@@ -33,6 +33,14 @@ def about_page():
 def submit_page():
     return FileResponse("frontend/submit.html")
 
+@app.get("/dashboard.css")
+def serve_css():
+    return FileResponse("frontend/dashboard.css")
+
+@app.get("/dashboard.js")
+def serve_js():
+    return FileResponse("frontend/dashboard.js")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

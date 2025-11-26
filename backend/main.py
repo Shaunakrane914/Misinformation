@@ -13,6 +13,7 @@ from typing import Dict, Optional
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
 from starlette.middleware.gzip import GZipMiddleware
+import asyncio
 from pydantic import BaseModel
 import logging
 from dotenv import load_dotenv
@@ -329,7 +330,7 @@ async def get_dashboard_claims(fresh: bool = False):
             claims = load_random_dashboard_claims(n=15)
         else:
             from backend.services.dashboard_loader import get_dashboard_claims_cached
-            claims = get_dashboard_claims_cached(n=15, ttl_seconds=int(os.getenv("DASHBOARD_TTL", "60")))
+            claims = get_dashboard_claims_cached(n=15, ttl_seconds=int(os.getenv("DASHBOARD_TTL", "300")))
         logger.info(f"[API] Loaded {len(claims)} dashboard claims")
         results = [
             {
@@ -380,3 +381,14 @@ async def request_logger(request: Request, call_next):
 @app.get("/healthz")
 async def healthz():
     return {"status": "ok"}
+
+
+@app.on_event("startup")
+async def warm_dashboard_cache():
+    try:
+        from backend.services.dashboard_loader import get_dashboard_claims_cached
+        loop = asyncio.get_event_loop()
+        await loop.run_in_executor(None, lambda: get_dashboard_claims_cached(n=15, ttl_seconds=int(os.getenv("DASHBOARD_TTL", "300"))))
+        logger.info("[Startup] Dashboard cache warmed")
+    except Exception as e:
+        logger.warning(f"[Startup] Failed to warm dashboard cache: {e}")

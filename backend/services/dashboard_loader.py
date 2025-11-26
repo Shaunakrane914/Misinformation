@@ -12,7 +12,8 @@ def _stream_sample_csv(csv_path: str, n: int) -> pd.DataFrame:
     chunksize = 10000
     reservoir: List[Dict] = []
     total_seen = 0
-
+    scan_limit = int(os.getenv("DASHBOARD_SCAN_LIMIT", "20000"))
+    
     try_encodings = ["utf-8", "latin-1"]
     for enc in try_encodings:
         try:
@@ -39,6 +40,10 @@ def _stream_sample_csv(csv_path: str, n: int) -> pd.DataFrame:
                         j = random.randint(0, total_seen - 1)
                         if j < n:
                             reservoir[j] = item
+                    if total_seen >= scan_limit:
+                        break
+                if total_seen >= scan_limit:
+                    break
             break
         except UnicodeDecodeError:
             logger.warning("[DashboardLoader] UTF-8 decode failed, trying latin-1")
@@ -57,6 +62,7 @@ def _stream_sample_zip(zip_path: str, n: int) -> pd.DataFrame:
     chunksize = 10000
     reservoir: List[Dict] = []
     total_seen = 0
+    scan_limit = int(os.getenv("DASHBOARD_SCAN_LIMIT", "20000"))
 
     with zipfile.ZipFile(zip_path, 'r') as z:
         # Pick first CSV inside the zip
@@ -89,6 +95,10 @@ def _stream_sample_zip(zip_path: str, n: int) -> pd.DataFrame:
                                 j = random.randint(0, total_seen - 1)
                                 if j < n:
                                     reservoir[j] = item
+                            if total_seen >= scan_limit:
+                                break
+                        if total_seen >= scan_limit:
+                            break
                 break
             except UnicodeDecodeError:
                 logger.warning("[DashboardLoader] UTF-8 decode failed in zip, trying latin-1")

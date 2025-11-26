@@ -3,8 +3,8 @@ fastapi==0.109.0
 uvicorn==0.27.0
 pydantic==2.5.3
 
-# Supabase (NO RUST)
-supabase-py==2.4.3
+# Supabase (Python client - works on Python 3.13)
+supabase==2.3.0
 
 # Google Gemini AI
 google-generativeai==0.6.0

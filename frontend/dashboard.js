@@ -1,4 +1,5 @@
-const API_URL = "http://127.0.0.1:8000/api/dashboard/claims";
+const API_BASE = typeof window !== "undefined" && window.BACKEND_BASE ? window.BACKEND_BASE : "";
+const API_URL = `${API_BASE}/api/dashboard/claims`;
 
 function updateStatCards(items) {
   const trueCount = items.filter(i => String(i.verdict).toLowerCase() === "true").length;
@@ -6,16 +7,20 @@ function updateStatCards(items) {
   const misleadingCount = items.filter(i => String(i.verdict).toLowerCase() === "misleading").length;
   const unverifiedCount = items.length - (trueCount + falseCount + misleadingCount);
 
-  document.getElementById('trueCount').textContent = trueCount;
-  document.getElementById('falseCount').textContent = falseCount;
-  document.getElementById('misleadingCount').textContent = misleadingCount;
-  document.getElementById('unverifiedCount').textContent = unverifiedCount;
+  const elTrue = document.getElementById('trueCount');
+  const elFalse = document.getElementById('falseCount');
+  const elMis = document.getElementById('misleadingCount');
+  const elUnv = document.getElementById('unverifiedCount');
+  if (elTrue) elTrue.textContent = trueCount;
+  if (elFalse) elFalse.textContent = falseCount;
+  if (elMis) elMis.textContent = misleadingCount;
+  if (elUnv) elUnv.textContent = unverifiedCount;
 
   return { trueCount, falseCount, misleadingCount, unverifiedCount };
 }
 
 function buildPieChart(stats) {
-  const ctx = document.getElementById('pieChart');
+  const ctx = document.getElementById('pieChart') || document.getElementById('claimsPieChart');
   if (!ctx) return;
 
   new Chart(ctx, {
@@ -60,7 +65,7 @@ function buildPieChart(stats) {
 }
 
 function buildBarChart(stats) {
-  const ctx = document.getElementById('barChart');
+  const ctx = document.getElementById('barChart') || document.getElementById('claimsBarChart');
   if (!ctx) return;
 
   new Chart(ctx, {
@@ -175,7 +180,7 @@ function buildCard(item) {
       try {
         evidenceContent.innerHTML = `<p style="color: #64748b;">🤖 Generating AI explanation...</p>`;
 
-        const response = await fetch("http://127.0.0.1:8000/api/explain-claim", {
+        const response = await fetch(`${API_BASE}/api/explain-claim`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -190,6 +195,9 @@ function buildCard(item) {
         const badgeClass = isTrue ? "badge-true" : "badge-false";
         const badgeText = isTrue ? "True" : "False";
 
+        const source = data.evidence_url
+          ? '<a href="' + (data.evidence_url || '#') + '" target="_blank" rel="noopener noreferrer">Source</a>'
+          : '<span style="color:#94a3b8">No link available</span>';
         evidenceContent.innerHTML = `
           <div class="evidence-block">
             <span class="badge ${badgeClass}">${badgeText}</span>
@@ -199,10 +207,11 @@ function buildCard(item) {
             <p>${data.explanation || "Unable to generate explanation."}</p>
           </div>
           <div class="evidence-block">
-            <h4>Dataset Source:</h4>
-            <p>This claim is labeled as <strong>${item.verdict}</strong> in the public WELFake dataset.</p>
+            <h4>Evidence Link:</h4>
+            <p>${source}</p>
           </div>
         `;
+        card.dataset.loaded = "1";
       } catch (error) {
         evidenceContent.innerHTML = `
           <div class="evidence-block">
@@ -231,7 +240,10 @@ async function init() {
     console.time("fetch-dashboard-claims");
     const res = await fetch(API_URL, { cache: "no-store" });
     if (!res.ok) {
-      console.error(`Failed to load dashboard claims (${res.status})`);
+      const container = document.getElementById("claimsContainer");
+      if (container) container.innerHTML = "";
+      const dbg = document.getElementById("debugArea");
+      if (dbg) { dbg.style.display = "block"; const b=document.createElement("div"); b.className="debug-banner error"; b.textContent=`Failed to load dashboard claims (${res.status})`; dbg.appendChild(b);} 
       return;
     }
     const data = await res.json();
@@ -248,9 +260,10 @@ async function init() {
     buildPieChart(stats);
     buildBarChart(stats);
   } catch (e) {
-    console.error(`Error fetching dashboard data: ${e}`);
     const container = document.getElementById("claimsContainer");
     if (container) container.innerHTML = "";
+    const dbg = document.getElementById("debugArea");
+    if (dbg) { dbg.style.display = "block"; const b=document.createElement("div"); b.className="debug-banner error"; b.textContent=`Error fetching dashboard data: ${e}`; dbg.appendChild(b);} 
   }
 }
 

@@ -12,6 +12,7 @@ import uuid
 from typing import Dict, Optional
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Request
 from fastapi.middleware.cors import CORSMiddleware
+from starlette.middleware.gzip import GZipMiddleware
 from pydantic import BaseModel
 import logging
 from dotenv import load_dotenv
@@ -48,6 +49,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.add_middleware(GZipMiddleware, minimum_size=500)
 
 # Lazy-loaded agents (initialized when first needed)
 _claim_ingestion_agent = None
@@ -320,10 +322,14 @@ if __name__ == "__main__":
 # Dashboard endpoints
 
 @app.get("/dashboard/claims")
-async def get_dashboard_claims():
+async def get_dashboard_claims(fresh: bool = False):
     logger.info("[API] GET /dashboard/claims - Generating dashboard claims")
     try:
-        claims = load_random_dashboard_claims(n=15)
+        if fresh:
+            claims = load_random_dashboard_claims(n=15)
+        else:
+            from backend.services.dashboard_loader import get_dashboard_claims_cached
+            claims = get_dashboard_claims_cached(n=15, ttl_seconds=int(os.getenv("DASHBOARD_TTL", "60")))
         logger.info(f"[API] Loaded {len(claims)} dashboard claims")
         results = [
             {

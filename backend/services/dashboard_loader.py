@@ -3,6 +3,7 @@ import logging
 import random
 from typing import List, Dict
 import zipfile
+import time
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -123,3 +124,22 @@ def load_random_dashboard_claims(n: int = 15) -> List[Dict[str, str]]:
     except Exception as e:
         logger.error(f"[DashboardLoader] Error loading claims: {str(e)}")
         raise
+
+
+_CACHE_DATA: List[Dict[str, str]] = []
+_CACHE_AT: float = 0.0
+
+def get_dashboard_claims_cached(n: int = 15, ttl_seconds: int = 60) -> List[Dict[str, str]]:
+    global _CACHE_DATA, _CACHE_AT
+    now = time.time()
+    if _CACHE_DATA and (now - _CACHE_AT) < ttl_seconds:
+        logger.info(f"[DashboardLoader] Using cached dashboard claims ({len(_CACHE_DATA)})")
+        # Return a random subset to keep perceived freshness
+        if len(_CACHE_DATA) > n:
+            return random.sample(_CACHE_DATA, n)
+        return _CACHE_DATA[:]
+    logger.info("[DashboardLoader] Cache miss; regenerating claims sample")
+    data = load_random_dashboard_claims(n=n)
+    _CACHE_DATA = data
+    _CACHE_AT = now
+    return data

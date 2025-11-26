@@ -11,6 +11,7 @@ import time
 import uuid
 from typing import Dict, Optional
 from fastapi import FastAPI, BackgroundTasks, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import logging
 from dotenv import load_dotenv
@@ -38,6 +39,14 @@ app = FastAPI(
     title="Misinformation Detection API",
     description="API for detecting and fact-checking misinformation claims",
     version="2.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[os.getenv("ALLOWED_ORIGIN", "*")],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 # Lazy-loaded agents (initialized when first needed)
@@ -361,3 +370,7 @@ async def request_logger(request: Request, call_next):
     )
     response.headers["X-Request-ID"] = rid
     return response
+
+@app.get("/healthz")
+async def healthz():
+    return {"status": "ok"}

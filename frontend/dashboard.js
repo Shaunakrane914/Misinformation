@@ -1,6 +1,19 @@
 const API_BASE = typeof window !== "undefined" && window.BACKEND_BASE ? window.BACKEND_BASE : "";
 const API_URL = `${API_BASE}/api/dashboard/claims`;
 
+async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {
+  for (let i = 0; i < retries; i++) {
+    try {
+      const res = await fetch(url, options);
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res;
+    } catch (e) {
+      if (i === retries - 1) throw e;
+      await new Promise(r => setTimeout(r, delayMs * Math.pow(2, i)));
+    }
+  }
+}
+
 function updateStatCards(items) {
   const trueCount = items.filter(i => String(i.verdict).toLowerCase() === "true").length;
   const falseCount = items.filter(i => String(i.verdict).toLowerCase() === "false").length;
@@ -180,14 +193,14 @@ function buildCard(item) {
       try {
         evidenceContent.innerHTML = `<p style="color: #64748b;">🤖 Generating AI explanation...</p>`;
 
-        const response = await fetch(`${API_BASE}/api/explain-claim`, {
+        const response = await fetchWithRetry(`${API_BASE}/api/explain-claim`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             claim: item.claim,
             verdict: item.verdict
           })
-        });
+        }, 3, 800);
 
         const data = await response.json();
 
@@ -238,7 +251,7 @@ function buildCard(item) {
 async function init() {
   try {
     console.time("fetch-dashboard-claims");
-    const res = await fetch(API_URL, { cache: "no-store" });
+    const res = await fetchWithRetry(API_URL, { cache: "no-store" });
     if (!res.ok) {
       const container = document.getElementById("claimsContainer");
       if (container) container.innerHTML = "";

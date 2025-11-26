@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Submit Claim - Misinformation Detection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/dashboard.css">
+</head>
+
+<body>
+  <header class="navbar">
+    <div class="nav-content">
+      <div class="brand">Aegis Protocol</div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/about">About</a>
+        <a href="/dashboard">Live Dashboard</a>
+        <a class="pill" href="/submit">Submit Claim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-header">
+      <h1>Submit a Claim</h1>
+      <p>Enter a misinformation claim to be analyzed by our AI-powered detection system.</p>
+    </section>
+
+    <section class="card mb-3">
+      <form id="claimForm">
+        <label for="claimText">Claim Text</label>
+        <textarea id="claimText" rows="5" placeholder="Enter the claim you want to verify..." required></textarea>
+        <button type="submit" class="toggle-btn mt-2">Submit Claim</button>
+      </form>
+    </section>
+
+    <section class="card" id="resultCard" style="display:none;">
+      <h3>Result</h3>
+      <div id="resultContent"></div>
+      <button id="checkStatusBtn" class="toggle-btn mt-2" style="display:none;">Check Status</button>
+    </section>
+  </main>
+
+  <script>
+    const API_BASE = 'http://127.0.0.1:8000';
+    const form = document.getElementById('claimForm');
+    const resultCard = document.getElementById('resultCard');
+    const resultContent = document.getElementById('resultContent');
+    const checkBtn = document.getElementById('checkStatusBtn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const claimText = document.getElementById('claimText').value.trim();
+      if (!claimText) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/claims/submit`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ claim_text: claimText })
+        });
+        const data = await res.json();
+
+        resultCard.style.display = 'block';
+        resultContent.innerHTML = `
+          <p><strong>Claim ID:</strong> ${data.claim_id}</p>
+          <p><strong>Status:</strong> <span class="badge ${data.status === 'completed' ? 'badge-true' : ''}">${data.status}</span></p>
+          ${data.is_new === false ? '<p><em>This claim was already processed.</em></p>' : '<p><em>Processing started...</em></p>'}
+        `;
+
+        checkBtn.style.display = 'inline-block';
+        checkBtn.onclick = async () => {
+          const r = await fetch(`${API_BASE}/claims/${data.claim_id}`);
+          const d = await r.json();
+
+          const evidenceHtml = d.evidence && d.evidence.length > 0
+            ? `<p><strong>Evidence:</strong> ${d.evidence[0].summary}</p>`
+            : '';
+
+          resultContent.innerHTML = `
+            <p><strong>Claim ID:</strong> ${d.claim_id}</p>
+            <p><strong>Status:</strong> <span class="badge ${d.status === 'completed' ? 'badge-true' : ''}">${d.status}</span></p>
+            ${d.verdict ? `<p><strong>Verdict:</strong> <span class="badge ${d.verdict === 'False' ? 'badge-false' : 'badge-true'}">${d.verdict}</span></p>` : ''}
+            ${d.confidence ? `<p><strong>Confidence:</strong> ${(d.confidence * 100).toFixed(0)}%</p>` : ''}
+            ${d.severity ? `<p><strong>Severity:</strong> ${d.severity}</p>` : ''}
+            ${d.reasoning ? `<p><strong>Reasoning:</strong> ${d.reasoning}</p>` : ''}
+            ${evidenceHtml}
+          `;
+        };
+      } catch (err) {
+        resultCard.style.display = 'block';
+        resultContent.innerHTML = `<div class="debug-banner error">Error submitting claim. Please try again.</div>`;
+      }
+    });
+  </script>
+</body>
+
+</html>

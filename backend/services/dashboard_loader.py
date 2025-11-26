@@ -21,6 +21,7 @@ def _stream_sample_csv(csv_path: str, n: int) -> pd.DataFrame:
                 encoding=enc,
                 engine="python",
                 on_bad_lines="skip",
+                encoding_errors="replace",
                 chunksize=chunksize,
             ):
                 chunk = chunk.dropna(subset=["title"])  # noqa: PD002
@@ -73,6 +74,7 @@ def _stream_sample_zip(zip_path: str, n: int) -> pd.DataFrame:
                         encoding=enc,
                         engine="python",
                         on_bad_lines="skip",
+                        encoding_errors="replace",
                         chunksize=chunksize,
                     ):
                         chunk = chunk.dropna(subset=["title"])  # noqa: PD002

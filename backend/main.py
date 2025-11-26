@@ -6,9 +6,11 @@ All claims and evidence stored in database.
 """
 
 import os
-import asyncio
+import os
+import time
+import uuid
 from typing import Dict, Optional
-from fastapi import FastAPI, BackgroundTasks, HTTPException
+from fastapi import FastAPI, BackgroundTasks, HTTPException, Request
 from pydantic import BaseModel
 import logging
 from dotenv import load_dotenv
@@ -25,8 +27,8 @@ from backend.services.dashboard_loader import load_random_dashboard_claims
 
 # Configure logging
 logging.basicConfig(
-    level=logging.INFO,
-    format='[%(asctime)s] %(levelname)s - %(message)s',
+    level=os.getenv("LOG_LEVEL", "INFO"),
+    format='ts=%(asctime)s level=%(levelname)s logger=%(name)s msg="%(message)s"',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 logger = logging.getLogger(__name__)
@@ -348,3 +350,14 @@ async def explain_claim(request: dict):
             "explanation": f"Unable to generate explanation right now.",
             "evidence_url": ""
         }
+@app.middleware("http")
+async def request_logger(request: Request, call_next):
+    rid = request.headers.get("X-Request-ID") or str(uuid.uuid4())
+    start = time.perf_counter()
+    response = await call_next(request)
+    duration = (time.perf_counter() - start) * 1000.0
+    logger.info(
+        f"[HTTP] rid={rid} method={request.method} path={request.url.path} status={response.status_code} duration_ms={duration:.1f}"
+    )
+    response.headers["X-Request-ID"] = rid
+    return response

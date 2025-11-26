@@ -4,6 +4,8 @@ import random
 from typing import List, Dict
 import zipfile
 import time
+import json
+import threading
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -138,9 +140,11 @@ def load_random_dashboard_claims(n: int = 15) -> List[Dict[str, str]]:
 
 _CACHE_DATA: List[Dict[str, str]] = []
 _CACHE_AT: float = 0.0
+_REFRESHING: bool = False
+_SEED_USED: bool = False
 
 def get_dashboard_claims_cached(n: int = 15, ttl_seconds: int = 60) -> List[Dict[str, str]]:
-    global _CACHE_DATA, _CACHE_AT
+    global _CACHE_DATA, _CACHE_AT, _REFRESHING, _SEED_USED
     now = time.time()
     if _CACHE_DATA and (now - _CACHE_AT) < ttl_seconds:
         logger.info(f"[DashboardLoader] Using cached dashboard claims ({len(_CACHE_DATA)})")
@@ -148,8 +152,36 @@ def get_dashboard_claims_cached(n: int = 15, ttl_seconds: int = 60) -> List[Dict
         if len(_CACHE_DATA) > n:
             return random.sample(_CACHE_DATA, n)
         return _CACHE_DATA[:]
+    # Try seed JSON only once for instant response
+    data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+    seed_path = os.path.join(data_dir, "dashboard_seed.json")
+    if (not _SEED_USED) and os.path.exists(seed_path):
+        try:
+            with open(seed_path, "r", encoding="utf-8") as f:
+                seed = json.load(f)
+                if isinstance(seed, list) and seed:
+                    logger.info("[DashboardLoader] Serving seed dashboard claims while refreshing in background")
+                    _SEED_USED = True
+                    if not _REFRESHING:
+                        _REFRESHING = True
+                        threading.Thread(target=_refresh_cache_sync, args=(n,), daemon=True).start()
+                    return (seed if len(seed) <= n else random.sample(seed, n))
+        except Exception as e:
+            logger.warning(f"[DashboardLoader] Failed to read seed JSON: {e}")
     logger.info("[DashboardLoader] Cache miss; regenerating claims sample")
     data = load_random_dashboard_claims(n=n)
     _CACHE_DATA = data
     _CACHE_AT = now
     return data
+
+def _refresh_cache_sync(n: int = 15):
+    global _CACHE_DATA, _CACHE_AT, _REFRESHING
+    try:
+        data = load_random_dashboard_claims(n=n)
+        _CACHE_DATA = data
+        _CACHE_AT = time.time()
+        logger.info("[DashboardLoader] Background cache refresh complete")
+    except Exception as e:
+        logger.warning(f"[DashboardLoader] Background refresh failed: {e}")
+    finally:
+        _REFRESHING = False

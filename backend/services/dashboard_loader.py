@@ -112,13 +112,28 @@ def _stream_sample_zip(zip_path: str, n: int) -> pd.DataFrame:
     df = df.drop_duplicates(subset=["claim"])  # noqa: PD002
     return df
 
+def _read_xlsx(xlsx_path: str) -> pd.DataFrame:
+    df = pd.read_excel(
+        xlsx_path,
+        usecols=["title", "label"],
+        engine="openpyxl"
+    )
+    df = df.dropna(subset=["title"]).drop_duplicates(subset=["title"])  # noqa: PD002
+    df["label"] = pd.to_numeric(df["label"], errors="coerce").fillna(0).astype(int)
+    df = df.rename(columns={"title": "claim"})
+    return df[["claim", "label"]]
+
 def load_random_dashboard_claims(n: int = 15) -> List[Dict[str, str]]:
     try:
         data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
         zip_path = os.path.join(data_dir, "WELFake_Dataset.zip")
         csv_path = os.path.join(data_dir, "WELFake_Dataset.csv")
+        xlsx_path = os.path.join(data_dir, "WELFake_Dataset.xlsx")
 
-        if os.path.exists(zip_path):
+        if os.path.exists(xlsx_path):
+            logger.info(f"[DashboardLoader] Loading XLSX: {xlsx_path}")
+            df = _read_xlsx(xlsx_path)
+        elif os.path.exists(zip_path):
             logger.info(f"[DashboardLoader] Loading ZIP: {zip_path}")
             df = _stream_sample_zip(zip_path, max(n * 3, 50))
         else:

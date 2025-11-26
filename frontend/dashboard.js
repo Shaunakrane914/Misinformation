@@ -161,9 +161,11 @@ function buildCard(item) {
   badgeContainer.style.marginBottom = "0.75rem";
 
   const badge = document.createElement("span");
-  const isTrue = String(item.verdict).toLowerCase() === "true";
-  badge.className = `badge ${isTrue ? "badge-true" : "badge-false"}`;
-  badge.textContent = isTrue ? "True" : "False";
+  const v = String(item.verdict).toLowerCase();
+  const badgeClassCollapsed = v === "true" ? "badge-true" : v === "misleading" ? "badge-misleading" : "badge-false";
+  const badgeTextCollapsed = v === "true" ? "True" : v === "misleading" ? "Misleading" : "False";
+  badge.className = `badge ${badgeClassCollapsed}`;
+  badge.textContent = badgeTextCollapsed;
   badgeContainer.appendChild(badge);
 
   const summary = document.createElement("p");
@@ -206,9 +208,9 @@ function buildCard(item) {
 
         const data = await response.json();
 
-        const isTrue = String(item.verdict).toLowerCase() === "true";
-        const badgeClass = isTrue ? "badge-true" : "badge-false";
-        const badgeText = isTrue ? "True" : "False";
+        const v2 = String(item.verdict).toLowerCase();
+        const badgeClass = v2 === "true" ? "badge-true" : v2 === "misleading" ? "badge-misleading" : "badge-false";
+        const badgeText = v2 === "true" ? "True" : v2 === "misleading" ? "Misleading" : "False";
 
         const source = data.evidence_url
           ? '<a href="' + (data.evidence_url || '#') + '" target="_blank" rel="noopener noreferrer">Source</a>'

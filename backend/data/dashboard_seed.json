@@ -1,0 +1,19 @@
+[
+  {"claim": "Bill Clinton called to break Northern Ireland political deadlock", "label": "True"},
+  {"claim": "Powerful hurricanes to fuel demands from island nations", "label": "True"},
+  {"claim": "Spanish judge orders arrest of ousted Catalan leader", "label": "True"},
+  {"claim": "The Trump presidency on Feb. 5 at 7:10 P.M. EST", "label": "True"},
+  {"claim": "Theresa May prepares to stare down Parliament in Brexit showdown", "label": "True"},
+  {"claim": "U.S. senator urges DOJ to reject any White House pressure on probes", "label": "True"},
+  {"claim": "After a Crime, the Price of a Second Chance", "label": "True"},
+
+  {"claim": "STAMMERING HILLARY PLAYS DUMB On Assange Comment", "label": "False"},
+  {"claim": "Trump adds new twist to immigration proposals", "label": "False"},
+  {"claim": "The delay over Loretta Lynch’s confirmation is unprecedented", "label": "False"},
+  {"claim": "Obama personally leaked Chuck Schumer’s private memo", "label": "False"},
+  {"claim": "BLACK LIVES MATTER TERRORIST asks Allah to punish police", "label": "False"},
+  {"claim": "Tourists flee nightmarish Paris amid rising crime", "label": "False"},
+
+  {"claim": "UK inflation hits highest since 2012", "label": "Misleading"},
+  {"claim": "Global oil supply rises in Q2", "label": "Misleading"}
+]

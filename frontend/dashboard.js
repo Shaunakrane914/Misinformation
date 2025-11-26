@@ -1,4 +1,6 @@
-const API_BASE = typeof window !== "undefined" && window.BACKEND_BASE ? window.BACKEND_BASE : "";
+const API_BASE = (typeof window !== "undefined" && window.BACKEND_BASE)
+  ? window.BACKEND_BASE
+  : "https://misinfo-5f13.onrender.com"; // fallback to Render backend
 const API_URL = `${API_BASE}/dashboard/claims`;
 
 async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {

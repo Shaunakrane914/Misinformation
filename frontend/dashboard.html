@@ -10,6 +10,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="dashboard.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script>
+    (function(){
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var b = params.get('backend');
+        if (b) {
+          window.BACKEND_BASE = String(b).replace(/\/$/, '');
+        }
+      } catch (e) {}
+    })();
+  </script>
   <script src="dashboard.js" defer></script>
 </head>
 

@@ -46,7 +46,18 @@
   </main>
 
   <script>
-    const API_BASE = typeof window !== 'undefined' && window.BACKEND_BASE ? window.BACKEND_BASE : '';
+    (function(){
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var b = params.get('backend');
+        if (b) {
+          window.BACKEND_BASE = String(b).replace(/\/$/, '');
+        }
+      } catch (e) {}
+    })();
+    const API_BASE = (typeof window !== 'undefined' && window.BACKEND_BASE)
+      ? window.BACKEND_BASE
+      : 'https://misinfo-5f13.onrender.com';
     async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {
       for (let i = 0; i < retries; i++) {
         try {

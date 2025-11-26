@@ -1,5 +1,5 @@
 const API_BASE = typeof window !== "undefined" && window.BACKEND_BASE ? window.BACKEND_BASE : "";
-const API_URL = `${API_BASE}/api/dashboard/claims`;
+const API_URL = `${API_BASE}/dashboard/claims`;
 
 async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {
   for (let i = 0; i < retries; i++) {
@@ -193,7 +193,7 @@ function buildCard(item) {
       try {
         evidenceContent.innerHTML = `<p style="color: #64748b;">🤖 Generating AI explanation...</p>`;
 
-        const response = await fetchWithRetry(`${API_BASE}/api/explain-claim`, {
+        const response = await fetchWithRetry(`${API_BASE}/explain-claim`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({

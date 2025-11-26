@@ -2,6 +2,7 @@ import os
 import logging
 import random
 from typing import List, Dict
+import zipfile
 import pandas as pd
 
 logger = logging.getLogger(__name__)
@@ -49,11 +50,65 @@ def _stream_sample_csv(csv_path: str, n: int) -> pd.DataFrame:
     df = df.drop_duplicates(subset=["claim"])  # noqa: PD002
     return df
 
+
+def _stream_sample_zip(zip_path: str, n: int) -> pd.DataFrame:
+    chunksize = 10000
+    reservoir: List[Dict] = []
+    total_seen = 0
+
+    with zipfile.ZipFile(zip_path, 'r') as z:
+        # Pick first CSV inside the zip
+        inner_csv = next((name for name in z.namelist() if name.lower().endswith('.csv')), None)
+        if not inner_csv:
+            logger.error(f"[DashboardLoader] No CSV found in zip: {zip_path}")
+            return pd.DataFrame(columns=["claim", "label"])
+        logger.info(f"[DashboardLoader] Reading zipped CSV: {inner_csv}")
+        try_encodings = ["utf-8", "latin-1"]
+        for enc in try_encodings:
+            try:
+                with z.open(inner_csv) as f:
+                    for chunk in pd.read_csv(
+                        f,
+                        usecols=["title", "label"],
+                        encoding=enc,
+                        engine="python",
+                        on_bad_lines="skip",
+                        chunksize=chunksize,
+                    ):
+                        chunk = chunk.dropna(subset=["title"])  # noqa: PD002
+                        chunk["label"] = pd.to_numeric(chunk["label"], errors="coerce").fillna(0).astype(int)
+                        for _, row in chunk.iterrows():
+                            total_seen += 1
+                            item = {"claim": row["title"], "label": row["label"]}
+                            if len(reservoir) < n:
+                                reservoir.append(item)
+                            else:
+                                j = random.randint(0, total_seen - 1)
+                                if j < n:
+                                    reservoir[j] = item
+                break
+            except UnicodeDecodeError:
+                logger.warning("[DashboardLoader] UTF-8 decode failed in zip, trying latin-1")
+                continue
+
+    if not reservoir:
+        return pd.DataFrame(columns=["claim", "label"])
+    df = pd.DataFrame(reservoir)
+    df = df.drop_duplicates(subset=["claim"])  # noqa: PD002
+    return df
+
 def load_random_dashboard_claims(n: int = 15) -> List[Dict[str, str]]:
     try:
-        csv_path = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "WELFake_Dataset.csv"))
-        logger.info(f"[DashboardLoader] Loading CSV: {csv_path}")
-        df = _stream_sample_csv(csv_path, max(n * 3, 50))  # oversample then reduce
+        data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+        zip_path = os.path.join(data_dir, "WELFake_Dataset.zip")
+        csv_path = os.path.join(data_dir, "WELFake_Dataset.csv")
+
+        if os.path.exists(zip_path):
+            logger.info(f"[DashboardLoader] Loading ZIP: {zip_path}")
+            df = _stream_sample_zip(zip_path, max(n * 3, 50))
+        else:
+            logger.info(f"[DashboardLoader] Loading CSV: {csv_path}")
+            df = _stream_sample_csv(csv_path, max(n * 3, 50))  # oversample then reduce
         logger.info(f"[DashboardLoader] Stream-sampled rows: {len(df)}")
         df["label"] = df["label"].apply(lambda x: "True" if int(x) == 1 else "False")
         if n <= 0:

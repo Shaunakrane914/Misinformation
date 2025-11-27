@@ -8,20 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/dashboard.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="theme-extras.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script>
-    (function(){
-      try {
-        var params = new URLSearchParams(window.location.search);
-        var b = params.get('backend');
-        if (b) {
-          window.BACKEND_BASE = String(b).replace(/\/$/, '');
-        }
-      } catch (e) {}
-    })();
-  </script>
-  <script src="/dashboard.js" defer></script>
+  <script src="dashboard.js" defer></script>
+  <script src="transitions.js" defer></script>
+  <script src="theme-interactive.js" defer></script>
 </head>
 
 <body>
@@ -29,11 +21,14 @@
     <div class="nav-content">
       <div class="brand">Aegis Protocol</div>
       <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/agents">Agents</a>
-        <a href="/about">About</a>
-        <a class="pill" href="/dashboard">Live Dashboard</a>
-        <a href="/submit">Submit Claim</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a class="pill" href="dashboard.html">Live Dashboard</a>
+        <a href="submit.html">Submit Claim</a>
+        <!-- Dark Mode Toggle in Navbar -->
+        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <span class="theme-icon">🌙</span>
+        </button>
       </nav>
     </div>
   </header>
@@ -41,11 +36,37 @@
   <main class="dashboard-container">
     <!-- Left Column: Claims Feed -->
     <div class="feed-column">
-      <section class="page-header">
+      <section class="page-header" data-reveal data-reveal-delay="0.1s">
         <h1>📋 Verified Claims Feed</h1>
+        <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
+          <span class="live-indicator">
+            <span class="live-dot"></span>
+            LIVE
+          </span>
+          <p style="margin: 0;">Showing the latest verified claims from our AI system</p>
+        </div>
       </section>
 
-      <section class="claims">
+      <!-- Search and Filter Bar -->
+      <section class="search-filter-bar" data-reveal data-reveal-delay="0.15s">
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="searchInput" class="search-input" placeholder="Search claims..."
+            aria-label="Search claims">
+        </div>
+        <div class="filter-buttons">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="True">True</button>
+          <button class="filter-btn" data-filter="False">False</button>
+          <button class="filter-btn" data-filter="Misleading">Misleading</button>
+        </div>
+        <button class="refresh-btn" id="refreshBtn">
+          <span class="refresh-icon">↻</span>
+          Refresh
+        </button>
+      </section>
+
+      <section class="claims" data-reveal data-reveal-delay="0.2s">
         <div id="claimsContainer" class="claims-grid"></div>
       </section>
     </div>
@@ -53,23 +74,23 @@
     <!-- Right Column: Statistics Sidebar -->
     <aside class="stats-sidebar">
       <!-- Stat Cards -->
-      <div class="stat-cards-grid">
-        <div class="stat-card stat-true">
+      <div class="stat-cards-grid" data-reveal data-reveal-delay="0.1s">
+        <div class="stat-card stat-true" data-reveal data-reveal-delay="0.15s">
           <div class="stat-icon">✓</div>
           <div class="stat-value" id="trueCount">0</div>
           <div class="stat-label">True</div>
         </div>
-        <div class="stat-card stat-false">
+        <div class="stat-card stat-false" data-reveal data-reveal-delay="0.2s">
           <div class="stat-icon">✗</div>
           <div class="stat-value" id="falseCount">0</div>
           <div class="stat-label">False</div>
         </div>
-        <div class="stat-card stat-misleading">
+        <div class="stat-card stat-misleading" data-reveal data-reveal-delay="0.25s">
           <div class="stat-icon">⚠</div>
           <div class="stat-value" id="misleadingCount">0</div>
           <div class="stat-label">Misleading</div>
         </div>
-        <div class="stat-card stat-unverified">
+        <div class="stat-card stat-unverified" data-reveal data-reveal-delay="0.3s">
           <div class="stat-icon">?</div>
           <div class="stat-value" id="unverifiedCount">0</div>
           <div class="stat-label">Unverified</div>
@@ -77,7 +98,7 @@
       </div>
 
       <!-- Verdict Distribution Chart -->
-      <div class="dark-card">
+      <div class="dark-card" data-reveal data-reveal-delay="0.35s">
         <h3>Verdict Distribution</h3>
         <div class="chart-container">
           <canvas id="pieChart"></canvas>
@@ -85,7 +106,7 @@
       </div>
 
       <!-- Claims Timeline Chart -->
-      <div class="dark-card">
+      <div class="dark-card" data-reveal data-reveal-delay="0.45s">
         <h3>Claims Timeline</h3>
         <div class="chart-container-bar">
           <canvas id="barChart"></canvas>

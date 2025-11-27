@@ -8,7 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/dashboard.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="theme-extras.css">
+  <script src="transitions.js" defer></script>
+  <script src="theme-interactive.js" defer></script>
 </head>
 
 <body>
@@ -16,110 +19,210 @@
     <div class="nav-content">
       <div class="brand">Aegis Protocol</div>
       <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/agents">Agents</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Live Dashboard</a>
-        <a class="pill" href="/submit">Submit Claim</a>
+        <a href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="dashboard.html">Live Dashboard</a>
+        <a class="pill" href="submit.html">Submit Claim</a>
+        <!-- Dark Mode Toggle in Navbar -->
+        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <span class="theme-icon">🌙</span>
+        </button>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <section class="page-header">
+    <section class="page-header" data-reveal data-reveal-delay="0.1s">
       <h1>Submit a Claim</h1>
       <p>Enter a misinformation claim to be analyzed by our AI-powered detection system.</p>
     </section>
 
-    <section class="card mb-3">
+    <section class="card mb-3" data-reveal data-reveal-delay="0.2s">
       <form id="claimForm">
-        <label for="claimText">Claim Text</label>
+        <label for="claimText">Claim Text *</label>
         <textarea id="claimText" rows="5" placeholder="Enter the claim you want to verify..." required></textarea>
-        <button type="submit" class="toggle-btn mt-2">Submit Claim</button>
+        <div class="char-counter" id="charCounter">0 / 1000 characters</div>
+
+        <label for="sourceUrl" style="margin-top: 1rem;">Source URL (Optional)</label>
+        <input type="url" id="sourceUrl" placeholder="https://example.com/article" style="margin-bottom: 0;">
+        <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0.5rem 0 1rem 0;">
+          Provide a link to where you found this claim (optional but helpful)
+        </p>
+
+        <button type="submit" class="toggle-btn mt-2" id="submitBtn">
+          <span id="btnText">Submit Claim</span>
+        </button>
       </form>
+
+      <!-- Example Claims Section -->
+      <div class="examples-section" style="margin-top: 2rem;">
+        <h3>💡 Try These Example Claims</h3>
+        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
+          Click any example below to auto-fill the form
+        </p>
+        <div class="examples-grid">
+          <div class="example-claim" onclick="fillExample('The Earth is flat and governments are hiding the truth.')">
+            "The Earth is flat and governments are hiding the truth."
+          </div>
+          <div class="example-claim"
+            onclick="fillExample('Drinking 8 glasses of water a day is essential for everyone.')">
+            "Drinking 8 glasses of water a day is essential for everyone."
+          </div>
+          <div class="example-claim" onclick="fillExample('Vaccines cause autism in children.')">
+            "Vaccines cause autism in children."
+          </div>
+          <div class="example-claim"
+            onclick="fillExample('The Great Wall of China is visible from space with the naked eye.')">
+            "The Great Wall of China is visible from space with the naked eye."
+          </div>
+          <div class="example-claim" onclick="fillExample('Humans only use 10% of their brain capacity.')">
+            "Humans only use 10% of their brain capacity."
+          </div>
+        </div>
+      </div>
     </section>
 
-    <section class="card" id="resultCard" style="display:none;">
-      <h3>Result</h3>
+    <section class="card" id="resultCard" style="display:none;" data-reveal data-reveal-delay="0.3s">
+      <h3 id="resultTitle">Result</h3>
       <div id="resultContent"></div>
-      <button id="checkStatusBtn" class="toggle-btn mt-2" style="display:none;">Check Status</button>
+      <div id="resultActions" style="margin-top: 1rem; display: none;">
+        <button id="viewStatusBtn" class="toggle-btn">View Full Status</button>
+        <button id="submitAnotherBtn" class="toggle-btn"
+          style="background: var(--text-secondary); margin-left: 0.5rem;">Submit Another</button>
+      </div>
     </section>
   </main>
 
   <script>
-    (function(){
-      try {
-        var params = new URLSearchParams(window.location.search);
-        var b = params.get('backend');
-        if (b) {
-          window.BACKEND_BASE = String(b).replace(/\/$/, '');
-        }
-      } catch (e) {}
-    })();
-    const API_BASE = (typeof window !== 'undefined' && window.BACKEND_BASE)
-      ? window.BACKEND_BASE
-      : 'https://misinfo-5f13.onrender.com';
-    async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {
-      for (let i = 0; i < retries; i++) {
-        try {
-          const res = await fetch(url, options);
-          if (!res.ok) throw new Error(`HTTP ${res.status}`);
-          return res;
-        } catch (e) {
-          if (i === retries - 1) throw e;
-          await new Promise(r => setTimeout(r, delayMs * Math.pow(2, i)));
-        }
-      }
-    }
+    const API_BASE = 'http://127.0.0.1:8000';
     const form = document.getElementById('claimForm');
     const resultCard = document.getElementById('resultCard');
     const resultContent = document.getElementById('resultContent');
-    const checkBtn = document.getElementById('checkStatusBtn');
+    const resultActions = document.getElementById('resultActions');
+    const submitBtn = document.getElementById('submitBtn');
+    const btnText = document.getElementById('btnText');
+
+    let currentClaimId = null;
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const claimText = document.getElementById('claimText').value.trim();
+      const sourceUrl = document.getElementById('sourceUrl').value.trim();
+
       if (!claimText) return;
 
+      // Show loading state
+      submitBtn.disabled = true;
+      btnText.textContent = 'Submitting...';
+      resultCard.style.display = 'none';
+
       try {
-        const res = await fetchWithRetry(`${API_BASE}/claims/submit`, {
+        const payload = { claim_text: claimText };
+        if (sourceUrl) {
+          payload.source_url = sourceUrl;
+        }
+
+        const res = await fetch(`${API_BASE}/claims/submit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ claim_text: claimText })
+          body: JSON.stringify(payload)
         });
+
+        if (!res.ok) {
+          throw new Error(`Server error: ${res.status}`);
+        }
+
         const data = await res.json();
+        currentClaimId = data.claim_id;
 
         resultCard.style.display = 'block';
-        resultContent.innerHTML = `
-          <p><strong>Claim ID:</strong> ${data.claim_id}</p>
-          <p><strong>Status:</strong> <span class="badge ${data.status === 'completed' ? 'badge-true' : ''}">${data.status}</span></p>
-          ${data.is_new === false ? '<p><em>This claim was already processed.</em></p>' : '<p><em>Processing started...</em></p>'}
-        `;
 
-        checkBtn.style.display = 'inline-block';
-        checkBtn.onclick = async () => {
-          const r = await fetchWithRetry(`${API_BASE}/claims/${data.claim_id}`);
-          const d = await r.json();
-
-          const evidenceHtml = d.evidence && d.evidence.length > 0
-            ? `<p><strong>Evidence:</strong> ${d.evidence[0].summary}</p>`
-            : '';
-
+        if (data.is_new === false) {
+          // Existing claim
           resultContent.innerHTML = `
-            <p><strong>Claim ID:</strong> ${d.claim_id}</p>
-            <p><strong>Status:</strong> <span class="badge ${d.status === 'completed' ? 'badge-true' : ''}">${d.status}</span></p>
-            ${d.verdict ? `<p><strong>Verdict:</strong> <span class="badge ${d.verdict === 'False' ? 'badge-false' : 'badge-true'}">${d.verdict}</span></p>` : ''}
-            ${d.confidence ? `<p><strong>Confidence:</strong> ${(d.confidence * 100).toFixed(0)}%</p>` : ''}
-            ${d.severity ? `<p><strong>Severity:</strong> ${d.severity}</p>` : ''}
-            ${d.reasoning ? `<p><strong>Reasoning:</strong> ${d.reasoning}</p>` : ''}
-            ${evidenceHtml}
+            <div class="debug-banner info">
+              <p style="margin: 0;"><strong>ℹ️ This claim was already processed!</strong></p>
+              <p style="margin: 0.5rem 0 0 0;">Claim ID: <code>${data.claim_id}</code></p>
+              <p style="margin: 0.5rem 0 0 0;">Status: <span class="badge ${data.status === 'completed' ? 'badge-true' : ''}">${data.status}</span></p>
+            </div>
           `;
-        };
+        } else {
+          // New claim
+          resultContent.innerHTML = `
+            <div class="debug-banner info">
+              <p style="margin: 0;"><strong>✅ Claim submitted successfully!</strong></p>
+              <p style="margin: 0.5rem 0 0 0;">Claim ID: <code>${data.claim_id}</code></p>
+              <p style="margin: 0.5rem 0 0 0;">Status: <span class="badge">${data.status}</span></p>
+              <p style="margin: 0.75rem 0 0 0; font-size: 0.875rem;">
+                Our AI agents are now analyzing your claim. This typically takes 10-30 seconds.
+              </p>
+            </div>
+          `;
+        }
+
+        resultActions.style.display = 'block';
+
+        // Scroll to result
+        resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+
       } catch (err) {
         resultCard.style.display = 'block';
-        resultContent.innerHTML = `<div class="debug-banner error">Error submitting claim. Please try again.</div>`;
+        resultContent.innerHTML = `
+          <div class="debug-banner error">
+            ❌ Error submitting claim: ${err.message}. Please try again.
+          </div>
+        `;
+        resultActions.style.display = 'none';
+      } finally {
+        submitBtn.disabled = false;
+        btnText.textContent = 'Submit Claim';
       }
     });
+
+    // View status button
+    document.getElementById('viewStatusBtn').addEventListener('click', () => {
+      if (currentClaimId) {
+        window.location.href = `status.html?id=${currentClaimId}`;
+      }
+    });
+
+    // Submit another button
+    document.getElementById('submitAnotherBtn').addEventListener('click', () => {
+      form.reset();
+      resultCard.style.display = 'none';
+      currentClaimId = null;
+      document.getElementById('claimText').focus();
+    });
+
+    // Character counter functionality
+    const claimTextArea = document.getElementById('claimText');
+    const charCounter = document.getElementById('charCounter');
+    const maxChars = 1000;
+
+    claimTextArea.addEventListener('input', () => {
+      const currentLength = claimTextArea.value.length;
+      charCounter.textContent = `${currentLength} / ${maxChars} characters`;
+
+      // Add warning/error classes
+      charCounter.classList.remove('warning', 'error');
+      if (currentLength > maxChars * 0.9) {
+        charCounter.classList.add('warning');
+      }
+      if (currentLength > maxChars) {
+        charCounter.classList.add('error');
+      }
+    });
+
+    // Function to fill example claims
+    window.fillExample = function (exampleText) {
+      claimTextArea.value = exampleText;
+      // Trigger char counter update
+      claimTextArea.dispatchEvent(new Event('input'));
+      // Smooth scroll to form
+      claimTextArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // Focus textarea
+      claimTextArea.focus();
+    };
   </script>
 </body>
 

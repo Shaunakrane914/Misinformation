@@ -8,7 +8,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/dashboard.css">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="theme-extras.css">
+  <script src="transitions.js" defer></script>
+  <script src="theme-interactive.js" defer></script>
 </head>
 
 <body>
@@ -16,24 +19,27 @@
     <div class="nav-content">
       <div class="brand">Aegis Protocol</div>
       <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/agents">Agents</a>
-        <a class="pill" href="/about">About</a>
-        <a href="/dashboard">Live Dashboard</a>
-        <a href="/submit">Submit Claim</a>
+        <a href="index.html">Home</a>
+        <a class="pill" href="about.html">About</a>
+        <a href="dashboard.html">Live Dashboard</a>
+        <a href="submit.html">Submit Claim</a>
+        <!-- Dark Mode Toggle in Navbar -->
+        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <span class="theme-icon">🌙</span>
+        </button>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <section class="page-header">
+    <section class="page-header" data-reveal data-reveal-delay="0.05s">
       <h1>🤖 How Aegis Protocol Works</h1>
       <p>Our agentic AI system uses three specialized agents working together to verify claims and detect
         misinformation.</p>
     </section>
 
     <!-- Agent Architecture Overview -->
-    <section class="card">
+    <section class="card" data-reveal data-reveal-delay="0.15s">
       <h2>Agentic AI Architecture</h2>
       <p>Aegis Protocol employs a multi-agent system where each AI agent has a specific role in the verification
         pipeline. When you submit a claim, it passes through three intelligent agents that collaborate to determine its
@@ -41,7 +47,7 @@
     </section>
 
     <!-- Agent 1: Claim Ingestion Agent -->
-    <section class="card">
+    <section class="card" data-reveal data-reveal-delay="0.25s">
       <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
         <div
           style="width: 48px; height: 48px; background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
@@ -64,7 +70,7 @@
     </section>
 
     <!-- Agent 2: Research Agent -->
-    <section class="card">
+    <section class="card" data-reveal data-reveal-delay="0.35s">
       <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
         <div
           style="width: 48px; height: 48px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
@@ -89,7 +95,7 @@
     </section>
 
     <!-- Agent 3: Investigator Agent -->
-    <section class="card">
+    <section class="card" data-reveal data-reveal-delay="0.45s">
       <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
         <div
           style="width: 48px; height: 48px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
@@ -115,7 +121,7 @@
     </section>
 
     <!-- Processing Pipeline -->
-    <section class="card">
+    <section class="card" data-reveal data-reveal-delay="0.55s">
       <h2>🔄 The Complete Processing Pipeline</h2>
       <ol style="line-height: 2;">
         <li><strong>Submission:</strong> User submits a claim via the Submit Claim page</li>

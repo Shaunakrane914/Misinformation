@@ -1,23 +1,5 @@
-const API_BASE = (typeof window !== "undefined" && window.BACKEND_BASE)
-  ? window.BACKEND_BASE
-  : "https://misinfo-5f13.onrender.com"; // fallback to Render backend
-function claimsUrl() {
-  const ts = Date.now();
-  return `${API_BASE}/dashboard/claims?t=${ts}`;
-}
-
-async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const res = await fetch(url, options);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      return res;
-    } catch (e) {
-      if (i === retries - 1) throw e;
-      await new Promise(r => setTimeout(r, delayMs * Math.pow(2, i)));
-    }
-  }
-}
+const API_BASE = typeof window !== "undefined" && window.BACKEND_BASE ? window.BACKEND_BASE : "";
+const API_URL = `${API_BASE}/api/dashboard/claims`;
 
 function updateStatCards(items) {
   const trueCount = items.filter(i => String(i.verdict).toLowerCase() === "true").length;
@@ -164,11 +146,9 @@ function buildCard(item) {
   badgeContainer.style.marginBottom = "0.75rem";
 
   const badge = document.createElement("span");
-  const v = String(item.verdict).toLowerCase();
-  const badgeClassCollapsed = v === "true" ? "badge-true" : v === "misleading" ? "badge-misleading" : "badge-false";
-  const badgeTextCollapsed = v === "true" ? "True" : v === "misleading" ? "Misleading" : "False";
-  badge.className = `badge ${badgeClassCollapsed}`;
-  badge.textContent = badgeTextCollapsed;
+  const isTrue = String(item.verdict).toLowerCase() === "true";
+  badge.className = `badge ${isTrue ? "badge-true" : "badge-false"}`;
+  badge.textContent = isTrue ? "True" : "False";
   badgeContainer.appendChild(badge);
 
   const summary = document.createElement("p");
@@ -200,20 +180,20 @@ function buildCard(item) {
       try {
         evidenceContent.innerHTML = `<p style="color: #64748b;">🤖 Generating AI explanation...</p>`;
 
-        const response = await fetchWithRetry(`${API_BASE}/explain-claim`, {
+        const response = await fetch(`${API_BASE}/api/explain-claim`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             claim: item.claim,
             verdict: item.verdict
           })
-        }, 3, 800);
+        });
 
         const data = await response.json();
 
-        const v2 = String(item.verdict).toLowerCase();
-        const badgeClass = v2 === "true" ? "badge-true" : v2 === "misleading" ? "badge-misleading" : "badge-false";
-        const badgeText = v2 === "true" ? "True" : v2 === "misleading" ? "Misleading" : "False";
+        const isTrue = String(item.verdict).toLowerCase() === "true";
+        const badgeClass = isTrue ? "badge-true" : "badge-false";
+        const badgeText = isTrue ? "True" : "False";
 
         const source = data.evidence_url
           ? '<a href="' + (data.evidence_url || '#') + '" target="_blank" rel="noopener noreferrer">Source</a>'
@@ -258,18 +238,7 @@ function buildCard(item) {
 async function init() {
   try {
     console.time("fetch-dashboard-claims");
-    const res = await fetchWithRetry(claimsUrl(), { cache: "no-store" });
-    const dbg = document.getElementById("debugArea");
-    if (dbg) {
-      dbg.style.display = "block";
-      const b = document.createElement("div");
-      b.className = "debug-banner info";
-      const src = res.headers.get("X-Dashboard-Source") || "n/a";
-      const sid = res.headers.get("X-Sample-Id") || "n/a";
-      const cks = res.headers.get("X-Claims-Checksum") || "n/a";
-      b.textContent = `Source=${src} SampleId=${sid} Checksum=${cks}`;
-      dbg.appendChild(b);
-    }
+    const res = await fetch(API_URL, { cache: "no-store" });
     if (!res.ok) {
       const container = document.getElementById("claimsContainer");
       if (container) container.innerHTML = "";
@@ -279,12 +248,6 @@ async function init() {
     }
     const data = await res.json();
     console.timeEnd("fetch-dashboard-claims");
-    if (dbg && data && data.length) {
-      const b2 = document.createElement("div");
-      b2.className = "debug-banner info";
-      b2.textContent = `FirstClaim=${(data[0].claim||"").slice(0,80)}`;
-      dbg.appendChild(b2);
-    }
 
     const container = document.getElementById("claimsContainer");
     if (container) {
@@ -305,3 +268,89 @@ async function init() {
 }
 
 window.addEventListener("DOMContentLoaded", init);
+
+// Search and Filter Functionality
+window.addEventListener("DOMContentLoaded", () => {
+  let allClaims = [];
+
+  // Store all claims for filtering
+  async function loadAllClaims() {
+    try {
+      const res = await fetch(API_URL, { cache: "no-store" });
+      if (!res.ok) return;
+      allClaims = await res.json();
+      renderFilteredClaims();
+    } catch (e) {
+      console.error('Error loading claims for filtering:', e);
+    }
+  }
+
+  // Render filtered claims
+  function renderFilteredClaims() {
+    const container = document.getElementById("claimsContainer");
+    if (!container) return;
+
+    // Get current filters
+    const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
+    const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+
+    // Filter claims
+    let filtered = allClaims.filter(claim => {
+      // Search filter
+      const matchesSearch = !searchTerm || 
+        (claim.claim || '').toLowerCase().includes(searchTerm) ||
+        (claim.explanation || '').toLowerCase().includes(searchTerm);
+
+      // Verdict filter
+      const matchesFilter = activeFilter === 'all' || 
+        String(claim.verdict).toLowerCase() === activeFilter.toLowerCase();
+
+      return matchesSearch && matchesFilter;
+    });
+
+    // Clear and render
+    container.innerHTML = "";
+    if (filtered.length === 0) {
+      container.innerHTML = '<p style="textAlign: center; color: var(--text-muted); padding: 3rem;">No claims match your filters.</p>';
+    } else {
+      filtered.forEach(item => container.appendChild(buildCard(item)));
+    }
+
+    // Update stats with filtered data
+    const stats = updateStatCards(filtered);
+  }
+
+  // Search input
+  const searchInput = document.getElementById('searchInput');
+  if (searchInput) {
+    let searchTimeout;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(renderFilteredClaims, 300); // Debounce
+    });
+  }
+
+  // Filter buttons
+  const filterButtons = document.querySelectorAll('.filter-btn');
+  filterButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterButtons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderFilteredClaims();
+    });
+  });
+
+  // Refresh button
+  const refreshBtn = document.getElementById('refreshBtn');
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', async () => {
+      refreshBtn.classList.add('spinning');
+      await loadAllClaims();
+      await init(); // Reload charts
+      setTimeout(() => refreshBtn.classList.remove('spinning'), 1000);
+    });
+  }
+
+  // Initial load
+  loadAllClaims();
+});

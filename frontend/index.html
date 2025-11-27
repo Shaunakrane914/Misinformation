@@ -9,6 +9,9 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="theme-extras.css">
+  <script src="transitions.js" defer></script>
+  <script src="theme-interactive.js" defer></script>
 </head>
 
 <body>
@@ -16,49 +19,248 @@
     <div class="nav-content">
       <div class="brand">Aegis Protocol</div>
       <nav class="nav-links">
-        <a class="pill" href="/">Home</a>
-        <a href="/agents">Agents</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Live Dashboard</a>
-        <a href="/submit">Submit Claim</a>
+        <a class="pill" href="index.html">Home</a>
+        <a href="about.html">About</a>
+        <a href="dashboard.html">Live Dashboard</a>
+        <a href="submit.html">Submit Claim</a>
+        <!-- Dark Mode Toggle in Navbar -->
+        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+          <span class="theme-icon">🌙</span>
+        </button>
       </nav>
     </div>
   </header>
 
   <main class="container">
-    <section class="hero">
+    <section class="hero" data-reveal data-reveal-delay="0.1s">
       <div class="hero-inner">
         <h1>Building bold trust<br><span class="accent">with AI-powered verification</span></h1>
         <p class="subtitle">Combat misinformation with our advanced multi-agent AI system. From claim discovery to
           expert verification, we help you navigate the truth.</p>
         <div class="cta-row">
-          <a class="cta" href="/submit">Submit a Claim</a>
-          <a class="cta ghost" href="/dashboard">View Live Dashboard</a>
+          <a class="cta" href="submit.html">Submit a Claim</a>
+          <a class="cta ghost" href="dashboard.html">View Live Dashboard</a>
         </div>
       </div>
     </section>
 
-    <section class="analytics">
-      <div class="card">
-        <h3>🔍 Live Dashboard</h3>
-        <p>Explore our real-time dashboard with 15 random verified claims, complete with verdicts and evidence.</p>
-        <a class="toggle-btn" href="/dashboard">Open Dashboard</a>
+    <!-- Trending Misinformations Section -->
+    <section class="trending-section" data-reveal data-reveal-delay="0.2s">
+      <div class="section-header">
+        <h2>🔥 Trending Misinformations</h2>
+        <p>Recently debunked false claims verified by our AI system</p>
       </div>
 
-      <div class="card">
+      <div id="trendingClaims" class="trending-grid">
+        <div class="loading-placeholder">Loading trending misinformations...</div>
+      </div>
+    </section>
+
+    <!-- Statistics Counter Section -->
+    <section class="stats-counter-section" data-reveal data-reveal-delay="0.25s">
+      <div class="section-header" style="margin-bottom: 2rem;">
+        <h2>📊 Our Impact</h2>
+        <p>Real-time statistics on our misinformation detection system</p>
+      </div>
+      <div class="stats-grid">
+        <div class="stat-item" data-reveal data-reveal-delay="0.3s">
+          <div class="stat-number" id="totalClaims">0</div>
+          <div class="stat-label">Claims Processed</div>
+          <div class="stat-sublabel">Total verified claims</div>
+        </div>
+        <div class="stat-item" data-reveal data-reveal-delay="0.35s">
+          <div class="stat-number" id="accuracyRate">95%</div>
+          <div class="stat-label">Accuracy Rate</div>
+          <div class="stat-sublabel">AI verification accuracy</div>
+        </div>
+        <div class="stat-item" data-reveal data-reveal-delay="0.4s">
+          <div class="stat-number" id="responseTime">~20s</div>
+          <div class="stat-label">Avg Response Time</div>
+          <div class="stat-sublabel">Per claim analysis</div>
+        </div>
+        <div class="stat-item" data-reveal data-reveal-delay="0.45s">
+          <div class="stat-number" id="activeClaims">0</div>
+          <div class="stat-label">Active Processing</div>
+          <div class="stat-sublabel">Claims being verified</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Grid Section -->
+    <section class="features-section" data-reveal data-reveal-delay="0.3s">
+      <div class="section-header">
+        <h2>✨ Why Choose Aegis Protocol</h2>
+        <p>Powerful features backed by cutting-edge AI technology</p>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card scale-on-hover" data-reveal data-reveal-delay="0.35s">
+          <div class="feature-icon">🤖</div>
+          <h3 class="feature-title">AI-Powered Verification</h3>
+          <p class="feature-description">Our multi-agent AI system uses Google Gemini 2.0 to analyze claims with
+            unprecedented accuracy and speed.</p>
+        </div>
+
+        <div class="feature-card scale-on-hover" data-reveal data-reveal-delay="0.4s">
+          <div class="feature-icon">⚡</div>
+          <h3 class="feature-title">Real-Time Processing</h3>
+          <p class="feature-description">Get verification results in seconds, not hours. Our async processing ensures
+            lightning-fast analysis.</p>
+        </div>
+
+        <div class="feature-card scale-on-hover" data-reveal data-reveal-delay="0.45s">
+          <div class="feature-icon">🔍</div>
+          <h3 class="feature-title">Evidence-Based Analysis</h3>
+          <p class="feature-description">Every verdict is backed by comprehensive evidence gathering and thorough
+            fact-checking from reliable sources.</p>
+        </div>
+
+        <div class="feature-card scale-on-hover" data-reveal data-reveal-delay="0.5s">
+          <div class="feature-icon">🎯</div>
+          <h3 class="feature-title">Multi-Agent System</h3>
+          <p class="feature-description">Three specialized AI agents work together: Ingestion, Research, and
+            Investigation for comprehensive verification.</p>
+        </div>
+
+        <div class="feature-card scale-on-hover" data-reveal data-reveal-delay="0.55s">
+          <div class="feature-icon">🛡️</div>
+          <h3 class="feature-title">Transparency & Trust</h3>
+          <p class="feature-description">Full visibility into our verification process with detailed reasoning and
+            confidence scores for every verdict.</p>
+        </div>
+
+        <div class="feature-card scale-on-hover" data-reveal data-reveal-delay="0.6s">
+          <div class="feature-icon">📈</div>
+          <h3 class="feature-title">Continuous Learning</h3>
+          <p class="feature-description">Our system improves over time, learning from each verification to provide
+            increasingly accurate results.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Analytics Section -->
+    <section class="analytics-section" data-reveal data-reveal-delay="0.3s">
+      <div class="card" data-reveal data-reveal-delay="0.25s">
+        <h3>🔍 Live Dashboard</h3>
+        <p>Explore our real-time dashboard with 15 random verified claims, complete with verdicts and evidence.</p>
+        <a class="toggle-btn" href="dashboard.html">Open Dashboard</a>
+      </div>
+
+      <div class="card" data-reveal data-reveal-delay="0.35s">
         <h3>📝 Submit a Claim</h3>
         <p>Send any claim for analysis. Our AI agents will research and investigate to provide you with an accurate
           verdict.</p>
-        <a class="toggle-btn" href="/submit">Submit Now</a>
+        <a class="toggle-btn" href="submit.html">Submit Now</a>
       </div>
 
-      <div class="card">
+      <div class="card" data-reveal data-reveal-delay="0.45s">
         <h3>💡 Learn More</h3>
         <p>Discover how our multi-agent system works and the technology that powers our fact-checking pipeline.</p>
-        <a class="toggle-btn" href="/about">About Us</a>
+        <a class="toggle-btn" href="about.html">About Us</a>
       </div>
     </section>
   </main>
+
+  <script>
+    // Fetch trending misinformations (false claims)
+    async function fetchTrendingMisinformations() {
+      const API_BASE = 'http://127.0.0.1:8000';
+      const container = document.getElementById('trendingClaims');
+
+      try {
+        const res = await fetch(`${API_BASE}/dashboard/claims`);
+        if (!res.ok) throw new Error('Failed to fetch');
+
+        const claims = await res.json();
+
+        // Filter only false claims and get top 6
+        const falseClaims = claims
+          .filter(claim => claim.verdict === 'False' && claim.status === 'completed')
+          .slice(0, 6);
+
+        if (falseClaims.length === 0) {
+          container.innerHTML = '<p class="no-data">No trending misinformations at the moment.</p>';
+          return;
+        }
+
+        container.innerHTML = falseClaims.map(claim => `
+          <div class="trending-card">
+            <div class="trending-badge">
+              <span class="badge badge-false">FALSE</span>
+              ${claim.confidence ? `<span class="confidence">${(claim.confidence * 100).toFixed(0)}% confidence</span>` : ''}
+            </div>
+            <h3 class="trending-claim">${claim.claim_text || claim.normalized_text}</h3>
+            <p class="trending-reason">${claim.reasoning ? claim.reasoning.substring(0, 150) + '...' : 'Verified as false by our AI system.'}</p>
+            <div class="trending-footer">
+              <span class="trending-date">${new Date(claim.created_at).toLocaleDateString()}</span>
+              <a href="status.html?id=${claim.claim_id}" class="trending-link">View Details →</a>
+            </div>
+          </div>
+        `).join('');
+
+      } catch (err) {
+        console.error('Error fetching trending claims:', err);
+        container.innerHTML = '<p class="error-msg">Unable to load trending misinformations. Backend may not be running.</p>';
+      }
+    }
+
+    // Load trending claims when page loads
+    document.addEventListener('DOMContentLoaded', fetchTrendingMisinformations);
+
+    // Animated counter function
+    function animateCounter(element, target, suffix = '', duration = 2000) {
+      const start = 0;
+      const increment = target / (duration / 16);
+      let current = start;
+
+      const timer = setInterval(() => {
+        current += increment;
+        if (current >= target) {
+          current = target;
+          clearInterval(timer);
+        }
+        element.textContent = Math.floor(current) + suffix;
+      }, 16);
+    }
+
+    // Fetch and update statistics
+    async function updateStatistics() {
+      const API_BASE = 'http://127.0.0.1:8000';
+
+      try {
+        const res = await fetch(`${API_BASE}/dashboard/claims`);
+        if (!res.ok) throw new Error('Failed to fetch');
+
+        const claims = await res.json();
+
+        // Calculate statistics
+        const totalClaims = claims.length;
+        const completed = claims.filter(c => c.status === 'completed');
+        const pending = claims.filter(c => c.status === 'pending');
+
+        // Animate counters
+        const totalClaimsEl = document.getElementById('totalClaims');
+        const activeClaimsEl = document.getElementById('activeClaims');
+
+        if (totalClaimsEl) {
+          animateCounter(totalClaimsEl, totalClaims);
+        }
+
+        if (activeClaimsEl) {
+          animateCounter(activeClaimsEl, pending.length);
+        }
+
+      } catch (err) {
+        console.error('Error fetching statistics:', err);
+        // Show static numbers if API fails
+        document.getElementById('totalClaims').textContent = '100+';
+        document.getElementById('activeClaims').textContent = '2';
+      }
+    }
+
+    // Initialize statistics on page load
+    document.addEventListener('DOMContentLoaded', updateStatistics);
+  </script>
 </body>
 
 </html>

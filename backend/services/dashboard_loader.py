@@ -123,14 +123,38 @@ def _read_xlsx(xlsx_path: str) -> pd.DataFrame:
     df = df.rename(columns={"title": "claim"})
     return df[["claim", "label"]]
 
+def _reservoir_from_large_sources(n: int) -> pd.DataFrame:
+    data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+    zip_path = os.path.join(data_dir, "WELFake_Dataset.zip")
+    csv_path = os.path.join(data_dir, "WELFake_Dataset.csv")
+    if os.path.exists(zip_path):
+        return _stream_sample_zip(zip_path, max(n * 20, 500))
+    return _stream_sample_csv(csv_path, max(n * 20, 500))
+
+def _ensure_min_csv_cache(data_dir: str) -> str:
+    xlsx_path = os.path.join(data_dir, "WELFake_Dataset.xlsx")
+    min_csv = os.path.join(data_dir, "WELFake_Dataset.min.csv")
+    try:
+        if os.path.exists(xlsx_path):
+            if (not os.path.exists(min_csv)) or (os.path.getmtime(min_csv) < os.path.getmtime(xlsx_path)):
+                df = _read_xlsx(xlsx_path)
+                df.to_csv(min_csv, index=False)
+        return min_csv if os.path.exists(min_csv) else ""
+    except Exception:
+        return ""
+
 def load_random_dashboard_claims(n: int = 15) -> List[Dict[str, str]]:
     try:
         data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
         zip_path = os.path.join(data_dir, "WELFake_Dataset.zip")
         csv_path = os.path.join(data_dir, "WELFake_Dataset.csv")
         xlsx_path = os.path.join(data_dir, "WELFake_Dataset.xlsx")
+        min_csv = _ensure_min_csv_cache(data_dir)
 
-        if os.path.exists(xlsx_path):
+        if min_csv:
+            logger.info(f"[DashboardLoader] Loading MIN CSV: {min_csv}")
+            df = pd.read_csv(min_csv)
+        elif os.path.exists(xlsx_path):
             logger.info(f"[DashboardLoader] Loading XLSX: {xlsx_path}")
             df = _read_xlsx(xlsx_path)
         elif os.path.exists(zip_path):
@@ -157,6 +181,8 @@ _CACHE_DATA: List[Dict[str, str]] = []
 _CACHE_AT: float = 0.0
 _REFRESHING: bool = False
 _SEED_USED: bool = False
+_CACHE_ALL: List[Dict[str, str]] = []
+_CACHE_ALL_AT: float = 0.0
 
 def get_dashboard_claims_cached(n: int = 15, ttl_seconds: int = 60) -> List[Dict[str, str]]:
     global _CACHE_DATA, _CACHE_AT, _REFRESHING, _SEED_USED
@@ -200,3 +226,36 @@ def _refresh_cache_sync(n: int = 15):
         logger.warning(f"[DashboardLoader] Background refresh failed: {e}")
     finally:
         _REFRESHING = False
+
+def get_dashboard_claims_rotating(n: int = 15, ttl_seconds: int = 300) -> List[Dict[str, str]]:
+    """Return a random sample from a cached full/reservoir dataset to ensure variation per request."""
+    global _CACHE_ALL, _CACHE_ALL_AT
+    now = time.time()
+    if _CACHE_ALL and (now - _CACHE_ALL_AT) < ttl_seconds:
+        if len(_CACHE_ALL) <= n:
+            sample = _CACHE_ALL[:]
+        else:
+            sample = random.sample(_CACHE_ALL, n)
+        checksum = "".join([s.get("claim", "") for s in sample])
+        logger.info(f"[DashboardLoader] Rotating cache hit size={len(_CACHE_ALL)} sample_n={len(sample)}")
+        return sample
+    # refresh full cache
+    try:
+        data_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data"))
+        xlsx_path = os.path.join(data_dir, "WELFake_Dataset.xlsx")
+        if os.path.exists(xlsx_path):
+            df = _read_xlsx(xlsx_path)
+        else:
+            df = _reservoir_from_large_sources(max(n * 20, 500))
+        df["label"] = df["label"].apply(lambda x: "True" if int(x) == 1 else "False")
+        _CACHE_ALL = [{"claim": r["claim"], "label": r["label"]} for _, r in df.iterrows()]
+        _CACHE_ALL_AT = now
+        if len(_CACHE_ALL) <= n:
+            sample = _CACHE_ALL[:]
+        else:
+            sample = random.sample(_CACHE_ALL, n)
+        logger.info(f"[DashboardLoader] Rotating cache refreshed size={len(_CACHE_ALL)} sample_n={len(sample)}")
+        return sample
+    except Exception as e:
+        logger.warning(f"[DashboardLoader] Rotating cache refresh failed: {e}")
+        return get_dashboard_claims_cached(n=n, ttl_seconds=ttl_seconds)

@@ -9,8 +9,9 @@ import os
 import json
 import re
 from typing import Dict
-from google import genai
-from google.genai import types as genai_types
+import requests
+from dotenv import load_dotenv
+import os as _os
 
 
 class InvestigatorAgent:
@@ -28,20 +29,77 @@ class InvestigatorAgent:
         2. GEMINI_API_KEY (fallback)
         """
         print("[InvestigatorAgent] Initializing Investigator Agent")
+        # Resolve and log the .env path we are actually loading
+        env_path = _os.path.abspath(
+            _os.path.join(_os.path.dirname(__file__), "..", "..", ".env")
+        )
+        print(f"[InvestigatorAgent] Loading .env from: {env_path}")
+        # Force-reload .env so updated keys are picked up even if process reused
+        load_dotenv(env_path, override=True)
         
-        # Key priority: GEMINI_API_KEY_2 first, then GEMINI_API_KEY
-        api_key = os.getenv("GEMINI_API_KEY_2") or os.getenv("GEMINI_API_KEY")
-        
+        # Key priority with sanitization: GEMINI_API_KEY_2 → GEMINI_API_KEY_1 → GEMINI_API_KEY
+        def _clean(s: str | None) -> str:
+            if not s:
+                return ""
+            return s.strip().strip('"').strip("'")
+        raw_k2 = os.getenv("GEMINI_API_KEY_2")
+        raw_k1 = os.getenv("GEMINI_API_KEY_1")
+        raw_k = os.getenv("GEMINI_API_KEY")
+        print(
+            "[InvestigatorAgent] Env snapshot - "
+            f"GEMINI_API_KEY_2: {(_clean(raw_k2)[:10] + '...') if raw_k2 else 'None'}, "
+            f"GEMINI_API_KEY_1: {(_clean(raw_k1)[:10] + '...') if raw_k1 else 'None'}, "
+            f"GEMINI_API_KEY: {(_clean(raw_k)[:10] + '...') if raw_k else 'None'}"
+        )
+
+        # Choose API key and model based on which env var is used:
+        # - GEMINI_API_KEY_* -> gemini-2.0-flash-lite (fast, cost-efficient)
+        api_key = None
+        if _clean(raw_k1):
+            api_key = _clean(raw_k1)
+            self.model_name = "gemini-2.0-flash-lite"
+        elif _clean(raw_k2):
+            api_key = _clean(raw_k2)
+            self.model_name = "gemini-2.0-flash-lite"
+        elif _clean(raw_k):
+            api_key = _clean(raw_k)
+            self.model_name = "gemini-2.0-flash-lite"
+
         if not api_key:
             raise ValueError(
-                "[InvestigatorAgent] No API key found. Set GEMINI_API_KEY_2 or GEMINI_API_KEY"
+                "[InvestigatorAgent] No API key found. Set GEMINI_API_KEY_1, GEMINI_API_KEY_2 or GEMINI_API_KEY"
             )
-        
+
+        # Store key for direct HTTP calls
+        self.api_key = api_key
+
         print(f"[InvestigatorAgent] Using API key: {api_key[:10]}...")
-        
-        # Configure Gemini client with flash-lite model
-        self.client = genai.Client(api_key=api_key)
-        self.model_name = "gemini-2.0-flash-lite"
+        print(f"[InvestigatorAgent] Using model: {self.model_name}")
+
+    def _call_gemini(self, prompt: str) -> str:
+        """
+        Call Gemini text model via HTTP and return the first text candidate.
+        """
+        print("[InvestigatorAgent] Calling Gemini via HTTP API...")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt}
+                    ]
+                }
+            ]
+        }
+        params = {"key": self.api_key}
+        resp = requests.post(url, headers=headers, params=params, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        try:
+            return data["candidates"][0]["content"]["parts"][0]["text"]
+        except Exception:
+            return json.dumps(data)
         
         print(f"[InvestigatorAgent] Configured with model: {self.model_name}")
         print("[InvestigatorAgent] Initialization complete")
@@ -147,15 +205,9 @@ GUIDELINES:
 Return ONLY the JSON object, nothing else."""
             
             print("[InvestigatorAgent] Sending investigation request to Gemini...")
-            
-            # Call Gemini API
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=prompt
-            )
-            
-            # Extract raw text
-            raw_text = response.text
+
+            # Call Gemini API via HTTP
+            raw_text = self._call_gemini(prompt)
             
             print(f"[InvestigatorAgent] Received response ({len(raw_text)} characters)")
             print(f"[InvestigatorAgent] Raw response preview: {raw_text[:150]}...")

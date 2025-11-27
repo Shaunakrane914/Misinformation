@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Agents – Aegis Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/dashboard.css">
+  <style>
+    .agents-hero { text-align: center; margin-top: 60px; }
+    .agents-hero h1 { font-size: 3em; margin-bottom: 20px; font-weight: 700; }
+    .agents-hero p { font-size: 1.3em; opacity: 0.95; max-width: 700px; margin: 0 auto; }
+    .agents-grid { max-width: 1200px; margin: 60px auto; padding: 0 20px; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; }
+    .agent-card { background: white; border-radius: 16px; padding: 40px 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); transition: all 0.3s ease; cursor: pointer; border: 2px solid transparent; position: relative; overflow: hidden; }
+    .agent-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 4px; background: linear-gradient(90deg, var(--agent-color-1), var(--agent-color-2)); }
+    .agent-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border-color: var(--agent-color-1); }
+    .agent-card.scout { --agent-color-1: #f093fb; --agent-color-2: #f5576c; }
+    .agent-card.trending { --agent-color-1: #4facfe; --agent-color-2: #00f2fe; }
+    .agent-card.brandshield { --agent-color-1: #43e97b; --agent-color-2: #38f9d7; }
+    .agent-card.personal { --agent-color-1: #fa709a; --agent-color-2: #fee140; }
+    .agent-icon { font-size: 3.5em; margin-bottom: 20px; }
+    .agent-card h2 { font-size: 1.8em; margin-bottom: 10px; color: #2d3748; }
+    .agent-card .tagline { font-size: 1em; color: #718096; margin-bottom: 20px; font-weight: 500; }
+    .agent-card p { color: #4a5568; line-height: 1.7; margin-bottom: 25px; }
+    .agent-features { list-style: none; padding: 0; margin-bottom: 25px; }
+    .agent-features li { padding: 8px 0; color: #4a5568; font-size: 0.95em; }
+    .agent-features li::before { content: '?'; color: var(--agent-color-1); font-weight: bold; margin-right: 10px; }
+    .explore-btn { background: linear-gradient(90deg, var(--agent-color-1), var(--agent-color-2)); color: white; border: none; padding: 12px 30px; border-radius: 8px; font-size: 1em; font-weight: 600; cursor: pointer; transition: all 0.3s ease; width: 100%; }
+    .explore-btn:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+    .status-badge { display: inline-block; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 600; margin-bottom: 15px; }
+    .status-live { background: #d4edda; color: #155724; }
+    .status-coming { background: #fff3cd; color: #856404; }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-content">
+      <div class="brand">Aegis Protocol</div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a class="pill" href="/agents">Agents</a>
+        <a href="/about">About</a>
+        <a href="/dashboard">Live Dashboard</a>
+        <a href="/submit">Submit Claim</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="agents-hero">
+    <h1>?? AI Agent Arsenal</h1>
+    <p>Four specialized agents working 24/7 to detect, analyze, and neutralize misinformation across finance, entertainment, brands, and personal reputation.</p>
+  </div>
+
+  <div class="agents-grid">
+    <div class="agent-card scout" onclick="window.location.href='/scout-agent'">
+      <span class="status-badge status-live">LIVE</span>
+      <div class="agent-icon">??</div>
+      <h2>Scout Agent</h2>
+      <p class="tagline">Financial Watchdog</p>
+      <p>Detects stock market manipulation and misinformation-driven crashes in real-time using statistical anomaly detection.</p>
+      <ul class="agent-features">
+        <li>Market crash prediction via Z-score analysis</li>
+        <li>Monitors Indian & global stock markets</li>
+        <li>Timeline correlation with viral rumors</li>
+      </ul>
+      <button class="explore-btn">Explore Scout ?</button>
+    </div>
+
+    <div class="agent-card trending" onclick="window.location.href='/trending-agent'">
+      <span class="status-badge status-live">LIVE</span>
+      <div class="agent-icon">??</div>
+      <h2>Trending Agent</h2>
+      <p class="tagline">Content Intelligence Engine</p>
+      <p>Hunts for viral misinformation in Bollywood, pop culture, and trending news using AI-powered panic score analysis.</p>
+      <ul class="agent-features">
+        <li>Scans Google News & social media trends</li>
+        <li>AI panic scoring (0-100 scale)</li>
+        <li>Celebrity & brand protection</li>
+      </ul>
+      <button class="explore-btn">Explore Trending ?</button>
+    </div>
+
+    <div class="agent-card brandshield" onclick="window.location.href='/brandshield-agent'">
+      <span class="status-badge status-coming">COMING SOON</span>
+      <div class="agent-icon">???</div>
+      <h2>BrandShield Agent</h2>
+      <p class="tagline">Product & Brand Guardian</p>
+      <p>Protects products and brands from fake reviews, counterfeit scams, and misleading advertisements across e-commerce platforms.</p>
+      <ul class="agent-features">
+        <li>Fake product listing detection</li>
+        <li>Review sentiment manipulation alerts</li>
+        <li>Counterfeit brand usage tracking</li>
+      </ul>
+      <button class="explore-btn">Explore BrandShield ?</button>
+    </div>
+
+    <div class="agent-card personal" onclick="window.location.href='/personal-watch-agent'">
+      <span class="status-badge status-coming">COMING SOON</span>
+      <div class="agent-icon">??</div>
+      <h2>Personal Watch Agent</h2>
+      <p class="tagline">Your Misinformation Bodyguard</p>
+      <p>Personalized monitoring for individuals, startups, and PR teams. Tracks mentions across social media and generates instant countermeasures.</p>
+      <ul class="agent-features">
+        <li>Custom watchlists (names, brands, events)</li>
+        <li>Real-time negative sentiment alerts</li>
+        <li>Auto-generated press releases & rebuttals</li>
+      </ul>
+      <button class="explore-btn">Explore Personal Watch ?</button>
+    </div>
+  </div>
+
+  <script>
+    document.querySelectorAll('.agent-card').forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        card.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+      });
+    });
+  </script>
+</body>
+</html>
+

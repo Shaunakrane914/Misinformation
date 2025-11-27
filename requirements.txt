@@ -1,15 +1,11 @@
-# FastAPI and Server
 fastapi>=0.110.0
 uvicorn[standard]>=0.29.0
 pydantic>=2.7.0
 
-# Database
 supabase>=2.4.0
 
-# AI/ML (matches code: from google import genai)
-google-genai>=0.2.0
+google-generativeai>=0.7.0
 
-# Utilities
 python-dotenv>=1.0.0
 python-multipart>=0.0.6
 aiohttp>=3.9.1
@@ -17,3 +13,8 @@ pandas>=2.0.0
 openpyxl>=3.1.2
 jinja2>=3.1.2
 requests>=2.31.0
+
+apify-client
+feedparser>=6.0.10
+pytrends
+beautifulsoup4

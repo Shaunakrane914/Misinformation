@@ -1,0 +1,23 @@
+{
+    "stock":  {
+                  "ticker":  "TATAMOTORS.NS",
+                  "current_price":  359.25,
+                  "drop_percent":  -0.83,
+                  "z_score":  0.33,
+                  "is_crashing":  false,
+                  "timestamp":  "2025-11-27T17:24:46.709269"
+              },
+    "news":  {
+                 "company":  [
+
+                             ],
+                 "ceo":  [
+
+                         ],
+                 "analysis":  [
+
+                              ]
+             },
+    "ticker":  "TATAMOTORS.NS",
+    "analyzed_at":  "2025-11-27T17:24:48.426529"
+}

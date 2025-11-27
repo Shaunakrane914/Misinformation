@@ -33,6 +33,26 @@ def about_page():
 def submit_page():
     return FileResponse("frontend/submit.html")
 
+@app.get("/agents")
+def agents_page():
+    return FileResponse("frontend/agents.html")
+
+@app.get("/scout-agent")
+def scout_agent_page():
+    return FileResponse("frontend/scout-agent.html")
+
+@app.get("/trending-agent")
+def trending_agent_page():
+    return FileResponse("frontend/trending-agent.html")
+
+@app.get("/brandshield-agent")
+def brandshield_agent_page():
+    return FileResponse("frontend/brandshield-agent.html")
+
+@app.get("/personal-watch-agent")
+def personal_watch_agent_page():
+    return FileResponse("frontend/personal-watch-agent.html")
+
 @app.get("/dashboard.css")
 def serve_css():
     return FileResponse("frontend/dashboard.css")

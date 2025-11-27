@@ -9,8 +9,9 @@ import os
 import json
 import re
 from typing import Dict, List
-from google import genai
-from google.genai import types as genai_types
+import requests
+from dotenv import load_dotenv
+import os as _os
 
 
 class ResearchAgent:
@@ -24,24 +25,85 @@ class ResearchAgent:
         Initialize the Research Agent with Google Gemini configuration.
         
         Uses API key priority:
-        1. GEMINI_API_KEY_1 (primary)
-        2. GEMINI_API_KEY (fallback)
+        1. GEMINI_API_KEY_2 (primary)
+        2. GEMINI_API_KEY_1 (fallback)
+        3. GEMINI_API_KEY (fallback)
         """
         print("[ResearchAgent] Initializing Research Agent")
+        # Resolve and log the .env path we are actually loading
+        env_path = _os.path.abspath(
+            _os.path.join(_os.path.dirname(__file__), "..", "..", ".env")
+        )
+        print(f"[ResearchAgent] Loading .env from: {env_path}")
+        # Force-reload .env so updated keys are picked up even if process reused
+        load_dotenv(env_path, override=True)
         
-        # Key priority: GEMINI_API_KEY_1 first, then GEMINI_API_KEY
-        api_key = os.getenv("GEMINI_API_KEY_1") or os.getenv("GEMINI_API_KEY")
-        
+        # Key priority with sanitization: GEMINI_API_KEY_2 → GEMINI_API_KEY_1 → GEMINI_API_KEY
+        def _clean(s: str | None) -> str:
+            if not s:
+                return ""
+            return s.strip().strip('"').strip("'")
+        raw_k2 = os.getenv("GEMINI_API_KEY_2")
+        raw_k1 = os.getenv("GEMINI_API_KEY_1")
+        raw_k = os.getenv("GEMINI_API_KEY")
+
+        print(
+            "[ResearchAgent] Env snapshot - "
+            f"GEMINI_API_KEY_2: {(_clean(raw_k2)[:10] + '...') if raw_k2 else 'None'}, "
+            f"GEMINI_API_KEY_1: {(_clean(raw_k1)[:10] + '...') if raw_k1 else 'None'}, "
+            f"GEMINI_API_KEY: {(_clean(raw_k)[:10] + '...') if raw_k else 'None'}"
+        )
+
+        # Choose API key and model based on which env var is used:
+        # - GEMINI_API_KEY_* -> gemini-2.0-flash-lite (fast, cost-efficient)
+        api_key = None
+        if _clean(raw_k1):
+            api_key = _clean(raw_k1)
+            self.model_name = "gemini-2.0-flash-lite"
+        elif _clean(raw_k2):
+            api_key = _clean(raw_k2)
+            self.model_name = "gemini-2.0-flash-lite"
+        elif _clean(raw_k):
+            api_key = _clean(raw_k)
+            self.model_name = "gemini-2.0-flash-lite"
+
         if not api_key:
             raise ValueError(
-                "[ResearchAgent] No API key found. Set GEMINI_API_KEY_1 or GEMINI_API_KEY"
+                "[ResearchAgent] No API key found. Set GEMINI_API_KEY_1, GEMINI_API_KEY_2 or GEMINI_API_KEY"
             )
-        
+
+        # Store key for direct HTTP calls
+        self.api_key = api_key
+
         print(f"[ResearchAgent] Using API key: {api_key[:10]}...")
-        
-        # Configure Gemini client
-        self.client = genai.Client(api_key=api_key)
-        self.model_name = "gemini-2.0-flash-lite"
+        print(f"[ResearchAgent] Using model: {self.model_name}")
+
+    def _call_gemini(self, prompt: str) -> str:
+        """
+        Call Gemini text model via HTTP and return the first text candidate.
+        """
+        print("[ResearchAgent] Calling Gemini via HTTP API...")
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
+        headers = {"Content-Type": "application/json"}
+        payload = {
+            "contents": [
+                {
+                    "parts": [
+                        {"text": prompt}
+                    ]
+                }
+            ]
+        }
+        params = {"key": self.api_key}
+        resp = requests.post(url, headers=headers, params=params, json=payload, timeout=30)
+        resp.raise_for_status()
+        data = resp.json()
+        # Extract first text response safely
+        try:
+            return data["candidates"][0]["content"]["parts"][0]["text"]
+        except Exception:
+            # Fallback: return raw JSON string
+            return json.dumps(data)
         
         print(f"[ResearchAgent] Configured with model: {self.model_name}")
         print("[ResearchAgent] Initialization complete")
@@ -79,15 +141,9 @@ Provide at least 2-3 evidence points for each category if available."""
         
         try:
             print("[ResearchAgent] Sending request to Gemini API...")
-            
-            # Call Gemini API
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=prompt
-            )
-            
-            # Extract raw text from response
-            raw_text = response.text
+
+            # Call Gemini API over HTTP
+            raw_text = self._call_gemini(prompt)
             
             print(f"[ResearchAgent] Received response ({len(raw_text)} characters)")
             print(f"[ResearchAgent] Raw response preview: {raw_text[:100]}...")
@@ -250,11 +306,7 @@ REQUIREMENTS:
   "evidence_url": "https://<one credible source>"
 }}
 """
-            response = self.client.models.generate_content(
-                model=self.model_name,
-                contents=prompt
-            )
-            raw_text = response.text
+            raw_text = self._call_gemini(prompt)
             cleaned = raw_text.strip()
             cleaned = re.sub(r'^```json\s*', '', cleaned, flags=re.IGNORECASE)
             cleaned = re.sub(r'^```\s*', '', cleaned)

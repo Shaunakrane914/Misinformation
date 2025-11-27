@@ -1,7 +1,10 @@
 const API_BASE = (typeof window !== "undefined" && window.BACKEND_BASE)
   ? window.BACKEND_BASE
   : "https://misinfo-5f13.onrender.com"; // fallback to Render backend
-const API_URL = `${API_BASE}/dashboard/claims`;
+function claimsUrl() {
+  const ts = Date.now();
+  return `${API_BASE}/dashboard/claims?t=${ts}`;
+}
 
 async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {
   for (let i = 0; i < retries; i++) {
@@ -255,7 +258,18 @@ function buildCard(item) {
 async function init() {
   try {
     console.time("fetch-dashboard-claims");
-    const res = await fetchWithRetry(API_URL, { cache: "no-store" });
+    const res = await fetchWithRetry(claimsUrl(), { cache: "no-store" });
+    const dbg = document.getElementById("debugArea");
+    if (dbg) {
+      dbg.style.display = "block";
+      const b = document.createElement("div");
+      b.className = "debug-banner info";
+      const src = res.headers.get("X-Dashboard-Source") || "n/a";
+      const sid = res.headers.get("X-Sample-Id") || "n/a";
+      const cks = res.headers.get("X-Claims-Checksum") || "n/a";
+      b.textContent = `Source=${src} SampleId=${sid} Checksum=${cks}`;
+      dbg.appendChild(b);
+    }
     if (!res.ok) {
       const container = document.getElementById("claimsContainer");
       if (container) container.innerHTML = "";
@@ -265,6 +279,12 @@ async function init() {
     }
     const data = await res.json();
     console.timeEnd("fetch-dashboard-claims");
+    if (dbg && data && data.length) {
+      const b2 = document.createElement("div");
+      b2.className = "debug-banner info";
+      b2.textContent = `FirstClaim=${(data[0].claim||"").slice(0,80)}`;
+      dbg.appendChild(b2);
+    }
 
     const container = document.getElementById("claimsContainer");
     if (container) {

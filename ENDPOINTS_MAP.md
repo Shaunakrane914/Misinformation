@@ -16,8 +16,8 @@
 ### Agent Pages
 - `GET /scout-agent` → **NEW** Scout Agent (Financial Watchdog) - LIVE
 - `GET /trending-agent` → **NEW** Trending Agent (Content Intelligence) - LIVE
-- `GET /brandshield-agent` → **NEW** BrandShield Agent - Coming Soon
-- `GET /personal-watch-agent` → **NEW** Personal Watch Agent - Coming Soon
+- `GET /brandshield-agent` → **NEW** BrandShield Agent - Coming Soon (Placeholder)
+- `GET /personal-watch-agent` → **NEW** Personal Watch Agent - Coming Soon (Placeholder)
 
 ### Static Assets
 - `GET /dashboard.css` → Dashboard styles

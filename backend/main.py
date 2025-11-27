@@ -38,7 +38,8 @@ from backend.services.dashboard_loader import load_random_dashboard_claims
 logging.basicConfig(
     level=os.getenv("LOG_LEVEL", "INFO"),
     format='ts=%(asctime)s level=%(levelname)s logger=%(name)s msg="%(message)s"',
-    datefmt='%Y-%m-%d %H:%M:%S'
+    datefmt='%Y-%m-%d %H:%M:%S',
+    encoding='utf-8'
 )
 logger = logging.getLogger(__name__)
 
@@ -58,11 +59,119 @@ app.add_middleware(
 )
 app.add_middleware(GZipMiddleware, minimum_size=500)
 
-# Lazy-loaded agents (initialized when first needed)
-_claim_ingestion_agent = None
-_research_agent = None
-_investigator_agent = None
-_trending_agent = None
+# Mount frontend directory for static assets (CSS, JS, Images)
+# This serves files like dashboard.css, transitions.js directly
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
+
+# ... (keep existing code) ...
+
+@app.get("/dashboard/claims")
+async def get_dashboard_claims(fresh: bool = False):
+    logger.info("[API] GET /dashboard/claims - Generating dashboard claims")
+    try:
+        if fresh:
+            claims = load_random_dashboard_claims(n=15)
+        else:
+            from backend.services.dashboard_loader import get_dashboard_claims_rotating
+            logger.info("[API] Using rotating cache for dashboard claims")
+            claims = get_dashboard_claims_rotating(n=15, ttl_seconds=int(os.getenv("DASHBOARD_TTL", "300")))
+        logger.info(f"[API] Loaded {len(claims)} dashboard claims")
+        results = [
+            {
+                "claim": item.get("claim", ""),
+                "verdict": item.get("label", "False"),
+                "explanation": "Click 'Show Evidence' for AI-generated explanation.",
+                "evidence_url": ""
+            }
+            for item in claims
+        ]
+        logger.info(f"[API] Returning {len(results)} dashboard claims")
+        # Prevent intermediary caching and expose source for debugging
+        sample_id = str(uuid.uuid4())
+        first_claim = results[0]["claim"] if results else ""
+        # Safe encoding for checksum
+        checksum = hashlib.sha1("\n".join([r["claim"] for r in results]).encode("utf-8", errors="ignore")).hexdigest()
+        
+        # Safe logging for potential non-latin characters
+        safe_first_claim = first_claim[:80].encode('ascii', 'replace').decode('ascii')
+        logger.info(f"[API] SampleId={sample_id} First='{safe_first_claim}' Checksum={checksum}")
+        
+        headers = {
+            "Cache-Control": "no-store, no-cache, max-age=0, must-revalidate",
+            "Pragma": "no-cache",
+            "X-Dashboard-Source": "rotating",
+            "X-Sample-Id": sample_id,
+            "X-First-Claim": first_claim[:120].encode('ascii', 'replace').decode('ascii'), # Safe header
+            "X-Claims-Checksum": checksum
+        }
+        return JSONResponse(content=results, headers=headers)
+    except Exception as e:
+        logger.error(f"[API] Error generating dashboard claims: {str(e)}")
+        raise HTTPException(status_code=500, detail="Error generating dashboard claims")
+
+# ... (keep existing code) ...
+
+# ============================================================================
+# FRONTEND SERVING
+# ============================================================================
+
+@app.get("/dashboard")
+@app.get("/dashboard.html")
+async def dashboard_page():
+    """Serve the main dashboard."""
+    return FileResponse("frontend/dashboard.html")
+
+@app.get("/agents")
+@app.get("/agents.html")
+async def agents_page():
+    """Serve the agents page."""
+    return FileResponse("frontend/agents.html")
+
+@app.get("/about")
+@app.get("/about.html")
+async def about_page():
+    """Serve the about page."""
+    return FileResponse("frontend/about.html")
+
+@app.get("/submit")
+@app.get("/submit.html")
+async def submit_page():
+    """Serve the submit claim page."""
+    return FileResponse("frontend/submit.html")
+
+@app.get("/status")
+@app.get("/status.html")
+async def status_page():
+    """Serve the status page."""
+    return FileResponse("frontend/status.html")
+
+@app.get("/trending-agent")
+@app.get("/trending-agent.html")
+async def trending_agent_page():
+    """Serve the Trending Agent page."""
+    return FileResponse("frontend/trending-agent.html")
+
+@app.get("/scout-agent")
+@app.get("/scout-agent.html")
+async def scout_agent_page():
+    """Serve the Scout Agent page."""
+    return FileResponse("frontend/scout-agent.html")
+
+# Serve static assets directly from root for convenience
+@app.get("/{filename}.css")
+async def serve_css(filename: str):
+    return FileResponse(f"frontend/{filename}.css")
+
+@app.get("/{filename}.js")
+async def serve_js(filename: str):
+    return FileResponse(f"frontend/{filename}.js")
+
+@app.get("/favicon.ico")
+async def favicon():
+    if os.path.exists("frontend/favicon.ico"):
+        return FileResponse("frontend/favicon.ico")
+    return JSONResponse({"status": "no favicon"}, status_code=404)
+
 
 
 def get_claim_ingestion_agent():
@@ -378,6 +487,9 @@ if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
 # Dashboard endpoints
 
+# ... (keep existing code) ...
+
+@app.get("/api/dashboard/claims")
 @app.get("/dashboard/claims")
 async def get_dashboard_claims(fresh: bool = False):
     logger.info("[API] GET /dashboard/claims - Generating dashboard claims")
@@ -816,7 +928,14 @@ async def warm_dashboard_cache():
 # FRONTEND SERVING
 # ============================================================================
 
+@app.get("/")
+@app.get("/index.html")
+async def root():
+    """Serve the homepage."""
+    return FileResponse("frontend/index.html")
+
 @app.get("/dashboard")
+@app.get("/dashboard.html")
 async def dashboard_page():
     """Serve the main dashboard."""
     return FileResponse("frontend/dashboard.html")
@@ -842,9 +961,22 @@ async def trending_agent_page():
     return FileResponse("frontend/trending-agent.html")
 
 @app.get("/scout-agent")
+@app.get("/scout-agent.html")
 async def scout_agent_page():
     """Serve the Scout Agent page."""
     return FileResponse("frontend/scout-agent.html")
+
+@app.get("/personal-watch-agent")
+@app.get("/personal-watch-agent.html")
+async def personal_watch_agent_page():
+    """Serve the Personal Watch Agent page."""
+    return FileResponse("frontend/personal-watch-agent.html")
+
+@app.get("/brandshield-agent")
+@app.get("/brandshield-agent.html")
+async def brandshield_agent_page():
+    """Serve the BrandShield Agent page."""
+    return FileResponse("frontend/brandshield-agent.html")
 
 # Serve static assets
 @app.get("/dashboard.css")

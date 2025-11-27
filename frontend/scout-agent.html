@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,19 +8,40 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/dashboard.css">
   <style>
-    .page-header { margin-top: 80px }
-    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 24px; align-items: start }
-    .section-card { display: grid; gap: 16px }
-    .claims-grid { display: grid; gap: 16px }
-    .claim-card { border-radius: 12px }
+    .page-header {
+      margin-top: 80px
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 24px;
+      align-items: start
+    }
+
+    .section-card {
+      display: grid;
+      gap: 16px
+    }
+
+    .claims-grid {
+      display: grid;
+      gap: 16px
+    }
+
+    .claim-card {
+      border-radius: 12px
+    }
   </style>
 </head>
+
 <body>
   <header class="navbar">
     <div class="nav-content">
       <div class="brand">Aegis Protocol</div>
       <nav class="nav-links">
         <a class="pill" href="/">Home</a>
+        <a class="pill" href="/agents">Agents</a>
         <a class="pill" href="/dashboard">Live Dashboard</a>
         <a class="pill" href="/submit">Submit Claim</a>
         <a class="pill" href="/about">About</a>
@@ -79,12 +101,12 @@
   </main>
 
   <script>
-    (function(){
+    (function () {
       try {
         var params = new URLSearchParams(window.location.search);
         var b = params.get('backend');
         if (b) { window.BACKEND_BASE = String(b).replace(/\/$/, ''); }
-      } catch(e) {}
+      } catch (e) { }
     })();
     const API_BASE = (typeof window !== 'undefined' && window.BACKEND_BASE) ? window.BACKEND_BASE : '/api';
 
@@ -120,7 +142,7 @@
       });
     }
 
-    async function init(){
+    async function init() {
       try {
         const data = await fetchWithRetry(`${API_BASE}/api/trending-news`, { cache: 'no-store' }, 3, 800);
         let items = (data && Array.isArray(data.items) && data.items.length) ? data.items : [];
@@ -132,7 +154,7 @@
           moreBtn.textContent = compactLimit === 3 ? 'Show more' : 'Show less';
           renderList('trendingGrid', items, compactLimit);
         };
-      } catch(e) {
+      } catch (e) {
         renderList('trendingGrid', [], 3);
         const moreBtn = document.getElementById('trendingMore');
         if (moreBtn) { moreBtn.style.display = 'none'; }
@@ -155,7 +177,7 @@
         sr.innerHTML = '';
         const card = document.createElement('div');
         card.className = 'claim-card';
-        const h = document.createElement('h3'); h.className = 'claim-title'; h.textContent = `${res.ticker || t} — ${stock.current_price ? '₹'+stock.current_price : ''}`;
+        const h = document.createElement('h3'); h.className = 'claim-title'; h.textContent = `${res.ticker || t} — ${stock.current_price ? '₹' + stock.current_price : ''}`;
         const p1 = document.createElement('p'); p1.textContent = `Drop: ${stock.drop_percent ?? 0}%  •  Z-score: ${stock.z_score ?? 0}`;
         const p2 = document.createElement('p'); p2.textContent = `Crashing: ${stock.is_crashing ? 'Yes' : 'No'}`;
         card.appendChild(h); card.appendChild(p1); card.appendChild(p2);
@@ -166,7 +188,7 @@
         renderList('companyNews', cmp, 3);
         renderList('ceoNews', ceo, 3);
         renderList('analysisNews', ana, 3);
-      } catch(err) {
+      } catch (err) {
         const sr = document.getElementById('stockResult');
         sr.innerHTML = '';
         const card = document.createElement('div');
@@ -184,4 +206,5 @@
     window.addEventListener('DOMContentLoaded', init);
   </script>
 </body>
+
 </html>

@@ -13,79 +13,65 @@
   <script src="transitions.js" defer></script>
   <script src="theme-interactive.js" defer></script>
 </head>
+</nav>
+</div>
+</header>
 
-<body>
-  <header class="navbar">
-    <div class="nav-content">
-      <div class="brand">Aegis Protocol</div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="about.html">About</a>
-        <a href="dashboard.html">Live Dashboard</a>
-        <a href="submit.html">Submit Claim</a>
-        <!-- Dark Mode Toggle in Navbar -->
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-          <span class="theme-icon">🌙</span>
-        </button>
-      </nav>
-    </div>
-  </header>
+<main class="container">
+  <section class="page-header" data-reveal data-reveal-delay="0.1s">
+    <h1>Check Claim Status</h1>
+    <p>Enter a claim ID to view its verification status and results.</p>
+  </section>
 
-  <main class="container">
-    <section class="page-header" data-reveal data-reveal-delay="0.1s">
-      <h1>Check Claim Status</h1>
-      <p>Enter a claim ID to view its verification status and results.</p>
-    </section>
+  <section class="card mb-3" data-reveal data-reveal-delay="0.2s">
+    <form id="statusForm">
+      <label for="claimId">Claim ID</label>
+      <input type="text" id="claimId" placeholder="Enter claim ID..." required>
+      <button type="submit" class="toggle-btn mt-2">Check Status</button>
+    </form>
+  </section>
 
-    <section class="card mb-3" data-reveal data-reveal-delay="0.2s">
-      <form id="statusForm">
-        <label for="claimId">Claim ID</label>
-        <input type="text" id="claimId" placeholder="Enter claim ID..." required>
-        <button type="submit" class="toggle-btn mt-2">Check Status</button>
-      </form>
-    </section>
+  <section class="card" id="statusCard" style="display:none;" data-reveal data-reveal-delay="0.3s">
+    <div id="statusContent"></div>
+  </section>
+</main>
 
-    <section class="card" id="statusCard" style="display:none;" data-reveal data-reveal-delay="0.3s">
-      <div id="statusContent"></div>
-    </section>
-  </main>
+<script>
+  const API_BASE = 'http://127.0.0.1:8000';
+  const form = document.getElementById('statusForm');
+  const statusCard = document.getElementById('statusCard');
+  const statusContent = document.getElementById('statusContent');
 
-  <script>
-    const API_BASE = 'http://127.0.0.1:8000';
-    const form = document.getElementById('statusForm');
-    const statusCard = document.getElementById('statusCard');
-    const statusContent = document.getElementById('statusContent');
+  // Check if there's a claim ID in the URL
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlClaimId = urlParams.get('id');
+  if (urlClaimId) {
+    document.getElementById('claimId').value = urlClaimId;
+    checkStatus(urlClaimId);
+  }
 
-    // Check if there's a claim ID in the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const urlClaimId = urlParams.get('id');
-    if (urlClaimId) {
-      document.getElementById('claimId').value = urlClaimId;
-      checkStatus(urlClaimId);
-    }
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const claimId = document.getElementById('claimId').value.trim();
+    if (!claimId) return;
+    checkStatus(claimId);
+  });
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const claimId = document.getElementById('claimId').value.trim();
-      if (!claimId) return;
-      checkStatus(claimId);
-    });
+  async function checkStatus(claimId) {
+    try {
+      statusCard.style.display = 'block';
+      statusContent.innerHTML = '<p><em>Loading claim status...</em></p>';
 
-    async function checkStatus(claimId) {
-      try {
-        statusCard.style.display = 'block';
-        statusContent.innerHTML = '<p><em>Loading claim status...</em></p>';
+      const res = await fetch(`${API_BASE}/claims/${claimId}`);
 
-        const res = await fetch(`${API_BASE}/claims/${claimId}`);
+      if (!res.ok) {
+        throw new Error(`Claim not found (${res.status})`);
+      }
 
-        if (!res.ok) {
-          throw new Error(`Claim not found (${res.status})`);
-        }
+      const data = await res.json();
 
-        const data = await res.json();
-
-        // Build the status display
-        let html = `
+      // Build the status display
+      let html = `
           <h3>Claim Details</h3>
           <div class="claim-text" style="margin-left: 0; margin-bottom: 1.5rem; padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md);">
             ${data.claim_text || data.normalized_text}
@@ -140,94 +126,94 @@
           </div>
         `;
 
-        // Status and Verdict
-        html += '<div class="claim-meta" style="margin-bottom: 1rem; margin-top: 2rem;">';
+      // Status and Verdict
+      html += '<div class="claim-meta" style="margin-bottom: 1rem; margin-top: 2rem;">';
 
-        const statusClass = data.status === 'completed' ? 'badge-true' : '';
-        html += `<span class="badge ${statusClass}">${data.status.toUpperCase()}</span>`;
+      const statusClass = data.status === 'completed' ? 'badge-true' : '';
+      html += `<span class="badge ${statusClass}">${data.status.toUpperCase()}</span>`;
 
-        if (data.verdict) {
-          const verdictClass = data.verdict === 'True' ? 'badge-true' : 'badge-false';
-          html += `<span class="badge ${verdictClass}">${data.verdict}</span>`;
-        }
+      if (data.verdict) {
+        const verdictClass = data.verdict === 'True' ? 'badge-true' : 'badge-false';
+        html += `<span class="badge ${verdictClass}">${data.verdict}</span>`;
+      }
 
-        html += '</div>';
+      html += '</div>';
 
-        // Confidence and Severity
-        if (data.confidence !== null && data.confidence !== undefined) {
-          const confidencePercent = (data.confidence * 100).toFixed(0);
-          html += `<p><strong>Confidence:</strong> ${confidencePercent}%</p>`;
-        }
+      // Confidence and Severity
+      if (data.confidence !== null && data.confidence !== undefined) {
+        const confidencePercent = (data.confidence * 100).toFixed(0);
+        html += `<p><strong>Confidence:</strong> ${confidencePercent}%</p>`;
+      }
 
-        if (data.severity) {
-          html += `<p><strong>Severity:</strong> ${data.severity}</p>`;
-        }
+      if (data.severity) {
+        html += `<p><strong>Severity:</strong> ${data.severity}</p>`;
+      }
 
-        // Reasoning
-        if (data.reasoning) {
-          html += `
+      // Reasoning
+      if (data.reasoning) {
+        html += `
             <div style="margin-top: 1.5rem;">
               <h4 style="margin-bottom: 0.5rem;">Reasoning</h4>
               <p style="line-height: 1.7; color: var(--text-secondary);">${data.reasoning}</p>
             </div>
           `;
-        }
+      }
 
-        // Evidence
-        if (data.evidence && data.evidence.length > 0) {
-          html += `
+      // Evidence
+      if (data.evidence && data.evidence.length > 0) {
+        html += `
             <div style="margin-top: 1.5rem;">
               <h4 style="margin-bottom: 0.75rem;">Evidence (${data.evidence.length} items)</h4>
               <div style="display: grid; gap: 1rem;">
           `;
 
-          data.evidence.forEach((ev, i) => {
-            html += `
+        data.evidence.forEach((ev, i) => {
+          html += `
               <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border-left: 3px solid var(--primary);">
                 <p style="margin: 0; color: var(--text-primary); font-weight: 500;">${ev.summary || ev.text || 'Evidence item ' + (i + 1)}</p>
                 ${ev.source ? `<p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: var(--text-secondary);">Source: ${ev.source}</p>` : ''}
                 ${ev.url ? `<p style="margin: 0.5rem 0 0 0;"><a href="${ev.url}" target="_blank" class="source-link">View Source →</a></p>` : ''}
               </div>
             `;
-          });
+        });
 
-          html += '</div></div>';
+        html += '</div></div>';
+      }
+
+      // Timestamps
+      if (data.created_at || data.updated_at) {
+        html += '<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--text-muted);">';
+        if (data.created_at) {
+          html += `<p style="margin: 0;">Created: ${new Date(data.created_at).toLocaleString()}</p>`;
         }
-
-        // Timestamps
-        if (data.created_at || data.updated_at) {
-          html += '<div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.875rem; color: var(--text-muted);">';
-          if (data.created_at) {
-            html += `<p style="margin: 0;">Created: ${new Date(data.created_at).toLocaleString()}</p>`;
-          }
-          if (data.updated_at) {
-            html += `<p style="margin: 0.25rem 0 0 0;">Last Updated: ${new Date(data.updated_at).toLocaleString()}</p>`;
-          }
-          html += '</div>';
+        if (data.updated_at) {
+          html += `<p style="margin: 0.25rem 0 0 0;">Last Updated: ${new Date(data.updated_at).toLocaleString()}</p>`;
         }
+        html += '</div>';
+      }
 
-        // Auto-refresh for pending claims
-        if (data.status === 'pending') {
-          html += `
+      // Auto-refresh for pending claims
+      if (data.status === 'pending') {
+        html += `
             <div class="debug-banner info" style="margin-top: 1rem;">
               ⏳ This claim is still being processed. The page will auto-refresh in 5 seconds...
             </div>
           `;
-          setTimeout(() => checkStatus(claimId), 5000);
-        }
+        setTimeout(() => checkStatus(claimId), 5000);
+      }
 
-        statusContent.innerHTML = html;
+      statusContent.innerHTML = html;
 
-      } catch (err) {
-        statusCard.style.display = 'block';
-        statusContent.innerHTML = `
+    } catch (err) {
+      statusCard.style.display = 'block';
+      statusContent.innerHTML = `
           <div class="debug-banner error">
             ❌ ${err.message || 'Error loading claim status. Please check the claim ID and try again.'}
           </div>
         `;
-      }
     }
-  </script>
+  }
+</script>
 </body>
 
 </html>

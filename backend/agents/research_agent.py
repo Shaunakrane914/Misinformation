@@ -55,17 +55,17 @@ class ResearchAgent:
         )
 
         # Choose API key and model based on which env var is used:
-        # - GEMINI_API_KEY_* -> gemini-2.0-flash-lite (fast, cost-efficient)
+        # - GEMINI_API_KEY_* -> gemini-2.0-flash-exp (working model)
         api_key = None
         if _clean(raw_k1):
             api_key = _clean(raw_k1)
-            self.model_name = "gemini-2.0-flash-lite"
+            self.model_name = "gemini-2.0-flash-exp"
         elif _clean(raw_k2):
             api_key = _clean(raw_k2)
-            self.model_name = "gemini-2.0-flash-lite"
+            self.model_name = "gemini-2.0-flash-exp"
         elif _clean(raw_k):
             api_key = _clean(raw_k)
-            self.model_name = "gemini-2.0-flash-lite"
+            self.model_name = "gemini-2.0-flash-exp"
 
         if not api_key:
             raise ValueError(
@@ -82,7 +82,11 @@ class ResearchAgent:
         """
         Call Gemini text model via HTTP and return the first text candidate.
         """
-        print("[ResearchAgent] Calling Gemini via HTTP API...")
+        # Log which API key is being used
+        key_preview = self.api_key[:15] + "..." if len(self.api_key) > 15 else self.api_key
+        print(f"[ResearchAgent] 🔑 Using API key: {key_preview}")
+        print(f"[ResearchAgent] 🤖 Calling Gemini model: {self.model_name}")
+        
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
         headers = {"Content-Type": "application/json"}
         payload = {

@@ -64,7 +64,7 @@ def analyze_sentiment(text_items: List[str]) -> List[Dict[str, Any]]:
             genai.configure(api_key=api_key)
             logger.info(f"Using API key #{(_key_index % len(GEMINI_KEYS)) + 1} for sentiment analysis")
             
-            model = genai.GenerativeModel('gemini-1.5-flash')
+            model = genai.GenerativeModel('gemini-2.0-flash-exp')
             
             # Construct a batch prompt
             prompt = """
@@ -147,7 +147,7 @@ def generate_defense(rumor_text: str) -> str:
         genai.configure(api_key=api_key)
         logger.info(f"Using API key #{(_key_index % len(GEMINI_KEYS)) + 1} for defense generation")
         
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-2.0-flash-exp')
         prompt = f"""
         You are a PR Crisis Manager for a top Bollywood Star. 
         A malicious rumor is spreading: "{rumor_text}". 

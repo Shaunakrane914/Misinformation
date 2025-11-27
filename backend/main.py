@@ -446,13 +446,18 @@ async def explain_claim(request: dict):
     logger.info(f"[API] POST /explain-claim - Claim: {claim_text[:50]} (verdict={verdict})")
     try:
         agent = get_research_agent()
+        logger.info(f"[API] 🔑 Research Agent using API key: {agent.api_key[:15]}...")
+        logger.info(f"[API] 🤖 Research Agent using model: {agent.model_name}")
+        
         result = await agent.generate_dashboard_explanation(claim_text, verdict)
+        
+        logger.info(f"[API] ✅ Explanation generated successfully")
         return {
             "explanation": result.get("explanation", "Explanation unavailable."),
             "evidence_url": result.get("evidence_url", "")
         }
     except Exception as e:
-        logger.error(f"[API] Error generating explanation: {str(e)}")
+        logger.error(f"[API] ❌ Error generating explanation: {str(e)}")
         return {
             "explanation": f"Unable to generate explanation right now.",
             "evidence_url": ""

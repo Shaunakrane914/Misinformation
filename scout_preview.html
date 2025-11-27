@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Scout Agent</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/dashboard.css">
+  <style>
+    .page-header { margin-top: 80px }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 24px; align-items: start }
+    .section-card { display: grid; gap: 16px }
+    .claims-grid { display: grid; gap: 16px }
+    .claim-card { border-radius: 12px }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-content">
+      <div class="brand">Aegis Protocol</div>
+      <nav class="nav-links">
+        <a class="pill" href="/">Home</a>
+        <a class="pill" href="/dashboard">Live Dashboard</a>
+        <a class="pill" href="/submit">Submit Claim</a>
+        <a class="pill" href="/about">About</a>
+        <a class="pill primary" href="/scout-agent">Scout Agent</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-header">
+      <h1>Scout Agent</h1>
+      <p>Latest stock news, a demo crash scenario, and on-demand analysis.</p>
+      <div class="section-actions" style="margin-top:12px">
+        <a href="#analyze" class="toggle-btn" style="padding:8px 14px">Analyze a stock</a>
+      </div>
+    </section>
+
+    <div class="grid-2">
+      <section class="card section-card">
+        <h3>Trending Stock News</h3>
+        <div class="claims-grid" id="trendingGrid"></div>
+        <div><button id="trendingMore" class="toggle-btn" style="width:auto">Show more</button></div>
+      </section>
+      <section class="card section-card">
+        <h3>Demo: Crash Due To Fake Tweet</h3>
+        <div class="claims-grid">
+          <div class="claim-card">
+            <h3 class="claim-title">Tata Motors plunges after fake bankruptcy tweet</h3>
+            <p>Fake tweet: "BREAKING: Tata Motors files for bankruptcy."</p>
+            <p><span class="badge badge-false">Misinformation</span> Stock down: -5.8%</p>
+            <a class="toggle-btn" href="#">View details</a>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="card section-card" id="analyze">
+      <h3>Analyze A Stock</h3>
+      <form id="analyzeForm" style="display:flex; gap:0.5rem;">
+        <input id="tickerInput" placeholder="e.g., TATAMOTORS.NS" style="flex:1; padding:0.6rem;" />
+        <button type="submit" class="toggle-btn">Analyze</button>
+      </form>
+      <div class="claims-grid" id="stockResult"></div>
+      <details open>
+        <summary style="cursor:pointer; font-weight:600">Company News</summary>
+        <div class="claims-grid" id="companyNews"></div>
+      </details>
+      <details>
+        <summary style="cursor:pointer; font-weight:600">CEO News</summary>
+        <div class="claims-grid" id="ceoNews"></div>
+      </details>
+      <details>
+        <summary style="cursor:pointer; font-weight:600">Stock/Analysis News</summary>
+        <div class="claims-grid" id="analysisNews"></div>
+      </details>
+    </section>
+  </main>
+
+  <script>
+    (function(){
+      try {
+        var params = new URLSearchParams(window.location.search);
+        var b = params.get('backend');
+        if (b) { window.BACKEND_BASE = String(b).replace(/\/$/, ''); }
+      } catch(e) {}
+    })();
+    const API_BASE = (typeof window !== 'undefined' && window.BACKEND_BASE) ? window.BACKEND_BASE : '/api';
+
+    async function fetchWithRetry(url, options = {}, retries = 3, delayMs = 800) {
+      for (let i = 0; i < retries; i++) {
+        try {
+          const res = await fetch(url, options);
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          return res.json();
+        } catch (e) {
+          if (i === retries - 1) throw e;
+          await new Promise(r => setTimeout(r, delayMs * Math.pow(2, i)));
+        }
+      }
+    }
+
+    function renderList(gridId, items, limit = 3) {
+      const grid = document.getElementById(gridId);
+      grid.innerHTML = '';
+      const sourceItems = (items && items.length ? items : [
+        { title: 'Global markets update', source: 'Market News', link: '#' },
+        { title: 'Tech stocks mixed amid earnings', source: 'Market News', link: '#' },
+        { title: 'Energy sector advances on crude gains', source: 'Market News', link: '#' }
+      ]);
+      sourceItems.slice(0, limit).forEach(it => {
+        const card = document.createElement('div');
+        card.className = 'claim-card';
+        const h = document.createElement('h3'); h.className = 'claim-title'; h.textContent = it.title || '';
+        const p = document.createElement('p'); p.textContent = it.source ? `${it.source}` : '';
+        const a = document.createElement('a'); a.className = 'toggle-btn'; a.href = it.link || '#'; a.target = '_blank'; a.textContent = 'Open';
+        card.appendChild(h); card.appendChild(p); card.appendChild(a);
+        grid.appendChild(card);
+      });
+    }
+
+    async function init(){
+      try {
+        const data = await fetchWithRetry(`${API_BASE}/api/trending-news`, { cache: 'no-store' }, 3, 800);
+        let items = (data && Array.isArray(data.items) && data.items.length) ? data.items : [];
+        let compactLimit = 3;
+        renderList('trendingGrid', items, compactLimit);
+        const moreBtn = document.getElementById('trendingMore');
+        moreBtn.onclick = () => {
+          compactLimit = compactLimit === 3 ? 8 : 3;
+          moreBtn.textContent = compactLimit === 3 ? 'Show more' : 'Show less';
+          renderList('trendingGrid', items, compactLimit);
+        };
+      } catch(e) {
+        renderList('trendingGrid', [], 3);
+        const moreBtn = document.getElementById('trendingMore');
+        if (moreBtn) { moreBtn.style.display = 'none'; }
+      }
+    }
+
+    document.getElementById('analyzeForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const t = document.getElementById('tickerInput').value.trim();
+      if (!t) return;
+      try {
+        const res = await fetchWithRetry(`${API_BASE}/scout/analyze`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ticker: t })
+        }, 3, 800);
+        const stock = res.stock || {};
+        const news = res.news || {};
+        const sr = document.getElementById('stockResult');
+        sr.innerHTML = '';
+        const card = document.createElement('div');
+        card.className = 'claim-card';
+        const h = document.createElement('h3'); h.className = 'claim-title'; h.textContent = `${res.ticker || t} — ${stock.current_price ? '?'+stock.current_price : ''}`;
+        const p1 = document.createElement('p'); p1.textContent = `Drop: ${stock.drop_percent ?? 0}%  •  Z-score: ${stock.z_score ?? 0}`;
+        const p2 = document.createElement('p'); p2.textContent = `Crashing: ${stock.is_crashing ? 'Yes' : 'No'}`;
+        card.appendChild(h); card.appendChild(p1); card.appendChild(p2);
+        sr.appendChild(card);
+        const cmp = (news.company || []).map(x => ({ title: x.title, source: x.source }));
+        const ceo = (news.ceo || []).map(x => ({ title: x.title, source: x.source }));
+        const ana = (news.analysis || []).map(x => ({ title: x.title, source: x.source }));
+        renderList('companyNews', cmp, 3);
+        renderList('ceoNews', ceo, 3);
+        renderList('analysisNews', ana, 3);
+      } catch(err) {
+        const sr = document.getElementById('stockResult');
+        sr.innerHTML = '';
+        const card = document.createElement('div');
+        card.className = 'claim-card';
+        const h = document.createElement('h3'); h.className = 'claim-title'; h.textContent = `${t}`;
+        const p1 = document.createElement('p'); p1.textContent = `Data unavailable. Showing general market headlines.`;
+        card.appendChild(h); card.appendChild(p1);
+        sr.appendChild(card);
+        renderList('companyNews', [], 3);
+        renderList('ceoNews', [], 3);
+        renderList('analysisNews', [], 3);
+      }
+    });
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
+

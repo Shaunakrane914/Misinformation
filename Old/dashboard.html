@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Live Dashboard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/dashboard.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-content">
+      <div class="brand">Aegis Protocol</div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a class="pill" href="/dashboard">Live Dashboard</a>
+        <a href="/submit">Submit Claim</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="page-header">
+      <h1>Live Misinformation Dashboard</h1>
+      <p>Real-time feed of verified claims with verdicts and evidence on demand.</p>
+    </section>
+
+    <section class="analytics">
+      <div class="card">
+        <h3>Verdict Distribution</h3>
+        <canvas id="pieChart" height="160"></canvas>
+      </div>
+      <div class="card">
+        <h3>Counts</h3>
+        <div style="display:flex; gap:1rem;">
+          <div class="stat"><div class="stat-number" id="trueCount">0</div><div class="stat-label">True</div></div>
+          <div class="stat"><div class="stat-number" id="falseCount">0</div><div class="stat-label">False</div></div>
+          <div class="stat"><div class="stat-number" id="misleadingCount">0</div><div class="stat-label">Misleading</div></div>
+          <div class="stat"><div class="stat-number" id="unverifiedCount">0</div><div class="stat-label">Unverified</div></div>
+        </div>
+        <canvas id="barChart" height="160" style="margin-top:1rem;"></canvas>
+      </div>
+    </section>
+
+    <section class="card" id="feedSection">
+      <div style="display:flex; align-items:center; justify-content:space-between;">
+        <h3>Feed</h3>
+        <button id="refreshClaimsBtn" class="toggle-btn"><span class="refresh-icon">⟳</span> Refresh</button>
+      </div>
+      <div id="loadingBanner" class="debug-banner" style="display:none;">Loading...</div>
+      <div id="claimsContainer" class="claims-grid"></div>
+    </section>
+  </main>
+
+  <script src="/static/dashboard.js"></script>
+</body>
+</html>

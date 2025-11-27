@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trending Agent - Bollywood War Room</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/dashboard.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+
+<body>
+    <header class="navbar">
+        <div class="nav-content">
+            <div class="brand">Aegis Protocol</div>
+            <nav class="nav-links">
+                <a href="/">Home</a>
+                <a href="/agents">Agents</a>
+                <a href="/about">About</a>
+                <a href="/dashboard">Live Dashboard</a>
+                <a href="/submit">Submit Claim</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard-container war-room-layout">
+        <!-- Left Sidebar: Asset Selector -->
+        <aside class="asset-sidebar">
+            <div class="dark-card">
+                <h3>🎯 Monitored Assets</h3>
+                <div class="asset-list" id="assetList">
+                    <div class="asset-item active" onclick="selectAsset('Deepika Padukone')">
+                        <span class="asset-icon">⭐</span> Deepika Padukone
+                    </div>
+                    <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')">
+                        <span class="asset-icon">⭐</span> Shah Rukh Khan
+                    </div>
+                    <div class="asset-item" onclick="selectAsset('Jawan')">
+                        <span class="asset-icon">🎬</span> Jawan
+                    </div>
+                </div>
+                <button class="add-asset-btn" onclick="showAddAssetModal()">+ Add Asset</button>
+            </div>
+
+            <div class="dark-card mt-4">
+                <h3>Sentiment Trend</h3>
+                <div class="chart-container">
+                    <canvas id="sentimentChart"></canvas>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content: Threat Feed -->
+        <div class="feed-column">
+            <section class="page-header">
+                <h1>🚨 Threat Intelligence Feed</h1>
+                <div class="controls">
+                    <span id="currentAsset" class="badge">Deepika Padukone</span>
+                    <button class="refresh-btn" onclick="refreshFeed()">🔄 Refresh Scan</button>
+                </div>
+            </section>
+
+            <div id="loadingState" class="hidden">
+                <div class="loader"></div> Scanning social media & news...
+            </div>
+
+            <div id="threatFeed" class="threat-grid">
+                <!-- Cards injected here -->
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let currentAsset = 'Deepika Padukone';
+
+        async function selectAsset(name) {
+            currentAsset = name;
+            document.getElementById('currentAsset').innerText = name;
+            document.querySelectorAll('.asset-item').forEach(el => {
+                el.classList.remove('active');
+                if (el.innerText.includes(name)) el.classList.add('active');
+            });
+            await refreshFeed();
+        }
+
+        async function refreshFeed() {
+            const feed = document.getElementById('threatFeed');
+            const loader = document.getElementById('loadingState');
+            feed.innerHTML = '';
+            loader.classList.remove('hidden');
+
+            try {
+                const response = await fetch('/api/trending/scan', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        asset_name: currentAsset,
+                        identifiers: {
+                            instagram_url: 'https://www.instagram.com/viralbhayani/',
+                            hashtag: '#' + currentAsset.replace(/\s+/g, ''),
+                            box_office: true
+                        }
+                    })
+                });
+                const data = await response.json();
+                renderFeed(data);
+            } catch (e) {
+                console.error(e);
+                feed.innerHTML = `<div class="error-msg">Failed to fetch data: ${e.message}</div>`;
+            } finally {
+                loader.classList.add('hidden');
+            }
+        }
+
+        function renderFeed(data) {
+            const feed = document.getElementById('threatFeed');
+            const sources = data.sources || {};
+
+            if (sources.box_office && sources.box_office.source) {
+                feed.innerHTML += createCard({
+                    title: `Box Office: ${data.asset_name}`,
+                    source: sources.box_office.source,
+                    summary: `Net India: ${sources.box_office.net_india} | Gross: ${sources.box_office.gross_worldwide}`,
+                    is_threat: false,
+                    sentiment: 0
+                });
+            }
+
+            (sources.news || []).forEach(item => {
+                feed.innerHTML += createCard({
+                    title: item.title,
+                    source: item.source || 'Google News',
+                    summary: item.summary || 'No analysis available',
+                    is_threat: item.is_threat,
+                    sentiment: item.sentiment_score,
+                    url: item.link
+                });
+            });
+
+            (sources.paparazzi || []).forEach(item => {
+                feed.innerHTML += createCard({
+                    title: item.caption ? item.caption.substring(0, 80) + '...' : 'Instagram Post',
+                    source: 'Instagram',
+                    summary: item.summary || 'Paparazzi update',
+                    is_threat: item.is_threat,
+                    sentiment: item.sentiment_score,
+                    url: item.url
+                });
+            });
+
+            (sources.fan_wars || []).forEach(item => {
+                feed.innerHTML += createCard({
+                    title: item.text,
+                    source: `Twitter (@${item.author})`,
+                    summary: 'Fan War Activity',
+                    is_threat: true,
+                    sentiment: -50,
+                    url: item.url
+                });
+            });
+
+            if (feed.innerHTML === '') {
+                feed.innerHTML = '<div class="empty-state">No recent activity found.</div>';
+            }
+        }
+
+        function createCard(item) {
+            const isThreat = item.is_threat;
+            const sentimentColor = item.sentiment < -30 ? '#ef4444' : (item.sentiment > 30 ? '#22c55e' : '#eab308');
+            const borderColor = isThreat ? '#ef4444' : '#334155';
+
+            return `
+        <div class="threat-card" style="border-left: 4px solid ${borderColor}">
+          <div class="card-header">
+            <span class="source-badge">${item.source}</span>
+            ${isThreat ? '<span class="threat-badge">⚠️ THREAT</span>' : ''}
+          </div>
+          <h3><a href="${item.url}" target="_blank">${item.title}</a></h3>
+          <p class="summary">${item.summary}</p>
+          <div class="sentiment-bar-container">
+            <div class="sentiment-bar" style="width: ${Math.abs(item.sentiment)}%; background: ${sentimentColor}"></div>
+          </div>
+        </div>
+      `;
+        }
+
+        function showAddAssetModal() {
+            alert('Add Asset feature coming soon!');
+        }
+
+        refreshFeed();
+    </script>
+</body>
+
+</html>

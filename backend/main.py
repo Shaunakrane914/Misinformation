@@ -173,6 +173,15 @@ async def favicon():
     return JSONResponse({"status": "no favicon"}, status_code=404)
 
 
+# ============================================================================
+# GLOBAL AGENT INSTANCES (Lazy-loaded)
+# ============================================================================
+
+_claim_ingestion_agent = None
+_research_agent = None
+_investigator_agent = None
+_trending_agent = None
+
 
 def get_claim_ingestion_agent():
     """Lazy-load the ClaimIngestionAgent."""
@@ -922,6 +931,40 @@ async def warm_dashboard_cache():
         logger.info("[Startup] Dashboard cache warmed")
     except Exception as e:
         logger.warning(f"[Startup] Failed to warm dashboard cache: {e}")
+
+
+# ============================================================================
+# PERSONAL WATCH AGENT API
+# ============================================================================
+
+class PersonalScanRequest(BaseModel):
+    """Request model for Personal Watch scan."""
+    name: str
+    official_handles: Optional[Dict[str, str]] = None
+    phone_number: Optional[str] = None
+
+@app.post("/api/personal/scan")
+async def personal_watch_scan(request: PersonalScanRequest):
+    """Trigger a Personal Watch scan for a VIP."""
+    logger.info(f"[API] POST /api/personal/scan - VIP: {request.name}")
+    
+    try:
+        from backend.agents.personal_agent import process_personal_watch
+        
+        vip_profile = {
+            "name": request.name,
+            "official_handles": request.official_handles or {},
+            "phone_number": request.phone_number
+        }
+        
+        results = process_personal_watch(vip_profile)
+        
+        logger.info(f"[API] Scan complete: {results.get('total_mentions', 0)} mentions, {results.get('high_risk_count', 0)} high-risk")
+        return results
+        
+    except Exception as e:
+        logger.error(f"[API] Personal Watch scan failed: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Scan failed: {str(e)}")
 
 
 # ============================================================================

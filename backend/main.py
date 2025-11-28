@@ -65,6 +65,7 @@ app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 # ... (keep existing code) ...
 
+@app.get("/api/dashboard/claims")
 @app.get("/dashboard/claims")
 async def get_dashboard_claims(fresh: bool = False):
     logger.info("[API] GET /dashboard/claims - Generating dashboard claims")

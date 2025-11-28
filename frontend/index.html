@@ -169,15 +169,22 @@
       const container = document.getElementById('trendingClaims');
 
       try {
-        const res = await fetch(`${API_BASE}/dashboard/claims`);
-        if (!res.ok) throw new Error('Failed to fetch');
+        console.log('[Homepage] Fetching trending claims from:', `${API_BASE}/api/dashboard/claims`);
+        const res = await fetch(`${API_BASE}/api/dashboard/claims`);
+        console.log('[Homepage] Response status:', res.status, res.statusText);
+
+        if (!res.ok) {
+          const errorText = await res.text();
+          console.error('[Homepage] API error:', errorText);
+          throw new Error(`API returned ${res.status}: ${errorText}`);
+        }
 
         const claims = await res.json();
+        console.log('[Homepage] Received claims:', claims.length, 'total');
 
         // Filter only false claims and get top 6
-        const falseClaims = claims
-          .filter(claim => claim.verdict === 'False' && claim.status === 'completed')
-          .slice(0, 6);
+        const falseClaims = claims.filter(claim => claim.verdict === 'False').slice(0, 6);
+        console.log('[Homepage] False claims found:', falseClaims.length);
 
         if (falseClaims.length === 0) {
           container.innerHTML = '<p class="no-data">No trending misinformations at the moment.</p>';
@@ -188,20 +195,20 @@
           <div class="trending-card">
             <div class="trending-badge">
               <span class="badge badge-false">FALSE</span>
-              ${claim.confidence ? `<span class="confidence">${(claim.confidence * 100).toFixed(0)}% confidence</span>` : ''}
             </div>
-            <h3 class="trending-claim">${claim.claim_text || claim.normalized_text}</h3>
-            <p class="trending-reason">${claim.reasoning ? claim.reasoning.substring(0, 150) + '...' : 'Verified as false by our AI system.'}</p>
+            <h3 class="trending-claim">${claim.claim || claim.claim_text || 'No claim text'}</h3>
+            <p class="trending-reason">Verified as false by our AI system.</p>
             <div class="trending-footer">
-              <span class="trending-date">${new Date(claim.created_at).toLocaleDateString()}</span>
-              <a href="status.html?id=${claim.claim_id}" class="trending-link">View Details →</a>
+              <span class="trending-date">Recently verified</span>
             </div>
           </div>
         `).join('');
 
+        console.log('[Homepage] Successfully rendered', falseClaims.length, 'trending cards');
+
       } catch (err) {
-        console.error('Error fetching trending claims:', err);
-        container.innerHTML = '<p class="error-msg">Unable to load trending misinformations. Backend may not be running.</p>';
+        console.error('[Homepage] Error details:', err);
+        container.innerHTML = `<p class="error-msg">Unable to load trending misinformations: ${err.message}</p>`;
       }
     }
 

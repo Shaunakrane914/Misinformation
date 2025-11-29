@@ -8,10 +8,11 @@
 // ============================================================================
 
 function initThemeToggle() {
-  // Check for saved theme preference or default to 'light'
+  //Check for saved theme preference or default to 'light'
   const currentTheme = localStorage.getItem('theme') || 'light';
   document.documentElement.setAttribute('data-theme', currentTheme);
   updateThemeIcon(currentTheme);
+  updateLogo(currentTheme);
 
   // Theme toggle button click handler
   const themeToggle = document.getElementById('themeToggle');
@@ -23,9 +24,10 @@ function initThemeToggle() {
       document.documentElement.setAttribute('data-theme', newTheme);
       localStorage.setItem('theme', newTheme);
       updateThemeIcon(newTheme);
+      updateLogo(newTheme);
 
-      // Add a subtle animation to the page
-      document.body.style.transition = 'background-color 0.3s ease';
+      // Add a fast subtle animation to the page
+      document.body.style.transition = 'background-color 0.15s ease';
     });
   }
 }
@@ -34,6 +36,22 @@ function updateThemeIcon(theme) {
   const themeIcon = document.querySelector('.theme-icon');
   if (themeIcon) {
     themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+  }
+}
+
+function updateLogo(theme) {
+  const logoImg = document.querySelector('.brand img');
+  if (logoImg) {
+    const newLogoSrc = theme === 'light' ? '/static/12.png' : '/static/2.png';
+
+    // Super fast transition
+    logoImg.style.transition = 'opacity 0.1s ease';
+    logoImg.style.opacity = '0';
+
+    setTimeout(() => {
+      logoImg.src = newLogoSrc;
+      logoImg.style.opacity = '1';
+    }, 50);
   }
 }
 

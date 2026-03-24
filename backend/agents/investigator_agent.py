@@ -14,6 +14,10 @@ from dotenv import load_dotenv
 import os as _os
 
 
+import itertools
+import time
+
+
 class InvestigatorAgent:
     """
     Agent responsible for investigating claims and providing final verdicts.
@@ -22,87 +26,72 @@ class InvestigatorAgent:
     
     def __init__(self):
         """
-        Initialize the Investigator Agent with Google Gemini Pro configuration.
-        
-        Uses API key priority:
-        1. GEMINI_API_KEY_2 (primary)
-        2. GEMINI_API_KEY (fallback)
+        Initialize the Investigator Agent with Google Gemini configuration.
+        Loads all available keys and rotates across them per request.
         """
         print("[InvestigatorAgent] Initializing Investigator Agent")
-        # Resolve and log the .env path we are actually loading
         env_path = _os.path.abspath(
             _os.path.join(_os.path.dirname(__file__), "..", "..", ".env")
         )
         print(f"[InvestigatorAgent] Loading .env from: {env_path}")
-        # Force-reload .env so updated keys are picked up even if process reused
         load_dotenv(env_path, override=True)
-        
-        # Key priority with sanitization: GEMINI_API_KEY_2 → GEMINI_API_KEY_1 → GEMINI_API_KEY
-        def _clean(s: str | None) -> str:
+
+        def _clean(s):
             if not s:
                 return ""
             return s.strip().strip('"').strip("'")
-        raw_k2 = os.getenv("GEMINI_API_KEY_2")
-        raw_k1 = os.getenv("GEMINI_API_KEY_1")
-        raw_k = os.getenv("GEMINI_API_KEY")
-        print(
-            "[InvestigatorAgent] Env snapshot - "
-            f"GEMINI_API_KEY_2: {(_clean(raw_k2)[:10] + '...') if raw_k2 else 'None'}, "
-            f"GEMINI_API_KEY_1: {(_clean(raw_k1)[:10] + '...') if raw_k1 else 'None'}, "
-            f"GEMINI_API_KEY: {(_clean(raw_k)[:10] + '...') if raw_k else 'None'}"
-        )
 
-        # Choose API key and model based on which env var is used:
-        # - GEMINI_API_KEY_* -> gemini-2.0-flash-lite (fast, cost-efficient)
-        api_key = None
-        if _clean(raw_k1):
-            api_key = _clean(raw_k1)
-            self.model_name = "gemini-2.0-flash-lite"
-        elif _clean(raw_k2):
-            api_key = _clean(raw_k2)
-            self.model_name = "gemini-2.0-flash-lite"
-        elif _clean(raw_k):
-            api_key = _clean(raw_k)
-            self.model_name = "gemini-2.0-flash-lite"
+        all_keys = [
+            _clean(os.getenv("GEMINI_API_KEY")),
+            _clean(os.getenv("GEMINI_API_KEY_1")),
+            _clean(os.getenv("GEMINI_API_KEY_2")),
+        ]
+        self.api_keys = [k for k in all_keys if k]
 
-        if not api_key:
+        if not self.api_keys:
             raise ValueError(
-                "[InvestigatorAgent] No API key found. Set GEMINI_API_KEY_1, GEMINI_API_KEY_2 or GEMINI_API_KEY"
+                "[InvestigatorAgent] No API key found. Set GEMINI_API_KEY, GEMINI_API_KEY_1, or GEMINI_API_KEY_2"
             )
 
-        # Store key for direct HTTP calls
-        self.api_key = api_key
-
-        print(f"[InvestigatorAgent] Using API key: {api_key[:10]}...")
+        self._key_cycle = itertools.cycle(self.api_keys)
+        self.model_name = "gemini-2.5-flash"
+        print(f"[InvestigatorAgent] Loaded {len(self.api_keys)} Gemini key(s), round-robin active.")
         print(f"[InvestigatorAgent] Using model: {self.model_name}")
 
     def _call_gemini(self, prompt: str) -> str:
         """
-        Call Gemini text model via HTTP and return the first text candidate.
+        Call Gemini via HTTP, rotating keys and retrying on 429.
         """
         print("[InvestigatorAgent] Calling Gemini via HTTP API...")
         url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
         headers = {"Content-Type": "application/json"}
-        payload = {
-            "contents": [
-                {
-                    "parts": [
-                        {"text": prompt}
-                    ]
-                }
-            ]
-        }
-        params = {"key": self.api_key}
-        resp = requests.post(url, headers=headers, params=params, json=payload, timeout=30)
-        resp.raise_for_status()
-        data = resp.json()
-        try:
-            return data["candidates"][0]["content"]["parts"][0]["text"]
-        except Exception:
-            return json.dumps(data)
-        
-        print(f"[InvestigatorAgent] Configured with model: {self.model_name}")
-        print("[InvestigatorAgent] Initialization complete")
+        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+
+        last_error = None
+        for attempt in range(len(self.api_keys) * 2):
+            api_key = next(self._key_cycle)
+            try:
+                resp = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=30)
+                if resp.status_code == 429:
+                    print(f"[InvestigatorAgent] 429 on key ...{api_key[-6:]}. Rotating key.")
+                    time.sleep(0.5)
+                    last_error = Exception(f"429 Too Many Requests on key ...{api_key[-6:]}")
+                    continue
+                resp.raise_for_status()
+                data = resp.json()
+                try:
+                    return data["candidates"][0]["content"]["parts"][0]["text"]
+                except Exception:
+                    return json.dumps(data)
+            except Exception as e:
+                if "429" not in str(e):
+                    raise
+                last_error = e
+                time.sleep(0.5)
+
+        raise last_error or RuntimeError("[InvestigatorAgent] All keys exhausted on 429s")
+
+
     
     def _clean_json(self, text: str) -> str:
         """

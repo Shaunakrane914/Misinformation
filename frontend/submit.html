@@ -123,7 +123,7 @@
           payload.source_url = sourceUrl;
         }
 
-        const res = await fetch(`${API_BASE}/claims/submit`, {
+        const res = await fetch(`${API_BASE}/api/claims/submit`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)

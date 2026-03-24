@@ -166,7 +166,7 @@
       const t = document.getElementById('tickerInput').value.trim();
       if (!t) return;
       try {
-        const res = await fetchWithRetry(`${API_BASE}/scout/analyze`, {
+        const res = await fetchWithRetry(`${API_BASE}/api/scout/analyze`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ ticker: t })

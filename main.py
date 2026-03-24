@@ -61,6 +61,9 @@ def serve_css():
 def serve_js():
     return FileResponse("frontend/dashboard.js")
 
+# Catch-all for other static assets (like CSS, JS, images, html files hitting root)
+app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend_catchall")
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run(app, host="0.0.0.0", port=8000)

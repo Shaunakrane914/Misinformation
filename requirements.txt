@@ -20,3 +20,5 @@ pytrends
 beautifulsoup4
 duckduckgo-search>=4.0.0
 twilio>=8.0.0
+itsdangerous>=2.1.2
+aiofiles>=23.1.0

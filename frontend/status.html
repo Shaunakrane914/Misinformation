@@ -76,7 +76,7 @@
         statusCard.style.display = 'block';
         statusContent.innerHTML = '<p><em>Loading claim status...</em></p>';
 
-        const res = await fetch(`${API_BASE}/claims/${claimId}`);
+        const res = await fetch(`${API_BASE}/api/claims/${claimId}`);
 
         if (!res.ok) {
           throw new Error(`Claim not found (${res.status})`);

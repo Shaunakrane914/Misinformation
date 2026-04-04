@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trending Agent – Aegis Protocol</title>
+  <title>Trending Agent â€“ Aegis Protocol</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -142,7 +142,7 @@
 <body>
   <header class="navbar">
     <div class="nav-content">
-      <div class="brand"><img src="/static/12.png" alt="Aegis Protocol" style="height:60px;"></div>
+      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height:60px;"></div>
       <nav class="nav-links">
         <a href="/">Home</a>
         <a href="/agents">Agents</a>
@@ -150,7 +150,7 @@
         <a href="/dashboard">Live Dashboard</a>
         <a href="/submit">Submit Claim</a>
         <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode">
-          <span class="theme-icon">🌙</span>
+          <span class="theme-icon">ðŸŒ™</span>
         </button>
       </nav>
     </div>
@@ -158,8 +158,8 @@
 
   <!-- HERO -->
   <div class="agent-hero">
-    <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent · Active</div>
-    <h1>🎬 <span>Trending</span> Agent</h1>
+    <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent Â· Active</div>
+    <h1>ðŸŽ¬ <span>Trending</span> Agent</h1>
     <p>Real-time Bollywood & entertainment threat intelligence. Scan celebrities, films, and cultural topics for misinformation spreading across news and social media.</p>
     <div class="hero-stats">
       <div class="hero-stat"><div class="hero-stat-val">200+</div><div class="hero-stat-label">Assets Monitored</div></div>
@@ -176,20 +176,20 @@
       <!-- SIDEBAR -->
       <aside class="asset-sidebar">
         <div class="dark-card">
-          <h3>🎯 Monitored Assets</h3>
+          <h3>ðŸŽ¯ Monitored Assets</h3>
           <div id="assetList">
-            <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-icon">⭐</span>Deepika Padukone</div>
-            <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-icon">⭐</span>Shah Rukh Khan</div>
-            <div class="asset-item" onclick="selectAsset('Ranveer Singh')"><span class="asset-icon">⭐</span>Ranveer Singh</div>
-            <div class="asset-item" onclick="selectAsset('Alia Bhatt')"><span class="asset-icon">⭐</span>Alia Bhatt</div>
-            <div class="asset-item" onclick="selectAsset('Jawan')"><span class="asset-icon">🎬</span>Jawan</div>
-            <div class="asset-item" onclick="selectAsset('Pathaan')"><span class="asset-icon">🎬</span>Pathaan</div>
+            <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-icon">â­</span>Deepika Padukone</div>
+            <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-icon">â­</span>Shah Rukh Khan</div>
+            <div class="asset-item" onclick="selectAsset('Ranveer Singh')"><span class="asset-icon">â­</span>Ranveer Singh</div>
+            <div class="asset-item" onclick="selectAsset('Alia Bhatt')"><span class="asset-icon">â­</span>Alia Bhatt</div>
+            <div class="asset-item" onclick="selectAsset('Jawan')"><span class="asset-icon">ðŸŽ¬</span>Jawan</div>
+            <div class="asset-item" onclick="selectAsset('Pathaan')"><span class="asset-icon">ðŸŽ¬</span>Pathaan</div>
           </div>
           <button class="add-asset-btn" onclick="addAsset()">+ Add Asset</button>
         </div>
 
         <div class="dark-card">
-          <h3>📊 Sentiment Trend</h3>
+          <h3>ðŸ“Š Sentiment Trend</h3>
           <div class="chart-container">
             <canvas id="sentimentChart"></canvas>
           </div>
@@ -199,10 +199,10 @@
       <!-- FEED -->
       <div class="feed-col">
         <div class="feed-header">
-          <h1>🚨 Threat Intelligence Feed</h1>
+          <h1>ðŸš¨ Threat Intelligence Feed</h1>
           <div class="feed-controls">
             <span class="current-asset-badge" id="currentAssetBadge">Deepika Padukone</span>
-            <button class="refresh-btn-feed" onclick="refreshFeed()">🔄 Refresh Scan</button>
+            <button class="refresh-btn-feed" onclick="refreshFeed()">ðŸ”„ Refresh Scan</button>
           </div>
         </div>
 
@@ -210,7 +210,7 @@
           <div class="spinner"></div> Scanning social media & news sources...
         </div>
 
-        <div id="staticNote" class="static-note">⚡ Showing sample threat data — connect backend for live scanning</div>
+        <div id="staticNote" class="static-note">âš¡ Showing sample threat data â€” connect backend for live scanning</div>
 
         <div id="threatFeed" class="threat-grid">
           <!-- Static sample cards shown before backend wakes -->
@@ -222,13 +222,13 @@
   <script>
     let currentAsset = 'Deepika Padukone';
 
-    // ── PLATFORM SCAN ANIMATION ──
+    // â”€â”€ PLATFORM SCAN ANIMATION â”€â”€
     const PLATFORMS = [
-      { name: 'X / Twitter', icon: '🐦', color: '#1d9bf0' },
-      { name: 'Instagram', icon: '📸', color: '#e1306c' },
-      { name: 'Reddit', icon: '🤖', color: '#ff4500' },
-      { name: 'Google News', icon: '📰', color: '#4285f4' },
-      { name: 'YouTube', icon: '📹', color: '#ff0000' },
+      { name: 'X / Twitter', icon: 'ðŸ¦', color: '#1d9bf0' },
+      { name: 'Instagram', icon: 'ðŸ“¸', color: '#e1306c' },
+      { name: 'Reddit', icon: 'ðŸ¤–', color: '#ff4500' },
+      { name: 'Google News', icon: 'ðŸ“°', color: '#4285f4' },
+      { name: 'YouTube', icon: 'ðŸ“¹', color: '#ff0000' },
     ];
 
     function showScanAnimation(feed) {
@@ -242,7 +242,7 @@
         row.innerHTML = `
           <span style="font-size:1.1rem;">${p.icon}</span>
           <span style="color:${p.color};font-weight:600;">${p.name}</span>
-          <span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">⏳ Scanning...</span>`;
+          <span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â³ Scanning...</span>`;
         wrapper.appendChild(row);
       });
       feed.appendChild(wrapper);
@@ -251,7 +251,7 @@
     function markPlatformDone(name, count) {
       const id = 'scan_' + name.replace(/[^a-z]/gi,'');
       const el = document.getElementById(id);
-      if (el) el.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ ${count} items</span>`;
+      if (el) el.innerHTML = `<span style="color:#10b981;font-weight:700;">âœ“ ${count} items</span>`;
     }
 
     function renderFeed(threats, isLive = true) {
@@ -275,7 +275,7 @@
         card.innerHTML = `
           <div class="tc-header">
             <span class="source-pill">${item.source || 'Unknown'}</span>
-            ${isThreat ? '<span class="threat-pill">⚠️ THREAT</span>' : ''}
+            ${isThreat ? '<span class="threat-pill">âš ï¸ THREAT</span>' : ''}
           </div>
           <p class="tc-title"><a href="${item.url || '#'}" target="_blank">${item.title || ''}</a></p>
           <p class="tc-summary">${item.summary || ''}</p>
@@ -340,7 +340,7 @@ Make it realistic and specific to ${currentAsset}. Include at least 2 threats (i
         // Show fallback
         await new Promise(r => setTimeout(r, 2200));
         renderFeed([
-          { title: `Scanning ${currentAsset} — Gemini analysis unavailable`, source: 'System', summary: 'Please try again in a moment.', is_threat: false, sentiment: 0 }
+          { title: `Scanning ${currentAsset} â€” Gemini analysis unavailable`, source: 'System', summary: 'Please try again in a moment.', is_threat: false, sentiment: 0 }
         ], false);
       }
     }
@@ -360,7 +360,7 @@ Make it realistic and specific to ${currentAsset}. Include at least 2 threats (i
       const name = prompt('Enter celebrity or film name to monitor:');
       if (!name || !name.trim()) return;
       const list = document.getElementById('assetList');
-      const icon = '⭐';
+      const icon = 'â­';
       const div = document.createElement('div');
       div.className = 'asset-item';
       div.innerHTML = `<span class="asset-icon">${icon}</span>${name.trim()}`;

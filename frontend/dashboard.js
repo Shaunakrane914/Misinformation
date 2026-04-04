@@ -173,69 +173,51 @@ function buildBarChart(stats) {
 function buildCard(item) {
   const card = document.createElement("div");
   card.className = "claim-card";
-
-  const indicator = document.createElement("div");
-  indicator.className = "claim-indicator";
-
-  const title = document.createElement("h3");
-  title.className = "claim-text";
-  title.textContent = item.claim || "";
-
-  const badgeContainer = document.createElement("div");
-  badgeContainer.style.cssText = "margin-left:2rem;margin-bottom:0.75rem;";
+  card.style.cssText = "background:var(--bg-primary);border:1px solid var(--border);border-radius:16px;padding:20px 24px;margin-bottom:16px;transition:box-shadow 0.2s;";
 
   const verdict = String(item.verdict);
   const isTrue = verdict.toLowerCase() === "true";
   const isMisleading = verdict.toLowerCase() === "misleading";
+  const badgeColor = isTrue ? "#10b981" : isMisleading ? "#fbbf24" : "#ef4444";
+
+  const title = document.createElement("h3");
+  title.style.cssText = "font-size:1rem;font-weight:700;margin:0 0 10px;line-height:1.5;color:var(--text-primary);";
+  title.textContent = item.claim || "";
+
   const badge = document.createElement("span");
-  badge.className = `badge ${isTrue ? "badge-true" : isMisleading ? "badge-misleading" : "badge-false"}`;
-  badge.textContent = verdict;
-  badgeContainer.appendChild(badge);
+  badge.style.cssText = `display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.72rem;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;background:${badgeColor}22;color:${badgeColor};border:1px solid ${badgeColor}55;`;
+  badge.textContent = verdict.toUpperCase();
 
   const summary = document.createElement("p");
-  summary.className = "claim-summary";
+  summary.style.cssText = "font-size:0.88rem;color:var(--text-secondary);margin:0 0 14px;line-height:1.65;";
   summary.textContent = item.explanation || "";
 
   const btn = document.createElement("button");
-  btn.className = "toggle-btn";
+  btn.style.cssText = `padding:7px 18px;background:${badgeColor}22;color:${badgeColor};border:1px solid ${badgeColor}55;border-radius:8px;font-size:0.8rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:Inter,sans-serif;`;
   btn.textContent = "Show Evidence";
 
+  // Evidence section — hidden by default
   const evidence = document.createElement("div");
-  evidence.className = "evidence-section";
+  evidence.style.cssText = "display:none;margin-top:12px;padding:14px;background:var(--bg-tertiary);border-radius:10px;border:1px solid var(--border);";
 
-  const evidenceContent = document.createElement("div");
-  evidenceContent.className = "evidence-content";
+  const aiNote = document.createElement("p");
+  aiNote.style.cssText = "color:#64748b;font-size:0.82rem;margin:0;";
+  aiNote.id = `aiNote_${Math.random().toString(36).slice(2)}`;
+  aiNote.textContent = backendAlive ? "🤖 Loading AI-enhanced source..." : "📡 Source links available once backend wakes up.";
 
-  // Pre-fill with static explanation immediately (no waiting)
-  const staticExplanation = item.explanation || "This claim has been assessed by our AI verification system.";
-  evidenceContent.innerHTML = `
-    <div class="evidence-block">
-      <span class="badge ${isTrue ? 'badge-true' : isMisleading ? 'badge-misleading' : 'badge-false'}">${verdict}</span>
-    </div>
-    <div class="evidence-block">
-      <h4>Analysis:</h4>
-      <p>${staticExplanation}</p>
-    </div>
-    <div class="evidence-block" id="aiEnhance_${Math.random().toString(36).slice(2)}">
-      <p style="color:#64748b;font-size:0.85rem;">
-        ${backendAlive ? '🤖 Loading AI-enhanced explanation...' : '📡 AI enhancement available once backend wakes up.'}
-      </p>
-    </div>
-  `;
+  const sourceLink = document.createElement("div");
+  sourceLink.id = `srcLink_${Math.random().toString(36).slice(2)}`;
 
-  evidence.appendChild(evidenceContent);
+  evidence.appendChild(aiNote);
+  evidence.appendChild(sourceLink);
 
   btn.addEventListener("click", async () => {
-    const isExpanded = card.classList.contains("expanded");
-    if (!isExpanded) {
-      card.classList.add("expanded");
+    const isOpen = evidence.style.display !== "none";
+    if (!isOpen) {
+      evidence.style.display = "block";
       btn.textContent = "Hide Evidence";
 
-      // Only call AI endpoint if backend is alive and not already loaded
       if (backendAlive && !card.dataset.aiLoaded) {
-        const aiBlock = evidenceContent.querySelector('[id^="aiEnhance_"]');
-        if (aiBlock) aiBlock.innerHTML = `<p style="color:#64748b;font-size:0.85rem;">🤖 Generating AI explanation...</p>`;
-
         try {
           const response = await fetch(`${BACKEND_BASE}/api/explain-claim`, {
             method: "POST",
@@ -243,37 +225,33 @@ function buildCard(item) {
             body: JSON.stringify({ claim: item.claim, verdict: item.verdict })
           });
           const data = await response.json();
-
           if (data.explanation) {
-            const aiExplanation = evidenceContent.querySelector('.evidence-block:nth-child(2) p');
-            if (aiExplanation) aiExplanation.textContent = data.explanation;
-
+            summary.textContent = data.explanation;
             const src = data.evidence_url
-              ? `<a href="${data.evidence_url}" target="_blank" rel="noopener noreferrer">View Source →</a>`
-              : `<span style="color:#94a3b8">No source link available</span>`;
-            const aiBlock2 = evidenceContent.querySelector('[id^="aiEnhance_"]');
-            if (aiBlock2) aiBlock2.innerHTML = `<h4>Evidence Link:</h4><p>${src}</p>`;
+              ? `<a href="${data.evidence_url}" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;font-size:0.82rem;font-weight:600;">🔗 View Source →</a>`
+              : `<span style="color:#94a3b8;font-size:0.82rem;">No source link available</span>`;
+            sourceLink.innerHTML = src;
+            aiNote.style.display = "none";
             card.dataset.aiLoaded = "1";
           }
         } catch (e) {
-          const aiBlock2 = evidenceContent.querySelector('[id^="aiEnhance_"]');
-          if (aiBlock2) aiBlock2.innerHTML = `<p style="color:#94a3b8;font-size:0.85rem;">AI explanation unavailable.</p>`;
+          aiNote.textContent = "AI explanation unavailable.";
         }
       }
     } else {
-      card.classList.remove("expanded");
+      evidence.style.display = "none";
       btn.textContent = "Show Evidence";
     }
   });
 
-  card.appendChild(indicator);
   card.appendChild(title);
-  card.appendChild(badgeContainer);
+  card.appendChild(badge);
   card.appendChild(summary);
   card.appendChild(btn);
   card.appendChild(evidence);
   return card;
 }
+
 
 // ─────────────────────────────────────────────
 // RENDER CLAIMS

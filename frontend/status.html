@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
@@ -17,7 +17,7 @@
 <body>
   <header class="navbar">
     <div class="nav-content">
-      <div class="brand"><img src="/static/12.png" alt="Aegis Protocol" style="height: 60px;"></div>
+      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height: 60px;"></div>
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="agents.html">Agents</a>
@@ -25,7 +25,7 @@
         <a href="dashboard.html">Live Dashboard</a>
         <a href="submit.html">Submit Claim</a>
         <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-          <span class="theme-icon">🌙</span>
+          <span class="theme-icon">ðŸŒ™</span>
         </button>
       </nav>
     </div>
@@ -96,7 +96,7 @@
             <h4 style="margin-bottom: 1rem; color: var(--text-primary);">Processing Timeline</h4>
             <div class="timeline">
               <div class="timeline-item ${data.created_at ? 'completed' : 'pending'}">
-                <div class="timeline-marker">${data.created_at ? '✓' : ''}</div>
+                <div class="timeline-marker">${data.created_at ? 'âœ“' : ''}</div>
                 <div class="timeline-content">
                   <div class="timeline-title">Claim Submitted</div>
                   <div class="timeline-description">Your claim has been received and entered into our system</div>
@@ -105,7 +105,7 @@
               </div>
               
               <div class="timeline-item ${data.normalized_text ? 'completed' : (data.status === 'pending' ? 'active' : 'pending')}">
-                <div class="timeline-marker">${data.normalized_text ? '✓' : (data.status === 'pending' ? '⟳' : '')}</div>
+                <div class="timeline-marker">${data.normalized_text ? 'âœ“' : (data.status === 'pending' ? 'âŸ³' : '')}</div>
                 <div class="timeline-content">
                   <div class="timeline-title">Normalization Complete</div>
                   <div class="timeline-description">Text normalized and duplicate detection completed</div>
@@ -113,7 +113,7 @@
               </div>
               
               <div class="timeline-item ${data.evidence && data.evidence.length > 0 ? 'completed' : (data.status === 'pending' ? 'active' : 'pending')}">
-                <div class="timeline-marker">${data.evidence && data.evidence.length > 0 ? '✓' : (data.status === 'pending' ? '⟳' : '')}</div>
+                <div class="timeline-marker">${data.evidence && data.evidence.length > 0 ? 'âœ“' : (data.status === 'pending' ? 'âŸ³' : '')}</div>
                 <div class="timeline-content">
                   <div class="timeline-title">Research Phase</div>
                   <div class="timeline-description">AI gathering supporting and refuting evidence</div>
@@ -121,7 +121,7 @@
               </div>
               
               <div class="timeline-item ${data.verdict ? 'completed' : (data.status === 'pending' ? 'active' : 'pending')}">
-                <div class="timeline-marker">${data.verdict ? '✓' : (data.status === 'pending' ? '⟳' : '')}</div>
+                <div class="timeline-marker">${data.verdict ? 'âœ“' : (data.status === 'pending' ? 'âŸ³' : '')}</div>
                 <div class="timeline-content">
                   <div class="timeline-title">Investigation Complete</div>
                   <div class="timeline-description">Evidence analyzed and verdict determined</div>
@@ -129,7 +129,7 @@
               </div>
               
               <div class="timeline-item ${data.status === 'completed' ? 'completed' : (data.status === 'pending' ? 'active' : 'pending')}">
-                <div class="timeline-marker">${data.status === 'completed' ? '✓' : (data.status === 'pending' ? '⟳' : '')}</div>
+                <div class="timeline-marker">${data.status === 'completed' ? 'âœ“' : (data.status === 'pending' ? 'âŸ³' : '')}</div>
                 <div class="timeline-content">
                   <div class="timeline-title">Results Ready</div>
                   <div class="timeline-description">Full verification report available</div>
@@ -186,7 +186,7 @@
               <div style="padding: 1rem; background: var(--bg-tertiary); border-radius: var(--radius-md); border-left: 3px solid var(--primary);">
                 <p style="margin: 0; color: var(--text-primary); font-weight: 500;">${ev.summary || ev.text || 'Evidence item ' + (i + 1)}</p>
                 ${ev.source ? `<p style="margin: 0.5rem 0 0 0; font-size: 0.875rem; color: var(--text-secondary);">Source: ${ev.source}</p>` : ''}
-                ${ev.url ? `<p style="margin: 0.5rem 0 0 0;"><a href="${ev.url}" target="_blank" class="source-link">View Source →</a></p>` : ''}
+                ${ev.url ? `<p style="margin: 0.5rem 0 0 0;"><a href="${ev.url}" target="_blank" class="source-link">View Source â†’</a></p>` : ''}
               </div>
             `;
           });
@@ -210,7 +210,7 @@
         if (data.status === 'pending') {
           html += `
             <div class="debug-banner info" style="margin-top: 1rem;">
-              ⏳ This claim is still being processed. The page will auto-refresh in 5 seconds...
+              â³ This claim is still being processed. The page will auto-refresh in 5 seconds...
             </div>
           `;
           setTimeout(() => checkStatus(claimId), 5000);
@@ -222,7 +222,7 @@
         statusCard.style.display = 'block';
         statusContent.innerHTML = `
           <div class="debug-banner error">
-            ❌ ${err.message || 'Error loading claim status. Please check the claim ID and try again.'}
+            âŒ ${err.message || 'Error loading claim status. Please check the claim ID and try again.'}
           </div>
         `;
       }

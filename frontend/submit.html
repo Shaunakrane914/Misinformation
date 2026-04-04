@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
@@ -17,7 +17,7 @@
 <body>
   <header class="navbar">
     <div class="nav-content">
-      <div class="brand"><img src="/static/12.png" alt="Aegis Protocol" style="height: 60px;"></div>
+      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height: 60px;"></div>
       <nav class="nav-links">
         <a href="index.html">Home</a>
         <a href="agents.html">Agents</a>
@@ -26,7 +26,7 @@
         <a class="pill" href="submit.html">Submit Claim</a>
         <!-- Dark Mode Toggle in Navbar -->
         <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-          <span class="theme-icon">🌙</span>
+          <span class="theme-icon">ðŸŒ™</span>
         </button>
       </nav>
     </div>
@@ -57,7 +57,7 @@
 
       <!-- Example Claims Section -->
       <div class="examples-section" style="margin-top: 2rem;">
-        <h3>💡 Try These Example Claims</h3>
+        <h3>ðŸ’¡ Try These Example Claims</h3>
         <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
           Click any example below to auto-fill the form
         </p>
@@ -142,7 +142,7 @@
           // Existing claim
           resultContent.innerHTML = `
             <div class="debug-banner info">
-              <p style="margin: 0;"><strong>ℹ️ This claim was already processed!</strong></p>
+              <p style="margin: 0;"><strong>â„¹ï¸ This claim was already processed!</strong></p>
               <p style="margin: 0.5rem 0 0 0;">Claim ID: <code>${data.claim_id}</code></p>
               <p style="margin: 0.5rem 0 0 0;">Status: <span class="badge ${data.status === 'completed' ? 'badge-true' : ''}">${data.status}</span></p>
             </div>
@@ -151,7 +151,7 @@
           // New claim
           resultContent.innerHTML = `
             <div class="debug-banner info">
-              <p style="margin: 0;"><strong>✅ Claim submitted successfully!</strong></p>
+              <p style="margin: 0;"><strong>âœ… Claim submitted successfully!</strong></p>
               <p style="margin: 0.5rem 0 0 0;">Claim ID: <code>${data.claim_id}</code></p>
               <p style="margin: 0.5rem 0 0 0;">Status: <span class="badge">${data.status}</span></p>
               <p style="margin: 0.75rem 0 0 0; font-size: 0.875rem;">
@@ -170,7 +170,7 @@
         resultCard.style.display = 'block';
         resultContent.innerHTML = `
           <div class="debug-banner error">
-            ❌ Error submitting claim: ${err.message}. Please try again.
+            âŒ Error submitting claim: ${err.message}. Please try again.
           </div>
         `;
         resultActions.style.display = 'none';

@@ -1,6 +1,6 @@
 [build]
-  base    = "Misinformation/frontend"
-  publish = "Misinformation/frontend"
+  base    = "frontend"
+  publish = "frontend"
 
 [[redirects]]
   from   = "/*"

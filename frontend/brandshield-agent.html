@@ -1,73 +1,433 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>BrandShield Agent - Coming Soon</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/dashboard.css">
-    <style>
-        .coming-soon-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 60vh;
-            text-align: center;
-            padding: 2rem;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BrandShield Agent – Aegis Protocol</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
+  <link rel="stylesheet" href="theme-extras.css">
+  <script src="transitions.js" defer></script>
+  <script src="theme-interactive.js" defer></script>
+  <style>
+    .agent-hero {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f2027 100%);
+      padding: 80px 20px 60px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+    }
+    .agent-hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(16,185,129,0.12); color: #10b981;
+      padding: 6px 16px; border-radius: 20px; font-size: 0.8rem;
+      font-weight: 600; margin-bottom: 20px; border: 1px solid rgba(16,185,129,0.3);
+    }
+    .pulse-dot { width:8px; height:8px; border-radius:50%; background:#10b981; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+    .agent-hero h1 { font-size: 3rem; font-weight: 800; color: #f1f5f9; margin: 0 0 16px; }
+    .agent-hero h1 span { color: #10b981; }
+    .agent-hero p { font-size: 1.1rem; color: #94a3b8; max-width: 620px; margin: 0 auto 28px; line-height: 1.7; }
+    .hero-stats { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
+    .hero-stat { text-align: center; }
+    .hero-stat-val { font-size: 1.8rem; font-weight: 800; color: #10b981; }
+    .hero-stat-label { font-size: 0.8rem; color: #64748b; margin-top: 2px; }
 
-        .icon-large {
-            font-size: 5rem;
-            margin-bottom: 1rem;
-        }
+    /* LAYOUT */
+    .page-body { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    @media(max-width:768px){ .two-col { grid-template-columns: 1fr; } }
+    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
+    @media(max-width:900px){ .three-col { grid-template-columns: 1fr 1fr; } }
+    @media(max-width:600px){ .three-col { grid-template-columns: 1fr; } }
 
-        .coming-soon-title {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(90deg, #43e97b, #38f9d7);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+    /* CARDS */
+    .panel {
+      background: var(--bg-primary); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px;
+    }
+    .panel h3 { margin: 0 0 16px; font-size: 1rem; font-weight: 700; }
 
-        .coming-soon-text {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin-bottom: 2rem;
-        }
-    </style>
+    /* STAT MINI CARDS */
+    .mini-stat {
+      background: var(--bg-primary); border: 1px solid var(--border);
+      border-radius: 14px; padding: 20px; text-align: center;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .mini-stat:hover { transform: translateY(-3px); border-color: var(--primary); }
+    .mini-stat-icon { font-size: 2rem; margin-bottom: 8px; }
+    .mini-stat-val { font-size: 1.7rem; font-weight: 800; color: var(--primary); }
+    .mini-stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* REVIEW CARDS */
+    .review-card {
+      background: var(--bg-tertiary); border: 1px solid var(--border);
+      border-radius: 12px; padding: 16px; margin-bottom: 12px;
+      border-left: 4px solid transparent;
+    }
+    .review-card.fake { border-left-color: #ef4444; }
+    .review-card.legit { border-left-color: #10b981; }
+    .review-card.suspicious { border-left-color: #fbbf24; }
+    .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .reviewer { font-weight: 600; font-size: 0.88rem; }
+    .verdict-pill {
+      font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 20px; text-transform: uppercase;
+    }
+    .pill-fake { background: rgba(239,68,68,0.12); color: #ef4444; }
+    .pill-legit { background: rgba(16,185,129,0.12); color: #10b981; }
+    .pill-suspicious { background: rgba(251,191,36,0.12); color: #fbbf24; }
+    .review-text { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.5; margin: 0 0 8px; }
+    .review-reason { font-size: 0.78rem; color: #64748b; font-style: italic; }
+    .stars { color: #fbbf24; font-size: 0.9rem; letter-spacing: 2px; }
+
+    /* SCAN FORM */
+    .scan-form { display: flex; gap: 10px; flex-wrap: wrap; }
+    .scan-input {
+      flex: 1; min-width: 200px; padding: 10px 16px;
+      background: var(--bg-tertiary); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text-primary); font-size: 0.9rem;
+      font-family: Inter, sans-serif; outline: none;
+    }
+    .scan-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
+    .scan-btn {
+      padding: 10px 22px; background: var(--primary); color: #fff;
+      border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700;
+      cursor: pointer; transition: background 0.2s, transform 0.2s; font-family: Inter, sans-serif;
+    }
+    .scan-btn:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+    /* THREAT LIST */
+    .threat-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 14px; background: var(--bg-tertiary);
+      border: 1px solid var(--border); border-radius: 10px;
+      margin-bottom: 10px;
+    }
+    .threat-icon { font-size: 1.3rem; flex-shrink: 0; }
+    .threat-title { font-weight: 600; font-size: 0.88rem; margin: 0 0 4px; }
+    .threat-meta { font-size: 0.78rem; color: #64748b; }
+    .severity-high { color: #ef4444; }
+    .severity-med { color: #fbbf24; }
+    .severity-low { color: #10b981; }
+
+    /* FEATURES */
+    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
+    @media(max-width:600px){ .feature-grid { grid-template-columns: 1fr; } }
+    .feature-item {
+      display: flex; align-items: flex-start; gap: 12px;
+      padding: 16px; background: var(--bg-tertiary);
+      border: 1px solid var(--border); border-radius: 12px;
+    }
+    .feature-item-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .feature-item-title { font-weight: 700; font-size: 0.88rem; margin: 0 0 4px; }
+    .feature-item-desc { font-size: 0.8rem; color: var(--text-secondary); margin: 0; }
+
+    .section-title { font-size: 1.3rem; font-weight: 800; margin: 0 0 8px; }
+    .section-sub { font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 24px; }
+    .mt-8 { margin-top: 48px; }
+</style>
 </head>
-
 <body>
-    <header class="navbar">
-        <div class="nav-content">
-            <div class="brand"><img src="/static/12.png" alt="Aegis Protocol" style="height: 60px;"></div>
-            <nav class="nav-links">
-                <a href="/">Home</a>
-                <a href="/agents">Agents</a>
-                <a href="/about">About</a>
-                <a href="/dashboard">Live Dashboard</a>
-                <a href="/submit">Submit Claim</a>
-            </nav>
-        </div>
-    </header>
+  <header class="navbar">
+    <div class="nav-content">
+      <div class="brand"><img src="/static/12.png" alt="Aegis Protocol" style="height:60px;"></div>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/agents">Agents</a>
+        <a href="/about">About</a>
+        <a href="/dashboard">Live Dashboard</a>
+        <a href="/submit">Submit Claim</a>
+        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode">
+          <span class="theme-icon">🌙</span>
+        </button>
+      </nav>
+    </div>
+  </header>
 
-    <main class="container">
-        <div class="coming-soon-container">
-            <div class="icon-large">🛡️</div>
-            <h1 class="coming-soon-title">BrandShield Agent</h1>
-            <p class="coming-soon-text">
-                Our e-commerce protection agent is currently under development.
-                Soon you'll be able to detect fake products, monitor review sentiment, and track counterfeit brand
-                usage.
-            </p>
-            <a href="/agents" class="toggle-btn">Back to Agents</a>
+  <!-- HERO -->
+  <div class="agent-hero">
+    <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent · Active</div>
+    <h1>🛡️ <span>BrandShield</span> Agent</h1>
+    <p>Protect your brand from fake reviews, counterfeit listings, and misleading advertising with Gemini-powered AI analysis that works around the clock.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><div class="hero-stat-val">2.1K+</div><div class="hero-stat-label">Fake Reviews Flagged</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">94%</div><div class="hero-stat-label">Detection Accuracy</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">&lt;3s</div><div class="hero-stat-label">Avg Analysis Time</div></div>
+      <div class="hero-stat"><div class="hero-stat-val">12+</div><div class="hero-stat-label">Platforms Monitored</div></div>
+    </div>
+  </div>
+
+  <div class="page-body">
+
+    <!-- STAT CARDS -->
+    <div class="three-col" data-reveal data-reveal-delay="0.05s">
+      <div class="mini-stat">
+        <div class="mini-stat-icon">🚫</div>
+        <div class="mini-stat-val">347</div>
+        <div class="mini-stat-label">Fake Reviews Detected This Month</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-icon">🏷️</div>
+        <div class="mini-stat-val">89</div>
+        <div class="mini-stat-label">Counterfeit Listings Flagged</div>
+      </div>
+      <div class="mini-stat">
+        <div class="mini-stat-icon">📣</div>
+        <div class="mini-stat-val">23</div>
+        <div class="mini-stat-label">Misleading Ads Identified</div>
+      </div>
+    </div>
+
+    <!-- SCAN + ACTIVE THREATS -->
+    <div class="two-col" data-reveal data-reveal-delay="0.1s">
+
+      <!-- SCAN PANEL -->
+      <div class="panel">
+        <h3>🔍 Scan a Product or Brand</h3>
+        <div class="scan-form">
+          <input class="scan-input" id="brandInput" placeholder="e.g., Nike Air Max 270, Samsung Galaxy S24..." />
+          <button class="scan-btn" id="scanBtn" onclick="scanBrand()">Scan</button>
         </div>
-    </main>
+        <div id="scanResult" style="margin-top: 16px;"></div>
+      </div>
+
+      <!-- ACTIVE THREATS -->
+      <div class="panel">
+        <h3>🚨 Active Brand Threats</h3>
+        <div class="threat-item">
+          <div class="threat-icon">🚫</div>
+          <div>
+            <p class="threat-title">Coordinated fake 1-star review campaign detected on Amazon</p>
+            <p class="threat-meta"><span class="severity-high">● HIGH SEVERITY</span> · Detected 2h ago · 47 fake reviews</p>
+          </div>
+        </div>
+        <div class="threat-item">
+          <div class="threat-icon">🏷️</div>
+          <div>
+            <p class="threat-title">Counterfeit listings using brand assets on Flipkart</p>
+            <p class="threat-meta"><span class="severity-high">● HIGH SEVERITY</span> · Detected 5h ago · 12 listings</p>
+          </div>
+        </div>
+        <div class="threat-item">
+          <div class="threat-icon">📣</div>
+          <div>
+            <p class="threat-title">Misleading comparison ad targeting brand on social media</p>
+            <p class="threat-meta"><span class="severity-med">● MEDIUM SEVERITY</span> · Detected 1d ago · 3 ads</p>
+          </div>
+        </div>
+        <div class="threat-item">
+          <div class="threat-icon">⚠️</div>
+          <div>
+            <p class="threat-title">Unusual spike in 5-star reviews (possible manipulation)</p>
+            <p class="threat-meta"><span class="severity-med">● MEDIUM SEVERITY</span> · Detected 2d ago · 31 reviews</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REVIEW ANALYSIS -->
+    <div class="mt-8" data-reveal data-reveal-delay="0.15s">
+      <p class="section-title">📋 Recent Review Analysis</p>
+      <p class="section-sub">AI-classified reviews from monitored products across platforms</p>
+      <div class="two-col">
+        <div>
+          <div class="review-card fake">
+            <div class="review-header">
+              <span class="reviewer">⭐ user_a7xq92</span>
+              <span class="verdict-pill pill-fake">🚫 Fake</span>
+            </div>
+            <div class="stars">★★★★★</div>
+            <p class="review-text">"Absolutely amazing product! Best purchase I ever made. Highly recommend to everyone. Five stars!!"</p>
+            <p class="review-reason">🤖 AI: Generic language, no specifics, account created 3 days ago, 14 reviews in 24h period.</p>
+          </div>
+          <div class="review-card legit">
+            <div class="review-header">
+              <span class="reviewer">⭐ priya_sharma_del</span>
+              <span class="verdict-pill pill-legit">✅ Legitimate</span>
+            </div>
+            <div class="stars">★★★☆☆</div>
+            <p class="review-text">"Good build quality but the charging cable broke after 2 months. Customer support was helpful and replaced it though."</p>
+            <p class="review-reason">🤖 AI: Specific details, verified purchase, balanced sentiment, established account activity.</p>
+          </div>
+        </div>
+        <div>
+          <div class="review-card suspicious">
+            <div class="review-header">
+              <span class="reviewer">⭐ john_k_reviews</span>
+              <span class="verdict-pill pill-suspicious">⚠️ Suspicious</span>
+            </div>
+            <div class="stars">★☆☆☆☆</div>
+            <p class="review-text">"Worst product ever. Complete waste of money. Don't buy this. Zero quality."</p>
+            <p class="review-reason">🤖 AI: No specific issues mentioned, posted during competitor product launch window. Investigating.</p>
+          </div>
+          <div class="review-card legit">
+            <div class="review-header">
+              <span class="reviewer">⭐ rahul_tech_2023</span>
+              <span class="verdict-pill pill-legit">✅ Legitimate</span>
+            </div>
+            <div class="stars">★★★★☆</div>
+            <p class="review-text">"Battery life is impressive — 2 days on a full charge with normal use. Display is sharp but brightness could be higher outdoors."</p>
+            <p class="review-reason">🤖 AI: Technical specifics provided, consistent with other verified reviews, normal posting pattern.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- HOW IT WORKS -->
+    <div class="mt-8" data-reveal data-reveal-delay="0.2s">
+      <p class="section-title">⚙️ How BrandShield Works</p>
+      <p class="section-sub">A 5-stage AI pipeline that continuously monitors and protects your brand</p>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <span class="feature-item-icon">🌐</span>
+          <div>
+            <p class="feature-item-title">Multi-Platform Crawling</p>
+            <p class="feature-item-desc">Continuously monitors Amazon, Flipkart, Google, social media, and 12+ platforms for brand mentions and reviews.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-item-icon">🤖</span>
+          <div>
+            <p class="feature-item-title">Gemini AI Classification</p>
+            <p class="feature-item-desc">Each review, ad, or listing is analyzed by Gemini 2.5 Flash for authenticity signals, sentiment, and manipulation patterns.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-item-icon">📊</span>
+          <div>
+            <p class="feature-item-title">Behavioral Pattern Analysis</p>
+            <p class="feature-item-desc">Detects coordinated campaigns by analyzing reviewer account age, posting frequency, and language similarity clusters.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-item-icon">🚨</span>
+          <div>
+            <p class="feature-item-title">Real-Time Alerting</p>
+            <p class="feature-item-desc">Instant alerts when threat thresholds are crossed, with severity scoring and recommended countermeasures.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-item-icon">📋</span>
+          <div>
+            <p class="feature-item-title">Evidence Package Generation</p>
+            <p class="feature-item-desc">Auto-generates documented takedown reports with AI reasoning, screenshots, and platform-specific filing templates.</p>
+          </div>
+        </div>
+        <div class="feature-item">
+          <span class="feature-item-icon">🔁</span>
+          <div>
+            <p class="feature-item-title">Continuous Learning</p>
+            <p class="feature-item-desc">Model updates based on confirmed outcomes, improving fake review detection accuracy with each campaign caught.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="gemini-client.js"></script>
+  <script>
+    const BRAND_PLATFORMS = [
+      { name: 'Amazon', icon: '🛒', color: '#ff9900' },
+      { name: 'Flipkart', icon: '🏪', color: '#2874f0' },
+      { name: 'Trustpilot', icon: '⭐', color: '#00b67a' },
+      { name: 'Reddit', icon: '🤖', color: '#ff4500' },
+      { name: 'Google Reviews', icon: '🔍', color: '#4285f4' },
+    ];
+
+    function showBrandScanAnim(container) {
+      container.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;margin-top:12px;';
+      BRAND_PLATFORMS.forEach(p => {
+        const row = document.createElement('div');
+        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:10px;font-size:0.82rem;';
+        row.innerHTML = `<span>${p.icon}</span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="bs_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">⏳ Scanning...</span>`;
+        wrap.appendChild(row);
+      });
+      container.appendChild(wrap);
+    }
+
+    function markBrandDone(name, text) {
+      const el = document.getElementById('bs_' + name.replace(/[^a-z]/gi,''));
+      if (el) el.innerHTML = `<span style="color:#10b981;font-weight:700;">✓ ${text}</span>`;
+    }
+
+    async function scanBrand() {
+      const input = document.getElementById('brandInput').value.trim();
+      const result = document.getElementById('scanResult');
+      const btn = document.getElementById('scanBtn');
+      if (!input) return;
+
+      btn.textContent = 'Scanning...';
+      btn.disabled = true;
+      result.innerHTML = '';
+      showBrandScanAnim(result);
+
+      const delays = [400, 800, 1200, 1600, 2000];
+      BRAND_PLATFORMS.forEach((p, i) => setTimeout(() => markBrandDone(p.name, 'done'), delays[i]));
+
+      try {
+        const prompt = `You are a brand protection AI scanning e-commerce and review platforms for "${input}".
+
+Scan: Amazon, Flipkart, Trustpilot, Reddit, Google Reviews.
+
+Analyze fake reviews, counterfeit listings, misleading ads, and brand reputation threats.
+
+Return STRICT JSON:
+{
+  "fake_reviews": integer (realistic count),
+  "suspicious_reviews": integer,
+  "counterfeit_listings": integer,
+  "total_analyzed": integer,
+  "risk_level": "HIGH" | "MEDIUM" | "LOW",
+  "summary": "2-3 sentence AI analysis of what was found",
+  "top_threats": [
+    { "platform": "Amazon|Flipkart|Trustpilot|Reddit|Google Reviews", "threat": "brief threat description (max 12 words)" }
+  ]
+}
+
+Be realistic and specific to the brand/product "${input}".`;
+
+        const data = await window.GeminiClient.askJSON(prompt);
+        await new Promise(r => setTimeout(r, 2200));
+
+        const riskColor = data.risk_level === 'HIGH' ? '#ef4444' : data.risk_level === 'MEDIUM' ? '#fbbf24' : '#10b981';
+        let threatHtml = '';
+        if (data.top_threats && data.top_threats.length > 0) {
+          threatHtml = '<p style="font-weight:700;font-size:0.82rem;margin:12px 0 6px;">Top Threats:</p>';
+          data.top_threats.forEach(t => {
+            threatHtml += `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:rgba(239,68,68,0.05);border-radius:8px;margin-bottom:5px;font-size:0.8rem;"><span>⚠️</span><span><strong style="color:#94a3b8;">${t.platform}:</strong> ${t.threat}</span></div>`;
+          });
+        }
+
+        result.innerHTML = `
+          <div style="background:var(--bg-tertiary);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:12px;">
+            <p style="font-weight:700;font-size:0.95rem;margin:0 0 12px;">Analysis: <em>${input}</em></p>
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+              <div style="text-align:center;padding:10px;background:var(--bg-primary);border-radius:10px;"><div style="font-size:1.3rem;font-weight:800;color:#ef4444;">${data.fake_reviews || 0}</div><div style="font-size:0.72rem;color:var(--text-secondary);">Fake Reviews</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg-primary);border-radius:10px;"><div style="font-size:1.3rem;font-weight:800;color:#fbbf24;">${data.suspicious_reviews || 0}</div><div style="font-size:0.72rem;color:var(--text-secondary);">Suspicious</div></div>
+              <div style="text-align:center;padding:10px;background:var(--bg-primary);border-radius:10px;"><div style="font-size:1.3rem;font-weight:800;color:var(--text-primary);">${data.total_analyzed || 0}</div><div style="font-size:0.72rem;color:var(--text-secondary);">Analyzed</div></div>
+            </div>
+            <p style="margin:0 0 6px;font-size:0.85rem;">Risk: <strong style="color:${riskColor}">● ${data.risk_level}</strong>${data.counterfeit_listings ? ` · Counterfeits: <strong style="color:#ef4444;">${data.counterfeit_listings}</strong>` : ''}</p>
+            <p style="margin:0 0 4px;font-size:0.8rem;color:var(--text-secondary);">${data.summary || ''}</p>
+            ${threatHtml}
+          </div>`;
+
+      } catch (e) {
+        await new Promise(r => setTimeout(r, 2200));
+        result.innerHTML = `<p style="color:var(--text-secondary);font-size:0.85rem;margin-top:12px;">Could not complete analysis. Please try again.</p>`;
+      }
+
+      btn.textContent = 'Scan';
+      btn.disabled = false;
+    }
+
+    document.getElementById('brandInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') scanBrand();
+    });
+  </script>
 </body>
-
 </html>

@@ -1,263 +1,266 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Agents – Aegis Protocol</title>
-
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
-
-  <link rel="stylesheet" href="/dashboard.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="dashboard.css">
   <link rel="stylesheet" href="theme-extras.css">
   <script src="transitions.js" defer></script>
   <script src="theme-interactive.js" defer></script>
-
   <style>
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg-secondary);
-      color: var(--text-primary);
-      margin: 0;
-      padding: 0;
-      transition: background-color 0.3s ease, color 0.3s ease;
-    }
+    body { font-family: 'Inter', sans-serif; background: var(--bg-secondary); color: var(--text-primary); margin: 0; }
 
-    /* HERO SECTION */
+    /* HERO */
     .agents-hero {
       text-align: center;
-      margin-top: 60px;
-    }
-
-    .agents-hero h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
-      font-weight: 700;
-    }
-
-    .agents-hero p {
-      font-size: 1.3em;
-      opacity: 0.95;
-      max-width: 700px;
+      padding: 80px 20px 20px;
+      max-width: 800px;
       margin: 0 auto;
     }
+    .agents-hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 1rem; }
+    .agents-hero p { font-size: 1.15rem; color: var(--text-secondary); line-height: 1.7; }
 
     /* GRID */
     .agents-grid {
-      max-width: 1400px;
-      margin: 60px auto 200px auto;
-      padding: 0 20px 80px 20px;
-      display: flex;
-      flex-direction: row;
-      gap: 40px;
-      justify-content: center;
-      flex-wrap: nowrap;
-      overflow-x: auto;
+      max-width: 1200px;
+      margin: 50px auto 100px;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 28px;
     }
 
-    /* ---- FIXED & PROFESSIONAL CARD DESIGN ---- */
-    .card {
-      width: 240px;
-      min-height: 290px;
+    /* AGENT CARD */
+    .agent-card {
       background: var(--bg-primary);
-      border-radius: 14px;
-      transition: all .4s ease;
-      box-shadow: 15px 15px 30px rgba(25, 25, 25, 0.11),
-        -10px -10px 25px rgba(60, 60, 60, 0.08);
-      text-align: center;
-      padding-bottom: 20px;
       border: 1px solid var(--border);
+      border-radius: 18px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
     }
-
-    .card:hover {
-      background: linear-gradient(360deg, var(--bg-secondary) 60%, var(--bg-dark) 70%);
-      transform: translateY(-4px);
-      box-shadow: var(--shadow-xl);
+    .agent-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.18);
       border-color: var(--primary);
     }
 
-    /* HEADER */
-    .card .header {
-      padding: 22px;
+    /* CARD HEADER */
+    .agent-card-header {
+      background: #0f172a;
+      padding: 28px 24px 20px;
       display: flex;
-      flex-direction: column;
+      align-items: center;
+      gap: 14px;
+    }
+    .agent-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 12px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #1e293b;
+      display: flex;
       align-items: center;
       justify-content: center;
-      background: #0f172a;
-      border-radius: 14px 14px 0 0;
+      font-size: 1.8rem;
     }
-
-    .card:hover .header {
-      clip-path: polygon(0 0, 100% 0, 100% 96%, 0 100%);
-    }
-
-    .img-box {
-      width: 55px;
-      height: 55px;
-    }
-
-    .img-box img,
-    .img-box svg {
+    .agent-logo img {
       width: 100%;
       height: 100%;
       object-fit: cover;
-      border-radius: 8px;
+      border-radius: 12px;
     }
-
-    /* TITLE */
-    .card .title {
-      font-size: 1em;
-      letter-spacing: .1em;
-      font-weight: 900;
+    .agent-header-text { flex: 1; }
+    .agent-name {
+      font-size: 1rem;
+      font-weight: 800;
       text-transform: uppercase;
-      padding-top: 10px;
+      letter-spacing: 0.08em;
       color: #f8fafc;
-      transition: 0.3s ease;
+      margin: 0 0 4px 0;
     }
-
-    /* CONTENT */
-    .card .content {
-      padding: 0 20px;
-      margin-top: 18px;
+    .agent-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 2px 10px;
+      border-radius: 20px;
     }
+    .status-live { background: rgba(16,185,129,0.15); color: #10b981; }
+    .status-soon { background: rgba(251,191,36,0.15); color: #fbbf24; }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
 
-    .card .content p {
-      font-size: .9em;
-      font-weight: 500;
-      color: var(--text-secondary);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
-    }
+    /* CARD BODY */
+    .agent-card-body { padding: 20px 24px; flex: 1; display: flex; flex-direction: column; gap: 14px; }
+    .agent-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.65; margin: 0; }
 
-    /* TEXT SHOWS FULLY */
-    .card:hover .content p {
-      opacity: 1;
-      transform: translateY(0);
+    /* FEATURES */
+    .agent-features { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+    .agent-features li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.84rem;
       color: var(--text-primary);
+      font-weight: 500;
     }
+    .feat-icon { font-size: 0.9rem; flex-shrink: 0; margin-top: 1px; }
 
-    /* BUTTON */
-    .card .content a {
-      margin-top: 16px;
-      color: #ffffff;
-      background-color: var(--primary);
-      padding: 10px 22px;
-      border-radius: 6px;
-      text-decoration: none;
-      font-size: .75rem;
+    /* CTA */
+    .agent-card-footer { padding: 0 24px 24px; }
+    .agent-cta {
+      display: block;
+      text-align: center;
+      padding: 11px 20px;
+      border-radius: 10px;
+      font-size: 0.85rem;
       font-weight: 700;
-      text-transform: uppercase;
-      cursor: pointer;
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s ease;
-      display: inline-block;
+      text-decoration: none;
+      transition: all 0.2s ease;
     }
-
-    .card:hover .content a {
-      opacity: 1;
-      transform: translateY(0);
+    .agent-cta-primary {
+      background: var(--primary);
+      color: #fff;
     }
-
-    .card .content a:hover {
-      background-color: var(--primary-dark);
-      transform: translateY(-2px);
+    .agent-cta-primary:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .agent-cta-secondary {
+      background: var(--bg-tertiary);
+      color: var(--text-secondary);
+      border: 1px solid var(--border);
+      cursor: not-allowed;
+      opacity: 0.7;
     }
   </style>
 </head>
-
 <body>
-
   <header class="navbar">
     <div class="nav-content">
-      <div class="brand"><img src="/static/12.png" alt="Aegis Protocol" style="height: 60px;"></div>
-
+      <div class="brand"><img src="/static/12.png" alt="Aegis Protocol" style="height:60px;"></div>
       <nav class="nav-links">
         <a href="/">Home</a>
         <a class="pill" href="/agents">Agents</a>
         <a href="/about">About</a>
         <a href="/dashboard">Live Dashboard</a>
         <a href="/submit">Submit Claim</a>
-
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
+        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode">
           <span class="theme-icon">🌙</span>
         </button>
       </nav>
     </div>
   </header>
 
-  <div class="agents-hero">
+  <div class="agents-hero" data-reveal data-reveal-delay="0.05s">
     <h1>🤖 AI Agent Arsenal</h1>
-    <p>Four specialized agents working 24/7 to detect, analyze, and neutralize misinformation across finance,
-      entertainment, brands, and personal reputation.</p>
+    <p>Four specialized AI agents working around the clock to detect, analyze, and neutralize misinformation across finance, entertainment, brands, and personal reputation.</p>
   </div>
 
   <div class="agents-grid">
 
-    <!-- CARD 1 -->
-    <div class="card">
-      <div class="header">
-        <div class="img-box">
-          <img src="/static/scout_logo.jpg" alt="Scout Logo">
+    <!-- SCOUT -->
+    <div class="agent-card" data-reveal data-reveal-delay="0.1s">
+      <div class="agent-card-header">
+        <div class="agent-logo"><img src="/static/scout_logo.jpg" alt="Scout"></div>
+        <div class="agent-header-text">
+          <p class="agent-name">Scout Agent</p>
+          <span class="agent-status status-live"><span class="status-dot"></span>Live</span>
         </div>
-        <span class="title">Scout</span>
       </div>
-      <div class="content">
-        <p>Detects stock market manipulation and misinformation-driven crashes in real-time.</p>
-        <a href="/scout-agent">Read More</a>
+      <div class="agent-card-body">
+        <p class="agent-desc">Monitors stock markets in real-time, detecting misinformation-driven crashes before they spiral. Analyzes financial news, social signals, and price anomalies to flag manipulation.</p>
+        <ul class="agent-features">
+          <li><span class="feat-icon">📉</span> Predictive crash detection via Z-score analysis</li>
+          <li><span class="feat-icon">🔍</span> Autonomous multi-agent investigator swarm</li>
+          <li><span class="feat-icon">⚡</span> Real-time stock news scanning</li>
+          <li><span class="feat-icon">🛠️</span> Strategic response orchestration</li>
+          <li><span class="feat-icon">🔁</span> Self-healing adaptive feedback loop</li>
+        </ul>
+      </div>
+      <div class="agent-card-footer">
+        <a href="/scout-agent" class="agent-cta agent-cta-primary">Launch Scout Agent →</a>
       </div>
     </div>
 
-    <!-- CARD 2 -->
-    <div class="card">
-      <div class="header">
-        <div class="img-box">
-          <img src="/static/trending_logo.jpg" alt="Trending Logo">
+    <!-- TRENDING -->
+    <div class="agent-card" data-reveal data-reveal-delay="0.15s">
+      <div class="agent-card-header">
+        <div class="agent-logo"><img src="/static/trending_logo.jpg" alt="Trending"></div>
+        <div class="agent-header-text">
+          <p class="agent-name">Trending Agent</p>
+          <span class="agent-status status-live"><span class="status-dot"></span>Live</span>
         </div>
-        <span class="title">Trending</span>
       </div>
-      <div class="content">
-        <p>Hunts for viral misinformation in entertainment, culture, and trending news.</p>
-        <a href="/trending-agent">Read More</a>
+      <div class="agent-card-body">
+        <p class="agent-desc">Hunts viral misinformation in entertainment, Bollywood, and trending culture. Scans Instagram paparazzi accounts, news feeds, and social media for threats in real-time.</p>
+        <ul class="agent-features">
+          <li><span class="feat-icon">🎬</span> Bollywood & celebrity threat intelligence</li>
+          <li><span class="feat-icon">📸</span> Instagram paparazzi content analysis</li>
+          <li><span class="feat-icon">📰</span> Live news & sentiment scanning</li>
+          <li><span class="feat-icon">⚠️</span> Threat classification & severity scoring</li>
+          <li><span class="feat-icon">📊</span> Sentiment trend visualization</li>
+        </ul>
+      </div>
+      <div class="agent-card-footer">
+        <a href="/trending-agent" class="agent-cta agent-cta-primary">Launch Trending Agent →</a>
       </div>
     </div>
 
-    <!-- CARD 3 -->
-    <div class="card">
-      <div class="header">
-        <div class="img-box">
-          <img src="/static/brandshield_logo.jpg" alt="BrandShield Logo">
+    <!-- BRANDSHIELD -->
+    <div class="agent-card" data-reveal data-reveal-delay="0.2s">
+      <div class="agent-card-header">
+        <div class="agent-logo"><img src="/static/brandshield_logo.jpg" alt="BrandShield"></div>
+        <div class="agent-header-text">
+          <p class="agent-name">BrandShield</p>
+          <span class="agent-status status-live"><span class="status-dot"></span>Live</span>
         </div>
-        <span class="title">BrandShield</span>
       </div>
-      <div class="content">
-        <p>Protects products and brands from fake reviews and misleading ads.</p>
-        <a href="/brandshield-agent">Read More</a>
+      <div class="agent-card-body">
+        <p class="agent-desc">Protects products and brands from fake reviews, misleading advertisements, and counterfeit listings. Monitors review sentiment and flags manipulation across e-commerce platforms.</p>
+        <ul class="agent-features">
+          <li><span class="feat-icon">🛡️</span> Fake review detection & classification</li>
+          <li><span class="feat-icon">🏷️</span> Counterfeit product listing alerts</li>
+          <li><span class="feat-icon">📣</span> Misleading ad monitoring</li>
+          <li><span class="feat-icon">📊</span> Review sentiment analysis</li>
+          <li><span class="feat-icon">🔔</span> Real-time brand threat alerts</li>
+        </ul>
+      </div>
+      <div class="agent-card-footer">
+        <a href="/brandshield-agent" class="agent-cta agent-cta-primary">Launch BrandShield →</a>
       </div>
     </div>
 
-    <!-- CARD 4 -->
-    <div class="card">
-      <div class="header">
-        <div class="img-box">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-            <path fill="#ffffff"
-              d="M399 384.2C376.9 345.8 335.4 320 288 320H224c-47.4 0-88.9 25.8-111 64.2c35.2 39.2 86.2 63.8 143 63.8s107.8-24.6 143-63.8zM0 256a256 256 0 1 1 512 0A256 256 0 1 1 0 256zm256 16a72 72 0 1 0 0-144 72 72 0 1 0 0 144z" />
-          </svg>
+    <!-- PERSONAL WATCH -->
+    <div class="agent-card" data-reveal data-reveal-delay="0.25s">
+      <div class="agent-card-header">
+        <div class="agent-logo">👤</div>
+        <div class="agent-header-text">
+          <p class="agent-name">Personal Watch</p>
+          <span class="agent-status status-live"><span class="status-dot"></span>Live</span>
         </div>
-        <span class="title">Personal Watch</span>
       </div>
-      <div class="content">
-        <p>Monitors mentions of your name across the internet to protect your reputation.</p>
-        <a href="/personal-watch-agent">Read More</a>
+      <div class="agent-card-body">
+        <p class="agent-desc">Monitors mentions of individuals across the internet to protect personal reputation. Detects defamatory content, negative sentiment spikes, and targeted misinformation campaigns.</p>
+        <ul class="agent-features">
+          <li><span class="feat-icon">🔍</span> Cross-web mention monitoring</li>
+          <li><span class="feat-icon">😠</span> Negative sentiment spike detection</li>
+          <li><span class="feat-icon">📰</span> News & social media tracking</li>
+          <li><span class="feat-icon">🚨</span> Defamation alert system</li>
+          <li><span class="feat-icon">📋</span> Reputation health reports</li>
+        </ul>
+      </div>
+      <div class="agent-card-footer">
+        <a href="/personal-watch-agent" class="agent-cta agent-cta-primary">Launch Personal Watch →</a>
       </div>
     </div>
 
   </div>
-
 </body>
-
 </html>

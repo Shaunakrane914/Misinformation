@@ -19,15 +19,27 @@ exports.handler = async (event) => {
   }
 
 
+  // GET: debug endpoint — shows which env vars are present (not values)
+  if (event.httpMethod === 'GET') {
+    const present = ['GEMINI_KEY_1','GEMINI_KEY_2','GEMINI_KEY_3','GEMINI_API_KEY','GEMINI_API_KEY_1','GEMINI_API_KEY_2']
+      .filter(k => !!process.env[k]);
+    return { statusCode: 200, headers: CORS, body: JSON.stringify({ present, total: present.length }) };
+  }
+
+  // Support both naming conventions: GEMINI_KEY_N (Netlify) and GEMINI_API_KEY_N (Render)
   const KEYS = [
     process.env.GEMINI_KEY_1,
     process.env.GEMINI_KEY_2,
     process.env.GEMINI_KEY_3,
+    process.env.GEMINI_API_KEY,
+    process.env.GEMINI_API_KEY_1,
+    process.env.GEMINI_API_KEY_2,
   ].filter(Boolean);
 
   if (KEYS.length === 0) {
-    return { statusCode: 500, body: JSON.stringify({ error: 'No Gemini keys configured' }) };
+    return { statusCode: 500, headers: CORS, body: JSON.stringify({ error: 'No Gemini keys configured', hint: 'Set GEMINI_KEY_1, GEMINI_KEY_2, GEMINI_KEY_3 in Netlify env vars' }) };
   }
+
 
   const MODEL = 'gemini-1.5-flash';
   const BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;

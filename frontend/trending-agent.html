@@ -4,242 +4,158 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Trending Agent — Aegis Protocol</title>
-  
-  
-  
   <link rel="stylesheet" href="aegis-theme.css">
-  
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="gemini-client.js"></script>
-  
-  
   <style>
-    .agent-hero {
-      background: linear-gradient(135deg, #0f172a 0%, #1a0a2e 60%, #0f172a 100%);
-      padding: 80px 20px 60px; text-align: center;
-      border-bottom: 1px solid var(--border);
-    }
-    .agent-hero-badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(236,72,153,0.12); color: #f472b6;
-      padding: 6px 16px; border-radius: 20px; font-size: 0.8rem;
-      font-weight: 600; margin-bottom: 20px; border: 1px solid rgba(236,72,153,0.3);
-    }
-    .pulse-dot { width:8px; height:8px; border-radius:50%; background:#f472b6; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .agent-hero h1 { font-size: 3rem; font-weight: 800; color: #f1f5f9; margin: 0 0 16px; }
-    .agent-hero h1 span { color: #f472b6; }
-    .agent-hero p { font-size: 1.1rem; color: #94a3b8; max-width: 620px; margin: 0 auto 28px; line-height: 1.7; }
-    .hero-stats { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
-    .hero-stat { text-align: center; }
-    .hero-stat-val { font-size: 1.8rem; font-weight: 800; color: #f472b6; }
-    .hero-stat-label { font-size: 0.8rem; color: #64748b; margin-top: 2px; }
+    .agent-hero { padding:100px 64px 56px; border-bottom:1px solid var(--border); background:linear-gradient(160deg,#050810 0%,#1a0818 50%,#050810 100%); }
+    .agent-tag { display:inline-flex;align-items:center;gap:8px; background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.25); color:#f472b6;padding:5px 14px 5px 8px;border-radius:100px; font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;margin-bottom:22px; }
+    .agent-tag .dot { width:7px;height:7px;border-radius:50%;background:#f472b6;animation:blink 1.5s ease-in-out infinite; }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+    .agent-hero h1 { font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.03em;margin-bottom:12px; }
+    .agent-hero h1 span { color:#f472b6; }
+    .agent-hero p { font-size:1rem;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:32px; }
+    .hero-stats { display:flex;gap:40px;flex-wrap:wrap; }
+    .hero-stat-val { font-size:1.6rem;font-weight:800;color:#f472b6; }
+    .hero-stat-lbl { font-size:.76rem;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace; }
 
-    /* LAYOUT */
-    .page-body { max-width: 1300px; margin: 0 auto; padding: 40px 24px 80px; }
-    .war-room-layout { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
-    @media(max-width:900px){ .war-room-layout { grid-template-columns: 1fr; } }
+    .agent-body { max-width:1280px;margin:0 auto;padding:40px 48px 80px; }
 
-    /* SIDEBAR */
-    .asset-sidebar { display: flex; flex-direction: column; gap: 20px; }
-    .dark-card { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 16px; padding: 20px; }
-    .dark-card h3 { margin: 0 0 14px; font-size: 0.95rem; font-weight: 700; }
+    /* War room layout */
+    .war-room { display:grid;grid-template-columns:260px 1fr;gap:24px; }
+    @media(max-width:900px){.war-room{grid-template-columns:1fr;}}
 
-    .asset-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 10px 12px; border-radius: 10px; cursor: pointer;
-      font-size: 0.88rem; font-weight: 500; color: var(--text-secondary);
-      transition: all 0.2s; margin-bottom: 6px; border: 1px solid transparent;
-    }
-    .asset-item:hover { background: var(--bg-tertiary); color: var(--text-primary); }
-    .asset-item.active {
-      background: rgba(236,72,153,0.1); color: #f472b6;
-      border-color: rgba(236,72,153,0.3); font-weight: 700;
-    }
-    .asset-icon { font-size: 1rem; }
+    /* Sidebar */
+    .asset-panel { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px; }
+    .asset-panel h3 { font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted); text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px; }
+    .asset-item { display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px; font-size:.86rem;font-weight:500;color:var(--muted);cursor:none;transition:all .15s;border:1px solid transparent;margin-bottom:5px; }
+    .asset-item:hover { background:var(--surface2);color:var(--text); }
+    .asset-item.active { background:rgba(244,114,182,.1);color:#f472b6;border-color:rgba(244,114,182,.25);font-weight:700; }
+    .asset-dot { width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0; }
+    .asset-item.active .asset-dot { background:#f472b6; }
+    .add-btn { width:100%;padding:9px;border:1px dashed var(--border);border-radius:9px;background:transparent;color:var(--muted);font-size:.8rem;font-weight:600;cursor:none;margin-top:8px;transition:all .15s;font-family:'Space Grotesk',sans-serif; }
+    .add-btn:hover { border-color:#f472b6;color:#f472b6; }
+    .chart-panel { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:16px; }
+    .chart-panel h3 { font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px; }
+    .chart-wrap { height:140px; }
 
-    .add-asset-btn {
-      width: 100%; padding: 9px; border: 1px dashed var(--border);
-      border-radius: 10px; background: transparent; color: var(--text-secondary);
-      font-size: 0.82rem; font-weight: 600; cursor: pointer; margin-top: 8px;
-      transition: all 0.2s; font-family: Inter, sans-serif;
-    }
-    .add-asset-btn:hover { border-color: #f472b6; color: #f472b6; background: rgba(236,72,153,0.05); }
+    /* Feed */
+    .feed-panel { display:flex;flex-direction:column;gap:16px; }
+    .feed-header { background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px; display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px; }
+    .feed-header-title { font-size:1rem;font-weight:700; }
+    .asset-badge { padding:5px 14px;background:rgba(244,114,182,.1);color:#f472b6;border:1px solid rgba(244,114,182,.25);border-radius:20px;font-size:.8rem;font-weight:700;font-family:'JetBrains Mono',monospace; }
+    .refresh-btn { padding:7px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:.8rem;font-weight:600;cursor:none;transition:all .15s;font-family:'Space Grotesk',sans-serif; }
+    .refresh-btn:hover { border-color:#f472b6;color:#f472b6; }
 
-    .chart-container { height: 150px; margin-top: 8px; }
+    .static-note { padding:8px 14px;border-radius:9px;background:rgba(251,191,36,.06);color:#fbbf24;font-size:.78rem;font-weight:600;border:1px solid rgba(251,191,36,.18);font-family:'JetBrains Mono',monospace; }
 
-    /* FEED COL */
-    .feed-col { display: flex; flex-direction: column; gap: 20px; }
-
-    .feed-header {
-      background: var(--bg-primary); border: 1px solid var(--border);
-      border-radius: 16px; padding: 20px 24px;
-      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-    }
-    .feed-header h1 { font-size: 1.3rem; font-weight: 800; margin: 0; }
-    .feed-controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
-    .current-asset-badge {
-      padding: 6px 14px; background: rgba(236,72,153,0.1);
-      color: #f472b6; border: 1px solid rgba(236,72,153,0.3);
-      border-radius: 20px; font-size: 0.82rem; font-weight: 700;
-    }
-    .refresh-btn-feed {
-      padding: 8px 16px; background: var(--bg-tertiary);
-      border: 1px solid var(--border); border-radius: 10px;
-      color: var(--text-secondary); font-size: 0.82rem; font-weight: 600;
-      cursor: pointer; transition: all 0.2s; font-family: Inter, sans-serif;
-    }
-    .refresh-btn-feed:hover { border-color: #f472b6; color: #f472b6; }
-
-    /* LOADER */
-    .loader-row { display: flex; align-items: center; gap: 10px; padding: 16px; color: var(--text-secondary); font-size: 0.88rem; }
-    .spinner { width: 18px; height: 18px; border: 2px solid var(--border); border-top-color: #f472b6; border-radius: 50%; animation: spin 0.8s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    .hidden { display: none !important; }
-
-    /* THREAT GRID */
-    .threat-grid { display: flex; flex-direction: column; gap: 12px; }
-
-    .threat-card {
-      background: var(--bg-primary); border: 1px solid var(--border);
-      border-left: 4px solid #334155; border-radius: 14px; padding: 16px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .threat-card:hover { transform: translateX(3px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-    .threat-card.is-threat { border-left-color: #ef4444 !important; }
-
-    .tc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .source-pill {
-      font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
-      background: var(--bg-tertiary); border: 1px solid var(--border);
-      border-radius: 20px; color: #94a3b8;
-    }
-    .threat-pill {
-      font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
-      background: rgba(239,68,68,0.1); color: #ef4444;
-      border-radius: 20px;
-    }
-    .tc-title { font-weight: 700; font-size: 0.92rem; margin: 0 0 6px; }
-    .tc-title a { color: var(--text-primary); text-decoration: none; }
-    .tc-title a:hover { color: #f472b6; }
-    .tc-summary { font-size: 0.82rem; color: var(--text-secondary); margin: 0 0 10px; line-height: 1.5; }
-    .sentiment-row { display: flex; align-items: center; gap: 10px; }
-    .sentiment-label { font-size: 0.75rem; color: #64748b; min-width: 70px; }
-    .sentiment-bar-wrap { flex: 1; height: 6px; background: var(--bg-tertiary); border-radius: 3px; overflow: hidden; }
-    .sentiment-bar-fill { height: 100%; border-radius: 3px; }
-
-    .empty-state { text-align: center; padding: 48px 24px; color: var(--text-secondary); font-size: 0.9rem; }
-
-    /* STATIC THREATS (shown before backend wakes) */
-    .static-note {
-      text-align: center; padding: 8px 16px; border-radius: 10px;
-      background: rgba(251,191,36,0.08); color: #fbbf24;
-      font-size: 0.8rem; font-weight: 600; margin-bottom: 4px;
-      border: 1px solid rgba(251,191,36,0.2);
-    }
+    .threat-card { background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:12px;padding:16px;transition:all .15s; }
+    .threat-card:hover { border-color:rgba(99,179,237,.25); }
+    .threat-card.is-threat { border-left-color:var(--danger); }
+    .tc-header { display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap; }
+    .src-pill { font-size:.7rem;font-weight:700;padding:3px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:'JetBrains Mono',monospace; }
+    .threat-pill { font-size:.7rem;font-weight:700;padding:3px 10px;background:rgba(239,68,68,.1);color:var(--danger);border-radius:20px;font-family:'JetBrains Mono',monospace; }
+    .tc-title { font-weight:700;font-size:.9rem;margin:0 0 5px; }
+    .tc-summary { font-size:.8rem;color:var(--muted);margin:0 0 10px;line-height:1.55; }
+    .sent-row { display:flex;align-items:center;gap:10px; }
+    .sent-lbl { font-size:.72rem;color:var(--muted);min-width:64px;font-family:'JetBrains Mono',monospace; }
+    .sent-bar { flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden; }
+    .sent-fill { height:100%;border-radius:3px; }
+    .spinner-row { display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.86rem;padding:12px 0; }
+    .spinner { width:16px;height:16px;border:2px solid var(--border);border-top-color:#f472b6;border-radius:50%;animation:spin .8s linear infinite; }
+    @keyframes spin{to{transform:rotate(360deg)}}
+    @media(max-width:760px){.agent-hero{padding:88px 24px 48px;}.agent-body{padding:28px 20px 60px;}.hero-stats{gap:24px;}}
   </style>
 </head>
 <body>
   <script>window.AEGIS_ACTIVE='agents';</script>
   <script src="aegis-nav.js"></script>
-  
 
-  <!-- HERO -->
-  <div class="agent-hero" style="padding-top:100px;">
-    <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent Â· Active</div>
-    <h1>ðŸŽ¬ <span>Trending</span> Agent</h1>
-    <p>Real-time Bollywood & entertainment threat intelligence. Scan celebrities, films, and cultural topics for misinformation spreading across news and social media.</p>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-val">200+</div><div class="hero-stat-label">Assets Monitored</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">89%</div><div class="hero-stat-label">Threat Detection Rate</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">Live</div><div class="hero-stat-label">Instagram Scanning</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">24/7</div><div class="hero-stat-label">Uptime</div></div>
+  <div class="ae-page">
+    <div class="agent-hero ae-reveal">
+      <div class="agent-tag"><span class="dot"></span>AGENT_01 &middot; Active</div>
+      <h1><span>Trending</span> Agent</h1>
+      <p>Real-time Bollywood &amp; entertainment threat intelligence. Scan celebrities, films, and cultural topics for misinformation spreading across news and social media.</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-val">200+</div><div class="hero-stat-lbl">Assets Monitored</div></div>
+        <div><div class="hero-stat-val">89%</div><div class="hero-stat-lbl">Threat Detection Rate</div></div>
+        <div><div class="hero-stat-val">Live</div><div class="hero-stat-lbl">Instagram Scanning</div></div>
+        <div><div class="hero-stat-val">24/7</div><div class="hero-stat-lbl">Uptime</div></div>
+      </div>
     </div>
-  </div>
 
-  <!-- WAR ROOM -->
-  <div class="page-body">
-    <div class="war-room-layout">
-
-      <!-- SIDEBAR -->
-      <aside class="asset-sidebar">
-        <div class="dark-card">
-          <h3>ðŸŽ¯ Monitored Assets</h3>
-          <div id="assetList">
-            <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-icon">â</span>Deepika Padukone</div>
-            <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-icon">â</span>Shah Rukh Khan</div>
-            <div class="asset-item" onclick="selectAsset('Ranveer Singh')"><span class="asset-icon">â</span>Ranveer Singh</div>
-            <div class="asset-item" onclick="selectAsset('Alia Bhatt')"><span class="asset-icon">â</span>Alia Bhatt</div>
-            <div class="asset-item" onclick="selectAsset('Jawan')"><span class="asset-icon">ðŸŽ¬</span>Jawan</div>
-            <div class="asset-item" onclick="selectAsset('Pathaan')"><span class="asset-icon">ðŸŽ¬</span>Pathaan</div>
+    <div class="agent-body">
+      <div class="war-room ae-reveal">
+        <!-- SIDEBAR -->
+        <aside>
+          <div class="asset-panel">
+            <h3>// Monitored Assets</h3>
+            <div id="assetList">
+              <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-dot"></span>Deepika Padukone</div>
+              <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-dot"></span>Shah Rukh Khan</div>
+              <div class="asset-item" onclick="selectAsset('Ranveer Singh')"><span class="asset-dot"></span>Ranveer Singh</div>
+              <div class="asset-item" onclick="selectAsset('Alia Bhatt')"><span class="asset-dot"></span>Alia Bhatt</div>
+              <div class="asset-item" onclick="selectAsset('Katrina Kaif')"><span class="asset-dot"></span>Katrina Kaif</div>
+              <div class="asset-item" onclick="selectAsset('Jawan (Film)')"><span class="asset-dot"></span>Jawan (Film)</div>
+            </div>
+            <button class="add-btn" onclick="addAsset()">+ Add Asset</button>
           </div>
-          <button class="add-asset-btn" onclick="addAsset()">+ Add Asset</button>
-        </div>
-
-        <div class="dark-card">
-          <h3>ðŸ“Š Sentiment Trend</h3>
-          <div class="chart-container">
-            <canvas id="sentimentChart"></canvas>
+          <div class="chart-panel">
+            <h3>// Sentiment Trend</h3>
+            <div class="chart-wrap"><canvas id="sentimentChart"></canvas></div>
           </div>
-        </div>
-      </aside>
+        </aside>
 
-      <!-- FEED -->
-      <div class="feed-col">
-        <div class="feed-header">
-          <h1>ðŸš¨ Threat Intelligence Feed</h1>
-          <div class="feed-controls">
-            <span class="current-asset-badge" id="currentAssetBadge">Deepika Padukone</span>
-            <button class="refresh-btn-feed" onclick="refreshFeed()">ðŸ”„ Refresh Scan</button>
+        <!-- FEED -->
+        <div class="feed-panel">
+          <div class="feed-header">
+            <div class="feed-header-title">Threat Intelligence Feed</div>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <span class="asset-badge" id="currentAssetBadge">Deepika Padukone</span>
+              <button class="refresh-btn" onclick="refreshFeed()">↻ Refresh Scan</button>
+            </div>
           </div>
-        </div>
 
-        <div id="loadingState" class="loader-row hidden">
-          <div class="spinner"></div> Scanning social media & news sources...
-        </div>
+          <div id="staticNote" class="static-note">Live scanning via Gemini AI — click Refresh Scan to start</div>
 
-        <div id="staticNote" class="static-note">âš¡ Showing sample threat data â€” connect backend for live scanning</div>
-
-        <div id="threatFeed" class="threat-grid">
-          <!-- Static sample cards shown before backend wakes -->
+          <div id="threatFeed" style="display:flex;flex-direction:column;gap:10px;"></div>
         </div>
       </div>
     </div>
+
+    <footer class="ae-footer">
+      <span>Aegis Protocol &copy; 2025</span>
+      <span style="color:#f472b6;font-size:.7rem;">AGENT_01 TRENDING // ACTIVE</span>
+      <span>Built with multi-agent AI</span>
+    </footer>
   </div>
 
   <script>
     let currentAsset = 'Deepika Padukone';
-
-    // â”€â”€ PLATFORM SCAN ANIMATION â”€â”€
     const PLATFORMS = [
-      { name: 'X / Twitter', icon: 'ðŸ', color: '#1d9bf0' },
-      { name: 'Instagram', icon: 'ðŸ“¸', color: '#e1306c' },
-      { name: 'Reddit', icon: 'ðŸ¤–', color: '#ff4500' },
-      { name: 'Google News', icon: 'ðŸ“°', color: '#4285f4' },
-      { name: 'YouTube', icon: 'ðŸ“¹', color: '#ff0000' },
+      { name: 'X / Twitter',  color: '#1d9bf0' },
+      { name: 'Instagram',    color: '#e1306c' },
+      { name: 'Reddit',       color: '#ff4500' },
+      { name: 'Google News',  color: '#4285f4' },
+      { name: 'YouTube',      color: '#ff0000' },
     ];
 
     function showScanAnimation(feed) {
       feed.innerHTML = '';
-      const wrapper = document.createElement('div');
-      wrapper.id = 'scanAnim';
-      wrapper.style.cssText = 'display:flex;flex-direction:column;gap:10px;padding:8px 0;';
+      const wrap = document.createElement('div');
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:7px;';
       PLATFORMS.forEach(p => {
         const row = document.createElement('div');
-        row.style.cssText = 'display:flex;align-items:center;gap:12px;padding:10px 16px;background:var(--bg-primary);border:1px solid var(--border);border-radius:10px;font-size:0.85rem;';
-        row.innerHTML = `
-          <span style="font-size:1.1rem;">${p.icon}</span>
-          <span style="color:${p.color};font-weight:600;">${p.name}</span>
-          <span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â Scanning...</span>`;
-        wrapper.appendChild(row);
+        row.style.cssText = `display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:.82rem;`;
+        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--muted);margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.72rem;">Scanning...</span>`;
+        wrap.appendChild(row);
       });
-      feed.appendChild(wrapper);
+      feed.appendChild(wrap);
     }
 
     function markPlatformDone(name, count) {
-      const id = 'scan_' + name.replace(/[^a-z]/gi,'');
-      const el = document.getElementById(id);
-      if (el) el.innerHTML = `<span style="color:#10b981;font-weight:700;">âœ“ ${count} items</span>`;
+      const el = document.getElementById('scan_' + name.replace(/[^a-z]/gi,''));
+      if (el) el.innerHTML = `<span style="color:var(--green);font-weight:700;">done — ${count} items</span>`;
     }
 
     function renderFeed(threats, isLive = true) {
@@ -247,89 +163,42 @@
       const note = document.getElementById('staticNote');
       feed.innerHTML = '';
       note.style.display = isLive ? 'none' : 'block';
-
       if (!threats || threats.length === 0) {
-        feed.innerHTML = '<div class="empty-state">No threats found. Monitoring continues.</div>';
+        feed.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:.9rem;">No threats found. Monitoring continues.</div>';
         return;
       }
-
       threats.forEach(item => {
         const isThreat = item.is_threat;
         const sent = item.sentiment || 0;
-        const sentColor = sent < -30 ? '#ef4444' : sent > 30 ? '#22c55e' : '#eab308';
+        const sentColor = sent < -30 ? 'var(--danger)' : sent > 30 ? 'var(--green)' : '#fbbf24';
         const sentPct = Math.min(Math.abs(sent), 100);
         const card = document.createElement('div');
         card.className = `threat-card${isThreat ? ' is-threat' : ''}`;
-        card.innerHTML = `
-          <div class="tc-header">
-            <span class="source-pill">${item.source || 'Unknown'}</span>
-            ${isThreat ? '<span class="threat-pill">âš ï THREAT</span>' : ''}
-          </div>
-          <p class="tc-title"><a href="${item.url || '#'}" target="_blank">${item.title || ''}</a></p>
-          <p class="tc-summary">${item.summary || ''}</p>
-          <div class="sentiment-row">
-            <span class="sentiment-label">Sentiment</span>
-            <div class="sentiment-bar-wrap">
-              <div class="sentiment-bar-fill" style="width:${sentPct}%;background:${sentColor};"></div>
-            </div>
-            <span style="font-size:0.72rem;color:${sentColor};font-weight:700;">${sent > 0 ? '+' : ''}${sent}</span>
-          </div>`;
+        card.innerHTML = `<div class="tc-header"><span class="src-pill">${item.source||'Unknown'}</span>${isThreat ? '<span class="threat-pill">THREAT DETECTED</span>' : ''}</div><p class="tc-title">${item.title||''}</p><p class="tc-summary">${item.summary||''}</p><div class="sent-row"><span class="sent-lbl">Sentiment</span><div class="sent-bar"><div class="sent-fill" style="width:${sentPct}%;background:${sentColor};"></div></div><span style="font-size:.7rem;color:${sentColor};font-weight:700;">${sent>0?'+':''}${sent}</span></div>`;
         feed.appendChild(card);
       });
     }
 
     async function refreshFeed() {
       const feed = document.getElementById('threatFeed');
-      const loader = document.getElementById('loadingState');
       const note = document.getElementById('staticNote');
       note.style.display = 'none';
-      loader.classList.remove('hidden');
-
-      // Start platform animation
       showScanAnimation(feed);
-      loader.classList.add('hidden'); // hide spinner since we show animation
-
-      // Stagger platform "scans" with delays
-      const delays = [400, 800, 1200, 1600, 2000];
+      const delays = [500, 900, 1300, 1700, 2100];
       const fakeCounts = [3, 2, 4, 5, 2];
-      PLATFORMS.forEach((p, i) => {
-        setTimeout(() => markPlatformDone(p.name, fakeCounts[i]), delays[i]);
-      });
+      PLATFORMS.forEach((p, i) => setTimeout(() => markPlatformDone(p.name, fakeCounts[i]), delays[i]));
 
       try {
-        const prompt = `You are a real-time entertainment intelligence AI scanning multiple social media platforms for "${currentAsset}".
-
-Scan the following platforms: X/Twitter, Instagram, Reddit, Google News, YouTube.
-
-Generate a threat intelligence report with 5-6 items. Mix threats and non-threats.
-
-Return STRICT JSON array:
-[
-  {
-    "title": "headline or post title (max 15 words)",
-    "source": "X / Twitter | Instagram | Reddit | Google News | YouTube",
-    "summary": "1-2 sentence analysis of what was found and why it matters (max 30 words)",
-    "is_threat": true or false,
-    "sentiment": integer from -100 to 100,
-    "url": "#"
-  }
-]
-
-Make it realistic and specific to ${currentAsset}. Include at least 2 threats (is_threat: true). Today is ${new Date().toDateString()}.`;
-
+        const prompt = `You are a real-time entertainment intelligence AI scanning multiple social media platforms for "${currentAsset}". Scan: X/Twitter, Instagram, Reddit, Google News, YouTube. Generate a threat intelligence report with 5-6 items mixing threats and non-threats. Return STRICT JSON array: [{ "title": "headline max 15 words", "source": "X / Twitter|Instagram|Reddit|Google News|YouTube", "summary": "1-2 sentence analysis max 30 words", "is_threat": true|false, "sentiment": integer -100 to 100, "url": "#" }]. Include at least 2 threats. Be specific to ${currentAsset}. Date: ${new Date().toDateString()}.`;
         const data = await window.GeminiClient.askJSON(prompt);
         if (Array.isArray(data) && data.length > 0) {
-          await new Promise(r => setTimeout(r, 2200)); // wait for animation
+          await new Promise(r => setTimeout(r, 2300));
           renderFeed(data, true);
           updateChart(currentAsset);
         }
       } catch (e) {
-        console.error('[Trending] Gemini error:', e);
-        // Show fallback
-        await new Promise(r => setTimeout(r, 2200));
-        renderFeed([
-          { title: `Scanning ${currentAsset} â€” Gemini analysis unavailable`, source: 'System', summary: 'Please try again in a moment.', is_threat: false, sentiment: 0 }
-        ], false);
+        await new Promise(r => setTimeout(r, 2300));
+        renderFeed([{ title: 'Gemini agent scanning...', source: 'System', summary: 'AI analysis in progress. Please try again shortly.', is_threat: false, sentiment: 0 }], false);
       }
     }
 
@@ -348,10 +217,9 @@ Make it realistic and specific to ${currentAsset}. Include at least 2 threats (i
       const name = prompt('Enter celebrity or film name to monitor:');
       if (!name || !name.trim()) return;
       const list = document.getElementById('assetList');
-      const icon = 'â';
       const div = document.createElement('div');
       div.className = 'asset-item';
-      div.innerHTML = `<span class="asset-icon">${icon}</span>${name.trim()}`;
+      div.innerHTML = `<span class="asset-dot"></span>${name.trim()}`;
       div.onclick = () => selectAsset(name.trim());
       list.appendChild(div);
       selectAsset(name.trim());
@@ -365,34 +233,12 @@ Make it realistic and specific to ${currentAsset}. Include at least 2 threats (i
       const data = labels.map(() => Math.floor(Math.random() * 80) - 20);
       window._sentChart = new Chart(ctx, {
         type: 'line',
-        data: {
-          labels,
-          datasets: [{
-            data,
-            borderColor: '#f472b6',
-            backgroundColor: 'rgba(244,114,182,0.08)',
-            borderWidth: 2, tension: 0.4, fill: true,
-            pointRadius: 3, pointBackgroundColor: '#f472b6'
-          }]
-        },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          plugins: { legend: { display: false } },
-          scales: {
-            y: { ticks: { color:'#64748b', font:{size:10} }, grid: { color:'rgba(255,255,255,0.05)' } },
-            x: { ticks: { color:'#64748b', font:{size:10} }, grid: { display: false } }
-          }
-        }
+        data: { labels, datasets: [{ data, borderColor: '#f472b6', backgroundColor: 'rgba(244,114,182,0.08)', borderWidth: 2, tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#f472b6' }] },
+        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color:'#64748b', font:{size:10} }, grid: { color:'rgba(255,255,255,0.04)' } }, x: { ticks: { color:'#64748b', font:{size:10} }, grid: { display: false } } } }
       });
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      updateChart('Deepika Padukone');
-      refreshFeed();
-    });
+    window.addEventListener('DOMContentLoaded', () => { updateChart('Deepika Padukone'); });
   </script>
-
 </body>
 </html>
-
-

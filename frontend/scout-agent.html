@@ -1,358 +1,224 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Scout Agent Ã¢â‚¬â€œ Aegis Protocol</title>
-  
-  
-  
+  <title>Scout Agent — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
-  
-  
-  
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="gemini-client.js"></script>
   <style>
     .agent-hero {
-      background: linear-gradient(135deg, #0f172a 0%, #0c2340 60%, #0f172a 100%);
-      padding: 80px 20px 60px; text-align: center;
+      padding: 100px 64px 56px;
       border-bottom: 1px solid var(--border);
+      background: linear-gradient(160deg, #050810 0%, #0d1930 50%, #050810 100%);
     }
-    .agent-hero-badge {
+    .agent-tag {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(59,130,246,0.12); color: #60a5fa;
-      padding: 6px 16px; border-radius: 20px; font-size: 0.8rem;
-      font-weight: 600; margin-bottom: 20px; border: 1px solid rgba(59,130,246,0.3);
+      background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25);
+      color: #a78bfa; padding: 5px 14px 5px 8px; border-radius: 100px;
+      font-size: .72rem; font-weight: 700; font-family: 'JetBrains Mono', monospace;
+      letter-spacing: .07em; text-transform: uppercase; margin-bottom: 22px;
     }
-    .pulse-dot { width:8px; height:8px; border-radius:50%; background:#60a5fa; animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
-    .agent-hero h1 { font-size: 3rem; font-weight: 800; color: #f1f5f9; margin: 0 0 16px; }
-    .agent-hero h1 span { color: #60a5fa; }
-    .agent-hero p { font-size: 1.1rem; color: #94a3b8; max-width: 620px; margin: 0 auto 28px; line-height: 1.7; }
-    .hero-stats { display: flex; gap: 40px; justify-content: center; flex-wrap: wrap; }
-    .hero-stat { text-align: center; }
-    .hero-stat-val { font-size: 1.8rem; font-weight: 800; color: #60a5fa; }
-    .hero-stat-label { font-size: 0.8rem; color: #64748b; margin-top: 2px; }
+    .agent-tag .dot { width:7px;height:7px;border-radius:50%;background:#a78bfa;animation:blink 1.5s ease-in-out infinite; }
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
+    .agent-hero h1 { font-size: clamp(2rem,4vw,3rem); font-weight: 800; letter-spacing:-.03em; margin-bottom:12px; }
+    .agent-hero h1 span { color: #8b5cf6; }
+    .agent-hero p { font-size:1rem; color:var(--muted); max-width:580px; line-height:1.7; margin-bottom:32px; }
+    .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
+    .hero-stat-val { font-size:1.6rem; font-weight:800; color:#a78bfa; }
+    .hero-stat-lbl { font-size:.76rem; color:var(--muted); margin-top:2px; font-family:'JetBrains Mono',monospace; }
 
-    .page-body { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
-    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-    @media(max-width:768px){ .two-col { grid-template-columns: 1fr; } }
-    .three-col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 32px; }
-    @media(max-width:900px){ .three-col { grid-template-columns: 1fr 1fr; } }
-    @media(max-width:600px){ .three-col { grid-template-columns: 1fr; } }
+    /* Page body */
+    .agent-body { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; }
 
-    .panel { background: var(--bg-primary); border: 1px solid var(--border); border-radius: 16px; padding: 24px; }
-    .panel h3 { margin: 0 0 16px; font-size: 1rem; font-weight: 700; }
+    /* Quick stats bar */
+    .quick-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
+    .qs { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+      padding: 14px 20px; display:flex; align-items:center; gap:12px; flex:1; min-width:180px; }
+    .qs-num { font-size:1.4rem; font-weight:800; letter-spacing:-.03em; }
+    .qs-lbl { font-size:.76rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
 
-    .mini-stat {
-      background: var(--bg-primary); border: 1px solid var(--border);
-      border-radius: 14px; padding: 20px; text-align: center;
-      transition: transform 0.2s, border-color 0.2s;
-    }
-    .mini-stat:hover { transform: translateY(-3px); border-color: #3b82f6; }
-    .mini-stat-icon { font-size: 2rem; margin-bottom: 8px; }
-    .mini-stat-val { font-size: 1.7rem; font-weight: 800; color: #3b82f6; }
-    .mini-stat-label { font-size: 0.8rem; color: var(--text-secondary); margin-top: 4px; }
+    /* Analyze card */
+    .analyze-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:28px; }
+    .analyze-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    #tickerInput { flex:1; min-width:200px; background:var(--bg2); border:1px solid var(--border);
+      border-radius:10px; color:var(--text); font-family:'Space Grotesk',sans-serif;
+      font-size:.92rem; padding:11px 16px; outline:none; transition:border-color .18s; }
+    #tickerInput:focus { border-color:var(--accent2); }
+    #analyzeBtn { padding:11px 24px; background:#8b5cf6; color:#fff; border:none; border-radius:10px;
+      font-weight:700; font-size:.88rem; cursor:none; font-family:'Space Grotesk',sans-serif;
+      transition:background .15s; white-space:nowrap; }
+    #analyzeBtn:hover { background:#7c3aed; }
+    #analyzeBtn:disabled { opacity:.6; }
 
-    /* ANALYZE FORM */
-    .analyze-form { display: flex; gap: 10px; flex-wrap: wrap; }
-    .analyze-input {
-      flex: 1; min-width: 200px; padding: 10px 16px;
-      background: var(--bg-tertiary); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text-primary); font-size: 0.9rem;
-      font-family: Inter, sans-serif; outline: none;
-    }
-    .analyze-input:focus { border-color: #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.1); }
-    .analyze-btn {
-      padding: 10px 22px; background: #3b82f6; color: #fff;
-      border: none; border-radius: 10px; font-size: 0.88rem; font-weight: 700;
-      cursor: pointer; transition: background 0.2s, transform 0.2s; font-family: Inter, sans-serif;
-    }
-    .analyze-btn:hover { background: #2563eb; transform: translateY(-1px); }
+    /* Stock result */
+    .stock-result-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:16px; }
+    .stock-header { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
+    .stock-ticker { font-size:1.2rem; font-weight:800; letter-spacing:-.02em; }
+    .stock-price { font-size:1.4rem; font-weight:800; }
+    .stock-metrics { display:flex; gap:16px; flex-wrap:wrap; }
+    .stock-metric { font-size:.82rem; color:var(--muted); }
+    .stock-metric strong { color:var(--text); }
 
-    /* NEWS CARDS */
-    .news-card {
-      background: var(--bg-tertiary); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px; margin-bottom: 10px;
-    }
-    .news-card-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 6px; }
-    .news-source { font-size: 0.75rem; font-weight: 700; color: #64748b; }
-    .news-title { font-weight: 600; font-size: 0.9rem; margin: 0 0 6px; line-height: 1.4; }
-    .news-meta { font-size: 0.75rem; color: #64748b; }
-    .news-link {
-      display: inline-block; margin-top: 8px; font-size: 0.78rem;
-      color: #60a5fa; text-decoration: none; font-weight: 600;
-    }
-    .news-link:hover { text-decoration: underline; }
+    /* Demo section */
+    .demo-card { background:var(--surface); border:1px solid rgba(239,68,68,.25); border-radius:16px; padding:24px; margin-bottom:28px; }
+    .demo-label { font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:700;
+      color:var(--danger); letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px; }
+    .demo-title { font-size:1rem; font-weight:700; margin-bottom:8px; }
+    .crash-stats { display:flex; gap:20px; flex-wrap:wrap; margin: 14px 0; }
+    .crash-stat-val { font-size:1.3rem; font-weight:800; }
+    .crash-stat-lbl { font-size:.72rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+    .tweet-box { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px; margin:14px 0;
+      font-size:.85rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+    .timeline { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
+    .timeline-item { display:flex; align-items:flex-start; gap:10px; font-size:.83rem; }
+    .t-dot { width:8px; height:8px; border-radius:50%; background:var(--danger); flex-shrink:0; margin-top:4px; }
+    .t-dot.green { background:var(--green); }
 
-    /* CRASH DEMO */
-    .crash-card {
-      background: linear-gradient(135deg, rgba(239,68,68,0.08), rgba(239,68,68,0.03));
-      border: 1px solid rgba(239,68,68,0.25);
-      border-radius: 14px; padding: 20px;
-    }
-    .crash-title { font-weight: 800; font-size: 1rem; color: #ef4444; margin: 0 0 8px; }
-    .crash-tweet {
-      background: #0f172a; border: 1px solid #1e293b;
-      border-radius: 10px; padding: 12px 14px; margin: 12px 0; font-size: 0.88rem;
-      border-left: 3px solid #ef4444;
-    }
-    .crash-stat { display: flex; gap: 20px; flex-wrap: wrap; margin: 12px 0; }
-    .crash-stat-item { text-align: center; }
-    .crash-stat-val { font-size: 1.3rem; font-weight: 800; }
-    .crash-stat-label { font-size: 0.72rem; color: #64748b; }
-    .timeline { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
-    .timeline-item { display: flex; gap: 10px; align-items: flex-start; font-size: 0.82rem; }
-    .timeline-dot { width: 8px; height: 8px; border-radius: 50%; background: #ef4444; flex-shrink: 0; margin-top: 5px; }
-    .timeline-dot.green { background: #10b981; }
+    /* News grid */
+    .news-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    @media(max-width:700px){ .news-grid{grid-template-columns:1fr;} }
+    .news-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px;
+      transition:border-color .18s; }
+    .news-card:hover { border-color:var(--border2); }
+    .news-src { font-size:.7rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--muted);
+      text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
+    .news-title { font-size:.88rem; font-weight:700; line-height:1.4; margin-bottom:6px; }
+    .news-meta { font-size:.78rem; color:var(--muted); }
 
-    /* STOCK RESULT */
-    .stock-result-card {
-      background: var(--bg-tertiary); border: 1px solid var(--border);
-      border-radius: 12px; padding: 16px; margin-bottom: 12px;
-    }
-    .stock-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .stock-ticker { font-size: 1.1rem; font-weight: 800; }
-    .stock-price { font-size: 1.2rem; font-weight: 700; color: #10b981; }
-    .stock-metrics { display: flex; gap: 16px; flex-wrap: wrap; }
-    .stock-metric { font-size: 0.82rem; color: var(--text-secondary); }
-    .stock-metric strong { font-weight: 700; color: var(--text-primary); }
+    /* How it works */
+    .how-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:24px; }
+    .how-item { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; }
+    .how-icon { width:40px;height:40px;border-radius:10px;background:rgba(139,92,246,.1);
+      display:flex;align-items:center;justify-content:center;margin-bottom:14px; }
+    .how-icon svg { width:18px;height:18px; }
+    .how-title { font-size:.9rem; font-weight:700; margin-bottom:6px; }
+    .how-desc { font-size:.82rem; color:var(--muted); line-height:1.6; }
 
-    /* FEATURES */
-    .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 24px; }
-    @media(max-width:600px){ .feature-grid { grid-template-columns: 1fr; } }
-    .feature-item {
-      display: flex; align-items: flex-start; gap: 12px;
-      padding: 16px; background: var(--bg-tertiary);
-      border: 1px solid var(--border); border-radius: 12px;
-    }
-    .feature-item-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .feature-item-title { font-weight: 700; font-size: 0.88rem; margin: 0 0 4px; }
-    .feature-item-desc { font-size: 0.8rem; color: var(--text-secondary); margin: 0; }
-
-    .section-title { font-size: 1.3rem; font-weight: 800; margin: 0 0 8px; }
-    .section-sub { font-size: 0.9rem; color: var(--text-secondary); margin: 0 0 24px; }
-    .mt-8 { margin-top: 48px; }
-    .loading-msg { color: var(--text-secondary); font-size: 0.88rem; padding: 12px 0; }
+    /* Scan animation */
+    .scan-row { display:flex;align-items:center;gap:10px;padding:9px 14px;
+      background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-size:.82rem; }
+    @media(max-width:760px){.agent-body{padding:28px 20px 60px;}.agent-hero{padding:90px 24px 48px;}.hero-stats{gap:24px;}}
   </style>
 </head>
 <body>
   <script>window.AEGIS_ACTIVE='agents';</script>
   <script src="aegis-nav.js"></script>
-  
 
-  <!-- HERO -->
-  <div class="agent-hero" style="padding-top:100px;">
-    <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent Ã‚Â· Active</div>
-    <h1>Ã°Å¸â€œâ€° <span>Scout</span> Agent</h1>
-    <p>Real-time stock market intelligence powered by AI. Detects misinformation-driven crashes before they spiral, analyzes stock anomalies, and investigates financial manipulation.</p>
-    <div class="hero-stats">
-      <div class="hero-stat"><div class="hero-stat-val">1,200+</div><div class="hero-stat-label">Stocks Monitored</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">92%</div><div class="hero-stat-label">Crash Detection Rate</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">&lt;30s</div><div class="hero-stat-label">Alert Response Time</div></div>
-      <div class="hero-stat"><div class="hero-stat-val">8+</div><div class="hero-stat-label">News Sources Scanned</div></div>
-    </div>
-  </div>
-
-  <div class="page-body">
-
-    <!-- STAT MINI CARDS -->
-    <div class="three-col" data-reveal data-reveal-delay="0.05s">
-      <div class="mini-stat">
-        <div class="mini-stat-icon">Ã¢Å¡Â¡</div>
-        <div class="mini-stat-val">14</div>
-        <div class="mini-stat-label">Crash Signals Detected Today</div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-icon">Ã°Å¸â€œÂ°</div>
-        <div class="mini-stat-val">3.4K</div>
-        <div class="mini-stat-label">News Articles Scanned</div>
-      </div>
-      <div class="mini-stat">
-        <div class="mini-stat-icon">Ã°Å¸Å¡Â¨</div>
-        <div class="mini-stat-val">3</div>
-        <div class="mini-stat-label">Active Misinformation Alerts</div>
+  <div class="ae-page">
+    <!-- HERO -->
+    <div class="agent-hero ae-reveal">
+      <div class="agent-tag"><span class="dot"></span>AGENT_02 &middot; Active</div>
+      <h1>Scout <span>Agent</span></h1>
+      <p>Real-time stock market intelligence powered by AI. Detects misinformation-driven crashes before they spiral, analyzes stock anomalies, and investigates financial manipulation.</p>
+      <div class="hero-stats">
+        <div><div class="hero-stat-val">1,200+</div><div class="hero-stat-lbl">Stocks Monitored</div></div>
+        <div><div class="hero-stat-val">92%</div><div class="hero-stat-lbl">Crash Detection Rate</div></div>
+        <div><div class="hero-stat-val">&lt;30s</div><div class="hero-stat-lbl">Alert Response Time</div></div>
+        <div><div class="hero-stat-val">8+</div><div class="hero-stat-lbl">News Sources Scanned</div></div>
       </div>
     </div>
 
-    <!-- ANALYZE + CRASH DEMO -->
-    <div class="two-col" data-reveal data-reveal-delay="0.1s">
-
-      <!-- ANALYZE A STOCK -->
-      <div class="panel">
-        <h3>Ã°Å¸â€Â Analyze a Stock</h3>
-        <div class="analyze-form">
-          <input class="analyze-input" id="tickerInput" placeholder="e.g., TATAMOTORS.NS, RELIANCE.NS..." />
-          <button class="analyze-btn" id="analyzeBtn" onclick="analyzeStock()">Analyze</button>
+    <div class="agent-body">
+      <!-- Quick stats -->
+      <div class="quick-stats ae-reveal">
+        <div class="qs">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <div><div class="qs-num" style="color:var(--danger)">14</div><div class="qs-lbl">Crash Signals Today</div></div>
         </div>
-        <div id="stockResult" style="margin-top:16px;"></div>
+        <div class="qs">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+          <div><div class="qs-num" style="color:#a78bfa">3.4K</div><div class="qs-lbl">Articles Scanned</div></div>
+        </div>
+        <div class="qs">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <div><div class="qs-num" style="color:#fbbf24">3</div><div class="qs-lbl">Active Misinfo Alerts</div></div>
+        </div>
+      </div>
+
+      <!-- ANALYZE -->
+      <div class="analyze-card ae-reveal">
+        <div class="ae-label mb-12">// ANALYZE A STOCK</div>
+        <div class="analyze-row">
+          <input type="text" id="tickerInput" placeholder="e.g., TATAMOTORS.NS, RELIANCE.NS, AAPL...">
+          <button id="analyzeBtn" onclick="analyzeStock()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;margin-right:6px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Analyze
+          </button>
+        </div>
+        <div id="stockResult"></div>
         <div id="newsSection" style="margin-top:12px;"></div>
       </div>
 
-      <!-- CRASH DEMO -->
-      <div class="panel">
-        <h3>Ã°Å¸Å¡Â¨ Demo: Crash Due to Fake Tweet</h3>
-        <div class="crash-card">
-          <p class="crash-title">Ã°Å¸â€œâ€° Tata Motors Ã¢â‚¬â€ Misinformation Attack</p>
-          <div class="crash-tweet">
-            <strong style="color:#ef4444;">@Breakingmarkets_bot:</strong> BREAKING: Tata Motors files for bankruptcy. Stock suspended pending investigation. #TataMotors #crash
-          </div>
-          <div class="crash-stat">
-            <div class="crash-stat-item">
-              <div class="crash-stat-val" style="color:#ef4444;">-5.8%</div>
-              <div class="crash-stat-label">Price Drop</div>
-            </div>
-            <div class="crash-stat-item">
-              <div class="crash-stat-val" style="color:#fbbf24;">4.2Z</div>
-              <div class="crash-stat-label">Z-Score</div>
-            </div>
-            <div class="crash-stat-item">
-              <div class="crash-stat-val" style="color:#10b981;">8 min</div>
-              <div class="crash-stat-label">Detection Time</div>
-            </div>
-          </div>
-          <div class="timeline">
-            <div class="timeline-item"><div class="timeline-dot"></div><span><strong>09:32</strong> Fake tweet posted by unverified account. 1,200 retweets in 6 minutes.</span></div>
-            <div class="timeline-item"><div class="timeline-dot"></div><span><strong>09:36</strong> Scout detects abnormal sell-off volume. Z-score exceeds 4.0 threshold.</span></div>
-            <div class="timeline-item"><div class="timeline-dot"></div><span><strong>09:38</strong> Investigator agent dispatched to analyze news sources and social signals.</span></div>
-            <div class="timeline-item"><div class="timeline-dot green"></div><span><strong>09:40</strong> Verdict: <strong style="color:#10b981;">MISINFORMATION</strong> Ã¢â‚¬â€ No official filing found. Alert issued.</span></div>
-          </div>
+      <!-- DEMO CRASH -->
+      <div class="demo-card ae-reveal">
+        <div class="demo-label">// DEMO — Crash Due to Fake Tweet</div>
+        <div class="demo-title">Tata Motors — Misinformation Attack</div>
+        <div class="tweet-box">@Breakingmarkets_bot: BREAKING: Tata Motors files for bankruptcy. Stock suspended pending investigation. #TataMotors #crash</div>
+        <div class="crash-stats">
+          <div><div class="crash-stat-val" style="color:var(--danger)">-5.8%</div><div class="crash-stat-lbl">Price Drop</div></div>
+          <div><div class="crash-stat-val" style="color:#fbbf24">4.2Z</div><div class="crash-stat-lbl">Z-Score</div></div>
+          <div><div class="crash-stat-val" style="color:var(--green)">8 min</div><div class="crash-stat-lbl">Detection Time</div></div>
+        </div>
+        <div class="timeline">
+          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:32</strong> Fake tweet posted by unverified account. 1,200 retweets in 6 minutes.</span></div>
+          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:36</strong> Scout detects abnormal sell-off volume. Z-score exceeds 4.0 threshold.</span></div>
+          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:38</strong> Investigator agent dispatched to analyze news sources and social signals.</span></div>
+          <div class="timeline-item"><div class="t-dot green"></div><span><strong>09:40</strong> Verdict: <strong style="color:var(--green)">MISINFORMATION</strong> — No official filing found. Alert issued.</span></div>
+        </div>
+      </div>
+
+      <!-- TRENDING NEWS -->
+      <div class="ae-reveal" style="margin-bottom:32px;">
+        <div class="ae-label mb-8">// TRENDING STOCK NEWS</div>
+        <p class="ae-muted" style="font-size:.85rem;margin-bottom:18px;">Latest financial news scanned and classified by Scout Agent</p>
+        <div class="news-grid">
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Economic Times</div><p class="news-title">Sensex surges 400 points amid strong global cues and FII inflows</p><p class="news-meta">2 hours ago &middot; <span style="color:var(--green)">Positive sentiment</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>Moneycontrol</div><p class="news-title">SEBI probes unusual trading pattern in mid-cap stocks ahead of results</p><p class="news-meta">4 hours ago &middot; <span style="color:#fbbf24">Alert — under review</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>Bloomberg India</div><p class="news-title">IT sector rallies as dollar strengthens; TCS and Infy lead gains</p><p class="news-meta">5 hours ago &middot; <span style="color:var(--green)">Positive sentiment</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--danger);display:inline-block;"></span>Business Standard</div><p class="news-title">Adani Group shares dip after unverified social media reports circulate</p><p class="news-meta">6 hours ago &middot; <span style="color:var(--danger)">Misinformation risk detected</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>Reuters India</div><p class="news-title">RBI holds rates steady; markets react with cautious optimism</p><p class="news-meta">8 hours ago &middot; <span style="color:var(--green)">Positive sentiment</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--danger);display:inline-block;"></span>Financial Express</div><p class="news-title">Pharma stocks under pressure after fake WHO advisory circulates on WhatsApp</p><p class="news-meta">10 hours ago &middot; <span style="color:var(--danger)">Flagged — fake advisory confirmed</span></p></div>
+        </div>
+      </div>
+
+      <!-- HOW IT WORKS -->
+      <div class="ae-reveal">
+        <div class="ae-label mb-8">// HOW SCOUT AGENT WORKS</div>
+        <p class="ae-muted" style="font-size:.85rem;margin-bottom:4px;">A multi-layer AI investigation pipeline for financial misinformation detection</p>
+        <div class="how-grid">
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="how-title">Live Market Monitoring</div><div class="how-desc">Continuously tracks 1,200+ NSE/BSE stocks using Yahoo Finance API, watching for anomalous price movements and volume spikes.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg></div><div class="how-title">Z-Score Crash Detection</div><div class="how-desc">Statistical anomaly detection using rolling Z-score analysis flags stocks deviating significantly from their normal trading patterns.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div><div class="how-title">Gemini AI Investigator</div><div class="how-desc">Multiple Gemini agents simultaneously analyze news, social signals, and company fundamentals to identify misinformation sources.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg></div><div class="how-title">Multi-Source News Analysis</div><div class="how-desc">Scans 8+ financial news sources including ET, Moneycontrol, Bloomberg, and Reuters for relevant company and CEO news.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="how-title">Rapid Response</div><div class="how-desc">When a crash is detected, Scout dispatches an investigation, generates a verdict, and issues an alert — all within 30 seconds.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg></div><div class="how-title">Adaptive Feedback Loop</div><div class="how-desc">Model continuously improves by learning from confirmed misinformation events, reducing false positives over time.</div></div>
         </div>
       </div>
     </div>
 
-    <!-- TRENDING STOCK NEWS -->
-    <div class="mt-8" data-reveal data-reveal-delay="0.15s">
-      <p class="section-title">Ã°Å¸â€œÂ° Trending Stock News</p>
-      <p class="section-sub">Latest financial news scanned and classified by Scout Agent</p>
-      <div class="two-col">
-        <div id="newsCol1">
-          <div class="news-card">
-            <div class="news-card-header">
-              <span class="news-source">Ã°Å¸Å’Â Economic Times</span>
-            </div>
-            <p class="news-title">Sensex surges 400 points amid strong global cues and FII inflows</p>
-            <p class="news-meta">2 hours ago Ã‚Â· <span style="color:#10b981;">Positive sentiment</span></p>
-            <a class="news-link" href="#" target="_blank">Read more Ã¢â€ â€™</a>
-          </div>
-          <div class="news-card">
-            <div class="news-card-header">
-              <span class="news-source">Ã°Å¸Å’Â Moneycontrol</span>
-            </div>
-            <p class="news-title">SEBI probes unusual trading pattern in mid-cap stocks ahead of results</p>
-            <p class="news-meta">4 hours ago Ã‚Â· <span style="color:#fbbf24;">Alert Ã¢â‚¬â€ under review</span></p>
-            <a class="news-link" href="#" target="_blank">Read more Ã¢â€ â€™</a>
-          </div>
-          <div class="news-card">
-            <div class="news-card-header">
-              <span class="news-source">Ã°Å¸Å’Â Bloomberg India</span>
-            </div>
-            <p class="news-title">IT sector rallies as dollar strengthens; TCS and Infy lead gains</p>
-            <p class="news-meta">5 hours ago Ã‚Â· <span style="color:#10b981;">Positive sentiment</span></p>
-            <a class="news-link" href="#" target="_blank">Read more Ã¢â€ â€™</a>
-          </div>
-        </div>
-        <div id="newsCol2">
-          <div class="news-card">
-            <div class="news-card-header">
-              <span class="news-source">Ã°Å¸Å’Â Business Standard</span>
-            </div>
-            <p class="news-title">Adani Group shares dip after unverified social media reports circulate</p>
-            <p class="news-meta">6 hours ago Ã‚Â· <span style="color:#ef4444;">Ã¢Å¡Â Ã¯Â¸Â Misinformation risk detected</span></p>
-            <a class="news-link" href="#" target="_blank">Read more Ã¢â€ â€™</a>
-          </div>
-          <div class="news-card">
-            <div class="news-card-header">
-              <span class="news-source">Ã°Å¸Å’Â Reuters India</span>
-            </div>
-            <p class="news-title">RBI holds rates steady; markets react with cautious optimism</p>
-            <p class="news-meta">8 hours ago Ã‚Â· <span style="color:#10b981;">Positive sentiment</span></p>
-            <a class="news-link" href="#" target="_blank">Read more Ã¢â€ â€™</a>
-          </div>
-          <div class="news-card">
-            <div class="news-card-header">
-              <span class="news-source">Ã°Å¸Å’Â Financial Express</span>
-            </div>
-            <p class="news-title">Pharma stocks under pressure after fake WHO advisory circulates on WhatsApp</p>
-            <p class="news-meta">10 hours ago Ã‚Â· <span style="color:#ef4444;">Ã¢Å¡Â Ã¯Â¸Â Flagged Ã¢â‚¬â€ fake advisory confirmed</span></p>
-            <a class="news-link" href="#" target="_blank">Read more Ã¢â€ â€™</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- HOW IT WORKS -->
-    <div class="mt-8" data-reveal data-reveal-delay="0.2s">
-      <p class="section-title">Ã¢Å¡â„¢Ã¯Â¸Â How Scout Agent Works</p>
-      <p class="section-sub">A multi-layer AI investigation pipeline for financial misinformation detection</p>
-      <div class="feature-grid">
-        <div class="feature-item">
-          <span class="feature-item-icon">Ã°Å¸â€œÂ¡</span>
-          <div>
-            <p class="feature-item-title">Live Market Monitoring</p>
-            <p class="feature-item-desc">Continuously tracks 1,200+ NSE/BSE stocks using Yahoo Finance API, watching for anomalous price movements and volume spikes.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-item-icon">Ã°Å¸â€Â¢</span>
-          <div>
-            <p class="feature-item-title">Z-Score Crash Detection</p>
-            <p class="feature-item-desc">Statistical anomaly detection using rolling Z-score analysis flags stocks deviating significantly from their normal trading patterns.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-item-icon">Ã°Å¸Â¤â€“</span>
-          <div>
-            <p class="feature-item-title">Gemini AI Investigator Swarm</p>
-            <p class="feature-item-desc">Multiple Gemini agents simultaneously analyze news, social signals, and company fundamentals to identify misinformation sources.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-item-icon">Ã°Å¸â€œÂ°</span>
-          <div>
-            <p class="feature-item-title">Multi-Source News Analysis</p>
-            <p class="feature-item-desc">Scans 8+ financial news sources including ET, Moneycontrol, Bloomberg, and Reuters for relevant company and CEO news.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-item-icon">Ã¢Å¡Â¡</span>
-          <div>
-            <p class="feature-item-title">Rapid Response Orchestration</p>
-            <p class="feature-item-desc">When a crash is detected, Scout dispatches an investigation, generates a verdict, and issues an alert Ã¢â‚¬â€ all within 30 seconds.</p>
-          </div>
-        </div>
-        <div class="feature-item">
-          <span class="feature-item-icon">Ã°Å¸â€Â</span>
-          <div>
-            <p class="feature-item-title">Adaptive Feedback Loop</p>
-            <p class="feature-item-desc">Model continuously improves by learning from confirmed misinformation events, reducing false positives over time.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
+    <footer class="ae-footer">
+      <span>Aegis Protocol &copy; 2025</span>
+      <span style="color:var(--accent2);font-size:.7rem;">AGENT_02 SCOUT // ACTIVE</span>
+      <span>Built with multi-agent AI</span>
+    </footer>
   </div>
 
-  <script src="gemini-client.js"></script>
   <script>
-    const NEWS_SOURCES = ['Economic Times', 'Moneycontrol', 'Business Standard', 'Bloomberg India', 'Reuters', 'Financial Express'];
+    const STOCK_PLATFORMS = [
+      { name: 'Google News',    color: '#4285f4' },
+      { name: 'X / Twitter',   color: '#1d9bf0' },
+      { name: 'Reddit',        color: '#ff4500' },
+      { name: 'Bloomberg',     color: '#f09000' },
+    ];
 
-    // â”€â”€ YAHOO FINANCE with CORS proxy fallback â”€â”€
     async function fetchYahooStock(ticker) {
       const yUrl = `https://query1.finance.yahoo.com/v8/finance/chart/${encodeURIComponent(ticker)}?interval=1d&range=5d`;
-      // Try direct first (works in some environments), then proxy
-      const endpoints = [
-        yUrl,
-        `https://api.allorigins.win/raw?url=${encodeURIComponent(yUrl)}`,
-        `https://corsproxy.io/?${encodeURIComponent(yUrl)}`
-      ];
+      const endpoints = [yUrl, `https://api.allorigins.win/raw?url=${encodeURIComponent(yUrl)}`, `https://corsproxy.io/?${encodeURIComponent(yUrl)}`];
       let data = null;
       for (const ep of endpoints) {
-        try {
-          const res = await fetch(ep, { signal: AbortSignal.timeout(5000) });
-          if (!res.ok) continue;
-          data = await res.json();
-          if (data?.chart?.result) break;
-        } catch (_) { continue; }
+        try { const r = await fetch(ep, { signal: AbortSignal.timeout(5000) }); if (!r.ok) continue; data = await r.json(); if (data?.chart?.result) break; } catch (_) { continue; }
       }
       if (!data?.chart?.result) throw new Error('Yahoo Finance unavailable');
       const meta = data.chart.result[0].meta || {};
@@ -363,34 +229,17 @@
       const avg = closes.reduce((a,b)=>a+b,0)/(closes.length||1);
       const stdDev = closes.length > 2 ? Math.sqrt(closes.reduce((a,c)=>a+Math.pow(c-avg,2),0)/closes.length) : 1;
       const zscore = stdDev > 0 ? ((curr - avg) / stdDev).toFixed(2) : 0;
-      return {
-        ticker: meta.symbol || ticker,
-        name: meta.longName || meta.shortName || ticker,
-        current_price: curr?.toFixed(2),
-        prev_close: prev?.toFixed(2),
-        drop_percent: drop,
-        z_score: zscore,
-        currency: meta.currency || 'USD',
-        is_crashing: Math.abs(drop) > 3 || Math.abs(zscore) > 2
-      };
+      return { ticker: meta.symbol||ticker, name: meta.longName||meta.shortName||ticker, current_price: curr?.toFixed(2), prev_close: prev?.toFixed(2), drop_percent: drop, z_score: zscore, currency: meta.currency||'USD', is_crashing: Math.abs(drop)>3||Math.abs(zscore)>2 };
     }
-
-    // â”€â”€ PLATFORM SCAN ANIMATION â”€â”€
-    const STOCK_PLATFORMS = [
-      { name: 'Google News', icon: 'Ã°Å¸â€œÂ°', color: '#4285f4' },
-      { name: 'X / Twitter', icon: 'Ã°Å¸ÂÂ¦', color: '#1d9bf0' },
-      { name: 'Reddit r/stocks', icon: 'Ã°Å¸Â¤â€“', color: '#ff4500' },
-      { name: 'Bloomberg', icon: 'Ã°Å¸â€™Â¹', color: '#f09000' },
-    ];
 
     function showScanAnim(container) {
       container.innerHTML = '';
       const wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:7px;margin-top:12px;';
       STOCK_PLATFORMS.forEach(p => {
         const row = document.createElement('div');
-        row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:10px;font-size:0.82rem;';
-        row.innerHTML = `<span>${p.icon}</span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="st_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">Ã¢ÂÂ³ Fetching...</span>`;
+        row.className = 'scan-row';
+        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;font-size:.82rem;">${p.name}</span><span id="st_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--muted);margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.75rem;">Scanning...</span>`;
         wrap.appendChild(row);
       });
       container.appendChild(wrap);
@@ -398,196 +247,68 @@
 
     function markDone(name, msg) {
       const el = document.getElementById('st_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:#10b981;font-weight:700;">Ã¢Å“â€œ ${msg}</span>`;
+      if (el) el.innerHTML = `<span style="color:var(--green);font-weight:700;">done — ${msg}</span>`;
     }
 
     async function analyzeStock() {
-      const ticker = document.getElementById('tickerInput').value.trim();
+      const ticker = document.getElementById('tickerInput').value.trim().toUpperCase();
       const resultBox = document.getElementById('stockResult');
       const newsBox = document.getElementById('newsSection');
       const btn = document.getElementById('analyzeBtn');
       if (!ticker) return;
 
-      btn.textContent = 'Analyzing...';
-      btn.disabled = true;
-      resultBox.innerHTML = '';
-      newsBox.innerHTML = '';
+      btn.textContent = 'Analyzing...'; btn.disabled = true;
+      resultBox.innerHTML = ''; newsBox.innerHTML = '';
       showScanAnim(resultBox);
 
-      // Stagger platform animations
-      const delays = [500, 900, 1300, 1700, 2100];
+      const delays = [600, 1000, 1400, 1800];
       STOCK_PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'done'), delays[i]));
 
       let stockData = null;
       try {
         stockData = await fetchYahooStock(ticker);
-        markDone('YahooFinance', `Ã¢â€šÂ¹${stockData.current_price}`);
-      } catch (e) {
-        markDone('YahooFinance', 'N/A');
-      }
+        markDone('YahooFinance', (stockData.currency === 'INR' ? '\u20b9' : '$') + stockData.current_price);
+      } catch (e) { markDone('YahooFinance', 'N/A'); }
 
-      // Ask Gemini to generate news analysis
       try {
-        const prompt = `You are a financial intelligence AI analyzing the stock "${ticker}"${stockData ? ` (${stockData.name}, price: ${stockData.current_price} ${stockData.currency}, ${stockData.drop_percent}% change, Z-score: ${stockData.z_score})` : ''}.
-
-Simulate scanning of financial news sources: Economic Times, Moneycontrol, Google News, Bloomberg, Reuters, Reddit r/stocks.
-
-Generate 5 news items about this company/stock with a mix of company news, CEO news, and market analysis.
-
-Return STRICT JSON array:
-[
-  {
-    "title": "realistic news headline (max 15 words)",
-    "source": "one of: Economic Times | Moneycontrol | Bloomberg | Google News | Reuters | Reddit r/stocks",
-    "category": "Company News | CEO News | Market Analysis | Insider Activity",
-    "summary": "1-2 sentence insight (max 25 words)",
-    "is_threat": true or false,
-    "sentiment": integer -100 to 100
-  }
-]
-
-Be specific and realistic. If the stock is crashing (${stockData?.is_crashing ? 'YES' : 'NO'}), include at least 2 negative/threat items.`;
+        const prompt = `You are a financial intelligence AI analyzing "${ticker}"${stockData ? ` (${stockData.name}, price: ${stockData.current_price} ${stockData.currency}, ${stockData.drop_percent}% change, Z-score: ${stockData.z_score})` : ''}.
+Simulate scanning of financial news: Economic Times, Moneycontrol, Google News, Bloomberg, Reuters, Reddit r/stocks.
+Generate 5 news items. Return STRICT JSON array:
+[{ "title": "headline max 15 words", "source": "one of the sources above", "category": "Company News|CEO News|Market Analysis|Insider Activity", "summary": "1-2 sentence insight max 25 words", "is_threat": true|false, "sentiment": integer -100 to 100 }]
+If crashing (${stockData?.is_crashing ? 'YES' : 'NO'}), include at least 2 negative/threat items. Current date: ${new Date().toDateString()}.`;
 
         const newsData = await window.GeminiClient.askJSON(prompt);
+        await new Promise(r => setTimeout(r, 2300));
 
-        await new Promise(r => setTimeout(r, 2200));
-
-        // Render stock card
         if (stockData) {
-          const dropColor = parseFloat(stockData.drop_percent) < -2 ? '#ef4444' : parseFloat(stockData.drop_percent) > 1 ? '#10b981' : '#fbbf24';
-          resultBox.innerHTML = `
-            <div class="stock-result-card">
-              <div class="stock-header">
-                <span class="stock-ticker">${stockData.ticker} <span style="font-size:0.8rem;font-weight:500;color:#94a3b8;">${stockData.name}</span></span>
-                <span class="stock-price" style="color:${dropColor}">${stockData.currency === 'INR' ? 'Ã¢â€šÂ¹' : '$'}${stockData.current_price}</span>
-              </div>
-              <div class="stock-metrics">
-                <span class="stock-metric">Change: <strong style="color:${dropColor}">${stockData.drop_percent}%</strong></span>
-                <span class="stock-metric">Prev Close: <strong>${stockData.currency === 'INR' ? 'Ã¢â€šÂ¹' : '$'}${stockData.prev_close}</strong></span>
-                <span class="stock-metric">Z-Score: <strong>${stockData.z_score}</strong></span>
-                <span class="stock-metric">Status: <strong style="color:${stockData.is_crashing ? '#ef4444' : '#10b981'}">${stockData.is_crashing ? 'Ã¢Å¡Â Ã¯Â¸Â ANOMALY' : 'Ã¢Å“â€œ Normal'}</strong></span>
-              </div>
-            </div>`;
+          const dc = parseFloat(stockData.drop_percent) < -2 ? 'var(--danger)' : parseFloat(stockData.drop_percent) > 1 ? 'var(--green)' : '#fbbf24';
+          const sym = stockData.currency === 'INR' ? '\u20b9' : '$';
+          resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker} <span style="font-size:.8rem;color:var(--muted);font-weight:500;">${stockData.name}</span></span><span class="stock-price" style="color:${dc}">${sym}${stockData.current_price}</span></div><div class="stock-metrics"><span class="stock-metric">Change: <strong style="color:${dc}">${stockData.drop_percent}%</strong></span><span class="stock-metric">Prev: <strong>${sym}${stockData.prev_close}</strong></span><span class="stock-metric">Z-Score: <strong>${stockData.z_score}</strong></span><span class="stock-metric">Status: <strong style="color:${stockData.is_crashing?'var(--danger)':'var(--green)'}">${stockData.is_crashing?'ANOMALY DETECTED':'Normal'}</strong></span></div></div>`;
         } else {
-          resultBox.innerHTML = `<div class="stock-result-card"><p style="color:var(--text-secondary);font-size:0.88rem;">Could not fetch live price for <strong>${ticker}</strong> Ã¢â‚¬â€ showing AI news analysis below.</p></div>`;
+          resultBox.innerHTML = `<div class="stock-result-card"><p style="color:var(--muted);font-size:.88rem;">Could not fetch live price for <strong>${ticker}</strong> — showing AI news analysis below.</p></div>`;
         }
 
-        // Render news
         if (Array.isArray(newsData) && newsData.length > 0) {
-          newsBox.innerHTML = '<p style="font-weight:700;font-size:0.9rem;margin:16px 0 10px;">Ã°Å¸â€œÂ° News Analysis (AI-powered):</p>';
+          newsBox.innerHTML = '<p style="font-weight:700;font-size:.84rem;margin:14px 0 10px;font-family:JetBrains Mono,monospace;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;">// NEWS ANALYSIS (AI)</p><div class="news-grid" id="newsGridDyn"></div>';
+          const grid = document.getElementById('newsGridDyn');
           newsData.forEach(item => {
-            const sentColor = (item.sentiment || 0) < -20 ? '#ef4444' : (item.sentiment || 0) > 20 ? '#10b981' : '#fbbf24';
-            newsBox.innerHTML += `
-              <div class="news-card">
-                <div class="news-card-header">
-                  <span class="news-source">${item.source} Ã‚Â· ${item.category}</span>
-                  ${item.is_threat ? '<span style="font-size:0.7rem;font-weight:700;color:#ef4444;padding:2px 8px;background:rgba(239,68,68,0.1);border-radius:20px;">Ã¢Å¡Â Ã¯Â¸Â RISK</span>' : ''}
-                </div>
-                <p class="news-title">${item.title}</p>
-                <p class="news-meta">${item.summary}</p>
-                <div style="height:4px;background:var(--bg-tertiary);border-radius:2px;margin-top:8px;">
-                  <div style="width:${Math.min(Math.abs(item.sentiment||0), 100)}%;height:4px;background:${sentColor};border-radius:2px;"></div>
-                </div>
-              </div>`;
+            const sc = (item.sentiment||0) < -20 ? 'var(--danger)' : (item.sentiment||0) > 20 ? 'var(--green)' : '#fbbf24';
+            const dotColor = (item.sentiment||0) < -20 ? 'var(--danger)' : (item.sentiment||0) > 20 ? 'var(--green)' : '#fbbf24';
+            grid.innerHTML += `<div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.source} <span style="color:var(--accent2)">${item.category}</span>${item.is_threat?'<span style="margin-left:auto;font-size:.68rem;color:var(--danger);background:rgba(239,68,68,.1);padding:2px 8px;border-radius:20px;">RISK</span>':''}</div><p class="news-title">${item.title}</p><p class="news-meta">${item.summary}</p><div style="height:4px;background:var(--bg2);border-radius:2px;margin-top:8px;"><div style="width:${Math.min(Math.abs(item.sentiment||0),100)}%;height:4px;background:${sc};border-radius:2px;"></div></div></div>`;
           });
         }
       } catch (e) {
-        await new Promise(r => setTimeout(r, 2200));
+        await new Promise(r => setTimeout(r, 2300));
         if (stockData) {
           resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker}</span><span class="stock-price">${stockData.current_price}</span></div></div>`;
         } else {
-          resultBox.innerHTML = `<p style="color:var(--text-secondary);font-size:0.88rem;padding:12px 0;">Gemini unavailable. Try again shortly.</p>`;
+          resultBox.innerHTML = `<p style="color:var(--muted);font-size:.88rem;padding:12px 0;">Gemini unavailable. Try again shortly.</p>`;
         }
       }
-
-      btn.textContent = 'Analyze';
-      btn.disabled = false;
+      btn.textContent = 'Analyze'; btn.disabled = false;
     }
 
-    document.getElementById('tickerInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') analyzeStock();
-    });
+    document.getElementById('tickerInput').addEventListener('keydown', e => { if (e.key === 'Enter') analyzeStock(); });
   </script>
 </body>
 </html>
-
-      const btn = document.getElementById('analyzeBtn');
-      if (!ticker) return;
-
-      btn.textContent = 'Analyzing...';
-      btn.disabled = true;
-      resultBox.innerHTML = `<p class="loading-msg">Ã°Å¸â€œÂ¡ Fetching market data for <strong>${ticker}</strong>...</p>`;
-      newsBox.innerHTML = '';
-
-      try {
-        const res = await fetch(`${BACKEND_BASE}/api/scout/analyze`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ticker })
-        });
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        const data = await res.json();
-        const s = data.stock || {};
-        const n = data.news || {};
-
-        const iscrashing = s.is_crashing;
-        const dropColor = (s.drop_percent || 0) < -3 ? '#ef4444' : (s.drop_percent || 0) > 1 ? '#10b981' : '#fbbf24';
-
-        resultBox.innerHTML = `
-          <div class="stock-result-card">
-            <div class="stock-header">
-              <span class="stock-ticker">${data.ticker || ticker}</span>
-              <span class="stock-price">${s.current_price ? 'Ã¢â€šÂ¹' + s.current_price : 'N/A'}</span>
-            </div>
-            <div class="stock-metrics">
-              <span class="stock-metric">Drop: <strong style="color:${dropColor}">${s.drop_percent ?? 0}%</strong></span>
-              <span class="stock-metric">Z-Score: <strong>${s.z_score ?? 0}</strong></span>
-              <span class="stock-metric">Crashing: <strong style="color:${iscrashing ? '#ef4444' : '#10b981'}">${iscrashing ? 'YES Ã¢Å¡Â Ã¯Â¸Â' : 'No Ã¢Å“â€œ'}</strong></span>
-            </div>
-          </div>`;
-
-        const allNews = [
-          ...(n.company || []).map(x => ({ ...x, cat: 'Company' })),
-          ...(n.ceo || []).map(x => ({ ...x, cat: 'CEO' })),
-          ...(n.analysis || []).map(x => ({ ...x, cat: 'Analysis' }))
-        ].slice(0, 5);
-
-        if (allNews.length > 0) {
-          newsBox.innerHTML = '<p style="font-weight:700;font-size:0.88rem;margin:0 0 10px;">Related News:</p>';
-          allNews.forEach(item => {
-            newsBox.innerHTML += `
-              <div class="news-card">
-                <span class="news-source">${item.cat}</span>
-                <p class="news-title">${item.title || 'No title'}</p>
-                <p class="news-meta">${item.source || ''}</p>
-                ${item.link ? `<a class="news-link" href="${item.link}" target="_blank">Read more Ã¢â€ â€™</a>` : ''}
-              </div>`;
-          });
-        }
-
-      } catch (e) {
-        // Fallback demo when backend is asleep
-        resultBox.innerHTML = `
-          <div class="stock-result-card">
-            <div class="stock-header">
-              <span class="stock-ticker">${ticker}</span>
-              <span class="stock-price" style="color:#64748b">Backend waking up...</span>
-            </div>
-            <div class="stock-metrics">
-              <span class="stock-metric">Demo mode Ã¢â‚¬â€ <strong>connect backend for live data</strong></span>
-            </div>
-          </div>`;
-      }
-
-      btn.textContent = 'Analyze';
-      btn.disabled = false;
-    }
-
-    document.getElementById('tickerInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') analyzeStock();
-    });
-  </script>
-</body>
-</html>
-
-

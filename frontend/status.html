@@ -17,21 +17,7 @@
 <body>
   <script>window.AEGIS_ACTIVE='';</script>
   <script src="aegis-nav.js"></script>
-  <header class="navbar">
-    <div class="nav-content">
-      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height: 60px;"></div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="agents.html">Agents</a>
-        <a href="about.html">About</a>
-        <a href="dashboard.html">Live Dashboard</a>
-        <a href="submit.html">Submit Claim</a>
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-          <span class="theme-icon">ðŸŒ™</span>
-        </button>
-      </nav>
-    </div>
-  </header>
+  
 
   <main class="container">
     <section class="page-header" data-reveal data-reveal-delay="0.1s">
@@ -212,7 +198,7 @@
         if (data.status === 'pending') {
           html += `
             <div class="debug-banner info" style="margin-top: 1rem;">
-              â³ This claim is still being processed. The page will auto-refresh in 5 seconds...
+              â This claim is still being processed. The page will auto-refresh in 5 seconds...
             </div>
           `;
           setTimeout(() => checkStatus(claimId), 5000);

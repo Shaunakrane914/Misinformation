@@ -23,6 +23,16 @@
   --text:    #e2e8f0;
   --muted:   #64748b;
   --glow:    rgba(59,130,246,0.35);
+
+  /* ── Legacy aliases (for agent pages using old dashboard.css vars) ── */
+  --bg-primary:    #0f1629;
+  --bg-secondary:  #0a0f1e;
+  --bg-tertiary:   #141d38;
+  --text-primary:  #e2e8f0;
+  --text-secondary:#64748b;
+  --text-muted:    #64748b;
+  --primary:       #3b82f6;
+  --primary-dark:  #2563eb;
 }
 
 html { scroll-behavior: smooth; }

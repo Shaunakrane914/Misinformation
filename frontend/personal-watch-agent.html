@@ -128,24 +128,10 @@
 <body>
   <script>window.AEGIS_ACTIVE='agents';</script>
   <script src="aegis-nav.js"></script>
-  <header class="navbar">
-    <div class="nav-content">
-      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height:60px;"></div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/agents">Agents</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Live Dashboard</a>
-        <a href="/submit">Submit Claim</a>
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode">
-          <span class="theme-icon">ðŸŒ™</span>
-        </button>
-      </nav>
-    </div>
-  </header>
+  
 
   <!-- HERO -->
-  <div class="agent-hero">
+  <div class="agent-hero" style="padding-top:100px;">
     <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent Â· Active</div>
     <h1>ðŸ‘¤ <span>Personal Watch</span> Agent</h1>
     <p>Monitor your name, personal brand, or anyone's reputation across the web. Detect defamation, negative sentiment spikes, and misinformation campaigns in real-time.</p>
@@ -191,7 +177,7 @@
       </div>
 
       <div class="panel">
-        <h3>â¤ï¸ Reputation Health Score</h3>
+        <h3>âï Reputation Health Score</h3>
         <div class="health-section">
           <div class="health-circle"><span class="health-score">75</span></div>
           <p class="health-status">Good</p>
@@ -222,11 +208,11 @@
           </div>
           <div class="mention-card negative">
             <div class="mention-header">
-              <span class="mention-source">ðŸ¦ Twitter Â· Social</span>
+              <span class="mention-source">ðŸ Twitter Â· Social</span>
               <span class="sentiment-chip chip-neg">ðŸ˜  Negative</span>
             </div>
             <p class="mention-text">"Thread claiming [Name] defrauded investors gaining traction â€” 450 retweets. Claim appears unsubstantiated and lacks sources."</p>
-            <p class="mention-meta">4 hours ago Â· 12.4K impressions Â· âš ï¸ THREAT DETECTED</p>
+            <p class="mention-meta">4 hours ago Â· 12.4K impressions Â· âš ï THREAT DETECTED</p>
           </div>
           <div class="mention-card neutral">
             <div class="mention-header">
@@ -252,7 +238,7 @@
               <span class="sentiment-chip chip-neg">ðŸ˜  Negative</span>
             </div>
             <p class="mention-text">"Video titled 'The Truth About [Name]' uploaded by unverified channel with 32K views. Content contains unverified claims."</p>
-            <p class="mention-meta">2 days ago Â· 32K views Â· âš ï¸ INVESTIGATING</p>
+            <p class="mention-meta">2 days ago Â· 32K views Â· âš ï INVESTIGATING</p>
           </div>
           <div class="mention-card neutral">
             <div class="mention-header">
@@ -268,11 +254,11 @@
 
     <!-- HOW IT WORKS -->
     <div class="mt-8" data-reveal data-reveal-delay="0.2s">
-      <p class="section-title">âš™ï¸ How Personal Watch Works</p>
+      <p class="section-title">âš™ï How Personal Watch Works</p>
       <p class="section-sub">Continuous AI-powered reputation surveillance so you're always one step ahead</p>
       <div class="feature-grid">
         <div class="feature-item">
-          <span class="feature-item-icon">ðŸ•·ï¸</span>
+          <span class="feature-item-icon">ðŸ•·ï</span>
           <div>
             <p class="feature-item-title">Web-Wide Crawling</p>
             <p class="feature-item-desc">Monitors 50+ sources including news sites, Twitter/X, Instagram, YouTube, Reddit, LinkedIn, and regional news outlets.</p>
@@ -321,7 +307,7 @@
   <script src="gemini-client.js"></script>
   <script>
     const WATCH_PLATFORMS = [
-      { name: 'X / Twitter', icon: 'ðŸ¦', color: '#1d9bf0' },
+      { name: 'X / Twitter', icon: 'ðŸ', color: '#1d9bf0' },
       { name: 'Google News', icon: 'ðŸ“°', color: '#4285f4' },
       { name: 'YouTube', icon: 'ðŸ“¹', color: '#ff0000' },
       { name: 'Reddit', icon: 'ðŸ¤–', color: '#ff4500' },
@@ -335,7 +321,7 @@
       WATCH_PLATFORMS.forEach(p => {
         const row = document.createElement('div');
         row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:10px;font-size:0.82rem;';
-        row.innerHTML = `<span>${p.icon}</span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="pw_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â³ Monitoring...</span>`;
+        row.innerHTML = `<span>${p.icon}</span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="pw_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â Monitoring...</span>`;
         wrap.appendChild(row);
       });
       container.appendChild(wrap);
@@ -398,7 +384,7 @@ Be realistic and specific to the person/brand "${input}".`;
           mentionHtml = '<p style="font-weight:700;font-size:0.82rem;margin:12px 0 6px;">Recent Mentions:</p>';
           data.top_mentions.forEach(m => {
             const sColor = m.sentiment === 'Positive' ? '#10b981' : m.sentiment === 'Negative' ? '#ef4444' : '#94a3b8';
-            mentionHtml += `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:var(--bg-primary);border-radius:8px;margin-bottom:5px;font-size:0.8rem;border-left:3px solid ${sColor};">${m.is_threat ? 'âš ï¸' : 'ðŸ’¬'} <span><strong style="color:#94a3b8;">${m.platform}:</strong> ${m.title}</span></div>`;
+            mentionHtml += `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:var(--bg-primary);border-radius:8px;margin-bottom:5px;font-size:0.8rem;border-left:3px solid ${sColor};">${m.is_threat ? 'âš ï' : 'ðŸ’¬'} <span><strong style="color:#94a3b8;">${m.platform}:</strong> ${m.title}</span></div>`;
           });
         }
 

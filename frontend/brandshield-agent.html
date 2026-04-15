@@ -132,26 +132,12 @@
 <body>
   <script>window.AEGIS_ACTIVE='agents';</script>
   <script src="aegis-nav.js"></script>
-  <header class="navbar">
-    <div class="nav-content">
-      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height:60px;"></div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/agents">Agents</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Live Dashboard</a>
-        <a href="/submit">Submit Claim</a>
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode">
-          <span class="theme-icon">ðŸŒ™</span>
-        </button>
-      </nav>
-    </div>
-  </header>
+  
 
   <!-- HERO -->
-  <div class="agent-hero">
+  <div class="agent-hero" style="padding-top:100px;">
     <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent Â· Active</div>
-    <h1>ðŸ›¡ï¸ <span>BrandShield</span> Agent</h1>
+    <h1>ðŸ›¡ï <span>BrandShield</span> Agent</h1>
     <p>Protect your brand from fake reviews, counterfeit listings, and misleading advertising with Gemini-powered AI analysis that works around the clock.</p>
     <div class="hero-stats">
       <div class="hero-stat"><div class="hero-stat-val">2.1K+</div><div class="hero-stat-label">Fake Reviews Flagged</div></div>
@@ -171,7 +157,7 @@
         <div class="mini-stat-label">Fake Reviews Detected This Month</div>
       </div>
       <div class="mini-stat">
-        <div class="mini-stat-icon">ðŸ·ï¸</div>
+        <div class="mini-stat-icon">ðŸï</div>
         <div class="mini-stat-val">89</div>
         <div class="mini-stat-label">Counterfeit Listings Flagged</div>
       </div>
@@ -206,7 +192,7 @@
           </div>
         </div>
         <div class="threat-item">
-          <div class="threat-icon">ðŸ·ï¸</div>
+          <div class="threat-icon">ðŸï</div>
           <div>
             <p class="threat-title">Counterfeit listings using brand assets on Flipkart</p>
             <p class="threat-meta"><span class="severity-high">â— HIGH SEVERITY</span> Â· Detected 5h ago Â· 12 listings</p>
@@ -220,7 +206,7 @@
           </div>
         </div>
         <div class="threat-item">
-          <div class="threat-icon">âš ï¸</div>
+          <div class="threat-icon">âš ï</div>
           <div>
             <p class="threat-title">Unusual spike in 5-star reviews (possible manipulation)</p>
             <p class="threat-meta"><span class="severity-med">â— MEDIUM SEVERITY</span> Â· Detected 2d ago Â· 31 reviews</p>
@@ -237,7 +223,7 @@
         <div>
           <div class="review-card fake">
             <div class="review-header">
-              <span class="reviewer">â­ user_a7xq92</span>
+              <span class="reviewer">â user_a7xq92</span>
               <span class="verdict-pill pill-fake">ðŸš« Fake</span>
             </div>
             <div class="stars">â˜…â˜…â˜…â˜…â˜…</div>
@@ -246,7 +232,7 @@
           </div>
           <div class="review-card legit">
             <div class="review-header">
-              <span class="reviewer">â­ priya_sharma_del</span>
+              <span class="reviewer">â priya_sharma_del</span>
               <span class="verdict-pill pill-legit">âœ… Legitimate</span>
             </div>
             <div class="stars">â˜…â˜…â˜…â˜†â˜†</div>
@@ -257,8 +243,8 @@
         <div>
           <div class="review-card suspicious">
             <div class="review-header">
-              <span class="reviewer">â­ john_k_reviews</span>
-              <span class="verdict-pill pill-suspicious">âš ï¸ Suspicious</span>
+              <span class="reviewer">â john_k_reviews</span>
+              <span class="verdict-pill pill-suspicious">âš ï Suspicious</span>
             </div>
             <div class="stars">â˜…â˜†â˜†â˜†â˜†</div>
             <p class="review-text">"Worst product ever. Complete waste of money. Don't buy this. Zero quality."</p>
@@ -266,7 +252,7 @@
           </div>
           <div class="review-card legit">
             <div class="review-header">
-              <span class="reviewer">â­ rahul_tech_2023</span>
+              <span class="reviewer">â rahul_tech_2023</span>
               <span class="verdict-pill pill-legit">âœ… Legitimate</span>
             </div>
             <div class="stars">â˜…â˜…â˜…â˜…â˜†</div>
@@ -279,7 +265,7 @@
 
     <!-- HOW IT WORKS -->
     <div class="mt-8" data-reveal data-reveal-delay="0.2s">
-      <p class="section-title">âš™ï¸ How BrandShield Works</p>
+      <p class="section-title">âš™ï How BrandShield Works</p>
       <p class="section-sub">A 5-stage AI pipeline that continuously monitors and protects your brand</p>
       <div class="feature-grid">
         <div class="feature-item">
@@ -333,8 +319,8 @@
   <script>
     const BRAND_PLATFORMS = [
       { name: 'Amazon', icon: 'ðŸ›’', color: '#ff9900' },
-      { name: 'Flipkart', icon: 'ðŸª', color: '#2874f0' },
-      { name: 'Trustpilot', icon: 'â­', color: '#00b67a' },
+      { name: 'Flipkart', icon: 'ðŸ', color: '#2874f0' },
+      { name: 'Trustpilot', icon: 'â', color: '#00b67a' },
       { name: 'Reddit', icon: 'ðŸ¤–', color: '#ff4500' },
       { name: 'Google Reviews', icon: 'ðŸ”', color: '#4285f4' },
     ];
@@ -346,7 +332,7 @@
       BRAND_PLATFORMS.forEach(p => {
         const row = document.createElement('div');
         row.style.cssText = 'display:flex;align-items:center;gap:10px;padding:8px 14px;background:var(--bg-tertiary);border:1px solid var(--border);border-radius:10px;font-size:0.82rem;';
-        row.innerHTML = `<span>${p.icon}</span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="bs_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â³ Scanning...</span>`;
+        row.innerHTML = `<span>${p.icon}</span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="bs_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â Scanning...</span>`;
         wrap.appendChild(row);
       });
       container.appendChild(wrap);
@@ -401,7 +387,7 @@ Be realistic and specific to the brand/product "${input}".`;
         if (data.top_threats && data.top_threats.length > 0) {
           threatHtml = '<p style="font-weight:700;font-size:0.82rem;margin:12px 0 6px;">Top Threats:</p>';
           data.top_threats.forEach(t => {
-            threatHtml += `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:rgba(239,68,68,0.05);border-radius:8px;margin-bottom:5px;font-size:0.8rem;"><span>âš ï¸</span><span><strong style="color:#94a3b8;">${t.platform}:</strong> ${t.threat}</span></div>`;
+            threatHtml += `<div style="display:flex;gap:8px;align-items:flex-start;padding:6px 10px;background:rgba(239,68,68,0.05);border-radius:8px;margin-bottom:5px;font-size:0.8rem;"><span>âš ï</span><span><strong style="color:#94a3b8;">${t.platform}:</strong> ${t.threat}</span></div>`;
           });
         }
 

@@ -4,7 +4,28 @@
  * Set window.AEGIS_ACTIVE to the current page key before loading.
  */
 (function() {
-  // ── Inject cursor elements ──
+  // ── Inject SVG Favicon ──
+  if (!document.querySelector('link[rel="icon"]')) {
+    const fav = document.createElement('link');
+    fav.rel = 'icon';
+    fav.type = 'image/svg+xml';
+    fav.href = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><rect width='28' height='28' rx='6' fill='%230f1629'/><path d='M14 3L23 7.5V14C23 18.9 19 23.2 14 24.5C9 23.2 5 18.9 5 14V7.5L14 3Z' fill='%231e40af' stroke='%233b82f6' stroke-width='1.5'/><path d='M10.5 14L13 16.5L17.5 11.5' stroke='%233b82f6' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/></svg>";
+    document.head.appendChild(fav);
+  }
+
+  // ── Remove old navbar (prevents double navbar on agent pages) ──
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('header.navbar, header:not(.ae-nav)').forEach(el => {
+      if (!el.classList.contains('ae-nav')) el.remove();
+    });
+  });
+
+  // ── Also remove synchronously in case it's already rendered ──
+  setTimeout(() => {
+    document.querySelectorAll('header.navbar').forEach(el => el.remove());
+  }, 0);
+
+
   const cur = document.createElement('div'); cur.id = 'aeCursor';
   const ring = document.createElement('div'); ring.id = 'aeCursorRing';
   document.body.prepend(ring); document.body.prepend(cur);

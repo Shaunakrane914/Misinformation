@@ -1,9 +1,9 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trending Agent â€“ Aegis Protocol</title>
+  <title>Trending Agent — Aegis Protocol</title>
   
   
   
@@ -142,24 +142,10 @@
 <body>
   <script>window.AEGIS_ACTIVE='agents';</script>
   <script src="aegis-nav.js"></script>
-  <header class="navbar">
-    <div class="nav-content">
-      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height:60px;"></div>
-      <nav class="nav-links">
-        <a href="/">Home</a>
-        <a href="/agents">Agents</a>
-        <a href="/about">About</a>
-        <a href="/dashboard">Live Dashboard</a>
-        <a href="/submit">Submit Claim</a>
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode">
-          <span class="theme-icon">ðŸŒ™</span>
-        </button>
-      </nav>
-    </div>
-  </header>
+  
 
   <!-- HERO -->
-  <div class="agent-hero">
+  <div class="agent-hero" style="padding-top:100px;">
     <div class="agent-hero-badge"><span class="pulse-dot"></span> AI Agent Â· Active</div>
     <h1>ðŸŽ¬ <span>Trending</span> Agent</h1>
     <p>Real-time Bollywood & entertainment threat intelligence. Scan celebrities, films, and cultural topics for misinformation spreading across news and social media.</p>
@@ -180,10 +166,10 @@
         <div class="dark-card">
           <h3>ðŸŽ¯ Monitored Assets</h3>
           <div id="assetList">
-            <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-icon">â­</span>Deepika Padukone</div>
-            <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-icon">â­</span>Shah Rukh Khan</div>
-            <div class="asset-item" onclick="selectAsset('Ranveer Singh')"><span class="asset-icon">â­</span>Ranveer Singh</div>
-            <div class="asset-item" onclick="selectAsset('Alia Bhatt')"><span class="asset-icon">â­</span>Alia Bhatt</div>
+            <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-icon">â</span>Deepika Padukone</div>
+            <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-icon">â</span>Shah Rukh Khan</div>
+            <div class="asset-item" onclick="selectAsset('Ranveer Singh')"><span class="asset-icon">â</span>Ranveer Singh</div>
+            <div class="asset-item" onclick="selectAsset('Alia Bhatt')"><span class="asset-icon">â</span>Alia Bhatt</div>
             <div class="asset-item" onclick="selectAsset('Jawan')"><span class="asset-icon">ðŸŽ¬</span>Jawan</div>
             <div class="asset-item" onclick="selectAsset('Pathaan')"><span class="asset-icon">ðŸŽ¬</span>Pathaan</div>
           </div>
@@ -226,7 +212,7 @@
 
     // â”€â”€ PLATFORM SCAN ANIMATION â”€â”€
     const PLATFORMS = [
-      { name: 'X / Twitter', icon: 'ðŸ¦', color: '#1d9bf0' },
+      { name: 'X / Twitter', icon: 'ðŸ', color: '#1d9bf0' },
       { name: 'Instagram', icon: 'ðŸ“¸', color: '#e1306c' },
       { name: 'Reddit', icon: 'ðŸ¤–', color: '#ff4500' },
       { name: 'Google News', icon: 'ðŸ“°', color: '#4285f4' },
@@ -244,7 +230,7 @@
         row.innerHTML = `
           <span style="font-size:1.1rem;">${p.icon}</span>
           <span style="color:${p.color};font-weight:600;">${p.name}</span>
-          <span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â³ Scanning...</span>`;
+          <span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:#64748b;margin-left:auto;">â Scanning...</span>`;
         wrapper.appendChild(row);
       });
       feed.appendChild(wrapper);
@@ -277,7 +263,7 @@
         card.innerHTML = `
           <div class="tc-header">
             <span class="source-pill">${item.source || 'Unknown'}</span>
-            ${isThreat ? '<span class="threat-pill">âš ï¸ THREAT</span>' : ''}
+            ${isThreat ? '<span class="threat-pill">âš ï THREAT</span>' : ''}
           </div>
           <p class="tc-title"><a href="${item.url || '#'}" target="_blank">${item.title || ''}</a></p>
           <p class="tc-summary">${item.summary || ''}</p>
@@ -362,7 +348,7 @@ Make it realistic and specific to ${currentAsset}. Include at least 2 threats (i
       const name = prompt('Enter celebrity or film name to monitor:');
       if (!name || !name.trim()) return;
       const list = document.getElementById('assetList');
-      const icon = 'â­';
+      const icon = 'â';
       const div = document.createElement('div');
       div.className = 'asset-item';
       div.innerHTML = `<span class="asset-icon">${icon}</span>${name.trim()}`;

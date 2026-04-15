@@ -3,9 +3,21 @@
 // Endpoint: /.netlify/functions/gemini
 
 exports.handler = async (event) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
+  const CORS = {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Content-Type': 'application/json',
+  };
+
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 200, headers: CORS, body: '' };
   }
+
+  if (event.httpMethod !== 'POST') {
+    return { statusCode: 405, headers: CORS, body: 'Method Not Allowed' };
+  }
+
 
   const KEYS = [
     process.env.GEMINI_KEY_1,
@@ -17,8 +29,9 @@ exports.handler = async (event) => {
     return { statusCode: 500, body: JSON.stringify({ error: 'No Gemini keys configured' }) };
   }
 
-  const MODEL = 'gemini-2.5-flash';
+  const MODEL = 'gemini-1.5-flash';
   const BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+
 
   let body;
   try {

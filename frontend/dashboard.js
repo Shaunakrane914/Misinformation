@@ -86,10 +86,12 @@ const STATIC_CLAIMS = [
 // ─────────────────────────────────────────────
 const BACKEND_BASE = "https://misinformation-1ouh.onrender.com";
 const API_URL = `${BACKEND_BASE}/api/dashboard/claims`;
-const HEALTH_URL = `${BACKEND_BASE}/healthz`;
+// /healthz doesn't exist — use the claims endpoint itself as health check
+const HEALTH_URL = `${BACKEND_BASE}/api/dashboard/claims`;
 
 let backendAlive = false;
 let allClaims = [...STATIC_CLAIMS];
+
 
 // ─────────────────────────────────────────────
 // STAT CARDS
@@ -353,21 +355,33 @@ function applyFilters() {
 // INIT
 // ─────────────────────────────────────────────
 window.addEventListener("DOMContentLoaded", () => {
-  // 1. Instantly show static claims
+  // 1. Show static claims instantly — no banner yet
   renderClaims(STATIC_CLAIMS);
-  setStatusBanner("loading");
 
-  // 2. Start polling backend in background
-  pollBackend();
+  // 2. Only show "waking up" banner after 3s if backend hasn't responded yet
+  const bannerTimer = setTimeout(() => {
+    if (!backendAlive) setStatusBanner('loading');
+  }, 3000);
 
-  // 3. Search
+  // 3. Poll backend — clears banner timer if it responds fast
+  pollBackend().then(() => clearTimeout(bannerTimer)).catch(() => {});
+
+  // 4. Auto-hide waking banner after 90s regardless (Render max cold-start)
+  setTimeout(() => {
+    if (!backendAlive) {
+      const b = document.getElementById('statusBanner');
+      if (b) b.style.display = 'none';
+    }
+  }, 90000);
+
+  // 5. Search
   const searchInput = document.getElementById('searchInput');
   if (searchInput) {
     let t;
     searchInput.addEventListener('input', () => { clearTimeout(t); t = setTimeout(applyFilters, 300); });
   }
 
-  // 4. Filter buttons
+  // 6. Filter buttons
   document.querySelectorAll('.filter-btn, .db-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       document.querySelectorAll('.filter-btn, .db-filter-btn').forEach(b => b.classList.remove('active'));
@@ -376,11 +390,10 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // 5. Refresh button
+  // 7. Refresh button
   const refreshBtn = document.getElementById('refreshBtn');
   if (refreshBtn) {
     refreshBtn.addEventListener('click', async () => {
-      refreshBtn.classList.add('spinning');
       if (backendAlive) {
         try {
           const res = await fetch(API_URL, { cache: "no-store" });
@@ -390,7 +403,8 @@ window.addEventListener("DOMContentLoaded", () => {
         renderClaims(STATIC_CLAIMS);
       }
       applyFilters();
-      setTimeout(() => refreshBtn.classList.remove('spinning'), 1000);
     });
   }
 });
+
+

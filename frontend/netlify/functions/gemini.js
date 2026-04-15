@@ -41,8 +41,9 @@ exports.handler = async (event) => {
   }
 
 
-  const MODEL = 'gemini-1.5-flash';
-  const BASE_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL}:generateContent`;
+  const MODEL = 'gemini-1.5-flash-latest';
+  const BASE_URL = `https://generativelanguage.googleapis.com/v1/models/${MODEL}:generateContent`;
+
 
 
   let body;

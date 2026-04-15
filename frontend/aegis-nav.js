@@ -85,9 +85,30 @@
       </svg>
       Aegis Protocol
     </a>
+    <button class="ae-hamburger" aria-label="Toggle Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="6" x2="20" y2="6"></line>
+        <line x1="4" y1="18" x2="20" y2="18"></line>
+      </svg>
+    </button>
     <nav class="ae-nav-links">${links}</nav>`;
 
   document.body.prepend(nav);
+
+  // ── Mobile Menu Logic ──
+  const hamburger = nav.querySelector('.ae-hamburger');
+  const navLinks = nav.querySelector('.ae-nav-links');
+  if (hamburger && navLinks) {
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('ae-mobile-open');
+      if (navLinks.classList.contains('ae-mobile-open')) {
+        hamburger.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>`;
+      } else {
+        hamburger.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="20" y2="12"></line><line x1="4" y1="6" x2="20" y2="6"></line><line x1="4" y1="18" x2="20" y2="18"></line></svg>`;
+      }
+    });
+  }
 
   // ── Reveal on scroll ──
   const observer = new IntersectionObserver(entries => {

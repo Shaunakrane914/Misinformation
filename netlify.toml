@@ -1,6 +1,7 @@
 [build]
-  base    = "frontend"
-  publish = "."
+  base      = "frontend"
+  publish   = "."
+  functions = "netlify/functions"
 
 [[redirects]]
   from   = "/*"

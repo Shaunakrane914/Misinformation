@@ -54,11 +54,12 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Missing prompt' }) };
   }
 
-  // Try models in order: 2.0-flash has highest free quota, 1.5-flash as fallback
+  // Try models in order: 2.5-flash, 2.0-flash, and flash-latest fallback.
+  // The user's specific API key has access to v1beta 2.5 and 2.0 models.
   const MODELS = [
+    { model: 'gemini-2.5-flash', version: 'v1beta' },
     { model: 'gemini-2.0-flash', version: 'v1beta' },
-    { model: 'gemini-1.5-flash-latest', version: 'v1' },
-    { model: 'gemini-1.5-flash', version: 'v1' },
+    { model: 'gemini-flash-latest', version: 'v1beta' },
   ];
 
   const lastErrors = [];

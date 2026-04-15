@@ -1,178 +1,172 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Submit Claim - Misinformation Detection</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="dashboard.css">
-  <link rel="stylesheet" href="theme-extras.css">
-  <script src="transitions.js" defer></script>
-  <script src="theme-interactive.js" defer></script>
+  <title>Submit Claim — Aegis Protocol</title>
+  <link rel="stylesheet" href="aegis-theme.css">
+  <style>
+    .submit-layout {
+      display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start;
+    }
+    .example-pill {
+      padding: 9px 14px; background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 10px; font-size: .83rem; color: var(--muted);
+      cursor: none; transition: border-color .15s, color .15s; line-height: 1.5;
+    }
+    .example-pill:hover { border-color: var(--accent); color: var(--text); }
+    .result-box {
+      display: none; padding: 20px 24px; border-radius: 14px;
+      border: 1px solid var(--border); background: var(--surface);
+      margin-top: 20px; font-size: .9rem; line-height: 1.7;
+    }
+    .result-box.show { display: block; }
+    .result-box.ok  { border-color: rgba(16,185,129,.3); background: rgba(16,185,129,.05); }
+    .result-box.err { border-color: rgba(239,68,68,.3); background: rgba(239,68,68,.05); }
+    .char-count { font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--muted); text-align:right; margin-top:5px; }
+    @media(max-width:860px){ .submit-layout { grid-template-columns:1fr; } }
+  </style>
 </head>
-
 <body>
-  <header class="navbar">
-    <div class="nav-content">
-      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height: 60px;"></div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="agents.html">Agents</a>
-        <a href="about.html">About</a>
-        <a href="dashboard.html">Live Dashboard</a>
-        <a class="pill" href="submit.html">Submit Claim</a>
-        <!-- Dark Mode Toggle in Navbar -->
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-          <span class="theme-icon">ðŸŒ™</span>
-        </button>
-      </nav>
-    </div>
-  </header>
+  <script>window.AEGIS_ACTIVE='submit';</script>
+  <script src="aegis-nav.js"></script>
 
-  <main class="container">
-    <section class="page-header" data-reveal data-reveal-delay="0.1s">
+  <div class="ae-page">
+    <div class="ae-page-hero ae-reveal">
+      <div class="ae-page-label">// CLAIM VERIFIER</div>
       <h1>Submit a Claim</h1>
-      <p>Enter a misinformation claim to be analyzed by our AI-powered detection system.</p>
-    </section>
+      <p>Enter any statement and our AI agents will research, evaluate and return a verdict with evidence.</p>
+    </div>
 
-    <section class="card mb-3" data-reveal data-reveal-delay="0.2s">
-      <form id="claimForm">
-        <label for="claimText">Claim Text *</label>
-        <textarea id="claimText" rows="5" placeholder="Enter the claim you want to verify..." required></textarea>
-        <div class="char-counter" id="charCounter">0 / 1000 characters</div>
+    <div class="ae-section">
+      <div class="ae-container">
+        <div class="submit-layout ae-reveal">
 
-        <label for="sourceUrl" style="margin-top: 1rem;">Source URL (Optional)</label>
-        <input type="url" id="sourceUrl" placeholder="https://example.com/article" style="margin-bottom: 0;">
-        <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0.5rem 0 1rem 0;">
-          Provide a link to where you found this claim (optional but helpful)
-        </p>
+          <!-- Form -->
+          <div class="ae-card">
+            <div class="ae-label mb-12">// CLAIM INPUT</div>
+            <form id="claimForm">
+              <div class="ae-form-group">
+                <label for="claimText">Claim Text <span style="color:var(--danger)">*</span></label>
+                <textarea id="claimText" class="ae-textarea" rows="6"
+                  placeholder="Enter the claim you want to verify..." required></textarea>
+                <div class="char-count" id="charCounter">0 / 1000</div>
+              </div>
 
-        <button type="submit" class="toggle-btn mt-2" id="submitBtn">
-          <span id="btnText">Submit Claim</span>
-        </button>
-      </form>
+              <div class="ae-form-group">
+                <label for="sourceUrl">Source URL <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+                <input type="url" id="sourceUrl" class="ae-input" placeholder="https://example.com/article">
+                <p style="font-size:.8rem;color:var(--muted);margin-top:4px;">Provide a link to where you found this claim</p>
+              </div>
 
-      <!-- Example Claims Section -->
-      <div class="examples-section" style="margin-top: 2rem;">
-        <h3>ðŸ’¡ Try These Example Claims</h3>
-        <p style="font-size: 0.875rem; color: var(--text-secondary); margin-bottom: 1rem;">
-          Click any example below to auto-fill the form
-        </p>
-        <div class="examples-grid">
-          <div class="example-claim" onclick="fillExample('The Earth is flat and governments are hiding the truth.')">
-            "The Earth is flat and governments are hiding the truth."
+              <button type="submit" class="ae-btn ae-btn-primary w-full mt-8" id="submitBtn" style="justify-content:center;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                <span id="btnText">Submit Claim</span>
+              </button>
+            </form>
+
+            <div class="result-box" id="resultBox">
+              <div id="resultContent"></div>
+              <div id="resultActions" style="display:none;margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
+                <button id="viewStatusBtn" class="ae-btn ae-btn-primary ae-btn-sm">View Status</button>
+                <button id="submitAnotherBtn" class="ae-btn ae-btn-ghost ae-btn-sm">Submit Another</button>
+              </div>
+            </div>
           </div>
-          <div class="example-claim"
-            onclick="fillExample('Drinking 8 glasses of water a day is essential for everyone.')">
-            "Drinking 8 glasses of water a day is essential for everyone."
+
+          <!-- Sidebar -->
+          <div style="display:flex;flex-direction:column;gap:18px;">
+            <div class="ae-card">
+              <div class="ae-label mb-12">// EXAMPLE CLAIMS</div>
+              <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;">Click any to auto-fill the form</p>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div class="example-pill" onclick="fillExample('The Earth is flat and governments are hiding the truth.')">The Earth is flat and governments are hiding the truth.</div>
+                <div class="example-pill" onclick="fillExample('Drinking 8 glasses of water a day is essential for everyone.')">Drinking 8 glasses of water a day is essential for everyone.</div>
+                <div class="example-pill" onclick="fillExample('Vaccines cause autism in children.')">Vaccines cause autism in children.</div>
+                <div class="example-pill" onclick="fillExample('The Great Wall of China is visible from space with the naked eye.')">The Great Wall of China is visible from space.</div>
+                <div class="example-pill" onclick="fillExample('Humans only use 10% of their brain capacity.')">Humans only use 10% of their brain capacity.</div>
+              </div>
+            </div>
+
+            <div class="ae-card">
+              <div class="ae-label mb-12">// HOW IT WORKS</div>
+              <div style="display:flex;flex-direction:column;gap:12px;">
+                <div class="ae-row gap-12">
+                  <div class="ae-badge ae-badge-blue" style="flex-shrink:0;padding:4px 8px;">01</div>
+                  <span style="font-size:.83rem;color:var(--muted);">Ingestion Agent normalizes your claim</span>
+                </div>
+                <div class="ae-row gap-12">
+                  <div class="ae-badge ae-badge-purple" style="flex-shrink:0;padding:4px 8px;">02</div>
+                  <span style="font-size:.83rem;color:var(--muted);">Research Agent gathers evidence for &amp; against</span>
+                </div>
+                <div class="ae-row gap-12">
+                  <div class="ae-badge ae-badge-yellow" style="flex-shrink:0;padding:4px 8px;">03</div>
+                  <span style="font-size:.83rem;color:var(--muted);">Investigator Agent delivers a final verdict</span>
+                </div>
+              </div>
+              <p style="font-size:.78rem;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">Typical processing time: <strong style="color:var(--text);">10–30 seconds</strong></p>
+            </div>
           </div>
-          <div class="example-claim" onclick="fillExample('Vaccines cause autism in children.')">
-            "Vaccines cause autism in children."
-          </div>
-          <div class="example-claim"
-            onclick="fillExample('The Great Wall of China is visible from space with the naked eye.')">
-            "The Great Wall of China is visible from space with the naked eye."
-          </div>
-          <div class="example-claim" onclick="fillExample('Humans only use 10% of their brain capacity.')">
-            "Humans only use 10% of their brain capacity."
-          </div>
+
         </div>
       </div>
-    </section>
+    </div>
 
-    <section class="card" id="resultCard" style="display:none;" data-reveal data-reveal-delay="0.3s">
-      <h3 id="resultTitle">Result</h3>
-      <div id="resultContent"></div>
-      <div id="resultActions" style="margin-top: 1rem; display: none;">
-        <button id="viewStatusBtn" class="toggle-btn">View Full Status</button>
-        <button id="submitAnotherBtn" class="toggle-btn"
-          style="background: var(--text-secondary); margin-left: 0.5rem;">Submit Another</button>
-      </div>
-    </section>
-  </main>
+    <footer class="ae-footer">
+      <span>Aegis Protocol &copy; 2025</span>
+      <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
+      <span>Built with multi-agent AI</span>
+    </footer>
+  </div>
 
   <script>
-    const API_BASE = 'http://127.0.0.1:8000';
+    const BACKEND = 'https://misinformation-1ouh.onrender.com';
     const form = document.getElementById('claimForm');
-    const resultCard = document.getElementById('resultCard');
+    const resultBox = document.getElementById('resultBox');
     const resultContent = document.getElementById('resultContent');
     const resultActions = document.getElementById('resultActions');
     const submitBtn = document.getElementById('submitBtn');
     const btnText = document.getElementById('btnText');
-
     let currentClaimId = null;
 
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const claimText = document.getElementById('claimText').value.trim();
-      const sourceUrl = document.getElementById('sourceUrl').value.trim();
+    // Char counter
+    const ta = document.getElementById('claimText');
+    const cc = document.getElementById('charCounter');
+    ta.addEventListener('input', () => { cc.textContent = `${ta.value.length} / 1000`; });
 
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+      const claimText = ta.value.trim();
+      const sourceUrl = document.getElementById('sourceUrl').value.trim();
       if (!claimText) return;
 
-      // Show loading state
       submitBtn.disabled = true;
       btnText.textContent = 'Submitting...';
-      resultCard.style.display = 'none';
+      resultBox.className = 'result-box';
+      resultBox.classList.remove('show');
 
       try {
         const payload = { claim_text: claimText };
-        if (sourceUrl) {
-          payload.source_url = sourceUrl;
-        }
+        if (sourceUrl) payload.source_url = sourceUrl;
 
-        const res = await fetch(`${API_BASE}/api/claims/submit`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch(`${BACKEND}/api/claims/submit`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(payload)
         });
-
-        if (!res.ok) {
-          throw new Error(`Server error: ${res.status}`);
-        }
-
+        if (!res.ok) throw new Error(`Server error ${res.status}`);
         const data = await res.json();
         currentClaimId = data.claim_id;
 
-        resultCard.style.display = 'block';
+        resultBox.classList.add('show', 'ok');
+        resultContent.innerHTML = data.is_new === false
+          ? `<strong>This claim was already processed.</strong><br>Claim ID: <code style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent)">${data.claim_id}</code><br>Status: <strong>${data.status}</strong>`
+          : `<strong style="color:var(--green)">Claim submitted successfully!</strong><br>Claim ID: <code style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent)">${data.claim_id}</code><br><span style="color:var(--muted);font-size:.88rem;">Our agents are analyzing your claim — typically takes 10–30 seconds.</span>`;
 
-        if (data.is_new === false) {
-          // Existing claim
-          resultContent.innerHTML = `
-            <div class="debug-banner info">
-              <p style="margin: 0;"><strong>â„¹ï¸ This claim was already processed!</strong></p>
-              <p style="margin: 0.5rem 0 0 0;">Claim ID: <code>${data.claim_id}</code></p>
-              <p style="margin: 0.5rem 0 0 0;">Status: <span class="badge ${data.status === 'completed' ? 'badge-true' : ''}">${data.status}</span></p>
-            </div>
-          `;
-        } else {
-          // New claim
-          resultContent.innerHTML = `
-            <div class="debug-banner info">
-              <p style="margin: 0;"><strong>âœ… Claim submitted successfully!</strong></p>
-              <p style="margin: 0.5rem 0 0 0;">Claim ID: <code>${data.claim_id}</code></p>
-              <p style="margin: 0.5rem 0 0 0;">Status: <span class="badge">${data.status}</span></p>
-              <p style="margin: 0.75rem 0 0 0; font-size: 0.875rem;">
-                Our AI agents are now analyzing your claim. This typically takes 10-30 seconds.
-              </p>
-            </div>
-          `;
-        }
-
-        resultActions.style.display = 'block';
-
-        // Scroll to result
-        resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
+        resultActions.style.display = 'flex';
+        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } catch (err) {
-        resultCard.style.display = 'block';
-        resultContent.innerHTML = `
-          <div class="debug-banner error">
-            âŒ Error submitting claim: ${err.message}. Please try again.
-          </div>
-        `;
+        resultBox.classList.add('show', 'err');
+        resultContent.innerHTML = `<strong style="color:var(--danger)">Submission failed</strong><br><span style="color:var(--muted);font-size:.88rem;">${err.message} — the backend may be waking up. Try again in 30 seconds.</span>`;
         resultActions.style.display = 'none';
       } finally {
         submitBtn.disabled = false;
@@ -180,51 +174,18 @@
       }
     });
 
-    // View status button
     document.getElementById('viewStatusBtn').addEventListener('click', () => {
-      if (currentClaimId) {
-        window.location.href = `status.html?id=${currentClaimId}`;
-      }
+      if (currentClaimId) window.location.href = `status.html?id=${currentClaimId}`;
     });
-
-    // Submit another button
     document.getElementById('submitAnotherBtn').addEventListener('click', () => {
-      form.reset();
-      resultCard.style.display = 'none';
-      currentClaimId = null;
-      document.getElementById('claimText').focus();
+      form.reset(); cc.textContent = '0 / 1000';
+      resultBox.className = 'result-box'; currentClaimId = null; ta.focus();
     });
 
-    // Character counter functionality
-    const claimTextArea = document.getElementById('claimText');
-    const charCounter = document.getElementById('charCounter');
-    const maxChars = 1000;
-
-    claimTextArea.addEventListener('input', () => {
-      const currentLength = claimTextArea.value.length;
-      charCounter.textContent = `${currentLength} / ${maxChars} characters`;
-
-      // Add warning/error classes
-      charCounter.classList.remove('warning', 'error');
-      if (currentLength > maxChars * 0.9) {
-        charCounter.classList.add('warning');
-      }
-      if (currentLength > maxChars) {
-        charCounter.classList.add('error');
-      }
-    });
-
-    // Function to fill example claims
-    window.fillExample = function (exampleText) {
-      claimTextArea.value = exampleText;
-      // Trigger char counter update
-      claimTextArea.dispatchEvent(new Event('input'));
-      // Smooth scroll to form
-      claimTextArea.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Focus textarea
-      claimTextArea.focus();
+    window.fillExample = text => {
+      ta.value = text; cc.textContent = `${text.length} / 1000`;
+      ta.scrollIntoView({ behavior: 'smooth', block: 'center' }); ta.focus();
     };
   </script>
 </body>
-
 </html>

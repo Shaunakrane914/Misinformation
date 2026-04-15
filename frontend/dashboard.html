@@ -1,124 +1,313 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Live Claims Dashboard</title>
-  
-  
-  
+  <title>Live Dashboard — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
-  
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="dashboard.js" defer></script>
-  
-  
-</head>
+  <style>
+    /* ── DASHBOARD LAYOUT ── */
+    .db-layout {
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 0;
+      min-height: calc(100vh - 62px);
+      position: relative; z-index: 1;
+    }
 
+    /* ── LEFT FEED COLUMN ── */
+    .db-feed {
+      border-right: 1px solid var(--border);
+      padding: 36px 32px;
+      overflow-y: auto;
+    }
+
+    .db-feed-header {
+      display: flex; align-items: flex-start;
+      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .db-title {
+      font-size: 1.6rem; font-weight: 800;
+      letter-spacing: -0.03em; margin-bottom: 6px;
+    }
+
+    .db-live-row { display: flex; align-items: center; gap: 10px; }
+    .db-live-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+      animation: blink 1.5s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
+    .db-live-text { font-size: .8rem; font-weight: 700; color: var(--green); font-family: 'JetBrains Mono', monospace; }
+    .db-live-sub { font-size: .82rem; color: var(--muted); }
+
+    /* Search + filter bar */
+    .db-toolbar {
+      display: flex; align-items: center; gap: 10px;
+      flex-wrap: wrap; margin-bottom: 24px;
+    }
+    .db-search-wrap { position: relative; flex: 1; min-width: 200px; }
+    .db-search-wrap svg {
+      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+      width: 14px; height: 14px; color: var(--muted); pointer-events: none;
+    }
+    #searchInput {
+      width: 100%;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; color: var(--text);
+      font-family: 'Space Grotesk', sans-serif; font-size: .88rem;
+      padding: 9px 14px 9px 36px; outline: none;
+      transition: border-color .18s;
+    }
+    #searchInput:focus { border-color: var(--accent); }
+
+    .db-filters { display: flex; gap: 6px; flex-wrap: wrap; }
+    .db-filter-btn {
+      padding: 7px 14px; border-radius: 8px;
+      font-size: .78rem; font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted);
+      cursor: none; transition: all .15s;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .db-filter-btn:hover, .db-filter-btn.active {
+      border-color: var(--accent); color: var(--accent);
+      background: rgba(59,130,246,.08);
+    }
+
+    .db-refresh-btn {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border-radius: 8px;
+      font-size: .8rem; font-weight: 700;
+      border: 1px solid var(--border);
+      background: var(--surface); color: var(--muted);
+      cursor: none; transition: all .15s;
+      font-family: 'Space Grotesk', sans-serif;
+    }
+    .db-refresh-btn:hover { border-color: var(--accent3); color: var(--accent3); }
+    .db-refresh-btn svg { width: 13px; height: 13px; }
+
+    /* Status banner */
+    #statusBanner {
+      padding: 9px 16px; border-radius: 10px; font-size: .82rem;
+      margin-bottom: 18px; display: none;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    #statusBanner.waking { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25); color: #fbbf24; display:block; }
+    #statusBanner.live   { background: rgba(16,185,129,.1);  border: 1px solid rgba(16,185,129,.25);  color: #34d399;  display:block; }
+
+    /* Claims list */
+    #claimsContainer { display: flex; flex-direction: column; gap: 14px; }
+
+    /* Claim card */
+    .claim-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px 22px;
+      transition: border-color .2s, box-shadow .2s;
+    }
+    .claim-card:hover { border-color: var(--border2); box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+
+    /* ── RIGHT SIDEBAR ── */
+    .db-sidebar {
+      padding: 28px 24px;
+      display: flex; flex-direction: column; gap: 20px;
+      position: sticky; top: 62px; height: calc(100vh - 62px); overflow-y: auto;
+    }
+
+    .db-sidebar-title {
+      font-size: .72rem; font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: .12em; color: var(--muted);
+      text-transform: uppercase; margin-bottom: 12px;
+    }
+
+    /* Stat cards */
+    .db-stat-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .db-stat {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 14px 12px; text-align: center;
+      transition: border-color .2s;
+    }
+    .db-stat:hover { border-color: var(--border2); }
+    .db-stat-num { font-size: 1.6rem; font-weight: 800; letter-spacing: -.04em; margin-bottom: 3px; }
+    .db-stat-lbl { font-size: .72rem; font-weight: 600; color: var(--muted); }
+    .db-stat.st-true  .db-stat-num { color: var(--green); }
+    .db-stat.st-false .db-stat-num { color: var(--danger); }
+    .db-stat.st-mis   .db-stat-num { color: var(--yellow); }
+    .db-stat.st-unv   .db-stat-num { color: var(--muted); }
+
+    /* Chart cards */
+    .db-chart-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px;
+    }
+    .db-chart-card h3 { font-size: .84rem; font-weight: 700; margin-bottom: 12px; }
+    .chart-wrap { position: relative; height: 180px; }
+    .chart-wrap-bar { position: relative; height: 140px; }
+
+    @media(max-width: 900px) {
+      .db-layout { grid-template-columns: 1fr; }
+      .db-sidebar { position: static; height: auto; }
+      .db-feed { border-right: none; border-bottom: 1px solid var(--border); }
+    }
+  </style>
+</head>
 <body>
   <script>window.AEGIS_ACTIVE='dashboard';</script>
   <script src="aegis-nav.js"></script>
-  <header class="navbar">
-    <div class="nav-content">
-      <div class="brand"><img src="12.png" alt="Aegis Protocol" style="height: 60px;"></div>
-      <nav class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="agents.html">Agents</a>
-        <a href="about.html">About</a>
-        <a class="pill" href="dashboard.html">Live Dashboard</a>
-        <a href="submit.html">Submit Claim</a>
-        <!-- Dark Mode Toggle in Navbar -->
-        <button class="theme-toggle-nav" id="themeToggle" aria-label="Toggle dark mode" title="Toggle dark/light mode">
-          <span class="theme-icon">ðŸŒ™</span>
-        </button>
-      </nav>
+  <script src="dashboard.js" defer></script>
+
+  <div class="ae-page">
+    <div class="db-layout">
+
+      <!-- LEFT: Claims Feed -->
+      <div class="db-feed">
+        <div class="db-feed-header">
+          <div>
+            <div class="db-title">Verified Claims Feed</div>
+            <div class="db-live-row">
+              <div class="db-live-dot"></div>
+              <span class="db-live-text">LIVE</span>
+              <span class="db-live-sub">Showing the latest verified claims from our AI system</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Status banner -->
+        <div id="statusBanner" class="waking">
+          Backend is waking up on Render &middot; Showing cached data &middot; Live AI results will load shortly
+        </div>
+
+        <!-- Toolbar -->
+        <div class="db-toolbar">
+          <div class="db-search-wrap">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+            </svg>
+            <input type="text" id="searchInput" placeholder="Search claims...">
+          </div>
+          <div class="db-filters">
+            <button class="db-filter-btn active" data-filter="all">All</button>
+            <button class="db-filter-btn" data-filter="True">True</button>
+            <button class="db-filter-btn" data-filter="False">False</button>
+            <button class="db-filter-btn" data-filter="Misleading">Misleading</button>
+          </div>
+          <button class="db-refresh-btn" id="refreshBtn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+              <path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+              <path d="M8 16H3v5"/>
+            </svg>
+            Refresh
+          </button>
+        </div>
+
+        <div id="claimsContainer"></div>
+      </div>
+
+      <!-- RIGHT: Stats Sidebar -->
+      <aside class="db-sidebar">
+        <div>
+          <div class="db-sidebar-title">// Verdict Counts</div>
+          <div class="db-stat-grid">
+            <div class="db-stat st-true">
+              <div class="db-stat-num" id="trueCount">0</div>
+              <div class="db-stat-lbl">True</div>
+            </div>
+            <div class="db-stat st-false">
+              <div class="db-stat-num" id="falseCount">0</div>
+              <div class="db-stat-lbl">False</div>
+            </div>
+            <div class="db-stat st-mis">
+              <div class="db-stat-num" id="misleadingCount">0</div>
+              <div class="db-stat-lbl">Misleading</div>
+            </div>
+            <div class="db-stat st-unv">
+              <div class="db-stat-num" id="unverifiedCount">0</div>
+              <div class="db-stat-lbl">Unverified</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="db-chart-card">
+          <h3>Verdict Distribution</h3>
+          <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
+        </div>
+
+        <div class="db-chart-card">
+          <h3>Claims by Verdict</h3>
+          <div class="chart-wrap-bar"><canvas id="barChart"></canvas></div>
+        </div>
+      </aside>
     </div>
-  </header>
 
-  <main class="dashboard-container">
-    <!-- Left Column: Claims Feed -->
-    <div class="feed-column">
-      <section class="page-header" data-reveal data-reveal-delay="0.1s">
-        <h1>ðŸ“‹ Verified Claims Feed</h1>
-        <div style="display: flex; align-items: center; gap: 1rem; margin-top: 1rem; flex-wrap: wrap;">
-          <span class="live-indicator">
-            <span class="live-dot"></span>
-            LIVE
-          </span>
-          <p style="margin: 0;">Showing the latest verified claims from our AI system</p>
-        </div>
-      </section>
+    <footer class="ae-footer">
+      <span>Aegis Protocol &copy; 2025</span>
+      <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
+      <span>Built with multi-agent AI</span>
+    </footer>
+  </div>
 
-      <!-- Search and Filter Bar -->
-      <section class="search-filter-bar" data-reveal data-reveal-delay="0.15s">
-        <div class="search-input-wrapper">
-          <span class="search-icon">ðŸ”</span>
-          <input type="text" id="searchInput" class="search-input" placeholder="Search claims..."
-            aria-label="Search claims">
-        </div>
-        <div class="filter-buttons">
-          <button class="filter-btn active" data-filter="all">All</button>
-          <button class="filter-btn" data-filter="True">True</button>
-          <button class="filter-btn" data-filter="False">False</button>
-          <button class="filter-btn" data-filter="Misleading">Misleading</button>
-        </div>
-        <button class="refresh-btn" id="refreshBtn">
-          <span class="refresh-icon">â†»</span>
-          Refresh
-        </button>
-      </section>
+  <script>
+    // ── Filter / Search UI wiring ──
+    document.addEventListener('DOMContentLoaded', () => {
+      // Filter buttons
+      document.querySelectorAll('.db-filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.db-filter-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          filterClaims();
+        });
+      });
 
-      <section class="claims" data-reveal data-reveal-delay="0.2s">
-        <div id="claimsContainer" class="claims-grid"></div>
-      </section>
-    </div>
+      // Search
+      document.getElementById('searchInput').addEventListener('input', filterClaims);
 
-    <!-- Right Column: Statistics Sidebar -->
-    <aside class="stats-sidebar">
-      <!-- Stat Cards -->
-      <div class="stat-cards-grid" data-reveal data-reveal-delay="0.1s">
-        <div class="stat-card stat-true" data-reveal data-reveal-delay="0.15s">
-          <div class="stat-icon">âœ“</div>
-          <div class="stat-value" id="trueCount">0</div>
-          <div class="stat-label">True</div>
-        </div>
-        <div class="stat-card stat-false" data-reveal data-reveal-delay="0.2s">
-          <div class="stat-icon">âœ—</div>
-          <div class="stat-value" id="falseCount">0</div>
-          <div class="stat-label">False</div>
-        </div>
-        <div class="stat-card stat-misleading" data-reveal data-reveal-delay="0.25s">
-          <div class="stat-icon">âš </div>
-          <div class="stat-value" id="misleadingCount">0</div>
-          <div class="stat-label">Misleading</div>
-        </div>
-        <div class="stat-card stat-unverified" data-reveal data-reveal-delay="0.3s">
-          <div class="stat-icon">?</div>
-          <div class="stat-value" id="unverifiedCount">0</div>
-          <div class="stat-label">Unverified</div>
-        </div>
-      </div>
+      // Refresh
+      document.getElementById('refreshBtn').addEventListener('click', () => {
+        if (typeof renderClaims === 'function') renderClaims(window._allClaims || []);
+        if (typeof initDashboard === 'function') initDashboard();
+      });
+    });
 
-      <!-- Verdict Distribution Chart -->
-      <div class="card" data-reveal data-reveal-delay="0.35s">
-        <h3>Verdict Distribution</h3>
-        <div class="chart-container">
-          <canvas id="pieChart"></canvas>
-        </div>
-      </div>
+    function filterClaims() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const filter = document.querySelector('.db-filter-btn.active')?.dataset.filter || 'all';
+      const cards = document.querySelectorAll('#claimsContainer .claim-card');
+      cards.forEach(card => {
+        const text = card.textContent.toLowerCase();
+        const verdict = card.dataset.verdict || '';
+        const matchFilter = filter === 'all' || verdict === filter;
+        const matchSearch = !query || text.includes(query);
+        card.style.display = (matchFilter && matchSearch) ? '' : 'none';
+      });
+    }
 
-      <!-- Claims Timeline Chart -->
-      <div class="card" data-reveal data-reveal-delay="0.45s">
-        <h3>Claims Timeline</h3>
-        <div class="chart-container-bar">
-          <canvas id="barChart"></canvas>
-        </div>
-      </div>
-    </aside>
-  </main>
+    // Status banner helper (called from dashboard.js)
+    window.setStatusBanner = function(state) {
+      const b = document.getElementById('statusBanner');
+      if (!b) return;
+      if (state === 'waking') {
+        b.className = 'waking';
+        b.textContent = 'Backend is waking up on Render \u00b7 Showing cached data \u00b7 Live AI results will load shortly';
+      } else if (state === 'live') {
+        b.className = 'live';
+        b.textContent = 'Backend is online \u00b7 Showing live AI-verified claims';
+        setTimeout(() => { b.style.opacity='0'; setTimeout(()=>b.style.display='none',400); }, 4000);
+      } else {
+        b.style.display = 'none';
+      }
+    };
+  </script>
 </body>
-
 </html>
-
-

@@ -258,10 +258,15 @@ function buildCard(item) {
 // ─────────────────────────────────────────────
 function renderClaims(data) {
   allClaims = data;
+  window._allClaims = data;
   const container = document.getElementById("claimsContainer");
   if (!container) return;
   container.innerHTML = "";
-  data.forEach(item => container.appendChild(buildCard(item)));
+  data.forEach(item => {
+    const card = buildCard(item);
+    card.dataset.verdict = String(item.verdict);
+    container.appendChild(card);
+  });
   const stats = updateStatCards(data);
   buildPieChart(stats);
   buildBarChart(stats);
@@ -271,25 +276,17 @@ function renderClaims(data) {
 // STATUS BANNER
 // ─────────────────────────────────────────────
 function setStatusBanner(state) {
-  let banner = document.getElementById("backendStatusBanner");
-  if (!banner) {
-    banner = document.createElement("div");
-    banner.id = "backendStatusBanner";
-    banner.style.cssText = "text-align:center;padding:0.5rem 1rem;font-size:0.85rem;font-family:Inter,sans-serif;transition:all 0.4s ease;";
-    const header = document.querySelector(".page-header");
-    if (header) header.insertAdjacentElement("afterend", banner);
+  // Delegate to the HTML-defined helper if available
+  const htmlHelper = window.setStatusBanner;
+  if (typeof htmlHelper === 'function' && htmlHelper !== setStatusBanner) {
+    htmlHelper(state === 'loading' ? 'waking' : state);
+    return;
   }
-  if (state === "loading") {
-    banner.style.cssText += "background:rgba(251,191,36,0.1);color:#fbbf24;border-radius:8px;margin:0.5rem 0;";
-    banner.innerHTML = `⏳ Backend is waking up on Render... Showing cached data. Live AI results will load shortly.`;
-  } else if (state === "live") {
-    banner.style.cssText += "background:rgba(16,185,129,0.1);color:#10b981;border-radius:8px;margin:0.5rem 0;";
-    banner.innerHTML = `✅ Live backend connected — showing real-time AI verified claims.`;
-    setTimeout(() => { banner.style.opacity = "0"; setTimeout(() => banner.remove(), 600); }, 4000);
-  } else if (state === "error") {
-    banner.style.cssText += "background:rgba(239,68,68,0.1);color:#ef4444;border-radius:8px;margin:0.5rem 0;";
-    banner.innerHTML = `⚠️ Backend unavailable. Showing pre-verified sample claims.`;
-  }
+  const b = document.getElementById('statusBanner');
+  if (!b) return;
+  if (state === 'loading') { b.className = 'waking'; b.style.display = 'block'; }
+  else if (state === 'live') { b.className = 'live'; b.style.display = 'block'; setTimeout(() => { b.style.display = 'none'; }, 5000); }
+  else { b.style.display = 'none'; }
 }
 
 // ─────────────────────────────────────────────
@@ -332,7 +329,7 @@ function applyFilters() {
   const container = document.getElementById("claimsContainer");
   if (!container) return;
   const searchTerm = document.getElementById('searchInput')?.value.toLowerCase() || '';
-  const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+  const activeFilter = document.querySelector('.db-filter-btn.active, .filter-btn.active')?.dataset.filter || 'all';
 
   const filtered = allClaims.filter(claim => {
     const matchesSearch = !searchTerm ||
@@ -371,9 +368,9 @@ window.addEventListener("DOMContentLoaded", () => {
   }
 
   // 4. Filter buttons
-  document.querySelectorAll('.filter-btn').forEach(btn => {
+  document.querySelectorAll('.filter-btn, .db-filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.filter-btn, .db-filter-btn').forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       applyFilters();
     });

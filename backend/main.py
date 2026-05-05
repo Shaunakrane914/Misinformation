@@ -256,6 +256,7 @@ async def root():
     return FileResponse("frontend/index.html")
 
 
+@app.post("/api/submit", response_model=ClaimSubmitResponse)
 @app.post("/claims/submit", response_model=ClaimSubmitResponse)
 async def submit_claim(request: ClaimSubmitRequest, background_tasks: BackgroundTasks):
     """

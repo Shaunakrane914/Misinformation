@@ -64,6 +64,7 @@
     agents:    { href: 'agents.html',    label: 'Agents' },
     about:     { href: 'about.html',     label: 'About' },
     dashboard: { href: 'dashboard.html', label: 'Dashboard' },
+    status:    { href: 'status.html',    label: 'Status' },
     submit:    { href: 'submit.html',    label: 'Submit Claim', cta: true },
   };
 

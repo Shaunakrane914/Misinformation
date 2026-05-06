@@ -511,6 +511,12 @@ async def startup_event():
     logger.info("  - InvestigatorAgent: Ready")
     logger.info("=" * 80)
 
+    # ── Start RSS ingestion background loop ──
+    if os.getenv("RSS_INGESTION_ENABLED", "true").lower() != "false":
+        from backend.services.rss_ingestion import rss_ingestion_loop
+        asyncio.create_task(rss_ingestion_loop())
+        logger.info("[FastAPI] RSS ingestion loop scheduled (15 min interval)")
+
 
 @app.on_event("shutdown")
 async def shutdown_event():

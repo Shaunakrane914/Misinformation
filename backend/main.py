@@ -70,39 +70,67 @@ app.mount("/static", StaticFiles(directory="frontend"), name="static")
 async def get_dashboard_claims(fresh: bool = False):
     logger.info("[API] GET /dashboard/claims - Generating dashboard claims")
     try:
-        if fresh:
-            claims = load_random_dashboard_claims(n=15)
-        else:
-            from backend.services.dashboard_loader import get_dashboard_claims_rotating
-            logger.info("[API] Using rotating cache for dashboard claims")
-            claims = get_dashboard_claims_rotating(n=15, ttl_seconds=int(os.getenv("DASHBOARD_TTL", "300")))
-        logger.info(f"[API] Loaded {len(claims)} dashboard claims")
-        results = [
-            {
-                "claim": item.get("claim", ""),
-                "verdict": item.get("label", "False"),
-                "explanation": "Click 'Show Evidence' for AI-generated explanation.",
-                "evidence_url": ""
-            }
-            for item in claims
-        ]
+        results = []
+
+        # ── Step 1: Pull real verified claims from Supabase first ──
+        try:
+            if db.supabase:
+                resp = db.supabase.table("claims") \
+                    .select("claim_text, verdict, reasoning, source_url") \
+                    .eq("status", "completed") \
+                    .not_.is_("verdict", "null") \
+                    .order("created_at", desc=True) \
+                    .limit(30) \
+                    .execute()
+                if resp.data:
+                    for row in resp.data:
+                        verdict_raw = row.get("verdict", "False") or "False"
+                        vl = verdict_raw.lower()
+                        if vl in ("true", "1", "real"):
+                            verdict = "True"
+                        elif vl in ("misleading", "partially true", "mixed"):
+                            verdict = "Misleading"
+                        else:
+                            verdict = "False"
+                        results.append({
+                            "claim":        row.get("claim_text", ""),
+                            "verdict":      verdict,
+                            "explanation":  row.get("reasoning") or "AI-verified claim from live news feed.",
+                            "evidence_url": row.get("source_url") or ""
+                        })
+                    logger.info(f"[API] Loaded {len(results)} real claims from Supabase")
+        except Exception as db_err:
+            logger.warning(f"[API] Supabase fetch failed, falling back to dataset: {db_err}")
+
+        # ── Step 2: Top up with WELFake dataset if fewer than 15 real claims ──
+        needed = 15 - len(results)
+        if needed > 0:
+            if fresh:
+                fallback = load_random_dashboard_claims(n=needed)
+            else:
+                from backend.services.dashboard_loader import get_dashboard_claims_rotating
+                fallback = get_dashboard_claims_rotating(n=needed, ttl_seconds=int(os.getenv("DASHBOARD_TTL", "300")))
+            for item in fallback:
+                results.append({
+                    "claim":        item.get("claim", ""),
+                    "verdict":      item.get("label", "False"),
+                    "explanation":  "Click 'Show Evidence' for AI-generated explanation.",
+                    "evidence_url": ""
+                })
+            logger.info(f"[API] Topped up with {needed} dataset claims (total={len(results)})")
+
         logger.info(f"[API] Returning {len(results)} dashboard claims")
-        # Prevent intermediary caching and expose source for debugging
         sample_id = str(uuid.uuid4())
         first_claim = results[0]["claim"] if results else ""
-        # Safe encoding for checksum
         checksum = hashlib.sha1("\n".join([r["claim"] for r in results]).encode("utf-8", errors="ignore")).hexdigest()
-        
-        # Safe logging for potential non-latin characters
         safe_first_claim = first_claim[:80].encode('ascii', 'replace').decode('ascii')
         logger.info(f"[API] SampleId={sample_id} First='{safe_first_claim}' Checksum={checksum}")
-        
         headers = {
             "Cache-Control": "no-store, no-cache, max-age=0, must-revalidate",
             "Pragma": "no-cache",
-            "X-Dashboard-Source": "rotating",
+            "X-Dashboard-Source": "supabase+rotating",
             "X-Sample-Id": sample_id,
-            "X-First-Claim": first_claim[:120].encode('ascii', 'replace').decode('ascii'), # Safe header
+            "X-First-Claim": first_claim[:120].encode('ascii', 'replace').decode('ascii'),
             "X-Claims-Checksum": checksum
         }
         return JSONResponse(content=results, headers=headers)

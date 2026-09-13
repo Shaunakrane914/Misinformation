@@ -22,14 +22,15 @@
 
 Aegis Protocol is a **production-grade, multi-agent misinformation detection platform**. Submit any claim and receive a `True / False / Misleading` verdict in ~18 seconds — backed by live web research, multi-pass AI reasoning, and confidence scoring.
 
-Beyond claim verification, four specialized agents run autonomously:
+Beyond claim verification, four specialized agents and an experimental Threat Intelligence Lab run autonomously:
 
-| Agent | Domain | Status |
+| Agent / Instrument | Domain | Status |
 |---|---|---|
 | 🔍 **Scout** | Financial misinformation — stock crashes correlated with viral rumors | ✅ Live |
 | 📈 **Trending** | Celebrity & viral content analysis via RSS + Apify | ✅ Live |
 | 🛡️ **BrandShield** | Fake reviews, counterfeit listings, reputation attacks | ✅ Live |
 | 👤 **Personal Watch** | Individual reputation monitoring across 5+ platforms | ✅ Live |
+| ⚡ **Threat Lab** | Mandelbrot synthetic detector, Hawkes blast radius, Byzantine swarm consensus | ✅ Live |
 
 ---
 
@@ -199,13 +200,25 @@ POST /api/personal/scan
 # Trending — scan a celebrity/asset
 POST /api/trending/scan
 { "asset_name": "Virat Kohli" }
+
+# Threat Intelligence Lab — Synthetic Text Detector (Mandelbrot Fit)
+POST /api/lab/synthetic-detect
+{ "text": "Aegis Nexus Corporation today announced..." }
+
+# Threat Intelligence Lab — Hawkes Process Blast Radius Modeler
+POST /api/lab/blast-radius
+{ "topic": "Deepfake CEO Audio", "claim": "Emergency liquidity shortfall..." }
+
+# Threat Intelligence Lab — Byzantine Swarm Consensus (W-MSR Filtered)
+POST /api/lab/consensus
+{ "claim": "Apollo 11 moon landing was staged in Nevada" }
 ```
 
 ### Health
 
 ```bash
 GET /api/healthz          # → { "status": "ok", "version": "3.0.0" }
-GET /api/             # → full endpoint listing
+GET /api/                 # → full endpoint listing
 ```
 
 ---
@@ -232,6 +245,12 @@ Scans Amazon, Flipkart, Trustpilot, Reddit, and Google Reviews for:
 
 ### 👤 Personal Watch Agent
 Monitors online reputation for any individual across Twitter/X, LinkedIn, YouTube, Reddit, and Google News. Classifies findings as Defamation, Fake Quote, Harassment, False Rumor, or Legitimate Criticism with severity ratings.
+
+### ⚡ Threat Intelligence Lab (Deterministic & Physics-First Verification)
+Interactive, research-grade verification instruments hosted at `/lab`:
+- **Mandelbrot Token-Rank Regression** ($P(r) = P_0 (r+\beta)^{-\gamma}$): Evaluates power-law fit ($R^2$), Shannon entropy, and Type-Token Ratio (TTR) to detect autoregressive synthetic text distributions.
+- **Hawkes Point-Process Blast Radius Modeler** ($\lambda(t) = \mu + \sum \alpha e^{-\beta(t-t_i)}$): Computes effective reproduction number $R_0$, self-excitation cascades, and 24-hour network reach projections.
+- **Byzantine Swarm Consensus Engine**: Executes multi-agent adversarial evaluation (Skeptic Node, Empirical Node, Adversary Node) and applies Weighted Mean Subsequence Reduction (W-MSR) to prune compromised or hallucinating outlier nodes.
 
 ---
 

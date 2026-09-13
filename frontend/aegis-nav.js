@@ -62,8 +62,9 @@
   const pages = {
     home:      { href: 'index.html',     label: 'Home' },
     agents:    { href: 'agents.html',    label: 'Agents' },
-    about:     { href: 'about.html',     label: 'About' },
+    lab:       { href: 'lab.html',       label: '⚡ Threat Lab' },
     dashboard: { href: 'dashboard.html', label: 'Dashboard' },
+    about:     { href: 'about.html',     label: 'About' },
     status:    { href: 'status.html',    label: 'Status' },
     submit:    { href: 'submit.html',    label: 'Submit Claim', cta: true },
   };

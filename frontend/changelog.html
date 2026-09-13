@@ -1,0 +1,226 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Changelog â€” Aegis Protocol</title>
+  <meta name="description" content="Version history and release notes for Aegis Protocol, the multi-agent AI misinformation detection system.">
+  <link rel="stylesheet" href="aegis-theme.css">
+  <style>
+    .cl-hero {
+      padding: 88px 64px 52px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(160deg, #050810 0%, #080f22 60%, #050810 100%);
+    }
+    .cl-hero h1 { font-size: clamp(1.9rem,4vw,3rem); font-weight:800; letter-spacing:-.03em; margin-bottom:10px; }
+    .cl-hero p  { font-size:1rem; color:var(--muted); max-width:540px; line-height:1.7; }
+
+    .cl-body { max-width: 860px; margin: 0 auto; padding: 52px 48px 100px; }
+
+    /* Version block */
+    .cl-version {
+      margin-bottom: 52px;
+      padding-left: 28px;
+      border-left: 2px solid var(--border);
+      position: relative;
+    }
+    .cl-version::before {
+      content: '';
+      position: absolute;
+      left: -5px; top: 8px;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 10px rgba(59,130,246,.5);
+    }
+    .cl-version.latest::before { background: var(--green); box-shadow: 0 0 10px rgba(16,185,129,.5); }
+    .cl-version-header {
+      display: flex; align-items: center; gap: 14px; flex-wrap: wrap;
+      margin-bottom: 6px;
+    }
+    .cl-ver-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem; font-weight: 700;
+      padding: 3px 12px; border-radius: 100px;
+      background: rgba(59,130,246,.1); color: #60a5fa;
+      border: 1px solid rgba(59,130,246,.2);
+    }
+    .cl-ver-tag.latest {
+      background: rgba(16,185,129,.1); color: #34d399;
+      border-color: rgba(16,185,129,.2);
+    }
+    .cl-date {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem; color: var(--muted);
+    }
+    .cl-title {
+      font-size: 1.15rem; font-weight: 800;
+      letter-spacing: -.02em; margin-bottom: 18px;
+    }
+    .cl-group { margin-bottom: 18px; }
+    .cl-group-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem; font-weight: 700; letter-spacing: .1em;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .cl-group-label.feat  { color: var(--accent); }
+    .cl-group-label.fix   { color: var(--yellow); }
+    .cl-group-label.chore { color: var(--muted); }
+    .cl-group-label.perf  { color: var(--green); }
+
+    .cl-items { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .cl-item {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .88rem; line-height: 1.6; color: var(--text);
+    }
+    .cl-item::before {
+      content: 'â†’'; color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem; flex-shrink: 0; margin-top: 2px;
+    }
+
+    .cl-divider { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
+
+    @media(max-width:768px) {
+      .cl-hero { padding: 80px 24px 40px; }
+      .cl-body  { padding: 36px 20px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <script>window.AEGIS_ACTIVE='';</script>
+  <script src="aegis-nav.js"></script>
+
+  <div class="ae-page">
+    <!-- Hero -->
+    <div class="cl-hero ae-reveal">
+      <div class="ae-label mb-12">// VERSION HISTORY</div>
+      <h1>Changelog</h1>
+      <p>All notable changes to the Aegis Protocol platform. Follows semantic versioning.</p>
+    </div>
+
+    <div class="cl-body">
+
+      <!-- v3.0.0 -->
+      <div class="cl-version latest ae-reveal">
+        <div class="cl-version-header">
+          <span class="cl-ver-tag latest">v3.0.0</span>
+          <span class="cl-date">September 2026</span>
+          <span class="ae-badge ae-badge-green" style="font-size:.62rem;">LATEST</span>
+        </div>
+        <div class="cl-title">The Agent Wiring Update</div>
+
+        <div class="cl-group">
+          <div class="cl-group-label feat">Features</div>
+          <ul class="cl-items">
+            <li class="cl-item">New <strong>BrandShield Agent</strong> backend (<code>brandshield_agent.py</code>) â€” DuckDuckGo search + Gemini AI analysis pipeline for fake reviews, counterfeit listings, and reputation attacks</li>
+            <li class="cl-item">BrandShield and Personal Watch agent pages now call real backend endpoints instead of exposing the Gemini API key in the browser</li>
+            <li class="cl-item">New <code>POST /api/brandshield/scan</code> endpoint returning structured threat findings with severity scores</li>
+            <li class="cl-item">Added <code>POST /api/personal-watch/scan</code> route alias for the existing Personal Watch agent</li>
+            <li class="cl-item">Threat/safe summary banners on BrandShield and Personal Watch result views</li>
+            <li class="cl-item">Homepage "How It Works" animated pipeline section showing the 5-step agent workflow</li>
+            <li class="cl-item">Live claims counter on homepage â€” fetches real count from API with count-up animation</li>
+            <li class="cl-item">New <code>GET /api/</code> endpoint listing all available API routes and agents</li>
+            <li class="cl-item">This changelog page</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label fix">Bug Fixes</div>
+          <ul class="cl-items">
+            <li class="cl-item">Removed duplicate <code>GET /api/dashboard/claims</code> route definition that was silently overriding the Supabase-first version with a dataset-only fallback</li>
+            <li class="cl-item">Removed duplicate <code>@app.on_event("startup")</code> handler that was registering the RSS ingestion loop twice</li>
+            <li class="cl-item">Removed duplicate frontend page routes from <code>backend/main.py</code> (existed in both the early and late sections of the file)</li>
+            <li class="cl-item">Removed duplicate <code>async def root()</code> definition causing silent route override</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label chore">Chores</div>
+          <ul class="cl-items">
+            <li class="cl-item">Rewrote <code>backend/main.py</code> as a single clean, logically organized file â€” eliminated all <code># ... (keep existing code) ...</code> placeholder comments</li>
+            <li class="cl-item">Updated API version string from <code>2.0.0</code> to <code>3.0.0</code></li>
+            <li class="cl-item">Added <code>Starting Misinformation Project.md</code> and <code>*.conversation.md</code> to <code>.gitignore</code></li>
+            <li class="cl-item">Committed and removed old fix scripts: <code>fix2.py</code>, <code>fix3.py</code>, <code>fix4.py</code>, <code>fix_pages.py</code></li>
+            <li class="cl-item">Updated copyright year from 2025 â†’ 2026 across all pages</li>
+            <li class="cl-item">Added changelog link to site footer</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="cl-divider">
+
+      <!-- v2.0.0 -->
+      <div class="cl-version ae-reveal">
+        <div class="cl-version-header">
+          <span class="cl-ver-tag">v2.0.0</span>
+          <span class="cl-date">Late 2025</span>
+        </div>
+        <div class="cl-title">The RSS & Mobile Update</div>
+
+        <div class="cl-group">
+          <div class="cl-group-label feat">Features</div>
+          <ul class="cl-items">
+            <li class="cl-item">Built-in RSS ingestion loop runs every 15 minutes inside the Render backend â€” replaced external n8n dependency</li>
+            <li class="cl-item">Dashboard now shows real Supabase verified claims first, topped up with WELFake dataset when needed</li>
+            <li class="cl-item">Complete mobile responsiveness overhaul â€” hamburger menu, fluid typography, stacking grids</li>
+            <li class="cl-item">Added <code>POST /api/ingest</code> endpoint for external automation pipelines</li>
+            <li class="cl-item">Added <code>/status</code> page for system health monitoring</li>
+            <li class="cl-item">Restored Gemini 2.5 Flash as primary model</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label fix">Bug Fixes</div>
+          <ul class="cl-items">
+            <li class="cl-item">Fixed Scout Agent dollar sign rendering bug</li>
+            <li class="cl-item">Added <code>/api/submit</code> route alias to prevent 404s from legacy integrations</li>
+            <li class="cl-item">Fixed Gemini API model path (v1beta â†’ v1) that was returning 404s</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label chore">Security</div>
+          <ul class="cl-items">
+            <li class="cl-item">Removed accidentally committed API key file from repository history</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="cl-divider">
+
+      <!-- v1.0.0 -->
+      <div class="cl-version ae-reveal">
+        <div class="cl-version-header">
+          <span class="cl-ver-tag">v1.0.0</span>
+          <span class="cl-date">2025 â€” Initial Release</span>
+        </div>
+        <div class="cl-title">Hackathon Launch</div>
+
+        <div class="cl-group">
+          <div class="cl-group-label feat">Features</div>
+          <ul class="cl-items">
+            <li class="cl-item">Multi-agent misinformation detection pipeline: ClaimIngestion â†’ Research â†’ Investigator</li>
+            <li class="cl-item">Scout Agent â€” financial misinformation detection with Yahoo Finance + 5 agentic features (Monte Carlo simulation, investigator swarm, bot graph, response orchestrator, feedback loop)</li>
+            <li class="cl-item">Trending Agent â€” celebrity and viral content analysis via RSS + Apify</li>
+            <li class="cl-item">Live dashboard with WELFake dataset claims + AI explanation generation</li>
+            <li class="cl-item">Supabase database integration for persistent claim storage</li>
+            <li class="cl-item">War Room API endpoints for crisis response deployment</li>
+            <li class="cl-item">Dark cyberpunk UI design system (Space Grotesk + JetBrains Mono)</li>
+            <li class="cl-item">Custom cursor, dot-grid background, scroll reveal animations</li>
+            <li class="cl-item">Deployed on Render (backend) + Netlify (frontend)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+    <footer class="ae-footer">
+      <span>Aegis Protocol &copy; 2026</span>
+      <span style="color:var(--accent);font-size:.7rem;">CHANGELOG // v3.0.0</span>
+      <span>Built with multi-agent AI</span>
+    </footer>
+  </div>
+</body>
+</html>
+

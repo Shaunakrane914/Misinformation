@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BrandShield Agent — Aegis Protocol</title>
+  <title>BrandShield Agent â€” Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="gemini-client.js"></script>
   <style>
@@ -72,7 +72,7 @@
       <div class="scan-card ae-reveal">
         <div class="ae-label mb-12">// SCAN A BRAND</div>
         <div class="scan-row">
-          <input type="text" id="brandInput" placeholder="Enter brand name — e.g., Samsung Galaxy, iPhone 16...">
+          <input type="text" id="brandInput" placeholder="Enter brand name â€” e.g., Samsung Galaxy, iPhone 16...">
           <button id="scanBtn" onclick="scanBrand()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;margin-right:6px;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
             Shield Scan
@@ -93,7 +93,7 @@
         <div class="ae-label mb-12">// HOW BRANDSHIELD WORKS</div>
         <div class="ae-grid-2" style="gap:14px;">
           <div class="ae-card"><div class="ae-label mb-8">Fake Review Detection</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">AI pattern analysis identifies bot-generated, incentivized or coordinated fake reviews across Amazon, Flipkart, Trustpilot and Google Reviews.</p></div>
-          <div class="ae-card"><div class="ae-label mb-8">Counterfeit Listing Scan</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Detects suspicious product listings on Amazon and Flipkart that mimic genuine brand products — protecting consumers and brand integrity.</p></div>
+          <div class="ae-card"><div class="ae-label mb-8">Counterfeit Listing Scan</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Detects suspicious product listings on Amazon and Flipkart that mimic genuine brand products â€” protecting consumers and brand integrity.</p></div>
           <div class="ae-card"><div class="ae-label mb-8">Reputation Attack Detection</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Monitors Reddit and social media for coordinated negative campaigns, FUD (Fear, Uncertainty, Doubt) attacks and disinformation targeting brands.</p></div>
           <div class="ae-card"><div class="ae-label mb-8">Gemini AI Investigation</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Each finding is investigated by Gemini AI which cross-references multiple sources to confirm or dismiss the threat before issuing a verdict.</p></div>
         </div>
@@ -101,7 +101,7 @@
     </div>
 
     <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2025</span>
+      <span>Aegis Protocol &copy; 2026</span>
       <span style="color:#10b981;font-size:.7rem;">AGENT_04 BRANDSHIELD // ACTIVE</span>
       <span>Built with multi-agent AI</span>
     </footer>
@@ -142,26 +142,42 @@
       btn.textContent = 'Scanning...'; btn.disabled = true;
       showScanAnim(container);
 
+      // Animate platform rows progressively
       const delays = [500, 900, 1300, 1700, 2100];
       PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'done', true), delays[i]));
 
       try {
-        const prompt = `You are a brand reputation AI performing a shield scan for "${brand}". Scan: Amazon, Flipkart, Trustpilot, Reddit, Google Reviews.
-Find: fake reviews, counterfeit listings, coordinated reputation attacks, misinformation, and genuine issues.
-Return STRICT JSON array of 5-6 findings:
-[{ "platform": "Amazon|Flipkart|Trustpilot|Reddit|Google Reviews", "title": "finding headline max 15 words", "summary": "2-sentence analysis max 40 words", "threat_type": "Fake Reviews|Counterfeit Listing|Reputation Attack|False Claim|Genuine Issue", "is_threat": true|false, "severity": "low|medium|high|critical", "fake_review_score": integer 0-100, "stars": integer 1-5 }]
-Mix threats and non-threats. Be specific and realistic for "${brand}". Date: ${new Date().toDateString()}.`;
+        // Call the real backend BrandShield agent
+        const resp = await fetch('/api/brandshield/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brand_name: brand })
+        });
 
-        const data = await window.GeminiClient.askJSON(prompt);
+        if (!resp.ok) throw new Error(`API error: ${resp.status}`);
+        const result = await resp.json();
+        const data = result.findings || [];
+
+        // Ensure all platform rows show done before rendering results
         await new Promise(r => setTimeout(r, 2300));
 
         if (Array.isArray(data) && data.length > 0) {
+          // Summary banner
+          const threatCount = result.threat_count || data.filter(f => f.is_threat).length;
+          const safeCount  = result.safe_count  || data.filter(f => !f.is_threat).length;
+          const banner = document.createElement('div');
+          banner.style.cssText = 'display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;';
+          banner.innerHTML = `
+            <span style="font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--danger);background:rgba(239,68,68,.08);padding:4px 12px;border-radius:20px;">âš  ${threatCount} THREAT${threatCount!==1?'S':''} DETECTED</span>
+            <span style="font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--green);background:rgba(16,185,129,.08);padding:4px 12px;border-radius:20px;">âœ“ ${safeCount} CLEAR</span>`;
+          container.appendChild(banner);
+
           const grid = document.createElement('div');
           grid.className = 'results-grid';
           data.forEach(item => {
             const sevColor = item.severity === 'critical' ? 'var(--danger)' : item.severity === 'high' ? '#f97316' : item.severity === 'medium' ? '#fbbf24' : 'var(--green)';
             const dotColor = item.is_threat ? 'var(--danger)' : 'var(--green)';
-            const stars = '★'.repeat(Math.min(item.stars||3, 5)) + '☆'.repeat(Math.max(0, 5-(item.stars||3)));
+            const stars = 'â˜…'.repeat(Math.min(item.stars||3, 5)) + 'â˜†'.repeat(Math.max(0, 5-(item.stars||3)));
             grid.innerHTML += `<div class="result-card${item.is_threat?' threat':''}">
               <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.platform} <span style="color:#10b981">${item.threat_type}</span>${item.is_threat?`<span class="sev-badge" style="color:${sevColor};background:rgba(239,68,68,.08);">${(item.severity||'medium').toUpperCase()}</span>`:'<span class="sev-badge" style="color:var(--green);background:rgba(16,185,129,.08);">SAFE</span>'}</div>
               <div class="result-title">${item.title}</div>
@@ -170,10 +186,13 @@ Mix threats and non-threats. Be specific and realistic for "${brand}". Date: ${n
             </div>`;
           });
           container.appendChild(grid);
+        } else {
+          container.innerHTML += `<div style="color:var(--muted);font-size:.86rem;padding:12px 0;">No findings returned. Try a different brand name.</div>`;
         }
       } catch (e) {
         await new Promise(r => setTimeout(r, 2300));
-        container.innerHTML += `<div style="color:var(--muted);font-size:.86rem;padding:12px 0;">Gemini unavailable. Try again shortly.</div>`;
+        container.innerHTML += `<div style="color:var(--muted);font-size:.86rem;padding:12px 0;">Scan failed: ${e.message}. Check that the backend server is running.</div>`;
+        console.error('[BrandShield] Scan error:', e);
       }
       btn.textContent = 'Shield Scan'; btn.disabled = false;
     }
@@ -187,3 +206,4 @@ Mix threats and non-threats. Be specific and realistic for "${brand}". Date: ${n
   </script>
 </body>
 </html>
+

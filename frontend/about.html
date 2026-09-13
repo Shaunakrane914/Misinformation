@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>About — Aegis Protocol</title>
+  <title>About â€” Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
 </head>
 <body>
@@ -14,7 +14,7 @@
     <div class="ae-page-hero ae-reveal">
       <div class="ae-page-label">// SYSTEM ARCHITECTURE</div>
       <h1>How Aegis Protocol Works</h1>
-      <p>A three-agent pipeline built for speed, accuracy and transparency — from claim submission to final verdict in seconds.</p>
+      <p>A three-agent pipeline built for speed, accuracy and transparency â€” from claim submission to final verdict in seconds.</p>
     </div>
 
     <div class="ae-section">
@@ -28,13 +28,13 @@
               <div class="ae-step-num">01</div>
               <div class="ae-step-content">
                 <h3>Submission</h3>
-                <p>User submits a claim via the Submit Claim page. The system accepts free-form natural language — no special formatting needed.</p>
+                <p>User submits a claim via the Submit Claim page. The system accepts free-form natural language â€” no special formatting needed.</p>
               </div>
             </div>
             <div class="ae-step">
               <div class="ae-step-num">02</div>
               <div class="ae-step-content">
-                <h3>Ingestion Agent — Normalize &amp; Hash</h3>
+                <h3>Ingestion Agent â€” Normalize &amp; Hash</h3>
                 <p>Standardizes claim text, strips noise, generates a SHA256 hash to detect and skip duplicate claims before processing.</p>
               </div>
             </div>
@@ -42,21 +42,21 @@
               <div class="ae-step-num">03</div>
               <div class="ae-step-content">
                 <h3>Database Storage</h3>
-                <p>Claim is saved to Supabase (PostgreSQL) with status <span class="ae-mono" style="color:var(--yellow);font-size:.85em;">pending</span> — immediately queryable from the dashboard.</p>
+                <p>Claim is saved to Supabase (PostgreSQL) with status <span class="ae-mono" style="color:var(--yellow);font-size:.85em;">pending</span> â€” immediately queryable from the dashboard.</p>
               </div>
             </div>
             <div class="ae-step">
               <div class="ae-step-num">04</div>
               <div class="ae-step-content">
-                <h3>Research Agent — Evidence Gathering</h3>
+                <h3>Research Agent â€” Evidence Gathering</h3>
                 <p>Uses Gemini AI to compile both supporting and refuting evidence from credible sources. Returns structured JSON with separate evidence lists.</p>
               </div>
             </div>
             <div class="ae-step">
               <div class="ae-step-num">05</div>
               <div class="ae-step-content">
-                <h3>Investigator Agent — Verdict</h3>
-                <p>Analyzes all evidence, determines True / False / Misleading, assigns a confidence score (0–100) and severity rating (low → critical).</p>
+                <h3>Investigator Agent â€” Verdict</h3>
+                <p>Analyzes all evidence, determines True / False / Misleading, assigns a confidence score (0â€“100) and severity rating (low â†’ critical).</p>
               </div>
             </div>
             <div class="ae-step">
@@ -86,7 +86,7 @@
                 <div style="font-weight:700;font-size:.95rem;">Ingestion Agent</div>
               </div>
             </div>
-            <p style="font-size:.86rem;color:var(--muted);line-height:1.65;">Normalizes text, deduplicates via SHA256 hash, and packages the claim for downstream agents. Pure Python — fast and deterministic.</p>
+            <p style="font-size:.86rem;color:var(--muted);line-height:1.65;">Normalizes text, deduplicates via SHA256 hash, and packages the claim for downstream agents. Pure Python â€” fast and deterministic.</p>
           </div>
 
           <div class="ae-card">
@@ -101,7 +101,7 @@
                 <div style="font-weight:700;font-size:.95rem;">Research Agent</div>
               </div>
             </div>
-            <p style="font-size:.86rem;color:var(--muted);line-height:1.65;">Queries Gemini 2.5 Flash to gather balanced evidence — both supporting and refuting the claim — from reliable, verifiable sources.</p>
+            <p style="font-size:.86rem;color:var(--muted);line-height:1.65;">Queries Gemini 2.5 Flash to gather balanced evidence â€” both supporting and refuting the claim â€” from reliable, verifiable sources.</p>
           </div>
 
           <div class="ae-card">
@@ -128,7 +128,7 @@
           <div class="ae-card">
             <div class="ae-label mb-12">AI &amp; ML</div>
             <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
-              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-blue" style="flex-shrink:0;">Gemini</span><span style="font-size:.88rem;color:var(--muted);">Google Gemini 2.5 Flash — primary AI model</span></li>
+              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-blue" style="flex-shrink:0;">Gemini</span><span style="font-size:.88rem;color:var(--muted);">Google Gemini 2.5 Flash â€” primary AI model</span></li>
               <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-purple" style="flex-shrink:0;">Multi-Agent</span><span style="font-size:.88rem;color:var(--muted);">Three specialized agents with distinct roles</span></li>
               <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-cyan" style="flex-shrink:0; background:rgba(6,182,212,.12);color:#22d3ee;border-color:rgba(6,182,212,.2)">Prompt Eng.</span><span style="font-size:.88rem;color:var(--muted);">Advanced prompting for balanced fact-checking</span></li>
             </ul>
@@ -148,7 +148,7 @@
         <!-- Why agentic -->
         <div class="ae-label mb-20 ae-reveal">// WHY AGENTIC AI</div>
         <div class="ae-grid-2 ae-reveal">
-          <div class="ae-card"><div class="ae-label mb-8 mt-0">Specialization</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">Each agent focuses on a specific task — ingestion, research, or investigation — leading to higher quality than a single monolithic model.</p></div>
+          <div class="ae-card"><div class="ae-label mb-8 mt-0">Specialization</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">Each agent focuses on a specific task â€” ingestion, research, or investigation â€” leading to higher quality than a single monolithic model.</p></div>
           <div class="ae-card"><div class="ae-label mb-8 mt-0">Scalability</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">Agents can be upgraded or swapped independently. Swap research sources without touching the verdict logic.</p></div>
           <div class="ae-card"><div class="ae-label mb-8 mt-0">Transparency</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">Multi-step processing makes reasoning auditable. Every verdict includes the evidence that led to it.</p></div>
           <div class="ae-card"><div class="ae-label mb-8 mt-0">Reliability</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">If one agent encounters an issue, the system degrades gracefully rather than failing silently.</p></div>
@@ -158,10 +158,11 @@
     </div>
 
     <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2025</span>
+      <span>Aegis Protocol &copy; 2026</span>
       <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
       <span>Built with multi-agent AI</span>
     </footer>
   </div>
 </body>
 </html>
+

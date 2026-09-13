@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Submit Claim — Aegis Protocol</title>
+  <title>Submit Claim â€” Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <style>
     .submit-layout {
@@ -104,7 +104,7 @@
                   <span style="font-size:.83rem;color:var(--muted);">Investigator Agent delivers a final verdict</span>
                 </div>
               </div>
-              <p style="font-size:.78rem;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">Typical processing time: <strong style="color:var(--text);">10–30 seconds</strong></p>
+              <p style="font-size:.78rem;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">Typical processing time: <strong style="color:var(--text);">10â€“30 seconds</strong></p>
             </div>
           </div>
 
@@ -113,7 +113,7 @@
     </div>
 
     <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2025</span>
+      <span>Aegis Protocol &copy; 2026</span>
       <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
       <span>Built with multi-agent AI</span>
     </footer>
@@ -160,13 +160,13 @@
         resultBox.classList.add('show', 'ok');
         resultContent.innerHTML = data.is_new === false
           ? `<strong>This claim was already processed.</strong><br>Claim ID: <code style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent)">${data.claim_id}</code><br>Status: <strong>${data.status}</strong>`
-          : `<strong style="color:var(--green)">Claim submitted successfully!</strong><br>Claim ID: <code style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent)">${data.claim_id}</code><br><span style="color:var(--muted);font-size:.88rem;">Our agents are analyzing your claim — typically takes 10–30 seconds.</span>`;
+          : `<strong style="color:var(--green)">Claim submitted successfully!</strong><br>Claim ID: <code style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent)">${data.claim_id}</code><br><span style="color:var(--muted);font-size:.88rem;">Our agents are analyzing your claim â€” typically takes 10â€“30 seconds.</span>`;
 
         resultActions.style.display = 'flex';
         resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       } catch (err) {
         resultBox.classList.add('show', 'err');
-        resultContent.innerHTML = `<strong style="color:var(--danger)">Submission failed</strong><br><span style="color:var(--muted);font-size:.88rem;">${err.message} — the backend may be waking up. Try again in 30 seconds.</span>`;
+        resultContent.innerHTML = `<strong style="color:var(--danger)">Submission failed</strong><br><span style="color:var(--muted);font-size:.88rem;">${err.message} â€” the backend may be waking up. Try again in 30 seconds.</span>`;
         resultActions.style.display = 'none';
       } finally {
         submitBtn.disabled = false;
@@ -189,3 +189,4 @@
   </script>
 </body>
 </html>
+

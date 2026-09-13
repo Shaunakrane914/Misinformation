@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Personal Watch — Aegis Protocol</title>
+  <title>Personal Watch â€” Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="gemini-client.js"></script>
   <style>
@@ -57,7 +57,7 @@
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>AGENT_03 &middot; Active</div>
       <h1>Personal <span>Watch</span></h1>
-      <p>Monitors the online reputation of any individual — detecting defamation, fake quotes, targeted harassment and misinformation campaigns across all major platforms.</p>
+      <p>Monitors the online reputation of any individual â€” detecting defamation, fake quotes, targeted harassment and misinformation campaigns across all major platforms.</p>
       <div class="hero-stats">
         <div><div class="hero-stat-val">5</div><div class="hero-stat-lbl">Platforms Scanned</div></div>
         <div><div class="hero-stat-val">Real-time</div><div class="hero-stat-lbl">AI Analysis</div></div>
@@ -71,7 +71,7 @@
       <div class="search-card ae-reveal">
         <div class="ae-label mb-12">// SCAN A PERSON</div>
         <div class="search-row">
-          <input type="text" id="personInput" placeholder="Enter a name — e.g., Elon Musk, Narendra Modi...">
+          <input type="text" id="personInput" placeholder="Enter a name â€” e.g., Elon Musk, Narendra Modi...">
           <button id="scanBtn" onclick="scanPerson()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;margin-right:6px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             Scan Now
@@ -92,7 +92,7 @@
         <div class="ae-label mb-12">// HOW PERSONAL WATCH WORKS</div>
         <div class="ae-grid-2" style="gap:14px;">
           <div class="ae-card"><div class="ae-label mb-8">Platform Coverage</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Scans X/Twitter, LinkedIn, YouTube, Reddit and Google News simultaneously using AI to detect misinformation, fake quotes and defamatory content.</p></div>
-          <div class="ae-card"><div class="ae-label mb-8">Threat Classification</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Each finding is classified as: Defamation, Fake Quote, Harassment, False Rumor or Legitimate Criticism — with severity ratings and evidence.</p></div>
+          <div class="ae-card"><div class="ae-label mb-8">Threat Classification</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Each finding is classified as: Defamation, Fake Quote, Harassment, False Rumor or Legitimate Criticism â€” with severity ratings and evidence.</p></div>
           <div class="ae-card"><div class="ae-label mb-8">Sentiment Tracking</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">Tracks public sentiment trends over time, identifying coordinated attacks or sudden reputation damage campaigns before they escalate.</p></div>
           <div class="ae-card"><div class="ae-label mb-8">Real-time Alerts</div><p style="font-size:.85rem;color:var(--muted);line-height:1.65;">When a threat pattern is detected, an investigation report is generated with recommended actions and confidence scoring.</p></div>
         </div>
@@ -100,7 +100,7 @@
     </div>
 
     <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2025</span>
+      <span>Aegis Protocol &copy; 2026</span>
       <span style="color:#06b6d4;font-size:.7rem;">AGENT_03 PERSONAL WATCH // ACTIVE</span>
       <span>Built with multi-agent AI</span>
     </footer>
@@ -141,34 +141,62 @@
       btn.textContent = 'Scanning...'; btn.disabled = true;
       showScanAnim(container);
 
+      // Animate platform rows progressively
       const delays = [500, 900, 1300, 1700, 2100];
       PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'done'), delays[i]));
 
       try {
-        const prompt = `You are a reputation intelligence AI scanning the internet for "${name}". Scan these platforms: X/Twitter, LinkedIn, YouTube, Reddit, Google News.
-Find reputation threats: defamation, fake quotes, misinformation, coordinated attacks, negative viral content.
-Return STRICT JSON array of 5-6 findings:
-[{ "platform": "X/Twitter|LinkedIn|YouTube|Reddit|Google News", "title": "finding headline max 15 words", "summary": "2-sentence analysis max 40 words", "type": "Defamation|Fake Quote|Harassment|False Rumor|Legitimate Criticism", "is_threat": true|false, "severity": "low|medium|high|critical", "sentiment": integer -100 to 100 }]
-Mix threats and non-threats. Be specific and realistic for ${name}. Date: ${new Date().toDateString()}.`;
+        // Call the real backend Personal Watch agent
+        const resp = await fetch('/api/personal/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name })
+        });
 
-        const data = await window.GeminiClient.askJSON(prompt);
+        if (!resp.ok) throw new Error(`API error: ${resp.status}`);
+        const result = await resp.json();
+
+        // Ensure all platform rows show done before rendering results
         await new Promise(r => setTimeout(r, 2300));
+        PLATFORMS.forEach(p => markDone(p.name, 'done', true));
 
-        if (Array.isArray(data) && data.length > 0) {
+        const threats = result.threats || [];
+        if (threats.length > 0) {
+          // Summary banner
+          const highCount = result.high_risk_count || 0;
+          const totalMentions = result.total_mentions || 0;
+          const banner = document.createElement('div');
+          banner.style.cssText = 'display:flex;gap:16px;margin-bottom:14px;flex-wrap:wrap;';
+          banner.innerHTML = `
+            <span style="font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--muted);background:rgba(99,102,241,.08);padding:4px 12px;border-radius:20px;">ðŸ“¡ ${totalMentions} MENTIONS FOUND</span>
+            ${highCount > 0 ? `<span style="font-size:.78rem;font-family:'JetBrains Mono',monospace;color:var(--danger);background:rgba(239,68,68,.08);padding:4px 12px;border-radius:20px;">âš  ${highCount} HIGH-RISK</span>` : '<span style="font-size:.78rem;font-family:\'JetBrains Mono\',monospace;color:var(--green);background:rgba(16,185,129,.08);padding:4px 12px;border-radius:20px;">âœ“ NO HIGH-RISK THREATS</span>'}`;
+          container.appendChild(banner);
+
           const grid = document.createElement('div');
           grid.className = 'results-grid';
-          grid.style.marginTop = '18px';
-          data.forEach(item => {
-            const sevColor = item.severity === 'critical' ? 'var(--danger)' : item.severity === 'high' ? '#f97316' : item.severity === 'medium' ? '#fbbf24' : 'var(--green)';
-            const dotColor = item.is_threat ? 'var(--danger)' : 'var(--green)';
-            grid.innerHTML += `<div class="result-card${item.is_threat?' threat':''}"><div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.platform} <span style="color:#06b6d4">${item.type}</span>${item.is_threat?`<span class="threat-tag" style="margin-left:auto;color:${sevColor};">${(item.severity||'medium').toUpperCase()}</span>`:'<span class="safe-tag" style="margin-left:auto;">SAFE</span>'}</div><div class="result-title">${item.title}</div><div class="result-body">${item.summary}</div></div>`;
+          grid.style.marginTop = '4px';
+          threats.slice(0, 6).forEach(item => {
+            const isHigh = item.risk_level === 'HIGH';
+            const isMed  = item.risk_level === 'MEDIUM';
+            const sevColor = isHigh ? 'var(--danger)' : isMed ? '#f97316' : 'var(--green)';
+            const dotColor = isHigh ? 'var(--danger)' : isMed ? '#fbbf24' : 'var(--green)';
+            const platform = item.source || 'Web';
+            const threatType = item.threat_type || 'Finding';
+            const sevLabel = item.risk_level || 'LOW';
+            grid.innerHTML += `<div class="result-card${isHigh || isMed ? ' threat' : ''}">
+              <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${platform} <span style="color:#06b6d4">${threatType}</span>${isHigh || isMed ? `<span class="threat-tag" style="margin-left:auto;color:${sevColor};">${sevLabel}</span>` : '<span class="safe-tag" style="margin-left:auto;">SAFE</span>'}</div>
+              <div class="result-title">${item.title || item.content?.slice(0,60) || 'Finding'}</div>
+              <div class="result-body">${item.reason || item.content?.slice(0,120) || ''}</div>
+            </div>`;
           });
           container.appendChild(grid);
-          PLATFORMS.forEach(p => markDone(p.name, 'done', true));
+        } else {
+          container.innerHTML += `<div style="color:var(--muted);font-size:.86rem;padding:12px 0;margin-top:14px;">No reputation threats found for "${name}". The web appears clean.</div>`;
         }
       } catch (e) {
         await new Promise(r => setTimeout(r, 2300));
-        container.innerHTML += `<div style="color:var(--muted);font-size:.86rem;padding:12px 0;">Gemini unavailable. Try again shortly.</div>`;
+        container.innerHTML += `<div style="color:var(--muted);font-size:.86rem;padding:12px 0;">Scan failed: ${e.message}. Check that the backend server is running.</div>`;
+        console.error('[PersonalWatch] Scan error:', e);
       }
       btn.textContent = 'Scan Now'; btn.disabled = false;
     }
@@ -182,3 +210,4 @@ Mix threats and non-threats. Be specific and realistic for ${name}. Date: ${new 
   </script>
 </body>
 </html>
+

@@ -1,9 +1,9 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trending Agent — Aegis Protocol</title>
+  <title>Trending Agent â€” Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="gemini-client.js"></script>
@@ -112,11 +112,11 @@
             <div class="feed-header-title">Threat Intelligence Feed</div>
             <div style="display:flex;gap:10px;align-items:center;">
               <span class="asset-badge" id="currentAssetBadge">Deepika Padukone</span>
-              <button class="refresh-btn" onclick="refreshFeed()">↻ Refresh Scan</button>
+              <button class="refresh-btn" onclick="refreshFeed()">â†» Refresh Scan</button>
             </div>
           </div>
 
-          <div id="staticNote" class="static-note">Live scanning via Gemini AI — click Refresh Scan to start</div>
+          <div id="staticNote" class="static-note">Live scanning via Gemini AI â€” click Refresh Scan to start</div>
 
           <div id="threatFeed" style="display:flex;flex-direction:column;gap:10px;"></div>
         </div>
@@ -124,7 +124,7 @@
     </div>
 
     <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2025</span>
+      <span>Aegis Protocol &copy; 2026</span>
       <span style="color:#f472b6;font-size:.7rem;">AGENT_01 TRENDING // ACTIVE</span>
       <span>Built with multi-agent AI</span>
     </footer>
@@ -155,7 +155,7 @@
 
     function markPlatformDone(name, count) {
       const el = document.getElementById('scan_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:var(--green);font-weight:700;">done — ${count} items</span>`;
+      if (el) el.innerHTML = `<span style="color:var(--green);font-weight:700;">done â€” ${count} items</span>`;
     }
 
     function renderFeed(threats, isLive = true) {
@@ -242,3 +242,4 @@
   </script>
 </body>
 </html>
+

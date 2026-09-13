@@ -24,7 +24,7 @@
   --muted:   #64748b;
   --glow:    rgba(59,130,246,0.35);
 
-  /* ── Legacy aliases (for agent pages using old dashboard.css vars) ── */
+  /* ── Extended aliases ── */
   --bg-primary:    #0f1629;
   --bg-secondary:  #0a0f1e;
   --bg-tertiary:   #141d38;

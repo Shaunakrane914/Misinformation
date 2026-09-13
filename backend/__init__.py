@@ -1,7 +1,7 @@
 """
-Backend Module
+Backend Module — Aegis Protocol
 
-Main backend package for the Misinformation Detection System.
+Multi-agent AI system for real-time misinformation detection and claim verification.
 """
 
-__version__ = "0.1.0"
+__version__ = "3.0.0"

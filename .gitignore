@@ -47,6 +47,7 @@ check_*.py
 debug_*.py
 setup_*.py
 verify_*.py
+diagnose_*.py
 *_test.py
 
 # Temporary files

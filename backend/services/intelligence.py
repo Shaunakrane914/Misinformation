@@ -13,12 +13,12 @@ logger = logging.getLogger(__name__)
 
 # Load all available Gemini API keys
 GEMINI_KEYS = []
-for i in range(1, 4):  # Check for GEMINI_API_KEY, GEMINI_API_KEY_1, GEMINI_API_KEY_2
-    key_name = f"GEMINI_API_KEY_{i}" if i > 1 else "GEMINI_API_KEY"
-    key = os.getenv(key_name)
-    if key:
-        GEMINI_KEYS.append(key)
-        logger.info(f"Loaded {key_name}")
+for k, v in sorted(os.environ.items()):
+    if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_"):
+        clean_v = v.strip().strip('"').strip("'")
+        if clean_v and clean_v not in GEMINI_KEYS:
+            GEMINI_KEYS.append(clean_v)
+            logger.info(f"Loaded key from {k}")
 
 if not GEMINI_KEYS:
     logger.warning("No GEMINI_API_KEY found. Intelligence service will return mock data.")

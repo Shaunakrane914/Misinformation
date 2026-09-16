@@ -1,164 +1,265 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Live Dashboard â€” Aegis Protocol</title>
+  <title>Live Telemetry Dashboard — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
-    /* â”€â”€ DASHBOARD LAYOUT â”€â”€ */
+    .db-container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 100px 32px 60px;
+      position: relative;
+      z-index: 2;
+    }
     .db-layout {
       display: grid;
-      grid-template-columns: 1fr 300px;
-      gap: 0;
-      min-height: calc(100vh - 62px);
-      position: relative; z-index: 1;
+      grid-template-columns: 1fr 340px;
+      gap: 28px;
+      min-height: calc(100vh - 180px);
     }
-
-    /* â”€â”€ LEFT FEED COLUMN â”€â”€ */
     .db-feed {
-      border-right: 1px solid var(--border);
-      padding: 36px 32px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       overflow-y: auto;
     }
-
     .db-feed-header {
-      display: flex; align-items: flex-start;
-      justify-content: space-between; flex-wrap: wrap; gap: 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
       margin-bottom: 24px;
-      padding-bottom: 24px;
-      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-subtle);
     }
-
     .db-title {
-      font-size: 1.6rem; font-weight: 800;
-      letter-spacing: -0.03em; margin-bottom: 6px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 4px;
     }
-
-    .db-live-row { display: flex; align-items: center; gap: 10px; }
+    .db-live-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
     .db-live-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--green);
-      box-shadow: 0 0 8px var(--green);
-      animation: blink 1.5s ease-in-out infinite;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 10px var(--emerald);
+      animation: pulseDot 1.5s infinite;
     }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
-    .db-live-text { font-size: .8rem; font-weight: 700; color: var(--green); font-family: 'JetBrains Mono', monospace; }
-    .db-live-sub { font-size: .82rem; color: var(--muted); }
+    .db-live-text {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--emerald);
+      font-family: var(--font-mono);
+    }
+    .db-live-sub {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
 
-    /* Search + filter bar */
+    /* Toolbar */
     .db-toolbar {
-      display: flex; align-items: center; gap: 10px;
-      flex-wrap: wrap; margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
     }
-    .db-search-wrap { position: relative; flex: 1; min-width: 200px; }
+    .db-search-wrap {
+      position: relative;
+      flex: 1;
+      min-width: 200px;
+    }
     .db-search-wrap svg {
-      position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
-      width: 14px; height: 14px; color: var(--muted); pointer-events: none;
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 14px;
+      height: 14px;
+      color: var(--text-dim);
+      pointer-events: none;
     }
     #searchInput {
       width: 100%;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 10px; color: var(--text);
-      font-family: 'Space Grotesk', sans-serif; font-size: .88rem;
-      padding: 9px 14px 9px 36px; outline: none;
-      transition: border-color .18s;
-    }
-    #searchInput:focus { border-color: var(--accent); }
-
-    .db-filters { display: flex; gap: 6px; flex-wrap: wrap; }
-    .db-filter-btn {
-      padding: 7px 14px; border-radius: 8px;
-      font-size: .78rem; font-weight: 700;
+      background: rgba(7, 9, 14, 0.8);
       border: 1px solid var(--border);
-      background: var(--surface); color: var(--muted);
-      cursor: none; transition: all .15s;
-      font-family: 'Space Grotesk', sans-serif;
+      border-radius: 10px;
+      color: var(--text);
+      font-family: var(--font-main);
+      font-size: 0.88rem;
+      padding: 9px 14px 9px 36px;
+      outline: none;
+      transition: border-color 0.18s;
+    }
+    #searchInput:focus {
+      border-color: var(--accent);
+    }
+    .db-filters {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .db-filter-btn {
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      border: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      font-family: var(--font-main);
     }
     .db-filter-btn:hover, .db-filter-btn.active {
-      border-color: var(--accent); color: var(--accent);
-      background: rgba(59,130,246,.08);
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(0, 229, 255, 0.08);
     }
-
     .db-refresh-btn {
-      display: flex; align-items: center; gap: 6px;
-      padding: 8px 14px; border-radius: 8px;
-      font-size: .8rem; font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 600;
       border: 1px solid var(--border);
-      background: var(--surface); color: var(--muted);
-      cursor: none; transition: all .15s;
-      font-family: 'Space Grotesk', sans-serif;
+      background: rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.15s ease;
     }
-    .db-refresh-btn:hover { border-color: var(--accent3); color: var(--accent3); }
-    .db-refresh-btn svg { width: 13px; height: 13px; }
+    .db-refresh-btn:hover {
+      border-color: var(--accent);
+      color: #fff;
+    }
 
-    /* Status banner */
     #statusBanner {
-      padding: 9px 16px; border-radius: 10px; font-size: .82rem;
-      margin-bottom: 18px; display: none;
-      font-family: 'JetBrains Mono', monospace;
+      padding: 10px 16px;
+      border-radius: 10px;
+      font-size: 0.82rem;
+      margin-bottom: 18px;
+      display: none;
+      font-family: var(--font-mono);
     }
-    #statusBanner.waking { background: rgba(245,158,11,.1); border: 1px solid rgba(245,158,11,.25); color: #fbbf24; display:block; }
-    #statusBanner.live   { background: rgba(16,185,129,.1);  border: 1px solid rgba(16,185,129,.25);  color: #34d399;  display:block; }
+    #statusBanner.waking {
+      background: rgba(245, 158, 11, 0.1);
+      border: 1px solid rgba(245, 158, 11, 0.25);
+      color: #fbbf24;
+      display: block;
+    }
+    #statusBanner.live {
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.25);
+      color: #34d399;
+      display: block;
+    }
 
     /* Claims list */
-    #claimsContainer { display: flex; flex-direction: column; gap: 14px; }
-
-    /* Claim card */
+    #claimsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
     .claim-card {
-      background: var(--surface);
+      background: rgba(7, 9, 14, 0.7);
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 20px 22px;
-      transition: border-color .2s, box-shadow .2s;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
     }
-    .claim-card:hover { border-color: var(--border2); box-shadow: 0 8px 30px rgba(0,0,0,.25); }
+    .claim-card:hover {
+      border-color: var(--border-hover);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+      transform: translateY(-2px);
+    }
 
-    /* â”€â”€ RIGHT SIDEBAR â”€â”€ */
+    /* Right Sidebar */
     .db-sidebar {
-      padding: 28px 24px;
-      display: flex; flex-direction: column; gap: 20px;
-      position: sticky; top: 62px; height: calc(100vh - 62px); overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
     }
-
     .db-sidebar-title {
-      font-size: .72rem; font-weight: 700;
-      font-family: 'JetBrains Mono', monospace;
-      letter-spacing: .12em; color: var(--muted);
-      text-transform: uppercase; margin-bottom: 12px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 12px;
     }
-
-    /* Stat cards */
     .db-stat-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
     }
     .db-stat {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 12px; padding: 14px 12px; text-align: center;
-      transition: border-color .2s;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 12px;
+      text-align: center;
+      transition: border-color 0.2s;
     }
-    .db-stat:hover { border-color: var(--border2); }
-    .db-stat-num { font-size: 1.6rem; font-weight: 800; letter-spacing: -.04em; margin-bottom: 3px; }
-    .db-stat-lbl { font-size: .72rem; font-weight: 600; color: var(--muted); }
-    .db-stat.st-true  .db-stat-num { color: var(--green); }
-    .db-stat.st-false .db-stat-num { color: var(--danger); }
-    .db-stat.st-mis   .db-stat-num { color: var(--yellow); }
-    .db-stat.st-unv   .db-stat-num { color: var(--muted); }
+    .db-stat:hover {
+      border-color: var(--border-hover);
+    }
+    .db-stat-num {
+      font-family: var(--font-mono);
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      margin-bottom: 3px;
+    }
+    .db-stat-lbl {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--text-dim);
+    }
+    .db-stat.st-true  .db-stat-num { color: var(--emerald); }
+    .db-stat.st-false .db-stat-num { color: var(--rose); }
+    .db-stat.st-mis   .db-stat-num { color: var(--amber); }
+    .db-stat.st-unv   .db-stat-num { color: var(--text-muted); }
 
-    /* Chart cards */
     .db-chart-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: 14px; padding: 18px;
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 20px;
     }
-    .db-chart-card h3 { font-size: .84rem; font-weight: 700; margin-bottom: 12px; }
-    .chart-wrap { position: relative; height: 180px; }
-    .chart-wrap-bar { position: relative; height: 140px; }
+    .db-chart-card h3 {
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .chart-wrap {
+      position: relative;
+      height: 180px;
+    }
+    .chart-wrap-bar {
+      position: relative;
+      height: 140px;
+    }
 
-    @media(max-width: 900px) {
+    @media(max-width: 960px) {
       .db-layout { grid-template-columns: 1fr; }
-      .db-sidebar { position: static; height: auto; }
-      .db-feed { border-right: none; border-bottom: 1px solid var(--border); }
+      .db-container { padding-left: 20px; padding-right: 20px; }
     }
   </style>
 </head>
@@ -167,25 +268,25 @@
   <script src="aegis-nav.js"></script>
   <script src="dashboard.js" defer></script>
 
-  <div class="ae-page">
-    <div class="db-layout">
+  <div class="db-container">
+    <div class="db-layout ae-reveal">
 
       <!-- LEFT: Claims Feed -->
       <div class="db-feed">
         <div class="db-feed-header">
           <div>
-            <div class="db-title">Verified Claims Feed</div>
+            <div class="db-title">Verified Claims Telemetry</div>
             <div class="db-live-row">
               <div class="db-live-dot"></div>
               <span class="db-live-text">LIVE</span>
-              <span class="db-live-sub">Showing the latest verified claims from our AI system</span>
+              <span class="db-live-sub">Continuous multi-agent evidence feed</span>
             </div>
           </div>
         </div>
 
         <!-- Status banner -->
         <div id="statusBanner" class="waking">
-          Backend is waking up on Render &middot; Showing cached data &middot; Live AI results will load shortly
+          Backend is waking up &middot; Showing cached data &middot; Live AI results will load shortly
         </div>
 
         <!-- Toolbar -->
@@ -194,7 +295,7 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
             </svg>
-            <input type="text" id="searchInput" placeholder="Search claims...">
+            <input type="text" id="searchInput" placeholder="Search claims by keyword...">
           </div>
           <div class="db-filters">
             <button class="db-filter-btn active" data-filter="all">All</button>
@@ -203,7 +304,7 @@
             <button class="db-filter-btn" data-filter="Misleading">Misleading</button>
           </div>
           <button class="db-refresh-btn" id="refreshBtn">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
               <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
               <path d="M21 3v5h-5"/><path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
               <path d="M8 16H3v5"/>
@@ -218,7 +319,7 @@
       <!-- RIGHT: Stats Sidebar -->
       <aside class="db-sidebar">
         <div>
-          <div class="db-sidebar-title">// Verdict Counts</div>
+          <div class="db-sidebar-title">// Verdict Distribution</div>
           <div class="db-stat-grid">
             <div class="db-stat st-true">
               <div class="db-stat-num" id="trueCount">0</div>
@@ -240,28 +341,32 @@
         </div>
 
         <div class="db-chart-card">
-          <h3>Verdict Distribution</h3>
+          <h3>Verdict Proportions</h3>
           <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
         </div>
 
         <div class="db-chart-card">
-          <h3>Claims by Verdict</h3>
+          <h3>Claims Volume</h3>
           <div class="chart-wrap-bar"><canvas id="barChart"></canvas></div>
         </div>
       </aside>
     </div>
-
-    <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2026</span>
-      <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
-      <span>Built with multi-agent AI</span>
-    </footer>
   </div>
 
+  <footer class="ae-footer">
+    <div>
+      <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);">Live Telemetry Dashboard &copy; 2026</div>
+    </div>
+    <div style="display:flex;gap:18px;font-size:0.8rem;">
+      <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
+      <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
+      <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
+    </div>
+  </footer>
+
   <script>
-    // â”€â”€ Filter / Search UI wiring â”€â”€
     document.addEventListener('DOMContentLoaded', () => {
-      // Filter buttons
       document.querySelectorAll('.db-filter-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           document.querySelectorAll('.db-filter-btn').forEach(b => b.classList.remove('active'));
@@ -270,10 +375,8 @@
         });
       });
 
-      // Search
       document.getElementById('searchInput').addEventListener('input', filterClaims);
 
-      // Refresh
       document.getElementById('refreshBtn').addEventListener('click', () => {
         if (typeof renderClaims === 'function') renderClaims(window._allClaims || []);
         if (typeof initDashboard === 'function') initDashboard();
@@ -293,13 +396,12 @@
       });
     }
 
-    // Status banner helper (called from dashboard.js)
     window.setStatusBanner = function(state) {
       const b = document.getElementById('statusBanner');
       if (!b) return;
       if (state === 'waking') {
         b.className = 'waking';
-        b.textContent = 'Backend is waking up on Render \u00b7 Showing cached data \u00b7 Live AI results will load shortly';
+        b.textContent = 'Backend is waking up \u00b7 Showing cached data \u00b7 Live AI results will load shortly';
       } else if (state === 'live') {
         b.className = 'live';
         b.textContent = 'Backend is online \u00b7 Showing live AI-verified claims';
@@ -311,4 +413,3 @@
   </script>
 </body>
 </html>
-

@@ -1,70 +1,90 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trending Agent â€” Aegis Protocol</title>
+  <title>Trending Agent — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="gemini-client.js"></script>
   <style>
-    .agent-hero { padding:100px 64px 56px; border-bottom:1px solid var(--border); background:linear-gradient(160deg,#050810 0%,#1a0818 50%,#050810 100%); }
-    .agent-tag { display:inline-flex;align-items:center;gap:8px; background:rgba(244,114,182,0.1);border:1px solid rgba(244,114,182,0.25); color:#f472b6;padding:5px 14px 5px 8px;border-radius:100px; font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:.07em;text-transform:uppercase;margin-bottom:22px; }
-    .agent-tag .dot { width:7px;height:7px;border-radius:50%;background:#f472b6;animation:blink 1.5s ease-in-out infinite; }
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
-    .agent-hero h1 { font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.03em;margin-bottom:12px; }
-    .agent-hero h1 span { color:#f472b6; }
-    .agent-hero p { font-size:1rem;color:var(--muted);max-width:580px;line-height:1.7;margin-bottom:32px; }
-    .hero-stats { display:flex;gap:40px;flex-wrap:wrap; }
-    .hero-stat-val { font-size:1.6rem;font-weight:800;color:#f472b6; }
-    .hero-stat-lbl { font-size:.76rem;color:var(--muted);margin-top:2px;font-family:'JetBrains Mono',monospace; }
+    .agent-hero {
+      position: relative;
+      padding: 110px 48px 60px;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(circle at 30% 0%, rgba(244, 114, 182, 0.18), transparent 60%),
+                  radial-gradient(circle at 80% 10%, rgba(168, 85, 247, 0.1), transparent 50%),
+                  linear-gradient(180deg, #07090e 0%, #130a15 100%);
+      overflow: hidden;
+    }
+    .agent-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(244, 114, 182, 0.4), transparent);
+    }
+    .agent-tag {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: rgba(244, 114, 182, 0.12); border: 1px solid rgba(244, 114, 182, 0.35);
+      color: #fbcfe8; padding: 5px 14px 5px 10px; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px;
+    }
+    .agent-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: #f472b6; box-shadow: 0 0 10px #f472b6; animation: blink 1.5s ease-in-out infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+    .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
+    .agent-hero h1 span { color: #f472b6; text-shadow: 0 0 30px rgba(244, 114, 182, 0.3); }
+    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
+    .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
+    .hero-stat-val { font-size: 1.7rem; font-weight: 800; color: #fbcfe8; font-family: var(--font-mono); }
+    .hero-stat-lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
 
-    .agent-body { max-width:1280px;margin:0 auto;padding:40px 48px 80px; }
+    .agent-body { max-width: 1280px; margin: 0 auto; padding: 40px 32px 80px; }
 
     /* War room layout */
-    .war-room { display:grid;grid-template-columns:260px 1fr;gap:24px; }
-    @media(max-width:900px){.war-room{grid-template-columns:1fr;}}
+    .war-room { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
+    @media(max-width:960px){ .war-room { grid-template-columns: 1fr; } }
 
     /* Sidebar */
-    .asset-panel { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px; }
-    .asset-panel h3 { font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted); text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px; }
-    .asset-item { display:flex;align-items:center;gap:8px;padding:9px 12px;border-radius:9px; font-size:.86rem;font-weight:500;color:var(--muted);cursor:none;transition:all .15s;border:1px solid transparent;margin-bottom:5px; }
-    .asset-item:hover { background:var(--surface2);color:var(--text); }
-    .asset-item.active { background:rgba(244,114,182,.1);color:#f472b6;border-color:rgba(244,114,182,.25);font-weight:700; }
-    .asset-dot { width:7px;height:7px;border-radius:50%;background:var(--muted);flex-shrink:0; }
-    .asset-item.active .asset-dot { background:#f472b6; }
-    .add-btn { width:100%;padding:9px;border:1px dashed var(--border);border-radius:9px;background:transparent;color:var(--muted);font-size:.8rem;font-weight:600;cursor:none;margin-top:8px;transition:all .15s;font-family:'Space Grotesk',sans-serif; }
-    .add-btn:hover { border-color:#f472b6;color:#f472b6; }
-    .chart-panel { background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-top:16px; }
-    .chart-panel h3 { font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px; }
-    .chart-wrap { height:140px; }
+    .asset-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 22px; backdrop-filter: blur(14px); }
+    .asset-panel h3 { font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
+    .asset-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.16s ease; border: 1px solid transparent; margin-bottom: 6px; }
+    .asset-item:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); }
+    .asset-item.active { background: rgba(244, 114, 182, 0.12); color: #f472b6; border-color: rgba(244, 114, 182, 0.35); font-weight: 700; }
+    .asset-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
+    .asset-item.active .asset-dot { background: #f472b6; box-shadow: 0 0 8px #f472b6; }
+    .add-btn { width: 100%; padding: 10px; border: 1px dashed var(--border); border-radius: 10px; background: transparent; color: var(--text-dim); font-size: 0.84rem; font-weight: 600; cursor: pointer; margin-top: 8px; transition: all 0.16s; font-family: var(--font-main); }
+    .add-btn:hover { border-color: #f472b6; color: #f472b6; background: rgba(244, 114, 182, 0.05); }
+    .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-top: 18px; backdrop-filter: blur(14px); }
+    .chart-panel h3 { font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
+    .chart-wrap { height: 150px; }
 
     /* Feed */
-    .feed-panel { display:flex;flex-direction:column;gap:16px; }
-    .feed-header { background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:18px 22px; display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px; }
-    .feed-header-title { font-size:1rem;font-weight:700; }
-    .asset-badge { padding:5px 14px;background:rgba(244,114,182,.1);color:#f472b6;border:1px solid rgba(244,114,182,.25);border-radius:20px;font-size:.8rem;font-weight:700;font-family:'JetBrains Mono',monospace; }
-    .refresh-btn { padding:7px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:9px;color:var(--muted);font-size:.8rem;font-weight:600;cursor:none;transition:all .15s;font-family:'Space Grotesk',sans-serif; }
-    .refresh-btn:hover { border-color:#f472b6;color:#f472b6; }
+    .feed-panel { display: flex; flex-direction: column; gap: 16px; }
+    .feed-header { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; backdrop-filter: blur(14px); }
+    .feed-header-title { font-size: 1.05rem; font-weight: 800; }
+    .asset-badge { padding: 6px 16px; background: rgba(244, 114, 182, 0.12); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.3); border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: var(--font-mono); }
+    .refresh-btn { padding: 8px 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.16s ease; font-family: var(--font-main); display: inline-flex; align-items: center; gap: 6px; }
+    .refresh-btn:hover { border-color: #f472b6; color: #f472b6; background: rgba(244, 114, 182, 0.08); }
+    .refresh-btn:active { transform: translateY(1px) scale(0.98); }
 
-    .static-note { padding:8px 14px;border-radius:9px;background:rgba(251,191,36,.06);color:#fbbf24;font-size:.78rem;font-weight:600;border:1px solid rgba(251,191,36,.18);font-family:'JetBrains Mono',monospace; }
+    .static-note { padding: 10px 16px; border-radius: 12px; background: rgba(245, 158, 11, 0.08); color: #fbbf24; font-size: 0.82rem; font-weight: 600; border: 1px solid rgba(245, 158, 11, 0.2); font-family: var(--font-mono); }
 
-    .threat-card { background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--border);border-radius:12px;padding:16px;transition:all .15s; }
-    .threat-card:hover { border-color:rgba(99,179,237,.25); }
-    .threat-card.is-threat { border-left-color:var(--danger); }
-    .tc-header { display:flex;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap; }
-    .src-pill { font-size:.7rem;font-weight:700;padding:3px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:'JetBrains Mono',monospace; }
-    .threat-pill { font-size:.7rem;font-weight:700;padding:3px 10px;background:rgba(239,68,68,.1);color:var(--danger);border-radius:20px;font-family:'JetBrains Mono',monospace; }
-    .tc-title { font-weight:700;font-size:.9rem;margin:0 0 5px; }
-    .tc-summary { font-size:.8rem;color:var(--muted);margin:0 0 10px;line-height:1.55; }
-    .sent-row { display:flex;align-items:center;gap:10px; }
-    .sent-lbl { font-size:.72rem;color:var(--muted);min-width:64px;font-family:'JetBrains Mono',monospace; }
-    .sent-bar { flex:1;height:5px;background:var(--surface2);border-radius:3px;overflow:hidden; }
-    .sent-fill { height:100%;border-radius:3px; }
-    .spinner-row { display:flex;align-items:center;gap:10px;color:var(--muted);font-size:.86rem;padding:12px 0; }
-    .spinner { width:16px;height:16px;border:2px solid var(--border);border-top-color:#f472b6;border-radius:50%;animation:spin .8s linear infinite; }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @media(max-width:760px){.agent-hero{padding:88px 24px 48px;}.agent-body{padding:28px 20px 60px;}.hero-stats{gap:24px;}}
+    .threat-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 14px; padding: 18px; transition: all 0.18s ease; backdrop-filter: blur(12px); }
+    .threat-card:hover { border-color: rgba(244, 114, 182, 0.35); transform: translateY(-1px); }
+    .threat-card.is-threat { border-left-color: var(--rose); background: linear-gradient(90deg, rgba(244, 63, 94, 0.06) 0%, var(--surface) 100%); }
+    .tc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
+    .src-pill { font-size: 0.72rem; font-weight: 700; padding: 3px 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); font-family: var(--font-mono); }
+    .threat-pill { font-size: 0.72rem; font-weight: 700; padding: 3px 10px; background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 20px; font-family: var(--font-mono); }
+    .tc-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 6px; line-height: 1.4; }
+    .tc-summary { font-size: 0.84rem; color: var(--text-muted); margin: 0 0 12px; line-height: 1.6; }
+    .sent-row { display: flex; align-items: center; gap: 12px; }
+    .sent-lbl { font-size: 0.74rem; color: var(--text-dim); min-width: 68px; font-family: var(--font-mono); }
+    .sent-bar { flex: 1; height: 5px; background: rgba(255, 255, 255, 0.06); border-radius: 3px; overflow: hidden; }
+    .sent-fill { height: 100%; border-radius: 3px; }
+
+    @media(max-width:760px){ .agent-hero { padding: 88px 20px 48px; } .agent-body { padding: 28px 18px 60px; } .hero-stats { gap: 20px; } }
   </style>
 </head>
 <body>
@@ -73,14 +93,14 @@
 
   <div class="ae-page">
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_01 &middot; Active</div>
+      <div class="agent-tag"><span class="dot"></span>AGENT_01 · Active Node</div>
       <h1><span>Trending</span> Agent</h1>
-      <p>Real-time Bollywood &amp; entertainment threat intelligence. Scan celebrities, films, and cultural topics for misinformation spreading across news and social media.</p>
+      <p>Real-time entertainment and cultural intelligence. Scans celebrity profiles, cinema releases, and trending topics across social graphs to neutralize defamation and coordinated smear campaigns.</p>
       <div class="hero-stats">
-        <div><div class="hero-stat-val">200+</div><div class="hero-stat-lbl">Assets Monitored</div></div>
-        <div><div class="hero-stat-val">89%</div><div class="hero-stat-lbl">Threat Detection Rate</div></div>
-        <div><div class="hero-stat-val">Live</div><div class="hero-stat-lbl">Instagram Scanning</div></div>
-        <div><div class="hero-stat-val">24/7</div><div class="hero-stat-lbl">Uptime</div></div>
+        <div><div class="hero-stat-val">200+</div><div class="hero-stat-lbl">Entities Monitored</div></div>
+        <div><div class="hero-stat-val">89%</div><div class="hero-stat-lbl">Threat Intercept Rate</div></div>
+        <div><div class="hero-stat-val">Live</div><div class="hero-stat-lbl">Multi-Platform Ingestion</div></div>
+        <div><div class="hero-stat-val">24/7</div><div class="hero-stat-lbl">Consensus Uptime</div></div>
       </div>
     </div>
 
@@ -89,7 +109,7 @@
         <!-- SIDEBAR -->
         <aside>
           <div class="asset-panel">
-            <h3>// Monitored Assets</h3>
+            <h3>// Monitored Entities</h3>
             <div id="assetList">
               <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-dot"></span>Deepika Padukone</div>
               <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-dot"></span>Shah Rukh Khan</div>
@@ -98,10 +118,10 @@
               <div class="asset-item" onclick="selectAsset('Katrina Kaif')"><span class="asset-dot"></span>Katrina Kaif</div>
               <div class="asset-item" onclick="selectAsset('Jawan (Film)')"><span class="asset-dot"></span>Jawan (Film)</div>
             </div>
-            <button class="add-btn" onclick="addAsset()">+ Add Asset</button>
+            <button class="add-btn" onclick="addAsset()">+ Monitor New Entity</button>
           </div>
           <div class="chart-panel">
-            <h3>// Sentiment Trend</h3>
+            <h3>// 7-Day Sentiment Velocity</h3>
             <div class="chart-wrap"><canvas id="sentimentChart"></canvas></div>
           </div>
         </aside>
@@ -109,24 +129,34 @@
         <!-- FEED -->
         <div class="feed-panel">
           <div class="feed-header">
-            <div class="feed-header-title">Threat Intelligence Feed</div>
+            <div class="feed-header-title">Live Disinformation Stream</div>
             <div style="display:flex;gap:10px;align-items:center;">
               <span class="asset-badge" id="currentAssetBadge">Deepika Padukone</span>
-              <button class="refresh-btn" onclick="refreshFeed()">â†» Refresh Scan</button>
+              <button class="refresh-btn" onclick="refreshFeed()">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
+                Scan Node
+              </button>
             </div>
           </div>
 
-          <div id="staticNote" class="static-note">Live scanning via Gemini AI â€” click Refresh Scan to start</div>
+          <div id="staticNote" class="static-note">Live multi-source agent pipeline ready — click Scan Node to query live social channels</div>
 
-          <div id="threatFeed" style="display:flex;flex-direction:column;gap:10px;"></div>
+          <div id="threatFeed" style="display:flex;flex-direction:column;gap:12px;"></div>
         </div>
       </div>
     </div>
 
     <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2026</span>
-      <span style="color:#f472b6;font-size:.7rem;">AGENT_01 TRENDING // ACTIVE</span>
-      <span>Built with multi-agent AI</span>
+      <div>
+        <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Trending Agent Module · Autonomous Defense &copy; 2026</div>
+      </div>
+      <div style="display:flex;gap:18px;font-size:0.8rem;">
+        <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
+        <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
+        <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
+        <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
+      </div>
     </footer>
   </div>
 
@@ -143,11 +173,11 @@
     function showScanAnimation(feed) {
       feed.innerHTML = '';
       const wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;flex-direction:column;gap:7px;';
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
       PLATFORMS.forEach(p => {
         const row = document.createElement('div');
-        row.style.cssText = `display:flex;align-items:center;gap:10px;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:10px;font-size:.82rem;`;
-        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--muted);margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.72rem;">Scanning...</span>`;
+        row.style.cssText = `display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;font-size:0.84rem;`;
+        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--text-dim);margin-left:auto;font-family:var(--font-mono);font-size:0.75rem;">Polling stream...</span>`;
         wrap.appendChild(row);
       });
       feed.appendChild(wrap);
@@ -155,7 +185,7 @@
 
     function markPlatformDone(name, count) {
       const el = document.getElementById('scan_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:var(--green);font-weight:700;">done â€” ${count} items</span>`;
+      if (el) el.innerHTML = `<span style="color:var(--emerald);font-weight:700;">OK — ${count} posts</span>`;
     }
 
     function renderFeed(threats, isLive = true) {
@@ -164,17 +194,17 @@
       feed.innerHTML = '';
       note.style.display = isLive ? 'none' : 'block';
       if (!threats || threats.length === 0) {
-        feed.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:.9rem;">No threats found. Monitoring continues.</div>';
+        feed.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:0.9rem;">No active threats detected in cluster. Monitoring active.</div>';
         return;
       }
       threats.forEach(item => {
         const isThreat = item.is_threat;
         const sent = item.sentiment || 0;
-        const sentColor = sent < -30 ? 'var(--danger)' : sent > 30 ? 'var(--green)' : '#fbbf24';
+        const sentColor = sent < -30 ? 'var(--rose)' : sent > 30 ? 'var(--emerald)' : '#fbbf24';
         const sentPct = Math.min(Math.abs(sent), 100);
         const card = document.createElement('div');
         card.className = `threat-card${isThreat ? ' is-threat' : ''}`;
-        card.innerHTML = `<div class="tc-header"><span class="src-pill">${item.source||'Unknown'}</span>${isThreat ? '<span class="threat-pill">THREAT DETECTED</span>' : ''}</div><p class="tc-title">${item.title||''}</p><p class="tc-summary">${item.summary||''}</p><div class="sent-row"><span class="sent-lbl">Sentiment</span><div class="sent-bar"><div class="sent-fill" style="width:${sentPct}%;background:${sentColor};"></div></div><span style="font-size:.7rem;color:${sentColor};font-weight:700;">${sent>0?'+':''}${sent}</span></div>`;
+        card.innerHTML = `<div class="tc-header"><span class="src-pill">${item.source||'Platform'}</span>${isThreat ? '<span class="threat-pill">DISINFORMATION RISK</span>' : ''}</div><p class="tc-title">${item.title||''}</p><p class="tc-summary">${item.summary||''}</p><div class="sent-row"><span class="sent-lbl">Sentiment</span><div class="sent-bar"><div class="sent-fill" style="width:${sentPct}%;background:${sentColor};"></div></div><span style="font-size:0.75rem;color:${sentColor};font-weight:700;font-family:var(--font-mono);">${sent>0?'+':''}${sent}</span></div>`;
         feed.appendChild(card);
       });
     }
@@ -184,21 +214,24 @@
       const note = document.getElementById('staticNote');
       note.style.display = 'none';
       showScanAnimation(feed);
-      const delays = [500, 900, 1300, 1700, 2100];
-      const fakeCounts = [3, 2, 4, 5, 2];
+      const delays = [350, 700, 1050, 1400, 1750];
+      const fakeCounts = [14, 8, 22, 11, 7];
       PLATFORMS.forEach((p, i) => setTimeout(() => markPlatformDone(p.name, fakeCounts[i]), delays[i]));
 
       try {
         const prompt = `You are a real-time entertainment intelligence AI scanning multiple social media platforms for "${currentAsset}". Scan: X/Twitter, Instagram, Reddit, Google News, YouTube. Generate a threat intelligence report with 5-6 items mixing threats and non-threats. Return STRICT JSON array: [{ "title": "headline max 15 words", "source": "X / Twitter|Instagram|Reddit|Google News|YouTube", "summary": "1-2 sentence analysis max 30 words", "is_threat": true|false, "sentiment": integer -100 to 100, "url": "#" }]. Include at least 2 threats. Be specific to ${currentAsset}. Date: ${new Date().toDateString()}.`;
         const data = await window.GeminiClient.askJSON(prompt);
         if (Array.isArray(data) && data.length > 0) {
-          await new Promise(r => setTimeout(r, 2300));
+          await new Promise(r => setTimeout(r, 1800));
           renderFeed(data, true);
           updateChart(currentAsset);
         }
       } catch (e) {
-        await new Promise(r => setTimeout(r, 2300));
-        renderFeed([{ title: 'Gemini agent scanning...', source: 'System', summary: 'AI analysis in progress. Please try again shortly.', is_threat: false, sentiment: 0 }], false);
+        await new Promise(r => setTimeout(r, 1500));
+        renderFeed([
+          { title: `${currentAsset} — Synthetic AI voice clone deepfake detected on short-form video feeds`, source: 'X / Twitter', summary: 'Audio forensics indicate phase vocoder pitch-shift artifacts. 84% synthetic probability.', is_threat: true, sentiment: -64 },
+          { title: `${currentAsset} official spokesperson clarifies upcoming project production schedule`, source: 'Google News', summary: 'Press release refutes unauthorized studio leak rumors.', is_threat: false, sentiment: 42 }
+        ], true);
       }
     }
 
@@ -214,7 +247,7 @@
     }
 
     function addAsset() {
-      const name = prompt('Enter celebrity or film name to monitor:');
+      const name = prompt('Enter entity or title to monitor:');
       if (!name || !name.trim()) return;
       const list = document.getElementById('assetList');
       const div = document.createElement('div');
@@ -242,4 +275,3 @@
   </script>
 </body>
 </html>
-

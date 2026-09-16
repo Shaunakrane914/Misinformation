@@ -90,9 +90,11 @@ class BrandShieldAgent:
             import google.generativeai as genai
 
             api_key = (
-                os.getenv("GEMINI_API_KEY_1")
+                os.getenv("GEMINI_API_KEY")
+                or os.getenv("GEMINI_API_KEY_1")
                 or os.getenv("GEMINI_API_KEY_2")
-                or os.getenv("GEMINI_API_KEY")
+                or os.getenv("GEMINI_API_KEY_3")
+                or os.getenv("GEMINI_API_KEY_4")
             )
             if not api_key:
                 raise ValueError("No Gemini API key configured")

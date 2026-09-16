@@ -3,256 +3,377 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agents â€” Aegis Protocol</title>
+  <title>Agents — Aegis Protocol</title>
+  <meta name="description" content="Explore Aegis AI agents specialized in social media, financial markets, personal reputation, and brand defense.">
   <link rel="stylesheet" href="aegis-theme.css">
   <style>
+    .agents-hero {
+      position: relative;
+      padding: 110px 32px 48px;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.08), transparent 60%),
+                  linear-gradient(180deg, #06080d 0%, #090d15 100%);
+    }
+    .agents-hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .agents-hero h1 span {
+      background: linear-gradient(135deg, #00f2fe, #38bdf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .agents-hero p {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 580px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .agents-container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
     .agents-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 22px;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-bottom: 32px;
     }
-    .ag-card {
-      background: var(--surface);
+    @media (max-width: 768px) {
+      .agents-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .agent-card {
+      background: rgba(13, 17, 26, 0.7);
       border: 1px solid var(--border);
-      border-radius: 20px; overflow: hidden;
-      display: flex; flex-direction: column;
-      transition: border-color .2s, box-shadow .2s, transform .15s;
-      transform-style: preserve-3d; cursor: none;
+      border-radius: 18px;
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(14px);
+      transition: transform 0.2s var(--ease-spring), border-color 0.2s, box-shadow 0.2s;
+      position: relative;
     }
-    .ag-card:hover {
-      border-color: rgba(99,179,237,.28);
-      box-shadow: 0 18px 50px rgba(0,0,0,.35), 0 0 24px rgba(59,130,246,.08);
+    .agent-card:hover {
+      border-color: var(--agent-accent, rgba(0, 229, 255, 0.4));
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
     }
-    .ag-header {
-      padding: 28px 26px 20px;
-      display: flex; align-items: center; gap: 14px;
-      border-bottom: 1px solid var(--border);
+
+    .agent-card-top {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 16px;
     }
-    .ag-icon { width: 52px; height: 52px; border-radius: 14px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .ag-icon svg { width: 24px; height: 24px; }
-    .ag-num { font-family:'JetBrains Mono',monospace; font-size:.65rem; font-weight:700; color:var(--muted); letter-spacing:.1em; margin-bottom:3px; }
-    .ag-name { font-size:1rem; font-weight:700; }
-    .ag-body { padding: 22px 26px; flex: 1; display: flex; flex-direction: column; }
-    .ag-desc { font-size:.87rem; color:var(--muted); line-height:1.68; flex:1; }
-    .ag-sources {
-      display: flex; flex-wrap: wrap; gap: 6px; margin-top: 16px; margin-bottom: 20px;
+    .agent-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: var(--agent-icon-bg, rgba(255, 255, 255, 0.05));
+      border: 1px solid var(--agent-icon-border, var(--border));
+      color: var(--agent-accent, #fff);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
-    .ag-src { display: inline-block; padding: 3px 10px; border-radius: 100px; font-size:.72rem; font-weight:700; font-family:'JetBrains Mono',monospace; }
-    .ag-footer { padding: 0 26px 24px; }
-    .ag-btn { display: inline-flex; align-items: center; gap: 7px; padding: 10px 20px; border-radius: 10px; font-size:.82rem; font-weight:700; text-decoration:none; font-family:'Space Grotesk',sans-serif; transition: all .15s; width:100%; justify-content:center; border:none; }
+    .agent-title-wrap h2 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin: 0;
+    }
+    .agent-tag-label {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: var(--agent-accent, var(--text-dim));
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .agent-desc {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 20px;
+    }
+
+    .agent-sources {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+    .agent-source-chip {
+      font-size: 0.74rem;
+      font-family: var(--font-mono);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 3px 8px;
+      color: var(--text-dim);
+    }
+
+    .agent-open-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: 12px 18px;
+      border-radius: 10px;
+      background: var(--agent-btn-bg, rgba(255, 255, 255, 0.05));
+      border: 1px solid var(--agent-btn-border, var(--border));
+      color: #fff;
+      font-weight: 600;
+      font-size: 0.88rem;
+      text-decoration: none;
+      transition: all 0.16s ease;
+    }
+    .agent-open-btn:hover {
+      background: var(--agent-btn-hover, rgba(255, 255, 255, 0.12));
+      border-color: var(--agent-accent, #fff);
+      color: #fff;
+    }
+
+    /* Core Verifier Card */
+    .verifier-full-card {
+      background: linear-gradient(135deg, rgba(13, 17, 26, 0.9), rgba(18, 24, 38, 0.9));
+      border: 1px solid rgba(0, 229, 255, 0.25);
+      border-radius: 18px;
+      padding: 28px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    .verifier-info {
+      max-width: 640px;
+    }
+    .verifier-info h3 {
+      font-size: 1.35rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .verifier-info p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0;
+    }
+    .verifier-action-btn {
+      background: #fff;
+      color: #06080d;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 12px 24px;
+      border-radius: 10px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s ease;
+      white-space: nowrap;
+    }
+    .verifier-action-btn:hover {
+      background: #e2e8f0;
+      transform: translateY(-1px);
+    }
   </style>
 </head>
 <body>
   <script>window.AEGIS_ACTIVE='agents';</script>
   <script src="aegis-nav.js"></script>
 
-  <div class="ae-page">
-    <div class="ae-page-hero ae-reveal">
-      <div class="ae-page-label">// INTELLIGENCE AGENTS</div>
-      <h1>The four agents.</h1>
-      <p>Each agent is purpose-built for a specific threat domain â€” running simultaneously, powered by Gemini AI, with results in seconds.</p>
+  <header class="agents-hero">
+    <h1 class="ae-reveal">The Four <span>Agents</span></h1>
+    <p class="ae-reveal">
+      Each agent is specialized in a different domain, monitoring social media, stock markets, brands, and public figures in real-time.
+    </p>
+  </header>
+
+  <main class="agents-container">
+    <div class="agents-grid">
+
+      <!-- Trending Agent -->
+      <article class="agent-card ae-reveal ag-card" style="
+        --agent-accent: #f472b6;
+        --agent-icon-bg: rgba(244, 114, 182, 0.1);
+        --agent-icon-border: rgba(244, 114, 182, 0.25);
+        --agent-btn-bg: rgba(244, 114, 182, 0.08);
+        --agent-btn-border: rgba(244, 114, 182, 0.25);
+        --agent-btn-hover: rgba(244, 114, 182, 0.18);
+      ">
+        <div>
+          <div class="agent-card-top">
+            <div class="agent-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
+            </div>
+            <div class="agent-title-wrap">
+              <span class="agent-tag-label">Social Media Radar</span>
+              <h2>Trending Agent</h2>
+            </div>
+          </div>
+          <p class="agent-desc">
+            Monitors viral trends and rumors across social platforms to detect coordinated bot amplification and rapid misinformation spikes.
+          </p>
+          <div class="agent-sources">
+            <span class="agent-source-chip">X / Twitter</span>
+            <span class="agent-source-chip">Reddit</span>
+            <span class="agent-source-chip">TikTok</span>
+            <span class="agent-source-chip">Instagram</span>
+            <span class="agent-source-chip">YouTube</span>
+          </div>
+        </div>
+        <a href="trending-agent.html" class="agent-open-btn">
+          <span>Open Trending Agent</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </article>
+
+      <!-- Scout Agent -->
+      <article class="agent-card ae-reveal ag-card" style="
+        --agent-accent: #a78bfa;
+        --agent-icon-bg: rgba(167, 139, 250, 0.1);
+        --agent-icon-border: rgba(167, 139, 250, 0.25);
+        --agent-btn-bg: rgba(167, 139, 250, 0.08);
+        --agent-btn-border: rgba(167, 139, 250, 0.25);
+        --agent-btn-hover: rgba(167, 139, 250, 0.18);
+      ">
+        <div>
+          <div class="agent-card-top">
+            <div class="agent-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
+            </div>
+            <div class="agent-title-wrap">
+              <span class="agent-tag-label">Market Watchdog</span>
+              <h2>Scout Agent</h2>
+            </div>
+          </div>
+          <p class="agent-desc">
+            Tracks financial markets for fake earnings leaks, stock manipulation rumors, and anomalous price drops tied to unverified claims.
+          </p>
+          <div class="agent-sources">
+            <span class="agent-source-chip">SEC Filings</span>
+            <span class="agent-source-chip">Yahoo Finance</span>
+            <span class="agent-source-chip">Bloomberg</span>
+            <span class="agent-source-chip">Benzinga</span>
+            <span class="agent-source-chip">WSJ</span>
+          </div>
+        </div>
+        <a href="scout-agent.html" class="agent-open-btn">
+          <span>Open Scout Agent</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </article>
+
+      <!-- Personal Watch -->
+      <article class="agent-card ae-reveal ag-card" style="
+        --agent-accent: #06b6d4;
+        --agent-icon-bg: rgba(6, 182, 212, 0.1);
+        --agent-icon-border: rgba(6, 182, 212, 0.25);
+        --agent-btn-bg: rgba(6, 182, 212, 0.08);
+        --agent-btn-border: rgba(6, 182, 212, 0.25);
+        --agent-btn-hover: rgba(6, 182, 212, 0.18);
+      ">
+        <div>
+          <div class="agent-card-top">
+            <div class="agent-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            </div>
+            <div class="agent-title-wrap">
+              <span class="agent-tag-label">Personal Reputation</span>
+              <h2>Personal Watch</h2>
+            </div>
+          </div>
+          <p class="agent-desc">
+            Protects individuals and executives by scanning for deepfake audio, fake quotes, impersonation attempts, and targeted defamation.
+          </p>
+          <div class="agent-sources">
+            <span class="agent-source-chip">Audio Logs</span>
+            <span class="agent-source-chip">Video Feeds</span>
+            <span class="agent-source-chip">Telegram</span>
+            <span class="agent-source-chip">LinkedIn</span>
+            <span class="agent-source-chip">News</span>
+          </div>
+        </div>
+        <a href="personal-watch-agent.html" class="agent-open-btn">
+          <span>Open Personal Watch</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </article>
+
+      <!-- BrandShield -->
+      <article class="agent-card ae-reveal ag-card" style="
+        --agent-accent: #10b981;
+        --agent-icon-bg: rgba(16, 185, 129, 0.1);
+        --agent-icon-border: rgba(16, 185, 129, 0.25);
+        --agent-btn-bg: rgba(16, 185, 129, 0.08);
+        --agent-btn-border: rgba(16, 185, 129, 0.25);
+        --agent-btn-hover: rgba(16, 185, 129, 0.18);
+      ">
+        <div>
+          <div class="agent-card-top">
+            <div class="agent-icon">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+            </div>
+            <div class="agent-title-wrap">
+              <span class="agent-tag-label">Corporate Defense</span>
+              <h2>BrandShield</h2>
+            </div>
+          </div>
+          <p class="agent-desc">
+            Protects brands and companies from fake product defect rumors, counterfeit PR statements, and organized smear campaigns.
+          </p>
+          <div class="agent-sources">
+            <span class="agent-source-chip">Reviews</span>
+            <span class="agent-source-chip">Discord</span>
+            <span class="agent-source-chip">Press Releases</span>
+            <span class="agent-source-chip">Trademarks</span>
+            <span class="agent-source-chip">Forums</span>
+          </div>
+        </div>
+        <a href="brandshield-agent.html" class="agent-open-btn">
+          <span>Open BrandShield</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </article>
+
     </div>
 
-    <div class="ae-section">
-      <div class="ae-container">
-        <div class="agents-grid ae-reveal">
-
-          <!-- Trending Agent -->
-          <div class="ag-card">
-            <div class="ag-header">
-              <div class="ag-icon" style="background:rgba(59,130,246,.1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" stroke-linecap="round">
-                  <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ag-num">AGENT_01</div>
-                <div class="ag-name">Trending Agent</div>
-              </div>
-            </div>
-            <div class="ag-body">
-              <p class="ag-desc">Monitors viral misinformation about celebrities, brands and public figures in real-time across social and news platforms. Enter any name and get AI-generated threat intelligence instantly.</p>
-              <div class="ag-sources">
-                <span class="ag-src" style="background:rgba(59,130,246,.1);color:#60a5fa;">X / Twitter</span>
-                <span class="ag-src" style="background:rgba(139,92,246,.1);color:#a78bfa;">Instagram</span>
-                <span class="ag-src" style="background:rgba(239,68,68,.1);color:#f87171;">Reddit</span>
-                <span class="ag-src" style="background:rgba(16,185,129,.1);color:#34d399;">Google News</span>
-                <span class="ag-src" style="background:rgba(245,158,11,.1);color:#fbbf24;">YouTube</span>
-              </div>
-            </div>
-            <div class="ag-footer">
-              <a href="trending-agent.html" class="ag-btn" style="background:rgba(59,130,246,.12);color:#60a5fa;border:1px solid rgba(59,130,246,.2);">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Launch Agent
-              </a>
-            </div>
-          </div>
-
-          <!-- Scout Agent -->
-          <div class="ag-card">
-            <div class="ag-header">
-              <div class="ag-icon" style="background:rgba(139,92,246,.1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round">
-                  <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ag-num">AGENT_02</div>
-                <div class="ag-name">Scout Agent</div>
-              </div>
-            </div>
-            <div class="ag-body">
-              <p class="ag-desc">Tracks financial misinformation â€” stock manipulation rumors, CEO controversies, earnings fake news. Uses live Yahoo Finance data combined with AI news analysis.</p>
-              <div class="ag-sources">
-                <span class="ag-src" style="background:rgba(139,92,246,.1);color:#a78bfa;">Yahoo Finance</span>
-                <span class="ag-src" style="background:rgba(16,185,129,.1);color:#34d399;">Google News</span>
-                <span class="ag-src" style="background:rgba(59,130,246,.1);color:#60a5fa;">X / Twitter</span>
-                <span class="ag-src" style="background:rgba(239,68,68,.1);color:#f87171;">Reddit</span>
-                <span class="ag-src" style="background:rgba(245,158,11,.1);color:#fbbf24;">Bloomberg</span>
-              </div>
-            </div>
-            <div class="ag-footer">
-              <a href="scout-agent.html" class="ag-btn" style="background:rgba(139,92,246,.12);color:#a78bfa;border:1px solid rgba(139,92,246,.2);">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Launch Agent
-              </a>
-            </div>
-          </div>
-
-          <!-- Personal Watch -->
-          <div class="ag-card">
-            <div class="ag-header">
-              <div class="ag-icon" style="background:rgba(6,182,212,.1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ag-num">AGENT_03</div>
-                <div class="ag-name">Personal Watch</div>
-              </div>
-            </div>
-            <div class="ag-body">
-              <p class="ag-desc">Monitors the online reputation of any individual â€” detecting defamation, fake quotes, targeted harassment and misinformation campaigns across all major platforms.</p>
-              <div class="ag-sources">
-                <span class="ag-src" style="background:rgba(59,130,246,.1);color:#60a5fa;">X / Twitter</span>
-                <span class="ag-src" style="background:rgba(6,182,212,.1);color:#22d3ee;">LinkedIn</span>
-                <span class="ag-src" style="background:rgba(239,68,68,.1);color:#f87171;">YouTube</span>
-                <span class="ag-src" style="background:rgba(16,185,129,.1);color:#34d399;">Google News</span>
-                <span class="ag-src" style="background:rgba(245,158,11,.1);color:#fbbf24;">Reddit</span>
-              </div>
-            </div>
-            <div class="ag-footer">
-              <a href="personal-watch-agent.html" class="ag-btn" style="background:rgba(6,182,212,.12);color:#22d3ee;border:1px solid rgba(6,182,212,.2);">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Launch Agent
-              </a>
-            </div>
-          </div>
-
-          <!-- BrandShield -->
-          <div class="ag-card">
-            <div class="ag-header">
-              <div class="ag-icon" style="background:rgba(16,185,129,.1)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ag-num">AGENT_04</div>
-                <div class="ag-name">BrandShield</div>
-              </div>
-            </div>
-            <div class="ag-body">
-              <p class="ag-desc">Detects fake reviews, counterfeit product listings and brand reputation manipulation across e-commerce platforms and review sites using AI pattern analysis.</p>
-              <div class="ag-sources">
-                <span class="ag-src" style="background:rgba(245,158,11,.1);color:#fbbf24;">Amazon</span>
-                <span class="ag-src" style="background:rgba(16,185,129,.1);color:#34d399;">Flipkart</span>
-                <span class="ag-src" style="background:rgba(59,130,246,.1);color:#60a5fa;">Trustpilot</span>
-                <span class="ag-src" style="background:rgba(239,68,68,.1);color:#f87171;">Reddit</span>
-                <span class="ag-src" style="background:rgba(139,92,246,.1);color:#a78bfa;">Google Reviews</span>
-              </div>
-            </div>
-            <div class="ag-footer">
-              <a href="brandshield-agent.html" class="ag-btn" style="background:rgba(16,185,129,.12);color:#34d399;border:1px solid rgba(16,185,129,.2);">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Launch Agent
-              </a>
-            </div>
-          </div>
-
-          <!-- Threat Intelligence Lab -->
-          <div class="ag-card" style="border:1px solid rgba(6,182,212,.3);background:radial-gradient(circle at top right, rgba(6,182,212,0.08), var(--surface) 60%);">
-            <div class="ag-header">
-              <div class="ag-icon" style="background:rgba(6,182,212,.12)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M10 2v7.31M14 2v7.31M8.5 2h7M14 9.3a6.5 6.5 0 1 1-4 0"/>
-                  <path d="M5.52 16h12.96"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ag-num" style="color:#06b6d4;">RESEARCH_LAB</div>
-                <div class="ag-name">Threat Intelligence Lab</div>
-              </div>
-            </div>
-            <div class="ag-body">
-              <p class="ag-desc">Experimental physics-first analysis instruments: Mandelbrot token-rank synthetic text detector, Hawkes process blast radius modeling, and Byzantine swarm consensus with W-MSR outlier pruning.</p>
-              <div class="ag-sources">
-                <span class="ag-src" style="background:rgba(6,182,212,.12);color:#22d3ee;">Mandelbrot Fit</span>
-                <span class="ag-src" style="background:rgba(239,68,68,.12);color:#f87171;">Hawkes Modeler</span>
-                <span class="ag-src" style="background:rgba(139,92,246,.12);color:#c084fc;">W-MSR Consensus</span>
-              </div>
-            </div>
-            <div class="ag-footer">
-              <a href="lab.html" class="ag-btn" style="background:rgba(6,182,212,.16);color:#22d3ee;border:1px solid rgba(6,182,212,.35);box-shadow:0 0 15px rgba(6,182,212,.15);">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                Open Threat Lab
-              </a>
-            </div>
-          </div>
-
-        </div>
-
-        <hr class="ae-divider" style="margin-top:60px;">
-
-        <!-- Bottom CTA row -->
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:20px;" class="ae-reveal">
-          <div>
-            <div class="ae-label mb-8">// CLAIM VERIFIER</div>
-            <p style="font-size:.92rem;color:var(--muted);">Have a specific claim to check? Submit it directly to the backend pipeline.</p>
-          </div>
-          <div style="display:flex;gap:12px;">
-            <a href="submit.html" class="ae-btn ae-btn-primary">Submit a Claim</a>
-            <a href="dashboard.html" class="ae-btn ae-btn-ghost">Live Dashboard</a>
-          </div>
-        </div>
-
+    <!-- Claim Verification Core -->
+    <div class="verifier-full-card ae-reveal">
+      <div class="verifier-info">
+        <h3>Need to verify a specific claim right now?</h3>
+        <p>Paste any rumor, tweet, headline, or leak to run evidence gathering across all four agents and get a verdict in seconds.</p>
       </div>
+      <a href="submit.html" class="verifier-action-btn">
+        <span>Verify a Claim</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
     </div>
+  </main>
 
-    <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2026</span>
-      <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
-      <span>Built with multi-agent AI</span>
-    </footer>
-  </div>
-
-  <script>
-    document.querySelectorAll('.ag-card').forEach(card => {
-      card.addEventListener('mousemove', e => {
-        const r = card.getBoundingClientRect();
-        const x = (e.clientX - r.left) / r.width - 0.5;
-        const y = (e.clientY - r.top) / r.height - 0.5;
-        card.style.transform = `perspective(700px) rotateY(${x * 10}deg) rotateX(${-y * 8}deg) translateY(-4px)`;
-      });
-      card.addEventListener('mouseleave', () => {
-        card.style.transition = 'transform 0.5s ease, border-color .2s, box-shadow .2s';
-        card.style.transform = '';
-        setTimeout(() => card.style.transition = '', 520);
-      });
-      card.addEventListener('mouseenter', () => card.style.transition = 'border-color .2s, box-shadow .2s');
-    });
-  </script>
+  <footer class="ae-footer">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <span style="font-weight:700;color:#fff;letter-spacing:-0.02em;">AEGIS PROTOCOL</span>
+    </div>
+    <div>Multi-Agent Misinformation Defense</div>
+  </footer>
 </body>
 </html>
-

@@ -1,168 +1,171 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>About â€” Aegis Protocol</title>
+  <title>Architecture & Engineering — Aegis Protocol</title>
+  <meta name="description" content="Physics-first architectural specifications and multi-agent arbitration pipelines for the Aegis Protocol.">
   <link rel="stylesheet" href="aegis-theme.css">
+  <style>
+    .about-container {
+      max-width: 1200px;
+      margin: 0 auto 80px;
+      padding: 110px 32px 40px;
+      position: relative;
+      z-index: 2;
+    }
+    .about-header {
+      margin-bottom: 40px;
+    }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+    .step-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      padding: 24px;
+      position: relative;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .step-body {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+    .stack-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 900px) {
+      .steps-grid { grid-template-columns: 1fr; }
+      .stack-grid { grid-template-columns: 1fr; }
+      .about-container { padding-left: 20px; padding-right: 20px; }
+    }
+  </style>
 </head>
 <body>
   <script>window.AEGIS_ACTIVE='about';</script>
   <script src="aegis-nav.js"></script>
 
-  <div class="ae-page">
-    <div class="ae-page-hero ae-reveal">
-      <div class="ae-page-label">// SYSTEM ARCHITECTURE</div>
-      <h1>How Aegis Protocol Works</h1>
-      <p>A three-agent pipeline built for speed, accuracy and transparency â€” from claim submission to final verdict in seconds.</p>
+  <div class="about-container">
+    <div class="about-header ae-reveal">
+      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// SYSTEM ARCHITECTURE</div>
+      <h1 style="font-size:clamp(2rem, 3.5vw, 2.8rem);font-weight:800;letter-spacing:-0.03em;color:#fff;">
+        Physics-First Misinformation Defense
+      </h1>
+      <p style="color:var(--text-muted);font-size:1rem;max-width:640px;margin-top:6px;">
+        Traditional fact-checking relies on subjective LLM prompts. Aegis anchors evidence verification in deterministic statistical physics, token-rank frequency regressions, and Byzantine fault-tolerant consensus.
+      </p>
     </div>
 
-    <div class="ae-section">
-      <div class="ae-container">
-
-        <!-- Pipeline flow -->
-        <div class="ae-reveal mb-32">
-          <div class="ae-label mb-12">// PIPELINE</div>
-          <div class="ae-steps">
-            <div class="ae-step">
-              <div class="ae-step-num">01</div>
-              <div class="ae-step-content">
-                <h3>Submission</h3>
-                <p>User submits a claim via the Submit Claim page. The system accepts free-form natural language â€” no special formatting needed.</p>
-              </div>
-            </div>
-            <div class="ae-step">
-              <div class="ae-step-num">02</div>
-              <div class="ae-step-content">
-                <h3>Ingestion Agent â€” Normalize &amp; Hash</h3>
-                <p>Standardizes claim text, strips noise, generates a SHA256 hash to detect and skip duplicate claims before processing.</p>
-              </div>
-            </div>
-            <div class="ae-step">
-              <div class="ae-step-num">03</div>
-              <div class="ae-step-content">
-                <h3>Database Storage</h3>
-                <p>Claim is saved to Supabase (PostgreSQL) with status <span class="ae-mono" style="color:var(--yellow);font-size:.85em;">pending</span> â€” immediately queryable from the dashboard.</p>
-              </div>
-            </div>
-            <div class="ae-step">
-              <div class="ae-step-num">04</div>
-              <div class="ae-step-content">
-                <h3>Research Agent â€” Evidence Gathering</h3>
-                <p>Uses Gemini AI to compile both supporting and refuting evidence from credible sources. Returns structured JSON with separate evidence lists.</p>
-              </div>
-            </div>
-            <div class="ae-step">
-              <div class="ae-step-num">05</div>
-              <div class="ae-step-content">
-                <h3>Investigator Agent â€” Verdict</h3>
-                <p>Analyzes all evidence, determines True / False / Misleading, assigns a confidence score (0â€“100) and severity rating (low â†’ critical).</p>
-              </div>
-            </div>
-            <div class="ae-step">
-              <div class="ae-step-num">06</div>
-              <div class="ae-step-content">
-                <h3>Result Storage &amp; Status Update</h3>
-                <p>Verdict, confidence, severity and reasoning are saved. Claim status flips to <span class="ae-mono" style="color:var(--green);font-size:.85em;">completed</span>. Dashboard updates in real-time.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <hr class="ae-divider">
-
-        <!-- Three agents detail -->
-        <div class="ae-label mb-20 ae-reveal">// THE THREE CORE AGENTS</div>
-        <div class="ae-grid-3 ae-reveal">
-          <div class="ae-card">
-            <div class="ae-row ae-row-center gap-12 mb-20">
-              <div class="ae-icon ae-icon-purple">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ae-label mb-4">AGENT_01</div>
-                <div style="font-weight:700;font-size:.95rem;">Ingestion Agent</div>
-              </div>
-            </div>
-            <p style="font-size:.86rem;color:var(--muted);line-height:1.65;">Normalizes text, deduplicates via SHA256 hash, and packages the claim for downstream agents. Pure Python â€” fast and deterministic.</p>
-          </div>
-
-          <div class="ae-card">
-            <div class="ae-row ae-row-center gap-12 mb-20">
-              <div class="ae-icon ae-icon-green">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round">
-                  <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ae-label mb-4">AGENT_02</div>
-                <div style="font-weight:700;font-size:.95rem;">Research Agent</div>
-              </div>
-            </div>
-            <p style="font-size:.86rem;color:var(--muted);line-height:1.65;">Queries Gemini 2.5 Flash to gather balanced evidence â€” both supporting and refuting the claim â€” from reliable, verifiable sources.</p>
-          </div>
-
-          <div class="ae-card">
-            <div class="ae-row ae-row-center gap-12 mb-20">
-              <div class="ae-icon ae-icon-yellow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round">
-                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-                </svg>
-              </div>
-              <div>
-                <div class="ae-label mb-4">AGENT_03</div>
-                <div style="font-weight:700;font-size:.95rem;">Investigator Agent</div>
-              </div>
-            </div>
-            <p style="font-size:.86rem;color:var(--muted);line-height:1.65;">Weighs all evidence, delivers a final True / False / Misleading verdict with confidence score, severity rating, and detailed reasoning.</p>
-          </div>
-        </div>
-
-        <hr class="ae-divider">
-
-        <!-- Tech stack -->
-        <div class="ae-label mb-20 ae-reveal">// TECHNOLOGY STACK</div>
-        <div class="ae-grid-2 ae-reveal">
-          <div class="ae-card">
-            <div class="ae-label mb-12">AI &amp; ML</div>
-            <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
-              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-blue" style="flex-shrink:0;">Gemini</span><span style="font-size:.88rem;color:var(--muted);">Google Gemini 2.5 Flash â€” primary AI model</span></li>
-              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-purple" style="flex-shrink:0;">Multi-Agent</span><span style="font-size:.88rem;color:var(--muted);">Three specialized agents with distinct roles</span></li>
-              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-cyan" style="flex-shrink:0; background:rgba(6,182,212,.12);color:#22d3ee;border-color:rgba(6,182,212,.2)">Prompt Eng.</span><span style="font-size:.88rem;color:var(--muted);">Advanced prompting for balanced fact-checking</span></li>
-            </ul>
-          </div>
-          <div class="ae-card">
-            <div class="ae-label mb-12">BACKEND &amp; INFRA</div>
-            <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
-              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-yellow">FastAPI</span><span style="font-size:.88rem;color:var(--muted);">Python async REST API with background workers</span></li>
-              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-green">Supabase</span><span style="font-size:.88rem;color:var(--muted);">PostgreSQL database with real-time updates</span></li>
-              <li class="ae-row ae-row-center gap-12"><span class="ae-badge ae-badge-red">Render</span><span style="font-size:.88rem;color:var(--muted);">Backend hosted on Render, frontend on Netlify</span></li>
-            </ul>
-          </div>
-        </div>
-
-        <hr class="ae-divider">
-
-        <!-- Why agentic -->
-        <div class="ae-label mb-20 ae-reveal">// WHY AGENTIC AI</div>
-        <div class="ae-grid-2 ae-reveal">
-          <div class="ae-card"><div class="ae-label mb-8 mt-0">Specialization</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">Each agent focuses on a specific task â€” ingestion, research, or investigation â€” leading to higher quality than a single monolithic model.</p></div>
-          <div class="ae-card"><div class="ae-label mb-8 mt-0">Scalability</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">Agents can be upgraded or swapped independently. Swap research sources without touching the verdict logic.</p></div>
-          <div class="ae-card"><div class="ae-label mb-8 mt-0">Transparency</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">Multi-step processing makes reasoning auditable. Every verdict includes the evidence that led to it.</p></div>
-          <div class="ae-card"><div class="ae-label mb-8 mt-0">Reliability</div><p style="font-size:.88rem;color:var(--muted);line-height:1.65;">If one agent encounters an issue, the system degrades gracefully rather than failing silently.</p></div>
-        </div>
-
+    <!-- 6 Step Pipeline -->
+    <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:16px;" class="ae-reveal">// 6-STAGE ARBITRATION PIPELINE</div>
+    <div class="steps-grid ae-reveal">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <div class="step-title">Ingestion &amp; Normalization</div>
+        <div class="step-body">Standardizes raw text, strips adversarial prompt-injection vectors, and computes SHA-256 idempotency hashes.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <div class="step-title">Zipf-Mandelbrot Regression</div>
+        <div class="step-body">Computes Mandelbrot rank-frequency parameter fits ($R^2$) to identify synthetic LLM-generated astroturf patterns.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <div class="step-title">Hawkes Point Process Modeling</div>
+        <div class="step-body">Models viral repost cascades to measure self-exciting branching ratios ($R_0$) and predict infection blast radius.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <div class="step-title">Parallel Domain Swarm Audit</div>
+        <div class="step-body">Dispatches Scout (Finance), Trending (Social), BrandShield (Reputation), and Personal Watch across live APIs and RSS feeds.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">05</div>
+        <div class="step-title">Byzantine W-MSR Consensus</div>
+        <div class="step-body">Applies weighted mean-subsequence-reduced outlier filtering to reject rogue or sycophantic agent scores.</div>
+      </div>
+      <div class="step-card">
+        <div class="step-num">06</div>
+        <div class="step-title">Dossier Synthesis &amp; Broadcast</div>
+        <div class="step-body">Issues immutable truth verdict, cryptographic provenance manifest, and real-time dashboard telemetry.</div>
       </div>
     </div>
 
-    <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2026</span>
-      <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
-      <span>Built with multi-agent AI</span>
-    </footer>
+    <!-- Tech Stack Grid -->
+    <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:16px;" class="ae-reveal">// CORE TECHNOLOGICAL STACK</div>
+    <div class="stack-grid ae-reveal">
+      <div class="bento-card">
+        <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:16px;">AI Models &amp; Statistical Engines</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:center;gap:12px;">
+            <span class="ae-badge ae-badge-blue">Gemini 2.5 Flash</span>
+            <span style="font-size:0.86rem;color:var(--text-muted);">High-throughput multi-pass reasoning and evidence extraction</span>
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;">
+            <span class="ae-badge ae-badge-purple">NumPy / SciPy</span>
+            <span style="font-size:0.86rem;color:var(--text-muted);">Nonlinear Mandelbrot least-squares and Hawkes point-process decay</span>
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;">
+            <span class="ae-badge ae-badge-green">Three.js WebGL</span>
+            <span style="font-size:0.86rem;color:var(--text-muted);">Hardware-accelerated 3D threat topology and swarm telemetry rendering</span>
+          </li>
+        </ul>
+      </div>
+
+      <div class="bento-card">
+        <h3 style="font-size:1.1rem;font-weight:700;color:#fff;margin-bottom:16px;">Infrastructure &amp; Storage</h3>
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+          <li style="display:flex;align-items:center;gap:12px;">
+            <span class="ae-badge ae-badge-yellow">FastAPI Async</span>
+            <span style="font-size:0.86rem;color:var(--text-muted);">Python asynchronous backend with non-blocking worker thread pools</span>
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;">
+            <span class="ae-badge ae-badge-green">Supabase PostgreSQL</span>
+            <span style="font-size:0.86rem;color:var(--text-muted);">Relational evidence storage with Row Level Security and real-time CDC</span>
+          </li>
+          <li style="display:flex;align-items:center;gap:12px;">
+            <span class="ae-badge ae-badge-zinc">Web Audio API</span>
+            <span style="font-size:0.86rem;color:var(--text-muted);">Client-side synthesized cyber soundscape for tactile tactile micro-interactions</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
   </div>
+
+  <footer class="ae-footer">
+    <div>
+      <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);">Autonomous Multi-Agent AI Defense System &copy; 2026</div>
+    </div>
+    <div style="display:flex;gap:18px;font-size:0.8rem;">
+      <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
+      <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
+      <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
+    </div>
+  </footer>
 </body>
 </html>
-

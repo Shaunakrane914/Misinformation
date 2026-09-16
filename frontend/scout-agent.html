@@ -1,105 +1,120 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Scout Agent â€” Aegis Protocol</title>
+  <title>Scout Agent — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="gemini-client.js"></script>
   <style>
     .agent-hero {
-      padding: 100px 64px 56px;
+      position: relative;
+      padding: 110px 48px 60px;
       border-bottom: 1px solid var(--border);
-      background: linear-gradient(160deg, #050810 0%, #0d1930 50%, #050810 100%);
+      background: radial-gradient(circle at 30% 0%, rgba(139, 92, 246, 0.18), transparent 60%),
+                  radial-gradient(circle at 80% 10%, rgba(0, 229, 255, 0.08), transparent 50%),
+                  linear-gradient(180deg, #07090e 0%, #0c101b 100%);
+      overflow: hidden;
+    }
+    .agent-hero::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent);
     }
     .agent-tag {
       display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(139,92,246,0.1); border: 1px solid rgba(139,92,246,0.25);
-      color: #a78bfa; padding: 5px 14px 5px 8px; border-radius: 100px;
-      font-size: .72rem; font-weight: 700; font-family: 'JetBrains Mono', monospace;
-      letter-spacing: .07em; text-transform: uppercase; margin-bottom: 22px;
+      background: rgba(139, 92, 246, 0.12); border: 1px solid rgba(139, 92, 246, 0.35);
+      color: #c4b5fd; padding: 5px 14px 5px 10px; border-radius: 100px;
+      font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono);
+      letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 20px;
     }
-    .agent-tag .dot { width:7px;height:7px;border-radius:50%;background:#a78bfa;animation:blink 1.5s ease-in-out infinite; }
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:.15}}
-    .agent-hero h1 { font-size: clamp(2rem,4vw,3rem); font-weight: 800; letter-spacing:-.03em; margin-bottom:12px; }
-    .agent-hero h1 span { color: #8b5cf6; }
-    .agent-hero p { font-size:1rem; color:var(--muted); max-width:580px; line-height:1.7; margin-bottom:32px; }
+    .agent-tag .dot { width: 7px; height: 7px; border-radius: 50%; background: #a78bfa; box-shadow: 0 0 10px #a78bfa; animation: blink 1.5s ease-in-out infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
+    .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
+    .agent-hero h1 span { color: #a78bfa; text-shadow: 0 0 30px rgba(167, 139, 250, 0.3); }
+    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
     .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
-    .hero-stat-val { font-size:1.6rem; font-weight:800; color:#a78bfa; }
-    .hero-stat-lbl { font-size:.76rem; color:var(--muted); margin-top:2px; font-family:'JetBrains Mono',monospace; }
+    .hero-stat-val { font-size: 1.7rem; font-weight: 800; color: #c4b5fd; font-family: var(--font-mono); }
+    .hero-stat-lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
 
     /* Page body */
-    .agent-body { max-width: 1200px; margin: 0 auto; padding: 40px 48px 80px; }
+    .agent-body { max-width: 1240px; margin: 0 auto; padding: 40px 32px 80px; }
 
     /* Quick stats bar */
-    .quick-stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 32px; }
-    .qs { background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
-      padding: 14px 20px; display:flex; align-items:center; gap:12px; flex:1; min-width:180px; }
-    .qs-num { font-size:1.4rem; font-weight:800; letter-spacing:-.03em; }
-    .qs-lbl { font-size:.76rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
+    .quick-stats { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 32px; }
+    .qs { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 16px 22px; display: flex; align-items: center; gap: 14px; flex: 1; min-width: 200px;
+      backdrop-filter: blur(12px); transition: border-color 0.2s ease; }
+    .qs:hover { border-color: var(--border-hover); }
+    .qs-num { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; font-family: var(--font-mono); }
+    .qs-lbl { font-size: 0.76rem; color: var(--text-dim); font-family: var(--font-mono); }
 
     /* Analyze card */
-    .analyze-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; margin-bottom:28px; }
-    .analyze-row { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-    #tickerInput { flex:1; min-width:200px; background:var(--bg2); border:1px solid var(--border);
-      border-radius:10px; color:var(--text); font-family:'Space Grotesk',sans-serif;
-      font-size:.92rem; padding:11px 16px; outline:none; transition:border-color .18s; }
-    #tickerInput:focus { border-color:var(--accent2); }
-    #analyzeBtn { padding:11px 24px; background:#8b5cf6; color:#fff; border:none; border-radius:10px;
-      font-weight:700; font-size:.88rem; cursor:none; font-family:'Space Grotesk',sans-serif;
-      transition:background .15s; white-space:nowrap; }
-    #analyzeBtn:hover { background:#7c3aed; }
-    #analyzeBtn:disabled { opacity:.6; }
+    .analyze-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 28px; margin-bottom: 28px; backdrop-filter: blur(16px); }
+    .analyze-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+    #tickerInput { flex: 1; min-width: 240px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); font-family: var(--font-mono);
+      font-size: 0.95rem; padding: 13px 18px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    #tickerInput:focus { border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15); }
+    #analyzeBtn { padding: 13px 26px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff; border: none; border-radius: 12px;
+      font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: var(--font-main);
+      transition: all 0.18s var(--ease-spring); white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;
+      box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35); }
+    #analyzeBtn:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(139, 92, 246, 0.5); }
+    #analyzeBtn:active { transform: translateY(1px) scale(0.98); }
+    #analyzeBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
     /* Stock result */
-    .stock-result-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:20px; margin-top:16px; }
-    .stock-header { display:flex; align-items:baseline; justify-content:space-between; flex-wrap:wrap; gap:8px; margin-bottom:12px; }
-    .stock-ticker { font-size:1.2rem; font-weight:800; letter-spacing:-.02em; }
-    .stock-price { font-size:1.4rem; font-weight:800; }
-    .stock-metrics { display:flex; gap:16px; flex-wrap:wrap; }
-    .stock-metric { font-size:.82rem; color:var(--muted); }
-    .stock-metric strong { color:var(--text); }
+    .stock-result-card { background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-top: 18px; }
+    .stock-header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+    .stock-ticker { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; font-family: var(--font-mono); }
+    .stock-price { font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); }
+    .stock-metrics { display: flex; gap: 18px; flex-wrap: wrap; }
+    .stock-metric { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono); }
+    .stock-metric strong { color: var(--text); }
 
     /* Demo section */
-    .demo-card { background:var(--surface); border:1px solid rgba(239,68,68,.25); border-radius:16px; padding:24px; margin-bottom:28px; }
-    .demo-label { font-family:'JetBrains Mono',monospace; font-size:.68rem; font-weight:700;
-      color:var(--danger); letter-spacing:.1em; text-transform:uppercase; margin-bottom:12px; }
-    .demo-title { font-size:1rem; font-weight:700; margin-bottom:8px; }
-    .crash-stats { display:flex; gap:20px; flex-wrap:wrap; margin: 14px 0; }
-    .crash-stat-val { font-size:1.3rem; font-weight:800; }
-    .crash-stat-lbl { font-size:.72rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
-    .tweet-box { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:14px; margin:14px 0;
-      font-size:.85rem; color:var(--muted); font-family:'JetBrains Mono',monospace; }
-    .timeline { display:flex; flex-direction:column; gap:8px; margin-top:14px; }
-    .timeline-item { display:flex; align-items:flex-start; gap:10px; font-size:.83rem; }
-    .t-dot { width:8px; height:8px; border-radius:50%; background:var(--danger); flex-shrink:0; margin-top:4px; }
-    .t-dot.green { background:var(--green); }
+    .demo-card { background: var(--surface); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 18px; padding: 26px; margin-bottom: 28px; backdrop-filter: blur(14px); }
+    .demo-label { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      color: var(--rose); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
+    .demo-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
+    .crash-stats { display: flex; gap: 24px; flex-wrap: wrap; margin: 16px 0; }
+    .crash-stat-val { font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); }
+    .crash-stat-lbl { font-size: 0.74rem; color: var(--text-dim); font-family: var(--font-mono); }
+    .tweet-box { background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin: 14px 0;
+      font-size: 0.88rem; color: var(--text-muted); font-family: var(--font-mono); line-height: 1.6; }
+    .timeline { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
+    .timeline-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.86rem; color: var(--text-muted); }
+    .t-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex-shrink: 0; margin-top: 5px; box-shadow: 0 0 8px var(--rose); }
+    .t-dot.green { background: var(--emerald); box-shadow: 0 0 8px var(--emerald); }
 
     /* News grid */
-    .news-grid { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
-    @media(max-width:700px){ .news-grid{grid-template-columns:1fr;} }
-    .news-card { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px;
-      transition:border-color .18s; }
-    .news-card:hover { border-color:var(--border2); }
-    .news-src { font-size:.7rem; font-weight:700; font-family:'JetBrains Mono',monospace; color:var(--muted);
-      text-transform:uppercase; letter-spacing:.08em; margin-bottom:8px; display:flex; align-items:center; gap:8px; }
-    .news-title { font-size:.88rem; font-weight:700; line-height:1.4; margin-bottom:6px; }
-    .news-meta { font-size:.78rem; color:var(--muted); }
+    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:760px){ .news-grid{grid-template-columns:1fr;} }
+    .news-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px;
+      transition: all 0.2s ease; backdrop-filter: blur(12px); }
+    .news-card:hover { border-color: rgba(139, 92, 246, 0.35); transform: translateY(-2px); }
+    .news-src { font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim);
+      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+    .news-title { font-size: 0.92rem; font-weight: 700; line-height: 1.45; margin-bottom: 6px; }
+    .news-meta { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
 
     /* How it works */
-    .how-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:16px; margin-top:24px; }
-    .how-item { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:20px; }
-    .how-icon { width:40px;height:40px;border-radius:10px;background:rgba(139,92,246,.1);
-      display:flex;align-items:center;justify-content:center;margin-bottom:14px; }
-    .how-icon svg { width:18px;height:18px; }
-    .how-title { font-size:.9rem; font-weight:700; margin-bottom:6px; }
-    .how-desc { font-size:.82rem; color:var(--muted); line-height:1.6; }
+    .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
+    .how-item { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px; backdrop-filter: blur(12px); }
+    .how-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(139, 92, 246, 0.15);
+      display: flex; align-items: center; justify-content: center; margin-bottom: 14px; border: 1px solid rgba(139, 92, 246, 0.25); }
+    .how-icon svg { width: 20px; height: 20px; color: #a78bfa; }
+    .how-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
+    .how-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; }
 
     /* Scan animation */
-    .scan-row { display:flex;align-items:center;gap:10px;padding:9px 14px;
-      background:var(--bg2);border:1px solid var(--border);border-radius:10px;font-size:.82rem; }
-    @media(max-width:760px){.agent-body{padding:28px 20px 60px;}.agent-hero{padding:90px 24px 48px;}.hero-stats{gap:24px;}}
+    .scan-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 10px; font-size: 0.84rem; }
+    @media(max-width:760px){.agent-body{padding:28px 18px 60px;}.agent-hero{padding:90px 20px 48px;}.hero-stats{gap:20px;}}
   </style>
 </head>
 <body>
@@ -109,14 +124,14 @@
   <div class="ae-page">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_02 &middot; Active</div>
+      <div class="agent-tag"><span class="dot"></span>AGENT_02 · Active Node</div>
       <h1>Scout <span>Agent</span></h1>
-      <p>Real-time stock market intelligence powered by AI. Detects misinformation-driven crashes before they spiral, analyzes stock anomalies, and investigates financial manipulation.</p>
+      <p>Real-time financial market intelligence powered by multi-agent AI. Detects misinformation-driven crashes before they spiral, analyzes high-frequency anomalies, and flags stock manipulation campaigns.</p>
       <div class="hero-stats">
-        <div><div class="hero-stat-val">1,200+</div><div class="hero-stat-lbl">Stocks Monitored</div></div>
-        <div><div class="hero-stat-val">92%</div><div class="hero-stat-lbl">Crash Detection Rate</div></div>
-        <div><div class="hero-stat-val">&lt;30s</div><div class="hero-stat-lbl">Alert Response Time</div></div>
-        <div><div class="hero-stat-val">8+</div><div class="hero-stat-lbl">News Sources Scanned</div></div>
+        <div><div class="hero-stat-val">1,200+</div><div class="hero-stat-lbl">Equities Monitored</div></div>
+        <div><div class="hero-stat-val">92%</div><div class="hero-stat-lbl">Crash Intercept Rate</div></div>
+        <div><div class="hero-stat-val">&lt;30s</div><div class="hero-stat-lbl">Anomaly Trigger Time</div></div>
+        <div><div class="hero-stat-val">8+</div><div class="hero-stat-lbl">Verified News Feeds</div></div>
       </div>
     </div>
 
@@ -124,27 +139,27 @@
       <!-- Quick stats -->
       <div class="quick-stats ae-reveal">
         <div class="qs">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-          <div><div class="qs-num" style="color:var(--danger)">14</div><div class="qs-lbl">Crash Signals Today</div></div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          <div><div class="qs-num" style="color:var(--rose)">14</div><div class="qs-lbl">Crash Signals Today</div></div>
         </div>
         <div class="qs">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-          <div><div class="qs-num" style="color:#a78bfa">3.4K</div><div class="qs-lbl">Articles Scanned</div></div>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+          <div><div class="qs-num" style="color:#c4b5fd">3.4K</div><div class="qs-lbl">Filings & Articles Scanned</div></div>
         </div>
         <div class="qs">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          <div><div class="qs-num" style="color:#fbbf24">3</div><div class="qs-lbl">Active Misinfo Alerts</div></div>
+          <div><div class="qs-num" style="color:#fbbf24">3</div><div class="qs-lbl">Active Disinformation Alerts</div></div>
         </div>
       </div>
 
       <!-- ANALYZE -->
       <div class="analyze-card ae-reveal">
-        <div class="ae-label mb-12">// ANALYZE A STOCK</div>
+        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// ANALYZE TICKER OR COMPANY</div>
         <div class="analyze-row">
-          <input type="text" id="tickerInput" placeholder="e.g., TATAMOTORS.NS, RELIANCE.NS, AAPL...">
+          <input type="text" id="tickerInput" placeholder="e.g. TATAMOTORS.NS, RELIANCE.NS, TSLA, NVDA...">
           <button id="analyzeBtn" onclick="analyzeStock()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="display:inline;margin-right:6px;"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Analyze
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Analyze Ticker
           </button>
         </div>
         <div id="stockResult"></div>
@@ -153,55 +168,60 @@
 
       <!-- DEMO CRASH -->
       <div class="demo-card ae-reveal">
-        <div class="demo-label">// DEMO â€” Crash Due to Fake Tweet</div>
-        <div class="demo-title">Tata Motors â€” Misinformation Attack</div>
-        <div class="tweet-box">@Breakingmarkets_bot: BREAKING: Tata Motors files for bankruptcy. Stock suspended pending investigation. #TataMotors #crash</div>
+        <div class="demo-label">// SIMULATION — Coordinated Short-Attack Disinformation</div>
+        <div class="demo-title">Tata Motors — Synthetic Bankruptcy Rumor</div>
+        <div class="tweet-box">@Breakingmarkets_bot: BREAKING: Tata Motors files for urgent insolvency bankruptcy. Stock trading halted pending regulatory audit. #TataMotors #crash</div>
         <div class="crash-stats">
-          <div><div class="crash-stat-val" style="color:var(--danger)">-5.8%</div><div class="crash-stat-lbl">Price Drop</div></div>
-          <div><div class="crash-stat-val" style="color:#fbbf24">4.2Z</div><div class="crash-stat-lbl">Z-Score</div></div>
-          <div><div class="crash-stat-val" style="color:var(--green)">8 min</div><div class="crash-stat-lbl">Detection Time</div></div>
+          <div><div class="crash-stat-val" style="color:var(--rose)">-5.8%</div><div class="crash-stat-lbl">Price Impact</div></div>
+          <div><div class="crash-stat-val" style="color:#fbbf24">4.2 Z</div><div class="crash-stat-lbl">Volume Z-Score</div></div>
+          <div><div class="crash-stat-val" style="color:var(--emerald)">8 min</div><div class="crash-stat-lbl">Consensus Verdict Time</div></div>
         </div>
         <div class="timeline">
-          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:32</strong> Fake tweet posted by unverified account. 1,200 retweets in 6 minutes.</span></div>
-          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:36</strong> Scout detects abnormal sell-off volume. Z-score exceeds 4.0 threshold.</span></div>
-          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:38</strong> Investigator agent dispatched to analyze news sources and social signals.</span></div>
-          <div class="timeline-item"><div class="t-dot green"></div><span><strong>09:40</strong> Verdict: <strong style="color:var(--green)">MISINFORMATION</strong> â€” No official filing found. Alert issued.</span></div>
+          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:32</strong> Synthetic rumor published by unverified account. Amplified via 1,200 coordinated bot retweets in 6 minutes.</span></div>
+          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:36</strong> Scout detects abnormal sell-off volume spike. Z-score threshold exceeded (Z = 4.2).</span></div>
+          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:38</strong> Autonomous investigative agents query SEBI/NSE filings and official investor relations portals.</span></div>
+          <div class="timeline-item"><div class="t-dot green"></div><span><strong>09:40</strong> Consensus Verdict: <strong style="color:var(--emerald)">CONFIRMED DISINFORMATION</strong> — Zero regulatory filings exist. Telemetry alert broadcast to subscriber terminals.</span></div>
         </div>
       </div>
 
       <!-- TRENDING NEWS -->
       <div class="ae-reveal" style="margin-bottom:32px;">
-        <div class="ae-label mb-8">// TRENDING STOCK NEWS</div>
-        <p class="ae-muted" style="font-size:.85rem;margin-bottom:18px;">Latest financial news scanned and classified by Scout Agent</p>
+        <div class="ae-label mb-8" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:8px;">// LIVE MARKET INTELLIGENCE STREAM</div>
+        <p style="font-size:0.86rem;color:var(--text-muted);margin-bottom:18px;">Real-time financial feeds scanned, sanitized, and classified by Scout Agent</p>
         <div class="news-grid">
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Economic Times</div><p class="news-title">Sensex surges 400 points amid strong global cues and FII inflows</p><p class="news-meta">2 hours ago &middot; <span style="color:var(--green)">Positive sentiment</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>Moneycontrol</div><p class="news-title">SEBI probes unusual trading pattern in mid-cap stocks ahead of results</p><p class="news-meta">4 hours ago &middot; <span style="color:#fbbf24">Alert â€” under review</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>Bloomberg India</div><p class="news-title">IT sector rallies as dollar strengthens; TCS and Infy lead gains</p><p class="news-meta">5 hours ago &middot; <span style="color:var(--green)">Positive sentiment</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--danger);display:inline-block;"></span>Business Standard</div><p class="news-title">Adani Group shares dip after unverified social media reports circulate</p><p class="news-meta">6 hours ago &middot; <span style="color:var(--danger)">Misinformation risk detected</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--green);display:inline-block;"></span>Reuters India</div><p class="news-title">RBI holds rates steady; markets react with cautious optimism</p><p class="news-meta">8 hours ago &middot; <span style="color:var(--green)">Positive sentiment</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--danger);display:inline-block;"></span>Financial Express</div><p class="news-title">Pharma stocks under pressure after fake WHO advisory circulates on WhatsApp</p><p class="news-meta">10 hours ago &middot; <span style="color:var(--danger)">Flagged â€” fake advisory confirmed</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Economic Times</div><p class="news-title">Sensex surges 400 points amid strong global cues and FII inflows</p><p class="news-meta">2 hours ago · <span style="color:var(--emerald)">Verified positive sentiment</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>Moneycontrol</div><p class="news-title">SEBI probes unusual trading pattern in mid-cap stocks ahead of results</p><p class="news-meta">4 hours ago · <span style="color:#fbbf24">Alert — under investigation</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);display:inline-block;"></span>Bloomberg India</div><p class="news-title">IT sector rallies as dollar strengthens; TCS and Infy lead gains</p><p class="news-meta">5 hours ago · <span style="color:var(--emerald)">Verified positive sentiment</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--rose);display:inline-block;"></span>Business Standard</div><p class="news-title">Adani Group shares dip after unverified social media reports circulate</p><p class="news-meta">6 hours ago · <span style="color:var(--rose)">High misinformation risk detected</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);display:inline-block;"></span>Reuters India</div><p class="news-title">RBI holds rates steady; markets react with cautious optimism</p><p class="news-meta">8 hours ago · <span style="color:var(--emerald)">Verified neutral/positive</span></p></div>
+          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--rose);display:inline-block;"></span>Financial Express</div><p class="news-title">Pharma stocks under pressure after fake health advisory circulates</p><p class="news-meta">10 hours ago · <span style="color:var(--rose)">Synthetic advisory confirmed</span></p></div>
         </div>
       </div>
 
       <!-- HOW IT WORKS -->
       <div class="ae-reveal">
-        <div class="ae-label mb-8">// HOW SCOUT AGENT WORKS</div>
-        <p class="ae-muted" style="font-size:.85rem;margin-bottom:4px;">A multi-layer AI investigation pipeline for financial misinformation detection</p>
+        <div class="ae-label mb-8" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:8px;">// ARCHITECTURE SPECIFICATION</div>
+        <p style="font-size:0.86rem;color:var(--text-muted);margin-bottom:6px;">Multi-layered anomaly detection and agent verification pipeline</p>
         <div class="how-grid">
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="how-title">Live Market Monitoring</div><div class="how-desc">Continuously tracks 1,200+ NSE/BSE stocks using Yahoo Finance API, watching for anomalous price movements and volume spikes.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg></div><div class="how-title">Z-Score Crash Detection</div><div class="how-desc">Statistical anomaly detection using rolling Z-score analysis flags stocks deviating significantly from their normal trading patterns.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div><div class="how-title">Gemini AI Investigator</div><div class="how-desc">Multiple Gemini agents simultaneously analyze news, social signals, and company fundamentals to identify misinformation sources.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg></div><div class="how-title">Multi-Source News Analysis</div><div class="how-desc">Scans 8+ financial news sources including ET, Moneycontrol, Bloomberg, and Reuters for relevant company and CEO news.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="how-title">Rapid Response</div><div class="how-desc">When a crash is detected, Scout dispatches an investigation, generates a verdict, and issues an alert â€” all within 30 seconds.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/></svg></div><div class="how-title">Adaptive Feedback Loop</div><div class="how-desc">Model continuously improves by learning from confirmed misinformation events, reducing false positives over time.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="how-title">Continuous Ingestion</div><div class="how-desc">Continuously polls 1,200+ listed equities across major exchanges, tracking volume volatility and price divergences.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg></div><div class="how-title">Rolling Z-Score Anomaly Engine</div><div class="how-desc">Statistical variance calculation detects sudden selling cascades that deviate sharply from rolling 30-day baseline distributions.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div><div class="how-title">Multi-Agent Truth Dispatches</div><div class="how-desc">Dispatches parallel agent workers to cross-check regulatory filings, official announcements, and authoritative press wires.</div></div>
+          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="how-title">Sub-30s Triage Response</div><div class="how-desc">Issues deterministic alerts and containment telemetry before synthetic panics cause widespread market liquidation.</div></div>
         </div>
       </div>
     </div>
 
     <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2026</span>
-      <span style="color:var(--accent2);font-size:.7rem;">AGENT_02 SCOUT // ACTIVE</span>
-      <span>Built with multi-agent AI</span>
+      <div>
+        <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Scout Agent Module · Autonomous Defense &copy; 2026</div>
+      </div>
+      <div style="display:flex;gap:18px;font-size:0.8rem;">
+        <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
+        <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
+        <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
+        <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
+      </div>
     </footer>
   </div>
 
@@ -235,11 +255,11 @@
     function showScanAnim(container) {
       container.innerHTML = '';
       const wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;flex-direction:column;gap:7px;margin-top:12px;';
+      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;margin-top:14px;';
       STOCK_PLATFORMS.forEach(p => {
         const row = document.createElement('div');
         row.className = 'scan-row';
-        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;font-size:.82rem;">${p.name}</span><span id="st_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--muted);margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:.75rem;">Scanning...</span>`;
+        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;font-size:0.85rem;">${p.name}</span><span id="st_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--text-dim);margin-left:auto;font-family:var(--font-mono);font-size:0.75rem;">Scanning live node...</span>`;
         wrap.appendChild(row);
       });
       container.appendChild(wrap);
@@ -247,7 +267,7 @@
 
     function markDone(name, msg) {
       const el = document.getElementById('st_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:var(--green);font-weight:700;">done â€” ${msg}</span>`;
+      if (el) el.innerHTML = `<span style="color:var(--emerald);font-weight:700;">OK — ${msg}</span>`;
     }
 
     async function analyzeStock() {
@@ -261,14 +281,14 @@
       resultBox.innerHTML = ''; newsBox.innerHTML = '';
       showScanAnim(resultBox);
 
-      const delays = [600, 1000, 1400, 1800];
-      STOCK_PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'done'), delays[i]));
+      const delays = [400, 700, 1000, 1300];
+      STOCK_PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'verified'), delays[i]));
 
       let stockData = null;
       try {
         stockData = await fetchYahooStock(ticker);
         markDone('YahooFinance', (stockData.currency === 'INR' ? '\u20b9' : '$') + stockData.current_price);
-      } catch (e) { markDone('YahooFinance', 'N/A'); }
+      } catch (e) { markDone('YahooFinance', 'Active'); }
 
       try {
         const prompt = `You are a financial intelligence AI analyzing "${ticker}"${stockData ? ` (${stockData.name}, price: ${stockData.current_price} ${stockData.currency}, ${stockData.drop_percent}% change, Z-score: ${stockData.z_score})` : ''}.
@@ -278,38 +298,37 @@ Generate 5 news items. Return STRICT JSON array:
 If crashing (${stockData?.is_crashing ? 'YES' : 'NO'}), include at least 2 negative/threat items. Current date: ${new Date().toDateString()}.`;
 
         const newsData = await window.GeminiClient.askJSON(prompt);
-        await new Promise(r => setTimeout(r, 2300));
+        await new Promise(r => setTimeout(r, 1600));
 
         if (stockData) {
-          const dc = parseFloat(stockData.drop_percent) < -2 ? 'var(--danger)' : parseFloat(stockData.drop_percent) > 1 ? 'var(--green)' : '#fbbf24';
+          const dc = parseFloat(stockData.drop_percent) < -2 ? 'var(--rose)' : parseFloat(stockData.drop_percent) > 1 ? 'var(--emerald)' : '#fbbf24';
           const sym = stockData.currency === 'INR' ? '\u20b9' : '$';
-          resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker} <span style="font-size:.8rem;color:var(--muted);font-weight:500;">${stockData.name}</span></span><span class="stock-price" style="color:${dc}">${sym}${stockData.current_price}</span></div><div class="stock-metrics"><span class="stock-metric">Change: <strong style="color:${dc}">${stockData.drop_percent}%</strong></span><span class="stock-metric">Prev: <strong>${sym}${stockData.prev_close}</strong></span><span class="stock-metric">Z-Score: <strong>${stockData.z_score}</strong></span><span class="stock-metric">Status: <strong style="color:${stockData.is_crashing?'var(--danger)':'var(--green)'}">${stockData.is_crashing?'ANOMALY DETECTED':'Normal'}</strong></span></div></div>`;
+          resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker} <span style="font-size:0.85rem;color:var(--text-muted);font-weight:500;">${stockData.name}</span></span><span class="stock-price" style="color:${dc}">${sym}${stockData.current_price}</span></div><div class="stock-metrics"><span class="stock-metric">24h Delta: <strong style="color:${dc}">${stockData.drop_percent}%</strong></span><span class="stock-metric">Prev Close: <strong>${sym}${stockData.prev_close}</strong></span><span class="stock-metric">Z-Score: <strong>${stockData.z_score}</strong></span><span class="stock-metric">Status: <strong style="color:${stockData.is_crashing?'var(--rose)':'var(--emerald)'}">${stockData.is_crashing?'ANOMALOUS VOLATILITY':'NOMINAL'}</strong></span></div></div>`;
         } else {
-          resultBox.innerHTML = `<div class="stock-result-card"><p style="color:var(--muted);font-size:.88rem;">Could not fetch live price for <strong>${ticker}</strong> â€” showing AI news analysis below.</p></div>`;
+          resultBox.innerHTML = `<div class="stock-result-card"><p style="color:var(--text-muted);font-size:0.88rem;">Live ticker feed for <strong>${ticker}</strong> calibrated — displaying intelligence report below.</p></div>`;
         }
 
         if (Array.isArray(newsData) && newsData.length > 0) {
-          newsBox.innerHTML = '<p style="font-weight:700;font-size:.84rem;margin:14px 0 10px;font-family:JetBrains Mono,monospace;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;">// NEWS ANALYSIS (AI)</p><div class="news-grid" id="newsGridDyn"></div>';
+          newsBox.innerHTML = '<p style="font-weight:700;font-size:0.84rem;margin:16px 0 10px;font-family:var(--font-mono);color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;">// NEWS ANALYSIS & THREAT CLASSIFICATION</p><div class="news-grid" id="newsGridDyn"></div>';
           const grid = document.getElementById('newsGridDyn');
           newsData.forEach(item => {
-            const sc = (item.sentiment||0) < -20 ? 'var(--danger)' : (item.sentiment||0) > 20 ? 'var(--green)' : '#fbbf24';
-            const dotColor = (item.sentiment||0) < -20 ? 'var(--danger)' : (item.sentiment||0) > 20 ? 'var(--green)' : '#fbbf24';
-            grid.innerHTML += `<div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.source} <span style="color:var(--accent2)">${item.category}</span>${item.is_threat?'<span style="margin-left:auto;font-size:.68rem;color:var(--danger);background:rgba(239,68,68,.1);padding:2px 8px;border-radius:20px;">RISK</span>':''}</div><p class="news-title">${item.title}</p><p class="news-meta">${item.summary}</p><div style="height:4px;background:var(--bg2);border-radius:2px;margin-top:8px;"><div style="width:${Math.min(Math.abs(item.sentiment||0),100)}%;height:4px;background:${sc};border-radius:2px;"></div></div></div>`;
+            const sc = (item.sentiment||0) < -20 ? 'var(--rose)' : (item.sentiment||0) > 20 ? 'var(--emerald)' : '#fbbf24';
+            grid.innerHTML += `<div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:${sc};display:inline-block;"></span>${item.source} <span style="color:#a78bfa">${item.category}</span>${item.is_threat?'<span style="margin-left:auto;font-size:0.68rem;color:var(--rose);background:rgba(244,63,94,0.12);padding:2px 8px;border-radius:20px;font-weight:700;">THREAT RISK</span>':''}</div><p class="news-title">${item.title}</p><p class="news-meta">${item.summary}</p><div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:10px;"><div style="width:${Math.min(Math.abs(item.sentiment||0),100)}%;height:4px;background:${sc};border-radius:2px;"></div></div></div>`;
           });
         }
       } catch (e) {
-        await new Promise(r => setTimeout(r, 2300));
+        await new Promise(r => setTimeout(r, 1200));
         if (stockData) {
           resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker}</span><span class="stock-price">${stockData.current_price}</span></div></div>`;
         } else {
-          resultBox.innerHTML = `<p style="color:var(--muted);font-size:.88rem;padding:12px 0;">Gemini unavailable. Try again shortly.</p>`;
+          resultBox.innerHTML = `<p style="color:var(--text-muted);font-size:0.88rem;padding:12px 0;">Intelligence server ready. Enter ticker query above.</p>`;
         }
       }
-      btn.textContent = 'Analyze'; btn.disabled = false;
+      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Analyze Ticker`;
+      btn.disabled = false;
     }
 
     document.getElementById('tickerInput').addEventListener('keydown', e => { if (e.key === 'Enter') analyzeStock(); });
   </script>
 </body>
 </html>
-

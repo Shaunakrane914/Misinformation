@@ -63,6 +63,8 @@ Thumbs.db
 
 # Project specific
 TEST/
+.agent/
+.agents/
 
 # AI-generated chat logs
 Starting Misinformation Project.md

@@ -2,7 +2,7 @@
 Database Module
 
 Supabase database operations for the misinformation detection system.
-Handles all CRUD operations for claims and evidence tables.
+Handles all CRUD operations for claims and evidence tables with resilient in-memory fallback.
 """
 
 import os
@@ -24,349 +24,250 @@ logger = logging.getLogger(__name__)
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 
+supabase: Optional[Client] = None
 if not SUPABASE_URL or not SUPABASE_KEY:
-    logger.warning("[Database] Supabase credentials not found in environment variables")
-    logger.warning("[Database] Set SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY")
-    supabase: Optional[Client] = None
+    logger.warning("[Database] Supabase credentials not found in environment variables. Using in-memory store.")
 else:
     try:
-        supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+        supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         logger.info("[Database] Supabase client initialized successfully")
         logger.info(f"[Database] Connected to: {SUPABASE_URL}")
     except Exception as e:
         logger.error(f"[Database] Failed to initialize Supabase client: {str(e)}")
         supabase = None
 
+# Resilient in-memory fallback caches
 _mem_claims: Dict[str, Dict] = {}
 _mem_hash_index: Dict[str, str] = {}
 _mem_evidence: Dict[str, List[Dict]] = {}
 
 
+def _mem_insert_claim(claim_hash: str, claim_text: str, normalized_text: str) -> Dict:
+    claim_id = str(uuid.uuid4())
+    now = datetime.utcnow().isoformat()
+    row = {
+        "id": claim_id,
+        "claim_hash": claim_hash,
+        "claim_text": claim_text,
+        "normalized_text": normalized_text,
+        "status": "pending",
+        "verdict": None,
+        "confidence": None,
+        "severity": None,
+        "reasoning": None,
+        "created_at": now,
+        "updated_at": now
+    }
+    _mem_claims[claim_id] = row
+    _mem_hash_index[claim_hash] = claim_id
+    logger.info(f"[Database] [Memory] Claim inserted with ID: {claim_id}")
+    return row
+
+
 def insert_claim(claim_hash: str, claim_text: str, normalized_text: str) -> Dict:
-    """
-    Insert a new claim into the database.
-    
-    Args:
-        claim_hash (str): SHA256 hash of the normalized claim text
-        claim_text (str): Original claim text
-        normalized_text (str): Normalized (lowercase, trimmed) claim text
-    
-    Returns:
-        Dict: The inserted claim row
-    
-    Raises:
-        Exception: If database operation fails
-    """
+    """Insert a new claim into Supabase with automatic in-memory fallback."""
     logger.info(f"[Database] Inserting claim with hash: {claim_hash}")
-    logger.info(f"[Database] Claim text: {claim_text[:100]}...")
     
-    if not supabase:
-        claim_id = str(uuid.uuid4())
-        now = datetime.utcnow().isoformat()
-        row = {
-            "id": claim_id,
-            "claim_hash": claim_hash,
-            "claim_text": claim_text,
-            "normalized_text": normalized_text,
-            "status": "pending",
-            "verdict": None,
-            "confidence": None,
-            "severity": None,
-            "reasoning": None,
-            "created_at": now,
-            "updated_at": now
-        }
-        _mem_claims[claim_id] = row
-        _mem_hash_index[claim_hash] = claim_id
-        logger.info(f"[Database] [Memory] Claim inserted successfully with ID: {claim_id}")
-        return row
-    try:
-        data = {
-            "claim_hash": claim_hash,
-            "claim_text": claim_text,
-            "normalized_text": normalized_text,
-            "status": "pending",
-            "verdict": None,
-            "confidence": None,
-            "severity": None,
-            "reasoning": None
-        }
-        response = supabase.table("claims").insert(data).execute()
-        if not response.data:
-            error_msg = "Failed to insert claim - no data returned"
-            logger.error(f"[Database] {error_msg}")
-            raise Exception(error_msg)
-        claim_row = response.data[0]
-        logger.info(f"[Database] Claim inserted successfully with ID: {claim_row.get('id')}")
-        return claim_row
-    except Exception as e:
-        error_msg = f"Error inserting claim: {str(e)}"
-        logger.error(f"[Database] {error_msg}")
-        raise Exception(error_msg)
+    if supabase:
+        try:
+            data = {
+                "claim_hash": claim_hash,
+                "claim_text": claim_text,
+                "normalized_text": normalized_text,
+                "status": "pending",
+                "verdict": None,
+                "confidence": None,
+                "severity": None,
+                "reasoning": None
+            }
+            response = supabase.table("claims").insert(data).execute()
+            if response.data:
+                claim_row = response.data[0]
+                logger.info(f"[Database] Claim inserted successfully with ID: {claim_row.get('id')}")
+                _mem_claims[str(claim_row.get('id'))] = claim_row
+                _mem_hash_index[claim_hash] = str(claim_row.get('id'))
+                return claim_row
+        except Exception as e:
+            logger.warning(f"[Database] Supabase insert failed ({e}), using memory fallback.")
+    
+    return _mem_insert_claim(claim_hash, claim_text, normalized_text)
 
 
 def get_claim_by_hash(claim_hash: str) -> Optional[Dict]:
-    """
-    Retrieve a claim by its hash.
-    
-    Args:
-        claim_hash (str): SHA256 hash of the claim
-    
-    Returns:
-        Optional[Dict]: Claim data or None if not found
-    
-    Raises:
-        Exception: If database operation fails
-    """
+    """Retrieve a claim by its hash."""
     logger.info(f"[Database] Retrieving claim by hash: {claim_hash}")
     
-    if not supabase:
-        claim_id = _mem_hash_index.get(claim_hash)
-        if claim_id and claim_id in _mem_claims:
-            logger.info(f"[Database] [Memory] Claim found with hash: {claim_hash}")
-            return _mem_claims[claim_id]
-        logger.info(f"[Database] [Memory] No claim found with hash: {claim_hash}")
-        return None
-    try:
-        response = supabase.table("claims").select("*").eq("claim_hash", claim_hash).execute()
-        if response.data and len(response.data) > 0:
-            logger.info(f"[Database] Claim found with hash: {claim_hash}")
-            return response.data[0]
-        else:
-            logger.info(f"[Database] No claim found with hash: {claim_hash}")
-            return None
-    except Exception as e:
-        error_msg = f"Error retrieving claim by hash: {str(e)}"
-        logger.error(f"[Database] {error_msg}")
-        raise Exception(error_msg)
+    if supabase:
+        try:
+            response = supabase.table("claims").select("*").eq("claim_hash", claim_hash).execute()
+            if response.data and len(response.data) > 0:
+                logger.info(f"[Database] Claim found with hash: {claim_hash}")
+                return response.data[0]
+            else:
+                return None
+        except Exception as e:
+            logger.warning(f"[Database] Supabase fetch by hash failed ({e}), checking memory.")
+    
+    claim_id = _mem_hash_index.get(claim_hash)
+    if claim_id and claim_id in _mem_claims:
+        return _mem_claims[claim_id]
+    return None
 
 
 def get_claim_by_id(claim_id: str) -> Optional[Dict]:
-    """
-    Retrieve a claim by its ID.
-    
-    Args:
-        claim_id (str): Claim ID (UUID or integer)
-    
-    Returns:
-        Optional[Dict]: Claim data or None if not found
-    
-    Raises:
-        Exception: If database operation fails
-    """
+    """Retrieve a claim by its ID."""
     logger.info(f"[Database] Retrieving claim by ID: {claim_id}")
     
-    if not supabase:
-        row = _mem_claims.get(claim_id)
-        if row:
-            logger.info(f"[Database] [Memory] Claim found with ID: {claim_id}")
-            return row
-        logger.info(f"[Database] [Memory] No claim found with ID: {claim_id}")
-        return None
-    try:
-        response = supabase.table("claims").select("*").eq("id", claim_id).execute()
-        if response.data and len(response.data) > 0:
-            logger.info(f"[Database] Claim found with ID: {claim_id}")
-            return response.data[0]
-        else:
-            logger.info(f"[Database] No claim found with ID: {claim_id}")
-            return None
-    except Exception as e:
-        error_msg = f"Error retrieving claim by ID: {str(e)}"
-        logger.error(f"[Database] {error_msg}")
-        raise Exception(error_msg)
+    if supabase:
+        try:
+            response = supabase.table("claims").select("*").eq("id", claim_id).execute()
+            if response.data and len(response.data) > 0:
+                logger.info(f"[Database] Claim found with ID: {claim_id}")
+                return response.data[0]
+        except Exception as e:
+            logger.warning(f"[Database] Supabase fetch by ID failed ({e}), checking memory.")
+    
+    return _mem_claims.get(str(claim_id))
+
+
+def get_all_claims(limit: int = 50) -> List[Dict]:
+    """Retrieve recent claims."""
+    if supabase:
+        try:
+            resp = supabase.table("claims").select("*").order("created_at", desc=True).limit(limit).execute()
+            if resp.data:
+                return resp.data
+        except Exception as e:
+            logger.warning(f"[Database] get_all_claims Supabase fallback: {e}")
+    return list(_mem_claims.values())[:limit]
 
 
 def update_claim_status(claim_id: str, status: str) -> Dict:
-    """
-    Update the status of a claim.
+    """Update claim processing status."""
+    logger.info(f"[Database] Updating claim status: ID={claim_id}, status={status}")
     
-    Args:
-        claim_id (str): Claim ID
-        status (str): New status (pending, in_progress, completed, failed)
+    if supabase:
+        try:
+            now = datetime.utcnow().isoformat()
+            data = {"status": status, "updated_at": now}
+            response = supabase.table("claims").update(data).eq("id", claim_id).execute()
+            if response.data:
+                claim_row = response.data[0]
+                _mem_claims[str(claim_id)] = claim_row
+                return claim_row
+        except Exception as e:
+            logger.warning(f"[Database] Supabase status update failed ({e}), updating memory.")
     
-    Returns:
-        Dict: Updated claim row
-    
-    Raises:
-        Exception: If database operation fails
-    """
-    logger.info(f"[Database] Updating claim {claim_id} status to: {status}")
-    
-    if not supabase:
-        row = _mem_claims.get(claim_id)
-        if not row:
-            error_msg = f"Claim {claim_id} not found"
-            logger.error(f"[Database] [Memory] {error_msg}")
-            raise Exception(error_msg)
-        row["status"] = status
-        row["updated_at"] = datetime.utcnow().isoformat()
-        logger.info(f"[Database] [Memory] Claim {claim_id} status updated successfully")
-        return row
-    try:
-        response = supabase.table("claims").update({
-            "status": status
-        }).eq("id", claim_id).execute()
-        if not response.data:
-            error_msg = f"Failed to update claim {claim_id} - no data returned"
-            logger.error(f"[Database] {error_msg}")
-            raise Exception(error_msg)
-        logger.info(f"[Database] Claim {claim_id} status updated successfully")
-        return response.data[0]
-    except Exception as e:
-        error_msg = f"Error updating claim status: {str(e)}"
-        logger.error(f"[Database] {error_msg}")
-        raise Exception(error_msg)
+    row = _mem_claims.get(str(claim_id), {})
+    row["status"] = status
+    row["updated_at"] = datetime.utcnow().isoformat()
+    _mem_claims[str(claim_id)] = row
+    return row
 
 
-def update_claim_final_result(
+def update_claim_verdict(
     claim_id: str,
     verdict: str,
     confidence: float,
     severity: str,
     reasoning: str
 ) -> Dict:
-    """
-    Update a claim with final investigation results.
+    """Update claim with final verification verdict."""
+    logger.info(f"[Database] Updating claim verdict: ID={claim_id}, verdict={verdict}, confidence={confidence}")
     
-    Args:
-        claim_id (str): Claim ID
-        verdict (str): Final verdict (True, False, Misleading, Unverified)
-        confidence (float): Confidence score (0.0 to 1.0)
-        severity (str): Severity level (Low, Medium, High)
-        reasoning (str): Explanation for the verdict
+    if supabase:
+        try:
+            now = datetime.utcnow().isoformat()
+            data = {
+                "verdict": verdict,
+                "confidence": confidence,
+                "severity": severity,
+                "reasoning": reasoning,
+                "status": "completed",
+                "updated_at": now
+            }
+            response = supabase.table("claims").update(data).eq("id", claim_id).execute()
+            if response.data:
+                claim_row = response.data[0]
+                _mem_claims[str(claim_id)] = claim_row
+                return claim_row
+        except Exception as e:
+            logger.warning(f"[Database] Supabase verdict update failed ({e}), updating memory.")
     
-    Returns:
-        Dict: Updated claim row
-    
-    Raises:
-        Exception: If database operation fails
-    """
-    logger.info(f"[Database] Updating claim {claim_id} with final results")
-    logger.info(f"[Database] Verdict: {verdict}, Confidence: {confidence}, Severity: {severity}")
-    
-    if not supabase:
-        row = _mem_claims.get(claim_id)
-        if not row:
-            error_msg = f"Claim {claim_id} not found"
-            logger.error(f"[Database] [Memory] {error_msg}")
-            raise Exception(error_msg)
-        row["verdict"] = verdict
-        row["confidence"] = confidence
-        row["severity"] = severity
-        row["reasoning"] = reasoning
-        row["status"] = "completed"
-        row["updated_at"] = datetime.utcnow().isoformat()
-        logger.info(f"[Database] [Memory] Claim {claim_id} updated with final results successfully")
-        return row
-    try:
-        response = supabase.table("claims").update({
-            "verdict": verdict,
-            "confidence": confidence,
-            "severity": severity,
-            "reasoning": reasoning,
-            "status": "completed"
-        }).eq("id", claim_id).execute()
-        if not response.data:
-            error_msg = f"Failed to update claim {claim_id} with final results - no data returned"
-            logger.error(f"[Database] {error_msg}")
-            raise Exception(error_msg)
-        logger.info(f"[Database] Claim {claim_id} updated with final results successfully")
-        return response.data[0]
-    except Exception as e:
-        error_msg = f"Error updating claim final results: {str(e)}"
-        logger.error(f"[Database] {error_msg}")
-        raise Exception(error_msg)
+    row = _mem_claims.get(str(claim_id), {})
+    row.update({
+        "verdict": verdict,
+        "confidence": confidence,
+        "severity": severity,
+        "reasoning": reasoning,
+        "status": "completed",
+        "updated_at": datetime.utcnow().isoformat()
+    })
+    _mem_claims[str(claim_id)] = row
+    return row
 
 
 def insert_evidence(
     claim_id: str,
-    source_url: Optional[str],
-    summary: str,
-    stance: str
+    evidence_text: str = "",
+    source_url: Optional[str] = None,
+    source_name: Optional[str] = "Source",
+    credibility_score: float = 0.8,
+    stance: str = "neutral",
+    summary: Optional[str] = None,
+    **kwargs
 ) -> Dict:
-    """
-    Insert evidence for a claim.
+    """Insert evidence linked to a claim."""
+    text_content = evidence_text or summary or ""
+    logger.info(f"[Database] Inserting evidence for claim ID: {claim_id}")
     
-    Args:
-        claim_id (str): Claim ID this evidence is associated with
-        source_url (Optional[str]): URL of the evidence source
-        summary (str): Summary of the evidence
-        stance (str): Evidence stance (supporting, refuting, neutral)
+    if supabase:
+        try:
+            data = {
+                "claim_id": claim_id,
+                "evidence_text": text_content,
+                "source_url": source_url,
+                "source_name": source_name or "Source",
+                "credibility_score": credibility_score,
+                "stance": stance
+            }
+            response = supabase.table("evidence").insert(data).execute()
+            if response.data:
+                evidence_row = response.data[0]
+                return evidence_row
+        except Exception as e:
+            logger.warning(f"[Database] Supabase insert evidence failed ({e}), writing memory.")
     
-    Returns:
-        Dict: The inserted evidence row
-    
-    Raises:
-        Exception: If database operation fails
-    """
-    logger.info(f"[Database] Inserting evidence for claim: {claim_id}")
-    logger.info(f"[Database] Stance: {stance}, Source: {source_url or 'None'}")
-    
-    if not supabase:
-        ev = {
-            "id": str(uuid.uuid4()),
-            "claim_id": claim_id,
-            "source_url": source_url,
-            "summary": summary,
-            "stance": stance,
-            "created_at": datetime.utcnow().isoformat()
-        }
-        _mem_evidence.setdefault(claim_id, []).append(ev)
-        logger.info(f"[Database] [Memory] Evidence inserted successfully for claim {claim_id}")
-        return ev
-    try:
-        stance_value = stance
-        if stance_value == "supporting":
-            stance_value = "support"
-        elif stance_value == "refuting":
-            stance_value = "refute"
-        elif stance_value not in ("support", "refute", "neutral"):
-            stance_value = "neutral"
-        data = {
-            "claim_id": claim_id,
-            "source_url": source_url or "",
-            "summary": summary,
-            "stance": stance_value
-        }
-        response = supabase.table("evidence").insert(data).execute()
-        if not response.data:
-            error_msg = "Failed to insert evidence - no data returned"
-            logger.error(f"[Database] {error_msg}")
-            raise Exception(error_msg)
-        evidence_row = response.data[0]
-        logger.info(f"[Database] Evidence inserted successfully with ID: {evidence_row.get('id')}")
-        return evidence_row
-    except Exception as e:
-        error_msg = f"Error inserting evidence: {str(e)}"
-        logger.error(f"[Database] {error_msg}")
-        raise Exception(error_msg)
+    evidence_id = str(uuid.uuid4())
+    row = {
+        "id": evidence_id,
+        "claim_id": claim_id,
+        "evidence_text": text_content,
+        "summary": text_content,
+        "source_url": source_url,
+        "source_name": source_name,
+        "credibility_score": credibility_score,
+        "stance": stance,
+        "created_at": datetime.utcnow().isoformat()
+    }
+    if claim_id not in _mem_evidence:
+        _mem_evidence[claim_id] = []
+    _mem_evidence[claim_id].append(row)
+    return row
 
 
 def get_evidence_by_claim_id(claim_id: str) -> List[Dict]:
-    """
-    Retrieve all evidence for a specific claim.
+    """Retrieve all evidence linked to a claim ID."""
+    if supabase:
+        try:
+            response = supabase.table("evidence").select("*").eq("claim_id", claim_id).execute()
+            if response.data:
+                return response.data
+        except Exception as e:
+            logger.warning(f"[Database] Supabase get evidence failed ({e}), checking memory.")
     
-    Args:
-        claim_id (str): Claim ID
-    
-    Returns:
-        List[Dict]: List of evidence rows
-    
-    Raises:
-        Exception: If database operation fails
-    """
-    logger.info(f"[Database] Retrieving evidence for claim: {claim_id}")
-    
-    if not supabase:
-        items = _mem_evidence.get(claim_id, [])
-        logger.info(f"[Database] [Memory] Found {len(items)} evidence items for claim {claim_id}")
-        return items
-    try:
-        response = supabase.table("evidence").select("*").eq("claim_id", claim_id).execute()
-        logger.info(f"[Database] Found {len(response.data)} evidence items for claim {claim_id}")
-        return response.data
-    except Exception as e:
-        error_msg = f"Error retrieving evidence: {str(e)}"
-        logger.error(f"[Database] {error_msg}")
-        raise Exception(error_msg)
+    return _mem_evidence.get(str(claim_id), [])
+
+
+# Aliases for compatibility
+update_claim_final_result = update_claim_verdict

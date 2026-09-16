@@ -84,9 +84,10 @@ const STATIC_CLAIMS = [
 // ─────────────────────────────────────────────
 // CONFIG
 // ─────────────────────────────────────────────
-const BACKEND_BASE = "https://misinformation-1ouh.onrender.com";
+const BACKEND_BASE = (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
+  ? ''
+  : 'https://misinformation-1ouh.onrender.com';
 const API_URL = `${BACKEND_BASE}/api/dashboard/claims`;
-// /healthz doesn't exist — use the claims endpoint itself as health check
 const HEALTH_URL = `${BACKEND_BASE}/api/dashboard/claims`;
 
 let backendAlive = false;
@@ -205,7 +206,7 @@ function buildCard(item) {
   const aiNote = document.createElement("p");
   aiNote.style.cssText = "color:#64748b;font-size:0.82rem;margin:0;";
   aiNote.id = `aiNote_${Math.random().toString(36).slice(2)}`;
-  aiNote.textContent = backendAlive ? "🤖 Loading AI-enhanced source..." : "📡 Source links available once backend wakes up.";
+  aiNote.textContent = backendAlive ? "Analyzing evidence source provenance..." : "Source links available once live stream syncs.";
 
   const sourceLink = document.createElement("div");
   sourceLink.id = `srcLink_${Math.random().toString(36).slice(2)}`;
@@ -230,14 +231,14 @@ function buildCard(item) {
           if (data.explanation) {
             summary.textContent = data.explanation;
             const src = data.evidence_url
-              ? `<a href="${data.evidence_url}" target="_blank" rel="noopener noreferrer" style="color:#60a5fa;font-size:0.82rem;font-weight:600;">🔗 View Source →</a>`
-              : `<span style="color:#94a3b8;font-size:0.82rem;">No source link available</span>`;
+              ? `<a href="${data.evidence_url}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-size:0.82rem;font-weight:600;text-decoration:none;">View Source Document →</a>`
+              : `<span style="color:#94a3b8;font-size:0.82rem;">No external source link provided</span>`;
             sourceLink.innerHTML = src;
             aiNote.style.display = "none";
             card.dataset.aiLoaded = "1";
           }
         } catch (e) {
-          aiNote.textContent = "AI explanation unavailable.";
+          aiNote.textContent = "Provenance verification unavailable.";
         }
       }
     } else {

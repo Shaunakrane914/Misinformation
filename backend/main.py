@@ -144,7 +144,8 @@ class ClaimSubmitResponse(BaseModel):
 
 
 class TrendingScanRequest(BaseModel):
-    asset_name: str
+    asset_name: Optional[str] = None
+    query: Optional[str] = None
     identifiers: Optional[Dict] = None
 
 
@@ -153,17 +154,20 @@ class DefenseRequest(BaseModel):
 
 
 class ScoutAnalyzeRequest(BaseModel):
-    ticker: str
+    ticker: Optional[str] = "NVDA"
+    query: Optional[str] = None
 
 
 class PersonalScanRequest(BaseModel):
-    name: str
+    name: Optional[str] = "Subject"
+    query: Optional[str] = None
     official_handles: Optional[Dict[str, str]] = None
     phone_number: Optional[str] = None
 
 
 class BrandShieldScanRequest(BaseModel):
-    brand_name: str
+    brand_name: Optional[str] = "Brand"
+    query: Optional[str] = None
 
 
 class DeployResponseRequest(BaseModel):
@@ -482,10 +486,11 @@ async def explain_claim(request: dict):
 @app.post("/api/trending/scan")
 async def trending_scan(request: TrendingScanRequest):
     """Trigger the Trending Agent ingestion pass for an asset/celebrity."""
-    logger.info(f"[API] POST /api/trending/scan - asset={request.asset_name}")
+    target_name = request.asset_name or request.query or "General"
+    logger.info(f"[API] POST /api/trending/scan - asset={target_name}")
     try:
         agent = get_trending_agent()
-        result = agent.scan(request.asset_name, request.identifiers)
+        result = agent.scan(target_name, request.identifiers)
         from backend.services.alerts import check_critical_threats
         result["alerts"] = check_critical_threats(result)
         return result
@@ -590,21 +595,13 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
         # Extract clean company name
         company_name = request.ticker.replace('.NS', '').replace('.BO', '')
 
-        company_task = {
-            'mode': 'deep_scan',
-            'ticker': request.ticker,
-            'company_name': company_name,
-            'search_terms': [company_name],
-            'time_window_hours': 72
-        }
-        company_news_result = trending.process_task(company_task)
-
+        raw_news = trending.fetch_news(company_name, limit=5)
         company_articles = []
-        for article in (company_news_result.get('articles') or [])[:5]:
+        for article in (raw_news or []):
             company_articles.append({
                 'title': article.get('title', 'No title'),
-                'source': article.get('source', 'Unknown'),
-                'time': article.get('pub_date', 'Recent')
+                'source': article.get('source') or 'Google News',
+                'time': article.get('published', 'Recent')
             })
 
         return {
@@ -691,8 +688,8 @@ async def get_war_room_signals(limit: int = 20):
             return {"signals": signals, "count": len(signals)}
         return {"signals": [], "count": 0}
     except Exception as e:
-        logger.error(f"[API] Error fetching signals: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error fetching signals: {str(e)}")
+        logger.warning(f"[API] Signal table fetch note: {str(e)}")
+        return {"signals": [], "count": 0, "status": "standby"}
 
 
 @app.get("/api/feed/live")
@@ -708,8 +705,8 @@ async def get_live_feed(limit: int = 10):
             return {"threats": threats, "count": len(threats)}
         return {"threats": [], "count": 0}
     except Exception as e:
-        logger.error(f"[API] Error fetching live feed: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error fetching live feed: {str(e)}")
+        logger.warning(f"[API] Verified threats table note: {str(e)}")
+        return {"threats": [], "count": 0, "status": "standby"}
 
 
 @app.post("/api/deploy-response")
@@ -825,7 +822,7 @@ async def brandshield_agent_page():
 @app.get("/lab")
 @app.get("/lab.html")
 async def lab_page():
-    return FileResponse("frontend/lab.html")
+    return FileResponse("frontend/submit.html")
 
 
 @app.get("/favicon.ico")
@@ -859,6 +856,7 @@ class ConsensusRequest(BaseModel):
 
 
 @app.post("/api/lab/synthetic-detect")
+@app.post("/lab/synthetic-detect")
 async def lab_synthetic_detect(req: SyntheticDetectRequest):
     import re
     import math
@@ -960,6 +958,7 @@ async def lab_synthetic_detect(req: SyntheticDetectRequest):
 
 
 @app.post("/api/lab/blast-radius")
+@app.post("/lab/blast-radius")
 async def lab_blast_radius(req: BlastRadiusRequest):
     import math
     import hashlib
@@ -1035,6 +1034,7 @@ async def lab_blast_radius(req: BlastRadiusRequest):
 
 
 @app.post("/api/lab/consensus")
+@app.post("/lab/consensus")
 async def lab_consensus(req: ConsensusRequest):
     import hashlib
     from collections import Counter

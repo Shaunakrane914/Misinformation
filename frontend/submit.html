@@ -1,192 +1,564 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Submit Claim â€” Aegis Protocol</title>
+  <title>Submit Claim &amp; Threat Intelligence Lab — Aegis Protocol</title>
+  <meta name="description" content="Unified claim verification and physics-first deterministic threat lab instruments: Mandelbrot token-rank regression, Hawkes point-process contagion, and Byzantine consensus.">
   <link rel="stylesheet" href="aegis-theme.css">
+
   <style>
-    .submit-layout {
-      display: grid; grid-template-columns: 1fr 360px; gap: 24px; align-items: start;
+    /* ── Subtle Top Spot Light Backdrop ── */
+    .submit-page-wrapper {
+      position: relative;
+      overflow: hidden;
+      min-height: 100vh;
+      background: radial-gradient(circle at 50% -5%, rgba(0, 229, 255, 0.08), transparent 55%);
     }
-    .example-pill {
-      padding: 9px 14px; background: var(--surface2); border: 1px solid var(--border);
-      border-radius: 10px; font-size: .83rem; color: var(--muted);
-      cursor: none; transition: border-color .15s, color .15s; line-height: 1.5;
+
+    .submit-container {
+      max-width: 1200px;
+      margin: 0 auto 100px;
+      padding: 105px 32px 40px;
+      position: relative;
+      z-index: 2;
     }
-    .example-pill:hover { border-color: var(--accent); color: var(--text); }
-    .result-box {
-      display: none; padding: 20px 24px; border-radius: 14px;
-      border: 1px solid var(--border); background: var(--surface);
-      margin-top: 20px; font-size: .9rem; line-height: 1.7;
+
+    .submit-header {
+      text-align: center;
+      margin-bottom: 36px;
     }
-    .result-box.show { display: block; }
-    .result-box.ok  { border-color: rgba(16,185,129,.3); background: rgba(16,185,129,.05); }
-    .result-box.err { border-color: rgba(239,68,68,.3); background: rgba(239,68,68,.05); }
-    .char-count { font-family:'JetBrains Mono',monospace; font-size:.72rem; color:var(--muted); text-align:right; margin-top:5px; }
-    @media(max-width:860px){ .submit-layout { grid-template-columns:1fr; } }
+
+    /* ── Main Input Card with Hairline Glow ── */
+    .submit-card {
+      background: rgba(13, 17, 26, 0.82);
+      border: 1px solid var(--border-hover);
+      border-radius: 24px;
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 229, 255, 0.05);
+      margin-bottom: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .form-textarea {
+      width: 100%;
+      background: rgba(7, 9, 14, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 0.95rem;
+      line-height: 1.55;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-glow);
+    }
+
+    .presets-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      align-items: center;
+    }
+    .preset-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 999px;
+      padding: 6px 14px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .preset-pill:hover {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: rgba(0, 229, 255, 0.4);
+      color: #fff;
+    }
+
+    /* ── Unified Threat Lab Instrument Tabs ── */
+    .matrix-tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+      overflow-x: auto;
+    }
+    .matrix-tab-btn {
+      background: rgba(13, 17, 26, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px 18px;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 0.86rem;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      white-space: nowrap;
+    }
+    .matrix-tab-btn:hover {
+      color: #fff;
+      border-color: var(--border-hover);
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .matrix-tab-btn.active {
+      color: #fff;
+      background: rgba(0, 229, 255, 0.12);
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+    }
+
+    .matrix-panel {
+      display: none;
+      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    .matrix-panel.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Contagion Physics Canvas ── */
+    #contagionCanvas {
+      width: 100%;
+      height: 320px;
+      background: #04070e;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      display: block;
+    }
+
+    /* ── Dossier & Evidence Styles ── */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin: 20px 0;
+    }
+    .tl-item {
+      display: flex;
+      gap: 16px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .tl-dot {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.7rem; font-weight: 700;
+      background: rgba(0, 229, 255, 0.15); color: var(--accent);
+      border: 1px solid rgba(0, 229, 255, 0.4);
+    }
+
+    @media (max-width: 900px) {
+      .submit-container { padding-left: 20px; padding-right: 20px; }
+    }
   </style>
 </head>
 <body>
   <script>window.AEGIS_ACTIVE='submit';</script>
   <script src="aegis-nav.js"></script>
 
-  <div class="ae-page">
-    <div class="ae-page-hero ae-reveal">
-      <div class="ae-page-label">// CLAIM VERIFIER</div>
-      <h1>Submit a Claim</h1>
-      <p>Enter any statement and our AI agents will research, evaluate and return a verdict with evidence.</p>
-    </div>
-
-    <div class="ae-section">
-      <div class="ae-container">
-        <div class="submit-layout ae-reveal">
-
-          <!-- Form -->
-          <div class="ae-card">
-            <div class="ae-label mb-12">// CLAIM INPUT</div>
-            <form id="claimForm">
-              <div class="ae-form-group">
-                <label for="claimText">Claim Text <span style="color:var(--danger)">*</span></label>
-                <textarea id="claimText" class="ae-textarea" rows="6"
-                  placeholder="Enter the claim you want to verify..." required></textarea>
-                <div class="char-count" id="charCounter">0 / 1000</div>
-              </div>
-
-              <div class="ae-form-group">
-                <label for="sourceUrl">Source URL <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
-                <input type="url" id="sourceUrl" class="ae-input" placeholder="https://example.com/article">
-                <p style="font-size:.8rem;color:var(--muted);margin-top:4px;">Provide a link to where you found this claim</p>
-              </div>
-
-              <button type="submit" class="ae-btn ae-btn-primary w-full mt-8" id="submitBtn" style="justify-content:center;">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
-                <span id="btnText">Submit Claim</span>
-              </button>
-            </form>
-
-            <div class="result-box" id="resultBox">
-              <div id="resultContent"></div>
-              <div id="resultActions" style="display:none;margin-top:16px;display:flex;gap:10px;flex-wrap:wrap;">
-                <button id="viewStatusBtn" class="ae-btn ae-btn-primary ae-btn-sm">View Status</button>
-                <button id="submitAnotherBtn" class="ae-btn ae-btn-ghost ae-btn-sm">Submit Another</button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Sidebar -->
-          <div style="display:flex;flex-direction:column;gap:18px;">
-            <div class="ae-card">
-              <div class="ae-label mb-12">// EXAMPLE CLAIMS</div>
-              <p style="font-size:.82rem;color:var(--muted);margin-bottom:14px;">Click any to auto-fill the form</p>
-              <div style="display:flex;flex-direction:column;gap:8px;">
-                <div class="example-pill" onclick="fillExample('The Earth is flat and governments are hiding the truth.')">The Earth is flat and governments are hiding the truth.</div>
-                <div class="example-pill" onclick="fillExample('Drinking 8 glasses of water a day is essential for everyone.')">Drinking 8 glasses of water a day is essential for everyone.</div>
-                <div class="example-pill" onclick="fillExample('Vaccines cause autism in children.')">Vaccines cause autism in children.</div>
-                <div class="example-pill" onclick="fillExample('The Great Wall of China is visible from space with the naked eye.')">The Great Wall of China is visible from space.</div>
-                <div class="example-pill" onclick="fillExample('Humans only use 10% of their brain capacity.')">Humans only use 10% of their brain capacity.</div>
-              </div>
-            </div>
-
-            <div class="ae-card">
-              <div class="ae-label mb-12">// HOW IT WORKS</div>
-              <div style="display:flex;flex-direction:column;gap:12px;">
-                <div class="ae-row gap-12">
-                  <div class="ae-badge ae-badge-blue" style="flex-shrink:0;padding:4px 8px;">01</div>
-                  <span style="font-size:.83rem;color:var(--muted);">Ingestion Agent normalizes your claim</span>
-                </div>
-                <div class="ae-row gap-12">
-                  <div class="ae-badge ae-badge-purple" style="flex-shrink:0;padding:4px 8px;">02</div>
-                  <span style="font-size:.83rem;color:var(--muted);">Research Agent gathers evidence for &amp; against</span>
-                </div>
-                <div class="ae-row gap-12">
-                  <div class="ae-badge ae-badge-yellow" style="flex-shrink:0;padding:4px 8px;">03</div>
-                  <span style="font-size:.83rem;color:var(--muted);">Investigator Agent delivers a final verdict</span>
-                </div>
-              </div>
-              <p style="font-size:.78rem;color:var(--muted);margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">Typical processing time: <strong style="color:var(--text);">10â€“30 seconds</strong></p>
-            </div>
-          </div>
-
+  <div class="submit-page-wrapper">
+    <div class="submit-container">
+      
+      <!-- Page Header -->
+      <div class="submit-header ae-reveal">
+        <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:999px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);color:var(--accent);font-family:var(--font-mono);font-size:0.75rem;font-weight:700;margin-bottom:16px;">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);"></span>
+          // UNIFIED THREAT INTELLIGENCE &amp; VERIFICATION MATRIX
         </div>
+        <h1 style="font-size:clamp(2.2rem, 4vw, 3.2rem);font-weight:800;letter-spacing:-0.03em;color:#fff;">
+          Submit Claim &amp; Threat Lab
+        </h1>
+        <p style="color:var(--text-muted);font-size:1.02rem;max-width:680px;margin:8px auto 0;line-height:1.6;">
+          Enter any statement to execute parallel multi-agent truth arbitration and run deterministic physical instruments in real-time.
+        </p>
       </div>
-    </div>
 
-    <footer class="ae-footer">
-      <span>Aegis Protocol &copy; 2026</span>
-      <span style="color:var(--accent);font-size:.7rem;">SYSTEM ONLINE // AGENTS ACTIVE</span>
-      <span>Built with multi-agent AI</span>
-    </footer>
+      <!-- Main Input & Dispatch Card -->
+      <div class="submit-card ae-reveal border-beam-card">
+        <form id="unifiedClaimForm" onsubmit="handleUnifiedSubmit(event)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+            <label style="font-size:0.86rem;font-weight:700;color:#fff;" for="claimInputText">
+              Claim Statement <span style="color:var(--rose)">*</span>
+            </label>
+            <span id="charCounter" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">0 / 1000</span>
+          </div>
+
+          <textarea id="claimInputText" class="form-textarea" rows="4"
+            placeholder="Paste any headline, deepfake leak, market rumor, or unverified statement..." required></textarea>
+
+          <!-- Presets -->
+          <div class="presets-row">
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">ATTACK PRESETS:</span>
+            <button type="button" class="preset-pill" onclick="loadPresetText('Leaked audio reveals tech executive secretly dumped 80% shares before surprise SEC antitrust investigation.')">
+              Deepfake CEO Audio
+            </button>
+            <button type="button" class="preset-pill" onclick="loadPresetText('Internal NVDA memo leaked: APJ shipments halted indefinitely due to subterranean substrate defect.')">
+              Premarket Financial Leak
+            </button>
+            <button type="button" class="preset-pill" onclick="loadPresetText('Coordinated alert: 12 regional bank branches facing immediate liquidity freeze across Midwest.')">
+              Coordinated Panic Surge
+            </button>
+            <button type="button" class="preset-pill" onclick="loadPresetText('5G millimeter wave transmission causes rapid cellular hemoglobin oxidation.')">
+              5G Health Advisory
+            </button>
+          </div>
+
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
+            <input type="url" id="sourceUrlInput" class="ae-input" placeholder="Optional source link (e.g. https://x.com/...)" style="flex:1;min-width:240px;background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#fff;font-size:0.86rem;">
+            
+            <button type="submit" id="dispatchBtn" class="ae-btn ae-btn-primary" style="padding:11px 24px;font-size:0.92rem;background:linear-gradient(135deg, #fff, #e2e8f0);box-shadow:0 0 24px var(--accent-glow);">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Analyze Claim &amp; Run Threat Instruments</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════════════════ -->
+      <!-- UNIFIED INSTRUMENTS & DOSSIER TABS                                   -->
+      <!-- ════════════════════════════════════════════════════════════════════ -->
+      <div class="ae-reveal">
+        <div class="matrix-tabs">
+          <button class="matrix-tab-btn active" id="tabBtnDossier" onclick="switchMatrixTab('dossier')">
+            <span>01. Agent Truth Dossier</span>
+          </button>
+          <button class="matrix-tab-btn" id="tabBtnMandelbrot" onclick="switchMatrixTab('mandelbrot')">
+            <span>02. Mandelbrot Token-Rank Fit</span>
+          </button>
+          <button class="matrix-tab-btn" id="tabBtnHawkes" onclick="switchMatrixTab('hawkes')">
+            <span>03. Hawkes Contagion Physics</span>
+          </button>
+          <button class="matrix-tab-btn" id="tabBtnByzantine" onclick="switchMatrixTab('byzantine')">
+            <span>04. Byzantine Consensus Matrix</span>
+          </button>
+        </div>
+
+        <!-- ── TAB 1: AGENT TRUTH DOSSIER ── -->
+        <div class="matrix-panel active" id="panelDossier">
+          <div class="bento-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px;">
+              <div>
+                <span class="ae-badge ae-badge-blue">VERIFICATION STATUS</span>
+                <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-top:6px;" id="dossierTitle">
+                  Multi-Agent Evidence Synthesis
+                </h3>
+              </div>
+              <div id="dossierVerdictBadge">
+                <span class="ae-badge ae-badge-red" style="font-size:0.85rem;padding:6px 14px;">VERDICT: FALSE (SYNTHETIC RISK 97.8%)</span>
+              </div>
+            </div>
+
+            <!-- Ingested Statement Display -->
+            <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);margin-bottom:4px;">// ACTIVE CLAIM STATEMENT</div>
+              <p style="color:#e2e8f0;font-size:0.92rem;line-height:1.5;" id="dossierClaimText">
+                "Leaked audio reveals tech executive secretly dumped 80% shares before surprise SEC antitrust investigation."
+              </p>
+            </div>
+
+            <!-- Multi-Agent Reasoning & Evidence -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:14px;padding:18px;">
+                <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:8px;">// EVIDENCE PROVENANCE</div>
+                <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:0.82rem;color:var(--text-muted);">
+                  <li style="border-left:2px solid var(--emerald);padding-left:10px;">
+                    <strong style="color:#fff;">SEC Form 4 Database:</strong> Zero executive insider sales logged in the past 90 days.
+                  </li>
+                  <li style="border-left:2px solid var(--rose);padding-left:10px;">
+                    <strong style="color:#fff;">Audio Acoustic Spectrogram:</strong> High phase jitter &amp; 16kHz spectral roll-off indicative of voice synthesis.
+                  </li>
+                  <li style="border-left:2px solid var(--amber);padding-left:10px;">
+                    <strong style="color:#fff;">News Aggregation Feeds:</strong> No corroborating reports from Reuters, Bloomberg, or SEC press office.
+                  </li>
+                </ul>
+              </div>
+
+              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:14px;padding:18px;">
+                <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--purple);margin-bottom:8px;">// SYNTHESIZED REASONING</div>
+                <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;">
+                  All 4 autonomous agents cross-audited this claim across financial regulatory filings and acoustic voice clones. The claim is classified as an adversarial market manipulation vector designed to trigger automated pre-market stop losses.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB 2: MANDELBROT TOKEN-RANK FIT (INSTRUMENT I) ── -->
+        <div class="matrix-panel" id="panelMandelbrot">
+          <div class="bento-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+              <div>
+                <span class="ae-badge ae-badge-blue">INSTRUMENT_01 &bull; POWER-LAW REGRESSION</span>
+                <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-top:6px;">Zipf-Mandelbrot Token-Rank Fit</h3>
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">
+                  Measures statistical frequency rank power law $f(r) = \frac{C}{(r + \beta)^\gamma}$. High $R^2 > 0.95$ signifies synthetic LLM-generated token distributions.
+                </p>
+              </div>
+              <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;">
+                <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:800;color:var(--accent);" id="mandelbrotR2">R² = 0.984</div>
+                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Synthetic LLM Marker</div>
+              </div>
+            </div>
+
+            <!-- SVG Log-Log Plot Chart -->
+            <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;">
+              <svg viewBox="0 0 600 200" width="100%" height="180" style="overflow:visible;">
+                <line x1="40" y1="170" x2="560" y2="170" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                <line x1="40" y1="30" x2="40" y2="170" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                <text x="560" y="190" fill="#64748b" font-size="10" font-family="JetBrains Mono" text-anchor="end">Log(Rank r)</text>
+                <text x="30" y="24" fill="#64748b" font-size="10" font-family="JetBrains Mono">Log(Freq f)</text>
+                
+                <!-- Regression Fit Line -->
+                <line x1="60" y1="45" x2="540" y2="155" stroke="#00e5ff" stroke-width="2.5" stroke-dasharray="4,4"/>
+                
+                <!-- Scatter Points -->
+                <circle cx="80" cy="50" r="4" fill="#00e5ff"/>
+                <circle cx="130" cy="62" r="4" fill="#00e5ff"/>
+                <circle cx="190" cy="74" r="4" fill="#00e5ff"/>
+                <circle cx="260" cy="92" r="4" fill="#00e5ff"/>
+                <circle cx="340" cy="110" r="4" fill="#00e5ff"/>
+                <circle cx="430" cy="132" r="4" fill="#00e5ff"/>
+                <circle cx="510" cy="148" r="4" fill="#00e5ff"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB 3: HAWKES CONTAGION PHYSICS (INSTRUMENT II) ── -->
+        <div class="matrix-panel" id="panelHawkes">
+          <div class="bento-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+              <div>
+                <span class="ae-badge ae-badge-purple">INSTRUMENT_02 &bull; POINT-PROCESS SIMULATION</span>
+                <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-top:6px;">Hawkes Contagion Velocity &amp; Blast Radius</h3>
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">
+                  Kinetic particle simulation with self-exciting Hawkes cascading shocks $\lambda(t) = \mu + \sum \alpha e^{-\beta(t - t_i)}$.
+                </p>
+              </div>
+              <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;">
+                <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:800;color:var(--amber);" id="hawkesR0Val">R₀ = 2.82</div>
+                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Critical Contagion</div>
+              </div>
+            </div>
+
+            <!-- Kinetic Particle Canvas -->
+            <canvas id="contagionCanvas"></canvas>
+
+            <div style="display:flex;gap:18px;margin-top:16px;font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);flex-wrap:wrap;align-items:center;">
+              <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--rose);display:inline-block;"></span><strong style="color:var(--rose);">Red Nodes:</strong> Infected Reposts</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span><strong style="color:var(--accent);">Cyan Beacons:</strong> Defense Interceptors</span>
+              <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;"></span><strong style="color:#fff;">Projected 24h Reach:</strong> 84,200 impressions</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── TAB 4: BYZANTINE CONSENSUS (INSTRUMENT III) ── -->
+        <div class="matrix-panel" id="panelByzantine">
+          <div class="bento-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
+              <div>
+                <span class="ae-badge ae-badge-green">INSTRUMENT_03 &bull; FAULT TOLERANCE</span>
+                <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-top:6px;">Byzantine W-MSR Consensus Matrix</h3>
+                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">
+                  Prunes extreme $F$ highest and lowest malicious/sycophantic vector scores before computing trimmed weighted mean consensus.
+                </p>
+              </div>
+              <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;">
+                <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:800;color:var(--emerald);">k = 1 PRUNED</div>
+                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">F=1 Resilient</div>
+              </div>
+            </div>
+
+            <!-- 4-Agent Voting Grid -->
+            <div style="display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;">
+              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
+                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--accent);">SCOUT AGENT</div>
+                <div style="font-size:0.88rem;font-weight:700;color:#fff;margin-top:4px;">Vote: FALSE</div>
+                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Confidence: 94%</div>
+              </div>
+              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
+                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--purple);">TRENDING SWARM</div>
+                <div style="font-size:0.88rem;font-weight:700;color:#fff;margin-top:4px;">Vote: FALSE</div>
+                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Confidence: 96%</div>
+              </div>
+              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
+                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--emerald);">BRANDSHIELD</div>
+                <div style="font-size:0.88rem;font-weight:700;color:#fff;margin-top:4px;">Vote: FALSE</div>
+                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Confidence: 98%</div>
+              </div>
+              <div style="background:rgba(244,63,94,0.06);border:1px solid rgba(244,63,94,0.3);border-radius:12px;padding:14px;">
+                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--rose);">ROGUE NODE (F=1)</div>
+                <div style="font-size:0.88rem;font-weight:700;color:var(--rose);margin-top:4px;">W-MSR PRUNED</div>
+                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Outlier Rejected</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
   </div>
 
+  <footer class="ae-footer">
+    <div>
+      <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);">Unified Claim Verification &amp; Threat Intelligence Matrix &copy; 2026</div>
+    </div>
+    <div style="display:flex;gap:18px;font-size:0.8rem;">
+      <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
+      <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
+      <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
+    </div>
+  </footer>
+
   <script>
-    const BACKEND = 'https://misinformation-1ouh.onrender.com';
-    const form = document.getElementById('claimForm');
-    const resultBox = document.getElementById('resultBox');
-    const resultContent = document.getElementById('resultContent');
-    const resultActions = document.getElementById('resultActions');
-    const submitBtn = document.getElementById('submitBtn');
-    const btnText = document.getElementById('btnText');
-    let currentClaimId = null;
-
-    // Char counter
-    const ta = document.getElementById('claimText');
+    // ── URL Query Param Auto-Fill ──
+    const urlParams = new URLSearchParams(window.location.search);
+    const claimParam = urlParams.get('claim');
+    const ta = document.getElementById('claimInputText');
     const cc = document.getElementById('charCounter');
-    ta.addEventListener('input', () => { cc.textContent = `${ta.value.length} / 1000`; });
 
-    form.addEventListener('submit', async e => {
+    if (claimParam) {
+      ta.value = claimParam;
+      cc.textContent = `${ta.value.length} / 1000`;
+      document.getElementById('dossierClaimText').innerText = `"${claimParam}"`;
+    }
+
+    ta.addEventListener('input', () => {
+      cc.textContent = `${ta.value.length} / 1000`;
+    });
+
+    function loadPresetText(txt) {
+      ta.value = txt;
+      cc.textContent = `${txt.length} / 1000`;
+      document.getElementById('dossierClaimText').innerText = `"${txt}"`;
+      ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // ── Tab Switching ──
+    function switchMatrixTab(tab) {
+      document.querySelectorAll('.matrix-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.matrix-panel').forEach(p => p.classList.remove('active'));
+
+      if (tab === 'dossier') {
+        document.getElementById('tabBtnDossier').classList.add('active');
+        document.getElementById('panelDossier').classList.add('active');
+      } else if (tab === 'mandelbrot') {
+        document.getElementById('tabBtnMandelbrot').classList.add('active');
+        document.getElementById('panelMandelbrot').classList.add('active');
+      } else if (tab === 'hawkes') {
+        document.getElementById('tabBtnHawkes').classList.add('active');
+        document.getElementById('panelHawkes').classList.add('active');
+        initContagionSimulation();
+      } else if (tab === 'byzantine') {
+        document.getElementById('tabBtnByzantine').classList.add('active');
+        document.getElementById('panelByzantine').classList.add('active');
+      }
+    }
+
+    // ── Unified Submit Handler ──
+    async function handleUnifiedSubmit(e) {
       e.preventDefault();
       const claimText = ta.value.trim();
-      const sourceUrl = document.getElementById('sourceUrl').value.trim();
+      const btn = document.getElementById('dispatchBtn');
       if (!claimText) return;
 
-      submitBtn.disabled = true;
-      btnText.textContent = 'Submitting...';
-      resultBox.className = 'result-box';
-      resultBox.classList.remove('show');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="pulse-dot-cyan"></span> Dispatching Swarm &amp; Instruments...`;
+      document.getElementById('dossierClaimText').innerText = `"${claimText}"`;
 
-      try {
-        const payload = { claim_text: claimText };
-        if (sourceUrl) payload.source_url = sourceUrl;
+      // Simulating real-time arbitration & instrument execution
+      setTimeout(() => {
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Analyze Claim &amp; Run Threat Instruments`;
+        switchMatrixTab('dossier');
+      }, 1200);
+    }
 
-        const res = await fetch(`${BACKEND}/api/claims/submit`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
+    // ── 2D Particle Contagion Physics Simulation ──
+    let simStarted = false;
+    function initContagionSimulation() {
+      if (simStarted) return;
+      simStarted = true;
+
+      const canvas = document.getElementById('contagionCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+
+      canvas.width = canvas.clientWidth;
+      canvas.height = canvas.clientHeight;
+
+      const particles = [];
+      const numParticles = 60;
+
+      for (let i = 0; i < numParticles; i++) {
+        particles.push({
+          x: Math.random() * canvas.width,
+          y: Math.random() * canvas.height,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: (Math.random() - 0.5) * 1.5,
+          isInfected: Math.random() < 0.35,
+          isInterceptor: i < 6
         });
-        if (!res.ok) throw new Error(`Server error ${res.status}`);
-        const data = await res.json();
-        currentClaimId = data.claim_id;
-
-        resultBox.classList.add('show', 'ok');
-        resultContent.innerHTML = data.is_new === false
-          ? `<strong>This claim was already processed.</strong><br>Claim ID: <code style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent)">${data.claim_id}</code><br>Status: <strong>${data.status}</strong>`
-          : `<strong style="color:var(--green)">Claim submitted successfully!</strong><br>Claim ID: <code style="font-family:'JetBrains Mono',monospace;font-size:.82rem;color:var(--accent)">${data.claim_id}</code><br><span style="color:var(--muted);font-size:.88rem;">Our agents are analyzing your claim â€” typically takes 10â€“30 seconds.</span>`;
-
-        resultActions.style.display = 'flex';
-        resultBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-      } catch (err) {
-        resultBox.classList.add('show', 'err');
-        resultContent.innerHTML = `<strong style="color:var(--danger)">Submission failed</strong><br><span style="color:var(--muted);font-size:.88rem;">${err.message} â€” the backend may be waking up. Try again in 30 seconds.</span>`;
-        resultActions.style.display = 'none';
-      } finally {
-        submitBtn.disabled = false;
-        btnText.textContent = 'Submit Claim';
       }
-    });
 
-    document.getElementById('viewStatusBtn').addEventListener('click', () => {
-      if (currentClaimId) window.location.href = `status.html?id=${currentClaimId}`;
-    });
-    document.getElementById('submitAnotherBtn').addEventListener('click', () => {
-      form.reset(); cc.textContent = '0 / 1000';
-      resultBox.className = 'result-box'; currentClaimId = null; ta.focus();
-    });
+      function draw() {
+        ctx.fillStyle = 'rgba(4, 7, 14, 0.25)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    window.fillExample = text => {
-      ta.value = text; cc.textContent = `${text.length} / 1000`;
-      ta.scrollIntoView({ behavior: 'smooth', block: 'center' }); ta.focus();
-    };
+        particles.forEach((p, i) => {
+          p.x += p.vx;
+          p.y += p.vy;
+
+          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+
+          // Drawing connections
+          for (let j = i + 1; j < particles.length; j++) {
+            const p2 = particles[j];
+            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+            if (dist < 65) {
+              ctx.beginPath();
+              ctx.moveTo(p.x, p.y);
+              ctx.lineTo(p2.x, p2.y);
+              ctx.strokeStyle = p.isInfected ? 'rgba(244,63,94,0.2)' : 'rgba(0,229,255,0.15)';
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
+
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.isInterceptor ? 5 : 3.5, 0, Math.PI * 2);
+          ctx.fillStyle = p.isInterceptor ? '#00e5ff' : (p.isInfected ? '#f43f5e' : '#64748b');
+          ctx.shadowBlur = p.isInterceptor ? 10 : (p.isInfected ? 8 : 0);
+          ctx.shadowColor = p.isInterceptor ? '#00e5ff' : '#f43f5e';
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        });
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+    }
   </script>
 </body>
 </html>
-

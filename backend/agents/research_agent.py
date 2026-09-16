@@ -41,16 +41,17 @@ class ResearchAgent:
                 return ""
             return s.strip().strip('"').strip("'")
 
-        all_keys = [
-            _clean(os.getenv("GEMINI_API_KEY")),
-            _clean(os.getenv("GEMINI_API_KEY_1")),
-            _clean(os.getenv("GEMINI_API_KEY_2")),
-        ]
-        self.api_keys = [k for k in all_keys if k]
+        all_keys = []
+        for k, v in sorted(os.environ.items()):
+            if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_"):
+                cleaned = _clean(v)
+                if cleaned and cleaned not in all_keys:
+                    all_keys.append(cleaned)
+        self.api_keys = all_keys
 
         if not self.api_keys:
             raise ValueError(
-                "[ResearchAgent] No API key found. Set GEMINI_API_KEY, GEMINI_API_KEY_1, or GEMINI_API_KEY_2"
+                "[ResearchAgent] No API key found. Set GEMINI_API_KEY in .env"
             )
 
         self._key_cycle = itertools.cycle(self.api_keys)

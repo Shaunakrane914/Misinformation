@@ -65,8 +65,9 @@ async def process_claim(claim_id: str):
         research_agent = ResearchAgent()
         
         # Step 4: Gather evidence
-        logger.info(f"[ClaimWorker] [{claim_id}] Running ResearchAgent.process()")
-        evidence_json = research_agent.process(claim_text)
+        source_url = claim.get("source_url")
+        logger.info(f"[ClaimWorker] [{claim_id}] Running ResearchAgent.process() (source_url={source_url})")
+        evidence_json = research_agent.process(claim_text, source_url=source_url)
         
         logger.info(f"[ClaimWorker] [{claim_id}] Evidence gathering complete")
         logger.info(f"[ClaimWorker] [{claim_id}] Supporting evidence: {len(evidence_json.get('supporting_evidence', []))} points")

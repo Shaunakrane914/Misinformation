@@ -8,7 +8,7 @@ Phase 2: Returns dictionary responses only (no database integration yet).
 import os
 import json
 import re
-from typing import Dict, List
+from typing import Dict, List, Optional, Any
 import requests
 from dotenv import load_dotenv
 import os as _os
@@ -94,23 +94,43 @@ class ResearchAgent:
 
 
 
-    def gather_evidence(self, claim_text: str) -> str:
+    def gather_evidence(self, claim_text: str, source_url: Optional[str] = None) -> str:
         """
-        Query Google Gemini to gather evidence about a claim.
-        
-        Args:
-            claim_text (str): The claim to research
-        
-        Returns:
-            str: Raw text response from the Gemini model
+        Query Google Gemini to gather evidence about a claim, augmented with AgentReach live intelligence.
         """
         print(f"[ResearchAgent] Gathering evidence for claim: {claim_text[:50]}...")
         
+        # Pull real-time web & social context via AgentReach
+        context_snippets = []
+        try:
+            from backend.services.agent_reach_scraper import reach_scraper
+            
+            # If source URL provided, parse clean markdown
+            if source_url:
+                doc = reach_scraper.read_article_markdown(source_url, max_chars=2000)
+                if doc.get("markdown"):
+                    context_snippets.append(f"SOURCE ARTICLE CONTENT ({source_url}):\n{doc['markdown'][:1500]}")
+
+            # Pull live news & social mentions
+            news_items = reach_scraper.search_news(claim_text, limit=4)
+            for item in news_items:
+                context_snippets.append(f"- [{item.get('source', 'News')}] {item.get('title', '')}")
+                
+            reddit_items = reach_scraper.search_reddit(claim_text, limit=3)
+            for r in reddit_items:
+                context_snippets.append(f"- [Reddit Community] {r.get('title', '')}")
+        except Exception as reach_err:
+            print(f"[ResearchAgent] AgentReach grounding notice: {reach_err}")
+
+        grounding_block = ""
+        if context_snippets:
+            grounding_block = f"\nREAL-TIME GROUNDING INTELLIGENCE:\n" + "\n".join(context_snippets) + "\n"
+
         # Construct the prompt
         prompt = f"""Search and summarize evidence supporting and refuting this claim:
 
 "{claim_text}"
-
+{grounding_block}
 Provide your response in the following JSON format:
 {{
   "supporting_evidence": ["evidence point 1", "evidence point 2", ...],
@@ -127,13 +147,8 @@ Provide at least 2-3 evidence points for each category if available."""
         
         try:
             print("[ResearchAgent] Sending request to Gemini API...")
-
-            # Call Gemini API over HTTP
             raw_text = self._call_gemini(prompt)
-            
             print(f"[ResearchAgent] Received response ({len(raw_text)} characters)")
-            print(f"[ResearchAgent] Raw response preview: {raw_text[:100]}...")
-            
             return raw_text
             
         except Exception as e:
@@ -224,33 +239,20 @@ Provide at least 2-3 evidence points for each category if available."""
             print("[ResearchAgent] Returning fallback response")
             return fallback_response
     
-    def process(self, claim_text: str) -> Dict:
+    def process(self, claim_text: str, source_url: Optional[str] = None) -> Dict:
         """
-        Process a claim by gathering evidence and converting to JSON.
-        
-        This is the main method that orchestrates:
-        1. Gathering evidence from Gemini
-        2. Extracting and parsing JSON
-        3. Returning structured response
-        
-        Args:
-            claim_text (str): The claim to research
-        
-        Returns:
-            Dict: Structured response with supporting_evidence, refuting_evidence, 
-                  and overall_evidence_confidence
+        Process a claim by gathering evidence and returning structured results.
         """
         print(f"[ResearchAgent] Processing claim: {claim_text[:50]}...")
         
         try:
-            # Step 1: Gather evidence from Gemini
-            raw_text = self.gather_evidence(claim_text)
+            # Step 1: Gather evidence from Gemini with AgentReach live intelligence
+            raw_text = self.gather_evidence(claim_text, source_url=source_url)
             
             # Step 2: Extract JSON from raw text
             result = self.extract_json(raw_text)
             
             print("[ResearchAgent] Claim processing complete")
-            
             return result
             
         except Exception as e:
@@ -271,27 +273,22 @@ Provide at least 2-3 evidence points for each category if available."""
             "evidence_url": ""
         }
         try:
-            prompt = f"""You are assisting a dashboard that displays claims and their labels.
-
-CLAIM:
-"{claim_text}"
-
-LABEL:
-"{label}"
-
-CONTEXT:
-The dataset already provides the correct verdict.
-Your task: produce a short explanation + 1 evidence link supporting the label.
-
-REQUIREMENTS:
-- 75–100 word explanation
-- Provide one credible evidence URL
-- Return STRICT JSON only:
-{{
-  "explanation": "<75–100 words>",
-  "evidence_url": "https://<one credible source>"
-}}
-"""
+            prompt = (
+                "You are assisting a dashboard that displays claims and their labels.\n\n"
+                f'CLAIM:\n"{claim_text}"\n\n'
+                f'LABEL:\n"{label}"\n\n'
+                "CONTEXT:\n"
+                "The dataset already provides the correct verdict.\n"
+                "Your task: produce a short explanation + 1 evidence link supporting the label.\n\n"
+                "REQUIREMENTS:\n"
+                "- 75-100 word explanation\n"
+                "- Provide one credible evidence URL\n"
+                "- Return STRICT JSON only:\n"
+                "{\n"
+                '  "explanation": "<75-100 words>",\n'
+                '  "evidence_url": "https://<one credible source>"\n'
+                "}\n"
+            )
             raw_text = self._call_gemini(prompt)
             cleaned = raw_text.strip()
             cleaned = re.sub(r'^```json\s*', '', cleaned, flags=re.IGNORECASE)

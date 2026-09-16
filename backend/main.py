@@ -175,6 +175,20 @@ class DeployResponseRequest(BaseModel):
     response_type: str  # 'cease_desist', 'official_denial', 'ceo_alert'
 
 
+class AgentReachScanRequest(BaseModel):
+    query: str
+    include_reddit: Optional[bool] = True
+    include_twitter: Optional[bool] = True
+    include_youtube: Optional[bool] = True
+    include_news: Optional[bool] = True
+    limit: Optional[int] = 6
+
+
+class AgentReachReadRequest(BaseModel):
+    url: str
+    max_chars: Optional[int] = 4000
+
+
 # ============================================================================
 # STARTUP & SHUTDOWN
 # ============================================================================
@@ -542,6 +556,53 @@ async def get_trending_news():
     except Exception as e:
         logger.error(f"[API] Error fetching trending news: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Failed to fetch trending news: {str(e)}")
+
+
+# ============================================================================
+# AGENT-REACH (ZERO-API MULTI-PLATFORM SCRAPER ENGINE)
+# ============================================================================
+
+@app.get("/api/agent-reach/doctor")
+async def agent_reach_doctor():
+    """Run diagnostics across all zero-cost scrapers (Reddit, Twitter, YouTube, News, Jina)."""
+    logger.info("[API] GET /api/agent-reach/doctor")
+    try:
+        from backend.services.agent_reach_scraper import reach_scraper
+        return reach_scraper.doctor()
+    except Exception as e:
+        logger.error(f"[API] AgentReach doctor failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/agent-reach/scan")
+async def agent_reach_scan(request: AgentReachScanRequest):
+    """Execute unified multi-platform scan across social media, forums, and news."""
+    logger.info(f"[API] POST /api/agent-reach/scan - query={request.query}")
+    try:
+        from backend.services.agent_reach_scraper import reach_scraper
+        return reach_scraper.unified_scan(
+            query=request.query,
+            include_reddit=request.include_reddit,
+            include_twitter=request.include_twitter,
+            include_youtube=request.include_youtube,
+            include_news=request.include_news,
+            max_per_channel=request.limit
+        )
+    except Exception as e:
+        logger.error(f"[API] AgentReach scan failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/api/agent-reach/read")
+async def agent_reach_read(request: AgentReachReadRequest):
+    """Cleanly parse any article or dynamic web page to markdown using Jina Reader."""
+    logger.info(f"[API] POST /api/agent-reach/read - url={request.url}")
+    try:
+        from backend.services.agent_reach_scraper import reach_scraper
+        return reach_scraper.read_article_markdown(request.url, max_chars=request.max_chars)
+    except Exception as e:
+        logger.error(f"[API] AgentReach read failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 # ============================================================================

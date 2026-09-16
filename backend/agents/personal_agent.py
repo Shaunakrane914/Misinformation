@@ -39,38 +39,44 @@ class PersonalWatchAgent:
     
     def search_web_mentions(self, vip_name: str, max_results: int = 10) -> List[Dict[str, Any]]:
         """
-        Search the web for mentions of the VIP using DuckDuckGo.
-        
-        Args:
-            vip_name: Name of the VIP to search for
-            max_results: Maximum number of results to return
-            
-        Returns:
-            List of search results with title, link, and snippet
+        Search the web for mentions of the VIP using AgentReach and DuckDuckGo.
         """
         try:
-            logger.info(f"Searching web for mentions of: {vip_name}")
+            logger.info(f"[PersonalWatch] Searching web for mentions of: {vip_name}")
+            from backend.services.agent_reach_scraper import reach_scraper
             
-            # Use DuckDuckGo search
-            ddgs = DDGS()
-            results = ddgs.text(vip_name, max_results=max_results)
-            
-            # Format results
+            # Use unified news & web extraction
+            news_items = reach_scraper.search_news(vip_name, limit=max_results)
             mentions = []
-            for result in results:
+            for item in news_items:
                 mentions.append({
-                    "source": "Web",
-                    "title": result.get("title", ""),
-                    "url": result.get("href", ""),
-                    "snippet": result.get("body", ""),
-                    "content": f"{result.get('title', '')} - {result.get('body', '')}"
+                    "source": item.get("source", "Web"),
+                    "title": item.get("title", ""),
+                    "url": item.get("url", ""),
+                    "snippet": item.get("snippet", ""),
+                    "content": item.get("content", "")
                 })
             
-            logger.info(f"Found {len(mentions)} web mentions")
+            # If news had few results, fallback to DDGS
+            if len(mentions) < max_results:
+                try:
+                    ddgs = DDGS()
+                    for r in ddgs.text(vip_name, max_results=max_results - len(mentions)):
+                        mentions.append({
+                            "source": "Web",
+                            "title": r.get("title", ""),
+                            "url": r.get("href", ""),
+                            "snippet": r.get("body", ""),
+                            "content": f"{r.get('title', '')} - {r.get('body', '')}"
+                        })
+                except Exception as d_err:
+                    logger.debug(f"[PersonalWatch] DDGS fallback notice: {d_err}")
+
+            logger.info(f"[PersonalWatch] Found {len(mentions)} web mentions")
             return mentions
             
         except Exception as e:
-            logger.error(f"Error searching web mentions: {str(e)}")
+            logger.error(f"[PersonalWatch] Error searching web mentions: {str(e)}")
             return []
     
     def search_social_mentions(
@@ -80,74 +86,75 @@ class PersonalWatchAgent:
         max_results: int = 10
     ) -> List[Dict[str, Any]]:
         """
-        Search Twitter for mentions of the VIP, excluding their own posts.
-        
-        Args:
-            vip_name: Name of the VIP to search for
-            official_handle: VIP's official Twitter handle (to exclude their posts)
-            max_results: Maximum number of results to return
-            
-        Returns:
-            List of tweets mentioning the VIP
+        Search Twitter/X and Reddit for mentions of the VIP without requiring paid API keys.
         """
-        if not self.apify_client:
-            logger.warning("Apify client not available - skipping Twitter search")
-            return []
-        
+        mentions: List[Dict[str, Any]] = []
         try:
-            logger.info(f"Searching Twitter for mentions of: {vip_name}")
-            
-            # Build search query - exclude VIP's own posts
-            if official_handle:
-                # Remove @ if present
-                handle = official_handle.lstrip('@')
-                query = f'"{vip_name}" -from:{handle}'
-            else:
-                query = f'"{vip_name}"'
-            
-            logger.info(f"Twitter query: {query}")
-            
-            # Run Apify Twitter scraper
-            actor = self.apify_client.actor("apidojo/tweet-scraper")
-            run = actor.call(
-                run_input={
-                    "searchTerms": [query],
-                    "maxTweets": max_results,
-                    "includeSearchTerms": True
-                },
-                timeout_secs=120
+            from backend.services.agent_reach_scraper import reach_scraper
+            logger.info(f"[PersonalWatch] Searching social channels (Twitter + Reddit) for: {vip_name}")
+
+            # 1. Zero-cost Twitter/X extraction via AgentReach
+            twitter_items = reach_scraper.search_twitter(
+                query=vip_name,
+                vip_handle=official_handle,
+                limit=max_results // 2 + 1
             )
-            
-            if not run or run.get("status") != "SUCCEEDED":
-                logger.error(f"Twitter scraper failed with status: {run.get('status') if run else 'No run'}")
-                return []
-            
-            # Get results
-            dataset_id = run.get("defaultDatasetId")
-            if not dataset_id:
-                logger.error("No dataset ID in Twitter scraper results")
-                return []
-            
-            dataset = self.apify_client.dataset(dataset_id)
-            items = dataset.list_items().get("items", [])
-            
-            # Format results
-            mentions = []
-            for item in items:
+            for t in twitter_items:
                 mentions.append({
-                    "source": "Twitter",
-                    "author": item.get("author", {}).get("userName", "Unknown"),
-                    "content": item.get("text", ""),
-                    "url": item.get("url", ""),
-                    "likes": item.get("likeCount", 0),
-                    "retweets": item.get("retweetCount", 0)
+                    "source": "Twitter/X",
+                    "author": t.get("author", "@user"),
+                    "content": t.get("content", ""),
+                    "url": t.get("url", ""),
+                    "likes": t.get("likes", 0),
+                    "retweets": t.get("retweets", 0),
+                    "title": t.get("title", "")
                 })
-            
-            logger.info(f"Found {len(mentions)} Twitter mentions")
-            return mentions
-            
+
+            # 2. Zero-cost Reddit community extraction via AgentReach
+            reddit_items = reach_scraper.search_reddit(
+                query=vip_name,
+                limit=max_results // 2 + 1
+            )
+            for r in reddit_items:
+                mentions.append({
+                    "source": "Reddit",
+                    "author": r.get("author", "u/user"),
+                    "content": r.get("content", ""),
+                    "url": r.get("url", ""),
+                    "likes": r.get("score", 0),
+                    "retweets": 0,
+                    "title": r.get("title", "")
+                })
+
+            # 3. Optional Apify enhancement if token exists
+            if self.apify_client and len(mentions) < max_results:
+                try:
+                    actor = self.apify_client.actor("apidojo/tweet-scraper")
+                    run = actor.call(
+                        run_input={"searchTerms": [f'"{vip_name}"'], "maxTweets": 5},
+                        timeout_secs=30
+                    )
+                    if run and run.get("status") == "SUCCEEDED":
+                        dataset_id = run.get("defaultDatasetId")
+                        if dataset_id:
+                            dataset = self.apify_client.dataset(dataset_id)
+                            for item in dataset.list_items().get("items", []):
+                                mentions.append({
+                                    "source": "Twitter",
+                                    "author": item.get("author", {}).get("userName", "Unknown"),
+                                    "content": item.get("text", ""),
+                                    "url": item.get("url", ""),
+                                    "likes": item.get("likeCount", 0),
+                                    "retweets": item.get("retweetCount", 0)
+                                })
+                except Exception as apify_err:
+                    logger.debug(f"[PersonalWatch] Apify client attempt notice: {apify_err}")
+
+            logger.info(f"[PersonalWatch] Found {len(mentions)} social mentions for {vip_name}")
+            return mentions[:max_results]
+
         except Exception as e:
-            logger.error(f"Error searching Twitter mentions: {str(e)}")
+            logger.error(f"[PersonalWatch] Error searching social mentions: {str(e)}")
             return []
     
     def scan(self, vip_profile: Dict[str, Any]) -> Dict[str, Any]:

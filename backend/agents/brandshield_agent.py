@@ -51,30 +51,74 @@ class BrandShieldAgent:
     # ─────────────────────────────────────────────────────────────────────────
 
     def search_brand_mentions(self, brand_name: str, max_results: int = 15) -> List[Dict[str, Any]]:
-        """Search DuckDuckGo for recent brand mentions and reviews."""
-        queries = [
-            f"{brand_name} fake reviews scam",
-            f"{brand_name} counterfeit complaints",
-            f"{brand_name} brand reputation news",
-        ]
+        """Search across Reddit, Twitter, News, and Web for brand mentions and complaints."""
         all_results: List[Dict[str, Any]] = []
         try:
-            ddgs = DDGS()
-            for query in queries:
+            from backend.services.agent_reach_scraper import reach_scraper
+            logger.info(f"[BrandShield] Executing AgentReach multi-channel scan for: {brand_name}")
+
+            # 1. Reddit community complaints & reviews (subreddits: scams, reviews, technology)
+            reddit_posts = reach_scraper.search_reddit(
+                f"{brand_name} fake OR scam OR issue OR review",
+                limit=max_results // 3 + 1
+            )
+            for r in reddit_posts:
+                all_results.append({
+                    "query": f"{brand_name} review",
+                    "title": r.get("title", ""),
+                    "url": r.get("url", ""),
+                    "snippet": f"[Reddit {r.get('author', '')}] {r.get('snippet', '')}",
+                    "platform": "Reddit"
+                })
+
+            # 2. Twitter/X brand attacks & discourse
+            twitter_posts = reach_scraper.search_twitter(
+                f"{brand_name} scam OR fake OR complaints",
+                limit=max_results // 3 + 1
+            )
+            for t in twitter_posts:
+                all_results.append({
+                    "query": f"{brand_name} twitter",
+                    "title": t.get("title", ""),
+                    "url": t.get("url", ""),
+                    "snippet": f"[Twitter/X {t.get('author', '')}] {t.get('snippet', '')}",
+                    "platform": "Twitter/X"
+                })
+
+            # 3. News headlines & reports
+            news_items = reach_scraper.search_news(
+                f"{brand_name} brand recall OR counterfeit OR controversy",
+                limit=max_results // 3 + 1
+            )
+            for n in news_items:
+                all_results.append({
+                    "query": f"{brand_name} news",
+                    "title": n.get("title", ""),
+                    "url": n.get("url", ""),
+                    "snippet": f"[{n.get('source', 'News')}] {n.get('snippet', '')}",
+                    "platform": "News"
+                })
+
+            # 4. Fallback to DDG if needed
+            if len(all_results) < max_results:
                 try:
-                    results = ddgs.text(query, max_results=max_results // len(queries) + 1)
-                    for r in results:
+                    ddgs = DDGS()
+                    ddg_res = ddgs.text(f"{brand_name} reviews complaints", max_results=max_results - len(all_results))
+                    for r in ddg_res:
                         all_results.append({
-                            "query": query,
+                            "query": f"{brand_name} web",
                             "title": r.get("title", ""),
                             "url": r.get("href", ""),
                             "snippet": r.get("body", ""),
+                            "platform": "Web"
                         })
-                except Exception as q_err:
-                    logger.warning(f"[BrandShield] Query failed ({query!r}): {q_err}")
-            logger.info(f"[BrandShield] Found {len(all_results)} raw mentions for '{brand_name}'")
+                except Exception as d_err:
+                    logger.debug(f"[BrandShield] DDGS search notice: {d_err}")
+
+            logger.info(f"[BrandShield] Retrieved {len(all_results)} multi-channel brand mentions")
         except Exception as e:
-            logger.error(f"[BrandShield] DuckDuckGo search error: {e}")
+            logger.error(f"[BrandShield] Brand mentions search error: {e}")
+
         return all_results[:max_results]
 
     # ─────────────────────────────────────────────────────────────────────────

@@ -1,28 +1,37 @@
 /**
  * gemini-client.js
- * Calls Gemini via the Netlify serverless proxy (/.netlify/functions/gemini).
- * NO API keys in this file — keys live in Netlify environment variables.
+ * Calls Gemini via the backend API (/api/gemini) or Netlify serverless proxy.
+ * NO API keys in client code — keys live securely in environment variables.
  */
 
 window.GeminiClient = (() => {
-  const PROXY_URL = '/.netlify/functions/gemini';
+  const ENDPOINTS = ['/api/gemini', '/.netlify/functions/gemini'];
 
   /**
-   * Call Gemini with a prompt via the secure proxy.
+   * Call Gemini with a prompt via backend proxy.
    * Returns the text string response.
    */
   async function ask(prompt) {
-    const res = await fetch(PROXY_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ prompt }),
-    });
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(`Gemini proxy error ${res.status}: ${err}`);
+    let lastError = null;
+
+    for (const ep of ENDPOINTS) {
+      try {
+        const res = await fetch(ep, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ prompt }),
+        });
+        if (res.ok) {
+          const data = await res.json();
+          return data.text || '';
+        }
+        lastError = new Error(`Proxy error ${res.status}: ${await res.text()}`);
+      } catch (err) {
+        lastError = err;
+      }
     }
-    const data = await res.json();
-    return data.text || '';
+
+    throw lastError || new Error('All Gemini proxy endpoints failed');
   }
 
   /**
@@ -47,3 +56,4 @@ window.GeminiClient = (() => {
 
   return { ask, askJSON };
 })();
+

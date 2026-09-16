@@ -255,15 +255,31 @@ async def api_info():
         "endpoints": {
             "claims": ["/api/claims/submit", "/api/claims/{claim_id}", "/api/claims"],
             "dashboard": ["/api/dashboard/claims", "/api/dashboard/debug"],
-            "agents": ["/api/trending/scan", "/api/scout/analyze", "/api/brandshield/scan", "/api/personal/scan"],
-            "war_room": ["/api/war-room/signals", "/api/feed/live", "/api/deploy-response"],
+            "agents": ["/api/trending/scan", "/api/scout/analyze", "/api/brandshield/scan", "/api/personal/scan"]
         }
     }
 
 
 # ============================================================================
-# CLAIMS MANAGEMENT
+# GEMINI PROXY ENDPOINTS (FOR FRONTEND CLIENTS)
 # ============================================================================
+
+class GeminiProxyRequest(BaseModel):
+    prompt: str
+
+
+@app.post("/api/gemini")
+@app.post("/.netlify/functions/gemini")
+async def gemini_proxy(request: GeminiProxyRequest):
+    """Secure backend proxy for Gemini AI calls with dynamic model rotation."""
+    try:
+        from backend.services.intelligence import call_gemini_text
+        text_resp = call_gemini_text(request.prompt)
+        return {"text": text_resp}
+    except Exception as e:
+        logger.error(f"[API] Gemini proxy failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Gemini generation failed: {str(e)}")
+
 
 @app.post("/api/claims/submit", response_model=ClaimSubmitResponse)
 @app.post("/api/ingest", response_model=ClaimSubmitResponse)

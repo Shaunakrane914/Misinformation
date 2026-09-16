@@ -131,20 +131,7 @@ class BrandShieldAgent:
         Falls back to a rule-based heuristic if Gemini is unavailable.
         """
         try:
-            import google.generativeai as genai
-
-            api_key = (
-                os.getenv("GEMINI_API_KEY")
-                or os.getenv("GEMINI_API_KEY_1")
-                or os.getenv("GEMINI_API_KEY_2")
-                or os.getenv("GEMINI_API_KEY_3")
-                or os.getenv("GEMINI_API_KEY_4")
-            )
-            if not api_key:
-                raise ValueError("No Gemini API key configured")
-
-            genai.configure(api_key=api_key)
-            model = genai.GenerativeModel("gemini-2.5-flash")
+            from backend.services.intelligence import call_gemini_text, clean_json_string
 
             mention_text = "\n".join(
                 f"- [{m.get('title', '')}] {m.get('snippet', '')}"
@@ -166,25 +153,18 @@ Each finding must be:
   "threat_type": "Fake Reviews|Counterfeit Listing|Reputation Attack|False Claim|Brand Impersonation|Genuine Issue",
   "is_threat": true|false,
   "severity": "low|medium|high|critical",
-  "fake_review_score": integer 0-100,
-  "stars": integer 1-5
+  "fake_review_score": 0-100,
+  "stars": 1-5
 }}
 
-Mix threats and genuine findings. Be specific and realistic for "{brand_name}". Today: {__import__('datetime').datetime.now().strftime('%B %d, %Y')}.
+Mix threats and genuine findings. Be specific and realistic for "{brand_name}".
 Return ONLY the JSON array, no other text."""
 
-            response = model.generate_content(prompt)
-            raw = response.text.strip()
-
-            # Strip markdown fences if present
-            if raw.startswith("```"):
-                raw = raw.split("```")[1]
-                if raw.startswith("json"):
-                    raw = raw[4:]
-                raw = raw.strip()
+            raw = call_gemini_text(prompt)
+            cleaned = clean_json_string(raw)
 
             import json
-            findings = json.loads(raw)
+            findings = json.loads(cleaned)
             if isinstance(findings, list):
                 logger.info(f"[BrandShield] Gemini returned {len(findings)} findings")
                 return findings

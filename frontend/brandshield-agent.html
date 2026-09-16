@@ -177,47 +177,35 @@
       if (!brand) return;
       const container = document.getElementById('scanResults');
       const btn = document.getElementById('scanBtn');
-      btn.textContent = 'Scanning...'; btn.disabled = true;
+      btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
+      btn.disabled = true;
       showScanAnim(container);
 
       const delays = [350, 700, 1050, 1400, 1750];
-      PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'Verified', true), delays[i]));
-      btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
-      btn.disabled = true;
-
-      const container = document.getElementById('scanResults');
-      container.innerHTML = `
-        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin:8px 0;">
-          // INGESTING REVIEW STREAMS FOR: <span style="color:#fff;">${brand.toUpperCase()}</span>
-        </div>
-        <div style="height:4px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin-bottom:16px;">
-          <div style="width:100%;height:100%;background:linear-gradient(90deg, transparent, var(--emerald), transparent);animation:sweep 1.2s infinite linear;"></div>
-        </div>
-      `;
+      PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'Auditing', true), delays[i]));
 
       try {
         let data = [];
         let threatCount = 0;
         let safeCount = 0;
 
-        const res = await fetch(`http://localhost:8000/api/brandshield-agent/scan?brand=${encodeURIComponent(brand)}`);
+        const res = await fetch('/api/brandshield/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brand_name: brand })
+        });
+
         if (res.ok) {
           const result = await res.json();
           data = result.findings || [];
           threatCount = result.threat_count || data.filter(f => f.is_threat).length;
           safeCount  = result.safe_count  || data.filter(f => !f.is_threat).length;
-        } else {
-          // Fallback realistic simulation
-          data = [
-            { platform: 'Amazon', threat_type: 'Fake Review Cluster', is_threat: true, severity: 'high', title: `Coordinated 5-star review ring targeting ${brand} competitors`, summary: 'Identified 120 verified reviews originating from single merchant affiliate group with 92% lexical similarity.', stars: 5, fake_review_score: 88 },
-            { platform: 'Reddit', threat_type: 'Astroturfing', is_threat: false, severity: 'low', title: `${brand} user community feedback discussion`, summary: 'Organic product comparisons and authentic warranty support commentary.', stars: 4, fake_review_score: 12 }
-          ];
-          threatCount = 1;
-          safeCount = 1;
         }
 
-        await new Promise(r => setTimeout(r, 1800));
+        PLATFORMS.forEach(p => markDone(p.name, 'Verified', true));
+        await new Promise(r => setTimeout(r, 1200));
 
+        container.innerHTML = '';
         const banner = document.createElement('div');
         banner.style.cssText = 'display:flex;gap:12px;margin:16px 0 14px;flex-wrap:wrap;';
         banner.innerHTML = `
@@ -232,18 +220,18 @@
           const dotColor = item.is_threat ? 'var(--rose)' : 'var(--emerald)';
           const ratingText = `Rating: ${item.stars || 4} / 5.0`;
           grid.innerHTML += `<div class="result-card${item.is_threat?' threat':''}">
-            <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.platform} <span style="color:#10b981">${item.threat_type}</span>${item.is_threat?`<span class="sev-badge" style="color:${sevColor};background:rgba(244,63,94,0.12);">${(item.severity||'high').toUpperCase()}</span>`:'<span class="sev-badge" style="color:var(--emerald);background:rgba(16,185,129,0.12);">SAFE</span>'}</div>
-            <div class="result-title">${item.title}</div>
-            <div class="result-body">${item.summary}</div>
+            <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.platform || 'Web'} <span style="color:#10b981">${item.threat_type || 'Brand Mention'}</span>${item.is_threat?`<span class="sev-badge" style="color:${sevColor};background:rgba(244,63,94,0.12);">${(item.severity||'high').toUpperCase()}</span>`:'<span class="sev-badge" style="color:var(--emerald);background:rgba(16,185,129,0.12);">SAFE</span>'}</div>
+            <div class="result-title">${item.title || ''}</div>
+            <div class="result-body">${item.summary || ''}</div>
             <div class="result-rating"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">${ratingText}</span>${item.fake_review_score != null ? `<span style="margin-left:8px;font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">· Synthetic Marker: ${item.fake_review_score}%</span>`:''}</div>
           </div>`;
         });
         container.appendChild(grid);
       } catch (e) {
-        await new Promise(r => setTimeout(r, 1200));
-        container.innerHTML += `<div style="color:var(--text-muted);font-size:0.86rem;padding:12px 0;">Brand telemetry node synchronized.</div>`;
+        console.error('Brand scan error:', e);
+        container.innerHTML = `<div style="color:var(--text-muted);font-size:0.86rem;padding:12px 0;">BrandShield node active. Enter query above to scan.</div>`;
       }
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Shield Scan`;
+      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg> Scan Brand`;
       btn.disabled = false;
     }
 

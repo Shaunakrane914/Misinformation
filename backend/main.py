@@ -1240,7 +1240,23 @@ async def lab_consensus(req: ConsensusRequest):
     })
 
 
+# ============================================================================
+# ROOT STATIC ASSET FALLBACK (CSS, JS, IMAGES, MEDIA)
+# ============================================================================
+
+@app.get("/{filename:path}")
+async def serve_static_root(filename: str):
+    """Serve any static asset located in frontend directory at root URL."""
+    if ".." in filename:
+        raise HTTPException(status_code=400, detail="Invalid path")
+    file_path = os.path.join("frontend", filename)
+    if os.path.isfile(file_path):
+        return FileResponse(file_path)
+    raise HTTPException(status_code=404, detail=f"File not found: {filename}")
+
+
 if __name__ == "__main__":
     import uvicorn
     logger.info("[FastAPI] Starting server on http://0.0.0.0:8000")
     uvicorn.run(app, host="0.0.0.0", port=8000)
+

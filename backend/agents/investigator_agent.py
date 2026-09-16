@@ -55,42 +55,46 @@ class InvestigatorAgent:
             )
 
         self._key_cycle = itertools.cycle(self.api_keys)
-        self.model_name = "gemini-2.5-flash"
+        self.available_models = ["gemini-3-flash-preview", "gemini-3.1-flash-lite-preview", "gemini-3.6-flash"]
+        self.model_name = self.available_models[0]
         print(f"[InvestigatorAgent] Loaded {len(self.api_keys)} Gemini key(s), round-robin active.")
-        print(f"[InvestigatorAgent] Using model: {self.model_name}")
+        print(f"[InvestigatorAgent] Using primary model: {self.model_name}")
 
     def _call_gemini(self, prompt: str) -> str:
         """
-        Call Gemini via HTTP, rotating keys and retrying on 429.
+        Call Gemini via HTTP, rotating models and keys with retry.
         """
         print("[InvestigatorAgent] Calling Gemini via HTTP API...")
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{self.model_name}:generateContent"
         headers = {"Content-Type": "application/json"}
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
 
         last_error = None
-        for attempt in range(len(self.api_keys) * 2):
-            api_key = next(self._key_cycle)
-            try:
-                resp = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=30)
-                if resp.status_code == 429:
-                    print(f"[InvestigatorAgent] 429 on key ...{api_key[-6:]}. Rotating key.")
-                    time.sleep(0.5)
-                    last_error = Exception(f"429 Too Many Requests on key ...{api_key[-6:]}")
-                    continue
-                resp.raise_for_status()
-                data = resp.json()
+        for model in self.available_models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+            for attempt in range(len(self.api_keys)):
+                api_key = next(self._key_cycle)
                 try:
-                    return data["candidates"][0]["content"]["parts"][0]["text"]
-                except Exception:
-                    return json.dumps(data)
-            except Exception as e:
-                if "429" not in str(e):
-                    raise
-                last_error = e
-                time.sleep(0.5)
+                    resp = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=25)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        try:
+                            return data["candidates"][0]["content"]["parts"][0]["text"]
+                        except Exception:
+                            return json.dumps(data)
+                    elif resp.status_code == 429:
+                        print(f"[InvestigatorAgent] 429 on model {model}, key ...{api_key[-6:]}. Rotating key.")
+                        time.sleep(0.4)
+                        last_error = Exception(f"429 on {model}")
+                        continue
+                    else:
+                        print(f"[InvestigatorAgent] Model {model} returned status {resp.status_code}: {resp.text[:100]}")
+                        last_error = Exception(f"{resp.status_code} on {model}")
+                        break
+                except Exception as e:
+                    last_error = e
+                    time.sleep(0.3)
 
-        raise last_error or RuntimeError("[InvestigatorAgent] All keys exhausted on 429s")
+        raise last_error or RuntimeError("[InvestigatorAgent] All Gemini models/keys exhausted")
 
 
     

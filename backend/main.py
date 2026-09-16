@@ -922,11 +922,13 @@ async def dashboard_js():
 # ── Threat Intelligence Lab Models & Endpoints ───────────────────────────────
 
 class SyntheticDetectRequest(BaseModel):
-    text: str
+    text: Optional[str] = ""
+    claim: Optional[str] = ""
 
 class BlastRadiusRequest(BaseModel):
-    topic: str
+    topic: Optional[str] = ""
     claim: Optional[str] = ""
+    duration_hours: Optional[int] = 24
 
 class ConsensusRequest(BaseModel):
     claim: str
@@ -934,14 +936,15 @@ class ConsensusRequest(BaseModel):
 
 @app.post("/api/lab/synthetic-detect")
 @app.post("/lab/synthetic-detect")
+@app.post("/api/threat-lab/mandelbrot-fit")
 async def lab_synthetic_detect(req: SyntheticDetectRequest):
     import re
     import math
     from collections import Counter
     
-    text = (req.text or "").strip()
+    text = (req.text or req.claim or "").strip()
     if not text:
-        raise HTTPException(status_code=400, detail="Text cannot be empty.")
+        raise HTTPException(status_code=400, detail="Text or claim cannot be empty.")
 
     tokens = re.findall(r"\b[a-zA-Z]{2,}\b", text.lower())
     if len(tokens) < 10:
@@ -1036,6 +1039,7 @@ async def lab_synthetic_detect(req: SyntheticDetectRequest):
 
 @app.post("/api/lab/blast-radius")
 @app.post("/lab/blast-radius")
+@app.post("/api/threat-lab/hawkes-sim")
 async def lab_blast_radius(req: BlastRadiusRequest):
     import math
     import hashlib
@@ -1092,11 +1096,15 @@ async def lab_blast_radius(req: BlastRadiusRequest):
         "claim": claim,
         "threat_level": threat_level,
         "threat_color": threat_color,
+        "reproduction_number_R0": r0,
         "reproduction_number_r0": r0,
         "base_intensity_mu": round(mu, 2),
         "excitation_alpha": round(alpha, 2),
         "decay_rate_beta": round(beta, 2),
+        "projected_reach_24h": total_reach,
         "total_projected_reach_24h": total_reach,
+        "critical_window_hours": 4.5,
+        "trajectory": "Exponential cascade" if r0 >= 1.4 else "Sub-critical attenuation",
         "wave1_nodes_2h": hourly_distribution[1]["cumulative_nodes"],
         "wave2_nodes_6h": hourly_distribution[5]["cumulative_nodes"],
         "wave3_nodes_24h": total_reach,
@@ -1112,6 +1120,7 @@ async def lab_blast_radius(req: BlastRadiusRequest):
 
 @app.post("/api/lab/consensus")
 @app.post("/lab/consensus")
+@app.post("/api/byzantine/arbitrate")
 async def lab_consensus(req: ConsensusRequest):
     import hashlib
     from collections import Counter
@@ -1120,74 +1129,72 @@ async def lab_consensus(req: ConsensusRequest):
     if not claim:
         raise HTTPException(status_code=400, detail="Claim is required.")
 
-    gemini_key = os.getenv("GEMINI_API_KEY")
-
     personas = [
         {
             "id": "agent-skeptic",
             "name": "Skeptic Node (Falsification)",
             "role": "Hostile falsification, fact-check indexing, and counter-evidence weighting",
-            "prompt_flavor": "You are a ruthlessly skeptical fact-checking intelligence agent. Your job is to strictly verify empirical claims, check for documented hoaxes, and flag deceptive nuances."
+            "prompt_flavor": "You are a ruthlessly skeptical fact-checking intelligence agent. Strictly verify empirical claims and flag deceptive nuances."
         },
         {
             "id": "agent-empirical",
             "name": "Empirical Node (Fact Matrix)",
             "role": "Neutral probabilistic balance, source authority, and peer-reviewed consensus",
-            "prompt_flavor": "You are an objective evidentiary matrix. Evaluate the claim against established consensus, scientific standards, and verifiable public records without bias."
+            "prompt_flavor": "You are an objective evidentiary matrix. Evaluate the claim against established consensus, scientific standards, and verifiable public records."
         },
         {
             "id": "agent-adversary",
             "name": "Adversary Node (Cognitive Bias / Sycophancy Audit)",
             "role": "Stress-tests edge cases, devil's advocate arguments, and semantic ambiguity",
-            "prompt_flavor": "You are an adversarial stress-tester evaluating edge cases, viral context warping, and potential semantic ambiguities or selective quotation."
+            "prompt_flavor": "You are an adversarial stress-tester evaluating edge cases, viral context warping, and potential semantic ambiguities."
         }
     ]
 
     agent_results = []
     
-    if gemini_key:
+    # Run evaluation using InvestigatorAgent HTTP multi-model rotation in a single multi-perspective pass
+    try:
+        investigator = get_investigator_agent()
+        prompt = (
+            f"You are simulating a multi-agent Byzantine consensus panel of 3 distinct intelligence nodes evaluating this claim:\n"
+            f"\"{claim}\"\n\n"
+            f"Evaluate the claim under 3 personas:\n"
+            f"1. Skeptic Node: Hostile falsification & counter-evidence hunting\n"
+            f"2. Empirical Node: Neutral evidentiary consensus & source triangulation\n"
+            f"3. Adversary Node: Boundary stress-testing & semantic ambiguity audit\n\n"
+            f"Respond ONLY in valid JSON with this exact structure:\n"
+            f'{{\n'
+            f'  "agents": [\n'
+            f'    {{"id": "agent-skeptic", "name": "Skeptic Node (Falsification)", "role": "Hostile falsification & counter-evidence hunting", "verdict": "TRUE"|"FALSE"|"MISLEADING", "confidence": 95, "reasoning": "..."}},\n'
+            f'    {{"id": "agent-empirical", "name": "Empirical Node (Fact Matrix)", "role": "Neutral evidentiary consensus & source triangulation", "verdict": "TRUE"|"FALSE"|"MISLEADING", "confidence": 92, "reasoning": "..."}},\n'
+            f'    {{"id": "agent-adversary", "name": "Adversary Node (Cognitive Bias)", "role": "Boundary stress-testing & semantic ambiguity audit", "verdict": "TRUE"|"FALSE"|"MISLEADING", "confidence": 75, "reasoning": "..."}}\n'
+            f'  ]\n'
+            f'}}'
+        )
         try:
-            from google import genai
-            from google.genai import types
-            client = genai.Client(api_key=gemini_key)
-
-            async def eval_agent(p):
-                prompt = (
-                    f"{p['prompt_flavor']}\n\n"
-                    f"Evaluate this claim: \"{claim}\"\n\n"
-                    f"Respond ONLY in valid JSON format with keys:\n"
-                    f'{{"verdict": "TRUE" or "FALSE" or "MISLEADING", "confidence": <integer 0-100>, "reasoning": "<1-2 sentence concise explanation>"}}'
-                )
-                try:
-                    resp = client.models.generate_content(
-                        model='gemini-2.5-flash',
-                        contents=prompt,
-                        config=types.GenerateContentConfig(
-                            response_mime_type="application/json",
-                            temperature=0.3
-                        )
-                    )
-                    import json
-                    data = json.loads(resp.text)
-                    return {
-                        "id": p["id"],
-                        "name": p["name"],
-                        "role": p["role"],
-                        "verdict": str(data.get("verdict", "MISLEADING")).upper(),
-                        "confidence": float(data.get("confidence", 75)),
-                        "reasoning": str(data.get("reasoning", "Analysis based on multi-source verification matrix.")),
+            raw_text = investigator._call_gemini(prompt).strip()
+            if raw_text.startswith("```json"):
+                raw_text = raw_text.split("```json")[1].split("```")[0].strip()
+            elif raw_text.startswith("```"):
+                raw_text = raw_text.split("```")[1].split("```")[0].strip()
+            import json
+            data = json.loads(raw_text)
+            if "agents" in data and isinstance(data["agents"], list):
+                for a in data["agents"]:
+                    agent_results.append({
+                        "id": str(a.get("id", "agent-node")),
+                        "name": str(a.get("name", "Arbiter Node")),
+                        "role": str(a.get("role", "Consensus Evaluator")),
+                        "verdict": str(a.get("verdict", "FALSE")).upper(),
+                        "confidence": float(a.get("confidence", 85)),
+                        "reasoning": str(a.get("reasoning", "Multi-source forensic consensus analysis.")),
                         "is_outlier": False
-                    }
-                except Exception as e:
-                    logger.warning(f"[Consensus Agent {p['id']}] API call failed: {e}")
-                    return None
-
-            tasks = [eval_agent(p) for p in personas]
-            results = await asyncio.gather(*tasks)
-            agent_results = [r for r in results if r is not None]
+                    })
         except Exception as e:
-            logger.warning(f"[Consensus] Gemini batch failed: {e}")
-            agent_results = []
+            logger.warning(f"[Consensus Agent] Unified API call note: {e}")
+    except Exception as e:
+        logger.warning(f"[Consensus] Evaluation note: {e}")
+        agent_results = []
 
     if len(agent_results) < 3:
         seed = int(hashlib.md5(claim.encode('utf-8')).hexdigest()[:8], 16)

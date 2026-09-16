@@ -9,11 +9,12 @@ import asyncio
 import json
 import logging
 import os
+import itertools
+import time
+import requests
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional, Tuple
 from dotenv import load_dotenv
-
-import google.generativeai as genai
 
 from backend.agents.scout_agent import ScoutAgent
 from backend.agents.trending_agent import TrendingAgent
@@ -24,9 +25,6 @@ load_dotenv()
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# Configure Gemini
-genai.configure(api_key=os.getenv("GEMINI_API_KEY"))
 
 
 class CoordinatorAgent:
@@ -42,14 +40,22 @@ class CoordinatorAgent:
     
     def __init__(self):
         """Initialize the Crisis Governor with all subsystems."""
-        logger.info("🏛️ Initializing Strategic Crisis Governor...")
+        logger.info("Initializing Strategic Crisis Governor...")
         
         # Initialize AI agents
         self.scout = ScoutAgent()
         self.trending = TrendingAgent()
         
-        # High-reasoning model for crisis response (fast, economical)
-        self.response_model = genai.GenerativeModel('gemini-2.0-flash-lite')
+        # Setup API keys and models
+        all_keys = []
+        for k, v in sorted(os.environ.items()):
+            if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_"):
+                cleaned = v.strip().strip('"').strip("'") if v else ""
+                if cleaned and cleaned not in all_keys:
+                    all_keys.append(cleaned)
+        self.api_keys = all_keys or [""]
+        self._key_cycle = itertools.cycle(self.api_keys)
+        self.available_models = ["gemini-3-flash-preview", "gemini-3.1-flash-lite-preview", "gemini-3.6-flash"]
         
         # Surveillance state
         self.surveillance_active = False
@@ -60,10 +66,34 @@ class CoordinatorAgent:
         self.verified_attacks = []
         self.response_history = []
         
-        logger.info("✅ Strategic Crisis Governor online")
-        logger.info(f"   Scout: Ready")
-        logger.info(f"   Trending: Ready")
-        logger.info(f"   Response AI: gemini-2.0-flash-lite")
+        logger.info("Strategic Crisis Governor online")
+        logger.info("   Scout: Ready")
+        logger.info("   Trending: Ready")
+
+    def _call_gemini(self, prompt: str) -> str:
+        headers = {"Content-Type": "application/json"}
+        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+        last_error = None
+        for model in self.available_models:
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+            for attempt in range(len(self.api_keys)):
+                api_key = next(self._key_cycle)
+                try:
+                    resp = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=25)
+                    if resp.status_code == 200:
+                        data = resp.json()
+                        return data["candidates"][0]["content"]["parts"][0]["text"]
+                    elif resp.status_code == 429:
+                        time.sleep(0.4)
+                        continue
+                    else:
+                        break
+                except Exception as e:
+                    last_error = e
+                    time.sleep(0.3)
+        if last_error:
+            raise last_error
+        raise RuntimeError("All Gemini models exhausted")
 
     def monitor_effectiveness(self):
         logger.info("[Coordinator] Running Impact Analysis...")
@@ -288,9 +318,8 @@ Return ONLY valid JSON in this exact format:
 }}"""
 
         try:
-            logger.info("🧠 Consulting Gemini AI for crisis response...")
-            response = self.response_model.generate_content(prompt)
-            result_text = response.text.strip()
+            logger.info("Consulting Gemini AI for crisis response...")
+            result_text = self._call_gemini(prompt).strip()
             
             # Clean markdown formatting
             if result_text.startswith('```json'):

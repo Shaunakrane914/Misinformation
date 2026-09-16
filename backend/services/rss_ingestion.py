@@ -98,17 +98,12 @@ async def _submit_claim(client: httpx.AsyncClient, title: str, link: str) -> boo
 
 
 async def _run_worker(claim_id: str):
-    """Run the synchronous claim worker in a thread pool so it doesn't block the event loop."""
-    loop = asyncio.get_event_loop()
+    """Run the async claim worker."""
     try:
-        await loop.run_in_executor(None, _sync_process, claim_id)
+        from backend.workers.claim_worker import process_claim
+        await process_claim(claim_id)
     except Exception as e:
         logger.error(f"[RSS] Worker error for {claim_id}: {e}")
-
-
-def _sync_process(claim_id: str):
-    from backend.workers.claim_worker import process_claim
-    process_claim(claim_id)
 
 
 async def rss_ingestion_loop():

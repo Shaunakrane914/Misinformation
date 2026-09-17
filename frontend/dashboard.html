@@ -203,38 +203,37 @@
       text-transform: uppercase;
       margin-bottom: 12px;
     }
-    .db-stat-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .db-stat {
-      background: var(--surface-card);
-      border: 1px solid var(--border);
+    /* Telemetry Strip for sidebar stats */
+    .db-tel-strip {
+      background: rgba(7,9,14,0.9);
+      border: 1px solid rgba(255,255,255,0.07);
       border-radius: 14px;
-      padding: 16px 12px;
-      text-align: center;
-      transition: border-color 0.2s;
+      overflow: hidden;
     }
-    .db-stat:hover {
-      border-color: var(--border-hover);
+    .db-tel-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 11px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
     }
-    .db-stat-num {
+    .db-tel-row:last-child { border-bottom: none; }
+    .db-tel-dot {
+      width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0;
+    }
+    .db-tel-label {
       font-family: var(--font-mono);
-      font-size: 1.6rem;
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      margin-bottom: 3px;
-    }
-    .db-stat-lbl {
-      font-size: 0.72rem;
-      font-weight: 600;
+      font-size: 0.7rem;
       color: var(--text-dim);
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex: 1;
     }
-    .db-stat.st-true  .db-stat-num { color: var(--emerald); }
-    .db-stat.st-false .db-stat-num { color: var(--rose); }
-    .db-stat.st-mis   .db-stat-num { color: var(--amber); }
-    .db-stat.st-unv   .db-stat-num { color: var(--text-muted); }
+    .db-tel-count {
+      font-family: var(--font-mono);
+      font-size: 1.0rem;
+      font-weight: 700;
+    }
 
     .db-chart-card {
       background: var(--surface-card);
@@ -320,33 +319,37 @@
       <aside class="db-sidebar">
         <div>
           <div class="db-sidebar-title">// Verdict Distribution</div>
-          <div class="db-stat-grid">
-            <div class="db-stat st-true">
-              <div class="db-stat-num" id="trueCount">0</div>
-              <div class="db-stat-lbl">True</div>
+          <div class="db-tel-strip">
+            <div class="db-tel-row">
+              <div class="db-tel-dot" style="background:var(--emerald);box-shadow:0 0 6px var(--emerald);"></div>
+              <span class="db-tel-label">Verified TRUE</span>
+              <span class="db-tel-count" style="color:var(--emerald);" id="trueCount">0</span>
             </div>
-            <div class="db-stat st-false">
-              <div class="db-stat-num" id="falseCount">0</div>
-              <div class="db-stat-lbl">False</div>
+            <div class="db-tel-row">
+              <div class="db-tel-dot" style="background:var(--rose);box-shadow:0 0 6px var(--rose);"></div>
+              <span class="db-tel-label">Confirmed FALSE</span>
+              <span class="db-tel-count" style="color:var(--rose);" id="falseCount">0</span>
             </div>
-            <div class="db-stat st-mis">
-              <div class="db-stat-num" id="misleadingCount">0</div>
-              <div class="db-stat-lbl">Misleading</div>
+            <div class="db-tel-row">
+              <div class="db-tel-dot" style="background:var(--amber);box-shadow:0 0 6px var(--amber);"></div>
+              <span class="db-tel-label">Misleading / Partial</span>
+              <span class="db-tel-count" style="color:var(--amber);" id="misleadingCount">0</span>
             </div>
-            <div class="db-stat st-unv">
-              <div class="db-stat-num" id="unverifiedCount">0</div>
-              <div class="db-stat-lbl">Unverified</div>
+            <div class="db-tel-row">
+              <div class="db-tel-dot" style="background:rgba(255,255,255,0.2);"></div>
+              <span class="db-tel-label">Unverified</span>
+              <span class="db-tel-count" style="color:var(--text-muted);" id="unverifiedCount">0</span>
             </div>
           </div>
         </div>
 
         <div class="db-chart-card">
-          <h3>Verdict Proportions</h3>
+          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">// Verdict Distribution</h3>
           <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
         </div>
 
         <div class="db-chart-card">
-          <h3>Claims Volume</h3>
+          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">// Claims Volume Histogram</h3>
           <div class="chart-wrap-bar"><canvas id="barChart"></canvas></div>
         </div>
       </aside>

@@ -490,12 +490,23 @@
           <div id="modalVerdictBadgeWrap">
             <span id="modalVerdictBadge" class="ae-badge ae-badge-blue">PROCESSING INFERENCE...</span>
           </div>
-          <div id="modalConfidenceWrap" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">
-            ANALYZING
+          <div id="modalConfidenceWrap" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--accent);">
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;" class="pulse-dot-cyan"></span><span id="heroModalTimer">0.0s elapsed</span>
           </div>
         </div>
 
-        <div>
+        <div class="ae-progress-track" style="margin:4px 0 8px;">
+          <div class="ae-progress-fill" id="heroModalProgressFill" style="width:20%;background:linear-gradient(90deg, #00e5ff, #6366f1, #10b981);"></div>
+        </div>
+
+        <!-- Skeleton Preview during loading -->
+        <div id="heroModalSkeleton" style="display:flex;flex-direction:column;gap:8px;margin:4px 0 8px;">
+          <div class="ae-skeleton-bar" style="height:16px;width:75%;"></div>
+          <div class="ae-skeleton-bar" style="height:12px;width:90%;"></div>
+          <div class="ae-skeleton-bar" style="height:12px;width:60%;"></div>
+        </div>
+
+        <div id="heroModalResultBody" style="display:none;">
           <div id="modalVerdictTitle" style="font-size:1.02rem;font-weight:700;color:#fff;line-height:1.4;">
             Evaluating claim across autonomous agent network...
           </div>
@@ -796,11 +807,18 @@
       const reasoning = document.getElementById('modalVerdictReasoning');
       const prov = document.getElementById('modalEvidenceProvenance');
       const timeEl = document.getElementById('modalTimeElapsed');
+      const skel = document.getElementById('heroModalSkeleton');
+      const resBody = document.getElementById('heroModalResultBody');
+      const progFill = document.getElementById('heroModalProgressFill');
+      const timerEl = document.getElementById('heroModalTimer');
 
       banner.style.borderColor = 'var(--border)';
       banner.style.background = 'rgba(14,20,32,0.85)';
       badgeWrap.innerHTML = `<span class="ae-badge ae-badge-blue">PROCESSING INFERENCE...</span>`;
-      confWrap.innerText = 'DISPATCHED';
+      if (confWrap) confWrap.innerHTML = `<span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:6px;" class="pulse-dot-cyan"></span><span id="heroModalTimer">0.0s elapsed</span>`;
+      if (skel) skel.style.display = 'flex';
+      if (resBody) resBody.style.display = 'none';
+      if (progFill) progFill.style.width = '20%';
       title.innerText = 'Interception swarm dispatched. Gathering live evidence...';
       reasoning.innerText = 'Multi-agent network is searching verified repositories, calculating power-law decay, and cross-auditing claims.';
       prov.style.display = 'none';
@@ -810,8 +828,16 @@
       modal.classList.add('open');
       if (typeof triggerWaveShockwave === 'function') triggerWaveShockwave();
 
-      const startTime = Date.now();
+      const startTime = performance.now();
       if (activeHeroPoll) clearInterval(activeHeroPoll);
+
+      const liveTimer = setInterval(() => {
+        const tEl = document.getElementById('heroModalTimer');
+        if (tEl) {
+          const elp = ((performance.now() - startTime) / 1000).toFixed(1);
+          tEl.innerText = `${elp}s elapsed`;
+        }
+      }, 100);
 
       try {
         let submitData = null;
@@ -831,6 +857,8 @@
           } catch (_) {}
         }
 
+        if (progFill) progFill.style.width = '45%';
+
         if (!submitData || !submitData.claim_id) throw new Error('Submission endpoints unavailable');
         const claimId = submitData.claim_id;
 
@@ -846,7 +874,8 @@
               const detailRes = await fetch(ep, { signal: AbortSignal.timeout(6000) });
               if (detailRes.ok) {
                 const fullClaim = await detailRes.json();
-                renderHeroModalResult(fullClaim, (Date.now() - startTime) / 1000);
+                clearInterval(liveTimer);
+                renderHeroModalResult(fullClaim, (performance.now() - startTime) / 1000);
                 return;
               }
             } catch (_) {}
@@ -856,12 +885,21 @@
         let attempts = 0;
         activeHeroPoll = setInterval(async () => {
           attempts++;
-          const elapsed = ((Date.now() - startTime) / 1000).toFixed(1);
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
           timeEl.innerText = `ELAPSED: ${elapsed}s • CLUSTER ID: ${claimId.slice(0, 8)}`;
 
-          if (attempts === 1) m1.innerText = 'R² = 0.984 (Spectral)';
-          if (attempts === 2) m2.innerText = 'R₀ = 1.62 (Hawkes)';
-          if (attempts === 3) m3.innerText = 'Cross-Audited (Swarm)';
+          if (attempts === 1) {
+            m1.innerText = 'R² = 0.984 (Spectral)';
+            if (progFill) progFill.style.width = '60%';
+          }
+          if (attempts === 2) {
+            m2.innerText = 'R₀ = 1.62 (Hawkes)';
+            if (progFill) progFill.style.width = '75%';
+          }
+          if (attempts === 3) {
+            m3.innerText = 'Cross-Audited (Swarm)';
+            if (progFill) progFill.style.width = '90%';
+          }
 
           for (const ep of pollEndpoints) {
             try {
@@ -870,7 +908,8 @@
                 const claim = await checkRes.json();
                 if (claim.status === 'completed' || claim.status === 'failed') {
                   clearInterval(activeHeroPoll);
-                  renderHeroModalResult(claim, (Date.now() - startTime) / 1000);
+                  clearInterval(liveTimer);
+                  renderHeroModalResult(claim, (performance.now() - startTime) / 1000);
                   return;
                 }
               }
@@ -881,13 +920,20 @@
 
           if (attempts >= 25) {
             clearInterval(activeHeroPoll);
+            clearInterval(liveTimer);
+            if (progFill) progFill.style.width = '100%';
+            if (skel) skel.style.display = 'none';
+            if (resBody) resBody.style.display = 'block';
             title.innerText = 'Arbitration In Progress';
             reasoning.innerText = 'Verification pipeline is processing high-volume evidence. Click Full Threat Dossier to view results as they stream.';
           }
         }, 1000);
 
       } catch (e) {
+        clearInterval(liveTimer);
         console.error('Submit claim error:', e);
+        if (skel) skel.style.display = 'none';
+        if (resBody) resBody.style.display = 'block';
         title.innerText = 'Connection Error';
         reasoning.innerText = 'Unable to reach backend intelligence node. Please verify server status or try again.';
       }
@@ -901,6 +947,13 @@
       const reasoning = document.getElementById('modalVerdictReasoning');
       const prov = document.getElementById('modalEvidenceProvenance');
       const timeEl = document.getElementById('modalTimeElapsed');
+      const skel = document.getElementById('heroModalSkeleton');
+      const resBody = document.getElementById('heroModalResultBody');
+      const progFill = document.getElementById('heroModalProgressFill');
+
+      if (progFill) progFill.style.width = '100%';
+      if (skel) skel.style.display = 'none';
+      if (resBody) resBody.style.display = 'block';
 
       const m1 = document.getElementById('mStage1Val');
       const m2 = document.getElementById('mStage2Val');

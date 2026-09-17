@@ -622,6 +622,89 @@ async def agent_reach_read(request: AgentReachReadRequest):
 
 
 # ============================================================================
+# STOCK DATA & TELEMETRY
+# ============================================================================
+
+STOCK_NAME_MAP = {
+    'NVIDIA': 'NVDA',
+    'APPLE': 'AAPL',
+    'TESLA': 'TSLA',
+    'MICROSOFT': 'MSFT',
+    'GOOGLE': 'GOOGL',
+    'ALPHABET': 'GOOGL',
+    'AMAZON': 'AMZN',
+    'META': 'META',
+    'FACEBOOK': 'META',
+    'NETFLIX': 'NFLX',
+    'TATA MOTORS': 'TATAMOTORS.NS',
+    'TATAMOTORS': 'TATAMOTORS.NS',
+    'RELIANCE': 'RELIANCE.NS',
+    'INFOSYS': 'INFY.NS',
+    'TCS': 'TCS.NS',
+    'HDFC': 'HDFCBANK.NS',
+    'HDFCBANK': 'HDFCBANK.NS',
+    'WIPRO': 'WIPRO.NS',
+    'ICICI': 'ICICIBANK.NS',
+    'SBI': 'SBIN.NS',
+    'ADANI': 'ADANIENT.NS',
+}
+
+@app.get("/api/stock")
+@app.get("/.netlify/functions/stock")
+async def get_stock_quote(ticker: str = "NVDA"):
+    """Fetch live stock price and volatility metrics server-side without client CORS issues."""
+    clean_sym = ticker.strip().upper()
+    sym = STOCK_NAME_MAP.get(clean_sym, clean_sym)
+    try:
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d&range=5d"
+        headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"}
+        r = requests.get(url, headers=headers, timeout=8)
+        if r.status_code == 200:
+            data = r.json()
+            result = data.get("chart", {}).get("result", [])
+            if result:
+                meta = result[0].get("meta", {})
+                quote = result[0].get("indicators", {}).get("quote", [{}])[0]
+                closes = [p for p in quote.get("close", []) if p is not None]
+                curr = meta.get("regularMarketPrice") or (closes[-1] if closes else 0.0)
+                prev = meta.get("chartPreviousClose") or (closes[-2] if len(closes) >= 2 else curr)
+                drop = (((curr - prev) / prev) * 100) if prev and prev > 0 else 0.0
+                z_score = 0.0
+                if len(closes) >= 3:
+                    avg = sum(closes) / len(closes)
+                    variance = sum((x - avg) ** 2 for x in closes) / len(closes)
+                    std_dev = variance ** 0.5
+                    if std_dev > 0:
+                        z_score = (curr - avg) / std_dev
+                is_crashing = (drop <= -3.0) or (z_score <= -2.0)
+                return {
+                    "ticker": meta.get("symbol", sym),
+                    "name": meta.get("longName") or meta.get("shortName") or sym,
+                    "current_price": round(float(curr), 2),
+                    "prev_close": round(float(prev), 2),
+                    "drop_percent": round(float(drop), 2),
+                    "z_score": round(float(z_score), 2),
+                    "currency": meta.get("currency") or ("INR" if sym.endswith(".NS") or sym.endswith(".BO") else "USD"),
+                    "is_crashing": is_crashing
+                }
+    except Exception as e:
+        logger.warning(f"[Stock] Quote fetch failed for {sym}: {e}")
+
+    is_inr = sym.endswith(".NS") or sym.endswith(".BO")
+    return {
+        "ticker": sym,
+        "name": sym,
+        "current_price": 0.0,
+        "prev_close": 0.0,
+        "drop_percent": 0.0,
+        "z_score": 0.0,
+        "currency": "INR" if is_inr else "USD",
+        "is_crashing": False,
+        "status": "Telemetry Standby"
+    }
+
+
+# ============================================================================
 # SCOUT AGENT
 # ============================================================================
 

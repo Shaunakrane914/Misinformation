@@ -5,7 +5,12 @@
  */
 
 window.GeminiClient = (() => {
-  const ENDPOINTS = ['/api/gemini', '/.netlify/functions/gemini'];
+  const ENDPOINTS = [
+    '/api/gemini',
+    '/.netlify/functions/gemini',
+    'https://misinformation-1ouh.onrender.com/api/gemini',
+    'https://misinformation-1ouh.onrender.com/.netlify/functions/gemini'
+  ];
 
   /**
    * Call Gemini with a prompt via backend proxy.

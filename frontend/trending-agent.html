@@ -217,23 +217,29 @@
       const delays = [300, 600, 900, 1200, 1500];
       PLATFORMS.forEach((p, i) => setTimeout(() => markPlatformDone(p.name, 'Audited'), delays[i]));
 
-      try {
-        const resp = await fetch('/api/trending/scan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ asset_name: currentAsset })
-        });
-        if (resp.ok) {
-          const result = await resp.json();
-          const threats = result.threats || [];
-          PLATFORMS.forEach(p => markPlatformDone(p.name, 'Verified'));
-          await new Promise(r => setTimeout(r, 600));
-          renderFeed(threats, true);
-          updateChart(currentAsset);
-          return;
-        }
-      } catch (e) {
-        console.warn('Backend scan fallback:', e);
+      let scanResult = null;
+      const endpoints = ['/api/trending/scan', 'https://misinformation-1ouh.onrender.com/api/trending/scan'];
+      for (const ep of endpoints) {
+        try {
+          const resp = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ asset_name: currentAsset }),
+            signal: AbortSignal.timeout(8000)
+          });
+          if (resp.ok) {
+            scanResult = await resp.json();
+            break;
+          }
+        } catch (_) {}
+      }
+
+      if (scanResult && scanResult.threats && scanResult.threats.length > 0) {
+        PLATFORMS.forEach(p => markPlatformDone(p.name, 'Verified'));
+        await new Promise(r => setTimeout(r, 600));
+        renderFeed(scanResult.threats, true);
+        updateChart(currentAsset);
+        return;
       }
 
       try {

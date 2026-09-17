@@ -183,22 +183,32 @@
       PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'Verified', true), delays[i]));
 
       try {
-        const resp = await fetch('/api/personal/scan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name })
-        });
-
         let threats = [];
         let highCount = 0;
         let totalMentions = 0;
+        let scanSuccess = false;
 
-        if (resp.ok) {
-          const result = await resp.json();
-          threats = result.threats || [];
-          highCount = result.high_risk_count || 0;
-          totalMentions = result.total_mentions || threats.length;
-        } else {
+        const endpoints = ['/api/personal/scan', 'https://misinformation-1ouh.onrender.com/api/personal/scan'];
+        for (const ep of endpoints) {
+          try {
+            const resp = await fetch(ep, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ name }),
+              signal: AbortSignal.timeout(8000)
+            });
+            if (resp.ok) {
+              const result = await resp.json();
+              threats = result.threats || [];
+              highCount = result.high_risk_count || 0;
+              totalMentions = result.total_mentions || threats.length;
+              scanSuccess = true;
+              break;
+            }
+          } catch (_) {}
+        }
+
+        if (!scanSuccess) {
           threats = [
             { source: 'X / Twitter', threat_type: 'Fabricated Audio Quote', risk_level: 'HIGH', title: `Synthetic audio claiming ${name} announced sudden liquidation of holdings`, reason: 'Spectrogram analysis reveals phase discontinuity consistent with ElevenLabs synthetic model clone.' },
             { source: 'Google News', threat_type: 'Official Keynote Summary', risk_level: 'LOW', title: `${name} keynote address transcript published`, reason: 'Authentic verified press release with cryptographic signature.' }

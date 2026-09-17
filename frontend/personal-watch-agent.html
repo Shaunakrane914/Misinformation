@@ -153,22 +153,83 @@
       { name: 'Google News',   color: '#4285f4' },
     ];
 
-    function showScanAnim(container) {
+    let pwTimerInterval = null;
+
+    function showScanAnim(container, vipName) {
       container.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.className = 'platforms-wrap';
-      PLATFORMS.forEach(p => {
-        const row = document.createElement('div');
-        row.className = 'plat-row';
-        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="pw_${p.name.replace(/[^a-z]/gi,'')}" class="plat-status">Polling node...</span>`;
-        wrap.appendChild(row);
-      });
-      container.appendChild(wrap);
+      if (pwTimerInterval) clearInterval(pwTimerInterval);
+
+      const preview = document.createElement('div');
+      preview.className = 'ae-loading-preview';
+      preview.innerHTML = `
+        <div class="ae-loading-top">
+          <div class="ae-loading-title-wrap">
+            <div class="ae-radar-spinner"></div>
+            <div class="ae-loading-title">Auditing Reputation &amp; Deepfake Vectors for <span style="color:#06b6d4;">${vipName}</span></div>
+          </div>
+          <div class="ae-loading-timer-badge" id="pwElapsedBadge">
+            <span style="width:6px;height:6px;border-radius:50%;background:#06b6d4;box-shadow:0 0 6px #06b6d4;"></span>
+            <span>0.0s elapsed</span>
+          </div>
+        </div>
+        <div class="ae-progress-track">
+          <div class="ae-progress-fill" id="pwProgressFill" style="width: 20%; background: linear-gradient(90deg, #06b6d4, #38bdf8, #818cf8);"></div>
+        </div>
+        <div class="ae-loading-steps-grid">
+          ${PLATFORMS.map(p => `
+            <div class="ae-loading-step-item" id="pw_step_${p.name.replace(/[^a-z]/gi,'')}">
+              <span class="ae-step-dot" style="background:${p.color};"></span>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
+                <span style="font-size:0.72rem;color:var(--text-dim);" id="pw_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting stream...</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="ae-skeleton-grid">
+          <div class="ae-skeleton-card">
+            <div style="display:flex;justify-content:space-between;">
+              <div class="ae-skeleton-bar" style="height:14px;width:30%;"></div>
+              <div class="ae-skeleton-bar" style="height:14px;width:15%;"></div>
+            </div>
+            <div class="ae-skeleton-bar" style="height:18px;width:85%;"></div>
+            <div class="ae-skeleton-bar" style="height:12px;width:70%;"></div>
+          </div>
+          <div class="ae-skeleton-card">
+            <div style="display:flex;justify-content:space-between;">
+              <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
+              <div class="ae-skeleton-bar" style="height:14px;width:15%;"></div>
+            </div>
+            <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
+            <div class="ae-skeleton-bar" style="height:12px;width:65%;"></div>
+          </div>
+        </div>
+      `;
+      container.appendChild(preview);
+
+      const startTime = performance.now();
+      pwTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('pwElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:#06b6d4;box-shadow:0 0 6px #06b6d4;"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
+    }
+
+    function setPwStepProgress(name, statusText, isDone = false) {
+      const stepEl = document.getElementById('pw_step_' + name.replace(/[^a-z]/gi,''));
+      const subEl = document.getElementById('pw_sub_' + name.replace(/[^a-z]/gi,''));
+      if (stepEl && subEl) {
+        subEl.textContent = statusText;
+        if (isDone) {
+          stepEl.className = 'ae-loading-step-item done';
+        } else {
+          stepEl.className = 'ae-loading-step-item active';
+        }
+      }
     }
 
     function markDone(name, msg, ok = true) {
-      const el = document.getElementById('pw_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:${ok?'var(--emerald)':'var(--rose)'};font-weight:700;">${msg}</span>`;
+      setPwStepProgress(name, msg, true);
     }
 
     async function scanPerson() {
@@ -176,11 +237,24 @@
       if (!name) return;
       const container = document.getElementById('scanResults');
       const btn = document.getElementById('scanBtn');
-      btn.textContent = 'Scanning...'; btn.disabled = true;
-      showScanAnim(container);
+      btn.innerHTML = `<span class="pulse-dot"></span> Auditing ${name}...`;
+      btn.disabled = true;
+      showScanAnim(container, name);
 
-      const delays = [350, 700, 1050, 1400, 1750];
-      PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'Verified', true), delays[i]));
+      const progressFill = document.getElementById('pwProgressFill');
+      const stepDelays = [
+        { name: 'X / Twitter', msg: 'Auditing mentions...', pct: 25, delay: 200 },
+        { name: 'Google News', msg: 'Checking news wire...', pct: 50, delay: 500 },
+        { name: 'Reddit', msg: 'Scanning discussion forums...', pct: 70, delay: 800 },
+        { name: 'LinkedIn', msg: 'Verifying official handles...', pct: 85, delay: 1100 },
+        { name: 'YouTube', msg: 'Auditing audio/video nodes...', pct: 95, delay: 1400 }
+      ];
+      stepDelays.forEach(s => {
+        setTimeout(() => {
+          setPwStepProgress(s.name, s.msg, false);
+          if (progressFill) progressFill.style.width = `${s.pct}%`;
+        }, s.delay);
+      });
 
       try {
         let threats = [];
@@ -195,7 +269,7 @@
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ name }),
-              signal: AbortSignal.timeout(8000)
+              signal: AbortSignal.timeout(9000)
             });
             if (resp.ok) {
               const result = await resp.json();
@@ -217,7 +291,11 @@
           totalMentions = 2;
         }
 
-        await new Promise(r => setTimeout(r, 1800));
+        if (progressFill) progressFill.style.width = '100%';
+        PLATFORMS.forEach(p => markDone(p.name, 'Audited', true));
+        await new Promise(r => setTimeout(r, 450));
+        if (pwTimerInterval) clearInterval(pwTimerInterval);
+        container.innerHTML = '';
 
         const banner = document.createElement('div');
         banner.style.cssText = 'display:flex;gap:12px;margin:16px 0 14px;flex-wrap:wrap;';

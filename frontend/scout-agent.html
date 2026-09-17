@@ -281,22 +281,77 @@
       return null;
     }
 
-    function showScanAnim(container) {
+    let scoutTimerInterval = null;
+
+    function showScanAnim(container, ticker) {
       container.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;margin-top:14px;';
-      STOCK_PLATFORMS.forEach(p => {
-        const row = document.createElement('div');
-        row.className = 'scan-row';
-        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;font-size:0.85rem;">${p.name}</span><span id="st_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--text-dim);margin-left:auto;font-family:var(--font-mono);font-size:0.75rem;">Scanning live node...</span>`;
-        wrap.appendChild(row);
-      });
-      container.appendChild(wrap);
+      if (scoutTimerInterval) clearInterval(scoutTimerInterval);
+
+      const preview = document.createElement('div');
+      preview.className = 'ae-loading-preview';
+      preview.innerHTML = `
+        <div class="ae-loading-top">
+          <div class="ae-loading-title-wrap">
+            <div class="ae-radar-spinner"></div>
+            <div class="ae-loading-title">Analyzing Market Telemetry &amp; Anomaly Matrix for <span style="color:#a78bfa;">${ticker}</span></div>
+          </div>
+          <div class="ae-loading-timer-badge" id="scoutElapsedBadge">
+            <span style="width:6px;height:6px;border-radius:50%;background:#a78bfa;box-shadow:0 0 6px #a78bfa;"></span>
+            <span>0.0s elapsed</span>
+          </div>
+        </div>
+        <div class="ae-progress-track">
+          <div class="ae-progress-fill" id="scoutProgressFill" style="width: 20%; background: linear-gradient(90deg, #a78bfa, #38bdf8, #00e5ff);"></div>
+        </div>
+        <div class="ae-loading-steps-grid">
+          ${STOCK_PLATFORMS.map(p => `
+            <div class="ae-loading-step-item" id="st_${p.name.replace(/[^a-z]/gi,'')}">
+              <span class="ae-step-dot" style="background:${p.color};"></span>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
+                <span style="font-size:0.72rem;color:var(--text-dim);" id="st_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting stream...</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div class="ae-skeleton-card" style="margin-bottom:12px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <div class="ae-skeleton-bar" style="height:22px;width:30%;"></div>
+            <div class="ae-skeleton-bar" style="height:24px;width:20%;"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
+            <div class="ae-skeleton-bar" style="height:14px;"></div>
+            <div class="ae-skeleton-bar" style="height:14px;"></div>
+            <div class="ae-skeleton-bar" style="height:14px;"></div>
+            <div class="ae-skeleton-bar" style="height:14px;"></div>
+          </div>
+        </div>
+      `;
+      container.appendChild(preview);
+
+      const startTime = performance.now();
+      scoutTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('scoutElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:#a78bfa;box-shadow:0 0 6px #a78bfa;"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
+    }
+
+    function setScoutStepProgress(name, statusText, isDone = false) {
+      const stepEl = document.getElementById('st_' + name.replace(/[^a-z]/gi,''));
+      const subEl = document.getElementById('st_sub_' + name.replace(/[^a-z]/gi,''));
+      if (stepEl && subEl) {
+        subEl.textContent = statusText;
+        if (isDone) {
+          stepEl.className = 'ae-loading-step-item done';
+        } else {
+          stepEl.className = 'ae-loading-step-item active';
+        }
+      }
     }
 
     function markDone(name, msg) {
-      const el = document.getElementById('st_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:var(--emerald);font-weight:700;">OK — ${msg}</span>`;
+      setScoutStepProgress(name, msg, true);
     }
 
     async function analyzeStock() {
@@ -307,18 +362,29 @@
       const newsBox = document.getElementById('newsSection');
       const btn = document.getElementById('analyzeBtn');
 
-      btn.textContent = 'Analyzing...'; btn.disabled = true;
+      btn.innerHTML = `<span class="pulse-dot"></span> Analyzing ${ticker}...`; btn.disabled = true;
       resultBox.innerHTML = ''; newsBox.innerHTML = '';
-      showScanAnim(resultBox);
+      showScanAnim(resultBox, ticker);
 
-      const delays = [350, 650, 950, 1200];
-      STOCK_PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'Verified'), delays[i]));
+      const progressFill = document.getElementById('scoutProgressFill');
+      const stepDelays = [
+        { name: 'YahooFinance', msg: 'Fetching market chart...', pct: 35, delay: 200 },
+        { name: 'EconomicTimes', msg: 'Querying news wire...', pct: 55, delay: 450 },
+        { name: 'Moneycontrol', msg: 'Parsing order liquidity...', pct: 75, delay: 700 },
+        { name: 'Bloomberg', msg: 'Running Z-Score engine...', pct: 90, delay: 950 }
+      ];
+      stepDelays.forEach(s => {
+        setTimeout(() => {
+          setScoutStepProgress(s.name, s.msg, false);
+          if (progressFill) progressFill.style.width = `${s.pct}%`;
+        }, s.delay);
+      });
 
       let stockData = await fetchStockTelemetry(ticker);
       if (stockData && stockData.current_price > 0) {
         markDone('YahooFinance', (stockData.currency === 'INR' ? '₹' : '$') + stockData.current_price);
       } else {
-        markDone('YahooFinance', 'Active');
+        markDone('YahooFinance', 'Active Stream');
       }
 
       // Try backend news endpoints
@@ -333,7 +399,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ticker }),
-            signal: AbortSignal.timeout(8000)
+            signal: AbortSignal.timeout(9000)
           });
           if (resp.ok) {
             const bData = await resp.json();
@@ -368,7 +434,9 @@ If crashing (${stockData?.is_crashing ? 'YES' : 'NO'}), include at least 2 negat
             ];
           }
         }
-        await new Promise(r => setTimeout(r, 600));
+        if (progressFill) progressFill.style.width = '100%';
+        await new Promise(r => setTimeout(r, 400));
+        if (scoutTimerInterval) clearInterval(scoutTimerInterval);
 
         if (stockData && stockData.current_price > 0) {
           const dc = parseFloat(stockData.drop_percent) < -2 ? 'var(--rose)' : parseFloat(stockData.drop_percent) > 1 ? 'var(--emerald)' : '#fbbf24';

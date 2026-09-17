@@ -170,25 +170,87 @@
       { name: 'YouTube',      color: '#ff0000' },
     ];
 
-    function showScanAnimation(feed) {
+    let scanTimerInterval = null;
+
+    function showScanAnimation(feed, assetName) {
       feed.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.style.cssText = 'display:flex;flex-direction:column;gap:8px;';
-      PLATFORMS.forEach(p => {
-        const row = document.createElement('div');
-        row.style.cssText = `display:flex;align-items:center;gap:10px;padding:10px 16px;background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;font-size:0.84rem;`;
-        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="scan_${p.name.replace(/[^a-z]/gi,'')}" style="color:var(--text-dim);margin-left:auto;font-family:var(--font-mono);font-size:0.75rem;">Polling stream...</span>`;
-        wrap.appendChild(row);
-      });
-      feed.appendChild(wrap);
+      if (scanTimerInterval) clearInterval(scanTimerInterval);
+
+      const preview = document.createElement('div');
+      preview.className = 'ae-loading-preview';
+      preview.innerHTML = `
+        <div class="ae-loading-top">
+          <div class="ae-loading-title-wrap">
+            <div class="ae-radar-spinner"></div>
+            <div class="ae-loading-title">Scanning Multi-Channel Threat Radar for <span style="color:var(--accent);">${assetName}</span></div>
+          </div>
+          <div class="ae-loading-timer-badge" id="taElapsedBadge">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span>
+            <span>0.0s elapsed</span>
+          </div>
+        </div>
+        <div class="ae-progress-track">
+          <div class="ae-progress-fill" id="taProgressFill" style="width: 15%;"></div>
+        </div>
+        <div class="ae-loading-steps-grid">
+          ${PLATFORMS.map((p, idx) => `
+            <div class="ae-loading-step-item" id="ta_step_${p.name.replace(/[^a-z]/gi,'')}">
+              <span class="ae-step-dot" style="background:${p.color};"></span>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
+                <span style="font-size:0.72rem;color:var(--text-dim);" id="ta_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting node...</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#38bdf8;"></span>
+          <span>PREVIEW: Ingesting live streams &amp; synthesizing threat intelligence...</span>
+        </div>
+        <div class="ae-skeleton-grid">
+          <div class="ae-skeleton-card">
+            <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
+            <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
+            <div class="ae-skeleton-bar" style="height:12px;width:75%;"></div>
+            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
+          </div>
+          <div class="ae-skeleton-card">
+            <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
+            <div class="ae-skeleton-bar" style="height:18px;width:85%;"></div>
+            <div class="ae-skeleton-bar" style="height:12px;width:60%;"></div>
+            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
+          </div>
+        </div>
+      `;
+      feed.appendChild(preview);
+
+      const startTime = performance.now();
+      scanTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('taElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
+    }
+
+    function setTaStepProgress(name, statusText, isDone = false) {
+      const stepEl = document.getElementById('ta_step_' + name.replace(/[^a-z]/gi,''));
+      const subEl = document.getElementById('ta_sub_' + name.replace(/[^a-z]/gi,''));
+      if (stepEl && subEl) {
+        subEl.textContent = statusText;
+        if (isDone) {
+          stepEl.className = 'ae-loading-step-item done';
+        } else {
+          stepEl.className = 'ae-loading-step-item active';
+        }
+      }
     }
 
     function markPlatformDone(name, count) {
-      const el = document.getElementById('scan_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:var(--emerald);font-weight:700;">OK — ${count} posts</span>`;
+      setTaStepProgress(name, `OK — ${count}`, true);
     }
 
     function renderFeed(threats, isLive = true) {
+      if (scanTimerInterval) clearInterval(scanTimerInterval);
       const feed = document.getElementById('threatFeed');
       const note = document.getElementById('staticNote');
       feed.innerHTML = '';
@@ -213,9 +275,22 @@
       const feed = document.getElementById('threatFeed');
       const note = document.getElementById('staticNote');
       note.style.display = 'none';
-      showScanAnimation(feed);
-      const delays = [300, 600, 900, 1200, 1500];
-      PLATFORMS.forEach((p, i) => setTimeout(() => markPlatformDone(p.name, 'Audited'), delays[i]));
+      showScanAnimation(feed, currentAsset);
+
+      const progressFill = document.getElementById('taProgressFill');
+      const stepDelays = [
+        { name: 'X / Twitter', msg: 'Auditing streams...', pct: 25, delay: 200 },
+        { name: 'Reddit', msg: 'Checking communities...', pct: 45, delay: 500 },
+        { name: 'Google News', msg: 'Parsing news wire...', pct: 65, delay: 800 },
+        { name: 'Instagram', msg: 'Scanning media feeds...', pct: 80, delay: 1100 },
+        { name: 'YouTube', msg: 'Verifying video nodes...', pct: 90, delay: 1400 }
+      ];
+      stepDelays.forEach(s => {
+        setTimeout(() => {
+          setTaStepProgress(s.name, s.msg, false);
+          if (progressFill) progressFill.style.width = `${s.pct}%`;
+        }, s.delay);
+      });
 
       let scanResult = null;
       const endpoints = ['/api/trending/scan', 'https://misinformation-1ouh.onrender.com/api/trending/scan'];
@@ -225,7 +300,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ asset_name: currentAsset }),
-            signal: AbortSignal.timeout(8000)
+            signal: AbortSignal.timeout(9000)
           });
           if (resp.ok) {
             scanResult = await resp.json();
@@ -235,23 +310,28 @@
       }
 
       if (scanResult && scanResult.threats && scanResult.threats.length > 0) {
+        if (progressFill) progressFill.style.width = '100%';
         PLATFORMS.forEach(p => markPlatformDone(p.name, 'Verified'));
-        await new Promise(r => setTimeout(r, 600));
+        await new Promise(r => setTimeout(r, 450));
         renderFeed(scanResult.threats, true);
         updateChart(currentAsset);
         return;
       }
 
       try {
+        if (progressFill) progressFill.style.width = '85%';
         const prompt = `You are a real-time entertainment intelligence AI scanning multiple social media platforms for "${currentAsset}". Scan: X/Twitter, Instagram, Reddit, Google News, YouTube. Generate a threat intelligence report with 5-6 items mixing threats and non-threats. Return STRICT JSON array: [{ "title": "headline max 15 words", "source": "X / Twitter|Instagram|Reddit|Google News|YouTube", "summary": "1-2 sentence analysis max 30 words", "is_threat": true|false, "sentiment": integer -100 to 100, "url": "#" }]. Include at least 2 threats. Be specific to ${currentAsset}. Date: ${new Date().toDateString()}.`;
         const data = await window.GeminiClient.askJSON(prompt);
         if (Array.isArray(data) && data.length > 0) {
-          await new Promise(r => setTimeout(r, 1200));
+          if (progressFill) progressFill.style.width = '100%';
+          PLATFORMS.forEach(p => markPlatformDone(p.name, 'Synthesized'));
+          await new Promise(r => setTimeout(r, 450));
           renderFeed(data, true);
           updateChart(currentAsset);
         }
       } catch (e) {
-        await new Promise(r => setTimeout(r, 1000));
+        if (progressFill) progressFill.style.width = '100%';
+        await new Promise(r => setTimeout(r, 500));
         renderFeed([
           { title: `${currentAsset} — Synthetic AI voice clone deepfake detected on short-form video feeds`, source: 'X / Twitter', summary: 'Audio forensics indicate phase vocoder pitch-shift artifacts. 84% synthetic probability.', is_threat: true, sentiment: -64 },
           { title: `${currentAsset} official spokesperson clarifies upcoming project production schedule`, source: 'Google News', summary: 'Press release refutes unauthorized studio leak rumors.', is_threat: false, sentiment: 42 }

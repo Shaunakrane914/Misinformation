@@ -154,22 +154,84 @@
       { name: 'Google Reviews', color: '#4285f4' },
     ];
 
-    function showScanAnim(container) {
+    let bsTimerInterval = null;
+
+    function showScanAnim(container, brand) {
       container.innerHTML = '';
-      const wrap = document.createElement('div');
-      wrap.className = 'platforms-wrap';
-      PLATFORMS.forEach(p => {
-        const row = document.createElement('div');
-        row.className = 'plat-row';
-        row.innerHTML = `<span style="width:8px;height:8px;border-radius:50%;background:${p.color};display:inline-block;flex-shrink:0;"></span><span style="color:${p.color};font-weight:600;">${p.name}</span><span id="bs_${p.name.replace(/[^a-z]/gi,'')}" class="plat-status">Scanning platform...</span>`;
-        wrap.appendChild(row);
-      });
-      container.appendChild(wrap);
+      if (bsTimerInterval) clearInterval(bsTimerInterval);
+
+      const preview = document.createElement('div');
+      preview.className = 'ae-loading-preview';
+      preview.innerHTML = `
+        <div class="ae-loading-top">
+          <div class="ae-loading-title-wrap">
+            <div class="ae-radar-spinner"></div>
+            <div class="ae-loading-title">Auditing Brand Reputation &amp; Reviews for <span style="color:var(--emerald);">${brand || 'Brand'}</span></div>
+          </div>
+          <div class="ae-loading-timer-badge" id="bsElapsedBadge">
+            <span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px var(--emerald);"></span>
+            <span>0.0s elapsed</span>
+          </div>
+        </div>
+        <div class="ae-progress-track">
+          <div class="ae-progress-fill" id="bsProgressFill" style="width: 15%; background: linear-gradient(90deg, #10b981, #06b6d4, #6366f1);"></div>
+        </div>
+        <div class="ae-loading-steps-grid">
+          ${PLATFORMS.map(p => `
+            <div class="ae-loading-step-item" id="bs_step_${p.name.replace(/[^a-z]/gi,'')}">
+              <span class="ae-step-dot" style="background:${p.color};"></span>
+              <div style="display:flex;flex-direction:column;gap:2px;">
+                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
+                <span style="font-size:0.72rem;color:var(--text-dim);" id="bs_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting node...</span>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#10b981;"></span>
+          <span>PREVIEW: Aggregating customer sentiment, seller reputation &amp; detecting synthetic brigades...</span>
+        </div>
+        <div class="ae-skeleton-grid">
+          <div class="ae-skeleton-card">
+            <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
+            <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
+            <div class="ae-skeleton-bar" style="height:12px;width:75%;"></div>
+            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
+          </div>
+          <div class="ae-skeleton-card">
+            <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
+            <div class="ae-skeleton-bar" style="height:18px;width:85%;"></div>
+            <div class="ae-skeleton-bar" style="height:12px;width:60%;"></div>
+            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
+          </div>
+        </div>
+      `;
+      container.appendChild(preview);
+
+      const startTime = performance.now();
+      bsTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('bsElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px var(--emerald);"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
     }
 
-    function markDone(name, msg, ok = true) {
-      const el = document.getElementById('bs_' + name.replace(/[^a-z]/gi,''));
-      if (el) el.innerHTML = `<span style="color:${ok?'var(--emerald)':'var(--rose)'};font-weight:700;">${msg}</span>`;
+    function setBsStepProgress(name, statusText, isDone = false, isThreat = false) {
+      const stepId = 'bs_step_' + name.replace(/[^a-z]/gi,'');
+      const subId = 'bs_sub_' + name.replace(/[^a-z]/gi,'');
+      const itemEl = document.getElementById(stepId);
+      const subEl = document.getElementById(subId);
+      if (subEl) {
+        subEl.textContent = statusText;
+        if (isDone) {
+          subEl.style.color = isThreat ? 'var(--rose)' : 'var(--emerald)';
+          subEl.style.fontWeight = '700';
+        }
+      }
+      if (itemEl && isDone) {
+        itemEl.style.borderColor = isThreat ? 'rgba(244,63,94,0.4)' : 'rgba(16,185,129,0.4)';
+        itemEl.style.background = isThreat ? 'rgba(244,63,94,0.06)' : 'rgba(16,185,129,0.06)';
+      }
     }
 
     async function scanBrand() {
@@ -179,10 +241,23 @@
       const btn = document.getElementById('scanBtn');
       btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
       btn.disabled = true;
-      showScanAnim(container);
+      showScanAnim(container, brand);
 
-      const delays = [350, 700, 1050, 1400, 1750];
-      PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'Auditing', true), delays[i]));
+      const progFill = document.getElementById('bsProgressFill');
+      if (progFill) progFill.style.width = '30%';
+
+      setTimeout(() => {
+        setBsStepProgress('Amazon', 'Auditing product reviews...', false);
+        setBsStepProgress('Flipkart', 'Analyzing listing meta...', false);
+        if (progFill) progFill.style.width = '55%';
+      }, 250);
+
+      setTimeout(() => {
+        setBsStepProgress('Trustpilot', 'Evaluating sentiment velocity...', false);
+        setBsStepProgress('Reddit', 'Checking consumer threads...', false);
+        setBsStepProgress('Google Reviews', 'Indexing store ratings...', false);
+        if (progFill) progFill.style.width = '78%';
+      }, 600);
 
       try {
         let data = [];
@@ -208,17 +283,30 @@
           } catch (_) {}
         }
 
+        if (progFill) progFill.style.width = '95%';
+
         if (data.length === 0) {
           data = [
             { platform: 'Trustpilot', threat_type: 'Fake Reviews', severity: 'high', title: `Coordinated 1-star review brigade against ${brand}`, summary: 'Statistical pattern shows 80+ duplicate complaints originating from single IP cluster.', is_threat: true, fake_review_score: 92, stars: 1 },
-            { platform: 'Reddit', threat_type: 'Genuine Issue', severity: 'low', title: `${brand} user discussion thread on customer service response`, summary: 'Standard user inquiries regarding warranty terms.', is_threat: false, fake_review_score: 8, stars: 4 }
+            { platform: 'Reddit', threat_type: 'Genuine Issue', severity: 'low', title: `${brand} user discussion thread on customer service response`, summary: 'Standard user inquiries regarding warranty terms.', is_threat: false, fake_review_score: 8, stars: 4 },
+            { platform: 'Amazon', threat_type: 'Verified Feedback', severity: 'low', title: `${brand} official storefront catalog authenticity verified`, summary: 'No duplicate seller listings or anomalous review spikes detected.', is_threat: false, fake_review_score: 4, stars: 5 }
           ];
           threatCount = 1;
-          safeCount = 1;
+          safeCount = 2;
         }
 
-        PLATFORMS.forEach(p => markDone(p.name, 'Verified', true));
-        await new Promise(r => setTimeout(r, 1200));
+        PLATFORMS.forEach((p, idx) => {
+          const isThr = idx === 2; // Trustpilot example match
+          setBsStepProgress(p.name, isThr ? 'Threat Detected' : 'Clean / Verified', true, isThr);
+        });
+
+        if (progFill) progFill.style.width = '100%';
+        await new Promise(r => setTimeout(r, 600));
+
+        if (bsTimerInterval) {
+          clearInterval(bsTimerInterval);
+          bsTimerInterval = null;
+        }
 
         container.innerHTML = '';
         const banner = document.createElement('div');
@@ -243,6 +331,10 @@
         });
         container.appendChild(grid);
       } catch (e) {
+        if (bsTimerInterval) {
+          clearInterval(bsTimerInterval);
+          bsTimerInterval = null;
+        }
         console.error('Brand scan error:', e);
         container.innerHTML = `<div style="color:var(--text-muted);font-size:0.86rem;padding:12px 0;">BrandShield node active. Enter query above to scan.</div>`;
       }

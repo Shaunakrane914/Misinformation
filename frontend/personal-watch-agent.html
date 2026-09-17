@@ -34,9 +34,20 @@
     .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
     .agent-hero h1 span { color: #06b6d4; text-shadow: 0 0 30px rgba(6, 182, 212, 0.3); }
     .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
-    .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
-    .hero-stat-val { font-size: 1.7rem; font-weight: 800; color: #a5f3fc; font-family: var(--font-mono); }
-    .hero-stat-lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+    /* Telemetry Ribbon */
+    .tel-ribbon {
+      display: flex; gap: 0; flex-wrap: wrap;
+      background: rgba(7,9,14,0.8); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; overflow: hidden; margin-top: 24px;
+    }
+    .tel-cell {
+      flex: 1; min-width: 130px; padding: 10px 18px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .tel-cell:last-child { border-right: none; }
+    .tel-val { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: #a5f3fc; }
+    .tel-key { font-family: var(--font-mono); font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
 
     .agent-body { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
 
@@ -81,11 +92,12 @@
       <div class="agent-tag"><span class="dot"></span>AGENT_03 · Active Node</div>
       <h1>Personal <span>Watch</span></h1>
       <p>Continuous executive and personal reputation protection. Isolates deepfake impersonations, fabricated audio quotes, and targeted harassment vectors across public social channels.</p>
-      <div class="hero-stats">
-        <div><div class="hero-stat-val">5</div><div class="hero-stat-lbl">Channels Scanned</div></div>
-        <div><div class="hero-stat-val">Real-time</div><div class="hero-stat-lbl">AI Truth Triage</div></div>
-        <div><div class="hero-stat-val">24/7</div><div class="hero-stat-lbl">Active Watchdog</div></div>
-        <div><div class="hero-stat-val">&lt;20s</div><div class="hero-stat-lbl">Cluster Audit Time</div></div>
+      <div class="tel-ribbon">
+        <div class="tel-cell"><span class="tel-val">Mel-MFCC</span><span class="tel-key">Audio Deepfake Model</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">&lt;20s</span><span class="tel-key">Triage Latency</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">W-MSR F=1</span><span class="tel-key">Consensus Protocol</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">5 Channels</span><span class="tel-key">Monitored Surfaces</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--rose)">LIVE</span><span class="tel-key">Node Status</span></div>
       </div>
     </div>
 
@@ -110,21 +122,36 @@
         <div id="scanResults"></div>
       </div>
 
-      <!-- How it works -->
+      <!-- PIPELINE SPEC TABLE -->
       <div class="ae-reveal">
-        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// DEFENSE METHODOLOGY</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
-          <div class="ae-card" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;backdrop-filter:blur(12px);">
-            <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;color:#a5f3fc;">Deepfake Audio Verification</div>
-            <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;">Analyzes viral voice notes and leaked call snippets for speech synthesis artifacts and frequency vocoder anomalies.</p>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:#06b6d4;letter-spacing:0.08em;margin-bottom:10px;">// PERSONAL WATCH — EXECUTION PIPELINE SPECIFICATION</div>
+        <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
+            <span>Stage</span><span>Operation</span><span>Method</span><span>Signal</span>
           </div>
-          <div class="ae-card" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;backdrop-filter:blur(12px);">
-            <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;color:#a5f3fc;">Fabricated Quote Attribution</div>
-            <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;">Cross-references circulating inflammatory statements against authoritative speech transcripts and official video logs.</p>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#06b6d4;font-weight:700;">01 · INGEST</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Scrape X/Twitter, LinkedIn, YouTube, Reddit, Google News for entity name mentions. Dedup by SHA-256 URL hash.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Scrape+RSS</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">mention[]</span>
           </div>
-          <div class="ae-card" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;backdrop-filter:blur(12px);">
-            <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;color:#a5f3fc;">Coordinated Bot Swarm Triage</div>
-            <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;">Detects automated astroturfing campaigns designed to artificially amplify defamation and manipulate algorithmic feeds.</p>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · AUDIO-DF</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Mel-spectrogram + MFCC feature extraction. Phase vocoder artifact detection. Synthetic probability &gt; 0.78 flags deepfake.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Mel-MFCC</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">synth prob</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--emerald);font-weight:700;">03 · QUOTE-X</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Cross-reference circulating statements against authoritative transcripts using cosine similarity (threshold &lt; 0.71 = fabricated).</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Cosine Sim</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);">sim score</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · VERDICT</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">W-MSR (F=1) consensus across 4 agents. Threat confidence &gt; 0.80 triggers broadcast alert + evidence dossier.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">W-MSR</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">threat flag</span>
           </div>
         </div>
       </div>

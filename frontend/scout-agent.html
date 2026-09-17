@@ -36,9 +36,20 @@
     .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
     .agent-hero h1 span { color: #a78bfa; text-shadow: 0 0 30px rgba(167, 139, 250, 0.3); }
     .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
-    .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
-    .hero-stat-val { font-size: 1.7rem; font-weight: 800; color: #c4b5fd; font-family: var(--font-mono); }
-    .hero-stat-lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+    /* Telemetry Ribbon */
+    .tel-ribbon {
+      display: flex; gap: 0; flex-wrap: wrap;
+      background: rgba(7,9,14,0.8); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; overflow: hidden; margin-top: 24px;
+    }
+    .tel-cell {
+      flex: 1; min-width: 130px; padding: 10px 18px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .tel-cell:last-child { border-right: none; }
+    .tel-val { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: #c4b5fd; }
+    .tel-key { font-family: var(--font-mono); font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
 
     /* Page body */
     .agent-body { max-width: 1240px; margin: 0 auto; padding: 40px 32px 80px; }
@@ -127,11 +138,12 @@
       <div class="agent-tag"><span class="dot"></span>AGENT_02 · Active Node</div>
       <h1>Scout <span>Agent</span></h1>
       <p>Real-time financial market intelligence powered by multi-agent AI. Detects misinformation-driven crashes before they spiral, analyzes high-frequency anomalies, and flags stock manipulation campaigns.</p>
-      <div class="hero-stats">
-        <div><div class="hero-stat-val">1,200+</div><div class="hero-stat-lbl">Equities Monitored</div></div>
-        <div><div class="hero-stat-val">92%</div><div class="hero-stat-lbl">Crash Intercept Rate</div></div>
-        <div><div class="hero-stat-val">&lt;30s</div><div class="hero-stat-lbl">Anomaly Trigger Time</div></div>
-        <div><div class="hero-stat-val">8+</div><div class="hero-stat-lbl">Verified News Feeds</div></div>
+      <div class="tel-ribbon">
+        <div class="tel-cell"><span class="tel-val">Z &gt; 3.8σ</span><span class="tel-key">Anomaly Threshold</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">&lt;30s</span><span class="tel-key">Triage Latency</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">W-MSR F=1</span><span class="tel-key">Consensus Protocol</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">SHA-256</span><span class="tel-key">Evidence Hash</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--rose)">LIVE</span><span class="tel-key">Node Status</span></div>
       </div>
     </div>
 
@@ -198,15 +210,37 @@
         </div>
       </div>
 
-      <!-- HOW IT WORKS -->
+      <!-- PIPELINE SPEC TABLE -->
       <div class="ae-reveal">
-        <div class="ae-label mb-8" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:8px;">// ARCHITECTURE SPECIFICATION</div>
-        <p style="font-size:0.86rem;color:var(--text-muted);margin-bottom:6px;">Multi-layered anomaly detection and agent verification pipeline</p>
-        <div class="how-grid">
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg></div><div class="how-title">Continuous Ingestion</div><div class="how-desc">Continuously polls 1,200+ listed equities across major exchanges, tracking volume volatility and price divergences.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 20h.01M7 20v-4M12 20v-8M17 20V8M22 4v16"/></svg></div><div class="how-title">Rolling Z-Score Anomaly Engine</div><div class="how-desc">Statistical variance calculation detects sudden selling cascades that deviate sharply from rolling 30-day baseline distributions.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg></div><div class="how-title">Multi-Agent Truth Dispatches</div><div class="how-desc">Dispatches parallel agent workers to cross-check regulatory filings, official announcements, and authoritative press wires.</div></div>
-          <div class="how-item"><div class="how-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="how-title">Sub-30s Triage Response</div><div class="how-desc">Issues deterministic alerts and containment telemetry before synthetic panics cause widespread market liquidation.</div></div>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:10px;">// SCOUT AGENT — EXECUTION PIPELINE SPECIFICATION</div>
+        <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
+            <span>Stage</span><span>Operation</span><span>Complexity</span><span>Output</span>
+          </div>
+          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#a78bfa;font-weight:700;">01 · INGEST</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">WebSocket price feed + exchange REST poll. SHA-256 dedup per tick. Volume Δ rolling 30d baseline.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(N)</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">tick bundle</span>
+          </div>
+          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · Z-SCORE</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Z = (V_t − μ_30d) / σ_30d. Threshold &gt; 3.8σ triggers anomaly flag. Kalman filter smooths noise.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(1)</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">Z-score Δ</span>
+          </div>
+          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--emerald);font-weight:700;">03 · DISPATCH</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">4 parallel agents query SEBI/NSE filings, Google News, X/Twitter, Reddit. Each issues signed evidence payload.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(4)</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);">evidence[]</span>
+          </div>
+          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · VERDICT</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">W-MSR consensus (F=1) prunes outlier votes. Majority verdict + confidence score broadcast to subscriber terminals.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(k log k)</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">alert + hash</span>
+          </div>
         </div>
       </div>
     </div>

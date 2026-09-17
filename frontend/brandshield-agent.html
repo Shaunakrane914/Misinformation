@@ -34,9 +34,20 @@
     .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
     .agent-hero h1 span { color: #10b981; text-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
     .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
-    .hero-stats { display: flex; gap: 40px; flex-wrap: wrap; }
-    .hero-stat-val { font-size: 1.7rem; font-weight: 800; color: #a7f3d0; font-family: var(--font-mono); }
-    .hero-stat-lbl { font-size: 0.75rem; color: var(--text-dim); margin-top: 2px; font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+    /* Telemetry Ribbon */
+    .tel-ribbon {
+      display: flex; gap: 0; flex-wrap: wrap;
+      background: rgba(7,9,14,0.8); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 10px; overflow: hidden; margin-top: 24px;
+    }
+    .tel-cell {
+      flex: 1; min-width: 130px; padding: 10px 18px;
+      border-right: 1px solid rgba(255,255,255,0.07);
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .tel-cell:last-child { border-right: none; }
+    .tel-val { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: #a7f3d0; }
+    .tel-key { font-family: var(--font-mono); font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
 
     .agent-body { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
 
@@ -82,11 +93,12 @@
       <div class="agent-tag"><span class="dot"></span>AGENT_04 · Active Node</div>
       <h1>Brand<span>Shield</span></h1>
       <p>Autonomous brand reputation defense and synthetic consumer fraud detection. Discovers coordinated fake review rings, unauthorized clone listings, and smear campaigns across retail marketplaces.</p>
-      <div class="hero-stats">
-        <div><div class="hero-stat-val">5</div><div class="hero-stat-lbl">Marketplaces Polled</div></div>
-        <div><div class="hero-stat-val">95%</div><div class="hero-stat-lbl">Fake Review Intercept Rate</div></div>
-        <div><div class="hero-stat-val">Live</div><div class="hero-stat-lbl">Neural Pattern Filter</div></div>
-        <div><div class="hero-stat-val">&lt;25s</div><div class="hero-stat-lbl">Cluster Audit Time</div></div>
+      <div class="tel-ribbon">
+        <div class="tel-cell"><span class="tel-val">LLM PPL</span><span class="tel-key">Perplexity Filter</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">&lt;25s</span><span class="tel-key">Cluster Audit</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">W-MSR F=1</span><span class="tel-key">Consensus Protocol</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">5 Markets</span><span class="tel-key">Polled Marketplaces</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--rose)">LIVE</span><span class="tel-key">Node Status</span></div>
       </div>
     </div>
 
@@ -111,21 +123,36 @@
         <div id="scanResults"></div>
       </div>
 
-      <!-- How it works -->
+      <!-- PIPELINE SPEC TABLE -->
       <div class="ae-reveal">
-        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// DEFENSE ARCHITECTURE</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;">
-          <div class="ae-card" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;backdrop-filter:blur(12px);">
-            <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;color:#a7f3d0;">Synthetic Review Clustering</div>
-            <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;">Identifies synchronized bot reviews, boilerplate prompt artifacts, and inorganic rating surges across retail marketplaces.</p>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);letter-spacing:0.08em;margin-bottom:10px;">// BRANDSHIELD — EXECUTION PIPELINE SPECIFICATION</div>
+        <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
+            <span>Stage</span><span>Operation</span><span>Method</span><span>Signal</span>
           </div>
-          <div class="ae-card" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;backdrop-filter:blur(12px);">
-            <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;color:#a7f3d0;">Counterfeit Listing Radar</div>
-            <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;">Audits merchant legitimacy, image metadata duplicates, and suspicious pricing anomalies on e-commerce storefronts.</p>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;font-weight:700;">01 · INGEST</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Scrape product listings + review pages across 5 marketplaces. SHA-256 dedup. Timestamp normalization.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">HTTP/3 Scrape</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">review[]</span>
           </div>
-          <div class="ae-card" style="background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:20px;backdrop-filter:blur(12px);">
-            <div style="font-weight:700;font-size:0.95rem;margin-bottom:6px;color:#a7f3d0;">Astroturfing & FUD Detection</div>
-            <p style="font-size:0.84rem;color:var(--text-muted);line-height:1.6;">Tracks coordinated smear threads across consumer subreddits and review portals to isolate adversarial PR attacks.</p>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · LLM-PPL</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Perplexity scoring via GPT-4o tokenizer. Reviews with PPL &lt; 18 flagged as synthetic LLM-generated content.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Perplexity</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">ppl score</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--accent);font-weight:700;">03 · CLUSTER</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">DBSCAN clustering on reviewer account age, IP subnet, posting cadence, and vocabulary cosine similarity.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">DBSCAN</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">cluster ID</span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · VERDICT</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">W-MSR (F=1) consensus across 4 agents. Botnet confidence > 0.82 triggers THREAT broadcast + dossier.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">W-MSR</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">threat flag</span>
           </div>
         </div>
       </div>

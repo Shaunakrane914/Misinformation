@@ -397,6 +397,8 @@
       area.innerHTML = html;
     }
 
+    let statusTimerInterval = null;
+
     async function checkStatus(silent = false) {
       const id = document.getElementById('claimIdInput').value.trim();
       if (!id) return;
@@ -405,8 +407,47 @@
       const area = document.getElementById('resultArea');
 
       if (!silent) {
-        btn.textContent = 'Checking...'; btn.disabled = true;
-        area.innerHTML = `<div class="info-banner warn">Loading claim status...</div>`;
+        btn.innerHTML = `<span class="pulse-dot-cyan"></span> Checking...`;
+        btn.disabled = true;
+
+        if (statusTimerInterval) clearInterval(statusTimerInterval);
+        const startTime = performance.now();
+
+        area.innerHTML = `
+          <div class="ae-loading-preview">
+            <div class="ae-loading-top">
+              <div class="ae-loading-title-wrap">
+                <div class="ae-radar-spinner"></div>
+                <div class="ae-loading-title">Retrieving Cluster Telemetry for <span style="color:var(--accent);">${id.slice(0, 8)}...</span></div>
+              </div>
+              <div class="ae-loading-timer-badge" id="statusElapsedBadge">
+                <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span>
+                <span>0.0s elapsed</span>
+              </div>
+            </div>
+            <div class="ae-progress-track">
+              <div class="ae-progress-fill" id="statusProgressFill" style="width:30%;background:linear-gradient(90deg, #00e5ff, #6366f1, #10b981);"></div>
+            </div>
+            <div class="ae-skeleton-grid">
+              <div class="ae-skeleton-card">
+                <div class="ae-skeleton-bar" style="height:14px;width:30%;"></div>
+                <div class="ae-skeleton-bar" style="height:20px;width:85%;"></div>
+                <div class="ae-skeleton-bar" style="height:12px;width:60%;"></div>
+              </div>
+              <div class="ae-skeleton-card">
+                <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
+                <div class="ae-skeleton-bar" style="height:14px;width:95%;"></div>
+                <div class="ae-skeleton-bar" style="height:14px;width:70%;"></div>
+              </div>
+            </div>
+          </div>
+        `;
+
+        statusTimerInterval = setInterval(() => {
+          const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+          const badge = document.getElementById('statusElapsedBadge');
+          if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span><span>${elapsed}s elapsed</span>`;
+        }, 100);
       }
 
       try {
@@ -426,10 +467,19 @@
           } catch (_) {}
         }
 
+        if (statusTimerInterval) {
+          clearInterval(statusTimerInterval);
+          statusTimerInterval = null;
+        }
+
         if (!data) throw new Error('Claim not found or backend node initializing');
         renderResult(data);
         window.aegisAudio && window.aegisAudio.playSuccess();
       } catch (err) {
+        if (statusTimerInterval) {
+          clearInterval(statusTimerInterval);
+          statusTimerInterval = null;
+        }
         area.innerHTML = `<div class="info-banner err">
           ${err.message.includes('not found') ? 'Claim not found. Check the ID and try again.' : 'Backend is initializing or claim not found. Try again in 20 seconds.'}
         </div>`;

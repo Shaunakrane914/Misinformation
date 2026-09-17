@@ -2,8 +2,6 @@
   base      = "frontend"
   publish   = "."
   functions = "netlify/functions"
-  # DEPLOY PAUSED — remove the ignore line below when ready to deploy
-  ignore    = "exit 0"
 
 # 1. Netlify functions endpoints
 [[redirects]]

@@ -69,3 +69,5 @@ TEST/
 # AI-generated chat logs
 Starting Misinformation Project.md
 *.conversation.md
+# Local Netlify folder
+.netlify

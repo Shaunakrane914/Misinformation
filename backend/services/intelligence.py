@@ -32,7 +32,12 @@ AVAILABLE_MODELS = [
     "gemini-3-flash-preview",
     "gemini-3.1-flash-lite-preview",
     "gemini-3.6-flash",
-    "gemini-flash-latest"
+    "gemini-flash-latest",
+    "gemini-2.0-flash-lite-preview-02-05",
+    "gemini-2.5-flash",
+    "gemini-2.0-flash",
+    "gemini-1.5-flash",
+    "gemini-1.5-pro"
 ]
 
 

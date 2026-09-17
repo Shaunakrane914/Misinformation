@@ -49,53 +49,41 @@ class ScoutAgent:
         Fetch real-time stock chart data from Yahoo Finance API.
         
         Args:
-            ticker: Stock ticker symbol (e.g., 'TATAMOTORS.NS')
+            ticker: Stock ticker symbol (e.g., 'NVDA', 'AAPL')
             
         Returns:
             Dict containing chart data or None if request fails
         """
+        browser_headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+            'Accept': 'application/json'
+        }
+
+        # 1. Try free zero-cost Yahoo Finance chart endpoint
         try:
-            # Try 1-minute data first
-            url = f"{self.base_url}/v8/finance/chart/{ticker}"
-            headers = {
-                'X-API-KEY': self.api_key,
-                'accept': 'application/json'
-            }
-            params = {
-                'range': '1d',
-                'interval': '1m',
-                'indicators': 'quote',
-                'includeTimestamps': 'true'
-            }
-            
-            logger.info(f"Fetching stock data for {ticker}...")
-            response = requests.get(url, headers=headers, params=params, timeout=10)
-            
+            url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=5d"
+            logger.info(f"Fetching stock data for {ticker} via Yahoo Finance...")
+            response = requests.get(url, headers=browser_headers, timeout=8)
             if response.status_code == 200:
                 data = response.json()
-                # Check if we got valid data
-                result = data.get('chart', {}).get('result', [])
-                if result:
+                if data.get('chart', {}).get('result'):
                     logger.info(f"Successfully fetched data for {ticker}")
                     return data
-                else:
-                    logger.warning(f"No data in response for {ticker}, trying 5-minute interval...")
-                    # Fallback to 5-minute interval
-                    params['interval'] = '5m'
-                    response = requests.get(url, headers=headers, params=params, timeout=10)
-                    if response.status_code == 200:
-                        data = response.json()
-                        logger.info(f"Successfully fetched 5-minute data for {ticker}")
-                        return data
-                    return None
-            else:
-                logger.error(f"API request failed with status {response.status_code}")
-                logger.error(f"Response: {response.text[:200]}")
-                return None
-                
         except Exception as e:
-            logger.error(f"Error fetching stock data: {str(e)}")
-            return None
+            logger.debug(f"Direct Yahoo Finance fetch notice: {e}")
+
+        # 2. Try yfapi.net if API key is configured
+        if self.api_key:
+            try:
+                url = f"{self.base_url}/v8/finance/chart/{ticker}?range=5d&interval=1d"
+                headers = {'X-API-KEY': self.api_key, 'accept': 'application/json'}
+                response = requests.get(url, headers=headers, timeout=10)
+                if response.status_code == 200:
+                    return response.json()
+            except Exception as e:
+                logger.error(f"yfapi.net fetch failed: {e}")
+
+        return None
     
     def extract_prices(self, chart_data: Dict) -> Optional[List[float]]:
         """
@@ -123,28 +111,10 @@ class ScoutAgent:
             close_prices = quote[0].get('close', [])
             
             # Filter out None values
-            prices = [p for p in close_prices if p is not None]
+            prices = [float(p) for p in close_prices if p is not None and not np.isnan(p)]
             
-            if len(prices) < 10:
+            if len(prices) < 2:
                 logger.warning(f"Insufficient price data: only {len(prices)} points available")
-                meta = result[0].get('meta', {})
-                ticker_symbol = meta.get('symbol', '')
-                try:
-                    url = f"{self.base_url}/v8/finance/chart/{ticker_symbol}"
-                    headers = {'X-API-KEY': self.api_key, 'accept': 'application/json'}
-                    params = {'range': '5d', 'interval': '1d', 'indicators': 'quote', 'includeTimestamps': 'true'}
-                    r = requests.get(url, headers=headers, params=params, timeout=10)
-                    if r.status_code == 200:
-                        d = r.json()
-                        r2 = d.get('chart', {}).get('result', [])
-                        if r2:
-                            q2 = r2[0].get('indicators', {}).get('quote', [])
-                            closes = [p for p in (q2[0].get('close', []) if q2 else []) if p is not None]
-                            if len(closes) >= 2:
-                                logger.info(f"Using last available daily closes for fallback: {len(closes)} points")
-                                return closes
-                except Exception as e:
-                    logger.warning(f"Fallback to daily data failed: {e}")
                 return None
             
             logger.info(f"Extracted {len(prices)} valid price points")

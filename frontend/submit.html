@@ -486,36 +486,56 @@
 
       try {
         // Step 1: Submit Claim to Backend
-        const res = await fetch('/api/claims/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            claim_text: claimText,
-            source_url: sourceUrl || undefined
-          })
-        });
-
-        if (!res.ok) {
-          throw new Error(`Server returned HTTP ${res.status}`);
+        let submitData = null;
+        const submitEndpoints = ['/api/claims/submit', 'https://misinformation-1ouh.onrender.com/api/claims/submit'];
+        for (const ep of submitEndpoints) {
+          try {
+            const res = await fetch(ep, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                claim_text: claimText,
+                source_url: sourceUrl || undefined
+              }),
+              signal: AbortSignal.timeout(10000)
+            });
+            if (res.ok) {
+              submitData = await res.json();
+              break;
+            }
+          } catch (_) {}
         }
 
-        const submitData = await res.json();
+        if (!submitData || !submitData.claim_id) {
+          throw new Error('All submission endpoints failed or timed out');
+        }
+
         const claimId = submitData.claim_id;
         btn.innerHTML = `<span class="pulse-dot-cyan"></span> Investigating Multi-Source Grounding...`;
 
         // Step 2: Poll for completion
         let completedData = null;
+        const pollEndpoints = [
+          `/api/claims/${claimId}`,
+          `https://misinformation-1ouh.onrender.com/api/claims/${claimId}`
+        ];
+
         for (let attempt = 0; attempt < 25; attempt++) {
           await new Promise(r => setTimeout(r, 1200));
-          const pollRes = await fetch(`/api/claims/${claimId}`);
-          if (pollRes.ok) {
-            const claimObj = await pollRes.json();
-            const c = claimObj.claim || claimObj;
-            if (c && (c.status === 'completed' || c.status === 'failed')) {
-              completedData = claimObj;
-              break;
-            }
+          for (const ep of pollEndpoints) {
+            try {
+              const pollRes = await fetch(ep, { signal: AbortSignal.timeout(6000) });
+              if (pollRes.ok) {
+                const claimObj = await pollRes.json();
+                const c = claimObj.claim || claimObj;
+                if (c && (c.status === 'completed' || c.status === 'failed')) {
+                  completedData = claimObj;
+                  break;
+                }
+              }
+            } catch (_) {}
           }
+          if (completedData) break;
         }
 
         // Step 3: Render Real Results

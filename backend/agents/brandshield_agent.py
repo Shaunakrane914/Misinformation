@@ -248,6 +248,7 @@ Return ONLY the JSON array, no other text."""
 
         return {
             "brand_name": brand_name,
+            "brand": brand_name,
             "total_findings": len(findings),
             "threat_count": threat_count,
             "safe_count": safe_count,

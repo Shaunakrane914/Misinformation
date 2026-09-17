@@ -814,23 +814,42 @@
       if (activeHeroPoll) clearInterval(activeHeroPoll);
 
       try {
-        const submitRes = await fetch('/api/claims/submit', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ claim_text: claimText })
-        });
+        let submitData = null;
+        const submitEndpoints = ['/api/claims/submit', 'https://misinformation-1ouh.onrender.com/api/claims/submit'];
+        for (const ep of submitEndpoints) {
+          try {
+            const submitRes = await fetch(ep, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ claim_text: claimText }),
+              signal: AbortSignal.timeout(10000)
+            });
+            if (submitRes.ok) {
+              submitData = await submitRes.json();
+              break;
+            }
+          } catch (_) {}
+        }
 
-        if (!submitRes.ok) throw new Error(`HTTP ${submitRes.status}`);
-        const submitData = await submitRes.json();
+        if (!submitData || !submitData.claim_id) throw new Error('Submission endpoints unavailable');
         const claimId = submitData.claim_id;
+
+        const pollEndpoints = [
+          `/api/claims/${claimId}`,
+          `https://misinformation-1ouh.onrender.com/api/claims/${claimId}`
+        ];
 
         // If completed immediately (e.g. cached claim)
         if (submitData.status === 'completed') {
-          const detailRes = await fetch(`/api/claims/${claimId}`);
-          if (detailRes.ok) {
-            const fullClaim = await detailRes.json();
-            renderHeroModalResult(fullClaim, (Date.now() - startTime) / 1000);
-            return;
+          for (const ep of pollEndpoints) {
+            try {
+              const detailRes = await fetch(ep, { signal: AbortSignal.timeout(6000) });
+              if (detailRes.ok) {
+                const fullClaim = await detailRes.json();
+                renderHeroModalResult(fullClaim, (Date.now() - startTime) / 1000);
+                return;
+              }
+            } catch (_) {}
           }
         }
 
@@ -844,17 +863,20 @@
           if (attempts === 2) m2.innerText = 'R₀ = 1.62 (Hawkes)';
           if (attempts === 3) m3.innerText = 'Cross-Audited (Swarm)';
 
-          try {
-            const checkRes = await fetch(`/api/claims/${claimId}`);
-            if (checkRes.ok) {
-              const claim = await checkRes.json();
-              if (claim.status === 'completed' || claim.status === 'failed') {
-                clearInterval(activeHeroPoll);
-                renderHeroModalResult(claim, (Date.now() - startTime) / 1000);
+          for (const ep of pollEndpoints) {
+            try {
+              const checkRes = await fetch(ep, { signal: AbortSignal.timeout(6000) });
+              if (checkRes.ok) {
+                const claim = await checkRes.json();
+                if (claim.status === 'completed' || claim.status === 'failed') {
+                  clearInterval(activeHeroPoll);
+                  renderHeroModalResult(claim, (Date.now() - startTime) / 1000);
+                  return;
+                }
               }
+            } catch (err) {
+              console.warn('Hero modal poll notice:', err);
             }
-          } catch (err) {
-            console.warn('Hero modal poll error:', err);
           }
 
           if (attempts >= 25) {

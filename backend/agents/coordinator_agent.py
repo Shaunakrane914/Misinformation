@@ -46,16 +46,26 @@ class CoordinatorAgent:
         self.scout = ScoutAgent()
         self.trending = TrendingAgent()
         
-        # Setup API keys and models
         all_keys = []
         for k, v in sorted(os.environ.items()):
             if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_"):
                 cleaned = v.strip().strip('"').strip("'") if v else ""
                 if cleaned and cleaned not in all_keys:
                     all_keys.append(cleaned)
-        self.api_keys = all_keys or [""]
-        self._key_cycle = itertools.cycle(self.api_keys)
-        self.available_models = ["gemini-3-flash-preview", "gemini-3.1-flash-lite-preview", "gemini-3.6-flash"]
+        self.api_keys = all_keys
+        self._key_cycle = itertools.cycle(self.api_keys if self.api_keys else [""])
+        self.available_models = [
+            "gemini-3-flash-preview",
+            "gemini-3.1-flash-lite-preview",
+            "gemini-3.6-flash",
+            "gemini-flash-latest",
+            "gemini-2.0-flash-lite-preview-02-05",
+            "gemini-2.5-flash",
+            "gemini-2.0-flash",
+            "gemini-1.5-flash",
+            "gemini-1.5-pro"
+        ]
+        self.model_name = self.available_models[0]
         
         # Surveillance state
         self.surveillance_active = False

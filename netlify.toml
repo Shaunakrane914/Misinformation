@@ -14,12 +14,17 @@
   to     = "/.netlify/functions/stock"
   status = 200
 
+[[redirects]]
+  from   = "/api/scout/stock"
+  to     = "/.netlify/functions/stock"
+  status = 200
+
 # 2. Proxy backend API requests to Render
 [[redirects]]
   from   = "/api/*"
   to     = "https://misinformation-1ouh.onrender.com/api/:splat"
   status = 200
-  force  = false
+  force  = true
 
 # 3. SPA Fallback (only for non-file routes)
 [[redirects]]

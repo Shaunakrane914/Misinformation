@@ -676,15 +676,23 @@
       btn.disabled = true;
       btn.innerText = 'Computing Regression...';
 
-      let data;
-      try {
-        const resp = await fetch('/api/lab/synthetic-detect', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text })
-        });
-        data = await resp.json();
-      } catch (err) {
+      let data = null;
+      const endpoints = ['/api/lab/synthetic-detect', 'https://misinformation-1ouh.onrender.com/api/lab/synthetic-detect'];
+      for (const ep of endpoints) {
+        try {
+          const resp = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ text }),
+            signal: AbortSignal.timeout(6000)
+          });
+          if (resp.ok) {
+            data = await resp.json();
+            break;
+          }
+        } catch (_) {}
+      }
+      if (!data || !data.fit_curve) {
         data = clientSideMandelbrot(text);
       }
 
@@ -961,15 +969,23 @@
       btn.disabled = true;
       btn.innerText = 'Modeling Contagion Physics...';
 
-      let data;
-      try {
-        const resp = await fetch('/api/lab/blast-radius', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ topic, claim })
-        });
-        data = await resp.json();
-      } catch (err) {
+      let data = null;
+      const blastEndpoints = ['/api/lab/blast-radius', 'https://misinformation-1ouh.onrender.com/api/lab/blast-radius'];
+      for (const ep of blastEndpoints) {
+        try {
+          const resp = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ topic, claim }),
+            signal: AbortSignal.timeout(6000)
+          });
+          if (resp.ok) {
+            data = await resp.json();
+            break;
+          }
+        } catch (_) {}
+      }
+      if (!data || !data.reproduction_number_r0) {
         data = clientSideHawkes(topic, claim);
       }
 
@@ -1075,15 +1091,23 @@
       btn.disabled = true;
       btn.innerText = 'Evaluating Byzantine Consensus...';
 
-      let data;
-      try {
-        const resp = await fetch('/api/lab/consensus', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ claim })
-        });
-        data = await resp.json();
-      } catch (err) {
+      let data = null;
+      const consensusEndpoints = ['/api/lab/consensus', 'https://misinformation-1ouh.onrender.com/api/lab/consensus'];
+      for (const ep of consensusEndpoints) {
+        try {
+          const resp = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ claim }),
+            signal: AbortSignal.timeout(6000)
+          });
+          if (resp.ok) {
+            data = await resp.json();
+            break;
+          }
+        } catch (_) {}
+      }
+      if (!data || !data.agents) {
         data = clientSideConsensus(claim);
       }
 

@@ -44,30 +44,24 @@ class AgentReachScraper:
         limit: int = 10
     ) -> List[Dict[str, Any]]:
         """
-        Search Reddit discussions without Reddit API keys using public RSS & JSON streams.
+        Search Reddit discussions without Reddit API keys using public streams and RSS indexers.
         """
         results: List[Dict[str, Any]] = []
         clean_q = query.strip()
         encoded_q = urllib.parse.quote_plus(clean_q)
 
-        # 1. Query Reddit RSS feeds (fast, zero auth, reliable)
-        rss_urls = []
-        if subreddits:
-            for sub in subreddits:
-                rss_urls.append(f"https://www.reddit.com/r/{sub}/search.rss?q={encoded_q}&restrict_sr=1&sort=new")
-        else:
-            rss_urls.append(f"https://www.reddit.com/search.rss?q={encoded_q}&sort=new")
-
-        for url in rss_urls:
-            try:
-                feed = feedparser.parse(url)
+        # 1. Bing News RSS for Reddit (Fast, reliable, zero blocking)
+        try:
+            bing_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus('reddit ' + clean_q)}&format=rss"
+            resp = requests.get(bing_url, headers=self.headers, timeout=self.timeout)
+            if resp.status_code == 200:
+                feed = feedparser.parse(resp.content)
                 for entry in feed.get("entries", [])[:limit]:
                     title = entry.get("title", "")
                     link = entry.get("link", "")
                     summary = entry.get("summary", "")
-                    author = entry.get("author", "u/reddit_user")
                     published = entry.get("published", "")
-                    
+
                     # Extract clean text from HTML summary
                     soup = BeautifulSoup(summary, "html.parser")
                     text_content = soup.get_text(separator=" ", strip=True)
@@ -77,46 +71,77 @@ class AgentReachScraper:
                         "title": title,
                         "content": f"{title}\n{text_content[:300]}",
                         "url": link,
-                        "author": author if author.startswith("u/") else f"u/{author}",
+                        "author": "u/community",
                         "published": published,
                         "snippet": text_content[:200] or title,
-                        "score": 15
+                        "score": 25
                     })
                     if len(results) >= limit:
                         break
-            except Exception as e:
-                logger.warning(f"[AgentReach] Reddit RSS fetch failed for {url}: {e}")
+        except Exception as e:
+            logger.debug(f"[AgentReach] Bing Reddit search failed: {e}")
 
-        # Fallback to direct Reddit JSON if RSS returned few results
+        # 2. PullPush Public Reddit Archive (No Auth Required)
         if len(results) < limit:
             try:
-                json_url = f"https://www.reddit.com/search.json?q={encoded_q}&sort=new&limit={limit}"
-                resp = requests.get(json_url, headers={"User-Agent": "AegisProtocol/3.0 (Security Scanner)"}, timeout=self.timeout)
+                pp_url = f"https://api.pullpush.io/reddit/search/submission/?q={encoded_q}&size={limit}"
+                resp = requests.get(pp_url, headers=self.headers, timeout=self.timeout)
                 if resp.status_code == 200:
-                    data = resp.json()
-                    children = data.get("data", {}).get("children", [])
-                    for post in children:
-                        pdata = post.get("data", {})
-                        title = pdata.get("title", "")
-                        selftext = pdata.get("selftext", "")
-                        permalink = f"https://reddit.com{pdata.get('permalink', '')}"
-                        author = pdata.get("author", "unknown")
-                        sub = pdata.get("subreddit_name_prefixed", "r/all")
-                        
-                        # Avoid duplicates
-                        if not any(r["url"] == permalink for r in results):
+                    data = resp.json().get("data", [])
+                    for post in data:
+                        title = post.get("title", "")
+                        selftext = post.get("selftext", "")
+                        permalink = post.get("full_link") or f"https://reddit.com/r/{post.get('subreddit')}/comments/{post.get('id')}"
+                        author = post.get("author", "redditor")
+                        sub = post.get("subreddit", "all")
+
+                        if not any(r.get("url") == permalink for r in results):
                             results.append({
                                 "platform": "Reddit",
-                                "subreddit": sub,
+                                "subreddit": f"r/{sub}",
                                 "title": title,
                                 "content": f"{title}\n{selftext[:300]}",
                                 "url": permalink,
                                 "author": f"u/{author}",
                                 "snippet": selftext[:200] or title,
-                                "score": pdata.get("score", 0)
+                                "score": post.get("score", 10)
                             })
-            except Exception as j_err:
-                logger.debug(f"[AgentReach] Reddit JSON fallback: {j_err}")
+                            if len(results) >= limit:
+                                break
+            except Exception as pp_err:
+                logger.debug(f"[AgentReach] PullPush Reddit search failed: {pp_err}")
+
+        # 3. Direct Reddit RSS with Browser User-Agent
+        if len(results) < limit:
+            try:
+                r_url = f"https://www.reddit.com/search.rss?q={encoded_q}&sort=new"
+                r_resp = requests.get(r_url, headers=self.headers, timeout=5)
+                if r_resp.status_code == 200:
+                    feed = feedparser.parse(r_resp.content)
+                    for entry in feed.get("entries", [])[:limit]:
+                        title = entry.get("title", "")
+                        link = entry.get("link", "")
+                        summary = entry.get("summary", "")
+                        author = entry.get("author", "u/reddit_user")
+
+                        soup = BeautifulSoup(summary, "html.parser")
+                        text_content = soup.get_text(separator=" ", strip=True)
+
+                        if not any(r.get("url") == link for r in results):
+                            results.append({
+                                "platform": "Reddit",
+                                "title": title,
+                                "content": f"{title}\n{text_content[:300]}",
+                                "url": link,
+                                "author": author if author.startswith("u/") else f"u/{author}",
+                                "published": entry.get("published", ""),
+                                "snippet": text_content[:200] or title,
+                                "score": 15
+                            })
+                            if len(results) >= limit:
+                                break
+            except Exception as r_err:
+                logger.debug(f"[AgentReach] Direct Reddit RSS fallback: {r_err}")
 
         return results[:limit]
 
@@ -137,7 +162,7 @@ class AgentReachScraper:
         clean_handle = (vip_handle or "").lstrip("@")
         clean_q = query.strip()
 
-        # 1. Search Google News / Search Twitter streams (real-time, zero auth)
+        # 1. Search Google News Twitter streams (real-time, zero auth)
         try:
             feed_query = f'"{clean_q}" site:x.com OR site:twitter.com'
             if clean_handle:
@@ -166,7 +191,34 @@ class AgentReachScraper:
                     "is_reply": "status" in link or "status" in title.lower()
                 })
         except Exception as e:
-            logger.warning(f"[AgentReach] Twitter stream fetch failed: {e}")
+            logger.debug(f"[AgentReach] Twitter stream fetch failed: {e}")
+
+        # 2. Bing News RSS for Twitter/X
+        if len(results) < limit:
+            try:
+                b_query = f"twitter {clean_q}"
+                b_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus(b_query)}&format=rss"
+                resp = requests.get(b_url, headers=self.headers, timeout=self.timeout)
+                if resp.status_code == 200:
+                    feed = feedparser.parse(resp.content)
+                    for entry in feed.get("entries", [])[:limit]:
+                        title = entry.get("title", "")
+                        link = entry.get("link", "")
+                        if not any(r.get("url") == link for r in results):
+                            results.append({
+                                "platform": "Twitter/X",
+                                "author": "@social_pulse",
+                                "title": title,
+                                "content": title,
+                                "url": link,
+                                "snippet": title,
+                                "published": entry.get("published", ""),
+                                "is_reply": False
+                            })
+                            if len(results) >= limit:
+                                break
+            except Exception as b_err:
+                logger.debug(f"[AgentReach] Bing Twitter fallback failed: {b_err}")
 
         # 2. Check syndication timeline if handle provided
         if clean_handle and len(results) < limit:
@@ -220,7 +272,32 @@ class AgentReachScraper:
                     "published": published
                 })
         except Exception as e:
-            logger.warning(f"[AgentReach] YouTube stream query failed: {e}")
+            logger.debug(f"[AgentReach] YouTube stream query failed: {e}")
+
+        if len(results) < limit:
+            try:
+                b_query = f"youtube {clean_q}"
+                b_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus(b_query)}&format=rss"
+                resp = requests.get(b_url, headers=self.headers, timeout=self.timeout)
+                if resp.status_code == 200:
+                    feed = feedparser.parse(resp.content)
+                    for entry in feed.get("entries", [])[:limit]:
+                        title = entry.get("title", "")
+                        link = entry.get("link", "")
+                        if not any(r.get("url") == link for r in results):
+                            results.append({
+                                "platform": "YouTube",
+                                "title": title,
+                                "channel": "YouTube Video",
+                                "url": link,
+                                "content": f"[YouTube] {title}",
+                                "snippet": title,
+                                "published": entry.get("published", "")
+                            })
+                            if len(results) >= limit:
+                                break
+            except Exception as b_err:
+                logger.debug(f"[AgentReach] Bing YouTube fallback failed: {b_err}")
 
         return results[:limit]
 
@@ -232,8 +309,9 @@ class AgentReachScraper:
         Search global news headlines and press releases without API keys.
         """
         results: List[Dict[str, Any]] = []
+        clean_q = query.strip()
         try:
-            feed_url = f"https://news.google.com/rss/search?q={urllib.parse.quote_plus(query)}&hl=en-US&gl=US&ceid=US:en"
+            feed_url = f"https://news.google.com/rss/search?q={urllib.parse.quote_plus(clean_q)}&hl=en-US&gl=US&ceid=US:en"
             feed = feedparser.parse(feed_url)
             for entry in feed.get("entries", [])[:limit]:
                 source_title = None
@@ -251,7 +329,32 @@ class AgentReachScraper:
                     "content": f"{entry.get('title', '')} ({source_title or 'News Wire'})"
                 })
         except Exception as e:
-            logger.warning(f"[AgentReach] News search failed: {e}")
+            logger.debug(f"[AgentReach] News search failed: {e}")
+
+        # Bing News RSS Fallback
+        if len(results) < limit:
+            try:
+                b_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus(clean_q)}&format=rss"
+                resp = requests.get(b_url, headers=self.headers, timeout=self.timeout)
+                if resp.status_code == 200:
+                    feed = feedparser.parse(resp.content)
+                    for entry in feed.get("entries", [])[:limit]:
+                        title = entry.get("title", "")
+                        link = entry.get("link", "")
+                        if not any(r.get("url") == link for r in results):
+                            results.append({
+                                "platform": "News RSS",
+                                "title": title,
+                                "source": "Global Wire",
+                                "url": link,
+                                "published": entry.get("published", ""),
+                                "snippet": title,
+                                "content": f"{title} (Global Wire)"
+                            })
+                            if len(results) >= limit:
+                                break
+            except Exception as b_err:
+                logger.debug(f"[AgentReach] Bing News fallback failed: {b_err}")
 
         return results[:limit]
 

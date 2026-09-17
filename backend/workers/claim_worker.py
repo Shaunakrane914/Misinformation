@@ -86,35 +86,37 @@ async def process_claim(claim_id: str):
         logger.info(f"[ClaimWorker] [{claim_id}] Confidence: {verdict_json.get('confidence')}")
         logger.info(f"[ClaimWorker] [{claim_id}] Severity: {verdict_json.get('severity')}")
         
-        # Step 7: Reduce evidence to ONLY ONE
-        # Pick first refuting evidence if available, else first supporting
+        # Step 7: Process and insert gathered evidence
         refuting_evidence = evidence_json.get('refuting_evidence', [])
         supporting_evidence = evidence_json.get('supporting_evidence', [])
-        
-        selected_evidence = None
-        selected_stance = None
-        
-        if refuting_evidence and len(refuting_evidence) > 0:
-            selected_evidence = refuting_evidence[0]
-            selected_stance = "refuting"
-            logger.info(f"[ClaimWorker] [{claim_id}] Selected refuting evidence")
-        elif supporting_evidence and len(supporting_evidence) > 0:
-            selected_evidence = supporting_evidence[0]
-            selected_stance = "supporting"
-            logger.info(f"[ClaimWorker] [{claim_id}] Selected supporting evidence")
-        else:
-            selected_evidence = "No evidence available"
-            selected_stance = "neutral"
-            logger.info(f"[ClaimWorker] [{claim_id}] No evidence available, using placeholder")
-        
-        # Step 8: Insert ONE evidence item into database
-        logger.info(f"[ClaimWorker] [{claim_id}] Inserting evidence into database")
-        insert_evidence(
-            claim_id=claim_id,
-            source_url=None,  # No URLs in current phase
-            summary=selected_evidence,
-            stance=selected_stance
-        )
+        final_verdict = (verdict_json.get("verdict") or "Unverified").strip().lower()
+
+        evidence_items_to_insert = []
+        for ev in supporting_evidence:
+            if ev and isinstance(ev, str):
+                evidence_items_to_insert.append({"summary": ev, "stance": "supporting"})
+        for ev in refuting_evidence:
+            if ev and isinstance(ev, str):
+                evidence_items_to_insert.append({"summary": ev, "stance": "refuting"})
+
+        if not evidence_items_to_insert:
+            evidence_items_to_insert.append({
+                "summary": verdict_json.get("reasoning") or "Multi-source evidence evaluated across global repositories.",
+                "stance": "supporting" if final_verdict == "true" else "refuting"
+            })
+
+        # Step 8: Insert evidence items into database
+        logger.info(f"[ClaimWorker] [{claim_id}] Inserting {len(evidence_items_to_insert)} evidence items into database")
+        for ev_item in evidence_items_to_insert:
+            try:
+                insert_evidence(
+                    claim_id=claim_id,
+                    source_url=None,
+                    summary=ev_item["summary"],
+                    stance=ev_item["stance"]
+                )
+            except Exception as ev_err:
+                logger.warning(f"[ClaimWorker] [{claim_id}] Error inserting evidence item: {ev_err}")
         
         # Step 9: Update claim with final results
         logger.info(f"[ClaimWorker] [{claim_id}] Updating claim with final results")

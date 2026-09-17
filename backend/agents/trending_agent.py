@@ -341,9 +341,9 @@ class TrendingAgent:
                 results = analyze_sentiment(analysis_queue)
                 for idx, res in enumerate(results):
                     if idx < len(feed_items):
-                        s_score = res.get("score", 0)
+                        s_score = res.get("sentiment_score") if res.get("sentiment_score") is not None else res.get("score", 0)
                         label = res.get("label", "neutral")
-                        is_threat = (s_score < -25) or (label.lower() in ["negative", "toxic", "threat"])
+                        is_threat = res.get("is_threat", False) or (s_score < -25) or (label.lower() in ["negative", "toxic", "threat"])
                         feed_items[idx]["sentiment"] = int(s_score * 100) if abs(s_score) <= 1 else int(s_score)
                         feed_items[idx]["is_threat"] = is_threat
                         if is_threat:

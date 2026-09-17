@@ -722,9 +722,12 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
         scout = ScoutAgent()
         trending = TrendingAgent()
 
-        stock_data = {}
-        if os.getenv("YF_API_KEY"):
-            stock_data = scout.check_stock_impact(request.ticker)
+        stock_data = scout.check_stock_impact(request.ticker)
+        if not stock_data or not stock_data.get("current_price"):
+            # Fallback to direct stock quote helper
+            quote_data = await get_stock_quote(request.ticker)
+            if quote_data and quote_data.get("current_price", 0) > 0:
+                stock_data = quote_data
 
         if not stock_data or not stock_data.get("current_price"):
             stock_data = {
@@ -762,9 +765,9 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
                 sent_results = analyze_sentiment(analysis_queue)
                 for idx, res in enumerate(sent_results):
                     if idx < len(company_articles):
-                        s_score = res.get("score", 0)
+                        s_score = res.get("sentiment_score") if res.get("sentiment_score") is not None else res.get("score", 0)
                         lbl = res.get("label", "neutral")
-                        is_t = (s_score < -25) or (lbl.lower() in ["negative", "toxic", "threat"])
+                        is_t = res.get("is_threat", False) or (s_score < -25) or (lbl.lower() in ["negative", "toxic", "threat"])
                         company_articles[idx]["sentiment"] = int(s_score * 100) if abs(s_score) <= 1 else int(s_score)
                         company_articles[idx]["is_threat"] = is_t
                         if is_t:
@@ -990,7 +993,7 @@ async def brandshield_agent_page():
 @app.get("/lab")
 @app.get("/lab.html")
 async def lab_page():
-    return FileResponse("frontend/submit.html")
+    return FileResponse("frontend/lab.html")
 
 
 @app.get("/favicon.ico")

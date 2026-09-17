@@ -410,16 +410,28 @@
       }
 
       try {
-        const res = await fetch(`${BACKEND}/api/claims/${encodeURIComponent(id)}`, {
-          signal: AbortSignal.timeout(10000)
-        });
-        if (!res.ok) throw new Error(`Claim not found (HTTP ${res.status})`);
-        const data = await res.json();
+        let data = null;
+        const endpoints = [
+          `/api/claims/${encodeURIComponent(id)}`,
+          `https://misinformation-1ouh.onrender.com/api/claims/${encodeURIComponent(id)}`
+        ];
+
+        for (const ep of endpoints) {
+          try {
+            const res = await fetch(ep, { signal: AbortSignal.timeout(8000) });
+            if (res.ok) {
+              data = await res.json();
+              break;
+            }
+          } catch (_) {}
+        }
+
+        if (!data) throw new Error('Claim not found or backend node initializing');
         renderResult(data);
         window.aegisAudio && window.aegisAudio.playSuccess();
       } catch (err) {
         area.innerHTML = `<div class="info-banner err">
-          ${err.message.includes('not found') ? 'Claim not found. Check the ID and try again.' : 'Backend is initializing or claim not found. Try again in 20 seconds. (' + err.message + ')'}
+          ${err.message.includes('not found') ? 'Claim not found. Check the ID and try again.' : 'Backend is initializing or claim not found. Try again in 20 seconds.'}
         </div>`;
       } finally {
         btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Check Status`;

@@ -54,9 +54,19 @@ class InvestigatorAgent:
                 "[InvestigatorAgent] No API key found. Set GEMINI_API_KEY in .env"
             )
 
-        self._key_cycle = itertools.cycle(self.api_keys)
-        self.available_models = ["gemini-3-flash-preview", "gemini-3.1-flash-lite-preview", "gemini-3.6-flash"]
+        self.available_models = [
+            "gemini-3-flash-preview",
+            "gemini-3.1-flash-lite-preview",
+            "gemini-3.6-flash",
+            "gemini-flash-latest",
+            "gemini-2.0-flash-lite-preview-02-05",
+            "gemini-2.5-flash",
+            "gemini-2.0-flash",
+            "gemini-1.5-flash",
+            "gemini-1.5-pro"
+        ]
         self.model_name = self.available_models[0]
+        self._key_cycle = itertools.cycle(self.api_keys)
         print(f"[InvestigatorAgent] Loaded {len(self.api_keys)} Gemini key(s), round-robin active.")
         print(f"[InvestigatorAgent] Using primary model: {self.model_name}")
 

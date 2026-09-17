@@ -396,6 +396,35 @@
             </div>
           </div>
 
+          <!-- Loading Preview -->
+          <div id="syntheticLoadingPreview" style="display:none;margin-top:28px;">
+            <div class="ae-loading-preview">
+              <div class="ae-loading-top">
+                <div class="ae-loading-title-wrap">
+                  <div class="ae-radar-spinner"></div>
+                  <div class="ae-loading-title">Calculating Zipf-Mandelbrot Power-Law Regression</div>
+                </div>
+                <div class="ae-loading-timer-badge" id="synElapsedBadge">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></span>
+                  <span>0.0s elapsed</span>
+                </div>
+              </div>
+              <div class="ae-progress-track">
+                <div class="ae-progress-fill" id="synProgressFill" style="width:25%;background:linear-gradient(90deg, #00f0ff, #10b981);"></div>
+              </div>
+              <div class="ae-skeleton-grid">
+                <div class="ae-skeleton-card">
+                  <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
+                  <div class="ae-skeleton-bar" style="height:24px;width:70%;"></div>
+                </div>
+                <div class="ae-skeleton-card">
+                  <div class="ae-skeleton-bar" style="height:14px;width:45%;"></div>
+                  <div class="ae-skeleton-bar" style="height:24px;width:65%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Results -->
           <div id="syntheticResults" style="display:none;margin-top:32px;">
             <div class="metrics-grid">
@@ -499,6 +528,35 @@
             </button>
           </div>
 
+          <!-- Loading Preview -->
+          <div id="blastLoadingPreview" style="display:none;margin-top:28px;">
+            <div class="ae-loading-preview">
+              <div class="ae-loading-top">
+                <div class="ae-loading-title-wrap">
+                  <div class="ae-radar-spinner"></div>
+                  <div class="ae-loading-title">Solving Hawkes Point-Process Contagion Cascade</div>
+                </div>
+                <div class="ae-loading-timer-badge" id="blastElapsedBadge">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 6px var(--amber);"></span>
+                  <span>0.0s elapsed</span>
+                </div>
+              </div>
+              <div class="ae-progress-track">
+                <div class="ae-progress-fill" id="blastProgressFill" style="width:25%;background:linear-gradient(90deg, #f59e0b, #ff0055);"></div>
+              </div>
+              <div class="ae-skeleton-grid">
+                <div class="ae-skeleton-card">
+                  <div class="ae-skeleton-bar" style="height:14px;width:45%;"></div>
+                  <div class="ae-skeleton-bar" style="height:24px;width:60%;"></div>
+                </div>
+                <div class="ae-skeleton-card">
+                  <div class="ae-skeleton-bar" style="height:14px;width:50%;"></div>
+                  <div class="ae-skeleton-bar" style="height:24px;width:75%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Blast Results -->
           <div id="blastResults" style="display:none;margin-top:32px;">
             <div class="metrics-grid">
@@ -597,6 +655,39 @@
             </button>
           </div>
 
+          <!-- Loading Preview -->
+          <div id="consensusLoadingPreview" style="display:none;margin-top:28px;">
+            <div class="ae-loading-preview">
+              <div class="ae-loading-top">
+                <div class="ae-loading-title-wrap">
+                  <div class="ae-radar-spinner"></div>
+                  <div class="ae-loading-title">Convening Byzantine Swarm Arbitrators &amp; Pruning Outliers</div>
+                </div>
+                <div class="ae-loading-timer-badge" id="byzLabElapsedBadge">
+                  <span style="width:6px;height:6px;border-radius:50%;background:var(--purple);box-shadow:0 0 6px var(--purple);"></span>
+                  <span>0.0s elapsed</span>
+                </div>
+              </div>
+              <div class="ae-progress-track">
+                <div class="ae-progress-fill" id="byzLabProgressFill" style="width:25%;background:linear-gradient(90deg, #a855f7, #6366f1, #10b981);"></div>
+              </div>
+              <div class="ae-skeleton-grid">
+                <div class="ae-skeleton-card">
+                  <div class="ae-skeleton-bar" style="height:14px;width:50%;"></div>
+                  <div class="ae-skeleton-bar" style="height:18px;width:80%;"></div>
+                </div>
+                <div class="ae-skeleton-card">
+                  <div class="ae-skeleton-bar" style="height:14px;width:45%;"></div>
+                  <div class="ae-skeleton-bar" style="height:18px;width:85%;"></div>
+                </div>
+                <div class="ae-skeleton-card">
+                  <div class="ae-skeleton-bar" style="height:14px;width:60%;"></div>
+                  <div class="ae-skeleton-bar" style="height:18px;width:75%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
           <!-- Consensus Results -->
           <div id="consensusResults" style="display:none;margin-top:32px;">
             <div class="agents-swarm-grid" id="swarmCardsGrid"></div>
@@ -613,6 +704,9 @@
               </div>
             </div>
           </div>
+
+        </div>
+      </div>
 
         </div>
       </div>
@@ -665,6 +759,8 @@
     document.getElementById('syntheticTextInput').addEventListener('input', updateTokenCount);
 
     // ── Synthetic Detection Scan ──
+    let synTimerInterval = null;
+
     async function runSyntheticDetection() {
       const text = document.getElementById('syntheticTextInput').value.trim();
       if (!text || text.split(/\s+/).length < 8) {
@@ -676,10 +772,27 @@
       btn.disabled = true;
       btn.innerText = 'Computing Regression...';
 
+      const prevEl = document.getElementById('syntheticLoadingPreview');
+      const resEl = document.getElementById('syntheticResults');
+      const progFill = document.getElementById('synProgressFill');
+
+      if (prevEl) prevEl.style.display = 'block';
+      if (resEl) resEl.style.display = 'none';
+      if (progFill) progFill.style.width = '30%';
+
+      if (synTimerInterval) clearInterval(synTimerInterval);
+      const startTime = performance.now();
+      synTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('synElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--cyan);box-shadow:0 0 6px var(--cyan);"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
+
       let data = null;
       const endpoints = ['/api/lab/synthetic-detect', 'https://misinformation-1ouh.onrender.com/api/lab/synthetic-detect'];
       for (const ep of endpoints) {
         try {
+          if (progFill) progFill.style.width = '60%';
           const resp = await fetch(ep, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -692,9 +805,21 @@
           }
         } catch (_) {}
       }
+
       if (!data || !data.fit_curve) {
+        await new Promise(r => setTimeout(r, 450));
         data = clientSideMandelbrot(text);
       }
+
+      if (progFill) progFill.style.width = '100%';
+      await new Promise(r => setTimeout(r, 300));
+
+      if (synTimerInterval) {
+        clearInterval(synTimerInterval);
+        synTimerInterval = null;
+      }
+
+      if (prevEl) prevEl.style.display = 'none';
 
       btn.disabled = false;
       btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Execute Mandelbrot Scan`;
@@ -961,6 +1086,8 @@
       }
     }
 
+    let blastTimerInterval = null;
+
     async function runBlastRadiusModel() {
       const topic = document.getElementById('blastTopicInput').value.trim();
       const claim = document.getElementById('blastClaimInput').value.trim();
@@ -969,10 +1096,27 @@
       btn.disabled = true;
       btn.innerText = 'Modeling Contagion Physics...';
 
+      const prevEl = document.getElementById('blastLoadingPreview');
+      const resEl = document.getElementById('blastResults');
+      const progFill = document.getElementById('blastProgressFill');
+
+      if (prevEl) prevEl.style.display = 'block';
+      if (resEl) resEl.style.display = 'none';
+      if (progFill) progFill.style.width = '30%';
+
+      if (blastTimerInterval) clearInterval(blastTimerInterval);
+      const startTime = performance.now();
+      blastTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('blastElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 6px var(--amber);"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
+
       let data = null;
       const blastEndpoints = ['/api/lab/blast-radius', 'https://misinformation-1ouh.onrender.com/api/lab/blast-radius'];
       for (const ep of blastEndpoints) {
         try {
+          if (progFill) progFill.style.width = '65%';
           const resp = await fetch(ep, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -985,9 +1129,20 @@
           }
         } catch (_) {}
       }
+
       if (!data || !data.reproduction_number_r0) {
+        await new Promise(r => setTimeout(r, 450));
         data = clientSideHawkes(topic, claim);
       }
+
+      if (progFill) progFill.style.width = '100%';
+      await new Promise(r => setTimeout(r, 300));
+
+      if (blastTimerInterval) {
+        clearInterval(blastTimerInterval);
+        blastTimerInterval = null;
+      }
+      if (prevEl) prevEl.style.display = 'none';
 
       btn.disabled = false;
       btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Simulate Contagion & Swarm Containment`;
@@ -1084,6 +1239,8 @@
       document.getElementById('consensusClaimInput').value = CONSENSUS_SAMPLES[key] || '';
     }
 
+    let byzLabTimerInterval = null;
+
     async function runByzantineConsensus() {
       const claim = document.getElementById('consensusClaimInput').value.trim();
 
@@ -1091,10 +1248,27 @@
       btn.disabled = true;
       btn.innerText = 'Evaluating Byzantine Consensus...';
 
+      const prevEl = document.getElementById('consensusLoadingPreview');
+      const resEl = document.getElementById('consensusResults');
+      const progFill = document.getElementById('byzLabProgressFill');
+
+      if (prevEl) prevEl.style.display = 'block';
+      if (resEl) resEl.style.display = 'none';
+      if (progFill) progFill.style.width = '30%';
+
+      if (byzLabTimerInterval) clearInterval(byzLabTimerInterval);
+      const startTime = performance.now();
+      byzLabTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('byzLabElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--purple);box-shadow:0 0 6px var(--purple);"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
+
       let data = null;
       const consensusEndpoints = ['/api/lab/consensus', 'https://misinformation-1ouh.onrender.com/api/lab/consensus'];
       for (const ep of consensusEndpoints) {
         try {
+          if (progFill) progFill.style.width = '65%';
           const resp = await fetch(ep, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -1107,9 +1281,20 @@
           }
         } catch (_) {}
       }
+
       if (!data || !data.agents) {
+        await new Promise(r => setTimeout(r, 450));
         data = clientSideConsensus(claim);
       }
+
+      if (progFill) progFill.style.width = '100%';
+      await new Promise(r => setTimeout(r, 300));
+
+      if (byzLabTimerInterval) {
+        clearInterval(byzLabTimerInterval);
+        byzLabTimerInterval = null;
+      }
+      if (prevEl) prevEl.style.display = 'none';
 
       btn.disabled = false;
       btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Launch Swarm Consensus Vote`;

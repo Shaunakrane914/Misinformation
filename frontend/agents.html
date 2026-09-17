@@ -3,196 +3,280 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agents — Aegis Protocol</title>
-  <meta name="description" content="Explore Aegis AI agents specialized in social media, financial markets, personal reputation, and brand defense.">
+  <title>Autonomous Agent Swarm Console — Aegis Protocol</title>
+  <meta name="description" content="Decentralized command console for autonomous AI agents monitoring financial equities, viral social discourse, brand integrity, and executive reputation.">
   <link rel="stylesheet" href="aegis-theme.css">
   <style>
-    .agents-hero {
+    /* ── Command Console Split-Pane Layout ── */
+    .agents-console-container {
+      max-width: 1340px;
+      margin: 0 auto 80px;
+      padding: 96px 32px 40px;
       position: relative;
-      padding: 110px 32px 48px;
-      text-align: center;
-      border-bottom: 1px solid var(--border);
-      background: radial-gradient(circle at 50% 0%, rgba(0, 229, 255, 0.08), transparent 60%),
-                  linear-gradient(180deg, #06080d 0%, #090d15 100%);
-    }
-    .agents-hero h1 {
-      font-size: clamp(2.2rem, 4vw, 3.2rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-    .agents-hero h1 span {
-      background: linear-gradient(135deg, #00f2fe, #38bdf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-    .agents-hero p {
-      font-size: 1.05rem;
-      color: var(--text-muted);
-      max-width: 580px;
-      margin: 0 auto;
-      line-height: 1.6;
+      z-index: 2;
     }
 
-    .agents-container {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 48px 24px 80px;
-    }
-
-    .agents-grid {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 24px;
-      margin-bottom: 32px;
-    }
-    @media (max-width: 768px) {
-      .agents-grid {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    .agent-card {
-      background: rgba(13, 17, 26, 0.7);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      padding: 28px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      backdrop-filter: blur(14px);
-      transition: transform 0.2s var(--ease-spring), border-color 0.2s, box-shadow 0.2s;
-      position: relative;
-    }
-    .agent-card:hover {
-      border-color: var(--agent-accent, rgba(0, 229, 255, 0.4));
-      transform: translateY(-2px);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);
-    }
-
-    .agent-card-top {
+    /* Top Telemetry Ribbon */
+    .telemetry-ribbon {
       display: flex;
       align-items: center;
       gap: 14px;
-      margin-bottom: 16px;
-    }
-    .agent-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: var(--agent-icon-bg, rgba(255, 255, 255, 0.05));
-      border: 1px solid var(--agent-icon-border, var(--border));
-      color: var(--agent-accent, #fff);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .agent-title-wrap h2 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      color: #fff;
-      margin: 0;
-    }
-    .agent-tag-label {
-      font-family: var(--font-mono);
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--agent-accent, var(--text-dim));
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-    }
-
-    .agent-desc {
-      font-size: 0.94rem;
-      color: var(--text-muted);
-      line-height: 1.55;
-      margin-bottom: 20px;
-    }
-
-    .agent-sources {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 24px;
-    }
-    .agent-source-chip {
-      font-size: 0.74rem;
-      font-family: var(--font-mono);
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(7, 9, 14, 0.85);
       border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 3px 8px;
-      color: var(--text-dim);
-    }
-
-    .agent-open-btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: space-between;
-      width: 100%;
-      padding: 12px 18px;
-      border-radius: 10px;
-      background: var(--agent-btn-bg, rgba(255, 255, 255, 0.05));
-      border: 1px solid var(--agent-btn-border, var(--border));
-      color: #fff;
-      font-weight: 600;
-      font-size: 0.88rem;
-      text-decoration: none;
-      transition: all 0.16s ease;
-    }
-    .agent-open-btn:hover {
-      background: var(--agent-btn-hover, rgba(255, 255, 255, 0.12));
-      border-color: var(--agent-accent, #fff);
-      color: #fff;
-    }
-
-    /* Core Verifier Card */
-    .verifier-full-card {
-      background: linear-gradient(135deg, rgba(13, 17, 26, 0.9), rgba(18, 24, 38, 0.9));
-      border: 1px solid rgba(0, 229, 255, 0.25);
-      border-radius: 18px;
-      padding: 28px 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-    .verifier-info {
-      max-width: 640px;
-    }
-    .verifier-info h3 {
-      font-size: 1.35rem;
-      font-weight: 800;
-      color: #fff;
-      margin-bottom: 6px;
-    }
-    .verifier-info p {
-      font-size: 0.92rem;
+      border-radius: 12px;
+      padding: 10px 18px;
+      margin-bottom: 24px;
+      font-family: var(--font-mono);
+      font-size: 0.76rem;
       color: var(--text-muted);
-      line-height: 1.55;
-      margin: 0;
+      overflow-x: auto;
+      white-space: nowrap;
+      backdrop-filter: blur(16px);
     }
-    .verifier-action-btn {
-      background: #fff;
-      color: #06080d;
-      font-weight: 700;
-      font-size: 0.9rem;
-      padding: 12px 24px;
-      border-radius: 10px;
-      text-decoration: none;
+    .telemetry-ribbon-item {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.15s ease;
-      white-space: nowrap;
     }
-    .verifier-action-btn:hover {
-      background: #e2e8f0;
+    .telemetry-ribbon-item strong {
+      color: #fff;
+    }
+    .telemetry-divider {
+      color: var(--border-hover);
+      user-select: none;
+    }
+
+    /* Main Split Deck */
+    .command-deck {
+      display: grid;
+      grid-template-columns: 380px 1fr;
+      gap: 24px;
+      min-height: 640px;
+    }
+
+    /* Left Rail: Master Node Selector */
+    .node-master-rail {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .node-selector-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px 20px;
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .node-selector-card:hover {
+      border-color: rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.03);
       transform: translateY(-1px);
+    }
+    .node-selector-card.active {
+      background: rgba(13, 19, 32, 0.9);
+      border-color: var(--node-accent, var(--accent));
+      box-shadow: 0 0 30px rgba(0, 229, 255, 0.08), inset 0 0 0 1px var(--node-accent, var(--accent));
+    }
+    .node-selector-card.active::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; bottom: 0;
+      width: 3px;
+      background: var(--node-accent, var(--accent));
+      box-shadow: 0 0 10px var(--node-accent, var(--accent));
+    }
+
+    .node-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .node-badge {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+    }
+    .node-selector-card.active .node-badge {
+      background: rgba(0, 229, 255, 0.12);
+      border-color: rgba(0, 229, 255, 0.3);
+      color: var(--node-accent, var(--accent));
+    }
+    .node-ping {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--emerald);
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .node-ping-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--emerald);
+      box-shadow: 0 0 8px var(--emerald);
+    }
+    .node-name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .node-desc-short {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+    .node-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .node-tag-pill {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-dim);
+    }
+
+    /* Right Rail: Inspector Deck */
+    .inspector-deck {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 32px;
+      backdrop-filter: blur(20px);
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      position: relative;
+    }
+    .inspector-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .inspector-title-wrap h2 {
+      font-size: 1.65rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      margin: 4px 0;
+    }
+    .inspector-spec-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      background: rgba(7, 9, 14, 0.7);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .spec-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .spec-label {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      letter-spacing: 0.06em;
+    }
+    .spec-value {
+      font-family: var(--font-mono);
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    /* Telemetry Waterfall & Event Log */
+    .inspector-terminal-box {
+      background: #04060a;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 18px 20px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+      color: #94a3b8;
+      line-height: 1.65;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .term-row {
+      display: flex;
+      gap: 12px;
+    }
+    .term-ts {
+      color: var(--text-dim);
+      user-select: none;
+    }
+    .term-tag-ok { color: var(--emerald); font-weight: 700; }
+    .term-tag-info { color: var(--accent); font-weight: 700; }
+    .term-tag-warn { color: var(--amber); font-weight: 700; }
+    .term-tag-crit { color: var(--rose); font-weight: 700; }
+
+    /* Interactive Quick-Test Launcher */
+    .quick-test-box {
+      background: rgba(7, 9, 14, 0.6);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .quick-test-input-row {
+      display: flex;
+      gap: 10px;
+    }
+    .quick-test-input {
+      flex: 1;
+      background: rgba(3, 7, 18, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #fff;
+      font-family: var(--font-mono);
+      font-size: 0.85rem;
+      padding: 10px 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    .quick-test-input:focus {
+      border-color: var(--accent);
+    }
+
+    @media (max-width: 960px) {
+      .command-deck {
+        grid-template-columns: 1fr;
+      }
+      .inspector-spec-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .agents-console-container {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
     }
   </style>
 </head>
@@ -200,180 +284,305 @@
   <script>window.AEGIS_ACTIVE='agents';</script>
   <script src="aegis-nav.js"></script>
 
-  <header class="agents-hero">
-    <h1 class="ae-reveal">The Four <span>Agents</span></h1>
-    <p class="ae-reveal">
-      Each agent is specialized in a different domain, monitoring social media, stock markets, brands, and public figures in real-time.
-    </p>
-  </header>
-
-  <main class="agents-container">
-    <div class="agents-grid">
-
-      <!-- Trending Agent -->
-      <article class="agent-card ae-reveal ag-card" style="
-        --agent-accent: #f472b6;
-        --agent-icon-bg: rgba(244, 114, 182, 0.1);
-        --agent-icon-border: rgba(244, 114, 182, 0.25);
-        --agent-btn-bg: rgba(244, 114, 182, 0.08);
-        --agent-btn-border: rgba(244, 114, 182, 0.25);
-        --agent-btn-hover: rgba(244, 114, 182, 0.18);
-      ">
-        <div>
-          <div class="agent-card-top">
-            <div class="agent-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>
-            </div>
-            <div class="agent-title-wrap">
-              <span class="agent-tag-label">Social Media Radar</span>
-              <h2>Trending Agent</h2>
-            </div>
-          </div>
-          <p class="agent-desc">
-            Monitors viral trends and rumors across social platforms to detect coordinated bot amplification and rapid misinformation spikes.
-          </p>
-          <div class="agent-sources">
-            <span class="agent-source-chip">X / Twitter</span>
-            <span class="agent-source-chip">Reddit</span>
-            <span class="agent-source-chip">TikTok</span>
-            <span class="agent-source-chip">Instagram</span>
-            <span class="agent-source-chip">YouTube</span>
-          </div>
-        </div>
-        <a href="trending-agent.html" class="agent-open-btn">
-          <span>Open Trending Agent</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </article>
-
-      <!-- Scout Agent -->
-      <article class="agent-card ae-reveal ag-card" style="
-        --agent-accent: #a78bfa;
-        --agent-icon-bg: rgba(167, 139, 250, 0.1);
-        --agent-icon-border: rgba(167, 139, 250, 0.25);
-        --agent-btn-bg: rgba(167, 139, 250, 0.08);
-        --agent-btn-border: rgba(167, 139, 250, 0.25);
-        --agent-btn-hover: rgba(167, 139, 250, 0.18);
-      ">
-        <div>
-          <div class="agent-card-top">
-            <div class="agent-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-4l-3 9L9 3l-3 9H2"></path></svg>
-            </div>
-            <div class="agent-title-wrap">
-              <span class="agent-tag-label">Market Watchdog</span>
-              <h2>Scout Agent</h2>
-            </div>
-          </div>
-          <p class="agent-desc">
-            Tracks financial markets for fake earnings leaks, stock manipulation rumors, and anomalous price drops tied to unverified claims.
-          </p>
-          <div class="agent-sources">
-            <span class="agent-source-chip">SEC Filings</span>
-            <span class="agent-source-chip">Yahoo Finance</span>
-            <span class="agent-source-chip">Bloomberg</span>
-            <span class="agent-source-chip">Benzinga</span>
-            <span class="agent-source-chip">WSJ</span>
-          </div>
-        </div>
-        <a href="scout-agent.html" class="agent-open-btn">
-          <span>Open Scout Agent</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </article>
-
-      <!-- Personal Watch -->
-      <article class="agent-card ae-reveal ag-card" style="
-        --agent-accent: #06b6d4;
-        --agent-icon-bg: rgba(6, 182, 212, 0.1);
-        --agent-icon-border: rgba(6, 182, 212, 0.25);
-        --agent-btn-bg: rgba(6, 182, 212, 0.08);
-        --agent-btn-border: rgba(6, 182, 212, 0.25);
-        --agent-btn-hover: rgba(6, 182, 212, 0.18);
-      ">
-        <div>
-          <div class="agent-card-top">
-            <div class="agent-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-            </div>
-            <div class="agent-title-wrap">
-              <span class="agent-tag-label">Personal Reputation</span>
-              <h2>Personal Watch</h2>
-            </div>
-          </div>
-          <p class="agent-desc">
-            Protects individuals and executives by scanning for deepfake audio, fake quotes, impersonation attempts, and targeted defamation.
-          </p>
-          <div class="agent-sources">
-            <span class="agent-source-chip">Audio Logs</span>
-            <span class="agent-source-chip">Video Feeds</span>
-            <span class="agent-source-chip">Telegram</span>
-            <span class="agent-source-chip">LinkedIn</span>
-            <span class="agent-source-chip">News</span>
-          </div>
-        </div>
-        <a href="personal-watch-agent.html" class="agent-open-btn">
-          <span>Open Personal Watch</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </article>
-
-      <!-- BrandShield -->
-      <article class="agent-card ae-reveal ag-card" style="
-        --agent-accent: #10b981;
-        --agent-icon-bg: rgba(16, 185, 129, 0.1);
-        --agent-icon-border: rgba(16, 185, 129, 0.25);
-        --agent-btn-bg: rgba(16, 185, 129, 0.08);
-        --agent-btn-border: rgba(16, 185, 129, 0.25);
-        --agent-btn-hover: rgba(16, 185, 129, 0.18);
-      ">
-        <div>
-          <div class="agent-card-top">
-            <div class="agent-icon">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-            </div>
-            <div class="agent-title-wrap">
-              <span class="agent-tag-label">Corporate Defense</span>
-              <h2>BrandShield</h2>
-            </div>
-          </div>
-          <p class="agent-desc">
-            Protects brands and companies from fake product defect rumors, counterfeit PR statements, and organized smear campaigns.
-          </p>
-          <div class="agent-sources">
-            <span class="agent-source-chip">Reviews</span>
-            <span class="agent-source-chip">Discord</span>
-            <span class="agent-source-chip">Press Releases</span>
-            <span class="agent-source-chip">Trademarks</span>
-            <span class="agent-source-chip">Forums</span>
-          </div>
-        </div>
-        <a href="brandshield-agent.html" class="agent-open-btn">
-          <span>Open BrandShield</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-        </a>
-      </article>
-
-    </div>
-
-    <!-- Claim Verification Core -->
-    <div class="verifier-full-card ae-reveal">
-      <div class="verifier-info">
-        <h3>Need to verify a specific claim right now?</h3>
-        <p>Paste any rumor, tweet, headline, or leak to run evidence gathering across all four agents and get a verdict in seconds.</p>
+  <div class="agents-console-container">
+    
+    <!-- Top Telemetry Ribbon -->
+    <div class="telemetry-ribbon ae-reveal">
+      <div class="telemetry-ribbon-item">
+        <span class="node-ping-dot"></span>
+        <span>SWARM TOPOLOGY: <strong>4/4 AUTONOMOUS NODES</strong></span>
       </div>
-      <a href="submit.html" class="verifier-action-btn">
-        <span>Verify a Claim</span>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-      </a>
+      <span class="telemetry-divider">│</span>
+      <div class="telemetry-ribbon-item">
+        <span>MEAN LATENCY: <strong style="color:var(--accent);">16.2ms</strong></span>
+      </div>
+      <span class="telemetry-divider">│</span>
+      <div class="telemetry-ribbon-item">
+        <span>FAULT TOLERANCE: <strong style="color:var(--purple);">W-MSR (F=1)</strong></span>
+      </div>
+      <span class="telemetry-divider">│</span>
+      <div class="telemetry-ribbon-item">
+        <span>INGESTION: <strong style="color:var(--emerald);">ZERO-COST HTTP + RSS</strong></span>
+      </div>
+      <span class="telemetry-divider">│</span>
+      <div class="telemetry-ribbon-item">
+        <span>EPOCH: <strong style="color:var(--cyan);">0x8F4E_2026</strong></span>
+      </div>
     </div>
-  </main>
+
+    <!-- Header Section -->
+    <div class="ae-reveal" style="margin-bottom:28px;">
+      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// INTELLIGENCE LAYER</div>
+      <h1 style="font-size:clamp(2rem, 3.8vw, 3rem);font-weight:800;letter-spacing:-0.03em;color:#fff;">
+        Autonomous Sentinel Swarm
+      </h1>
+      <p style="color:var(--text-muted);font-size:0.96rem;max-width:640px;line-height:1.6;margin-top:4px;">
+        Inspect real-time telemetry, data vectors, and mathematical anomaly detection thresholds for each specialized agent in the Aegis Protocol.
+      </p>
+    </div>
+
+    <!-- Split-Pane Command Deck -->
+    <div class="command-deck ae-reveal">
+      
+      <!-- Left Rail: Master Node Selector -->
+      <div class="node-master-rail" id="nodeMasterRail">
+        
+        <!-- Node 1: Scout -->
+        <div class="node-selector-card active" onclick="selectAgentNode('scout')" id="card_scout" style="--node-accent:#00e5ff;">
+          <div class="node-card-top">
+            <span class="node-badge">AGENT_01 &bull; FINANCE</span>
+            <span class="node-ping"><span class="node-ping-dot"></span> 14ms</span>
+          </div>
+          <div class="node-name">Scout Agent</div>
+          <div class="node-desc-short">Financial market watchdog correlating equity plunges with unverified leaks.</div>
+          <div class="node-tags">
+            <span class="node-tag-pill">Yahoo Finance</span>
+            <span class="node-tag-pill">SEC Filings</span>
+            <span class="node-tag-pill">Options Delta</span>
+          </div>
+        </div>
+
+        <!-- Node 2: Trending -->
+        <div class="node-selector-card" onclick="selectAgentNode('trending')" id="card_trending" style="--node-accent:#f472b6;">
+          <div class="node-card-top">
+            <span class="node-badge">AGENT_02 &bull; SOCIAL</span>
+            <span class="node-ping"><span class="node-ping-dot"></span> 22ms</span>
+          </div>
+          <div class="node-name">Trending Agent</div>
+          <div class="node-desc-short">Viral discourse radar detecting coordinated bot amplification cascades.</div>
+          <div class="node-tags">
+            <span class="node-tag-pill">X / Twitter</span>
+            <span class="node-tag-pill">Reddit</span>
+            <span class="node-tag-pill">Google News</span>
+          </div>
+        </div>
+
+        <!-- Node 3: BrandShield -->
+        <div class="node-selector-card" onclick="selectAgentNode('brandshield')" id="card_brandshield" style="--node-accent:#10b981;">
+          <div class="node-card-top">
+            <span class="node-badge">AGENT_03 &bull; REPUTATION</span>
+            <span class="node-ping"><span class="node-ping-dot"></span> 18ms</span>
+          </div>
+          <div class="node-name">BrandShield Agent</div>
+          <div class="node-desc-short">Corporate defense scanning for 1-star review brigades and smear PR campaigns.</div>
+          <div class="node-tags">
+            <span class="node-tag-pill">Trustpilot</span>
+            <span class="node-tag-pill">Amazon</span>
+            <span class="node-tag-pill">Flipkart</span>
+          </div>
+        </div>
+
+        <!-- Node 4: Personal Watch -->
+        <div class="node-selector-card" onclick="selectAgentNode('personal')" id="card_personal" style="--node-accent:#a855f7;">
+          <div class="node-card-top">
+            <span class="node-badge">AGENT_04 &bull; VIP DEFENSE</span>
+            <span class="node-ping"><span class="node-ping-dot"></span> 19ms</span>
+          </div>
+          <div class="node-name">Personal Watch Agent</div>
+          <div class="node-desc-short">Executive surveillance defending against deepfake voice leaks and fake quotes.</div>
+          <div class="node-tags">
+            <span class="node-tag-pill">Spectrogram</span>
+            <span class="node-tag-pill">YouTube</span>
+            <span class="node-tag-pill">LinkedIn</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Right Rail: Live Inspector Deck -->
+      <div class="inspector-deck" id="inspectorDeck">
+        
+        <!-- Header & Launch Action -->
+        <div class="inspector-header">
+          <div class="inspector-title-wrap">
+            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);letter-spacing:0.08em;" id="insNodeId">AGENT_01 &bull; FINANCIAL SENTINEL</div>
+            <h2 id="insNodeTitle">Scout Agent Console</h2>
+            <p style="font-size:0.88rem;color:var(--text-muted);margin:0;max-width:540px;line-height:1.5;" id="insNodeDesc">
+              Monitors equity markets for sudden volatility spikes triggered by unverified leaks, earnings hoaxes, and spoofed SEC press releases.
+            </p>
+          </div>
+          <a href="scout-agent.html" id="insLaunchBtn" class="ae-btn ae-btn-primary" style="padding:10px 20px;font-size:0.86rem;">
+            <span>Open Dedicated Console →</span>
+          </a>
+        </div>
+
+        <!-- System Specifications Grid -->
+        <div class="inspector-spec-grid">
+          <div class="spec-item">
+            <span class="spec-label">INGESTION PROTOCOL</span>
+            <span class="spec-value" id="specProto">HTTP / Yahoo Finance</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">EXECUTION BUDGET</span>
+            <span class="spec-value" id="specBudget">18.4ms / query</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">ANOMALY TRIGGER</span>
+            <span class="spec-value" id="specTrigger">|Δp| &gt; 2.5% &amp; Leak</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">CONSENSUS WEIGHT</span>
+            <span class="spec-value" id="specWeight">w_i = 0.32 (High)</span>
+          </div>
+        </div>
+
+        <!-- Telemetry Event Stream -->
+        <div>
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;">
+            <span>// LIVE SOCKET EVENT TELEMETRY</span>
+            <span style="color:var(--emerald);font-size:0.7rem;">STREAMING LIVE</span>
+          </div>
+          <div class="inspector-terminal-box" id="insTermBox">
+            <div class="term-row"><span class="term-ts">[13:24:02.14]</span><span class="term-tag-ok">NODE_ONLINE</span><span>Scout Agent initialized on cluster socket ws://aegis-mesh/scout</span></div>
+            <div class="term-row"><span class="term-ts">[13:24:02.38]</span><span class="term-tag-info">FEED_SYNC</span><span>Ingested live 5d intraday ticks for NVDA, TSLA, AAPL</span></div>
+            <div class="term-row"><span class="term-ts">[13:24:03.01]</span><span class="term-tag-warn">ANOMALY_POLL</span><span>Evaluating price-leak correlation matrix against Reddit r/wallstreetbets</span></div>
+            <div class="term-row"><span class="term-ts">[13:24:04.12]</span><span class="term-tag-ok">READY</span><span>Quorum standing by for user search query</span></div>
+          </div>
+        </div>
+
+        <!-- Quick Test Launcher -->
+        <div class="quick-test-box">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);display:flex;justify-content:space-between;">
+            <span>// INTERACTIVE QUERY DISPATCH</span>
+            <span style="color:var(--text-dim);">DIRECT LAUNCH</span>
+          </div>
+          <form onsubmit="handleQuickDispatch(event)" class="quick-test-input-row">
+            <input type="text" id="insQuickInput" class="quick-test-input" placeholder="Enter target equity or query (e.g. NVDA)..." value="NVDA">
+            <button type="submit" class="ae-btn ae-btn-primary" style="padding:8px 18px;font-size:0.84rem;">
+              Dispatch Agent
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
 
   <footer class="ae-footer">
-    <div style="display:flex;align-items:center;gap:10px;">
-      <span style="font-weight:700;color:#fff;letter-spacing:-0.02em;">AEGIS PROTOCOL</span>
+    <div>
+      <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);">Autonomous Multi-Agent AI Defense System &copy; 2026</div>
     </div>
-    <div>Multi-Agent Misinformation Defense</div>
+    <div style="display:flex;gap:18px;font-size:0.8rem;">
+      <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
+      <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
+      <a href="lab.html" style="color:var(--text-muted);text-decoration:none;">Threat Lab</a>
+      <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
+    </div>
   </footer>
+
+  <script>
+    const AGENT_DATA = {
+      scout: {
+        id: 'AGENT_01 &bull; FINANCIAL SENTINEL',
+        title: 'Scout Agent Console',
+        desc: 'Monitors equity markets for sudden volatility spikes triggered by unverified leaks, earnings hoaxes, and spoofed SEC press releases.',
+        url: 'scout-agent.html',
+        proto: 'HTTP / Yahoo Finance',
+        budget: '18.4ms / query',
+        trigger: '|Δp| > 2.5% & Rumor',
+        weight: 'w_i = 0.32 (High)',
+        placeholder: 'Enter equity symbol (e.g. NVDA, TSLA, AAPL)...',
+        defaultVal: 'NVDA',
+        logs: [
+          { ts: '13:24:02.14', tag: 'term-tag-ok', tagText: 'NODE_ONLINE', msg: 'Scout Agent initialized on cluster socket ws://aegis-mesh/scout' },
+          { ts: '13:24:02.38', tag: 'term-tag-info', tagText: 'FEED_SYNC', msg: 'Ingested live 5d intraday ticks for NVDA, TSLA, AAPL' },
+          { ts: '13:24:03.01', tag: 'term-tag-warn', tagText: 'ANOMALY_POLL', msg: 'Evaluating price-leak correlation matrix against financial discourse' },
+          { ts: '13:24:04.12', tag: 'term-tag-ok', tagText: 'READY', msg: 'Quorum standing by for user search query' }
+        ]
+      },
+      trending: {
+        id: 'AGENT_02 &bull; SOCIAL MEDIA RADAR',
+        title: 'Trending Agent Console',
+        desc: 'Scans real-time social streams (X/Twitter, Reddit, Google News, TikTok, YouTube) to uncover synchronized amplification and synthetic engagement bursts.',
+        url: 'trending-agent.html',
+        proto: 'RSS / Web Feeds',
+        budget: '24.1ms / query',
+        trigger: 'Velocity > 3.2x Mean',
+        weight: 'w_i = 0.28 (Standard)',
+        placeholder: 'Enter viral topic or entity (e.g. Deepfake CEO, 5G Water)...',
+        defaultVal: 'Deepfake CEO',
+        logs: [
+          { ts: '13:24:01.88', tag: 'term-tag-ok', tagText: 'SOCKET_ESTABLISHED', msg: 'Connected to PullPush Reddit stream & Google News RSS cluster' },
+          { ts: '13:24:02.45', tag: 'term-tag-info', tagText: 'CLUSTER_ANALYSIS', msg: 'Hawkes contagion branch modeling active across 84k social vectors' },
+          { ts: '13:24:03.18', tag: 'term-tag-ok', tagText: 'INGESTION_STABLE', msg: 'Zero-cost scraper pipeline streaming live with 0 token expenditure' }
+        ]
+      },
+      brandshield: {
+        id: 'AGENT_03 &bull; CORPORATE REPUTATION',
+        title: 'BrandShield Agent Console',
+        desc: 'Audits consumer marketplaces and review portals to isolate counterfeit merchant listings, coordinated 1-star brigades, and adversarial PR smears.',
+        url: 'brandshield-agent.html',
+        proto: 'Multi-Storefront Audit',
+        budget: '21.0ms / query',
+        trigger: 'Fake Review Index > 75%',
+        weight: 'w_i = 0.22 (Bespoke)',
+        placeholder: 'Enter company or brand name (e.g. Apple, Nike, Sony)...',
+        defaultVal: 'Apple',
+        logs: [
+          { ts: '13:24:02.05', tag: 'term-tag-ok', tagText: 'AGENT_ACTIVE', msg: 'BrandShield node active across Trustpilot, Amazon, Flipkart, Reddit' },
+          { ts: '13:24:02.72', tag: 'term-tag-info', tagText: 'ASTROTURF_SCAN', msg: 'Statistical pattern recognizer filtering duplicate complaint clusters' },
+          { ts: '13:24:03.54', tag: 'term-tag-ok', tagText: 'HEURISTIC_SYNC', msg: 'Merchant catalog verified against official trademark registries' }
+        ]
+      },
+      personal: {
+        id: 'AGENT_04 &bull; VIP & EXECUTIVE DEFENSE',
+        title: 'Personal Watch Agent Console',
+        desc: 'Protects high-profile individuals and executives against synthetic voice deepfakes, fabricated quotes, impersonation channels, and targeted defamation.',
+        url: 'personal-watch-agent.html',
+        proto: 'Spectrogram + Search',
+        budget: '26.8ms / query',
+        trigger: 'Deepfake Probability > 80%',
+        weight: 'w_i = 0.18 (Targeted)',
+        placeholder: 'Enter person or executive name (e.g. Sam Altman, Jensen Huang)...',
+        defaultVal: 'Sam Altman',
+        logs: [
+          { ts: '13:24:02.20', tag: 'term-tag-ok', tagText: 'AUDIO_FFT_ARMED', msg: 'Acoustic artifact analyzer loaded with 48kHz frequency resolution' },
+          { ts: '13:24:02.91', tag: 'term-tag-info', tagText: 'IDENTITY_SURVEILLANCE', msg: 'Cross-referencing verified interview transcripts with video vectors' },
+          { ts: '13:24:03.88', tag: 'term-tag-ok', tagText: 'WATCH_ACTIVE', msg: 'Standing by for live VIP forensic audit' }
+        ]
+      }
+    };
+
+    let currentAgentKey = 'scout';
+
+    function selectAgentNode(key) {
+      currentAgentKey = key;
+      document.querySelectorAll('.node-selector-card').forEach(c => c.classList.remove('active'));
+      const activeCard = document.getElementById('card_' + key);
+      if (activeCard) activeCard.classList.add('active');
+
+      const data = AGENT_DATA[key];
+      if (!data) return;
+
+      document.getElementById('insNodeId').innerHTML = data.id;
+      document.getElementById('insNodeTitle').innerText = data.title;
+      document.getElementById('insNodeDesc').innerText = data.desc;
+      document.getElementById('insLaunchBtn').href = data.url;
+      document.getElementById('specProto').innerText = data.proto;
+      document.getElementById('specBudget').innerText = data.budget;
+      document.getElementById('specTrigger').innerText = data.trigger;
+      document.getElementById('specWeight').innerText = data.weight;
+
+      const input = document.getElementById('insQuickInput');
+      input.placeholder = data.placeholder;
+      input.value = data.defaultVal;
+
+      const termBox = document.getElementById('insTermBox');
+      termBox.innerHTML = data.logs.map(l => `
+        <div class="term-row"><span class="term-ts">[${l.ts}]</span><span class="${l.tag}">${l.tagText}</span><span>${l.msg}</span></div>
+      `).join('');
+    }
+
+    function handleQuickDispatch(e) {
+      e.preventDefault();
+      const val = document.getElementById('insQuickInput').value.trim();
+      const data = AGENT_DATA[currentAgentKey];
+      if (!data) return;
+      window.location.href = data.url;
+    }
+  </script>
 </body>
 </html>

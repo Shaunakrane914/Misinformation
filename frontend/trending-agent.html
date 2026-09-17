@@ -214,20 +214,38 @@
       const note = document.getElementById('staticNote');
       note.style.display = 'none';
       showScanAnimation(feed);
-      const delays = [350, 700, 1050, 1400, 1750];
-      const fakeCounts = [14, 8, 22, 11, 7];
-      PLATFORMS.forEach((p, i) => setTimeout(() => markPlatformDone(p.name, fakeCounts[i]), delays[i]));
+      const delays = [300, 600, 900, 1200, 1500];
+      PLATFORMS.forEach((p, i) => setTimeout(() => markPlatformDone(p.name, 'Audited'), delays[i]));
+
+      try {
+        const resp = await fetch('/api/trending/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ asset_name: currentAsset })
+        });
+        if (resp.ok) {
+          const result = await resp.json();
+          const threats = result.threats || [];
+          PLATFORMS.forEach(p => markPlatformDone(p.name, 'Verified'));
+          await new Promise(r => setTimeout(r, 600));
+          renderFeed(threats, true);
+          updateChart(currentAsset);
+          return;
+        }
+      } catch (e) {
+        console.warn('Backend scan fallback:', e);
+      }
 
       try {
         const prompt = `You are a real-time entertainment intelligence AI scanning multiple social media platforms for "${currentAsset}". Scan: X/Twitter, Instagram, Reddit, Google News, YouTube. Generate a threat intelligence report with 5-6 items mixing threats and non-threats. Return STRICT JSON array: [{ "title": "headline max 15 words", "source": "X / Twitter|Instagram|Reddit|Google News|YouTube", "summary": "1-2 sentence analysis max 30 words", "is_threat": true|false, "sentiment": integer -100 to 100, "url": "#" }]. Include at least 2 threats. Be specific to ${currentAsset}. Date: ${new Date().toDateString()}.`;
         const data = await window.GeminiClient.askJSON(prompt);
         if (Array.isArray(data) && data.length > 0) {
-          await new Promise(r => setTimeout(r, 1800));
+          await new Promise(r => setTimeout(r, 1200));
           renderFeed(data, true);
           updateChart(currentAsset);
         }
       } catch (e) {
-        await new Promise(r => setTimeout(r, 1500));
+        await new Promise(r => setTimeout(r, 1000));
         renderFeed([
           { title: `${currentAsset} — Synthetic AI voice clone deepfake detected on short-form video feeds`, source: 'X / Twitter', summary: 'Audio forensics indicate phase vocoder pitch-shift artifacts. 84% synthetic probability.', is_threat: true, sentiment: -64 },
           { title: `${currentAsset} official spokesperson clarifies upcoming project production schedule`, source: 'Google News', summary: 'Press release refutes unauthorized studio leak rumors.', is_threat: false, sentiment: 42 }

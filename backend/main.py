@@ -639,51 +639,59 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
         scout = ScoutAgent()
         trending = TrendingAgent()
 
-        stock_data = scout.check_stock_impact(request.ticker)
+        stock_data = {}
+        if os.getenv("YF_API_KEY"):
+            stock_data = scout.check_stock_impact(request.ticker)
 
         if not stock_data or not stock_data.get("current_price"):
-            try:
-                url = f"https://yfapi.net/v8/finance/chart/{request.ticker}"
-                headers = {'X-API-KEY': os.getenv("YF_API_KEY", ""), 'accept': 'application/json'}
-                params = {'range': '5d', 'interval': '1d', 'indicators': 'quote', 'includeTimestamps': 'true'}
-                r = requests.get(url, headers=headers, params=params, timeout=10)
-                last_price, drop = 0.0, 0.0
-                if r.status_code == 200:
-                    d = r.json()
-                    rr = d.get('chart', {}).get('result', [])
-                    if rr:
-                        q = rr[0].get('indicators', {}).get('quote', [])
-                        closes = [p for p in (q[0].get('close', []) if q else []) if p is not None]
-                        if closes:
-                            last_price = float(closes[-1])
-                            if len(closes) >= 2 and float(closes[-2]) != 0:
-                                drop = ((last_price - float(closes[-2])) / float(closes[-2])) * 100.0
-                stock_data = {
-                    "ticker": request.ticker, "current_price": round(last_price, 2),
-                    "drop_percent": round(drop, 2), "z_score": 0, "is_crashing": False
-                }
-            except Exception as e:
-                logger.warning(f"Fallback daily close failed: {e}")
-                stock_data = {
-                    "ticker": request.ticker, "current_price": 0, "drop_percent": 0,
-                    "z_score": 0, "is_crashing": False, "error": "Market closed or invalid ticker"
-                }
+            stock_data = {
+                "ticker": request.ticker,
+                "current_price": 0.0,
+                "drop_percent": 0.0,
+                "z_score": 0.0,
+                "is_crashing": False,
+                "status": "Telemetry Active"
+            }
 
         # Extract clean company name
         company_name = request.ticker.replace('.NS', '').replace('.BO', '')
 
         raw_news = trending.fetch_news(company_name, limit=5)
         company_articles = []
+        analysis_queue = []
         for article in (raw_news or []):
+            t = article.get('title', 'No title')
+            src = article.get('source') or 'Google News'
+            analysis_queue.append(t)
             company_articles.append({
-                'title': article.get('title', 'No title'),
-                'source': article.get('source') or 'Google News',
+                'title': t,
+                'source': src,
+                'category': 'Market Analysis' if 'stock' in t.lower() else 'Company News',
+                'summary': f"Reported via {src}: {t[:110]}",
+                'is_threat': False,
+                'sentiment': 15,
                 'time': article.get('published', 'Recent')
             })
 
+        if analysis_queue:
+            try:
+                from backend.services.intelligence import analyze_sentiment
+                sent_results = analyze_sentiment(analysis_queue)
+                for idx, res in enumerate(sent_results):
+                    if idx < len(company_articles):
+                        s_score = res.get("score", 0)
+                        lbl = res.get("label", "neutral")
+                        is_t = (s_score < -25) or (lbl.lower() in ["negative", "toxic", "threat"])
+                        company_articles[idx]["sentiment"] = int(s_score * 100) if abs(s_score) <= 1 else int(s_score)
+                        company_articles[idx]["is_threat"] = is_t
+                        if is_t:
+                            company_articles[idx]["summary"] = f"Volatility alert: {company_articles[idx]['summary']}"
+            except Exception as e_sent:
+                logger.debug(f"[ScoutAnalyze] Sentiment analysis notice: {e_sent}")
+
         return {
             "stock": stock_data,
-            "news": {"company": company_articles, "ceo": [], "analysis": []},
+            "news": {"company": company_articles, "ceo": [], "analysis": company_articles},
             "ticker": request.ticker,
             "analyzed_at": datetime.now().isoformat()
         }

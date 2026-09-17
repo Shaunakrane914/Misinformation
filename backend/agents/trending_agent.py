@@ -251,8 +251,8 @@ class TrendingAgent:
         check_box_office = identifiers.get("box_office", False)
 
         # 1. Fetch raw data
+        news_items = self.fetch_news(asset_name, limit=6)
         paparazzi_items = self.fetch_paparazzi(instagram_url) if instagram_url else []
-        news_items = self.fetch_news(asset_name)
         
         box_office_data = {}
         if check_box_office:
@@ -262,52 +262,107 @@ class TrendingAgent:
         if hashtag:
             fan_war_tweets = self.fetch_fan_wars(hashtag)
 
-        # 2. Prepare text for analysis
-        # We'll analyze news titles, paparazzi captions, and fan war tweets
+        # 2. Enrich with AgentReach zero-cost social scraper (Twitter & Reddit)
+        try:
+            from backend.services.agent_reach_scraper import reach_scraper
+            if not fan_war_tweets:
+                social_tweets = reach_scraper.search_twitter(f"{asset_name} rumor OR controversy OR leak", limit=4)
+                for st in social_tweets:
+                    fan_war_tweets.append({
+                        "text": st.get("snippet") or st.get("title", ""),
+                        "author": st.get("author", "@user"),
+                        "source": "Twitter/X",
+                        "url": st.get("url", "#"),
+                        "likes": st.get("likes", 0),
+                        "retweets": st.get("retweets", 0)
+                    })
+
+            reddit_posts = reach_scraper.search_reddit(f"{asset_name}", limit=4)
+            for rp in reddit_posts:
+                fan_war_tweets.append({
+                    "text": rp.get("snippet") or rp.get("title", ""),
+                    "author": rp.get("author", "u/user"),
+                    "source": "Reddit",
+                    "url": rp.get("url", "#"),
+                    "likes": rp.get("score", 0),
+                    "retweets": 0
+                })
+        except Exception as reach_err:
+            logger.debug(f"[TrendingAgent] AgentReach enrichment note: {reach_err}")
+
+        # 3. Prepare text for analysis
         analysis_queue = []
+        feed_items = []
         
         # Add news titles
         for item in news_items:
-            analysis_queue.append(item.get("title", ""))
+            t = item.get("title", "")
+            analysis_queue.append(t)
+            feed_items.append({
+                "title": t,
+                "source": item.get("source") or "Google News",
+                "summary": f"Reported by {item.get('source', 'News Wire')}: {t[:120]}",
+                "url": item.get("link", "#"),
+                "is_threat": False,
+                "sentiment": 0
+            })
             
         # Add paparazzi captions
         for item in paparazzi_items:
-            analysis_queue.append(item.get("caption", "") or "No caption")
+            cap = item.get("caption", "") or "Media Post"
+            analysis_queue.append(cap)
+            feed_items.append({
+                "title": f"Instagram Update: {cap[:80]}",
+                "source": "Instagram",
+                "summary": cap[:140],
+                "url": item.get("url", "#"),
+                "is_threat": False,
+                "sentiment": 0
+            })
             
-        # Add fan war tweets
+        # Add fan war tweets & reddit
         for item in fan_war_tweets:
-            analysis_queue.append(item.get("text", "") or "No text")
+            txt = item.get("text", "") or "Social Discussion"
+            analysis_queue.append(txt)
+            feed_items.append({
+                "title": txt[:90] + ("..." if len(txt) > 90 else ""),
+                "source": item.get("source") or "Twitter/X",
+                "summary": f"Discussion by {item.get('author', 'user')}: {txt[:120]}",
+                "url": item.get("url", "#"),
+                "is_threat": False,
+                "sentiment": 0
+            })
 
-        # 3. Run Gemini Analysis
+        # 4. Run Gemini / Sentiment Analysis
         if analysis_queue:
-            from backend.services.intelligence import analyze_sentiment
-            logger.info(f"Analyzing sentiment for {len(analysis_queue)} items...")
-            results = analyze_sentiment(analysis_queue)
-            
-            # 4. Merge results back
-            current_idx = 0
-            
-            # News
-            for item in news_items:
-                if current_idx < len(results):
-                    item.update(results[current_idx])
-                    current_idx += 1
-            
-            # Paparazzi
-            for item in paparazzi_items:
-                if current_idx < len(results):
-                    item.update(results[current_idx])
-                    current_idx += 1
-                    
-            # Fan Wars
-            for item in fan_war_tweets:
-                if current_idx < len(results):
-                    item.update(results[current_idx])
-                    current_idx += 1
+            try:
+                from backend.services.intelligence import analyze_sentiment
+                logger.info(f"Analyzing sentiment for {len(analysis_queue)} items...")
+                results = analyze_sentiment(analysis_queue)
+                for idx, res in enumerate(results):
+                    if idx < len(feed_items):
+                        s_score = res.get("score", 0)
+                        label = res.get("label", "neutral")
+                        is_threat = (s_score < -25) or (label.lower() in ["negative", "toxic", "threat"])
+                        feed_items[idx]["sentiment"] = int(s_score * 100) if abs(s_score) <= 1 else int(s_score)
+                        feed_items[idx]["is_threat"] = is_threat
+                        if is_threat:
+                            feed_items[idx]["summary"] = f"Flagged risk ({label}): {feed_items[idx]['summary']}"
+            except Exception as sent_err:
+                logger.warning(f"Sentiment analysis fallback: {sent_err}")
+                for idx, fi in enumerate(feed_items):
+                    # Basic heuristic fallback
+                    lower_t = fi["title"].lower()
+                    if any(w in lower_t for w in ["fake", "scam", "rumor", "leak", "controversy", "boycott", "deepfake"]):
+                        fi["is_threat"] = True
+                        fi["sentiment"] = -45
+                    else:
+                        fi["sentiment"] = 25
 
         return {
             "asset_name": asset_name,
             "identifiers": identifiers,
+            "threats": feed_items,
             "sources": {
                 "paparazzi": paparazzi_items,
                 "news": news_items,
@@ -317,7 +372,9 @@ class TrendingAgent:
             "counts": {
                 "paparazzi": len(paparazzi_items),
                 "news": len(news_items),
-                "fan_wars": len(fan_war_tweets)
+                "fan_wars": len(fan_war_tweets),
+                "total_threats": sum(1 for f in feed_items if f.get("is_threat")),
+                "total_items": len(feed_items)
             },
         }
 

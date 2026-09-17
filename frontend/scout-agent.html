@@ -281,7 +281,7 @@
       resultBox.innerHTML = ''; newsBox.innerHTML = '';
       showScanAnim(resultBox);
 
-      const delays = [400, 700, 1000, 1300];
+      const delays = [350, 650, 950, 1200];
       STOCK_PLATFORMS.forEach((p, i) => setTimeout(() => markDone(p.name, 'verified'), delays[i]));
 
       let stockData = null;
@@ -290,22 +290,43 @@
         markDone('YahooFinance', (stockData.currency === 'INR' ? '\u20b9' : '$') + stockData.current_price);
       } catch (e) { markDone('YahooFinance', 'Active'); }
 
+      // Try backend endpoint first
+      let backendNews = null;
       try {
-        const prompt = `You are a financial intelligence AI analyzing "${ticker}"${stockData ? ` (${stockData.name}, price: ${stockData.current_price} ${stockData.currency}, ${stockData.drop_percent}% change, Z-score: ${stockData.z_score})` : ''}.
+        const resp = await fetch('/api/scout/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ticker })
+        });
+        if (resp.ok) {
+          const bData = await resp.json();
+          if (bData.news && bData.news.company && bData.news.company.length > 0) {
+            backendNews = bData.news.company;
+          }
+        }
+      } catch (beErr) {
+        console.warn('Backend scout note:', beErr);
+      }
+
+      try {
+        let newsData = backendNews;
+        if (!newsData || newsData.length === 0) {
+          const prompt = `You are a financial intelligence AI analyzing "${ticker}"${stockData ? ` (${stockData.name}, price: ${stockData.current_price} ${stockData.currency}, ${stockData.drop_percent}% change, Z-score: ${stockData.z_score})` : ''}.
 Simulate scanning of financial news: Economic Times, Moneycontrol, Google News, Bloomberg, Reuters, Reddit r/stocks.
 Generate 5 news items. Return STRICT JSON array:
 [{ "title": "headline max 15 words", "source": "one of the sources above", "category": "Company News|CEO News|Market Analysis|Insider Activity", "summary": "1-2 sentence insight max 25 words", "is_threat": true|false, "sentiment": integer -100 to 100 }]
 If crashing (${stockData?.is_crashing ? 'YES' : 'NO'}), include at least 2 negative/threat items. Current date: ${new Date().toDateString()}.`;
 
-        const newsData = await window.GeminiClient.askJSON(prompt);
-        await new Promise(r => setTimeout(r, 1600));
+          newsData = await window.GeminiClient.askJSON(prompt);
+        }
+        await new Promise(r => setTimeout(r, 600));
 
         if (stockData) {
           const dc = parseFloat(stockData.drop_percent) < -2 ? 'var(--rose)' : parseFloat(stockData.drop_percent) > 1 ? 'var(--emerald)' : '#fbbf24';
           const sym = stockData.currency === 'INR' ? '\u20b9' : '$';
           resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker} <span style="font-size:0.85rem;color:var(--text-muted);font-weight:500;">${stockData.name}</span></span><span class="stock-price" style="color:${dc}">${sym}${stockData.current_price}</span></div><div class="stock-metrics"><span class="stock-metric">24h Delta: <strong style="color:${dc}">${stockData.drop_percent}%</strong></span><span class="stock-metric">Prev Close: <strong>${sym}${stockData.prev_close}</strong></span><span class="stock-metric">Z-Score: <strong>${stockData.z_score}</strong></span><span class="stock-metric">Status: <strong style="color:${stockData.is_crashing?'var(--rose)':'var(--emerald)'}">${stockData.is_crashing?'ANOMALOUS VOLATILITY':'NOMINAL'}</strong></span></div></div>`;
         } else {
-          resultBox.innerHTML = `<div class="stock-result-card"><p style="color:var(--text-muted);font-size:0.88rem;">Live ticker feed for <strong>${ticker}</strong> calibrated — displaying intelligence report below.</p></div>`;
+          resultBox.innerHTML = `<div class="stock-result-card"><p style="color:var(--text-muted);font-size:0.88rem;">Live market intelligence stream for <strong>${ticker}</strong> active — telemetry rendered below.</p></div>`;
         }
 
         if (Array.isArray(newsData) && newsData.length > 0) {
@@ -313,11 +334,11 @@ If crashing (${stockData?.is_crashing ? 'YES' : 'NO'}), include at least 2 negat
           const grid = document.getElementById('newsGridDyn');
           newsData.forEach(item => {
             const sc = (item.sentiment||0) < -20 ? 'var(--rose)' : (item.sentiment||0) > 20 ? 'var(--emerald)' : '#fbbf24';
-            grid.innerHTML += `<div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:${sc};display:inline-block;"></span>${item.source} <span style="color:#a78bfa">${item.category}</span>${item.is_threat?'<span style="margin-left:auto;font-size:0.68rem;color:var(--rose);background:rgba(244,63,94,0.12);padding:2px 8px;border-radius:20px;font-weight:700;">THREAT RISK</span>':''}</div><p class="news-title">${item.title}</p><p class="news-meta">${item.summary}</p><div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:10px;"><div style="width:${Math.min(Math.abs(item.sentiment||0),100)}%;height:4px;background:${sc};border-radius:2px;"></div></div></div>`;
+            grid.innerHTML += `<div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:${sc};display:inline-block;"></span>${item.source} <span style="color:#a78bfa">${item.category || 'Market Intelligence'}</span>${item.is_threat?'<span style="margin-left:auto;font-size:0.68rem;color:var(--rose);background:rgba(244,63,94,0.12);padding:2px 8px;border-radius:20px;font-weight:700;">THREAT RISK</span>':''}</div><p class="news-title">${item.title}</p><p class="news-meta">${item.summary || item.title}</p><div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:10px;"><div style="width:${Math.min(Math.abs(item.sentiment||0),100)}%;height:4px;background:${sc};border-radius:2px;"></div></div></div>`;
           });
         }
       } catch (e) {
-        await new Promise(r => setTimeout(r, 1200));
+        await new Promise(r => setTimeout(r, 600));
         if (stockData) {
           resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker}</span><span class="stock-price">${stockData.current_price}</span></div></div>`;
         } else {

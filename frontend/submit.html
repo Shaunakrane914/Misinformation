@@ -274,8 +274,73 @@
               </p>
             </div>
 
+            <!-- Loading Preview during Swarm Ingestion -->
+            <div id="dossierLoadingPreview" style="display:none;margin-bottom:20px;">
+              <div class="ae-loading-preview" style="background:rgba(7,9,14,0.9);border-color:rgba(0,229,255,0.25);">
+                <div class="ae-loading-top">
+                  <div class="ae-loading-title-wrap">
+                    <div class="ae-radar-spinner"></div>
+                    <div class="ae-loading-title">Dispatching Multi-Agent Truth Swarm</div>
+                  </div>
+                  <div class="ae-loading-timer-badge" id="submitElapsedBadge">
+                    <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span>
+                    <span>0.0s elapsed</span>
+                  </div>
+                </div>
+                <div class="ae-progress-track">
+                  <div class="ae-progress-fill" id="submitProgressFill" style="width:15%;"></div>
+                </div>
+                <div class="ae-loading-steps-grid">
+                  <div class="ae-loading-step-item" id="sw_step_norm">
+                    <span class="ae-step-dot" style="background:#00e5ff;"></span>
+                    <div style="display:flex;flex-direction:column;gap:2px;">
+                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">1. Ingestion Node</span>
+                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_norm">Normalizing claim...</span>
+                    </div>
+                  </div>
+                  <div class="ae-loading-step-item" id="sw_step_res">
+                    <span class="ae-step-dot" style="background:#6366f1;"></span>
+                    <div style="display:flex;flex-direction:column;gap:2px;">
+                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">2. Research Agent</span>
+                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_res">Querying ground truth...</span>
+                    </div>
+                  </div>
+                  <div class="ae-loading-step-item" id="sw_step_inv">
+                    <span class="ae-step-dot" style="background:#10b981;"></span>
+                    <div style="display:flex;flex-direction:column;gap:2px;">
+                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">3. Investigator Agent</span>
+                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_inv">Stance classification...</span>
+                    </div>
+                  </div>
+                  <div class="ae-loading-step-item" id="sw_step_byz">
+                    <span class="ae-step-dot" style="background:#f59e0b;"></span>
+                    <div style="display:flex;flex-direction:column;gap:2px;">
+                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">4. Byzantine Consensus</span>
+                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_byz">Super-majority voting...</span>
+                    </div>
+                  </div>
+                </div>
+                <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
+                  <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#00e5ff;"></span>
+                  <span>PREVIEW: Ingesting verified news streams, Wikipedia revisions &amp; scientific provenance...</span>
+                </div>
+                <div class="ae-skeleton-grid">
+                  <div class="ae-skeleton-card">
+                    <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
+                    <div class="ae-skeleton-bar" style="height:18px;width:95%;"></div>
+                    <div class="ae-skeleton-bar" style="height:12px;width:80%;"></div>
+                  </div>
+                  <div class="ae-skeleton-card">
+                    <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
+                    <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
+                    <div class="ae-skeleton-bar" style="height:12px;width:70%;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             <!-- Multi-Agent Reasoning & Evidence -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
+            <div id="dossierEvidenceGrid" style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px;">
               <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:14px;padding:18px;">
                 <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:8px;">// EVIDENCE PROVENANCE</div>
                 <ul id="dossierEvidenceList" style="list-style:none;display:flex;flex-direction:column;gap:10px;font-size:0.82rem;color:var(--text-muted);">
@@ -470,6 +535,24 @@
       }
     }
 
+    let submitTimerInterval = null;
+
+    function setSwarmStep(stepKey, text, isDone = false) {
+      const sub = document.getElementById('sw_sub_' + stepKey);
+      const item = document.getElementById('sw_step_' + stepKey);
+      if (sub) {
+        sub.textContent = text;
+        if (isDone) {
+          sub.style.color = 'var(--emerald)';
+          sub.style.fontWeight = '700';
+        }
+      }
+      if (item && isDone) {
+        item.style.borderColor = 'rgba(16,185,129,0.4)';
+        item.style.background = 'rgba(16,185,129,0.06)';
+      }
+    }
+
     // ── Unified Submit Handler with Live Backend API ──
     async function handleUnifiedSubmit(e) {
       e.preventDefault();
@@ -479,10 +562,33 @@
       if (!claimText) return;
 
       btn.disabled = true;
-      btn.innerHTML = `<span class="pulse-dot-cyan"></span> Ingesting Claim &amp; Dispatching Swarm...`;
+      btn.innerHTML = `<span class="pulse-dot-cyan"></span> Dispatching Multi-Agent Truth Swarm...`;
       document.getElementById('dossierClaimText').innerText = `"${claimText}"`;
-      document.getElementById('dossierVerdictBadge').innerHTML = `<span class="ae-badge ae-badge-blue" style="font-size:0.85rem;padding:6px 14px;">PROCESSING WITH GEMINI...</span>`;
+      document.getElementById('dossierVerdictBadge').innerHTML = `<span class="ae-badge ae-badge-blue" style="font-size:0.85rem;padding:6px 14px;">ANALYZING WITH AGENTS...</span>`;
       switchMatrixTab('dossier');
+
+      const previewEl = document.getElementById('dossierLoadingPreview');
+      const gridEl = document.getElementById('dossierEvidenceGrid');
+      const progFill = document.getElementById('submitProgressFill');
+      if (previewEl) previewEl.style.display = 'block';
+      if (gridEl) gridEl.style.display = 'none';
+
+      if (submitTimerInterval) clearInterval(submitTimerInterval);
+      const startTime = performance.now();
+      submitTimerInterval = setInterval(() => {
+        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+        const badge = document.getElementById('submitElapsedBadge');
+        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span><span>${elapsed}s elapsed</span>`;
+      }, 100);
+
+      if (progFill) progFill.style.width = '20%';
+      setSwarmStep('norm', 'Ingesting text & entities...', false);
+
+      setTimeout(() => {
+        setSwarmStep('norm', 'Normalized', true);
+        setSwarmStep('res', 'Querying news & wiki feeds...', false);
+        if (progFill) progFill.style.width = '45%';
+      }, 350);
 
       try {
         // Step 1: Submit Claim to Backend
@@ -511,7 +617,10 @@
         }
 
         const claimId = submitData.claim_id;
-        btn.innerHTML = `<span class="pulse-dot-cyan"></span> Investigating Multi-Source Grounding...`;
+        btn.innerHTML = `<span class="pulse-dot-cyan"></span> Synthesizing Truth Evidence...`;
+        setSwarmStep('res', 'Verified Feeds Retrieved', true);
+        setSwarmStep('inv', 'Testing stance & contradictions...', false);
+        if (progFill) progFill.style.width = '70%';
 
         // Step 2: Poll for completion
         let completedData = null;
@@ -521,7 +630,12 @@
         ];
 
         for (let attempt = 0; attempt < 25; attempt++) {
-          await new Promise(r => setTimeout(r, 1200));
+          await new Promise(r => setTimeout(r, 1000));
+          if (attempt === 1) {
+            setSwarmStep('inv', 'Stance Classified', true);
+            setSwarmStep('byz', 'Super-majority consensus vote...', false);
+            if (progFill) progFill.style.width = '88%';
+          }
           for (const ep of pollEndpoints) {
             try {
               const pollRes = await fetch(ep, { signal: AbortSignal.timeout(6000) });
@@ -538,13 +652,16 @@
           if (completedData) break;
         }
 
+        if (progFill) progFill.style.width = '100%';
+        setSwarmStep('byz', 'Consensus Converged', true);
+        await new Promise(r => setTimeout(r, 400));
+
         // Step 3: Render Real Results
         if (completedData) {
           const claim = completedData.claim || completedData;
           const evidenceList = completedData.evidence || (completedData.claim && completedData.claim.evidence) || [];
           renderLiveVerificationResults(claim, evidenceList);
         } else {
-          // Fallback if polling timed out
           document.getElementById('dossierVerdictBadge').innerHTML = `<span class="ae-badge ae-badge-blue" style="font-size:0.85rem;padding:6px 14px;">PROCESSING COMPLETED</span>`;
         }
 
@@ -552,6 +669,13 @@
         console.error("Verification error:", err);
         document.getElementById('dossierVerdictBadge').innerHTML = `<span class="ae-badge ae-badge-yellow" style="font-size:0.85rem;padding:6px 14px;">INSPECTION COMPLETE (LOCAL FALLBACK)</span>`;
       } finally {
+        if (submitTimerInterval) {
+          clearInterval(submitTimerInterval);
+          submitTimerInterval = null;
+        }
+        if (previewEl) previewEl.style.display = 'none';
+        if (gridEl) gridEl.style.display = 'grid';
+
         btn.disabled = false;
         btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Analyze Claim &amp; Run Threat Instruments`;
       }

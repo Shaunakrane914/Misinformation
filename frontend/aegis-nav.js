@@ -238,27 +238,18 @@
     });
   }
 
-  // ── 4. ThreeUI 3D Card Tilt Physics & Specular Lighting ──
+  // ── 4. Card Specular Lighting (Tilt disabled for stability) ──
   function init3DCardTilt() {
     document.querySelectorAll('.bento-card, .ag-card, .instrument-card, .submit-card').forEach(card => {
       card.addEventListener('mousemove', e => {
         const rect = card.getBoundingClientRect();
-        const x = (e.clientX - rect.left) / rect.width - 0.5;
-        const y = (e.clientY - rect.top) / rect.height - 0.5;
-        
         card.style.setProperty('--mouse-x', `${e.clientX - rect.left}px`);
         card.style.setProperty('--mouse-y', `${e.clientY - rect.top}px`);
-        card.style.transform = `perspective(1000px) rotateX(${-y * 6}deg) rotateY(${x * 7}deg) translateZ(4px)`;
+        // No 3D transform or tilt on mousemove - keeps cards stable and normal
       });
 
       card.addEventListener('mouseleave', () => {
-        card.style.transition = 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s';
-        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-        setTimeout(() => { card.style.transition = ''; }, 450);
-      });
-
-      card.addEventListener('mouseenter', () => {
-        card.style.transition = 'border-color 0.25s, box-shadow 0.25s';
+        card.style.transform = 'none';
       });
     });
   }

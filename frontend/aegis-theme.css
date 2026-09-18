@@ -382,9 +382,7 @@ body::before {
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   overflow: hidden;
-  transition: border-color 0.25s, box-shadow 0.25s, transform 0.15s var(--ease-spring);
-  transform-style: preserve-3d;
-  perspective: 1000px;
+  transition: border-color 0.25s, box-shadow 0.25s;
 }
 .bento-card:hover, .ag-card:hover, .instrument-card:hover {
   border-color: var(--border-hover);

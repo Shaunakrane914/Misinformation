@@ -504,6 +504,15 @@ class AgentReachScraper:
             except Exception as j_err:
                 logger.debug(f"[AgentReach:omni_scan] Jina article parse notice: {j_err}")
 
+        # Extract salient search keywords for higher search engine recall on verbose claims
+        stopwords = {
+            'that', 'this', 'with', 'from', 'have', 'been', 'were', 'what', 'when', 'where', 'which',
+            'their', 'there', 'about', 'into', 'secretly', 'according', 'alleged', 'reportedly', 'claims',
+            'stated', 'saying', 'could', 'would', 'should', 'might'
+        }
+        words = [w for w in re.findall(r'\b[A-Za-z0-9_-]{3,}\b', clean_q) if w.lower() not in stopwords]
+        search_kw = " ".join(words[:5]) if len(words) >= 5 else clean_q
+
         # 2. Domain-targeted query crafting
         if domain == "financial":
             clean_ticker = clean_q.upper().replace(".NS", "").replace(".BO", "")
@@ -512,10 +521,10 @@ class AgentReachScraper:
             youtube_q = f"{clean_ticker} stock crash analysis"
             news_q = f"{clean_ticker} stock investigation OR crash OR SEC OR results"
         elif domain == "fact_check":
-            reddit_q = f"{clean_q} (debunked OR hoax OR true OR fake)"
-            twitter_q = f"{clean_q} fake OR hoax OR debunked"
-            youtube_q = f"{clean_q} fact check debunked"
-            news_q = f"{clean_q} fact check OR verified OR official"
+            reddit_q = f"{search_kw} (debunked OR hoax OR true OR fake)"
+            twitter_q = f"{search_kw} fake OR hoax OR debunked"
+            youtube_q = f"{search_kw} fact check debunked"
+            news_q = f"{search_kw} fact check OR verified OR official"
         elif domain == "brand":
             reddit_q = f"{clean_q} (scam OR fake review OR counterfeit OR refund)"
             twitter_q = f"{clean_q} scam OR boycott OR counterfeit OR fake"

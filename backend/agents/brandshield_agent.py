@@ -54,7 +54,10 @@ class BrandShieldAgent:
         """Search across Reddit, Twitter, YouTube, News, and Web for brand mentions, counterfeits, and complaints."""
         all_results: List[Dict[str, Any]] = []
         try:
-            from backend.services.agent_reach_scraper import reach_scraper
+            try:
+                from backend.services.agent_reach_scraper import reach_scraper
+            except (ImportError, ModuleNotFoundError):
+                from services.agent_reach_scraper import reach_scraper
             logger.info(f"[BrandShield] Executing AgentReach omni-scan for: {brand_name}")
 
             omni_res = reach_scraper.omni_scan(
@@ -138,7 +141,10 @@ class BrandShieldAgent:
         Falls back to a rule-based heuristic if Gemini is unavailable.
         """
         try:
-            from backend.services.intelligence import call_gemini_text, clean_json_string
+            try:
+                from backend.services.intelligence import call_gemini_text, clean_json_string
+            except (ImportError, ModuleNotFoundError):
+                from services.intelligence import call_gemini_text, clean_json_string
 
             mention_text = "\n".join(
                 f"- [{m.get('title', '')}] {m.get('snippet', '')}"

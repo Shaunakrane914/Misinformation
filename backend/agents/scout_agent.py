@@ -359,7 +359,10 @@ class ScoutAgent:
             "news_catalysts": []
         }
         try:
-            from backend.services.agent_reach_scraper import reach_scraper
+            try:
+                from backend.services.agent_reach_scraper import reach_scraper
+            except (ImportError, ModuleNotFoundError):
+                from services.agent_reach_scraper import reach_scraper
             omni_data = reach_scraper.omni_scan(
                 query=ticker,
                 domain="financial",

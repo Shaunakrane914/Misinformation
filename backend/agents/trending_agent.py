@@ -264,7 +264,10 @@ class TrendingAgent:
 
         # 2. Enrich with AgentReach zero-cost omni-scan (Twitter, Reddit & YouTube viral clips)
         try:
-            from backend.services.agent_reach_scraper import reach_scraper
+            try:
+                from backend.services.agent_reach_scraper import reach_scraper
+            except (ImportError, ModuleNotFoundError):
+                from services.agent_reach_scraper import reach_scraper
             omni_data = reach_scraper.omni_scan(
                 query=asset_name,
                 domain="trending",
@@ -352,7 +355,10 @@ class TrendingAgent:
         # 4. Run Gemini / Sentiment Analysis
         if analysis_queue:
             try:
-                from backend.services.intelligence import analyze_sentiment
+                try:
+                    from backend.services.intelligence import analyze_sentiment
+                except (ImportError, ModuleNotFoundError):
+                    from services.intelligence import analyze_sentiment
                 logger.info(f"Analyzing sentiment for {len(analysis_queue)} items...")
                 results = analyze_sentiment(analysis_queue)
                 for idx, res in enumerate(results):

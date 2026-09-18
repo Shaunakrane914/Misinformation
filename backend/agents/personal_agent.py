@@ -43,7 +43,10 @@ class PersonalWatchAgent:
         """
         try:
             logger.info(f"[PersonalWatch] Searching web for mentions of: {vip_name}")
-            from backend.services.agent_reach_scraper import reach_scraper
+            try:
+                from backend.services.agent_reach_scraper import reach_scraper
+            except (ImportError, ModuleNotFoundError):
+                from services.agent_reach_scraper import reach_scraper
             
             # Use unified news & web extraction
             news_items = reach_scraper.search_news(vip_name, limit=max_results)
@@ -91,7 +94,10 @@ class PersonalWatchAgent:
         """
         mentions: List[Dict[str, Any]] = []
         try:
-            from backend.services.agent_reach_scraper import reach_scraper
+            try:
+                from backend.services.agent_reach_scraper import reach_scraper
+            except (ImportError, ModuleNotFoundError):
+                from services.agent_reach_scraper import reach_scraper
             logger.info(f"[PersonalWatch] Searching omni-channels (Twitter + Reddit + YouTube) for: {vip_name}")
 
             omni_data = reach_scraper.omni_scan(
@@ -201,7 +207,10 @@ class PersonalWatchAgent:
         analyzed_threats = []
         if all_mentions:
             try:
-                from backend.services.intelligence import analyze_security_risk
+                try:
+                    from backend.services.intelligence import analyze_security_risk
+                except (ImportError, ModuleNotFoundError):
+                    from services.intelligence import analyze_security_risk
                 logger.info(f"Analyzing security risks for {len(all_mentions)} mentions...")
                 analyzed_threats = analyze_security_risk(all_mentions, vip_name)
                 logger.info(f"Analysis complete: {len(analyzed_threats)} threats identified")
@@ -218,7 +227,10 @@ class PersonalWatchAgent:
         alerts_sent = 0
         if high_risk_threats and vip_profile.get("phone_number"):
             try:
-                from backend.services.notifier import send_security_alert
+                try:
+                    from backend.services.notifier import send_security_alert
+                except (ImportError, ModuleNotFoundError):
+                    from services.notifier import send_security_alert
                 phone_number = vip_profile.get("phone_number")
                 
                 for threat in high_risk_threats:
@@ -256,7 +268,8 @@ class PersonalWatchAgent:
         }
 
 
-# Global instance
+# Alias for backward compatibility
+PersonalAgent = PersonalWatchAgent
 personal_watch_agent = PersonalWatchAgent()
 
 

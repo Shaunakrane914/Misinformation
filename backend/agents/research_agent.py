@@ -117,7 +117,10 @@ class ResearchAgent:
         # Pull real-time multi-platform grounding context via AgentReach omni-scan
         context_snippets = []
         try:
-            from backend.services.agent_reach_scraper import reach_scraper
+            try:
+                from backend.services.agent_reach_scraper import reach_scraper
+            except (ImportError, ModuleNotFoundError):
+                from services.agent_reach_scraper import reach_scraper
             omni_res = reach_scraper.omni_scan(
                 query=claim_text,
                 domain="fact_check",

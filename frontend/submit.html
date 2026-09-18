@@ -995,10 +995,12 @@ Do not output markdown codeblocks, output only the JSON.`;
       let finalTruthData = null;
 
       try {
-        // TIER 1: Try Backend Ingestion & Processing with Fast Polling
-        let submitData = null;
-        const submitEndpoints = ['/api/claims/submit', 'https://misinformation-1ouh.onrender.com/api/claims/submit'];
-        for (const ep of submitEndpoints) {
+        // TIER 0: Direct Synchronous FastAPI Truth Dossier Endpoint (/api/claims/verify)
+        const verifyEndpoints = [
+          '/api/claims/verify',
+          'https://misinformation-1ouh.onrender.com/api/claims/verify'
+        ];
+        for (const ep of verifyEndpoints) {
           try {
             const res = await fetch(ep, {
               method: 'POST',
@@ -1007,16 +1009,42 @@ Do not output markdown codeblocks, output only the JSON.`;
                 claim_text: claimText,
                 source_url: sourceUrl || undefined
               }),
-              signal: AbortSignal.timeout(5000)
+              signal: AbortSignal.timeout(7500)
             });
             if (res.ok) {
-              submitData = await res.json();
-              break;
+              const vData = await res.json();
+              if (vData && vData.verdict) {
+                finalTruthData = vData;
+                break;
+              }
             }
           } catch (_) {}
         }
 
-        if (submitData && submitData.claim_id) {
+        // TIER 1: Try Backend Ingestion & Processing with Fast Polling (if verify not cached)
+        let submitData = null;
+        if (!finalTruthData) {
+          const submitEndpoints = ['/api/claims/submit', 'https://misinformation-1ouh.onrender.com/api/claims/submit'];
+          for (const ep of submitEndpoints) {
+            try {
+              const res = await fetch(ep, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  claim_text: claimText,
+                  source_url: sourceUrl || undefined
+                }),
+                signal: AbortSignal.timeout(4000)
+              });
+              if (res.ok) {
+                submitData = await res.json();
+                break;
+              }
+            } catch (_) {}
+          }
+        }
+
+        if (!finalTruthData && submitData && submitData.claim_id) {
           const claimId = submitData.claim_id;
           btn.innerHTML = `<span class="pulse-dot-cyan"></span> Synthesizing Truth Evidence...`;
           setSwarmStep('res', 'Cross-Platform Streams Gathered', true);

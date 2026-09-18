@@ -618,7 +618,13 @@ class AgentReachScraper:
         except Exception as e:
             diagnostics["jina_reader"] = {"status": "error", "message": str(e)}
 
-        return diagnostics
+        healthy_count = sum(1 for v in diagnostics.values() if v.get("status") in ("ok", "success", "fallback_soup"))
+        return {
+            "status": "ok",
+            "healthy_channels": healthy_count,
+            "total_channels": len(diagnostics),
+            "channels": diagnostics
+        }
 
 
 # Global singleton instance

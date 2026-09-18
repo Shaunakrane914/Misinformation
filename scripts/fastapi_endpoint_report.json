@@ -1,0 +1,90 @@
+{
+  "total_endpoints": 14,
+  "passed": 14,
+  "tests": [
+    {
+      "endpoint": "GET /api/healthz",
+      "status": 200,
+      "passed": true,
+      "time": 0.007
+    },
+    {
+      "endpoint": "GET /api/",
+      "status": 200,
+      "passed": true,
+      "time": 0.002
+    },
+    {
+      "endpoint": "GET /api/system/agents",
+      "status": 200,
+      "passed": true,
+      "time": 0.002
+    },
+    {
+      "endpoint": "GET /api/agent-reach/doctor",
+      "status": 200,
+      "passed": true,
+      "time": 5.518
+    },
+    {
+      "endpoint": "POST /api/agent-reach/omni-scan",
+      "status": 200,
+      "passed": true,
+      "time": 5.923
+    },
+    {
+      "endpoint": "POST /api/claims/verify",
+      "status": 200,
+      "passed": true,
+      "time": 13.569
+    },
+    {
+      "endpoint": "POST /api/scout/analyze",
+      "status": 200,
+      "passed": true,
+      "time": 15.708
+    },
+    {
+      "endpoint": "GET /api/stock",
+      "status": 200,
+      "passed": true,
+      "time": 0.352
+    },
+    {
+      "endpoint": "POST /api/brandshield/scan",
+      "status": 200,
+      "passed": true,
+      "time": 7.831
+    },
+    {
+      "endpoint": "POST /api/personal/scan",
+      "status": 200,
+      "passed": true,
+      "time": 8.375
+    },
+    {
+      "endpoint": "POST /api/trending/scan",
+      "status": 200,
+      "passed": true,
+      "time": 5.529
+    },
+    {
+      "endpoint": "POST /api/lab/synthetic-detect",
+      "status": 200,
+      "passed": true,
+      "time": 0.006
+    },
+    {
+      "endpoint": "POST /api/lab/blast-radius",
+      "status": 200,
+      "passed": true,
+      "time": 0.026
+    },
+    {
+      "endpoint": "POST /api/lab/consensus",
+      "status": 200,
+      "passed": true,
+      "time": 3.829
+    }
+  ]
+}

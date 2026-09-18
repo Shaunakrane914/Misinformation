@@ -262,14 +262,20 @@ class TrendingAgent:
         if hashtag:
             fan_war_tweets = self.fetch_fan_wars(hashtag)
 
-        # 2. Enrich with AgentReach zero-cost social scraper (Twitter & Reddit)
+        # 2. Enrich with AgentReach zero-cost omni-scan (Twitter, Reddit & YouTube viral clips)
         try:
             from backend.services.agent_reach_scraper import reach_scraper
+            omni_data = reach_scraper.omni_scan(
+                query=asset_name,
+                domain="trending",
+                limit_per_channel=4
+            )
+            channels = omni_data.get("channels", {})
+
             if not fan_war_tweets:
-                social_tweets = reach_scraper.search_twitter(f"{asset_name} rumor OR controversy OR leak", limit=4)
-                for st in social_tweets:
+                for st in channels.get("twitter", []):
                     fan_war_tweets.append({
-                        "text": st.get("snippet") or st.get("title", ""),
+                        "text": st.get("snippet") or st.get("content", ""),
                         "author": st.get("author", "@user"),
                         "source": "Twitter/X",
                         "url": st.get("url", "#"),
@@ -277,8 +283,7 @@ class TrendingAgent:
                         "retweets": st.get("retweets", 0)
                     })
 
-            reddit_posts = reach_scraper.search_reddit(f"{asset_name}", limit=4)
-            for rp in reddit_posts:
+            for rp in channels.get("reddit", []):
                 fan_war_tweets.append({
                     "text": rp.get("snippet") or rp.get("title", ""),
                     "author": rp.get("author", "u/user"),
@@ -287,8 +292,19 @@ class TrendingAgent:
                     "likes": rp.get("score", 0),
                     "retweets": 0
                 })
+
+            for yp in channels.get("youtube", []):
+                fan_war_tweets.append({
+                    "text": f"[Viral Video] {yp.get('title', '')}",
+                    "author": yp.get("channel", "YouTube"),
+                    "source": "YouTube",
+                    "url": yp.get("url", "#"),
+                    "likes": 0,
+                    "retweets": 0
+                })
         except Exception as reach_err:
-            logger.debug(f"[TrendingAgent] AgentReach enrichment note: {reach_err}")
+            logger.debug(f"[TrendingAgent] AgentReach omni-scan note: {reach_err}")
+
 
         # 3. Prepare text for analysis
         analysis_queue = []

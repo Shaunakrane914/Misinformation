@@ -114,31 +114,50 @@ class ResearchAgent:
         """
         print(f"[ResearchAgent] Gathering evidence for claim: {claim_text[:50]}...")
         
-        # Pull real-time web & social context via AgentReach
+        # Pull real-time multi-platform grounding context via AgentReach omni-scan
         context_snippets = []
         try:
             from backend.services.agent_reach_scraper import reach_scraper
-            
-            # If source URL provided, parse clean markdown
-            if source_url:
-                doc = reach_scraper.read_article_markdown(source_url, max_chars=2000)
-                if doc.get("markdown"):
-                    context_snippets.append(f"SOURCE ARTICLE CONTENT ({source_url}):\n{doc['markdown'][:1500]}")
+            omni_res = reach_scraper.omni_scan(
+                query=claim_text,
+                domain="fact_check",
+                source_url=source_url,
+                limit_per_channel=4
+            )
 
-            # Pull live news & social mentions
-            news_items = reach_scraper.search_news(claim_text, limit=4)
+            # 1. Primary Source Full Text (via Jina Reader)
+            src_doc = omni_res.get("source_article")
+            if src_doc and src_doc.get("markdown"):
+                clean_md = src_doc["markdown"][:2500]
+                context_snippets.append(f"PRIMARY SOURCE ARTICLE CONTENT ({source_url}):\n{clean_md}")
+
+            # 2. Mainstream News Wire Findings
+            news_items = omni_res.get("channels", {}).get("news", [])
             for item in news_items:
-                context_snippets.append(f"- [{item.get('source', 'News')}] {item.get('title', '')}")
-                
-            reddit_items = reach_scraper.search_reddit(claim_text, limit=3)
+                context_snippets.append(f"- [News: {item.get('source', 'Wire')}] {item.get('title', '')}")
+
+            # 3. Twitter/X Viral Claims & Debunking
+            twitter_items = omni_res.get("channels", {}).get("twitter", [])
+            for t in twitter_items:
+                context_snippets.append(f"- [Twitter/X {t.get('author', '@pulse')}] {t.get('content', '')}")
+
+            # 4. Reddit Community Fact-Checking & Discussions
+            reddit_items = omni_res.get("channels", {}).get("reddit", [])
             for r in reddit_items:
-                context_snippets.append(f"- [Reddit Community] {r.get('title', '')}")
+                context_snippets.append(f"- [Reddit Community] {r.get('title', '')} | Context: {r.get('snippet', '')[:120]}")
+
+            # 5. YouTube Video Explanations & Exposés
+            youtube_items = omni_res.get("channels", {}).get("youtube", [])
+            for y in youtube_items:
+                context_snippets.append(f"- [YouTube Video Analysis] {y.get('title', '')}")
+
         except Exception as reach_err:
-            print(f"[ResearchAgent] AgentReach grounding notice: {reach_err}")
+            print(f"[ResearchAgent] AgentReach omni-grounding notice: {reach_err}")
 
         grounding_block = ""
         if context_snippets:
-            grounding_block = f"\nREAL-TIME GROUNDING INTELLIGENCE:\n" + "\n".join(context_snippets) + "\n"
+            grounding_block = f"\nREAL-TIME CROSS-PLATFORM GROUNDING INTELLIGENCE (Reddit, Twitter, YouTube, News, Source Doc):\n" + "\n".join(context_snippets) + "\n"
+
 
         # Construct the prompt
         prompt = f"""Search and summarize evidence supporting and refuting this claim:

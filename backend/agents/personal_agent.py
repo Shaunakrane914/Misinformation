@@ -83,23 +83,27 @@ class PersonalWatchAgent:
         self, 
         vip_name: str, 
         official_handle: Optional[str] = None,
-        max_results: int = 10
+        max_results: int = 15
     ) -> List[Dict[str, Any]]:
         """
-        Search Twitter/X and Reddit for mentions of the VIP without requiring paid API keys.
+        Search Twitter/X, Reddit, and YouTube for mentions of the VIP,
+        including audio/video deepfake indicators, without requiring paid API keys.
         """
         mentions: List[Dict[str, Any]] = []
         try:
             from backend.services.agent_reach_scraper import reach_scraper
-            logger.info(f"[PersonalWatch] Searching social channels (Twitter + Reddit) for: {vip_name}")
+            logger.info(f"[PersonalWatch] Searching omni-channels (Twitter + Reddit + YouTube) for: {vip_name}")
+
+            omni_data = reach_scraper.omni_scan(
+                query=vip_name,
+                domain="personal",
+                vip_handle=official_handle,
+                limit_per_channel=max(3, max_results // 3)
+            )
+            channels = omni_data.get("channels", {})
 
             # 1. Zero-cost Twitter/X extraction via AgentReach
-            twitter_items = reach_scraper.search_twitter(
-                query=vip_name,
-                vip_handle=official_handle,
-                limit=max_results // 2 + 1
-            )
-            for t in twitter_items:
+            for t in channels.get("twitter", []):
                 mentions.append({
                     "source": "Twitter/X",
                     "author": t.get("author", "@user"),
@@ -107,15 +111,12 @@ class PersonalWatchAgent:
                     "url": t.get("url", ""),
                     "likes": t.get("likes", 0),
                     "retweets": t.get("retweets", 0),
-                    "title": t.get("title", "")
+                    "title": t.get("title", ""),
+                    "is_official": t.get("is_official", False)
                 })
 
             # 2. Zero-cost Reddit community extraction via AgentReach
-            reddit_items = reach_scraper.search_reddit(
-                query=vip_name,
-                limit=max_results // 2 + 1
-            )
-            for r in reddit_items:
+            for r in channels.get("reddit", []):
                 mentions.append({
                     "source": "Reddit",
                     "author": r.get("author", "u/user"),
@@ -126,7 +127,21 @@ class PersonalWatchAgent:
                     "title": r.get("title", "")
                 })
 
-            # 3. Optional Apify enhancement if token exists
+            # 3. YouTube video / deepfake / audio leak extraction
+            for y in channels.get("youtube", []):
+                mentions.append({
+                    "source": "YouTube",
+                    "author": y.get("channel", "YouTube Video"),
+                    "content": f"[Video/Audio Signal] {y.get('title', '')}",
+                    "url": y.get("url", ""),
+                    "likes": 0,
+                    "retweets": 0,
+                    "title": y.get("title", ""),
+                    "is_video": True
+                })
+
+            # 4. Optional Apify enhancement if token exists
+
             if self.apify_client and len(mentions) < max_results:
                 try:
                     actor = self.apify_client.actor("apidojo/tweet-scraper")

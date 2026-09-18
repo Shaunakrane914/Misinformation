@@ -464,6 +464,117 @@ class AgentReachScraper:
         return results
 
     # ─────────────────────────────────────────────────────────────────────────
+    # 6B. OMNI-SCAN: DOMAIN-SPECIALIZED AGENT INTELLIGENCE ENGINE
+    # ─────────────────────────────────────────────────────────────────────────
+    def omni_scan(
+        self,
+        query: str,
+        domain: str = "general",
+        source_url: Optional[str] = None,
+        vip_handle: Optional[str] = None,
+        limit_per_channel: int = 4,
+        include_reddit: bool = True,
+        include_twitter: bool = True,
+        include_youtube: bool = True,
+        include_news: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Domain-specialized extraction engine designed for dedicated agents.
+        Customizes query construction, booleans, and channel filters based on agent domain:
+        - 'financial': cashtags, volatility, panic, short-seller discourse (Scout)
+        - 'fact_check': verification, debunked, official press, community consensus (Research)
+        - 'brand': fake reviews, counterfeits, consumer scams (BrandShield)
+        - 'personal': audio deepfakes, impersonation, reputation attacks (Personal Watch)
+        - 'trending': viral memes, pop-culture velocity, hashtag spikes (Trending)
+        """
+        clean_q = query.strip()
+        results: Dict[str, Any] = {
+            "domain": domain,
+            "query": clean_q,
+            "channels": {"reddit": [], "twitter": [], "youtube": [], "news": []},
+            "source_article": None,
+            "total_signals": 0,
+            "items": []
+        }
+
+        # 1. Parse primary source URL with Jina Reader if provided
+        if source_url and source_url.strip():
+            try:
+                results["source_article"] = self.read_article_markdown(source_url.strip(), max_chars=3500)
+            except Exception as j_err:
+                logger.debug(f"[AgentReach:omni_scan] Jina article parse notice: {j_err}")
+
+        # 2. Domain-targeted query crafting
+        if domain == "financial":
+            clean_ticker = clean_q.upper().replace(".NS", "").replace(".BO", "")
+            reddit_q = f"{clean_ticker} (crash OR scam OR fraud OR short OR plunge OR earnings)"
+            twitter_q = f"${clean_ticker} OR {clean_ticker} rumor OR crash OR short"
+            youtube_q = f"{clean_ticker} stock crash analysis"
+            news_q = f"{clean_ticker} stock investigation OR crash OR SEC OR results"
+        elif domain == "fact_check":
+            reddit_q = f"{clean_q} (debunked OR hoax OR true OR fake)"
+            twitter_q = f"{clean_q} fake OR hoax OR debunked"
+            youtube_q = f"{clean_q} fact check debunked"
+            news_q = f"{clean_q} fact check OR verified OR official"
+        elif domain == "brand":
+            reddit_q = f"{clean_q} (scam OR fake review OR counterfeit OR refund)"
+            twitter_q = f"{clean_q} scam OR boycott OR counterfeit OR fake"
+            youtube_q = f"{clean_q} fake vs real OR scam review exposé"
+            news_q = f"{clean_q} recall OR counterfeit OR lawsuit OR scam"
+        elif domain == "personal":
+            reddit_q = f"{clean_q} (scandal OR controversy OR leak OR arrested)"
+            twitter_q = f"{clean_q} leaked OR audio OR deepfake OR exposed"
+            youtube_q = f"{clean_q} deepfake OR leaked audio OR speech analysis"
+            news_q = f"{clean_q} statement OR allegations OR defamation OR lawsuit"
+        elif domain == "trending":
+            reddit_q = f"{clean_q} rumor OR controversy"
+            twitter_q = f"{clean_q} viral OR drama OR trending"
+            youtube_q = f"{clean_q} viral clips drama"
+            news_q = f"{clean_q} viral OR buzz OR controversy"
+        else:
+            reddit_q = clean_q
+            twitter_q = clean_q
+            youtube_q = clean_q
+            news_q = clean_q
+
+        # 3. Execute channel sweeps with safe isolation
+        if include_reddit:
+            try:
+                r_items = self.search_reddit(reddit_q, limit=limit_per_channel)
+                results["channels"]["reddit"] = r_items
+                results["items"].extend(r_items)
+            except Exception as r_err:
+                logger.debug(f"[AgentReach:omni_scan] Reddit query failed: {r_err}")
+
+        if include_twitter:
+            try:
+                t_items = self.search_twitter(twitter_q, vip_handle=vip_handle, limit=limit_per_channel)
+                results["channels"]["twitter"] = t_items
+                results["items"].extend(t_items)
+            except Exception as t_err:
+                logger.debug(f"[AgentReach:omni_scan] Twitter query failed: {t_err}")
+
+        if include_youtube:
+            try:
+                y_items = self.search_youtube(youtube_q, limit=limit_per_channel)
+                results["channels"]["youtube"] = y_items
+                results["items"].extend(y_items)
+            except Exception as y_err:
+                logger.debug(f"[AgentReach:omni_scan] YouTube query failed: {y_err}")
+
+        if include_news:
+            try:
+                n_items = self.search_news(news_q, limit=limit_per_channel)
+                results["channels"]["news"] = n_items
+                results["items"].extend(n_items)
+            except Exception as n_err:
+                logger.debug(f"[AgentReach:omni_scan] News query failed: {n_err}")
+
+        results["total_signals"] = len(results["items"])
+        return results
+
+
+    # ─────────────────────────────────────────────────────────────────────────
     # 7. DOCTOR / DIAGNOSTICS
     # ─────────────────────────────────────────────────────────────────────────
     def doctor(self) -> Dict[str, Any]:

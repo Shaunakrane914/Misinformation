@@ -11,7 +11,7 @@ import logging
 import os
 import json
 from datetime import datetime
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional, Tuple, Any
 from dotenv import load_dotenv
 
 # Load environment variables from .env file
@@ -345,6 +345,70 @@ class ScoutAgent:
                 "error": str(e)
             }
 
+    def correlate_social_rumors(self, ticker: str) -> Dict[str, Any]:
+        """
+        Correlate stock price volatility with real-time Reddit (WSB), Twitter ($CASHTAG),
+        and YouTube financial analysis signals via AgentReach omni-scan.
+        """
+        social_intel = {
+            "social_signals_detected": 0,
+            "short_seller_risk": "LOW",
+            "reddit_discussions": [],
+            "twitter_cashtags": [],
+            "youtube_analyses": [],
+            "news_catalysts": []
+        }
+        try:
+            from backend.services.agent_reach_scraper import reach_scraper
+            omni_data = reach_scraper.omni_scan(
+                query=ticker,
+                domain="financial",
+                limit_per_channel=4
+            )
+
+            channels = omni_data.get("channels", {})
+            r_items = channels.get("reddit", [])
+            t_items = channels.get("twitter", [])
+            y_items = channels.get("youtube", [])
+            n_items = channels.get("news", [])
+
+            social_intel["reddit_discussions"] = [
+                {"title": r.get("title", ""), "url": r.get("url", ""), "author": r.get("author", "u/trader")}
+                for r in r_items
+            ]
+            social_intel["twitter_cashtags"] = [
+                {"text": t.get("content", ""), "author": t.get("author", "@pulse"), "url": t.get("url", "")}
+                for t in t_items
+            ]
+            social_intel["youtube_analyses"] = [
+                {"title": y.get("title", ""), "url": y.get("url", "")}
+                for y in y_items
+            ]
+            social_intel["news_catalysts"] = [
+                {"title": n.get("title", ""), "source": n.get("source", "Wire"), "url": n.get("url", "")}
+                for n in n_items
+            ]
+
+            total_signals = len(r_items) + len(t_items) + len(y_items) + len(n_items)
+            social_intel["social_signals_detected"] = total_signals
+
+            # Detect panic keywords across social discourse
+            panic_keywords = ["crash", "scam", "fraud", "short", "investigation", "bankrupt", "dump", "sec", "probe"]
+            all_text = " ".join([r.get("title", "") for r in r_items] + [t.get("content", "") for t in t_items]).lower()
+            panic_hits = sum(1 for kw in panic_keywords if kw in all_text)
+
+            if panic_hits >= 4:
+                social_intel["short_seller_risk"] = "CRITICAL (High Coordinated Short Buzz)"
+            elif panic_hits >= 2:
+                social_intel["short_seller_risk"] = "ELEVATED (Rumor Discourse Active)"
+            else:
+                social_intel["short_seller_risk"] = "NOMINAL (Standard Chatter)"
+
+        except Exception as e:
+            logger.debug(f"[ScoutAgent:correlate_social_rumors] Scraper notice: {e}")
+
+        return social_intel
+
     def check_stock_impact(self, ticker: str) -> Dict:
         try:
             chart_data = self.fetch_stock_data(ticker)
@@ -377,17 +441,24 @@ class ScoutAgent:
             vol = self.analyze_volatility(prices)
             z = float(vol.get("z_score", 0.0))
             is_crashing = (drop_percent <= -2.0) or (z <= -2.0)
+
+            # Correlate price anomaly with omni-channel social intelligence
+            social_intel = self.correlate_social_rumors(ticker)
+
             return {
                 "ticker": ticker,
                 "current_price": round(last, 2),
                 "drop_percent": round(drop_percent, 2),
                 "z_score": round(z, 2),
                 "is_crashing": bool(is_crashing),
+                "social_intel": social_intel,
+                "short_attack_correlation": bool(is_crashing and social_intel.get("social_signals_detected", 0) > 0),
                 "timestamp": datetime.now().isoformat()
             }
         except Exception as e:
             logger.error(f"check_stock_impact error: {e}")
             return {}
+
 
 
 # Agent instance for external use

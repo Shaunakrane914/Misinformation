@@ -10,9 +10,9 @@
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
 
-**Four specialized AI agents work simultaneously — scanning financial markets, trending content, brand reputation, and personal profiles for misinformation threats before they spread.**
+**Seven specialized AI agents work simultaneously — scanning financial markets, trending viral dynamics, brand reputation, personal executive security, empirical research, and adversarial attribution to detect and neutralize misinformation before it spreads.**
 
-[Live Demo](#) · [API Docs](http://localhost:8000/docs) · [Changelog](frontend/changelog.html)
+[Live Demo](#) · [API Docs](http://localhost:8000/docs) · [Endpoints Map](ENDPOINTS_MAP.md) · [Architecture](ARCHITECTURE.md)
 
 </div>
 
@@ -20,17 +20,20 @@
 
 ## ✨ What It Does
 
-Aegis Protocol is a **production-grade, multi-agent misinformation detection platform**. Submit any claim and receive a `True / False / Misleading` verdict in ~18 seconds — backed by live web research, multi-pass AI reasoning, and confidence scoring.
+Aegis Protocol is an **autonomous, enterprise-grade multi-agent misinformation intelligence platform**. Submit any claim and receive an instant, synchronous **Truth Dossier** backed by live multi-platform web research, omni-channel cross-referencing, and Byzantine consensus confidence scoring.
 
-Beyond claim verification, four specialized agents and an experimental Threat Intelligence Lab run autonomously:
+Beyond claim verification, seven specialized agents and an experimental Threat Intelligence Lab run autonomously:
 
-| Agent / Instrument | Domain | Status |
-|---|---|---|
-| 🔍 **Scout** | Financial misinformation — stock crashes correlated with viral rumors | ✅ Live |
-| 📈 **Trending** | Celebrity & viral content analysis via RSS + Apify | ✅ Live |
-| 🛡️ **BrandShield** | Fake reviews, counterfeit listings, reputation attacks | ✅ Live |
-| 👤 **Personal Watch** | Individual reputation monitoring across 5+ platforms | ✅ Live |
-| ⚡ **Threat Lab** | Mandelbrot synthetic detector, Hawkes blast radius, Byzantine swarm consensus | ✅ Live |
+| Agent / Instrument | Domain & Function | Data Channels | Status |
+|---|---|---|---|
+| 🔍 **Scout Agent** | Financial misinformation — stock crashes correlated with viral rumors | Twitter/X, Reddit, SEC Edgar, RSS Wires | ✅ Live |
+| 📈 **Trending Agent** | Viral memetic velocity & synthetic amplification | Reddit, Twitter, YouTube, Trend Wires | ✅ Live |
+| 🛡️ **BrandShield Agent** | Brand disparagement, fake reviews, smear campaigns | Google News, Reddit, Twitter, Reviews | ✅ Live |
+| 👤 **Personal Watch Agent** | Executive & VIP deepfakes, voice clones, defamation | YouTube, Twitter, Reddit, News Wires | ✅ Live |
+| 🔬 **Research Agent** | Empirical evidence retrieval & citation cross-referencing | Academic sources, fact-checking archives | ✅ Live |
+| ⚔️ **Adversarial Agent** | Counter-adversarial attribution & swarm pattern discovery | Threat telemetry, network topologies | ✅ Live |
+| 👑 **Coordinator Agent** | Byzantine consensus, debate orchestration & Truth Dossier synthesis | Internal multi-agent ensemble | ✅ Live |
+| ⚡ **Threat Lab** | Mandelbrot synthetic detector, Hawkes blast radius, Byzantine swarm consensus | Live telemetry simulators | ✅ Live |
 
 ---
 

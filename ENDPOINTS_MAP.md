@@ -1,159 +1,59 @@
-# Aegis Enterprise - Complete Endpoint Map
+# Aegis Enterprise - Complete API & Endpoint Map
 
-## 🌐 Server: http://127.0.0.1:8000
-
----
-
-## Frontend Routes
-
-### Main Pages
-- `GET /` → Home page (index.html)
-- `GET /dashboard` → Live dashboard with claims feed
-- `GET /about` → About page with agent explanations
-- `GET /submit` → Submit claim form
-- `GET /agents` → **NEW** Agent overview with 4 cards
-
-### Agent Pages
-- `GET /scout-agent` → **NEW** Scout Agent (Financial Watchdog) - LIVE
-- `GET /trending-agent` → **NEW** Trending Agent (Content Intelligence) - LIVE
-- `GET /brandshield-agent` → **NEW** BrandShield Agent - Coming Soon (Placeholder)
-- `GET /personal-watch-agent` → **NEW** Personal Watch Agent - Coming Soon (Placeholder)
-
-### Static Assets
-- `GET /dashboard.css` → Dashboard styles
-- `GET /dashboard.js` → Dashboard JavaScript
-- `GET /static/*` → All other frontend files
+## 🌐 Server Base URL: `http://127.0.0.1:8000` (Swagger UI: `http://127.0.0.1:8000/docs`)
 
 ---
 
-## Backend API Routes (Prefix: /api)
+## 🖥️ Frontend Routes
 
-### Health & Info
-- `GET /api/` → API information and endpoints list
-- `GET /api/healthz` → Health check
+### Main Applications & Dashboards
+- `GET /` → Home page (`index.html`)
+- `GET /dashboard` → Live telemetry dashboard with real-time claims feed (`dashboard.html`)
+- `GET /about` → Architecture & methodology explanation with interactive pipeline simulator (`about.html`)
+- `GET /submit` → High-fidelity claim verification interface with multi-tier fallback and social radar (`submit.html`)
+- `GET /agents` → Unified 7-Agent Command Center with dedicated cards and live telemetry (`agents.html`)
+- `GET /status` → Cluster health, nodes, and worker telemetry (`status.html`)
+- `GET /threat-intel` → Threat Intelligence Lab instruments & Hawkes contagion monitor (`threat-intel.html`)
 
-### Claims Management
-- `POST /api/claims/submit` → Submit new claim for fact-checking
-- `GET /api/claims/{claim_id}` → Get claim status and results
-- `GET /api/claims` → List all claims (with pagination)
-
-### Dashboard
-- `GET /api/dashboard/claims` → Get 15 random claims for dashboard
-- `GET /api/dashboard/debug` → Debug info for dashboard
-- `POST /api/explain-claim` → Generate AI explanation for claim
-
-### War Room (Aegis Enterprise)
-- `GET /api/war-room/signals` → Get recent crash signals (active_signals table)
-- `GET /api/feed/live` → Get verified threats (verified_threats table)
-- `POST /api/deploy-response` → Deploy crisis response measure
+### Specialized Agent Interfaces
+- `GET /scout-agent` → Scout Sentinel (Financial market manipulation & volatility watchdog)
+- `GET /trending-agent` → Trend Pulse Sentinel (Viral memetic spread & velocity tracker)
+- `GET /brandshield-agent` → BrandShield Sentinel (Corporate brand disparagement & PR smear defense)
+- `GET /personal-watch-agent` → Personal Watch Sentinel (VIP impersonation, deepfake detection & defamation monitoring)
 
 ---
 
-## Database Tables (Supabase)
+## ⚡ Backend API Routes (FastAPI v3.5.0)
 
-### Misinformation Detection
-- `claims` - Submitted claims with verdicts
-- `evidence` - Supporting evidence for claims
+### System & Health Telemetry
+- `GET /api/` → API system info, version, and active agents manifest
+- `GET /api/healthz` → Live cluster health, uptime, and database connection status
+- `GET /docs` → Interactive OpenAPI / Swagger UI documentation
+- `GET /redoc` → ReDoc API reference documentation
 
-### War Room (Aegis)
-- `active_signals` - Scout Agent crash detections
-- `verified_threats` - Correlated misinformation + crashes
-- `deployed_measures` - Crisis responses deployed
+### Autonomous 7-Agent Fleet Endpoints
+- `POST /api/agents/scout/scan` → Execute market anomaly and ticker manipulation scan
+- `POST /api/agents/trending/scan` → Detect virality velocity and synthetic amplification
+- `POST /api/agents/brandshield/scan` → Execute brand smear and sentiment volatility analysis
+- `POST /api/agents/personal/scan` → Detect VIP impersonation, deepfakes, and defamation
+- `POST /api/agents/research/query` → Retrieve cross-referenced empirical evidence from scientific sources
+- `POST /api/agents/adversary/analyze` → Run counter-adversarial deconstruction and coordinated campaign attribution
+- `POST /api/agents/coordinator/orchestrate` → Multi-agent ensemble debate, byzantine consensus, and synthesis
 
----
+### Omni-Channel Intelligence & Scraper Hub
+- `POST /api/scrapers/omni-scan` → Parallel extraction across Twitter/X, Reddit, YouTube, and News wires
+- `GET /api/scrapers/status` → Scraper engine telemetry, fallback circuit-breaker status, and quotas
+- `POST /api/scrapers/reddit` → Dedicated Reddit subreddit and thread crawler
+- `POST /api/scrapers/twitter` → AgentReach Nitter/guest Twitter scanner
+- `POST /api/scrapers/youtube` → YouTube video transcript and metadata auditor
 
-## Featured Pages
+### Deep Verification & Truth Dossier
+- `POST /api/verify/truth-dossier` → Full synchronous Truth Dossier report with multi-agent consensus
+- `POST /api/claims/submit` → Async claim submission for pipeline queuing
+- `GET /api/claims/{claim_id}` → Query claim verification progress and verdicts
+- `GET /api/claims` → List all processed claims with pagination and verdict filters
 
-### 🎯 Scout Agent Page (`/scout-agent`)
-**5 Agentic Features:**
-1. 📉 Predictive Impact Modeling - Monte Carlo simulation
-2. 🔍 Autonomous Investigator Swarm - Multi-agent debate
-3. ⚡ Network Neutralization - Bot graph mapping
-4. 🛠️ Strategic Response Orchestrator - Multi-modal countermeasures
-5. 🚨 Self-Healing Feedback Loop - Outcome learning
-
-### 🤖 Agents Overview (`/agents`)
-**4 Agent Cards:**
-1. Scout Agent - Financial misinformation detection
-2. Trending Agent - Viral content analysis
-3. BrandShield Agent - Product protection (coming soon)
-4. Personal Watch Agent - Individual monitoring (coming soon)
-
----
-
-## Testing Endpoints
-
-```bash
-# Health check
-curl http://127.0.0.1:8000/api/healthz
-
-# Dashboard claims
-curl http://127.0.0.1:8000/api/dashboard/claims
-
-# War Room signals
-curl http://127.0.0.1:8000/api/war-room/signals
-
-# Live threat feed
-curl http://127.0.0.1:8000/api/feed/live
-
-# Submit claim
-curl -X POST http://127.0.0.1:8000/api/claims/submit \
-  -H "Content-Type: application/json" \
-  -d '{"claim_text": "Test claim", "source_url": "https://example.com"}'
-```
-
----
-
-## Environment Variables Required
-
-```env
-# Gemini AI
-GEMINI_API_KEY_1=your_key
-GEMINI_API_KEY_2=your_key
-GEMINI_API_KEY=your_key
-
-# Yahoo Finance
-YF_API_KEY=your_key
-
-# Supabase
-SUPABASE_URL=https://your-project.supabase.co
-SUPABASE_SERVICE_ROLE_KEY=your_key
-```
-
----
-
-## Quick Start
-
-```bash
-# 1. Start server
-python main.py
-
-# 2. Open in browser
-http://127.0.0.1:8000
-
-# 3. Navigate to:
-- Home: http://127.0.0.1:8000/
-- Agents: http://127.0.0.1:8000/agents
-- Scout Agent: http://127.0.0.1:8000/scout-agent
-- Dashboard: http://127.0.0.1:8000/dashboard
-```
-
----
-
-## Status Summary
-
-✅ **Working:**
-- All frontend pages
-- Scout Agent full demo
-- Agents overview page
-- Dashboard with claims
-- API health endpoints
-
-⚠️ **Needs Database Setup:**
-- War Room tables (run setup_aegis_db.sql in Supabase)
-- Then: `/api/war-room/signals` and `/api/feed/live` will work
-
-🚀 **Ready for Hackathon Demo:**
-- Scout Agent page is fully featured
-- 4-agent strategy is clear
-- All routes connected
+### War Room & Crisis Mitigation
+- `GET /api/war-room/signals` → Active systemic crash signals and coordinated attack alerts
+- `GET /api/feed/live` → Real-time stream of verified digital threats
+- `POST /api/deploy-response` → Issue defensive counter-narratives and verified rebuttal packages

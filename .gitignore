@@ -71,3 +71,9 @@ Starting Misinformation Project.md
 *.conversation.md
 # Local Netlify folder
 .netlify
+frontend/.netlify
+.netlify/
+frontend/.netlify/
+port.txt
+.pytest_cache/
+*.pyc

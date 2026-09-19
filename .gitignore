@@ -41,14 +41,15 @@ wheels/
 *.sqlite3
 aegis.db
 
-# Test files
-test_*.py
-check_*.py
-debug_*.py
-setup_*.py
-verify_*.py
-diagnose_*.py
-*_test.py
+# Test files (root scratch files only)
+/test_*.py
+/check_*.py
+/debug_*.py
+/setup_*.py
+/verify_*.py
+/diagnose_*.py
+/*_test.py
+!scripts/
 
 # Temporary files
 *.log

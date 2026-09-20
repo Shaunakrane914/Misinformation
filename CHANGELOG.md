@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.5.1] - 2026-09-20
+
+### Added
+- **20-Second Cinematic Launch Video**: Integrated [`latent-spaces/brag`](https://github.com/latent-spaces/brag) agent skill and [Hyperframes](https://hyperframes.heygen.com/) motion engine to produce an official launch teaser with synchronized electronic music, UI sound effects, and 4-scene narrative arc.
+- **Interactive In-Browser Player Controls**: Added playback scrubber, auto-audio synchronization, and pause/resume controls to `brag-output/composition/index.html`.
+- **Omni-Channel Social Launch Copy**: Created ready-to-publish launch copy tailored for 𝕏 / Twitter, LinkedIn, and Discord / Reddit in `brag-output/share-copy.md`.
+- **Centralized Application Config (`backend/config.py`)**: Added type-safe dataclass-based settings with environment introspection for Gemini, Supabase, and Apify credentials.
+
+---
+
 ## [3.5.0] - 2026-09-18
 
 ### Added

@@ -481,6 +481,31 @@ async def root():
     return FileResponse("frontend/index.html")
 
 
+@app.get("/launch-video", tags=["Media & Teaser"])
+@app.get("/teaser", tags=["Media & Teaser"])
+async def serve_launch_video():
+    """Serve the interactive 20-second Aegis Protocol launch film composition."""
+    video_page = "brag-output/composition/index.html"
+    if os.path.exists(video_page):
+        return FileResponse(video_page)
+    return FileResponse("frontend/index.html")
+
+
+@app.get("/api/media/launch-info", tags=["Media & Teaser"])
+async def launch_video_info():
+    """Get metadata and resource paths for the official Aegis Protocol launch video."""
+    return {
+        "title": "Aegis Protocol — Official Launch Film",
+        "duration_seconds": 20,
+        "format": "1080p landscape (1920x1080)",
+        "interactive_player": "/launch-video",
+        "video_path": "brag-output/brag.mp4",
+        "poster_path": "brag-output/brag.png",
+        "scenes": 4,
+        "status": "ready"
+    }
+
+
 @app.get("/healthz", tags=["System & Telemetry"])
 @app.get("/api/healthz", tags=["System & Telemetry"])
 async def healthz():

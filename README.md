@@ -37,6 +37,20 @@ Beyond claim verification, seven specialized agents and an experimental Threat I
 
 ---
 
+## 🎬 20-Second Cinematic Launch Film
+
+Check out the official animated launch teaser created via the [`latent-spaces/brag`](https://github.com/latent-spaces/brag) Hyperframes engine:
+
+- **Launch Storyboard & Copy:** [`brag-output/brag-plan.md`](brag-output/brag-plan.md) & [`brag-output/share-copy.md`](brag-output/share-copy.md)
+- **Interactive Web Player:** Open `brag-output/composition/index.html` or visit `http://localhost:8089/`
+- **Rendered 1080p Video:** `brag-output/brag.mp4`
+
+<div align="center">
+  <img src="brag-output/brag.png" width="850" alt="Aegis Protocol Launch Film Poster" />
+</div>
+
+---
+
 ## 🏗️ Architecture
 
 ```

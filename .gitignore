@@ -78,3 +78,12 @@ frontend/.netlify/
 port.txt
 .pytest_cache/
 *.pyc
+
+# Test output artifacts
+scripts/*_report.json
+*.report.json
+
+# Large video binaries
+brag-output/*.mp4
+*.mp4
+

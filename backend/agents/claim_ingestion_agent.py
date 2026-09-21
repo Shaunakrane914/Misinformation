@@ -1,99 +1,131 @@
 """
-Claim Ingestion Agent
-
-This agent is responsible for processing and ingesting misinformation claims.
-Phase 2: Returns dictionary responses only (no database integration yet).
+Aegis Protocol — Claim Ingestion Agent
+======================================
+Ingests, normalizes (Unicode NFC, whitespace collapsing, punctuation trimming),
+validates, and deduplicates incoming claims against the persistent database.
 """
 
 import hashlib
+import logging
+import re
+import unicodedata
 from typing import Dict, Optional
+
+from backend.db.database import get_claim_by_hash, insert_claim
+
+logger = logging.getLogger(__name__)
 
 
 class ClaimIngestionAgent:
     """
-    Agent responsible for ingesting claims into the system.
-    Normalizes claim text and generates unique identifiers.
+    Agent responsible for deterministic ingestion, Unicode normalization,
+    and database-backed deduplication of misinformation claims.
     """
-    
+
     def __init__(self):
-        """Initialize the Claim Ingestion Agent."""
-        print("[ClaimIngestionAgent] Initialized")
-    
+        logger.info("[ClaimIngestionAgent] Initialized with Unicode normalization and DB deduplication")
+
+    def normalize_text(self, text: str) -> str:
+        """
+        Normalize claim text:
+        1. Unicode NFC normalization
+        2. Replace smart quotes / dashes with ASCII equivalents
+        3. Collapse multi-spaces, newlines, and tabs into single spaces
+        4. Lowercase and strip leading/trailing whitespace and outer quotation marks
+        """
+        if not text:
+            return ""
+
+        # Step 1: Unicode NFC normalization
+        norm = unicodedata.normalize("NFC", text)
+
+        # Step 2: Normalize typographical quotes and dashes
+        norm = norm.replace("“", '"').replace("”", '"')
+        norm = norm.replace("‘", "'").replace("’", "'")
+        norm = norm.replace("—", "-").replace("–", "-")
+
+        # Step 3: Collapse whitespace
+        norm = re.sub(r"\s+", " ", norm).strip()
+
+        # Step 4: Lowercase and strip outer quotes / trailing punctuation
+        norm = norm.lower().strip()
+        if (norm.startswith('"') and norm.endswith('"')) or (norm.startswith("'") and norm.endswith("'")):
+            norm = norm[1:-1].strip()
+        norm = norm.rstrip("!?. \t\r\n")
+
+        return norm
+
+    def compute_claim_hash(self, normalized_text: str) -> str:
+        """Compute SHA256 hex digest for normalized claim text."""
+        return hashlib.sha256(normalized_text.encode("utf-8")).hexdigest()
+
+    # Aliases
+    normalize = normalize_text
+    compute_hash = compute_claim_hash
+
     def ingest(self, claim_text: str, source_url: Optional[str] = None) -> Dict:
         """
-        Ingest a claim for fact-checking.
-        
-        This method:
-        1. Normalizes the claim text (lowercase, trim spaces)
-        2. Computes a unique claim hash using SHA256
-        3. Returns a JSON structure with claim details
+        Ingest a claim with validation, normalization, and deduplication.
         
         Args:
-            claim_text (str): The text of the claim to be fact-checked
-            source_url (Optional[str]): The URL source of the claim
-        
+            claim_text: Raw claim text submitted
+            source_url: Optional source URL where the claim originated
+            
         Returns:
-            Dict: JSON structure containing claim_id, status, is_new, and normalized_text
+            Dict containing claim_id, status, is_new, normalized_text, and claim_hash
         """
-        print(f"[ClaimIngestionAgent] Ingesting claim: {claim_text[:50]}...")
-        
-        # Step 1: Normalize the claim text
-        normalized_text = self._normalize_text(claim_text)
-        print(f"[ClaimIngestionAgent] Normalized text: {normalized_text[:50]}...")
-        
-        # Step 2: Compute claim hash
-        claim_hash = self._compute_claim_hash(normalized_text)
-        print(f"[ClaimIngestionAgent] Computed claim hash: {claim_hash}")
-        
-        # Step 3: Build response JSON
-        response = {
-            "claim_id": claim_hash,
+        raw_text = (claim_text or "").strip()
+        if len(raw_text) < 5:
+            raise ValueError("Claim text is too short (minimum 5 characters required).")
+        if len(raw_text) > 5000:
+            raise ValueError("Claim text exceeds maximum permitted length (5000 characters).")
+
+        normalized = self.normalize_text(raw_text)
+        claim_hash = self.compute_claim_hash(normalized)
+
+        # Check database for existing claim (Idempotency & Deduplication)
+        existing_claim = get_claim_by_hash(claim_hash)
+        if existing_claim:
+            logger.info(f"[ClaimIngestionAgent] Duplicate claim detected (hash={claim_hash[:10]}..., id={existing_claim.get('id')})")
+            return {
+                "claim_id": str(existing_claim.get("id")),
+                "claim_hash": claim_hash,
+                "status": existing_claim.get("status", "completed"),
+                "is_new": False,
+                "original_text": existing_claim.get("claim_text", raw_text),
+                "normalized_text": normalized,
+                "verdict": existing_claim.get("verdict"),
+                "confidence": existing_claim.get("confidence"),
+                "source_url": existing_claim.get("source_url") or source_url
+            }
+
+        # Insert new claim
+        claim_row = insert_claim(
+            claim_hash=claim_hash,
+            claim_text=raw_text,
+            normalized_text=normalized,
+            source_url=source_url
+        )
+
+        claim_id = str(claim_row.get("id"))
+        logger.info(f"[ClaimIngestionAgent] New claim registered with ID: {claim_id}")
+
+        return {
+            "claim_id": claim_id,
+            "claim_hash": claim_hash,
             "status": "pending",
             "is_new": True,
-            "normalized_text": normalized_text
+            "original_text": raw_text,
+            "normalized_text": normalized,
+            "source_url": source_url
         }
-        
-        if source_url:
-            print(f"[ClaimIngestionAgent] Source URL: {source_url}")
-            response["source_url"] = source_url
-        
-        print(f"[ClaimIngestionAgent] Claim ingested successfully with ID: {claim_hash}")
-        
-        return response
-    
-    def _normalize_text(self, text: str) -> str:
-        """
-        Normalize claim text by converting to lowercase and trimming spaces.
-        
-        Args:
-            text (str): Original claim text
-        
-        Returns:
-            str: Normalized claim text
-        """
-        # Convert to lowercase
-        normalized = text.lower()
-        
-        # Trim leading and trailing spaces
-        normalized = normalized.strip()
-        
-        return normalized
-    
-    def _compute_claim_hash(self, normalized_text: str) -> str:
-        """
-        Compute SHA256 hash of the normalized claim text.
-        
-        Args:
-            normalized_text (str): Normalized claim text
-        
-        Returns:
-            str: Hexadecimal SHA256 hash
-        """
-        # Encode text to bytes
-        text_bytes = normalized_text.encode('utf-8')
-        
-        # Compute SHA256 hash
-        hash_object = hashlib.sha256(text_bytes)
-        claim_hash = hash_object.hexdigest()
-        
-        return claim_hash
+
+
+claim_ingestion_agent = ClaimIngestionAgent()
+
+
+def get_claim_ingestion_agent() -> ClaimIngestionAgent:
+    """Return singleton instance of ClaimIngestionAgent."""
+    global claim_ingestion_agent
+    return claim_ingestion_agent
+

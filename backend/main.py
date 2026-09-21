@@ -28,7 +28,7 @@ from fastapi.staticfiles import StaticFiles
 from starlette.middleware.gzip import GZipMiddleware
 from starlette.responses import FileResponse
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, model_validator
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -234,10 +234,14 @@ def get_personal_agent():
 # ============================================================================
 
 class ClaimVerifyRequest(BaseModel):
-    claim_text: str = Field(
-        ...,
+    claim_text: Optional[str] = Field(
+        None,
         description="The statement, news headline, or rumor to fact-check with multi-agent intelligence.",
         json_schema_extra={"example": "Scientists discovered that drinking boiled lemon water completely cures cancer within 48 hours."}
+    )
+    claim: Optional[str] = Field(
+        None,
+        description="Alias for claim_text."
     )
     source_url: Optional[str] = Field(
         None,
@@ -245,18 +249,42 @@ class ClaimVerifyRequest(BaseModel):
         json_schema_extra={"example": "https://twitter.com/health_news/status/18361234567"}
     )
 
+    @model_validator(mode="before")
+    @classmethod
+    def resolve_claim_fields(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            text = data.get("claim_text") or data.get("claim")
+            if not text or not str(text).strip() or len(str(text).strip()) < 5:
+                raise ValueError("A valid claim or claim_text of at least 5 characters is required.")
+            data["claim_text"] = str(text).strip()
+        return data
+
 
 class ClaimSubmitRequest(BaseModel):
-    claim_text: str = Field(
-        ...,
+    claim_text: Optional[str] = Field(
+        None,
         description="Claim text for background queuing and database insertion.",
         json_schema_extra={"example": "Leaked memo reveals Nvidia is acquiring AMD in $150B secret merger."}
+    )
+    claim: Optional[str] = Field(
+        None,
+        description="Alias for claim_text."
     )
     source_url: Optional[str] = Field(
         None,
         description="Optional origin URL.",
         json_schema_extra={"example": "https://reddit.com/r/stocks/comments/xyz123"}
     )
+
+    @model_validator(mode="before")
+    @classmethod
+    def resolve_claim_fields(cls, data: Any) -> Any:
+        if isinstance(data, dict):
+            text = data.get("claim_text") or data.get("claim")
+            if not text or not str(text).strip() or len(str(text).strip()) < 5:
+                raise ValueError("A valid claim or claim_text of at least 5 characters is required.")
+            data["claim_text"] = str(text).strip()
+        return data
 
 
 class ClaimSubmitResponse(BaseModel):
@@ -960,29 +988,21 @@ async def submit_claim(request: ClaimSubmitRequest, background_tasks: Background
             source_url=request.source_url
         )
 
-        claim_hash = ingest_result["claim_id"]
-        normalized_text = ingest_result["normalized_text"]
-        logger.info(f"[API] Claim hash: {claim_hash}")
+        claim_id = str(ingest_result["claim_id"])
+        is_new = bool(ingest_result.get("is_new", True))
+        status = str(ingest_result.get("status", "pending"))
 
-        existing_claim = db.get_claim_by_hash(claim_hash)
-        if existing_claim:
-            logger.info(f"[API] Claim already exists with ID: {existing_claim['id']}")
-            return ClaimSubmitResponse(
-                claim_id=str(existing_claim['id']),
-                status=existing_claim['status'],
-                is_new=False
-            )
+        if is_new:
+            logger.info(f"[API] Dispatching background investigation for claim ID: {claim_id}")
+            background_tasks.add_task(process_claim, claim_id)
+        else:
+            logger.info(f"[API] Existing claim returned immediately (ID: {claim_id}, status: {status})")
 
-        inserted_claim = db.insert_claim(
-            claim_hash=claim_hash,
-            claim_text=request.claim_text,
-            normalized_text=normalized_text
+        return ClaimSubmitResponse(
+            claim_id=claim_id,
+            status=status,
+            is_new=is_new
         )
-        claim_id = str(inserted_claim['id'])
-        logger.info(f"[API] New claim inserted with ID: {claim_id}")
-
-        background_tasks.add_task(process_claim, claim_id)
-        return ClaimSubmitResponse(claim_id=claim_id, status="pending", is_new=True)
 
     except Exception as e:
         logger.error(f"[API] Error submitting claim: {str(e)}")
@@ -1007,6 +1027,7 @@ async def get_claim_status(claim_id: str):
             "status": claim.get("status"),
             "verdict": claim.get("verdict"),
             "confidence": claim.get("confidence"),
+            "confidence_score": claim.get("confidence"),
             "severity": claim.get("severity"),
             "reasoning": claim.get("reasoning"),
             "evidence": evidence_list,
@@ -1751,103 +1772,14 @@ async def dashboard_js():
 @app.post("/lab/synthetic-detect", tags=["Threat Intelligence Lab"])
 @app.post("/api/threat-lab/mandelbrot-fit", tags=["Threat Intelligence Lab"])
 async def lab_synthetic_detect(req: SyntheticDetectRequest):
-    import re
-    import math
-    from collections import Counter
+    from backend.services.threat_instruments import compute_mandelbrot_fit
     
     text = (req.text or req.claim or "").strip()
     if not text:
         raise HTTPException(status_code=400, detail="Text or claim cannot be empty.")
 
-    tokens = re.findall(r"\b[a-zA-Z]{2,}\b", text.lower())
-    if len(tokens) < 10:
-        return JSONResponse({
-            "status": "warning",
-            "message": "Text too short for statistically significant Mandelbrot fit. Minimum 10 words required.",
-            "verdict": "INSUFFICIENT_DATA",
-            "confidence": 50.0,
-            "r_squared": 0.0,
-            "entropy": 0.0,
-            "ttr": 0.0,
-            "total_tokens": len(tokens),
-            "unique_tokens": len(set(tokens)),
-            "curve_data": [],
-            "analysis": "Provide a longer sample (at least 20-30 words) for full token rank regression."
-        })
-
-    counts = Counter(tokens)
-    total_n = len(tokens)
-    unique_v = len(counts)
-    sorted_tokens = counts.most_common()
-
-    ranks = min(len(sorted_tokens), 20)
-    top_p = [count / total_n for _, count in sorted_tokens[:ranks]]
-    
-    beta = 1.8
-    gamma = 1.12
-    
-    zipf_denom = sum(1.0 / r for r in range(1, ranks + 1))
-    mandel_denom = sum(1.0 / ((r + beta) ** gamma) for r in range(1, ranks + 1))
-
-    curve_data = []
-    actual_vals = []
-    mandel_vals = []
-
-    for idx in range(ranks):
-        r = idx + 1
-        word, count = sorted_tokens[idx]
-        p_act = count / total_n
-        p_zipf = (1.0 / r) / zipf_denom * sum(top_p)
-        p_mandel = (1.0 / ((r + beta) ** gamma)) / mandel_denom * sum(top_p)
-
-        actual_vals.append(p_act)
-        mandel_vals.append(p_mandel)
-
-        curve_data.append({
-            "rank": r,
-            "token": word,
-            "count": count,
-            "p_actual": round(p_act, 4),
-            "p_mandelbrot": round(p_mandel, 4),
-            "p_zipf": round(p_zipf, 4),
-            "delta": round(abs(p_act - p_mandel), 4)
-        })
-
-    mean_act = sum(actual_vals) / len(actual_vals) if actual_vals else 1e-6
-    ss_tot = sum((y - mean_act) ** 2 for y in actual_vals)
-    ss_res = sum((y - f) ** 2 for y, f in zip(actual_vals, mandel_vals))
-    
-    if ss_tot > 1e-9:
-        r_squared = max(0.0, min(0.999, 1.0 - (ss_res / ss_tot)))
-    else:
-        r_squared = 0.85
-
-    ttr = round(unique_v / total_n, 4)
-    entropy = round(-sum((c / total_n) * math.log2(c / total_n) for _, c in counts.items()), 3)
-
-    is_synthetic = r_squared >= 0.92 and (ttr < 0.75 or entropy < 5.2)
-    confidence = round(min(98.8, max(62.0, (r_squared * 100.0))), 1)
-    verdict = "SYNTHETIC" if is_synthetic else "HUMAN"
-    
-    analysis = (
-        f"Mandelbrot rank-frequency regression yielded R² = {r_squared:.3f} (entropy: {entropy} bits, TTR: {ttr:.2f}). "
-        + ("Token distribution shows characteristic low-variance power-law decay typical of autoregressive transformer sampling (temperature < 0.8)."
-           if is_synthetic else
-           "Token distribution exhibits organic vocabulary burstiness, colloquial entropy, and non-smooth tail distribution consistent with human composition.")
-    )
-
-    return JSONResponse({
-        "status": "success",
-        "verdict": verdict,
-        "confidence": confidence,
-        "r_squared": round(r_squared, 4),
-        "entropy": entropy,
-        "ttr": ttr,
-        "total_tokens": total_n,
-        "unique_tokens": unique_v,
-        "curve_data": curve_data,
-        "analysis": analysis
-    })
+    res = compute_mandelbrot_fit(text)
+    return JSONResponse(res)
 
 
 @app.post(
@@ -1858,81 +1790,19 @@ async def lab_synthetic_detect(req: SyntheticDetectRequest):
 @app.post("/lab/blast-radius", tags=["Threat Intelligence Lab"])
 @app.post("/api/threat-lab/hawkes-sim", tags=["Threat Intelligence Lab"])
 async def lab_blast_radius(req: BlastRadiusRequest):
-    import math
-    import hashlib
+    from backend.services.threat_instruments import simulate_hawkes_contagion
     
     topic = (req.topic or "").strip()
     claim = (req.claim or "").strip()
     if not topic and not claim:
         raise HTTPException(status_code=400, detail="Topic or claim is required.")
 
-    query = f"{topic} {claim}".strip()
-    seed_val = int(hashlib.md5(query.encode('utf-8')).hexdigest()[:8], 16)
-    
-    mu = 0.6 + ((seed_val % 50) / 100.0)
-    alpha = 0.8 + (((seed_val >> 4) % 90) / 100.0)
-    beta = 0.5 + (((seed_val >> 8) % 40) / 100.0)
-    
-    r0 = round(alpha / beta, 2)
-    
-    if r0 >= 1.6:
-        threat_level = "CRITICAL CONTAGION"
-        threat_color = "red"
-    elif r0 >= 1.0:
-        threat_level = "ELEVATED"
-        threat_color = "yellow"
-    else:
-        threat_level = "NOMINAL"
-        threat_color = "green"
-
-    hourly_distribution = []
-    current_cum = 0
-    base_spread = int(120 * (r0 ** 2.2))
-
-    for h in range(1, 25):
-        decay = math.exp(-beta * (h / 6.0))
-        h_intensity = round(mu + alpha * decay * (1.0 + 0.3 * math.sin(h / 3.0)), 2)
-        growth_factor = (h ** 1.3) * math.exp(-0.08 * h) * (r0 ** 1.8)
-        new_nodes = max(12, int(base_spread * growth_factor * (0.8 + 0.4 * ((seed_val + h * 37) % 100) / 100.0)))
-        current_cum += new_nodes
-        
-        hourly_distribution.append({
-            "hour": h,
-            "hour_label": f"+{h}h",
-            "new_nodes": new_nodes,
-            "cumulative_nodes": current_cum,
-            "intensity": h_intensity
-        })
-
-    total_reach = current_cum
-    epicenter_name = topic if topic else (claim[:40] + "...")
-
-    return JSONResponse({
-        "status": "success",
-        "topic": topic,
-        "claim": claim,
-        "threat_level": threat_level,
-        "threat_color": threat_color,
-        "reproduction_number_R0": r0,
-        "reproduction_number_r0": r0,
-        "base_intensity_mu": round(mu, 2),
-        "excitation_alpha": round(alpha, 2),
-        "decay_rate_beta": round(beta, 2),
-        "projected_reach_24h": total_reach,
-        "total_projected_reach_24h": total_reach,
-        "critical_window_hours": 4.5,
-        "trajectory": "Exponential cascade" if r0 >= 1.4 else "Sub-critical attenuation",
-        "wave1_nodes_2h": hourly_distribution[1]["cumulative_nodes"],
-        "wave2_nodes_6h": hourly_distribution[5]["cumulative_nodes"],
-        "wave3_nodes_24h": total_reach,
-        "hourly_distribution": hourly_distribution,
-        "epicenter": epicenter_name,
-        "containment_recommendation": (
-            "Initiate immediate automated debunker deployment across Tier-1 ingestion nodes. Isolate synthetic cluster vectors."
-            if r0 >= 1.4 else
-            "Maintain passive monitoring; cascade velocity remains sub-critical under current network topology."
-        )
-    })
+    try:
+        res = simulate_hawkes_contagion(topic=topic, claim=claim)
+        return JSONResponse(res)
+    except Exception as e:
+        logger.error(f"[Hawkes Simulation] Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
 
 
 @app.post(
@@ -1945,7 +1815,8 @@ async def lab_blast_radius(req: BlastRadiusRequest):
 async def lab_consensus(req: ConsensusRequest):
     import hashlib
     from collections import Counter
-    
+    from backend.services.threat_instruments import arbitrate_ensemble_consensus
+
     claim = (req.claim or "").strip()
     if not claim:
         raise HTTPException(status_code=400, detail="Claim is required.")
@@ -2048,38 +1919,33 @@ async def lab_consensus(req: ConsensusRequest):
                 "is_outlier": False
             })
 
-    v_map = {"FALSE": -1.0, "MISLEADING": 0.0, "TRUE": 1.0}
-    scores = [v_map.get(a["verdict"], 0.0) * (a["confidence"] / 100.0) for a in agent_results]
-    mean_score = sum(scores) / len(scores) if scores else 0.0
+    # Execute deterministic ensemble consensus with statistical outlier pruning
+    arb_res = arbitrate_ensemble_consensus(agent_results)
+    annotated_nodes = arb_res.get("nodes", agent_results)
+    outlier_agent = next((a for a in annotated_nodes if a.get("is_outlier")), annotated_nodes[0] if annotated_nodes else {"id": "none", "name": "None"})
     
-    distances = [abs(s - mean_score) for s in scores]
-    max_dist_idx = distances.index(max(distances)) if distances else 0
-    
-    agent_results[max_dist_idx]["is_outlier"] = True
-    outlier_agent = agent_results[max_dist_idx]
-
-    valid_agents = [a for idx, a in enumerate(agent_results) if idx != max_dist_idx]
+    valid_agents = [a for a in annotated_nodes if not a.get("is_outlier")]
     if not valid_agents:
-        valid_agents = agent_results
+        valid_agents = annotated_nodes
 
-    verdict_counts = Counter(a["verdict"] for a in valid_agents)
-    consensus_verdict = verdict_counts.most_common(1)[0][0]
-    
-    agreeing = [a["confidence"] for a in valid_agents if a["verdict"] == consensus_verdict]
-    consensus_confidence = round(sum(agreeing) / len(agreeing), 1) if agreeing else 80.0
+    consensus_verdict = arb_res.get("consensus_verdict", "UNVERIFIED")
+    agreeing = [a["confidence"] for a in valid_agents if a.get("verdict") == consensus_verdict]
+    consensus_confidence = round(sum(agreeing) / len(agreeing), 1) if agreeing else arb_res.get("mean_confidence", 80.0)
 
     return JSONResponse({
         "status": "success",
         "claim": claim,
-        "agents": agent_results,
-        "outlier_pruned_id": outlier_agent["id"],
-        "outlier_pruned_name": outlier_agent["name"],
-        "w_msr_status": "Outlier successfully pruned via W-MSR trimmed subsequence filter (k=1).",
+        "agents": annotated_nodes,
+        "outlier_pruned_id": outlier_agent.get("id"),
+        "outlier_pruned_name": outlier_agent.get("name"),
+        "w_msr_status": f"Outlier identification complete via {arb_res.get('fault_tolerance_model')}.",
         "consensus_verdict": consensus_verdict,
         "consensus_confidence": consensus_confidence,
+        "quorum_reached": arb_res.get("consensus_reached", True),
+        "quorum_ratio": arb_res.get("quorum_ratio", 1.0),
         "epistemic_synthesis": (
             f"Byzantine Swarm converged on {consensus_verdict} ({consensus_confidence}% confidence) "
-            f"after pruning divergent telemetry from {outlier_agent['name']}."
+            f"after evaluating multi-agent telemetry."
         )
     })
 

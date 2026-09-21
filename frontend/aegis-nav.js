@@ -2,6 +2,18 @@
  * aegis-nav.js — Aegis Protocol High-Craft Global Navigation & Command Console
  */
 (function() {
+  // ── Global XSS Protection Helper ──
+  window.escapeHtml = function(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  };
+  window.sanitizeText = window.escapeHtml;
+
   // ── 1. Inject SVG Favicon with Bespoke Faceted Prism Emblem ──
   const faviconSvg = `<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 28 28'><defs><linearGradient id='g' x1='0' y1='0' x2='28' y2='28' gradientUnits='userSpaceOnUse'><stop offset='0%' stop-color='%2300f2fe'/><stop offset='100%' stop-color='%23818cf8'/></linearGradient></defs><rect width='28' height='28' rx='6' fill='%2306080d'/><polygon points='14,3 23.5,8 14,14 4.5,8' fill='rgba(0,242,254,0.3)'/><polygon points='4.5,8 14,14 14,24.5 4.5,17' fill='rgba(56,189,248,0.2)'/><polygon points='23.5,8 14,14 14,24.5 23.5,17' fill='rgba(129,140,248,0.25)'/><path d='M14 3L23.5 8V17L14 24.5L4.5 17V8L14 3Z' stroke='url(%23g)' stroke-width='1.4' fill='none'/><path d='M14 3V14M4.5 8L14 14M23.5 8L14 14M14 14V24.5' stroke='url(%23g)' stroke-width='0.9' stroke-opacity='0.6'/><polygon points='14,11.5 16.5,14 14,16.5 11.5,14' fill='%2300f2fe'/></svg>`;
   

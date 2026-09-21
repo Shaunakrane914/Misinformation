@@ -42,7 +42,7 @@ _mem_hash_index: Dict[str, str] = {}
 _mem_evidence: Dict[str, List[Dict]] = {}
 
 
-def _mem_insert_claim(claim_hash: str, claim_text: str, normalized_text: str) -> Dict:
+def _mem_insert_claim(claim_hash: str, claim_text: str, normalized_text: str, source_url: Optional[str] = None) -> Dict:
     claim_id = str(uuid.uuid4())
     now = datetime.utcnow().isoformat()
     row = {
@@ -50,6 +50,7 @@ def _mem_insert_claim(claim_hash: str, claim_text: str, normalized_text: str) ->
         "claim_hash": claim_hash,
         "claim_text": claim_text,
         "normalized_text": normalized_text,
+        "source_url": source_url,
         "status": "pending",
         "verdict": None,
         "confidence": None,
@@ -64,7 +65,7 @@ def _mem_insert_claim(claim_hash: str, claim_text: str, normalized_text: str) ->
     return row
 
 
-def insert_claim(claim_hash: str, claim_text: str, normalized_text: str) -> Dict:
+def insert_claim(claim_hash: str, claim_text: str, normalized_text: str, source_url: Optional[str] = None) -> Dict:
     """Insert a new claim into Supabase with automatic in-memory fallback."""
     logger.info(f"[Database] Inserting claim with hash: {claim_hash}")
     
@@ -74,6 +75,7 @@ def insert_claim(claim_hash: str, claim_text: str, normalized_text: str) -> Dict
                 "claim_hash": claim_hash,
                 "claim_text": claim_text,
                 "normalized_text": normalized_text,
+                "source_url": source_url,
                 "status": "pending",
                 "verdict": None,
                 "confidence": None,

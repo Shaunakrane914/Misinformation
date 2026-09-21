@@ -333,15 +333,16 @@
 
         const grid = document.createElement('div');
         grid.className = 'results-grid';
+        const esc = window.escapeHtml || (str => String(str || ''));
         threats.forEach(item => {
           const isHigh = item.risk_level === 'HIGH';
           const isMed  = item.risk_level === 'MEDIUM';
           const sevColor = isHigh ? 'var(--rose)' : isMed ? '#fbbf24' : 'var(--emerald)';
           const dotColor = isHigh ? 'var(--rose)' : isMed ? '#fbbf24' : 'var(--emerald)';
           grid.innerHTML += `<div class="result-card${isHigh || isMed ? ' threat' : ''}">
-            <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.source || 'Web'} <span style="color:#06b6d4">${item.threat_type || 'Finding'}</span>${isHigh || isMed ? `<span class="threat-tag" style="margin-left:auto;color:${sevColor};">${item.risk_level}</span>` : '<span class="safe-tag" style="margin-left:auto;">SAFE</span>'}</div>
-            <div class="result-title">${item.title || 'Finding Item'}</div>
-            <div class="result-body">${item.reason || ''}</div>
+            <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${esc(item.source || 'Web')} <span style="color:#06b6d4">${esc(item.threat_type || 'Finding')}</span>${isHigh || isMed ? `<span class="threat-tag" style="margin-left:auto;color:${sevColor};">${esc(item.risk_level)}</span>` : '<span class="safe-tag" style="margin-left:auto;">SAFE</span>'}</div>
+            <div class="result-title">${esc(item.title || 'Finding Item')}</div>
+            <div class="result-body">${esc(item.reason || '')}</div>
           </div>`;
         });
         container.appendChild(grid);

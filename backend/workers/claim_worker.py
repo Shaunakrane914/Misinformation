@@ -25,6 +25,9 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+_research_agent = None
+_investigator_agent = None
+
 
 async def process_claim(claim_id: str):
     """
@@ -60,26 +63,25 @@ async def process_claim(claim_id: str):
         logger.info(f"[ClaimWorker] [{claim_id}] Updating status to 'in_progress'")
         update_claim_status(claim_id, "in_progress")
         
-        # Step 3: Instantiate ResearchAgent
-        logger.info(f"[ClaimWorker] [{claim_id}] Initializing ResearchAgent")
-        research_agent = ResearchAgent()
-        
+        # Step 3: Lazy-instantiate agents
+        global _research_agent, _investigator_agent
+        if _research_agent is None:
+            _research_agent = ResearchAgent()
+        if _investigator_agent is None:
+            _investigator_agent = InvestigatorAgent()
+
         # Step 4: Gather evidence
         source_url = claim.get("source_url")
         logger.info(f"[ClaimWorker] [{claim_id}] Running ResearchAgent.process() (source_url={source_url})")
-        evidence_json = research_agent.process(claim_text, source_url=source_url)
+        evidence_json = _research_agent.process(claim_text, source_url=source_url)
         
         logger.info(f"[ClaimWorker] [{claim_id}] Evidence gathering complete")
         logger.info(f"[ClaimWorker] [{claim_id}] Supporting evidence: {len(evidence_json.get('supporting_evidence', []))} points")
         logger.info(f"[ClaimWorker] [{claim_id}] Refuting evidence: {len(evidence_json.get('refuting_evidence', []))} points")
         
-        # Step 5: Instantiate InvestigatorAgent
-        logger.info(f"[ClaimWorker] [{claim_id}] Initializing InvestigatorAgent")
-        investigator_agent = InvestigatorAgent()
-        
-        # Step 6: Determine verdict
+        # Step 5 & 6: Determine verdict
         logger.info(f"[ClaimWorker] [{claim_id}] Running InvestigatorAgent.process()")
-        verdict_json = investigator_agent.process(claim_text, evidence_json)
+        verdict_json = _investigator_agent.process(claim_text, evidence_json)
         
         logger.info(f"[ClaimWorker] [{claim_id}] Investigation complete")
         logger.info(f"[ClaimWorker] [{claim_id}] Verdict: {verdict_json.get('verdict')}")
@@ -94,15 +96,16 @@ async def process_claim(claim_id: str):
         evidence_items_to_insert = []
         for ev in supporting_evidence:
             if ev and isinstance(ev, str):
-                evidence_items_to_insert.append({"summary": ev, "stance": "supporting"})
+                evidence_items_to_insert.append({"summary": ev, "stance": "supporting", "source_url": source_url})
         for ev in refuting_evidence:
             if ev and isinstance(ev, str):
-                evidence_items_to_insert.append({"summary": ev, "stance": "refuting"})
+                evidence_items_to_insert.append({"summary": ev, "stance": "refuting", "source_url": source_url})
 
         if not evidence_items_to_insert:
             evidence_items_to_insert.append({
                 "summary": verdict_json.get("reasoning") or "Multi-source evidence evaluated across global repositories.",
-                "stance": "supporting" if final_verdict == "true" else "refuting"
+                "stance": "supporting" if final_verdict == "true" else "refuting",
+                "source_url": source_url
             })
 
         # Step 8: Insert evidence items into database
@@ -111,7 +114,7 @@ async def process_claim(claim_id: str):
             try:
                 insert_evidence(
                     claim_id=claim_id,
-                    source_url=None,
+                    source_url=ev_item.get("source_url"),
                     summary=ev_item["summary"],
                     stance=ev_item["stance"]
                 )

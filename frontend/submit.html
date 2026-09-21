@@ -1364,18 +1364,23 @@ Do not output markdown codeblocks, output only the JSON.`;
       if (supCountBadge) supCountBadge.innerText = `${supporting.length} point${supporting.length !== 1 ? 's' : ''}`;
       if (refCountBadge) refCountBadge.innerText = `${refuting.length} point${refuting.length !== 1 ? 's' : ''}`;
 
+      const esc = window.escapeHtml || (str => String(str || ''));
+
       if (supList) {
         if (supporting.length > 0) {
-          supList.innerHTML = supporting.map(s => `
+          supList.innerHTML = supporting.map(s => {
+            const rawUrl = s.url && s.url !== '#' ? s.url : '';
+            const safeUrl = rawUrl.startsWith('http://') || rawUrl.startsWith('https://') ? encodeURI(rawUrl) : '';
+            return `
             <div class="evidence-card" style="border-left:3px solid var(--emerald);">
               <div class="evidence-source-tag">
-                <span style="color:var(--emerald);">${s.source || 'Corroborating Record'}</span>
-                <span style="color:var(--text-dim);">${s.platform || 'Verified'}</span>
+                <span style="color:var(--emerald);">${esc(s.source || s.publisher || 'Corroborating Record')}</span>
+                <span style="color:var(--text-dim);">${esc(s.platform || 'Verified')}</span>
               </div>
-              <div style="color:#e2e8f0;line-height:1.5;">${s.text || ''}</div>
-              ${s.url && s.url !== '#' ? `<a href="${s.url}" target="_blank" rel="noopener" style="display:inline-block;font-size:0.72rem;color:var(--accent);margin-top:6px;text-decoration:none;">View Primary Citation &rarr;</a>` : ''}
+              <div style="color:#e2e8f0;line-height:1.5;">${esc(s.text || s.summary || '')}</div>
+              ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;font-size:0.72rem;color:var(--accent);margin-top:6px;text-decoration:none;">View Primary Citation &rarr;</a>` : ''}
             </div>
-          `).join('');
+          `;}).join('');
         } else {
           supList.innerHTML = `<div style="font-size:0.8rem;color:var(--text-dim);padding:14px 0;font-style:italic;">No credible corroborating evidence found across monitored registries.</div>`;
         }
@@ -1383,16 +1388,19 @@ Do not output markdown codeblocks, output only the JSON.`;
 
       if (refList) {
         if (refuting.length > 0) {
-          refList.innerHTML = refuting.map(r => `
+          refList.innerHTML = refuting.map(r => {
+            const rawUrl = r.url && r.url !== '#' ? r.url : '';
+            const safeUrl = rawUrl.startsWith('http://') || rawUrl.startsWith('https://') ? encodeURI(rawUrl) : '';
+            return `
             <div class="evidence-card" style="border-left:3px solid var(--rose);">
               <div class="evidence-source-tag">
-                <span style="color:var(--rose);">${r.source || 'Refuting Proof'}</span>
-                <span style="color:var(--text-dim);">${r.platform || 'Fact-Check'}</span>
+                <span style="color:var(--rose);">${esc(r.source || r.publisher || 'Refuting Proof')}</span>
+                <span style="color:var(--text-dim);">${esc(r.platform || 'Fact-Check')}</span>
               </div>
-              <div style="color:#e2e8f0;line-height:1.5;">${r.text || ''}</div>
-              ${r.url && r.url !== '#' ? `<a href="${r.url}" target="_blank" rel="noopener" style="display:inline-block;font-size:0.72rem;color:var(--accent);margin-top:6px;text-decoration:none;">View Primary Proof &rarr;</a>` : ''}
+              <div style="color:#e2e8f0;line-height:1.5;">${esc(r.text || r.summary || '')}</div>
+              ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;font-size:0.72rem;color:var(--accent);margin-top:6px;text-decoration:none;">View Primary Proof &rarr;</a>` : ''}
             </div>
-          `).join('');
+          `;}).join('');
         } else {
           refList.innerHTML = `<div style="font-size:0.8rem;color:var(--text-dim);padding:14px 0;font-style:italic;">No refuting contradictions detected. Claims align with baseline empirical records.</div>`;
         }

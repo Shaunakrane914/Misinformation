@@ -271,6 +271,7 @@
         feed.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:0.9rem;">No active threats detected in cluster. Monitoring active.</div>';
         return;
       }
+      const esc = window.escapeHtml || (s => String(s || ''));
       threats.forEach(item => {
         const isThreat = item.is_threat;
         const sent = item.sentiment || 0;
@@ -278,7 +279,7 @@
         const sentPct = Math.min(Math.abs(sent), 100);
         const card = document.createElement('div');
         card.className = `threat-card${isThreat ? ' is-threat' : ''}`;
-        card.innerHTML = `<div class="tc-header"><span class="src-pill">${item.source||'Platform'}</span>${isThreat ? '<span class="threat-pill">DISINFORMATION RISK</span>' : ''}</div><p class="tc-title">${item.title||''}</p><p class="tc-summary">${item.summary||''}</p><div class="sent-row"><span class="sent-lbl">Sentiment</span><div class="sent-bar"><div class="sent-fill" style="width:${sentPct}%;background:${sentColor};"></div></div><span style="font-size:0.75rem;color:${sentColor};font-weight:700;font-family:var(--font-mono);">${sent>0?'+':''}${sent}</span></div>`;
+        card.innerHTML = `<div class="tc-header"><span class="src-pill">${esc(item.source||'Platform')}</span>${isThreat ? '<span class="threat-pill">DISINFORMATION RISK</span>' : ''}</div><p class="tc-title">${esc(item.title||'')}</p><p class="tc-summary">${esc(item.summary||'')}</p><div class="sent-row"><span class="sent-lbl">Sentiment</span><div class="sent-bar"><div class="sent-fill" style="width:${sentPct}%;background:${sentColor};"></div></div><span style="font-size:0.75rem;color:${sentColor};font-weight:700;font-family:var(--font-mono);">${sent>0?'+':''}${sent}</span></div>`;
         feed.appendChild(card);
       });
     }

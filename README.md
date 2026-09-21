@@ -9,31 +9,31 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
+[![Tests](https://img.shields.io/badge/Tests-26%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
+[![Evaluation](https://img.shields.io/badge/WELFake-Evaluated-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
 
-**Seven specialized AI agents work simultaneously — scanning financial markets, trending viral dynamics, brand reputation, personal executive security, empirical research, and adversarial attribution to detect and neutralize misinformation before it spreads.**
+**Aegis Protocol is an enterprise-grade multi-agent misinformation intelligence platform. It ingests, normalizes, and investigates claims with evidence-grounded attribution, 6-verdict truth taxonomies, physics-based contagion simulation, and strict SSRF/XSS security hardening.**
 
-[Live Demo](#) · [API Docs](http://localhost:8000/docs) · [Endpoints Map](ENDPOINTS_MAP.md) · [Architecture](ARCHITECTURE.md)
+[API Documentation](http://localhost:8000/docs) · [Feature Status](docs/FEATURE_STATUS.md) · [Testing Suite](docs/TESTING.md) · [ML Evaluation](docs/EVALUATION.md) · [Security](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
 
 </div>
 
 ---
 
-## ✨ What It Does
+## ✨ System Capabilities & Feature Matrix
 
-Aegis Protocol is an **autonomous, enterprise-grade multi-agent misinformation intelligence platform**. Submit any claim and receive an instant, synchronous **Truth Dossier** backed by live multi-platform web research, omni-channel cross-referencing, and Byzantine consensus confidence scoring.
+Submit any factual assertion or viral rumor to receive a transparent **Truth Dossier** backed by structured evidence extraction, deterministic idempotency, and calibrated uncertainty bounds:
 
-Beyond claim verification, seven specialized agents and an experimental Threat Intelligence Lab run autonomously:
-
-| Agent / Instrument | Domain & Function | Data Channels | Status |
+| Agent / Instrument | Domain & Function | Data Channels | Verified Status |
 |---|---|---|---|
-| 🔍 **Scout Agent** | Financial misinformation — stock crashes correlated with viral rumors | Twitter/X, Reddit, SEC Edgar, RSS Wires | ✅ Live |
-| 📈 **Trending Agent** | Viral memetic velocity & synthetic amplification | Reddit, Twitter, YouTube, Trend Wires | ✅ Live |
-| 🛡️ **BrandShield Agent** | Brand disparagement, fake reviews, smear campaigns | Google News, Reddit, Twitter, Reviews | ✅ Live |
-| 👤 **Personal Watch Agent** | Executive & VIP deepfakes, voice clones, defamation | YouTube, Twitter, Reddit, News Wires | ✅ Live |
-| 🔬 **Research Agent** | Empirical evidence retrieval & citation cross-referencing | Academic sources, fact-checking archives | ✅ Live |
-| ⚔️ **Adversarial Agent** | Counter-adversarial attribution & swarm pattern discovery | Threat telemetry, network topologies | ✅ Live |
-| 👑 **Coordinator Agent** | Byzantine consensus, debate orchestration & Truth Dossier synthesis | Internal multi-agent ensemble | ✅ Live |
-| ⚡ **Threat Lab** | Mandelbrot synthetic detector, Hawkes blast radius, Byzantine swarm consensus | Live telemetry simulators | ✅ Live |
+| 🔬 **Investigator Agent** | 6-verdict truth synthesis (`True`, `False`, `Misleading`, `Partially True`, `Unverified`, `Insufficient Evidence`) | Monitored wires & fact-checking archives | ✅ Tested (`pytest`) |
+| 🛡️ **Claim Ingestion Agent** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication | Multi-channel ingress | ✅ Tested (`pytest`) |
+| ⚡ **Mandelbrot Detector** | Zipf-Mandelbrot token-rank power-law regression ($R^2$, Shannon entropy, TTR) | Text forensic samples | ✅ Tested (`pytest`) |
+| 🌊 **Hawkes Contagion** | Self-exciting point-process simulation of viral cascade velocity ($R_0 = \alpha / \beta$) | Narrative clusters | 📊 Simulated |
+| ⚖️ **Ensemble Quorum** | Majority consensus arbitrament with statistical $2\sigma$ outlier detection | Multi-node intelligence | ✅ Tested (`pytest`) |
+| 🔍 **Scout Agent** | Financial volatility & stock price impact correlation | Twitter/X, Reddit, SEC Edgar | 🔬 Experimental |
+| 🛡️ **BrandShield Agent** | Brand smear forensics & sentiment shifts | Google News, Review Feeds | ✅ Implemented |
+| 👤 **Personal Watch Agent** | Deepfake marker alerts & impersonation scanning | News wires, Video transcripts | ✅ Implemented |
 
 ---
 
@@ -381,6 +381,7 @@ See [frontend/changelog.html](frontend/changelog.html) or the full [version hist
 
 | Version | Date | Highlights |
 |---|---|---|
+| **v3.5.1** | Sep 2026 | Full-scale repository transformation: 6-verdict truth taxonomy, strict SSRF/XSS defense, centralized Gemini key rotation & resilient offline mock provider, mathematical Mandelbrot/Hawkes/consensus lab, automated 26-test pytest suite, and WELFake ML evaluation harness |
 | **v3.0.0** | Sep 2026 | BrandShield backend agent, wired Personal Watch, fixed duplicate routes, codebase cleanup |
 | **v2.0.0** | Late 2025 | Built-in RSS ingestion, Supabase-first dashboard, mobile overhaul |
 | **v1.0.0** | 2025 | Hackathon launch — Scout + Trending agents, WELFake dashboard |

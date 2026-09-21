@@ -370,6 +370,23 @@ class AgentReachScraper:
         if not clean_url:
             return {"status": "error", "url": "", "title": "Empty URL", "markdown": "", "char_count": 0}
 
+        try:
+            from backend.services.url_validator import validate_url_safe
+        except (ImportError, ModuleNotFoundError):
+            from services.url_validator import validate_url_safe
+
+        is_safe, reason = validate_url_safe(clean_url)
+        if not is_safe:
+            logger.warning(f"[AgentReach] SSRF blocked URL '{clean_url}': {reason}")
+            return {
+                "status": "blocked_ssrf",
+                "url": clean_url,
+                "title": "Blocked URL",
+                "markdown": f"[Security Violation] Access to URL '{clean_url}' was blocked by Aegis SSRF Defense: {reason}",
+                "char_count": 0,
+                "reason": reason
+            }
+
         jina_url = f"https://r.jina.ai/{clean_url}"
         try:
             resp = requests.get(

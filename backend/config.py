@@ -29,7 +29,13 @@ class AppConfig:
 
     # Supabase Database
     supabase_url: Optional[str] = os.getenv("SUPABASE_URL")
-    supabase_key: Optional[str] = os.getenv("SUPABASE_KEY")
+    supabase_key: Optional[str] = (
+        os.getenv("SUPABASE_KEY")
+        or os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+        or os.getenv("SUPABASE_ANON_KEY")
+    )
+    supabase_service_role_key: Optional[str] = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+    supabase_anon_key: Optional[str] = os.getenv("SUPABASE_ANON_KEY")
 
     # Scrapers & Financial Intelligence
     apify_token: Optional[str] = os.getenv("APIFY_TOKEN")
@@ -42,7 +48,7 @@ class AppConfig:
 
     @property
     def has_supabase(self) -> bool:
-        return bool(self.supabase_url and self.supabase_key)
+        return bool(self.supabase_url and (self.supabase_key or self.supabase_service_role_key or self.supabase_anon_key))
 
     @property
     def has_gemini(self) -> bool:

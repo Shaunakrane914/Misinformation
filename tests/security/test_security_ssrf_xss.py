@@ -30,7 +30,15 @@ def test_ssrf_prevention(dangerous_url):
 
 
 @pytest.mark.security
-def test_public_safe_urls_allowed():
+def test_public_safe_urls_allowed(monkeypatch):
+    import socket
+    
+    # Ensure offline test independence by mocking DNS resolution to a known safe public IP
+    def mock_getaddrinfo(host, port, *args, **kwargs):
+        return [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("93.184.216.34", 443))]
+    
+    monkeypatch.setattr(socket, "getaddrinfo", mock_getaddrinfo)
+
     safe_urls = [
         "https://www.reuters.com/news/archive",
         "https://en.wikipedia.org/wiki/Misinformation",

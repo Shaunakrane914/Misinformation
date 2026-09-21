@@ -55,12 +55,12 @@ class BrandShieldAgent:
         all_results: List[Dict[str, Any]] = []
         try:
             try:
-                from backend.services.agent_reach_scraper import reach_scraper
+                from backend.services.agent_reach import agent_reach_service
             except (ImportError, ModuleNotFoundError):
-                from services.agent_reach_scraper import reach_scraper
-            logger.info(f"[BrandShield] Executing AgentReach omni-scan for: {brand_name}")
+                from services.agent_reach import agent_reach_service
+            logger.info(f"[BrandShield] Executing AgentReach retrieval for: {brand_name}")
 
-            omni_res = reach_scraper.omni_scan(
+            omni_res = agent_reach_service.omni_scan(
                 query=brand_name,
                 domain="brand",
                 limit_per_channel=max(3, max_results // 4)

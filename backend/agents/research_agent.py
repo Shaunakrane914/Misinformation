@@ -11,7 +11,11 @@ import re
 from typing import Any, Dict, List, Optional
 
 from backend.schemas.claim_schemas import EvidenceItem
-from backend.services.agent_reach_scraper import reach_scraper
+try:
+    from backend.services.agent_reach import agent_reach_service
+except (ImportError, ModuleNotFoundError):
+    from services.agent_reach import agent_reach_service
+
 from backend.services.gemini_service import gemini_service
 
 logger = logging.getLogger(__name__)
@@ -20,11 +24,13 @@ logger = logging.getLogger(__name__)
 class ResearchAgent:
     """
     Evidence gathering agent that queries cross-platform intelligence feeds
-    and synthesizes verifiable supporting and refuting evidence records.
+    via the unified AgentReach capability layer and synthesizes verifiable
+    supporting and refuting evidence records.
     """
 
     def __init__(self):
-        logger.info("[ResearchAgent] Initialized with unified GeminiService and SSRF-hardened reach scraper")
+        self.last_retrieval = None
+        logger.info("[ResearchAgent] Initialized with unified AgentReach capability layer and GeminiService")
 
     def _call_gemini(self, prompt: str) -> str:
         """Compatibility wrapper routing through centralized GeminiService."""
@@ -32,43 +38,42 @@ class ResearchAgent:
 
     def gather_evidence(self, claim_text: str, source_url: Optional[str] = None) -> str:
         """
-        Query cross-platform connectors for real-time grounding, wrap untrusted text
-        in protective XML delimiters, and synthesize evidence using Gemini.
+        Query cross-platform connectors via AgentReachService, wrap untrusted text
+        in protective XML delimiters with forensic source roles/tiers, and synthesize
+        evidence using Gemini with strict prompt injection defense.
         """
         logger.info(f"[ResearchAgent] Gathering evidence for claim: {claim_text[:60]}...")
         context_snippets: List[str] = []
 
         try:
-            omni_res = reach_scraper.omni_scan(
+            retrieval_res = agent_reach_service.retrieve(
                 query=claim_text,
                 domain="fact_check",
                 source_url=source_url,
-                limit_per_channel=4
+                limit_per_channel=4,
             )
+            self.last_retrieval = retrieval_res
 
             # 1. Primary Source Article (if provided)
-            src_doc = omni_res.get("source_article")
+            src_doc = retrieval_res.source_article
             if src_doc and src_doc.get("markdown") and src_doc.get("status") != "blocked_ssrf":
                 clean_md = src_doc["markdown"][:2000].replace("<", "&lt;").replace(">", "&gt;")
+                src_title = str(src_doc.get("title", "Primary Source")).replace("<", "&lt;").replace(">", "&gt;")
                 context_snippets.append(
-                    f'<evidence_untrusted platform="Primary Article" source="{src_doc.get("title", "Article")}">\n{clean_md}\n</evidence_untrusted>'
+                    f'<evidence_untrusted platform="Primary Article" role="PRIMARY" tier="TIER_1_ORIGINAL_DOCUMENT" source="{src_title}">\n{clean_md}\n</evidence_untrusted>'
                 )
 
-            # 2. Mainstream News Wire Findings
-            news_items = omni_res.get("channels", {}).get("news", [])
-            for item in news_items:
-                title = str(item.get("title", "")).replace("<", "&lt;").replace(">", "&gt;")
-                src = str(item.get("source", "News Wire")).replace("<", "&lt;").replace(">", "&gt;")
+            # 2. Normalized evidence fragments across channels
+            for frag in retrieval_res.fragments:
+                clean_title = str(frag.title).replace("<", "&lt;").replace(">", "&gt;")
+                clean_text = str(frag.content or frag.snippet or frag.title)[:350].replace("<", "&lt;").replace(">", "&gt;")
+                platform = str(frag.platform).replace("<", "&lt;").replace(">", "&gt;")
+                role = frag.raw_metadata.get("source_role", "DISCOVERY")
+                tier = frag.raw_metadata.get("source_tier", "TIER_3_AGGREGATE")
+                group = frag.raw_metadata.get("source_independence_group", "independent")
+                
                 context_snippets.append(
-                    f'<evidence_untrusted platform="News" source="{src}">\n{title}\n</evidence_untrusted>'
-                )
-
-            # 3. Community Fact-Checking / Social Snippets
-            reddit_items = omni_res.get("channels", {}).get("reddit", [])
-            for r in reddit_items:
-                snippet = str(r.get("snippet", "") or r.get("title", "")).replace("<", "&lt;").replace(">", "&gt;")
-                context_snippets.append(
-                    f'<evidence_untrusted platform="Reddit" source="Community Discussion">\n{snippet[:250]}\n</evidence_untrusted>'
+                    f'<evidence_untrusted platform="{platform}" role="{role}" tier="{tier}" group="{group}" source="{clean_title}">\n{clean_text}\n</evidence_untrusted>'
                 )
 
         except Exception as e:
@@ -77,6 +82,7 @@ class ResearchAgent:
         grounding_block = ""
         if context_snippets:
             grounding_block = "\nRETRIEVED UNTRUSTED INTELLIGENCE SOURCES:\n" + "\n".join(context_snippets) + "\n"
+
 
         prompt = f"""You are a neutral, rigorous forensic misinformation researcher.
 Evaluate this claim:
@@ -137,6 +143,15 @@ Where overall_evidence_confidence represents:
             return fallback
 
     def process(self, claim_text: str, source_url: Optional[str] = None) -> Dict[str, Any]:
-        """Full pipeline execution for research agent."""
+        """Full pipeline execution for research agent with provenance metadata."""
         raw_text = self.gather_evidence(claim_text, source_url=source_url)
-        return self.extract_json(raw_text)
+        res = self.extract_json(raw_text)
+
+        if self.last_retrieval:
+            res["retrieval_plan"] = self.last_retrieval.retrieval_plan
+            res["channel_health"] = self.last_retrieval.channel_health
+            res["total_signals"] = self.last_retrieval.total_signals
+            res["fragments_count"] = len(self.last_retrieval.fragments)
+
+        return res
+

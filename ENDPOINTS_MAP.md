@@ -40,12 +40,14 @@
 - `POST /api/agents/adversary/analyze` → Run counter-adversarial deconstruction and coordinated campaign attribution
 - `POST /api/agents/coordinator/orchestrate` → Multi-agent ensemble debate, byzantine consensus, and synthesis
 
-### Omni-Channel Intelligence & Scraper Hub
-- `POST /api/scrapers/omni-scan` → Parallel extraction across Twitter/X, Reddit, YouTube, and News wires
-- `GET /api/scrapers/status` → Scraper engine telemetry, fallback circuit-breaker status, and quotas
-- `POST /api/scrapers/reddit` → Dedicated Reddit subreddit and thread crawler
-- `POST /api/scrapers/twitter` → AgentReach Nitter/guest Twitter scanner
-- `POST /api/scrapers/youtube` → YouTube video transcript and metadata auditor
+### Agent Reach Internet Evidence-Acquisition Layer
+- `GET /api/agent-reach/capabilities` → Channel capability inventory, supported domains, and server compatibility
+- `GET /api/agent-reach/health` → Live probe health across all 14 channels (healthy, degraded, auth_required, unavailable)
+- `GET /api/agent-reach/doctor` → Legacy zero-cost scraper diagnostic probe
+- `POST /api/agent-reach/omni-scan` → Domain-directed multi-channel retrieval pass with provenance, deduplication, and syndication clustering
+- `POST /api/agent-reach/read` → SSRF-protected clean markdown parsing of web documents
+- `POST /api/agent-reach/scan` → Unified cross-platform scan across news, Reddit, Twitter/X, and YouTube
+
 
 ### Deep Verification & Truth Dossier
 - `POST /api/verify/truth-dossier` → Full synchronous Truth Dossier report with multi-agent consensus

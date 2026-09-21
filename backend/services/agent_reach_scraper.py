@@ -19,6 +19,8 @@ import feedparser
 import requests
 from bs4 import BeautifulSoup
 
+import warnings
+
 logger = logging.getLogger(__name__)
 
 USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 AegisReach/1.0"
@@ -26,13 +28,20 @@ USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTM
 
 class AgentReachScraper:
     """
-    Unified multi-platform internet and social intelligence scraper.
-    Bypasses expensive SaaS API subscriptions with zero-cost extractors.
+    [DEPRECATED] Unified multi-platform internet and social intelligence scraper.
+    Maintained for backward compatibility. New consumers should use
+    `backend.services.agent_reach.agent_reach_service`.
     """
 
     def __init__(self, timeout: float = 12.0):
         self.timeout = timeout
         self.headers = {"User-Agent": USER_AGENT}
+        warnings.warn(
+            "AgentReachScraper is deprecated. Use backend.services.agent_reach.AgentReachService instead.",
+            DeprecationWarning,
+            stacklevel=2,
+        )
+
 
     # ─────────────────────────────────────────────────────────────────────────
     # 1. REDDIT ZERO-API EXTRACTOR

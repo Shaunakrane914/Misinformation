@@ -50,13 +50,67 @@ Each agent operates with domain-specialized semantic extractors, specialized heu
 - **Research Agent**: Scours academic, scientific, and authoritative primary archives to supply empirical evidence citations.
 - **Adversarial Agent**: Simulates coordinated attack vectors, reverse-engineers adversary strategies, and performs campaign attribution.
 
-### 2. Omni-Channel Intelligence & Scraper Hub
-- **Resilient Fallback Design**: All scrapers use layered fallbacks (direct API -> guest scraping -> public RSS -> synthetic simulation) ensuring zero service interruption.
-- **Rate-Limit Resilience**: Circuit breakers prevent cascade failures when upstream platforms throttle requests.
-- **Zero-Key Operational Mode**: Core telemetry operates seamlessly even without paid Twitter/Reddit API tier access.
+### 2. Agent Reach Internet Evidence-Acquisition Layer
+Aegis v3.5.1+ establishes Agent Reach as the central internet evidence-acquisition capability layer:
+```
+                      CLAIM
+                        │
+                        ▼
+               Claim Understanding
+                        │
+                        ▼
+            ┌───────────────────────┐
+            │   RetrievalPlanner    │
+            │ (Domain Query Craft)  │
+            └───────────┬───────────┘
+                        │
+                        ▼
+            ┌───────────────────────┐
+            │   AgentReachService   │
+            │ (Capability Registry) │
+            └───────────┬───────────┘
+                        │ Bounded Concurrency / Timeouts
+       ┌────────────────┼────────────────┬────────────────┐
+       ▼                ▼                ▼                ▼
+ ┌───────────┐    ┌───────────┐    ┌───────────┐    ┌───────────┐
+ │   News    │    │  Reddit   │    │ Twitter/X │    │  GitHub   │
+ │   & RSS   │    │ (Threads) │    │(Cashtags) │    │  (Repos)  │
+ └─────┬─────┘    └─────┬─────┘    └─────┬─────┘    └─────┬─────┘
+       │                │                │                │
+       └────────────────┼────────────────┴────────────────┘
+                        │
+                        ▼
+            ┌───────────────────────┐
+            │   Evidence Normalizer │
+            │ & Deduplication Engine│
+            └───────────┬───────────┘
+                        │
+                        ▼
+            ┌───────────────────────┐
+            │  Source Independence  │
+            │ (Syndication Cluster) │
+            └───────────┬───────────┘
+                        │
+                        ▼
+            ┌───────────────────────┐
+            │   ResearchAgent &     │
+            │   InvestigatorAgent   │
+            └───────────┬───────────┘
+                        │
+                        ▼
+                 TRUTH DOSSIER
+```
+
+- **Capability Registry**: Tracks 14 channels (7 core zero-config channels: `reddit`, `twitter`, `youtube`, `news`, `jina_reader`, `github`, `rss`; 7 optional authenticated channels: `linkedin`, `bilibili`, `xueqiu`, `xiaohongshu`, `instagram`, `facebook`, `v2ex`).
+- **Domain Query Planner**: Automatically crafts domain-specific queries across `fact_check`, `financial`, `brand`, `personal`, `trending`, `technical`, and `general`.
+- **Syndication Clustering & Independence**: Clustered detection of wire syndication (Reuters, AP, Bloomberg, PR Newswire) ensures 4 derivative republished articles are counted as 1 underlying report, preventing false confirmation inflation.
+- **SSRF Defense**: Strict pre-fetch validation blocking private RFC 1918, loopback, and cloud metadata (AWS/GCP) endpoints.
+- **Source Role Attribution**: Classifies evidence into `PRIMARY`, `SECONDARY`, `COMMUNITY`, and `DIRECT_MEDIA` tiers.
 
 ### 3. Truth Dossier Verification Protocol
 1. **Ingestion & Normalization**: Incoming claims are tokenized and key entity vectors extracted.
-2. **Parallel Omni-Scan**: Concurrent social radar sweep across all platforms.
-3. **Multi-Agent Evaluation**: Independent agent scoring across risk, virality, evidence quality, and attribution.
-4. **Byzantine Consensus**: Weighted consensus resolution yielding confidence score, veracity verdict, and actionable mitigation measures.
+2. **Domain-Planned Retrieval**: `AgentReachService` executes concurrent queries across healthy channels with strict timeout budgets.
+3. **Deduplication & Syndication Clustering**: Duplicate URLs and syndicated stories are normalized and grouped.
+4. **Multi-Agent Evaluation**: Independent agent scoring across risk, virality, evidence quality, and attribution.
+5. **Bayesian Consensus**: Weighted consensus resolution yielding confidence score, veracity verdict, and actionable mitigation measures.
+

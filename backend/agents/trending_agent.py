@@ -265,10 +265,10 @@ class TrendingAgent:
         # 2. Enrich with AgentReach zero-cost omni-scan (Twitter, Reddit & YouTube viral clips)
         try:
             try:
-                from backend.services.agent_reach_scraper import reach_scraper
+                from backend.services.agent_reach import agent_reach_service
             except (ImportError, ModuleNotFoundError):
-                from services.agent_reach_scraper import reach_scraper
-            omni_data = reach_scraper.omni_scan(
+                from services.agent_reach import agent_reach_service
+            omni_data = agent_reach_service.omni_scan(
                 query=asset_name,
                 domain="trending",
                 limit_per_channel=4

@@ -9,7 +9,7 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-26%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
+[![Tests](https://img.shields.io/badge/Tests-47%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
 [![Evaluation](https://img.shields.io/badge/WELFake-Evaluated-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
 
 **Aegis Protocol is an enterprise-grade multi-agent misinformation intelligence platform. It ingests, normalizes, and investigates claims with evidence-grounded attribution, 6-verdict truth taxonomies, physics-based contagion simulation, and strict SSRF/XSS security hardening.**
@@ -26,6 +26,7 @@ Submit any factual assertion or viral rumor to receive a transparent **Truth Dos
 
 | Agent / Instrument | Domain & Function | Data Channels | Verified Status |
 |---|---|---|---|
+| 🌐 **Agent Reach Capability Layer** | 14-channel capability registry, domain retrieval planner, wire syndication clustering, and SSRF defense | Reddit, Twitter/X, YouTube, News Wires, GitHub, RSS, Jina Reader | ✅ Tested (`pytest`) |
 | 🔬 **Investigator Agent** | 6-verdict truth synthesis (`True`, `False`, `Misleading`, `Partially True`, `Unverified`, `Insufficient Evidence`) | Monitored wires & fact-checking archives | ✅ Tested (`pytest`) |
 | 🛡️ **Claim Ingestion Agent** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication | Multi-channel ingress | ✅ Tested (`pytest`) |
 | ⚡ **Mandelbrot Detector** | Zipf-Mandelbrot token-rank power-law regression ($R^2$, Shannon entropy, TTR) | Text forensic samples | ✅ Tested (`pytest`) |
@@ -36,6 +37,7 @@ Submit any factual assertion or viral rumor to receive a transparent **Truth Dos
 | 👤 **Personal Watch Agent** | Deepfake marker alerts & impersonation scanning | News wires, Video transcripts | ✅ Implemented |
 
 ---
+
 
 ## 🎬 20-Second Cinematic Launch Film
 

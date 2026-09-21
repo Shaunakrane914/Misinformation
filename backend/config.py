@@ -41,10 +41,17 @@ class AppConfig:
     apify_token: Optional[str] = os.getenv("APIFY_TOKEN")
     yf_api_key: Optional[str] = os.getenv("YF_API_KEY")
 
+    # Agent Reach Capability Layer
+    agent_reach_enabled: bool = os.getenv("AGENT_REACH_ENABLED", "true").lower() == "true"
+    agent_reach_timeout: float = float(os.getenv("AGENT_REACH_TIMEOUT", "12.0"))
+    agent_reach_max_channels: int = int(os.getenv("AGENT_REACH_MAX_CHANNELS", "6"))
+    agent_reach_max_results: int = int(os.getenv("AGENT_REACH_MAX_RESULTS", "10"))
+
     # Notifications & Alerts
     twilio_account_sid: Optional[str] = os.getenv("TWILIO_ACCOUNT_SID")
     twilio_auth_token: Optional[str] = os.getenv("TWILIO_AUTH_TOKEN")
     twilio_phone_number: Optional[str] = os.getenv("TWILIO_PHONE_NUMBER")
+
 
     @property
     def has_supabase(self) -> bool:

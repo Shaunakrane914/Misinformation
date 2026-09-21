@@ -7,7 +7,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.0] - 2026-09-21
+
+### Added
+- **Central Agent Reach Capability Layer (`backend/services/agent_reach/`)**: Upgraded Aegis from ad-hoc scraping to a unified capability and evidence-acquisition layer featuring `CapabilityRegistry`, `RetrievalPlanner`, and `AgentReachService`.
+- **14-Channel Capability Registry**: Tracks status (`AVAILABLE`, `DEGRADED`, `UNAVAILABLE`, `AUTH_REQUIRED`) across 7 zero-config core channels (`reddit`, `twitter`, `youtube`, `news`, `jina_reader`, `github`, `rss`) and 7 optional authenticated channels (`linkedin`, `bilibili`, `xueqiu`, `xiaohongshu`, `instagram`, `facebook`, `v2ex`).
+- **Domain-Adaptive Retrieval Planner**: Automatically crafts domain-tailored queries and channel priority rankings across 7 domains (`fact_check`, `financial`, `brand`, `personal`, `trending`, `technical`, `general`).
+- **Technical Claim Domain & GitHub Channel**: Added GitHub repository, release, and CVE search integration for verifying software vulnerabilities, open-source packages, and code provenance.
+- **Evidence Deduplication & Syndication Clustering**: Layered URL normalization and text clustering detect wire-service syndication (Reuters, AP, Bloomberg, PR Newswire) to prevent derivative republished articles from inflating independent confirmation counts.
+- **Forensic Source Role & Tier Attribution**: Classifies evidence fragments into structured roles (`PRIMARY`, `SECONDARY`, `COMMUNITY`, `DIRECT_MEDIA`, `DISCOVERY`) and tiers (`TIER_1_ORIGINAL_DOCUMENT`, `TIER_2_REPORTED_PRESS`, etc.).
+- **New API Endpoints**:
+  - `GET /api/agent-reach/capabilities` — Channel inventory, status, and supported domains.
+  - `GET /api/agent-reach/health` — Probe-based health diagnostic report across all 14 channels.
+  - Enhanced `POST /api/agent-reach/omni-scan` — Exposes domain retrieval plans, source independence groupings, and channel health.
+  - Enhanced `POST /api/agent-reach/read` — Pre-fetch SSRF-validated web extraction.
+- **Comprehensive Test Suite**: Added 21 new unit and integration tests (`test_capability_registry.py`, `test_agent_reach_service.py`, `test_agent_reach_api.py`), bringing the verified passing test suite to 47 tests.
+
+### Changed
+- **Agent Fleet Migration**: Migrated `ResearchAgent`, `ScoutAgent`, `TrendingAgent`, `BrandShieldAgent`, and `PersonalWatchAgent` to use `agent_reach_service`.
+- **Scraper Deprecation with Zero-Breakage Compatibility**: Marked `AgentReachScraper` as deprecated with clean backward-compatibility delegators (`omni_scan`, `unified_scan`, `doctor`) ensuring all existing callers and endpoints operate without disruption.
+
+---
+
 ## [3.5.1] - 2026-09-20
+
 
 ### Added
 - **20-Second Cinematic Launch Video**: Integrated [`latent-spaces/brag`](https://github.com/latent-spaces/brag) agent skill and [Hyperframes](https://hyperframes.heygen.com/) motion engine to produce an official launch teaser with synchronized electronic music, UI sound effects, and 4-scene narrative arc.

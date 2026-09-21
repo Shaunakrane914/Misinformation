@@ -46,6 +46,7 @@ try:
     from backend.workers.claim_worker import process_claim
     from backend.services.dashboard_loader import load_random_dashboard_claims
     from backend.services.agent_reach_scraper import reach_scraper
+    from backend.services.agent_reach import agent_reach_service
 except (ImportError, ModuleNotFoundError):
     from agents.claim_ingestion_agent import ClaimIngestionAgent
     from agents.research_agent import ResearchAgent
@@ -58,6 +59,8 @@ except (ImportError, ModuleNotFoundError):
     from workers.claim_worker import process_claim
     from services.dashboard_loader import load_random_dashboard_claims
     from services.agent_reach_scraper import reach_scraper
+    from services.agent_reach import agent_reach_service
+
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 logging.basicConfig(
@@ -1257,15 +1260,26 @@ async def get_trending_news():
 # AGENT-REACH (ZERO-API MULTI-PLATFORM SCRAPER ENGINE)
 # ============================================================================
 
+@app.get("/api/agent-reach/capabilities", tags=["Agent Reach (Omni-Channel Scrapers)"], summary="Capability Inventory & Status")
+async def agent_reach_capabilities():
+    """Return channel capability inventory, supported domains, and server compatibility."""
+    logger.info("[API] GET /api/agent-reach/capabilities")
+    try:
+        return agent_reach_service.capabilities()
+    except Exception as e:
+        logger.error(f"[API] AgentReach capabilities failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/api/agent-reach/health", tags=["Agent Reach (Omni-Channel Scrapers)"], summary="Channel Health & Probe Discovery")
 @app.get("/api/agent-reach/doctor", tags=["Agent Reach (Omni-Channel Scrapers)"], summary="Run Zero-Cost Scraper Diagnostics")
 async def agent_reach_doctor():
-    """Run diagnostics across all zero-cost scrapers (Reddit, Twitter, YouTube, News, Jina)."""
-    logger.info("[API] GET /api/agent-reach/doctor")
+    """Run diagnostics across all internet evidence channels (Reddit, Twitter, YouTube, News, Jina, GitHub, RSS)."""
+    logger.info("[API] GET /api/agent-reach/health")
     try:
-        from backend.services.agent_reach_scraper import reach_scraper
-        return reach_scraper.doctor()
+        return agent_reach_service.health()
     except Exception as e:
-        logger.error(f"[API] AgentReach doctor failed: {e}")
+        logger.error(f"[API] AgentReach health check failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -1274,14 +1288,9 @@ async def agent_reach_scan(request: AgentReachScanRequest):
     """Execute unified multi-platform scan across social media, forums, and news."""
     logger.info(f"[API] POST /api/agent-reach/scan - query={request.query}")
     try:
-        from backend.services.agent_reach_scraper import reach_scraper
-        return reach_scraper.unified_scan(
+        return agent_reach_service.unified_scan(
             query=request.query,
-            include_reddit=request.include_reddit,
-            include_twitter=request.include_twitter,
-            include_youtube=request.include_youtube,
-            include_news=request.include_news,
-            max_per_channel=request.limit
+            max_results_per_platform=request.limit or 5
         )
     except Exception as e:
         logger.error(f"[API] AgentReach scan failed: {e}")
@@ -1297,15 +1306,14 @@ async def agent_reach_omni_scan(request: OmniScanRequest):
     - 'brand': fake reviews, counterfeits, consumer scams (BrandShield)
     - 'personal': audio deepfakes, impersonation, reputation attacks (Personal Watch)
     - 'trending': viral memes, pop-culture velocity, hashtag spikes (Trending)
+    - 'technical': code repositories, CVEs, release notes, maintainer statements (GitHub)
     """
     logger.info(f"[API] POST /api/agent-reach/omni-scan - query='{request.query}' domain='{request.domain}'")
     try:
-        from backend.services.agent_reach_scraper import reach_scraper
-        return reach_scraper.omni_scan(
+        return agent_reach_service.omni_scan(
             query=request.query,
             domain=request.domain or "general",
             source_url=request.source_url,
-            vip_handle=request.vip_handle,
             limit_per_channel=request.limit or 4
         )
     except Exception as e:
@@ -1313,16 +1321,21 @@ async def agent_reach_omni_scan(request: OmniScanRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/api/agent-reach/read", tags=["Agent Reach (Omni-Channel Scrapers)"], summary="Convert URL to Clean Markdown via Jina Reader")
+@app.post("/api/agent-reach/read", tags=["Agent Reach (Omni-Channel Scrapers)"], summary="Convert URL to Clean Markdown with SSRF Protection")
 async def agent_reach_read(request: AgentReachReadRequest):
-    """Cleanly parse any article or dynamic web page to markdown using Jina Reader."""
+    """Cleanly parse any article or dynamic web page to markdown with SSRF defense."""
     logger.info(f"[API] POST /api/agent-reach/read - url={request.url}")
     try:
-        from backend.services.agent_reach_scraper import reach_scraper
-        return reach_scraper.read_article_markdown(request.url, max_chars=request.max_chars)
+        res = agent_reach_service.read(request.url, max_chars=request.max_chars)
+        if res.get("status") == "blocked_ssrf":
+            raise HTTPException(status_code=400, detail=res.get("error", "URL blocked by SSRF defense"))
+        return res
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"[API] AgentReach read failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))
+
 
 
 # ============================================================================

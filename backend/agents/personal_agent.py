@@ -44,12 +44,12 @@ class PersonalWatchAgent:
         try:
             logger.info(f"[PersonalWatch] Searching web for mentions of: {vip_name}")
             try:
-                from backend.services.agent_reach_scraper import reach_scraper
+                from backend.services.agent_reach import agent_reach_service
             except (ImportError, ModuleNotFoundError):
-                from services.agent_reach_scraper import reach_scraper
+                from services.agent_reach import agent_reach_service
             
             # Use unified news & web extraction
-            news_items = reach_scraper.search_news(vip_name, limit=max_results)
+            news_items = agent_reach_service.search_news(vip_name, limit=max_results)
             mentions = []
             for item in news_items:
                 mentions.append({
@@ -95,15 +95,14 @@ class PersonalWatchAgent:
         mentions: List[Dict[str, Any]] = []
         try:
             try:
-                from backend.services.agent_reach_scraper import reach_scraper
+                from backend.services.agent_reach import agent_reach_service
             except (ImportError, ModuleNotFoundError):
-                from services.agent_reach_scraper import reach_scraper
+                from services.agent_reach import agent_reach_service
             logger.info(f"[PersonalWatch] Searching omni-channels (Twitter + Reddit + YouTube) for: {vip_name}")
 
-            omni_data = reach_scraper.omni_scan(
+            omni_data = agent_reach_service.omni_scan(
                 query=vip_name,
                 domain="personal",
-                vip_handle=official_handle,
                 limit_per_channel=max(3, max_results // 3)
             )
             channels = omni_data.get("channels", {})

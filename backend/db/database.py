@@ -36,10 +36,137 @@ else:
         logger.error(f"[Database] Failed to initialize Supabase client: {str(e)}")
         supabase = None
 
-# Resilient in-memory fallback caches
+# Resilient in-memory fallback caches & local SQLite persistence
 _mem_claims: Dict[str, Dict] = {}
 _mem_hash_index: Dict[str, str] = {}
 _mem_evidence: Dict[str, List[Dict]] = {}
+
+import sqlite3
+
+SQLITE_DB_PATH = os.getenv("AEGIS_SQLITE_PATH", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "aegis_local.db")))
+
+def _init_sqlite_db():
+    """Initialize local SQLite database for offline and resilient persistence."""
+    try:
+        conn = sqlite3.connect(SQLITE_DB_PATH)
+        cur = conn.cursor()
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS claims (
+                id TEXT PRIMARY KEY,
+                claim_hash TEXT UNIQUE,
+                claim_text TEXT,
+                normalized_text TEXT,
+                source_url TEXT,
+                status TEXT,
+                verdict TEXT,
+                confidence REAL,
+                severity TEXT,
+                reasoning TEXT,
+                created_at TEXT,
+                updated_at TEXT
+            )
+        """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS evidence (
+                id TEXT PRIMARY KEY,
+                claim_id TEXT,
+                evidence_text TEXT,
+                summary TEXT,
+                source_url TEXT,
+                source_name TEXT,
+                credibility_score REAL,
+                stance TEXT,
+                created_at TEXT
+            )
+        """)
+        conn.commit()
+
+        # Warm up in-memory caches from SQLite
+        cur.execute("SELECT id, claim_hash, claim_text, normalized_text, source_url, status, verdict, confidence, severity, reasoning, created_at, updated_at FROM claims")
+        for row in cur.fetchall():
+            c_dict = {
+                "id": row[0],
+                "claim_hash": row[1],
+                "claim_text": row[2],
+                "normalized_text": row[3],
+                "source_url": row[4],
+                "status": row[5],
+                "verdict": row[6],
+                "confidence": row[7],
+                "severity": row[8],
+                "reasoning": row[9],
+                "created_at": row[10],
+                "updated_at": row[11],
+            }
+            _mem_claims[row[0]] = c_dict
+            if row[1]:
+                _mem_hash_index[row[1]] = row[0]
+
+        cur.execute("SELECT id, claim_id, evidence_text, summary, source_url, source_name, credibility_score, stance, created_at FROM evidence")
+        for row in cur.fetchall():
+            e_dict = {
+                "id": row[0],
+                "claim_id": row[1],
+                "evidence_text": row[2],
+                "summary": row[3],
+                "source_url": row[4],
+                "source_name": row[5],
+                "credibility_score": row[6],
+                "stance": row[7],
+                "created_at": row[8],
+            }
+            cid = row[1]
+            if cid not in _mem_evidence:
+                _mem_evidence[cid] = []
+            _mem_evidence[cid].append(e_dict)
+
+        conn.close()
+        logger.info(f"[Database] SQLite persistence initialized at: {SQLITE_DB_PATH} (loaded {len(_mem_claims)} claims)")
+    except Exception as e:
+        logger.warning(f"[Database] SQLite init note: {e}")
+
+# Run SQLite initialization
+_init_sqlite_db()
+
+
+def _sqlite_upsert_claim(row: Dict):
+    try:
+        conn = sqlite3.connect(SQLITE_DB_PATH)
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT OR REPLACE INTO claims (
+                id, claim_hash, claim_text, normalized_text, source_url,
+                status, verdict, confidence, severity, reasoning, created_at, updated_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            row.get("id"), row.get("claim_hash"), row.get("claim_text"), row.get("normalized_text"), row.get("source_url"),
+            row.get("status"), row.get("verdict"), row.get("confidence"), row.get("severity"), row.get("reasoning"),
+            row.get("created_at"), row.get("updated_at")
+        ))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        logger.debug(f"[Database] SQLite claim upsert notice: {e}")
+
+
+def _sqlite_insert_evidence(row: Dict):
+    try:
+        conn = sqlite3.connect(SQLITE_DB_PATH)
+        cur = conn.cursor()
+        cur.execute("""
+            INSERT OR REPLACE INTO evidence (
+                id, claim_id, evidence_text, summary, source_url, source_name,
+                credibility_score, stance, created_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """, (
+            row.get("id"), row.get("claim_id"), row.get("evidence_text"), row.get("summary"),
+            row.get("source_url"), row.get("source_name"), row.get("credibility_score"),
+            row.get("stance"), row.get("created_at")
+        ))
+        conn.commit()
+        conn.close()
+    except Exception as e:
+        logger.debug(f"[Database] SQLite evidence insert notice: {e}")
 
 
 def _mem_insert_claim(claim_hash: str, claim_text: str, normalized_text: str, source_url: Optional[str] = None) -> Dict:
@@ -61,7 +188,8 @@ def _mem_insert_claim(claim_hash: str, claim_text: str, normalized_text: str, so
     }
     _mem_claims[claim_id] = row
     _mem_hash_index[claim_hash] = claim_id
-    logger.info(f"[Database] [Memory] Claim inserted with ID: {claim_id}")
+    _sqlite_upsert_claim(row)
+    logger.info(f"[Database] [Memory+SQLite] Claim inserted with ID: {claim_id}")
     return row
 
 
@@ -92,7 +220,7 @@ def insert_claim(claim_hash: str, claim_text: str, normalized_text: str, source_
         except Exception as e:
             logger.warning(f"[Database] Supabase insert failed ({e}), using memory fallback.")
     
-    return _mem_insert_claim(claim_hash, claim_text, normalized_text)
+    return _mem_insert_claim(claim_hash, claim_text, normalized_text, source_url=source_url)
 
 
 def get_claim_by_hash(claim_hash: str) -> Optional[Dict]:
@@ -156,6 +284,7 @@ def update_claim_status(claim_id: str, status: str) -> Dict:
             if response.data:
                 claim_row = response.data[0]
                 _mem_claims[str(claim_id)] = claim_row
+                _sqlite_upsert_claim(claim_row)
                 return claim_row
         except Exception as e:
             logger.warning(f"[Database] Supabase status update failed ({e}), updating memory.")
@@ -164,6 +293,7 @@ def update_claim_status(claim_id: str, status: str) -> Dict:
     row["status"] = status
     row["updated_at"] = datetime.utcnow().isoformat()
     _mem_claims[str(claim_id)] = row
+    _sqlite_upsert_claim(row)
     return row
 
 
@@ -192,6 +322,7 @@ def update_claim_verdict(
             if response.data:
                 claim_row = response.data[0]
                 _mem_claims[str(claim_id)] = claim_row
+                _sqlite_upsert_claim(claim_row)
                 return claim_row
         except Exception as e:
             logger.warning(f"[Database] Supabase verdict update failed ({e}), updating memory.")
@@ -206,6 +337,7 @@ def update_claim_verdict(
         "updated_at": datetime.utcnow().isoformat()
     })
     _mem_claims[str(claim_id)] = row
+    _sqlite_upsert_claim(row)
     return row
 
 
@@ -236,6 +368,7 @@ def insert_evidence(
             response = supabase.table("evidence").insert(data).execute()
             if response.data:
                 evidence_row = response.data[0]
+                _sqlite_insert_evidence(evidence_row)
                 return evidence_row
         except Exception as e:
             logger.warning(f"[Database] Supabase insert evidence failed ({e}), writing memory.")
@@ -255,6 +388,7 @@ def insert_evidence(
     if claim_id not in _mem_evidence:
         _mem_evidence[claim_id] = []
     _mem_evidence[claim_id].append(row)
+    _sqlite_insert_evidence(row)
     return row
 
 

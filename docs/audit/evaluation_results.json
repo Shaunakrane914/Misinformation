@@ -1,71 +1,39 @@
 {
-  "timestamp": 1789970808.7490325,
+  "timestamp": 1789985179.424609,
   "dataset": "backend/data/WELFake_Dataset.xlsx",
-  "sample_size": 60,
+  "sample_size": 50,
   "seed": 42,
   "baseline": {
     "mode": "baseline",
-    "total_samples": 60,
-    "evaluated_samples": 60,
+    "total_samples": 50,
+    "evaluated_samples": 50,
     "abstentions": 0,
     "abstention_rate": 0.0,
     "duration_seconds": 0.0,
-    "accuracy": 0.6833,
-    "macro_f1": 0.6622,
+    "accuracy": 0.7,
+    "macro_f1": 0.6783,
     "fake_class": {
-      "precision": 0.8667,
-      "recall": 0.4333,
-      "f1_score": 0.5778,
-      "support": 30
+      "precision": 0.9167,
+      "recall": 0.44,
+      "f1_score": 0.5946,
+      "support": 25
     },
     "real_class": {
-      "precision": 0.6222,
-      "recall": 0.9333,
-      "f1_score": 0.7466,
-      "support": 30
+      "precision": 0.6316,
+      "recall": 0.96,
+      "f1_score": 0.7619,
+      "support": 25
     },
     "confusion_matrix": {
-      "true_positives": 13,
-      "true_negatives": 28,
-      "false_positives": 2,
-      "false_negatives": 17
+      "true_positives": 11,
+      "true_negatives": 24,
+      "false_positives": 1,
+      "false_negatives": 14
     },
-    "mean_confidence": 0.5858,
+    "mean_confidence": 0.586,
     "predictions_sample": [
       {
         "index": 0,
-        "title": "When Can Fetuses Feel Pain? Utah Abortion Law and Doctors Are at Odds - The New York Times",
-        "ground_truth": 0,
-        "predicted_verdict": "True",
-        "predicted_binary": 0,
-        "confidence": 0.55
-      },
-      {
-        "index": 1,
-        "title": "Open Borders Lobby Blasts Sheriff\u00e2\u20ac\u2122s Deportation Deal",
-        "ground_truth": 0,
-        "predicted_verdict": "True",
-        "predicted_binary": 0,
-        "confidence": 0.65
-      },
-      {
-        "index": 2,
-        "title": "New York Times is Advocating for Internet Censorship (controlled by them and other \u00e2\u20ac\u02dcapproved\u00e2\u20ac\u2122 ag",
-        "ground_truth": 1,
-        "predicted_verdict": "True",
-        "predicted_binary": 0,
-        "confidence": 0.55
-      },
-      {
-        "index": 3,
-        "title": " Canada\u00e2\u20ac\u2122s Foreign Minister: We Must Now Fill The Global Leadership Role U.S. Has Abandoned",
-        "ground_truth": 1,
-        "predicted_verdict": "True",
-        "predicted_binary": 0,
-        "confidence": 0.65
-      },
-      {
-        "index": 4,
         "title": "Donald Trump, Dilma Rousseff, Cuba: Your Wednesday Evening Briefing - The New York Times",
         "ground_truth": 0,
         "predicted_verdict": "True",
@@ -73,41 +41,73 @@
         "confidence": 0.55
       },
       {
-        "index": 5,
-        "title": " Trump Campaign CEO Didn\u00e2\u20ac\u2122t Want His Kids In School With A Bunch Of \u00e2\u20ac\u02dcWhiny\u00e2\u20ac\u2122 Jews",
+        "index": 1,
+        "title": "How to make your home feel welcoming",
         "ground_truth": 1,
         "predicted_verdict": "True",
         "predicted_binary": 0,
         "confidence": 0.55
       },
       {
-        "index": 6,
-        "title": "CodeSOD: The Rule of Ten",
+        "index": 2,
+        "title": "Former Director Of National Budget Warns That Markets Will Tank After US Election",
         "ground_truth": 1,
-        "predicted_verdict": "False",
-        "predicted_binary": 1,
-        "confidence": 0.6
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.55
+      },
+      {
+        "index": 3,
+        "title": "Voting Machine Caught Swapping Republican Ballot For Democrat",
+        "ground_truth": 1,
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.55
+      },
+      {
+        "index": 4,
+        "title": "Khamenei says Iran, Turkey must act against Kurdish secession: TV",
+        "ground_truth": 0,
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.65
+      },
+      {
+        "index": 5,
+        "title": "The Art of Chinese Face Reading: What Your Face Says About Your Personality and Future",
+        "ground_truth": 1,
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.65
+      },
+      {
+        "index": 6,
+        "title": " Trump Faked Out Fans, Used Machine To Autograph Hats He Sold Them",
+        "ground_truth": 1,
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.55
       },
       {
         "index": 7,
-        "title": "GEORGE SOROS BOARD MEMBER Is Chairman Of Firm Running Voting For Utah\u00e2\u20ac\u2122s Caucus On Tuesday",
+        "title": "Gold prices grow by $60 as Trump wins, US dollar trashed",
         "ground_truth": 1,
-        "predicted_verdict": "False",
-        "predicted_binary": 1,
-        "confidence": 0.6
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.55
       },
       {
         "index": 8,
-        "title": "ACLU Targets Jeff Sessions Won\u00e2\u20ac\u2122t Defend Michael Flynn - Breitbart",
-        "ground_truth": 0,
+        "title": "Sanders calls Trump 'political coward' over voter suppression report",
+        "ground_truth": 1,
         "predicted_verdict": "True",
         "predicted_binary": 0,
         "confidence": 0.55
       },
       {
         "index": 9,
-        "title": "FBI Weiner Probe Reopens Hillary Clinton Investigation - Clinton Foundation Pay to Play for Israeli ",
-        "ground_truth": 1,
+        "title": "For Trump, a new \u00e2\u20ac\u02dcrigged\u00e2\u20ac\u2122 system: The election itself",
+        "ground_truth": 0,
         "predicted_verdict": "True",
         "predicted_binary": 0,
         "confidence": 0.55
@@ -116,36 +116,36 @@
   },
   "aegis_protocol": {
     "mode": "aegis",
-    "total_samples": 60,
-    "evaluated_samples": 54,
-    "abstentions": 6,
+    "total_samples": 50,
+    "evaluated_samples": 45,
+    "abstentions": 5,
     "abstention_rate": 0.1,
-    "duration_seconds": 0.04,
-    "accuracy": 0.5,
-    "macro_f1": 0.3333,
+    "duration_seconds": 0.65,
+    "accuracy": 0.9333,
+    "macro_f1": 0.9333,
     "fake_class": {
-      "precision": 0.5,
-      "recall": 1.0,
-      "f1_score": 0.6667,
-      "support": 27
+      "precision": 1.0,
+      "recall": 0.875,
+      "f1_score": 0.9333,
+      "support": 24
     },
     "real_class": {
-      "precision": 0.0,
-      "recall": 0.0,
-      "f1_score": 0.0,
-      "support": 27
+      "precision": 0.875,
+      "recall": 1.0,
+      "f1_score": 0.9333,
+      "support": 21
     },
     "confusion_matrix": {
-      "true_positives": 27,
-      "true_negatives": 0,
-      "false_positives": 27,
-      "false_negatives": 0
+      "true_positives": 21,
+      "true_negatives": 21,
+      "false_positives": 0,
+      "false_negatives": 3
     },
-    "mean_confidence": 0.672,
+    "mean_confidence": 0.8708,
     "predictions_sample": [
       {
         "index": 0,
-        "title": "When Can Fetuses Feel Pain? Utah Abortion Law and Doctors Are at Odds - The New York Times",
+        "title": "Donald Trump, Dilma Rousseff, Cuba: Your Wednesday Evening Briefing - The New York Times",
         "ground_truth": 0,
         "predicted_verdict": "Insufficient Evidence",
         "predicted_binary": -1,
@@ -153,75 +153,75 @@
       },
       {
         "index": 1,
-        "title": "Open Borders Lobby Blasts Sheriff\u00e2\u20ac\u2122s Deportation Deal",
-        "ground_truth": 0,
-        "predicted_verdict": "Misleading",
+        "title": "How to make your home feel welcoming",
+        "ground_truth": 1,
+        "predicted_verdict": "False",
         "predicted_binary": 1,
-        "confidence": 0.72
+        "confidence": 0.94
       },
       {
         "index": 2,
-        "title": "New York Times is Advocating for Internet Censorship (controlled by them and other \u00e2\u20ac\u02dcapproved\u00e2\u20ac\u2122 ag",
+        "title": "Former Director Of National Budget Warns That Markets Will Tank After US Election",
         "ground_truth": 1,
-        "predicted_verdict": "Misleading",
+        "predicted_verdict": "False",
         "predicted_binary": 1,
-        "confidence": 0.72
+        "confidence": 0.94
       },
       {
         "index": 3,
-        "title": " Canada\u00e2\u20ac\u2122s Foreign Minister: We Must Now Fill The Global Leadership Role U.S. Has Abandoned",
+        "title": "Voting Machine Caught Swapping Republican Ballot For Democrat",
         "ground_truth": 1,
-        "predicted_verdict": "Misleading",
+        "predicted_verdict": "False",
         "predicted_binary": 1,
-        "confidence": 0.72
+        "confidence": 0.94
       },
       {
         "index": 4,
-        "title": "Donald Trump, Dilma Rousseff, Cuba: Your Wednesday Evening Briefing - The New York Times",
+        "title": "Khamenei says Iran, Turkey must act against Kurdish secession: TV",
         "ground_truth": 0,
-        "predicted_verdict": "Misleading",
-        "predicted_binary": 1,
-        "confidence": 0.72
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.95
       },
       {
         "index": 5,
-        "title": " Trump Campaign CEO Didn\u00e2\u20ac\u2122t Want His Kids In School With A Bunch Of \u00e2\u20ac\u02dcWhiny\u00e2\u20ac\u2122 Jews",
+        "title": "The Art of Chinese Face Reading: What Your Face Says About Your Personality and Future",
         "ground_truth": 1,
-        "predicted_verdict": "Misleading",
+        "predicted_verdict": "False",
         "predicted_binary": 1,
-        "confidence": 0.72
+        "confidence": 0.94
       },
       {
         "index": 6,
-        "title": "CodeSOD: The Rule of Ten",
+        "title": " Trump Faked Out Fans, Used Machine To Autograph Hats He Sold Them",
         "ground_truth": 1,
-        "predicted_verdict": "Misleading",
+        "predicted_verdict": "False",
         "predicted_binary": 1,
-        "confidence": 0.72
+        "confidence": 0.94
       },
       {
         "index": 7,
-        "title": "GEORGE SOROS BOARD MEMBER Is Chairman Of Firm Running Voting For Utah\u00e2\u20ac\u2122s Caucus On Tuesday",
+        "title": "Gold prices grow by $60 as Trump wins, US dollar trashed",
         "ground_truth": 1,
-        "predicted_verdict": "Misleading",
-        "predicted_binary": 1,
-        "confidence": 0.72
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.95
       },
       {
         "index": 8,
-        "title": "ACLU Targets Jeff Sessions Won\u00e2\u20ac\u2122t Defend Michael Flynn - Breitbart",
-        "ground_truth": 0,
-        "predicted_verdict": "Misleading",
+        "title": "Sanders calls Trump 'political coward' over voter suppression report",
+        "ground_truth": 1,
+        "predicted_verdict": "False",
         "predicted_binary": 1,
-        "confidence": 0.72
+        "confidence": 0.94
       },
       {
         "index": 9,
-        "title": "FBI Weiner Probe Reopens Hillary Clinton Investigation - Clinton Foundation Pay to Play for Israeli ",
-        "ground_truth": 1,
-        "predicted_verdict": "Misleading",
-        "predicted_binary": 1,
-        "confidence": 0.72
+        "title": "For Trump, a new \u00e2\u20ac\u02dcrigged\u00e2\u20ac\u2122 system: The election itself",
+        "ground_truth": 0,
+        "predicted_verdict": "True",
+        "predicted_binary": 0,
+        "confidence": 0.95
       }
     ]
   }

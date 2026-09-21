@@ -9,6 +9,7 @@ Provides unified, resilient access to Google Gemini models with:
 - Token usage & latency tracking
 """
 
+import asyncio
 import itertools
 import json
 import logging
@@ -17,6 +18,7 @@ import random
 import time
 from typing import Any, Dict, List, Optional
 import requests
+import httpx
 from dotenv import load_dotenv
 
 logger = logging.getLogger(__name__)
@@ -67,6 +69,46 @@ class MockGeminiProvider:
 
         # 2. Verdict synthesis mock
         if "determine the verdict" in prompt_lower or "final verdict" in prompt_lower or "verdict" in prompt_lower or "fact-checking" in prompt_lower:
+            # Check for structured evidence sections passed by InvestigatorAgent
+            if "gathered refuting evidence:" in prompt_lower and "gathered supporting evidence:" in prompt_lower:
+                idx_ref = prompt.find("GATHERED REFUTING EVIDENCE:")
+                idx_sup = prompt.find("GATHERED SUPPORTING EVIDENCE:")
+                idx_score = prompt.find("EVIDENCE RETRIEVAL CONFIDENCE SCORE:")
+                
+                sup_chunk = prompt[idx_sup:idx_ref] if idx_sup != -1 and idx_ref != -1 else ""
+                ref_chunk = prompt[idx_ref:idx_score] if idx_ref != -1 and idx_score != -1 else prompt[idx_ref:]
+                
+                has_refuting = '"claim_supported": false' in ref_chunk.lower() or '"text":' in ref_chunk.lower()
+                has_supporting = '"claim_supported": true' in sup_chunk.lower() or '"text":' in sup_chunk.lower()
+
+                if has_refuting and not has_supporting:
+                    return json.dumps({
+                        "verdict": "False",
+                        "confidence": 0.94,
+                        "severity": "High",
+                        "reasoning": "Primary investigation and corroborating debunks disprove the claim.",
+                        "explanation": "Independent fact-checkers and primary records refute the empirical validity of the submitted claim.",
+                        "evidence_limitations": ["Evaluated against verified wire sources and institutional databases"]
+                    })
+                elif has_supporting and not has_refuting:
+                    return json.dumps({
+                        "verdict": "True",
+                        "confidence": 0.95,
+                        "severity": "Low",
+                        "reasoning": "Primary documentation and journalistic wire reporting verify the factual basis.",
+                        "explanation": "Official institutional records and corroborated reporting establish that the claim is empirically accurate.",
+                        "evidence_limitations": []
+                    })
+                elif has_supporting and has_refuting:
+                    return json.dumps({
+                        "verdict": "Partially True",
+                        "confidence": 0.78,
+                        "severity": "Medium",
+                        "reasoning": "Evidence reveals elements of factual truth alongside contradictory reporting.",
+                        "explanation": "While partial elements refer to real occurrences, significant aspects remain disputed or lack consensus.",
+                        "evidence_limitations": ["Conflicting accounts across primary reporting"]
+                    })
+
             if any(w in prompt_lower for w in ["lemon", "diabetes", "microchip", "flat earth", "hoax", "fake", "5g"]):
                 return json.dumps({
                     "verdict": "False",
@@ -221,6 +263,76 @@ class GeminiService:
 
         # If all live models fail, fallback safely to deterministic mock provider
         logger.warning(f"[GeminiService] All Gemini calls failed ({last_error}). Falling back to resilient local mock.")
+        return self.mock_provider.generate_content(prompt, self.models[0])
+
+    async def generate_text_async(self, prompt: str, system_instruction: Optional[str] = None) -> str:
+        """
+        Asynchronously generate text completion using httpx.AsyncClient without blocking
+        the asyncio event loop.
+        """
+        if self.use_mock or not self.api_keys:
+            return self.mock_provider.generate_content(prompt, self.models[0])
+
+        headers = {"Content-Type": "application/json"}
+        contents: List[Dict[str, Any]] = []
+        if system_instruction:
+            contents.append({"role": "system", "parts": [{"text": system_instruction}]})
+        contents.append({"role": "user", "parts": [{"text": prompt}]})
+
+        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+        last_error: Optional[Exception] = None
+
+        async with httpx.AsyncClient(timeout=self.timeout) as client:
+            for model in self.models:
+                url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+                for attempt in range(max(1, len(self.api_keys))):
+                    api_key = next(self._key_cycle)
+                    try:
+                        start_t = time.time()
+                        resp = await client.post(
+                            url,
+                            headers=headers,
+                            params={"key": api_key},
+                            json=payload
+                        )
+                        latency = round(time.time() - start_t, 3)
+
+                        if resp.status_code == 200:
+                            data = resp.json()
+                            candidates = data.get("candidates", [])
+                            if candidates:
+                                parts = candidates[0].get("content", {}).get("parts", [])
+                                if parts and "text" in parts[0]:
+                                    logger.info(f"[GeminiService] [Async] {model} responded in {latency}s")
+                                    return parts[0]["text"]
+                            return json.dumps(data)
+
+                        elif resp.status_code == 429:
+                            backoff = 0.5 * (1.5 ** attempt) + random.uniform(0.1, 0.4)
+                            logger.warning(
+                                f"[GeminiService] [Async] Rate limit (429) on {model}. Backing off {backoff:.2f}s."
+                            )
+                            await asyncio.sleep(backoff)
+                            last_error = Exception(f"429 Rate Limit on {model}")
+                            continue
+
+                        elif resp.status_code in (404, 400):
+                            logger.warning(f"[GeminiService] [Async] Model {model} returned HTTP {resp.status_code}. Skipping model.")
+                            last_error = Exception(f"HTTP {resp.status_code} on {model}")
+                            break
+
+                        else:
+                            logger.warning(f"[GeminiService] [Async] HTTP {resp.status_code} on {model}: {resp.text[:120]}")
+                            last_error = Exception(f"HTTP {resp.status_code} on {model}")
+
+                    except httpx.TimeoutException:
+                        logger.warning(f"[GeminiService] [Async] Request timeout on {model}")
+                        last_error = Exception(f"Timeout on {model}")
+                    except Exception as e:
+                        logger.warning(f"[GeminiService] [Async] Error calling {model}: {e}")
+                        last_error = e
+
+        logger.warning(f"[GeminiService] [Async] All Gemini calls failed ({last_error}). Falling back to resilient local mock.")
         return self.mock_provider.generate_content(prompt, self.models[0])
 
 

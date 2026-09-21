@@ -1,0 +1,45 @@
+name: Aegis Protocol CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    name: Test & Lint Matrix (Python ${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+        cache: 'pip'
+
+    - name: Install Dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        pip install pytest pytest-rerunfailures flake8
+
+    - name: Lint Syntax & Undefined Names (flake8)
+      run: |
+        # Stop build if there are Python syntax errors or undefined names
+        flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv,.venv,build,dist
+
+    - name: Execute Pytest Suite
+      env:
+        ENVIRONMENT: test
+        AEGIS_MOCK_LLM: "true"
+        AGENT_REACH_ENABLED: "true"
+      run: |
+        pytest -v --maxfail=1

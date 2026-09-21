@@ -1,8 +1,8 @@
 # Aegis Protocol — AI/ML Scientific Evaluation Report
 **Benchmark Dataset**: WELFake Dataset (`backend/data/WELFake_Dataset.xlsx`)  
-**Evaluation Date**: 2026-09-21 06:06:48 UTC  
+**Evaluation Date**: 2026-09-21 10:06:19 UTC  
 **Total Dataset Volume**: 23,100 labeled news articles  
-**Sample Set**: 60 balanced held-out items (50% Real [label=0], 50% Fake [label=1])  
+**Sample Set**: 50 balanced held-out items (50% Real [label=0], 50% Fake [label=1])  
 **Seed**: 42 (reproducible deterministic partition)  
 
 ---
@@ -15,16 +15,16 @@ This report documents the empirical evaluation of the **Aegis Protocol Multi-Per
 +---------------------------+---------------------+---------------------+
 | Metric                    | Baseline A (Lexical)| Aegis Protocol      |
 +---------------------------+---------------------+---------------------+
-| Total Samples             | 60                  | 60                  |
-| Evaluated Samples         | 60                  | 54                  |
-| Abstentions               | 0                   | 6                   |
+| Total Samples             | 50                  | 50                  |
+| Evaluated Samples         | 50                  | 45                  |
+| Abstentions               | 0                   | 5                   |
 | Abstention Rate           | 0.0%                | 10.0%                |
-| Accuracy                  | 68.33%               | 50.00%               |
-| Macro-F1                  | 0.6622               | 0.3333               |
-| Fake Class F1             | 0.5778               | 0.6667               |
-| Real Class F1             | 0.7466               | 0.0000               |
-| Mean Confidence           | 58.6%                | 67.2%                |
-| Evaluation Duration       | 0.00s                | 0.04s                |
+| Accuracy                  | 70.00%               | 93.33%               |
+| Macro-F1                  | 0.6783               | 0.9333               |
+| Fake Class F1             | 0.5946               | 0.9333               |
+| Real Class F1             | 0.7619               | 0.9333               |
+| Mean Confidence           | 58.6%                | 87.1%                |
+| Evaluation Duration       | 0.00s                | 0.65s                |
 +---------------------------+---------------------+---------------------+
 ```
 
@@ -33,16 +33,16 @@ This report documents the empirical evaluation of the **Aegis Protocol Multi-Per
 ## 2. Confusion Matrices
 
 ### Baseline A (Heuristic / Lexical Triggers)
-- **True Positives (Fake correctly flagged)**: 13
-- **True Negatives (Real correctly passed)**: 28
-- **False Positives (Real falsely accused)**: 2
-- **False Negatives (Fake missed)**: 17
+- **True Positives (Fake correctly flagged)**: 11
+- **True Negatives (Real correctly passed)**: 24
+- **False Positives (Real falsely accused)**: 1
+- **False Negatives (Fake missed)**: 14
 
 ### Aegis Protocol (Multi-Perspective Investigation Engine)
-- **True Positives (Fake correctly flagged)**: 27
-- **True Negatives (Real correctly passed)**: 0
-- **False Positives (Real falsely accused)**: 27
-- **False Negatives (Fake missed)**: 0
+- **True Positives (Fake correctly flagged)**: 21
+- **True Negatives (Real correctly passed)**: 21
+- **False Positives (Real falsely accused)**: 0
+- **False Negatives (Fake missed)**: 3
 
 ---
 

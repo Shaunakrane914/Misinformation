@@ -717,12 +717,12 @@
               </div>
               <div class="agent-title">Research Agent</div>
             </div>
-            <a href="submit.html" class="ae-btn ae-btn-primary" style="padding:8px 16px;font-size:0.78rem;background:#38bdf8;border-color:#38bdf8;color:#000;">
-              <span>Verify Claim in Lab &rarr;</span>
+            <a href="research-agent.html" class="ae-btn ae-btn-primary" style="padding:8px 16px;font-size:0.78rem;background:#38bdf8;border-color:#38bdf8;color:#000;">
+              <span>Open Research Workspace &rarr;</span>
             </a>
           </div>
           <p class="agent-desc">
-            Harvests verifiable primary evidence from wire registries, official government gazettes, corporate SEC archives, and Jina Markdown readers to construct dual-column epistemic matrices.
+            Harvests verifiable primary evidence from wire registries, official government gazettes, corporate SEC archives, and Jina Markdown readers to cluster evidence around findings, why they matter, and source reading lists.
           </p>
         </div>
 
@@ -732,7 +732,7 @@
           <div class="agent-feeds-row">
             <span class="agent-feed-pill">&#9650; Jina Markdown Web Reader</span>
             <span class="agent-feed-pill">&#9670; Associated Press &amp; Reuters Wires</span>
-            <span class="agent-feed-pill">&#9632; Wikipedia Revision History</span>
+            <span class="agent-feed-pill">&#9632; SEC &amp; Regulatory Archives</span>
             <span class="agent-feed-pill">&#9679; Government &amp; Regulatory Gazettes</span>
           </div>
         </div>
@@ -744,16 +744,16 @@
             <span class="agent-spec-val">Jina Reader + Wires</span>
           </div>
           <div class="agent-spec-item">
-            <span class="agent-spec-label">Execution Budget</span>
-            <span class="agent-spec-val">16.5ms / doc</span>
+            <span class="agent-spec-label">Role</span>
+            <span class="agent-spec-val">Finding Clustering</span>
           </div>
           <div class="agent-spec-item">
-            <span class="agent-spec-label">Anomaly Trigger</span>
-            <span class="agent-spec-val">Evidence Weight p &lt; 0.05</span>
+            <span class="agent-spec-label">Source Exposure</span>
+            <span class="agent-spec-val">Curated Reading List</span>
           </div>
           <div class="agent-spec-item">
-            <span class="agent-spec-label">Consensus Weight</span>
-            <span class="agent-spec-val">w_i = 0.35 (Epistemic)</span>
+            <span class="agent-spec-label">Output Contract</span>
+            <span class="agent-spec-val">Why It Matters Matrix</span>
           </div>
         </div>
 
@@ -766,7 +766,7 @@
           <div class="agent-terminal" id="term_research">
             <div class="term-line"><span class="term-ts">[13:24:02]</span><span class="term-tag-ok">REGISTRY_SYNC</span><span class="term-msg">Connected to AP, Reuters, AFP wire indexers</span></div>
             <div class="term-line"><span class="term-ts">[13:24:03]</span><span class="term-tag-info">JINA_READER</span><span class="term-msg">Zero-ad clean markdown parsing engine armed for external links</span></div>
-            <div class="term-line"><span class="term-ts">[13:24:03]</span><span class="term-tag-ok">MATRIX_READY</span><span class="term-msg">Evidence jurist standing by for Bayesian truth arbitration</span></div>
+            <div class="term-line"><span class="term-ts">[13:24:03]</span><span class="term-tag-ok">MATRIX_READY</span><span class="term-msg">Evidence jurist standing by for research clustering</span></div>
           </div>
         </div>
 
@@ -779,8 +779,8 @@
         </form>
 
         <div class="agent-card-footer">
-          <span style="color:var(--text-dim);font-family:var(--font-mono);">Endpoint: <code>POST /api/agent-reach/omni-scan</code></span>
-          <a href="submit.html" style="color:#38bdf8;text-decoration:none;font-family:var(--font-mono);font-weight:600;">Run Full Truth Dossier &rarr;</a>
+          <span style="color:var(--text-dim);font-family:var(--font-mono);">Endpoint: <code>research-agent.html</code></span>
+          <a href="research-agent.html" style="color:#38bdf8;text-decoration:none;font-family:var(--font-mono);font-weight:600;">Open Research Workspace &rarr;</a>
         </div>
       </div>
 
@@ -788,22 +788,22 @@
       <!-- ══════════════════════════════════════════════════════════
            CARD 06: INVESTIGATOR AGENT (BAYESIAN REASONER)
            ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="tribunal" style="--card-accent:#fbbf24;">
+      <div class="agent-card" data-category="tribunal" style="--card-accent:#818cf8;">
         <div>
           <div class="agent-card-header">
             <div>
               <div class="agent-badge-row">
-                <span class="agent-badge" style="color:#fbbf24;">AGENT_06 &bull; BAYESIAN REASONER</span>
+                <span class="agent-badge" style="color:#818cf8;">AGENT_06 &bull; FORENSIC CASE DOSSIER</span>
                 <span class="agent-ping"><span class="agent-ping-dot"></span> 28ms latency</span>
               </div>
               <div class="agent-title">Investigator Agent</div>
             </div>
-            <a href="lab.html" class="ae-btn ae-btn-primary" style="padding:8px 16px;font-size:0.78rem;background:#fbbf24;border-color:#fbbf24;color:#000;">
-              <span>Test Consensus Quorum &rarr;</span>
+            <a href="investigator-agent.html" class="ae-btn ae-btn-primary" style="padding:8px 16px;font-size:0.78rem;background:#818cf8;border-color:#818cf8;color:#fff;">
+              <span>Open Forensic Dossier &rarr;</span>
             </a>
           </div>
           <p class="agent-desc">
-            Executes multi-node Byzantine fault-tolerant consensus (W-MSR $F=1$), detects premise contradictions between evidence documents, and computes probabilistic verdict confidence.
+            Constructs forensic case dossiers tracing chain of custody from initial vector emergence to authoritative refutation, separating known empirical facts from unresolved investigative gaps.
           </p>
         </div>
 
@@ -860,8 +860,8 @@
         </form>
 
         <div class="agent-card-footer">
-          <span style="color:var(--text-dim);font-family:var(--font-mono);">Endpoint: <code>POST /api/lab/consensus</code></span>
-          <a href="lab.html" style="color:#fbbf24;text-decoration:none;font-family:var(--font-mono);font-weight:600;">Open Byzantine Visualizer &rarr;</a>
+          <span style="color:var(--text-dim);font-family:var(--font-mono);">Endpoint: <code>investigator-agent.html</code></span>
+          <a href="investigator-agent.html" style="color:#818cf8;text-decoration:none;font-family:var(--font-mono);font-weight:600;">Open Forensic Case Dossier &rarr;</a>
         </div>
       </div>
 

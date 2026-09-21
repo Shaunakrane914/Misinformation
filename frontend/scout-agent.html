@@ -456,7 +456,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 01 · MARKET TELEMETRY SNAPSHOT</span>
+            <span>// 01 · MARKET SNAPSHOT</span>
             <span class="intel-count-badge">${esc(data.company_name || data.ticker)}</span>
           </div>
           <div class="snapshot-grid">
@@ -484,60 +484,177 @@
             </div>
           </div>
           <div class="freshness-note">
-            <strong>Data Disclosure:</strong> ${esc(stock.data_source || 'Delayed Daily Close via Yahoo Finance Free Chart API — Non-realtime')}.
+            <strong>Data Freshness:</strong> ${esc(stock.data_source || 'Delayed Daily Close via Yahoo Finance — Non-realtime')}.
           </div>
         </div>
       `;
 
-      // 2. RETRIEVAL & CHANNEL TELEMETRY
+      // 2. WHAT CHANGED (TOP 3 DEVELOPMENTS)
+      const topNews = news.slice(0, 3);
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 02 · RESEARCH RETRIEVAL PLAN &amp; EVIDENCE ACQUISITION</span>
-            <span class="intel-count-badge">${retrieval.total_sources || sources.length} Sources Discovered</span>
+            <span>// 02 · WHAT CHANGED (TOP DEVELOPMENTS)</span>
+            <span class="intel-count-badge">Core Shifts</span>
           </div>
-          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-family:var(--font-mono);font-size:0.8rem;">
-            <div>Total Records: <strong style="color:#c4b5fd">${retrieval.total_sources || sources.length}</strong></div>
-            <div>Unique Outlets: <strong style="color:var(--emerald)">${retrieval.unique_sources || sources.length}</strong></div>
-            <div>Syndicated Duplicates: <strong style="color:#fbbf24">${retrieval.syndicated_sources || 0}</strong></div>
-            <div>Retrieval Latency: <strong style="color:var(--text)">${retrieval.latency_ms || 0} ms</strong></div>
-          </div>
-        </div>
-      `;
-
-      // 3. PRIMARY SOURCES & NEWS INTELLIGENCE
-      html += `
-        <div class="intel-section ae-reveal">
-          <div class="intel-section-title">
-            <span>// 03 · NEWS INTELLIGENCE &amp; PRIMARY SOURCES</span>
-            <span class="intel-count-badge">${news.length} Items</span>
-          </div>
-      `;
-
-      if (news.length === 0) {
-        html += `
-          <div class="empty-state">
-            No verified retrieved news was returned across monitored channels for this ticker.
-          </div>
-        `;
-      } else {
-        html += `<div class="source-grid">`;
-        news.forEach(item => {
-          const url = item.source_url || item.url || '';
-          const role = item.source_role || (item.category === 'Primary Source' ? 'PRIMARY' : 'SECONDARY');
-          html += `
-            <div class="evidence-card">
-              <div>
-                <div class="ev-header">
-                  <span class="ev-source-name">${esc(item.source || 'Market Wire')}</span>
-                  ${getRoleBadge(role)}
+          <div style="display:flex;flex-direction:column;gap:12px;">
+            ${topNews.length === 0 ? '<div style="color:var(--text-dim);font-size:0.86rem;">No breaking shifts identified in current scan window.</div>' : topNews.map((item, idx) => `
+              <div style="background:rgba(139,92,246,0.06);border-left:3px solid #8b5cf6;border-radius:6px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                <div style="flex:1;min-width:260px;">
+                  <div style="font-weight:700;color:#fff;font-size:0.92rem;">${idx + 1}. ${esc(item.title)}</div>
+                  <div style="font-size:0.82rem;color:#cbd5e1;margin-top:3px;line-height:1.45;">${esc(item.summary || item.snippet || '')}</div>
                 </div>
-                <div class="ev-title">${esc(item.title)}</div>
-                <div class="ev-snippet">${esc(item.summary || item.snippet || item.title)}</div>
+                <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:0.74rem;">
+                  <span style="color:var(--text-dim);">${esc(item.source || 'Wire')}</span>
+                  ${item.source_url || item.url ? `<a href="${esc(item.source_url || item.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:3px 8px;">Open ↗</a>` : ''}
+                </div>
               </div>
-              <div class="ev-footer">
-                <span>${esc(item.time || 'Recent')}</span>
-                ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open Source ↗</a>` : `<span class="ae-no-link">Source link unavailable</span>`}
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      // 3. MARKET NARRATIVE & CATALYSTS
+      const posCats = catalysts.positive || [];
+      const negCats = catalysts.negative || [];
+      const unresCats = catalysts.unresolved || [];
+
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 03 · MARKET NARRATIVE &amp; CATALYSTS</span>
+            <span class="intel-count-badge">${narratives.length} Themes</span>
+          </div>
+
+          ${narratives.length > 0 ? `
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
+              ${narratives.map(n => `
+                <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.25);border-radius:10px;padding:12px 16px;flex:1;min-width:240px;">
+                  <div style="font-weight:700;color:#c4b5fd;font-size:0.88rem;margin-bottom:4px;">${esc(n.theme)}</div>
+                  <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${esc(n.description)}</div>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+
+          <div class="catalyst-grid">
+            <div class="cat-box pos">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Positive Catalysts (${posCats.length})
+              </div>
+              ${posCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No positive catalysts detected.</div>' : ''}
+              ${posCats.map(c => `
+                <div class="cat-item">
+                  ${esc(c.catalyst)}
+                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="cat-box neg">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Negative Headwinds (${negCats.length})
+              </div>
+              ${negCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No significant headwinds detected.</div>' : ''}
+              ${negCats.map(c => `
+                <div class="cat-item">
+                  ${esc(c.catalyst)}
+                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="cat-box unres">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:#fbbf24;font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Unresolved Factors (${unresCats.length})
+              </div>
+              ${unresCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No unresolved factors.</div>' : ''}
+              ${unresCats.map(c => `
+                <div class="cat-item">
+                  ${esc(c.factor || c.catalyst)}
+                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // 4. NEWS INTELLIGENCE (GROUPED BY EVENT)
+      // Cluster news by company event instead of showing 8 identical individual cards
+      const eventGroups = [];
+      const usedTitles = new Set();
+
+      news.forEach(item => {
+        const titleWords = (item.title || '').toLowerCase().split(' ').filter(w => w.length > 4);
+        let matchedGroup = null;
+        for (const grp of eventGroups) {
+          const overlap = titleWords.filter(w => grp.keywords.has(w));
+          if (overlap.length >= 2) {
+            matchedGroup = grp;
+            break;
+          }
+        }
+        if (matchedGroup) {
+          matchedGroup.articles.push(item);
+          matchedGroup.sources.add(item.source || 'Wire');
+        } else {
+          eventGroups.push({
+            headline: item.title,
+            keywords: new Set(titleWords),
+            articles: [item],
+            sources: new Set([item.source || 'Wire']),
+            time: item.time || 'Recent'
+          });
+        }
+      });
+
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 04 · NEWS INTELLIGENCE (GROUPED BY EVENT)</span>
+            <span class="intel-count-badge">${eventGroups.length} Event Clusters &bull; ${news.length} Articles</span>
+          </div>
+      `;
+
+      if (eventGroups.length === 0) {
+        html += `<div class="empty-state">No verified reporting retrieved across news channels.</div>`;
+      } else {
+        html += `<div style="display:flex;flex-direction:column;gap:16px;">`;
+        eventGroups.forEach((grp, gIdx) => {
+          const firstArt = grp.articles[0];
+          const hasPrimary = grp.articles.some(a => a.source_role === 'PRIMARY' || (a.source || '').toLowerCase().includes('filing') || (a.source || '').toLowerCase().includes('sec'));
+          html += `
+            <div class="aegis-event-group">
+              <div class="aegis-event-header">
+                <div>
+                  <div class="aegis-event-title">${esc(grp.headline)}</div>
+                  <div class="aegis-event-coverage">
+                    <span>${grp.articles.length} article${grp.articles.length > 1 ? 's' : ''} &bull; ${grp.sources.size} independent outlet${grp.sources.size > 1 ? 's' : ''}</span>
+                    <span class="ae-badge ${hasPrimary ? 'ae-badge-green' : 'ae-badge-blue'}" style="font-size:0.68rem;">
+                      ${hasPrimary ? 'PRIMARY &amp; SECONDARY' : 'SECONDARY COVERAGE'}
+                    </span>
+                  </div>
+                </div>
+                <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">${esc(grp.time)}</div>
+              </div>
+
+              <div style="font-size:0.84rem;color:#cbd5e1;line-height:1.55;margin-bottom:12px;">
+                ${esc(firstArt.summary || firstArt.snippet || '')}
+              </div>
+
+              <!-- Clustered sources row -->
+              <div style="display:flex;flex-wrap:wrap;gap:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.06);align-items:center;">
+                <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);font-weight:700;">COVERAGE:</span>
+                ${grp.articles.map(art => {
+                  const url = art.source_url || art.url || '';
+                  return `
+                    <span style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);padding:3px 8px;border-radius:6px;font-size:0.74rem;font-family:var(--font-mono);display:inline-flex;align-items:center;gap:5px;">
+                      <strong>${esc(art.source || 'Wire')}</strong>
+                      ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);text-decoration:none;">&nearr;</a>` : ''}
+                    </span>
+                  `;
+                }).join('')}
               </div>
             </div>
           `;

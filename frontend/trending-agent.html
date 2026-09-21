@@ -3,10 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trending Agent — Aegis Protocol</title>
+  <title>Trending Agent 2.0 — Trend Discovery & Intelligence Engine</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="gemini-client.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -35,67 +34,211 @@
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
     .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
     .agent-hero h1 span { color: #f472b6; text-shadow: 0 0 30px rgba(244, 114, 182, 0.3); }
-    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
-    /* Telemetry Ribbon */
+    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 680px; line-height: 1.7; margin-bottom: 24px; }
+
+    /* Truthful Telemetry Ribbon */
     .tel-ribbon {
       display: flex; gap: 0; flex-wrap: wrap;
-      background: rgba(7,9,14,0.8); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 10px; overflow: hidden; margin-top: 24px;
+      background: rgba(7,9,14,0.85); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; overflow: hidden; margin-top: 24px;
     }
     .tel-cell {
-      flex: 1; min-width: 130px; padding: 10px 18px;
+      flex: 1; min-width: 130px; padding: 12px 18px;
       border-right: 1px solid rgba(255,255,255,0.07);
-      display: flex; flex-direction: column; gap: 3px;
+      display: flex; flex-direction: column; gap: 4px;
     }
     .tel-cell:last-child { border-right: none; }
-    .tel-val { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: #fbcfe8; }
-    .tel-key { font-family: var(--font-mono); font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
+    .tel-val { font-family: var(--font-mono); font-size: 0.92rem; font-weight: 700; color: #fbcfe8; }
+    .tel-key { font-family: var(--font-mono); font-size: 0.64rem; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
 
-    .agent-body { max-width: 1280px; margin: 0 auto; padding: 40px 32px 80px; }
+    .agent-body { max-width: 1280px; margin: 0 auto; padding: 36px 28px 80px; }
 
-    /* War room layout */
-    .war-room { display: grid; grid-template-columns: 280px 1fr; gap: 24px; }
-    @media(max-width:960px){ .war-room { grid-template-columns: 1fr; } }
+    /* Scan Configuration Card */
+    .scan-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 24px 28px; margin-bottom: 28px; backdrop-filter: blur(14px);
+    }
+    .mode-toggle {
+      display: inline-flex; background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: 10px; padding: 3px; gap: 4px; margin-bottom: 18px;
+    }
+    .mode-btn {
+      padding: 7px 18px; font-size: 0.8rem; font-weight: 700; border-radius: 8px; border: none;
+      background: transparent; color: var(--text-muted); cursor: pointer; transition: all 0.16s ease;
+      font-family: var(--font-mono);
+    }
+    .mode-btn.active {
+      background: rgba(244, 114, 182, 0.15); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.35);
+    }
+    .scan-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    .scan-input {
+      flex: 1; min-width: 280px; background: rgba(0, 0, 0, 0.35);
+      border: 1px solid var(--border); border-radius: 10px; padding: 12px 18px;
+      color: #fff; font-size: 0.95rem; font-family: var(--font-main); transition: border-color 0.16s;
+    }
+    .scan-input:focus { outline: none; border-color: #f472b6; box-shadow: 0 0 12px rgba(244, 114, 182, 0.2); }
+    .cat-select {
+      background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 10px;
+      padding: 12px 16px; color: var(--text-muted); font-size: 0.88rem; font-family: var(--font-main);
+    }
+    .cat-select option { background: #130a15; color: #fff; }
+    .btn-scan {
+      padding: 12px 24px; background: linear-gradient(135deg, #f472b6 0%, #d946ef 100%);
+      border: none; border-radius: 10px; color: #fff; font-weight: 700; font-size: 0.9rem;
+      cursor: pointer; transition: all 0.18s; font-family: var(--font-main); display: inline-flex; align-items: center; gap: 8px;
+    }
+    .btn-scan:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(244, 114, 182, 0.3); }
 
-    /* Sidebar */
-    .asset-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 22px; backdrop-filter: blur(14px); }
-    .asset-panel h3 { font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px; }
-    .asset-item { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px; font-size: 0.88rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.16s ease; border: 1px solid transparent; margin-bottom: 6px; }
-    .asset-item:hover { background: rgba(255, 255, 255, 0.06); color: var(--text); }
-    .asset-item.active { background: rgba(244, 114, 182, 0.12); color: #f472b6; border-color: rgba(244, 114, 182, 0.35); font-weight: 700; }
-    .asset-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text-dim); flex-shrink: 0; }
-    .asset-item.active .asset-dot { background: #f472b6; box-shadow: 0 0 8px #f472b6; }
-    .add-btn { width: 100%; padding: 10px; border: 1px dashed var(--border); border-radius: 10px; background: transparent; color: var(--text-dim); font-size: 0.84rem; font-weight: 600; cursor: pointer; margin-top: 8px; transition: all 0.16s; font-family: var(--font-main); }
-    .add-btn:hover { border-color: #f472b6; color: #f472b6; background: rgba(244, 114, 182, 0.05); }
-    .chart-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 22px; margin-top: 18px; backdrop-filter: blur(14px); }
-    .chart-panel h3 { font-size: 0.75rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 12px; }
-    .chart-wrap { height: 150px; }
+    /* Quick Start Chips */
+    .quick-chips-wrap { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    .chip-label { font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.06em; margin-right: 4px; }
+    .quick-chip {
+      padding: 5px 12px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+      border-radius: 20px; font-size: 0.76rem; color: var(--text-muted); cursor: pointer; transition: all 0.14s;
+    }
+    .quick-chip:hover { border-color: #f472b6; color: #f472b6; background: rgba(244, 114, 182, 0.06); }
 
-    /* Feed */
-    .feed-panel { display: flex; flex-direction: column; gap: 16px; }
-    .feed-header { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; backdrop-filter: blur(14px); }
-    .feed-header-title { font-size: 1.05rem; font-weight: 800; }
-    .asset-badge { padding: 6px 16px; background: rgba(244, 114, 182, 0.12); color: #f472b6; border: 1px solid rgba(244, 114, 182, 0.3); border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: var(--font-mono); }
-    .refresh-btn { padding: 8px 18px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-size: 0.84rem; font-weight: 600; cursor: pointer; transition: all 0.16s ease; font-family: var(--font-main); display: inline-flex; align-items: center; gap: 6px; }
-    .refresh-btn:hover { border-color: #f472b6; color: #f472b6; background: rgba(244, 114, 182, 0.08); }
-    .refresh-btn:active { transform: translateY(1px) scale(0.98); }
+    /* Channel Health Strip */
+    .channel-strip {
+      display: flex; gap: 8px; flex-wrap: wrap; background: var(--surface); border: 1px solid var(--border);
+      border-radius: 12px; padding: 12px 18px; margin-bottom: 24px; align-items: center;
+    }
+    .channel-label { font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-right: 6px; }
+    .ch-badge {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 0.74rem; font-family: var(--font-mono);
+      padding: 4px 10px; border-radius: 6px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .ch-badge.ok { border-color: rgba(52, 211, 153, 0.3); color: #34d399; background: rgba(52, 211, 153, 0.08); }
+    .ch-badge.warn { border-color: rgba(245, 158, 11, 0.3); color: #fbbf24; background: rgba(245, 158, 11, 0.08); }
 
-    .static-note { padding: 10px 16px; border-radius: 12px; background: rgba(245, 158, 11, 0.08); color: #fbbf24; font-size: 0.82rem; font-weight: 600; border: 1px solid rgba(245, 158, 11, 0.2); font-family: var(--font-mono); }
+    /* Dual Column Layout */
+    .main-grid { display: grid; grid-template-columns: 1.15fr 1fr; gap: 24px; margin-bottom: 36px; }
+    @media(max-width: 992px){ .main-grid { grid-template-columns: 1fr; } }
 
-    .threat-card { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid var(--border); border-radius: 14px; padding: 18px; transition: all 0.18s ease; backdrop-filter: blur(12px); }
-    .threat-card:hover { border-color: rgba(244, 114, 182, 0.35); transform: translateY(-1px); }
-    .threat-card.is-threat { border-left-color: var(--rose); background: linear-gradient(90deg, rgba(244, 63, 94, 0.06) 0%, var(--surface) 100%); }
-    .tc-header { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; flex-wrap: wrap; }
-    .src-pill { font-size: 0.72rem; font-weight: 700; padding: 3px 10px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 20px; color: var(--text-muted); font-family: var(--font-mono); }
-    .threat-pill { font-size: 0.72rem; font-weight: 700; padding: 3px 10px; background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); border-radius: 20px; font-family: var(--font-mono); }
-    .tc-title { font-weight: 700; font-size: 0.95rem; margin: 0 0 6px; line-height: 1.4; }
-    .tc-summary { font-size: 0.84rem; color: var(--text-muted); margin: 0 0 12px; line-height: 1.6; }
-    .sent-row { display: flex; align-items: center; gap: 12px; }
-    .sent-lbl { font-size: 0.74rem; color: var(--text-dim); min-width: 68px; font-family: var(--font-mono); }
-    .sent-bar { flex: 1; height: 5px; background: rgba(255, 255, 255, 0.06); border-radius: 3px; overflow: hidden; }
-    .sent-fill { height: 100%; border-radius: 3px; }
+    /* Cards & Panels */
+    .panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 22px 24px; backdrop-filter: blur(14px); margin-bottom: 24px; }
+    .panel-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .panel-title { font-size: 0.88rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px; }
 
-    @media(max-width:760px){ .agent-hero { padding: 88px 20px 48px; } .agent-body { padding: 28px 18px 60px; } .hero-stats { gap: 20px; } }
+    /* Trend Card */
+    .trend-card {
+      background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-left: 3px solid #f472b6;
+      border-radius: 14px; padding: 18px; margin-bottom: 14px; transition: all 0.16s ease;
+    }
+    .trend-card:hover { border-color: rgba(244, 114, 182, 0.4); transform: translateY(-1px); }
+    .trend-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+    .trend-topic { font-size: 0.96rem; font-weight: 700; color: #fff; line-height: 1.4; }
+    .trend-badge-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    .t-tag {
+      font-size: 0.68rem; font-family: var(--font-mono); font-weight: 700; padding: 3px 8px;
+      border-radius: 4px; background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border);
+    }
+    .t-tag.acc { background: rgba(244, 114, 182, 0.15); color: #f472b6; border-color: rgba(244, 114, 182, 0.35); }
+    .t-tag.active { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.35); }
+    .t-tag.misinfo-high { background: rgba(244, 63, 94, 0.15); color: #f43f5e; border-color: rgba(244, 63, 94, 0.35); }
+    .t-tag.misinfo-med { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.35); }
+
+    .trend-metrics-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px;
+      background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+      border-radius: 8px; padding: 8px 12px; margin-bottom: 12px;
+    }
+    .tm-cell { display: flex; flex-direction: column; gap: 2px; }
+    .tm-val { font-family: var(--font-mono); font-size: 0.82rem; font-weight: 700; color: #fff; }
+    .tm-lbl { font-family: var(--font-mono); font-size: 0.62rem; color: var(--text-dim); text-transform: uppercase; }
+
+    .origin-note { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 12px; font-family: var(--font-main); }
+    .origin-note strong { color: #fbcfe8; font-family: var(--font-mono); }
+
+    .btn-dossier {
+      padding: 6px 14px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      border-radius: 6px; color: var(--text-muted); font-size: 0.75rem; font-weight: 600;
+      cursor: pointer; transition: all 0.14s; font-family: var(--font-mono);
+    }
+    .btn-dossier:hover { border-color: #f472b6; color: #f472b6; background: rgba(244,114,182,0.08); }
+
+    /* Claims Cards */
+    .claim-card {
+      background: rgba(0,0,0,0.25); border: 1px solid var(--border); border-radius: 12px;
+      padding: 14px 16px; margin-bottom: 10px;
+    }
+    .claim-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 6px; }
+    .c-status {
+      font-size: 0.65rem; font-family: var(--font-mono); font-weight: 700; padding: 2px 7px;
+      border-radius: 4px; text-transform: uppercase;
+    }
+    .c-status.VERIFIED { background: rgba(52, 211, 153, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+    .c-status.SUPPORTED { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .c-status.UNVERIFIED { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .c-status.CONTRADICTED { background: rgba(244, 63, 94, 0.15); color: #f43f5e; border: 1px solid rgba(244, 63, 94, 0.3); }
+    .claim-text { font-size: 0.85rem; font-weight: 600; color: var(--text); line-height: 1.4; margin-bottom: 6px; }
+    .claim-meta { font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-dim); display: flex; gap: 12px; }
+
+    /* Timeline */
+    .tl-wrap { position: relative; padding-left: 20px; }
+    .tl-wrap::before {
+      content: ''; position: absolute; left: 6px; top: 8px; bottom: 8px; width: 2px;
+      background: var(--border);
+    }
+    .tl-item { position: relative; margin-bottom: 16px; }
+    .tl-dot {
+      position: absolute; left: -20px; top: 4px; width: 10px; height: 10px; border-radius: 50%;
+      background: #f472b6; border: 2px solid #07090e; box-shadow: 0 0 6px rgba(244, 114, 182, 0.6);
+    }
+    .tl-time { font-family: var(--font-mono); font-size: 0.72rem; color: #fbcfe8; margin-bottom: 2px; }
+    .tl-event { font-size: 0.82rem; font-weight: 600; color: #fff; line-height: 1.35; }
+    .tl-src { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-dim); }
+
+    /* Source Explorer */
+    .explorer-panel { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 26px; }
+    .exp-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 18px; }
+    .exp-tab {
+      padding: 6px 14px; background: rgba(255,255,255,0.03); border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700;
+      color: var(--text-muted); cursor: pointer; transition: all 0.14s;
+    }
+    .exp-tab.active { background: rgba(244, 114, 182, 0.15); color: #f472b6; border-color: rgba(244, 114, 182, 0.35); }
+    .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
+    @media(max-width: 600px){ .evidence-grid { grid-template-columns: 1fr; } }
+    .ev-card {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.16s;
+    }
+    .ev-card:hover { border-color: rgba(244, 114, 182, 0.35); }
+    .ev-head { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .ev-platform { font-size: 0.7rem; font-family: var(--font-mono); font-weight: 700; color: #f472b6; }
+    .ev-role { font-size: 0.64rem; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; background: rgba(255,255,255,0.04); padding: 2px 6px; border-radius: 4px; border: 1px solid var(--border); }
+    .ev-title { font-size: 0.88rem; font-weight: 700; color: #fff; line-height: 1.4; }
+    .ev-snippet { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; flex: 1; }
+    .ev-foot { display: flex; justify-content: space-between; align-items: center; margin-top: 6px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.05); }
+    .ev-time { font-size: 0.7rem; font-family: var(--font-mono); color: var(--text-dim); }
+    .open-src-btn {
+      display: inline-flex; align-items: center; gap: 4px; font-size: 0.74rem; font-family: var(--font-mono);
+      font-weight: 700; color: #f472b6; text-decoration: none; padding: 4px 10px;
+      background: rgba(244, 114, 182, 0.1); border: 1px solid rgba(244, 114, 182, 0.25); border-radius: 6px;
+      transition: all 0.14s;
+    }
+    .open-src-btn:hover { background: rgba(244, 114, 182, 0.2); border-color: #f472b6; text-decoration: none; }
+    .open-src-disabled { font-size: 0.72rem; font-family: var(--font-mono); color: var(--text-dim); }
+
+    /* Modal */
+    .dossier-modal {
+      display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 24px;
+    }
+    .dossier-content {
+      background: #0d0f18; border: 1px solid rgba(244, 114, 182, 0.4); border-radius: 18px;
+      max-width: 780px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 28px; position: relative;
+    }
+    .modal-close {
+      position: absolute; right: 20px; top: 20px; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: #fff; width: 32px; height: 32px; border-radius: 50%; font-size: 1rem; cursor: pointer;
+    }
+
+    /* Skeleton preview */
+    .skeleton-bar { background: rgba(255,255,255,0.06); border-radius: 4px; animation: pulse 1.5s infinite ease-in-out; }
+    @keyframes pulse { 0%, 100% { opacity: 0.4; } 50% { opacity: 0.8; } }
   </style>
 </head>
 <body>
@@ -103,292 +246,612 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <!-- HERO -->
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_01 · Active Node</div>
-      <h1><span>Trending</span> Agent</h1>
-      <p>Real-time entertainment and cultural intelligence. Scans celebrity profiles, cinema releases, and trending topics across social graphs to neutralize defamation and coordinated smear campaigns.</p>
+      <div class="agent-tag"><span class="dot"></span>AGENT_01 · Trending Engine 2.0</div>
+      <h1><span>Trend Intelligence</span> &amp; Discovery</h1>
+      <p>Autonomous trend intelligence across entertainment, cinema, technology, and culture. Discovers emerging narratives, monitors velocity, verifies circulating claims, and attributes sources with zero synthetic hallucinations.</p>
+      
+      <!-- REAL-TIME TELEMETRY RIBBON -->
       <div class="tel-ribbon">
-        <div class="tel-cell"><span class="tel-val">Hawkes R&#8320;</span><span class="tel-key">Contagion Model</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">5 Channels</span><span class="tel-key">Ingestion Nodes</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">W-MSR F=1</span><span class="tel-key">Consensus Protocol</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">Zipf-R&#178; 0.94</span><span class="tel-key">Linguistic Fit</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--rose)">LIVE</span><span class="tel-key">Node Status</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telSignals">0</span><span class="tel-key">Signals Retrieved</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telSources" style="color:var(--accent)">0</span><span class="tel-key">Unique Sources</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">0</span><span class="tel-key">Independent Groups</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telPlatforms" style="color:#fbbf24">0</span><span class="tel-key">Platforms Active</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telTrends" style="color:#f472b6">0</span><span class="tel-key">Discovered Trends</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telDuration" style="color:var(--text-muted)">0.0s</span><span class="tel-key">Scan Duration</span></div>
       </div>
     </div>
 
     <div class="agent-body">
-      <div class="war-room ae-reveal">
-        <!-- SIDEBAR -->
-        <aside>
-          <div class="asset-panel">
-            <h3>// Monitored Entities</h3>
-            <div id="assetList">
-              <div class="asset-item active" onclick="selectAsset('Deepika Padukone')"><span class="asset-dot"></span>Deepika Padukone</div>
-              <div class="asset-item" onclick="selectAsset('Shah Rukh Khan')"><span class="asset-dot"></span>Shah Rukh Khan</div>
-              <div class="asset-item" onclick="selectAsset('Ranveer Singh')"><span class="asset-dot"></span>Ranveer Singh</div>
-              <div class="asset-item" onclick="selectAsset('Alia Bhatt')"><span class="asset-dot"></span>Alia Bhatt</div>
-              <div class="asset-item" onclick="selectAsset('Katrina Kaif')"><span class="asset-dot"></span>Katrina Kaif</div>
-              <div class="asset-item" onclick="selectAsset('Jawan (Film)')"><span class="asset-dot"></span>Jawan (Film)</div>
-            </div>
-            <button class="add-btn" onclick="addAsset()">+ Monitor New Entity</button>
-          </div>
-          <div class="chart-panel">
-            <h3>// 7-Day Sentiment Velocity</h3>
-            <div class="chart-wrap"><canvas id="sentimentChart"></canvas></div>
-          </div>
-        </aside>
-
-        <!-- FEED -->
-        <div class="feed-panel">
-          <div class="feed-header">
-            <div class="feed-header-title">Live Disinformation Stream</div>
-            <div style="display:flex;gap:10px;align-items:center;">
-              <span class="asset-badge" id="currentAssetBadge">Deepika Padukone</span>
-              <button class="refresh-btn" onclick="refreshFeed()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/></svg>
-                Scan Node
-              </button>
-            </div>
-          </div>
-
-          <div id="staticNote" class="static-note">Live multi-source agent pipeline ready — click Scan Node to query live social channels</div>
-
-          <div id="threatFeed" style="display:flex;flex-direction:column;gap:12px;"></div>
+      <!-- SCAN CONFIGURATION -->
+      <div class="scan-card ae-reveal">
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="btnModeEntity" onclick="setMode('entity')">Entity Investigation</button>
+          <button class="mode-btn" id="btnModeDiscovery" onclick="setMode('discovery')">Discovery Mode</button>
         </div>
+        <div class="scan-row">
+          <input type="text" id="scanQueryInput" class="scan-input" placeholder="Enter entity name (e.g. Deepika Padukone, Jawan, OpenAI, Tesla)..." value="Deepika Padukone">
+          <select id="catSelect" class="cat-select">
+            <option value="general">All Categories</option>
+            <option value="entertainment" selected>Entertainment &amp; Cinema</option>
+            <option value="technology">Technology &amp; AI</option>
+            <option value="business">Business &amp; Markets</option>
+          </select>
+          <button class="btn-scan" onclick="runTrendingScan()">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+            Scan Engine
+          </button>
+        </div>
+
+        <div class="quick-chips-wrap">
+          <span class="chip-label">// Quick Start Examples:</span>
+          <span class="quick-chip" onclick="applyQuickStart('Deepika Padukone', 'entity', 'entertainment')">Deepika Padukone</span>
+          <span class="quick-chip" onclick="applyQuickStart('Shah Rukh Khan', 'entity', 'entertainment')">Shah Rukh Khan</span>
+          <span class="quick-chip" onclick="applyQuickStart('Jawan (Film)', 'entity', 'cinema')">Jawan (Film)</span>
+          <span class="quick-chip" onclick="applyQuickStart('OpenAI', 'entity', 'technology')">OpenAI</span>
+          <span class="quick-chip" onclick="applyQuickStart('What\'s trending in India?', 'discovery', 'general')">What's trending in India?</span>
+          <span class="quick-chip" onclick="applyQuickStart('What\'s trending in AI?', 'discovery', 'technology')">What's trending in AI?</span>
+        </div>
+      </div>
+
+      <!-- CHANNEL HEALTH STRIP -->
+      <div class="channel-strip ae-reveal" id="channelStrip">
+        <span class="channel-label">// Channels:</span>
+        <div class="ch-badge" id="ch_news"><span>News</span><span class="dot-val">Ready</span></div>
+        <div class="ch-badge" id="ch_reddit"><span>Reddit</span><span class="dot-val">Ready</span></div>
+        <div class="ch-badge" id="ch_twitter"><span>Twitter / X</span><span class="dot-val">Ready</span></div>
+        <div class="ch-badge" id="ch_youtube"><span>YouTube</span><span class="dot-val">Ready</span></div>
+        <div class="ch-badge" id="ch_web"><span>Web</span><span class="dot-val">Ready</span></div>
+        <div class="ch-badge" id="ch_instagram"><span>Instagram</span><span class="dot-val">Optional</span></div>
+      </div>
+
+      <!-- MAIN CONTENT GRID -->
+      <div class="main-grid ae-reveal">
+        <!-- LEFT: DISCOVERED TRENDS & TIME-SERIES CHART -->
+        <div>
+          <!-- REAL SNAPSHOT CHART (Zero Math.random()) -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M18 9l-5 5-4-4-6 6"/></svg>
+                Verified Trend Velocity &amp; Momentum
+              </div>
+              <span style="font-size:0.72rem;font-family:var(--font-mono);color:var(--text-dim);" id="chartStatusBadge">Snapshot History</span>
+            </div>
+            <div style="height: 180px; position: relative;">
+              <canvas id="velocityChart"></canvas>
+              <div id="chartEmptyState" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.8rem;color:var(--text-dim);padding:20px;font-family:var(--font-mono);">
+                Initial scan snapshot recorded. Run repeat scans over time to plot the multi-interval velocity curve.
+              </div>
+            </div>
+          </div>
+
+          <!-- TRENDS LIST -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                Discovered Trend Clusters
+              </div>
+              <span class="t-tag active" id="clusterCountTag">0 Clusters</span>
+            </div>
+            <div id="trendsFeed">
+              <div style="text-align:center;padding:40px;color:var(--text-dim);font-size:0.86rem;">
+                Click <strong>Scan Engine</strong> above to discover live trends and investigate narratives.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: CLAIMS, CHRONOLOGY & BOX OFFICE -->
+        <div>
+          <!-- CIRCULATING CLAIMS MATRIX -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                Circulating Claims &amp; Verification
+              </div>
+              <span class="t-tag" id="claimsCountTag">0 Claims</span>
+            </div>
+            <div id="claimsList">
+              <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:0.84rem;">
+                Verified claims will be extracted from retrieved evidence.
+              </div>
+            </div>
+          </div>
+
+          <!-- CHRONOLOGICAL TIMELINE -->
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                Verified Trend Chronology
+              </div>
+            </div>
+            <div class="tl-wrap" id="timelineList">
+              <div style="padding:10px 0;color:var(--text-dim);font-size:0.84rem;">Timestamps will be sequenced from verified sources.</div>
+            </div>
+          </div>
+
+          <!-- BOX OFFICE TELEMETRY CARD -->
+          <div class="panel" id="boxOfficePanel" style="display:none;">
+            <div class="panel-header">
+              <div class="panel-title">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 2v5M8 2v5"/></svg>
+                Trade &amp; Box Office Telemetry
+              </div>
+            </div>
+            <div id="boxOfficeContent" style="font-size:0.84rem;color:var(--text-muted);">
+              Box-office data status.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOURCE EXPLORER -->
+      <div class="explorer-panel ae-reveal">
+        <div class="panel-header">
+          <div class="panel-title">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
+            Interactive Evidence Explorer
+          </div>
+          <span style="font-size:0.75rem;font-family:var(--font-mono);color:var(--text-dim);" id="evidenceCountBadge">0 Evidence Items</span>
+        </div>
+
+        <div class="exp-tabs" id="expTabs">
+          <button class="exp-tab active" onclick="filterEvidence('all')">ALL</button>
+          <button class="exp-tab" onclick="filterEvidence('news')">NEWS</button>
+          <button class="exp-tab" onclick="filterEvidence('reddit')">REDDIT</button>
+          <button class="exp-tab" onclick="filterEvidence('twitter')">TWITTER / X</button>
+          <button class="exp-tab" onclick="filterEvidence('youtube')">YOUTUBE</button>
+          <button class="exp-tab" onclick="filterEvidence('instagram')">INSTAGRAM</button>
+          <button class="exp-tab" onclick="filterEvidence('web')">WEB</button>
+        </div>
+
+        <div class="evidence-grid" id="evidenceGrid">
+          <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-dim);font-size:0.86rem;">
+            Evidence records with verified clickable source URLs will be displayed here.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- DOSSIER DETAIL MODAL -->
+    <div class="dossier-modal" id="dossierModal" onclick="if(event.target===this)closeDossier()">
+      <div class="dossier-content" id="dossierModalBody">
+        <button class="modal-close" onclick="closeDossier()">&times;</button>
+        <div id="dossierModalInner"></div>
       </div>
     </div>
 
     <footer class="ae-footer">
       <div>
         <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);">Trending Agent Module · Autonomous Defense &copy; 2026</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Trending Agent 2.0 · Autonomous Trend Discovery &copy; 2026</div>
       </div>
       <div style="display:flex;gap:18px;font-size:0.8rem;">
         <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
         <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
-        <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
-        <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
+        <a href="scout-agent.html" style="color:var(--text-muted);text-decoration:none;">Scout</a>
+        <a href="brandshield-agent.html" style="color:var(--text-muted);text-decoration:none;">BrandShield</a>
+        <a href="personal-watch-agent.html" style="color:var(--text-muted);text-decoration:none;">Personal Watch</a>
       </div>
     </footer>
   </div>
 
   <script>
-    let currentAsset = 'Deepika Padukone';
-    const PLATFORMS = [
-      { name: 'X / Twitter',  color: '#1d9bf0' },
-      { name: 'Instagram',    color: '#e1306c' },
-      { name: 'Reddit',       color: '#ff4500' },
-      { name: 'Google News',  color: '#4285f4' },
-      { name: 'YouTube',      color: '#ff0000' },
-    ];
+    let currentMode = 'entity';
+    let currentScanData = null;
+    let activeEvidenceFilter = 'all';
+    let chartInstance = null;
 
-    let scanTimerInterval = null;
+    function setMode(mode) {
+      currentMode = mode;
+      document.getElementById('btnModeEntity').className = `mode-btn ${mode === 'entity' ? 'active' : ''}`;
+      document.getElementById('btnModeDiscovery').className = `mode-btn ${mode === 'discovery' ? 'active' : ''}`;
+      const inp = document.getElementById('scanQueryInput');
+      if (mode === 'discovery') {
+        inp.placeholder = "Enter discovery question (e.g. What's trending in India?, trending in AI, viral entertainment today)...";
+        if (inp.value === 'Deepika Padukone') inp.value = "What's trending in India?";
+      } else {
+        inp.placeholder = "Enter entity name (e.g. Deepika Padukone, Jawan, OpenAI, Tesla)...";
+        if (inp.value.startsWith("What's trending")) inp.value = "Deepika Padukone";
+      }
+    }
 
-    function showScanAnimation(feed, assetName) {
-      feed.innerHTML = '';
-      if (scanTimerInterval) clearInterval(scanTimerInterval);
+    function applyQuickStart(query, mode, cat) {
+      setMode(mode);
+      document.getElementById('scanQueryInput').value = query;
+      if (cat) document.getElementById('catSelect').value = cat;
+      runTrendingScan();
+    }
 
-      const preview = document.createElement('div');
-      preview.className = 'ae-loading-preview';
-      preview.innerHTML = `
-        <div class="ae-loading-top">
-          <div class="ae-loading-title-wrap">
-            <div class="ae-radar-spinner"></div>
-            <div class="ae-loading-title">Scanning Multi-Channel Threat Radar for <span style="color:var(--accent);">${assetName}</span></div>
+    function esc(s) {
+      return String(s || '')
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function showLoadingState(query) {
+      document.getElementById('trendsFeed').innerHTML = `
+        <div style="padding:20px;display:flex;flex-direction:column;gap:12px;">
+          <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:0.8rem;color:#f472b6;">
+            <div class="skeleton-bar" style="width:12px;height:12px;border-radius:50%;background:#f472b6;"></div>
+            <span>Agent Reach scanning multi-channel radar for "${esc(query)}"...</span>
           </div>
-          <div class="ae-loading-timer-badge" id="taElapsedBadge">
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span>
-            <span>0.0s elapsed</span>
-          </div>
-        </div>
-        <div class="ae-progress-track">
-          <div class="ae-progress-fill" id="taProgressFill" style="width: 15%;"></div>
-        </div>
-        <div class="ae-loading-steps-grid">
-          ${PLATFORMS.map((p, idx) => `
-            <div class="ae-loading-step-item" id="ta_step_${p.name.replace(/[^a-z]/gi,'')}">
-              <span class="ae-step-dot" style="background:${p.color};"></span>
-              <div style="display:flex;flex-direction:column;gap:2px;">
-                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
-                <span style="font-size:0.72rem;color:var(--text-dim);" id="ta_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting node...</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
-          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#38bdf8;"></span>
-          <span>PREVIEW: Ingesting live streams &amp; synthesizing threat intelligence...</span>
-        </div>
-        <div class="ae-skeleton-grid">
-          <div class="ae-skeleton-card">
-            <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
-            <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
-            <div class="ae-skeleton-bar" style="height:12px;width:75%;"></div>
-            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
-          </div>
-          <div class="ae-skeleton-card">
-            <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
-            <div class="ae-skeleton-bar" style="height:18px;width:85%;"></div>
-            <div class="ae-skeleton-bar" style="height:12px;width:60%;"></div>
-            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
-          </div>
+          <div class="skeleton-bar" style="height:18px;width:70%;"></div>
+          <div class="skeleton-bar" style="height:14px;width:95%;"></div>
+          <div class="skeleton-bar" style="height:14px;width:80%;"></div>
         </div>
       `;
-      feed.appendChild(preview);
-
-      const startTime = performance.now();
-      scanTimerInterval = setInterval(() => {
-        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
-        const badge = document.getElementById('taElapsedBadge');
-        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span><span>${elapsed}s elapsed</span>`;
-      }, 100);
+      document.getElementById('claimsList').innerHTML = `<div style="padding:20px;color:var(--text-dim);font-size:0.82rem;">Verifying circulating claims against retrieved evidence...</div>`;
+      document.getElementById('evidenceGrid').innerHTML = `<div style="grid-column:1/-1;padding:30px;text-align:center;color:var(--text-dim);font-size:0.85rem;">Retrieving and normalizing multi-channel evidence...</div>`;
     }
 
-    function setTaStepProgress(name, statusText, isDone = false) {
-      const stepEl = document.getElementById('ta_step_' + name.replace(/[^a-z]/gi,''));
-      const subEl = document.getElementById('ta_sub_' + name.replace(/[^a-z]/gi,''));
-      if (stepEl && subEl) {
-        subEl.textContent = statusText;
-        if (isDone) {
-          stepEl.className = 'ae-loading-step-item done';
-        } else {
-          stepEl.className = 'ae-loading-step-item active';
-        }
-      }
-    }
+    async function runTrendingScan() {
+      const query = document.getElementById('scanQueryInput').value.trim();
+      if (!query) return;
+      const category = document.getElementById('catSelect').value;
 
-    function markPlatformDone(name, count) {
-      setTaStepProgress(name, `OK — ${count}`, true);
-    }
+      showLoadingState(query);
 
-    function renderFeed(threats, isLive = true) {
-      if (scanTimerInterval) clearInterval(scanTimerInterval);
-      const feed = document.getElementById('threatFeed');
-      const note = document.getElementById('staticNote');
-      feed.innerHTML = '';
-      note.style.display = isLive ? 'none' : 'block';
-      if (!threats || threats.length === 0) {
-        feed.innerHTML = '<div style="text-align:center;padding:40px;color:var(--text-muted);font-size:0.9rem;">No active threats detected in cluster. Monitoring active.</div>';
-        return;
-      }
-      const esc = window.escapeHtml || (s => String(s || ''));
-      threats.forEach(item => {
-        const isThreat = item.is_threat;
-        const sent = item.sentiment || 0;
-        const sentColor = sent < -30 ? 'var(--rose)' : sent > 30 ? 'var(--emerald)' : '#fbbf24';
-        const sentPct = Math.min(Math.abs(sent), 100);
-        const card = document.createElement('div');
-        card.className = `threat-card${isThreat ? ' is-threat' : ''}`;
-        card.innerHTML = `<div class="tc-header"><span class="src-pill">${esc(item.source||'Platform')}</span>${isThreat ? '<span class="threat-pill">DISINFORMATION RISK</span>' : ''}</div><p class="tc-title">${esc(item.title||'')}</p><p class="tc-summary">${esc(item.summary||'')}</p><div class="sent-row"><span class="sent-lbl">Sentiment</span><div class="sent-bar"><div class="sent-fill" style="width:${sentPct}%;background:${sentColor};"></div></div><span style="font-size:0.75rem;color:${sentColor};font-weight:700;font-family:var(--font-mono);">${sent>0?'+':''}${sent}</span></div>`;
-        feed.appendChild(card);
-      });
-    }
+      const payload = {
+        asset_name: query,
+        query: query,
+        category: category,
+        mode: currentMode
+      };
 
-    async function refreshFeed() {
-      const feed = document.getElementById('threatFeed');
-      const note = document.getElementById('staticNote');
-      note.style.display = 'none';
-      showScanAnimation(feed, currentAsset);
-
-      const progressFill = document.getElementById('taProgressFill');
-      const stepDelays = [
-        { name: 'X / Twitter', msg: 'Auditing streams...', pct: 25, delay: 200 },
-        { name: 'Reddit', msg: 'Checking communities...', pct: 45, delay: 500 },
-        { name: 'Google News', msg: 'Parsing news wire...', pct: 65, delay: 800 },
-        { name: 'Instagram', msg: 'Scanning media feeds...', pct: 80, delay: 1100 },
-        { name: 'YouTube', msg: 'Verifying video nodes...', pct: 90, delay: 1400 }
-      ];
-      stepDelays.forEach(s => {
-        setTimeout(() => {
-          setTaStepProgress(s.name, s.msg, false);
-          if (progressFill) progressFill.style.width = `${s.pct}%`;
-        }, s.delay);
-      });
-
-      let scanResult = null;
+      let result = null;
       const endpoints = ['/api/trending/scan', 'https://misinformation-1ouh.onrender.com/api/trending/scan'];
+
       for (const ep of endpoints) {
         try {
           const resp = await fetch(ep, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ asset_name: currentAsset }),
-            signal: AbortSignal.timeout(9000)
+            body: JSON.stringify(payload),
+            signal: AbortSignal.timeout(18000)
           });
           if (resp.ok) {
-            scanResult = await resp.json();
+            result = await resp.json();
             break;
           }
-        } catch (_) {}
+        } catch (e) {
+          console.warn(`Endpoint ${ep} error:`, e);
+        }
       }
 
-      if (scanResult && scanResult.threats && scanResult.threats.length > 0) {
-        if (progressFill) progressFill.style.width = '100%';
-        PLATFORMS.forEach(p => markPlatformDone(p.name, 'Verified'));
-        await new Promise(r => setTimeout(r, 450));
-        renderFeed(scanResult.threats, true);
-        updateChart(currentAsset);
+      if (result) {
+        currentScanData = result;
+        renderScanResults(result);
+      } else {
+        renderFailureState(query);
+      }
+    }
+
+    function renderScanResults(data) {
+      // 1. Update Telemetry Ribbon
+      const tel = data.telemetry || {};
+      document.getElementById('telSignals').textContent = tel.signals_retrieved || (data.evidence ? data.evidence.length : 0);
+      document.getElementById('telSources').textContent = tel.unique_sources || 0;
+      document.getElementById('telGroups').textContent = tel.independent_groups || 0;
+      document.getElementById('telPlatforms').textContent = tel.platforms_active || (data.platform_breakdown ? Object.keys(data.platform_breakdown).length : 0);
+      document.getElementById('telTrends').textContent = tel.discovered_trends || (data.trends ? data.trends.length : 0);
+      document.getElementById('telDuration').textContent = `${tel.scan_duration_s || 0.0}s`;
+
+      // 2. Update Channel Strip
+      const channels = (data.retrieval && data.retrieval.channels) || {};
+      for (const [ch, info] of Object.entries(channels)) {
+        const badge = document.getElementById(`ch_${ch}`);
+        if (badge) {
+          if (info.status === 'ok') {
+            badge.className = 'ch-badge ok';
+            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">✓ ${info.retrieved_count}</span>`;
+          } else if (info.status === 'unavailable') {
+            badge.className = 'ch-badge warn';
+            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">⚠ offline</span>`;
+          } else {
+            badge.className = 'ch-badge';
+            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">0</span>`;
+          }
+        }
+      }
+
+      // 3. Render Trend Clusters
+      renderTrends(data.trends || []);
+
+      // 4. Render Claims
+      renderClaims(data.trends || []);
+
+      // 5. Render Timeline
+      renderTimeline(data.timeline || []);
+
+      // 6. Render Evidence Explorer
+      renderEvidenceGrid(data.evidence || []);
+
+      // 7. Update Real Velocity Chart (Zero Math.random())
+      updateVelocityChart(data.chart_history || []);
+
+      // 8. Box Office Panel
+      if (data.box_office && Object.keys(data.box_office).length > 0) {
+        document.getElementById('boxOfficePanel').style.display = 'block';
+        document.getElementById('boxOfficeContent').innerHTML = `
+          <div style="background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:10px;padding:12px;">
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#fbcfe8;margin-bottom:4px;">${esc(data.box_office.source || 'Trade Telemetry')}</div>
+            <div style="font-size:0.85rem;color:var(--text);">${esc(data.box_office.message || 'Box office telemetry unavailable')}</div>
+          </div>
+        `;
+      } else {
+        document.getElementById('boxOfficePanel').style.display = 'none';
+      }
+    }
+
+    function renderTrends(trends) {
+      const feed = document.getElementById('trendsFeed');
+      document.getElementById('clusterCountTag').textContent = `${trends.length} Clusters`;
+
+      if (!trends || trends.length === 0) {
+        feed.innerHTML = `
+          <div style="text-align:center;padding:40px;color:var(--text-dim);font-size:0.86rem;">
+            No verified live trend evidence was retrieved for this query.
+          </div>
+        `;
         return;
       }
 
-      try {
-        if (progressFill) progressFill.style.width = '85%';
-        const prompt = `You are a real-time entertainment intelligence AI scanning multiple social media platforms for "${currentAsset}". Scan: X/Twitter, Instagram, Reddit, Google News, YouTube. Generate a threat intelligence report with 5-6 items mixing threats and non-threats. Return STRICT JSON array: [{ "title": "headline max 15 words", "source": "X / Twitter|Instagram|Reddit|Google News|YouTube", "summary": "1-2 sentence analysis max 30 words", "is_threat": true|false, "sentiment": integer -100 to 100, "url": "#" }]. Include at least 2 threats. Be specific to ${currentAsset}. Date: ${new Date().toDateString()}.`;
-        const data = await window.GeminiClient.askJSON(prompt);
-        if (Array.isArray(data) && data.length > 0) {
-          if (progressFill) progressFill.style.width = '100%';
-          PLATFORMS.forEach(p => markPlatformDone(p.name, 'Synthesized'));
-          await new Promise(r => setTimeout(r, 450));
-          renderFeed(data, true);
-          updateChart(currentAsset);
-        }
-      } catch (e) {
-        if (progressFill) progressFill.style.width = '100%';
-        await new Promise(r => setTimeout(r, 500));
-        renderFeed([
-          { title: `${currentAsset} — Synthetic AI voice clone deepfake detected on short-form video feeds`, source: 'X / Twitter', summary: 'Audio forensics indicate phase vocoder pitch-shift artifacts. 84% synthetic probability.', is_threat: true, sentiment: -64 },
-          { title: `${currentAsset} official spokesperson clarifies upcoming project production schedule`, source: 'Google News', summary: 'Press release refutes unauthorized studio leak rumors.', is_threat: false, sentiment: 42 }
-        ], true);
+      feed.innerHTML = '';
+      trends.forEach((t, idx) => {
+        const velStatus = (t.velocity && t.velocity.status) || 'EMERGING';
+        const velClass = velStatus === 'ACCELERATING' ? 'acc' : 'active';
+        const misClass = t.misinformation_risk === 'HIGH' ? 'misinfo-high' : t.misinformation_risk === 'MEDIUM' ? 'misinfo-med' : '';
+
+        const card = document.createElement('div');
+        card.className = 'trend-card';
+        card.innerHTML = `
+          <div class="trend-top">
+            <div class="trend-topic">${esc(t.topic)}</div>
+            <span class="t-tag ${velClass}">${esc(velStatus)}</span>
+          </div>
+          <div class="trend-badge-row">
+            <span class="t-tag">${esc(t.category.toUpperCase())}</span>
+            <span class="t-tag">SENTIMENT: ${esc(t.sentiment)}</span>
+            <span class="t-tag ${misClass}">MISINFO RISK: ${esc(t.misinformation_risk)}</span>
+          </div>
+          <div class="trend-metrics-grid">
+            <div class="tm-cell"><span class="tm-val">${t.signal_count}</span><span class="tm-lbl">Signals</span></div>
+            <div class="tm-cell"><span class="tm-val">${t.unique_source_count}</span><span class="tm-lbl">Sources</span></div>
+            <div class="tm-cell"><span class="tm-val">${t.independent_source_count}</span><span class="tm-lbl">Groups</span></div>
+            <div class="tm-cell"><span class="tm-val">${t.platform_count}</span><span class="tm-lbl">Platforms</span></div>
+          </div>
+          <div class="origin-note">
+            First observed on <strong>${esc(t.origin.first_observed_platform.toUpperCase())}</strong> via <em>${esc(t.origin.first_observed_source)}</em>
+            ${t.origin.amplification_platforms && t.origin.amplification_platforms.length > 0 ? ` · Amplified by ${t.origin.amplification_platforms.map(p => esc(p.toUpperCase())).join(', ')}` : ''}
+          </div>
+          <button class="btn-dossier" onclick="openDossier(${idx})">Investigate Trend Dossier ↗</button>
+        `;
+        feed.appendChild(card);
+      });
+    }
+
+    function renderClaims(trends) {
+      const container = document.getElementById('claimsList');
+      let allClaims = [];
+      trends.forEach(t => {
+        if (t.claims) allClaims.push(...t.claims);
+      });
+
+      document.getElementById('claimsCountTag').textContent = `${allClaims.length} Claims`;
+
+      if (!allClaims.length) {
+        container.innerHTML = `<div style="padding:20px;color:var(--text-dim);font-size:0.84rem;text-align:center;">No specific factual claims extracted from this cluster.</div>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      allClaims.slice(0, 5).forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'claim-card';
+        const urlLink = c.source_urls && c.source_urls.length > 0 ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Open Source ↗</a>` : '';
+        card.innerHTML = `
+          <div class="claim-top">
+            <span class="c-status ${c.status}">${c.status}</span>
+            ${urlLink}
+          </div>
+          <div class="claim-text">"${esc(c.claim_text)}"</div>
+          <div class="claim-meta">
+            <span>Supporting: ${c.supporting_sources}</span>
+            <span>Contradicting: ${c.contradicting_sources}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderTimeline(timeline) {
+      const container = document.getElementById('timelineList');
+      if (!timeline || !timeline.length) {
+        container.innerHTML = `<div style="padding:10px 0;color:var(--text-dim);font-size:0.84rem;">No timestamped events available.</div>`;
+        return;
+      }
+
+      container.innerHTML = '';
+      timeline.slice(0, 6).forEach(ev => {
+        const item = document.createElement('div');
+        item.className = 'tl-item';
+        const cleanTime = ev.timestamp ? ev.timestamp.replace('T', ' ').substring(0, 19) : 'Observed signal';
+        const link = ev.url && ev.url !== 'Source URL unavailable' ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;text-decoration:none;margin-left:6px;">↗</a>` : '';
+        item.innerHTML = `
+          <div class="tl-dot"></div>
+          <div class="tl-time">${esc(cleanTime)} · ${esc(ev.platform.toUpperCase())}</div>
+          <div class="tl-event">${esc(ev.event)} ${link}</div>
+          <div class="tl-src">${esc(ev.source)}</div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function renderEvidenceGrid(evidence) {
+      const grid = document.getElementById('evidenceGrid');
+      document.getElementById('evidenceCountBadge').textContent = `${evidence.length} Evidence Items`;
+
+      const filtered = activeEvidenceFilter === 'all' 
+        ? evidence 
+        : evidence.filter(e => e.platform.toLowerCase() === activeEvidenceFilter.toLowerCase());
+
+      if (!filtered.length) {
+        grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-dim);font-size:0.85rem;">No evidence records for filter "${activeEvidenceFilter.toUpperCase()}".</div>`;
+        return;
+      }
+
+      grid.innerHTML = '';
+      filtered.forEach(ev => {
+        const card = document.createElement('div');
+        card.className = 'ev-card';
+        const hasUrl = ev.url && ev.url !== 'Source URL unavailable' && ev.url.startsWith('http');
+        const urlHtml = hasUrl 
+          ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" class="open-src-btn">OPEN SOURCE ↗</a>`
+          : `<span class="open-src-disabled">Source URL unavailable</span>`;
+
+        card.innerHTML = `
+          <div class="ev-head">
+            <span class="ev-platform">${esc(ev.platform.toUpperCase())} · ${esc(ev.source)}</span>
+            <span class="ev-role">${esc(ev.source_role)}</span>
+          </div>
+          <div class="ev-title">${esc(ev.title)}</div>
+          <div class="ev-snippet">${esc(ev.snippet)}</div>
+          <div class="ev-foot">
+            <span class="ev-time">${ev.published_at ? esc(ev.published_at.substring(0, 16).replace('T', ' ')) : ''} · ${esc(ev.source_group_id)}</span>
+            ${urlHtml}
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterEvidence(platform) {
+      activeEvidenceFilter = platform;
+      document.querySelectorAll('.exp-tab').forEach(b => {
+        b.className = `exp-tab ${b.textContent.toLowerCase().includes(platform.toLowerCase()) ? 'active' : ''}`;
+      });
+      if (currentScanData && currentScanData.evidence) {
+        renderEvidenceGrid(currentScanData.evidence);
       }
     }
 
-    function selectAsset(name) {
-      currentAsset = name;
-      document.getElementById('currentAssetBadge').textContent = name;
-      document.querySelectorAll('.asset-item').forEach(el => {
-        el.classList.remove('active');
-        if (el.textContent.trim() === name) el.classList.add('active');
-      });
-      refreshFeed();
-      updateChart(name);
-    }
-
-    function addAsset() {
-      const name = prompt('Enter entity or title to monitor:');
-      if (!name || !name.trim()) return;
-      const list = document.getElementById('assetList');
-      const div = document.createElement('div');
-      div.className = 'asset-item';
-      div.innerHTML = `<span class="asset-dot"></span>${name.trim()}`;
-      div.onclick = () => selectAsset(name.trim());
-      list.appendChild(div);
-      selectAsset(name.trim());
-    }
-
-    function updateChart(name) {
-      const ctx = document.getElementById('sentimentChart');
+    function updateVelocityChart(history) {
+      const ctx = document.getElementById('velocityChart');
+      const emptyState = document.getElementById('chartEmptyState');
       if (!ctx) return;
-      if (window._sentChart) window._sentChart.destroy();
-      const labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
-      const data = labels.map(() => Math.floor(Math.random() * 80) - 20);
-      window._sentChart = new Chart(ctx, {
+
+      if (chartInstance) chartInstance.destroy();
+
+      if (!history || history.length < 2) {
+        ctx.style.display = 'none';
+        if (emptyState) emptyState.style.display = 'flex';
+        document.getElementById('chartStatusBadge').textContent = 'Single Observation';
+        return;
+      }
+
+      ctx.style.display = 'block';
+      if (emptyState) emptyState.style.display = 'none';
+      document.getElementById('chartStatusBadge').textContent = `${history.length} Verified Intervals`;
+
+      const labels = history.map((h, i) => `Scan ${i + 1}`);
+      const data = history.map(h => h.signal_count || 0);
+
+      chartInstance = new Chart(ctx, {
         type: 'line',
-        data: { labels, datasets: [{ data, borderColor: '#f472b6', backgroundColor: 'rgba(244,114,182,0.08)', borderWidth: 2, tension: 0.4, fill: true, pointRadius: 3, pointBackgroundColor: '#f472b6' }] },
-        options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color:'#64748b', font:{size:10} }, grid: { color:'rgba(255,255,255,0.04)' } }, x: { ticks: { color:'#64748b', font:{size:10} }, grid: { display: false } } } }
+        data: {
+          labels: labels,
+          datasets: [{
+            label: 'Signal Volume',
+            data: data,
+            borderColor: '#f472b6',
+            backgroundColor: 'rgba(244, 114, 182, 0.1)',
+            borderWidth: 2,
+            tension: 0.35,
+            fill: true,
+            pointRadius: 4,
+            pointBackgroundColor: '#f472b6'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: { legend: { display: false } },
+          scales: {
+            y: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { color: 'rgba(255,255,255,0.04)' } },
+            x: { ticks: { color: '#64748b', font: { size: 10 } }, grid: { display: false } }
+          }
+        }
       });
     }
 
-    window.addEventListener('DOMContentLoaded', () => { updateChart('Deepika Padukone'); });
+    function openDossier(idx) {
+      if (!currentScanData || !currentScanData.trends || !currentScanData.trends[idx]) return;
+      const t = currentScanData.trends[idx];
+      const body = document.getElementById('dossierModalInner');
+
+      let narrativesHtml = (t.narratives || []).map(n => `
+        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
+          <div style="font-weight:700;color:#fbcfe8;font-size:0.86rem;margin-bottom:4px;">${esc(n.title)}</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);">${esc(n.summary)}</div>
+        </div>
+      `).join('') || '<div style="color:var(--text-dim);font-size:0.8rem;">No discrete narrative sub-clusters.</div>';
+
+      let claimsHtml = (t.claims || []).map(c => `
+        <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span class="c-status ${c.status}">${c.status}</span>
+            ${c.source_urls && c.source_urls.length ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Source Link ↗</a>` : ''}
+          </div>
+          <div style="font-size:0.84rem;color:#fff;">"${esc(c.claim_text)}"</div>
+        </div>
+      `).join('') || '<div style="color:var(--text-dim);font-size:0.8rem;">No extracted claims.</div>';
+
+      body.innerHTML = `
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:#f472b6;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Trend Dossier · ${esc(t.trend_id)}</div>
+        <h2 style="font-size:1.3rem;font-weight:800;color:#fff;margin-bottom:14px;line-height:1.3;">${esc(t.topic)}</h2>
+        
+        <div style="background:rgba(244,114,182,0.06);border:1px solid rgba(244,114,182,0.25);border-radius:12px;padding:14px;margin-bottom:18px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:#fbcfe8;text-transform:uppercase;margin-bottom:4px;">Misinformation Analysis (Separated from Sentiment)</div>
+          <div style="font-size:0.84rem;color:#fff;line-height:1.5;">${esc(t.misinformation_rationale)}</div>
+        </div>
+
+        <div style="font-weight:700;font-size:0.86rem;color:#fff;margin-bottom:10px;font-family:var(--font-mono);text-transform:uppercase;">Dominant Narratives</div>
+        <div style="margin-bottom:20px;">${narrativesHtml}</div>
+
+        <div style="font-weight:700;font-size:0.86rem;color:#fff;margin-bottom:10px;font-family:var(--font-mono);text-transform:uppercase;">Circulating Claims Verification</div>
+        <div>${claimsHtml}</div>
+      `;
+
+      document.getElementById('dossierModal').style.display = 'flex';
+    }
+
+    function closeDossier() {
+      document.getElementById('dossierModal').style.display = 'none';
+    }
+
+    function renderFailureState(query) {
+      document.getElementById('trendsFeed').innerHTML = `
+        <div style="text-align:center;padding:40px;color:var(--text-dim);font-size:0.86rem;">
+          No verified live trend evidence was retrieved for "${esc(query)}".
+          <div style="font-size:0.75rem;margin-top:8px;color:#f43f5e;">Agent Reach returned 0 matching signals across scanned channels.</div>
+        </div>
+      `;
+      document.getElementById('claimsList').innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-dim);font-size:0.84rem;">No claims available.</div>`;
+      document.getElementById('evidenceGrid').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-dim);font-size:0.85rem;">No evidence items retrieved.</div>`;
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      // Initialize with empty state note
+      updateVelocityChart([]);
+    });
   </script>
 </body>
 </html>

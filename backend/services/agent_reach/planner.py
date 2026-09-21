@@ -211,21 +211,21 @@ class RetrievalPlanner:
 
         if domain == "personal":
             return {
-                "reddit": f"{clean_q} (scandal OR controversy OR leak OR arrested)",
-                "twitter": f"{clean_q} leaked OR audio OR deepfake OR exposed",
-                "youtube": f"{clean_q} deepfake OR leaked audio OR speech analysis",
-                "news": f"{clean_q} statement OR allegations OR defamation OR lawsuit",
-                "rss": f"{clean_q} official statement legal",
+                "reddit": f"{clean_q} (scandal OR controversy OR impersonation OR fake OR leak)",
+                "twitter": f"{clean_q} (deepfake OR impersonation OR scam OR fake OR leaked)",
+                "youtube": f"{clean_q} (deepfake OR fake video OR AI voice OR controversy)",
+                "news": f"{clean_q} (statement OR allegations OR lawsuit OR impersonation OR deepfake)",
+                "rss": f"{clean_q} official statement announcement clarification",
                 "github": clean_q,
             }
 
         if domain == "trending":
             return {
-                "reddit": f"{clean_q} rumor OR controversy",
-                "twitter": f"{clean_q} viral OR drama OR trending",
-                "youtube": f"{clean_q} viral clips drama",
-                "news": f"{clean_q} viral OR buzz OR controversy",
-                "rss": f"{clean_q} viral trending controversy",
+                "reddit": f"{clean_q} (trending OR viral OR controversy OR rumor OR news)",
+                "twitter": f"{clean_q} (trending OR viral OR breaking OR controversy)",
+                "youtube": f"{clean_q} viral trending news update reaction",
+                "news": f"{clean_q} trending OR viral OR latest OR controversy OR announcement",
+                "rss": f"{clean_q} latest news developments trending",
                 "github": clean_q,
             }
 
@@ -318,5 +318,133 @@ class RetrievalPlanner:
                 f"{target} product recall safety warning",
             ],
         }
+
+    def build_personal_query_classes(
+        self,
+        name: str,
+        aliases: Optional[List[str]] = None,
+        handles: Optional[Dict[str, str]] = None,
+        category: Optional[str] = None
+    ) -> Dict[str, List[str]]:
+        """
+        Generate structured classes of personal threat investigation queries:
+        - General public discourse & news
+        - Impersonation & fake profiles
+        - Phishing & scam campaigns
+        - Deepfake & synthetic media claims
+        - Reputation attacks, false claims & rumors
+        - Publicly exposed breach/doxxing mentions
+        """
+        clean_name = name.strip()
+        alias_terms = " OR ".join([f'"{a.strip()}"' for a in (aliases or []) if a.strip()])
+        name_clause = f'("{clean_name}" OR {alias_terms})' if alias_terms else f'"{clean_name}"'
+
+        twitter_handle = (handles or {}).get("twitter", "").lstrip("@")
+        handle_clause = f" @{twitter_handle}" if twitter_handle else ""
+
+        return {
+            "general": [
+                f"{name_clause} latest news",
+                f"{name_clause} announcement public statement",
+            ],
+            "impersonation": [
+                f"{name_clause} fake account impersonation",
+                f"{name_clause} fake profile verified{handle_clause}",
+                f"fake {clean_name} account support",
+            ],
+            "phishing_scam": [
+                f"{name_clause} scam fake giveaway",
+                f"{name_clause} phishing fraudulent investment crypto",
+                f"{name_clause} fake offer money transaction",
+            ],
+            "deepfake_synthetic": [
+                f"{name_clause} deepfake AI voice clone",
+                f"{name_clause} fake video manipulated audio synthetic",
+            ],
+            "reputation_claims": [
+                f"{name_clause} controversy allegations",
+                f"{name_clause} false claim rumor smear campaign",
+            ],
+            "doxxing_privacy": [
+                f"{name_clause} leaked data breach document",
+                f"{name_clause} personal information leak public paste",
+            ],
+        }
+
+    def build_trending_query_classes(
+        self,
+        query: str,
+        is_discovery: bool = False,
+        category: Optional[str] = None
+    ) -> Dict[str, List[str]]:
+        """
+        Generate structured classes of trend intelligence & discovery queries.
+        
+        Supports two operational modes:
+        1. Discovery Mode: Unsupervised discovery across regions/domains
+        2. Entity Mode: Deep trend intelligence on a star, project, company, or topic
+        """
+        clean_q = query.strip()
+        disc_indicators = [
+            "what's trending", "whats trending", "trending in", "trending today",
+            "viral today", "viral in", "current trends", "top trends", "today's trends"
+        ]
+        auto_discovery = is_discovery or any(ind in clean_q.lower() for ind in disc_indicators)
+
+        if auto_discovery:
+            # Extract region or domain if mentioned
+            topic_str = clean_q
+            for ind in disc_indicators:
+                topic_str = re.sub(re.escape(ind), "", topic_str, flags=re.IGNORECASE).strip()
+            topic_str = re.sub(r'^(in|for|across|of)\s+', '', topic_str, flags=re.IGNORECASE).strip()
+            region_or_domain = topic_str if topic_str else (category or "India")
+
+            return {
+                "regional_trends": [
+                    f"trending {region_or_domain} today",
+                    f"viral news {region_or_domain} today",
+                ],
+                "domain_trends": [
+                    f"top trends {region_or_domain} social media",
+                    f"popular discussions {region_or_domain} today",
+                ],
+                "breaking_headlines": [
+                    f"breaking news {region_or_domain} today",
+                    f"top headlines {region_or_domain}",
+                ],
+                "social_momentum": [
+                    f"viral social media {region_or_domain} buzz",
+                    f"trending topics {region_or_domain} twitter reddit",
+                ],
+            }
+
+        # Entity Mode
+        return {
+            "general_buzz": [
+                f'"{clean_q}" latest news updates',
+                f'"{clean_q}" today developments',
+            ],
+            "viral_moments": [
+                f'"{clean_q}" viral trending social media',
+                f'"{clean_q}" viral video moment clip',
+            ],
+            "controversy_rumors": [
+                f'"{clean_q}" controversy rumors allegations drama',
+                f'"{clean_q}" backlash statement explanation',
+            ],
+            "announcements_projects": [
+                f'"{clean_q}" announcement project release trailer interview',
+                f'"{clean_q}" official confirmation upcoming',
+            ],
+            "community_discourse": [
+                f'"{clean_q}" fan reactions discussion reddit',
+                f'"{clean_q}" public opinion social discourse',
+            ],
+            "claim_verification": [
+                f'"{clean_q}" fact check debunked false rumor true',
+                f'"{clean_q}" claims verified official clarification',
+            ],
+        }
+
 
 

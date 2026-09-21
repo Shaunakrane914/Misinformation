@@ -123,7 +123,9 @@
     { label: 'Scout Agent (Stocks & Financial Markets)', href: 'scout-agent.html', group: 'Agents', key: 'Scout' },
     { label: 'Personal Watch (Defamation & People)', href: 'personal-watch-agent.html', group: 'Agents', key: 'Watch' },
     { label: 'BrandShield (Corporate & Brand Defense)', href: 'brandshield-agent.html', group: 'Agents', key: 'Brand' },
-    { label: 'Threat Analysis Matrix', href: 'submit.html#threat-matrix', group: 'Tools', key: 'Matrix' },
+    { label: 'Research Agent (Intelligence Research Workspace)', href: 'research-agent.html', group: 'Agents', key: 'Research' },
+    { label: 'Investigator Agent (Forensic Case Dossier)', href: 'investigator-agent.html', group: 'Agents', key: 'Case' },
+    { label: 'Threat Intelligence Lab (Deterministic Bench)', href: 'lab.html', group: 'Tools', key: 'Lab' },
     { label: 'Changelog', href: 'changelog.html', group: 'System', key: 'Logs' }
   ];
 

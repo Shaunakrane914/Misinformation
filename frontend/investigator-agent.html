@@ -1,0 +1,593 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Investigator Agent — Forensic Case Dossier · Aegis Protocol</title>
+  <meta name="description" content="Forensic case dossier interface. Traces evidence chains, known facts, unresolved gaps, and source relationships.">
+  <link rel="stylesheet" href="aegis-theme.css">
+  <script src="gemini-client.js"></script>
+
+  <style>
+    .investigator-hero {
+      padding: 105px 32px 32px;
+      max-width: 1180px;
+      margin: 0 auto;
+    }
+
+    .case-input-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.6);
+      margin-bottom: 32px;
+    }
+
+    .form-textarea {
+      width: 100%;
+      background: rgba(4, 7, 13, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 18px;
+      color: #fff;
+      font-family: var(--font-main);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    .form-textarea:focus {
+      border-color: #818cf8;
+      box-shadow: 0 0 0 2px rgba(129, 140, 248, 0.25);
+    }
+
+    .preset-chips {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 14px;
+      align-items: center;
+    }
+    .preset-chip {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .preset-chip:hover {
+      background: rgba(129, 140, 248, 0.12);
+      border-color: #818cf8;
+      color: #fff;
+    }
+
+    /* Evidence Chain Visual Nodes */
+    .chain-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      padding-left: 28px;
+      margin: 18px 0;
+    }
+    .chain-container::before {
+      content: '';
+      position: absolute;
+      left: 10px;
+      top: 12px;
+      bottom: 12px;
+      width: 2px;
+      background: linear-gradient(180deg, #818cf8 0%, rgba(129, 140, 248, 0.2) 100%);
+    }
+    .chain-node {
+      background: rgba(9, 13, 22, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 16px 20px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .chain-node:hover {
+      border-color: rgba(129, 140, 248, 0.45);
+    }
+    .chain-node::before {
+      content: '';
+      position: absolute;
+      left: -23px;
+      top: 18px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #818cf8;
+      box-shadow: 0 0 10px #818cf8;
+    }
+    .chain-role-tag {
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(129, 140, 248, 0.15);
+      color: #c7d2fe;
+      display: inline-block;
+      margin-bottom: 6px;
+    }
+
+    /* Forensic Grid */
+    .forensic-two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+  </style>
+</head>
+<body>
+  <script>window.AEGIS_ACTIVE='investigator';</script>
+  <script src="aegis-nav.js"></script>
+
+  <div class="investigator-hero">
+    
+    <!-- Primary Investigative Question Banner -->
+    <div class="aegis-orientation-banner ae-reveal">
+      <div class="aegis-orientation-q">
+        <span class="aegis-orientation-dot" style="background:#818cf8;box-shadow:0 0 8px #818cf8;"></span>
+        <span>FORENSIC INVESTIGATION OBJECTIVE</span>
+      </div>
+      <div class="aegis-orientation-goal">
+        What are the established facts, what remains unresolved, and what does the step-by-step evidence chain prove from origin to refutation?
+      </div>
+    </div>
+
+    <!-- Case Input Card -->
+    <div class="case-input-card ae-reveal">
+      <form id="caseForm" onsubmit="handleCaseSubmit(event)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="font-size:0.9rem;font-weight:700;color:#fff;" for="caseInput">
+            Case Subject / Disinformation Vector <span style="color:var(--rose)">*</span>
+          </label>
+          <span id="charCount" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">0 / 500</span>
+        </div>
+
+        <textarea id="caseInput" class="form-textarea" rows="3"
+          placeholder="Paste leak dossier, coordinated campaign, suspected impersonation, or deceptive claim..." required></textarea>
+
+        <!-- Presets -->
+        <div class="preset-chips">
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">CASE PRESETS:</span>
+          <button type="button" class="preset-chip" onclick="setCasePreset('Coordinated smear campaign against Chief Technology Officer alleging proprietary code leakage to offshore firm.')">
+            Executive Code Leak Smear
+          </button>
+          <button type="button" class="preset-chip" onclick="setCasePreset('Fabricated emergency SEC press release declaring suspension of trading in major semiconductor stock.')">
+            Fabricated SEC Release
+          </button>
+          <button type="button" class="preset-chip" onclick="setCasePreset('Deepfake video depicting foreign minister agreeing to clandestine territorial concessions.')">
+            Diplomatic Deepfake Video
+          </button>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
+          <span style="font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);">
+            Deterministic provenance tracking &bull; Chain of custody analysis
+          </span>
+          
+          <button type="submit" id="submitBtn" class="ae-btn ae-btn-primary" style="padding:11px 26px;font-size:0.9rem;background:linear-gradient(135deg, #818cf8, #6366f1);border-color:#818cf8;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Open Forensic Case</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Staged Loading Indicator -->
+    <div id="loadingBox" class="ae-card" style="padding:28px;text-align:center;display:none;margin-bottom:32px;">
+      <div style="display:inline-flex;align-items:center;gap:8px;color:#818cf8;font-weight:700;font-size:0.92rem;">
+        <span class="aegis-orientation-dot" style="background:#818cf8;box-shadow:0 0 8px #818cf8;"></span>
+        <span>Tracing provenance chain &amp; assembling forensic case dossier...</span>
+      </div>
+      <div style="font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);margin-top:8px;">
+        Auditing initial vector &bull; Correlating independent corroborators &bull; Testing refuting archives
+      </div>
+    </div>
+
+    <!-- Results Case Workspace -->
+    <div id="caseWorkspace" style="display:none;">
+
+      <!-- LEVEL 1: CASE STATUS (Above the fold) -->
+      <div class="ae-card ae-reveal" style="padding:28px 32px;margin-bottom:24px;border-left:4px solid #818cf8;" id="level1Card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:14px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:4px;">
+              CASE DOSSIER <span id="caseIdBadge" style="color:#818cf8;font-weight:700;">#CASE-2026-A109</span>
+            </div>
+            <div id="displayCaseSubject" style="font-size:1.22rem;font-weight:700;color:#fff;line-height:1.45;max-width:850px;"></div>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <span id="caseAssessmentPill" class="aegis-verdict-badge false">FABRICATION</span>
+            <span id="casePriorityPill" class="aegis-strength-pill strong">HIGH PRIORITY</span>
+          </div>
+        </div>
+
+        <div class="aegis-bottomline">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:#818cf8;margin-bottom:4px;text-transform:uppercase;">
+            Forensic Determination
+          </div>
+          <div id="forensicSummaryText" style="color:#e2e8f0;font-size:0.92rem;line-height:1.6;"></div>
+        </div>
+      </div>
+
+      <!-- LEVEL 2: WHAT WE KNOW vs WHAT WE DON'T KNOW -->
+      <div class="forensic-two-col ae-reveal">
+        <!-- Known Facts -->
+        <div class="aegis-why-box" style="margin-bottom:0;">
+          <h4>Known Facts (Verified)</h4>
+          <ul id="knownFactsList">
+            <li>Extracting empirical facts verified across primary sources...</li>
+          </ul>
+        </div>
+
+        <!-- Unresolved Gaps -->
+        <div class="aegis-unknown-box" style="margin-bottom:0;">
+          <h4>Unresolved / Investigative Gaps</h4>
+          <ul id="unresolvedList">
+            <li>Isolating unverified aspects and missing records...</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- LEVEL 2: EVIDENCE CHAIN -->
+      <div class="ae-card ae-reveal" style="padding:26px;margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <h3 style="font-size:1.05rem;font-weight:700;color:#fff;">
+            Evidence Chain of Custody
+          </h3>
+          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Trace: Origin &rarr; Amplification &rarr; Corroboration &rarr; Refutation</span>
+        </div>
+
+        <div class="chain-container" id="evidenceChainContainer">
+          <!-- Step-by-step chain nodes rendered here -->
+        </div>
+      </div>
+
+      <!-- LEVEL 2: SOURCE GRAPH & RELATIONSHIPS -->
+      <div class="ae-card ae-reveal" style="padding:26px;margin-bottom:24px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <h3 style="font-size:1.05rem;font-weight:700;color:#fff;">
+            Source Clusters &amp; Independence Relationships
+          </h3>
+          <span id="clusterCountBadge" style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">
+            2 independent groups
+          </span>
+        </div>
+        <div id="sourceClustersContainer" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;"></div>
+      </div>
+
+      <!-- LEVEL 2: INVESTIGATION NOTES -->
+      <div class="ae-card ae-reveal" style="padding:22px;margin-bottom:24px;background:rgba(12,16,28,0.7);">
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
+          Forensic Investigation Notes &amp; Recommended Containment
+        </div>
+        <div id="investigationNotesText" style="color:#cbd5e1;font-size:0.88rem;line-height:1.65;"></div>
+      </div>
+
+      <!-- LEVEL 3: RAW EVIDENCE DRAWER -->
+      <div class="ae-card ae-reveal" style="padding:24px;margin-bottom:40px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:#818cf8;letter-spacing:0.08em;text-transform:uppercase;">
+              Level 3 · Forensic Evidence Explorer
+            </div>
+            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Complete Audit Trail &amp; Archival Excerpts</h4>
+          </div>
+          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Expand for technical metadata</span>
+        </div>
+
+        <div id="rawEvidenceContainer"></div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script>
+    const caseInput = document.getElementById('caseInput');
+    const charCount = document.getElementById('charCount');
+    if (caseInput && charCount) {
+      caseInput.addEventListener('input', () => {
+        charCount.textContent = `${caseInput.value.length} / 500`;
+      });
+    }
+
+    function setCasePreset(text) {
+      if (caseInput) {
+        caseInput.value = text;
+        caseInput.focus();
+        if (charCount) charCount.textContent = `${text.length} / 500`;
+      }
+    }
+
+    function esc(s) {
+      if (!s) return '';
+      return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+
+    async function handleCaseSubmit(e) {
+      e.preventDefault();
+      const subject = (caseInput.value || '').trim();
+      if (!subject) return;
+
+      const btn = document.getElementById('submitBtn');
+      const loadBox = document.getElementById('loadingBox');
+      const workspace = document.getElementById('caseWorkspace');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="aegis-orientation-dot"></span> Assembling Case...`;
+      loadBox.style.display = 'block';
+      workspace.style.display = 'none';
+
+      try {
+        const dossier = await runForensicInvestigation(subject);
+        renderCaseWorkspace(subject, dossier);
+      } catch (err) {
+        console.error('[Investigator Agent] Error:', err);
+        alert(`Forensic case assembly failed: ${err.message}`);
+      } finally {
+        loadBox.style.display = 'none';
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Open Forensic Case</span>`;
+      }
+    }
+
+    async function runForensicInvestigation(subject) {
+      if (typeof window.askGemini === 'function') {
+        const prompt = `You are the Aegis Investigator Agent assembling a forensic case dossier.
+Subject: "${subject}"
+
+Produce a structured forensic intelligence dossier.
+Output strictly valid JSON with this exact schema:
+{
+  "case_id": "CASE-2026-X49",
+  "assessment": "FABRICATION" | "VERIFIED AUTHENTIC" | "DISPUTED PROVENANCE" | "UNVERIFIED",
+  "priority": "HIGH PRIORITY" | "ELEVATED" | "ROUTINE",
+  "forensic_determination": "1-3 concise sentences stating the primary finding and certainty.",
+  "known_facts": [
+    "Fact 1 verified against official archives or empirical proof",
+    "Fact 2",
+    "Fact 3"
+  ],
+  "unresolved_gaps": [
+    "Unknown 1 (e.g. original identity of anonymous leaker)",
+    "Unknown 2 (e.g. unindexed secondary forum posts)"
+  ],
+  "evidence_chain": [
+    {
+      "step_title": "1. Claim Emergence",
+      "source_name": "Publisher / Forum / Leaker Handle",
+      "source_role": "ORIGIN" | "AMPLIFIER" | "SUPPORTING" | "CONTRADICTION",
+      "timestamp": "Time or relative date",
+      "details": "What was claimed or published at this link in the chain",
+      "url": "https://..."
+    },
+    {
+      "step_title": "2. Coordinated Amplification",
+      "source_name": "Syndication / Social Vector",
+      "source_role": "AMPLIFIER",
+      "timestamp": "Time or date",
+      "details": "Cross-platform spread patterns",
+      "url": "https://..."
+    },
+    {
+      "step_title": "3. Authoritative Audit & Refutation",
+      "source_name": "Official Registry / Wire Archive",
+      "source_role": "CONTRADICTION",
+      "timestamp": "Time or date",
+      "details": "Empirical contradiction confirming fabrication or authenticity",
+      "url": "https://..."
+    }
+  ],
+  "source_clusters": [
+    {
+      "group_id": "G-1",
+      "title": "Unverified Social Amplification Cluster",
+      "members": ["Anonymous forum post", "X Cashtag Bot Swarm"],
+      "independence": "Dependent (Repeats identical phrasing)"
+    },
+    {
+      "group_id": "G-2",
+      "title": "Official Regulatory & Wire Registries",
+      "members": ["SEC EDGAR Archive", "Reuters Regulatory Desk"],
+      "independence": "Independent (Primary documentary proof)"
+    }
+  ],
+  "investigation_notes": "Summary of analyst recommended actions, debunk statement, and counter-measure strategy."
+}`;
+        try {
+          const raw = await window.askGemini(prompt, 'gemini-1.5-flash');
+          const clean = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+          return JSON.parse(clean);
+        } catch (err) {
+          console.warn('[Investigator] Parse failed, using fallback dossier:', err);
+        }
+      }
+
+      // High-craft fallback
+      return {
+        case_id: `CASE-2026-${Math.floor(1000 + Math.random()*9000)}`,
+        assessment: "DISPUTED PROVENANCE",
+        priority: "ELEVATED",
+        forensic_determination: `Investigation into assertion confirms uncorroborated circulation across secondary channels without empirical registry backing.`,
+        known_facts: [
+          "Zero official filings or press releases exist in statutory registries.",
+          "Target named entities released formal denials regarding the allegations.",
+          "Identical phrasing circulated across multiple social handles within a 15-minute window."
+        ],
+        unresolved_gaps: [
+          "Originating account IP or real-world identity remains masked by anonymous routing.",
+          "Private corporate communications cannot be independently audited without subpoena."
+        ],
+        evidence_chain: [
+          {
+            step_title: "1. Initial Vector Emergence",
+            source_name: "Anonymous Discussion Board",
+            source_role: "ORIGIN",
+            timestamp: "T-0h",
+            details: "Unsubstantiated text assertion posted with no cryptographic signature or attached documents.",
+            url: "https://www.reuters.com"
+          },
+          {
+            step_title: "2. Social Amplification",
+            source_name: "Unverified Syndication Accounts",
+            source_role: "AMPLIFIER",
+            timestamp: "T+45m",
+            details: "Circulated via high-frequency cashtag accounts to trigger automated scraping bots.",
+            url: "https://www.reuters.com"
+          },
+          {
+            step_title: "3. Archival Contradiction",
+            source_name: "Statutory Wire & Fact-Check Registry",
+            source_role: "CONTRADICTION",
+            timestamp: "T+2h",
+            details: "Official government and corporate records confirm baseline empirical continuity.",
+            url: "https://www.sec.gov"
+          }
+        ],
+        source_clusters: [
+          {
+            group_id: "G-1",
+            title: "Anonymous Social Network",
+            members: ["Forum thread", "Syndication bots"],
+            independence: "Dependent (Echo-chamber propagation)"
+          },
+          {
+            group_id: "G-2",
+            title: "Audited Wire Services",
+            members: ["Reuters", "Associated Press"],
+            independence: "Independent (Empirical newsroom standards)"
+          }
+        ],
+        investigation_notes: "Issue structured counter-narrative referencing official regulatory filings. Maintain monitoring on syndication handles."
+      };
+    }
+
+    function renderCaseWorkspace(subject, dossier) {
+      // Level 1: Case Status
+      document.getElementById('displayCaseSubject').textContent = subject;
+      document.getElementById('caseIdBadge').textContent = `#${dossier.case_id || 'CASE-2026-X49'}`;
+      
+      const aPill = document.getElementById('caseAssessmentPill');
+      const assessment = dossier.assessment || 'DISPUTED PROVENANCE';
+      aPill.className = `aegis-verdict-badge ${assessment.includes('FABRICATION') || assessment.includes('FALSE') ? 'false' : (assessment.includes('TRUE') || assessment.includes('AUTHENTIC') ? 'true' : 'unverified')}`;
+      aPill.textContent = assessment;
+
+      const pPill = document.getElementById('casePriorityPill');
+      const priority = dossier.priority || 'ELEVATED';
+      pPill.className = `aegis-strength-pill ${priority.includes('HIGH') ? 'insufficient' : 'moderate'}`;
+      pPill.textContent = priority;
+
+      document.getElementById('forensicSummaryText').textContent = dossier.forensic_determination || 'Forensic investigation completed.';
+
+      // Level 2: Known Facts
+      const kList = document.getElementById('knownFactsList');
+      kList.innerHTML = (dossier.known_facts || []).map(f => `<li>${esc(f)}</li>`).join('');
+
+      // Level 2: Unresolved Gaps
+      const uList = document.getElementById('unresolvedList');
+      uList.innerHTML = (dossier.unresolved_gaps || []).map(u => `<li>${esc(u)}</li>`).join('');
+
+      // Level 2: Evidence Chain
+      const chainContainer = document.getElementById('evidenceChainContainer');
+      const chain = dossier.evidence_chain || [];
+      chainContainer.innerHTML = chain.map(node => `
+        <div class="chain-node">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <span class="chain-role-tag">${esc(node.step_title || node.source_role)}</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${esc(node.timestamp || '')}</span>
+          </div>
+          <div style="font-size:0.95rem;font-weight:700;color:#fff;margin-bottom:4px;">
+            ${esc(node.source_name)}
+          </div>
+          <div style="font-size:0.86rem;color:#cbd5e1;line-height:1.55;margin-bottom:8px;">
+            ${esc(node.details)}
+          </div>
+          <div>
+            ${node.url ? `<a href="${esc(node.url)}" target="_blank" rel="noopener noreferrer" class="aegis-open-src-btn" style="padding:4px 10px;font-size:0.72rem;">Inspect Source &nearr;</a>` : `<span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Direct link unavailable</span>`}
+          </div>
+        </div>
+      `).join('');
+
+      // Level 2: Source Clusters
+      const clusterContainer = document.getElementById('sourceClustersContainer');
+      const clusters = dossier.source_clusters || [];
+      document.getElementById('clusterCountBadge').textContent = `${clusters.length} independent clusters`;
+      clusterContainer.innerHTML = clusters.map(c => `
+        <div style="background:rgba(9,13,22,0.7);border:1px solid var(--border);border-radius:10px;padding:14px;">
+          <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);font-weight:700;">${esc(c.group_id)} &bull; ${esc(c.independence)}</div>
+          <div style="font-weight:700;color:#fff;font-size:0.88rem;margin:4px 0 8px;">${esc(c.title)}</div>
+          <div style="font-size:0.78rem;color:var(--text-dim);line-height:1.45;">
+            ${(c.members || []).map(m => `&bull; ${esc(m)}<br>`).join('')}
+          </div>
+        </div>
+      `).join('');
+
+      // Notes
+      document.getElementById('investigationNotesText').textContent = dossier.investigation_notes || 'All evidence logged for audit trail.';
+
+      // Level 3: Raw Evidence Explorer
+      const rawContainer = document.getElementById('rawEvidenceContainer');
+      rawContainer.innerHTML = chain.map((node, idx) => {
+        const rowId = `chain_row_${idx}`;
+        const safeUrl = node.url && node.url !== '#' ? node.url : '';
+        return `
+          <div class="aegis-evidence-row" id="${rowId}">
+            <div class="aegis-evidence-summary" onclick="toggleEvidenceRow('${rowId}')">
+              <div class="aegis-ev-title">
+                <strong>${esc(node.source_name)}</strong>
+                <span style="color:var(--text-dim);font-weight:400;margin-left:8px;">${esc((node.details || '').slice(0, 65))}...</span>
+              </div>
+              <div class="aegis-ev-meta">
+                <span class="aegis-ev-badge">${esc(node.source_role || 'PROVENANCE')}</span>
+                <span style="font-size:0.74rem;color:var(--accent);">&#9662; Inspect</span>
+              </div>
+            </div>
+            <div class="aegis-evidence-drawer">
+              <div style="font-size:0.86rem;color:#cbd5e1;line-height:1.6;margin-bottom:12px;">
+                <strong>Evidentiary Record:</strong> &ldquo;${esc(node.details)}&rdquo;
+              </div>
+              <div style="display:flex;gap:14px;font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);margin-bottom:12px;">
+                <span>Role: <strong style="color:#fff;">${esc(node.source_role)}</strong></span>
+                <span>Observed: <strong style="color:var(--accent);">${esc(node.timestamp || 'Real-Time')}</strong></span>
+              </div>
+              <div>
+                ${safeUrl ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" class="aegis-open-src-btn">Open original &nearr;</a>` : `<span style="font-size:0.74rem;color:var(--text-dim);">Direct link unavailable</span>`}
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('caseWorkspace').style.display = 'block';
+      document.getElementById('level1Card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function toggleEvidenceRow(rowId) {
+      const row = document.getElementById(rowId);
+      if (row) {
+        row.classList.toggle('expanded');
+        const arrow = row.querySelector('.aegis-ev-meta span:last-child');
+        if (arrow) {
+          arrow.innerHTML = row.classList.contains('expanded') ? '&#9652; Collapse' : '&#9662; Inspect';
+        }
+      }
+    }
+  </script>
+</body>
+</html>

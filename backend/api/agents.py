@@ -74,15 +74,23 @@ class BrandShieldScanRequest(BaseModel):
 
 
 class PersonalScanRequest(BaseModel):
-    name: str = Field(..., description="Full name of VIP, executive, or public figure.", json_schema_extra={"example": "Sam Altman"})
-    official_handles: Optional[Dict[str, str]] = Field(None, description="Official social media handles.", json_schema_extra={"example": {"twitter": "@sama"}})
-    phone_number: Optional[str] = Field(None, description="Optional phone number for breach alerts.")
+    name: str = Field(..., description="Full name of VIP, executive, creator, or public figure.", json_schema_extra={"example": "Sam Altman"})
+    official_handles: Optional[Dict[str, str]] = Field(None, description="Official verified social media handles.", json_schema_extra={"example": {"twitter": "@sama"}})
+    phone_number: Optional[str] = Field(None, description="Optional phone number for Twilio security alerts.")
+    aliases: Optional[List[str]] = Field(None, description="Known public aliases, nicknames, or common spellings.", json_schema_extra={"example": ["Sama"]})
+    category: Optional[str] = Field(None, description="'executive' | 'creator' | 'public_figure' | 'researcher' | 'employee'", json_schema_extra={"example": "executive"})
+    official_domains: Optional[List[str]] = Field(None, description="Official websites or domains belonging to subject.")
+    monitoring_terms: Optional[List[str]] = Field(None, description="Specific terms, project names, or controversy keywords to monitor.")
+    alert_preferences: Optional[Dict[str, Any]] = Field(None, description="Alert settings: level ('HIGH_ONLY', 'HIGH_AND_MEDIUM', 'ALL_NEW_THREATS').")
+    query: Optional[str] = Field(None, description="Optional custom query override.")
 
 
 class TrendingScanRequest(BaseModel):
-    asset_name: Optional[str] = Field(None, description="Company, asset, or entity name.")
-    query: Optional[str] = Field(None, description="Alternative field for search query.")
-    identifiers: Optional[List[str]] = Field(None, description="Keywords, cashtags, or tickers.")
+    asset_name: Optional[str] = Field(None, description="Company, asset, or entity name.", json_schema_extra={"example": "Deepika Padukone"})
+    query: Optional[str] = Field(None, description="Search query or discovery question.", json_schema_extra={"example": "What's trending in India?"})
+    identifiers: Optional[Any] = Field(None, description="Keywords, cashtags, or dict of URLs/hashtags.")
+    category: Optional[str] = Field(None, description="'entertainment' | 'technology' | 'business' | 'cinema' | 'general'")
+    mode: Optional[str] = Field(None, description="'entity' | 'discovery' | 'auto'")
 
 
 class DefenseRequest(BaseModel):
@@ -193,12 +201,22 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
 async def trending_scan(request: TrendingScanRequest):
     """Trigger the Trending Agent ingestion pass for an asset/celebrity."""
     target_name = request.asset_name or request.query or "General"
-    logger.info(f"[API] POST /api/trending/scan - asset={target_name}")
+    logger.info(f"[API] POST /api/trending/scan - asset={target_name} mode={request.mode}")
     try:
         agent = get_trending_agent()
-        result = agent.scan(target_name, request.identifiers)
-        from backend.services.alerts import check_critical_threats
-        result["alerts"] = check_critical_threats(result)
+        ident_dict = request.identifiers if isinstance(request.identifiers, dict) else {}
+        result = agent.scan(
+            target_name,
+            identifiers=ident_dict,
+            category=request.category,
+            mode=request.mode
+        )
+        try:
+            from backend.services.alerts import check_critical_threats
+            result["alerts"] = check_critical_threats(result)
+        except Exception as alert_err:
+            logger.warning(f"Alert check note: {alert_err}")
+            result["alerts"] = []
         return result
     except Exception as e:
         logger.error(f"[API] Trending scan failed: {e}")
@@ -251,17 +269,27 @@ async def get_trending_news():
 
 # ── Personal Watch Agent ─────────────────────────────────────────────────────
 
-@router.post("/api/personal/scan", tags=["Personal Watch Agent (VIP Protection)"], summary="VIP Reputation, Deepfake & Impersonation Scan")
+@router.post("/api/personal/scan", tags=["Personal Watch Agent (VIP Protection)"], summary="Personal Identity & Online Threat Intelligence Scan")
 @router.post("/api/personal-watch/scan", tags=["Personal Watch Agent (VIP Protection)"])
 async def personal_watch_scan(request: PersonalScanRequest):
-    """Run a Personal Watch scan for a public figure or individual."""
-    logger.info(f"[API] POST /api/personal/scan - VIP: {request.name}")
+    """
+    Run Personal Watch 2.0: Personal Identity & Online Threat Intelligence Scan.
+    Discovers and investigates impersonation, scams, phishing, deepfakes, smear campaigns,
+    and narrative spread across public web and social channels with verified evidence provenance.
+    """
+    logger.info(f"[API] POST /api/personal/scan - Subject: {request.name}")
     try:
         from backend.agents.personal_agent import process_personal_watch
         vip_profile = {
             "name": request.name,
             "official_handles": request.official_handles or {},
-            "phone_number": request.phone_number
+            "phone_number": request.phone_number,
+            "aliases": request.aliases or [],
+            "category": request.category or "public_figure",
+            "official_domains": request.official_domains or [],
+            "monitoring_terms": request.monitoring_terms or [],
+            "alert_preferences": request.alert_preferences or {"level": "HIGH_ONLY"},
+            "query": request.query
         }
         results = process_personal_watch(vip_profile)
         return results

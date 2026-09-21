@@ -377,39 +377,57 @@
       // 1. Channel Health Strip
       html += `
         <div class="health-strip ae-reveal">
-          <span style="color:var(--text-dim);font-weight:700;">CHANNEL RADAR:</span>
+      // 1. Orientation Question & Brand Snapshot
+      html += `
+        <div class="aegis-orientation-banner ae-reveal" style="margin-bottom:20px;">
+          <div class="aegis-orientation-q">
+            <span class="aegis-orientation-dot" style="background:#10b981;box-shadow:0 0 8px #10b981;"></span>
+            <span>BRAND PROTECTION OBJECTIVE</span>
+          </div>
+          <div class="aegis-orientation-goal">
+            Is there anything threatening ${escapeHtml(data.brand_name)} that deserves immediate attention?
+          </div>
+        </div>
+
+        <div class="health-strip ae-reveal">
+          <span style="color:var(--text-dim);font-weight:700;">CHANNELS MONITORED:</span>
           <span class="health-pill healthy"><span>News</span> <span>✓</span></span>
           <span class="health-pill healthy"><span>Web</span> <span>✓</span></span>
           <span class="health-pill healthy"><span>Reddit</span> <span>✓</span></span>
           <span class="health-pill healthy"><span>Twitter</span> <span>✓</span></span>
           <span class="health-pill healthy"><span>YouTube</span> <span>✓</span></span>
-          <span class="health-pill ${channels.rss === 'degraded' ? 'degraded' : 'healthy'}"><span>RSS</span> <span>✓</span></span>
+          <span class="health-pill ${channels.rss === 'degraded' ? 'degraded' : 'healthy'}"><span>RSS Wires</span> <span>✓</span></span>
           <span style="margin-left:auto;color:var(--text-dim);">${retrieval.latency_ms || 0}ms scan latency</span>
         </div>
       `;
 
-      // 2. Brand Overview & Snapshot Metrics
+      // 2. Risk Overview (Human-Centered)
+      const highSevThreats = threats.filter(t => (t.severity || '').toLowerCase() === 'critical' || (t.severity || '').toLowerCase() === 'high');
+      const unverifiedClaims = claims.filter(c => (c.status || '').toLowerCase() !== 'verified');
+      const counterfeits = summary.counterfeit_count || threats.filter(t => (t.type || '').toLowerCase().includes('counterfeit')).length;
+      const impersonations = threats.filter(t => (t.type || '').toLowerCase().includes('impersonat')).length;
+
       html += `
         <div class="snapshot-grid ae-reveal">
           <div class="snap-card">
             <span class="snap-val" style="color:#fff;">${escapeHtml(entity.resolved_entity || data.brand_name || 'Brand')}</span>
-            <span class="snap-lbl">Resolved Entity (${escapeHtml(entity.entity_type || 'Brand')})</span>
+            <span class="snap-lbl">Monitored Brand (${escapeHtml(entity.entity_type || 'Brand')})</span>
           </div>
           <div class="snap-card">
-            <span class="snap-val" style="color:${threats.length > 0 ? 'var(--rose)' : '#10b981'};">${threats.length}</span>
-            <span class="snap-lbl">Threat Vectors</span>
+            <span class="snap-val" style="color:${highSevThreats.length > 0 ? 'var(--rose)' : 'var(--emerald)'};">${highSevThreats.length}</span>
+            <span class="snap-lbl">High-Priority Threats</span>
           </div>
           <div class="snap-card">
-            <span class="snap-val" style="color:#00e5ff;">${claims.length}</span>
-            <span class="snap-lbl">Tracked Claims</span>
+            <span class="snap-val" style="color:${unverifiedClaims.length > 0 ? '#fbbf24' : 'var(--emerald)'};">${unverifiedClaims.length}</span>
+            <span class="snap-lbl">Unverified Claims</span>
           </div>
           <div class="snap-card">
-            <span class="snap-val" style="color:#fbbf24;">${summary.counterfeit_count || 0}</span>
-            <span class="snap-lbl">Counterfeit Signals</span>
+            <span class="snap-val" style="color:${counterfeits > 0 ? '#fbbf24' : 'var(--text-dim)'};">${counterfeits}</span>
+            <span class="snap-lbl">Suspicious Listings</span>
           </div>
           <div class="snap-card">
-            <span class="snap-val" style="color:#a7f3d0;">${sources.length}</span>
-            <span class="snap-lbl">Verified Sources</span>
+            <span class="snap-val" style="color:${impersonations > 0 ? 'var(--rose)' : 'var(--emerald)'};">${impersonations}</span>
+            <span class="snap-lbl">Impersonation Signals</span>
           </div>
         </div>
       `;
@@ -418,11 +436,11 @@
       if (sources.length === 0 && threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin:24px 0;">
-            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Verified Live Evidence Found</div>
-            <div>No matching public signals were retrieved for "${escapeHtml(data.brand_name)}" across active search channels.</div>
+            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Verified Public Threat Evidence Found</div>
+            <div>No matching adversarial or deceptive public signals were retrieved for "${escapeHtml(data.brand_name)}" across active search channels.</div>
             <div style="font-size:0.8rem;color:var(--text-dim);margin-top:8px;">
-              Possible causes: obscure keyword, search provider rate limits, or absence of indexed public complaints.
-              (Synthetic news &amp; review hallucination is strictly disabled in Aegis Protocol).
+              Possible causes: obscure keyword, search provider rate limits, or genuine absence of indexed public complaints.
+              (Synthetic news &amp; fake reviews are strictly disabled in Aegis Protocol).
             </div>
           </div>
         `;
@@ -430,49 +448,96 @@
         return;
       }
 
-      // 3. Identified Threat Vectors & Investigation Dossiers
-      html += `<div class="sec-hdr">TOP THREAT VECTORS &amp; REPUTATION RISKS (${threats.length})</div>`;
+      // 3. Top Threats (Human-Centered 4-Question Cards)
+      html += `<div class="sec-hdr">TOP THREATS REQUIRING ATTENTION (${threats.length})</div>`;
       if (threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin-bottom:20px;">
-            <div style="color:#10b981;font-weight:700;margin-bottom:4px;">No Malicious Brand Threats Identified</div>
+            <div style="color:#10b981;font-weight:700;margin-bottom:4px;">No Active Brand Threats Identified</div>
             <div>Public discussions reflect standard consumer queries or positive brand mentions without coordinated attacks.</div>
           </div>
         `;
       } else {
-        html += `<div class="ae-reveal">`;
+        html += `<div class="ae-reveal" style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">`;
         threats.forEach((t, idx) => {
           const sevClass = (t.severity || 'medium').toLowerCase();
           const sevColor = sevClass === 'critical' || sevClass === 'high' ? 'var(--rose)' : sevClass === 'medium' ? '#fbbf24' : '#10b981';
+          const evCount = (t.evidence_ids || []).length;
           html += `
-            <div class="threat-card ${sevClass}">
-              <div class="threat-header">
+            <div class="threat-card ${sevClass}" style="padding:20px;">
+              <div class="threat-header" style="margin-bottom:12px;">
                 <div>
                   <span class="threat-type-badge" style="color:${sevColor};background:rgba(255,255,255,0.06);border:1px solid ${sevColor};">
                     ${escapeHtml(t.type || 'THREAT')}
                   </span>
-                  <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);margin-left:8px;">
-                    STATUS: ${(t.status || 'UNVERIFIED').toUpperCase()}
+                  <span style="font-weight:700;font-size:1.02rem;color:#fff;margin-left:10px;">
+                    ${escapeHtml(t.title)}
                   </span>
                 </div>
                 <button class="dossier-btn" onclick="openDossierModal(${idx})">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                  Open Dossier ↗
+                  Investigate Threat ↗
                 </button>
               </div>
-              <div class="threat-title">${escapeHtml(t.title)}</div>
-              <div class="threat-desc">${escapeHtml(t.summary)}</div>
-              <div class="threat-footer">
+
+              <!-- 4 Essential Questions -->
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;margin-bottom:12px;font-size:0.85rem;line-height:1.5;">
+                <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
+                  <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Why Flagged</div>
+                  <div style="color:#cbd5e1;">${escapeHtml(t.summary || 'Unverified pattern detected.')}</div>
+                </div>
+                <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
+                  <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Severity &amp; Status</div>
+                  <div style="color:${sevColor};font-weight:600;">${escapeHtml(t.severity || 'Medium').toUpperCase()} PRIORITY &bull; ${(t.status || 'Under Investigation').toUpperCase()}</div>
+                </div>
+              </div>
+
+              <div class="threat-footer" style="padding-top:8px;">
                 <div class="threat-meta">
+                  <span>Evidence: <strong>${evCount} verified sources</strong></span>
+                  <span>First Observed: <strong>${escapeHtml(t.first_seen || 'Recent scan')}</strong></span>
                   <span>Platforms: <strong>${(t.platforms || ['Web']).join(', ')}</strong></span>
-                  <span>Confidence: <strong>${Math.round((t.confidence || 0.8) * 100)}%</strong></span>
-                  <span>Evidence IDs: <strong>${(t.evidence_ids || []).join(', ')}</strong></span>
                 </div>
               </div>
             </div>
           `;
         });
         html += `</div>`;
+      }
+
+      // 4. Suspicious Listings Table (Section 24)
+      const listingThreats = threats.filter(t => (t.type || '').toLowerCase().includes('counterfeit') || (t.type || '').toLowerCase().includes('listing') || (t.type || '').toLowerCase().includes('scam'));
+      if (listingThreats.length > 0) {
+        html += `
+          <div class="sec-hdr">SUSPICIOUS MARKETPLACE LISTINGS &amp; PRODUCT SIGNALS</div>
+          <div class="scan-card ae-reveal" style="padding:0;overflow:hidden;margin-bottom:28px;">
+            <table class="aegis-compact-table">
+              <thead>
+                <tr>
+                  <th>Platform / Channel</th>
+                  <th>Product / Entity</th>
+                  <th>Seller / Handle</th>
+                  <th>Flagged Signal</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${listingThreats.map((lt, lIdx) => `
+                  <tr>
+                    <td><strong>${escapeHtml((lt.platforms || ['Marketplace'])[0])}</strong></td>
+                    <td style="color:#fff;font-weight:600;">${escapeHtml(lt.title)}</td>
+                    <td style="font-family:var(--font-mono);color:var(--text-dim);">${escapeHtml(lt.seller || '@unverified')}</td>
+                    <td><span class="ae-badge ae-badge-red" style="font-size:0.7rem;">${escapeHtml(lt.type || 'Suspicious')}</span></td>
+                    <td>
+                      <button class="aegis-open-src-btn" style="padding:3px 8px;font-size:0.72rem;" onclick="openDossierModal(${lIdx})">
+                        Investigate ↗
+                      </button>
+                    </td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `;
       }
 
       // 4. Review Manipulation & Astroturfing Intelligence

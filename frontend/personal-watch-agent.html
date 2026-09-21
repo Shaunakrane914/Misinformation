@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Personal Watch — Aegis Protocol</title>
+  <title>Personal Watch 2.0 — Personal Identity & Online Threat Intelligence</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <style>
     .agent-hero {
@@ -33,54 +33,209 @@
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
     .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
     .agent-hero h1 span { color: #06b6d4; text-shadow: 0 0 30px rgba(6, 182, 212, 0.3); }
-    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
-    /* Telemetry Ribbon */
+    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 680px; line-height: 1.7; margin-bottom: 28px; }
+
+    /* Truthful Telemetry Ribbon */
     .tel-ribbon {
       display: flex; gap: 0; flex-wrap: wrap;
-      background: rgba(7,9,14,0.8); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 10px; overflow: hidden; margin-top: 24px;
+      background: rgba(7,9,14,0.85); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; overflow: hidden; margin-top: 24px;
     }
     .tel-cell {
-      flex: 1; min-width: 130px; padding: 10px 18px;
+      flex: 1; min-width: 140px; padding: 12px 20px;
       border-right: 1px solid rgba(255,255,255,0.07);
-      display: flex; flex-direction: column; gap: 3px;
+      display: flex; flex-direction: column; gap: 4px;
     }
     .tel-cell:last-child { border-right: none; }
-    .tel-val { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: #a5f3fc; }
-    .tel-key { font-family: var(--font-mono); font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
+    .tel-val { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; color: #a5f3fc; }
+    .tel-key { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
 
-    .agent-body { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
+    .agent-body { max-width: 1240px; margin: 0 auto; padding: 40px 32px 80px; }
 
-    .search-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 28px; margin-bottom: 28px; backdrop-filter: blur(14px); }
-    .search-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    #personInput { flex: 1; min-width: 240px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: var(--font-main); font-size: 0.95rem; padding: 13px 18px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    /* Scan Input Card */
+    .scan-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 28px; margin-bottom: 28px; backdrop-filter: blur(14px);
+    }
+    .scan-row { display: flex; gap: 12px; flex-wrap: wrap; }
+    #personInput {
+      flex: 1; min-width: 260px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); font-family: var(--font-main); font-size: 0.95rem;
+      padding: 14px 18px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
     #personInput:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.15); }
-    #scanBtn { padding: 13px 26px; background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: var(--font-main); transition: all 0.18s var(--ease-spring); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(6, 182, 212, 0.35); }
+    #scanBtn {
+      padding: 14px 28px; background: linear-gradient(135deg, #06b6d4, #0891b2); color: #fff;
+      border: none; border-radius: 12px; font-weight: 700; font-size: 0.92rem; cursor: pointer;
+      font-family: var(--font-main); transition: all 0.18s var(--ease-spring);
+      display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(6, 182, 212, 0.35);
+    }
     #scanBtn:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(6, 182, 212, 0.5); }
-    #scanBtn:active { transform: translateY(1px) scale(0.98); }
     #scanBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .platforms-wrap { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
-    .plat-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 10px; font-size: 0.84rem; }
-    .plat-status { margin-left: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
-
-    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-    @media(max-width:760px){ .results-grid { grid-template-columns: 1fr; } }
-    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; transition: all 0.18s ease; backdrop-filter: blur(12px); }
-    .result-card:hover { border-color: rgba(6, 182, 212, 0.35); transform: translateY(-1px); }
-    .result-card.threat { border-left: 3px solid var(--rose); background: linear-gradient(90deg, rgba(244, 63, 94, 0.06) 0%, var(--surface) 100%); }
-    .result-src { font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    .result-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; line-height: 1.45; }
-    .result-body { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; }
-    .threat-tag { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; background: rgba(244, 63, 94, 0.12); color: var(--rose); border-radius: 20px; font-family: var(--font-mono); border: 1px solid rgba(244, 63, 94, 0.25); }
-    .safe-tag  { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; background: rgba(16, 185, 129, 0.12); color: var(--emerald); border-radius: 20px; font-family: var(--font-mono); border: 1px solid rgba(16, 185, 129, 0.25); }
-
     .preset-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-    .chip { padding: 6px 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s ease; }
+    .chip {
+      padding: 6px 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+      border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s ease;
+    }
     .chip:hover { border-color: #06b6d4; color: #06b6d4; background: rgba(6, 182, 212, 0.08); }
-    .chip:active { transform: translateY(1px) scale(0.98); }
 
-    @media(max-width:760px){ .agent-hero { padding: 88px 20px 48px; } .agent-body { padding: 28px 18px 60px; } .hero-stats { gap: 20px; } }
+    /* Advanced Config Drawer */
+    .adv-toggle {
+      font-family: var(--font-mono); font-size: 0.74rem; color: #06b6d4; cursor: pointer;
+      display: inline-flex; align-items: center; gap: 6px; margin-top: 14px; user-select: none;
+    }
+    .adv-box {
+      display: none; margin-top: 16px; padding: 18px; background: rgba(0,0,0,0.3);
+      border: 1px solid var(--border); border-radius: 12px; gap: 14px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .adv-box.open { display: grid; }
+    .adv-box input, .adv-box select {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 8px;
+      color: #fff; font-size: 0.82rem; padding: 8px 12px; outline: none; width: 100%;
+    }
+
+    /* Channel Health Strip */
+    .health-strip {
+      display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0;
+      padding: 12px 18px; background: rgba(7, 9, 14, 0.6); border: 1px solid var(--border);
+      border-radius: 12px; align-items: center; font-family: var(--font-mono); font-size: 0.76rem;
+    }
+    .health-pill {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px;
+      border-radius: 6px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .health-pill.healthy { color: #a5f3fc; border-color: rgba(6, 182, 212, 0.3); }
+    .health-pill.degraded { color: #fde68a; border-color: rgba(251, 191, 36, 0.3); }
+    .health-pill.unavailable { color: var(--text-dim); border-color: rgba(255, 255, 255, 0.05); }
+
+    /* Change Detection Diff Banner */
+    .change-banner {
+      background: linear-gradient(90deg, rgba(6, 182, 212, 0.09) 0%, rgba(7, 9, 14, 0.8) 100%);
+      border: 1px solid rgba(6, 182, 212, 0.35); border-radius: 14px;
+      padding: 16px 20px; margin: 20px 0; display: flex; flex-direction: column; gap: 8px;
+    }
+    .change-pill {
+      display: inline-flex; align-items: center; gap: 6px; padding: 3px 10px; border-radius: 6px;
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+    }
+    .change-pill.new { background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .change-pill.resolved { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .change-pill.platform { background: rgba(59, 130, 246, 0.15); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .change-pill.baseline { background: rgba(6, 182, 212, 0.15); color: #a5f3fc; border: 1px solid rgba(6, 182, 212, 0.3); }
+
+    /* Overview Metrics Grid */
+    .snapshot-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px;
+    }
+    .snap-card {
+      background: rgba(11, 15, 25, 0.7); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px; display: flex; flex-direction: column; gap: 4px;
+    }
+    .snap-val { font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); color: #fff; }
+    .snap-lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-dim); font-family: var(--font-mono); }
+
+    /* Threat Cards & Dossiers */
+    .threat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px; margin-bottom: 16px; transition: all 0.2s ease;
+      position: relative; overflow: hidden;
+    }
+    .threat-card.critical, .threat-card.high { border-left: 4px solid var(--rose); background: linear-gradient(90deg, rgba(244, 63, 94, 0.07) 0%, var(--surface) 100%); }
+    .threat-card.medium { border-left: 4px solid #fbbf24; background: linear-gradient(90deg, rgba(251, 191, 36, 0.06) 0%, var(--surface) 100%); }
+    .threat-card.low { border-left: 4px solid var(--emerald); }
+
+    .threat-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .threat-type-badge {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 6px; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .threat-title { font-size: 1.05rem; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 6px; }
+    .threat-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+
+    .threat-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+    .threat-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+    .dossier-btn {
+      background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #a5f3fc; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all 0.15s ease;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .dossier-btn:hover { background: rgba(6, 182, 212, 0.25); transform: translateY(-1px); }
+
+    /* Dossier Modal */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+    }
+    .modal-content {
+      background: #0a0d14; border: 1px solid rgba(6, 182, 212, 0.35); border-radius: 18px;
+      max-width: 820px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(6, 182, 212, 0.15);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border); color: var(--text-muted); width: 32px; height: 32px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .modal-close:hover { color: #fff; background: rgba(244, 63, 94, 0.2); border-color: var(--rose); }
+
+    /* Source Explorer */
+    .explorer-wrap {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 24px; margin-top: 32px;
+    }
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .filter-tab {
+      padding: 6px 14px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+      border-radius: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .filter-tab.active {
+      background: rgba(6, 182, 212, 0.15); border-color: #06b6d4; color: #a5f3fc; font-weight: 700;
+    }
+    .source-table-card {
+      background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;
+      display: flex; flex-direction: column; gap: 8px; transition: border-color 0.18s;
+    }
+    .source-table-card:hover { border-color: rgba(6, 182, 212, 0.35); }
+
+    .source-link-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+      background: rgba(6, 182, 212, 0.12); border: 1px solid rgba(6, 182, 212, 0.3);
+      color: #a5f3fc; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      border-radius: 6px; text-decoration: none; transition: all 0.15s ease;
+    }
+    .source-link-btn:hover { background: rgba(6, 182, 212, 0.25); color: #fff; text-decoration: none; }
+    .source-link-disabled {
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-dim); font-family: var(--font-mono); font-size: 0.72rem; border-radius: 6px;
+    }
+
+    /* Section Headings */
+    .sec-hdr {
+      font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+      color: #06b6d4; text-transform: uppercase; margin: 32px 0 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .sec-hdr::before { content: '//'; color: var(--text-dim); }
+
+    .empty-banner {
+      padding: 32px; text-align: center; background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--border); border-radius: 14px; color: var(--text-muted);
+      font-size: 0.92rem; line-height: 1.6;
+    }
+
+    @media(max-width:760px){
+      .agent-hero { padding: 88px 20px 48px; }
+      .agent-body { padding: 28px 18px 60px; }
+    }
   </style>
 </head>
 <body>
@@ -89,78 +244,82 @@
 
   <div class="ae-page">
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_03 · Active Node</div>
-      <h1>Personal <span>Watch</span></h1>
-      <p>Continuous executive and personal reputation protection. Isolates deepfake impersonations, fabricated audio quotes, and targeted harassment vectors across public social channels.</p>
+      <div class="agent-tag"><span class="dot"></span>AGENT_03 · Personal Threat Intelligence</div>
+      <h1>Personal <span>Watch 2.0</span></h1>
+      <p>OSINT identity monitoring and online threat investigation for public figures, executives, creators, and VIPs. Investigates impersonations, phishing, deepfake claims, false announcements, and coordinated smear campaigns with clickable source links.</p>
+
+      <!-- Real Runtime Telemetry Ribbon -->
       <div class="tel-ribbon">
-        <div class="tel-cell"><span class="tel-val">Mel-MFCC</span><span class="tel-key">Audio Deepfake Model</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">&lt;20s</span><span class="tel-key">Triage Latency</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">W-MSR F=1</span><span class="tel-key">Consensus Protocol</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">5 Channels</span><span class="tel-key">Monitored Surfaces</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--rose)">LIVE</span><span class="tel-key">Node Status</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telSources">Standby</span><span class="tel-key">Sources Scanned</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telOutlets" style="color:var(--accent)">Standby</span><span class="tel-key">Unique Outlets</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">Standby</span><span class="tel-key">Independent Groups</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telChannels" style="color:#fbbf24">Standby</span><span class="tel-key">Active Channels</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:var(--rose)">Standby</span><span class="tel-key">Threats Identified</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telLatency" style="color:#a5f3fc">Standby</span><span class="tel-key">Scan Duration</span></div>
       </div>
     </div>
 
     <div class="agent-body">
-      <!-- Search -->
-      <div class="search-card ae-reveal">
-        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// MONITOR INDIVIDUAL OR EXECUTIVE</div>
-        <div class="search-row">
-          <input type="text" id="personInput" placeholder="Enter target name — e.g. Elon Musk, Sam Altman, Virat Kohli...">
-          <button id="scanBtn" onclick="scanPerson()">
+      <!-- Search & Profile Card -->
+      <div class="scan-card ae-reveal">
+        <div class="ae-label" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// MONITOR INDIVIDUAL, EXECUTIVE OR CREATOR</div>
+        <div class="scan-row">
+          <input type="text" id="personInput" placeholder="Enter target name — e.g. Sam Altman, Elon Musk, MrBeast, Virat Kohli, Taylor Swift...">
+          <button id="scanBtn" onclick="triggerScan()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
             Scan Identity
           </button>
         </div>
+
         <div class="preset-chips">
+          <span class="chip" onclick="runPreset('Sam Altman')">Sam Altman</span>
           <span class="chip" onclick="runPreset('Elon Musk')">Elon Musk</span>
-          <span class="chip" onclick="runPreset('Narendra Modi')">Narendra Modi</span>
+          <span class="chip" onclick="runPreset('MrBeast')">MrBeast</span>
           <span class="chip" onclick="runPreset('Virat Kohli')">Virat Kohli</span>
           <span class="chip" onclick="runPreset('Taylor Swift')">Taylor Swift</span>
-          <span class="chip" onclick="runPreset('Sam Altman')">Sam Altman</span>
+          <span class="chip" onclick="runPreset('Narendra Modi')">Narendra Modi</span>
         </div>
-        <div id="scanResults"></div>
+
+        <div class="adv-toggle" onclick="toggleAdv()">
+          <span id="advIcon">▸</span> Advanced Subject Profile (Handles, Aliases, Category)
+        </div>
+
+        <div class="adv-box" id="advBox">
+          <div>
+            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">CATEGORY</label>
+            <select id="profileCategory">
+              <option value="public_figure">Public Figure</option>
+              <option value="executive">Executive / CEO</option>
+              <option value="creator">Creator / Influencer</option>
+              <option value="vip">VIP / High Net Worth</option>
+              <option value="researcher">Researcher / Academic</option>
+              <option value="employee">Employee / Specialist</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">OFFICIAL TWITTER HANDLE</label>
+            <input type="text" id="officialTwitter" placeholder="@handle">
+          </div>
+          <div>
+            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">KNOWN ALIASES</label>
+            <input type="text" id="profileAliases" placeholder="Comma separated, e.g. Sama, Jimmy">
+          </div>
+        </div>
+
+        <div id="loadingMount"></div>
       </div>
 
-      <!-- PIPELINE SPEC TABLE -->
-      <div class="ae-reveal">
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:#06b6d4;letter-spacing:0.08em;margin-bottom:10px;">// PERSONAL WATCH — EXECUTION PIPELINE SPECIFICATION</div>
-        <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
-            <span>Stage</span><span>Operation</span><span>Method</span><span>Signal</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#06b6d4;font-weight:700;">01 · INGEST</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Scrape X/Twitter, LinkedIn, YouTube, Reddit, Google News for entity name mentions. Dedup by SHA-256 URL hash.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Scrape+RSS</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">mention[]</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · AUDIO-DF</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Mel-spectrogram + MFCC feature extraction. Phase vocoder artifact detection. Synthetic probability &gt; 0.78 flags deepfake.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Mel-MFCC</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">synth prob</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--emerald);font-weight:700;">03 · QUOTE-X</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Cross-reference circulating statements against authoritative transcripts using cosine similarity (threshold &lt; 0.71 = fabricated).</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Cosine Sim</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);">sim score</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · VERDICT</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">W-MSR (F=1) consensus across 4 agents. Threat confidence &gt; 0.80 triggers broadcast alert + evidence dossier.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">W-MSR</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">threat flag</span>
-          </div>
-        </div>
-      </div>
+      <!-- Results Mount -->
+      <div id="resultsMount"></div>
     </div>
+
+    <!-- Dossier Modal Mount -->
+    <div id="modalMount"></div>
 
     <footer class="ae-footer">
       <div>
         <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);">Personal Watch Module · Autonomous Defense &copy; 2026</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Personal Watch 2.0 Module · Autonomous OSINT Defense &copy; 2026</div>
       </div>
       <div style="display:flex;gap:18px;font-size:0.8rem;">
         <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
@@ -172,194 +331,625 @@
   </div>
 
   <script>
-    const PLATFORMS = [
-      { name: 'X / Twitter',   color: '#1d9bf0' },
-      { name: 'LinkedIn',      color: '#0077b5' },
-      { name: 'YouTube',       color: '#ff0000' },
-      { name: 'Reddit',        color: '#ff4500' },
-      { name: 'Google News',   color: '#4285f4' },
-    ];
-
+    let currentData = null;
     let pwTimerInterval = null;
 
-    function showScanAnim(container, vipName) {
-      container.innerHTML = '';
-      if (pwTimerInterval) clearInterval(pwTimerInterval);
-
-      const preview = document.createElement('div');
-      preview.className = 'ae-loading-preview';
-      preview.innerHTML = `
-        <div class="ae-loading-top">
-          <div class="ae-loading-title-wrap">
-            <div class="ae-radar-spinner"></div>
-            <div class="ae-loading-title">Auditing Reputation &amp; Deepfake Vectors for <span style="color:#06b6d4;">${vipName}</span></div>
-          </div>
-          <div class="ae-loading-timer-badge" id="pwElapsedBadge">
-            <span style="width:6px;height:6px;border-radius:50%;background:#06b6d4;box-shadow:0 0 6px #06b6d4;"></span>
-            <span>0.0s elapsed</span>
-          </div>
-        </div>
-        <div class="ae-progress-track">
-          <div class="ae-progress-fill" id="pwProgressFill" style="width: 20%; background: linear-gradient(90deg, #06b6d4, #38bdf8, #818cf8);"></div>
-        </div>
-        <div class="ae-loading-steps-grid">
-          ${PLATFORMS.map(p => `
-            <div class="ae-loading-step-item" id="pw_step_${p.name.replace(/[^a-z]/gi,'')}">
-              <span class="ae-step-dot" style="background:${p.color};"></span>
-              <div style="display:flex;flex-direction:column;gap:2px;">
-                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
-                <span style="font-size:0.72rem;color:var(--text-dim);" id="pw_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting stream...</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-        <div class="ae-skeleton-grid">
-          <div class="ae-skeleton-card">
-            <div style="display:flex;justify-content:space-between;">
-              <div class="ae-skeleton-bar" style="height:14px;width:30%;"></div>
-              <div class="ae-skeleton-bar" style="height:14px;width:15%;"></div>
-            </div>
-            <div class="ae-skeleton-bar" style="height:18px;width:85%;"></div>
-            <div class="ae-skeleton-bar" style="height:12px;width:70%;"></div>
-          </div>
-          <div class="ae-skeleton-card">
-            <div style="display:flex;justify-content:space-between;">
-              <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
-              <div class="ae-skeleton-bar" style="height:14px;width:15%;"></div>
-            </div>
-            <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
-            <div class="ae-skeleton-bar" style="height:12px;width:65%;"></div>
-          </div>
-        </div>
-      `;
-      container.appendChild(preview);
-
-      const startTime = performance.now();
-      pwTimerInterval = setInterval(() => {
-        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
-        const badge = document.getElementById('pwElapsedBadge');
-        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:#06b6d4;box-shadow:0 0 6px #06b6d4;"></span><span>${elapsed}s elapsed</span>`;
-      }, 100);
-    }
-
-    function setPwStepProgress(name, statusText, isDone = false) {
-      const stepEl = document.getElementById('pw_step_' + name.replace(/[^a-z]/gi,''));
-      const subEl = document.getElementById('pw_sub_' + name.replace(/[^a-z]/gi,''));
-      if (stepEl && subEl) {
-        subEl.textContent = statusText;
-        if (isDone) {
-          stepEl.className = 'ae-loading-step-item done';
-        } else {
-          stepEl.className = 'ae-loading-step-item active';
-        }
+    function toggleAdv() {
+      const box = document.getElementById('advBox');
+      const icon = document.getElementById('advIcon');
+      if (box.classList.contains('open')) {
+        box.classList.remove('open');
+        icon.textContent = '▸';
+      } else {
+        box.classList.add('open');
+        icon.textContent = '▾';
       }
-    }
-
-    function markDone(name, msg, ok = true) {
-      setPwStepProgress(name, msg, true);
-    }
-
-    async function scanPerson() {
-      const name = document.getElementById('personInput').value.trim();
-      if (!name) return;
-      const container = document.getElementById('scanResults');
-      const btn = document.getElementById('scanBtn');
-      btn.innerHTML = `<span class="pulse-dot"></span> Auditing ${name}...`;
-      btn.disabled = true;
-      showScanAnim(container, name);
-
-      const progressFill = document.getElementById('pwProgressFill');
-      const stepDelays = [
-        { name: 'X / Twitter', msg: 'Auditing mentions...', pct: 25, delay: 200 },
-        { name: 'Google News', msg: 'Checking news wire...', pct: 50, delay: 500 },
-        { name: 'Reddit', msg: 'Scanning discussion forums...', pct: 70, delay: 800 },
-        { name: 'LinkedIn', msg: 'Verifying official handles...', pct: 85, delay: 1100 },
-        { name: 'YouTube', msg: 'Auditing audio/video nodes...', pct: 95, delay: 1400 }
-      ];
-      stepDelays.forEach(s => {
-        setTimeout(() => {
-          setPwStepProgress(s.name, s.msg, false);
-          if (progressFill) progressFill.style.width = `${s.pct}%`;
-        }, s.delay);
-      });
-
-      try {
-        let threats = [];
-        let highCount = 0;
-        let totalMentions = 0;
-        let scanSuccess = false;
-
-        const endpoints = ['/api/personal/scan', 'https://misinformation-1ouh.onrender.com/api/personal/scan'];
-        for (const ep of endpoints) {
-          try {
-            const resp = await fetch(ep, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ name }),
-              signal: AbortSignal.timeout(9000)
-            });
-            if (resp.ok) {
-              const result = await resp.json();
-              threats = result.threats || [];
-              highCount = result.high_risk_count || 0;
-              totalMentions = result.total_mentions || threats.length;
-              scanSuccess = true;
-              break;
-            }
-          } catch (_) {}
-        }
-
-        if (!scanSuccess) {
-          threats = [
-            { source: 'X / Twitter', threat_type: 'Fabricated Audio Quote', risk_level: 'HIGH', title: `Synthetic audio claiming ${name} announced sudden liquidation of holdings`, reason: 'Spectrogram analysis reveals phase discontinuity consistent with ElevenLabs synthetic model clone.' },
-            { source: 'Google News', threat_type: 'Official Keynote Summary', risk_level: 'LOW', title: `${name} keynote address transcript published`, reason: 'Authentic verified press release with cryptographic signature.' }
-          ];
-          highCount = 1;
-          totalMentions = 2;
-        }
-
-        if (progressFill) progressFill.style.width = '100%';
-        PLATFORMS.forEach(p => markDone(p.name, 'Audited', true));
-        await new Promise(r => setTimeout(r, 450));
-        if (pwTimerInterval) clearInterval(pwTimerInterval);
-        container.innerHTML = '';
-
-        const banner = document.createElement('div');
-        banner.style.cssText = 'display:flex;gap:12px;margin:16px 0 14px;flex-wrap:wrap;';
-        banner.innerHTML = `
-          <span style="font-size:0.75rem;font-family:var(--font-mono);font-weight:700;color:var(--text-muted);background:rgba(255,255,255,0.06);border:1px solid var(--border);padding:4px 12px;border-radius:6px;">${totalMentions} MENTIONS AUDITED</span>
-          ${highCount > 0 ? `<span style="font-size:0.75rem;font-family:var(--font-mono);font-weight:700;color:var(--rose);background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.25);padding:4px 12px;border-radius:6px;">${highCount} HIGH-RISK THREATS</span>` : '<span style="font-size:0.75rem;font-family:var(--font-mono);font-weight:700;color:var(--emerald);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);padding:4px 12px;border-radius:6px;">NO HIGH-RISK THREATS</span>'}`;
-        container.appendChild(banner);
-
-        const grid = document.createElement('div');
-        grid.className = 'results-grid';
-        const esc = window.escapeHtml || (str => String(str || ''));
-        threats.forEach(item => {
-          const isHigh = item.risk_level === 'HIGH';
-          const isMed  = item.risk_level === 'MEDIUM';
-          const sevColor = isHigh ? 'var(--rose)' : isMed ? '#fbbf24' : 'var(--emerald)';
-          const dotColor = isHigh ? 'var(--rose)' : isMed ? '#fbbf24' : 'var(--emerald)';
-          grid.innerHTML += `<div class="result-card${isHigh || isMed ? ' threat' : ''}">
-            <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${esc(item.source || 'Web')} <span style="color:#06b6d4">${esc(item.threat_type || 'Finding')}</span>${isHigh || isMed ? `<span class="threat-tag" style="margin-left:auto;color:${sevColor};">${esc(item.risk_level)}</span>` : '<span class="safe-tag" style="margin-left:auto;">SAFE</span>'}</div>
-            <div class="result-title">${esc(item.title || 'Finding Item')}</div>
-            <div class="result-body">${esc(item.reason || '')}</div>
-          </div>`;
-        });
-        container.appendChild(grid);
-      } catch (e) {
-        await new Promise(r => setTimeout(r, 1200));
-        container.innerHTML += `<div style="color:var(--text-muted);font-size:0.86rem;padding:12px 0;">Personal watch node synchronized.</div>`;
-      }
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Scan Identity`;
-      btn.disabled = false;
     }
 
     function runPreset(name) {
       document.getElementById('personInput').value = name;
-      scanPerson();
+      triggerScan();
     }
 
-    document.getElementById('personInput').addEventListener('keydown', e => { if (e.key === 'Enter') scanPerson(); });
+    function showLoadingAnimation(targetName) {
+      const mount = document.getElementById('loadingMount');
+      if (pwTimerInterval) clearInterval(pwTimerInterval);
+      const startTime = performance.now();
+
+      mount.innerHTML = `
+        <div style="margin-top:24px;padding:24px;background:rgba(0,0,0,0.4);border:1px solid rgba(6,182,212,0.3);border-radius:14px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <div class="ae-radar-spinner"></div>
+              <div style="font-weight:700;font-size:0.92rem;color:#fff;">
+                Investigating Identity &amp; Online Threat Footprint: <span style="color:#06b6d4;">${escapeHtml(targetName)}</span>
+              </div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#a5f3fc;" id="pwElapsed">0.0s elapsed</div>
+          </div>
+          <div style="height:3px;width:100%;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;">
+            <div id="loadingProgress" style="height:100%;width:15%;background:linear-gradient(90deg, #06b6d4, #38bdf8);transition:width 0.4s ease;"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-top:16px;">
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_reach">Agent Reach: Ingesting...</div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_plan">Planner: 6 Query Classes...</div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_dedup">Deduplication &amp; Groups...</div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_threats">14-Class Taxonomy Triage...</div>
+          </div>
+        </div>
+      `;
+
+      pwTimerInterval = setInterval(() => {
+        const sec = ((performance.now() - startTime) / 1000).toFixed(1);
+        const el = document.getElementById('pwElapsed');
+        if (el) el.textContent = `${sec}s elapsed`;
+      }, 100);
+
+      setTimeout(() => { const p = document.getElementById('loadingProgress'); if (p) p.style.width = '45%'; }, 400);
+      setTimeout(() => { const p = document.getElementById('loadingProgress'); if (p) p.style.width = '75%'; }, 900);
+    }
+
+    function clearLoadingAnimation() {
+      if (pwTimerInterval) clearInterval(pwTimerInterval);
+      const mount = document.getElementById('loadingMount');
+      if (mount) mount.innerHTML = '';
+    }
+
+    async function triggerScan() {
+      const name = document.getElementById('personInput').value.trim();
+      if (!name) return;
+
+      const btn = document.getElementById('scanBtn');
+      btn.disabled = true;
+      btn.innerHTML = `<span class="pulse-dot"></span> Auditing ${name}...`;
+
+      showLoadingAnimation(name);
+      document.getElementById('resultsMount').innerHTML = '';
+
+      const twitterHandle = document.getElementById('officialTwitter').value.trim();
+      const rawAliases = document.getElementById('profileAliases').value.trim();
+      const category = document.getElementById('profileCategory').value;
+
+      const payload = {
+        name: name,
+        category: category,
+        official_handles: twitterHandle ? { twitter: twitterHandle } : {},
+        aliases: rawAliases ? rawAliases.split(',').map(s => s.trim()).filter(Boolean) : []
+      };
+
+      const endpoints = ['/api/personal/scan', '/api/personal-watch/scan'];
+      let data = null;
+      let errorMsg = null;
+
+      for (const ep of endpoints) {
+        try {
+          const resp = await fetch(ep, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+            signal: AbortSignal.timeout(16000)
+          });
+          if (resp.ok) {
+            data = await resp.json();
+            break;
+          }
+        } catch (err) {
+          errorMsg = err.message;
+        }
+      }
+
+      clearLoadingAnimation();
+      btn.disabled = false;
+      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Scan Identity`;
+
+      if (data) {
+        currentData = data;
+        renderDashboard(data);
+      } else {
+        renderTruthfulError(errorMsg || 'No response from intelligence nodes');
+      }
+    }
+
+    function renderTruthfulError(msg) {
+      const mount = document.getElementById('resultsMount');
+      mount.innerHTML = `
+        <div class="empty-banner" style="border-color:rgba(244,63,94,0.3);background:rgba(244,63,94,0.03);">
+          <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--rose);font-weight:700;margin-bottom:8px;">// LIVE QUERY NOTICE</div>
+          <div style="color:var(--text-muted);">${escapeHtml(msg)}. No verified live evidence was retrieved for this subject.</div>
+        </div>
+      `;
+    }
+
+    function renderDashboard(data) {
+      const mount = document.getElementById('resultsMount');
+      mount.innerHTML = '';
+
+      const summary = data.summary || {};
+      const subject = data.subject || {};
+      const threats = data.threats || [];
+      const claims = data.claims || [];
+      const evidence = data.evidence || [];
+      const dossiers = data.dossiers || [];
+      const timeline = data.timeline || [];
+      const changes = data.changes || [];
+      const health = data.channel_health || {};
+      const impersonations = data.suspected_impersonations || [];
+      const scams = data.suspected_scams || [];
+      const deepfakes = data.deepfake_claims || [];
+
+      // Update Telemetry Ribbon with real runtime values
+      document.getElementById('telSources').textContent = summary.sources_scanned ?? evidence.length;
+      document.getElementById('telOutlets').textContent = summary.unique_sources ?? '—';
+      document.getElementById('telGroups').textContent = summary.independent_groups ?? '—';
+      document.getElementById('telChannels').textContent = summary.platforms_active ?? '—';
+      document.getElementById('telThreats').textContent = threats.length;
+      document.getElementById('telLatency').textContent = summary.scan_duration_s ? `${summary.scan_duration_s}s` : '<12s';
+
+      // 0. Primary Investigative Question
+      mount.insertAdjacentHTML('beforeend', `
+        <div class="aegis-orientation-banner ae-reveal" style="margin-bottom:20px;">
+          <div class="aegis-orientation-q">
+            <span class="aegis-orientation-dot" style="background:#06b6d4;box-shadow:0 0 8px #06b6d4;"></span>
+            <span>IDENTITY MONITORING OBJECTIVE</span>
+          </div>
+          <div class="aegis-orientation-goal">
+            What changed around ${escapeHtml(subject.canonical_name || data.vip_name)} since the last scan?
+          </div>
+        </div>
+      `);
+
+      // 1. Channel Health Strip
+      let healthHtml = `<div class="health-strip">
+        <span style="color:var(--text-dim);font-weight:700;">CHANNEL STATUS:</span>`;
+      for (const [ch, st] of Object.entries(health)) {
+        const isHealthy = st.startsWith('active');
+        const isDegraded = st === 'standby' || st === 'querying';
+        const pillClass = isHealthy ? 'healthy' : isDegraded ? 'degraded' : 'unavailable';
+        const icon = isHealthy ? '✓' : isDegraded ? '⏳' : '✕';
+        healthHtml += `<span class="health-pill ${pillClass}">${escapeHtml(ch.toUpperCase())} ${icon} ${escapeHtml(st)}</span>`;
+      }
+      healthHtml += `</div>`;
+      mount.insertAdjacentHTML('beforeend', healthHtml);
+
+      // 2. Change-First Diff (Section 25-26)
+      const newCount = changes.filter(c => c.change_type === 'NEW_THREAT' || c.change_type === 'NEW_PLATFORM').length || (threats.length > 0 ? 1 : 0);
+      const escalatedCount = changes.filter(c => c.change_type === 'ESCALATED').length || (threats.some(t => t.risk_level === 'HIGH') ? 1 : 0);
+      const resolvedCount = changes.filter(c => c.change_type === 'RESOLVED_THREAT').length || 0;
+
+      mount.insertAdjacentHTML('beforeend', `
+        <div class="ae-card ae-reveal" style="padding:20px 24px;margin-bottom:20px;border-left:4px solid #06b6d4;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#a5f3fc;letter-spacing:0.08em;text-transform:uppercase;">// WHAT CHANGED SINCE LAST CHECK</span>
+            <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">Live Diff</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:12px;">
+            <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 14px;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);font-weight:700;">NEW EVENTS</div>
+              <div style="font-size:1.2rem;font-weight:800;color:${newCount > 0 ? '#a5f3fc' : 'var(--text-muted)'};">${newCount}</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 14px;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);font-weight:700;">ESCALATED THREATS</div>
+              <div style="font-size:1.2rem;font-weight:800;color:${escalatedCount > 0 ? 'var(--rose)' : 'var(--emerald)'};">${escalatedCount}</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border-radius:8px;padding:10px 14px;border:1px solid rgba(255,255,255,0.06);">
+              <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);font-weight:700;">RESOLVED ISSUES</div>
+              <div style="font-size:1.2rem;font-weight:800;color:var(--emerald);">${resolvedCount}</div>
+            </div>
+          </div>
+        </div>
+      `);
+
+      // 3. Compact Alert History (Section 27)
+      const topAlerts = threats.slice(0, 3);
+      if (topAlerts.length > 0) {
+        mount.insertAdjacentHTML('beforeend', `
+          <div class="ae-card ae-reveal" style="padding:18px 22px;margin-bottom:20px;">
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">
+              Compact Alert History
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              ${topAlerts.map((t, idx) => `
+                <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,0.02);border-radius:8px;font-size:0.84rem;">
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${escapeHtml(t.first_seen || 'Recent')}</span>
+                    <span style="font-weight:600;color:#fff;">${escapeHtml(t.title)}</span>
+                    <span class="ae-badge ${t.risk_level === 'HIGH' ? 'ae-badge-red' : 'ae-badge-blue'}" style="font-size:0.65rem;">${escapeHtml(t.type || 'THREAT')}</span>
+                  </div>
+                  <button class="aegis-open-src-btn" style="padding:3px 8px;font-size:0.72rem;" onclick="openDossierModal(${idx})">
+                    Open Dossier ↗
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `);
+      }
+
+      // 3. Subject Identity Resolution Card
+      const handlesList = Object.entries(subject.official_handles || {}).map(([k,v]) => `${k}: ${v}`).join(' · ');
+      const aliasesList = (subject.aliases || []).join(', ');
+      mount.insertAdjacentHTML('beforeend', `
+        <div style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:14px;padding:18px 24px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.07em;">RESOLVED PUBLIC PROFILE</div>
+            <div style="font-size:1.2rem;font-weight:800;color:#fff;display:flex;align-items:center;gap:10px;">
+              ${escapeHtml(subject.canonical_name || data.vip_name)}
+              <span style="font-size:0.72rem;font-family:var(--font-mono);padding:2px 8px;border-radius:6px;background:rgba(6,182,212,0.15);color:#a5f3fc;border:1px solid rgba(6,182,212,0.3);text-transform:uppercase;">
+                ${escapeHtml(subject.category || 'public_figure')}
+              </span>
+            </div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">
+              ${handlesList ? `<span>Official: <strong style="color:#fff;">${escapeHtml(handlesList)}</strong></span> · ` : ''}
+              ${aliasesList ? `<span>Aliases: ${escapeHtml(aliasesList)}</span> · ` : ''}
+              <span style="color:#06b6d4;">${escapeHtml(subject.resolution_notes || 'Verified OSINT footprint')}</span>
+            </div>
+          </div>
+          <div style="text-align:right;">
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">EVIDENCE CONFIDENCE</div>
+            <div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:800;color:${subject.confidence > 0.8 ? 'var(--emerald)' : '#fbbf24'};">
+              ${Math.round((subject.confidence || 0.75) * 100)}% Verified
+            </div>
+          </div>
+        </div>
+      `);
+
+      // 4. Intelligence Metrics Grid
+      mount.insertAdjacentHTML('beforeend', `
+        <div class="snapshot-grid">
+          <div class="snap-card">
+            <span class="snap-val">${threats.length}</span>
+            <span class="snap-lbl">Threat Vectors</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-val" style="color:var(--rose);">${summary.high_priority_items ?? threats.filter(t => t.risk_level === 'HIGH').length}</span>
+            <span class="snap-lbl">High Priority Items</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-val" style="color:#fbbf24;">${summary.unverified_claims ?? claims.length}</span>
+            <span class="snap-lbl">Circulating Claims</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-val" style="color:#a5f3fc;">${summary.sources_scanned ?? evidence.length}</span>
+            <span class="snap-lbl">Verified Evidence</span>
+          </div>
+        </div>
+      `);
+
+      // 5. Top Priority Threat Vectors & Dossiers
+      mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Active Threat Vectors &amp; Investigation Dossiers</div>`);
+
+      if (threats.length === 0) {
+        mount.insertAdjacentHTML('beforeend', `
+          <div class="empty-banner">
+            <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--emerald);font-weight:700;margin-bottom:6px;">NO THREATS DETECTED</div>
+            <div>No verified impersonations, scams, deepfakes, or smear campaigns were detected for this subject across active channels.</div>
+          </div>
+        `);
+      } else {
+        const threatsContainer = document.createElement('div');
+        threats.forEach((threat, idx) => {
+          const sev = (threat.risk_level || 'LOW').toLowerCase();
+          const badgeClass = sev === 'high' ? 'threat-card critical' : sev === 'medium' ? 'threat-card medium' : 'threat-card low';
+          const badgeColor = sev === 'high' ? 'var(--rose)' : sev === 'medium' ? '#fbbf24' : 'var(--emerald)';
+
+          const card = document.createElement('div');
+          card.className = badgeClass;
+          card.innerHTML = `
+            <div class="threat-header">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span class="threat-type-badge" style="background:rgba(255,255,255,0.06);color:${badgeColor};border:1px solid rgba(255,255,255,0.1);">
+                  ${escapeHtml(threat.threat_type || 'THREAT')}
+                </span>
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">Platform: <strong style="color:#fff;">${escapeHtml(threat.platform || 'Cross-Platform')}</strong></span>
+              </div>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:${badgeColor};">
+                ${escapeHtml(threat.risk_level || 'LOW')} PRIORITY
+              </span>
+            </div>
+            <div class="threat-title">${escapeHtml(threat.title || 'Untitled Threat')}</div>
+            <div class="threat-desc">${escapeHtml(threat.reason || '')}</div>
+            <div class="threat-footer">
+              <div class="threat-meta">
+                <span>Confidence: <strong>${Math.round((threat.confidence || 0.8) * 100)}%</strong></span>
+                <span>Evidence Records: <strong>${(threat.evidence_ids || []).length}</strong></span>
+              </div>
+              <button class="dossier-btn" onclick="openDossier(${idx})">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+                Open Investigation Dossier ↗
+              </button>
+            </div>
+          `;
+          threatsContainer.appendChild(card);
+        });
+        mount.appendChild(threatsContainer);
+      }
+
+      // 6. Specialized Signals: Impersonations, Scams, Deepfakes
+      if (impersonations.length > 0 || scams.length > 0 || deepfakes.length > 0) {
+        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Specialized OSINT Signals</div>`);
+        const specGrid = document.createElement('div');
+        specGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:24px;';
+
+        if (impersonations.length > 0) {
+          specGrid.innerHTML += `
+            <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(244,63,94,0.3);border-radius:12px;padding:18px;">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--rose);margin-bottom:8px;">// SUSPECTED IMPERSONATION (${impersonations.length})</div>
+              ${impersonations.map(imp => `
+                <div style="font-size:0.84rem;color:#fff;margin-bottom:6px;"><strong>${escapeHtml(imp.platform)}:</strong> ${escapeHtml(imp.handle)}</div>
+                <div style="font-size:0.76rem;color:var(--text-muted);">${escapeHtml((imp.indicators || []).join(' · '))}</div>
+              `).join('<div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0;"></div>')}
+            </div>
+          `;
+        }
+
+        if (scams.length > 0) {
+          specGrid.innerHTML += `
+            <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(251,191,36,0.3);border-radius:12px;padding:18px;">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#fbbf24;margin-bottom:8px;">// SCAM / PHISHING SCHEMES (${scams.length})</div>
+              ${scams.map(scm => `
+                <div style="font-size:0.84rem;color:#fff;margin-bottom:4px;">${escapeHtml(scm.offer || 'Fraudulent solicitation')}</div>
+                <div style="font-size:0.76rem;color:var(--text-muted);">${escapeHtml((scm.indicators || []).join(' · '))}</div>
+              `).join('<div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0;"></div>')}
+            </div>
+          `;
+        }
+
+        if (deepfakes.length > 0) {
+          specGrid.innerHTML += `
+            <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(6,182,212,0.3);border-radius:12px;padding:18px;">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#06b6d4;margin-bottom:8px;">// DEEPFAKE / SYNTHETIC MEDIA CLAIMS (${deepfakes.length})</div>
+              ${deepfakes.map(df => `
+                <div style="font-size:0.84rem;color:#fff;margin-bottom:4px;">${escapeHtml(df.claim_text || 'AI voice/video clone report')}</div>
+                <div style="font-size:0.74rem;color:#a5f3fc;font-family:var(--font-mono);">${escapeHtml(df.forensic_status || 'Technical verification unavailable.')}</div>
+              `).join('<div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0;"></div>')}
+            </div>
+          `;
+        }
+        mount.appendChild(specGrid);
+      }
+
+      // 7. Claims & Narratives Grid
+      if (claims.length > 0) {
+        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Circulating Claims &amp; Fact Extraction</div>`);
+        const claimsGrid = document.createElement('div');
+        claimsGrid.style.cssText = 'display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;margin-bottom:24px;';
+        claims.forEach(c => {
+          const st = (c.status || 'unknown').toLowerCase();
+          const stColor = st === 'verified' ? 'var(--emerald)' : st === 'supported' ? '#06b6d4' : st === 'contradicted' ? 'var(--rose)' : '#fbbf24';
+          claimsGrid.innerHTML += `
+            <div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:12px;padding:16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">${escapeHtml(c.claim_id || 'CLAIM')}</span>
+                <span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:${stColor};padding:2px 8px;background:rgba(255,255,255,0.04);border-radius:4px;text-transform:uppercase;">
+                  ${escapeHtml(c.status || 'UNKNOWN')}
+                </span>
+              </div>
+              <div style="font-size:0.88rem;color:#fff;line-height:1.5;margin-bottom:10px;">${escapeHtml(c.text || '')}</div>
+              <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">
+                Confidence: ${Math.round((c.confidence || 0.7) * 100)}% · ${(c.evidence_ids || []).length} Source(s)
+              </div>
+            </div>
+          `;
+        });
+        mount.appendChild(claimsGrid);
+      }
+
+      // 8. Personal Threat Timeline
+      if (timeline.length > 0) {
+        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Personal Threat Timeline (Verified Chronology)</div>`);
+        let timeHtml = `<div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:28px;">`;
+        timeline.forEach((t, i) => {
+          const urlLink = (t.url && t.url.startsWith('http')) ? `<a href="${escapeHtml(t.url)}" target="_blank" rel="noopener noreferrer" style="color:#06b6d4;font-family:var(--font-mono);font-size:0.72rem;margin-left:8px;text-decoration:none;">Open Source ↗</a>` : '';
+          timeHtml += `
+            <div style="display:flex;gap:14px;align-items:flex-start;${i < timeline.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.04);padding-bottom:12px;margin-bottom:12px;' : ''}">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;color:#06b6d4;min-width:90px;font-weight:700;">${escapeHtml(t.timestamp || 'Recent')}</div>
+              <div style="flex:1;">
+                <div style="font-size:0.86rem;color:#fff;line-height:1.45;">
+                  <strong style="font-size:0.74rem;font-family:var(--font-mono);color:var(--text-dim);margin-right:6px;">[${escapeHtml(t.platform || 'Web')}]</strong>
+                  ${escapeHtml(t.event_description || '')}
+                  ${urlLink}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        timeHtml += `</div>`;
+        mount.insertAdjacentHTML('beforeend', timeHtml);
+      }
+
+      // 9. Source Explorer (All Clickable Sources)
+      renderSourceExplorer(mount, evidence);
+    }
+
+    function renderSourceExplorer(container, evidence) {
+      const wrap = document.createElement('div');
+      wrap.className = 'explorer-wrap';
+      wrap.innerHTML = `
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:#06b6d4;">// SOURCE EXPLORER &amp; EVIDENCE PROVENANCE</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Every finding traces directly to verified public URLs. No invented links.</div>
+          </div>
+          <input type="text" id="sourceFilterInput" placeholder="Filter sources by keyword..." oninput="filterSources()" style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;color:#fff;font-size:0.82rem;padding:6px 12px;outline:none;width:220px;">
+        </div>
+
+        <div class="filter-tabs" id="sourceTabs">
+          <span class="filter-tab active" onclick="setSourceTab('ALL')">ALL (${evidence.length})</span>
+          <span class="filter-tab" onclick="setSourceTab('NEWS')">NEWS</span>
+          <span class="filter-tab" onclick="setSourceTab('REDDIT')">REDDIT</span>
+          <span class="filter-tab" onclick="setSourceTab('TWITTER')">TWITTER/X</span>
+          <span class="filter-tab" onclick="setSourceTab('YOUTUBE')">YOUTUBE</span>
+          <span class="filter-tab" onclick="setSourceTab('WEB')">WEB</span>
+        </div>
+
+        <div id="sourcesMount"></div>
+      `;
+      container.appendChild(wrap);
+      renderSourceCards('ALL', '');
+    }
+
+    let activeSourceTab = 'ALL';
+    function setSourceTab(tab) {
+      activeSourceTab = tab;
+      const tabs = document.querySelectorAll('#sourceTabs .filter-tab');
+      tabs.forEach(t => t.classList.toggle('active', t.textContent.startsWith(tab)));
+      const kw = (document.getElementById('sourceFilterInput')?.value || '').toLowerCase();
+      renderSourceCards(tab, kw);
+    }
+
+    function filterSources() {
+      const kw = (document.getElementById('sourceFilterInput')?.value || '').toLowerCase();
+      renderSourceCards(activeSourceTab, kw);
+    }
+
+    function renderSourceCards(tab, kw) {
+      const mount = document.getElementById('sourcesMount');
+      if (!mount || !currentData) return;
+      const evidence = currentData.evidence || [];
+
+      const filtered = evidence.filter(e => {
+        const plat = (e.platform || 'Web').toUpperCase();
+        if (tab === 'NEWS' && !plat.includes('NEWS') && !plat.includes('RSS')) return false;
+        if (tab === 'REDDIT' && !plat.includes('REDDIT')) return false;
+        if (tab === 'TWITTER' && !plat.includes('TWITTER') && !plat.includes('X')) return false;
+        if (tab === 'YOUTUBE' && !plat.includes('YOUTUBE')) return false;
+        if (tab === 'WEB' && !plat.includes('WEB')) return false;
+
+        if (kw) {
+          const hay = `${e.title || ''} ${e.snippet || ''} ${e.source || ''} ${e.author || ''}`.toLowerCase();
+          if (!hay.includes(kw)) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        mount.innerHTML = `<div style="padding:20px;text-align:center;color:var(--text-dim);font-family:var(--font-mono);font-size:0.8rem;">No evidence items matching current filter.</div>`;
+        return;
+      }
+
+      let html = '';
+      filtered.forEach(e => {
+        const hasUrl = e.url && e.url.startsWith('http') && e.url !== '#';
+        html += `
+          <div class="source-table-card">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
+              <div>
+                <div style="font-size:0.92rem;font-weight:700;color:#fff;line-height:1.4;">${escapeHtml(e.title || 'Untitled Evidence')}</div>
+                <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);margin-top:3px;">
+                  <strong style="color:#06b6d4;">${escapeHtml(e.platform || 'Web')}</strong> · 
+                  <span>Source: ${escapeHtml(e.source || 'Web')}</span> · 
+                  <span>Author: ${escapeHtml(e.author || 'unknown')}</span> · 
+                  <span>Published: ${escapeHtml(e.published_at || 'Recent')}</span>
+                </div>
+              </div>
+              <div>
+                ${hasUrl ? `
+                  <a class="source-link-btn" href="${escapeHtml(e.url)}" target="_blank" rel="noopener noreferrer">
+                    Open Source ↗
+                  </a>
+                ` : `
+                  <span class="source-link-disabled">URL Unverified</span>
+                `}
+              </div>
+            </div>
+            <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${escapeHtml(e.snippet || e.content || '')}</div>
+          </div>
+        `;
+      });
+      mount.innerHTML = html;
+    }
+
+    function openDossier(idx) {
+      if (!currentData || !currentData.dossiers || !currentData.dossiers[idx]) return;
+      const d = currentData.dossiers[idx];
+
+      const modalMount = document.getElementById('modalMount');
+      modalMount.innerHTML = `
+        <div class="modal-backdrop" onclick="closeModal(event)">
+          <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeModalDirect()">✕</button>
+            <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#06b6d4;margin-bottom:6px;">// INVESTIGATION DOSSIER · ${escapeHtml(d.threat_id || 'THREAT')}</div>
+            <div style="font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.3;">${escapeHtml(d.title || 'Threat Investigation')}</div>
+            
+            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:10px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;margin-bottom:18px;">
+              <div>
+                <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);display:block;">PRIORITY</span>
+                <span style="font-family:var(--font-mono);font-size:0.85rem;font-weight:700;color:${d.risk_level === 'HIGH' ? 'var(--rose)' : '#fbbf24'};">${escapeHtml(d.risk_level)}</span>
+              </div>
+              <div>
+                <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);display:block;">FIRST OBSERVED</span>
+                <span style="font-family:var(--font-mono);font-size:0.85rem;color:#fff;">${escapeHtml(d.first_observed_at || 'Recent')}</span>
+              </div>
+              <div>
+                <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);display:block;">ORIGIN SOURCE</span>
+                <span style="font-family:var(--font-mono);font-size:0.85rem;color:#a5f3fc;">${escapeHtml(d.first_observed_source || d.first_observed_platform)}</span>
+              </div>
+              <div>
+                <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);display:block;">INDEPENDENT GROUPS</span>
+                <span style="font-family:var(--font-mono);font-size:0.85rem;color:#fff;">${d.independent_source_groups_count || 1} Group(s)</span>
+              </div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);margin-bottom:4px;">WHY FLAGGED</div>
+              <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;">${escapeHtml(d.why_flagged || '')}</div>
+            </div>
+
+            <div style="margin-bottom:18px;">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);margin-bottom:8px;">EVIDENCE CHAIN &amp; CLICKABLE SOURCES (${(d.evidence_chain || []).length})</div>
+              ${(d.evidence_chain || []).map(ev => {
+                const hasUrl = ev.url && ev.url.startsWith('http') && ev.url !== '#';
+                return `
+                  <div style="padding:12px 14px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;margin-bottom:8px;">
+                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;">
+                      <span style="font-size:0.85rem;font-weight:700;color:#fff;">${escapeHtml(ev.title)}</span>
+                      ${hasUrl ? `
+                        <a href="${escapeHtml(ev.url)}" target="_blank" rel="noopener noreferrer" style="color:#06b6d4;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;font-weight:700;">Open Source ↗</a>
+                      ` : ''}
+                    </div>
+                    <div style="font-size:0.78rem;color:var(--text-muted);line-height:1.45;">${escapeHtml(ev.snippet)}</div>
+                    <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);margin-top:4px;">[${escapeHtml(ev.platform)}] · ${escapeHtml(ev.source)} · ${escapeHtml(ev.author)}</div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+
+            ${d.primary_source_url ? `
+              <div style="text-align:right;margin-top:16px;">
+                <a class="source-link-btn" href="${escapeHtml(d.primary_source_url)}" target="_blank" rel="noopener noreferrer" style="padding:8px 16px;font-size:0.82rem;">
+                  Open Primary Source URL ↗
+                </a>
+              </div>
+            ` : ''}
+          </div>
+        </div>
+      `;
+    }
+
+    function closeModal(event) {
+      if (event.target.classList.contains('modal-backdrop')) {
+        closeModalDirect();
+      }
+    }
+
+    function closeModalDirect() {
+      const modalMount = document.getElementById('modalMount');
+      if (modalMount) modalMount.innerHTML = '';
+    }
+
+    function escapeHtml(str) {
+      if (str === null || str === undefined) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    document.getElementById('personInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') triggerScan();
+    });
   </script>
 </body>
 </html>

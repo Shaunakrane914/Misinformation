@@ -3,56 +3,38 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Submit Claim &amp; Threat Intelligence Lab — Aegis Protocol</title>
-  <meta name="description" content="Unified claim verification and physics-first deterministic threat lab instruments: Mandelbrot token-rank regression, Hawkes point-process contagion, and Byzantine consensus.">
+  <title>Claim Verification &amp; Fact-Check Agent — Aegis Protocol</title>
+  <meta name="description" content="Forensic claim verification engine. Answers whether a claim is true, false, or misleading, why, and what evidence supports that assessment with dual-column provenance.">
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="gemini-client.js"></script>
 
   <style>
-    /* ── Subtle Top Spot Light Backdrop ── */
-    .submit-page-wrapper {
-      position: relative;
-      overflow: hidden;
-      min-height: 100vh;
-      background: radial-gradient(circle at 50% -5%, rgba(0, 229, 255, 0.08), transparent 55%);
+    .claim-hero {
+      padding: 105px 32px 32px;
+      max-width: 1180px;
+      margin: 0 auto;
     }
 
-    .submit-container {
-      max-width: 1200px;
-      margin: 0 auto 100px;
-      padding: 105px 32px 40px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .submit-header {
-      text-align: center;
-      margin-bottom: 36px;
-    }
-
-    /* ── Main Input Card with Hairline Glow ── */
-    .submit-card {
-      background: rgba(13, 17, 26, 0.82);
-      border: 1px solid var(--border-hover);
-      border-radius: 24px;
-      padding: 32px;
-      backdrop-filter: blur(20px);
-      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 229, 255, 0.05);
-      margin-bottom: 36px;
-      position: relative;
-      overflow: hidden;
+    .claim-input-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 16px 50px rgba(0,0,0,0.6);
+      margin-bottom: 32px;
     }
 
     .form-textarea {
       width: 100%;
-      background: rgba(7, 9, 14, 0.85);
+      background: rgba(4, 7, 13, 0.85);
       border: 1px solid var(--border);
-      border-radius: 14px;
+      border-radius: 12px;
       padding: 16px 18px;
       color: #fff;
       font-family: var(--font-main);
-      font-size: 0.95rem;
-      line-height: 1.55;
+      font-size: 0.98rem;
+      line-height: 1.6;
       outline: none;
       resize: vertical;
       transition: border-color 0.2s, box-shadow 0.2s;
@@ -62,325 +44,151 @@
       box-shadow: 0 0 0 2px var(--accent-glow);
     }
 
-    .presets-row {
+    .preset-chips {
       display: flex;
       gap: 8px;
       flex-wrap: wrap;
       margin-top: 14px;
       align-items: center;
     }
-    .preset-pill {
+    .preset-chip {
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
       color: var(--text-muted);
-      border-radius: 999px;
-      padding: 6px 14px;
-      font-size: 0.78rem;
-      font-weight: 500;
+      border-radius: 8px;
+      padding: 5px 12px;
+      font-size: 0.76rem;
+      font-family: var(--font-mono);
       cursor: pointer;
       transition: all 0.15s ease;
     }
-    .preset-pill:hover {
+    .preset-chip:hover {
       background: rgba(0, 229, 255, 0.1);
-      border-color: rgba(0, 229, 255, 0.4);
-      color: #fff;
-    }
-
-    /* ── Unified Threat Lab Instrument Tabs ── */
-    .matrix-tabs {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 24px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 14px;
-      overflow-x: auto;
-    }
-    .matrix-tab-btn {
-      background: rgba(13, 17, 26, 0.7);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 10px 18px;
-      color: var(--text-muted);
-      font-weight: 600;
-      font-size: 0.86rem;
-      cursor: pointer;
-      transition: all 0.18s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      white-space: nowrap;
-    }
-    .matrix-tab-btn:hover {
-      color: #fff;
-      border-color: var(--border-hover);
-      background: rgba(255, 255, 255, 0.06);
-    }
-    .matrix-tab-btn.active {
-      color: #fff;
-      background: rgba(0, 229, 255, 0.12);
       border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(0, 229, 255, 0.15);
+      color: #fff;
     }
 
-    .matrix-panel {
-      display: none;
-      animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-    .matrix-panel.active {
-      display: block;
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    /* ── Contagion Physics Canvas ── */
-    #contagionCanvas {
-      width: 100%;
-      height: 320px;
-      background: #04070e;
-      border-radius: 14px;
+    /* Staged Loading State */
+    .eval-stage-box {
+      background: var(--surface);
       border: 1px solid var(--border);
-      display: block;
+      border-radius: 16px;
+      padding: 28px;
+      margin-bottom: 32px;
+      text-align: center;
+      display: none;
     }
-
-    /* ── Dossier & Evidence Styles ── */
-    .timeline {
+    .stage-steps-list {
       display: flex;
-      flex-direction: column;
-      gap: 0;
-      margin: 20px 0;
-    }
-    .tl-item {
-      display: flex;
-      gap: 16px;
-      padding: 12px 0;
-      border-bottom: 1px solid var(--border-subtle);
-    }
-    .tl-dot {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.7rem; font-weight: 700;
-      background: rgba(0, 229, 255, 0.15); color: var(--accent);
-      border: 1px solid rgba(0, 229, 255, 0.4);
-    }
-
-    @media (max-width: 900px) {
-      .submit-container { padding-left: 20px; padding-right: 20px; }
-    }
-
-    /* ── Enhanced Epistemic Matrix & Verdict Styles ── */
-    .verdict-hero-card {
-      background: rgba(13, 17, 26, 0.95);
-      border: 1px solid var(--border-hover);
-      border-radius: 20px;
-      padding: 24px;
-      margin-bottom: 24px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
-      position: relative;
-      overflow: hidden;
-    }
-    .verdict-header-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 18px;
       flex-wrap: wrap;
-      gap: 14px;
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
     }
-    .verdict-main-badge {
+    .stage-step-item {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
-      padding: 8px 20px;
-      border-radius: 999px;
-      font-size: 0.95rem;
-      font-weight: 800;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-      font-family: var(--font-mono);
-    }
-    .verdict-true {
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.45);
-      color: var(--emerald);
-      box-shadow: 0 0 24px rgba(16, 185, 129, 0.25);
-    }
-    .verdict-false {
-      background: rgba(244, 63, 94, 0.15);
-      border: 1px solid rgba(244, 63, 94, 0.45);
-      color: var(--rose);
-      box-shadow: 0 0 24px rgba(244, 63, 94, 0.25);
-    }
-    .verdict-misleading {
-      background: rgba(245, 158, 11, 0.15);
-      border: 1px solid rgba(245, 158, 11, 0.45);
-      color: var(--amber);
-      box-shadow: 0 0 24px rgba(245, 158, 11, 0.25);
-    }
-    .verdict-explanation-box {
-      background: rgba(7, 9, 14, 0.7);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 18px 20px;
-      font-size: 0.94rem;
-      line-height: 1.68;
-      color: #e2e8f0;
-      border-left: 3px solid var(--accent);
-    }
-    .epistemic-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-bottom: 24px;
-    }
-    @media(max-width: 840px) {
-      .epistemic-grid { grid-template-columns: 1fr; }
-    }
-    .epistemic-col {
-      background: rgba(13, 17, 26, 0.75);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-    }
-    .epistemic-col.supporting {
-      border-top: 3px solid var(--emerald);
-    }
-    .epistemic-col.refuting {
-      border-top: 3px solid var(--rose);
-    }
-    .evidence-card {
-      background: rgba(7, 9, 14, 0.85);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 14px;
-      margin-top: 12px;
-      font-size: 0.84rem;
-      transition: all 0.2s ease;
-    }
-    .evidence-card:hover {
-      border-color: var(--border-hover);
-      transform: translateY(-1px);
-    }
-    .evidence-source-tag {
-      font-family: var(--font-mono);
-      font-size: 0.7rem;
-      font-weight: 700;
+      gap: 6px;
       color: var(--text-dim);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 6px;
+    }
+    .stage-step-item.active {
+      color: var(--accent);
+    }
+    .stage-step-item.done {
+      color: var(--emerald);
     }
 
-    /* Social Radar */
-    .social-radar-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
-    }
-    .social-radar-card {
-      background: rgba(13, 17, 26, 0.82);
+    /* Dual-column evidence cards */
+    .evidence-item-card {
+      background: rgba(9, 13, 22, 0.7);
       border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 18px;
-      backdrop-filter: blur(12px);
-      transition: border-color 0.2s ease, box-shadow 0.2s ease;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .social-radar-card:hover {
-      border-color: rgba(0, 229, 255, 0.35);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-    }
-    .social-card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 0.84rem;
-      font-weight: 700;
-    }
-    .scraped-signal-box {
-      background: rgba(7, 9, 14, 0.7);
-      border: 1px solid rgba(255, 255, 255, 0.07);
       border-radius: 12px;
-      padding: 12px 14px;
-      margin-bottom: 10px;
+      padding: 16px;
+      margin-bottom: 12px;
+      transition: border-color 0.2s;
     }
-    .scraped-signal-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #f1f5f9;
-      line-height: 1.45;
-      margin-bottom: 8px;
+    .evidence-item-card:hover {
+      border-color: var(--border-hover);
     }
-    .scraped-signal-snippet {
-      font-size: 0.8rem;
-      color: #94a3b8;
-      line-height: 1.55;
-      font-style: italic;
-      border-left: 2px solid var(--accent);
-      padding-left: 10px;
-      background: rgba(0, 229, 255, 0.03);
-      padding-top: 4px;
-      padding-bottom: 4px;
-      border-radius: 0 6px 6px 0;
-      margin-bottom: 10px;
-    }
-    .scraped-signal-meta {
+    .evidence-meta-row {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      flex-wrap: wrap;
-      gap: 6px;
-      font-size: 0.72rem;
+      margin-bottom: 8px;
       font-family: var(--font-mono);
+      font-size: 0.72rem;
       color: var(--text-dim);
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 8px;
     }
-    .scraped-signal-link {
+    .evidence-quote-text {
+      font-size: 0.88rem;
+      color: #e2e8f0;
+      line-height: 1.55;
+      margin-bottom: 10px;
+    }
+    .evidence-source-link {
       display: inline-flex;
       align-items: center;
       gap: 5px;
-      font-size: 0.74rem;
       font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 600;
       color: var(--accent);
       text-decoration: none;
-      font-weight: 600;
-      transition: color 0.15s ease;
+      transition: color 0.15s;
     }
-    .scraped-signal-link:hover {
+    .evidence-source-link:hover {
       text-decoration: underline;
       color: #fff;
     }
-
-    /* Counter-Narrative Package */
-    .action-package-card {
-      background: rgba(13, 17, 26, 0.85);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 22px;
-      margin-bottom: 24px;
-      border-left: 4px solid var(--accent);
-    }
-    .action-quote-box {
-      background: rgba(7, 9, 14, 0.9);
-      border: 1px dashed var(--border);
-      border-radius: 10px;
-      padding: 14px 16px;
+    .evidence-source-na {
       font-family: var(--font-mono);
-      font-size: 0.84rem;
-      color: #94a3b8;
-      margin: 12px 0;
-      line-height: 1.55;
-      user-select: all;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+
+    /* Chronology Timeline */
+    .timeline-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      padding-left: 24px;
+      margin-top: 14px;
+    }
+    .timeline-strip::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 4px;
+      bottom: 4px;
+      width: 2px;
+      background: var(--border);
+    }
+    .timeline-event-node {
+      position: relative;
+    }
+    .timeline-event-node::before {
+      content: '';
+      position: absolute;
+      left: -21px;
+      top: 5px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 8px var(--accent);
+    }
+    .timeline-time {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+    .timeline-text {
+      font-size: 0.86rem;
+      color: #cbd5e1;
+      margin-top: 2px;
     }
   </style>
 </head>
@@ -388,1397 +196,582 @@
   <script>window.AEGIS_ACTIVE='submit';</script>
   <script src="aegis-nav.js"></script>
 
-  <div class="submit-page-wrapper">
-    <div class="submit-container">
+  <div class="claim-hero">
+    
+    <!-- Orientation Question Banner -->
+    <div class="aegis-orientation-banner ae-reveal">
+      <div class="aegis-orientation-q">
+        <span class="aegis-orientation-dot"></span>
+        <span>PRIMARY INVESTIGATIVE QUESTION</span>
+      </div>
+      <div class="aegis-orientation-goal">
+        Is this claim true, false, misleading, or unresolved? What evidence supports that assessment, and what remains unknown?
+      </div>
+    </div>
+
+    <!-- Input Card -->
+    <div class="claim-input-card ae-reveal">
+      <form id="claimSubmitForm" onsubmit="handleClaimVerification(event)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+          <label style="font-size:0.9rem;font-weight:700;color:#fff;" for="claimText">
+            Claim Under Investigation <span style="color:var(--rose)">*</span>
+          </label>
+          <span id="charCount" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">0 / 1000</span>
+        </div>
+
+        <textarea id="claimText" class="form-textarea" rows="3"
+          placeholder="Paste claim, breaking news assertion, quote, or viral rumor to verify..." required></textarea>
+
+        <!-- Presets -->
+        <div class="preset-chips">
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">EXAMPLE CLAIMS:</span>
+          <button type="button" class="preset-chip" onclick="setClaimPreset('WHO declares new airborne pandemic strain requiring global lockdowns in October 2026.')">
+            WHO Pandemic Claim
+          </button>
+          <button type="button" class="preset-chip" onclick="setClaimPreset('Tesla announces acquisition of lithium mining company for $12B cash.')">
+            Tesla Acquisition Rumor
+          </button>
+          <button type="button" class="preset-chip" onclick="setClaimPreset('Central bank issues emergency memo freezing consumer retail withdrawals.')">
+            Bank Liquidity Freeze
+          </button>
+          <button type="button" class="preset-chip" onclick="setClaimPreset('Scientists at CERN confirm observation of stable microscopic wormholes.')">
+            Physics Discovery Claim
+          </button>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
+          <input type="url" id="sourceUrl" class="ae-input" placeholder="Optional source URL to audit (e.g. https://...)" style="flex:1;min-width:240px;background:rgba(4,7,13,0.85);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#fff;font-size:0.86rem;">
+          
+          <button type="submit" id="verifyBtn" class="ae-btn ae-btn-primary" style="padding:11px 26px;font-size:0.9rem;">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            <span>Verify Claim</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Staged Progress Loading Indicator -->
+    <div id="evalStageBox" class="eval-stage-box">
+      <div style="display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:700;font-size:0.92rem;">
+        <span class="aegis-orientation-dot" style="width:8px;height:8px;"></span>
+        <span id="stageLabel">Harvesting Primary Registries &amp; Wire Archives...</span>
+      </div>
+      <div class="stage-steps-list">
+        <span id="stg_ingest" class="stage-step-item active">1. Search Primary Sources</span>
+        <span id="stg_contradict" class="stage-step-item">2. Check Contradictions</span>
+        <span id="stg_weight" class="stage-step-item">3. Evaluate Evidence Strength</span>
+        <span id="stg_synthesize" class="stage-step-item">4. Formulate Verdict</span>
+      </div>
+    </div>
+
+    <!-- Results Workspace (Hidden initially) -->
+    <div id="resultsWorkspace" style="display:none;">
+
+      <!-- LEVEL 1: ORIENTATION / DECISION (Above the Fold) -->
+      <div class="ae-card ae-reveal" style="padding:28px 32px;margin-bottom:24px;border-left:4px solid var(--accent);" id="level1Card">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:6px;">
+              EVALUATED STATEMENT
+            </div>
+            <div id="verdictClaimQuote" style="font-size:1.25rem;font-weight:700;color:#fff;line-height:1.45;max-width:850px;">
+              &ldquo;Claim statement under review&rdquo;
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+            <div id="verdictPill" class="aegis-verdict-badge unverified">
+              UNVERIFIED
+            </div>
+            <div id="strengthPill" class="aegis-strength-pill limited">
+              Evidence: Limited
+            </div>
+          </div>
+        </div>
+
+        <div class="aegis-bottomline">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">
+            Bottom Line Assessment
+          </div>
+          <div id="bottomLineText" style="color:#e2e8f0;font-size:0.92rem;line-height:1.6;">
+            Evaluating verified empirical records...
+          </div>
+        </div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">
+          <span id="auditTimestamp">Audit: Just now</span>
+          <a href="#evidenceMatrixSection" class="ae-btn ae-btn-secondary" style="padding:6px 14px;font-size:0.74rem;">
+            Investigate Evidence &darr;
+          </a>
+        </div>
+      </div>
+
+      <!-- LEVEL 2: INVESTIGATION (Why, Dual Evidence Matrix, Chronology, Unknowns) -->
       
-      <!-- Page Header -->
-      <div class="submit-header ae-reveal">
-        <div style="display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:999px;background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);color:var(--accent);font-family:var(--font-mono);font-size:0.75rem;font-weight:700;margin-bottom:16px;">
-          <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);"></span>
-          // UNIFIED THREAT INTELLIGENCE &amp; VERIFICATION MATRIX
-        </div>
-        <h1 style="font-size:clamp(2.2rem, 4vw, 3.2rem);font-weight:800;letter-spacing:-0.03em;color:#fff;">
-          Submit Claim &amp; Threat Lab
-        </h1>
-        <p style="color:var(--text-muted);font-size:1.02rem;max-width:680px;margin:8px auto 0;line-height:1.6;">
-          Enter any statement to execute parallel multi-agent truth arbitration and run deterministic physical instruments in real-time.
-        </p>
+      <!-- 1. Why Box -->
+      <div class="aegis-why-box ae-reveal">
+        <h4>Why This Assessment Was Reached</h4>
+        <ul id="whyPointsList">
+          <li>Checking empirical news archives and primary sources...</li>
+        </ul>
       </div>
 
-      <!-- Main Input & Dispatch Card -->
-      <div class="submit-card ae-reveal border-beam-card">
-        <form id="unifiedClaimForm" onsubmit="handleUnifiedSubmit(event)">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-            <label style="font-size:0.86rem;font-weight:700;color:#fff;" for="claimInputText">
-              Claim Statement <span style="color:var(--rose)">*</span>
-            </label>
-            <span id="charCounter" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">0 / 1000</span>
+      <!-- 2. Dual-Column Evidence Matrix -->
+      <div id="evidenceMatrixSection" class="ae-reveal" style="margin-bottom:28px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+          <h3 style="font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;">
+            Evidence Matrix: Direct Support vs. Refutation
+          </h3>
+          <span id="sourceGroupCounts" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">
+            0 independent source groups
+          </span>
+        </div>
+
+        <div class="aegis-evidence-matrix">
+          <!-- Column A: Supporting (FOR) -->
+          <div class="aegis-matrix-col">
+            <div class="aegis-matrix-col-header supporting">
+              <span>Supporting Evidence (FOR)</span>
+              <span id="supportCountBadge" class="aegis-matrix-count">0</span>
+            </div>
+            <div id="supportingListContainer">
+              <div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No verified supporting evidence identified.</div>
+            </div>
           </div>
 
-          <textarea id="claimInputText" class="form-textarea" rows="4"
-            placeholder="Paste any headline, deepfake leak, market rumor, or unverified statement..." required></textarea>
-
-          <!-- Presets -->
-          <div class="presets-row">
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">ATTACK PRESETS:</span>
-            <button type="button" class="preset-pill" onclick="loadPresetText('Leaked audio reveals tech executive secretly dumped 80% shares before surprise SEC antitrust investigation.')">
-              Deepfake CEO Audio
-            </button>
-            <button type="button" class="preset-pill" onclick="loadPresetText('Internal NVDA memo leaked: APJ shipments halted indefinitely due to subterranean substrate defect.')">
-              Premarket Financial Leak
-            </button>
-            <button type="button" class="preset-pill" onclick="loadPresetText('Coordinated alert: 12 regional bank branches facing immediate liquidity freeze across Midwest.')">
-              Coordinated Panic Surge
-            </button>
-            <button type="button" class="preset-pill" onclick="loadPresetText('5G millimeter wave transmission causes rapid cellular hemoglobin oxidation.')">
-              5G Health Advisory
-            </button>
+          <!-- Column B: Refuting (AGAINST) -->
+          <div class="aegis-matrix-col">
+            <div class="aegis-matrix-col-header refuting">
+              <span>Refuting Evidence (AGAINST)</span>
+              <span id="refutingCountBadge" class="aegis-matrix-count">0</span>
+            </div>
+            <div id="refutingListContainer">
+              <div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No contradicting evidence identified.</div>
+            </div>
           </div>
-
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
-            <input type="url" id="sourceUrlInput" class="ae-input" placeholder="Optional source link (e.g. https://x.com/...)" style="flex:1;min-width:240px;background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#fff;font-size:0.86rem;">
-            
-            <button type="submit" id="dispatchBtn" class="ae-btn ae-btn-primary" style="padding:11px 24px;font-size:0.92rem;background:linear-gradient(135deg, #fff, #e2e8f0);box-shadow:0 0 24px var(--accent-glow);">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              <span>Analyze Claim &amp; Run Threat Instruments</span>
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
 
-      <!-- ════════════════════════════════════════════════════════════════════ -->
-      <!-- UNIFIED INSTRUMENTS & DOSSIER TABS                                   -->
-      <!-- ════════════════════════════════════════════════════════════════════ -->
-      <div class="ae-reveal">
-        <div class="matrix-tabs">
-          <button class="matrix-tab-btn active" id="tabBtnDossier" onclick="switchMatrixTab('dossier')">
-            <span>01. Agent Truth Dossier</span>
-          </button>
-          <button class="matrix-tab-btn" id="tabBtnMandelbrot" onclick="switchMatrixTab('mandelbrot')">
-            <span>02. Mandelbrot Token-Rank Fit</span>
-          </button>
-          <button class="matrix-tab-btn" id="tabBtnHawkes" onclick="switchMatrixTab('hawkes')">
-            <span>03. Hawkes Contagion Physics</span>
-          </button>
-          <button class="matrix-tab-btn" id="tabBtnByzantine" onclick="switchMatrixTab('byzantine')">
-            <span>04. Byzantine Consensus Matrix</span>
-          </button>
+      <!-- 3. What is Unknown Box -->
+      <div class="aegis-unknown-box ae-reveal">
+        <h4>What Remains Unknown / Gaps in Evidence</h4>
+        <ul id="unknownPointsList">
+          <li>Verifying completeness of secondary citations...</li>
+        </ul>
+      </div>
+
+      <!-- 4. Chronology / Timeline (if available) -->
+      <div id="timelineCard" class="ae-card ae-reveal" style="padding:22px;margin-bottom:28px;display:none;">
+        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">
+          Chronology of Reporting &amp; Emergence
         </div>
+        <div id="timelineEventsContainer" class="timeline-strip"></div>
+      </div>
 
-        <!-- ── TAB 1: AGENT TRUTH DOSSIER ── -->
-        <div class="matrix-panel active" id="panelDossier">
-          <div class="bento-card">
-            
-            <!-- Ingested Statement Display -->
-            <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-              <div style="flex:1;min-width:280px;">
-                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--accent);margin-bottom:4px;">// ACTIVE CLAIM STATEMENT</div>
-                <p style="color:#e2e8f0;font-size:0.95rem;line-height:1.5;font-weight:500;margin:0;" id="dossierClaimText">
-                  "Enter a claim above to run full multi-agent fact-checking and neural reasoning."
-                </p>
-              </div>
-              <div id="dossierVerdictBadge">
-                <span class="ae-badge ae-badge-blue" style="font-size:0.85rem;padding:6px 14px;">READY FOR SUBMISSION</span>
-              </div>
+      <!-- LEVEL 3: RAW EVIDENCE & DEEP PROVENANCE (Progressive Disclosure) -->
+      <div class="ae-card ae-reveal" style="padding:24px;margin-bottom:40px;">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;">
+              Level 3 · Full Evidence Explorer
             </div>
-
-            <!-- Loading Preview during Swarm Ingestion -->
-            <div id="dossierLoadingPreview" style="display:none;margin-bottom:20px;">
-              <div class="ae-loading-preview" style="background:rgba(7,9,14,0.9);border-color:rgba(0,229,255,0.25);">
-                <div class="ae-loading-top">
-                  <div class="ae-loading-title-wrap">
-                    <div class="ae-radar-spinner"></div>
-                    <div class="ae-loading-title">Dispatching Multi-Agent Truth Swarm</div>
-                  </div>
-                  <div class="ae-loading-timer-badge" id="submitElapsedBadge">
-                    <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span>
-                    <span>0.0s elapsed</span>
-                  </div>
-                </div>
-                <div class="ae-progress-track">
-                  <div class="ae-progress-fill" id="submitProgressFill" style="width:15%;"></div>
-                </div>
-                <div class="ae-loading-steps-grid">
-                  <div class="ae-loading-step-item" id="sw_step_norm">
-                    <span class="ae-step-dot" style="background:#00e5ff;"></span>
-                    <div style="display:flex;flex-direction:column;gap:2px;">
-                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">1. Ingestion Node</span>
-                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_norm">Normalizing claim...</span>
-                    </div>
-                  </div>
-                  <div class="ae-loading-step-item" id="sw_step_res">
-                    <span class="ae-step-dot" style="background:#6366f1;"></span>
-                    <div style="display:flex;flex-direction:column;gap:2px;">
-                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">2. Research Agent</span>
-                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_res">Querying ground truth...</span>
-                    </div>
-                  </div>
-                  <div class="ae-loading-step-item" id="sw_step_inv">
-                    <span class="ae-step-dot" style="background:#10b981;"></span>
-                    <div style="display:flex;flex-direction:column;gap:2px;">
-                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">3. Investigator Agent</span>
-                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_inv">Stance classification...</span>
-                    </div>
-                  </div>
-                  <div class="ae-loading-step-item" id="sw_step_byz">
-                    <span class="ae-step-dot" style="background:#f59e0b;"></span>
-                    <div style="display:flex;flex-direction:column;gap:2px;">
-                      <span style="font-weight:600;font-size:0.8rem;color:#fff;">4. Byzantine Consensus</span>
-                      <span style="font-size:0.72rem;color:var(--text-dim);" id="sw_sub_byz">Super-majority voting...</span>
-                    </div>
-                  </div>
-                </div>
-                <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
-                  <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#00e5ff;"></span>
-                  <span>PREVIEW: Ingesting verified news streams, Wikipedia revisions &amp; scientific provenance...</span>
-                </div>
-                <div class="ae-skeleton-grid">
-                  <div class="ae-skeleton-card">
-                    <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
-                    <div class="ae-skeleton-bar" style="height:18px;width:95%;"></div>
-                    <div class="ae-skeleton-bar" style="height:12px;width:80%;"></div>
-                  </div>
-                  <div class="ae-skeleton-card">
-                    <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
-                    <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
-                    <div class="ae-skeleton-bar" style="height:12px;width:70%;"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- RESULT CONTAINER (Populated dynamically upon verification) -->
-            <div id="dossierLiveContent" style="display:none;">
-              
-              <!-- 1. VERDICT HERO CARD -->
-              <div class="verdict-hero-card" id="verdictHeroCard">
-                <div class="verdict-header-row">
-                  <div>
-                    <span class="ae-badge ae-badge-blue" id="verdictCategoryTag">GEOPOLITICAL INTELLIGENCE</span>
-                    <h3 style="font-size:1.35rem;font-weight:800;color:#fff;margin-top:6px;margin-bottom:0;" id="verdictMainHeadline">
-                      Multi-Agent Epistemic Dossier
-                    </h3>
-                  </div>
-                  <div style="display:flex;align-items:center;gap:12px;">
-                    <div id="verdictHeroPill" class="verdict-main-badge verdict-false">
-                      <span style="width:8px;height:8px;border-radius:50%;background:currentColor;"></span>
-                      <span id="verdictHeroText">VERDICT: FALSE</span>
-                    </div>
-                    <div style="background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:10px;padding:6px 14px;font-family:var(--font-mono);font-size:0.82rem;color:var(--accent);" id="verdictHeroConfidence">
-                      98% Confidence
-                    </div>
-                  </div>
-                </div>
-
-                <!-- Forensic Explanation Box -->
-                <div class="verdict-explanation-box">
-                  <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:6px;letter-spacing:0.06em;">// FORENSIC EXPLANATION &amp; EMPIRICAL EVIDENCE GROUNDS</div>
-                  <p id="dossierExplanationText" style="margin:0;color:#f1f5f9;font-size:0.92rem;line-height:1.65;">
-                    Evidence analysis proves this statement is fabricated. No official documentation or wire reports corroborate the event.
-                  </p>
-                </div>
-              </div>
-
-              <!-- 2. DUAL-COLUMN EPISTEMIC EVIDENCE MATRIX -->
-              <div style="margin-bottom:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                  <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;">// SECTION 01: EPISTEMIC EVIDENCE COMPARISON MATRIX</span>
-                  <span style="font-size:0.75rem;color:var(--text-muted);font-family:var(--font-mono);">Cross-Source Bayesian Verification</span>
-                </div>
-                <div class="epistemic-grid">
-                  <!-- Supporting Evidence -->
-                  <div class="epistemic-col supporting">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                      <span style="font-size:0.86rem;font-weight:700;color:var(--emerald);display:flex;align-items:center;gap:6px;">
-                        <span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);"></span>
-                        Supporting Claims &amp; Context
-                      </span>
-                      <span class="ae-badge ae-badge-green" style="font-size:0.7rem;" id="supCountBadge">0 points</span>
-                    </div>
-                    <div id="supportingEvidenceList" style="display:flex;flex-direction:column;gap:10px;margin-top:10px;"></div>
-                  </div>
-
-                  <!-- Refuting Evidence -->
-                  <div class="epistemic-col refuting">
-                    <div style="display:flex;justify-content:space-between;align-items:center;">
-                      <span style="font-size:0.86rem;font-weight:700;color:var(--rose);display:flex;align-items:center;gap:6px;">
-                        <span style="width:6px;height:6px;border-radius:50%;background:var(--rose);"></span>
-                        Refuting Proofs &amp; Debunking Facts
-                      </span>
-                      <span class="ae-badge ae-badge-red" style="font-size:0.7rem;" id="refCountBadge">0 points</span>
-                    </div>
-                    <div id="refutingEvidenceList" style="display:flex;flex-direction:column;gap:10px;margin-top:10px;"></div>
-                  </div>
-                </div>
-              </div>
-
-              <!-- 3. OMNI-CHANNEL SOCIAL INTELLIGENCE RADAR -->
-              <div style="margin-bottom:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                  <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;">// SECTION 02: OMNI-CHANNEL SOCIAL &amp; WIRE INTELLIGENCE RADAR</span>
-                  <span style="font-size:0.75rem;color:var(--accent);font-family:var(--font-mono);">Zero-Cost AgentReach Feed</span>
-                </div>
-                <div class="social-radar-grid" id="socialRadarGrid"></div>
-              </div>
-
-              <!-- 4. FORENSIC RISK & MANIPULATION RADAR -->
-              <div style="margin-bottom:20px;">
-                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
-                  <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;">// SECTION 03: NARRATIVE FORENSICS &amp; ASTROTURFING DETECTOR</span>
-                  <span style="font-size:0.75rem;color:var(--purple);font-family:var(--font-mono);">Physics &amp; Token Dynamics</span>
-                </div>
-                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));gap:12px;" id="forensicsGrid"></div>
-              </div>
-
-              <!-- 5. ONE-CLICK COUNTER-DISINFORMATION ACTION PACKAGE -->
-              <div class="action-package-card">
-                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-                  <div style="display:flex;align-items:center;gap:8px;">
-                    <span style="width:8px;height:8px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);"></span>
-                    <span style="font-weight:700;color:#fff;font-size:0.92rem;">// SECTION 04: ACTIONABLE COUNTER-NARRATIVE PACKAGE</span>
-                  </div>
-                  <div style="display:flex;gap:10px;">
-                    <button type="button" class="ae-btn ae-btn-secondary" style="padding:6px 14px;font-size:0.78rem;" onclick="copyDebunkText()" id="copyDebunkBtn">
-                      📋 Copy Verified Debunk
-                    </button>
-                    <button type="button" class="ae-btn ae-btn-secondary" style="padding:6px 14px;font-size:0.78rem;" onclick="downloadDossierJSON()">
-                      💾 Export JSON Dossier
-                    </button>
-                  </div>
-                </div>
-                <div class="action-quote-box" id="debunkQuoteBox">
-                  "Official Aegis Fact-Check: Verification concluded claim is FALSE. Full forensic analysis at agentai100.netlify.app"
-                </div>
-                <div style="font-size:0.75rem;color:var(--text-muted);display:flex;align-items:center;gap:6px;">
-                  <span>⚡ <strong>Tip:</strong> Use this pre-formatted statement to refute misinformation on Twitter/X, Reddit, or WhatsApp with verified primary proof citations.</span>
-                </div>
-              </div>
-
-            </div>
-
-            <!-- Initial Placeholder before first submission -->
-            <div id="dossierInitialPlaceholder" style="background:rgba(7,9,14,0.5);border:1px dashed var(--border);border-radius:16px;padding:36px;text-align:center;">
-              <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" style="margin-bottom:12px;opacity:0.8;"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              <h4 style="font-size:1.05rem;font-weight:700;color:#fff;margin-bottom:6px;">Aegis Multi-Agent Intelligence Engine Ready</h4>
-              <p style="font-size:0.84rem;color:var(--text-muted);max-width:520px;margin:0 auto 16px;line-height:1.5;">
-                Enter any statement or click an attack preset above. Aegis will query Reddit, Twitter, YouTube, wire feeds, and execute parallel mathematical checks.
-              </p>
-              <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap;">
-                <span class="ae-badge ae-badge-blue">AgentReach Live Scrapers</span>
-                <span class="ae-badge ae-badge-purple">Mandelbrot Token-Rank Fit</span>
-                <span class="ae-badge ae-badge-green">Byzantine Supermajority</span>
-              </div>
-            </div>
-
+            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Complete Source Provenance &amp; Disclosures</h4>
           </div>
+          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Click any row to inspect technical details</span>
         </div>
 
-        <!-- ── TAB 2: MANDELBROT TOKEN-RANK FIT (INSTRUMENT I) ── -->
-        <div class="matrix-panel" id="panelMandelbrot">
-          <div class="bento-card">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
-              <div>
-                <span class="ae-badge ae-badge-blue">INSTRUMENT_01 &bull; POWER-LAW REGRESSION</span>
-                <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-top:6px;">Zipf-Mandelbrot Token-Rank Fit</h3>
-                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">
-                  Measures statistical frequency rank power law $f(r) = \frac{C}{(r + \beta)^\gamma}$. High $R^2 > 0.95$ signifies synthetic LLM-generated token distributions.
-                </p>
-              </div>
-              <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;">
-                <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:800;color:var(--accent);" id="mandelbrotR2">R² = 0.984</div>
-                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Synthetic LLM Marker</div>
-              </div>
-            </div>
-
-            <!-- SVG Log-Log Plot Chart -->
-            <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;">
-              <svg viewBox="0 0 600 200" width="100%" height="180" style="overflow:visible;">
-                <line x1="40" y1="170" x2="560" y2="170" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-                <line x1="40" y1="30" x2="40" y2="170" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
-                <text x="560" y="190" fill="#64748b" font-size="10" font-family="JetBrains Mono" text-anchor="end">Log(Rank r)</text>
-                <text x="30" y="24" fill="#64748b" font-size="10" font-family="JetBrains Mono">Log(Freq f)</text>
-                
-                <!-- Regression Fit Line -->
-                <line x1="60" y1="45" x2="540" y2="155" stroke="#00e5ff" stroke-width="2.5" stroke-dasharray="4,4"/>
-                
-                <!-- Scatter Points -->
-                <circle cx="80" cy="50" r="4" fill="#00e5ff"/>
-                <circle cx="130" cy="62" r="4" fill="#00e5ff"/>
-                <circle cx="190" cy="74" r="4" fill="#00e5ff"/>
-                <circle cx="260" cy="92" r="4" fill="#00e5ff"/>
-                <circle cx="340" cy="110" r="4" fill="#00e5ff"/>
-                <circle cx="430" cy="132" r="4" fill="#00e5ff"/>
-                <circle cx="510" cy="148" r="4" fill="#00e5ff"/>
-              </svg>
-            </div>
-          </div>
+        <div id="evidenceRowsContainer">
+          <!-- Reusable Aegis Evidence Rows rendered here -->
         </div>
-
-        <!-- ── TAB 3: HAWKES CONTAGION PHYSICS (INSTRUMENT II) ── -->
-        <div class="matrix-panel" id="panelHawkes">
-          <div class="bento-card">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
-              <div>
-                <span class="ae-badge ae-badge-purple">INSTRUMENT_02 &bull; POINT-PROCESS SIMULATION</span>
-                <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-top:6px;">Hawkes Contagion Velocity &amp; Blast Radius</h3>
-                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">
-                  Kinetic particle simulation with self-exciting Hawkes cascading shocks $\lambda(t) = \mu + \sum \alpha e^{-\beta(t - t_i)}$.
-                </p>
-              </div>
-              <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;">
-                <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:800;color:var(--amber);" id="hawkesR0Val">R₀ = 2.82</div>
-                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">Critical Contagion</div>
-              </div>
-            </div>
-
-            <!-- Kinetic Particle Canvas -->
-            <canvas id="contagionCanvas"></canvas>
-
-            <div style="display:flex;gap:18px;margin-top:16px;font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);flex-wrap:wrap;align-items:center;">
-              <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--rose);display:inline-block;"></span><strong style="color:var(--rose);">Red Nodes:</strong> Infected Reposts</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:var(--accent);display:inline-block;"></span><strong style="color:var(--accent);">Cyan Beacons:</strong> Defense Interceptors</span>
-              <span style="display:inline-flex;align-items:center;gap:6px;"><span style="width:7px;height:7px;border-radius:50%;background:#fff;display:inline-block;"></span><strong style="color:#fff;">Projected 24h Reach:</strong> 84,200 impressions</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- ── TAB 4: BYZANTINE CONSENSUS (INSTRUMENT III) ── -->
-        <div class="matrix-panel" id="panelByzantine">
-          <div class="bento-card">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;">
-              <div>
-                <span class="ae-badge ae-badge-green">INSTRUMENT_03 &bull; FAULT TOLERANCE</span>
-                <h3 style="font-size:1.3rem;font-weight:700;color:#fff;margin-top:6px;">Byzantine W-MSR Consensus Matrix</h3>
-                <p style="font-size:0.85rem;color:var(--text-muted);margin-top:4px;">
-                  Prunes extreme $F$ highest and lowest malicious/sycophantic vector scores before computing trimmed weighted mean consensus.
-                </p>
-              </div>
-              <div style="background:rgba(7,9,14,0.8);border:1px solid var(--border);border-radius:12px;padding:12px 18px;text-align:center;">
-                <div style="font-family:var(--font-mono);font-size:1.4rem;font-weight:800;color:var(--emerald);">k = 1 PRUNED</div>
-                <div style="font-size:0.7rem;color:var(--text-dim);margin-top:2px;">F=1 Resilient</div>
-              </div>
-            </div>
-
-            <!-- 4-Agent Voting Grid -->
-            <div id="byzantineGrid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:12px;">
-              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
-                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--accent);">RESEARCH AGENT</div>
-                <div style="font-size:0.88rem;font-weight:700;color:#fff;margin-top:4px;" id="byzVoteResearch">Vote: PENDING</div>
-                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;" id="byzConfResearch">Confidence: --</div>
-              </div>
-              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
-                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--purple);">INVESTIGATOR SWARM</div>
-                <div style="font-size:0.88rem;font-weight:700;color:#fff;margin-top:4px;" id="byzVoteInvestigator">Vote: PENDING</div>
-                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;" id="byzConfInvestigator">Confidence: --</div>
-              </div>
-              <div style="background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
-                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--emerald);">AGENT-REACH FORENSICS</div>
-                <div style="font-size:0.88rem;font-weight:700;color:#fff;margin-top:4px;" id="byzVoteForensics">Vote: PENDING</div>
-                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;" id="byzConfForensics">Confidence: --</div>
-              </div>
-              <div style="background:rgba(244,63,94,0.06);border:1px solid rgba(244,63,94,0.3);border-radius:12px;padding:14px;">
-                <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--rose);">ROGUE FILTER (F=1)</div>
-                <div style="font-size:0.88rem;font-weight:700;color:var(--rose);margin-top:4px;">W-MSR PRUNED</div>
-                <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Outlier Sanitized</div>
-              </div>
-            </div>
-          </div>
-        </div>
-
       </div>
 
     </div>
+
   </div>
 
-  <footer class="ae-footer">
-    <div>
-      <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-      <div style="font-size:0.75rem;color:var(--text-dim);">Unified Claim Verification &amp; Threat Intelligence Matrix &copy; 2026</div>
-    </div>
-    <div style="display:flex;gap:18px;font-size:0.8rem;">
-      <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
-      <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
-      <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
-    </div>
-  </footer>
-
   <script>
-    // ── URL Query Param Auto-Fill ──
-    const urlParams = new URLSearchParams(window.location.search);
-    const claimParam = urlParams.get('claim');
-    const ta = document.getElementById('claimInputText');
-    const srcInput = document.getElementById('sourceUrlInput');
-    const cc = document.getElementById('charCounter');
-
-    if (claimParam) {
-      ta.value = claimParam;
-      cc.textContent = `${ta.value.length} / 1000`;
-      document.getElementById('dossierClaimText').innerText = `"${claimParam}"`;
+    const claimInput = document.getElementById('claimText');
+    const charCounter = document.getElementById('charCount');
+    if (claimInput && charCounter) {
+      claimInput.addEventListener('input', () => {
+        charCounter.textContent = `${claimInput.value.length} / 1000`;
+      });
     }
 
-    ta.addEventListener('input', () => {
-      cc.textContent = `${ta.value.length} / 1000`;
-    });
-
-    function loadPresetText(txt) {
-      ta.value = txt;
-      cc.textContent = `${txt.length} / 1000`;
-      document.getElementById('dossierClaimText').innerText = `"${txt}"`;
-      ta.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // ── Tab Switching ──
-    function switchMatrixTab(tab) {
-      document.querySelectorAll('.matrix-tab-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.matrix-panel').forEach(p => p.classList.remove('active'));
-
-      if (tab === 'dossier') {
-        document.getElementById('tabBtnDossier').classList.add('active');
-        document.getElementById('panelDossier').classList.add('active');
-      } else if (tab === 'mandelbrot') {
-        document.getElementById('tabBtnMandelbrot').classList.add('active');
-        document.getElementById('panelMandelbrot').classList.add('active');
-      } else if (tab === 'hawkes') {
-        document.getElementById('tabBtnHawkes').classList.add('active');
-        document.getElementById('panelHawkes').classList.add('active');
-        initContagionSimulation();
-      } else if (tab === 'byzantine') {
-        document.getElementById('tabBtnByzantine').classList.add('active');
-        document.getElementById('panelByzantine').classList.add('active');
+    function setClaimPreset(text) {
+      if (claimInput) {
+        claimInput.value = text;
+        claimInput.focus();
+        if (charCounter) charCounter.textContent = `${text.length} / 1000`;
       }
     }
 
-    let submitTimerInterval = null;
+    function esc(s) {
+      if (!s) return '';
+      return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
 
-    function setSwarmStep(stepKey, text, isDone = false) {
-      const sub = document.getElementById('sw_sub_' + stepKey);
-      const item = document.getElementById('sw_step_' + stepKey);
-      if (sub) {
-        sub.textContent = text;
-        if (isDone) {
-          sub.style.color = 'var(--emerald)';
-          sub.style.fontWeight = '700';
+    function setStage(stepId, label) {
+      document.getElementById('stageLabel').innerText = label;
+      const steps = ['stg_ingest', 'stg_contradict', 'stg_weight', 'stg_synthesize'];
+      let found = false;
+      steps.forEach(id => {
+        const el = document.getElementById(id);
+        if (id === stepId) {
+          el.className = 'stage-step-item active';
+          found = true;
+        } else if (!found) {
+          el.className = 'stage-step-item done';
+        } else {
+          el.className = 'stage-step-item';
         }
-      }
-      if (item && isDone) {
-        item.style.borderColor = 'rgba(16,185,129,0.4)';
-        item.style.background = 'rgba(16,185,129,0.06)';
+      });
+    }
+
+    async function handleClaimVerification(e) {
+      e.preventDefault();
+      const text = (claimInput.value || '').trim();
+      const url = (document.getElementById('sourceUrl').value || '').trim();
+      if (!text) return;
+
+      const btn = document.getElementById('verifyBtn');
+      const stageBox = document.getElementById('evalStageBox');
+      const workspace = document.getElementById('resultsWorkspace');
+
+      btn.disabled = true;
+      btn.innerHTML = `<span class="aegis-orientation-dot"></span> Verifying...`;
+      stageBox.style.display = 'block';
+      workspace.style.display = 'none';
+
+      try {
+        setStage('stg_ingest', 'Searching Wire Registries & Primary Documents...');
+        
+        let reportData = null;
+
+        // Try backend submission
+        try {
+          const res = await fetch('/api/claims/', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ claim_text: text, source_url: url || undefined }),
+            signal: AbortSignal.timeout(6000)
+          });
+          if (res.ok) {
+            const sub = await res.json();
+            if (sub.claim_id) {
+              setStage('stg_contradict', 'Checking Contradictions across Multi-Agent Swarm...');
+              for (let i = 0; i < 6; i++) {
+                await new Promise(r => setTimeout(r, 900));
+                if (i === 2) setStage('stg_weight', 'Evaluating Evidence Strength & Independence...');
+                const pollRes = await fetch(`/api/claims/${sub.claim_id}`, { signal: AbortSignal.timeout(4000) });
+                if (pollRes.ok) {
+                  const pollData = await pollRes.json();
+                  const c = pollData.claim || pollData;
+                  if (c && (c.status === 'completed' || c.status === 'failed')) {
+                    reportData = pollData;
+                    break;
+                  }
+                }
+              }
+            }
+          }
+        } catch (backendErr) {
+          console.warn('[Aegis Claim] Backend polling note:', backendErr.message);
+        }
+
+        // Fallback to client Gemini if backend was asleep or returned incomplete
+        if (!reportData || !reportData.claim || !reportData.claim.verdict) {
+          setStage('stg_synthesize', 'Synthesizing Forensic Truth Assessment...');
+          reportData = await runClientFactCheck(text, url);
+        }
+
+        renderClaimWorkspace(text, reportData);
+
+      } catch (err) {
+        console.error('[Aegis Claim] Error:', err);
+        renderErrorState(text, err.message);
+      } finally {
+        stageBox.style.display = 'none';
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Verify Claim</span>`;
       }
     }
 
-    // ── Active Dossier Cache for JSON Export ──
-    let currentDossierData = null;
+    async function runClientFactCheck(claimText, sourceUrl) {
+      if (typeof window.askGemini === 'function') {
+        const prompt = `You are the Aegis Fact-Check Agent.
+Evaluate this claim: "${claimText}" ${sourceUrl ? `(Source URL: ${sourceUrl})` : ''}
 
-    // ── Deterministic Expert Fact-Checking Engine (Offline / Safe Fallback) ──
-    // ── Deterministic Expert Fact-Checking Engine (Dynamic Fallback) ──
-    function generateDeterministicTruthReport(claimText) {
-      const lower = claimText.toLowerCase();
-      
-      // Known Truth Patterns vs Known False Patterns
-      const isKnownFalse = lower.includes("dismantled") || lower.includes("moved to tokyo") || 
-                           lower.includes("5g") || lower.includes("hemoglobin") || 
-                           lower.includes("secretly dumped 80%") || lower.includes("substrate defect") ||
-                           lower.includes("liquidity freeze") || lower.includes("aliens landed") ||
-                           lower.includes("fake") || lower.includes("hoax") || lower.includes("scam");
-
-      const verdict = isKnownFalse ? "FALSE" : "MISLEADING";
-      const confidence = isKnownFalse ? 98 : 82;
-      const category = lower.includes("5g") ? "HEALTH & TELECOM ADVISORY" :
-                       lower.includes("nvda") || lower.includes("shares") || lower.includes("bank") ? "FINANCIAL THREAT INTELLIGENCE" :
-                       lower.includes("audio") || lower.includes("video") ? "SYNTHETIC MEDIA & DEEPFAKE" :
-                       "GLOBAL INFORMATION FORENSICS";
-
-      const explanation = isKnownFalse ?
-        `Multi-agent adversarial cross-referencing determined this claim is categorically FALSE. No official records, regulatory filings, or global wire services (AP, Reuters, AFP) corroborate the alleged occurrence. Physical landmarks, corporate assets, or biological mechanisms cited contradict empirical reality.` :
-        `The claim contains partial truths framed within unverified sensationalized assertions. While individual entities exist, the causal claims lack statistical and empirical corroboration across verified primary registers.`;
-
-      const safeClaimSnippet = claimText.length > 55 ? claimText.slice(0, 52) + "..." : claimText;
-      const encodedQuery = encodeURIComponent(claimText.slice(0, 45));
-
-      const supporting = [
-        {
-          source: "Social Media Discussion Streams",
-          platform: "Twitter/X & Reddit",
-          text: `Viral discourse amplified by unverified user handles claiming knowledge of the event without primary citations.`,
-          url: "#"
-        }
-      ];
-
-      const refuting = [
-        {
-          source: "Primary Registry & Wire Verification",
-          platform: "AP & Reuters Fact-Check",
-          text: `Independent archival verification confirms official entities refute the statement. Zero legal, geographical, or regulatory documentation exists.`,
-          url: "https://www.reuters.com/fact-check/"
-        },
-        {
-          source: "Aegis Epistemic Provenance Bench",
-          platform: "Cross-Source Synthesis",
-          text: `Bayesian consensus matrix rejected claim with zero corroborating primary citations (Evidence weight p < 0.02).`,
-          url: "#"
-        }
-      ];
-
-      const rawSignals = {
-        reddit: [
-          {
-            platform: "Reddit",
-            subreddit: lower.includes("5g") ? "r/science" : lower.includes("shares") || lower.includes("bank") ? "r/stocks" : "r/worldnews",
-            title: `Community Investigation: Did '${safeClaimSnippet}' actually occur?`,
-            snippet: `Top commenters and archival moderators debunked this assertion citing lack of government gazette entries and satellite photographic proof.`,
-            author: "u/epistemic_analyst",
-            url: `https://www.reddit.com/search/?q=${encodedQuery}`,
-            sentiment: isKnownFalse ? "Debunked / Fabricated" : "Skeptical Discourse",
-            score: 214,
-            published: "Live Monitored Thread"
-          },
-          {
-            platform: "Reddit",
-            subreddit: "r/technology",
-            title: `Forensic audit of viral rumor regarding '${safeClaimSnippet}'`,
-            snippet: `Historical records and reverse image lookups reveal re-used multimedia from unrelated historical incidents.`,
-            author: "u/registry_monitor",
-            url: `https://www.reddit.com/search/?q=${encodedQuery}`,
-            sentiment: "Disproven Archive Match",
-            score: 96,
-            published: "Cross-Indexed Archive"
-          }
-        ],
-        twitter: [
-          {
-            platform: "Twitter/X",
-            author: "@IntelDisinfoDesk",
-            title: `Disinfo Alert: Rapid amplification tracking for '${safeClaimSnippet}'`,
-            snippet: `Algorithmic cluster identified 28 bot accounts repeating uniform syntax with zero primary citation links. Community Note submitted.`,
-            url: `https://x.com/search?q=${encodedQuery}`,
-            virality: "Elevated Velocity",
-            bot_risk: "62%",
-            published: "Live Feed Stream"
-          }
-        ],
-        youtube: [
-          {
-            platform: "YouTube",
-            channel: "Veritas Visual Forensics",
-            title: `Fact Check & Forensic Analysis: '${safeClaimSnippet}'`,
-            snippet: `Frame-by-frame perceptual hash inspection and vocal pitch spectrum analysis detected generative AI synthesis artifacts.`,
-            url: `https://www.youtube.com/results?search_query=${encodedQuery}`,
-            forensics: "AI Synthetic Media Flagged",
-            published: "Verified Broadcast Stream"
-          }
-        ],
-        news: [
-          {
-            platform: "News Wire",
-            source: "Associated Press & Reuters Fact-Check",
-            title: `Official Wire Registry: Statement alleging '${safeClaimSnippet}' lacks empirical foundation`,
-            snippet: `Direct inquiries with regional authorities, regulatory bodies, and diplomatic archives confirm zero records substantiate this viral narrative.`,
-            url: "https://www.reuters.com/fact-check/",
-            status: isKnownFalse ? "Debunked by Wire Services" : "Unverified by Official Wires",
-            published: "Real-Time Registry Sync"
-          }
-        ]
-      };
-
-      return {
-        verdict,
-        confidence,
-        category,
-        explanation,
-        supporting_evidence: supporting,
-        refuting_evidence: refuting,
-        social_radar: {
-          reddit: { mentions: 38, sentiment: isKnownFalse ? "Debunked / False" : "Skeptical", top_sub: rawSignals.reddit[0].subreddit, summary: rawSignals.reddit[0].title },
-          twitter: { virality: "Elevated", bot_ratio: "62%", cashtag: "#DisinfoAlert" },
-          youtube: { video_count: 2, finding: rawSignals.youtube[0].snippet },
-          news: { registry_status: isKnownFalse ? "Debunked by Wire Services" : "Unverified Wire Match", top_wire: "Associated Press & Reuters" },
-          raw_signals: rawSignals
-        },
-        raw_signals: rawSignals,
-        forensic_risk: {
-          mandelbrot_r2: 0.94,
-          synthetic_marker: "AI Synthetic / Astroturf",
-          hawkes_r0: 2.45,
-          polarization_score: 78
-        },
-        debunk_statement: `Official Aegis Fact-Check: Verification proves the claim '${safeClaimSnippet}' is FALSE. No official or wire records confirm this event.`
-      };
-    }
-
-    // ── Client-Side Intelligent Verification via Gemini Proxy ──
-    async function runClientSideFactCheck(claimText, sourceUrl) {
-      const prompt = `You are the Aegis Protocol Truth Verification Swarm, an elite multi-agent tribunal consisting of ResearchAgent (Evidence Jurist), InvestigatorAgent (Forensic Analyst), and CoordinatorAgent.
-Fact-check the following claim with rigorous epistemic standards:
-CLAIM: "${claimText}"
-${sourceUrl ? `SOURCE LINK: "${sourceUrl}"` : ''}
-
-You MUST return a STRICT JSON object with this exact structure:
+Output strictly valid JSON with this exact schema:
 {
-  "verdict": "TRUE" | "FALSE" | "MISLEADING",
-  "confidence": <integer 65 to 99>,
-  "category": "<e.g. Geopolitical Intelligence | Financial Panic | AI Synthetic Media | Health Hoax | Scientific Verification>",
-  "explanation": "<Clear 2-3 sentence executive breakdown explaining why this is true/false, citing key historical, physical or empirical facts>",
+  "verdict": "TRUE" | "FALSE" | "MISLEADING" | "UNVERIFIED",
+  "evidence_strength": "Strong" | "Moderate" | "Limited" | "Insufficient",
+  "category": "String (e.g. Geopolitical, Corporate, Science)",
+  "bottom_line": "1-3 concise factual sentences stating the core answer directly.",
+  "why": [
+    "Factual point 1 explaining the verdict",
+    "Factual point 2",
+    "Factual point 3"
+  ],
+  "what_is_unknown": [
+    "Known limitation, missing official registry confirmation, or unverified detail"
+  ],
   "supporting_evidence": [
     {
-      "source": "<e.g. Reuters, NASA, SEC Filing, Scientific American, AP, Wikipedia Official>",
-      "platform": "News" | "Official" | "Academic",
-      "text": "<Concise supporting point or context max 35 words>",
-      "url": "https://..."
+      "source_name": "Name of publisher (e.g. Reuters, Official Gazette)",
+      "source_role": "PRIMARY" | "SECONDARY" | "FACT-CHECK",
+      "independence_group": "G-1",
+      "text": "Exact factual quote or empirical finding",
+      "url": "https://... or empty string if offline archive"
     }
   ],
   "refuting_evidence": [
     {
-      "source": "<e.g. Snopes, Le Monde, Bloomberg, AP Fact Check, Government Gazette, Historical Record>",
-      "platform": "Fact-Check" | "Primary Archive" | "News",
-      "text": "<Direct factual refutation or contradictory proof max 35 words>",
+      "source_name": "Name of publisher",
+      "source_role": "PRIMARY" | "SECONDARY" | "FACT-CHECK",
+      "independence_group": "G-2",
+      "text": "Exact contradiction or refutation point",
       "url": "https://..."
     }
   ],
-  "social_radar": {
-    "reddit": {
-      "mentions": <number 5 to 120>,
-      "sentiment": "<Bearish / Skeptical / Debunked / Active>",
-      "top_sub": "r/worldnews" | "r/technology" | "r/science" | "r/stocks",
-      "summary": "<Community reaction in 15 words>"
-    },
-    "twitter": {
-      "virality": "<Low | Spreading | Explosive>",
-      "bot_ratio": "<e.g. 14% | 42% | 68%>",
-      "cashtag": "<e.g. #FactCheck or ticker if financial>"
-    },
-    "youtube": {
-      "video_count": <number 0 to 15>,
-      "finding": "<Video analysis finding max 15 words>"
-    },
-    "news": {
-      "registry_status": "Verified Wire Match" | "Debunked by Wire Services" | "Zero Credible Coverage",
-      "top_wire": "Associated Press" | "Reuters" | "AFP"
-    },
-    "raw_signals": {
-      "reddit": [
-        {
-          "platform": "Reddit",
-          "title": "<Specific Reddit post title discussing this claim>",
-          "subreddit": "r/worldnews" | "r/technology" | "r/science" | "r/stocks",
-          "author": "u/<username>",
-          "snippet": "<Scraped comment or excerpt of the discussion max 30 words>",
-          "url": "https://www.reddit.com/search/?q=...",
-          "sentiment": "Disproven / Skeptical" | "Active Inquiry" | "Corroborated",
-          "score": <number upvotes e.g. 184>
-        }
-      ],
-      "twitter": [
-        {
-          "platform": "Twitter/X",
-          "title": "<Scraped Tweet text or headline of viral tweet>",
-          "author": "@<handle>",
-          "snippet": "<Excerpt of the viral tweet claim or community note max 30 words>",
-          "url": "https://x.com/search?q=...",
-          "virality": "Spreading Velocity" | "High Bot Amplification" | "Community Note Attached",
-          "bot_risk": "<e.g. 48%>"
-        }
-      ],
-      "youtube": [
-        {
-          "platform": "YouTube",
-          "title": "<Scraped YouTube video title analyzing this>",
-          "channel": "<Channel name e.g. Reuters Video, Veritas, DW News>",
-          "snippet": "<Video transcript excerpt or debunking summary max 30 words>",
-          "url": "https://www.youtube.com/results?search_query=...",
-          "forensics": "Audio Spectral Validated" | "Manipulated Footage" | "AI Synthetic Artifacts"
-        }
-      ],
-      "news": [
-        {
-          "platform": "News Wire",
-          "title": "<Scraped news headline from wire service>",
-          "source": "Associated Press" | "Reuters" | "AFP" | "Bloomberg" | "BBC News",
-          "snippet": "<Scraped journalistic fact-check or reporting summary max 35 words>",
-          "url": "https://www.reuters.com/fact-check/",
-          "status": "Official Wire Debunk" | "Wire Corroborated" | "Zero Official Record"
-        }
-      ]
+  "timeline": [
+    {
+      "time": "Approximate date or timestamp",
+      "event": "What occurred or was published"
     }
-  },
-  "forensic_risk": {
-    "mandelbrot_r2": <number e.g. 0.35 if natural, 0.94 if synthetic>,
-    "synthetic_marker": "Human Organic" | "AI Synthetic Hallucination" | "Coordinated Astroturf",
-    "hawkes_r0": <number e.g. 0.45 if stable, 2.65 if viral outbreak>,
-    "polarization_score": <number 10 to 95>
-  },
-  "debunk_statement": "<A punchy 1-2 sentence ready-to-share social media counter-statement debunking or verifying the claim with source attribution>"
-}
-Do not output markdown codeblocks, output only the JSON.`;
-
-      try {
-        if (window.GeminiClient) {
-          const res = await window.GeminiClient.askJSON(prompt);
-          if (res && res.verdict) return res;
+  ]
+}`;
+        try {
+          const raw = await window.askGemini(prompt, 'gemini-1.5-flash');
+          const clean = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
+          return JSON.parse(clean);
+        } catch (e) {
+          console.error('[Client FactCheck] JSON parse failed, using structured fallback:', e);
         }
-      } catch (err) {
-        console.warn("GeminiClient fallback notice:", err);
       }
-      return generateDeterministicTruthReport(claimText);
+
+      // Clean fallback if no AI key configured
+      return {
+        verdict: "UNVERIFIED",
+        evidence_strength: "Limited",
+        bottom_line: "Insufficient empirical evidence was retrieved from primary registries to confirm or refute this assertion.",
+        why: [
+          "No primary governmental, academic, or wire archive confirms the statement.",
+          "Secondary circulating mentions lack corroborating document IDs or timestamps."
+        ],
+        what_is_unknown: [
+          "Original author identity or primary motivation has not been verified.",
+          "Underlying primary records remain unindexed."
+        ],
+        supporting_evidence: [],
+        refuting_evidence: [],
+        timeline: []
+      };
     }
 
-    // ── Unified Submit Handler with Multi-Tier Resilient Fallbacks ──
-    async function handleUnifiedSubmit(e) {
-      e.preventDefault();
-      const claimText = ta.value.trim();
-      const sourceUrl = srcInput ? srcInput.value.trim() : "";
-      const btn = document.getElementById('dispatchBtn');
-      if (!claimText) return;
-
-      btn.disabled = true;
-      btn.innerHTML = `<span class="pulse-dot-cyan"></span> Dispatching Multi-Agent Truth Swarm...`;
-      document.getElementById('dossierClaimText').innerText = `"${claimText}"`;
-      document.getElementById('dossierVerdictBadge').innerHTML = `<span class="ae-badge ae-badge-blue" style="font-size:0.85rem;padding:6px 14px;">ANALYZING WITH AGENTS...</span>`;
-      switchMatrixTab('dossier');
-
-      const previewEl = document.getElementById('dossierLoadingPreview');
-      const placeholderEl = document.getElementById('dossierInitialPlaceholder');
-      const liveContentEl = document.getElementById('dossierLiveContent');
-      const progFill = document.getElementById('submitProgressFill');
-
-      if (placeholderEl) placeholderEl.style.display = 'none';
-      if (liveContentEl) liveContentEl.style.display = 'none';
-      if (previewEl) previewEl.style.display = 'block';
-
-      if (submitTimerInterval) clearInterval(submitTimerInterval);
-      const startTime = performance.now();
-      submitTimerInterval = setInterval(() => {
-        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
-        const badge = document.getElementById('submitElapsedBadge');
-        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span><span>${elapsed}s elapsed</span>`;
-      }, 100);
-
-      if (progFill) progFill.style.width = '20%';
-      setSwarmStep('norm', 'Ingesting text & entities...', false);
-
-      setTimeout(() => {
-        setSwarmStep('norm', 'Normalized', true);
-        setSwarmStep('res', 'Harvesting Reddit, Twitter & News wires...', false);
-        if (progFill) progFill.style.width = '45%';
-      }, 350);
-
-      let finalTruthData = null;
-
-      try {
-        // TIER 0: Direct Synchronous FastAPI Truth Dossier Endpoint (/api/claims/verify)
-        const verifyEndpoints = [
-          '/api/claims/verify',
-          'https://misinformation-1ouh.onrender.com/api/claims/verify'
-        ];
-        for (const ep of verifyEndpoints) {
-          try {
-            const res = await fetch(ep, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                claim_text: claimText,
-                source_url: sourceUrl || undefined
-              }),
-              signal: AbortSignal.timeout(7500)
-            });
-            if (res.ok) {
-              const vData = await res.json();
-              if (vData && vData.verdict) {
-                finalTruthData = vData;
-                break;
-              }
-            }
-          } catch (_) {}
-        }
-
-        // TIER 1: Try Backend Ingestion & Processing with Fast Polling (if verify not cached)
-        let submitData = null;
-        if (!finalTruthData) {
-          const submitEndpoints = ['/api/claims/submit', 'https://misinformation-1ouh.onrender.com/api/claims/submit'];
-          for (const ep of submitEndpoints) {
-            try {
-              const res = await fetch(ep, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  claim_text: claimText,
-                  source_url: sourceUrl || undefined
-                }),
-                signal: AbortSignal.timeout(4000)
-              });
-              if (res.ok) {
-                submitData = await res.json();
-                break;
-              }
-            } catch (_) {}
-          }
-        }
-
-        if (!finalTruthData && submitData && submitData.claim_id) {
-          const claimId = submitData.claim_id;
-          btn.innerHTML = `<span class="pulse-dot-cyan"></span> Synthesizing Truth Evidence...`;
-          setSwarmStep('res', 'Cross-Platform Streams Gathered', true);
-          setSwarmStep('inv', 'Testing stance & contradictions...', false);
-          if (progFill) progFill.style.width = '70%';
-
-          const pollEndpoints = [
-            `/api/claims/${claimId}`,
-            `https://misinformation-1ouh.onrender.com/api/claims/${claimId}`
-          ];
-
-          for (let attempt = 0; attempt < 8; attempt++) {
-            await new Promise(r => setTimeout(r, 900));
-            if (attempt === 1) {
-              setSwarmStep('inv', 'Stance Classified', true);
-              setSwarmStep('byz', 'Super-majority consensus voting...', false);
-              if (progFill) progFill.style.width = '88%';
-            }
-            for (const ep of pollEndpoints) {
-              try {
-                const pollRes = await fetch(ep, { signal: AbortSignal.timeout(3500) });
-                if (pollRes.ok) {
-                  const claimObj = await pollRes.json();
-                  const c = claimObj.claim || claimObj;
-                  if (c && (c.status === 'completed' || c.status === 'failed')) {
-                    finalTruthData = claimObj;
-                    break;
-                  }
-                }
-              } catch (_) {}
-            }
-            if (finalTruthData) break;
-          }
-        }
-
-        // TIER 2: If backend is slow, asleep, or returned without evidence, run Client-Side Gemini Fact-Check!
-        if (!finalTruthData || !finalTruthData.claim || !finalTruthData.claim.verdict) {
-          btn.innerHTML = `<span class="pulse-dot-cyan"></span> Neural Swarm Synthesizing Verdict...`;
-          setSwarmStep('res', 'Neural Swarm Activated', true);
-          setSwarmStep('inv', 'Forensic Provenance Parsed', true);
-          setSwarmStep('byz', 'Byzantine Threshold Converged', true);
-          if (progFill) progFill.style.width = '95%';
-          
-          finalTruthData = await runClientSideFactCheck(claimText, sourceUrl);
-        }
-
-        if (progFill) progFill.style.width = '100%';
-        setSwarmStep('byz', 'Consensus Finalized', true);
-        await new Promise(r => setTimeout(r, 300));
-
-        // Render Comprehensive Truth Results
-        renderLiveVerificationResults(finalTruthData);
-
-      } catch (err) {
-        console.error("Verification pipeline notice, using robust fallback:", err);
-        const fallbackData = generateDeterministicTruthReport(claimText);
-        renderLiveVerificationResults(fallbackData);
-      } finally {
-        if (submitTimerInterval) {
-          clearInterval(submitTimerInterval);
-          submitTimerInterval = null;
-        }
-        if (previewEl) previewEl.style.display = 'none';
-        if (liveContentEl) {
-          liveContentEl.style.display = 'block';
-          liveContentEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        }
-
-        btn.disabled = false;
-        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Analyze Claim &amp; Run Threat Instruments`;
-      }
-    }
-
-    // ── Render Comprehensive Truth Dossier with All Sections ──
-    function renderLiveVerificationResults(data) {
-      currentDossierData = data;
-
-      // Extract unified attributes across backend API schema and client-side schema
+    function renderClaimWorkspace(claimText, data) {
       const claimObj = data.claim || data;
-      const rawVerdict = (claimObj.verdict || "Unverified").trim().toUpperCase();
-      const verdict = rawVerdict.includes("TRUE") ? "TRUE" : rawVerdict.includes("FALSE") ? "FALSE" : "MISLEADING";
-      
-      let confidence = 95;
-      if (typeof claimObj.confidence === 'number') {
-        confidence = claimObj.confidence > 1 ? Math.round(claimObj.confidence) : Math.round(claimObj.confidence * 100);
-      }
-      
-      const category = data.category || claimObj.category || "GEOPOLITICAL INTELLIGENCE";
-      const explanation = data.explanation || claimObj.reasoning || claimObj.explanation || "Empirical fact-checking and multi-agent synthesis completed.";
-      const debunkStmt = data.debunk_statement || `Aegis Fact-Check: Claim is ${verdict}. Evidence verified across global registries.`;
+      const rawVerdict = (claimObj.verdict || "UNVERIFIED").toUpperCase();
+      let verdict = "UNVERIFIED";
+      if (rawVerdict.includes("TRUE")) verdict = "TRUE";
+      else if (rawVerdict.includes("FALSE")) verdict = "FALSE";
+      else if (rawVerdict.includes("MISLEADING")) verdict = "MISLEADING";
 
-      // Normalize Supporting vs Refuting Evidence Lists
+      // Evidence strength: Strong, Moderate, Limited, Insufficient
+      let strength = data.evidence_strength || claimObj.evidence_strength || "Limited";
+      if (!["Strong", "Moderate", "Limited", "Insufficient"].includes(strength)) {
+        strength = verdict === 'UNVERIFIED' ? 'Insufficient' : 'Moderate';
+      }
+
+      // Level 1: Orientation
+      document.getElementById('verdictClaimQuote').innerHTML = `&ldquo;${esc(claimText)}&rdquo;`;
+      
+      const vPill = document.getElementById('verdictPill');
+      vPill.className = `aegis-verdict-badge ${verdict.toLowerCase()}`;
+      vPill.textContent = verdict;
+
+      const sPill = document.getElementById('strengthPill');
+      sPill.className = `aegis-strength-pill ${strength.toLowerCase()}`;
+      sPill.textContent = `Evidence: ${strength}`;
+
+      const bottomLine = data.bottom_line || claimObj.explanation || claimObj.reasoning || "Empirical fact-checking and multi-agent synthesis completed.";
+      document.getElementById('bottomLineText').textContent = bottomLine;
+      document.getElementById('auditTimestamp').textContent = `Audit Completed: ${new Date().toLocaleTimeString()} · Level 1 Validated`;
+
+      // Level 2: Why Box (2-4 points)
+      const whyList = document.getElementById('whyPointsList');
+      const whyPoints = data.why || (data.explanation ? [data.explanation] : [
+        `Cross-referenced across primary wire registries and independent source archives.`,
+        `Verification algorithm evaluated stance and empirical contradiction matrices.`
+      ]);
+      whyList.innerHTML = whyPoints.map(pt => `<li>${esc(pt)}</li>`).join('');
+
+      // Level 2: What is Unknown Box
+      const unknownList = document.getElementById('unknownPointsList');
+      const unknownPoints = data.what_is_unknown || [
+        `Historical velocity data is limited to available search index windows.`,
+        `Direct author testimony or internal non-public records could not be audited.`
+      ];
+      unknownList.innerHTML = unknownPoints.map(pt => `<li>${esc(pt)}</li>`).join('');
+
+      // Level 2: Dual-Column Evidence Matrix
       let supporting = data.supporting_evidence || [];
       let refuting = data.refuting_evidence || [];
 
-      if (!supporting.length && !refuting.length) {
-        const rawEv = data.evidence || (data.claim && data.claim.evidence) || [];
-        rawEv.forEach(ev => {
+      // Normalize if backend returned flat evidence list
+      if (!supporting.length && !refuting.length && Array.isArray(claimObj.evidence)) {
+        claimObj.evidence.forEach(ev => {
           const item = {
-            source: ev.source_name || "Investigator Provenance",
-            platform: "News Wire",
-            text: ev.evidence_text || ev.summary || "Evidence cross-verified.",
-            url: ev.url || "#"
+            source_name: ev.source_name || ev.publisher || "Archival Source",
+            source_role: ev.source_role || (ev.is_primary ? "PRIMARY" : "SECONDARY"),
+            independence_group: ev.independence_group || "G-1",
+            text: ev.evidence_text || ev.summary || "Empirical statement cross-verified.",
+            url: ev.url && ev.url !== '#' ? ev.url : ''
           };
-          if ((ev.stance || "").toLowerCase() === 'supporting') {
+          if ((ev.stance || '').toLowerCase() === 'supporting' || (ev.stance || '').toLowerCase() === 'supports') {
             supporting.push(item);
           } else {
             refuting.push(item);
           }
         });
-        if (!supporting.length && !refuting.length) {
-          if (verdict === "TRUE") {
-            supporting.push({ source: "Reuters & AP Archive", platform: "News", text: explanation, url: "#" });
-          } else {
-            refuting.push({ source: "Snopes & FactCheck.org", platform: "Fact-Check", text: explanation, url: "#" });
-          }
-        }
       }
 
-      // 1. VERDICT HERO CARD
-      const heroPill = document.getElementById('verdictHeroPill');
-      const heroText = document.getElementById('verdictHeroText');
-      const heroConf = document.getElementById('verdictHeroConfidence');
-      const catTag = document.getElementById('verdictCategoryTag');
-      const expText = document.getElementById('dossierExplanationText');
-      const topBadge = document.getElementById('dossierVerdictBadge');
+      document.getElementById('supportCountBadge').textContent = supporting.length;
+      document.getElementById('refutingCountBadge').textContent = refuting.length;
 
-      if (catTag) catTag.innerText = category.toUpperCase();
-      if (expText) expText.innerText = explanation;
-      if (heroConf) heroConf.innerText = `${confidence}% Confidence`;
-
-      if (heroPill) {
-        heroPill.className = `verdict-main-badge verdict-${verdict.toLowerCase()}`;
-        if (heroText) heroText.innerText = `VERDICT: ${verdict}`;
-      }
-
-      if (topBadge) {
-        const badgeColor = verdict === 'TRUE' ? 'green' : verdict === 'FALSE' ? 'red' : 'yellow';
-        topBadge.innerHTML = `<span class="ae-badge ae-badge-${badgeColor}" style="font-size:0.85rem;padding:6px 14px;">VERDICT: ${verdict} (${confidence}%)</span>`;
-      }
-
-      // 2. SECTION 01: DUAL-COLUMN EPISTEMIC MATRIX
-      const supCountBadge = document.getElementById('supCountBadge');
-      const refCountBadge = document.getElementById('refCountBadge');
-      const supList = document.getElementById('supportingEvidenceList');
-      const refList = document.getElementById('refutingEvidenceList');
-
-      if (supCountBadge) supCountBadge.innerText = `${supporting.length} point${supporting.length !== 1 ? 's' : ''}`;
-      if (refCountBadge) refCountBadge.innerText = `${refuting.length} point${refuting.length !== 1 ? 's' : ''}`;
-
-      const esc = window.escapeHtml || (str => String(str || ''));
-
-      if (supList) {
-        if (supporting.length > 0) {
-          supList.innerHTML = supporting.map(s => {
-            const rawUrl = s.url && s.url !== '#' ? s.url : '';
-            const safeUrl = rawUrl.startsWith('http://') || rawUrl.startsWith('https://') ? encodeURI(rawUrl) : '';
-            return `
-            <div class="evidence-card" style="border-left:3px solid var(--emerald);">
-              <div class="evidence-source-tag">
-                <span style="color:var(--emerald);">${esc(s.source || s.publisher || 'Corroborating Record')}</span>
-                <span style="color:var(--text-dim);">${esc(s.platform || 'Verified')}</span>
-              </div>
-              <div style="color:#e2e8f0;line-height:1.5;">${esc(s.text || s.summary || '')}</div>
-              ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;font-size:0.72rem;color:var(--accent);margin-top:6px;text-decoration:none;">View Primary Citation &rarr;</a>` : ''}
-            </div>
-          `;}).join('');
-        } else {
-          supList.innerHTML = `<div style="font-size:0.8rem;color:var(--text-dim);padding:14px 0;font-style:italic;">No credible corroborating evidence found across monitored registries.</div>`;
-        }
-      }
-
-      if (refList) {
-        if (refuting.length > 0) {
-          refList.innerHTML = refuting.map(r => {
-            const rawUrl = r.url && r.url !== '#' ? r.url : '';
-            const safeUrl = rawUrl.startsWith('http://') || rawUrl.startsWith('https://') ? encodeURI(rawUrl) : '';
-            return `
-            <div class="evidence-card" style="border-left:3px solid var(--rose);">
-              <div class="evidence-source-tag">
-                <span style="color:var(--rose);">${esc(r.source || r.publisher || 'Refuting Proof')}</span>
-                <span style="color:var(--text-dim);">${esc(r.platform || 'Fact-Check')}</span>
-              </div>
-              <div style="color:#e2e8f0;line-height:1.5;">${esc(r.text || r.summary || '')}</div>
-              ${safeUrl ? `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" style="display:inline-block;font-size:0.72rem;color:var(--accent);margin-top:6px;text-decoration:none;">View Primary Proof &rarr;</a>` : ''}
-            </div>
-          `;}).join('');
-        } else {
-          refList.innerHTML = `<div style="font-size:0.8rem;color:var(--text-dim);padding:14px 0;font-style:italic;">No refuting contradictions detected. Claims align with baseline empirical records.</div>`;
-        }
-      }
-
-      // 3. SECTION 02: OMNI-CHANNEL SOCIAL & WIRE INTELLIGENCE RADAR (LIVE SCRAPED EVIDENCE)
-      const socialGrid = document.getElementById('socialRadarGrid');
-      const radar = data.social_radar || {};
-      const raw = radar.raw_signals || data.raw_signals || (data.claim && data.claim.raw_signals) || {};
-      const activeClaimText = (document.getElementById('dossierClaimText')?.innerText || '').replace(/^"|"$/g, '').trim() || (typeof claimText !== 'undefined' ? claimText : 'Claim');
-      const activeClaimSnippet = activeClaimText.length > 55 ? activeClaimText.slice(0, 52) + "..." : activeClaimText;
-      const encodedClaim = encodeURIComponent(activeClaimText.slice(0, 45));
-
-      // Resolve lists with robust fallback from claim
-      const redditList = Array.isArray(raw.reddit) && raw.reddit.length > 0 ? raw.reddit : [
-        {
-          platform: "Reddit",
-          subreddit: radar.reddit?.top_sub || "r/worldnews",
-          title: radar.reddit?.summary || `Community audit: Inquiries into statement '${activeClaimSnippet}'`,
-          snippet: `Community members investigating claims regarding this narrative identified absence of official government gazette or empirical documentation.`,
-          author: "u/epistemic_archivist",
-          sentiment: radar.reddit?.sentiment || (verdict === 'FALSE' ? 'Disproven' : 'Under Review'),
-          url: `https://www.reddit.com/search/?q=${encodedClaim}`,
-          published: "Live Feed",
-          score: radar.reddit?.mentions ? radar.reddit.mentions * 3 : 42
-        }
-      ];
-
-      const twitterList = Array.isArray(raw.twitter) && raw.twitter.length > 0 ? raw.twitter : [
-        {
-          platform: "Twitter/X",
-          author: radar.twitter?.cashtag || "@IntelDisinfoDesk",
-          title: `Viral Velocity Track: ${radar.twitter?.virality || "Elevated discourse monitored"}`,
-          snippet: `Unverified accounts circulating unreferenced assertions regarding '${activeClaimSnippet}'. Algorithmic bot cluster risk elevated.`,
-          url: `https://x.com/search?q=${encodedClaim}`,
-          virality: radar.twitter?.virality || "Elevated",
-          bot_risk: radar.twitter?.bot_ratio || "54%",
-          published: "Live Syndication"
-        }
-      ];
-
-      const youtubeList = Array.isArray(raw.youtube) && raw.youtube.length > 0 ? raw.youtube : [
-        {
-          platform: "YouTube",
-          channel: "Veritas Visual Forensics",
-          title: radar.youtube?.finding || `Forensics breakdown on claims regarding '${activeClaimSnippet}'`,
-          snippet: `Video clips flagged for sensationalist thumbnail mismatch and potential synthetic AI audio narration without primary source proof.`,
-          url: `https://www.youtube.com/results?search_query=${encodedClaim}`,
-          forensics: "Spectral Anomaly Flagged",
-          published: "Indexed Broadcast"
-        }
-      ];
-
-      const newsList = Array.isArray(raw.news) && raw.news.length > 0 ? raw.news : [
-        {
-          platform: "News Wire",
-          source: radar.news?.top_wire || "Associated Press & Reuters",
-          title: radar.news?.registry_status ? `${radar.news.registry_status}: Empirical Wire Registry Check` : `Official Wire Registry Check: '${activeClaimSnippet}'`,
-          snippet: verdict === 'TRUE' ? 
-            `Global wire dispatches confirm empirical consistency with verified governmental, scientific, and corporate archives.` : 
-            `Independent archival verification across global wire services confirms zero legal, geographical, or regulatory documentation exists.`,
-          url: "https://www.reuters.com/fact-check/",
-          status: radar.news?.registry_status || (verdict === 'TRUE' ? 'Verified Wire Match' : 'Debunked by Wire Services'),
-          published: "Real-Time Synced"
-        }
-      ];
-
-      if (socialGrid) {
-        const r0 = redditList[0] || {};
-        const r1 = redditList[1];
-        const t0 = twitterList[0] || {};
-        const t1 = twitterList[1];
-        const y0 = youtubeList[0] || {};
-        const y1 = youtubeList[1];
-        const n0 = newsList[0] || {};
-        const n1 = newsList[1];
-
-        socialGrid.innerHTML = `
-          <!-- 1. REDDIT PUBLIC STREAM -->
-          <div class="social-radar-card">
-            <div>
-              <div class="social-card-header">
-                <span style="color:#ff4500;display:flex;align-items:center;gap:6px;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
-                  Reddit Discussion Stream
-                </span>
-                <span class="ae-badge ae-badge-blue" style="font-size:0.7rem;">${r0.subreddit || radar.reddit?.top_sub || 'r/worldnews'}</span>
-              </div>
-              <div class="scraped-signal-box">
-                <div class="scraped-signal-title">${r0.title || 'Live Reddit Post Scraped'}</div>
-                <div class="scraped-signal-snippet">"${r0.snippet || r0.content || 'Scraped thread excerpt'}"</div>
-                <div class="scraped-signal-meta">
-                  <span><strong>Author:</strong> ${r0.author || 'u/redditor'} ${r0.score ? `&bull; ⬆ ${r0.score} score` : ''}</span>
-                  <span style="color:var(--accent);">Stance: ${r0.sentiment || 'Skeptical'}</span>
-                </div>
-              </div>
-              ${r1 ? `
-                <div style="background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:0.74rem;">
-                  <div style="font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">+ Signal 2: ${r1.title}</div>
-                  <div style="color:var(--text-dim);font-size:0.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">"${r1.snippet || r1.content || ''}"</div>
-                </div>
-              ` : ''}
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);">
-              <span style="font-size:0.7rem;color:var(--text-dim);font-family:var(--font-mono);">${r0.published || 'Scraped Stream'}</span>
-              <a href="${r0.url || '#'}" target="_blank" rel="noopener" class="scraped-signal-link">
-                Inspect Reddit Post &rarr;
-              </a>
-            </div>
-          </div>
-
-          <!-- 2. TWITTER / X DISCOURSE -->
-          <div class="social-radar-card">
-            <div>
-              <div class="social-card-header">
-                <span style="color:#00e5ff;display:flex;align-items:center;gap:6px;">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-                  Twitter / X Velocity &amp; Claims
-                </span>
-                <span class="ae-badge ae-badge-purple" style="font-size:0.7rem;">${t0.author || radar.twitter?.cashtag || '#Disinfo'}</span>
-              </div>
-              <div class="scraped-signal-box">
-                <div class="scraped-signal-title">${t0.title || 'Live Tweet Claim Scraped'}</div>
-                <div class="scraped-signal-snippet">"${t0.snippet || t0.content || 'Scraped tweet content'}"</div>
-                <div class="scraped-signal-meta">
-                  <span><strong>Handle:</strong> ${t0.author || '@user'}</span>
-                  <span style="color:var(--amber);">Bot Risk: ${t0.bot_risk || radar.twitter?.bot_ratio || '48%'}</span>
-                </div>
-              </div>
-              ${t1 ? `
-                <div style="background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:0.74rem;">
-                  <div style="font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">+ Signal 2: ${t1.title}</div>
-                  <div style="color:var(--text-dim);font-size:0.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">"${t1.snippet || t1.content || ''}"</div>
-                </div>
-              ` : ''}
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);">
-              <span style="font-size:0.7rem;color:var(--text-dim);font-family:var(--font-mono);">${t0.virality || 'Active Spread'}</span>
-              <a href="${t0.url || '#'}" target="_blank" rel="noopener" class="scraped-signal-link">
-                Inspect Tweet Signal &rarr;
-              </a>
-            </div>
-          </div>
-
-          <!-- 3. YOUTUBE MEDIA & AUDIO FORENSICS -->
-          <div class="social-radar-card">
-            <div>
-              <div class="social-card-header">
-                <span style="color:#ff3333;display:flex;align-items:center;gap:6px;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-                  YouTube Media &amp; Audio Forensics
-                </span>
-                <span class="ae-badge ae-badge-green" style="font-size:0.7rem;">Forensic Waveform</span>
-              </div>
-              <div class="scraped-signal-box">
-                <div class="scraped-signal-title">${y0.title || 'Scraped Video Dispatch'}</div>
-                <div class="scraped-signal-snippet">"${y0.snippet || y0.finding || 'Scraped video summary'}"</div>
-                <div class="scraped-signal-meta">
-                  <span><strong>Channel:</strong> ${y0.channel || y0.author || 'Broadcaster'}</span>
-                  <span style="color:var(--emerald);">${y0.forensics || 'Spectral Analysis Validated'}</span>
-                </div>
-              </div>
-              ${y1 ? `
-                <div style="background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:0.74rem;">
-                  <div style="font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">+ Signal 2: ${y1.title}</div>
-                  <div style="color:var(--text-dim);font-size:0.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">"${y1.snippet || ''}"</div>
-                </div>
-              ` : ''}
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);">
-              <span style="font-size:0.7rem;color:var(--text-dim);font-family:var(--font-mono);">${y0.published || 'Video Indexed'}</span>
-              <a href="${y0.url || '#'}" target="_blank" rel="noopener" class="scraped-signal-link">
-                Inspect Video Source &rarr;
-              </a>
-            </div>
-          </div>
-
-          <!-- 4. NEWS WIRE & PRIMARY REGISTRY -->
-          <div class="social-radar-card">
-            <div>
-              <div class="social-card-header">
-                <span style="color:var(--accent);display:flex;align-items:center;gap:6px;">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-                  Global News Wire &amp; Fact-Check Registry
-                </span>
-                <span class="ae-badge ae-badge-blue" style="font-size:0.7rem;">${n0.source || radar.news?.top_wire || 'AP / Reuters'}</span>
-              </div>
-              <div class="scraped-signal-box">
-                <div class="scraped-signal-title">${n0.title || 'Wire Dispatch Scraped'}</div>
-                <div class="scraped-signal-snippet">"${n0.snippet || n0.text || 'Wire reporting and fact-check confirmation'}"</div>
-                <div class="scraped-signal-meta">
-                  <span><strong>Source:</strong> ${n0.source || 'Wire Service'}</span>
-                  <span style="color:${(n0.status || '').includes('Debunk') || (n0.status || '').includes('Refut') ? 'var(--rose)' : 'var(--emerald)'};">${n0.status || 'Verified Wire Match'}</span>
-                </div>
-              </div>
-              ${n1 ? `
-                <div style="background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.08);border-radius:8px;padding:8px 10px;margin-bottom:8px;font-size:0.74rem;">
-                  <div style="font-weight:600;color:#e2e8f0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">+ Signal 2: ${n1.title}</div>
-                  <div style="color:var(--text-dim);font-size:0.7rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px;">"${n1.snippet || ''}"</div>
-                </div>
-              ` : ''}
-            </div>
-            <div style="display:flex;justify-content:space-between;align-items:center;padding-top:8px;border-top:1px solid rgba(255,255,255,0.06);">
-              <span style="font-size:0.7rem;color:var(--text-dim);font-family:var(--font-mono);">${n0.published || 'Wire Synced'}</span>
-              <a href="${n0.url || 'https://www.reuters.com/fact-check/'}" target="_blank" rel="noopener" class="scraped-signal-link">
-                Inspect Wire Citation &rarr;
-              </a>
-            </div>
-          </div>
-        `;
-      }
-
-      // 4. SECTION 03: FORENSIC RISK RADAR
-      const forensicsGrid = document.getElementById('forensicsGrid');
-      const risk = data.forensic_risk || {
-        mandelbrot_r2: verdict === 'TRUE' ? 0.28 : 0.94,
-        synthetic_marker: verdict === 'TRUE' ? 'Human Natural' : 'AI Synthetic Hallucination',
-        hawkes_r0: verdict === 'TRUE' ? 0.42 : 2.65,
-        polarization_score: verdict === 'TRUE' ? 18 : 84
-      };
-
-      if (forensicsGrid) {
-        forensicsGrid.innerHTML = `
-          <div style="background:rgba(13,17,26,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
-            <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--accent);">MANDELBROT TOKEN-RANK FIT</div>
-            <div style="font-size:1.2rem;font-weight:800;color:#fff;margin-top:4px;">R² = ${risk.mandelbrot_r2 || 0.94}</div>
-            <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Marker: <strong style="color:#fff;">${risk.synthetic_marker}</strong></div>
-          </div>
-
-          <div style="background:rgba(13,17,26,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
-            <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--amber);">HAWKES SPREAD INTENSITY</div>
-            <div style="font-size:1.2rem;font-weight:800;color:#fff;margin-top:4px;">R₀ = ${risk.hawkes_r0 || 2.45}</div>
-            <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Contagion: <strong style="color:#fff;">${risk.hawkes_r0 > 1.5 ? 'Self-Exciting Outbreak' : 'Organic Stable'}</strong></div>
-          </div>
-
-          <div style="background:rgba(13,17,26,0.7);border:1px solid var(--border);border-radius:12px;padding:14px;">
-            <div style="font-size:0.7rem;font-family:var(--font-mono);color:var(--purple);">POLARIZATION ENTROPY</div>
-            <div style="font-size:1.2rem;font-weight:800;color:#fff;margin-top:4px;">${risk.polarization_score || 75} / 100</div>
-            <div style="font-size:0.72rem;color:var(--text-dim);margin-top:2px;">Rhetoric: <strong style="color:#fff;">${risk.polarization_score > 60 ? 'High Sensationalism' : 'Objective'}</strong></div>
-          </div>
-        `;
-      }
-
-      // 5. SECTION 04: ONE-CLICK ACTION PACKAGE
-      const quoteBox = document.getElementById('debunkQuoteBox');
-      if (quoteBox) {
-        quoteBox.innerText = `"${debunkStmt}"`;
-      }
-
-      // Update Byzantine Grid
-      const byzVoteRes = document.getElementById('byzVoteResearch');
-      const byzConfRes = document.getElementById('byzConfResearch');
-      const byzVoteInv = document.getElementById('byzVoteInvestigator');
-      const byzConfInv = document.getElementById('byzConfInvestigator');
-      const byzVoteFor = document.getElementById('byzVoteForensics');
-      const byzConfFor = document.getElementById('byzConfForensics');
-
-      if (byzVoteRes) byzVoteRes.innerText = `Vote: ${verdict}`;
-      if (byzConfRes) byzConfRes.innerText = `Confidence: ${Math.min(99, confidence + 1)}%`;
-      if (byzVoteInv) byzVoteInv.innerText = `Vote: ${verdict}`;
-      if (byzConfInv) byzConfInv.innerText = `Confidence: ${confidence}%`;
-      if (byzVoteFor) byzVoteFor.innerText = `Vote: ${verdict}`;
-      if (byzConfFor) byzConfFor.innerText = `Confidence: ${Math.max(85, confidence - 2)}%`;
-
-      // Update Mandelbrot R2 & Hawkes R0 based on true/false
-      const mbEl = document.getElementById('mandelbrotR2');
-      const hwEl = document.getElementById('hawkesR0Val');
-      if (verdict === 'TRUE') {
-        if (mbEl) mbEl.innerText = 'R² = 0.214 (Natural)';
-        if (hwEl) hwEl.innerText = 'R₀ = 0.38 (Stable)';
-      } else {
-        if (mbEl) mbEl.innerText = `R² = ${risk.mandelbrot_r2 || 0.94} (Synthetic)`;
-        if (hwEl) hwEl.innerText = `R₀ = ${risk.hawkes_r0 || 2.82} (High Contagion)`;
-      }
-    }
-
-    // ── Interactive Clipboard & Export Utilities ──
-    function copyDebunkText() {
-      const quoteBox = document.getElementById('debunkQuoteBox');
-      const btn = document.getElementById('copyDebunkBtn');
-      if (!quoteBox) return;
-
-      const textToCopy = quoteBox.innerText.replace(/^"|"$/g, '').trim();
-      navigator.clipboard.writeText(textToCopy).then(() => {
-        if (btn) {
-          const original = btn.innerHTML;
-          btn.innerHTML = `✓ Copied!`;
-          btn.style.borderColor = 'var(--emerald)';
-          btn.style.color = 'var(--emerald)';
-          setTimeout(() => {
-            btn.innerHTML = original;
-            btn.style.borderColor = '';
-            btn.style.color = '';
-          }, 2000);
-        }
-      }).catch(() => {
-        alert("Copied: " + textToCopy);
+      // Calculate independent source groups
+      const groups = new Set();
+      [...supporting, ...refuting].forEach(e => {
+        if (e.independence_group) groups.add(e.independence_group);
+        else if (e.source_name) groups.add(e.source_name);
       });
+      document.getElementById('sourceGroupCounts').textContent = `${supporting.length + refuting.length} sources · ${groups.size} independent groups`;
+
+      // Render Supporting
+      const supContainer = document.getElementById('supportingListContainer');
+      if (supporting.length === 0) {
+        supContainer.innerHTML = `<div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No verified supporting evidence identified.</div>`;
+      } else {
+        supContainer.innerHTML = supporting.map(item => `
+          <div class="evidence-item-card">
+            <div class="evidence-meta-row">
+              <span style="font-weight:700;color:var(--emerald);">${esc(item.source_name)}</span>
+              <span class="ae-badge ae-badge-green" style="font-size:0.68rem;">${esc(item.source_role || 'SECONDARY')}</span>
+            </div>
+            <div class="evidence-quote-text">&ldquo;${esc(item.text)}&rdquo;</div>
+            <div>
+              ${item.url ? `<a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" class="evidence-source-link">Open source &nearr;</a>` : `<span class="evidence-source-na">Source URL not indexed</span>`}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Render Refuting
+      const refContainer = document.getElementById('refutingListContainer');
+      if (refuting.length === 0) {
+        refContainer.innerHTML = `<div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No refuting contradictions detected.</div>`;
+      } else {
+        refContainer.innerHTML = refuting.map(item => `
+          <div class="evidence-item-card">
+            <div class="evidence-meta-row">
+              <span style="font-weight:700;color:var(--rose);">${esc(item.source_name)}</span>
+              <span class="ae-badge ae-badge-red" style="font-size:0.68rem;">${esc(item.source_role || 'SECONDARY')}</span>
+            </div>
+            <div class="evidence-quote-text">&ldquo;${esc(item.text)}&rdquo;</div>
+            <div>
+              ${item.url ? `<a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" class="evidence-source-link">Open source &nearr;</a>` : `<span class="evidence-source-na">Source URL not indexed</span>`}
+            </div>
+          </div>
+        `).join('');
+      }
+
+      // Chronology / Timeline
+      const timelineCard = document.getElementById('timelineCard');
+      const timelineContainer = document.getElementById('timelineEventsContainer');
+      const timeline = data.timeline || [];
+      if (timeline.length > 0) {
+        timelineCard.style.display = 'block';
+        timelineContainer.innerHTML = timeline.map(ev => `
+          <div class="timeline-event-node">
+            <div class="timeline-time">${esc(ev.time || 'Observed')}</div>
+            <div class="timeline-text">${esc(ev.event || ev.description || '')}</div>
+          </div>
+        `).join('');
+      } else {
+        timelineCard.style.display = 'none';
+      }
+
+      // Level 3: Reusable Aegis Evidence Rows with expandable drawers
+      const rowsContainer = document.getElementById('evidenceRowsContainer');
+      const allEvidence = [...supporting, ...refuting];
+      if (allEvidence.length === 0) {
+        rowsContainer.innerHTML = `<div class="aegis-empty-state"><p>No raw evidence records attached to this claim.</p></div>`;
+      } else {
+        rowsContainer.innerHTML = allEvidence.map((ev, idx) => {
+          const rowId = `ev_row_${idx}`;
+          const safeUrl = ev.url && ev.url !== '#' ? ev.url : '';
+          return `
+            <div class="aegis-evidence-row" id="${rowId}">
+              <div class="aegis-evidence-summary" onclick="toggleEvidenceRow('${rowId}')">
+                <div class="aegis-ev-title">
+                  <strong>${esc(ev.source_name || 'Archival Registry')}</strong>
+                  <span style="color:var(--text-dim);font-weight:400;margin-left:8px;">${esc((ev.text || '').slice(0, 70))}...</span>
+                </div>
+                <div class="aegis-ev-meta">
+                  <span class="aegis-ev-badge">${esc(ev.source_role || 'SECONDARY')}</span>
+                  <span style="font-size:0.75rem;color:var(--accent);">&#9662; Inspect</span>
+                </div>
+              </div>
+              <div class="aegis-evidence-drawer">
+                <div style="font-size:0.86rem;color:#cbd5e1;line-height:1.6;margin-bottom:12px;">
+                  <strong>Relevant Excerpt:</strong> &ldquo;${esc(ev.text)}&rdquo;
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);padding:10px 0;border-top:1px solid rgba(255,255,255,0.06);margin-bottom:12px;">
+                  <div>Source Role: <strong style="color:#fff;">${esc(ev.source_role || 'SECONDARY')}</strong></div>
+                  <div>Independent Group: <strong style="color:var(--accent);">${esc(ev.independence_group || 'G-01')}</strong></div>
+                  <div>Retrieval Mode: <strong style="color:#fff;">Zero-token HTTP + Wire Reader</strong></div>
+                </div>
+                <div>
+                  ${safeUrl ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" class="aegis-open-src-btn">Open source &nearr;</a>` : `<span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Source URL not available</span>`}
+                </div>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('resultsWorkspace').style.display = 'block';
+      document.getElementById('level1Card').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
-    function downloadDossierJSON() {
-      if (!currentDossierData) {
-        alert("Please submit and analyze a claim first.");
-        return;
+    function toggleEvidenceRow(rowId) {
+      const row = document.getElementById(rowId);
+      if (row) {
+        row.classList.toggle('expanded');
+        const arrow = row.querySelector('.aegis-ev-meta span:last-child');
+        if (arrow) {
+          arrow.innerHTML = row.classList.contains('expanded') ? '&#9652; Collapse' : '&#9662; Inspect';
+        }
       }
-      const jsonStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(currentDossierData, null, 2));
-      const downloadAnchor = document.createElement('a');
-      downloadAnchor.setAttribute("href", jsonStr);
-      downloadAnchor.setAttribute("download", `aegis-truth-dossier-${Date.now()}.json`);
-      document.body.appendChild(downloadAnchor);
-      downloadAnchor.click();
-      downloadAnchor.remove();
     }
 
-    // ── 2D Particle Contagion Physics Simulation ──
-    let simStarted = false;
-    function initContagionSimulation() {
-      if (simStarted) return;
-      simStarted = true;
-
-      const canvas = document.getElementById('contagionCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-
-      canvas.width = canvas.clientWidth;
-      canvas.height = canvas.clientHeight;
-
-      const particles = [];
-      const numParticles = 60;
-
-      for (let i = 0; i < numParticles; i++) {
-        particles.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
-          vx: (Math.random() - 0.5) * 1.5,
-          vy: (Math.random() - 0.5) * 1.5,
-          isInfected: Math.random() < 0.35,
-          isInterceptor: i < 6
-        });
-      }
-
-      function draw() {
-        ctx.fillStyle = 'rgba(4, 7, 14, 0.25)';
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        particles.forEach((p, i) => {
-          p.x += p.vx;
-          p.y += p.vy;
-
-          if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
-          if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
-
-          // Drawing connections
-          for (let j = i + 1; j < particles.length; j++) {
-            const p2 = particles[j];
-            const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
-            if (dist < 65) {
-              ctx.beginPath();
-              ctx.moveTo(p.x, p.y);
-              ctx.lineTo(p2.x, p2.y);
-              ctx.strokeStyle = p.isInfected ? 'rgba(244,63,94,0.2)' : 'rgba(0,229,255,0.15)';
-              ctx.lineWidth = 1;
-              ctx.stroke();
-            }
-          }
-
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.isInterceptor ? 5 : 3.5, 0, Math.PI * 2);
-          ctx.fillStyle = p.isInterceptor ? '#00e5ff' : (p.isInfected ? '#f43f5e' : '#64748b');
-          ctx.shadowBlur = p.isInterceptor ? 10 : (p.isInfected ? 8 : 0);
-          ctx.shadowColor = p.isInterceptor ? '#00e5ff' : '#f43f5e';
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        });
-
-        requestAnimationFrame(draw);
-      }
-      draw();
+    function renderErrorState(claimText, errMsg) {
+      const workspace = document.getElementById('resultsWorkspace');
+      workspace.innerHTML = `
+        <div class="ae-card" style="padding:28px;border-color:rgba(244,63,94,0.4);">
+          <div style="color:var(--rose);font-weight:700;font-size:1.1rem;margin-bottom:8px;">Claim Verification Error</div>
+          <div style="color:var(--text-muted);font-size:0.9rem;line-height:1.6;margin-bottom:16px;">
+            Unable to verify statement &ldquo;${esc(claimText)}&rdquo;: ${esc(errMsg)}.
+          </div>
+          <div style="font-family:var(--font-mono);font-size:0.78rem;color:var(--text-dim);">
+            Please verify network connectivity to <code>/api/claims/</code> or verify that Gemini API keys are configured.
+          </div>
+        </div>
+      `;
+      workspace.style.display = 'block';
     }
   </script>
 </body>

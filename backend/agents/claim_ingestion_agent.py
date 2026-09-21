@@ -126,6 +126,5 @@ claim_ingestion_agent = ClaimIngestionAgent()
 
 def get_claim_ingestion_agent() -> ClaimIngestionAgent:
     """Return singleton instance of ClaimIngestionAgent."""
-    global claim_ingestion_agent
     return claim_ingestion_agent
 

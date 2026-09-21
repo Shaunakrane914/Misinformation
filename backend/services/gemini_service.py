@@ -342,6 +342,5 @@ gemini_service = GeminiService()
 
 def get_gemini_service() -> GeminiService:
     """Return singleton instance of GeminiService."""
-    global gemini_service
     return gemini_service
 

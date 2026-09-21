@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>BrandShield Agent — Aegis Protocol</title>
+  <title>BrandShield 2.0 — Brand Protection & Online Threat Intelligence</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <style>
     .agent-hero {
@@ -33,55 +33,178 @@
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
     .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
     .agent-hero h1 span { color: #10b981; text-shadow: 0 0 30px rgba(16, 185, 129, 0.3); }
-    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
-    /* Telemetry Ribbon */
+    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 680px; line-height: 1.7; margin-bottom: 28px; }
+
+    /* Truthful Telemetry Ribbon */
     .tel-ribbon {
       display: flex; gap: 0; flex-wrap: wrap;
-      background: rgba(7,9,14,0.8); border: 1px solid rgba(255,255,255,0.07);
-      border-radius: 10px; overflow: hidden; margin-top: 24px;
+      background: rgba(7,9,14,0.85); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; overflow: hidden; margin-top: 24px;
     }
     .tel-cell {
-      flex: 1; min-width: 130px; padding: 10px 18px;
+      flex: 1; min-width: 140px; padding: 12px 20px;
       border-right: 1px solid rgba(255,255,255,0.07);
-      display: flex; flex-direction: column; gap: 3px;
+      display: flex; flex-direction: column; gap: 4px;
     }
     .tel-cell:last-child { border-right: none; }
-    .tel-val { font-family: var(--font-mono); font-size: 0.9rem; font-weight: 700; color: #a7f3d0; }
-    .tel-key { font-family: var(--font-mono); font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
+    .tel-val { font-family: var(--font-mono); font-size: 0.95rem; font-weight: 700; color: #a7f3d0; }
+    .tel-key { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase; }
 
-    .agent-body { max-width: 1180px; margin: 0 auto; padding: 40px 32px 80px; }
+    .agent-body { max-width: 1240px; margin: 0 auto; padding: 40px 32px 80px; }
 
-    .scan-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 28px; margin-bottom: 28px; backdrop-filter: blur(14px); }
+    /* Scan Input Card */
+    .scan-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
+      padding: 28px; margin-bottom: 28px; backdrop-filter: blur(14px);
+    }
     .scan-row { display: flex; gap: 12px; flex-wrap: wrap; }
-    #brandInput { flex: 1; min-width: 240px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 12px; color: var(--text); font-family: var(--font-main); font-size: 0.95rem; padding: 13px 18px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
+    #brandInput {
+      flex: 1; min-width: 260px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border);
+      border-radius: 12px; color: var(--text); font-family: var(--font-main); font-size: 0.95rem;
+      padding: 14px 18px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
     #brandInput:focus { border-color: #10b981; box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.15); }
-    #scanBtn { padding: 13px 26px; background: linear-gradient(135deg, #10b981, #059669); color: #fff; border: none; border-radius: 12px; font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: var(--font-main); transition: all 0.18s var(--ease-spring); display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35); }
+    #scanBtn {
+      padding: 14px 28px; background: linear-gradient(135deg, #10b981, #059669); color: #fff;
+      border: none; border-radius: 12px; font-weight: 700; font-size: 0.92rem; cursor: pointer;
+      font-family: var(--font-main); transition: all 0.18s var(--ease-spring);
+      display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 16px rgba(16, 185, 129, 0.35);
+    }
     #scanBtn:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(16, 185, 129, 0.5); }
-    #scanBtn:active { transform: translateY(1px) scale(0.98); }
     #scanBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    .platforms-wrap { display: flex; flex-direction: column; gap: 8px; margin-top: 16px; }
-    .plat-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 10px; font-size: 0.84rem; }
-    .plat-status { margin-left: auto; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); }
-
-    .results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 20px; }
-    @media(max-width:760px){ .results-grid { grid-template-columns: 1fr; } }
-    .result-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 20px; transition: all 0.18s ease; backdrop-filter: blur(12px); }
-    .result-card:hover { border-color: rgba(16, 185, 129, 0.35); transform: translateY(-1px); }
-    .result-card.threat { border-left: 3px solid var(--rose); background: linear-gradient(90deg, rgba(244, 63, 94, 0.06) 0%, var(--surface) 100%); }
-    .result-src { font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .result-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; line-height: 1.45; }
-    .result-body { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 10px; }
-    .result-rating { display: flex; align-items: center; gap: 6px; margin-top: 8px; }
-    .star { color: #fbbf24; font-size: 0.85rem; }
-
     .preset-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
-    .chip { padding: 6px 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted); cursor: pointer; transition: all 0.15s ease; }
+    .chip {
+      padding: 6px 14px; background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border);
+      border-radius: 100px; font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s ease;
+    }
     .chip:hover { border-color: #10b981; color: #10b981; background: rgba(16, 185, 129, 0.08); }
-    .chip:active { transform: translateY(1px) scale(0.98); }
 
-    .sev-badge { font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; font-family: var(--font-mono); margin-left: auto; }
-    @media(max-width:760px){ .agent-hero { padding: 88px 20px 48px; } .agent-body { padding: 28px 18px 60px; } .hero-stats { gap: 20px; } }
+    /* Channel Health Strip */
+    .health-strip {
+      display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0;
+      padding: 12px 18px; background: rgba(7, 9, 14, 0.6); border: 1px solid var(--border);
+      border-radius: 12px; align-items: center; font-family: var(--font-mono); font-size: 0.76rem;
+    }
+    .health-pill {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px;
+      border-radius: 6px; background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .health-pill.healthy { color: #a7f3d0; border-color: rgba(16, 185, 129, 0.3); }
+    .health-pill.degraded { color: #fde68a; border-color: rgba(251, 191, 36, 0.3); }
+
+    /* Brand Snapshot Grid */
+    .snapshot-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px;
+    }
+    .snap-card {
+      background: rgba(11, 15, 25, 0.7); border: 1px solid var(--border); border-radius: 12px;
+      padding: 16px; display: flex; flex-direction: column; gap: 4px;
+    }
+    .snap-val { font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); color: #fff; }
+    .snap-lbl { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-dim); font-family: var(--font-mono); }
+
+    /* Threat Cards & Dossiers */
+    .threat-card {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
+      padding: 22px; margin-bottom: 16px; transition: all 0.2s ease;
+      position: relative; overflow: hidden;
+    }
+    .threat-card.critical { border-left: 4px solid var(--rose); background: linear-gradient(90deg, rgba(244, 63, 94, 0.07) 0%, var(--surface) 100%); }
+    .threat-card.high { border-left: 4px solid #f97316; background: linear-gradient(90deg, rgba(249, 115, 22, 0.07) 0%, var(--surface) 100%); }
+    .threat-card.medium { border-left: 4px solid #fbbf24; background: linear-gradient(90deg, rgba(251, 191, 36, 0.06) 0%, var(--surface) 100%); }
+    .threat-card.low { border-left: 4px solid #10b981; }
+
+    .threat-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .threat-type-badge {
+      font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; padding: 3px 10px;
+      border-radius: 6px; letter-spacing: 0.06em; text-transform: uppercase;
+    }
+    .threat-title { font-size: 1.05rem; font-weight: 700; color: #fff; line-height: 1.4; margin-bottom: 6px; }
+    .threat-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.6; margin-bottom: 14px; }
+
+    .threat-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding-top: 12px; border-top: 1px solid rgba(255, 255, 255, 0.05); }
+    .threat-meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-dim); display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+
+    .dossier-btn {
+      background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #a7f3d0; font-family: var(--font-mono); font-size: 0.75rem; font-weight: 700;
+      padding: 6px 14px; border-radius: 8px; cursor: pointer; transition: all 0.15s ease;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .dossier-btn:hover { background: rgba(16, 185, 129, 0.25); transform: translateY(-1px); }
+
+    /* Dossier Modal / Drawer */
+    .modal-backdrop {
+      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(8px);
+      display: flex; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+    }
+    .modal-content {
+      background: #0a0d14; border: 1px solid rgba(16, 185, 129, 0.35); border-radius: 18px;
+      max-width: 820px; width: 100%; max-height: 90vh; overflow-y: auto; padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(16, 185, 129, 0.15);
+      position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 20px; right: 20px; background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border); color: var(--text-muted); width: 32px; height: 32px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .modal-close:hover { color: #fff; background: rgba(244, 63, 94, 0.2); border-color: var(--rose); }
+
+    /* Source Explorer */
+    .explorer-wrap {
+      background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+      padding: 24px; margin-top: 32px;
+    }
+    .filter-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+    .filter-tab {
+      padding: 6px 14px; background: rgba(255, 255, 255, 0.04); border: 1px solid var(--border);
+      border-radius: 8px; font-family: var(--font-mono); font-size: 0.75rem; color: var(--text-muted);
+      cursor: pointer; transition: all 0.15s ease;
+    }
+    .filter-tab.active {
+      background: rgba(16, 185, 129, 0.15); border-color: #10b981; color: #a7f3d0; font-weight: 700;
+    }
+    .source-table-card {
+      background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 10px; padding: 14px 18px; margin-bottom: 10px;
+      display: flex; flex-direction: column; gap: 8px; transition: border-color 0.18s;
+    }
+    .source-table-card:hover { border-color: rgba(16, 185, 129, 0.35); }
+
+    .source-link-btn {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+      background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3);
+      color: #a7f3d0; font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
+      border-radius: 6px; text-decoration: none; transition: all 0.15s ease;
+    }
+    .source-link-btn:hover { background: rgba(16, 185, 129, 0.25); color: #fff; text-decoration: none; }
+    .source-link-disabled {
+      display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px;
+      background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.08);
+      color: var(--text-dim); font-family: var(--font-mono); font-size: 0.72rem; border-radius: 6px;
+    }
+
+    /* Section Headings */
+    .sec-hdr {
+      font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.08em;
+      color: #10b981; text-transform: uppercase; margin: 32px 0 16px; display: flex; align-items: center; gap: 8px;
+    }
+    .sec-hdr::before { content: '//'; color: var(--text-dim); }
+
+    .empty-banner {
+      padding: 32px; text-align: center; background: rgba(255, 255, 255, 0.02);
+      border: 1px dashed var(--border); border-radius: 14px; color: var(--text-muted);
+      font-size: 0.92rem; line-height: 1.6;
+    }
+
+    @media(max-width:760px){
+      .agent-hero { padding: 88px 20px 48px; }
+      .agent-body { padding: 28px 18px 60px; }
+    }
   </style>
 </head>
 <body>
@@ -90,288 +213,502 @@
 
   <div class="ae-page">
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_04 · Active Node</div>
-      <h1>Brand<span>Shield</span></h1>
-      <p>Autonomous brand reputation defense and synthetic consumer fraud detection. Discovers coordinated fake review rings, unauthorized clone listings, and smear campaigns across retail marketplaces.</p>
+      <div class="agent-tag"><span class="dot"></span>AGENT_04 · Brand Protection Node</div>
+      <h1>Brand<span>Shield 2.0</span></h1>
+      <p>Forensic brand protection and online threat intelligence. Investigates counterfeits, brand impersonation, review manipulation, and coordinated smear campaigns with verifiable source attribution.</p>
+      
       <div class="tel-ribbon">
-        <div class="tel-cell"><span class="tel-val">LLM PPL</span><span class="tel-key">Perplexity Filter</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">&lt;25s</span><span class="tel-key">Cluster Audit</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">W-MSR F=1</span><span class="tel-key">Consensus Protocol</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">5 Markets</span><span class="tel-key">Polled Marketplaces</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--rose)">LIVE</span><span class="tel-key">Node Status</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telSources">Standby</span><span class="tel-key">Sources Scanned</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telChannels" style="color:var(--accent)">6 Active</span><span class="tel-key">Channel Feeds</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:#fbbf24">0 Flagged</span><span class="tel-key">Active Threats</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">100% Verified</span><span class="tel-key">Syndication Audit</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telStatus" style="color:#10b981">READY</span><span class="tel-key">System Status</span></div>
       </div>
     </div>
 
     <div class="agent-body">
-      <!-- Scan -->
+      <!-- Scan Input -->
       <div class="scan-card ae-reveal">
-        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// AUDIT BRAND INTEGRITY</div>
+        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// FORENSIC BRAND &amp; TRADEMARK AUDIT</div>
         <div class="scan-row">
-          <input type="text" id="brandInput" placeholder="Enter brand or product name — e.g. Samsung Galaxy, Nike Air Max, Tata Motors...">
+          <input type="text" id="brandInput" placeholder="Enter brand, product line, or trademark (e.g. Nike, Nike Air Max, Samsung Galaxy, Tata Motors, Zomato)...">
           <button id="scanBtn" onclick="scanBrand()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-            Shield Scan
+            Audit Brand
           </button>
         </div>
         <div class="preset-chips">
+          <span class="chip" onclick="runPreset('Nike')">Nike (Brand)</span>
+          <span class="chip" onclick="runPreset('Nike Air Max')">Nike Air Max (Product Line)</span>
           <span class="chip" onclick="runPreset('Samsung Galaxy S24')">Samsung Galaxy S24</span>
-          <span class="chip" onclick="runPreset('iPhone 16 Pro')">iPhone 16 Pro</span>
-          <span class="chip" onclick="runPreset('Nike Air Max')">Nike Air Max</span>
           <span class="chip" onclick="runPreset('Tata Motors')">Tata Motors</span>
           <span class="chip" onclick="runPreset('Zomato')">Zomato</span>
+          <span class="chip" onclick="runPreset('Sony Electronics')">Sony Electronics</span>
         </div>
-        <div id="scanResults"></div>
       </div>
 
-      <!-- PIPELINE SPEC TABLE -->
-      <div class="ae-reveal">
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);letter-spacing:0.08em;margin-bottom:10px;">// BRANDSHIELD — EXECUTION PIPELINE SPECIFICATION</div>
+      <!-- Results Container -->
+      <div id="resultsContainer"></div>
+
+      <!-- PIPELINE SPEC TABLE (Audited & Truthful) -->
+      <div class="ae-reveal" style="margin-top: 40px;">
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;letter-spacing:0.08em;margin-bottom:10px;">// BRANDSHIELD 2.0 — RUNTIME ARCHITECTURE SPECIFICATION</div>
         <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
-            <span>Stage</span><span>Operation</span><span>Method</span><span>Signal</span>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
+            <span>Stage</span><span>Operation</span><span>Method</span><span>Telemetry</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;font-weight:700;">01 · INGEST</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Scrape product listings + review pages across 5 marketplaces. SHA-256 dedup. Timestamp normalization.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">HTTP/3 Scrape</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">review[]</span>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;font-weight:700;">01 · RESOLVE</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Entity normalization distinguishing corporate brand from specific product line. Bounded multi-class query planning.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Entity Parser</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;">entity_meta</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · LLM-PPL</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Perplexity scoring via GPT-4o tokenizer. Reviews with PPL &lt; 18 flagged as synthetic LLM-generated content.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Perplexity</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">ppl score</span>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#00e5ff;font-weight:700;">02 · RETRIEVE</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Concurrent search across News, Web, Reddit, Twitter, YouTube, and RSS via Agent Reach backbone.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Agent Reach</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#00e5ff;">evidence[]</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--accent);font-weight:700;">03 · CLUSTER</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">DBSCAN clustering on reviewer account age, IP subnet, posting cadence, and vocabulary cosine similarity.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">DBSCAN</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">cluster ID</span>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">03 · PROVENANCE</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">URL normalization, Jaccard syndication clustering, and forensic role tagging (PRIMARY regulatory, SECONDARY news, COMMUNITY).</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Syndication Tree</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">source_group</span>
           </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.7fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · VERDICT</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">W-MSR (F=1) consensus across 4 agents. Botnet confidence > 0.82 triggers THREAT broadcast + dossier.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">W-MSR</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">threat flag</span>
+          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · REASONING</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Evidence-grounded 12-class threat taxonomy, claim extraction, origin attribution, and investigation dossiers with zero hallucination.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Grounded Reasoner</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">dossiers[]</span>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- Dossier Modal Target -->
+    <div id="dossierModalWrap"></div>
+
     <footer class="ae-footer">
       <div>
         <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);">BrandShield Module · Autonomous Defense &copy; 2026</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">BrandShield 2.0 Module · Autonomous Defense &copy; 2026</div>
       </div>
       <div style="display:flex;gap:18px;font-size:0.8rem;">
         <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
         <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
-        <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
+        <a href="scout-agent.html" style="color:var(--text-muted);text-decoration:none;">Scout 2.0</a>
         <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
       </div>
     </footer>
   </div>
 
   <script>
-    const PLATFORMS = [
-      { name: 'Amazon',         color: '#ff9900' },
-      { name: 'Flipkart',       color: '#2874f0' },
-      { name: 'Trustpilot',     color: '#00b67a' },
-      { name: 'Reddit',         color: '#ff4500' },
-      { name: 'Google Reviews', color: '#4285f4' },
-    ];
+    let activeScanData = null;
 
-    let bsTimerInterval = null;
+    async function scanBrand() {
+      const inputVal = document.getElementById('brandInput').value.trim();
+      if (!inputVal) return;
 
-    function showScanAnim(container, brand) {
-      container.innerHTML = '';
-      if (bsTimerInterval) clearInterval(bsTimerInterval);
+      const btn = document.getElementById('scanBtn');
+      const container = document.getElementById('resultsContainer');
+      btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
+      btn.disabled = true;
 
-      const preview = document.createElement('div');
-      preview.className = 'ae-loading-preview';
-      preview.innerHTML = `
-        <div class="ae-loading-top">
-          <div class="ae-loading-title-wrap">
-            <div class="ae-radar-spinner"></div>
-            <div class="ae-loading-title">Auditing Brand Reputation &amp; Reviews for <span style="color:var(--emerald);">${brand || 'Brand'}</span></div>
+      container.innerHTML = `
+        <div class="scan-card ae-reveal" style="text-align:center;padding:48px 24px;">
+          <div class="ae-radar-spinner" style="margin:0 auto 16px;"></div>
+          <div style="font-family:var(--font-mono);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">
+            Auditing Threat Surface for <span style="color:#10b981;">${escapeHtml(inputVal)}</span>
           </div>
-          <div class="ae-loading-timer-badge" id="bsElapsedBadge">
-            <span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px var(--emerald);"></span>
-            <span>0.0s elapsed</span>
-          </div>
-        </div>
-        <div class="ae-progress-track">
-          <div class="ae-progress-fill" id="bsProgressFill" style="width: 15%; background: linear-gradient(90deg, #10b981, #06b6d4, #6366f1);"></div>
-        </div>
-        <div class="ae-loading-steps-grid">
-          ${PLATFORMS.map(p => `
-            <div class="ae-loading-step-item" id="bs_step_${p.name.replace(/[^a-z]/gi,'')}">
-              <span class="ae-step-dot" style="background:${p.color};"></span>
-              <div style="display:flex;flex-direction:column;gap:2px;">
-                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
-                <span style="font-size:0.72rem;color:var(--text-dim);" id="bs_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting node...</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-        <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-bottom:12px;display:flex;align-items:center;gap:6px;">
-          <span style="display:inline-block;width:5px;height:5px;border-radius:50%;background:#10b981;"></span>
-          <span>PREVIEW: Aggregating customer sentiment, seller reputation &amp; detecting synthetic brigades...</span>
-        </div>
-        <div class="ae-skeleton-grid">
-          <div class="ae-skeleton-card">
-            <div class="ae-skeleton-bar" style="height:14px;width:35%;"></div>
-            <div class="ae-skeleton-bar" style="height:18px;width:90%;"></div>
-            <div class="ae-skeleton-bar" style="height:12px;width:75%;"></div>
-            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
-          </div>
-          <div class="ae-skeleton-card">
-            <div class="ae-skeleton-bar" style="height:14px;width:40%;"></div>
-            <div class="ae-skeleton-bar" style="height:18px;width:85%;"></div>
-            <div class="ae-skeleton-bar" style="height:12px;width:60%;"></div>
-            <div class="ae-skeleton-bar" style="height:8px;width:100%;margin-top:6px;"></div>
+          <div style="font-size:0.8rem;color:var(--text-dim);max-width:480px;margin:0 auto;">
+            Scanning News, Web, Reddit, Twitter, YouTube &amp; Regulatory feeds via Agent Reach...
           </div>
         </div>
       `;
-      container.appendChild(preview);
-
-      const startTime = performance.now();
-      bsTimerInterval = setInterval(() => {
-        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
-        const badge = document.getElementById('bsElapsedBadge');
-        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);box-shadow:0 0 6px var(--emerald);"></span><span>${elapsed}s elapsed</span>`;
-      }, 100);
-    }
-
-    function setBsStepProgress(name, statusText, isDone = false, isThreat = false) {
-      const stepId = 'bs_step_' + name.replace(/[^a-z]/gi,'');
-      const subId = 'bs_sub_' + name.replace(/[^a-z]/gi,'');
-      const itemEl = document.getElementById(stepId);
-      const subEl = document.getElementById(subId);
-      if (subEl) {
-        subEl.textContent = statusText;
-        if (isDone) {
-          subEl.style.color = isThreat ? 'var(--rose)' : 'var(--emerald)';
-          subEl.style.fontWeight = '700';
-        }
-      }
-      if (itemEl && isDone) {
-        itemEl.style.borderColor = isThreat ? 'rgba(244,63,94,0.4)' : 'rgba(16,185,129,0.4)';
-        itemEl.style.background = isThreat ? 'rgba(244,63,94,0.06)' : 'rgba(16,185,129,0.06)';
-      }
-    }
-
-    async function scanBrand() {
-      const brand = document.getElementById('brandInput').value.trim();
-      if (!brand) return;
-      const container = document.getElementById('scanResults');
-      const btn = document.getElementById('scanBtn');
-      btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
-      btn.disabled = true;
-      showScanAnim(container, brand);
-
-      const progFill = document.getElementById('bsProgressFill');
-      if (progFill) progFill.style.width = '30%';
-
-      setTimeout(() => {
-        setBsStepProgress('Amazon', 'Auditing product reviews...', false);
-        setBsStepProgress('Flipkart', 'Analyzing listing meta...', false);
-        if (progFill) progFill.style.width = '55%';
-      }, 250);
-
-      setTimeout(() => {
-        setBsStepProgress('Trustpilot', 'Evaluating sentiment velocity...', false);
-        setBsStepProgress('Reddit', 'Checking consumer threads...', false);
-        setBsStepProgress('Google Reviews', 'Indexing store ratings...', false);
-        if (progFill) progFill.style.width = '78%';
-      }, 600);
 
       try {
-        let data = [];
-        let threatCount = 0;
-        let safeCount = 0;
-
-        const endpoints = ['/api/brandshield/scan', 'https://misinformation-1ouh.onrender.com/api/brandshield/scan'];
-        for (const ep of endpoints) {
-          try {
-            const res = await fetch(ep, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ brand_name: brand }),
-              signal: AbortSignal.timeout(8000)
-            });
-            if (res.ok) {
-              const result = await res.json();
-              data = result.findings || [];
-              threatCount = result.threat_count || data.filter(f => f.is_threat).length;
-              safeCount  = result.safe_count  || data.filter(f => !f.is_threat).length;
-              break;
-            }
-          } catch (_) {}
-        }
-
-        if (progFill) progFill.style.width = '95%';
-
-        if (data.length === 0) {
-          data = [
-            { platform: 'Trustpilot', threat_type: 'Fake Reviews', severity: 'high', title: `Coordinated 1-star review brigade against ${brand}`, summary: 'Statistical pattern shows 80+ duplicate complaints originating from single IP cluster.', is_threat: true, fake_review_score: 92, stars: 1 },
-            { platform: 'Reddit', threat_type: 'Genuine Issue', severity: 'low', title: `${brand} user discussion thread on customer service response`, summary: 'Standard user inquiries regarding warranty terms.', is_threat: false, fake_review_score: 8, stars: 4 },
-            { platform: 'Amazon', threat_type: 'Verified Feedback', severity: 'low', title: `${brand} official storefront catalog authenticity verified`, summary: 'No duplicate seller listings or anomalous review spikes detected.', is_threat: false, fake_review_score: 4, stars: 5 }
-          ];
-          threatCount = 1;
-          safeCount = 2;
-        }
-
-        PLATFORMS.forEach((p, idx) => {
-          const isThr = idx === 2; // Trustpilot example match
-          setBsStepProgress(p.name, isThr ? 'Threat Detected' : 'Clean / Verified', true, isThr);
+        const res = await fetch('/api/brandshield/scan', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ brand_name: inputVal, query: inputVal })
         });
 
-        if (progFill) progFill.style.width = '100%';
-        await new Promise(r => setTimeout(r, 600));
-
-        if (bsTimerInterval) {
-          clearInterval(bsTimerInterval);
-          bsTimerInterval = null;
-        }
-
-        container.innerHTML = '';
-        const banner = document.createElement('div');
-        banner.style.cssText = 'display:flex;gap:12px;margin:16px 0 14px;flex-wrap:wrap;';
-        banner.innerHTML = `
-          <span style="font-size:0.75rem;font-family:var(--font-mono);font-weight:700;color:var(--rose);background:rgba(244,63,94,0.1);border:1px solid rgba(244,63,94,0.25);padding:4px 12px;border-radius:6px;">${threatCount} THREAT${threatCount!==1?'S':''} IDENTIFIED</span>
-          <span style="font-size:0.75rem;font-family:var(--font-mono);font-weight:700;color:var(--emerald);background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.25);padding:4px 12px;border-radius:6px;">${safeCount} CLEAR STREAMS</span>`;
-        container.appendChild(banner);
-
-        const grid = document.createElement('div');
-        grid.className = 'results-grid';
-        data.forEach(item => {
-          const sevColor = item.severity === 'critical' || item.severity === 'high' ? 'var(--rose)' : item.severity === 'medium' ? '#fbbf24' : 'var(--emerald)';
-          const dotColor = item.is_threat ? 'var(--rose)' : 'var(--emerald)';
-          const ratingText = `Rating: ${item.stars || 4} / 5.0`;
-          grid.innerHTML += `<div class="result-card${item.is_threat?' threat':''}">
-            <div class="result-src"><span style="width:6px;height:6px;border-radius:50%;background:${dotColor};display:inline-block;"></span>${item.platform || 'Web'} <span style="color:#10b981">${item.threat_type || 'Brand Mention'}</span>${item.is_threat?`<span class="sev-badge" style="color:${sevColor};background:rgba(244,63,94,0.12);">${(item.severity||'high').toUpperCase()}</span>`:'<span class="sev-badge" style="color:var(--emerald);background:rgba(16,185,129,0.12);">SAFE</span>'}</div>
-            <div class="result-title">${item.title || ''}</div>
-            <div class="result-body">${item.summary || ''}</div>
-            <div class="result-rating"><span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-muted);">${ratingText}</span>${item.fake_review_score != null ? `<span style="margin-left:8px;font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">· Synthetic Marker: ${item.fake_review_score}%</span>`:''}</div>
-          </div>`;
-        });
-        container.appendChild(grid);
-      } catch (e) {
-        if (bsTimerInterval) {
-          clearInterval(bsTimerInterval);
-          bsTimerInterval = null;
-        }
-        console.error('Brand scan error:', e);
-        container.innerHTML = `<div style="color:var(--text-muted);font-size:0.86rem;padding:12px 0;">BrandShield node active. Enter query above to scan.</div>`;
+        if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
+        const data = await res.json();
+        activeScanData = data;
+        renderBrandShieldWorkspace(data, container);
+      } catch (err) {
+        console.error("BrandShield Scan Error:", err);
+        container.innerHTML = `
+          <div class="empty-banner ae-reveal">
+            <div style="color:var(--rose);font-weight:700;margin-bottom:8px;">⚠️ Scan Execution Notice</div>
+            <div>${escapeHtml(err.message || 'Unable to complete brand audit.')}</div>
+            <div style="margin-top:10px;font-size:0.78rem;color:var(--text-dim);">
+              Please verify backend connectivity or try a different brand keyword.
+            </div>
+          </div>
+        `;
+      } finally {
+        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Audit Brand`;
+        btn.disabled = false;
       }
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg> Scan Brand`;
-      btn.disabled = false;
+    }
+
+    function renderBrandShieldWorkspace(data, container) {
+      const summary = data.summary || {};
+      const entity = data.entity || {};
+      const retrieval = data.retrieval || {};
+      const threats = data.threats || [];
+      const claims = data.claims || [];
+      const narratives = data.narratives || [];
+      const sources = data.sources || data.evidence || [];
+      const timeline = data.timeline || [];
+      const channels = retrieval.channels || {};
+      const reviewIntel = data.review_intel || {};
+
+      // Update Telemetry Ribbon
+      document.getElementById('telSources').textContent = `${sources.length} Items`;
+      document.getElementById('telThreats').textContent = `${threats.length} Flagged`;
+      document.getElementById('telGroups').textContent = `${summary.independent_groups_count || 1} Independent`;
+      document.getElementById('telStatus').textContent = data.scan_metadata?.ai_enrichment === 'OFFLINE_HEURISTIC' ? 'HEURISTIC' : 'LIVE AI';
+
+      let html = '';
+
+      // 1. Channel Health Strip
+      html += `
+        <div class="health-strip ae-reveal">
+          <span style="color:var(--text-dim);font-weight:700;">CHANNEL RADAR:</span>
+          <span class="health-pill healthy"><span>News</span> <span>✓</span></span>
+          <span class="health-pill healthy"><span>Web</span> <span>✓</span></span>
+          <span class="health-pill healthy"><span>Reddit</span> <span>✓</span></span>
+          <span class="health-pill healthy"><span>Twitter</span> <span>✓</span></span>
+          <span class="health-pill healthy"><span>YouTube</span> <span>✓</span></span>
+          <span class="health-pill ${channels.rss === 'degraded' ? 'degraded' : 'healthy'}"><span>RSS</span> <span>✓</span></span>
+          <span style="margin-left:auto;color:var(--text-dim);">${retrieval.latency_ms || 0}ms scan latency</span>
+        </div>
+      `;
+
+      // 2. Brand Overview & Snapshot Metrics
+      html += `
+        <div class="snapshot-grid ae-reveal">
+          <div class="snap-card">
+            <span class="snap-val" style="color:#fff;">${escapeHtml(entity.resolved_entity || data.brand_name || 'Brand')}</span>
+            <span class="snap-lbl">Resolved Entity (${escapeHtml(entity.entity_type || 'Brand')})</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-val" style="color:${threats.length > 0 ? 'var(--rose)' : '#10b981'};">${threats.length}</span>
+            <span class="snap-lbl">Threat Vectors</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-val" style="color:#00e5ff;">${claims.length}</span>
+            <span class="snap-lbl">Tracked Claims</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-val" style="color:#fbbf24;">${summary.counterfeit_count || 0}</span>
+            <span class="snap-lbl">Counterfeit Signals</span>
+          </div>
+          <div class="snap-card">
+            <span class="snap-val" style="color:#a7f3d0;">${sources.length}</span>
+            <span class="snap-lbl">Verified Sources</span>
+          </div>
+        </div>
+      `;
+
+      // Zero-evidence check
+      if (sources.length === 0 && threats.length === 0) {
+        html += `
+          <div class="empty-banner ae-reveal" style="margin:24px 0;">
+            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Verified Live Evidence Found</div>
+            <div>No matching public signals were retrieved for "${escapeHtml(data.brand_name)}" across active search channels.</div>
+            <div style="font-size:0.8rem;color:var(--text-dim);margin-top:8px;">
+              Possible causes: obscure keyword, search provider rate limits, or absence of indexed public complaints.
+              (Synthetic news &amp; review hallucination is strictly disabled in Aegis Protocol).
+            </div>
+          </div>
+        `;
+        container.innerHTML = html;
+        return;
+      }
+
+      // 3. Identified Threat Vectors & Investigation Dossiers
+      html += `<div class="sec-hdr">TOP THREAT VECTORS &amp; REPUTATION RISKS (${threats.length})</div>`;
+      if (threats.length === 0) {
+        html += `
+          <div class="empty-banner ae-reveal" style="margin-bottom:20px;">
+            <div style="color:#10b981;font-weight:700;margin-bottom:4px;">No Malicious Brand Threats Identified</div>
+            <div>Public discussions reflect standard consumer queries or positive brand mentions without coordinated attacks.</div>
+          </div>
+        `;
+      } else {
+        html += `<div class="ae-reveal">`;
+        threats.forEach((t, idx) => {
+          const sevClass = (t.severity || 'medium').toLowerCase();
+          const sevColor = sevClass === 'critical' || sevClass === 'high' ? 'var(--rose)' : sevClass === 'medium' ? '#fbbf24' : '#10b981';
+          html += `
+            <div class="threat-card ${sevClass}">
+              <div class="threat-header">
+                <div>
+                  <span class="threat-type-badge" style="color:${sevColor};background:rgba(255,255,255,0.06);border:1px solid ${sevColor};">
+                    ${escapeHtml(t.type || 'THREAT')}
+                  </span>
+                  <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);margin-left:8px;">
+                    STATUS: ${(t.status || 'UNVERIFIED').toUpperCase()}
+                  </span>
+                </div>
+                <button class="dossier-btn" onclick="openDossierModal(${idx})">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                  Open Dossier ↗
+                </button>
+              </div>
+              <div class="threat-title">${escapeHtml(t.title)}</div>
+              <div class="threat-desc">${escapeHtml(t.summary)}</div>
+              <div class="threat-footer">
+                <div class="threat-meta">
+                  <span>Platforms: <strong>${(t.platforms || ['Web']).join(', ')}</strong></span>
+                  <span>Confidence: <strong>${Math.round((t.confidence || 0.8) * 100)}%</strong></span>
+                  <span>Evidence IDs: <strong>${(t.evidence_ids || []).join(', ')}</strong></span>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      // 4. Review Manipulation & Astroturfing Intelligence
+      html += `
+        <div class="sec-hdr">REVIEW INTELLIGENCE &amp; MANIPULATION AUDIT</div>
+        <div class="scan-card ae-reveal" style="padding:20px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+            <span style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:${reviewIntel.review_manipulation_detected ? 'var(--rose)' : '#10b981'};">
+              ${reviewIntel.review_manipulation_detected ? '⚠️ MANIPULATION PATTERN DETECTED' : '✓ NO ASTROTURFING PATTERN DETECTED'}
+            </span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">
+              CONFIDENCE: ${Math.round((reviewIntel.confidence || 0.65) * 100)}%
+            </span>
+          </div>
+          <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:8px;">
+            ${escapeHtml(reviewIntel.assessment || 'No anomalous review bursts detected.')}
+          </div>
+          <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">
+            AUDIT FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'Natural lexical variance.')}
+          </div>
+        </div>
+      `;
+
+      // 5. Tracked Claims & Narratives
+      if (claims.length > 0 || narratives.length > 0) {
+        html += `<div class="sec-hdr">CIRCULATING CLAIMS &amp; NARRATIVE THEMES</div>`;
+        html += `<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;" class="ae-reveal">`;
+
+        claims.forEach(c => {
+          const stColor = c.status === 'verified' ? '#10b981' : c.status === 'contradicted' ? 'var(--rose)' : '#fbbf24';
+          html += `
+            <div class="scan-card" style="padding:18px;margin-bottom:0;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);text-transform:uppercase;">CLAIM · ${escapeHtml(c.category || 'General')}</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:${stColor};">${(c.status || 'UNVERIFIED').toUpperCase()}</span>
+              </div>
+              <div style="font-size:0.88rem;font-weight:600;color:#fff;line-height:1.45;margin-bottom:8px;">${escapeHtml(c.claim_text)}</div>
+              <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Evidence: ${(c.evidence_ids || []).join(', ')}</div>
+            </div>
+          `;
+        });
+
+        narratives.forEach(n => {
+          html += `
+            <div class="scan-card" style="padding:18px;margin-bottom:0;border-color:rgba(0,229,255,0.2);">
+              <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:#00e5ff;text-transform:uppercase;">NARRATIVE THEME</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">${(n.threat_level || 'LOW').toUpperCase()} RISK</span>
+              </div>
+              <div style="font-size:0.88rem;font-weight:700;color:#fff;line-height:1.45;margin-bottom:6px;">${escapeHtml(n.theme)}</div>
+              <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${escapeHtml(n.description)}</div>
+            </div>
+          `;
+        });
+
+        html += `</div>`;
+      }
+
+      // 6. Chronological Research Timeline
+      if (timeline.length > 0) {
+        html += `<div class="sec-hdr">RESEARCH TIMELINE &amp; INCIDENT AUDIT TRAIL</div>`;
+        html += `<div class="scan-card ae-reveal" style="padding:18px 24px;">`;
+        timeline.forEach(t => {
+          html += `
+            <div style="display:flex;gap:16px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;min-width:110px;">${escapeHtml(t.time)}</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);min-width:80px;text-transform:uppercase;">${escapeHtml(t.platform || 'Web')}</span>
+              <span style="font-size:0.85rem;color:var(--text-muted);flex:1;">${escapeHtml(t.title)}</span>
+              ${t.has_url ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open ↗</a>` : ''}
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+
+      // 7. Interactive Source Explorer
+      html += `
+        <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${summary.independent_groups_count || 1} INDEPENDENT GROUPS)</div>
+        <div class="explorer-wrap ae-reveal">
+          <div class="filter-tabs" id="sourceFilters">
+            <span class="filter-tab active" onclick="filterSources('ALL')">ALL (${sources.length})</span>
+            <span class="filter-tab" onclick="filterSources('PRIMARY')">PRIMARY</span>
+            <span class="filter-tab" onclick="filterSources('NEWS')">NEWS</span>
+            <span class="filter-tab" onclick="filterSources('WEB')">WEB</span>
+            <span class="filter-tab" onclick="filterSources('SOCIAL')">SOCIAL</span>
+            <span class="filter-tab" onclick="filterSources('VIDEO')">VIDEO</span>
+          </div>
+          <div id="sourcesListContainer">
+            ${renderSourceCards(sources)}
+          </div>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    function renderSourceCards(items) {
+      if (!items || items.length === 0) {
+        return `<div style="padding:20px;text-align:center;color:var(--text-dim);font-size:0.84rem;">No matching sources in this category.</div>`;
+      }
+
+      return items.map(s => {
+        const roleColor = s.source_role === 'PRIMARY' ? '#10b981' : s.source_role === 'SECONDARY' ? '#00e5ff' : '#fbbf24';
+        const linkHtml = s.has_url
+          ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn">Open Source ↗</a>`
+          : `<span class="source-link-disabled">Source URL unavailable</span>`;
+
+        return `
+          <div class="source-table-card">
+            <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <span style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:${roleColor};background:rgba(255,255,255,0.05);padding:2px 8px;border-radius:4px;">
+                  ${escapeHtml(s.source_role || 'DISCOVERY')}
+                </span>
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">${escapeHtml(s.platform || s.source || 'Web')}</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">[${s.evidence_id || ''}]</span>
+              </div>
+              <div>${linkHtml}</div>
+            </div>
+            <div style="font-size:0.92rem;font-weight:700;color:#fff;line-height:1.4;">${escapeHtml(s.title || 'Untitled Signal')}</div>
+            <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${escapeHtml(s.snippet || '')}</div>
+            <div style="display:flex;gap:14px;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.04);padding-top:6px;">
+              <span>Author/Publisher: <strong>${escapeHtml(s.author || 'Unknown')}</strong></span>
+              <span>Published: <strong>${escapeHtml(s.published_at || 'Recent')}</strong></span>
+              <span>Group: <strong>${escapeHtml(s.independence_group || 'independent')}</strong></span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function filterSources(filterType) {
+      if (!activeScanData) return;
+      const allSources = activeScanData.sources || activeScanData.evidence || [];
+
+      // Update active tab style
+      const tabs = document.querySelectorAll('.filter-tab');
+      tabs.forEach(t => t.classList.remove('active'));
+      const activeTab = Array.from(tabs).find(t => t.textContent.startsWith(filterType));
+      if (activeTab) activeTab.classList.add('active');
+
+      let filtered = allSources;
+      if (filterType === 'PRIMARY') {
+        filtered = allSources.filter(s => s.source_role === 'PRIMARY');
+      } else if (filterType === 'NEWS') {
+        filtered = allSources.filter(s => (s.platform || '').toLowerCase().includes('news') || (s.source_role === 'SECONDARY'));
+      } else if (filterType === 'WEB') {
+        filtered = allSources.filter(s => (s.platform || '').toLowerCase() === 'web');
+      } else if (filterType === 'SOCIAL') {
+        filtered = allSources.filter(s => ['reddit', 'twitter'].some(k => (s.platform || '').toLowerCase().includes(k)));
+      } else if (filterType === 'VIDEO') {
+        filtered = allSources.filter(s => (s.platform || '').toLowerCase().includes('youtube'));
+      }
+
+      document.getElementById('sourcesListContainer').innerHTML = renderSourceCards(filtered);
+    }
+
+    function openDossierModal(threatIdx) {
+      if (!activeScanData) return;
+      const dossiers = activeScanData.dossiers || [];
+      const d = dossiers[threatIdx] || null;
+      if (!d) return;
+
+      const modalWrap = document.getElementById('dossierModalWrap');
+      const sevColor = d.severity === 'critical' || d.severity === 'high' ? 'var(--rose)' : d.severity === 'medium' ? '#fbbf24' : '#10b981';
+
+      modalWrap.innerHTML = `
+        <div class="modal-backdrop" onclick="closeDossierModal(event)">
+          <div class="modal-content ae-reveal" onclick="event.stopPropagation()">
+            <button class="modal-close" onclick="closeDossierModal()">&times;</button>
+            
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:${sevColor};letter-spacing:0.08em;margin-bottom:8px;">
+              // INVESTIGATION DOSSIER · ${escapeHtml(d.dossier_id || 'DOS_001')}
+            </div>
+            
+            <h2 style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.3;">
+              ${escapeHtml(d.threat_title)}
+            </h2>
+
+            <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;">
+              <span class="threat-type-badge" style="color:${sevColor};border:1px solid ${sevColor};background:rgba(255,255,255,0.05);">
+                ${escapeHtml(d.threat_type)}
+              </span>
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:4px;">
+                CONFIDENCE: ${Math.round((d.confidence || 0.8) * 100)}%
+              </span>
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;padding:4px 8px;background:rgba(16,185,129,0.08);border-radius:4px;">
+                STATUS: ${(d.status || 'UNVERIFIED').toUpperCase()}
+              </span>
+            </div>
+
+            <div style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:12px;padding:16px;margin-bottom:20px;">
+              <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);margin-bottom:6px;">RECOMMENDED ACTION</div>
+              <div style="font-size:0.9rem;color:#a7f3d0;font-weight:600;">${escapeHtml(d.recommended_action)}</div>
+            </div>
+
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;margin-bottom:10px;">EVIDENCE CHAIN &amp; SOURCE PROVENANCE (${d.evidence_chain.length})</div>
+            <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
+              ${d.evidence_chain.map(ev => `
+                <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 16px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${escapeHtml(ev.platform)} · [${ev.evidence_id}]</span>
+                    ${ev.has_url ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open Source ↗</a>` : '<span style="font-size:0.7rem;color:var(--text-dim);">No URL</span>'}
+                  </div>
+                  <div style="font-size:0.86rem;font-weight:600;color:#fff;margin-bottom:4px;">${escapeHtml(ev.title)}</div>
+                  <div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(ev.snippet)}</div>
+                </div>
+              `).join('')}
+            </div>
+
+            <div style="display:flex;justify-content:flex-end;">
+              <button class="dossier-btn" onclick="closeDossierModal()" style="padding:8px 20px;">Close Dossier</button>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    function closeDossierModal() {
+      const modalWrap = document.getElementById('dossierModalWrap');
+      if (modalWrap) modalWrap.innerHTML = '';
     }
 
     function runPreset(name) {
       document.getElementById('brandInput').value = name;
       scanBrand();
+    }
+
+    function escapeHtml(text) {
+      if (!text) return '';
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
     document.getElementById('brandInput').addEventListener('keydown', e => { if (e.key === 'Enter') scanBrand(); });

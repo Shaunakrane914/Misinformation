@@ -201,11 +201,11 @@ class RetrievalPlanner:
 
         if domain == "brand":
             return {
-                "reddit": f"{clean_q} (scam OR fake review OR counterfeit OR refund)",
-                "twitter": f"{clean_q} scam OR boycott OR counterfeit OR fake",
-                "youtube": f"{clean_q} fake vs real OR scam review exposé",
-                "news": f"{clean_q} recall OR counterfeit OR lawsuit OR scam",
-                "rss": f"{clean_q} press release recall statement",
+                "reddit": f"{clean_q} (scam OR \"fake review\" OR counterfeit OR complaint OR boycott)",
+                "twitter": f"{clean_q} (scam OR boycott OR counterfeit OR fake OR lawsuit)",
+                "youtube": f"{clean_q} (fake vs real OR scam review exposé OR defect)",
+                "news": f"{clean_q} (recall OR counterfeit OR lawsuit OR scam OR investigation OR controversy)",
+                "rss": f"{clean_q} press release recall statement official announcement",
                 "github": clean_q,
             }
 
@@ -279,4 +279,44 @@ class RetrievalPlanner:
                 f"{comp} rumor false debunked confirmed",
             ],
         }
+
+    def build_brand_query_classes(self, brand: str, product: Optional[str] = None) -> Dict[str, List[str]]:
+        """
+        Generate structured classes of brand protection & threat investigation queries:
+        - General reputation
+        - Counterfeit & unauthorized listings
+        - Scam & phishing promotions
+        - Brand impersonation & fake support
+        - Review manipulation & consumer complaints
+        - Regulatory, legal & product safety
+        """
+        target = f"{brand} {product}".strip() if product and product.lower() != brand.lower() else brand.strip()
+
+        return {
+            "general_reputation": [
+                f"{target} latest news",
+                f"{target} controversy reputation complaints",
+            ],
+            "counterfeit": [
+                f"{target} counterfeit fake products",
+                f"{target} unauthorized seller fake store clone listing",
+            ],
+            "phishing_scam": [
+                f"{target} scam fake website phishing",
+                f"{target} fake giveaway promotion fraud",
+            ],
+            "impersonation": [
+                f"{target} fake account impersonation",
+                f"{target} fake customer support handle verified",
+            ],
+            "reviews": [
+                f"{target} fake reviews review manipulation",
+                f"{target} review bombing customer complaints",
+            ],
+            "regulatory_legal": [
+                f"{target} lawsuit investigation regulator",
+                f"{target} product recall safety warning",
+            ],
+        }
+
 

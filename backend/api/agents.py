@@ -70,6 +70,7 @@ class ScoutAnalyzeRequest(BaseModel):
 
 class BrandShieldScanRequest(BaseModel):
     brand_name: str = Field(..., description="Brand, company, or trademark name.", json_schema_extra={"example": "Sony Electronics"})
+    query: Optional[str] = Field(None, description="Optional search query override or specific product line.", json_schema_extra={"example": "Nike Air Max counterfeit fake store"})
 
 
 class PersonalScanRequest(BaseModel):
@@ -270,14 +271,19 @@ async def personal_watch_scan(request: PersonalScanRequest):
 
 
 # ── BrandShield Agent ────────────────────────────────────────────────────────
-
+ 
 @router.post("/api/brandshield/scan", tags=["BrandShield Agent (Brand Defense)"], summary="Counterfeit, Fake Review & Brand Defamation Scan")
+@router.post("/brandshield/scan", tags=["BrandShield Agent (Brand Defense)"])
 async def brandshield_scan(request: BrandShieldScanRequest):
-    """Run a BrandShield scan for a brand or product across reviews and forums."""
+    """
+    Run BrandShield 2.0 brand protection and online threat intelligence scan.
+    Investigates online footprint, counterfeits, impersonations, review manipulation,
+    and smear campaigns with evidence provenance and clickable source links.
+    """
     logger.info(f"[API] POST /api/brandshield/scan - brand={request.brand_name}")
     try:
         agent = get_brandshield_agent()
-        results = agent.scan(request.brand_name)
+        results = agent.scan(brand_name=request.brand_name, query=request.query)
         return results
     except Exception as e:
         logger.error(f"[API] BrandShield scan failed: {str(e)}")

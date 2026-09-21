@@ -462,6 +462,403 @@ class ScoutAgent:
             logger.error(f"check_stock_impact error: {e}")
             return {}
 
+    def resolve_ticker_and_company(self, ticker: str) -> Tuple[str, str]:
+        """Resolve ticker to standard symbol and clean corporate entity name."""
+        clean = ticker.strip().upper()
+        name_to_ticker = {
+            'NVIDIA': 'NVDA', 'APPLE': 'AAPL', 'TESLA': 'TSLA', 'MICROSOFT': 'MSFT',
+            'GOOGLE': 'GOOGL', 'ALPHABET': 'GOOGL', 'AMAZON': 'AMZN', 'META': 'META',
+            'FACEBOOK': 'META', 'NETFLIX': 'NFLX', 'TATA MOTORS': 'TATAMOTORS.NS',
+            'TATAMOTORS': 'TATAMOTORS.NS', 'RELIANCE': 'RELIANCE.NS', 'INFOSYS': 'INFY.NS',
+            'TCS': 'TCS.NS', 'HDFC': 'HDFCBANK.NS', 'HDFCBANK': 'HDFCBANK.NS',
+            'WIPRO': 'WIPRO.NS', 'ICICI': 'ICICIBANK.NS', 'SBI': 'SBIN.NS', 'ADANI': 'ADANIENT.NS',
+        }
+        sym = name_to_ticker.get(clean, clean)
+        from backend.services.agent_reach.planner import TICKER_NAME_MAP
+        base_sym = sym.replace('.NS', '').replace('.BO', '')
+        company = TICKER_NAME_MAP.get(sym, TICKER_NAME_MAP.get(base_sym, base_sym.title()))
+        return sym, company
+
+    def _synthesize_financial_intelligence(
+        self, company_name: str, ticker: str, stock_data: Dict, sources: List[Dict]
+    ) -> Dict[str, Any]:
+        """
+        Use Gemini strictly as a reasoning engine over retrieved evidence fragments.
+        Never hallucinate facts, dates, or non-existent sources.
+        """
+        if not sources:
+            return {
+                "catalysts": {"positive": [], "negative": [], "unresolved": []},
+                "risks": ["No verified online sources retrieved across monitored channels."],
+                "narratives": [],
+                "contradictions": {"for": [], "against": [], "unresolved": []},
+                "misinformation": {
+                    "status": "NOMINAL",
+                    "rumors_detected": [],
+                    "manipulation_risk": "LOW",
+                    "evidence_quality_score": 0.0,
+                    "notes": "Zero external records discovered for cross-verdict synthesis."
+                }
+            }
+
+        source_summary = "\n".join([
+            f"[{s['evidence_id']}] ({s['source_role']}) {s['source']}: {s['title']} — {s['snippet'][:160]}"
+            for s in sources[:12]
+        ])
+
+        prompt = f"""You are a principal financial intelligence analyst at Aegis Protocol.
+Analyze the following retrieved market evidence for {company_name} ({ticker}).
+CRITICAL RULE: Rely ONLY on the provided evidence below. DO NOT invent, assume, or hallucinate any facts, dates, filings, or sources.
+
+RETRIEVED EVIDENCE:
+{source_summary}
+
+STOCK STATUS: Price {stock_data.get('current_price', 'N/A')} {stock_data.get('currency', '')}, 24h Change {stock_data.get('drop_percent', 0)}%, Z-Score {stock_data.get('z_score', 0)}
+
+TASK:
+Respond in STRICT JSON with this schema:
+{{
+  "catalysts": {{
+    "positive": [{{"catalyst": "Concise factual statement", "impact": "High|Medium|Low", "evidence_ids": ["src_001"]}}],
+    "negative": [{{"catalyst": "Concise factual statement", "impact": "High|Medium|Low", "evidence_ids": ["src_002"]}}],
+    "unresolved": [{{"factor": "Concise factual statement", "evidence_ids": ["src_003"]}}]
+  }},
+  "risks": ["Specific risk grounded directly in evidence"],
+  "narratives": [
+    {{"theme": "Theme Name", "description": "Brief summary", "sentiment": "Bullish|Bearish|Neutral", "evidence_ids": ["src_001"]}}
+  ],
+  "contradictions": {{
+    "for": ["Grounded supporting point"],
+    "against": ["Grounded contradicting point"],
+    "unresolved": ["Ambiguous or conflicting aspect"]
+  }},
+  "misinformation": {{
+    "status": "NOMINAL|ELEVATED|CRITICAL",
+    "rumors_detected": ["Any unverified or sensationalized claim"],
+    "manipulation_risk": "LOW|MEDIUM|HIGH",
+    "evidence_quality_score": 0.85,
+    "primary_corroboration": true
+  }}
+}}"""
+
+        try:
+            from backend.services.gemini_service import gemini_service
+            raw_text = gemini_service.generate_text(prompt)
+            cleaned = raw_text.strip()
+            if "```json" in cleaned:
+                cleaned = cleaned.split("```json")[1].split("```")[0].strip()
+            elif "```" in cleaned:
+                cleaned = cleaned.split("```")[1].split("```")[0].strip()
+            parsed = json.loads(cleaned)
+            if isinstance(parsed, dict) and "catalysts" in parsed:
+                return parsed
+        except Exception as e:
+            logger.debug(f"[ScoutAgent:synthesize] LLM synthesis notice, using grounded rule-based parsing: {e}")
+
+        # Deterministic evidence-grounded fallback extraction
+        pos_cats = []
+        neg_cats = []
+        unres_cats = []
+        narratives = []
+        risks = []
+        rumors = []
+
+        pos_kw = ["growth", "profit", "surge", "gain", "rally", "deal", "order", "boost", "strong", "outperform", "expand"]
+        neg_kw = ["drop", "crash", "plunge", "fall", "debt", "investigation", "probe", "loss", "fraud", "lawsuit", "defect"]
+        rumor_kw = ["rumor", "unverified", "alleged", "claim", "hoax", "speculation", "leak"]
+
+        for s in sources:
+            text = f"{s['title']} {s['snippet']}".lower()
+            if any(k in text for k in pos_kw):
+                pos_cats.append({
+                    "catalyst": s['title'][:110],
+                    "impact": "Medium",
+                    "evidence_ids": [s['evidence_id']]
+                })
+            elif any(k in text for k in neg_kw):
+                neg_cats.append({
+                    "catalyst": s['title'][:110],
+                    "impact": "High" if "investigation" in text or "fraud" in text else "Medium",
+                    "evidence_ids": [s['evidence_id']]
+                })
+            else:
+                unres_cats.append({
+                    "factor": s['title'][:110],
+                    "evidence_ids": [s['evidence_id']]
+                })
+
+            if any(k in text for k in rumor_kw):
+                rumors.append(s['title'][:100])
+
+        if any("earnings" in s['title'].lower() or "result" in s['title'].lower() for s in sources):
+            narratives.append({
+                "theme": "Earnings & Financial Performance",
+                "description": f"Market focus on operational margins and periodic results for {company_name}.",
+                "sentiment": "Neutral",
+                "evidence_ids": [s['evidence_id'] for s in sources if "earning" in s['title'].lower() or "result" in s['title'].lower()]
+            })
+        if any("regulatory" in s['title'].lower() or "investigation" in s['title'].lower() for s in sources):
+            narratives.append({
+                "theme": "Regulatory & Legal Scrutiny",
+                "description": f"Regulatory compliance or inquiry signals observed in discourse.",
+                "sentiment": "Bearish",
+                "evidence_ids": [s['evidence_id'] for s in sources if "regulatory" in s['title'].lower() or "investigation" in s['title'].lower()]
+            })
+        if not narratives:
+            narratives.append({
+                "theme": "General Market Momentum",
+                "description": f"Trading volume and sector momentum surrounding {company_name}.",
+                "sentiment": "Neutral",
+                "evidence_ids": [sources[0]['evidence_id']] if sources else []
+            })
+
+        for nc in neg_cats[:3]:
+            risks.append(nc["catalyst"])
+        if not risks:
+            risks.append(f"Standard macroeconomic and sector-wide volatility impacting {company_name}.")
+
+        return {
+            "catalysts": {
+                "positive": pos_cats[:4],
+                "negative": neg_cats[:4],
+                "unresolved": unres_cats[:3]
+            },
+            "risks": risks[:4],
+            "narratives": narratives[:3],
+            "contradictions": {
+                "for": [p["catalyst"] for p in pos_cats[:2]],
+                "against": [n["catalyst"] for n in neg_cats[:2]],
+                "unresolved": [u["factor"] for u in unres_cats[:2]]
+            },
+            "misinformation": {
+                "status": "ELEVATED" if rumors else "NOMINAL",
+                "rumors_detected": rumors[:3],
+                "manipulation_risk": "ELEVATED" if len(rumors) >= 2 else ("MEDIUM" if rumors else "LOW"),
+                "evidence_quality_score": round(min(0.95, 0.50 + 0.05 * len(sources)), 2),
+                "primary_corroboration": any(s["source_role"] == "PRIMARY" for s in sources)
+            }
+        }
+
+    def analyze_stock(self, ticker: str, query: Optional[str] = None) -> Dict[str, Any]:
+        """
+        Execute comprehensive Financial Intelligence Research Workspace analysis.
+        Orchestrates:
+        1. Market telemetry & anomaly detection
+        2. Agent Reach multi-channel retrieval (News, Reddit, Twitter, YouTube, RSS)
+        3. Forensic source role & primary source classification
+        4. Chronological research timeline construction
+        5. Grounded catalyst, narrative, and contradiction reasoning
+        """
+        start_t = datetime.utcnow()
+        sym, company_name = self.resolve_ticker_and_company(ticker)
+
+        # 1. Market Telemetry
+        stock_data = self.check_stock_impact(sym)
+        if not stock_data or not stock_data.get("current_price"):
+            stock_data = {
+                "ticker": sym,
+                "name": company_name,
+                "current_price": 0.0,
+                "prev_close": 0.0,
+                "drop_percent": 0.0,
+                "z_score": 0.0,
+                "currency": "INR" if sym.endswith(".NS") or sym.endswith(".BO") else "USD",
+                "is_crashing": False,
+                "data_source": "Historical Daily Close via Yahoo Finance Chart API (Delayed) — Non-realtime"
+            }
+        else:
+            stock_data["name"] = company_name
+            stock_data["currency"] = "INR" if sym.endswith(".NS") or sym.endswith(".BO") else "USD"
+            stock_data["data_source"] = "Historical Daily Close via Yahoo Finance Chart API (Delayed) — Non-realtime"
+
+        # 2. Agent Reach Multi-Channel Retrieval
+        from backend.services.agent_reach import agent_reach_service
+        search_query = query.strip() if query else f"{company_name} {sym}"
+        try:
+            retrieval_res = agent_reach_service.retrieve(
+                query=search_query,
+                domain="financial",
+                limit_per_channel=4,
+                timeout=10.0
+            )
+            fragments = retrieval_res.fragments
+            channel_health = retrieval_res.channel_health
+            retrieval_plan = retrieval_res.retrieval_plan or {}
+        except Exception as e_ret:
+            logger.warning(f"[ScoutAgent:analyze_stock] AgentReach retrieval exception: {e_ret}")
+            fragments = []
+            channel_health = {}
+            retrieval_plan = {}
+
+        # 3. Classify & Group Fragments
+        primary_sources = []
+        news_items = []
+        reddit_items = []
+        twitter_items = []
+        youtube_items = []
+        all_sources = []
+
+        syndicated_count = 0
+
+        for f in fragments:
+            role = f.raw_metadata.get("source_role", "DISCOVERY")
+            tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE")
+            group = f.raw_metadata.get("source_independence_group", "independent")
+            if group.startswith("syndicated_"):
+                syndicated_count += 1
+
+            source_record = {
+                "evidence_id": f"src_{len(all_sources)+1:03d}",
+                "title": f.title or "Untitled Discovered Signal",
+                "url": f.url or "",
+                "has_url": bool(f.url),
+                "author": f.author or f.platform,
+                "source": f.platform or f.channel_name,
+                "channel": f.channel_name or f.platform,
+                "published_at": f.published or "Recent",
+                "retrieved_at": f.retrieved_at,
+                "snippet": f.snippet or f.content[:240],
+                "source_role": role,
+                "source_tier": tier,
+                "independence_group": group,
+            }
+            all_sources.append(source_record)
+
+            if role == "PRIMARY" or "investor" in (f.url or "").lower() or "filing" in (f.title or "").lower():
+                primary_sources.append(source_record)
+
+            ch_low = (f.channel_name or f.platform).lower()
+            if "reddit" in ch_low:
+                reddit_items.append(source_record)
+            elif "twitter" in ch_low:
+                twitter_items.append(source_record)
+            elif "youtube" in ch_low:
+                youtube_items.append(source_record)
+            else:
+                news_items.append(source_record)
+
+        # 4. Chronological Research Timeline (sorted by publication if available)
+        timeline = []
+        dated_sources = [s for s in all_sources if s.get("published_at") and s.get("published_at") != "Recent"]
+        for s in dated_sources[:8]:
+            timeline.append({
+                "time": s["published_at"],
+                "source": s["source"],
+                "title": s["title"],
+                "url": s["url"],
+                "role": s["source_role"]
+            })
+        if not timeline and all_sources:
+            for s in all_sources[:5]:
+                timeline.append({
+                    "time": s.get("published_at") or "Monitored Stream",
+                    "source": s["source"],
+                    "title": s["title"],
+                    "url": s["url"],
+                    "role": s["source_role"]
+                })
+
+        # 5. Extract Grounded Catalysts, Narratives, Contradictions, & Misinformation Risk
+        reasoning = self._synthesize_financial_intelligence(company_name, sym, stock_data, all_sources)
+
+        # 6. Backward compatibility fields
+        drop_pct = abs(stock_data.get("drop_percent", 0.0))
+        z_score = abs(stock_data.get("z_score", 0.0))
+        total_social = len(reddit_items) + len(twitter_items) + len(youtube_items)
+        if drop_pct >= 3.0 and total_social >= 4:
+            risk_level = "CRITICAL COVERT SHORT ATTACK"
+            corr_score = 92
+        elif drop_pct >= 1.5 or z_score >= 1.5:
+            risk_level = "ELEVATED VOLATILITY DISINFO"
+            corr_score = 68
+        else:
+            risk_level = "NOMINAL (NO ANOMALY)"
+            corr_score = 15
+
+        short_attack_correlation = {
+            "risk_level": risk_level,
+            "correlation_score": corr_score,
+            "social_catalyst_volume": total_social,
+            "drop_percent": stock_data.get("drop_percent", 0.0),
+            "z_score": stock_data.get("z_score", 0.0),
+            "is_anomalous": risk_level != "NOMINAL (NO ANOMALY)",
+            "recommendation": (
+                "Immediate War Room escalation: Coordinated negative narrative volume matches algorithmic sell threshold."
+                if risk_level.startswith("CRITICAL")
+                else "Continue passive monitoring of cashtag sentiment."
+            )
+        }
+
+        # News object format for backward compatibility
+        legacy_company_articles = [
+            {
+                "title": n["title"],
+                "source": n["source"],
+                "source_url": n["url"],
+                "url": n["url"],
+                "category": "Primary Source" if n["source_role"] == "PRIMARY" else "Market Intelligence",
+                "summary": n["snippet"][:120],
+                "is_threat": "investigation" in n["title"].lower() or "crash" in n["title"].lower() or "fraud" in n["title"].lower(),
+                "sentiment": 15,
+                "time": n["published_at"],
+                "source_role": n["source_role"],
+                "source_tier": n["source_tier"]
+            }
+            for n in news_items
+        ]
+
+        total_time_ms = int((datetime.utcnow() - start_t).total_seconds() * 1000)
+
+        return {
+            "ticker": sym,
+            "company_name": company_name,
+            "analyzed_at": datetime.utcnow().isoformat(),
+            "stock": stock_data,
+            "retrieval": {
+                "plan": retrieval_plan,
+                "channels": channel_health,
+                "latency_ms": total_time_ms,
+                "total_sources": len(all_sources),
+                "unique_sources": max(0, len(all_sources) - syndicated_count),
+                "syndicated_sources": syndicated_count,
+            },
+            "sources": all_sources,
+            "news": {
+                "company": legacy_company_articles,
+                "ceo": [],
+                "analysis": legacy_company_articles
+            },
+            "social": {
+                "reddit": reddit_items,
+                "twitter": twitter_items,
+                "youtube": youtube_items,
+            },
+            "social_intel": {
+                "reddit": [r["title"] for r in reddit_items],
+                "twitter": [t["title"] for t in twitter_items],
+                "youtube": [y["title"] for y in youtube_items],
+                "news": [n["title"] for n in news_items]
+            },
+            "primary_sources": primary_sources,
+            "catalysts": reasoning.get("catalysts", {"positive": [], "negative": [], "unresolved": []}),
+            "risks": reasoning.get("risks", []),
+            "narratives": reasoning.get("narratives", []),
+            "contradictions": reasoning.get("contradictions", {"for": [], "against": [], "unresolved": []}),
+            "timeline": timeline,
+            "misinformation": reasoning.get("misinformation", {
+                "status": "NOMINAL",
+                "rumors_detected": [],
+                "manipulation_risk": "LOW",
+                "evidence_quality_score": 0.85
+            }),
+            "limitations": [
+                "Market telemetry reflects delayed daily closing series from Yahoo Finance (free tier), not high-frequency tick streams.",
+                "Social channels operate via public feeds without authenticated enterprise firehoses.",
+                "All citations reflect retrieved public web records; user verification of primary filings is recommended."
+            ],
+            "short_attack_correlation": short_attack_correlation
+        }
+
 
 
 # Agent instance for external use

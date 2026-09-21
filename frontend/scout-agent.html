@@ -3,17 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Scout Agent — Aegis Protocol</title>
+  <title>Scout 2.0 — Financial Intelligence Research Terminal · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-  <script src="gemini-client.js"></script>
   <style>
     .agent-hero {
       position: relative;
       padding: 110px 48px 60px;
       border-bottom: 1px solid var(--border);
-      background: radial-gradient(circle at 30% 0%, rgba(139, 92, 246, 0.18), transparent 60%),
-                  radial-gradient(circle at 80% 10%, rgba(0, 229, 255, 0.08), transparent 50%),
+      background: radial-gradient(circle at 30% 0%, rgba(139, 92, 246, 0.2), transparent 60%),
+                  radial-gradient(circle at 80% 10%, rgba(0, 229, 255, 0.1), transparent 50%),
                   linear-gradient(180deg, #07090e 0%, #0c101b 100%);
       overflow: hidden;
     }
@@ -22,7 +21,7 @@
       position: absolute;
       bottom: 0; left: 0; right: 0;
       height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.4), transparent);
+      background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.5), transparent);
     }
     .agent-tag {
       display: inline-flex; align-items: center; gap: 8px;
@@ -35,16 +34,17 @@
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
     .agent-hero h1 { font-size: clamp(2.2rem, 4vw, 3.2rem); font-weight: 800; letter-spacing: -0.03em; margin-bottom: 14px; line-height: 1.15; }
     .agent-hero h1 span { color: #a78bfa; text-shadow: 0 0 30px rgba(167, 139, 250, 0.3); }
-    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 620px; line-height: 1.7; margin-bottom: 32px; }
+    .agent-hero p { font-size: 1rem; color: var(--text-muted); max-width: 680px; line-height: 1.7; margin-bottom: 32px; }
+
     /* Telemetry Ribbon */
     .tel-ribbon {
       display: flex; gap: 0; flex-wrap: wrap;
-      background: rgba(7,9,14,0.8); border: 1px solid rgba(255,255,255,0.07);
+      background: rgba(7,9,14,0.85); border: 1px solid rgba(255,255,255,0.08);
       border-radius: 10px; overflow: hidden; margin-top: 24px;
     }
     .tel-cell {
-      flex: 1; min-width: 130px; padding: 10px 18px;
-      border-right: 1px solid rgba(255,255,255,0.07);
+      flex: 1; min-width: 140px; padding: 10px 18px;
+      border-right: 1px solid rgba(255,255,255,0.08);
       display: flex; flex-direction: column; gap: 3px;
     }
     .tel-cell:last-child { border-right: none; }
@@ -52,80 +52,168 @@
     .tel-key { font-family: var(--font-mono); font-size: 0.63rem; color: var(--text-dim); letter-spacing: 0.07em; text-transform: uppercase; }
 
     /* Page body */
-    .agent-body { max-width: 1240px; margin: 0 auto; padding: 40px 32px 80px; }
+    .agent-body { max-width: 1280px; margin: 0 auto; padding: 40px 32px 80px; }
 
-    /* Quick stats bar */
-    .quick-stats { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 32px; }
-    .qs { background: var(--surface); border: 1px solid var(--border); border-radius: 14px;
-      padding: 16px 22px; display: flex; align-items: center; gap: 14px; flex: 1; min-width: 200px;
-      backdrop-filter: blur(12px); transition: border-color 0.2s ease; }
-    .qs:hover { border-color: var(--border-hover); }
-    .qs-num { font-size: 1.5rem; font-weight: 800; letter-spacing: -0.03em; font-family: var(--font-mono); }
-    .qs-lbl { font-size: 0.76rem; color: var(--text-dim); font-family: var(--font-mono); }
+    /* Channel health ribbon */
+    .channel-strip {
+      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+      margin-bottom: 24px; padding: 12px 18px;
+      background: rgba(12, 16, 27, 0.6); border: 1px solid var(--border);
+      border-radius: 12px; font-family: var(--font-mono); font-size: 0.76rem;
+    }
+    .channel-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 10px; border-radius: 8px; background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08); color: var(--text-muted);
+    }
+    .channel-pill.active { border-color: rgba(16, 185, 129, 0.4); color: var(--emerald); background: rgba(16, 185, 129, 0.08); }
+    .channel-pill.degraded { border-color: rgba(245, 158, 11, 0.4); color: #fbbf24; background: rgba(245, 158, 11, 0.08); }
+    .cp-dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
 
     /* Analyze card */
-    .analyze-card { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 28px; margin-bottom: 28px; backdrop-filter: blur(16px); }
+    .analyze-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 18px; padding: 28px; margin-bottom: 32px;
+      backdrop-filter: blur(16px);
+    }
     .analyze-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
-    #tickerInput { flex: 1; min-width: 240px; background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border);
+    #tickerInput {
+      flex: 1; min-width: 260px; background: rgba(0, 0, 0, 0.5); border: 1px solid var(--border);
       border-radius: 12px; color: var(--text); font-family: var(--font-mono);
-      font-size: 0.95rem; padding: 13px 18px; outline: none; transition: border-color 0.2s, box-shadow 0.2s; }
-    #tickerInput:focus { border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.15); }
-    #analyzeBtn { padding: 13px 26px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff; border: none; border-radius: 12px;
+      font-size: 0.95rem; padding: 13px 18px; outline: none; transition: border-color 0.2s, box-shadow 0.2s;
+    }
+    #tickerInput:focus { border-color: #a78bfa; box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.18); }
+    #analyzeBtn {
+      padding: 13px 26px; background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff; border: none; border-radius: 12px;
       font-weight: 700; font-size: 0.9rem; cursor: pointer; font-family: var(--font-main);
       transition: all 0.18s var(--ease-spring); white-space: nowrap; display: inline-flex; align-items: center; gap: 8px;
-      box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35); }
+      box-shadow: 0 4px 16px rgba(139, 92, 246, 0.35);
+    }
     #analyzeBtn:hover { transform: translateY(-1px); box-shadow: 0 6px 22px rgba(139, 92, 246, 0.5); }
-    #analyzeBtn:active { transform: translateY(1px) scale(0.98); }
     #analyzeBtn:disabled { opacity: 0.6; cursor: not-allowed; }
 
-    /* Stock result */
-    .stock-result-card { background: rgba(0, 0, 0, 0.35); border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-top: 18px; }
-    .stock-header { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
-    .stock-ticker { font-size: 1.3rem; font-weight: 800; letter-spacing: -0.02em; font-family: var(--font-mono); }
-    .stock-price { font-size: 1.5rem; font-weight: 800; font-family: var(--font-mono); }
-    .stock-metrics { display: flex; gap: 18px; flex-wrap: wrap; }
-    .stock-metric { font-size: 0.85rem; color: var(--text-muted); font-family: var(--font-mono); }
-    .stock-metric strong { color: var(--text); }
+    .quick-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; align-items: center; font-size: 0.78rem; font-family: var(--font-mono); color: var(--text-dim); }
+    .qchip {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09);
+      padding: 3px 9px; border-radius: 6px; color: #c4b5fd; cursor: pointer; transition: all 0.15s;
+    }
+    .qchip:hover { background: rgba(139, 92, 246, 0.15); border-color: #a78bfa; color: #fff; }
 
-    /* Demo section */
-    .demo-card { background: var(--surface); border: 1px solid rgba(244, 63, 94, 0.25); border-radius: 18px; padding: 26px; margin-bottom: 28px; backdrop-filter: blur(14px); }
-    .demo-label { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700;
-      color: var(--rose); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 12px; }
-    .demo-title { font-size: 1.1rem; font-weight: 800; margin-bottom: 10px; }
-    .crash-stats { display: flex; gap: 24px; flex-wrap: wrap; margin: 16px 0; }
-    .crash-stat-val { font-size: 1.4rem; font-weight: 800; font-family: var(--font-mono); }
-    .crash-stat-lbl { font-size: 0.74rem; color: var(--text-dim); font-family: var(--font-mono); }
-    .tweet-box { background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin: 14px 0;
-      font-size: 0.88rem; color: var(--text-muted); font-family: var(--font-mono); line-height: 1.6; }
-    .timeline { display: flex; flex-direction: column; gap: 10px; margin-top: 16px; }
-    .timeline-item { display: flex; align-items: flex-start; gap: 12px; font-size: 0.86rem; color: var(--text-muted); }
-    .t-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--rose); flex-shrink: 0; margin-top: 5px; box-shadow: 0 0 8px var(--rose); }
-    .t-dot.green { background: var(--emerald); box-shadow: 0 0 8px var(--emerald); }
+    /* Results Workspace Sections */
+    .intel-section {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; margin-bottom: 24px;
+      backdrop-filter: blur(14px);
+    }
+    .intel-section-title {
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+      font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;
+      color: var(--text-dim); letter-spacing: 0.08em; text-transform: uppercase;
+      padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); margin-bottom: 18px;
+    }
+    .intel-count-badge {
+      font-size: 0.72rem; padding: 2px 8px; border-radius: 6px;
+      background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3);
+    }
 
-    /* News grid */
-    .news-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media(max-width:760px){ .news-grid{grid-template-columns:1fr;} }
-    .news-card { background: var(--surface); border: 1px solid var(--border); border-radius: 14px; padding: 18px;
-      transition: all 0.2s ease; backdrop-filter: blur(12px); }
-    .news-card:hover { border-color: rgba(139, 92, 246, 0.35); transform: translateY(-2px); }
-    .news-src { font-size: 0.72rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-dim);
-      text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
-    .news-title { font-size: 0.92rem; font-weight: 700; line-height: 1.45; margin-bottom: 6px; }
-    .news-meta { font-size: 0.8rem; color: var(--text-muted); line-height: 1.55; }
+    /* Market snapshot */
+    .snapshot-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 14px;
+      margin-bottom: 16px;
+    }
+    .snap-card {
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px; padding: 14px 18px;
+    }
+    .snap-val { font-size: 1.35rem; font-weight: 800; font-family: var(--font-mono); }
+    .snap-lbl { font-size: 0.72rem; color: var(--text-dim); font-family: var(--font-mono); margin-top: 4px; }
+    .freshness-note {
+      font-size: 0.76rem; color: var(--text-muted); font-family: var(--font-mono);
+      background: rgba(0,0,0,0.25); padding: 8px 12px; border-radius: 8px; border-left: 3px solid #fbbf24;
+    }
 
-    /* How it works */
-    .how-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 24px; }
-    .how-item { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 22px; backdrop-filter: blur(12px); }
-    .how-icon { width: 42px; height: 42px; border-radius: 12px; background: rgba(139, 92, 246, 0.15);
-      display: flex; align-items: center; justify-content: center; margin-bottom: 14px; border: 1px solid rgba(139, 92, 246, 0.25); }
-    .how-icon svg { width: 20px; height: 20px; color: #a78bfa; }
-    .how-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 6px; }
-    .how-desc { font-size: 0.84rem; color: var(--text-muted); line-height: 1.6; }
+    /* Source Cards */
+    .source-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 16px; }
+    @media(max-width:768px){ .source-grid { grid-template-columns: 1fr; } }
+    .evidence-card {
+      background: rgba(0,0,0,0.3); border: 1px solid var(--border);
+      border-radius: 14px; padding: 18px; display: flex; flex-direction: column; justify-content: space-between;
+      transition: all 0.2s ease;
+    }
+    .evidence-card:hover { border-color: rgba(139, 92, 246, 0.4); transform: translateY(-2px); }
+    .ev-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+    .ev-source-name { font-size: 0.74rem; font-weight: 700; font-family: var(--font-mono); color: var(--text-muted); }
+    .badge-role {
+      font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; padding: 2px 7px;
+      border-radius: 4px; text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .badge-primary { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.35); }
+    .badge-secondary { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-community { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-commentary { background: rgba(139, 92, 246, 0.15); color: #c4b5fd; border: 1px solid rgba(139, 92, 246, 0.3); }
+    .badge-media { background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); }
 
-    /* Scan animation */
-    .scan-row { display: flex; align-items: center; gap: 10px; padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.4); border: 1px solid var(--border); border-radius: 10px; font-size: 0.84rem; }
-    @media(max-width:760px){.agent-body{padding:28px 18px 60px;}.agent-hero{padding:90px 20px 48px;}.hero-stats{gap:20px;}}
+    .ev-title { font-size: 0.94rem; font-weight: 700; line-height: 1.45; margin-bottom: 8px; color: var(--text); }
+    .ev-snippet { font-size: 0.82rem; color: var(--text-muted); line-height: 1.55; margin-bottom: 14px; }
+    .ev-footer { display: flex; align-items: center; justify-content: space-between; font-size: 0.75rem; color: var(--text-dim); }
+    .ae-open-btn {
+      display: inline-flex; align-items: center; gap: 4px; color: #a78bfa; text-decoration: none;
+      font-weight: 700; font-family: var(--font-mono); font-size: 0.76rem;
+      padding: 4px 10px; border-radius: 6px; background: rgba(139, 92, 246, 0.1);
+      border: 1px solid rgba(139, 92, 246, 0.25); transition: all 0.15s;
+    }
+    .ae-open-btn:hover { background: rgba(139, 92, 246, 0.22); color: #fff; border-color: #a78bfa; }
+    .ae-no-link { font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-dim); }
+
+    /* Catalysts and Risks */
+    .catalyst-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; }
+    .cat-box { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 16px; border: 1px solid var(--border); }
+    .cat-box.pos { border-left: 4px solid var(--emerald); }
+    .cat-box.neg { border-left: 4px solid var(--rose); }
+    .cat-box.unres { border-left: 4px solid #fbbf24; }
+    .cat-item { margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.04); font-size: 0.85rem; }
+    .cat-item:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+    .cat-cite { font-family: var(--font-mono); font-size: 0.68rem; color: #a78bfa; margin-left: 6px; }
+
+    /* Contradictions */
+    .contra-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width:768px){ .contra-grid { grid-template-columns: 1fr; } }
+
+    /* Timeline */
+    .research-timeline { display: flex; flex-direction: column; gap: 10px; }
+    .rtl-item {
+      display: flex; align-items: baseline; gap: 12px; padding: 10px 14px;
+      background: rgba(0,0,0,0.25); border-radius: 8px; font-size: 0.84rem;
+    }
+    .rtl-time { font-family: var(--font-mono); font-size: 0.72rem; color: #a78bfa; min-width: 80px; flex-shrink: 0; }
+
+    /* Source Explorer */
+    .explorer-filters { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+    .filter-btn {
+      background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+      color: var(--text-muted); padding: 5px 12px; border-radius: 8px;
+      font-size: 0.76rem; font-family: var(--font-mono); cursor: pointer; transition: all 0.15s;
+    }
+    .filter-btn.active, .filter-btn:hover { background: rgba(139, 92, 246, 0.2); border-color: #a78bfa; color: #fff; }
+    .source-table { display: flex; flex-direction: column; gap: 10px; }
+    .source-row {
+      background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px; padding: 12px 16px; transition: border-color 0.2s;
+    }
+    .source-row:hover { border-color: rgba(139, 92, 246, 0.3); }
+
+    /* Empty state */
+    .empty-state {
+      padding: 32px; text-align: center; color: var(--text-muted); font-size: 0.88rem;
+      border: 1px dashed var(--border); border-radius: 12px; background: rgba(0,0,0,0.2);
+    }
+
+    /* Honest Case Study */
+    .case-study-card {
+      background: var(--surface); border: 1px solid rgba(244, 63, 94, 0.25);
+      border-radius: 16px; padding: 24px; margin-bottom: 28px; backdrop-filter: blur(14px);
+    }
+    @media(max-width:760px){.agent-body{padding:24px 16px 60px;}.agent-hero{padding:85px 18px 40px;}}
   </style>
 </head>
 <body>
@@ -135,111 +223,107 @@
   <div class="ae-page">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_02 · Active Node</div>
-      <h1>Scout <span>Agent</span></h1>
-      <p>Real-time financial market intelligence powered by multi-agent AI. Detects misinformation-driven crashes before they spiral, analyzes high-frequency anomalies, and flags stock manipulation campaigns.</p>
+      <div class="agent-tag"><span class="dot"></span>AGENT_02 · Financial Intelligence Terminal</div>
+      <h1>Scout <span>2.0</span></h1>
+      <p>Autonomous financial information research workspace. Integrates market quote telemetry, Agent Reach multi-channel discovery, primary filing escalation, source independence verification, and evidence-grounded intelligence.</p>
+      
       <div class="tel-ribbon">
-        <div class="tel-cell"><span class="tel-val">Z &gt; 3.8σ</span><span class="tel-key">Anomaly Threshold</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">&lt;30s</span><span class="tel-key">Triage Latency</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">W-MSR F=1</span><span class="tel-key">Consensus Protocol</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">SHA-256</span><span class="tel-key">Evidence Hash</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--rose)">LIVE</span><span class="tel-key">Node Status</span></div>
+        <div class="tel-cell"><span class="tel-val">REST Quotes</span><span class="tel-key">Market Telemetry</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">2.0σ Z-Score</span><span class="tel-key">Anomaly Engine</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">Agent Reach 14x</span><span class="tel-key">Channel Ingestion</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">SHA-256</span><span class="tel-key">Evidence Deduplication</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">ACTIVE</span><span class="tel-key">Terminal Status</span></div>
       </div>
     </div>
 
     <div class="agent-body">
-      <!-- Quick stats -->
-      <div class="quick-stats ae-reveal">
-        <div class="qs">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
-          <div><div class="qs-num" style="color:var(--rose)">14</div><div class="qs-lbl">Crash Signals Today</div></div>
-        </div>
-        <div class="qs">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-          <div><div class="qs-num" style="color:#c4b5fd">3.4K</div><div class="qs-lbl">Filings & Articles Scanned</div></div>
-        </div>
-        <div class="qs">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-          <div><div class="qs-num" style="color:#fbbf24">3</div><div class="qs-lbl">Active Disinformation Alerts</div></div>
-        </div>
+      <!-- Agent Reach Channel Health -->
+      <div class="channel-strip ae-reveal">
+        <span style="color:var(--text-dim);font-weight:700;margin-right:4px;">AGENT REACH CHANNELS:</span>
+        <span class="channel-pill active"><span class="cp-dot"></span>News RSS & Wires</span>
+        <span class="channel-pill active"><span class="cp-dot"></span>Official Filings & IR</span>
+        <span class="channel-pill active"><span class="cp-dot"></span>Reddit Discussions</span>
+        <span class="channel-pill active"><span class="cp-dot"></span>YouTube Video Intel</span>
+        <span class="channel-pill active"><span class="cp-dot"></span>X / Twitter Streams</span>
+        <span class="channel-pill" style="margin-left:auto;color:var(--text-dim);">Deduplication &amp; Provenance Enabled</span>
       </div>
 
-      <!-- ANALYZE -->
+      <!-- ANALYZE / TICKER INPUT -->
       <div class="analyze-card ae-reveal">
-        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// ANALYZE TICKER OR COMPANY</div>
+        <div class="ae-label mb-12" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:12px;">// RESEARCH TICKER OR CORPORATE ENTITY</div>
         <div class="analyze-row">
-          <input type="text" id="tickerInput" placeholder="e.g. TATAMOTORS.NS, RELIANCE.NS, TSLA, NVDA...">
+          <input type="text" id="tickerInput" placeholder="Enter ticker or company name (e.g. TATAMOTORS.NS, RELIANCE.NS, NVDA, TSLA, AAPL)..." value="TATAMOTORS.NS">
           <button id="analyzeBtn" onclick="analyzeStock()">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-            Analyze Ticker
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            Research Entity
           </button>
         </div>
-        <div id="stockResult"></div>
-        <div id="newsSection" style="margin-top:12px;"></div>
-      </div>
-
-      <!-- DEMO CRASH -->
-      <div class="demo-card ae-reveal">
-        <div class="demo-label">// SIMULATION — Coordinated Short-Attack Disinformation</div>
-        <div class="demo-title">Tata Motors — Synthetic Bankruptcy Rumor</div>
-        <div class="tweet-box">@Breakingmarkets_bot: BREAKING: Tata Motors files for urgent insolvency bankruptcy. Stock trading halted pending regulatory audit. #TataMotors #crash</div>
-        <div class="crash-stats">
-          <div><div class="crash-stat-val" style="color:var(--rose)">-5.8%</div><div class="crash-stat-lbl">Price Impact</div></div>
-          <div><div class="crash-stat-val" style="color:#fbbf24">4.2 Z</div><div class="crash-stat-lbl">Volume Z-Score</div></div>
-          <div><div class="crash-stat-val" style="color:var(--emerald)">8 min</div><div class="crash-stat-lbl">Consensus Verdict Time</div></div>
-        </div>
-        <div class="timeline">
-          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:32</strong> Synthetic rumor published by unverified account. Amplified via 1,200 coordinated bot retweets in 6 minutes.</span></div>
-          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:36</strong> Scout detects abnormal sell-off volume spike. Z-score threshold exceeded (Z = 4.2).</span></div>
-          <div class="timeline-item"><div class="t-dot"></div><span><strong>09:38</strong> Autonomous investigative agents query SEBI/NSE filings and official investor relations portals.</span></div>
-          <div class="timeline-item"><div class="t-dot green"></div><span><strong>09:40</strong> Consensus Verdict: <strong style="color:var(--emerald)">CONFIRMED DISINFORMATION</strong> — Zero regulatory filings exist. Telemetry alert broadcast to subscriber terminals.</span></div>
+        <div class="quick-chips">
+          <span>Quick Research:</span>
+          <span class="qchip" onclick="setTicker('TATAMOTORS.NS')">Tata Motors (TATAMOTORS.NS)</span>
+          <span class="qchip" onclick="setTicker('RELIANCE.NS')">Reliance (RELIANCE.NS)</span>
+          <span class="qchip" onclick="setTicker('NVDA')">Nvidia (NVDA)</span>
+          <span class="qchip" onclick="setTicker('TSLA')">Tesla (TSLA)</span>
+          <span class="qchip" onclick="setTicker('AAPL')">Apple (AAPL)</span>
         </div>
       </div>
 
-      <!-- TRENDING NEWS -->
-      <div class="ae-reveal" style="margin-bottom:32px;">
-        <div class="ae-label mb-8" style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:8px;">// LIVE MARKET INTELLIGENCE STREAM</div>
-        <p style="font-size:0.86rem;color:var(--text-muted);margin-bottom:18px;">Real-time financial feeds scanned, sanitized, and classified by Scout Agent</p>
-        <div class="news-grid">
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent);display:inline-block;"></span>Economic Times</div><p class="news-title">Sensex surges 400 points amid strong global cues and FII inflows</p><p class="news-meta">2 hours ago · <span style="color:var(--emerald)">Verified positive sentiment</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:#fbbf24;display:inline-block;"></span>Moneycontrol</div><p class="news-title">SEBI probes unusual trading pattern in mid-cap stocks ahead of results</p><p class="news-meta">4 hours ago · <span style="color:#fbbf24">Alert — under investigation</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);display:inline-block;"></span>Bloomberg India</div><p class="news-title">IT sector rallies as dollar strengthens; TCS and Infy lead gains</p><p class="news-meta">5 hours ago · <span style="color:var(--emerald)">Verified positive sentiment</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--rose);display:inline-block;"></span>Business Standard</div><p class="news-title">Adani Group shares dip after unverified social media reports circulate</p><p class="news-meta">6 hours ago · <span style="color:var(--rose)">High misinformation risk detected</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--emerald);display:inline-block;"></span>Reuters India</div><p class="news-title">RBI holds rates steady; markets react with cautious optimism</p><p class="news-meta">8 hours ago · <span style="color:var(--emerald)">Verified neutral/positive</span></p></div>
-          <div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:var(--rose);display:inline-block;"></span>Financial Express</div><p class="news-title">Pharma stocks under pressure after fake health advisory circulates</p><p class="news-meta">10 hours ago · <span style="color:var(--rose)">Synthetic advisory confirmed</span></p></div>
+      <!-- WORKSPACE ROOT CONTAINER -->
+      <div id="workspaceRoot"></div>
+
+      <!-- HONEST ANOMALY SIMULATION & HISTORICAL CASE STUDY -->
+      <div class="case-study-card ae-reveal">
+        <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:var(--rose);letter-spacing:0.08em;margin-bottom:10px;">// ANOMALY SIMULATION &amp; HISTORICAL CASE STUDY</div>
+        <div style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Synthetic Bankruptcy Smear Anomaly Scenario</div>
+        <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
+          This reference case study demonstrates how Scout's statistical dispersion model flags volume anomalies while autonomous Agent Reach queries regulatory portals (SEBI/NSE/SEC) to falsify coordinated short-seller rumors before market panic escalates.
+        </p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
+          <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
+            <div style="color:var(--rose);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">-5.8% Δ</div>
+            <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Simulated Sell-off</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
+            <div style="color:#fbbf24;font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">4.2σ</div>
+            <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Dispersion Z-Score</div>
+          </div>
+          <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
+            <div style="color:var(--emerald);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">0 Filings</div>
+            <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Regulatory Portal Cross-Check</div>
+          </div>
         </div>
       </div>
 
-      <!-- PIPELINE SPEC TABLE -->
+      <!-- PIPELINE SPECIFICATION TABLE -->
       <div class="ae-reveal">
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:10px;">// SCOUT AGENT — EXECUTION PIPELINE SPECIFICATION</div>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:10px;">// SCOUT 2.0 — ARCHITECTURAL PIPELINE SPECIFICATION</div>
         <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
           <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
             <span>Stage</span><span>Operation</span><span>Complexity</span><span>Output</span>
           </div>
           <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
             <span style="font-family:var(--font-mono);font-size:0.75rem;color:#a78bfa;font-weight:700;">01 · INGEST</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">WebSocket price feed + exchange REST poll. SHA-256 dedup per tick. Volume Δ rolling 30d baseline.</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Exchange REST quote ingestion + Historical 5-day closing series. SHA-256 deduplication per retrieved record.</span>
             <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(N)</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">tick bundle</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">quote bundle</span>
           </div>
           <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
             <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · Z-SCORE</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Z = (V_t − μ_30d) / σ_30d. Threshold &gt; 3.8σ triggers anomaly flag. Kalman filter smooths noise.</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Statistical dispersion Z = (P_t − μ) / σ. Threshold |Z| &ge; 2.0σ triggers anomaly alert.</span>
             <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(1)</span>
             <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">Z-score Δ</span>
           </div>
           <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
             <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--emerald);font-weight:700;">03 · DISPATCH</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">4 parallel agents query SEBI/NSE filings, Google News, X/Twitter, Reddit. Each issues signed evidence payload.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(4)</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);">evidence[]</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Agent Reach concurrent multi-channel dispatch across News wires, Regulatory filings, Reddit, X/Twitter, and YouTube.</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(channels)</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);">evidence_fragments[]</span>
           </div>
           <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · VERDICT</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">W-MSR consensus (F=1) prunes outlier votes. Majority verdict + confidence score broadcast to subscriber terminals.</span>
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · SYNTHESIS</span>
+            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Source provenance tagging, syndication clustering, catalyst extraction, contradiction matrix, and W-MSR consensus.</span>
             <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(k log k)</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">alert + hash</span>
+            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">research terminal dossier</span>
           </div>
         </div>
       </div>
@@ -248,7 +332,7 @@
     <footer class="ae-footer">
       <div>
         <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);">Scout Agent Module · Autonomous Defense &copy; 2026</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Scout Agent 2.0 · Financial Intelligence Research Terminal &copy; 2026</div>
       </div>
       <div style="display:flex;gap:18px;font-size:0.8rem;">
         <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
@@ -260,243 +344,495 @@
   </div>
 
   <script>
-    const STOCK_PLATFORMS = [
-      { name: 'Google News',    color: '#4285f4' },
-      { name: 'X / Twitter',   color: '#1d9bf0' },
-      { name: 'Reddit',        color: '#ff4500' },
-      { name: 'Bloomberg',     color: '#f09000' },
-    ];
+    let currentResearchData = null;
+    let currentFilter = 'ALL';
 
-    const TICKER_MAP = {
-      'NVIDIA': 'NVDA',
-      'APPLE': 'AAPL',
-      'TESLA': 'TSLA',
-      'MICROSOFT': 'MSFT',
-      'GOOGLE': 'GOOGL',
-      'ALPHABET': 'GOOGL',
-      'AMAZON': 'AMZN',
-      'META': 'META',
-      'FACEBOOK': 'META',
-      'NETFLIX': 'NFLX',
-      'TATA MOTORS': 'TATAMOTORS.NS',
-      'TATAMOTORS': 'TATAMOTORS.NS',
-      'RELIANCE': 'RELIANCE.NS',
-      'INFOSYS': 'INFY.NS',
-      'TCS': 'TCS.NS',
-      'HDFC': 'HDFCBANK.NS',
-      'HDFCBANK': 'HDFCBANK.NS',
-      'WIPRO': 'WIPRO.NS',
-      'ICICI': 'ICICIBANK.NS',
-      'SBI': 'SBIN.NS',
-      'ADANI': 'ADANIENT.NS',
-    };
-
-    function resolveTicker(query) {
-      if (!query) return 'NVDA';
-      const clean = query.trim().toUpperCase();
-      return TICKER_MAP[clean] || clean;
+    function setTicker(t) {
+      document.getElementById('tickerInput').value = t;
+      analyzeStock();
     }
 
-    async function fetchStockTelemetry(ticker) {
-      const endpoints = [
-        `/api/stock?ticker=${encodeURIComponent(ticker)}`,
-        `/.netlify/functions/stock?ticker=${encodeURIComponent(ticker)}`,
-        `https://misinformation-1ouh.onrender.com/api/stock?ticker=${encodeURIComponent(ticker)}`
-      ];
-      for (const ep of endpoints) {
-        try {
-          const r = await fetch(ep, { signal: AbortSignal.timeout(6000) });
-          if (r.ok) {
-            const d = await r.json();
-            if (d && (d.current_price != null || d.ticker)) return d;
-          }
-        } catch (_) {}
-      }
-      return null;
+    function esc(str) {
+      if (str == null) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
-    let scoutTimerInterval = null;
-
-    function showScanAnim(container, ticker) {
-      container.innerHTML = '';
-      if (scoutTimerInterval) clearInterval(scoutTimerInterval);
-
-      const preview = document.createElement('div');
-      preview.className = 'ae-loading-preview';
-      preview.innerHTML = `
-        <div class="ae-loading-top">
-          <div class="ae-loading-title-wrap">
-            <div class="ae-radar-spinner"></div>
-            <div class="ae-loading-title">Analyzing Market Telemetry &amp; Anomaly Matrix for <span style="color:#a78bfa;">${ticker}</span></div>
-          </div>
-          <div class="ae-loading-timer-badge" id="scoutElapsedBadge">
-            <span style="width:6px;height:6px;border-radius:50%;background:#a78bfa;box-shadow:0 0 6px #a78bfa;"></span>
-            <span>0.0s elapsed</span>
-          </div>
-        </div>
-        <div class="ae-progress-track">
-          <div class="ae-progress-fill" id="scoutProgressFill" style="width: 20%; background: linear-gradient(90deg, #a78bfa, #38bdf8, #00e5ff);"></div>
-        </div>
-        <div class="ae-loading-steps-grid">
-          ${STOCK_PLATFORMS.map(p => `
-            <div class="ae-loading-step-item" id="st_${p.name.replace(/[^a-z]/gi,'')}">
-              <span class="ae-step-dot" style="background:${p.color};"></span>
-              <div style="display:flex;flex-direction:column;gap:2px;">
-                <span style="font-weight:600;font-size:0.8rem;color:#fff;">${p.name}</span>
-                <span style="font-size:0.72rem;color:var(--text-dim);" id="st_sub_${p.name.replace(/[^a-z]/gi,'')}">Connecting stream...</span>
-              </div>
-            </div>
-          `).join('')}
-        </div>
-        <div class="ae-skeleton-card" style="margin-bottom:12px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div class="ae-skeleton-bar" style="height:22px;width:30%;"></div>
-            <div class="ae-skeleton-bar" style="height:24px;width:20%;"></div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;">
-            <div class="ae-skeleton-bar" style="height:14px;"></div>
-            <div class="ae-skeleton-bar" style="height:14px;"></div>
-            <div class="ae-skeleton-bar" style="height:14px;"></div>
-            <div class="ae-skeleton-bar" style="height:14px;"></div>
-          </div>
-        </div>
-      `;
-      container.appendChild(preview);
-
-      const startTime = performance.now();
-      scoutTimerInterval = setInterval(() => {
-        const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
-        const badge = document.getElementById('scoutElapsedBadge');
-        if (badge) badge.innerHTML = `<span style="width:6px;height:6px;border-radius:50%;background:#a78bfa;box-shadow:0 0 6px #a78bfa;"></span><span>${elapsed}s elapsed</span>`;
-      }, 100);
-    }
-
-    function setScoutStepProgress(name, statusText, isDone = false) {
-      const stepEl = document.getElementById('st_' + name.replace(/[^a-z]/gi,''));
-      const subEl = document.getElementById('st_sub_' + name.replace(/[^a-z]/gi,''));
-      if (stepEl && subEl) {
-        subEl.textContent = statusText;
-        if (isDone) {
-          stepEl.className = 'ae-loading-step-item done';
-        } else {
-          stepEl.className = 'ae-loading-step-item active';
-        }
-      }
-    }
-
-    function markDone(name, msg) {
-      setScoutStepProgress(name, msg, true);
+    function getRoleBadge(role) {
+      const r = (role || 'DISCOVERY').toUpperCase();
+      if (r === 'PRIMARY') return `<span class="badge-role badge-primary">PRIMARY SOURCE</span>`;
+      if (r === 'SECONDARY') return `<span class="badge-role badge-secondary">FINANCIAL PRESS</span>`;
+      if (r === 'COMMUNITY') return `<span class="badge-role badge-community">COMMUNITY SIGNAL</span>`;
+      if (r === 'COMMENTARY') return `<span class="badge-role badge-commentary">COMMENTARY</span>`;
+      if (r === 'DIRECT_MEDIA') return `<span class="badge-role badge-media">VIDEO ANALYSIS</span>`;
+      return `<span class="badge-role badge-secondary">${r}</span>`;
     }
 
     async function analyzeStock() {
       const rawInput = document.getElementById('tickerInput').value.trim();
       if (!rawInput) return;
-      const ticker = resolveTicker(rawInput);
-      const resultBox = document.getElementById('stockResult');
-      const newsBox = document.getElementById('newsSection');
+
+      const root = document.getElementById('workspaceRoot');
       const btn = document.getElementById('analyzeBtn');
 
-      btn.innerHTML = `<span class="pulse-dot"></span> Analyzing ${ticker}...`; btn.disabled = true;
-      resultBox.innerHTML = ''; newsBox.innerHTML = '';
-      showScanAnim(resultBox, ticker);
+      btn.innerHTML = `<span class="pulse-dot"></span> Researching ${esc(rawInput)}...`;
+      btn.disabled = true;
 
-      const progressFill = document.getElementById('scoutProgressFill');
-      const stepDelays = [
-        { name: 'YahooFinance', msg: 'Fetching market chart...', pct: 35, delay: 200 },
-        { name: 'EconomicTimes', msg: 'Querying news wire...', pct: 55, delay: 450 },
-        { name: 'Moneycontrol', msg: 'Parsing order liquidity...', pct: 75, delay: 700 },
-        { name: 'Bloomberg', msg: 'Running Z-Score engine...', pct: 90, delay: 950 }
-      ];
-      stepDelays.forEach(s => {
-        setTimeout(() => {
-          setScoutStepProgress(s.name, s.msg, false);
-          if (progressFill) progressFill.style.width = `${s.pct}%`;
-        }, s.delay);
-      });
-
-      let stockData = await fetchStockTelemetry(ticker);
-      if (stockData && stockData.current_price > 0) {
-        markDone('YahooFinance', (stockData.currency === 'INR' ? '₹' : '$') + stockData.current_price);
-      } else {
-        markDone('YahooFinance', 'Active Stream');
-      }
-
-      // Try backend news endpoints
-      let backendNews = null;
-      const scoutEndpoints = [
-        '/api/scout/analyze',
-        'https://misinformation-1ouh.onrender.com/api/scout/analyze'
-      ];
-      for (const ep of scoutEndpoints) {
-        try {
-          const resp = await fetch(ep, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ticker }),
-            signal: AbortSignal.timeout(9000)
-          });
-          if (resp.ok) {
-            const bData = await resp.json();
-            if (bData?.news?.company?.length > 0) {
-              backendNews = bData.news.company;
-              if (!stockData || stockData.current_price === 0) {
-                if (bData.stock && bData.stock.current_price > 0) stockData = bData.stock;
-              }
-              break;
-            }
-          }
-        } catch (_) {}
-      }
+      root.innerHTML = `
+        <div class="intel-section ae-reveal" style="text-align:center;padding:48px;">
+          <div class="ae-radar-spinner" style="margin:0 auto 16px;"></div>
+          <div style="font-size:1.05rem;font-weight:700;margin-bottom:8px;">Running Financial Retrieval Plan &amp; Multi-Channel Acquisition</div>
+          <div style="font-size:0.82rem;color:var(--text-muted);font-family:var(--font-mono);">
+            Dispatching Agent Reach &rarr; News wires, Regulatory filings, Reddit, X/Twitter, YouTube &rarr; Deduplicating &rarr; Reasoning...
+          </div>
+        </div>
+      `;
 
       try {
-        let newsData = backendNews;
-        if (!newsData || newsData.length === 0) {
-          const prompt = `You are a financial intelligence AI analyzing "${ticker}"${stockData?.name ? ` (${stockData.name}, price: ${stockData.current_price} ${stockData.currency}, ${stockData.drop_percent}% change, Z-score: ${stockData.z_score})` : ''}.
-Simulate scanning of financial news: Economic Times, Moneycontrol, Google News, Bloomberg, Reuters, Reddit r/stocks.
-Generate 5 news items. Return STRICT JSON array:
-[{ "title": "headline max 15 words", "source": "one of the sources above", "category": "Company News|CEO News|Market Analysis|Insider Activity", "summary": "1-2 sentence insight max 25 words", "is_threat": true|false, "sentiment": integer -100 to 100 }]
-If crashing (${stockData?.is_crashing ? 'YES' : 'NO'}), include at least 2 negative/threat items. Current date: ${new Date().toDateString()}.`;
+        const resp = await fetch('/api/scout/analyze', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ticker: rawInput }),
+          signal: AbortSignal.timeout(15000)
+        });
 
-          try {
-            newsData = await window.GeminiClient.askJSON(prompt);
-          } catch (gErr) {
-            console.warn('Gemini proxy notice, using simulated feeds:', gErr);
-            newsData = [
-              { title: `${ticker} quarterly operational telemetry published across investor relations portal`, source: 'Bloomberg', category: 'Company News', summary: 'Financial disclosures confirm nominal revenue trajectory.', is_threat: false, sentiment: 22 },
-              { title: `${ticker} algorithmic order flow analysis indicates sustained institutional liquidity`, source: 'Economic Times', category: 'Market Analysis', summary: 'Consensus sentiment index remains positive across major trading desks.', is_threat: false, sentiment: 35 },
-              { title: `Unverified social media claims regarding ${ticker} supply chain delay investigated`, source: 'Reddit', category: 'Market Analysis', summary: 'Automated veracity checks refute coordinated short-seller rumors.', is_threat: true, sentiment: -38 }
-            ];
-          }
-        }
-        if (progressFill) progressFill.style.width = '100%';
-        await new Promise(r => setTimeout(r, 400));
-        if (scoutTimerInterval) clearInterval(scoutTimerInterval);
-
-        if (stockData && stockData.current_price > 0) {
-          const dc = parseFloat(stockData.drop_percent) < -2 ? 'var(--rose)' : parseFloat(stockData.drop_percent) > 1 ? 'var(--emerald)' : '#fbbf24';
-          const sym = stockData.currency === 'INR' ? '₹' : '$';
-          resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${stockData.ticker} <span style="font-size:0.85rem;color:var(--text-muted);font-weight:500;">${stockData.name || ticker}</span></span><span class="stock-price" style="color:${dc}">${sym}${stockData.current_price}</span></div><div class="stock-metrics"><span class="stock-metric">24h Delta: <strong style="color:${dc}">${stockData.drop_percent}%</strong></span><span class="stock-metric">Prev Close: <strong>${sym}${stockData.prev_close}</strong></span><span class="stock-metric">Z-Score: <strong>${stockData.z_score}</strong></span><span class="stock-metric">Status: <strong style="color:${stockData.is_crashing?'var(--rose)':'var(--emerald)'}">${stockData.is_crashing?'ANOMALOUS VOLATILITY':'NOMINAL'}</strong></span></div></div>`;
-        } else {
-          resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${ticker}</span><span class="stock-price" style="color:var(--accent);font-size:1.1rem;font-weight:700;">ACTIVE NODE</span></div><p style="color:var(--text-muted);font-size:0.86rem;margin-top:6px;">Market intelligence telemetry stream calibrated for <strong>${ticker}</strong>.</p></div>`;
+        if (!resp.ok) {
+          throw new Error(`Server returned HTTP ${resp.status}`);
         }
 
-        if (Array.isArray(newsData) && newsData.length > 0) {
-          newsBox.innerHTML = '<p style="font-weight:700;font-size:0.84rem;margin:16px 0 10px;font-family:var(--font-mono);color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;">// NEWS ANALYSIS & THREAT CLASSIFICATION</p><div class="news-grid" id="newsGridDyn"></div>';
-          const grid = document.getElementById('newsGridDyn');
-          const esc = window.escapeHtml || (str => String(str || ''));
-          newsData.forEach(item => {
-            const sc = (item.sentiment||0) < -20 ? 'var(--rose)' : (item.sentiment||0) > 20 ? 'var(--emerald)' : '#fbbf24';
-            grid.innerHTML += `<div class="news-card"><div class="news-src"><span style="width:6px;height:6px;border-radius:50%;background:${sc};display:inline-block;"></span>${esc(item.source || 'Market Feed')} <span style="color:#a78bfa">${esc(item.category || 'Market Intelligence')}</span>${item.is_threat?'<span style="margin-left:auto;font-size:0.68rem;color:var(--rose);background:rgba(244,63,94,0.12);padding:2px 8px;border-radius:20px;font-weight:700;">THREAT RISK</span>':''}</div><p class="news-title">${esc(item.title || '')}</p><p class="news-meta">${esc(item.summary || item.title || '')}</p><div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:10px;"><div style="width:${Math.min(Math.abs(item.sentiment||0),100)}%;height:4px;background:${sc};border-radius:2px;"></div></div></div>`;
-          });
-        }
-      } catch (e) {
-        resultBox.innerHTML = `<div class="stock-result-card"><div class="stock-header"><span class="stock-ticker">${ticker}</span><span class="stock-price">SYNCED</span></div></div>`;
+        const data = await resp.json();
+        currentResearchData = data;
+        renderWorkspace(data);
+
+      } catch (err) {
+        console.error('[Scout 2.0] Analysis error:', err);
+        root.innerHTML = `
+          <div class="intel-section ae-reveal" style="border-color:rgba(244,63,94,0.4);">
+            <div style="color:var(--rose);font-weight:700;margin-bottom:8px;">Research Acquisition Error</div>
+            <div style="color:var(--text-muted);font-size:0.86rem;line-height:1.6;">
+              Unable to complete multi-channel research query for <strong>${esc(rawInput)}</strong>: ${esc(err.message)}.
+              Ensure the backend server is running and accessible at <code>/api/scout/analyze</code>.
+            </div>
+          </div>
+        `;
+      } finally {
+        btn.innerHTML = `
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          Research Entity
+        `;
+        btn.disabled = false;
       }
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Analyze Ticker`;
-      btn.disabled = false;
     }
 
-    document.getElementById('tickerInput').addEventListener('keydown', e => { if (e.key === 'Enter') analyzeStock(); });
+    function renderWorkspace(data) {
+      const root = document.getElementById('workspaceRoot');
+      const stock = data.stock || {};
+      const retrieval = data.retrieval || {};
+      const sources = data.sources || [];
+      const primarySources = data.primary_sources || [];
+      const news = (data.news && data.news.company) ? data.news.company : (Array.isArray(data.news) ? data.news : []);
+      const social = data.social || {};
+      const catalysts = data.catalysts || {};
+      const narratives = data.narratives || [];
+      const contradictions = data.contradictions || {};
+      const timeline = data.timeline || [];
+      const misinfo = data.misinformation || {};
+
+      const price = stock.current_price ? Number(stock.current_price).toFixed(2) : '0.00';
+      const prevClose = stock.prev_close ? Number(stock.prev_close).toFixed(2) : '0.00';
+      const delta = stock.drop_percent != null ? Number(stock.drop_percent).toFixed(2) : '0.00';
+      const deltaColor = delta < -2.0 ? 'var(--rose)' : (delta > 1.0 ? 'var(--emerald)' : '#fbbf24');
+      const zScore = stock.z_score != null ? Number(stock.z_score).toFixed(2) : '0.00';
+      const isCrashing = stock.is_crashing;
+      const symPrefix = stock.currency === 'INR' ? '₹' : '$';
+
+      let html = '';
+
+      // 1. MARKET SNAPSHOT
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 01 · MARKET TELEMETRY SNAPSHOT</span>
+            <span class="intel-count-badge">${esc(data.company_name || data.ticker)}</span>
+          </div>
+          <div class="snapshot-grid">
+            <div class="snap-card">
+              <div class="snap-val" style="color:${deltaColor}">${symPrefix}${price}</div>
+              <div class="snap-lbl">Last Price (${esc(stock.currency || 'USD')})</div>
+            </div>
+            <div class="snap-card">
+              <div class="snap-val" style="color:${deltaColor}">${delta > 0 ? '+' : ''}${delta}%</div>
+              <div class="snap-lbl">24h Price Change</div>
+            </div>
+            <div class="snap-card">
+              <div class="snap-val">${symPrefix}${prevClose}</div>
+              <div class="snap-lbl">Previous Close</div>
+            </div>
+            <div class="snap-card">
+              <div class="snap-val" style="color:${Math.abs(zScore)>=2 ? 'var(--rose)' : '#c4b5fd'}">${zScore}σ</div>
+              <div class="snap-lbl">Volatility Dispersion (Z-Score)</div>
+            </div>
+            <div class="snap-card">
+              <div class="snap-val" style="color:${isCrashing ? 'var(--rose)' : 'var(--emerald)'}">
+                ${isCrashing ? 'ANOMALY DETECTED' : 'NOMINAL'}
+              </div>
+              <div class="snap-lbl">Market Condition</div>
+            </div>
+          </div>
+          <div class="freshness-note">
+            <strong>Data Disclosure:</strong> ${esc(stock.data_source || 'Delayed Daily Close via Yahoo Finance Free Chart API — Non-realtime')}.
+          </div>
+        </div>
+      `;
+
+      // 2. RETRIEVAL & CHANNEL TELEMETRY
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 02 · RESEARCH RETRIEVAL PLAN &amp; EVIDENCE ACQUISITION</span>
+            <span class="intel-count-badge">${retrieval.total_sources || sources.length} Sources Discovered</span>
+          </div>
+          <div style="display:flex;gap:16px;flex-wrap:wrap;margin-bottom:14px;font-family:var(--font-mono);font-size:0.8rem;">
+            <div>Total Records: <strong style="color:#c4b5fd">${retrieval.total_sources || sources.length}</strong></div>
+            <div>Unique Outlets: <strong style="color:var(--emerald)">${retrieval.unique_sources || sources.length}</strong></div>
+            <div>Syndicated Duplicates: <strong style="color:#fbbf24">${retrieval.syndicated_sources || 0}</strong></div>
+            <div>Retrieval Latency: <strong style="color:var(--text)">${retrieval.latency_ms || 0} ms</strong></div>
+          </div>
+        </div>
+      `;
+
+      // 3. PRIMARY SOURCES & NEWS INTELLIGENCE
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 03 · NEWS INTELLIGENCE &amp; PRIMARY SOURCES</span>
+            <span class="intel-count-badge">${news.length} Items</span>
+          </div>
+      `;
+
+      if (news.length === 0) {
+        html += `
+          <div class="empty-state">
+            No verified retrieved news was returned across monitored channels for this ticker.
+          </div>
+        `;
+      } else {
+        html += `<div class="source-grid">`;
+        news.forEach(item => {
+          const url = item.source_url || item.url || '';
+          const role = item.source_role || (item.category === 'Primary Source' ? 'PRIMARY' : 'SECONDARY');
+          html += `
+            <div class="evidence-card">
+              <div>
+                <div class="ev-header">
+                  <span class="ev-source-name">${esc(item.source || 'Market Wire')}</span>
+                  ${getRoleBadge(role)}
+                </div>
+                <div class="ev-title">${esc(item.title)}</div>
+                <div class="ev-snippet">${esc(item.summary || item.snippet || item.title)}</div>
+              </div>
+              <div class="ev-footer">
+                <span>${esc(item.time || 'Recent')}</span>
+                ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open Source ↗</a>` : `<span class="ae-no-link">Source link unavailable</span>`}
+              </div>
+            </div>
+          `;
+        });
+        html += `</div>`;
+      }
+      html += `</div>`;
+
+      // 4. SOCIAL & VIDEO INTELLIGENCE
+      const reddit = social.reddit || [];
+      const twitter = social.twitter || [];
+      const youtube = social.youtube || [];
+
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 04 · MULTI-CHANNEL SOCIAL &amp; VIDEO DISCOURSE</span>
+            <span class="intel-count-badge">${reddit.length + twitter.length + youtube.length} Signals</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+            <!-- Reddit -->
+            <div class="cat-box">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;margin-bottom:12px;text-transform:uppercase;">
+                Reddit Investor Threads (${reddit.length})
+              </div>
+              ${reddit.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No active Reddit discussions retrieved.</div>' : ''}
+              ${reddit.map(r => `
+                <div class="cat-item">
+                  <div style="font-weight:600;margin-bottom:4px;">${esc(r.title)}</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
+                    <span>${esc(r.author || 'u/community')}</span>
+                    ${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Thread ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- Twitter / X -->
+            <div class="cat-box">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;color:#60a5fa;font-weight:700;margin-bottom:12px;text-transform:uppercase;">
+                X / Twitter Signals (${twitter.length})
+              </div>
+              ${twitter.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No cashtag chatter retrieved.</div>' : ''}
+              ${twitter.map(t => `
+                <div class="cat-item">
+                  <div style="font-weight:600;margin-bottom:4px;">${esc(t.title || t.snippet)}</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
+                    <span>${esc(t.author || '@pulse')}</span>
+                    ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Post ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+
+            <!-- YouTube -->
+            <div class="cat-box">
+              <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;margin-bottom:12px;text-transform:uppercase;">
+                YouTube Video Analysis (${youtube.length})
+              </div>
+              ${youtube.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No video analyses retrieved.</div>' : ''}
+              ${youtube.map(y => `
+                <div class="cat-item">
+                  <div style="font-weight:600;margin-bottom:4px;">${esc(y.title)}</div>
+                  <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
+                    <span>${esc(y.author || 'YouTube Channel')}</span>
+                    ${y.url ? `<a href="${esc(y.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Video ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // 5. CATALYSTS & MARKET NARRATIVES
+      const posCats = catalysts.positive || [];
+      const negCats = catalysts.negative || [];
+      const unresCats = catalysts.unresolved || [];
+
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 05 · EVIDENCE-GROUNDED CATALYSTS &amp; MARKET NARRATIVES</span>
+            <span class="intel-count-badge">${narratives.length} Narratives</span>
+          </div>
+
+          <!-- Narratives -->
+          ${narratives.length > 0 ? `
+            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
+              ${narratives.map(n => `
+                <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.25);border-radius:10px;padding:10px 14px;flex:1;min-width:240px;">
+                  <div style="font-weight:700;color:#c4b5fd;font-size:0.86rem;margin-bottom:4px;">${esc(n.theme)}</div>
+                  <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.45;">${esc(n.description)}</div>
+                </div>
+              `).join('')}
+            </div>
+          ` : ''}
+
+          <!-- Catalysts Grid -->
+          <div class="catalyst-grid">
+            <div class="cat-box pos">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Positive Catalysts (${posCats.length})
+              </div>
+              ${posCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No distinct positive catalysts detected.</div>' : ''}
+              ${posCats.map(c => `
+                <div class="cat-item">
+                  ${esc(c.catalyst)}
+                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="cat-box neg">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Negative Catalysts / Headwinds (${negCats.length})
+              </div>
+              ${negCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No significant negative catalysts detected.</div>' : ''}
+              ${negCats.map(c => `
+                <div class="cat-item">
+                  ${esc(c.catalyst)}
+                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
+                </div>
+              `).join('')}
+            </div>
+
+            <div class="cat-box unres">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:#fbbf24;font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Unresolved Factors (${unresCats.length})
+              </div>
+              ${unresCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No unresolved factors.</div>' : ''}
+              ${unresCats.map(c => `
+                <div class="cat-item">
+                  ${esc(c.factor || c.catalyst)}
+                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </div>
+      `;
+
+      // 6. CONTRADICTION & MISINFORMATION RISK
+      const cFor = contradictions.for || [];
+      const cAgainst = contradictions.against || [];
+      const rumors = misinfo.rumors_detected || [];
+
+      html += `
+        <div class="intel-section ae-reveal">
+          <div class="intel-section-title">
+            <span>// 06 · CONTRADICTION ANALYSIS &amp; MISINFORMATION RISK</span>
+            <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'NOMINAL')}</span>
+          </div>
+          <div class="contra-grid" style="margin-bottom:18px;">
+            <div class="cat-box pos">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Evidence For Bullish / Official Narrative
+              </div>
+              ${cFor.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No specific points extracted.</div>' : ''}
+              ${cFor.map(f => `<div class="cat-item">${esc(f)}</div>`).join('')}
+            </div>
+            <div class="cat-box neg">
+              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
+                Evidence Against / Counter-Claims
+              </div>
+              ${cAgainst.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No contradictory claims detected.</div>' : ''}
+              ${cAgainst.map(a => `<div class="cat-item">${esc(a)}</div>`).join('')}
+            </div>
+          </div>
+
+          <!-- Misinformation & Rumors Summary -->
+          <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-family:var(--font-mono);font-size:0.8rem;">
+              <span>Disinformation Vulnerability Status: <strong style="color:${misinfo.status === 'ELEVATED' ? 'var(--rose)' : 'var(--emerald)'}">${esc(misinfo.status || 'NOMINAL')}</strong></span>
+              <span>Evidence Quality: <strong>${Math.round((misinfo.evidence_quality_score || 0.8) * 100)}%</strong></span>
+            </div>
+            ${rumors.length > 0 ? `
+              <div style="color:var(--rose);font-size:0.82rem;font-weight:600;margin-top:8px;">Suspicious Discourse / Unverified Rumors:</div>
+              <ul style="margin:4px 0 0 18px;font-size:0.8rem;color:var(--text-muted);">
+                ${rumors.map(r => `<li>${esc(r)}</li>`).join('')}
+              </ul>
+            ` : '<div style="font-size:0.8rem;color:var(--text-muted);">Zero coordinated smear campaigns or high-probability rumors observed in retrieved channels.</div>'}
+          </div>
+        </div>
+      `;
+
+      // 7. RESEARCH TIMELINE
+      if (timeline.length > 0) {
+        html += `
+          <div class="intel-section ae-reveal">
+            <div class="intel-section-title">
+              <span>// 07 · CHRONOLOGICAL RESEARCH TIMELINE</span>
+              <span class="intel-count-badge">${timeline.length} Events</span>
+            </div>
+            <div class="research-timeline">
+              ${timeline.map(item => `
+                <div class="rtl-item">
+                  <span class="rtl-time">${esc(item.time)}</span>
+                  <div style="flex:1;">
+                    <strong>[${esc(item.source)}]</strong> ${esc(item.title)}
+                  </div>
+                  ${item.url ? `<a href="${esc(item.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open ↗</a>` : ''}
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }
+
+      // 8. SOURCE EXPLORER
+      html += `
+        <div class="intel-section ae-reveal" id="sourceExplorerSection">
+          <div class="intel-section-title">
+            <span>// 08 · SOURCE EXPLORER &amp; PROVENANCE INSPECTOR</span>
+            <span class="intel-count-badge">${sources.length} Indexed Records</span>
+          </div>
+          <div class="explorer-filters">
+            <button class="filter-btn active" onclick="filterSources('ALL')">ALL (${sources.length})</button>
+            <button class="filter-btn" onclick="filterSources('PRIMARY')">PRIMARY (${primarySources.length})</button>
+            <button class="filter-btn" onclick="filterSources('NEWS')">NEWS (${news.length})</button>
+            <button class="filter-btn" onclick="filterSources('SOCIAL')">SOCIAL (${reddit.length + twitter.length})</button>
+            <button class="filter-btn" onclick="filterSources('VIDEO')">VIDEO (${youtube.length})</button>
+          </div>
+          <div class="source-table" id="sourceExplorerList"></div>
+        </div>
+      `;
+
+      root.innerHTML = html;
+      renderSourceExplorerList(sources);
+    }
+
+    function filterSources(filterType) {
+      currentFilter = filterType;
+      const btns = document.querySelectorAll('.filter-btn');
+      btns.forEach(b => {
+        if (b.textContent.startsWith(filterType)) b.classList.add('active');
+        else b.classList.remove('active');
+      });
+
+      if (!currentResearchData || !currentResearchData.sources) return;
+      const all = currentResearchData.sources;
+      let filtered = all;
+
+      if (filterType === 'PRIMARY') {
+        filtered = all.filter(s => s.source_role === 'PRIMARY');
+      } else if (filterType === 'NEWS') {
+        filtered = all.filter(s => s.channel === 'news' || s.source_role === 'SECONDARY');
+      } else if (filterType === 'SOCIAL') {
+        filtered = all.filter(s => s.channel === 'reddit' || s.channel === 'twitter');
+      } else if (filterType === 'VIDEO') {
+        filtered = all.filter(s => s.channel === 'youtube');
+      }
+
+      renderSourceExplorerList(filtered);
+    }
+
+    function renderSourceExplorerList(list) {
+      const container = document.getElementById('sourceExplorerList');
+      if (!container) return;
+
+      if (!list || list.length === 0) {
+        container.innerHTML = `<div class="empty-state">No sources matching the selected filter.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(s => `
+        <div class="source-row">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;">
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+              <span style="font-family:var(--font-mono);font-size:0.7rem;color:#a78bfa;font-weight:700;">${esc(s.evidence_id)}</span>
+              ${getRoleBadge(s.source_role)}
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${esc(s.source)} · ${esc(s.channel)}</span>
+            </div>
+            <div>
+              ${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open Source ↗</a>` : `<span class="ae-no-link">No URL</span>`}
+            </div>
+          </div>
+          <div style="font-weight:700;font-size:0.9rem;margin-bottom:4px;color:var(--text);">${esc(s.title)}</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">${esc(s.snippet)}</div>
+          <div style="display:flex;gap:14px;margin-top:8px;font-size:0.72rem;font-family:var(--font-mono);color:var(--text-dim);">
+            <span>Published: ${esc(s.published_at || 'Recent')}</span>
+            <span>Syndication Group: ${esc(s.independence_group || 'independent')}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    document.getElementById('tickerInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') analyzeStock();
+    });
+
+    // Run initial search on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      analyzeStock();
+    });
   </script>
 </body>
 </html>

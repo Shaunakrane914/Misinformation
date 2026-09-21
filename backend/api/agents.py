@@ -164,120 +164,23 @@ async def get_stock_quote(ticker: str = "NVDA"):
 @router.post("/scout/analyze", tags=["Scout Agent (Financial Intelligence)"])
 async def analyze_stock_live(request: ScoutAnalyzeRequest):
     """
-    Analyze a stock ticker with real-time price metrics, multi-platform social catalysts,
-    news sentiment, and automated coordinated short-attack correlation.
+    Financial Intelligence Research Terminal analysis:
+    Orchestrates market telemetry, Agent Reach multi-channel retrieval (News, Reddit, Twitter,
+    YouTube, RSS), primary source escalation, evidence deduplication, catalyst reasoning,
+    narrative clustering, contradiction analysis, research timeline, and short attack risk.
     """
     logger.info(f"[API] POST /api/scout/analyze - ticker={request.ticker}")
     try:
         scout = get_scout_agent()
-        trending = get_trending_agent()
+        result = scout.analyze_stock(ticker=request.ticker, query=request.query)
 
-        stock_data = scout.check_stock_impact(request.ticker)
-        if not stock_data or not stock_data.get("current_price"):
+        # If stock price is 0, attempt live quote fallback
+        if not result.get("stock", {}).get("current_price"):
             quote_data = await get_stock_quote(request.ticker)
             if quote_data and quote_data.get("current_price", 0) > 0:
-                stock_data = quote_data
+                result["stock"] = quote_data
 
-        if not stock_data or not stock_data.get("current_price"):
-            stock_data = {
-                "ticker": request.ticker,
-                "current_price": 0.0,
-                "drop_percent": 0.0,
-                "z_score": 0.0,
-                "is_crashing": False,
-                "status": "Telemetry Active"
-            }
-
-        company_name = request.ticker.replace('.NS', '').replace('.BO', '')
-
-        # News Articles
-        raw_news = trending.fetch_news(company_name, limit=5)
-        company_articles = []
-        analysis_queue = []
-        for article in (raw_news or []):
-            t = article.get('title', 'No title')
-            src = article.get('source') or 'Google News'
-            analysis_queue.append(t)
-            company_articles.append({
-                'title': t,
-                'source': src,
-                'category': 'Market Analysis' if 'stock' in t.lower() else 'Company News',
-                'summary': f"Reported via {src}: {t[:110]}",
-                'is_threat': False,
-                'sentiment': 15,
-                'time': article.get('published', 'Recent')
-            })
-
-        if analysis_queue:
-            try:
-                from backend.services.intelligence import analyze_sentiment
-                sent_results = analyze_sentiment(analysis_queue)
-                for idx, res in enumerate(sent_results):
-                    if idx < len(company_articles):
-                        s_score = res.get("sentiment_score") if res.get("sentiment_score") is not None else res.get("score", 0)
-                        lbl = res.get("label", "neutral")
-                        is_t = res.get("is_threat", False) or (s_score < -25) or (lbl.lower() in ["negative", "toxic", "threat"])
-                        company_articles[idx]["sentiment"] = int(s_score * 100) if abs(s_score) <= 1 else int(s_score)
-                        company_articles[idx]["is_threat"] = is_t
-                        if is_t:
-                            company_articles[idx]["summary"] = f"Volatility alert: {company_articles[idx]['summary']}"
-            except Exception as e_sent:
-                logger.debug(f"[ScoutAnalyze] Sentiment analysis notice: {e_sent}")
-
-        # Social Chatter via AgentReach
-        try:
-            from backend.services.agent_reach import agent_reach_service
-            query_q = request.query or request.ticker
-            social_intel = agent_reach_service.omni_scan(
-                query=query_q,
-                domain="financial",
-                limit_per_channel=3
-            )
-        except Exception as e_reach:
-            logger.debug(f"[ScoutAnalyze] Social intel notice: {e_reach}")
-            social_intel = {"channels": {"reddit": [], "twitter": [], "youtube": [], "news": []}}
-
-        channels = social_intel.get("channels", {})
-        reddit_catalysts = len(channels.get("reddit", []))
-        twitter_catalysts = len(channels.get("twitter", []))
-        youtube_catalysts = len(channels.get("youtube", []))
-        total_social_catalysts = reddit_catalysts + twitter_catalysts + youtube_catalysts
-
-        drop_pct = abs(stock_data.get("drop_percent", 0.0))
-        z_score = abs(stock_data.get("z_score", 0.0))
-
-        if drop_pct >= 3.0 and total_social_catalysts >= 4:
-            short_attack_risk = "CRITICAL COVERT SHORT ATTACK"
-            correlation_score = 92
-        elif drop_pct >= 1.5 or z_score >= 1.5:
-            short_attack_risk = "ELEVATED VOLATILITY DISINFO"
-            correlation_score = 68
-        else:
-            short_attack_risk = "NOMINAL (NO ANOMALY)"
-            correlation_score = 15
-
-        short_attack_correlation = {
-            "risk_level": short_attack_risk,
-            "correlation_score": correlation_score,
-            "social_catalyst_volume": total_social_catalysts,
-            "drop_percent": stock_data.get("drop_percent", 0.0),
-            "z_score": stock_data.get("z_score", 0.0),
-            "is_anomalous": short_attack_risk != "NOMINAL (NO ANOMALY)",
-            "recommendation": (
-                "Immediate War Room escalation: Coordinated negative narrative volume matches algorithmic sell threshold."
-                if short_attack_risk.startswith("CRITICAL")
-                else "Continue passive monitoring of cashtag sentiment."
-            )
-        }
-
-        return {
-            "stock": stock_data,
-            "news": {"company": company_articles, "ceo": [], "analysis": company_articles},
-            "social_intel": social_intel.get("channels", {}),
-            "short_attack_correlation": short_attack_correlation,
-            "ticker": request.ticker,
-            "analyzed_at": datetime.now().isoformat()
-        }
+        return result
     except Exception as e:
         logger.error(f"[API] Error in scout analysis: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")

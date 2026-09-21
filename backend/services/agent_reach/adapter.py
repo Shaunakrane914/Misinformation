@@ -335,25 +335,44 @@ class AgentReachService:
 
     def _assign_source_roles(self, fragments: List[EvidenceFragment]) -> None:
         """Tag fragments with their forensic source role (PRIMARY, SECONDARY, etc.)."""
+        primary_markers = [
+            "sec.gov", "bseindia.com", "nseindia.com", "investor", "ir.",
+            "tatamotors.com", "nvidia.com", "apple.com", "tesla.com",
+            "regulatory filing", "investor relations", "annual report",
+            "exchange filing", "press release", "official statement",
+            "form 10-k", "form 10-q", "sebi.gov"
+        ]
+        financial_press = [
+            "reuters", "bloomberg", "moneycontrol", "economictimes",
+            "livemint", "business-standard", "financialexpress", "cnbc",
+            "wsj", "ft.com", "apnews"
+        ]
+
         for f in fragments:
             platform = f.platform.lower()
             method = f.retrieval_method.lower()
+            url_lower = (f.url or "").lower()
+            title_lower = (f.title or "").lower()
+            combined_text = f"{url_lower} {title_lower}"
 
-            if "github" in platform or "github" in method:
+            if any(pm in combined_text for pm in primary_markers):
+                f.raw_metadata["source_role"] = "PRIMARY"
+                f.raw_metadata["source_tier"] = "TIER_1_OFFICIAL_FILING"
+            elif "github" in platform or "github" in method:
                 f.raw_metadata["source_role"] = "PRIMARY"
                 f.raw_metadata["source_tier"] = "TIER_1_CODE_METADATA"
-            elif "news" in platform or "reuters" in platform or "wire" in platform:
+            elif any(fp in combined_text for fp in financial_press) or "news" in platform or "wire" in platform:
                 f.raw_metadata["source_role"] = "SECONDARY"
-                f.raw_metadata["source_tier"] = "TIER_2_REPORTED_PRESS"
+                f.raw_metadata["source_tier"] = "TIER_2_FINANCIAL_PRESS"
             elif "reddit" in platform:
                 f.raw_metadata["source_role"] = "COMMUNITY"
-                f.raw_metadata["source_tier"] = "TIER_3_SOCIAL_SIGNAL"
+                f.raw_metadata["source_tier"] = "TIER_3_INVESTOR_COMMUNITY"
             elif "twitter" in platform:
                 f.raw_metadata["source_role"] = "COMMENTARY"
-                f.raw_metadata["source_tier"] = "TIER_3_SOCIAL_SIGNAL"
+                f.raw_metadata["source_tier"] = "TIER_3_SOCIAL_SIGNALS"
             elif "youtube" in platform:
                 f.raw_metadata["source_role"] = "DIRECT_MEDIA"
-                f.raw_metadata["source_tier"] = "TIER_2_MEDIA_STREAM"
+                f.raw_metadata["source_tier"] = "TIER_2_VIDEO_ANALYSIS"
             elif "web article" in platform or "jina" in method:
                 f.raw_metadata["source_role"] = "PRIMARY"
                 f.raw_metadata["source_tier"] = "TIER_1_ORIGINAL_DOCUMENT"

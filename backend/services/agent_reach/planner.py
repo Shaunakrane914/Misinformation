@@ -48,6 +48,32 @@ _STOPWORDS = {
     'could', 'would', 'should', 'might',
 }
 
+# Common financial ticker to company mapping
+TICKER_NAME_MAP: Dict[str, str] = {
+    'NVDA': 'Nvidia',
+    'AAPL': 'Apple',
+    'TSLA': 'Tesla',
+    'MSFT': 'Microsoft',
+    'GOOGL': 'Alphabet Google',
+    'AMZN': 'Amazon',
+    'META': 'Meta',
+    'NFLX': 'Netflix',
+    'TATAMOTORS.NS': 'Tata Motors',
+    'TATAMOTORS': 'Tata Motors',
+    'RELIANCE.NS': 'Reliance Industries',
+    'RELIANCE': 'Reliance Industries',
+    'INFY.NS': 'Infosys',
+    'INFY': 'Infosys',
+    'TCS.NS': 'Tata Consultancy Services',
+    'TCS': 'Tata Consultancy Services',
+    'HDFCBANK.NS': 'HDFC Bank',
+    'HDFCBANK': 'HDFC Bank',
+    'WIPRO.NS': 'Wipro',
+    'ICICIBANK.NS': 'ICICI Bank',
+    'SBIN.NS': 'State Bank of India',
+    'ADANIENT.NS': 'Adani Enterprises',
+}
+
 
 class RetrievalPlanner:
     """
@@ -153,12 +179,13 @@ class RetrievalPlanner:
 
         if domain == "financial":
             clean_ticker = clean_q.upper().replace(".NS", "").replace(".BO", "")
+            company_name = TICKER_NAME_MAP.get(clean_q.upper(), TICKER_NAME_MAP.get(clean_ticker, clean_ticker))
             return {
-                "reddit": f"{clean_ticker} (crash OR scam OR fraud OR short OR plunge OR earnings)",
-                "twitter": f"${clean_ticker} OR {clean_ticker} rumor OR crash OR short",
-                "youtube": f"{clean_ticker} stock crash analysis",
-                "news": f"{clean_ticker} stock investigation OR crash OR SEC OR results",
-                "rss": f"{clean_ticker} financial earnings regulatory",
+                "reddit": f"{clean_ticker} OR \"{company_name}\" (crash OR scam OR fraud OR short OR plunge OR earnings OR DD)",
+                "twitter": f"${clean_ticker} OR {clean_ticker} rumor OR crash OR short OR \"{company_name}\"",
+                "youtube": f"{company_name} {clean_ticker} stock financial analysis crash",
+                "news": f"{company_name} {clean_ticker} stock investigation OR crash OR SEC OR results OR earnings OR announcement",
+                "rss": f"{company_name} {clean_ticker} investor relations filing regulatory annual report press release",
                 "github": clean_q,
             }
 
@@ -210,5 +237,46 @@ class RetrievalPlanner:
             "news": clean_q,
             "github": clean_q,
             "rss": clean_q,
+        }
+
+    def build_financial_query_classes(self, ticker: str, company: Optional[str] = None) -> Dict[str, List[str]]:
+        """
+        Generate structured classes of financial research queries:
+        - General news
+        - Financial results & earnings
+        - Corporate & regulatory filings
+        - Risk & controversies
+        - Market narrative & investor sentiment
+        - Contradiction verification
+        """
+        clean_ticker = ticker.upper().replace(".NS", "").replace(".BO", "")
+        comp = company or TICKER_NAME_MAP.get(ticker.upper(), TICKER_NAME_MAP.get(clean_ticker, clean_ticker))
+
+        return {
+            "general_news": [
+                f"{comp} latest news",
+                f"{comp} today developments",
+            ],
+            "financial": [
+                f"{comp} earnings results revenue",
+                f"{comp} financial guidance analyst expectations",
+            ],
+            "corporate_filings": [
+                f"{comp} investor relations announcement",
+                f"{comp} regulatory filing SEBI SEC",
+            ],
+            "risk_investigation": [
+                f"{comp} investigation controversy debt",
+                f"{comp} credit downgrade rumor probe",
+            ],
+            "market_narrative": [
+                f"${clean_ticker} investor sentiment discussion",
+                f"{comp} stock market rumor social media",
+            ],
+            "contradictions": [
+                f"{comp} positive outlook growth",
+                f"{comp} negative outlook risks",
+                f"{comp} rumor false debunked confirmed",
+            ],
         }
 

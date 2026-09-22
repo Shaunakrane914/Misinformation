@@ -9,9 +9,15 @@ the channel primitives, the planner decides *what* to search and *where*.
 import re
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Set
 
 logger = logging.getLogger(__name__)
+
+__all__ = [
+    "RetrievalPlan",
+    "RetrievalPlanner",
+    "TICKER_NAME_MAP",
+]
 
 
 @dataclass
@@ -445,6 +451,3 @@ class RetrievalPlanner:
                 f'"{clean_q}" claims verified official clarification',
             ],
         }
-
-
-

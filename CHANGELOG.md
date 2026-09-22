@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.6.1] - 2026-09-22
+
+### Added
+- **Trending Agent 2.0 Discovery & Intelligence Engine**: Rebuilt from headline aggregator into an investigative trend engine answering what, why, when, and where a trend started with velocity tracking and syndication clustering.
+- **BrandShield 2.0 Brand Protection & Threat Intelligence**: Structured threat taxonomy (Counterfeits, Scams, Review Bombing, Impersonation) with verified threat dossiers and truthful telemetry.
+- **Personal Watch 2.0 VIP Intelligence Sentinel**: Autonomous VIP protection with deepfake/synthetic media labeling, alert deduplication, and cooldowns.
+- **Human-Centered 3-Tier Progressive Disclosure**: Universal presentation layer across all 7 agents displaying primary answers first, supporting evidence second, and technical telemetry in collapsibles.
+- **Expanded 99-Test Passing Milestone**: Expanded automated pytest test suite to 99 verified passing unit, integration, and security tests with 100% clean Flake8 code linting.
+- **WCAG 2.2 Accessibility Hardening**: Added focus-visible rings, reduced motion detection, and screen-reader utility classes across stylesheets.
+
+---
+
 ## [3.6.0] - 2026-09-21
 
 ### Added

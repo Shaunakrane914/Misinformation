@@ -379,6 +379,20 @@ class AgentReachScraper:
         if not clean_url:
             return {"status": "error", "url": "", "title": "Empty URL", "markdown": "", "char_count": 0}
 
+        # Early defense: Reject dangerous schemes (file, gopher, ftp, data, javascript)
+        scheme = urllib.parse.urlsplit(clean_url).scheme.lower()
+        if scheme not in {"http", "https"}:
+            reason = f"Disallowed URI scheme '{scheme}'. Only http and https protocols are permitted."
+            logger.warning(f"[AgentReach] SSRF blocked URL '{clean_url}': {reason}")
+            return {
+                "status": "blocked_ssrf",
+                "url": clean_url,
+                "title": "Blocked URL Scheme",
+                "markdown": f"[Security Violation] Access to URL '{clean_url}' was blocked by Aegis SSRF Defense: {reason}",
+                "char_count": 0,
+                "reason": reason
+            }
+
         try:
             from backend.services.url_validator import validate_url_safe
         except (ImportError, ModuleNotFoundError):

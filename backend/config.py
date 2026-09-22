@@ -17,7 +17,7 @@ load_dotenv()
 class AppConfig:
     """Central configuration for Aegis Protocol."""
     app_name: str = "Aegis Protocol"
-    version: str = "3.5.1"
+    version: str = "3.6.1"
     environment: str = os.getenv("ENVIRONMENT", "development")
     port: int = int(os.getenv("PORT", "8000"))
     allowed_origins: List[str] = field(default_factory=lambda: [os.getenv("ALLOWED_ORIGIN", "*")])

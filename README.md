@@ -9,12 +9,12 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-47%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
+[![Tests](https://img.shields.io/badge/Tests-99%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
 [![Evaluation](https://img.shields.io/badge/WELFake-Evaluated-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
 
 **Aegis Protocol is an enterprise-grade multi-agent misinformation intelligence platform. It ingests, normalizes, and investigates claims with evidence-grounded attribution, 6-verdict truth taxonomies, physics-based contagion simulation, and strict SSRF/XSS security hardening.**
 
-[API Documentation](http://localhost:8000/docs) · [Feature Status](docs/FEATURE_STATUS.md) · [Testing Suite](docs/TESTING.md) · [ML Evaluation](docs/EVALUATION.md) · [Security](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
+[API Documentation](http://localhost:8000/docs) · [System Architecture](docs/ARCHITECTURE.md) · [Feature Status](docs/FEATURE_STATUS.md) · [Testing Suite](docs/TESTING.md) · [ML Evaluation](docs/EVALUATION.md) · [Security](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
 
 </div>
 
@@ -22,19 +22,18 @@
 
 ## ✨ System Capabilities & Feature Matrix
 
-Submit any factual assertion or viral rumor to receive a transparent **Truth Dossier** backed by structured evidence extraction, deterministic idempotency, and calibrated uncertainty bounds:
+Submit any factual assertion, market ticker, brand entity, or public persona to receive a transparent **Truth Dossier** backed by structured evidence extraction, deterministic idempotency, and calibrated uncertainty bounds:
 
-| Agent / Instrument | Domain & Function | Data Channels | Verified Status |
+| Agent / Sentinel | Domain & Function | Data Channels | Verified Status |
 |---|---|---|---|
-| 🌐 **Agent Reach Capability Layer** | 14-channel capability registry, domain retrieval planner, wire syndication clustering, and SSRF defense | Reddit, Twitter/X, YouTube, News Wires, GitHub, RSS, Jina Reader | ✅ Tested (`pytest`) |
-| 🔬 **Investigator Agent** | 6-verdict truth synthesis (`True`, `False`, `Misleading`, `Partially True`, `Unverified`, `Insufficient Evidence`) | Monitored wires & fact-checking archives | ✅ Tested (`pytest`) |
-| 🛡️ **Claim Ingestion Agent** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication | Multi-channel ingress | ✅ Tested (`pytest`) |
-| ⚡ **Mandelbrot Detector** | Zipf-Mandelbrot token-rank power-law regression ($R^2$, Shannon entropy, TTR) | Text forensic samples | ✅ Tested (`pytest`) |
-| 🌊 **Hawkes Contagion** | Self-exciting point-process simulation of viral cascade velocity ($R_0 = \alpha / \beta$) | Narrative clusters | 📊 Simulated |
-| ⚖️ **Ensemble Quorum** | Majority consensus arbitrament with statistical $2\sigma$ outlier detection | Multi-node intelligence | ✅ Tested (`pytest`) |
-| 🔍 **Scout Agent** | Financial volatility & stock price impact correlation | Twitter/X, Reddit, SEC Edgar | 🔬 Experimental |
-| 🛡️ **BrandShield Agent** | Brand smear forensics & sentiment shifts | Google News, Review Feeds | ✅ Implemented |
-| 👤 **Personal Watch Agent** | Deepfake marker alerts & impersonation scanning | News wires, Video transcripts | ✅ Implemented |
+| 🌐 **Agent Reach Layer** | 14-channel capability registry, domain retrieval planner, wire syndication clustering, and SSRF defense | Reddit, Twitter/X, YouTube, News Wires, GitHub, RSS, Jina Reader | ✅ Tested (`pytest` 99/99) |
+| 🔍 **Scout Agent 2.0** | Financial research terminal, price drop correlation, What Changed diffs, and event-grouped news clusters | Yahoo Finance, Reddit (r/stocks, r/wsb), SEC EDGAR, X Cashtags | ✅ Tested (`pytest`) |
+| 📈 **Trending Agent 2.0** | Viral trend discovery, Hawkes point-process velocity tracking ($R_0$), and progressive narrative dossiers | Multi-platform RSS, PullPush Reddit, News wires, TikTok | ✅ Tested (`pytest`) |
+| 🛡️ **BrandShield Agent 2.0** | Corporate protection, suspicious listing audit tables, 4-question threat cards, and review astroturfing | Amazon/Flipkart storefronts, Trustpilot, consumer forums | ✅ Tested (`pytest`) |
+| 👤 **Personal Watch 2.0** | Executive & public persona defense, change-first diffs (NEW/ESCALATED/RESOLVED), and compact alert history | OSINT footprint, acoustic spectrograms, news wires | ✅ Tested (`pytest`) |
+| 🔬 **Research Agent** | Intelligence research workspace clustering key findings with sources, "Why It Matters", and reading lists | SEC filings, Jina Reader, investigative wire archives | ✅ Tested (`pytest`) |
+| ⚖️ **Investigator Agent** | Forensic case dossiers, chain of custody (Origin → Amplification → Refutation), and gap analysis | Provenance tracking, source dependency graphs | ✅ Tested (`pytest`) |
+| 🛡️ **Claim Ingestion** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication, dual-column evidence matrix | Wire registries (AP, Reuters), official government gazettes | ✅ Tested (`pytest`) |
 
 ---
 

@@ -23,3 +23,6 @@ twilio>=8.0.0
 itsdangerous>=2.1.2
 aiofiles>=23.1.0
 httpx>=0.27.0
+
+# Upstream Agent Reach (pinned for reproducible deployment)
+agent-reach @ git+https://github.com/Panniantong/Agent-Reach.git@a19a171fa980a0785849596492e0af4db800c82f

@@ -98,17 +98,17 @@ class RetrievalPlanner:
     """
 
     # Default channels available in the system
-    ALL_CHANNELS = ["news", "web", "rss", "reddit", "twitter", "youtube", "github"]
+    ALL_CHANNELS = ["news", "web", "rss", "reddit", "twitter", "youtube", "github", "v2ex", "bilibili"]
 
     # Domain -> channel priority ordering
     DOMAIN_PRIORITIES: Dict[str, List[str]] = {
-        "technical": ["github", "news", "web", "reddit", "youtube", "twitter"],
+        "technical": ["github", "v2ex", "news", "web", "reddit", "youtube", "twitter"],
         "financial": ["news", "web", "rss", "twitter", "reddit", "youtube"],
         "fact_check": ["news", "web", "reddit", "twitter", "youtube", "rss"],
-        "brand": ["news", "web", "reddit", "twitter", "youtube", "rss"],
-        "personal": ["news", "web", "twitter", "reddit", "youtube", "rss"],
-        "trending": ["news", "web", "twitter", "reddit", "youtube", "rss"],
-        "general": ["news", "web", "reddit", "twitter", "youtube", "rss"],
+        "brand": ["news", "web", "reddit", "twitter", "youtube", "bilibili", "rss"],
+        "personal": ["news", "web", "twitter", "reddit", "youtube", "bilibili", "rss"],
+        "trending": ["news", "web", "twitter", "reddit", "youtube", "bilibili", "v2ex", "rss"],
+        "general": ["news", "web", "reddit", "twitter", "youtube", "bilibili", "v2ex", "rss"],
     }
 
 
@@ -183,6 +183,8 @@ class RetrievalPlanner:
         if domain == "technical":
             return {
                 "github": search_kw,
+                "v2ex": f"{search_kw} architecture technical",
+                "bilibili": f"{search_kw} 教程 架构",
                 "news": f"{search_kw} vulnerability OR patch OR release OR security",
                 "web": f"{search_kw} technical documentation architecture benchmark",
                 "reddit": f"{search_kw} (release OR CVE OR issue OR bug)",
@@ -202,6 +204,8 @@ class RetrievalPlanner:
                 "web": f"{company_name} {clean_ticker} stock financial results earnings SEC investigation",
                 "rss": f"{company_name} {clean_ticker} investor relations filing regulatory annual report press release",
                 "github": clean_q,
+                "v2ex": clean_q,
+                "bilibili": clean_q,
             }
 
         if domain == "fact_check":
@@ -213,6 +217,8 @@ class RetrievalPlanner:
                 "web": f'"{search_kw}" fact check verified truth',
                 "rss": f"{search_kw} fact check official statement",
                 "github": clean_q,
+                "v2ex": clean_q,
+                "bilibili": clean_q,
             }
 
         if domain == "brand":
@@ -223,6 +229,8 @@ class RetrievalPlanner:
                 "news": f"{clean_q} (recall OR counterfeit OR lawsuit OR scam OR investigation OR controversy)",
                 "web": f"{clean_q} counterfeit scam review boycott lawsuit",
                 "rss": f"{clean_q} press release recall statement official announcement",
+                "bilibili": f"{clean_q} 测评 假货",
+                "v2ex": clean_q,
                 "github": clean_q,
             }
 
@@ -234,6 +242,8 @@ class RetrievalPlanner:
                 "news": f"{clean_q} (statement OR allegations OR lawsuit OR impersonation OR deepfake)",
                 "web": f"{clean_q} impersonation deepfake scam controversy statement",
                 "rss": f"{clean_q} official statement announcement clarification",
+                "bilibili": f"{clean_q} 澄清",
+                "v2ex": clean_q,
                 "github": clean_q,
             }
 
@@ -245,6 +255,8 @@ class RetrievalPlanner:
                 "news": f"{clean_q} trending OR viral OR latest OR controversy OR announcement",
                 "web": f"{clean_q} trending viral latest news updates",
                 "rss": f"{clean_q} latest news developments trending",
+                "bilibili": f"{clean_q} 热门 视频",
+                "v2ex": f"{clean_q} 讨论",
                 "github": clean_q,
             }
 
@@ -257,6 +269,8 @@ class RetrievalPlanner:
             "web": clean_q,
             "github": clean_q,
             "rss": clean_q,
+            "v2ex": clean_q,
+            "bilibili": clean_q,
         }
 
     def build_multi_channel_queries(
@@ -286,7 +300,8 @@ class RetrievalPlanner:
 
         channel_map: Dict[str, List[Dict[str, str]]] = {
             "news": [], "web": [], "rss": [], "reddit": [],
-            "twitter": [], "youtube": [], "github": []
+            "twitter": [], "youtube": [], "github": [],
+            "v2ex": [], "bilibili": []
         }
 
         if domain == "brand":
@@ -298,6 +313,7 @@ class RetrievalPlanner:
                 channel_map["web"].append(_make_q("counterfeit", q))
                 channel_map["reddit"].append(_make_q("counterfeit", q))
                 channel_map["youtube"].append(_make_q("counterfeit", q))
+                channel_map["bilibili"].append(_make_q("counterfeit", f"{clean_q} 测评"))
             for q in classes.get("phishing_scam", []):
                 channel_map["web"].append(_make_q("phishing_scam", q))
                 channel_map["twitter"].append(_make_q("phishing_scam", q))
@@ -345,6 +361,7 @@ class RetrievalPlanner:
             for q in classes.get("viral_moments", classes.get("domain_trends", [])):
                 channel_map["twitter"].append(_make_q("viral_moments", q))
                 channel_map["youtube"].append(_make_q("viral_moments", q))
+                channel_map["bilibili"].append(_make_q("viral_moments", q))
             for q in classes.get("controversy_rumors", classes.get("breaking_headlines", [])):
                 channel_map["news"].append(_make_q("controversy_rumors", q))
                 channel_map["reddit"].append(_make_q("controversy_rumors", q))
@@ -355,6 +372,7 @@ class RetrievalPlanner:
             for q in classes.get("community_discourse", []):
                 channel_map["reddit"].append(_make_q("community_discourse", q))
                 channel_map["twitter"].append(_make_q("community_discourse", q))
+                channel_map["v2ex"].append(_make_q("community_discourse", q))
             for q in classes.get("claim_verification", []):
                 channel_map["web"].append(_make_q("claim_verification", q))
                 channel_map["news"].append(_make_q("claim_verification", q))
@@ -396,6 +414,7 @@ class RetrievalPlanner:
             for q in classes["discussions"]:
                 channel_map["reddit"].append(_make_q("discussions", q))
                 channel_map["youtube"].append(_make_q("discussions", q))
+                channel_map["v2ex"].append(_make_q("discussions", q))
 
         else: # general / fact_check
             classes = {
@@ -411,6 +430,8 @@ class RetrievalPlanner:
             channel_map["twitter"].append(_make_q("debunk_rumors", f"{search_kw} (fake OR hoax OR debunked)"))
             channel_map["youtube"].append(_make_q("claim_verification", f"{search_kw} fact check explanation"))
             channel_map["rss"].append(_make_q("news_statements", f"{search_kw} press release official statement"))
+            channel_map["bilibili"].append(_make_q("claim_verification", f"{search_kw}"))
+            channel_map["v2ex"].append(_make_q("debunk_rumors", f"{search_kw}"))
 
         # Prune each channel to max_queries_per_channel
         pruned_channel_map = {
@@ -626,3 +647,143 @@ class RetrievalPlanner:
                 f'"{clean_q}" claims verified official clarification',
             ],
         }
+
+    def plan_adaptive_follow_ups(
+        self,
+        target_name: str,
+        initial_plan: Optional[RetrievalPlan] = None,
+        evidence_items: Optional[List[Any]] = None,
+        contradictions: Optional[List[Dict[str, Any]]] = None,
+        max_follow_ups: int = 5,
+    ) -> List[Dict[str, Any]]:
+        """
+        Generate adaptive follow-up queries based on discovered evidence (Requirement 11).
+        
+        Follow-up queries are triggered by:
+        - Newly discovered entities / companies / persons / handles
+        - Filing numbers (SEC 10-K, 10-Q, 8-K, Form XYZ, BSE/NSE circulars)
+        - Court cases / lawsuits (Case No, v. Party)
+        - Missing primary documents (disclosures, official statements)
+        - Contradictory statements between sources
+        
+        Each follow-up query carries:
+        - query_id
+        - parent_query_id
+        - query_class: "adaptive_expansion"
+        - query_text
+        - trigger: "named_entity" | "filing_number" | "court_case" | "contradiction" | "missing_primary"
+        - reason: explanation of why this query was generated
+        - suggested_channels: list of channels to execute on
+        """
+        clean_target = target_name.strip()
+        evidence_items = evidence_items or []
+        follow_ups: List[Dict[str, Any]] = []
+        seen_texts: Set[str] = set()
+
+        def _add_follow_up(q_text: str, trigger: str, reason: str, parent_id: str, channels: List[str]):
+            clean = q_text.strip()
+            if not clean or clean.lower() in seen_texts or len(follow_ups) >= max_follow_ups:
+                return
+            seen_texts.add(clean.lower())
+            follow_ups.append({
+                "query_id": f"q_adapt_{len(follow_ups) + 1:03d}",
+                "parent_query_id": parent_id or "q_001",
+                "query_class": "adaptive_expansion",
+                "query_text": clean,
+                "trigger": trigger,
+                "reason": reason,
+                "suggested_channels": channels,
+            })
+
+        # 1. Contradictions resolution trigger
+        if contradictions:
+            for c in contradictions:
+                claim_a = str(c.get("claim_a", "") or c.get("statement_a", "") or c.get("title_a", ""))[:60]
+                p_id = str(c.get("source_a_id", "") or "q_001")
+                if claim_a:
+                    _add_follow_up(
+                        q_text=f'"{clean_target}" official verification statement "{claim_a[:35]}"',
+                        trigger="contradiction",
+                        reason=f"Disagreement detected between sources: {c.get('details', 'conflicting claims')}; seeking authoritative statement",
+                        parent_id=p_id,
+                        channels=["web", "news", "rss"]
+                    )
+
+        # Scan text across evidence items
+        filing_pat = re.compile(r'\b(?:Form\s+)?(10-K|10-Q|8-K|13-F|S-1|BSE|NSE|MCA|ED|CBI)\b', re.IGNORECASE)
+        court_pat = re.compile(r'\b(Case\s+(?:No\.?|Number)\s*[\w\d-]+|[A-Z][a-z]+\s+v\.\s+[A-Z][a-z]+)\b')
+        primary_clue_pat = re.compile(r'\b(?:according to a filing|company spokesperson said|official statement|regulatory notice|court documents show)\b', re.IGNORECASE)
+        entity_pat = re.compile(r'\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+){1,2})\b')
+
+        found_filings: Set[str] = set()
+        found_cases: Set[str] = set()
+        found_entities: Set[str] = set()
+        has_primary_clue = False
+        primary_parent_id = "q_001"
+
+        target_lower = clean_target.lower()
+        stopwords_entities = {
+            "The", "This", "New", "United States", "India", "Reuters", "Bloomberg",
+            "Associated Press", "Google", "Yahoo", "Twitter", "Reddit", "YouTube", "GitHub"
+        }
+
+        for item in evidence_items:
+            t = getattr(item, "title", "") or (item.get("title", "") if isinstance(item, dict) else "")
+            snip = getattr(item, "snippet", "") or (item.get("snippet", "") if isinstance(item, dict) else "")
+            text = f"{t} {snip}"
+            p_id = getattr(item, "query_id", "") or (item.get("query_id", "") if isinstance(item, dict) else "q_001")
+
+            # Check filings
+            f_match = filing_pat.search(text)
+            if f_match and f_match.group(1).upper() not in found_filings:
+                found_filings.add(f_match.group(1).upper())
+                _add_follow_up(
+                    q_text=f'"{clean_target}" "{f_match.group(1).upper()}" filing disclosure',
+                    trigger="filing_number",
+                    reason=f"Discovered regulatory reference ({f_match.group(1).upper()}) in evidence; seeking primary disclosure",
+                    parent_id=p_id,
+                    channels=["web", "rss", "news"]
+                )
+
+            # Check court cases
+            c_match = court_pat.search(text)
+            if c_match and c_match.group(1) not in found_cases:
+                found_cases.add(c_match.group(1))
+                _add_follow_up(
+                    q_text=f'"{clean_target}" "{c_match.group(1)}" court lawsuit legal documents',
+                    trigger="court_case",
+                    reason=f"Discovered legal proceeding ({c_match.group(1)}) in evidence; seeking court records",
+                    parent_id=p_id,
+                    channels=["web", "news"]
+                )
+
+            # Check primary clues
+            if primary_clue_pat.search(text) and not has_primary_clue:
+                has_primary_clue = True
+                primary_parent_id = p_id
+
+            # Check newly discovered entities
+            for ent in entity_pat.findall(text):
+                ent_clean = ent.strip()
+                if ent_clean.lower() not in target_lower and ent_clean not in stopwords_entities and len(ent_clean) > 4:
+                    if ent_clean not in found_entities and len(found_entities) < 2:
+                        found_entities.add(ent_clean)
+                        _add_follow_up(
+                            q_text=f'"{clean_target}" "{ent_clean}" announcement statement partnership',
+                            trigger="named_entity",
+                            reason=f"Discovered named entity '{ent_clean}' in reporting; investigating relationship to target",
+                            parent_id=p_id,
+                            channels=["web", "news", "reddit", "twitter"]
+                        )
+
+        # If primary clue found but no primary filing query added yet
+        if has_primary_clue and not found_filings and len(follow_ups) < max_follow_ups:
+            _add_follow_up(
+                q_text=f'"{clean_target}" official announcement press release filing statement',
+                trigger="missing_primary",
+                reason="Secondary reporting refers to an official statement or filing; seeking primary document",
+                parent_id=primary_parent_id,
+                channels=["web", "rss", "news"]
+            )
+
+        return follow_ups

@@ -130,6 +130,9 @@ class ChannelTelemetry:
     final_results: int = 0
     latency_ms: int = 0
     status: str = "AVAILABLE"
+    active_backend: str = ""
+    fallback_used: bool = False
+    fallback_backend: Optional[str] = None
     failure_reason: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
@@ -144,6 +147,9 @@ class ChannelTelemetry:
             "final_results": self.final_results,
             "latency_ms": self.latency_ms,
             "status": self.status,
+            "active_backend": self.active_backend,
+            "fallback_used": self.fallback_used,
+            "fallback_backend": self.fallback_backend,
             "failure_reason": self.failure_reason,
         }
 

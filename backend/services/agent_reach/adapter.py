@@ -24,14 +24,22 @@ from backend.services.agent_reach.channels import (
 )
 from backend.services.agent_reach.channels_impl import (
     AuthenticatedOptionalChannel,
+    BilibiliChannel,
     GitHubChannel,
     JinaReaderChannel,
     NewsChannel,
     RedditChannel,
     RssChannel,
     TwitterChannel,
+    V2EXChannel,
     WebChannel,
     YouTubeChannel,
+)
+from backend.services.agent_reach.native import (
+    CAPABILITY_MATRIX,
+    get_runtime_profile,
+    get_upstream_info,
+    native_doctor,
 )
 from backend.services.agent_reach.planner import RetrievalPlan, RetrievalPlanner
 from backend.services.agent_reach.registry import CapabilityRegistry
@@ -59,41 +67,67 @@ class AgentReachService:
         self.registry = CapabilityRegistry()
         self.planner = RetrievalPlanner()
         self._register_default_channels()
-        logger.info("[AgentReachService] Initialized with 15 tracked channels and domain planner")
+        logger.info("[AgentReachService] Initialized with Native Agent Reach 3.0 capability backbone")
 
     def _register_default_channels(self) -> None:
         """Register primary zero-config channels and optional authenticated channels."""
-        # Core zero-config channels (cloud-ready)
+        # Core zero-config channels (cloud-ready & native tools)
         self.registry.register(NewsChannel())
         self.registry.register(WebChannel())
         self.registry.register(RssChannel())
-        self.registry.register(RedditChannel())
-        self.registry.register(TwitterChannel())
+        self.registry.register(V2EXChannel())
+        self.registry.register(BilibiliChannel())
+        self.registry.register(GitHubChannel())
         self.registry.register(YouTubeChannel())
         self.registry.register(JinaReaderChannel())
-        self.registry.register(GitHubChannel())
+        self.registry.register(RedditChannel())
+        self.registry.register(TwitterChannel())
 
         # Optional / authenticated channels (gracefully report status)
         self.registry.register(AuthenticatedOptionalChannel("linkedin", "LinkedIn", "LINKEDIN_SESSION_COOKIE"))
-        self.registry.register(AuthenticatedOptionalChannel("bilibili", "Bilibili", "BILIBILI_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("xueqiu", "Xueqiu", "XUEQIU_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("xiaohongshu", "Xiaohongshu", "XIAOHONGSHU_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("instagram", "Instagram", "INSTAGRAM_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("facebook", "Facebook", "FACEBOOK_COOKIE"))
-        self.registry.register(AuthenticatedOptionalChannel("v2ex", "V2EX", "V2EX_TOKEN"))
+        self.registry.register(AuthenticatedOptionalChannel("boss", "Boss直聘", "BOSS_CDP_PORT"))
 
     # ── Diagnostics & Capabilities ──────────────────────────────────────────
 
     def capabilities(self) -> Dict[str, Any]:
         """Return the complete channel capability inventory and server compatibility status."""
+        upstream = get_upstream_info()
+        doctor_status = native_doctor.check_all()
         cap_map = self.registry.capability_map()
         available_count = sum(1 for c in cap_map.values() if c["status"] == ChannelStatus.AVAILABLE.value)
+
+        native_channels = {}
+        for plat, cap in CAPABILITY_MATRIX.items():
+            doc_entry = doctor_status.get(plat, {})
+            status_code = native_doctor.get_canonical_status_code(plat)
+            active_b = doc_entry.get("active_backend") or (cap.backends[0] if cap.backends else "default")
+            native_channels[plat] = {
+                "status": status_code,
+                "backend": active_b,
+                "operations": sorted(list(cap.operations)),
+                "tier": cap.tier,
+                "cloud_safe": cap.cloud_safe,
+            }
+
         return {
+            "runtime": upstream["runtime"],
+            "agent_reach": {
+                "installed": upstream["installed"],
+                "version": upstream["version"],
+                "commit": upstream["commit"],
+                "doctor_timestamp": datetime.utcnow().isoformat(),
+            },
+            "channels": native_channels,
+            # Backwards compatibility keys
             "service": "AgentReachService",
-            "version": "2.0.0",
-            "total_channels": len(cap_map),
+            "version": upstream["version"],
+            "total_channels": len(native_channels),
             "available_channels": available_count,
-            "channels": cap_map,
+            "legacy_channels_map": cap_map,
             "supported_domains": list(self.planner.DOMAIN_PRIORITIES.keys()),
         }
 
@@ -320,6 +354,8 @@ class AgentReachService:
             ch_raw = channel_raw_fragments.get(ch_n, [])
             tel.raw_results = len(ch_raw)
             tel.normalized_results = len(ch_raw)
+            st_info = native_doctor.get_channel_status(ch_n)
+            tel.active_backend = st_info.get("active_backend") or ch_n
             if tel.failure_reason:
                 tel.status = ChannelStatus.UNAVAILABLE.value
                 self.registry.mark_degraded(ch_n)

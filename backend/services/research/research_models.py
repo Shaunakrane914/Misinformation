@@ -122,6 +122,9 @@ class EvidenceItem:
     extraction_status: str = "NOT_ATTEMPTED"  # NOT_ATTEMPTED | SUCCESS | EMPTY
     contradiction_flag: bool = False
     corroboration_count: int = 1
+    eligible_for_read: bool = False
+    selected_for_read: bool = False
+    rejection_reason: Optional[str] = None
     provenance: Dict[str, Any] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
@@ -216,6 +219,9 @@ class EvidenceItem:
             "extraction_status": self.extraction_status,
             "contradiction_flag": self.contradiction_flag,
             "corroboration_count": self.corroboration_count,
+            "eligible_for_read": self.eligible_for_read,
+            "selected_for_read": self.selected_for_read,
+            "rejection_reason": self.rejection_reason,
             "provenance": self.provenance,
             "metadata": self.metadata,
         }
@@ -364,6 +370,41 @@ class ResearchRequest:
 
 
 @dataclass
+class ResearchCorpus:
+    """
+    Full research corpus retaining the complete evidence surface (Requirement 19).
+    """
+    queries: List[Dict[str, Any]] = field(default_factory=list)
+    raw_candidates: List[Dict[str, Any]] = field(default_factory=list)
+    ranked_candidates: List[Dict[str, Any]] = field(default_factory=list)
+    deep_read_sources: List[Dict[str, Any]] = field(default_factory=list)
+    primary_sources: List[Dict[str, Any]] = field(default_factory=list)
+    social_sources: List[Dict[str, Any]] = field(default_factory=list)
+    video_sources: List[Dict[str, Any]] = field(default_factory=list)
+    transcript_sources: List[Dict[str, Any]] = field(default_factory=list)
+    contradictions: List[Dict[str, Any]] = field(default_factory=list)
+    corroboration_groups: List[Dict[str, Any]] = field(default_factory=list)
+    findings: List[Dict[str, Any]] = field(default_factory=list)
+    evidence_graph: Dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "queries": self.queries,
+            "raw_candidates": self.raw_candidates,
+            "ranked_candidates": self.ranked_candidates,
+            "deep_read_sources": self.deep_read_sources,
+            "primary_sources": self.primary_sources,
+            "social_sources": self.social_sources,
+            "video_sources": self.video_sources,
+            "transcript_sources": self.transcript_sources,
+            "contradictions": self.contradictions,
+            "corroboration_groups": self.corroboration_groups,
+            "findings": self.findings,
+            "evidence_graph": self.evidence_graph,
+        }
+
+
+@dataclass
 class ResearchResult:
     """Comprehensive forensic result produced by the shared ResearchEngine."""
     agent: str
@@ -382,6 +423,7 @@ class ResearchResult:
     channel_status: Dict[str, str] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)
     retrieval_trace: Dict[str, Any] = field(default_factory=dict)
+    research_corpus: Optional[Dict[str, Any]] = None
 
     # ── Backward-compatible properties ────────────────────────────────────
     @property
@@ -431,4 +473,5 @@ class ResearchResult:
             "channel_health": self.channel_status,
             "warnings": self.warnings,
             "retrieval_trace": self.retrieval_trace,
+            "research_corpus": self.research_corpus or {},
         }

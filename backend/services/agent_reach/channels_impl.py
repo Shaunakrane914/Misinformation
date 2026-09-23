@@ -1,243 +1,81 @@
 """
-Aegis Protocol — Concrete Channel Implementations
-===================================================
-Wraps the existing AgentReachScraper methods into the Channel protocol.
-Zero duplication — each implementation delegates to the proven scraper logic.
+Aegis Protocol — Native-Backed Channel Implementations
+======================================================
+Provides concrete implementations for all Aegis evidence channels.
+Uses upstream Agent Reach tools (gh CLI, yt-dlp, Jina Reader, V2EX API, Bilibili API,
+feedparser) as the primary execution path, preserving the legacy scraper strictly as a
+safety fallback (marked [LEGACY_COMPATIBILITY]).
 """
 
+import base64
 import logging
-from typing import Any, Dict, List
+import os
+import urllib.parse
+from typing import Any, Dict, List, Optional
 
 from backend.services.agent_reach.channels import (
     Channel,
     ChannelStatus,
     EvidenceFragment,
 )
+from backend.services.agent_reach.native import (
+    native_doctor,
+    native_executor,
+    native_normalizer,
+    native_router,
+)
 
 logger = logging.getLogger(__name__)
 
 
-def _get_scraper():
-    """Lazy import to avoid circular dependency at module load time."""
+def _get_legacy_scraper():
+    """
+    [LEGACY_COMPATIBILITY]
+    Lazy import for legacy scraper fallback when native upstream tools fail or are offline.
+    """
     from backend.services.agent_reach_scraper import reach_scraper
     return reach_scraper
 
 
-class RedditChannel(Channel):
-    """Reddit evidence channel backed by the existing zero-API scraper."""
-
-    @property
-    def name(self) -> str:
-        return "reddit"
-
-    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
-        scraper = _get_scraper()
-        try:
-            raw_items = scraper.search_reddit(query, limit=limit)
-            return [
-                EvidenceFragment.from_scraper_dict(
-                    item,
-                    channel_name=self.name,
-                    query_id=kwargs.get("query_id", ""),
-                    query_class=kwargs.get("query_class", ""),
-                    query_text=kwargs.get("query_text", query),
-                )
-                for item in raw_items
-            ]
-        except Exception as e:
-            logger.warning(f"[RedditChannel] Search failed: {e}")
-            return []
-
-    def health_check(self) -> ChannelStatus:
-        scraper = _get_scraper()
-        try:
-            results = scraper.search_reddit("technology", limit=2)
-            if results:
-                return ChannelStatus.AVAILABLE
-            return ChannelStatus.DEGRADED
-        except Exception:
-            return ChannelStatus.UNAVAILABLE
-
-
-class TwitterChannel(Channel):
-    """Twitter/X evidence channel backed by the existing zero-API scraper."""
-
-    @property
-    def name(self) -> str:
-        return "twitter"
-
-    def search(self, query: str, limit: int = 6, vip_handle: str = None, **kwargs) -> List[EvidenceFragment]:
-        scraper = _get_scraper()
-        try:
-            raw_items = scraper.search_twitter(query, vip_handle=vip_handle, limit=limit)
-            return [
-                EvidenceFragment.from_scraper_dict(
-                    item,
-                    channel_name=self.name,
-                    query_id=kwargs.get("query_id", ""),
-                    query_class=kwargs.get("query_class", ""),
-                    query_text=kwargs.get("query_text", query),
-                )
-                for item in raw_items
-            ]
-        except Exception as e:
-            logger.warning(f"[TwitterChannel] Search failed: {e}")
-            return []
-
-    def health_check(self) -> ChannelStatus:
-        scraper = _get_scraper()
-        try:
-            results = scraper.search_twitter("technology", limit=2)
-            if results:
-                return ChannelStatus.AVAILABLE
-            return ChannelStatus.DEGRADED
-        except Exception:
-            return ChannelStatus.UNAVAILABLE
-
-
-class YouTubeChannel(Channel):
-    """YouTube evidence channel backed by the existing zero-API scraper."""
-
-    @property
-    def name(self) -> str:
-        return "youtube"
-
-    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
-        scraper = _get_scraper()
-        try:
-            raw_items = scraper.search_youtube(query, limit=limit)
-            return [
-                EvidenceFragment.from_scraper_dict(
-                    item,
-                    channel_name=self.name,
-                    query_id=kwargs.get("query_id", ""),
-                    query_class=kwargs.get("query_class", ""),
-                    query_text=kwargs.get("query_text", query),
-                )
-                for item in raw_items
-            ]
-        except Exception as e:
-            logger.warning(f"[YouTubeChannel] Search failed: {e}")
-            return []
-
-    def health_check(self) -> ChannelStatus:
-        scraper = _get_scraper()
-        try:
-            results = scraper.search_youtube("AI technology", limit=2)
-            if results:
-                return ChannelStatus.AVAILABLE
-            return ChannelStatus.DEGRADED
-        except Exception:
-            return ChannelStatus.UNAVAILABLE
-
-
-class NewsChannel(Channel):
-    """News wire evidence channel backed by the existing zero-API scraper."""
-
-    @property
-    def name(self) -> str:
-        return "news"
-
-    def search(self, query: str, limit: int = 8, **kwargs) -> List[EvidenceFragment]:
-        scraper = _get_scraper()
-        try:
-            raw_items = scraper.search_news(query, limit=limit)
-            return [
-                EvidenceFragment.from_scraper_dict(
-                    item,
-                    channel_name=self.name,
-                    query_id=kwargs.get("query_id", ""),
-                    query_class=kwargs.get("query_class", ""),
-                    query_text=kwargs.get("query_text", query),
-                )
-                for item in raw_items
-            ]
-        except Exception as e:
-            logger.warning(f"[NewsChannel] Search failed: {e}")
-            return []
-
-    def health_check(self) -> ChannelStatus:
-        scraper = _get_scraper()
-        try:
-            results = scraper.search_news("technology", limit=2)
-            if results:
-                return ChannelStatus.AVAILABLE
-            return ChannelStatus.DEGRADED
-        except Exception:
-            return ChannelStatus.UNAVAILABLE
-
-
-class JinaReaderChannel(Channel):
-    """
-    Jina Reader channel for converting web pages to clean markdown.
-
-    Unlike other channels, this is a URL-targeted reader rather than
-    a search channel. The search() method is a pass-through that
-    reads the query as a URL.
-    """
-
-    @property
-    def name(self) -> str:
-        return "jina_reader"
-
-    def search(self, query: str, limit: int = 1) -> List[EvidenceFragment]:
-        """
-        Read a URL and return its markdown content as a single EvidenceFragment.
-        The 'query' parameter is treated as a URL for this channel.
-        """
-        scraper = _get_scraper()
-        try:
-            result = scraper.read_article_markdown(query, max_chars=4000)
-            if result.get("status") in ("success", "fallback_soup"):
-                return [EvidenceFragment(
-                    platform="Web Article",
-                    title=result.get("title", "Web Document"),
-                    content=result.get("markdown", ""),
-                    url=result.get("url", query),
-                    snippet=result.get("markdown", "")[:200],
-                    retrieval_method="jina_reader",
-                    channel_name=self.name,
-                    raw_metadata={
-                        "status": result.get("status"),
-                        "char_count": result.get("char_count", 0),
-                    },
-                )]
-            return []
-        except Exception as e:
-            logger.warning(f"[JinaReaderChannel] Read failed: {e}")
-            return []
-
-    def health_check(self) -> ChannelStatus:
-        scraper = _get_scraper()
-        try:
-            result = scraper.read_article_markdown("https://example.com", max_chars=200)
-            status = result.get("status", "error")
-            if status in ("success", "fallback_soup"):
-                return ChannelStatus.AVAILABLE
-            return ChannelStatus.DEGRADED
-        except Exception:
-            return ChannelStatus.UNAVAILABLE
-
+# ─────────────────────────────────────────────────────────────────────────────
+# 1. GITHUB CHANNEL (Native gh CLI -> REST Fallback)
+# ─────────────────────────────────────────────────────────────────────────────
 
 class GitHubChannel(Channel):
     """
     GitHub evidence channel for technical claims, repo verification,
     releases, and open-source provenance.
+    Primary: native `gh` CLI JSON tools.
+    Fallback: GitHub REST API.
     """
 
     @property
     def name(self) -> str:
         return "github"
 
-    def search(self, query: str, limit: int = 5) -> List[EvidenceFragment]:
+    def search(self, query: str, limit: int = 5, **kwargs) -> List[EvidenceFragment]:
+        # Primary: Native gh CLI
+        try:
+            res = native_executor.execute_github_search(query, limit=limit)
+            fragments = native_normalizer.normalize_github_repos(
+                res.get("items", []),
+                query_id=kwargs.get("query_id", ""),
+                query_class=kwargs.get("query_class", ""),
+                query_text=kwargs.get("query_text", query)
+            )
+            if fragments:
+                return fragments
+        except Exception as e:
+            logger.debug(f"[GitHubChannel] Native gh CLI search notice: {e}. Trying REST fallback.")
+
+        # [LEGACY_COMPATIBILITY] Fallback: GitHub REST API
         import requests
-        import urllib.parse
         clean_q = query.strip()
         encoded_q = urllib.parse.quote_plus(clean_q)
         url = f"https://api.github.com/search/repositories?q={encoded_q}&sort=stars&order=desc&per_page={limit}"
         headers = {
             "Accept": "application/vnd.github.v3+json",
-            "User-Agent": "AegisProtocol-AgentReach/1.0"
+            "User-Agent": "AegisProtocol-AgentReach/3.0"
         }
         try:
             resp = requests.get(url, headers=headers, timeout=8.0)
@@ -263,46 +101,180 @@ class GitHubChannel(Channel):
                         published=updated,
                         snippet=desc[:200],
                         score=float(min(stars, 100)),
-                        retrieval_method="github_api",
+                        retrieval_method="github_rest_fallback",
                         channel_name=self.name,
+                        query_id=kwargs.get("query_id", ""),
+                        query_class=kwargs.get("query_class", ""),
+                        query_text=kwargs.get("query_text", query),
                         raw_metadata={
+                            "backend": "GitHub REST (fallback)",
                             "stars": stars,
                             "forks": repo.get("forks_count", 0),
                             "language": repo.get("language"),
-                            "license": repo.get("license", {}).get("spdx_id") if repo.get("license") else None,
                         }
                     ))
                 return fragments
             elif resp.status_code == 403:
-                logger.warning("[GitHubChannel] Rate limited by GitHub API")
+                logger.warning("[GitHubChannel] Rate limited by GitHub REST API")
                 return []
-            return []
         except Exception as e:
-            logger.warning(f"[GitHubChannel] Search failed: {e}")
+            logger.warning(f"[GitHubChannel] REST fallback search failed: {e}")
+        return []
+
+    def health_check(self) -> ChannelStatus:
+        st = native_doctor.get_channel_status("github")
+        if st.get("status") in ("ok", "warn") and shutil_which_gh():
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.DEGRADED
+
+
+def shutil_which_gh() -> bool:
+    import shutil
+    return shutil.which("gh") is not None
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 2. YOUTUBE CHANNEL (Native yt-dlp -> Scraper Fallback)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class YouTubeChannel(Channel):
+    """
+    YouTube evidence channel for video discussions, commentary, and transcripts.
+    Primary: native `yt-dlp` toolchain.
+    Fallback: Scraper metadata extraction.
+    """
+
+    @property
+    def name(self) -> str:
+        return "youtube"
+
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        # Primary: Native yt-dlp
+        try:
+            res = native_executor.execute_youtube_search(query, limit=limit)
+            fragments = native_normalizer.normalize_youtube_search(
+                res.get("items", []),
+                query_id=kwargs.get("query_id", ""),
+                query_class=kwargs.get("query_class", ""),
+                query_text=kwargs.get("query_text", query)
+            )
+            if fragments:
+                return fragments
+        except Exception as e:
+            logger.debug(f"[YouTubeChannel] Native yt-dlp search notice: {e}. Trying legacy scraper fallback.")
+
+        # [LEGACY_COMPATIBILITY] Fallback: Legacy reach scraper
+        scraper = _get_legacy_scraper()
+        try:
+            raw_items = scraper.search_youtube(query, limit=limit)
+            return [
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
+                for item in raw_items
+            ]
+        except Exception as e:
+            logger.warning(f"[YouTubeChannel] Fallback search failed: {e}")
             return []
 
     def health_check(self) -> ChannelStatus:
-        import requests
-        try:
-            resp = requests.get(
-                "https://api.github.com/zen",
-                headers={"User-Agent": "AegisProtocol/1.0"},
-                timeout=5.0
-            )
-            if resp.status_code == 200:
-                return ChannelStatus.AVAILABLE
-            elif resp.status_code == 403:
-                return ChannelStatus.DEGRADED
-            return ChannelStatus.UNAVAILABLE
-        except Exception:
-            return ChannelStatus.UNAVAILABLE
+        st = native_doctor.get_channel_status("youtube")
+        if st.get("status") in ("ok", "warn"):
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.DEGRADED
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 3. V2EX CHANNEL (Native Public JSON API — Zero Config)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class V2EXChannel(Channel):
+    """
+    V2EX tech community evidence channel.
+    Backed by public HTTPS JSON API (Tier 0 zero-config).
+    """
+
+    @property
+    def name(self) -> str:
+        return "v2ex"
+
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        try:
+            res = native_executor.execute_v2ex_hot()
+            raw_items = res.get("items", [])
+            if query and query.strip():
+                q_low = query.lower()
+                filtered = [
+                    t for t in raw_items
+                    if q_low in t.get("title", "").lower() or q_low in (t.get("content") or "").lower()
+                ]
+                raw_items = filtered or raw_items[:limit]
+
+            return native_normalizer.normalize_v2ex_topics(
+                raw_items[:limit],
+                query_id=kwargs.get("query_id", ""),
+                query_class=kwargs.get("query_class", ""),
+                query_text=kwargs.get("query_text", query)
+            )
+        except Exception as e:
+            logger.warning(f"[V2EXChannel] Search failed: {e}")
+            return []
+
+    def health_check(self) -> ChannelStatus:
+        st = native_doctor.get_channel_status("v2ex")
+        if st.get("status") == "ok":
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.UNAVAILABLE
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 4. BILIBILI CHANNEL (Native Public Search API — Zero Config)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class BilibiliChannel(Channel):
+    """
+    Bilibili video and community evidence channel.
+    Backed by Bilibili public search web interface API (Zero auth for search/metadata).
+    """
+
+    @property
+    def name(self) -> str:
+        return "bilibili"
+
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        try:
+            res = native_executor.execute_bilibili_search(query, limit=limit)
+            return native_normalizer.normalize_bilibili_videos(
+                res.get("items", []),
+                query_id=kwargs.get("query_id", ""),
+                query_class=kwargs.get("query_class", ""),
+                query_text=kwargs.get("query_text", query)
+            )
+        except Exception as e:
+            logger.warning(f"[BilibiliChannel] Search failed: {e}")
+            return []
+
+    def health_check(self) -> ChannelStatus:
+        st = native_doctor.get_channel_status("bilibili")
+        if st.get("status") == "ok":
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.DEGRADED
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 5. RSS / WIRE CHANNEL (Native feedparser -> Scraper Fallback)
+# ─────────────────────────────────────────────────────────────────────────────
 
 class RssChannel(Channel):
     """
     Syndicated RSS wire channel for official news, press releases,
-    and verified wire dispatches. Differentiates from general news by focusing
-    on official corporate wires, regulatory filings, and press releases.
+    and verified wire dispatches.
+    Primary: native `feedparser` execution.
+    Fallback: Scraper news indexer.
     """
 
     @property
@@ -310,14 +282,31 @@ class RssChannel(Channel):
         return "rss"
 
     def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
-        scraper = _get_scraper()
-        # Differentiate from news: steer query towards press releases & official statements
+        # Primary: Native feedparser with Google News RSS
         wire_terms = ["press release", "filing", "statement", "announcement", "regulatory", "wire"]
         if not any(wt in query.lower() for wt in wire_terms):
             wire_query = f"{query} (press release OR official statement OR filing OR wire)"
         else:
             wire_query = query
 
+        try:
+            feed_query = urllib.parse.quote_plus(wire_query.strip())
+            rss_url = f"https://news.google.com/rss/search?q={feed_query}&hl=en-US&gl=US&ceid=US:en"
+            res = native_executor.execute_rss_read(rss_url, limit=limit)
+            fragments = native_normalizer.normalize_rss_entries(
+                res.get("items", []),
+                channel_name=self.name,
+                query_id=kwargs.get("query_id", ""),
+                query_class=kwargs.get("query_class", ""),
+                query_text=kwargs.get("query_text", wire_query)
+            )
+            if fragments:
+                return fragments
+        except Exception as e:
+            logger.debug(f"[RssChannel] Native RSS read notice: {e}. Trying legacy scraper fallback.")
+
+        # [LEGACY_COMPATIBILITY] Fallback
+        scraper = _get_legacy_scraper()
         try:
             raw_items = scraper.search_news(wire_query, limit=limit)
             fragments = []
@@ -330,30 +319,159 @@ class RssChannel(Channel):
                     query_text=kwargs.get("query_text", wire_query),
                 )
                 f.platform = "PR Wire / RSS"
-                # If from official portal or regulatory filing, mark as PRIMARY
-                text_low = (f.title + " " + f.url).lower()
-                if any(k in text_low for k in ["filing", "sec.gov", "bseindia", "nseindia", "investor", "statement"]):
-                    f.raw_metadata["source_role"] = "PRIMARY"
-                    f.raw_metadata["source_tier"] = "TIER_1_OFFICIAL_FILING"
-                else:
-                    f.raw_metadata["source_role"] = "SECONDARY"
-                    f.raw_metadata["source_tier"] = "TIER_2_FINANCIAL_PRESS"
                 fragments.append(f)
             return fragments
         except Exception as e:
-            logger.warning(f"[RssChannel] Search failed: {e}")
+            logger.warning(f"[RssChannel] Fallback search failed: {e}")
             return []
 
     def health_check(self) -> ChannelStatus:
-        scraper = _get_scraper()
-        try:
-            results = scraper.search_news("press release official", limit=2)
-            if results:
-                return ChannelStatus.AVAILABLE
-            return ChannelStatus.DEGRADED
-        except Exception:
-            return ChannelStatus.UNAVAILABLE
+        st = native_doctor.get_channel_status("rss")
+        if st.get("status") == "ok":
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.UNAVAILABLE
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 6. NEWS CHANNEL (Native RSS News Wire -> Scraper Fallback)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class NewsChannel(Channel):
+    """News wire evidence channel backed by Google News RSS and news indexers."""
+
+    @property
+    def name(self) -> str:
+        return "news"
+
+    def search(self, query: str, limit: int = 8, **kwargs) -> List[EvidenceFragment]:
+        try:
+            feed_query = urllib.parse.quote_plus(query.strip())
+            rss_url = f"https://news.google.com/rss/search?q={feed_query}&hl=en-US&gl=US&ceid=US:en"
+            res = native_executor.execute_rss_read(rss_url, limit=limit)
+            fragments = native_normalizer.normalize_rss_entries(
+                res.get("items", []),
+                channel_name=self.name,
+                query_id=kwargs.get("query_id", ""),
+                query_class=kwargs.get("query_class", ""),
+                query_text=kwargs.get("query_text", query)
+            )
+            if fragments:
+                for f in fragments:
+                    f.platform = "News"
+                return fragments
+        except Exception as e:
+            logger.debug(f"[NewsChannel] Native news feed read notice: {e}")
+
+        # [LEGACY_COMPATIBILITY] Fallback
+        scraper = _get_legacy_scraper()
+        try:
+            raw_items = scraper.search_news(query, limit=limit)
+            return [
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
+                for item in raw_items
+            ]
+        except Exception as e:
+            logger.warning(f"[NewsChannel] Search failed: {e}")
+            return []
+
+    def health_check(self) -> ChannelStatus:
+        return ChannelStatus.AVAILABLE
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 7. JINA READER CHANNEL (Native r.jina.ai -> Scraper Fallback)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class JinaReaderChannel(Channel):
+    """
+    Dedicated article and web page reading channel via Jina Reader.
+    Converts arbitrary public URLs into clean Markdown.
+    """
+
+    @property
+    def name(self) -> str:
+        return "jina_reader"
+
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        """Search / fetch web document via URL."""
+        return self.read_article(query, max_chars=kwargs.get("max_chars", 4000), **kwargs)
+
+    def read_article(self, url: str, max_chars: int = 4000, **kwargs) -> List[EvidenceFragment]:
+        # Primary: Native Jina Reader HTTP fetch with antibot detection
+        try:
+            res = native_executor.execute_web_read(url)
+            content = res.get("content", "")
+            return [EvidenceFragment(
+                platform="Web",
+                title=f"Article from {urllib.parse.urlparse(url).netloc}",
+                content=content[:max_chars],
+                url=url,
+                author=urllib.parse.urlparse(url).netloc or "Web",
+                published="Recent",
+                snippet=content[:300],
+                score=85.0,
+                retrieval_method="jina_reader",
+                channel_name=self.name,
+                content_depth="FULL_ARTICLE" if len(content) > 500 else "SNIPPET",
+                query_id=kwargs.get("query_id", ""),
+                query_class=kwargs.get("query_class", ""),
+                query_text=kwargs.get("query_text", url),
+                raw_metadata={
+                    "backend": "Jina Reader",
+                    "status": "success",
+                    "char_count": len(content),
+                },
+            )]
+        except Exception as e:
+            logger.debug(f"[JinaReaderChannel] Native Jina read notice: {e}. Trying legacy scraper fallback.")
+
+        # [LEGACY_COMPATIBILITY] Fallback
+        scraper = _get_legacy_scraper()
+        try:
+            result = scraper.read_article_markdown(url, max_chars=max_chars)
+            content = result.get("content", "")
+            if content:
+                return [EvidenceFragment(
+                    platform="Web",
+                    title=result.get("title") or f"Article from {urllib.parse.urlparse(url).netloc}",
+                    content=content,
+                    url=url,
+                    author=result.get("author") or urllib.parse.urlparse(url).netloc or "Web",
+                    published=result.get("published", "Recent"),
+                    snippet=content[:300],
+                    score=80.0,
+                    retrieval_method="jina_fallback",
+                    channel_name=self.name,
+                    content_depth="FULL_ARTICLE",
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", url),
+                    raw_metadata={
+                        "status": result.get("status"),
+                        "char_count": result.get("char_count", 0),
+                    },
+                )]
+            return []
+        except Exception as e:
+            logger.warning(f"[JinaReaderChannel] Read failed: {e}")
+            return []
+
+    def health_check(self) -> ChannelStatus:
+        st = native_doctor.get_channel_status("web")
+        if st.get("status") == "ok":
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.DEGRADED
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 8. WEB CHANNEL (Direct Open Web Search with Bing/DDG)
+# ─────────────────────────────────────────────────────────────────────────────
 
 class WebChannel(Channel):
     """
@@ -367,11 +485,6 @@ class WebChannel(Channel):
         return "web"
 
     def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
-        import base64
-        import requests
-        import urllib.parse
-        from bs4 import BeautifulSoup
-
         clean_q = query.strip()
         fragments: List[EvidenceFragment] = []
 
@@ -382,6 +495,8 @@ class WebChannel(Channel):
         }
 
         # 1. Bing Web Search (Fast, rich snippets, zero auth)
+        import requests
+        from bs4 import BeautifulSoup
         try:
             url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}"
             resp = requests.get(url, headers=headers, timeout=6.0)
@@ -476,11 +591,92 @@ class WebChannel(Channel):
             return ChannelStatus.UNAVAILABLE
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 9. REDDIT & TWITTER CHANNELS (Capability-Aware with Scraper Fallback)
+# ─────────────────────────────────────────────────────────────────────────────
+
+class RedditChannel(Channel):
+    """
+    Reddit evidence channel.
+    Checks Doctor for active OpenCLI or rdt-cli session.
+    If unavailable, gracefully reports AUTH_REQUIRED or uses zero-API public streams.
+    """
+
+    @property
+    def name(self) -> str:
+        return "reddit"
+
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        scraper = _get_legacy_scraper()
+        try:
+            raw_items = scraper.search_reddit(query, limit=limit)
+            return [
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
+                for item in raw_items
+            ]
+        except Exception as e:
+            logger.warning(f"[RedditChannel] Search failed: {e}")
+            return []
+
+    def health_check(self) -> ChannelStatus:
+        st = native_doctor.get_channel_status("reddit")
+        if st.get("status") == "ok":
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.AUTH_REQUIRED
+
+
+class TwitterChannel(Channel):
+    """
+    Twitter/X evidence channel.
+    Checks Doctor for active twitter-cli or OpenCLI session.
+    If unavailable, gracefully reports AUTH_REQUIRED or uses public syndication indexers.
+    """
+
+    @property
+    def name(self) -> str:
+        return "twitter"
+
+    def search(self, query: str, limit: int = 6, vip_handle: str = None, **kwargs) -> List[EvidenceFragment]:
+        scraper = _get_legacy_scraper()
+        try:
+            raw_items = scraper.search_twitter(query, vip_handle=vip_handle, limit=limit)
+            return [
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
+                for item in raw_items
+            ]
+        except Exception as e:
+            logger.warning(f"[TwitterChannel] Search failed: {e}")
+            return []
+
+    def health_check(self) -> ChannelStatus:
+        st = native_doctor.get_channel_status("twitter")
+        if st.get("status") == "ok":
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.AUTH_REQUIRED
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# 10. AUTHENTICATED / DESKTOP-SESSION CHANNELS (OpenCLI / MCP / Cookies)
+# ─────────────────────────────────────────────────────────────────────────────
+
 class AuthenticatedOptionalChannel(Channel):
     """
     Channel base for platforms requiring user credentials, browser automation,
-    or session cookies (e.g. LinkedIn, Xiaohongshu, Instagram, Facebook).
-    These gracefully report AUTH_REQUIRED so cloud deployments continue uninterrupted.
+    or session cookies (e.g. LinkedIn, Xiaohongshu, Instagram, Facebook, Boss直聘, Xueqiu).
+    Directly checks Doctor for active backend. Gracefully reports AUTH_REQUIRED
+    so cloud and headless deployments continue uninterrupted with zero hallucinations.
     """
 
     def __init__(self, channel_id: str, platform_name: str, auth_env_var: str = ""):
@@ -492,16 +688,15 @@ class AuthenticatedOptionalChannel(Channel):
     def name(self) -> str:
         return self._name
 
-    def search(self, query: str, limit: int = 6) -> List[EvidenceFragment]:
-        import os
-        if not self.auth_env_var or not os.getenv(self.auth_env_var):
-            logger.debug(f"[{self.platform_name}Channel] Search skipped: {self.auth_env_var} not configured")
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        st = native_doctor.get_channel_status(self._name)
+        if st.get("status") != "ok" or not st.get("active_backend"):
+            logger.debug(f"[{self.platform_name}Channel] Search omitted: {st.get('message', 'AUTH_REQUIRED')}")
             return []
         return []
 
     def health_check(self) -> ChannelStatus:
-        import os
-        if self.auth_env_var and os.getenv(self.auth_env_var):
+        st = native_doctor.get_channel_status(self._name)
+        if st.get("status") == "ok" and st.get("active_backend"):
             return ChannelStatus.AVAILABLE
         return ChannelStatus.AUTH_REQUIRED
-

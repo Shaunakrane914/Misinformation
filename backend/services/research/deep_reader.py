@@ -33,58 +33,127 @@ class DeepReader:
         self,
         ranked_candidates: List[EvidenceItem],
         max_reads: int = 8
-    ) -> List[EvidenceItem]:
+    ) -> Tuple[List[EvidenceItem], List[Dict[str, Any]]]:
         """
         Selects top candidate sources prioritizing:
         1. Primary and official documents
-        2. Domain diversity (max 1-2 per domain)
+        2. Domain diversity (up to 2 per domain, or 3 if covering novel query class/entity)
         3. Syndication diversity (max 1 per wire family)
+        
+        Audits every candidate with:
+        - candidate_id
+        - rank
+        - score
+        - eligible_for_read
+        - selected
+        - rejection_reason
         """
         selected: List[EvidenceItem] = []
-        domain_counts: Dict[str, int] = {}
+        domain_items: Dict[str, List[EvidenceItem]] = {}
         seen_wire_families: Set[str] = set()
+        primary_satisfied_count = 0
+        audit: List[Dict[str, Any]] = []
 
-        # Pass 1: Primary / Official sources first
+        # Step 1: Preliminary Eligibility Assessment
+        for rank, item in enumerate(ranked_candidates, 1):
+            url = item.canonical_url or ""
+            score = item.metadata.get("candidate_score", item.relevance_score)
+
+            if not url or not url.startswith("http"):
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = "unsupported_read"
+            elif any(sd in url.lower() for sd in ["twitter.com", "x.com", "reddit.com", "instagram.com", "facebook.com", "threads.net"]):
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = "social_only"
+            elif any(sd in url.lower() for sd in ["youtube.com", "youtu.be", "bilibili.com"]):
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = "video_requires_transcript"
+            elif item.source_quality_score < 0.15:
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = "low_quality"
+            elif item.relevance_score < 0.10:
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = "low_relevance"
+            else:
+                item.eligible_for_read = True
+                item.selected_for_read = False
+                item.rejection_reason = None
+
+        # Step 2: Primary and Official Selection
         for item in ranked_candidates:
             if len(selected) >= max_reads:
                 break
-            url = item.canonical_url or ""
-            domain = item.source_domain.lower() if item.source_domain else ""
-            if not url.startswith("http") or any(sd in url.lower() for sd in SKIP_READ_DOMAINS):
+            if not item.eligible_for_read:
                 continue
 
-            if item.primary_source or item.source_role == SourceRole.PRIMARY.value:
+            domain = item.source_domain.lower() if item.source_domain else "other"
+            if item.primary_source or item.source_role == SourceRole.PRIMARY.value or item.official_source:
+                if primary_satisfied_count >= 3:
+                    item.rejection_reason = "primary_already_satisfied"
+                    continue
                 selected.append(item)
-                domain_counts[domain] = domain_counts.get(domain, 0) + 1
+                item.selected_for_read = True
+                item.rejection_reason = None
+                primary_satisfied_count += 1
+                domain_items.setdefault(domain, []).append(item)
                 if item.source_family_id:
                     seen_wire_families.add(item.source_family_id)
 
-        # Pass 2: Diverse secondary and investigative candidates
+        # Step 3: Diverse Secondary and Investigative Selection
         for item in ranked_candidates:
-            if len(selected) >= max_reads:
-                break
+            if not item.eligible_for_read:
+                continue
             if item in selected:
                 continue
 
-            url = item.canonical_url or ""
-            domain = item.source_domain.lower() if item.source_domain else ""
-            if not url.startswith("http") or any(sd in url.lower() for sd in SKIP_READ_DOMAINS):
+            domain = item.source_domain.lower() if item.source_domain else "other"
+            d_list = domain_items.get(domain, [])
+
+            if len(selected) >= max_reads:
+                item.rejection_reason = "domain_budget_exhausted" if len(d_list) >= 2 else "read_budget_exhausted"
                 continue
 
-            # Limit per domain
-            if domain and domain_counts.get(domain, 0) >= 2:
-                continue
-
-            # Avoid reading two syndicated copies of the same wire
+            # Check wire family duplicate
             if item.source_family_id and item.source_family_id in seen_wire_families:
+                item.rejection_reason = "same_source_family"
                 continue
+
+            # Diversity check: allow 2 per domain, or 3 if different query class
+            if len(d_list) >= 2:
+                existing_classes = {x.query_class for x in d_list}
+                if item.query_class in existing_classes or len(d_list) >= 3:
+                    item.rejection_reason = "same_domain_over_budget"
+                    continue
 
             selected.append(item)
-            domain_counts[domain] = domain_counts.get(domain, 0) + 1
+            item.selected_for_read = True
+            item.rejection_reason = None
+            domain_items.setdefault(domain, []).append(item)
             if item.source_family_id:
                 seen_wire_families.add(item.source_family_id)
 
-        return selected
+        # Build audit list for all candidates
+        for rank, item in enumerate(ranked_candidates, 1):
+            if item.selected_for_read:
+                item.rejection_reason = None
+            elif item.eligible_for_read and not item.rejection_reason:
+                item.rejection_reason = "read_budget_exhausted"
+
+            audit.append({
+                "candidate_id": item.id,
+                "rank": rank,
+                "score": round(float(item.metadata.get("candidate_score", item.relevance_score)), 3),
+                "eligible_for_read": item.eligible_for_read,
+                "selected": item.selected_for_read,
+                "rejection_reason": item.rejection_reason,
+            })
+
+        return selected, audit
 
     def deep_read(
         self,
@@ -100,7 +169,7 @@ class DeepReader:
         """
         from backend.services.agent_reach import agent_reach_service
 
-        candidates_to_read = self._select_read_candidates(ranked_candidates, max_reads=max_reads)
+        candidates_to_read, audit = self._select_read_candidates(ranked_candidates, max_reads=max_reads)
         now = time.time()
         telemetry = {
             "attempted": len(candidates_to_read),
@@ -108,7 +177,8 @@ class DeepReader:
             "failed": 0,
             "cached": 0,
             "total_chars_read": 0,
-            "read_urls": []
+            "read_urls": [],
+            "candidate_selection_audit": audit,
         }
 
         def _fetch_url(item: EvidenceItem) -> Tuple[EvidenceItem, Dict[str, Any]]:

@@ -14,10 +14,10 @@ from backend.services.research.research_models import ContentDepth, EvidenceItem
 logger = logging.getLogger(__name__)
 
 PRIMARY_REFERENCE_PATTERNS = [
-    (re.compile(r'\b(?:in a|its|their)\s+(?:regulatory|exchange|securities|sec)\s+filing\b', re.I), "filing"),
-    (re.compile(r'\b(?:press release|official statement|spokesperson said|company announced)\b', re.I), "official_statement"),
-    (re.compile(r'\b(?:lawsuit filed|court document|complaint filed|consent decree)\b', re.I), "legal_filing"),
-    (re.compile(r'\b(?:quarterly report|earnings release|form 10-k|form 10-q|form 8-k)\b', re.I), "financial_report"),
+    (re.compile(r'\b(?:according to a filing|in a regulatory filing|sec filing|regulatory notice|exchange disclosure)\b', re.I), "regulatory_filing"),
+    (re.compile(r'\b(?:court documents show|lawsuit filed|court filing|complaint filed|consent decree)\b', re.I), "court_document"),
+    (re.compile(r'\b(?:official statement|company said|spokesperson said|company announced|press release)\b', re.I), "official_statement"),
+    (re.compile(r'\b(?:form 10-k|form 10-q|form 8-k|quarterly report|earnings release)\b', re.I), "financial_report"),
 ]
 
 
@@ -80,15 +80,43 @@ class PrimarySourceEscalator:
         discovered_primaries: List[EvidenceItem] = []
         clean_target = target_name.strip()
 
-        # Build escalation query based on detected reference
-        ref_types = set(r["ref_type"] for r in refs)
-        escalation_queries = []
-        if "filing" in ref_types or "financial_report" in ref_types:
-            escalation_queries.append(f'"{clean_target}" regulatory filing annual report exchange disclosure')
-        if "official_statement" in ref_types:
-            escalation_queries.append(f'"{clean_target}" official announcement press release statement')
+        # Build escalation query specs preserving originating evidence and trigger
+        escalation_specs = []
+        for r in refs:
+            ref_type = r["ref_type"]
+            item_id = r["item_id"]
+            if ref_type in ("regulatory_filing", "financial_report"):
+                escalation_specs.append({
+                    "query": f'"{clean_target}" regulatory filing annual report exchange disclosure',
+                    "ref_type": ref_type,
+                    "originating_id": item_id
+                })
+            elif ref_type == "court_document":
+                escalation_specs.append({
+                    "query": f'"{clean_target}" court documents lawsuit legal complaint',
+                    "ref_type": ref_type,
+                    "originating_id": item_id
+                })
+            elif ref_type == "official_statement":
+                escalation_specs.append({
+                    "query": f'"{clean_target}" official announcement press release statement',
+                    "ref_type": ref_type,
+                    "originating_id": item_id
+                })
 
-        for eq in escalation_queries[:max_escalations]:
+        seen_queries = set()
+        unique_specs = []
+        for spec in escalation_specs:
+            if spec["query"] not in seen_queries:
+                seen_queries.add(spec["query"])
+                unique_specs.append(spec)
+
+        for spec in unique_specs[:max_escalations]:
+            eq = spec["query"]
+            originating_id = spec["originating_id"]
+            ref_type = spec["ref_type"]
+            q_id = f"q_esc_{len(telemetry['queries']) + 1:03d}"
+
             telemetry["escalation_queries_executed"] += 1
             telemetry["queries"].append(eq)
             try:
@@ -103,12 +131,17 @@ class PrimarySourceEscalator:
                     if any(c.canonical_url == u for c in candidates if c.canonical_url):
                         continue
 
-                    # Create typed EvidenceItem
+                    # Create typed EvidenceItem with Requirement 16 provenance
                     item_id = f"esc_prim_{len(candidates) + len(discovered_primaries) + 1:03d}"
                     prim_item = EvidenceItem.from_evidence_fragment(f, item_id=item_id, target_name=clean_target)
                     prim_item.primary_source = True
                     prim_item.source_role = SourceRole.PRIMARY.value
                     prim_item.source_tier = SourceTier.TIER_1_OFFICIAL_FILING.value if "filing" in eq else SourceTier.TIER_1_ORIGINAL_DOCUMENT.value
+                    
+                    prim_item.metadata["originating_evidence_id"] = originating_id
+                    prim_item.metadata["escalation_reason"] = ref_type
+                    prim_item.metadata["primary_query_id"] = q_id
+                    prim_item.metadata["primary_source_candidate"] = True
                     prim_item.metadata["escalation_query"] = eq
                     prim_item.metadata["discovered_via"] = "primary_escalator"
                     discovered_primaries.append(prim_item)

@@ -9,7 +9,7 @@ import hashlib
 import logging
 import re
 import unicodedata
-from typing import Dict, Optional
+from typing import Dict, Optional, List, Any
 
 from backend.db.database import get_claim_by_hash, insert_claim
 
@@ -119,6 +119,50 @@ class ClaimIngestionAgent:
             "normalized_text": normalized,
             "source_url": source_url
         }
+
+    def decompose_claim(self, claim_text: str) -> List["AtomicClaim"]:
+        """
+        Decompose a compound claim statement into verifiable atomic claims.
+        Extracts entities, verifiable dimensions, and assigns unique claim IDs.
+        """
+        from backend.services.research.research_models import AtomicClaim
+
+        raw = (claim_text or "").strip()
+        if not raw:
+            return []
+
+        # Split on sentence boundaries or strong coordinating conjunctions
+        parts = [p.strip() for p in re.split(r'(?<=[.?!])\s+|\s+(?:and also|additionally|furthermore|claiming that)\s+', raw) if len(p.strip()) > 8]
+        if not parts:
+            parts = [raw]
+
+        atomic_claims: List[AtomicClaim] = []
+        for idx, part in enumerate(parts):
+            # Extract potential entities
+            words = re.findall(r'\b[A-Z][a-zA-Z0-9_]+\b', part)
+            entity = words[0] if words else "Unknown Entity"
+            
+            # Extract verifiable dimensions
+            dims = []
+            if re.search(r'[\$₹€£]|\b\d+(?:\.\d+)?%|\b\d+\b', part):
+                dims.append("QUANTITATIVE_VALUE")
+            if re.search(r'\b(?:19|20)\d{2}\b|\b(?:today|yesterday|january|february|march|april|may|june|july|august|september|october|november|december)\b', part, re.I):
+                dims.append("TEMPORAL_ANCHOR")
+            if any(w in part.lower() for w in ["acquired", "bought", "merger", "cured", "died", "arrested", "filed", "resigned", "announced"]):
+                dims.append("ACTION_EVENT")
+            if not dims:
+                dims.append("GENERAL_ASSERTION")
+
+            c_id = f"atomic_{idx + 1:02d}"
+            atomic_claims.append(AtomicClaim(
+                claim_id=c_id,
+                claim_text=part,
+                entity=entity,
+                claim_type="FACTUAL",
+                verifiable_dimensions=dims
+            ))
+
+        return atomic_claims
 
 
 claim_ingestion_agent = ClaimIngestionAgent()

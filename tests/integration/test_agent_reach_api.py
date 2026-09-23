@@ -24,7 +24,8 @@ def test_api_agent_reach_capabilities():
     assert response.status_code == 200
     data = response.json()
     assert data["service"] == "AgentReachService"
-    assert data["total_channels"] == 14
+    assert data["total_channels"] == 15
+    assert "web" in data["channels"]
     assert "reddit" in data["channels"]
     assert "github" in data["channels"]
     assert "rss" in data["channels"]

@@ -12,13 +12,15 @@ import logging
 import re
 import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.agent_reach.channels import (
     Channel,
     ChannelStatus,
+    ChannelTelemetry,
     EvidenceFragment,
     RetrievalResult,
+    RetrievalTrace,
 )
 from backend.services.agent_reach.channels_impl import (
     AuthenticatedOptionalChannel,
@@ -28,6 +30,7 @@ from backend.services.agent_reach.channels_impl import (
     RedditChannel,
     RssChannel,
     TwitterChannel,
+    WebChannel,
     YouTubeChannel,
 )
 from backend.services.agent_reach.planner import RetrievalPlan, RetrievalPlanner
@@ -56,18 +59,19 @@ class AgentReachService:
         self.registry = CapabilityRegistry()
         self.planner = RetrievalPlanner()
         self._register_default_channels()
-        logger.info("[AgentReachService] Initialized with 14 tracked channels and domain planner")
+        logger.info("[AgentReachService] Initialized with 15 tracked channels and domain planner")
 
     def _register_default_channels(self) -> None:
         """Register primary zero-config channels and optional authenticated channels."""
         # Core zero-config channels (cloud-ready)
+        self.registry.register(NewsChannel())
+        self.registry.register(WebChannel())
+        self.registry.register(RssChannel())
         self.registry.register(RedditChannel())
         self.registry.register(TwitterChannel())
         self.registry.register(YouTubeChannel())
-        self.registry.register(NewsChannel())
         self.registry.register(JinaReaderChannel())
         self.registry.register(GitHubChannel())
-        self.registry.register(RssChannel())
 
         # Optional / authenticated channels (gracefully report status)
         self.registry.register(AuthenticatedOptionalChannel("linkedin", "LinkedIn", "LINKEDIN_SESSION_COOKIE"))
@@ -169,6 +173,250 @@ class AgentReachService:
             self.registry.mark_degraded(channel_name)
             return []
 
+    def retrieve_many(
+        self,
+        channel_queries: Dict[str, List[Any]],
+        domain: str = "general",
+        agent_name: str = "agent",
+        target_name: str = "",
+        source_url: Optional[str] = None,
+        budget: Optional[Dict[str, Any]] = None,
+        perform_reads: bool = True,
+        timeout: float = 12.0,
+    ) -> RetrievalResult:
+        """
+        Execute bounded concurrent multi-query retrieval across channels with full tracing.
+
+        Enforces:
+        - Query planning metrics (classes created, queries generated, queries executed)
+        - Bounded concurrent worker execution across (channel_name, query_spec)
+        - Per-channel telemetry (queries attempted, requests attempted, successful, raw,
+          normalized, duplicates, final, latency_ms, status, failure_reason)
+        - Non-destructive deduplication preserving distinct evidence angles
+        - Deep reading pass for top high-value primary URLs
+        - Source independence clustering & semantic role attribution
+        - Full RetrievalTrace telemetry construction
+        """
+        import time
+        start_ts = time.time()
+        budget = budget or {}
+        max_q_per_ch = budget.get("max_queries_per_channel", 3)
+        max_res_per_q = budget.get("max_results_per_query", 5)
+        max_total_ev = budget.get("max_total_evidence", 40)
+        max_deep_reads = budget.get("max_deep_reads", 4)
+        task_timeout = budget.get("channel_timeout", min(timeout, 8.0))
+
+        # 1. Normalize query specs
+        normalized_channel_queries: Dict[str, List[Dict[str, str]]] = {}
+        all_query_classes: Set[str] = set()
+        total_planned_queries = 0
+
+        for ch_name, q_list in channel_queries.items():
+            norm_list = []
+            for idx, q_item in enumerate(q_list):
+                if isinstance(q_item, dict):
+                    q_id = q_item.get("query_id", f"{ch_name[:2]}_{idx+1:02d}")
+                    q_class = q_item.get("query_class", "general")
+                    q_text = q_item.get("query_text", "")
+                else:
+                    q_id = f"{ch_name[:2]}_{idx+1:02d}"
+                    q_class = "general"
+                    q_text = str(q_item)
+
+                if q_text.strip():
+                    norm_list.append({"query_id": q_id, "query_class": q_class, "query_text": q_text.strip()})
+                    all_query_classes.add(q_class)
+                    total_planned_queries += 1
+
+            if norm_list:
+                normalized_channel_queries[ch_name] = norm_list[:max_q_per_ch]
+
+        # 2. Source Article Reading (if provided)
+        source_doc = None
+        if source_url:
+            source_doc = self.read(source_url)
+
+        # 3. Channel Telemetry Setup
+        channel_telemetry_map: Dict[str, ChannelTelemetry] = {}
+        for ch_name in self.registry.channel_names:
+            ch_status = self.registry.get_status(ch_name).value
+            channel_telemetry_map[ch_name] = ChannelTelemetry(
+                channel=ch_name,
+                status=ch_status,
+                queries_attempted=[],
+            )
+
+        # Prepare execution tasks
+        tasks = []  # (ch_name, channel_obj, query_spec)
+        available_channels = {c.name: c for c in self.registry.get_available()}
+
+        for ch_name, queries in normalized_channel_queries.items():
+            telemetry = channel_telemetry_map.setdefault(ch_name, ChannelTelemetry(channel=ch_name))
+            telemetry.queries_attempted = [q["query_text"] for q in queries]
+            telemetry.requests_attempted = len(queries)
+
+            if ch_name not in available_channels:
+                telemetry.failure_reason = f"Channel {ch_name} status is {telemetry.status}"
+                continue
+
+            channel_obj = available_channels[ch_name]
+            for q_spec in queries:
+                tasks.append((ch_name, channel_obj, q_spec))
+
+        # 4. Concurrent execution with bounded concurrency
+        raw_fragments: List[EvidenceFragment] = []
+        executed_queries_count = 0
+
+        def _run_single_query(task_tuple) -> Tuple[str, List[EvidenceFragment], int, Optional[str]]:
+            ch_n, ch_obj, q_sp = task_tuple
+            t0 = time.time()
+            try:
+                frags = ch_obj.search(
+                    q_sp["query_text"],
+                    limit=max_res_per_q,
+                    query_id=q_sp["query_id"],
+                    query_class=q_sp["query_class"],
+                    query_text=q_sp["query_text"]
+                )
+                lat = int((time.time() - t0) * 1000)
+                for f in frags or []:
+                    if not getattr(f, "query_id", "") and q_sp.get("query_id"):
+                        f.query_id = q_sp["query_id"]
+                    if not getattr(f, "query_class", "") and q_sp.get("query_class"):
+                        f.query_class = q_sp["query_class"]
+                    if not getattr(f, "query_text", "") and q_sp.get("query_text"):
+                        f.query_text = q_sp["query_text"]
+                    if not getattr(f, "channel_name", ""):
+                        f.channel_name = ch_n
+                return ch_n, frags or [], lat, None
+            except Exception as e:
+                lat = int((time.time() - t0) * 1000)
+                return ch_n, [], lat, str(e)
+
+        channel_raw_fragments: Dict[str, List[EvidenceFragment]] = {ch: [] for ch in normalized_channel_queries}
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+            future_to_task = {executor.submit(_run_single_query, t): t for t in tasks}
+            for fut in concurrent.futures.as_completed(future_to_task, timeout=timeout + 2.0):
+                ch_n, ch_obj, q_sp = future_to_task[fut]
+                executed_queries_count += 1
+                try:
+                    ch_ret, frags, lat, err = fut.result(timeout=task_timeout)
+                    tel = channel_telemetry_map[ch_ret]
+                    tel.latency_ms = max(tel.latency_ms, lat)
+                    if err:
+                        tel.failure_reason = err
+                    else:
+                        tel.successful_requests += 1
+                    if frags:
+                        channel_raw_fragments.setdefault(ch_ret, []).extend(frags)
+                        raw_fragments.extend(frags)
+                except Exception as ex:
+                    tel = channel_telemetry_map[ch_n]
+                    tel.failure_reason = f"Timeout/Error: {ex}"
+
+        # Update per-channel raw counts
+        for ch_n, tel in channel_telemetry_map.items():
+            ch_raw = channel_raw_fragments.get(ch_n, [])
+            tel.raw_results = len(ch_raw)
+            tel.normalized_results = len(ch_raw)
+            if tel.failure_reason:
+                tel.status = ChannelStatus.UNAVAILABLE.value
+                self.registry.mark_degraded(ch_n)
+            elif tel.raw_results > 0:
+                tel.status = ChannelStatus.AVAILABLE.value
+            elif tel.requests_attempted > 0:
+                tel.status = "EMPTY"
+
+        # 5. Deduplication & Normalization
+        deduped_fragments, total_dupes_removed = self._deduplicate_fragments(raw_fragments)
+        if len(deduped_fragments) > max_total_ev:
+            deduped_fragments = deduped_fragments[:max_total_ev]
+
+        # Calculate per-channel final and duplicates
+        final_by_ch: Dict[str, int] = {}
+        for f in deduped_fragments:
+            ch_k = f.channel_name or "unknown"
+            final_by_ch[ch_k] = final_by_ch.get(ch_k, 0) + 1
+
+        for ch_n, tel in channel_telemetry_map.items():
+            tel.final_results = final_by_ch.get(ch_n, 0)
+            tel.duplicates_removed = max(0, tel.raw_results - tel.final_results)
+
+        # 6. Deep Reading Phase
+        readable_sources = 0
+        if perform_reads and deduped_fragments:
+            read_candidates = []
+            for f in deduped_fragments:
+                u = f.url or ""
+                if u.startswith("http") and not any(skip in u.lower() for skip in ["youtube.com", "youtu.be", "twitter.com", "x.com", "reddit.com", ".pdf"]):
+                    read_candidates.append(f)
+
+            for cand in read_candidates[:max_deep_reads]:
+                try:
+                    read_res = self.read(cand.url, max_chars=2500)
+                    if read_res.get("status") in ("success", "fallback_soup") and read_res.get("markdown"):
+                        md = read_res["markdown"].strip()
+                        if len(md) > 200:
+                            cand.content = md
+                            cand.snippet = md[:350] + ("..." if len(md) > 350 else "")
+                            cand.content_depth = "FULL_ARTICLE" if len(md) > 1000 else "PARTIAL_CONTENT"
+                            readable_sources += 1
+                except Exception as r_err:
+                    logger.debug(f"[AgentReachService] Deep reading pass error for {cand.url}: {r_err}")
+
+        # 7. Source Independence & Syndication Grouping
+        independence_groups = self._cluster_source_independence(deduped_fragments)
+
+        # 8. Assign semantic source roles
+        self._assign_source_roles(deduped_fragments)
+
+        # 9. Build RetrievalTrace
+        unique_domains = len(set(urllib.parse.urlparse(f.url).netloc.lower() for f in deduped_fragments if f.url))
+        indep_groups_count = len(set(f.raw_metadata.get("source_independence_group", "independent") for f in deduped_fragments))
+        total_latency_ms = int((time.time() - start_ts) * 1000)
+
+        trace = RetrievalTrace(
+            scan_id=f"scan_{int(start_ts)}_{abs(hash(target_name or domain)) % 10000:04d}",
+            agent=agent_name,
+            query=target_name or "multi_query",
+            domain=domain,
+            planned_query_classes=len(all_query_classes),
+            planned_queries_count=total_planned_queries,
+            executed_queries_count=executed_queries_count,
+            channel_stats={ch: tel.to_dict() for ch, tel in channel_telemetry_map.items() if tel.requests_attempted > 0 or tel.raw_results > 0},
+            total_raw=len(raw_fragments),
+            total_normalized=len(raw_fragments),
+            total_duplicates=total_dupes_removed,
+            total_final=len(deduped_fragments),
+            unique_domains=unique_domains,
+            independent_groups=indep_groups_count,
+            readable_sources=readable_sources,
+            total_latency_ms=total_latency_ms,
+        )
+
+        channel_health_map = {
+            ch: tel.status for ch, tel in channel_telemetry_map.items()
+        }
+
+        return RetrievalResult(
+            query=target_name or "multi_query",
+            domain=domain,
+            fragments=deduped_fragments,
+            channel_health=channel_health_map,
+            total_signals=len(deduped_fragments),
+            retrieval_plan={
+                "domain": domain,
+                "target": target_name,
+                "planned_queries": total_planned_queries,
+                "executed_queries": executed_queries_count,
+                "channels": list(normalized_channel_queries.keys()),
+            },
+            source_article=source_doc,
+            retrieval_trace=trace.to_dict(),
+            trace_obj=trace,
+        )
+
     def retrieve(
         self,
         query: str,
@@ -180,81 +428,54 @@ class AgentReachService:
     ) -> RetrievalResult:
         """
         Execute domain-planned, concurrent internet evidence retrieval.
-
-        Pipeline:
-        1. Query Planning (per-channel optimized queries)
-        2. Source URL reading (SSRF safe)
-        3. Parallel channel querying with bounded concurrency
-        4. Deduplication & URL normalization
-        5. Source independence & syndication grouping
-        6. Source role & tier attribution
+        Automatically leverages multi-query planning and bounded concurrent execution.
         """
-        start_time = datetime.utcnow()
         clean_q = query.strip()
-
-        # 1. Retrieval Planning
         plan = self.planner.plan(clean_q, domain=domain, include_channels=channels)
-        logger.info(f"[AgentReachService] Plan for '{clean_q[:40]}...' (domain={domain}): channels={plan.channels_to_query}")
+        logger.info(f"[AgentReachService] Executing retrieve for '{clean_q[:40]}...' (domain={domain}): channels={plan.channels_to_query}")
 
-        # 2. Source Article Acquisition (if provided)
-        source_doc = None
-        if source_url:
-            source_doc = self.read(source_url)
+        # If multi_channel_queries are available from plan, use retrieve_many
+        if plan.multi_channel_queries:
+            active_queries = plan.multi_channel_queries
+            if channels:
+                active_queries = {ch: q_list for ch, q_list in active_queries.items() if ch in channels}
 
-        # 3. Concurrent Retrieval across planned channels
-        raw_fragments: List[EvidenceFragment] = []
-        channel_health_map: Dict[str, str] = {}
+            return self.retrieve_many(
+                channel_queries=active_queries,
+                domain=domain,
+                agent_name="agent_reach",
+                target_name=clean_q,
+                source_url=source_url,
+                budget={
+                    "max_queries_per_channel": 3,
+                    "max_results_per_query": limit_per_channel,
+                    "max_total_evidence": 40,
+                    "max_deep_reads": 4,
+                },
+                perform_reads=True,
+                timeout=timeout
+            )
 
-        # Filter to healthy channels
-        available_map = {c.name: c for c in self.registry.get_available(set(plan.channels_to_query))}
-
-        def _fetch(ch_name: str) -> List[EvidenceFragment]:
-            ch = available_map.get(ch_name)
-            if not ch:
-                return []
-            q = plan.domain_queries.get(ch_name, clean_q)
-            return ch.search(q, limit=limit_per_channel)
-
-        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-            future_to_channel = {
-                executor.submit(_fetch, ch_name): ch_name
-                for ch_name in plan.channels_to_query
-                if ch_name in available_map
-            }
-
-            for future in concurrent.futures.as_completed(future_to_channel, timeout=timeout + 2.0):
-                ch_name = future_to_channel[future]
-                try:
-                    res = future.result(timeout=timeout)
-                    if res:
-                        raw_fragments.extend(res)
-                        channel_health_map[ch_name] = ChannelStatus.AVAILABLE.value
-                    else:
-                        channel_health_map[ch_name] = ChannelStatus.DEGRADED.value
-                except Exception as e:
-                    logger.warning(f"[AgentReachService] Channel {ch_name} timed out or failed: {e}")
-                    channel_health_map[ch_name] = ChannelStatus.UNAVAILABLE.value
-                    self.registry.mark_degraded(ch_name)
-
-        # 4. Deduplication & Normalization
-        deduped_fragments, dupes_removed = self._deduplicate_fragments(raw_fragments)
-
-        # 5. Source Independence & Syndication Grouping
-        independence_groups = self._cluster_source_independence(deduped_fragments)
-
-        # 6. Assign semantic source roles
-        self._assign_source_roles(deduped_fragments)
-
-        result = RetrievalResult(
-            query=clean_q,
+        # Fallback to single-query per channel
+        single_query_matrix = {
+            ch: [{"query_id": f"{ch}_01", "query_class": "general", "query_text": plan.domain_queries.get(ch, clean_q)}]
+            for ch in plan.channels_to_query
+        }
+        return self.retrieve_many(
+            channel_queries=single_query_matrix,
             domain=domain,
-            fragments=deduped_fragments,
-            channel_health=channel_health_map,
-            total_signals=len(deduped_fragments),
-            retrieval_plan=plan.to_dict(),
-            source_article=source_doc,
+            agent_name="agent_reach",
+            target_name=clean_q,
+            source_url=source_url,
+            budget={
+                "max_queries_per_channel": 1,
+                "max_results_per_query": limit_per_channel,
+                "max_total_evidence": 30,
+                "max_deep_reads": 3,
+            },
+            perform_reads=True,
+            timeout=timeout
         )
-        return result
 
     # ── Deduplication & Independence Logic ──────────────────────────────────
 
@@ -266,7 +487,7 @@ class AgentReachService:
             parsed = urllib.parse.urlparse(raw_url)
             query_params = urllib.parse.parse_qs(parsed.query)
             # Remove tracking params
-            filtered = {k: v for k, v in query_params.items() if not k.startswith("utm_") and k not in ("ref", "fbclid")}
+            filtered = {k: v for k, v in query_params.items() if not k.startswith("utm_") and k not in ("ref", "fbclid", "gclid")}
             clean_query = urllib.parse.urlencode(filtered, doseq=True)
             return urllib.parse.urlunparse((
                 parsed.scheme.lower(),
@@ -282,8 +503,8 @@ class AgentReachService:
     def _deduplicate_fragments(
         self,
         fragments: List[EvidenceFragment]
-    ) -> (List[EvidenceFragment], int):
-        """Deduplicate fragments across multiple search providers and channels."""
+    ) -> Tuple[List[EvidenceFragment], int]:
+        """Deduplicate fragments across multiple search providers and channels with fine-grained precision."""
         seen_urls: Set[str] = set()
         seen_titles: Set[str] = set()
         unique: List[EvidenceFragment] = []
@@ -291,12 +512,18 @@ class AgentReachService:
 
         for f in fragments:
             norm_url = self._normalize_url(f.url)
-            norm_title = re.sub(r'[^a-zA-Z0-9]', '', f.title.lower())[:60]
+            norm_title = re.sub(r'[^a-z0-9]', '', f.title.lower())
 
+            # URL matching: exact normalized URL is an unequivocal duplicate
             if norm_url and norm_url in seen_urls:
                 dupes_count += 1
                 continue
-            if norm_title and len(norm_title) > 15 and norm_title in seen_titles:
+
+            # Title matching: require full title match (> 25 characters) on the same domain or exact match
+            domain = urllib.parse.urlparse(f.url).netloc.lower() if f.url else ""
+            title_key = f"{domain}:{norm_title}" if domain else norm_title
+
+            if norm_title and len(norm_title) > 25 and (title_key in seen_titles or norm_title in seen_titles):
                 dupes_count += 1
                 continue
 
@@ -304,6 +531,8 @@ class AgentReachService:
                 seen_urls.add(norm_url)
             if norm_title:
                 seen_titles.add(norm_title)
+                if domain:
+                    seen_titles.add(title_key)
 
             unique.append(f)
 
@@ -411,6 +640,8 @@ class AgentReachService:
         output["channels"] = res.channels
         output["items"] = res.items
         output["total_signals"] = len(res.fragments)
+        output["retrieval_trace"] = res.retrieval_trace
+        output["trace"] = res.retrieval_trace
         return output
 
     def unified_scan(

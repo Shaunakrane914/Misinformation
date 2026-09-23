@@ -134,25 +134,40 @@ class BrandShieldAgent:
         try:
             try:
                 from backend.services.agent_reach import agent_reach_service
+                from backend.services.agent_reach.planner import RetrievalPlanner
             except (ImportError, ModuleNotFoundError):
                 from services.agent_reach import agent_reach_service
+                from services.agent_reach.planner import RetrievalPlanner
 
-            logger.info(f"[BrandShield 2.0] Launching Agent Reach retrieval for '{target_name}' (domain=brand)")
+            logger.info(f"[BrandShield 2.0] Launching multi-query Agent Reach retrieval for '{target_name}' (domain=brand)")
 
-            retrieval_res = agent_reach_service.retrieve(
-                query=target_name,
+            from backend.services.research import research_engine, ResearchRequest
+            planner = RetrievalPlanner()
+            multi_queries, query_classes = planner.build_multi_channel_queries(target_name, domain="brand")
+
+            research_req = ResearchRequest(
+                target=target_name,
                 domain="brand",
-                limit_per_channel=4,
-                timeout=timeout
+                intent=f"investigate brand reputation, counterfeits, impersonations, phishing, and online threats for {target_name}",
+                query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
+                deep_read_budget=6,
+                corroboration_budget=4,
             )
-            fragments = retrieval_res.fragments
-            channel_health = retrieval_res.channel_health
-            plan = retrieval_res.retrieval_plan or {}
+            research_res = research_engine.investigate(research_req)
+            self._last_research_res = research_res
+            fragments = research_res.evidence
+            retrieval_trace = research_res.telemetry
+            channel_health = retrieval_trace.get("channel_health", {})
+            plan = {
+                "query_classes": query_classes,
+                "trace": retrieval_trace
+            }
         except Exception as e:
-            logger.warning(f"[BrandShield 2.0] AgentReach retrieval exception: {e}")
+            logger.warning(f"[BrandShield 2.0] ResearchEngine retrieval exception: {e}")
             fragments = []
             channel_health = {}
             plan = {}
+            self._last_research_res = None
 
         evidence_items: List[Dict[str, Any]] = []
         syndicated_count = 0
@@ -165,37 +180,72 @@ class BrandShieldAgent:
         ]
 
         for idx, f in enumerate(fragments):
-            url = f.url or ""
+            if hasattr(f, "canonical_url"):
+                url = f.canonical_url or ""
+                title = f.title or f"{target_name} Signal"
+                content = f.content or f.snippet
+                snippet = f.relevant_excerpt or f.snippet or content[:240]
+                source = f.source_name or f.channel
+                platform = f.channel
+                author = f.source_name or f.channel
+                published_at = f.published_at or "Recent"
+                retrieved_at = f.discovered_at
+                role = f.source_role
+                tier = f.source_tier
+                group = f.independence_group
+                content_depth = f.content_depth
+                query_id = f.query_id
+                query_class = f.query_class
+                query_text = f.query_text
+                is_primary = f.primary_source or role in ("PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY")
+            else:
+                url = f.url or ""
+                title = f.title or f"{target_name} Signal"
+                content = f.content or f.snippet
+                snippet = f.snippet or content[:240]
+                source = f.platform or getattr(f, "channel_name", "web")
+                platform = getattr(f, "channel_name", None) or f.platform
+                author = f.author or (f.channel_name.title() if getattr(f, "channel_name", None) else "Web")
+                published_at = getattr(f, "published", "Recent")
+                retrieved_at = getattr(f, "retrieved_at", "")
+                role = f.raw_metadata.get("source_role", "DISCOVERY") if hasattr(f, "raw_metadata") else "DISCOVERY"
+                tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE") if hasattr(f, "raw_metadata") else "TIER_3_AGGREGATE"
+                group = f.raw_metadata.get("source_independence_group", "independent") if hasattr(f, "raw_metadata") else "independent"
+                content_depth = getattr(f, "content_depth", "SNIPPET")
+                query_id = getattr(f, "query_id", "")
+                query_class = getattr(f, "query_class", "general")
+                query_text = getattr(f, "query_text", "")
+                is_primary = role == "PRIMARY"
+
             norm_url = url.lower()
-            role = f.raw_metadata.get("source_role", "DISCOVERY")
-            tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE")
-            group = f.raw_metadata.get("source_independence_group", "independent")
+            if any(m in norm_url for m in primary_markers):
+                is_primary = True
+                role = "PRIMARY"
+                tier = "TIER_1_OFFICIAL_FILING"
 
             if group.startswith("syndicated_"):
                 syndicated_count += 1
 
-            # Check if source is an official portal or regulatory body
-            is_primary = any(m in norm_url for m in primary_markers)
-            if is_primary:
-                role = "PRIMARY"
-                tier = "TIER_1_OFFICIAL_FILING"
-
             evidence_items.append({
                 "evidence_id": f"ev_{idx+1:03d}",
-                "title": f.title or f"{target_name} Signal",
-                "content": f.content or f.snippet,
-                "snippet": f.snippet or f.content[:240],
+                "title": title,
+                "content": content,
+                "snippet": snippet,
                 "url": url,
                 "has_url": bool(url and url.startswith("http")),
-                "source": f.platform or f.channel_name,
-                "platform": f.channel_name or f.platform,
-                "author": f.author or (f.channel_name.title() if f.channel_name else "Web"),
-                "published_at": f.published or "Recent",
-                "retrieved_at": f.retrieved_at,
+                "source": source,
+                "platform": platform,
+                "author": author,
+                "published_at": published_at,
+                "retrieved_at": retrieved_at,
                 "source_role": role,
                 "source_tier": tier,
                 "independence_group": group,
                 "is_primary": is_primary,
+                "content_depth": content_depth,
+                "query_id": query_id,
+                "query_class": query_class,
+                "query_text": query_text,
             })
 
         # If Agent Reach returned fewer than 4 items, fall back to DDGS to ensure baseline web discovery
@@ -757,6 +807,9 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
                 "duration_ms": duration_ms,
                 "ai_enrichment": synthesis.get("ai_enrichment", "ONLINE_GEMINI"),
             },
+            "findings_structured": [f.to_dict() if hasattr(f, "to_dict") else f for f in self._last_research_res.findings] if getattr(self, "_last_research_res", None) else [],
+            "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in self._last_research_res.contradictions] if getattr(self, "_last_research_res", None) else [],
+            "deep_research_trace": plan.get("trace", {}),
             "retrieval": {
                 "plan": plan,
                 "channels": channel_health,
@@ -764,7 +817,10 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
                 "total_sources": len(evidence_items),
                 "unique_sources": max(0, len(evidence_items) - syndicated_count),
                 "syndicated_sources": syndicated_count,
+                "deep_reads": plan.get("trace", {}).get("deep_read_success", 0),
+                "trace": plan.get("trace", {}),
             },
+            "retrieval_trace": plan.get("trace", {}),
             "summary": {
                 "threats_count": len(threats),
                 "claims_count": len(claims),

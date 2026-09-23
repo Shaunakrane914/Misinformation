@@ -117,6 +117,12 @@ class Trend:
     misinformation_rationale: str
     evidence_ids: List[str]
     status: str = "active"           # "active" | "emerging" | "stable" | "declining" | "resolved"
+    trend_nature: str = "TRENDING"   # "TRENDING" | "VIRAL" | "NEWSWORTHY" | "RECURRING" | "HIGH_VOLUME" | "NEWLY_EMERGING"
+    why_trending: str = ""
+    emergence_window: str = ""
+    underlying_event: str = ""
+    debunk_status: str = "NO_CONTRADICTION"
+    contradictions: List[str] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)
@@ -570,6 +576,35 @@ class TrendingAgent:
                 "amplification_platforms": list({it.platform for it in items if it.platform != first_ev.platform})
             }
 
+            # Trend Nature Classification
+            v_status = velocity.get("status", "STABLE")
+            if v_status == "ACCELERATING" and unique_platforms >= 3:
+                trend_nature = "VIRAL"
+            elif unique_platforms >= 2 and independent_groups >= 2:
+                trend_nature = "TRENDING"
+            elif cat_key in ["announcement", "box_office", "business_tech"] and any(it.source_role == "PRIMARY" for it in items):
+                trend_nature = "NEWSWORTHY"
+            elif len(velocity.get("history", [])) >= 3:
+                trend_nature = "RECURRING"
+            elif len(items) >= 5:
+                trend_nature = "HIGH_VOLUME"
+            else:
+                trend_nature = "NEWLY_EMERGING"
+
+            why_trending = (
+                f"Circulating across {unique_platforms} platform(s) with {independent_groups} independent source group(s) "
+                f"and {len(items)} verified evidence signals ({v_status.lower()} velocity)."
+            )
+
+            emergence_window = f"{first_ev.published_at} to {latest_ev.published_at}"
+            underlying_event = first_ev.title
+
+            debunk_status = "NO_CONTRADICTION"
+            if misinfo_risk == "HIGH":
+                debunk_status = "DISPUTED"
+            elif misinfo_risk == "MEDIUM":
+                debunk_status = "UNVERIFIED"
+
             trends.append(Trend(
                 trend_id=f"T-{t_idx:02d}",
                 topic=topic,
@@ -590,7 +625,13 @@ class TrendingAgent:
                 misinformation_risk=misinfo_risk,
                 misinformation_rationale=misinfo_rationale,
                 evidence_ids=[it.evidence_id for it in items],
-                status="active" if velocity.get("status") in ["ACTIVE", "ACCELERATING"] else "stable"
+                status="active" if velocity.get("status") in ["ACTIVE", "ACCELERATING"] else "stable",
+                trend_nature=trend_nature,
+                why_trending=why_trending,
+                emergence_window=emergence_window,
+                underlying_event=underlying_event,
+                debunk_status=debunk_status,
+                contradictions=[]
             ))
             t_idx += 1
 
@@ -814,47 +855,77 @@ class TrendingAgent:
         # 2. Query Planning via Agent Reach Planner
         from backend.services.agent_reach.planner import RetrievalPlanner
         planner = RetrievalPlanner()
-        query_classes = planner.build_trending_query_classes(
-            query=target_query,
-            is_discovery=is_discovery,
-            category=entity_res.get("category")
+        multi_queries, query_classes = planner.build_multi_channel_queries(
+            target_query,
+            domain="trending"
         )
 
-        # 3. Multi-Channel Retrieval via Agent Reach
+        # 3. Multi-Channel Retrieval & Deep Research Investigation via Shared Research Engine
         all_raw_evidence: List[TrendEvidence] = []
         channel_health: Dict[str, Dict[str, Any]] = {}
+        retrieval_trace: Dict[str, Any] = {}
+        research_findings = []
+        research_contradictions = []
 
+        research_res = None
         try:
-            from backend.services.agent_reach import agent_reach_service
-            # Select top representative queries for multi-channel reach
-            primary_queries = []
-            for class_name, q_list in query_classes.items():
-                if q_list:
-                    primary_queries.append(q_list[0])
-            reach_query = " ".join(primary_queries[:2]) if primary_queries else target_query
-
-            omni_start = time.time()
-            omni_data = agent_reach_service.omni_scan(
-                query=reach_query,
+            from backend.services.research import research_engine, ResearchRequest
+            research_req = ResearchRequest(
+                target=target_query,
                 domain="trending",
-                limit_per_channel=5
+                intent=f"discover emerging viral trends, public narratives, and cross-channel discourse for {target_query}",
+                query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
+                deep_read_budget=6,
+                corroboration_budget=4,
             )
-            channels = omni_data.get("channels", {})
+            research_res = research_engine.investigate(research_req)
+            retrieval_trace = research_res.telemetry
+            research_findings = research_res.findings
+            research_contradictions = research_res.contradictions
 
-            for ch_name, items in channels.items():
-                if items:
-                    norm = self._normalize_evidence(items, ch_name, retrieval_method="agent_reach")
-                    all_raw_evidence.extend(norm)
-                    channel_health[ch_name] = {
-                        "status": "ok",
-                        "retrieved_count": len(items),
-                        "latency_ms": int((time.time() - omni_start) * 1000)
+            for item in research_res.evidence:
+                ch = item.channel or "web"
+                ev_id = f"EV-{ch.upper()[:2]}-{len(all_raw_evidence) + 1:03d}"
+                role = item.source_role
+                tier = item.source_tier
+                group = item.independence_group
+                url = item.canonical_url or "Source URL unavailable"
+
+                all_raw_evidence.append(TrendEvidence(
+                    evidence_id=ev_id,
+                    platform=ch,
+                    source=item.source_name or ch,
+                    title=item.title[:220],
+                    content=item.content[:1000] if item.content else item.snippet[:1000],
+                    snippet=(item.relevant_excerpt or item.snippet)[:300],
+                    url=url,
+                    canonical_url=url if url != "Source URL unavailable" else "",
+                    author=item.source_name or ch,
+                    published_at=item.published_at or datetime.now(timezone.utc).isoformat(),
+                    retrieved_at=item.discovered_at,
+                    source_role=role,
+                    source_tier=tier,
+                    source_group_id=group,
+                    retrieval_method="agent_reach",
+                    metadata={
+                        "content_depth": item.content_depth,
+                        "query_id": item.query_id,
+                        "query_class": item.query_class,
+                        "query_text": item.query_text,
+                        "relevant_excerpt": item.relevant_excerpt,
+                        "independence_score": item.independence_score,
                     }
-                else:
-                    channel_health[ch_name] = {"status": "empty", "retrieved_count": 0, "latency_ms": 0}
+                ))
+
+            for ch_name, status in retrieval_trace.get("channel_health", {}).items():
+                channel_health[ch_name] = {
+                    "status": status,
+                    "retrieved_count": sum(1 for f in research_res.evidence if f.channel == ch_name),
+                    "latency_ms": retrieval_trace.get("total_latency_ms", 500)
+                }
 
         except Exception as reach_err:
-            logger.warning(f"Agent Reach omni_scan encountered: {reach_err}")
+            logger.warning(f"[TrendingAgent] ResearchEngine investigate encountered: {reach_err}")
 
         # 4. Direct Google News Retrieval (Guarantees fresh headlines)
         news_raw = self.fetch_news(target_query, limit=8)
@@ -971,10 +1042,16 @@ class TrendingAgent:
             "retrieval": {
                 "plan": query_classes,
                 "channels": channel_health,
-                "scan_time_s": scan_duration
+                "scan_time_s": scan_duration,
+                "deep_reads": retrieval_trace.get("deep_read_success", 0),
+                "trace": retrieval_trace,
             },
+            "retrieval_trace": retrieval_trace,
             "trends": [t.to_dict() for t in trends],
             "evidence": [e.to_dict() for e in deduped_evidence],
+            "findings": [f.to_dict() if hasattr(f, "to_dict") else f for f in research_findings],
+            "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in research_contradictions],
+            "deep_research_trace": retrieval_trace,
             "timeline": timeline,
             "platform_breakdown": platform_breakdown,
             "chart_history": chart_history,
@@ -985,6 +1062,7 @@ class TrendingAgent:
                 "independent_groups": len({e.source_group_id for e in deduped_evidence}),
                 "platforms_active": len(platform_breakdown),
                 "discovered_trends": len(trends),
+                "deep_reads": retrieval_trace.get("deep_read_success", 0),
                 "scan_duration_s": scan_duration
             },
             "limitations": limitations

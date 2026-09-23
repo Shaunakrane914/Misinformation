@@ -256,70 +256,101 @@ class PersonalWatchAgent:
         retrieval_plan_info: Dict[str, Any] = {}
 
         try:
-            try:
-                from backend.services.agent_reach import agent_reach_service
-                from backend.services.agent_reach.planner import RetrievalPlanner
-            except (ImportError, ModuleNotFoundError):
-                from services.agent_reach import agent_reach_service
-                from services.agent_reach.planner import RetrievalPlanner
-
+            from backend.services.research import research_engine, ResearchRequest
+            from backend.services.agent_reach.planner import RetrievalPlanner
             planner = RetrievalPlanner()
-            query_classes = planner.build_personal_query_classes(
-                name=target_name,
-                aliases=aliases,
-                handles=handles,
-                category=category
+            multi_queries, query_classes = planner.build_multi_channel_queries(
+                target_name,
+                domain="personal"
             )
             retrieval_plan_info["query_classes"] = query_classes
 
-            # Execute omni_scan through central Agent Reach service
-            omni_res = agent_reach_service.omni_scan(
-                query=target_name,
+            research_req = ResearchRequest(
+                target=target_name,
                 domain="personal",
-                limit_per_channel=max(3, max_results // 4)
+                intent=f"monitor personal identity threat surface, impersonation profiles, synthetic deepfakes, scams, and false claims for {target_name}",
+                query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
+                deep_read_budget=6,
+                corroboration_budget=4,
             )
+            research_res = research_engine.investigate(research_req)
+            self._last_research_res = research_res
+            retrieval_plan_info["trace"] = research_res.telemetry
+            retrieval_plan_info["plan"] = {
+                "query_classes": query_classes,
+                "trace": research_res.telemetry
+            }
 
-            channels_data = omni_res.get("channels", {})
-            active_channels_list = omni_res.get("active_channels", [])
-            retrieval_plan_info["plan"] = omni_res.get("plan", {})
+            for f in research_res.evidence:
+                if hasattr(f, "canonical_url"):
+                    url = f.canonical_url or ""
+                    title = f.title
+                    snippet = f.relevant_excerpt or f.snippet
+                    content = f.content or f.snippet
+                    source = f.source_name or f.channel
+                    channel = f.channel
+                    platform = f.channel
+                    role = f.source_role
+                    tier = f.source_tier
+                    author = f.source_name or f.channel
+                    pub = f.published_at or "Recent"
+                    depth = f.content_depth
+                    q_id = f.query_id
+                    q_class = f.query_class
+                    q_text = f.query_text
+                    excerpt = f.relevant_excerpt
+                    indep_group = f.independence_group
+                else:
+                    url = getattr(f, "url", "")
+                    title = getattr(f, "title", "")
+                    snippet = getattr(f, "snippet", "")
+                    content = getattr(f, "content", "")
+                    source = getattr(f, "platform", "web")
+                    channel = getattr(f, "channel_name", "web")
+                    platform = getattr(f, "channel_name", "web")
+                    role = f.raw_metadata.get("source_role", "WEB_REFERENCE") if hasattr(f, "raw_metadata") else "WEB_REFERENCE"
+                    tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE") if hasattr(f, "raw_metadata") else "TIER_3_AGGREGATE"
+                    author = getattr(f, "author", "Web")
+                    pub = getattr(f, "published", "Recent")
+                    depth = getattr(f, "content_depth", "SNIPPET")
+                    q_id = getattr(f, "query_id", "")
+                    q_class = getattr(f, "query_class", "general")
+                    q_text = getattr(f, "query_text", "")
+                    excerpt = ""
+                    indep_group = "independent"
 
-            # 1. News & Press Releases
-            news_items = channels_data.get("news", [])
-            if news_items or "news" in active_channels_list:
-                channel_health["news"] = f"active ({len(news_items)})"
-            for item in news_items:
-                evidence_items.append(self._normalize_item(item, default_platform="News", source_role="PRIMARY_NEWS", subject=target_name))
+                ch = (channel or platform or "Web").title()
+                norm_dict = {
+                    "title": title,
+                    "url": url,
+                    "snippet": snippet,
+                    "content": content,
+                    "author": author,
+                    "published": pub,
+                    "published_at": pub,
+                    "source": source,
+                    "channel": channel,
+                    "platform": platform,
+                    "source_role": role,
+                    "source_tier": tier,
+                    "metadata": {
+                        "content_depth": depth,
+                        "query_id": q_id,
+                        "query_class": q_class,
+                        "query_text": q_text,
+                        "relevant_excerpt": excerpt,
+                        "independence_group": indep_group,
+                    }
+                }
+                evidence_items.append(self._normalize_item(norm_dict, default_platform=ch, source_role=role, subject=target_name))
 
-            # 2. Reddit Community
-            reddit_items = channels_data.get("reddit", [])
-            if reddit_items or "reddit" in active_channels_list:
-                channel_health["reddit"] = f"active ({len(reddit_items)})"
-            for item in reddit_items:
-                evidence_items.append(self._normalize_item(item, default_platform="Reddit", source_role="COMMUNITY_FORUM", subject=target_name))
-
-            # 3. Twitter / X Social
-            twitter_items = channels_data.get("twitter", [])
-            if twitter_items or "twitter" in active_channels_list:
-                channel_health["twitter"] = f"active ({len(twitter_items)})"
-            for item in twitter_items:
-                evidence_items.append(self._normalize_item(item, default_platform="Twitter/X", source_role="SOCIAL_COMMENTARY", subject=target_name))
-
-            # 4. YouTube Video & Audio Claims
-            youtube_items = channels_data.get("youtube", [])
-            if youtube_items or "youtube" in active_channels_list:
-                channel_health["youtube"] = f"active ({len(youtube_items)})"
-            for item in youtube_items:
-                evidence_items.append(self._normalize_item(item, default_platform="YouTube", source_role="VIDEO_AUDIO_SIGNAL", subject=target_name))
-
-            # 5. RSS Feeds
-            rss_items = channels_data.get("rss", [])
-            if rss_items or "rss" in active_channels_list:
-                channel_health["rss"] = f"active ({len(rss_items)})"
-            for item in rss_items:
-                evidence_items.append(self._normalize_item(item, default_platform="RSS", source_role="WIRE_DISPATCH", subject=target_name))
+            for ch_name, status in research_res.telemetry.get("channel_health", {}).items():
+                count = sum(1 for f in research_res.evidence if f.channel == ch_name)
+                channel_health[ch_name] = f"{status} ({count})"
 
         except Exception as reach_err:
-            logger.error(f"[PersonalWatch 2.0] Agent Reach error: {reach_err}")
+            logger.error(f"[PersonalWatch 2.0] ResearchEngine investigate error: {reach_err}")
+            self._last_research_res = None
 
         # Web search supplement via DDGS if evidence count is low
         if len(evidence_items) < 4:
@@ -1054,7 +1085,7 @@ Return a STRICT JSON object:
         low_risk_threats = [t for t in threats if t.get("risk_level") == "LOW"]
 
         # Step 6: Upgraded WhatsApp Alerting with Deduplication & Cooldown
-        phone_number = vip_profile.get("phone_number")
+        phone_number = vip_profile.get("phone_number") if isinstance(vip_profile, dict) else subject_info.get("phone_number")
         alert_preference = subject_info.get("alert_preferences", {}).get("level", "HIGH_ONLY")
         alerts_sent = 0
         alert_logs: List[Dict[str, Any]] = []
@@ -1173,10 +1204,15 @@ Return a STRICT JSON object:
             "deepfake_claims": deepfakes,
             "evidence": evidence_list,
             "dossiers": dossiers,
+            "findings": [f.to_dict() if hasattr(f, "to_dict") else f for f in self._last_research_res.findings] if getattr(self, "_last_research_res", None) else [],
+            "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in self._last_research_res.contradictions] if getattr(self, "_last_research_res", None) else [],
+            "deep_research_trace": retrieval_plan_info.get("trace", {}),
+            "deep_reads": retrieval_plan_info.get("trace", {}).get("deep_read_success", 0),
             "spread_analysis": spread_analysis,
             "timeline": timeline,
             "changes": changes,
             "alerts": alert_logs,
+            "retrieval_trace": retrieval_plan_info.get("trace", {}),
             "limitations": limitations
         }
 

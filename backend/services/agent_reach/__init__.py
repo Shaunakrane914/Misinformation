@@ -8,8 +8,10 @@ retrieval planning, and provenance-annotated evidence fragments.
 from backend.services.agent_reach.channels import (
     Channel,
     ChannelStatus,
+    ChannelTelemetry,
     EvidenceFragment,
     RetrievalResult,
+    RetrievalTrace,
 )
 from backend.services.agent_reach.registry import CapabilityRegistry
 from backend.services.agent_reach.adapter import (
@@ -26,9 +28,11 @@ __all__ = [
     "CapabilityRegistry",
     "Channel",
     "ChannelStatus",
+    "ChannelTelemetry",
     "EvidenceFragment",
     "RetrievalPlan",
     "RetrievalPlanner",
     "RetrievalResult",
+    "RetrievalTrace",
 ]
 

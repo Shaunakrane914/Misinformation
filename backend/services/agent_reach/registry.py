@@ -7,7 +7,7 @@ and provides a system-wide capability inventory.
 
 import logging
 from datetime import datetime
-from typing import Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set
 
 from backend.services.agent_reach.channels import (
     Channel,
@@ -51,6 +51,20 @@ class CapabilityRegistry:
         self._last_checked.pop(name, None)
         logger.info(f"[CapabilityRegistry] Unregistered channel: {name}")
 
+    def get_channel(self, name: str) -> Optional[Channel]:
+        """Retrieve a registered channel instance by name."""
+        return self._channels.get(name)
+
+    def get(self, name: str, default: Any = None) -> Any:
+        """Dict-like access for a registered channel."""
+        return self._channels.get(name, default)
+
+    def __getitem__(self, name: str) -> Channel:
+        return self._channels[name]
+
+    def __contains__(self, name: str) -> bool:
+        return name in self._channels
+
     # ── Status Management ─────────────────────────────────────────────────
 
     def update_status(self, name: str, status: ChannelStatus) -> None:
@@ -78,23 +92,39 @@ class CapabilityRegistry:
 
     def discover(self) -> Dict[str, str]:
         """
-        Probe all registered channels and update their status.
+        Probe all registered channels concurrently and update their status.
 
         Returns:
             Dict of channel_name -> ChannelStatus string
         """
-        logger.info("[CapabilityRegistry] Running health discovery...")
+        import concurrent.futures
+
+        logger.info("[CapabilityRegistry] Running concurrent health discovery...")
         results: Dict[str, str] = {}
 
-        for name, channel in self._channels.items():
+        def _check(name: str, chan: Channel):
             try:
-                status = channel.health_check()
-                self.update_status(name, status)
-                results[name] = status.value
+                st = chan.health_check()
+                return name, st
             except Exception as e:
                 logger.warning(f"[CapabilityRegistry] Health check failed for {name}: {e}")
-                self.update_status(name, ChannelStatus.UNAVAILABLE)
-                results[name] = ChannelStatus.UNAVAILABLE.value
+                return name, ChannelStatus.UNAVAILABLE
+
+        with concurrent.futures.ThreadPoolExecutor(max_workers=min(len(self._channels) or 1, 8)) as executor:
+            future_to_name = {
+                executor.submit(_check, name, chan): name
+                for name, chan in self._channels.items()
+            }
+            for fut in concurrent.futures.as_completed(future_to_name):
+                name = future_to_name[fut]
+                try:
+                    c_name, st = fut.result(timeout=6.0)
+                    self.update_status(c_name, st)
+                    results[c_name] = st.value
+                except Exception as e:
+                    logger.warning(f"[CapabilityRegistry] Future error for {name}: {e}")
+                    self.update_status(name, ChannelStatus.UNAVAILABLE)
+                    results[name] = ChannelStatus.UNAVAILABLE.value
 
         healthy = sum(1 for s in results.values() if s == ChannelStatus.AVAILABLE.value)
         logger.info(f"[CapabilityRegistry] Discovery complete: {healthy}/{len(results)} healthy")

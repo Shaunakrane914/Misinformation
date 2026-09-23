@@ -68,6 +68,14 @@ class AgentReachReadRequest(BaseModel):
     max_chars: Optional[int] = Field(3500, description="Max characters to return.")
 
 
+class AgentReachDebugRequest(BaseModel):
+    query: str = Field(..., description="Entity or claim to debug retrieval on", json_schema_extra={"example": "Nike"})
+    domain: Optional[str] = Field("brand", description="Domain context: brand | financial | trending | personal | fact_check | general")
+    max_queries_per_channel: Optional[int] = Field(3, description="Max queries per channel")
+    limit_per_query: Optional[int] = Field(4, description="Max results per query")
+    perform_reads: Optional[bool] = Field(True, description="Attempt deep reading on top URLs")
+
+
 # ── Endpoints ────────────────────────────────────────────────────────────────
 
 @router.get("/capabilities", summary="Capability Inventory & Status")
@@ -84,7 +92,7 @@ async def agent_reach_capabilities():
 @router.get("/health", summary="Channel Health & Probe Discovery")
 @router.get("/doctor", summary="Run Zero-Cost Scraper Diagnostics")
 async def agent_reach_doctor():
-    """Run diagnostics across all internet evidence channels (Reddit, Twitter, YouTube, News, Jina, GitHub, RSS)."""
+    """Run diagnostics across all internet evidence channels (Reddit, Twitter, YouTube, News, Jina, GitHub, RSS, Web)."""
     logger.info("[API] GET /api/agent-reach/health")
     try:
         return agent_reach_service.health()
@@ -144,4 +152,91 @@ async def agent_reach_read(request: AgentReachReadRequest):
         raise
     except Exception as e:
         logger.error(f"[API] AgentReach read failed: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@router.post("/debug", summary="Retrieval Reality Telemetry & Multi-Query Debugger")
+async def agent_reach_debug(request: AgentReachDebugRequest):
+    """
+    Developer diagnostics endpoint providing complete retrieval execution telemetry.
+    Shows planned queries, executed channel queries, raw vs final counts, deduplication losses,
+    latency breakdown, and failure reasons.
+    """
+    logger.info(f"[API] POST /api/agent-reach/debug - query='{request.query}' domain='{request.domain}'")
+    try:
+        clean_q = request.query.strip()
+        plan = agent_reach_service.planner.plan(clean_q, domain=request.domain or "general")
+
+        result = agent_reach_service.retrieve_many(
+            channel_queries=plan.multi_channel_queries,
+            domain=request.domain or "general",
+            agent_name="debug_debugger",
+            target_name=clean_q,
+            budget={
+                "max_queries_per_channel": request.max_queries_per_channel or 3,
+                "max_results_per_query": request.limit_per_query or 4,
+                "max_total_evidence": 50,
+                "max_deep_reads": 4,
+            },
+            perform_reads=request.perform_reads,
+            timeout=12.0
+        )
+
+        trace = result.retrieval_trace or {}
+        channels_stat = trace.get("channels", {})
+        total_stat = trace.get("total", {})
+
+        # Build clean formatted ASCII report string
+        lines = []
+        lines.append(f"SCAN: {clean_q} (domain={request.domain})")
+        lines.append("────────────────────────────────────────────")
+        lines.append(f"Query classes planned: {trace.get('planning', {}).get('query_classes_created', 0)}")
+        lines.append(f"Queries executed:      {trace.get('planning', {}).get('queries_executed', 0)}")
+        lines.append("")
+        lines.append(f"{'CHANNEL':<15} {'RAW':<8} {'FINAL':<8} {'STATUS':<12}")
+        lines.append("────────────────────────────────────────────")
+        for ch, s in channels_stat.items():
+            lines.append(f"{ch:<15} {s.get('raw_results', 0):<8} {s.get('final_results', 0):<8} {s.get('status', 'OK'):<12}")
+        lines.append("────────────────────────────────────────────")
+        lines.append(f"{'RAW TOTAL:':<15} {total_stat.get('raw_results', 0)}")
+        lines.append(f"{'DUPLICATES:':<15} {total_stat.get('duplicates_removed', 0)}")
+        lines.append(f"{'FINAL EVIDENCE:':<15} {total_stat.get('final_evidence', 0)}")
+        lines.append(f"{'READABLE:':<15} {total_stat.get('readable_sources', 0)}")
+        lines.append(f"{'INDEP GROUPS:':<15} {total_stat.get('independent_groups', 0)}")
+
+        return {
+            "scan": {
+                "query": clean_q,
+                "domain": request.domain,
+                "scan_id": trace.get("scan_id"),
+            },
+            "planning": {
+                "query_classes_count": trace.get("planning", {}).get("query_classes_created", 0),
+                "queries_generated": trace.get("planning", {}).get("queries_generated", 0),
+                "queries_executed": trace.get("planning", {}).get("queries_executed", 0),
+                "query_classes": plan.query_classes,
+            },
+            "execution": {
+                ch: [q["query_text"] for q in q_list]
+                for ch, q_list in plan.multi_channel_queries.items()
+            },
+            "channels": channels_stat,
+            "total": total_stat,
+            "raw_evidence_sample": [
+                {
+                    "channel": f.channel_name or f.platform,
+                    "query_class": f.query_class,
+                    "query_text": f.query_text,
+                    "title": f.title,
+                    "url": f.url,
+                    "snippet": f.snippet,
+                    "content_depth": f.content_depth,
+                    "retrieval_method": f.retrieval_method,
+                }
+                for f in result.fragments[:15]
+            ],
+            "formatted_telemetry": "\n".join(lines),
+        }
+    except Exception as e:
+        logger.error(f"[API] AgentReach debug failed: {e}")
         raise HTTPException(status_code=500, detail=str(e))

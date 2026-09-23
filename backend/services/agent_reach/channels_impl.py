@@ -30,12 +30,18 @@ class RedditChannel(Channel):
     def name(self) -> str:
         return "reddit"
 
-    def search(self, query: str, limit: int = 6) -> List[EvidenceFragment]:
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
         scraper = _get_scraper()
         try:
             raw_items = scraper.search_reddit(query, limit=limit)
             return [
-                EvidenceFragment.from_scraper_dict(item, channel_name=self.name)
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
                 for item in raw_items
             ]
         except Exception as e:
@@ -60,12 +66,18 @@ class TwitterChannel(Channel):
     def name(self) -> str:
         return "twitter"
 
-    def search(self, query: str, limit: int = 6, vip_handle: str = None) -> List[EvidenceFragment]:
+    def search(self, query: str, limit: int = 6, vip_handle: str = None, **kwargs) -> List[EvidenceFragment]:
         scraper = _get_scraper()
         try:
             raw_items = scraper.search_twitter(query, vip_handle=vip_handle, limit=limit)
             return [
-                EvidenceFragment.from_scraper_dict(item, channel_name=self.name)
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
                 for item in raw_items
             ]
         except Exception as e:
@@ -90,12 +102,18 @@ class YouTubeChannel(Channel):
     def name(self) -> str:
         return "youtube"
 
-    def search(self, query: str, limit: int = 6) -> List[EvidenceFragment]:
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
         scraper = _get_scraper()
         try:
             raw_items = scraper.search_youtube(query, limit=limit)
             return [
-                EvidenceFragment.from_scraper_dict(item, channel_name=self.name)
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
                 for item in raw_items
             ]
         except Exception as e:
@@ -120,12 +138,18 @@ class NewsChannel(Channel):
     def name(self) -> str:
         return "news"
 
-    def search(self, query: str, limit: int = 8) -> List[EvidenceFragment]:
+    def search(self, query: str, limit: int = 8, **kwargs) -> List[EvidenceFragment]:
         scraper = _get_scraper()
         try:
             raw_items = scraper.search_news(query, limit=limit)
             return [
-                EvidenceFragment.from_scraper_dict(item, channel_name=self.name)
+                EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", query),
+                )
                 for item in raw_items
             ]
         except Exception as e:
@@ -277,22 +301,45 @@ class GitHubChannel(Channel):
 class RssChannel(Channel):
     """
     Syndicated RSS wire channel for official news, press releases,
-    and verified wire dispatches.
+    and verified wire dispatches. Differentiates from general news by focusing
+    on official corporate wires, regulatory filings, and press releases.
     """
 
     @property
     def name(self) -> str:
         return "rss"
 
-    def search(self, query: str, limit: int = 6) -> List[EvidenceFragment]:
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
         scraper = _get_scraper()
+        # Differentiate from news: steer query towards press releases & official statements
+        wire_terms = ["press release", "filing", "statement", "announcement", "regulatory", "wire"]
+        if not any(wt in query.lower() for wt in wire_terms):
+            wire_query = f"{query} (press release OR official statement OR filing OR wire)"
+        else:
+            wire_query = query
+
         try:
-            # Delegate to scraper's news RSS aggregator
-            raw_items = scraper.search_news(query, limit=limit)
-            return [
-                EvidenceFragment.from_scraper_dict(item, channel_name=self.name)
-                for item in raw_items
-            ]
+            raw_items = scraper.search_news(wire_query, limit=limit)
+            fragments = []
+            for item in raw_items:
+                f = EvidenceFragment.from_scraper_dict(
+                    item,
+                    channel_name=self.name,
+                    query_id=kwargs.get("query_id", ""),
+                    query_class=kwargs.get("query_class", ""),
+                    query_text=kwargs.get("query_text", wire_query),
+                )
+                f.platform = "PR Wire / RSS"
+                # If from official portal or regulatory filing, mark as PRIMARY
+                text_low = (f.title + " " + f.url).lower()
+                if any(k in text_low for k in ["filing", "sec.gov", "bseindia", "nseindia", "investor", "statement"]):
+                    f.raw_metadata["source_role"] = "PRIMARY"
+                    f.raw_metadata["source_tier"] = "TIER_1_OFFICIAL_FILING"
+                else:
+                    f.raw_metadata["source_role"] = "SECONDARY"
+                    f.raw_metadata["source_tier"] = "TIER_2_FINANCIAL_PRESS"
+                fragments.append(f)
+            return fragments
         except Exception as e:
             logger.warning(f"[RssChannel] Search failed: {e}")
             return []
@@ -300,8 +347,129 @@ class RssChannel(Channel):
     def health_check(self) -> ChannelStatus:
         scraper = _get_scraper()
         try:
-            results = scraper.search_news("world news", limit=2)
+            results = scraper.search_news("press release official", limit=2)
             if results:
+                return ChannelStatus.AVAILABLE
+            return ChannelStatus.DEGRADED
+        except Exception:
+            return ChannelStatus.UNAVAILABLE
+
+
+class WebChannel(Channel):
+    """
+    Direct open-web search channel.
+    Retrieves web pages, articles, blogs, and databases with real destination URLs and descriptive snippets.
+    Uses Bing search HTML extraction with DuckDuckGo fallback.
+    """
+
+    @property
+    def name(self) -> str:
+        return "web"
+
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        import base64
+        import requests
+        import urllib.parse
+        from bs4 import BeautifulSoup
+
+        clean_q = query.strip()
+        fragments: List[EvidenceFragment] = []
+
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
+
+        # 1. Bing Web Search (Fast, rich snippets, zero auth)
+        try:
+            url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}"
+            resp = requests.get(url, headers=headers, timeout=6.0)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, "html.parser")
+                for el in soup.select("li.b_algo")[:limit]:
+                    h2 = el.find("h2")
+                    if not h2:
+                        continue
+                    a = h2.find("a")
+                    if not a or not a.get("href"):
+                        continue
+                    title = h2.get_text(separator=" ", strip=True)
+                    raw_href = a["href"]
+
+                    # Unpack Bing destination redirect URL if present
+                    dest_url = raw_href
+                    if "bing.com/ck/a?" in raw_href and "&u=a1" in raw_href:
+                        try:
+                            encoded_part = raw_href.split("&u=a1")[1].split("&")[0]
+                            padded = encoded_part + "=" * (-len(encoded_part) % 4)
+                            dest_url = base64.b64decode(padded).decode("utf-8", errors="ignore")
+                        except Exception:
+                            dest_url = raw_href
+
+                    p = el.find("div", class_="b_caption") or el.find("p")
+                    snippet = p.get_text(separator=" ", strip=True) if p else title
+
+                    fragments.append(EvidenceFragment(
+                        platform="Web",
+                        title=title,
+                        content=f"{title}\n\n{snippet}",
+                        url=dest_url,
+                        author=urllib.parse.urlparse(dest_url).netloc or "Web",
+                        published="Recent",
+                        snippet=snippet[:300],
+                        score=50.0,
+                        retrieval_method="web_search",
+                        channel_name=self.name,
+                        content_depth="SNIPPET",
+                        query_id=kwargs.get("query_id", ""),
+                        query_class=kwargs.get("query_class", ""),
+                        query_text=kwargs.get("query_text", clean_q),
+                        raw_metadata={"engine": "bing_web", "domain": urllib.parse.urlparse(dest_url).netloc}
+                    ))
+        except Exception as e:
+            logger.debug(f"[WebChannel] Bing web search notice: {e}")
+
+        # 2. DDGS Fallback if Bing returned fewer results than desired
+        if len(fragments) < limit:
+            try:
+                from duckduckgo_search import DDGS
+                ddgs = DDGS()
+                ddg_results = list(ddgs.text(clean_q, max_results=limit))
+                for r in ddg_results:
+                    href = r.get("href", "")
+                    if href and not any(f.url == href for f in fragments):
+                        title = r.get("title", "Web Result")
+                        body = r.get("body", "")
+                        fragments.append(EvidenceFragment(
+                            platform="Web",
+                            title=title,
+                            content=f"{title}\n\n{body}",
+                            url=href,
+                            author=urllib.parse.urlparse(href).netloc or "Web",
+                            published="Recent",
+                            snippet=body[:300],
+                            score=45.0,
+                            retrieval_method="web_search",
+                            channel_name=self.name,
+                            content_depth="SNIPPET",
+                            query_id=kwargs.get("query_id", ""),
+                            query_class=kwargs.get("query_class", ""),
+                            query_text=kwargs.get("query_text", clean_q),
+                            raw_metadata={"engine": "duckduckgo", "domain": urllib.parse.urlparse(href).netloc}
+                        ))
+                        if len(fragments) >= limit:
+                            break
+            except Exception as ddg_err:
+                logger.debug(f"[WebChannel] DDGS fallback notice: {ddg_err}")
+
+        return fragments[:limit]
+
+    def health_check(self) -> ChannelStatus:
+        import requests
+        try:
+            resp = requests.get("https://www.bing.com", timeout=4.0)
+            if resp.status_code == 200:
                 return ChannelStatus.AVAILABLE
             return ChannelStatus.DEGRADED
         except Exception:

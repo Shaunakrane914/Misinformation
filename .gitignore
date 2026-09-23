@@ -57,6 +57,7 @@ aegis.db
 personal_api.txt
 append_function.py
 FORCE_CRASH_TEST
+scratch/
 
 # OS
 .DS_Store

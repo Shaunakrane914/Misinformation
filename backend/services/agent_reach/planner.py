@@ -9,7 +9,7 @@ the channel primitives, the planner decides *what* to search and *where*.
 import re
 import logging
 from dataclasses import dataclass, field
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 logger = logging.getLogger(__name__)
 
@@ -34,6 +34,8 @@ class RetrievalPlan:
     domain_queries: Dict[str, str] = field(default_factory=dict)
     priority_order: List[str] = field(default_factory=list)
     search_keywords: str = ""
+    multi_channel_queries: Dict[str, List[Dict[str, str]]] = field(default_factory=dict)
+    query_classes: Dict[str, List[str]] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -43,6 +45,8 @@ class RetrievalPlan:
             "domain_queries": self.domain_queries,
             "priority_order": self.priority_order,
             "search_keywords": self.search_keywords,
+            "multi_channel_queries": self.multi_channel_queries,
+            "query_classes": self.query_classes,
         }
 
 
@@ -94,17 +98,17 @@ class RetrievalPlanner:
     """
 
     # Default channels available in the system
-    ALL_CHANNELS = ["reddit", "twitter", "youtube", "news", "github", "rss"]
+    ALL_CHANNELS = ["news", "web", "rss", "reddit", "twitter", "youtube", "github"]
 
     # Domain -> channel priority ordering
     DOMAIN_PRIORITIES: Dict[str, List[str]] = {
-        "technical": ["github", "news", "reddit", "youtube", "twitter"],
-        "financial": ["twitter", "news", "reddit", "youtube", "rss"],
-        "fact_check": ["news", "reddit", "twitter", "youtube", "rss"],
-        "brand": ["reddit", "news", "twitter", "youtube", "rss"],
-        "personal": ["twitter", "news", "reddit", "youtube", "rss"],
-        "trending": ["twitter", "reddit", "youtube", "news", "rss"],
-        "general": ["news", "reddit", "twitter", "youtube", "rss"],
+        "technical": ["github", "news", "web", "reddit", "youtube", "twitter"],
+        "financial": ["news", "web", "rss", "twitter", "reddit", "youtube"],
+        "fact_check": ["news", "web", "reddit", "twitter", "youtube", "rss"],
+        "brand": ["news", "web", "reddit", "twitter", "youtube", "rss"],
+        "personal": ["news", "web", "twitter", "reddit", "youtube", "rss"],
+        "trending": ["news", "web", "twitter", "reddit", "youtube", "rss"],
+        "general": ["news", "web", "reddit", "twitter", "youtube", "rss"],
     }
 
 
@@ -143,6 +147,7 @@ class RetrievalPlanner:
 
         # Generate domain-specific queries
         domain_queries = self._craft_domain_queries(clean_q, search_kw, domain)
+        multi_queries, query_classes = self.build_multi_channel_queries(clean_q, domain=domain)
 
         return RetrievalPlan(
             domain=domain,
@@ -151,6 +156,8 @@ class RetrievalPlanner:
             domain_queries=domain_queries,
             priority_order=channels,
             search_keywords=search_kw,
+            multi_channel_queries=multi_queries,
+            query_classes=query_classes,
         )
 
     def _extract_keywords(self, query: str) -> str:
@@ -177,6 +184,7 @@ class RetrievalPlanner:
             return {
                 "github": search_kw,
                 "news": f"{search_kw} vulnerability OR patch OR release OR security",
+                "web": f"{search_kw} technical documentation architecture benchmark",
                 "reddit": f"{search_kw} (release OR CVE OR issue OR bug)",
                 "twitter": f"{search_kw} CVE OR exploit OR update",
                 "youtube": f"{search_kw} technical analysis walkthrough",
@@ -191,6 +199,7 @@ class RetrievalPlanner:
                 "twitter": f"${clean_ticker} OR {clean_ticker} rumor OR crash OR short OR \"{company_name}\"",
                 "youtube": f"{company_name} {clean_ticker} stock financial analysis crash",
                 "news": f"{company_name} {clean_ticker} stock investigation OR crash OR SEC OR results OR earnings OR announcement",
+                "web": f"{company_name} {clean_ticker} stock financial results earnings SEC investigation",
                 "rss": f"{company_name} {clean_ticker} investor relations filing regulatory annual report press release",
                 "github": clean_q,
             }
@@ -201,6 +210,7 @@ class RetrievalPlanner:
                 "twitter": f"{search_kw} fake OR hoax OR debunked",
                 "youtube": f"{search_kw} fact check debunked",
                 "news": f"{search_kw} fact check OR verified OR official",
+                "web": f'"{search_kw}" fact check verified truth',
                 "rss": f"{search_kw} fact check official statement",
                 "github": clean_q,
             }
@@ -211,6 +221,7 @@ class RetrievalPlanner:
                 "twitter": f"{clean_q} (scam OR boycott OR counterfeit OR fake OR lawsuit)",
                 "youtube": f"{clean_q} (fake vs real OR scam review exposé OR defect)",
                 "news": f"{clean_q} (recall OR counterfeit OR lawsuit OR scam OR investigation OR controversy)",
+                "web": f"{clean_q} counterfeit scam review boycott lawsuit",
                 "rss": f"{clean_q} press release recall statement official announcement",
                 "github": clean_q,
             }
@@ -221,6 +232,7 @@ class RetrievalPlanner:
                 "twitter": f"{clean_q} (deepfake OR impersonation OR scam OR fake OR leaked)",
                 "youtube": f"{clean_q} (deepfake OR fake video OR AI voice OR controversy)",
                 "news": f"{clean_q} (statement OR allegations OR lawsuit OR impersonation OR deepfake)",
+                "web": f"{clean_q} impersonation deepfake scam controversy statement",
                 "rss": f"{clean_q} official statement announcement clarification",
                 "github": clean_q,
             }
@@ -231,6 +243,7 @@ class RetrievalPlanner:
                 "twitter": f"{clean_q} (trending OR viral OR breaking OR controversy)",
                 "youtube": f"{clean_q} viral trending news update reaction",
                 "news": f"{clean_q} trending OR viral OR latest OR controversy OR announcement",
+                "web": f"{clean_q} trending viral latest news updates",
                 "rss": f"{clean_q} latest news developments trending",
                 "github": clean_q,
             }
@@ -241,9 +254,171 @@ class RetrievalPlanner:
             "twitter": clean_q,
             "youtube": clean_q,
             "news": clean_q,
+            "web": clean_q,
             "github": clean_q,
             "rss": clean_q,
         }
+
+    def build_multi_channel_queries(
+        self,
+        query: str,
+        domain: str = "general",
+        max_queries_per_channel: int = 3
+    ) -> Tuple[Dict[str, List[Dict[str, str]]], Dict[str, List[str]]]:
+        """
+        Produce a full multi-query distribution matrix for each channel.
+        Returns:
+            (channel_queries, query_classes)
+        """
+        clean_q = query.strip()
+        search_kw = self._extract_keywords(clean_q)
+
+        q_id = 1
+        def _make_q(q_class: str, q_text: str) -> Dict[str, str]:
+            nonlocal q_id
+            item = {
+                "query_id": f"q_{q_id:03d}",
+                "query_class": q_class,
+                "query_text": q_text.strip(),
+            }
+            q_id += 1
+            return item
+
+        channel_map: Dict[str, List[Dict[str, str]]] = {
+            "news": [], "web": [], "rss": [], "reddit": [],
+            "twitter": [], "youtube": [], "github": []
+        }
+
+        if domain == "brand":
+            classes = self.build_brand_query_classes(clean_q)
+            for q in classes.get("general_reputation", []):
+                channel_map["news"].append(_make_q("general_reputation", q))
+                channel_map["web"].append(_make_q("general_reputation", q))
+            for q in classes.get("counterfeit", []):
+                channel_map["web"].append(_make_q("counterfeit", q))
+                channel_map["reddit"].append(_make_q("counterfeit", q))
+                channel_map["youtube"].append(_make_q("counterfeit", q))
+            for q in classes.get("phishing_scam", []):
+                channel_map["web"].append(_make_q("phishing_scam", q))
+                channel_map["twitter"].append(_make_q("phishing_scam", q))
+            for q in classes.get("impersonation", []):
+                channel_map["twitter"].append(_make_q("impersonation", q))
+                channel_map["web"].append(_make_q("impersonation", q))
+            for q in classes.get("reviews", []):
+                channel_map["reddit"].append(_make_q("reviews", q))
+                channel_map["youtube"].append(_make_q("reviews", q))
+            for q in classes.get("regulatory_legal", []):
+                channel_map["rss"].append(_make_q("regulatory_legal", q))
+                channel_map["news"].append(_make_q("regulatory_legal", q))
+
+        elif domain == "financial":
+            clean_ticker = clean_q.upper().replace(".NS", "").replace(".BO", "")
+            comp = TICKER_NAME_MAP.get(clean_q.upper(), TICKER_NAME_MAP.get(clean_ticker, clean_ticker))
+            classes = self.build_financial_query_classes(clean_ticker, comp)
+            for q in classes.get("general_news", []):
+                channel_map["news"].append(_make_q("general_news", q))
+                channel_map["web"].append(_make_q("general_news", q))
+            for q in classes.get("financial", []):
+                channel_map["news"].append(_make_q("financial", q))
+                channel_map["rss"].append(_make_q("financial", q))
+                channel_map["web"].append(_make_q("financial", q))
+            for q in classes.get("corporate_filings", []):
+                channel_map["rss"].append(_make_q("corporate_filings", q))
+                channel_map["web"].append(_make_q("corporate_filings", q))
+            for q in classes.get("risk_investigation", []):
+                channel_map["web"].append(_make_q("risk_investigation", q))
+                channel_map["news"].append(_make_q("risk_investigation", q))
+                channel_map["reddit"].append(_make_q("risk_investigation", q))
+            for q in classes.get("market_narrative", []):
+                channel_map["twitter"].append(_make_q("market_narrative", q))
+                channel_map["reddit"].append(_make_q("market_narrative", q))
+                channel_map["youtube"].append(_make_q("market_narrative", q))
+            for q in classes.get("contradictions", []):
+                channel_map["news"].append(_make_q("contradictions", q))
+                channel_map["twitter"].append(_make_q("contradictions", q))
+
+        elif domain == "trending":
+            classes = self.build_trending_query_classes(clean_q)
+            for q in classes.get("general_buzz", classes.get("regional_trends", [])):
+                channel_map["news"].append(_make_q("general_buzz", q))
+                channel_map["web"].append(_make_q("general_buzz", q))
+            for q in classes.get("viral_moments", classes.get("domain_trends", [])):
+                channel_map["twitter"].append(_make_q("viral_moments", q))
+                channel_map["youtube"].append(_make_q("viral_moments", q))
+            for q in classes.get("controversy_rumors", classes.get("breaking_headlines", [])):
+                channel_map["news"].append(_make_q("controversy_rumors", q))
+                channel_map["reddit"].append(_make_q("controversy_rumors", q))
+                channel_map["web"].append(_make_q("controversy_rumors", q))
+            for q in classes.get("announcements_projects", classes.get("social_momentum", [])):
+                channel_map["rss"].append(_make_q("announcements", q))
+                channel_map["news"].append(_make_q("announcements", q))
+            for q in classes.get("community_discourse", []):
+                channel_map["reddit"].append(_make_q("community_discourse", q))
+                channel_map["twitter"].append(_make_q("community_discourse", q))
+            for q in classes.get("claim_verification", []):
+                channel_map["web"].append(_make_q("claim_verification", q))
+                channel_map["news"].append(_make_q("claim_verification", q))
+
+        elif domain == "personal":
+            classes = self.build_personal_query_classes(clean_q)
+            for q in classes.get("general", []):
+                channel_map["news"].append(_make_q("general", q))
+                channel_map["web"].append(_make_q("general", q))
+            for q in classes.get("impersonation", []):
+                channel_map["twitter"].append(_make_q("impersonation", q))
+                channel_map["web"].append(_make_q("impersonation", q))
+            for q in classes.get("phishing_scam", []):
+                channel_map["web"].append(_make_q("phishing_scam", q))
+                channel_map["twitter"].append(_make_q("phishing_scam", q))
+            for q in classes.get("deepfake_synthetic", []):
+                channel_map["youtube"].append(_make_q("deepfake_synthetic", q))
+                channel_map["twitter"].append(_make_q("deepfake_synthetic", q))
+                channel_map["web"].append(_make_q("deepfake_synthetic", q))
+            for q in classes.get("reputation_claims", []):
+                channel_map["news"].append(_make_q("reputation_claims", q))
+                channel_map["reddit"].append(_make_q("reputation_claims", q))
+            for q in classes.get("doxxing_privacy", []):
+                channel_map["web"].append(_make_q("doxxing_privacy", q))
+                channel_map["reddit"].append(_make_q("doxxing_privacy", q))
+
+        elif domain == "technical":
+            classes = {
+                "repositories": [clean_q, f"{clean_q} repository"],
+                "security": [f"{clean_q} vulnerability CVE security issue", f"{clean_q} patch exploit bug"],
+                "discussions": [f"{clean_q} architecture review benchmark"],
+            }
+            for q in classes["repositories"]:
+                channel_map["github"].append(_make_q("repositories", q))
+            for q in classes["security"]:
+                channel_map["news"].append(_make_q("security", q))
+                channel_map["web"].append(_make_q("security", q))
+                channel_map["reddit"].append(_make_q("security", q))
+            for q in classes["discussions"]:
+                channel_map["reddit"].append(_make_q("discussions", q))
+                channel_map["youtube"].append(_make_q("discussions", q))
+
+        else: # general / fact_check
+            classes = {
+                "claim_verification": [f"{search_kw} fact check", f"{search_kw} verified official"],
+                "debunk_rumors": [f"{search_kw} fake hoax rumor", f"{search_kw} debunked false"],
+                "news_statements": [f"{search_kw} latest news statement", f"{search_kw} official announcement"],
+            }
+            channel_map["news"].append(_make_q("claim_verification", f"{search_kw} fact check"))
+            channel_map["news"].append(_make_q("news_statements", f"{search_kw} official statement"))
+            channel_map["web"].append(_make_q("claim_verification", f'"{search_kw}" fact check verified'))
+            channel_map["web"].append(_make_q("debunk_rumors", f'"{search_kw}" hoax rumor false'))
+            channel_map["reddit"].append(_make_q("debunk_rumors", f"{search_kw} (debunked OR hoax OR true OR fake)"))
+            channel_map["twitter"].append(_make_q("debunk_rumors", f"{search_kw} (fake OR hoax OR debunked)"))
+            channel_map["youtube"].append(_make_q("claim_verification", f"{search_kw} fact check explanation"))
+            channel_map["rss"].append(_make_q("news_statements", f"{search_kw} press release official statement"))
+
+        # Prune each channel to max_queries_per_channel
+        pruned_channel_map = {
+            ch: q_list[:max_queries_per_channel]
+            for ch, q_list in channel_map.items()
+            if q_list
+        }
+        return pruned_channel_map, classes
 
     def build_financial_query_classes(self, ticker: str, company: Optional[str] = None) -> Dict[str, List[str]]:
         """

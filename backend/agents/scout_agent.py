@@ -181,55 +181,73 @@ class ScoutAgent:
     
     def predict_impact(self, prices: List[float]) -> Dict:
         """
-        Predict future price movement using linear regression.
-        
-        Uses the last 10 price points to calculate a trend line, then
-        extrapolates 12 data points (60 minutes) into the future.
+        Honest Market Signal Framework:
+        Replaces naive linear regression extrapolation with an empirical volatility and
+        catalyst sensitivity model. Separates observed price momentum, volatility bounds,
+        and fundamental catalyst exposure rather than pretending daily ticks extrapolate
+        into deterministic 60-minute forecasts.
         
         Args:
             prices: List of historical closing prices
             
         Returns:
-            Dict containing prediction results
+            Dict containing honest market signal analysis
         """
         try:
-            # Use the last 10 points for trend analysis
-            recent_prices = prices[-10:]
-            prices_array = np.array(recent_prices)
+            if not prices or len(prices) < 2:
+                return {
+                    "projected_price_1hr": 0.0,
+                    "projected_loss": 0.0,
+                    "trend": "UNKNOWN",
+                    "confidence": "INSUFFICIENT",
+                    "methodology": "Insufficient historical price points for volatility estimation"
+                }
+
+            recent_prices = prices[-10:] if len(prices) >= 10 else prices
+            current_price = float(recent_prices[-1])
+            baseline_price = float(recent_prices[0])
             
-            # Create x-axis (time indices)
-            x = np.arange(len(recent_prices))
+            # Empirical price momentum over sample window
+            pct_change = ((current_price - baseline_price) / baseline_price) * 100.0 if baseline_price > 0 else 0.0
             
-            # Calculate linear regression (y = mx + b)
-            # Using numpy's polyfit for simplicity
-            coefficients = np.polyfit(x, prices_array, 1)
-            slope = coefficients[0]
-            intercept = coefficients[1]
+            # Standard deviation and 95% volatility envelope
+            std_dev = float(np.std(recent_prices))
+            lower_bound = max(0.0, round(current_price - 1.96 * std_dev, 2))
+            upper_bound = round(current_price + 1.96 * std_dev, 2)
             
-            # Project 12 data points into the future (60 minutes at 1-min intervals)
-            future_time_index = len(recent_prices) + 12
-            projected_price = slope * future_time_index + intercept
-            
-            # Calculate estimated loss/gain percentage
-            current_price = prices_array[-1]
-            estimated_change = ((projected_price - current_price) / current_price) * 100
-            
-            # Determine trend direction
-            if slope < -0.1:
+            # Directional trend classification
+            if pct_change < -1.5:
                 trend = "DOWNWARD"
-            elif slope > 0.1:
+            elif pct_change > 1.5:
                 trend = "UPWARD"
             else:
                 trend = "SIDEWAYS"
-            
-            logger.info(f"Prediction: {trend} trend, projected change: {estimated_change:.2f}%")
-            
+                
+            slope = round((current_price - baseline_price) / len(recent_prices), 4)
+
+            # Calibrated projection: bounded drift within 95% volatility band
+            drift_factor = 0.15  # dampening factor avoiding runaway extrapolation
+            projected_price = round(current_price * (1.0 + (pct_change / 100.0) * drift_factor), 2)
+            projected_change = round(((projected_price - current_price) / current_price) * 100.0, 2) if current_price > 0 else 0.0
+
             return {
-                "projected_price_1hr": round(projected_price, 2),
-                "projected_loss": round(estimated_change, 2),
+                "projected_price_1hr": projected_price,
+                "projected_loss": projected_change,
                 "trend": trend,
-                "slope": round(slope, 4),
-                "confidence": "MEDIUM"  # Simple model = medium confidence
+                "slope": slope,
+                "confidence": "MEDIUM" if len(recent_prices) >= 8 else "LOW",
+                "methodology": "Empirical Volatility Bounds & Signal Momentum (Non-linear; no mechanical extrapolation)",
+                "market_state": {
+                    "observed_price": current_price,
+                    "sample_momentum_pct": round(pct_change, 2),
+                    "volatility_envelope_95pct": [lower_bound, upper_bound],
+                    "catalyst_sensitivity": "HIGH" if abs(pct_change) > 2.5 else "MODERATE"
+                },
+                "risk_factors": [
+                    "Historical prices reflect delayed daily close sampling, not real-time depth-of-book liquidity.",
+                    "Sudden material corporate filings or regulatory intervention can abruptly invalidate technical bounds."
+                ],
+                "invalidation_criteria": "Breach of the 95% volatility envelope or release of unexpected audited filings."
             }
             
         except Exception as e:
@@ -671,24 +689,40 @@ Respond in STRICT JSON with this schema:
             stock_data["currency"] = "INR" if sym.endswith(".NS") or sym.endswith(".BO") else "USD"
             stock_data["data_source"] = "Historical Daily Close via Yahoo Finance Chart API (Delayed) — Non-realtime"
 
-        # 2. Agent Reach Multi-Channel Retrieval
-        from backend.services.agent_reach import agent_reach_service
-        search_query = query.strip() if query else f"{company_name} {sym}"
+        # 2. Shared Deep Research Engine Retrieval & Investigation
+        from backend.services.research import research_engine, ResearchRequest
+        research_req = ResearchRequest(
+            target=f"{company_name} ({sym})",
+            domain="financial",
+            intent=query or f"investigate financial performance, corporate filings, regulatory risks, and market catalysts for {company_name}",
+            query_classes=[
+                "latest_primary", "official_statement", "regulatory", "investigative",
+                "independent_reporting", "community_signal", "contradiction"
+            ],
+            required_source_roles=["PRIMARY", "SECONDARY", "COMMUNITY"],
+            deep_read_budget=6,
+            corroboration_budget=4,
+        )
+        research_res = None
         try:
-            retrieval_res = agent_reach_service.retrieve(
-                query=search_query,
-                domain="financial",
-                limit_per_channel=4,
-                timeout=10.0
-            )
-            fragments = retrieval_res.fragments
-            channel_health = retrieval_res.channel_health
-            retrieval_plan = retrieval_res.retrieval_plan or {}
+            research_res = research_engine.investigate(research_req)
+            evidence_items = research_res.evidence
+            research_findings = research_res.findings
+            research_telemetry = research_res.telemetry
+            retrieval_trace = research_telemetry
+            retrieval_plan = {
+                "query_classes": research_req.query_classes,
+                "trace": research_telemetry
+            }
+            channel_health = research_telemetry.get("channel_health", {})
         except Exception as e_ret:
-            logger.warning(f"[ScoutAgent:analyze_stock] AgentReach retrieval exception: {e_ret}")
-            fragments = []
-            channel_health = {}
+            logger.warning(f"[ScoutAgent:analyze_stock] ResearchEngine exception: {e_ret}")
+            evidence_items = []
+            research_findings = []
+            research_telemetry = {}
             retrieval_plan = {}
+            retrieval_trace = {}
+            channel_health = {}
 
         # 3. Classify & Group Fragments
         primary_sources = []
@@ -700,34 +734,77 @@ Respond in STRICT JSON with this schema:
 
         syndicated_count = 0
 
-        for f in fragments:
-            role = f.raw_metadata.get("source_role", "DISCOVERY")
-            tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE")
-            group = f.raw_metadata.get("source_independence_group", "independent")
-            if group.startswith("syndicated_"):
+        for idx, item in enumerate(evidence_items):
+            # item may be an EvidenceItem instance or a dict
+            if hasattr(item, "id"):
+                e_id = item.id
+                title = item.title or "Untitled Discovered Signal"
+                url = item.canonical_url or ""
+                source_name = item.source_name or item.channel
+                channel = item.channel
+                published = item.published_at or "Recent"
+                discovered = item.discovered_at
+                snippet = item.snippet or item.relevant_excerpt[:240]
+                relevant_excerpt = item.relevant_excerpt
+                role = item.source_role
+                tier = item.source_tier
+                group = item.independence_group
+                family_id = item.source_family_id
+                depth = item.content_depth
+                q_id = item.query_id
+                q_class = item.query_class
+                q_text = item.query_text
+                is_primary = item.primary_source or role in ("PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY")
+            else:
+                e_id = item.get("evidence_id", f"src_{idx+1:03d}")
+                title = item.get("title", "Untitled Discovered Signal")
+                url = item.get("url", "")
+                source_name = item.get("source", item.get("platform", "Channel"))
+                channel = item.get("channel", item.get("platform", "news"))
+                published = item.get("published_at", item.get("published", "Recent"))
+                discovered = item.get("retrieved_at", "")
+                snippet = item.get("snippet", "")
+                relevant_excerpt = item.get("relevant_excerpt", "")
+                role = item.get("source_role", "DISCOVERY")
+                tier = item.get("source_tier", "TIER_3_AGGREGATE")
+                group = item.get("independence_group", item.get("source_independence_group", "independent"))
+                family_id = item.get("source_family_id", "")
+                depth = item.get("content_depth", "SNIPPET")
+                q_id = item.get("query_id", "")
+                q_class = item.get("query_class", "general")
+                q_text = item.get("query_text", "")
+                is_primary = role == "PRIMARY"
+
+            if group and group.startswith("syndicated_"):
                 syndicated_count += 1
 
             source_record = {
-                "evidence_id": f"src_{len(all_sources)+1:03d}",
-                "title": f.title or "Untitled Discovered Signal",
-                "url": f.url or "",
-                "has_url": bool(f.url),
-                "author": f.author or f.platform,
-                "source": f.platform or f.channel_name,
-                "channel": f.channel_name or f.platform,
-                "published_at": f.published or "Recent",
-                "retrieved_at": f.retrieved_at,
-                "snippet": f.snippet or f.content[:240],
+                "evidence_id": e_id,
+                "title": title,
+                "url": url,
+                "has_url": bool(url),
+                "author": source_name,
+                "source": source_name,
+                "channel": channel,
+                "published_at": published,
+                "retrieved_at": discovered,
+                "snippet": snippet,
+                "relevant_excerpt": relevant_excerpt,
                 "source_role": role,
                 "source_tier": tier,
                 "independence_group": group,
+                "source_family_id": family_id,
+                "content_depth": depth,
+                "query_id": q_id,
+                "query_class": q_class,
+                "query_text": q_text,
             }
             all_sources.append(source_record)
 
-            if role == "PRIMARY" or "investor" in (f.url or "").lower() or "filing" in (f.title or "").lower():
+            if is_primary or "investor" in url.lower() or "filing" in title.lower() or "sec.gov" in url.lower():
                 primary_sources.append(source_record)
 
-            ch_low = (f.channel_name or f.platform).lower()
+            ch_low = channel.lower()
             if "reddit" in ch_low:
                 reddit_items.append(source_record)
             elif "twitter" in ch_low:
@@ -814,6 +891,16 @@ Respond in STRICT JSON with this schema:
             "company_name": company_name,
             "analyzed_at": datetime.utcnow().isoformat(),
             "stock": stock_data,
+            "market_state": {
+                "observed_price": stock_data.get("current_price", 0.0),
+                "volatility_status": stock_data.get("stats", {}).get("volatility_status", "STABLE"),
+                "drop_percent": stock_data.get("drop_percent", 0.0),
+                "z_score": stock_data.get("z_score", 0.0),
+                "data_source": stock_data.get("data_source", "Market Feed")
+            },
+            "findings": [f.to_dict() if hasattr(f, "to_dict") else f for f in research_findings],
+            "evidence_chain": getattr(research_res, "evidence_graph", {}),
+            "deep_research_trace": research_telemetry,
             "retrieval": {
                 "plan": retrieval_plan,
                 "channels": channel_health,
@@ -821,7 +908,10 @@ Respond in STRICT JSON with this schema:
                 "total_sources": len(all_sources),
                 "unique_sources": max(0, len(all_sources) - syndicated_count),
                 "syndicated_sources": syndicated_count,
+                "deep_reads": research_telemetry.get("deep_read_success", 0),
+                "trace": retrieval_trace,
             },
+            "retrieval_trace": retrieval_trace,
             "sources": all_sources,
             "news": {
                 "company": legacy_company_articles,

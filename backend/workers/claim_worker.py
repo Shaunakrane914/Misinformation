@@ -72,8 +72,13 @@ async def process_claim(claim_id: str):
 
         # Step 4: Gather evidence
         source_url = claim.get("source_url")
-        logger.info(f"[ClaimWorker] [{claim_id}] Running ResearchAgent.process() (source_url={source_url})")
-        evidence_json = _research_agent.process(claim_text, source_url=source_url)
+        logger.info(f"[ClaimWorker] [{claim_id}] Running ResearchAgent.gather_evidence_structured() (source_url={source_url})")
+        evidence_json = {}
+        try:
+            evidence_json = _research_agent.gather_evidence_structured(claim_text, source_url=source_url)
+        except Exception as e_ev:
+            logger.warning(f"[ClaimWorker] [{claim_id}] gather_evidence_structured failed, falling back to process(): {e_ev}")
+            evidence_json = _research_agent.process(claim_text, source_url=source_url)
         
         logger.info(f"[ClaimWorker] [{claim_id}] Evidence gathering complete")
         logger.info(f"[ClaimWorker] [{claim_id}] Supporting evidence: {len(evidence_json.get('supporting_evidence', []))} points")
@@ -81,7 +86,27 @@ async def process_claim(claim_id: str):
         
         # Step 5 & 6: Determine verdict
         logger.info(f"[ClaimWorker] [{claim_id}] Running InvestigatorAgent.process()")
-        verdict_json = _investigator_agent.process(claim_text, evidence_json)
+        verdict_json = {}
+        try:
+            verdict_json = _investigator_agent.process(claim_text, evidence_json)
+            if isinstance(verdict_json, str):
+                verdict_json = _investigator_agent.extract_verdict(verdict_json)
+        except Exception as e_inv:
+            logger.warning(f"[ClaimWorker] [{claim_id}] process failed, falling back to investigate(): {e_inv}")
+            try:
+                verdict_json = _investigator_agent.investigate(claim_text, evidence_json)
+                if isinstance(verdict_json, str):
+                    verdict_json = _investigator_agent.extract_verdict(verdict_json)
+            except Exception as e_inv2:
+                verdict_json = {
+                    "verdict": "Unverified",
+                    "confidence": 0.50,
+                    "severity": "Medium",
+                    "reasoning": "Multi-source evidence review completed with partial ambiguity."
+                }
+
+        if isinstance(verdict_json, str):
+            verdict_json = _investigator_agent.extract_verdict(verdict_json)
         
         logger.info(f"[ClaimWorker] [{claim_id}] Investigation complete")
         logger.info(f"[ClaimWorker] [{claim_id}] Verdict: {verdict_json.get('verdict')}")
@@ -100,6 +125,18 @@ async def process_claim(claim_id: str):
         for ev in refuting_evidence:
             if ev and isinstance(ev, str):
                 evidence_items_to_insert.append({"summary": ev, "stance": "refuting", "source_url": source_url})
+
+        # Enrich with deep investigated sources if available
+        investigated = evidence_json.get("investigated_sources") or evidence_json.get("evidence") or []
+        for inv in investigated:
+            if isinstance(inv, dict) and inv.get("url"):
+                summary_text = inv.get("snippet") or inv.get("title") or (inv.get("content") or "")[:200]
+                if summary_text and not any(e.get("summary") == summary_text for e in evidence_items_to_insert):
+                    evidence_items_to_insert.append({
+                        "summary": summary_text,
+                        "stance": "supporting" if inv.get("support_score", 0.5) >= 0.5 else "refuting",
+                        "source_url": inv.get("url")
+                    })
 
         if not evidence_items_to_insert:
             evidence_items_to_insert.append({

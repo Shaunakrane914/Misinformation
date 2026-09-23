@@ -417,7 +417,11 @@
         aliases: rawAliases ? rawAliases.split(',').map(s => s.trim()).filter(Boolean) : []
       };
 
-      const endpoints = ['/api/personal/scan', '/api/personal-watch/scan'];
+      const endpoints = [
+        '/api/personal/scan',
+        '/api/personal-watch/scan',
+        'https://misinformation-1ouh.onrender.com/api/personal/scan'
+      ];
       let data = null;
       let errorMsg = null;
 
@@ -427,7 +431,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
-            signal: AbortSignal.timeout(16000)
+            signal: AbortSignal.timeout(20000)
           });
           if (resp.ok) {
             data = await resp.json();

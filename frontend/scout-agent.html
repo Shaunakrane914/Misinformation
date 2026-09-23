@@ -271,59 +271,61 @@
       <!-- WORKSPACE ROOT CONTAINER -->
       <div id="workspaceRoot"></div>
 
-      <!-- HONEST ANOMALY SIMULATION & HISTORICAL CASE STUDY -->
-      <div class="case-study-card ae-reveal">
-        <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:var(--rose);letter-spacing:0.08em;margin-bottom:10px;">// ANOMALY SIMULATION &amp; HISTORICAL CASE STUDY</div>
-        <div style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Synthetic Bankruptcy Smear Anomaly Scenario</div>
-        <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
-          This reference case study demonstrates how Scout's statistical dispersion model flags volume anomalies while autonomous Agent Reach queries regulatory portals (SEBI/NSE/SEC) to falsify coordinated short-seller rumors before market panic escalates.
-        </p>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
-          <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-            <div style="color:var(--rose);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">-5.8% Δ</div>
-            <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Simulated Sell-off</div>
-          </div>
-          <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-            <div style="color:#fbbf24;font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">4.2σ</div>
-            <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Dispersion Z-Score</div>
-          </div>
-          <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-            <div style="color:var(--emerald);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">0 Filings</div>
-            <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Regulatory Portal Cross-Check</div>
+      <!-- HONEST ANOMALY SIMULATION & HISTORICAL CASE STUDY (Hidden on Live Search) -->
+      <div id="scoutInitialDemo">
+        <div class="case-study-card ae-reveal">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:var(--rose);letter-spacing:0.08em;margin-bottom:10px;">// ANOMALY SIMULATION &amp; HISTORICAL CASE STUDY</div>
+          <div style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Synthetic Bankruptcy Smear Anomaly Scenario</div>
+          <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
+            This reference case study demonstrates how Scout's statistical dispersion model flags volume anomalies while autonomous Agent Reach queries regulatory portals (SEBI/NSE/SEC) to falsify coordinated short-seller rumors before market panic escalates.
+          </p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
+            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
+              <div style="color:var(--rose);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">-5.8% Δ</div>
+              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Simulated Sell-off</div>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
+              <div style="color:#fbbf24;font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">4.2σ</div>
+              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Dispersion Z-Score</div>
+            </div>
+            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
+              <div style="color:var(--emerald);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">0 Filings</div>
+              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Regulatory Portal Cross-Check</div>
+            </div>
           </div>
         </div>
-      </div>
 
-      <!-- PIPELINE SPECIFICATION TABLE -->
-      <div class="ae-reveal">
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:10px;">// SCOUT 2.0 — ARCHITECTURAL PIPELINE SPECIFICATION</div>
-        <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
-          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
-            <span>Stage</span><span>Operation</span><span>Complexity</span><span>Output</span>
-          </div>
-          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#a78bfa;font-weight:700;">01 · INGEST</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Exchange REST quote ingestion + Historical 5-day closing series. SHA-256 deduplication per retrieved record.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(N)</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">quote bundle</span>
-          </div>
-          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · Z-SCORE</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Statistical dispersion Z = (P_t − μ) / σ. Threshold |Z| &ge; 2.0σ triggers anomaly alert.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(1)</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">Z-score Δ</span>
-          </div>
-          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--emerald);font-weight:700;">03 · DISPATCH</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Agent Reach concurrent multi-channel dispatch across News wires, Regulatory filings, Reddit, X/Twitter, and YouTube.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(channels)</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);">evidence_fragments[]</span>
-          </div>
-          <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · SYNTHESIS</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Source provenance tagging, syndication clustering, catalyst extraction, contradiction matrix, and W-MSR consensus.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(k log k)</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">research terminal dossier</span>
+        <!-- PIPELINE SPECIFICATION TABLE -->
+        <div class="ae-reveal">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:10px;">// SCOUT 2.0 — ARCHITECTURAL PIPELINE SPECIFICATION</div>
+          <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
+              <span>Stage</span><span>Operation</span><span>Complexity</span><span>Output</span>
+            </div>
+            <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:#a78bfa;font-weight:700;">01 · INGEST</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Exchange REST quote ingestion + Historical 5-day closing series. SHA-256 deduplication per retrieved record.</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(N)</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);">quote bundle</span>
+            </div>
+            <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">02 · Z-SCORE</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Statistical dispersion Z = (P_t − μ) / σ. Threshold |Z| &ge; 2.0σ triggers anomaly alert.</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(1)</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">Z-score Δ</span>
+            </div>
+            <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--emerald);font-weight:700;">03 · DISPATCH</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Agent Reach concurrent multi-channel dispatch across News wires, Regulatory filings, Reddit, X/Twitter, and YouTube.</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(channels)</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--emerald);">evidence_fragments[]</span>
+            </div>
+            <div style="display:grid;grid-template-columns:0.9fr 1.6fr 0.8fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · SYNTHESIS</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Source provenance tagging, syndication clustering, catalyst extraction, contradiction matrix, and W-MSR consensus.</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">O(k log k)</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">research terminal dossier</span>
+            </div>
           </div>
         </div>
       </div>
@@ -376,6 +378,10 @@
       const rawInput = document.getElementById('tickerInput').value.trim();
       if (!rawInput) return;
 
+      // 1. Instantly hide initial hardcoded/demo info when a specific search is triggered
+      const demoBox = document.getElementById('scoutInitialDemo');
+      if (demoBox) demoBox.style.display = 'none';
+
       const root = document.getElementById('workspaceRoot');
       const btn = document.getElementById('analyzeBtn');
 
@@ -393,18 +399,35 @@
       `;
 
       try {
-        const resp = await fetch('/api/scout/analyze', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ticker: rawInput }),
-          signal: AbortSignal.timeout(15000)
-        });
+        let data = null;
+        let lastErr = null;
+        const endpoints = [
+          '/api/scout/analyze',
+          'https://misinformation-1ouh.onrender.com/api/scout/analyze'
+        ];
 
-        if (!resp.ok) {
-          throw new Error(`Server returned HTTP ${resp.status}`);
+        for (const ep of endpoints) {
+          try {
+            const resp = await fetch(ep, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ ticker: rawInput }),
+              signal: AbortSignal.timeout(22000)
+            });
+            if (resp.ok) {
+              data = await resp.json();
+              break;
+            }
+          } catch (e) {
+            lastErr = e;
+            console.warn(`[Scout] Endpoint ${ep} failed:`, e);
+          }
         }
 
-        const data = await resp.json();
+        if (!data) {
+          throw lastErr || new Error('All Scout analysis endpoints failed to respond.');
+        }
+
         currentResearchData = data;
         renderWorkspace(data);
 
@@ -663,7 +686,7 @@
       }
       html += `</div>`;
 
-      // 4. SOCIAL & VIDEO INTELLIGENCE
+      // 5. SOCIAL & VIDEO INTELLIGENCE
       const reddit = social.reddit || [];
       const twitter = social.twitter || [];
       const youtube = social.youtube || [];
@@ -671,7 +694,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 04 · MULTI-CHANNEL SOCIAL &amp; VIDEO DISCOURSE</span>
+            <span>// 05 · MULTI-CHANNEL SOCIAL &amp; VIDEO DISCOURSE</span>
             <span class="intel-count-badge">${reddit.length + twitter.length + youtube.length} Signals</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
@@ -722,74 +745,6 @@
                     <span>${esc(y.author || 'YouTube Channel')}</span>
                     ${y.url ? `<a href="${esc(y.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Video ↗</a>` : `<span class="ae-no-link">No link</span>`}
                   </div>
-                </div>
-              `).join('')}
-            </div>
-          </div>
-        </div>
-      `;
-
-      // 5. CATALYSTS & MARKET NARRATIVES
-      const posCats = catalysts.positive || [];
-      const negCats = catalysts.negative || [];
-      const unresCats = catalysts.unresolved || [];
-
-      html += `
-        <div class="intel-section ae-reveal">
-          <div class="intel-section-title">
-            <span>// 05 · EVIDENCE-GROUNDED CATALYSTS &amp; MARKET NARRATIVES</span>
-            <span class="intel-count-badge">${narratives.length} Narratives</span>
-          </div>
-
-          <!-- Narratives -->
-          ${narratives.length > 0 ? `
-            <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:18px;">
-              ${narratives.map(n => `
-                <div style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.25);border-radius:10px;padding:10px 14px;flex:1;min-width:240px;">
-                  <div style="font-weight:700;color:#c4b5fd;font-size:0.86rem;margin-bottom:4px;">${esc(n.theme)}</div>
-                  <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.45;">${esc(n.description)}</div>
-                </div>
-              `).join('')}
-            </div>
-          ` : ''}
-
-          <!-- Catalysts Grid -->
-          <div class="catalyst-grid">
-            <div class="cat-box pos">
-              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
-                Positive Catalysts (${posCats.length})
-              </div>
-              ${posCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No distinct positive catalysts detected.</div>' : ''}
-              ${posCats.map(c => `
-                <div class="cat-item">
-                  ${esc(c.catalyst)}
-                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
-                </div>
-              `).join('')}
-            </div>
-
-            <div class="cat-box neg">
-              <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
-                Negative Catalysts / Headwinds (${negCats.length})
-              </div>
-              ${negCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No significant negative catalysts detected.</div>' : ''}
-              ${negCats.map(c => `
-                <div class="cat-item">
-                  ${esc(c.catalyst)}
-                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
-                </div>
-              `).join('')}
-            </div>
-
-            <div class="cat-box unres">
-              <div style="font-family:var(--font-mono);font-size:0.74rem;color:#fbbf24;font-weight:700;margin-bottom:10px;text-transform:uppercase;">
-                Unresolved Factors (${unresCats.length})
-              </div>
-              ${unresCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No unresolved factors.</div>' : ''}
-              ${unresCats.map(c => `
-                <div class="cat-item">
-                  ${esc(c.factor || c.catalyst)}
-                  <span class="cat-cite">${(c.evidence_ids || []).map(id => `[${esc(id)}]`).join(' ')}</span>
                 </div>
               `).join('')}
             </div>

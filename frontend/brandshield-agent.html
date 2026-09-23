@@ -250,36 +250,38 @@
       <!-- Results Container -->
       <div id="resultsContainer"></div>
 
-      <!-- PIPELINE SPEC TABLE (Audited & Truthful) -->
-      <div class="ae-reveal" style="margin-top: 40px;">
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;letter-spacing:0.08em;margin-bottom:10px;">// BRANDSHIELD 2.0 — RUNTIME ARCHITECTURE SPECIFICATION</div>
-        <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
-            <span>Stage</span><span>Operation</span><span>Method</span><span>Telemetry</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;font-weight:700;">01 · RESOLVE</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Entity normalization distinguishing corporate brand from specific product line. Bounded multi-class query planning.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Entity Parser</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;">entity_meta</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#00e5ff;font-weight:700;">02 · RETRIEVE</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Concurrent search across News, Web, Reddit, Twitter, YouTube, and RSS via Agent Reach backbone.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Agent Reach</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#00e5ff;">evidence[]</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">03 · PROVENANCE</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">URL normalization, Jaccard syndication clustering, and forensic role tagging (PRIMARY regulatory, SECONDARY news, COMMUNITY).</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Syndication Tree</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">source_group</span>
-          </div>
-          <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
-            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · REASONING</span>
-            <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Evidence-grounded 12-class threat taxonomy, claim extraction, origin attribution, and investigation dossiers with zero hallucination.</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Grounded Reasoner</span>
-            <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">dossiers[]</span>
+      <!-- PIPELINE SPEC TABLE (Audited & Truthful - Hidden on Live Search) -->
+      <div id="brandInitialSpec">
+        <div class="ae-reveal" style="margin-top: 40px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;letter-spacing:0.08em;margin-bottom:10px;">// BRANDSHIELD 2.0 — RUNTIME ARCHITECTURE SPECIFICATION</div>
+          <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
+            <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.07);padding:10px 18px;font-family:var(--font-mono);font-size:0.65rem;color:var(--text-dim);letter-spacing:0.07em;text-transform:uppercase;">
+              <span>Stage</span><span>Operation</span><span>Method</span><span>Telemetry</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;font-weight:700;">01 · RESOLVE</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Entity normalization distinguishing corporate brand from specific product line. Bounded multi-class query planning.</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Entity Parser</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;">entity_meta</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:#00e5ff;font-weight:700;">02 · RETRIEVE</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Concurrent search across News, Web, Reddit, Twitter, YouTube, and RSS via Agent Reach backbone.</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Agent Reach</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:#00e5ff;">evidence[]</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;border-bottom:1px solid rgba(255,255,255,0.04);padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;">03 · PROVENANCE</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">URL normalization, Jaccard syndication clustering, and forensic role tagging (PRIMARY regulatory, SECONDARY news, COMMUNITY).</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Syndication Tree</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:#fbbf24;">source_group</span>
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1.8fr 0.8fr 0.8fr;gap:0;padding:12px 18px;align-items:center;">
+              <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--rose);font-weight:700;">04 · REASONING</span>
+              <span style="font-size:0.83rem;color:var(--text-muted);line-height:1.45;">Evidence-grounded 12-class threat taxonomy, claim extraction, origin attribution, and investigation dossiers with zero hallucination.</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Grounded Reasoner</span>
+              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--rose);">dossiers[]</span>
+            </div>
           </div>
         </div>
       </div>
@@ -309,6 +311,10 @@
       const inputVal = document.getElementById('brandInput').value.trim();
       if (!inputVal) return;
 
+      // 1. Instantly hide initial hardcoded runtime spec table when a brand search is executed
+      const initialSpec = document.getElementById('brandInitialSpec');
+      if (initialSpec) initialSpec.style.display = 'none';
+
       const btn = document.getElementById('scanBtn');
       const container = document.getElementById('resultsContainer');
       btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
@@ -327,14 +333,36 @@
       `;
 
       try {
-        const res = await fetch('/api/brandshield/scan', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ brand_name: inputVal, query: inputVal })
-        });
+        let data = null;
+        let lastErr = null;
+        const endpoints = [
+          '/api/brandshield/scan',
+          '/brandshield/scan',
+          'https://misinformation-1ouh.onrender.com/api/brandshield/scan'
+        ];
 
-        if (!res.ok) throw new Error(`Server returned HTTP ${res.status}`);
-        const data = await res.json();
+        for (const ep of endpoints) {
+          try {
+            const res = await fetch(ep, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ brand_name: inputVal, query: inputVal }),
+              signal: AbortSignal.timeout(22000)
+            });
+            if (res.ok) {
+              data = await res.json();
+              break;
+            }
+          } catch (e) {
+            lastErr = e;
+            console.warn(`[BrandShield] Endpoint ${ep} failed:`, e);
+          }
+        }
+
+        if (!data) {
+          throw lastErr || new Error('All BrandShield endpoints failed to respond.');
+        }
+
         activeScanData = data;
         renderBrandShieldWorkspace(data, container);
       } catch (err) {
@@ -374,9 +402,6 @@
 
       let html = '';
 
-      // 1. Channel Health Strip
-      html += `
-        <div class="health-strip ae-reveal">
       // 1. Orientation Question & Brand Snapshot
       html += `
         <div class="aegis-orientation-banner ae-reveal" style="margin-bottom:20px;">

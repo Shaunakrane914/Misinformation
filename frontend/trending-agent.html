@@ -653,7 +653,7 @@
       }
 
       container.innerHTML = '';
-      allClaims.slice(0, 5).forEach(c => {
+      allClaims.forEach(c => {
         const card = document.createElement('div');
         card.className = 'claim-card';
         const urlLink = c.source_urls && c.source_urls.length > 0 ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Open Source ↗</a>` : '';
@@ -680,7 +680,7 @@
       }
 
       container.innerHTML = '';
-      timeline.slice(0, 6).forEach(ev => {
+      timeline.forEach(ev => {
         const item = document.createElement('div');
         item.className = 'tl-item';
         const cleanTime = ev.timestamp ? ev.timestamp.replace('T', ' ').substring(0, 19) : 'Observed signal';

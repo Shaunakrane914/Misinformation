@@ -7,10 +7,11 @@ Handles all CRUD operations for claims and evidence tables with resilient in-mem
 
 import os
 import logging
-from typing import Dict, Optional, List
-from supabase import create_client, Client
+from typing import Dict, Optional, List, Any
+import json
 import uuid
 from datetime import datetime
+from supabase import create_client, Client
 
 # Configure logging
 logging.basicConfig(
@@ -40,6 +41,7 @@ else:
 _mem_claims: Dict[str, Dict] = {}
 _mem_hash_index: Dict[str, str] = {}
 _mem_evidence: Dict[str, List[Dict]] = {}
+_mem_research: Dict[str, Dict] = {}
 
 import sqlite3
 
@@ -76,6 +78,14 @@ def _init_sqlite_db():
                 source_name TEXT,
                 credibility_score REAL,
                 stance TEXT,
+                created_at TEXT
+            )
+        """)
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS claim_research (
+                claim_id TEXT PRIMARY KEY,
+                funnel_json TEXT,
+                corpus_json TEXT,
                 created_at TEXT
             )
         """)
@@ -119,6 +129,18 @@ def _init_sqlite_db():
             if cid not in _mem_evidence:
                 _mem_evidence[cid] = []
             _mem_evidence[cid].append(e_dict)
+
+        cur.execute("SELECT claim_id, funnel_json, corpus_json, created_at FROM claim_research")
+        for row in cur.fetchall():
+            try:
+                _mem_research[row[0]] = {
+                    "claim_id": row[0],
+                    "funnel": json.loads(row[1]) if row[1] else {},
+                    "corpus": json.loads(row[2]) if row[2] else {},
+                    "created_at": row[3],
+                }
+            except Exception:
+                pass
 
         conn.close()
         logger.info(f"[Database] SQLite persistence initialized at: {SQLITE_DB_PATH} (loaded {len(_mem_claims)} claims)")
@@ -407,3 +429,99 @@ def get_evidence_by_claim_id(claim_id: str) -> List[Dict]:
 
 # Aliases for compatibility
 update_claim_final_result = update_claim_verdict
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# CLAIM RESEARCH CORPUS OPERATIONS
+# ─────────────────────────────────────────────────────────────────────────────
+
+def save_claim_research(claim_id: str, corpus: Dict[str, Any]) -> bool:
+    """Save full research corpus and extract lightweight funnel metrics."""
+    try:
+        if not claim_id or not corpus:
+            return False
+
+        # Extract or construct structured funnel
+        raw_funnel = corpus.get("funnel") or {}
+        funnel = {
+            "queries_planned": raw_funnel.get("queries_planned") or corpus.get("queries_planned") or 0,
+            "queries_executed": raw_funnel.get("queries_executed") or corpus.get("queries_executed") or 0,
+            "candidates_found": raw_funnel.get("candidates_found") or len(corpus.get("raw_candidates", [])) or corpus.get("candidates_found") or 0,
+            "candidates_ranked": raw_funnel.get("candidates_ranked") or len(corpus.get("ranked_candidates", [])) or corpus.get("candidates_ranked") or 0,
+            "deep_reads_count": raw_funnel.get("deep_reads_count") or len(corpus.get("deep_read_sources", [])) or corpus.get("deep_read_success") or 0,
+            "primary_sources_count": raw_funnel.get("primary_sources_count") or len(corpus.get("primary_sources", [])) or corpus.get("primary_sources_found") or 0,
+            "independent_groups_count": raw_funnel.get("independent_groups_count") or len(corpus.get("corroboration_groups", [])) or corpus.get("independent_source_groups") or 0,
+            "contradictions_count": raw_funnel.get("contradictions_count") or len(corpus.get("contradictions", [])) or corpus.get("contradictions_found") or 0,
+            "findings_count": raw_funnel.get("findings_count") or len(corpus.get("grounded_findings", [])) or corpus.get("findings_count") or 0,
+        }
+
+        created_at = datetime.utcnow().isoformat()
+        _mem_research[str(claim_id)] = {
+            "claim_id": str(claim_id),
+            "funnel": funnel,
+            "corpus": corpus,
+            "created_at": created_at,
+        }
+
+        try:
+            conn = sqlite3.connect(SQLITE_DB_PATH)
+            cur = conn.cursor()
+            cur.execute("""
+                INSERT OR REPLACE INTO claim_research (claim_id, funnel_json, corpus_json, created_at)
+                VALUES (?, ?, ?, ?)
+            """, (str(claim_id), json.dumps(funnel), json.dumps(corpus), created_at))
+            conn.commit()
+            conn.close()
+        except Exception as e_sql:
+            logger.warning(f"[Database] SQLite save_claim_research notice: {e_sql}")
+
+        return True
+    except Exception as e:
+        logger.error(f"[Database] save_claim_research error: {e}")
+        return False
+
+
+def get_claim_research(claim_id: str) -> Optional[Dict[str, Any]]:
+    """Retrieve full research corpus by claim_id."""
+    if not claim_id:
+        return None
+    cid = str(claim_id)
+    if cid in _mem_research:
+        return _mem_research[cid].get("corpus")
+
+    try:
+        conn = sqlite3.connect(SQLITE_DB_PATH)
+        cur = conn.cursor()
+        cur.execute("SELECT corpus_json FROM claim_research WHERE claim_id = ?", (cid,))
+        row = cur.fetchone()
+        conn.close()
+        if row and row[0]:
+            corpus_data = json.loads(row[0])
+            _mem_research.setdefault(cid, {})["corpus"] = corpus_data
+            return corpus_data
+    except Exception as e:
+        logger.warning(f"[Database] SQLite get_claim_research error: {e}")
+    return None
+
+
+def get_claim_research_funnel(claim_id: str) -> Optional[Dict[str, Any]]:
+    """Retrieve lightweight funnel summary metrics by claim_id."""
+    if not claim_id:
+        return None
+    cid = str(claim_id)
+    if cid in _mem_research:
+        return _mem_research[cid].get("funnel")
+
+    try:
+        conn = sqlite3.connect(SQLITE_DB_PATH)
+        cur = conn.cursor()
+        cur.execute("SELECT funnel_json FROM claim_research WHERE claim_id = ?", (cid,))
+        row = cur.fetchone()
+        conn.close()
+        if row and row[0]:
+            funnel_data = json.loads(row[0])
+            _mem_research.setdefault(cid, {})["funnel"] = funnel_data
+            return funnel_data
+    except Exception as e:
+        logger.warning(f"[Database] SQLite get_claim_research_funnel error: {e}")
+    return None

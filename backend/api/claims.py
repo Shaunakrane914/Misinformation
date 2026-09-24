@@ -331,7 +331,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             }
         }
 
-        return {
+        resp_payload = {
             "status": "success",
             "claim": norm_text,
             "claim_hash": claim_hash,
@@ -362,8 +362,15 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "press_notice": f"OFFICIAL CORRECTION: Fact-checking confirms statement '{norm_text}' lacks empirical substantiation. Global wire records refute this occurrence."
             },
             "execution_time_seconds": duration,
-            "agents_executed": ["ClaimIngestionAgent", "ResearchAgent", "InvestigatorAgent", "AgentReachScraper"]
+            "agents_executed": ["ClaimIngestionAgent", "ResearchAgent", "InvestigatorAgent", "AgentReachScraper"],
+            "claim_id": claim_hash,
+            "research_funnel": db.get_claim_research_funnel(claim_hash) or (evidence_json.get("research_corpus", {}).get("funnel") if evidence_json.get("research_corpus") else None),
+            "has_research_corpus": bool(evidence_json.get("research_corpus")),
+            "research_url": f"/api/claims/{claim_hash}/research" if evidence_json.get("research_corpus") else None
         }
+        if evidence_json.get("research_corpus"):
+            db.save_claim_research(claim_hash, evidence_json["research_corpus"])
+        return resp_payload
     except HTTPException:
         raise
     except Exception as e:
@@ -418,6 +425,8 @@ async def get_claim_status(claim_id: str):
             raise HTTPException(status_code=404, detail=f"Claim not found: {claim_id}")
 
         evidence_list = db.get_evidence_by_claim_id(claim_id)
+        research_funnel = db.get_claim_research_funnel(claim_id)
+        has_corpus = bool(db.get_claim_research(claim_id))
         return {
             "claim_id": claim_id,
             "claim_hash": claim.get("claim_hash"),
@@ -430,6 +439,9 @@ async def get_claim_status(claim_id: str):
             "severity": claim.get("severity"),
             "reasoning": claim.get("reasoning"),
             "evidence": evidence_list,
+            "research_funnel": research_funnel,
+            "has_research_corpus": has_corpus,
+            "research_url": f"/api/claims/{claim_id}/research" if has_corpus else None,
             "created_at": claim.get("created_at"),
             "updated_at": claim.get("updated_at")
         }
@@ -438,6 +450,39 @@ async def get_claim_status(claim_id: str):
     except Exception as e:
         logger.error(f"[API] Error retrieving claim: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error retrieving claim: {str(e)}")
+
+
+@router.get("/api/claims/{claim_id}/research", summary="Get Full Forensic Research Corpus by Claim ID")
+async def get_claim_research_corpus(claim_id: str):
+    """
+    Dedicated endpoint returning the complete ResearchCorpus for a claim.
+    Includes planned queries, candidate selection audit, deep read sources with
+    extracted passages, primary escalations, syndication clusters, contradictions,
+    grounded findings, and evidence graph.
+    """
+    logger.info(f"[API] GET /claims/{claim_id}/research")
+    try:
+        corpus = db.get_claim_research(claim_id)
+        if not corpus:
+            claim = db.get_claim_by_id(claim_id)
+            if not claim:
+                raise HTTPException(status_code=404, detail=f"Claim not found: {claim_id}")
+            raise HTTPException(
+                status_code=404,
+                detail=f"Research corpus not yet generated for claim: {claim_id}. Current status is '{claim.get('status')}'."
+            )
+
+        funnel = db.get_claim_research_funnel(claim_id) or corpus.get("funnel") or {}
+        return {
+            "claim_id": claim_id,
+            "funnel": funnel,
+            "corpus": corpus,
+        }
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"[API] Error retrieving claim research corpus: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error retrieving research corpus: {str(e)}")
 
 
 @router.get("/api/claims", summary="List All Claims with Pagination")

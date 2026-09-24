@@ -40,6 +40,7 @@ from backend.services.agent_reach.native import (
     get_runtime_profile,
     get_upstream_info,
     native_doctor,
+    native_router,
 )
 from backend.services.agent_reach.planner import RetrievalPlan, RetrievalPlanner
 from backend.services.agent_reach.registry import CapabilityRegistry
@@ -155,53 +156,21 @@ class AgentReachService:
     def read(self, url: str, max_chars: int = 4000) -> Dict[str, Any]:
         """
         Safely fetch and parse a web document into clean markdown.
-        Enforces strict SSRF validation before network transmission.
+        Routes through native_router with SSRF validation and structured fallback.
         """
-        if not url:
-            return {"status": "error", "error": "Empty URL provided", "url": ""}
-
-        safe, reason = is_safe_url(url)
-        if not safe:
-            logger.warning(f"[AgentReachService] SSRF defense blocked URL: {url} ({reason})")
-            return {
-                "status": "blocked_ssrf",
-                "error": f"URL blocked by SSRF defense: {reason}",
-                "url": url,
-            }
-
-        try:
-            reader = self.registry._channels.get("jina_reader")
-            if reader:
-                fragments = reader.search(url, limit=1)
-                if fragments:
-                    f = fragments[0]
-                    return {
-                        "status": "success",
-                        "title": f.title,
-                        "markdown": f.content[:max_chars],
-                        "url": f.url,
-                        "char_count": len(f.content),
-                    }
-        except Exception as e:
-            logger.warning(f"[AgentReachService] Reader failed for {url}: {e}")
-
-        # Fallback reading
-        try:
-            from backend.services.agent_reach_scraper import reach_scraper
-            return reach_scraper.read_article_markdown(url, max_chars=max_chars)
-        except Exception as e:
-            return {"status": "error", "error": str(e), "url": url}
+        return native_router.execute_channel_read(url, max_chars=max_chars)
 
     # ── Core Retrieval Pipeline ─────────────────────────────────────────────
 
     def search_channel(self, channel_name: str, query: str, limit: int = 6) -> List[EvidenceFragment]:
-        """Execute a targeted search on a single channel."""
+        """Execute a targeted search on a single channel through native_router."""
         channel = self.registry._channels.get(channel_name)
         if not channel:
             logger.warning(f"[AgentReachService] Channel '{channel_name}' not registered")
             return []
         try:
-            return channel.search(query, limit=limit)
+            frags, _ = native_router.execute_channel_query(channel_name, query, limit=limit)
+            return frags
         except Exception as e:
             logger.warning(f"[AgentReachService] Channel '{channel_name}' search failed: {e}")
             self.registry.mark_degraded(channel_name)
@@ -310,7 +279,8 @@ class AgentReachService:
                     limit=max_res_per_q,
                     query_id=q_sp["query_id"],
                     query_class=q_sp["query_class"],
-                    query_text=q_sp["query_text"]
+                    query_text=q_sp["query_text"],
+                    domain=domain
                 )
                 lat = int((time.time() - t0) * 1000)
                 for f in frags or []:

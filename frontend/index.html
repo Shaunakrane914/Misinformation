@@ -7,6 +7,7 @@
   <meta name="description" content="Decentralized network of autonomous AI agents monitoring financial markets, social feeds, and corporate reputation in real-time.">
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="forensic-explorer.js"></script>
 
   <style>
     /* ── Full-Width 3D Wave Stage ── */
@@ -514,6 +515,8 @@
             Dispatched multi-agent evidence collection to web repositories, social vectors, and cryptographic consensus layer.
           </div>
           <div id="modalEvidenceProvenance" style="margin-top:12px;padding:10px 14px;background:rgba(7,9,14,0.7);border:1px solid var(--border);border-radius:8px;font-size:0.76rem;color:var(--text-dim);font-family:var(--font-mono);line-height:1.5;display:none;"></div>
+          <!-- Native Forensic Explorer Mount -->
+          <div id="heroModalForensicMount" style="margin-top:16px;"></div>
         </div>
 
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px;padding-top:12px;border-top:1px solid var(--border-subtle);">
@@ -997,6 +1000,17 @@
         if (evText) {
           prov.style.display = 'block';
           prov.innerHTML = `<strong style="color:#fff;">PRIMARY EVIDENCE:</strong> ${evText.slice(0, 240)}${evText.length > 240 ? '...' : ''}`;
+        }
+      }
+
+      // Mount Native Forensic Funnel & Source Explorer
+      const feMount = document.getElementById('heroModalForensicMount');
+      if (feMount && window.ForensicExplorer) {
+        const explorer = new window.ForensicExplorer(feMount);
+        if (claim.id) {
+          explorer.loadFromClaimId(claim.id);
+        } else if (claim.research_corpus) {
+          explorer.setData(claim.research_corpus);
         }
       }
     }

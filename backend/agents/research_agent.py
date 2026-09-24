@@ -128,6 +128,12 @@ Where overall_evidence_confidence represents:
             parsed["channel_health"] = res.channel_status
             parsed["total_signals"] = len(res.evidence)
             parsed["fragments_count"] = len(res.evidence)
+            if hasattr(res, "research_corpus") and res.research_corpus:
+                parsed["research_corpus"] = (
+                    res.research_corpus.to_dict()
+                    if hasattr(res.research_corpus, "to_dict")
+                    else res.research_corpus
+                )
 
         return parsed
 

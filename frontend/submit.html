@@ -13,6 +13,7 @@
   <meta name="twitter:description" content="Forensic claim verification engine with dual-column provenance.">
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="gemini-client.js"></script>
+  <script src="forensic-explorer.js"></script>
 
   <style>
     .claim-hero {
@@ -385,6 +386,8 @@
           <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Click any row to inspect technical details</span>
         </div>
 
+        <div id="submitForensicMount" style="margin-bottom:20px;"></div>
+
         <div id="evidenceRowsContainer">
           <!-- Reusable Aegis Evidence Rows rendered here -->
         </div>
@@ -478,6 +481,7 @@
                   const c = pollData.claim || pollData;
                   if (c && (c.status === 'completed' || c.status === 'failed')) {
                     reportData = pollData;
+                    reportData.claim_id = sub.claim_id;
                     break;
                   }
                 }
@@ -751,6 +755,14 @@ Output strictly valid JSON with this exact schema:
 
       document.getElementById('resultsWorkspace').style.display = 'block';
       document.getElementById('level1Card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+      // Mount Native Forensic Funnel & Source Explorer
+      const feMount = document.getElementById('submitForensicMount');
+      const targetClaimId = data.claim_id || (data.claim && data.claim.id) || (data.id);
+      if (feMount && window.ForensicExplorer && targetClaimId) {
+        const explorer = new window.ForensicExplorer(feMount);
+        explorer.loadFromClaimId(targetClaimId);
+      }
     }
 
     function toggleEvidenceRow(rowId) {

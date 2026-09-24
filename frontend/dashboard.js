@@ -211,14 +211,25 @@ function buildCard(item) {
   const sourceLink = document.createElement("div");
   sourceLink.id = `srcLink_${Math.random().toString(36).slice(2)}`;
 
+  const feWrap = document.createElement("div");
+  feWrap.style.marginTop = "12px";
+
   evidence.appendChild(aiNote);
   evidence.appendChild(sourceLink);
+  evidence.appendChild(feWrap);
 
   btn.addEventListener("click", async () => {
     const isOpen = evidence.style.display !== "none";
     if (!isOpen) {
       evidence.style.display = "block";
       btn.textContent = "Hide Evidence";
+
+      const claimId = item.id || item.claim_id;
+      if (claimId && window.ForensicExplorer && !card.dataset.feLoaded) {
+        card.dataset.feLoaded = "1";
+        const exp = new window.ForensicExplorer(feWrap);
+        exp.loadFromClaimId(claimId);
+      }
 
       if (backendAlive && !card.dataset.aiLoaded) {
         try {

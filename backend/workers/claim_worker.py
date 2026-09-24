@@ -14,7 +14,8 @@ from backend.db.database import (
     get_claim_by_id,
     update_claim_status,
     update_claim_final_result,
-    insert_evidence
+    insert_evidence,
+    save_claim_research
 )
 
 # Configure logging
@@ -83,6 +84,12 @@ async def process_claim(claim_id: str):
         logger.info(f"[ClaimWorker] [{claim_id}] Evidence gathering complete")
         logger.info(f"[ClaimWorker] [{claim_id}] Supporting evidence: {len(evidence_json.get('supporting_evidence', []))} points")
         logger.info(f"[ClaimWorker] [{claim_id}] Refuting evidence: {len(evidence_json.get('refuting_evidence', []))} points")
+        
+        # Persist full ResearchCorpus if available
+        corpus_data = evidence_json.get("research_corpus")
+        if corpus_data:
+            logger.info(f"[ClaimWorker] [{claim_id}] Persisting ResearchCorpus to dedicated research store")
+            save_claim_research(claim_id, corpus_data)
         
         # Step 5 & 6: Determine verdict
         logger.info(f"[ClaimWorker] [{claim_id}] Running InvestigatorAgent.process()")

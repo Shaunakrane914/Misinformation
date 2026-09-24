@@ -1173,4 +1173,687 @@ select:focus-visible,
   border-width: 0;
 }
 
+/* ── FORENSIC FUNNEL & SOURCE EXPLORER (AEGIS NATIVE AGENT REACH 3.0) ── */
+.forensic-explorer-root {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  margin-top: 14px;
+  font-family: var(--font-main);
+  color: var(--text);
+}
+
+.fe-loading, .fe-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+  text-align: center;
+  background: var(--surface-card);
+  border: 1px dashed var(--border);
+  border-radius: 12px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  gap: 12px;
+}
+
+.fe-empty-icon {
+  font-size: 2rem;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.fe-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(0, 229, 255, 0.15);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: fe-spin 0.8s linear infinite;
+}
+
+@keyframes fe-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* 1. Funnel Ribbon */
+.fe-funnel-ribbon {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(12, 16, 24, 0.95), rgba(18, 24, 38, 0.9));
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px 18px;
+  overflow-x: auto;
+  gap: 12px;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.fe-funnel-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+  padding: 4px 10px;
+  border-radius: 6px;
+  transition: all 0.2s var(--ease-spring);
+}
+
+.fe-funnel-step:hover {
+  background: rgba(255, 255, 255, 0.05);
+  transform: translateY(-1px);
+}
+
+.fe-f-val {
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.fe-step-read .fe-f-val { color: var(--accent); }
+.fe-step-primary .fe-f-val { color: var(--amber); }
+.fe-step-findings .fe-f-val { color: var(--emerald); }
+
+.fe-f-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: var(--text-dim);
+  text-transform: uppercase;
+}
+
+.fe-f-arrow {
+  color: rgba(255, 255, 255, 0.2);
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+/* 2. Tabs Header */
+.fe-tabs-header {
+  display: flex;
+  gap: 8px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 4px;
+  overflow-x: auto;
+}
+
+.fe-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px 8px 0 0;
+  color: var(--text-muted);
+  font-family: var(--font-main);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.fe-tab-btn:hover {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+.fe-tab-btn.active {
+  color: #fff;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--border);
+  border-bottom-color: transparent;
+  box-shadow: inset 0 2px 0 var(--accent);
+}
+
+.fe-tab-count {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--text-muted);
+}
+
+.fe-tab-btn.active .fe-tab-count {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+/* 3. Findings Tab */
+.fe-findings-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fe-finding-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.fe-finding-card:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+}
+
+.fe-fcard-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fe-fcard-num {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-dim);
+}
+
+.fe-badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.fe-badge-green {
+  background: rgba(16, 185, 129, 0.12);
+  color: var(--emerald);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+}
+
+.fe-badge-red {
+  background: rgba(244, 63, 94, 0.12);
+  color: var(--rose);
+  border: 1px solid rgba(244, 63, 94, 0.25);
+}
+
+.fe-badge-cyan {
+  background: rgba(0, 229, 255, 0.1);
+  color: var(--accent);
+  border: 1px solid rgba(0, 229, 255, 0.25);
+}
+
+.fe-badge-amber {
+  background: rgba(245, 158, 11, 0.12);
+  color: var(--amber);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+}
+
+.fe-badge-muted {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-dim);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.fe-badge-tier {
+  background: rgba(99, 102, 241, 0.12);
+  color: #a5b4fc;
+  border: 1px solid rgba(99, 102, 241, 0.25);
+}
+
+.fe-fcard-conf {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  color: var(--emerald);
+}
+
+.fe-fcard-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.4;
+}
+
+.fe-fcard-summary {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.55;
+}
+
+.fe-fcard-citations {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 4px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(255, 255, 255, 0.06);
+}
+
+.fe-cite-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.fe-cite-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px;
+  background: rgba(0, 229, 255, 0.07);
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  border-radius: 12px;
+  color: var(--accent);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.fe-cite-pill:hover {
+  background: rgba(0, 229, 255, 0.18);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+/* 4. Sources Tab (Accordion) */
+.fe-sources-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fe-source-accordion {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.fe-source-accordion:hover {
+  border-color: var(--border-hover);
+}
+
+.fe-s-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: pointer;
+  user-select: none;
+  background: rgba(255, 255, 255, 0.015);
+  gap: 12px;
+}
+
+.fe-s-header:hover {
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.fe-s-title-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.fe-s-idx {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-weight: 700;
+}
+
+.fe-s-domain {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.fe-s-title {
+  font-size: 0.84rem;
+  color: var(--text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.fe-s-meta-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fe-s-chars {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--text-dim);
+}
+
+.fe-s-chevron {
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  transition: transform 0.2s ease;
+}
+
+.fe-source-accordion.open .fe-s-chevron {
+  transform: rotate(180deg);
+}
+
+.fe-s-body {
+  display: none;
+  padding: 16px;
+  border-top: 1px solid var(--border-subtle);
+  background: rgba(6, 8, 13, 0.4);
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fe-source-accordion.open .fe-s-body {
+  display: flex;
+}
+
+.fe-s-body-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fe-link {
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.fe-link:hover {
+  text-decoration: underline;
+}
+
+.fe-tag {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+.fe-s-excerpt-box {
+  background: rgba(12, 16, 24, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-left: 3px solid var(--accent);
+  border-radius: 6px;
+  padding: 12px 14px;
+}
+
+.fe-box-lbl {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.fe-passage {
+  font-size: 0.84rem;
+  color: var(--text);
+  line-height: 1.6;
+  font-style: normal;
+}
+
+.fe-full-text-details {
+  border-top: 1px dashed rgba(255, 255, 255, 0.08);
+  padding-top: 10px;
+}
+
+.fe-full-text-details summary {
+  font-size: 0.78rem;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+}
+
+.fe-full-text-details summary:hover {
+  color: var(--accent);
+}
+
+.fe-full-markdown {
+  margin-top: 10px;
+  padding: 12px;
+  background: #040609;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  max-height: 300px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  line-height: 1.5;
+}
+
+/* 5. Primary Filings Tab */
+.fe-primaries-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+}
+
+.fe-primary-card {
+  background: var(--surface-card);
+  border: 1px solid rgba(245, 158, 11, 0.25);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fe-pcard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fe-pcard-domain {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--amber);
+}
+
+.fe-pcard-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #fff;
+  line-height: 1.4;
+}
+
+.fe-pcard-reason {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.fe-btn-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  border-radius: 6px;
+  color: var(--amber);
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  width: fit-content;
+}
+
+.fe-btn-link:hover {
+  background: rgba(245, 158, 11, 0.2);
+  border-color: var(--amber);
+}
+
+/* 6. Syndication & Groups Tab */
+.fe-groups-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fe-groups-note, .fe-audit-note {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid var(--purple);
+  padding: 8px 12px;
+  border-radius: 4px;
+}
+
+.fe-group-card {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fe-group-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.fe-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fe-group-count {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-dim);
+}
+
+.fe-group-items {
+  list-style: none;
+  padding-left: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fe-group-items li {
+  font-size: 0.8rem;
+}
+
+/* 7. Selection Audit Tab */
+.fe-audit-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fe-table-scroll {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.fe-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.fe-table th {
+  background: rgba(18, 24, 38, 0.95);
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.fe-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+}
+
+.fe-table tr.row-selected td {
+  background: rgba(0, 229, 255, 0.025);
+  color: #fff;
+}
+
+.fe-reason-code {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--amber);
+  background: rgba(245, 158, 11, 0.08);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+/* 8. Evidence Graph Tab */
+.fe-graph-wrap {
+  background: var(--surface-card);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fe-graph-header {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--accent);
+}
+
+.fe-graph-viewport {
+  background: #04060a;
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.fe-graph-footer {
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  font-family: var(--font-mono);
+}
+
+
 

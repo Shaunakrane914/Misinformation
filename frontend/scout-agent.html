@@ -388,15 +388,24 @@
       btn.innerHTML = `<span class="pulse-dot"></span> Researching ${esc(rawInput)}...`;
       btn.disabled = true;
 
-      root.innerHTML = `
-        <div class="intel-section ae-reveal" style="text-align:center;padding:48px;">
-          <div class="ae-radar-spinner" style="margin:0 auto 16px;"></div>
-          <div style="font-size:1.05rem;font-weight:700;margin-bottom:8px;">Running Financial Retrieval Plan &amp; Multi-Channel Acquisition</div>
-          <div style="font-size:0.82rem;color:var(--text-muted);font-family:var(--font-mono);">
-            Dispatching Agent Reach &rarr; News wires, Regulatory filings, Reddit, X/Twitter, YouTube &rarr; Deduplicating &rarr; Reasoning...
+      const progress = window.createAgentProgressBar ? window.createAgentProgressBar(root, {
+        title: `Scout Financial Intelligence: Auditing ${esc(rawInput)}`,
+        stages: [
+          { name: '01 · Ingestion', desc: 'Exchange quote ingestion & 5-day series' },
+          { name: '02 · Z-Score', desc: 'Statistical price dispersion & anomaly trigger' },
+          { name: '03 · Agent Reach', desc: 'News wires, Regulatory, Reddit & Cashtags' },
+          { name: '04 · Synthesis', desc: 'Catalyst extraction & short attack correlation' }
+        ]
+      }) : null;
+
+      if (!progress) {
+        root.innerHTML = `
+          <div class="intel-section ae-reveal" style="text-align:center;padding:48px;">
+            <div class="ae-radar-spinner" style="margin:0 auto 16px;"></div>
+            <div style="font-size:1.05rem;font-weight:700;margin-bottom:8px;">Running Financial Retrieval Plan &amp; Multi-Channel Acquisition</div>
           </div>
-        </div>
-      `;
+        `;
+      }
 
       try {
         let data = null;
@@ -429,10 +438,15 @@
         }
 
         currentResearchData = data;
-        renderWorkspace(data);
+        if (progress) {
+          progress.finish(() => renderWorkspace(data));
+        } else {
+          renderWorkspace(data);
+        }
 
       } catch (err) {
         console.error('[Scout 2.0] Analysis error:', err);
+        if (progress) progress.error(err.message);
         root.innerHTML = `
           <div class="intel-section ae-reveal" style="border-color:rgba(244,63,94,0.4);">
             <div style="color:var(--rose);font-weight:700;margin-bottom:8px;">Research Acquisition Error</div>

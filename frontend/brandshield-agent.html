@@ -320,17 +320,26 @@
       btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
       btn.disabled = true;
 
-      container.innerHTML = `
-        <div class="scan-card ae-reveal" style="text-align:center;padding:48px 24px;">
-          <div class="ae-radar-spinner" style="margin:0 auto 16px;"></div>
-          <div style="font-family:var(--font-mono);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">
-            Auditing Threat Surface for <span style="color:#10b981;">${escapeHtml(inputVal)}</span>
+      const progress = window.createAgentProgressBar ? window.createAgentProgressBar(container, {
+        title: `BrandShield 2.0: Auditing Brand Threat Surface for ${escapeHtml(inputVal)}`,
+        stages: [
+          { name: '01 · Brand Mapping', desc: 'Catalog lookup & multi-channel query matrix' },
+          { name: '02 · Omni-Scan', desc: 'Storefront reviews, social complaints & web leaks' },
+          { name: '03 · Heuristic Audit', desc: 'Counterfeits, smear rings & astroturfing' },
+          { name: '04 · Risk Synthesis', desc: 'Severity classification & defense package' }
+        ]
+      }) : null;
+
+      if (!progress) {
+        container.innerHTML = `
+          <div class="scan-card ae-reveal" style="text-align:center;padding:48px 24px;">
+            <div class="ae-radar-spinner" style="margin:0 auto 16px;"></div>
+            <div style="font-family:var(--font-mono);font-size:0.9rem;font-weight:700;color:#fff;margin-bottom:6px;">
+              Auditing Threat Surface for <span style="color:#10b981;">${escapeHtml(inputVal)}</span>
+            </div>
           </div>
-          <div style="font-size:0.8rem;color:var(--text-dim);max-width:480px;margin:0 auto;">
-            Scanning News, Web, Reddit, Twitter, YouTube &amp; Regulatory feeds via Agent Reach...
-          </div>
-        </div>
-      `;
+        `;
+      }
 
       try {
         let data = null;
@@ -364,9 +373,14 @@
         }
 
         activeScanData = data;
-        renderBrandShieldWorkspace(data, container);
+        if (progress) {
+          progress.finish(() => renderBrandShieldWorkspace(data, container));
+        } else {
+          renderBrandShieldWorkspace(data, container);
+        }
       } catch (err) {
         console.error("BrandShield Scan Error:", err);
+        if (progress) progress.error(err.message);
         container.innerHTML = `
           <div class="empty-banner ae-reveal">
             <div style="color:var(--rose);font-weight:700;margin-bottom:8px;">⚠️ Scan Execution Notice</div>

@@ -351,48 +351,33 @@
       triggerScan();
     }
 
+    let activeProgressBar = null;
+
     function showLoadingAnimation(targetName) {
       const mount = document.getElementById('loadingMount');
-      if (pwTimerInterval) clearInterval(pwTimerInterval);
-      const startTime = performance.now();
-
-      mount.innerHTML = `
-        <div style="margin-top:24px;padding:24px;background:rgba(0,0,0,0.4);border:1px solid rgba(6,182,212,0.3);border-radius:14px;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <div class="ae-radar-spinner"></div>
-              <div style="font-weight:700;font-size:0.92rem;color:#fff;">
-                Investigating Identity &amp; Online Threat Footprint: <span style="color:#06b6d4;">${escapeHtml(targetName)}</span>
-              </div>
-            </div>
-            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#a5f3fc;" id="pwElapsed">0.0s elapsed</div>
-          </div>
-          <div style="height:3px;width:100%;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;">
-            <div id="loadingProgress" style="height:100%;width:15%;background:linear-gradient(90deg, #06b6d4, #38bdf8);transition:width 0.4s ease;"></div>
-          </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));gap:10px;margin-top:16px;">
-            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_reach">Agent Reach: Ingesting...</div>
-            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_plan">Planner: 6 Query Classes...</div>
-            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_dedup">Deduplication &amp; Groups...</div>
-            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);" id="step_threats">14-Class Taxonomy Triage...</div>
-          </div>
-        </div>
-      `;
-
-      pwTimerInterval = setInterval(() => {
-        const sec = ((performance.now() - startTime) / 1000).toFixed(1);
-        const el = document.getElementById('pwElapsed');
-        if (el) el.textContent = `${sec}s elapsed`;
-      }, 100);
-
-      setTimeout(() => { const p = document.getElementById('loadingProgress'); if (p) p.style.width = '45%'; }, 400);
-      setTimeout(() => { const p = document.getElementById('loadingProgress'); if (p) p.style.width = '75%'; }, 900);
+      activeProgressBar = window.createAgentProgressBar ? window.createAgentProgressBar(mount, {
+        title: `Personal Watch 2.0: Investigating ${escapeHtml(targetName)}`,
+        stages: [
+          { name: '01 · OSINT Ingestion', desc: 'Agent Reach targeted multi-platform dispatch' },
+          { name: '02 · Query Classes', desc: 'Defamation, deepfakes, impersonation & leaks' },
+          { name: '03 · Deduplication', desc: 'Cross-platform wire syndication & group clustering' },
+          { name: '04 · Risk Triage', desc: '14-class taxonomy scoring & defense brief' }
+        ]
+      }) : null;
     }
 
     function clearLoadingAnimation() {
-      if (pwTimerInterval) clearInterval(pwTimerInterval);
-      const mount = document.getElementById('loadingMount');
-      if (mount) mount.innerHTML = '';
+      if (activeProgressBar) {
+        activeProgressBar.finish(() => {
+          setTimeout(() => {
+            const mount = document.getElementById('loadingMount');
+            if (mount) mount.innerHTML = '';
+          }, 350);
+        });
+      } else {
+        const mount = document.getElementById('loadingMount');
+        if (mount) mount.innerHTML = '';
+      }
     }
 
     async function triggerScan() {

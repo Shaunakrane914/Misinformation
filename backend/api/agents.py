@@ -9,6 +9,7 @@ Endpoints for:
 - War Room (Live Threat Signals & Incident Response Countermeasures)
 """
 
+import asyncio
 import logging
 import requests
 from datetime import datetime
@@ -205,7 +206,8 @@ async def trending_scan(request: TrendingScanRequest):
     try:
         agent = get_trending_agent()
         ident_dict = request.identifiers if isinstance(request.identifiers, dict) else {}
-        result = agent.scan(
+        result = await asyncio.to_thread(
+            agent.scan,
             target_name,
             identifiers=ident_dict,
             category=request.category,

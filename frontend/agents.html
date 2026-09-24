@@ -333,7 +333,7 @@
     <div class="telemetry-ribbon ae-reveal">
       <div class="telemetry-ribbon-item">
         <span class="agent-ping-dot"></span>
-        <span>SWARM TOPOLOGY: <strong>7/7 AUTONOMOUS NODES ACTIVE</strong></span>
+        <span>SWARM TOPOLOGY: <strong>4/4 AUTONOMOUS SENTINELS ACTIVE</strong></span>
       </div>
       <span class="telemetry-divider">│</span>
       <div class="telemetry-ribbon-item">
@@ -360,20 +360,26 @@
         Autonomous Sentinel Swarm
       </h1>
       <p style="color:var(--text-muted);font-size:0.96rem;max-width:760px;line-height:1.6;margin-top:6px;">
-        Each autonomous sentinel operates as an independent node monitoring equities, viral social currents, brand reputation, and executive integrity. Explore live telemetry, monitored feeds, and dispatch queries to any agent individually.
+        The 4 primary autonomous sentinels operate as independent intelligence nodes monitoring equities, viral social currents, brand reputation, and executive integrity. Explore live telemetry, monitored feeds, and dispatch queries to any agent individually.
       </p>
     </div>
 
     <!-- Filter Control Bar -->
     <div class="agent-filter-bar ae-reveal">
       <button type="button" class="agent-filter-btn active" onclick="filterAgents('all', this)">
-        <span>All 7 Swarm Agents</span>
+        <span>All 4 Autonomous Agents</span>
       </button>
-      <button type="button" class="agent-filter-btn" onclick="filterAgents('sentinel', this)">
-        <span>Domain Sentinels (4)</span>
+      <button type="button" class="agent-filter-btn" onclick="filterAgents('financial', this)">
+        <span>Financial Markets (Scout)</span>
       </button>
-      <button type="button" class="agent-filter-btn" onclick="filterAgents('tribunal', this)">
-        <span>Truth Tribunal (3)</span>
+      <button type="button" class="agent-filter-btn" onclick="filterAgents('social', this)">
+        <span>Viral Feeds (Trending)</span>
+      </button>
+      <button type="button" class="agent-filter-btn" onclick="filterAgents('brand', this)">
+        <span>Brand Defense</span>
+      </button>
+      <button type="button" class="agent-filter-btn" onclick="filterAgents('vip', this)">
+        <span>VIP Protection</span>
       </button>
     </div>
 
@@ -383,7 +389,7 @@
       <!-- ══════════════════════════════════════════════════════════
            CARD 01: SCOUT AGENT (FINANCIAL SENTINEL)
            ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="sentinel" style="--card-accent:#00e5ff;">
+      <div class="agent-card" data-category="financial" style="--card-accent:#00e5ff;">
         <div>
           <div class="agent-card-header">
             <div>
@@ -464,7 +470,7 @@
       <!-- ══════════════════════════════════════════════════════════
            CARD 02: TRENDING AGENT (VIRAL SOCIAL RADAR)
            ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="sentinel" style="--card-accent:#f472b6;">
+      <div class="agent-card" data-category="social" style="--card-accent:#f472b6;">
         <div>
           <div class="agent-card-header">
             <div>
@@ -545,7 +551,7 @@
       <!-- ══════════════════════════════════════════════════════════
            CARD 03: BRANDSHIELD AGENT (CORPORATE REPUTATION)
            ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="sentinel" style="--card-accent:#10b981;">
+      <div class="agent-card" data-category="brand" style="--card-accent:#10b981;">
         <div>
           <div class="agent-card-header">
             <div>
@@ -626,7 +632,7 @@
       <!-- ══════════════════════════════════════════════════════════
            CARD 04: PERSONAL WATCH AGENT (VIP & EXECUTIVE DEFENSE)
            ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="sentinel" style="--card-accent:#a855f7;">
+      <div class="agent-card" data-category="vip" style="--card-accent:#a855f7;">
         <div>
           <div class="agent-card-header">
             <div>
@@ -703,248 +709,6 @@
         </div>
       </div>
 
-
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 05: RESEARCH AGENT (EVIDENCE JURIST)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="tribunal" style="--card-accent:#38bdf8;">
-        <div>
-          <div class="agent-card-header">
-            <div>
-              <div class="agent-badge-row">
-                <span class="agent-badge" style="color:#38bdf8;">AGENT_05 &bull; EVIDENCE JURIST</span>
-                <span class="agent-ping"><span class="agent-ping-dot"></span> 16ms latency</span>
-              </div>
-              <div class="agent-title">Research Agent</div>
-            </div>
-            <a href="research-agent.html" class="ae-btn ae-btn-primary" style="padding:8px 16px;font-size:0.78rem;background:#38bdf8;border-color:#38bdf8;color:#000;">
-              <span>Open Research Workspace &rarr;</span>
-            </a>
-          </div>
-          <p class="agent-desc">
-            Harvests verifiable primary evidence from wire registries, official government gazettes, corporate SEC archives, and Jina Markdown readers to cluster evidence around findings, why they matter, and source reading lists.
-          </p>
-        </div>
-
-        <!-- Monitored Feeds -->
-        <div>
-          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);margin-bottom:6px;">MONITORED STREAMS &amp; SCAPERS:</div>
-          <div class="agent-feeds-row">
-            <span class="agent-feed-pill">&#9650; Jina Markdown Web Reader</span>
-            <span class="agent-feed-pill">&#9670; Associated Press &amp; Reuters Wires</span>
-            <span class="agent-feed-pill">&#9632; SEC &amp; Regulatory Archives</span>
-            <span class="agent-feed-pill">&#9679; Government &amp; Regulatory Gazettes</span>
-          </div>
-        </div>
-
-        <!-- System Specifications -->
-        <div class="agent-spec-grid">
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Protocol</span>
-            <span class="agent-spec-val">Jina Reader + Wires</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Role</span>
-            <span class="agent-spec-val">Finding Clustering</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Source Exposure</span>
-            <span class="agent-spec-val">Curated Reading List</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Output Contract</span>
-            <span class="agent-spec-val">Why It Matters Matrix</span>
-          </div>
-        </div>
-
-        <!-- Live Terminal Stream -->
-        <div>
-          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);margin-bottom:6px;display:flex;justify-content:space-between;">
-            <span>// LIVE SOCKET EVENT TELEMETRY</span>
-            <span style="color:var(--emerald);">STREAMING</span>
-          </div>
-          <div class="agent-terminal" id="term_research">
-            <div class="term-line"><span class="term-ts">[13:24:02]</span><span class="term-tag-ok">REGISTRY_SYNC</span><span class="term-msg">Connected to AP, Reuters, AFP wire indexers</span></div>
-            <div class="term-line"><span class="term-ts">[13:24:03]</span><span class="term-tag-info">JINA_READER</span><span class="term-msg">Zero-ad clean markdown parsing engine armed for external links</span></div>
-            <div class="term-line"><span class="term-ts">[13:24:03]</span><span class="term-tag-ok">MATRIX_READY</span><span class="term-msg">Evidence jurist standing by for research clustering</span></div>
-          </div>
-        </div>
-
-        <!-- Interactive Quick Dispatch -->
-        <form onsubmit="dispatchAgentTest(event, 'research')" class="agent-action-row">
-          <input type="text" id="input_research" class="agent-quick-input" placeholder="Enter claim to verify evidence..." value="Nvidia Blackwell substrate defect rumor">
-          <button type="submit" class="agent-dispatch-btn" id="btn_research" style="background:#38bdf8;color:#000;">
-            <span>⚡ Harvest Evidence</span>
-          </button>
-        </form>
-
-        <div class="agent-card-footer">
-          <span style="color:var(--text-dim);font-family:var(--font-mono);">Endpoint: <code>research-agent.html</code></span>
-          <a href="research-agent.html" style="color:#38bdf8;text-decoration:none;font-family:var(--font-mono);font-weight:600;">Open Research Workspace &rarr;</a>
-        </div>
-      </div>
-
-
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 06: INVESTIGATOR AGENT (BAYESIAN REASONER)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="tribunal" style="--card-accent:#818cf8;">
-        <div>
-          <div class="agent-card-header">
-            <div>
-              <div class="agent-badge-row">
-                <span class="agent-badge" style="color:#818cf8;">AGENT_06 &bull; FORENSIC CASE DOSSIER</span>
-                <span class="agent-ping"><span class="agent-ping-dot"></span> 28ms latency</span>
-              </div>
-              <div class="agent-title">Investigator Agent</div>
-            </div>
-            <a href="investigator-agent.html" class="ae-btn ae-btn-primary" style="padding:8px 16px;font-size:0.78rem;background:#818cf8;border-color:#818cf8;color:#fff;">
-              <span>Open Forensic Dossier &rarr;</span>
-            </a>
-          </div>
-          <p class="agent-desc">
-            Constructs forensic case dossiers tracing chain of custody from initial vector emergence to authoritative refutation, separating known empirical facts from unresolved investigative gaps.
-          </p>
-        </div>
-
-        <!-- Monitored Feeds -->
-        <div>
-          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);margin-bottom:6px;">MONITORED STREAMS &amp; SCAPERS:</div>
-          <div class="agent-feeds-row">
-            <span class="agent-feed-pill">&#9650; Bayesian Prior/Posterior Engine</span>
-            <span class="agent-feed-pill">&#9670; Logical Contradiction Resolver</span>
-            <span class="agent-feed-pill">&#9632; 3-Node Byzantine Quorum</span>
-            <span class="agent-feed-pill">&#9679; W-MSR Trimmed Consensus</span>
-          </div>
-        </div>
-
-        <!-- System Specifications -->
-        <div class="agent-spec-grid">
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Protocol</span>
-            <span class="agent-spec-val">Bayesian Inference</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Execution Budget</span>
-            <span class="agent-spec-val">31.2ms / claim</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Anomaly Trigger</span>
-            <span class="agent-spec-val">Contradiction Detected</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Consensus Weight</span>
-            <span class="agent-spec-val">w_i = 0.38 (Consensus)</span>
-          </div>
-        </div>
-
-        <!-- Live Terminal Stream -->
-        <div>
-          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);margin-bottom:6px;display:flex;justify-content:space-between;">
-            <span>// LIVE SOCKET EVENT TELEMETRY</span>
-            <span style="color:var(--emerald);">STREAMING</span>
-          </div>
-          <div class="agent-terminal" id="term_investigator">
-            <div class="term-line"><span class="term-ts">[13:24:02]</span><span class="term-tag-ok">QUORUM_ARMED</span><span class="term-msg">3-node Byzantine fault-tolerant voting matrix initialized</span></div>
-            <div class="term-line"><span class="term-ts">[13:24:03]</span><span class="term-tag-info">WMSR_FILTER</span><span class="term-msg">Adversarial and extreme confidence outliers pruned automatically (F=1)</span></div>
-            <div class="term-line"><span class="term-ts">[13:24:04]</span><span class="term-tag-ok">REASONER_READY</span><span class="term-msg">Supermajority threshold set at 66.7% convergence</span></div>
-          </div>
-        </div>
-
-        <!-- Interactive Quick Dispatch -->
-        <form onsubmit="dispatchAgentTest(event, 'investigator')" class="agent-action-row">
-          <input type="text" id="input_investigator" class="agent-quick-input" placeholder="Enter claim to arbitrate..." value="5G telecommunication causes cellular oxygen starvation">
-          <button type="submit" class="agent-dispatch-btn" id="btn_investigator" style="background:#fbbf24;color:#000;">
-            <span>⚡ Arbitrate Consensus</span>
-          </button>
-        </form>
-
-        <div class="agent-card-footer">
-          <span style="color:var(--text-dim);font-family:var(--font-mono);">Endpoint: <code>investigator-agent.html</code></span>
-          <a href="investigator-agent.html" style="color:#818cf8;text-decoration:none;font-family:var(--font-mono);font-weight:600;">Open Forensic Case Dossier &rarr;</a>
-        </div>
-      </div>
-
-
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 07: CLAIM INGESTION AGENT (LINGUISTIC NORMALIZER)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="tribunal" style="--card-accent:#818cf8;">
-        <div>
-          <div class="agent-card-header">
-            <div>
-              <div class="agent-badge-row">
-                <span class="agent-badge" style="color:#818cf8;">AGENT_07 &bull; LINGUISTIC NORMALIZER</span>
-                <span class="agent-ping"><span class="agent-ping-dot"></span> 5ms latency</span>
-              </div>
-              <div class="agent-title">Claim Ingestion Agent</div>
-            </div>
-            <a href="submit.html" class="ae-btn ae-btn-primary" style="padding:8px 16px;font-size:0.78rem;background:#818cf8;border-color:#818cf8;color:#fff;">
-              <span>Submit Raw Claim &rarr;</span>
-            </a>
-          </div>
-          <p class="agent-desc">
-            Cleanses unstructured multi-language user input, normalizes typographic anomalies, executes Named Entity Recognition (NER), and computes SHA-256 deduplication hashes.
-          </p>
-        </div>
-
-        <!-- Monitored Feeds -->
-        <div>
-          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);margin-bottom:6px;">MONITORED STREAMS &amp; SCAPERS:</div>
-          <div class="agent-feeds-row">
-            <span class="agent-feed-pill">&#9650; Named Entity Recognition (NER)</span>
-            <span class="agent-feed-pill">&#9670; SHA-256 Hash Deduplicator</span>
-            <span class="agent-feed-pill">&#9632; Temporal Epoch Normalizer</span>
-            <span class="agent-feed-pill">&#9679; Multilingual Cleanser</span>
-          </div>
-        </div>
-
-        <!-- System Specifications -->
-        <div class="agent-spec-grid">
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Protocol</span>
-            <span class="agent-spec-val">UTF-8 Normalizer</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Execution Budget</span>
-            <span class="agent-spec-val">4.8ms / payload</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Anomaly Trigger</span>
-            <span class="agent-spec-val">Hash Collision (Dedupe)</span>
-          </div>
-          <div class="agent-spec-item">
-            <span class="agent-spec-label">Pipeline Stage</span>
-            <span class="agent-spec-val">Stage 01 (Entry)</span>
-          </div>
-        </div>
-
-        <!-- Live Terminal Stream -->
-        <div>
-          <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);margin-bottom:6px;display:flex;justify-content:space-between;">
-            <span>// LIVE SOCKET EVENT TELEMETRY</span>
-            <span style="color:var(--emerald);">STREAMING</span>
-          </div>
-          <div class="agent-terminal" id="term_ingestion">
-            <div class="term-line"><span class="term-ts">[13:24:02]</span><span class="term-tag-ok">PIPELINE_INIT</span><span class="term-msg">Claim Ingestion Stage 01 ready on intake gateway</span></div>
-            <div class="term-line"><span class="term-ts">[13:24:03]</span><span class="term-tag-info">DEDUPE_INDEX</span><span class="term-msg">SHA-256 hash table loaded with verified historical claim signatures</span></div>
-            <div class="term-line"><span class="term-ts">[13:24:04]</span><span class="term-tag-ok">GATEWAY_ACTIVE</span><span class="term-msg">Accepting raw URLs, social transcripts, and text strings</span></div>
-          </div>
-        </div>
-
-        <!-- Interactive Quick Dispatch -->
-        <form onsubmit="dispatchAgentTest(event, 'ingestion')" class="agent-action-row">
-          <input type="text" id="input_ingestion" class="agent-quick-input" placeholder="Enter raw claim or news link..." value="BREAKING: Eiffel Tower relocated to Tokyo overnight">
-          <button type="submit" class="agent-dispatch-btn" id="btn_ingestion" style="background:#818cf8;color:#fff;">
-            <span>⚡ Ingest &amp; Normalize</span>
-          </button>
-        </form>
-
-        <div class="agent-card-footer">
-          <span style="color:var(--text-dim);font-family:var(--font-mono);">Endpoint: <code>POST /api/claims/verify</code></span>
-          <a href="submit.html" style="color:#818cf8;text-decoration:none;font-family:var(--font-mono);font-weight:600;">Open Submit Pipeline &rarr;</a>
-        </div>
-      </div>
 
     </div>
 

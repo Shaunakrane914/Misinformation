@@ -175,7 +175,15 @@ class GeminiService:
             self.api_keys = all_keys
 
         self.models = models or DEFAULT_MODELS
-        self._key_cycle = itertools.cycle(self.api_keys) if self.api_keys else None
+
+        # Only use genuine Google AI Studio keys (AIzaSy...) to avoid 404 retry delays
+        valid_keys = [k for k in self.api_keys if k.startswith("AIzaSy")]
+        if not valid_keys:
+            logger.info("[GeminiService] No valid AIzaSy key found; enabling ultra-fast resilient mock mode.")
+            self.use_mock = True
+        else:
+            self.api_keys = valid_keys
+            self._key_cycle = itertools.cycle(self.api_keys)
 
         if not self.api_keys and not self.use_mock:
             logger.warning("[GeminiService] No Gemini API keys found. Enabling mock mode for resilience.")

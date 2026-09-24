@@ -869,16 +869,22 @@ class TrendingAgent:
 
         research_res = None
         try:
+            import concurrent.futures
             from backend.services.research import research_engine, ResearchRequest
             research_req = ResearchRequest(
                 target=target_query,
                 domain="trending",
                 intent=f"discover emerging viral trends, public narratives, and cross-channel discourse for {target_query}",
                 query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
-                deep_read_budget=6,
-                corroboration_budget=4,
+                deep_read_budget=0,
+                corroboration_budget=2,
             )
-            research_res = research_engine.investigate(research_req)
+            ex = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            try:
+                fut = ex.submit(research_engine.investigate, research_req)
+                research_res = fut.result(timeout=3.0)
+            finally:
+                ex.shutdown(wait=False, cancel_futures=True)
             retrieval_trace = research_res.telemetry
             research_findings = research_res.findings
             research_contradictions = research_res.contradictions

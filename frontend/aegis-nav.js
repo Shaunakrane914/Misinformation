@@ -118,13 +118,10 @@
     { label: 'Submit Claim to Verify', href: 'submit.html', group: 'Actions', key: 'Verify' },
     { label: 'Live Dashboard', href: 'dashboard.html', group: 'Navigation', key: 'Dash' },
     { label: 'System Status', href: 'status.html', group: 'System', key: 'Status' },
-    { label: 'About Aegis', href: 'about.html', group: 'Information', key: 'About' },
     { label: 'Trending Agent (Viral Social Media)', href: 'trending-agent.html', group: 'Agents', key: 'Trend' },
     { label: 'Scout Agent (Stocks & Financial Markets)', href: 'scout-agent.html', group: 'Agents', key: 'Scout' },
-    { label: 'Personal Watch (Defamation & People)', href: 'personal-watch-agent.html', group: 'Agents', key: 'Watch' },
     { label: 'BrandShield (Corporate & Brand Defense)', href: 'brandshield-agent.html', group: 'Agents', key: 'Brand' },
-    { label: 'Research Agent (Intelligence Research Workspace)', href: 'research-agent.html', group: 'Agents', key: 'Research' },
-    { label: 'Investigator Agent (Forensic Case Dossier)', href: 'investigator-agent.html', group: 'Agents', key: 'Case' },
+    { label: 'Personal Watch (Defamation & People)', href: 'personal-watch-agent.html', group: 'Agents', key: 'Watch' },
     { label: 'Threat Intelligence Lab (Deterministic Bench)', href: 'lab.html', group: 'Tools', key: 'Lab' },
     { label: 'Changelog', href: 'changelog.html', group: 'System', key: 'Logs' }
   ];
@@ -287,4 +284,161 @@
   } else {
     initAll();
   }
+
+  // ── 6. Global High-Craft Progress & Loading Bar for All Agents ──
+  window.createAgentProgressBar = function(containerTarget, options = {}) {
+    const container = typeof containerTarget === 'string' ? document.querySelector(containerTarget) : containerTarget;
+    if (!container) return null;
+
+    const title = options.title || 'Executing Multi-Channel Agent Intelligence...';
+    const stages = options.stages || [
+      { name: '01 · Ingestion', desc: 'Agent Reach dispatch & query expansion' },
+      { name: '02 · Retrieval', desc: 'Scanning News, Web, Regulatory & Social feeds' },
+      { name: '03 · Synthesis', desc: 'Deduplication, wire clustering & corroboration' },
+      { name: '04 · Verdict', desc: 'Bayesian evidence matrix & consensus scoring' }
+    ];
+
+    const box = document.createElement('div');
+    box.className = 'agent-progress-box ae-reveal';
+    box.innerHTML = `
+      <div class="agent-progress-header">
+        <div class="agent-progress-title-row">
+          <div class="agent-progress-spinner" id="apbSpinner"></div>
+          <div>
+            <div class="agent-progress-title" id="apbTitle">${window.escapeHtml(title)}</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px;" id="apbSub">Pipeline running autonomously via Agent Reach</div>
+          </div>
+        </div>
+        <div class="agent-progress-meta">
+          <span class="agent-progress-pct" id="apbPct">12%</span>
+          <span class="agent-progress-timer" id="apbTimer">0.0s</span>
+        </div>
+      </div>
+      <div class="agent-progress-track">
+        <div class="agent-progress-bar" id="apbBar" style="width: 12%;"></div>
+      </div>
+      <div class="agent-progress-stages">
+        ${stages.map((st, idx) => `
+          <div class="agent-stage-col ${idx === 0 ? 'active' : ''}" id="apbStage_${idx}">
+            <div class="agent-stage-status">
+              <span class="agent-stage-dot"></span>
+              <span>${window.escapeHtml(st.name)}</span>
+            </div>
+            <div class="agent-stage-desc">${window.escapeHtml(st.desc)}</div>
+          </div>
+        `).join('')}
+      </div>
+    `;
+
+    container.innerHTML = '';
+    container.appendChild(box);
+
+    const startTime = performance.now();
+    let currentPct = 12;
+    let currentStage = 0;
+
+    const timerInterval = setInterval(() => {
+      const elapsed = ((performance.now() - startTime) / 1000).toFixed(1);
+      const timerEl = document.getElementById('apbTimer');
+      if (timerEl) timerEl.textContent = `${elapsed}s`;
+    }, 100);
+
+    const autoStepInterval = setInterval(() => {
+      if (currentPct < 28) {
+        currentPct += 4;
+        setStage(0);
+      } else if (currentPct < 58) {
+        currentPct += 3;
+        setStage(1);
+      } else if (currentPct < 84) {
+        currentPct += 2;
+        setStage(2);
+      } else if (currentPct < 94) {
+        currentPct += 0.5;
+        setStage(3);
+      }
+      updateBar(currentPct);
+    }, 250);
+
+    function setStage(idx) {
+      currentStage = idx;
+      stages.forEach((_, i) => {
+        const el = document.getElementById(`apbStage_${i}`);
+        if (!el) return;
+        if (i < idx) {
+          el.className = 'agent-stage-col complete';
+        } else if (i === idx) {
+          el.className = 'agent-stage-col active';
+        } else {
+          el.className = 'agent-stage-col';
+        }
+      });
+    }
+
+    function updateBar(pct, subText) {
+      const bar = document.getElementById('apbBar');
+      const pctEl = document.getElementById('apbPct');
+      const subEl = document.getElementById('apbSub');
+      const rounded = Math.min(100, Math.round(pct));
+      if (bar) bar.style.width = `${rounded}%`;
+      if (pctEl) pctEl.textContent = `${rounded}%`;
+      if (subText && subEl) subEl.textContent = subText;
+    }
+
+    return {
+      set(pct, stageIdx, subText) {
+        currentPct = pct;
+        if (typeof stageIdx === 'number') setStage(stageIdx);
+        updateBar(pct, subText);
+      },
+      finish(doneCallback) {
+        clearInterval(timerInterval);
+        clearInterval(autoStepInterval);
+        stages.forEach((_, i) => {
+          const el = document.getElementById(`apbStage_${i}`);
+          if (el) el.className = 'agent-stage-col complete';
+        });
+        const bar = document.getElementById('apbBar');
+        const pctEl = document.getElementById('apbPct');
+        const spinner = document.getElementById('apbSpinner');
+        const subEl = document.getElementById('apbSub');
+        if (bar) {
+          bar.style.width = '100%';
+          bar.style.background = 'linear-gradient(90deg, #10b981, #00e5ff)';
+        }
+        if (pctEl) {
+          pctEl.textContent = '100%';
+          pctEl.style.color = 'var(--emerald)';
+          pctEl.style.borderColor = 'var(--emerald)';
+          pctEl.style.background = 'rgba(16, 185, 129, 0.15)';
+        }
+        if (spinner) {
+          spinner.style.borderTopColor = 'var(--emerald)';
+          spinner.style.animation = 'none';
+        }
+        if (subEl) subEl.textContent = 'Pipeline execution complete — rendering intelligence artifacts';
+        setTimeout(() => {
+          if (doneCallback) doneCallback();
+        }, 350);
+      },
+      error(errMsg) {
+        clearInterval(timerInterval);
+        clearInterval(autoStepInterval);
+        const bar = document.getElementById('apbBar');
+        const pctEl = document.getElementById('apbPct');
+        const subEl = document.getElementById('apbSub');
+        const titleEl = document.getElementById('apbTitle');
+        if (bar) {
+          bar.style.background = 'var(--rose)';
+        }
+        if (pctEl) {
+          pctEl.textContent = 'FAILED';
+          pctEl.style.color = 'var(--rose)';
+          pctEl.style.borderColor = 'var(--rose)';
+        }
+        if (titleEl) titleEl.style.color = 'var(--rose)';
+        if (subEl) subEl.textContent = errMsg || 'Agent analysis timed out or encountered an error';
+      }
+    };
+  };
 })();

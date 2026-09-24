@@ -148,12 +148,14 @@
       document.body.appendChild(backdrop);
     }
 
-    const input = document.getElementById('cmdPaletteInput');
-    const list = document.getElementById('cmdPaletteList');
+    const input = document.getElementById('cmdPaletteInput') || document.getElementById('cmdInput');
+    const list = document.getElementById('cmdPaletteList') || (backdrop ? backdrop.querySelector('.cmd-list') : null);
+    if (!backdrop || !input) return;
     let selectedIndex = 0;
     let filteredItems = [...cmdPaletteItems];
 
     function renderList() {
+      if (!list) return;
       if (filteredItems.length === 0) {
         list.innerHTML = `<div style="padding:18px 14px;color:var(--text-dim);font-size:0.85rem;text-align:center;">No matching commands found.</div>`;
         return;
@@ -178,6 +180,7 @@
     }
 
     function updateSelection() {
+      if (!list) return;
       list.querySelectorAll('.cmd-item').forEach((el, idx) => {
         el.classList.toggle('selected', idx === selectedIndex);
       });

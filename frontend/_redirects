@@ -1,0 +1,10 @@
+# 1. Netlify functions endpoints
+/api/gemini          /.netlify/functions/gemini 200
+/api/stock           /.netlify/functions/stock  200
+/api/scout/stock     /.netlify/functions/stock  200
+
+# 2. Proxy backend API requests to Render
+/api/*               https://misinformation-1ouh.onrender.com/api/:splat 200!
+
+# 3. SPA Fallback (only for non-file routes)
+/*                   /index.html 200

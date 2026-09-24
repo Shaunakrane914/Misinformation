@@ -358,7 +358,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             "debunk_statement": debunk_stmt,
             "action_package": {
                 "copy_debunk": debunk_stmt,
-                "tweet_rebuttal": f"ALERT: The claim that '{norm_text[:50]}...' has been verified as {clean_verdict} by @AegisProtocol. Provenance analysis refutes this assertion. Read the truth dossier: https://agentai100.netlify.app/submit.html?claim={urllib.parse.quote_plus(norm_text[:40])}",
+                "tweet_rebuttal": f"ALERT: The claim that '{norm_text[:50]}...' has been verified as {clean_verdict} by @AegisProtocol. Provenance analysis refutes this assertion. Read the truth dossier: https://agenticai914.netlify.app/submit.html?claim={urllib.parse.quote_plus(norm_text[:40])}",
                 "press_notice": f"OFFICIAL CORRECTION: Fact-checking confirms statement '{norm_text}' lacks empirical substantiation. Global wire records refute this occurrence."
             },
             "execution_time_seconds": duration,

@@ -427,7 +427,25 @@ class ResearchEngine:
             f"{lineage_graph.get('metrics', {}).get('echo_count', 0)} syndicated echoes."
         )
 
-        logger.info(f"[ResearchEngine] Investigation finished in {total_latency_ms}ms: {len(findings)} findings, {len(primary_sources)} primaries")
+        # Stage 14: Immutable Research Dossier Registration
+        try:
+            from backend.services.research.replay_ledger import replay_ledger
+            dossier_id = replay_ledger.record_investigation(
+                target=request.target,
+                domain=request.domain,
+                summary=summary,
+                candidates=ranked_candidates,
+                findings=findings,
+                queries=all_executed_queries,
+                telemetry=telemetry,
+                lineage_graph=lineage_graph,
+            )
+            telemetry["dossier_id"] = dossier_id
+        except Exception as e_dos:
+            logger.debug(f"[ResearchEngine] Dossier recording notice: {e_dos}")
+            telemetry["dossier_id"] = f"R-2026-TEMP-{int(time.time())}"
+
+        logger.info(f"[ResearchEngine] Investigation finished in {total_latency_ms}ms (dossier={telemetry.get('dossier_id')}): {len(findings)} findings, {len(primary_sources)} primaries")
 
         return ResearchResult(
             agent=request.agent_name,

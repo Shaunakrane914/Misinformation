@@ -10,6 +10,7 @@ from backend.api.claims import router as claims_router
 from backend.api.agent_reach import router as agent_reach_router
 from backend.api.threat_lab import router as threat_lab_router
 from backend.api.agents import router as agents_router
+from backend.api.replay import router as replay_router
 
 all_routers = [
     system_router,
@@ -17,4 +18,5 @@ all_routers = [
     agent_reach_router,
     threat_lab_router,
     agents_router,
+    replay_router,
 ]

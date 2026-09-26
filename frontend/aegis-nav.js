@@ -32,6 +32,7 @@
     agents:    { href: 'agents.html',    label: 'Agents' },
     submit:    { href: 'submit.html',    label: 'Submit Claim' },
     dashboard: { href: 'dashboard.html', label: 'Dashboard' },
+    benchmark: { href: 'benchmark.html', label: 'Benchmark' },
     status:    { href: 'status.html',    label: 'Status' },
     about:     { href: 'about.html',     label: 'About' }
   };
@@ -123,6 +124,7 @@
     { label: 'BrandShield (Corporate & Brand Defense)', href: 'brandshield-agent.html', group: 'Agents', key: 'Brand' },
     { label: 'Personal Watch (Defamation & People)', href: 'personal-watch-agent.html', group: 'Agents', key: 'Watch' },
     { label: 'Threat Intelligence Lab (Deterministic Bench)', href: 'lab.html', group: 'Tools', key: 'Lab' },
+    { label: 'Research Benchmark (Empirical & Chaos Suite)', href: 'benchmark.html', group: 'Tools', key: 'Bench' },
     { label: 'Changelog', href: 'changelog.html', group: 'System', key: 'Logs' }
   ];
 

@@ -1,0 +1,874 @@
+{
+  "session_id": "R-2026-9774D1",
+  "target": "Nvidia Corp",
+  "domain": "financial",
+  "created_at": "2026-09-26T18:11:19Z",
+  "latency_ms": 18459,
+  "summary": "Forensic investigation for 'Nvidia Corp' across 6 channels yielded 44 deduplicated candidates, with 2 deep-read primary/investigative documents across 7 independent source groups. Identified 1 substantive evidence-backed findings, 0 conflicting signal(s), and isolated 3 verified origin sources from 0 syndicated echoes.",
+  "queries_executed": [
+    {
+      "channel": "news",
+      "query_id": "q_001",
+      "query_text": "NVIDIA CORP latest news"
+    },
+    {
+      "channel": "news",
+      "query_id": "q_003",
+      "query_text": "NVIDIA CORP today developments"
+    },
+    {
+      "channel": "news",
+      "query_id": "q_005",
+      "query_text": "NVIDIA CORP earnings results revenue"
+    },
+    {
+      "channel": "web",
+      "query_id": "q_002",
+      "query_text": "NVIDIA CORP latest news"
+    },
+    {
+      "channel": "web",
+      "query_id": "q_004",
+      "query_text": "NVIDIA CORP today developments"
+    },
+    {
+      "channel": "web",
+      "query_id": "q_007",
+      "query_text": "NVIDIA CORP earnings results revenue"
+    },
+    {
+      "channel": "rss",
+      "query_id": "q_006",
+      "query_text": "NVIDIA CORP earnings results revenue"
+    },
+    {
+      "channel": "rss",
+      "query_id": "q_009",
+      "query_text": "NVIDIA CORP financial guidance analyst expectations"
+    },
+    {
+      "channel": "rss",
+      "query_id": "q_011",
+      "query_text": "NVIDIA CORP investor relations announcement"
+    },
+    {
+      "channel": "reddit",
+      "query_id": "q_017",
+      "query_text": "NVIDIA CORP investigation controversy debt"
+    },
+    {
+      "channel": "reddit",
+      "query_id": "q_020",
+      "query_text": "NVIDIA CORP credit downgrade rumor probe"
+    },
+    {
+      "channel": "reddit",
+      "query_id": "q_022",
+      "query_text": "$NVIDIA CORP investor sentiment discussion"
+    },
+    {
+      "channel": "twitter",
+      "query_id": "q_021",
+      "query_text": "$NVIDIA CORP investor sentiment discussion"
+    },
+    {
+      "channel": "twitter",
+      "query_id": "q_024",
+      "query_text": "NVIDIA CORP stock market rumor social media"
+    },
+    {
+      "channel": "twitter",
+      "query_id": "q_028",
+      "query_text": "NVIDIA CORP positive outlook growth"
+    },
+    {
+      "channel": "youtube",
+      "query_id": "q_023",
+      "query_text": "$NVIDIA CORP investor sentiment discussion"
+    },
+    {
+      "channel": "youtube",
+      "query_id": "q_026",
+      "query_text": "NVIDIA CORP stock market rumor social media"
+    },
+    {
+      "channel": "adaptive",
+      "query_id": "q_adapt_001",
+      "query_text": "\"Nvidia Corp\" \"World Leader\" announcement statement partnership"
+    },
+    {
+      "channel": "adaptive",
+      "query_id": "q_adapt_002",
+      "query_text": "\"Nvidia Corp\" \"Artificial Intelligence Computing\" announcement statement partnership"
+    }
+  ],
+  "candidate_hashes": {
+    "ev_034": "9d619192c081b2ec",
+    "ev_036": "673ab4a50dafbee0",
+    "ev_019": "35084dd54a1e980e",
+    "ev_038": "776f12262ba1cf52",
+    "ev_001": "f88bfa3c150f9410",
+    "ev_037": "a8ada9a5d003cc7d",
+    "ev_035": "e352f46137ad0873",
+    "ev_006": "ae5c7df3f3a1f958",
+    "ev_017": "2c4bc45e1ccae12e",
+    "ev_018": "f21ff440a7671a65",
+    "ev_014": "727bb71c852aa9b3",
+    "ev_002": "7c63df30d8d467b5",
+    "ev_003": "ae54d38bc2550496",
+    "ev_004": "696cb40827059992",
+    "ev_005": "a37c40eb12541ddc",
+    "ev_007": "b0de2b73469ee36c",
+    "ev_009": "a8b63e378c08ca31",
+    "ev_010": "6800ec2ab0568912",
+    "ev_011": "2225fd42ecc00209",
+    "ev_012": "6b280674f77081df",
+    "ev_013": "e0e8ec387fb31680",
+    "ev_015": "d8ee71a9afe4fcf6",
+    "ev_016": "190578142e0ff335",
+    "ev_020": "965d6286142dd6ac",
+    "ev_031": "4bf6d09367f5d6ab",
+    "ev_032": "f1594d9d4b0e7865",
+    "ev_033": "8713f8ed0349c26e",
+    "ev_039": "a8ada9a5d003cc7d",
+    "ev_040": "a8ada9a5d003cc7d",
+    "ev_fu_041": "e4067bf83c4b5b48",
+    "ev_fu_042": "563b706ddc0ec7f8",
+    "ev_022": "e9f57e25f86096e1",
+    "ev_024": "698b67a82eb98f1f",
+    "ev_025": "a3ea97cd6dd9eb46",
+    "ev_008": "d015c5211632484b",
+    "ev_fu_043": "8ae9a85d1174133f",
+    "ev_fu_044": "0a76343f4aa638cf",
+    "ev_021": "4637f5d9e508f26f",
+    "ev_023": "0bfe0e3f6c80b5bb",
+    "ev_026": "bca83f0f4687470c",
+    "ev_027": "e3d6bd1ddbc58589",
+    "ev_028": "e4f6ec9fc0e0fd2a",
+    "ev_029": "49217466dc8b5118",
+    "ev_030": "1615fbc36bc81711"
+  },
+  "decision_log": [
+    {
+      "timestamp": 1790446279.634,
+      "stage": "QueryPlanning",
+      "decision_type": "QUERY_GENERATION",
+      "entity_or_query": "Nvidia Corp",
+      "rationale": "Generated 19 multi-channel targeted queries for domain 'financial'.",
+      "evidence_ids_affected": []
+    }
+  ],
+  "findings_provenance": [
+    {
+      "finding_id": "fnd_fi_001",
+      "title": "General News: World Leader in Artificial Intelligence Computing | NVIDIA",
+      "epistemic_state": "KNOWN_FACT",
+      "quality_tensor": {
+        "relevance": 0.575,
+        "source_quality": 0.55,
+        "independence": 0.85,
+        "primary_weight": 1.0,
+        "freshness": 0.6,
+        "contradiction_level": 0.05,
+        "composite_score": 0.696
+      },
+      "supporting_evidence_ids": [
+        "ev_034",
+        "ev_036"
+      ],
+      "contradicting_evidence_ids": [],
+      "primary_sources": [
+        "www.nvidia.com",
+        "build.nvidia.com"
+      ]
+    }
+  ],
+  "source_lineage": {
+    "nodes": [
+      {
+        "id": "ev_034",
+        "source_name": "www.nvidia.com",
+        "domain": "www.nvidia.com",
+        "url": "https://www.nvidia.com/en-in/",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "DISCOVERY",
+        "is_origin": true,
+        "citation_depth": 0,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_036",
+        "source_name": "build.nvidia.com",
+        "domain": "build.nvidia.com",
+        "url": "https://build.nvidia.com/",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "DISCOVERY",
+        "is_origin": true,
+        "citation_depth": 0,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_019",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiWkFVX3lxTE9acnFWSVR0WTRLWV9oVUQzRVdzM3JEMUdadXlSeUZIMkRiemdFWUlMRktCTmwtYXNWVml5YnI5dFlHOHQ0VDZvRkJPZkhCMTgzQ3NfT002bGJ2UQ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": true,
+        "citation_depth": 0,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_038",
+        "source_name": "apps.microsoft.com",
+        "domain": "apps.microsoft.com",
+        "url": "https://apps.microsoft.com/detail/xp8clzl93f5z4p",
+        "tier": "TIER_2_FINANCIAL_PRESS",
+        "role": "SECONDARY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_001",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOcjZPeVV6eC01Z2tWOHlyVEhmMG9uZDgyaXdvVTV3MVVMWGdKVVhJdlNiRHBvejd0UnlSNFJfTFA4dXAxUk9fVi1RQ2h2VU1kd2FkSUoydEJheDVMNWRnYUdMa2RFcG8zcTROTl9ZX1lJQ0tRU1VZR2pkQjFRdEtkM0tpUUlOcXhsYTFGcGY5RHFQYWZyNkh6LXVCSmN0Y1J3WWc?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_037",
+        "source_name": "www.bing.com",
+        "domain": "www.bing.com",
+        "url": "https://www.bing.com/ck/a?!&&p=16cb0b9fd8f159ccfbc28144667b1a4c0c347de196a7bedc6b2906c61b9bf7acJmltdHM9MTc5MDM4MDgwMA&ptn=3&ver=2&hsh=4&fclid=02a6a521-11fe-67c7-2284-b2c110046627&u=a1aHR0cHM6Ly93d3cubnZpZGlhLmluL2NvbnRlbnQvRHJpdmVyRG93bmxvYWRzL2NvbmZpcm1hdGlvbi5waHA_dXJsPS9XaW5kb3dzLzUxMi41OS81MTIuNTktZGVza3RvcC13aW4xMC13aW4xMS02NGJpdC1pbnRlcm5hdGlvbmFsLW5zZC1kY2gtd2hxbC5leGUmbGFuZz1pbiZ0eXBlPUdlRm9yY2U&ntb=1",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_035",
+        "source_name": "en.wikipedia.org",
+        "domain": "en.wikipedia.org",
+        "url": "https://en.wikipedia.org/wiki/Nvidia",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "DISCOVERY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_006",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMi6wFBVV95cUxOUS1Ma0RBY1F0ZGliTkR6SmpNa3RtNlhsSzJBZ21qNWlRSHJvUjBJdU1RSEtYWGVwSmZ0LWh5clYySGRhb2ozbm4xekVtcFc3bU02TFFNVFRrc1dHNkVRQlBqYTBhVmhEUkdGSTgwV05jSko5SkRseERuOTlSbEFyVWM3X0hScnBpS2ZzXy1xSWxZYWVtMXN2d3J6eDNJZk0wc3E5S1dUR01DSThtX1JjUmh2R09Id0s5NHIwdEJ0WlpQMXVKRllTTU1rLVJaaWMtMmhIZmxrY0ZTRnlnNXozV3A1NUJKck5DVmFj?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_017",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxQMlgyU1NVZzRuWmRBM1Z3R0E0a3pFMmlEZEtNd2JWVXk2SWg1dDRMYVRQbzhSZ3VtNmY0OU1CV29kQ09oUGo1N2lkeV84aUhWdGh5MzVremdrZkhMS3dwVkJHRWJUeTBRbEFYeDRoS0VDczYxZHR2MWZBZ3dXRE13WkdIQWZGZnR3VUxydDM3N1pUdw?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_018",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiZkFVX3lxTFBLdkV5WnB4RE55RHprbEZUaHBvcEhMc0JXci1IRmQydjhFY3hHZFgwWEVPSjQyYmxHU3VPUWFuX2pLRGs3aGVzbl85N1E0bTItQi1ZV0FiWFRaRW0za2hCZ215SFVTZw?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_014",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMi_AFBVV95cUxQQldBMzdLdkFBZjNtOGRfWmNqazN6N3dZcHExV0NzS2hBMjU1cmZFQm1BS2NEenhfdWFkUFhxdzZGRkd6cWpOajh0eFRuLThSOGhJOV9xcktHaDduSmNYVXVuYzFXRV9wYXl5aTZNUUM3d1BmeThQTnlFbWZ4YURodUNEblo4c3Y5a1FzMFlVLU9pVXJfU1U5N3hrcHc2aEN6Vmt2M0JuT19LeHBJUVJYS3loY0VweDNzV1dpa3pPVlBCb004cTF2WEFpd3dnak9XcTBvNFplZkprdXFDdmhoX3VoLVB6S0toVm50dDhSNlQ0WHdyNEdzOGFqWXQ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_002",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxQVTdlSVdfanZLZVB3elBDNkpjOXRrVEtqODlaaVJEakxvWUhTLU9zNEpkUkUzbUpGWVhDNEQtc2JNSEpwRFlTQUpnNkw4eU5xakpQd09OaXAzQUw2ZEJaVHRlb1N5cU1rcFZ3XzYxMl9RNWx0dGwzMGtvb1dORHNqbUVmdmd1RDZXdEFIcXc4Vmp2MEFmc1hmYXpzONIBoAFBVV95cUxQbExCZEYxVi1YOTlRaVdpZVlpb1NSZVZUWExBazBJSVBhUlZtOUM3YzhpUG1EZGE0WGZ5VkNoNDM4LTBqTG82bXktaGdzb2tmcFY5dVV3VEpseDZhNXc5SGVjOTZIWFNscmRFNDJkd0IzdHJCYkZHSUFHZG1KcVdldGdOYkd4b3NnYVFMRnB0NW9lRkxIdVhRRjFHZ0lsVm92?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_003",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMi0AFBVV95cUxOYmRYN1JmV1dzS2VkR0NvTFlQbnNoZllEWFhhLUdQbTQ4MFY5M1NBY2NQcWIxTmZXbGRJTjAtMzgzQW5yeXBNOFVreU1nWDNSXzB4aUtPYlppdDVubk9yOVN0a1h1RzNJYW9WUkw2WkM4c0pkMDBZbko0MUpBVXNiUktEMFFvQjlTOWRTbm8yS0VCS0JiV0hEcWZEd3h1cjFpbzBYYTc1WWJ3MlAzdlRFRXk5RGx3enR3UHdKNGNmUHQxQXh6QWphb0VGc3p1RFhm?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_004",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxPdC1rUGZycU5DWDhBdkJvNTYyeGl1d0lyV2J2VFlRRkdNZno4d0dWRE1QbHNGc2JOQ1NqUkNQZXA2XzMtTUp6d1hwOVc1RXhsY0p5WnpPX3NCcTFYYjNYS0dOeUlnYXNwWTlBQkNhT016MUZIeUx6b2d5VUJYLTFOSnBIRFY1U2Q2X3hBTmdlY2VwNUlHYlJ1eDJZSFZOZ1RJ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_005",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiqAFBVV95cUxQUW1ETzlYdmdSM2tOdEVPN1kzZUhSM1lMRjctVkpQOFl3VFNhT3N5eG1QTTZMVkh4cG9pQWRKUGt0ZmdCaXl6V3FJdFBaUF9oMUdrS2xqeENNV2I1bUhaQ3J6NTN4MFJyZDVzMlpkcEt2RHVhTTZ5V3U3TVh3ZzBCRWdnazFPQmh1bTBqWXgyRkFaUklaM0s2S0ttWnlUVGFBdmJNclpzRHrSAa4BQVVfeXFMTXlMb2p6dVN6Vmg0Wk83T3RLalNJTDlOQnVOOUtUNTlUUV9UelZ5SEp3TW9GZGhqeDIxUklXQ09XblJtY2cyVHFNYXI1SElQQXlHWHJIZ18xTFg0WkNKc1haZmoxRU1EVHc4dlRjQ25CWktUUjBKNV9qd2xmRWZKNDRTY0hpNTdRTlN3ZjdWbWhac2R1TjdUZ0ZIM3kybEZQamNpYm5yRDEwM2xlNjJ3?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_007",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOTlZ3eURLTmdvaFlhVjRTR3d3TE5qSzBTSlhEN0tnRjJNQm9YSF9jOXpfaldkTzZ0OEpxV2JfY3NMZzE2ZWowcVFERk9RMzJucWJqbS01YmJlb0Q5Z0V6TXhKdXFUZHB1aFRvQ2pjdERKTUI5bXFYbGI3YkNiRDFkUHNjQnhjeXRuazVVUEVsUW9tOXUwTHVaNWtTVjcxdExYRGJQU093?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_009",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPQXlJRjc2MVFBNlVHY3Q5c21hVU1SUTRFWDNHcldJVnAyNERTLWxBWUpBUFYtYjFBNDFLb0ZZQnFWRl9MeFRxTklyUFEySE5fN2F0QklMQkxkdnVYV29BWUM0ZDExR3pqVTdWSHJYY1MxcjluWENJSmZFT3BRMEItbGNHN2JfbXk0SzRsZXotdlYtdzJQenpiV0gyaw?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_010",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxOMk9qWU1DdjYzU21NbDIyQlNYY25GUk1nVUdDckZqdjRUMUdPUkQ2RE0wM001WEpXai1SY0ZrRE1MMG1aeUhJVW1DVGhFNWppQzViQnlWakNRQkxvaFFEQ2pjb0d2N2l6UDZWOW1MZ1ZHMXdoelRnMlpaSXo0eGVZMERESDNkZ3l6dDJSaFEzeFlENzFYVjc4RDdMMFlVN3d1M3htWkI2Smg2WDZsUnc?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_011",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiZEFVX3lxTE9uXzBzR3NhYkhmOFNSb0tua2s2U1RCRHQ5RXpRcUxKS0xMUkFMNlYxMDltR3N3bmVSdWFQc1lMWDcwaC1yVnNnWEdkMEt3QkZOaGZvaXY0cHRHMVBaLUp1SzFDejc?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_012",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxQLVhNZklDZUNsa3FUN0xyZW1tZ2FtYlktalR2akJZV1FNMDZhSi12VXFCbTJTWTVmajBPN0J3bVlPUG5DdHZuRC1jUGRfSG1GTi1KalpQV1Y1QkpYc0hHd3VvRHZrZmp1SjZnd0FYRU1aeE9tWl9sR2stb1dXaWRIRWEwOWtMQmJVaFl4UDlrTTQxVFFLOU5kS2lzMk9mV3g4?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_013",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimAFBVV95cUxNOFBmMEdPMDVSWjNYUnhOQmdPRVQ4VGJXS2dyclRDSDFsMEZDSklJZHdwNDlaM1NxcTk2QW5vaE9ENHp6QldidmJXaHFrNWdwR3RCVFhraDF4YTFGbS1zTXc0NlFROGRZdnFxbHg1NHkxMXdtVVdzbzBQZUV2ODdRQkxkUTVfZ2hncHZLVmx4YUlCWUtiRkU0ZQ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_015",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPbVpVTkZFc2k0UUJxejF1dFlJTVBiaEc4MmNRV0REczlKSVlCdDNuZUtOWmJtY3ltLU1ZUS1COXpWUUJ2bzJiR1FjamZmRTY4TVJodUdqcG1rQzRGTjl2WTNlV3JvZzNhNmU1blk0ZTViNEhDa1E4SURDWHJRakw0aHBSUXlYTEEzeFFwYVVFUEVlMGdUQ1RLZ3FaWXhWMGlwTkxwcEU4NW12b3c?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_016",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiywJBVV95cUxNUGxLczhkY1phSHVqWkVkVWFNZUtzVjVXSmxlUzZBd1hjc1huVnpiMXZ1VWI1VE8zR09yR0ZQOURYM1F6Yl9mYlVtYmMyeDV1RHRSdVRvT0hfT0tzSklWb1plUHdpSXRjazVSVDIzMmFJekd2M1NXV2F2OW5UZ2dDS2F6LXBya2FpODJySFNVdjBFdFQyVkxCQ2F0ZVdCYkVxOEM5c3NZZ1VGTWhvS2V2V205dVVQRFJGRGx4N2xoRXBZQmpodzhxeHU3VGstV21KUEhfeGgwd1FYRVlXRGQ4WVJPUXpFM0dqS2lPaDZiV1VfOXdERVFGZVlHVHZaY3o0a0xTME9JMFJxaklvV1NNNEJabWdCNlhFT29sVE9UQ0FNX3o5ekY4YmtCLTlOTnZiZnUxSThVRVRwOHFhUldVSVIxU0FuWVpQSEpn?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_020",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxNVWM4b1VHZ25hRWxOVldvNUJRX3J0aXFnZTdtQk83QjlyOXFTQWN3UmN1eFZGVllUOWlTSmRITnJrTEZkZmtDVGFIZC0za3Z5QXVJaEl4OF9fWkNLOGd1U3NaejlOWVlyUHpzVUNzNEx2bWFUbVFDRDYxVTdjUFFmTlM4MGZzc283T0R2aFBQMWt5T0JncVFlR1BMUC1CTEktSGF1M1V3?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_031",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPbGhBdzEtek1ZdzFhdE5SZlFlaXZzVDNyMkg0ZjJLRTJpVHl4d25wWGliRFBzT3NZekFkZGV2N1lURkM3bmlJNlV1ajhUWGd6SmE3NkZicXlXN3YtM0xOeHI4NEVOWHVHWFFUbzVpbHFiUDBHcmlZRTR5WHlyd2k4TWpkMXZEejlFR1Q3YkZadXJzYXRzY21fVEtValdTMEZOSXRvbTBQQTFPYVJSR2pRNkpR?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_032",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiakFVX3lxTE1BWEhVNnVLZHo3MkhxN0VZaWxpLTFjUGNEUV9EUnlJLVZCSlpRYldzTDNLcVNxNlR5YXR0c2tSdFRyZ1ZoM0Uza1ptcHA2cWJRNEdYUG9POG9aQk96MllkMTkxbWdITnlvVGc?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_033",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxQTEhUektnZzg5QXo2MnJIVlBLRFI3OFdCNTNtbjdQVkxtVE9fUTlMVmRpVGdtQnVHOWxwTXBpODBFSlp0ZHlVN2hGbW9FNEpsV0dXcE91ZTVSNVpfYTlvMmc3c29sVlVMWm5QN2YwaUgwaThEZGd5aW9md2NjUGZjaHpZRnBGYzJxT2VRcUFoUGVtbmtRTWhjTUVKN0hQNXFhMWNR?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_039",
+        "source_name": "www.bing.com",
+        "domain": "www.bing.com",
+        "url": "https://www.bing.com/ck/a?!&&p=2c56029dfb584667cb4d8c2f03ea34cf46ce375bdc02347543d920a5a7125662JmltdHM9MTc5MDM4MDgwMA&ptn=3&ver=2&hsh=4&fclid=0637061e-d745-6f3f-02a1-11fed6a26e9a&u=a1aHR0cHM6Ly93d3cubnZpZGlhLmluL2NvbnRlbnQvRHJpdmVyRG93bmxvYWRzL2NvbmZpcm1hdGlvbi5waHA_dXJsPS9XaW5kb3dzLzUxMi41OS81MTIuNTktZGVza3RvcC13aW4xMC13aW4xMS02NGJpdC1pbnRlcm5hdGlvbmFsLW5zZC1kY2gtd2hxbC5leGUmbGFuZz1pbiZ0eXBlPUdlRm9yY2U&ntb=1",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_040",
+        "source_name": "www.bing.com",
+        "domain": "www.bing.com",
+        "url": "https://www.bing.com/ck/a?!&&p=dd4e1860a7241be6ef244076df59c746c670aebe2ad7205f1f5f3e54243e5f1eJmltdHM9MTc5MDM4MDgwMA&ptn=3&ver=2&hsh=4&fclid=2e2f2c05-69de-647d-367d-3be56814659e&u=a1aHR0cHM6Ly93d3cubnZpZGlhLmluL2NvbnRlbnQvRHJpdmVyRG93bmxvYWRzL2NvbmZpcm1hdGlvbi5waHA_dXJsPS9XaW5kb3dzLzUxMi41OS81MTIuNTktZGVza3RvcC13aW4xMC13aW4xMS02NGJpdC1pbnRlcm5hdGlvbmFsLW5zZC1kY2gtd2hxbC5leGUmbGFuZz1pbiZ0eXBlPUdlRm9yY2U&ntb=1",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_fu_041",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiwAFBVV95cUxOY3d6cEdNQ3BBZ3FsQjZBdFN0YXdVR3pQNDdoQ280OVJHZmJJNHM4djEzUFRIcmt4MlhHSExUb3BtNV9ndzQ1U3NlSFlPMThKcUk2VmhXUTZyUDF0MEY4X0tLWUhSajVlWVdKaEZLY2JtZFlwLTQyZ09FeWdydU1McUJWdlpWX3dKbjBSTHF6ZFgzaGI5LW1YS3ZiWWNNSHlBTk1CaklFYlFnT29VdlJWMndXNW1IZ1Y0Ykt2QzdCWGQ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_fu_042",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxPVUpjazVTcmxnUnFnb0NuUXFSc2JJNFNsRFQzTUdfbHF5NGI5UE8tVWVvMUtiVUw1UUZzMDVsQ0ZnS0U1SUtCUThPQ0FncFItSnRMbmkwZnVSdW5ZYndxUGNkLXQ4OU5oU0E5WkRiTGNLSnNsOVhJNXlmV3BJS2lpX2J6ZjRLY3pKMlpiZHAwdkRQeDVaVlhtUXJLRWJ3MG82YkJPUnlFQ3RuaWhUTGtSRHZ4cDRmTmZBRGc?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_022",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOT3NnLW9mRXd4R3RDUGVSTG9OSG9CZ0xvRXV6WURDOVpYVkNPTk12R1Z2cDgycV9xZEVOOWtRemxiVEYwaTg0Y0NDVlZwYWZYX25LQW9NWS1xb2wwVXpMWDVnaTYxTEVpTUdadGcxdHdYN0JZbnhVRXJ3c1ctazJ4aHBURUNKX1ROcXIwOWdkSXVHS2dFb3duOTA1eF8?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_024",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNR3ZmX25BOGdVMlZ5M3NVeS1KZ1pMcERHRFBWcnFrQmxmNWxIN1FfbjdnXzJyZlJWNzRTUlhDMVlwNmZnQ2Z4SmF2X29NZERlVndMZkh1YmpaUUFTZWhaeTJJOE5ZZ0RldnItaVdxNnJmMkdKYU1pWVpDODZ0RHZCT0t3djlYMU9DTDZpY1B4RlJvWFliQmNRRFp3?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_025",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMihwFBVV95cUxQcVlINW9TLU10MUl2TENmRHRWd1c1aTN3VS1GU3BqV09GU193cXNXYWRLd2xia2ItR2hZZWFDaGNCWE1XcDZueXBEY1JlVHVsYjU5RVJUWlk4eVcwUndsbVNmS1hWSHh5X0VTaHlNa0t3MGNYVVFLaWU2Q0RhMEJCeDQwTTU5STQ?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_008",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiqAJBVV95cUxPOXR5YWVwZnV4azMySVAycWJZZDhQbW5scUtDUElqUmRCdFc0a1BKQVRacFE3TktLLU93TW1aMk0zY1NQYWV2c1hvb3RDZUxibXItYVd4WmVLMW9wM2Nsckxpc05xYmxxb1RWajBpbFJCY1k3NXJ0RUljVHdER3hNYkVvWG4xamN5UUt5U0tKN2kxWVdFWGxoYjhYWDRGQXc0QkhzTVU2WkwyTXZHUXloSUxFMjFYMmJrbDdtYUs4azhaNDAzTWdhYjFWWHhfN2hxWlFzWlgxb18zaVdEbHRLbnhlV1RaTXNxUDlyVzJXYkVJRElHaml0UFBVNHRCYnE4c0c3b0hIQkx4VE1VZWtoeUFZR3FmTFk4d2NleERGcVVjUTU2YThwNA?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_fu_043",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiugFBVV95cUxNSlA3Y3R2b0FmbS1vQ2cycExtOU90Yk9fMndkem41YnFyNTIyc3FLZE9iRExRQU1NWERLSGdhS3BoUktDdm1JTEtxWXdzc2pTdk44ZGc3R3RWeE5HSG5HODdoSFdWamVGM3BYOEtpdE1YSk5kQU1UM3pueng4dFZ1VkZYOXFrRGJuQVpmUFFpc1NDVEhCZzNwTkdsMERlQnlFaHFEV0RsMzBJdV9iYmVkWG9UekhjRzZXR1E?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_fu_044",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMikgFBVV95cUxNWk81ZmVqX2E4T2taaml4cE9tcWVFcm5wSUlFb2Y4elppbWlFSnI1UjJtZDBhSEw4TzVhNHF4NXpFTGx6cVFFWlNRc2ttQ2pyOGZZbzFEcE5tZXp6ZlRCZzJzSy1GcXpNNE9nUXA5bzd4Rnp1YjJRc2pONDBLbjViZ2JzMXphdE9Wa2hybFlZdU1TUQ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_021",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiTEFVX3lxTE04ZlRmZEJMdkw1SkZpcXdpRmFNR2xxNlBjVUV3LXlMdTRoQU93eFAtMm0tNHpCeWdPdnRUTTlvWlh0dmpybVpNeU9yZHg?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_023",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOSmFTekdlMk5qeklXU1ZWYTJQcGRhQ3dveENEczc3Q19BZUFQUkV2a1U3Z1lucWh4czRxaEdoT2R2T3p2WERPTmh4RzBPaFZ2ZTRTaDZrYXVoMl9YckJheTZ0M19JZ1g2Vkh4RllVRkc2QVBnT3NzMF80REw4eDVlSEZENHJuVHdsNm00bHNwQXM3WnZpZzFxMDlnVVdWakNWRHc?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_026",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMijAFBVV95cUxNZERuVENOX0MwVFc2dWlaaXhsT0ZzaUVhbENiRXdIakNBUWFZOG45TlhkLTdHOHI4cFFPR3Z4Q05yU3Jzdm4xM2t6Z2w0dGlIWm5mQ2wtbFJnQkQwSDdLdDYzaGdpTHZOaEtSc200TkU5UDVENzlIamZUMXNrWEQxVWw2VkZnSkNxVFFfSQ?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_027",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxObnljV0thZ0dRUDdfbkdZUGp5V2NwWk4yN1V1ejg4Qnp5d2dxYkJWQU1iNHpxQUMxdy12RHc2TkppUnR4VjhEamJQWjFJbmF0VFhCR25feVc0NVF0bGpJMEFyanBTb0ZlSV9ONjRYTTVvZHBxbDVTWGljWGpacmVjdlk2WWs1S3RGRGhtOFlObk5ZNHBpNlgw?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_028",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOSmpIVzFBaDhrMWY1U1VjRkhUVWhjb0pnVlRaMEkya3k2b3pLb21HT0pYeVBUZnc4eW1lSGtBT255Wkx0bV9lM0Q3dUdjT0JrYUIyWGtDbEM0Ty1PSlNiY01KdjRQQVFCS1hjNTQ3bGdCd0lEOVREb2M4Y2NfX1oxME02MjBSbXNENjByeHg4N2tXZl8zMjh5bWNQSUpRS2xaTFNLZjFn?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_029",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxOdkFjZlJHcFNITWhuSExIOWNRYlMtd2VOSkZNbmRXWWVRV1phTWVycm1jbVRtcEU3OE9fZjZfZGpjY0ZXMGg0MjZ5cHJESmNOYTFzSzZiMk1VQWtXQWpIeExpaWRiaTFjZ3AxOVZwVUxmQjZSUFh5SllUTFVRYzVmc3l5VGVHcmRjbnowUGZUbUJPQk9yQkp1cHFR?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_030",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNeW9zamNjM25CZGpBdHpSS25YZFV4a1ZRYWp2LWZUY09qT01kTW9oSWpfY1JkV1A5N19lSTZ3NWwxY3AyYk42MEN1bkNJeFlTLTRYakhNbWlEeTZwMVdwSTRXUTltbWpyQnFIeTQyZmEwdmR5MGFFYVFld3psTzFXd0Fxa25yM2Q0RVlKTTZCb2xTS2s?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      }
+    ],
+    "edges": [],
+    "metrics": {
+      "total_nodes": 44,
+      "edges_count": 0,
+      "origin_count": 3,
+      "echo_count": 0,
+      "true_independent_count": 44,
+      "syndication_compression_ratio": 0.0
+    }
+  },
+  "saturation_summary": {
+    "steps_executed": 3,
+    "final_marginal_novelty": 0.889,
+    "final_saturation_index": 0.39,
+    "is_saturated": false,
+    "stopping_criterion_met": false,
+    "halt_reason": "Completed standard budget",
+    "saturation_curve": [
+      {
+        "step": 1,
+        "query_id": "q_initial_broad",
+        "query_text": "Nvidia Corp",
+        "channel": "broad_discovery",
+        "candidates_count": 10,
+        "new_entities_count": 24,
+        "marginal_novelty": 0.95,
+        "cumulative_saturation": 0.174,
+        "halt_triggered": false,
+        "halt_reason": null
+      },
+      {
+        "step": 2,
+        "query_id": "q_adapt_001",
+        "query_text": "\"Nvidia Corp\" \"World Leader\" announcement statement partnership",
+        "channel": "web",
+        "candidates_count": 2,
+        "new_entities_count": 5,
+        "marginal_novelty": 0.812,
+        "cumulative_saturation": 0.322,
+        "halt_triggered": false,
+        "halt_reason": null
+      },
+      {
+        "step": 3,
+        "query_id": "q_adapt_002",
+        "query_text": "\"Nvidia Corp\" \"Artificial Intelligence Computing\" announcement statement partnership",
+        "channel": "web",
+        "candidates_count": 2,
+        "new_entities_count": 7,
+        "marginal_novelty": 0.889,
+        "cumulative_saturation": 0.39,
+        "halt_triggered": false,
+        "halt_reason": null
+      }
+    ],
+    "total_unique_entities": 36
+  },
+  "capability_graph": [
+    {
+      "step_id": 1,
+      "platform": "news",
+      "backend": "news",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 15,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 6965,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 2,
+      "platform": "web",
+      "backend": "Jina Reader",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Playwright",
+        "RSS",
+        "Direct HTML"
+      ],
+      "fallback_used": false,
+      "result_count": 15,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 8074,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 3,
+      "platform": "rss",
+      "backend": "feedparser",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 15,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 6324,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 4,
+      "platform": "youtube",
+      "backend": "yt-dlp",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 10,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 2595,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 5,
+      "platform": "reddit",
+      "backend": "reddit",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 10,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 3990,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 6,
+      "platform": "twitter",
+      "backend": "twitter",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 0,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 1766,
+      "status": "EMPTY"
+    }
+  ],
+  "status": "COMPLETED"
+}

@@ -1,0 +1,875 @@
+{
+  "session_id": "R-2026-CF3AFD",
+  "target": "Tesla Motors",
+  "domain": "financial",
+  "created_at": "2026-09-26T18:11:16Z",
+  "latency_ms": 15062,
+  "summary": "Forensic investigation for 'Tesla Motors' across 6 channels yielded 42 deduplicated candidates, with 0 deep-read primary/investigative documents across 4 independent source groups. Identified 2 substantive evidence-backed findings, 0 conflicting signal(s), and isolated 4 verified origin sources from 0 syndicated echoes.",
+  "queries_executed": [
+    {
+      "channel": "news",
+      "query_id": "q_001",
+      "query_text": "TESLA MOTORS latest news"
+    },
+    {
+      "channel": "news",
+      "query_id": "q_003",
+      "query_text": "TESLA MOTORS today developments"
+    },
+    {
+      "channel": "news",
+      "query_id": "q_005",
+      "query_text": "TESLA MOTORS earnings results revenue"
+    },
+    {
+      "channel": "web",
+      "query_id": "q_002",
+      "query_text": "TESLA MOTORS latest news"
+    },
+    {
+      "channel": "web",
+      "query_id": "q_004",
+      "query_text": "TESLA MOTORS today developments"
+    },
+    {
+      "channel": "web",
+      "query_id": "q_007",
+      "query_text": "TESLA MOTORS earnings results revenue"
+    },
+    {
+      "channel": "rss",
+      "query_id": "q_006",
+      "query_text": "TESLA MOTORS earnings results revenue"
+    },
+    {
+      "channel": "rss",
+      "query_id": "q_009",
+      "query_text": "TESLA MOTORS financial guidance analyst expectations"
+    },
+    {
+      "channel": "rss",
+      "query_id": "q_011",
+      "query_text": "TESLA MOTORS investor relations announcement"
+    },
+    {
+      "channel": "reddit",
+      "query_id": "q_017",
+      "query_text": "TESLA MOTORS investigation controversy debt"
+    },
+    {
+      "channel": "reddit",
+      "query_id": "q_020",
+      "query_text": "TESLA MOTORS credit downgrade rumor probe"
+    },
+    {
+      "channel": "reddit",
+      "query_id": "q_022",
+      "query_text": "$TESLA MOTORS investor sentiment discussion"
+    },
+    {
+      "channel": "twitter",
+      "query_id": "q_021",
+      "query_text": "$TESLA MOTORS investor sentiment discussion"
+    },
+    {
+      "channel": "twitter",
+      "query_id": "q_024",
+      "query_text": "TESLA MOTORS stock market rumor social media"
+    },
+    {
+      "channel": "twitter",
+      "query_id": "q_028",
+      "query_text": "TESLA MOTORS positive outlook growth"
+    },
+    {
+      "channel": "youtube",
+      "query_id": "q_023",
+      "query_text": "$TESLA MOTORS investor sentiment discussion"
+    },
+    {
+      "channel": "youtube",
+      "query_id": "q_026",
+      "query_text": "TESLA MOTORS stock market rumor social media"
+    },
+    {
+      "channel": "adaptive",
+      "query_id": "q_adapt_001",
+      "query_text": "\"Tesla Motors\" \"Tesla Earnings Miss\" announcement statement partnership"
+    },
+    {
+      "channel": "adaptive",
+      "query_id": "q_adapt_002",
+      "query_text": "\"Tesla Motors\" \"Despite Strong\" announcement statement partnership"
+    }
+  ],
+  "candidate_hashes": {
+    "ev_002": "9844dbcb73ca409c",
+    "ev_017": "a4c3043d46572c8e",
+    "ev_030": "c6c10a8e7662a8c3",
+    "ev_022": "93bb5a9558cbad44",
+    "ev_001": "5fc05c19d2b2600f",
+    "ev_036": "d3dfd94e2810bc44",
+    "ev_fu_041": "4a53b222bbf94878",
+    "ev_003": "7cff37f45bf07fea",
+    "ev_005": "266784efb2323adc",
+    "ev_006": "178c347299af4503",
+    "ev_007": "7ffd56a67f6be2fe",
+    "ev_008": "a52b2aefbd2c16d3",
+    "ev_009": "e2aa269bd8fb2808",
+    "ev_010": "c380136dc3e0aa53",
+    "ev_011": "f18a87ca2952ae58",
+    "ev_012": "6fcd003b27cd4b0a",
+    "ev_013": "42d96c5d3635e663",
+    "ev_014": "6f7bfcd027d18282",
+    "ev_015": "80e90a9f7e1fd745",
+    "ev_016": "b87255e72ef6578e",
+    "ev_018": "90e9770bc7a0c338",
+    "ev_019": "a1ce62a1ab987db3",
+    "ev_020": "bbebf7978be37833",
+    "ev_021": "b873b7bf061b7b17",
+    "ev_023": "81bfb10d28536c7a",
+    "ev_024": "6b4075f52c887725",
+    "ev_025": "8f86eb5d8c16f0fd",
+    "ev_027": "bc4774d14dd7e618",
+    "ev_029": "416c83b71935d74b",
+    "ev_037": "336f8a6a20704b7d",
+    "ev_038": "4ea2611735ae4702",
+    "ev_039": "081bc5bc810e62ce",
+    "ev_040": "6546c1e88df7f6f5",
+    "ev_fu_042": "5fcfc3a9c7497a03",
+    "ev_031": "79f36ed95a9a1236",
+    "ev_004": "e7c2f972fe455e68",
+    "ev_026": "8367785b145a8262",
+    "ev_028": "e3d33ecdf5d2c20b",
+    "ev_032": "80b96c091451f226",
+    "ev_033": "962719b2507c5b49",
+    "ev_034": "32b181ba50566432",
+    "ev_035": "926b8a69a6d205a6"
+  },
+  "decision_log": [
+    {
+      "timestamp": 1790446276.237,
+      "stage": "QueryPlanning",
+      "decision_type": "QUERY_GENERATION",
+      "entity_or_query": "Tesla Motors",
+      "rationale": "Generated 19 multi-channel targeted queries for domain 'financial'.",
+      "evidence_ids_affected": []
+    },
+    {
+      "timestamp": 1790446276.237,
+      "stage": "EvidenceSaturation",
+      "decision_type": "SATURATION_HALT",
+      "entity_or_query": "Tesla Motors",
+      "rationale": "Marginal novelty depleted (N_3=0.05 < 0.08)",
+      "evidence_ids_affected": []
+    }
+  ],
+  "findings_provenance": [
+    {
+      "finding_id": "fnd_fi_001",
+      "title": "General News: SpaceX IPO goes live. What it means for Tesla stock and investors - US",
+      "epistemic_state": "KNOWN_FACT",
+      "quality_tensor": {
+        "relevance": 0.525,
+        "source_quality": 0.6,
+        "independence": 0.6,
+        "primary_weight": 1.0,
+        "freshness": 0.6,
+        "contradiction_level": 0.05,
+        "composite_score": 0.644
+      },
+      "supporting_evidence_ids": [
+        "ev_002"
+      ],
+      "contradicting_evidence_ids": [],
+      "primary_sources": [
+        "RSS Wire"
+      ]
+    },
+    {
+      "finding_id": "fnd_fi_002",
+      "title": "Financial: Tesla Earnings Miss Despite Strong EV Sales; Elon Musk Preaches Robota",
+      "epistemic_state": "KNOWN_FACT",
+      "quality_tensor": {
+        "relevance": 0.525,
+        "source_quality": 0.6,
+        "independence": 0.6,
+        "primary_weight": 1.0,
+        "freshness": 0.6,
+        "contradiction_level": 0.05,
+        "composite_score": 0.644
+      },
+      "supporting_evidence_ids": [
+        "ev_017"
+      ],
+      "contradicting_evidence_ids": [],
+      "primary_sources": [
+        "RSS Wire"
+      ]
+    }
+  ],
+  "source_lineage": {
+    "nodes": [
+      {
+        "id": "ev_002",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxPM1JJRXFZdGJBTzB5YlFrcXJHa3hjWkZCSTh6bFBwbFB4OFU5R2lDQnNXbFE5alVJdzE3UkNUVkJOcnFfNTNhNnR2TkJ6bzhUSW5PeU9YSEU3Q2Q3TV9JVThqazdtRW9vZ2tETlBaOUUySXJnQVVmR1g4aGxyZktmUXBxVU5LVTdyWjRUSlpXeVd1MldIRlh0NWhORkdWT0M4WFJxTE9qTTVVaDFs?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": true,
+        "citation_depth": 0,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_017",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxNR2F6UGZwZllxS3FUZ0lia18yM2JRLTdETUlWOFNwcjVqUXpwY0E0Nmw2VTVlMlR4ZlhYTm9obGV3UFVWTUJGZlluc0gyMzg4V0F2SXozdnJvRm91RzBOaVdsOTh2aExLb01pYTFVZ0szNXFoNjVQQW9tZlJOb2d4dll6S2JsbUMzeVJ6bkFqcGxQcEFPeDJDX1RR?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": true,
+        "citation_depth": 0,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_030",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiV0FVX3lxTE4tczRiOXFqelpaWEY4OFZwaDZXSkE3aW1tTjlMb0R6V1g5dk5HNnVaWGFYeTZGUDZEYmwwTUtKSkp5QzBFT1l6elBQbkpiX0lJMXpfVVgwWQ?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": true,
+        "citation_depth": 0,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_022",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMitAJBVV95cUxQb3dqVHdMM1AtbFJyRmRKeWc2UDgzRTdnT19vZFNwc1pNN0tmM3VvN3Q0bFNoMXc3ajNiNVFVd2tmX1NRSldPZF9YTXk3dHdzd3FSY0s5cmhJZ2NuZG1USi1NMWNBaE1rRmFsLXd3RWN5T1ZHTXVrSGE3c0xZSVp2MG43dm01aFlUVER5cDVWd25XUXZWT29GTEhsT1JxN0VXdHczOFRKS1VhcFZqcHZBNENUZ3lpSjZlTHNySzRERmhYQWtuQ2VraXIzaHNqUldNTV94SzkyckxabUoyYmhRS0kyYWFMNXFlb3d1b1V6T1dGWjV1Q0RPcWFaTmFpZlBVX3JqQnNaaEVOSC02cEtHeUNtcUVpTThvbWtjanhBeDB0bVEtblpnU2VhM1laTjZyZUdQNg?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": true,
+        "citation_depth": 0,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_001",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE1DYzB5d29UTWVKVDdpTnNETGVGbGozWUk5aU9WckoxQW5KNWdhdS1WcG9XcnV2TzBRWlQta3M3d19TTWZUalVOSnVFajZ0YlhNbXZnYjBsaU0?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_036",
+        "source_name": "Schwab Network",
+        "domain": "www.youtube.com",
+        "url": "https://www.youtube.com/watch?v=b16lg_6syKA",
+        "tier": "TIER_2_VIDEO_ANALYSIS",
+        "role": "SECONDARY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_fu_041",
+        "source_name": "www.tesla.com",
+        "domain": "www.tesla.com",
+        "url": "https://www.tesla.com/",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "DISCOVERY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_003",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMipwFBVV95cUxNekotZDRhbW56dFhRZXVfTUhjMjFIZ2k3SGxLVHpxN2pYaUxreFRTcEhJU2F5RzRxeFNHdndUN29IODF2dWVtYnVfMFUzcTdybG1PZFBUb1hIa09kTGpjVDdNaFQ2NjdfaTU2V3BIeEZJcGxBRTRLY3ZNNkxHTEJFWFJJNGJwUC0xaDNMV1lvekNhVUV3UU1ETFVWRWRJMmJaNWNxaHNYZw?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_005",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxPbjlEaW5mam84MGdoYXZhckZRZmpva0ZhMC1fejFEY2xtUUUzR0xQNmg0V3JORnYxZm5iMUVENWhPU0ltdHVZc1ZqNnltMTlGVV8yMS1jVy1yaWNZcGs4QlJUTzFpb3pmNlFIUjlnc3d4YURlcnBTMC1kbnVBblZ1ZEhTM2V1ZVd6WlFDWFhheFEtckZLSUE5LUwwRUc?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_006",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiiwFBVV95cUxOdDc2bGtiOWtucFhFaGNpTG9fMnQ2Ukg3OUJnSFZwTGkwYTBPSWJJNzBkZ2MzeEdiSXNZbmJlSHNsc1czcFBPNTVjRjJTRGpyVG1SblZWUURFMktRRk1MOTlBQUF6TTJmai1HQW1GNVA5cHJZZmhOdlhyQm9JamFjbnhWblU2UE8tN3k0?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_007",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMinAFBVV95cUxOVERHOEU3eklPLTN1OVpkWXo0dXRCTkNWaWdGTHpqT2tZN1pXaXRleDJDdnV1dm9IZWpqRlFIdi1XUGZYWHFOQm9fRnVLb2VXeE1INnV4ZFBCQmpJRzlJRE40SDU0TS0wbm9HOE5VYlVZaHdBVU9saGNPd3lDdzMxSk81cG5va0kxbWROSEc3X25MU2JpMlZPaUwxbnA?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_008",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMisAFBVV95cUxPVS03WHRHcERJLUpwbDJENzlhMkhZRjl2MktxUEotbXlFdF9rVnJGZGQySFNpWmlLWGhYWFZtUVMxMzVtQnNVSEg0dFJ5cTRIV3pEQzNpVUhTekcxS1NGVHd2X0pLbFBQLU84bnpZU2VfUWdIMVQ0ampFTUE2LTBPX1hBNnJ0c3Y5OEQ0aGtfa3JLM0VlYnBiS2gtaTZMN0VFcWo5NGtpbU5aUzI0aVkxVA?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_009",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMijwFBVV95cUxNcUtnbGNtczJHbEMtbURiVXF3cXF6amhsZ2VtaVFNOVBUdDFfcmVOLThrbEZreEJBU2RtM25ZY1M3Z2xYT3dvaUp2VWxLTVZja3pJWW0wMTVNT1hkWXk4aHc2N2ZuMzlBSG9aam9saWdmX09WOE1TNTgwRTJYMGh1OHZBakotZVI5YVI1NkpOMA?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_010",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTE10eGROSnJ6b3I1Q2RuMmhrdXYxem9ZNThqNE4tbUtGenJmWUxrb3F3ang5blQyTUdERV9TX3c1bXcwSk56VlA1TVFXOHNIRW1HQTdEY0EzUDhhc3JtQkRtQXVCTzM4cVlNRkFPd2ZJTTVmLXh0dllfRUFsVmVuOVE?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_011",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxNOGRZbmhHT21RTmtxQWV0M2JjSmNjVXAtbDQtcDJZMVZWOEVZUldDcm5oNDdVbzF1dy1UeWdiVEtjYkhrcjVyQU83WExVMmpITE9US2wxRW9KZGIyLWd2dmcwaXh1OHo4aWVuMmhhanlZa2U5aFRiZEZLLWw3ZElaRGdhTDlQMHNGUU5sUi1UQ3VqY0x6Y002WHBPODJSUQ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_012",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMid0FVX3lxTE9ZcnNGVjlydzNUNlRaMmhhS2k3Vm84RmR3TmtNSEVjcUJxZkxHdDZaai0tVDlyeW1ieV9yZUZ0dkFUUFB5TDBlSkdKRnlMTTBaNEZDd2k3N0JWU3hYSWpDT1hVMEJpTEJXam4zY3pRZlJESUhEWm9F?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_013",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNOVdEaXFTSVM5MTB6anVqT1ZzN242dVZyeDdIc01GU2tRTzc4Vm1acTluTlctZXN4Q1lwRWpYeTl2Si0yOTdhbFBUSHBUdGNkMlBXcDM0NHlqX19wb3NqY2RPWVVHZ3BiaFh6ak9QVkdCRW1GMEQ1MFctSmJETmV5RmtUQnV2NDFaMkd1cEdlSHdGeVVqNW1tbW5HelUtTTk3WVhB?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_014",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTFB0VWduT0M1S3QyWU80WEpvQTZ5Y2M3MC1YVVVRZGx1dm92RnYtdHp0RkVlRGdqOUdVdEFIRXlCcERNZW1BQ09xOGpLZlZ2VFgyREtPLW91S25UWWtBOUJJS1JYZFo1YnF5dXJVaWg3NXBTalpRa1F6dE13ZUxUZw?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_015",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE1lMWkxdjBWOUgzMnlUbnZFZ0pCQjBxOTV0NGVYclJ1SHg0X1U4OENUMUZPX2hBTEZtSHUtNEhhVWQtUDU3RFYyZU51TG9GTW8takRzU2VlcGxJNGNMeWpubktKdG9NY0ZxTFhCbTFMRXUtUmxDbGJBQnBWeDJxQQ?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_016",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE5acjlTUFo2Vkk1TUFQeWZITmVPYkxEdlZ1bTk2ZkxJTDV3ZjItQzRsTzdMcDFjWEM2bGUwdUlTdUExc1F3S1JjMm9kTXBSQXNsaFR3YjRnYUxJQ19NTW5OdUJjTjRkZzdSdXhsRERjV0o5VDRZWGQybnNGY9IBgAFBVV95cUxPQWk3UmpFYTZXaElZMFNOcG0zejRmUEZ3V18xbnRnYkVvTzlIQkNVMWgtbDJjVDR6dWQ4V3dpTVF6dXJsWWlRM1R1M1hCQktnMUNJVE5HQ0d4dzhrd3Q5RlJfaFh4cU1hUDRENWFFM0ljeFJhU3RCWEJZRVlodDQ1bg?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_018",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxOVVA2LW9qVW9Ialc0c0p0U0pKcU5Ub1VobEJUcGt5M3NkTG9IVU5nMGw2UVMtUkZQYjBwSmlGR0FyRkRCZWlZZFE0RWxFWFVoUnpTZXJCc3l1ZmQweUZlbGdZOVlaNzh0LXZ4U0ZOQW5BLU80dXJJYWNLdldPWkJKSWZiUWpSTGxya3NibmtuNXdza1hWUWow?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_019",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPd25vTklpWnBhVkpRMDI5SjFHT3AxVlNVbHRFV1ZKc3lva01uMUxNb1M3SWhydjlfMWpIVUR2UDNOQ1V5dHlkSHNEMHpOakctRWFmTGgzU0ZuOXQwM0d0NE05bWVPZnR2UDNSc2VpbWQzLU9lVURha3FfbVpacWhsdy1DZ2c2N2t6WlZfYTZlLTJHOGxmOGZ5QVFvazJ4a1Nwa2ZDZnBJa2hxQzVqVWVUeVhZemR1b21rMmVfbmttRU1SVVJh?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_020",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMilgFBVV95cUxORmNIS0hRY3Q1SEptQkNxQmU3UEF3Q1J2VzlDcHhsSkdPUjJaVjY1TGFFZGcwdV9DYjlwbkVoRi1xVWx4NXhZbjBEMVBaMkJMUFhZUmJEd2hITGtVeU5MOU8xRER1M3pCM1RWMFI1WVpOT2Z0RTZXc0p3Wk0ycnZfcElCUEVqNFlJMVhxWl9NQ25PVkwzOXc?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_021",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimgFBVV95cUxPdlBHNEQySE1BaEV0RjBUbV9mWjhVcWFaYmttNXJoM3hVOWR6RGVFYklZdjVDcms0bG4yd28wX3MyOU9GODYxcXVCeEZ4bWpQbURSVzBZSUNyM1hBWkNWRHN6a0xydHgzS05SRVZqUlFzc0hmY3VCT3UycGJGQU9mUjd4V1RVYjQzYkItbjByNUNDOXJQTEkyZzN3?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_023",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNQl8xNmp0dkF5bFJFQTFpMFJlRU1EVDVwSTI2QTJMMnBLM3p4dXRqc2hWNXpiUU9qUDdPRXlKNk9MczV2Qk5XMEVmTk9TY0hubzBVdUFLSlJicFBuRnVIMVlfTktDaVRZSlZJMm54MjJvSEY2eDRUZnpMem10OV9BSGdNZVZxWlZKcGRVT1pzVnBtX3c?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_024",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxPZ2M2VlpWQ0pxSV9IbEUxel9oZWxLaHg2WEpWNHpzc3FteHRuQzlUa1hTME1lZWlQdHV2OXpCVkRhZWtEejY2QlNSOWpIaHJzNVIyZ0JuenBHTFQwSzRIaTVqZTh2TkNEbmFXSUZzQmdWcjB0RjVwejh0VlFFTmJUMTdDcGxzeWJHR29CVU1B?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_025",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiwwFBVV95cUxQT2JBbHZCQmpRSkVGMXVtQXlEcXo5dnFkb3NSZlB3SDFtTVNMV1hBMDB5NlMxc2dWOHY1ZVRGc0JzTDllNE1jQlhNVTNSOUVBeUpibjlXN3pCMWZVcHZQRlBvOXI4LTdWXzlyQkxzX004dGVRYkZpQTQ3cVdPWWFpOF9jc2JqYXQ4UkxhR3p2NzVxOV9NSDZwUDRQUEFMZ2d1WV9PLXl4Q2tYajdzeDVMM012VXp3OTAwbG9zVkJOM1NRVFU?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_027",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMie0FVX3lxTE01YUI4bnRzTWNFcFNkV0t4aXZpV1NiSkpkb2RDa0FPaE10cHd2anViVTY1azdqQVNPN2N1eWJoalhZSjd6MmxCSTVmNHpUZTRjZ2ozSG5DR0o4Wkc0VzdhcDhFeEtCbTc1bUU3UnE1em9CNURubDFpQkJfONIBgAFBVV95cUxNWG5oWG9wRWpjZERicThsN1dIQUZTSlo2bE5qQlZMcXpLY2VZNXRRWmhDdnFObm5RdmF3c2hRN1lmUmlSWFF6WnFHWW9sc1VoM3lfcUJwWjNIaU55RU9ycy1iTm9zWmtIUTZEY0dpT1pkLTVEMnhrUWpGQ1I5NkZHXw?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_029",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxNX0ZKRlI1T2tSMHpFRWV4UDBaZmszVThHR05qVVExN3cwZnRYc3JXVzBybk5kVmY4WnRnelotS3RMZUQ5WkpwT09OUlpjclFoTUVvZGNyT3JpbzRZSkRjaWtVcUNDQ0VCbzVPN19IcTFOOXQybTZOcFJlM0VjNTBsN0Vldk5Ob3c2ZVZRSkZ3TldrcXBicEM0aTluM0JCQjlZZ1E4?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_037",
+        "source_name": "Jo Bhakdi",
+        "domain": "www.youtube.com",
+        "url": "https://www.youtube.com/watch?v=eR8Qp800RCw",
+        "tier": "TIER_2_VIDEO_ANALYSIS",
+        "role": "SECONDARY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_038",
+        "source_name": "Michael Tyler",
+        "domain": "www.youtube.com",
+        "url": "https://www.youtube.com/watch?v=2zXQTE4xHUI",
+        "tier": "TIER_2_VIDEO_ANALYSIS",
+        "role": "SECONDARY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_039",
+        "source_name": "Market | Chart | Pattern",
+        "domain": "www.youtube.com",
+        "url": "https://www.youtube.com/watch?v=YWMaBhYpGFE",
+        "tier": "TIER_2_VIDEO_ANALYSIS",
+        "role": "SECONDARY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_040",
+        "source_name": "Money Management",
+        "domain": "www.youtube.com",
+        "url": "https://www.youtube.com/watch?v=kwiU39IyUeQ",
+        "tier": "TIER_2_VIDEO_ANALYSIS",
+        "role": "SECONDARY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_fu_042",
+        "source_name": "www.tesla.com",
+        "domain": "www.tesla.com",
+        "url": "https://www.tesla.com/model3",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "DISCOVERY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_031",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMioAFBVV95cUxOSXBQbkNhWlhGY3I0TVZ6Q1NvY05taW4yWnlXNjllQldNTkZYOFZsSUlyYmR5MUhPcXNNekFHclFLdkxnREQ1R2dtS1VEejVILS0xNVQyazhJSUYzOWFMZmFtZHFVbjJYQ2lSNy1HOG9nOEUyVlRmdERrWnhqOXJXSGZPbnBjQ080LTRhMHFsY1JrdzV4SndhUDVoYTFManRx?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_004",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxPM3BycFR0aGZ2YjljTEZMU2FncGNVSDNkU1U0ak1IdEo3X1ZvZVl2bF9kRndZdFc1R0ZEUTE4dTJxWU5QQmRfclExaGEyMlZvaVBvS0FjMXZMYzgyTVdQWXBDSU4yOGw5eGdObnh5MC1kVGFHem5jNVM5VlZacGZvdXln?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_026",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMinwFBVV95cUxNMGl3bVhNVVpvSnhTTzFheWFsSkJqWkJsVEgtMUlBZjBJWkk2X19OS2JEY0tKdDFfMjRpUS14cDhCTG5nQVlIc09UMXlneXNka2tKcGUxbmxBdU90b3Nsc2ZmdExmbjN1aTFnYkVDMy1lOTFmWk9iQ1VnaGZCYXp0ajNPX0FjWGhoWkhhVmNGcTY0NmtUXzZEVzVyTkQ3UzjSAaQBQVVfeXFMTUI4dXF2UzNpRThfT00wMW04Vm5IZFlLeUlMdlU2WUtnWWllSG5neTM3SnhTRVFLSGttOW9pQ1NmSm1VRVpXNzlFLW5XSE9ySEl3alBUZGxQTzNPUldHY0hNczJ4Z2JfbnAwVV9EdzVnYlNBLVhQNHU3ako2WmowWTZDUUQ4VFM4OUh3V2lqdlRUcHRlX0h5bThPUGhzdlA5d0NGMmY?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_028",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxOODQ2c0pfcEhmODVid1M3RmxONEtpbGpPb2hvcGhrVGRWUFdmNjJObTNXY0RlcFM2X1ppb0xIN1FIczVfV2pDS0N4dWRDZzZkUjE3RDNpUXJXN1lHSjlyNFZOWUYtdmtqdGNYM3dWNHp6Z2ktekJfRHh6c1lfTVN6TjRIeWFjUWM3LThFR0o0N2hPMWtNTTNOX0dCOUQwNnA3cDVuMmVQT2dtRVU?oc=5",
+        "tier": "TIER_3_AGGREGATE",
+        "role": "AGGREGATOR",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_032",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMimwFBVV95cUxPYkFCcUoyaFlMZUQyVGEzc3I1SHBSdklwNjh2dkZ0UWFyUGJPZE5udG5FX2N4OGVqV3hObGIxWUV5UWFrY3JJVFhZTkN4TXZyalNPSExGREdnSm1GeFp1SEZVNy1td2ZQUUdma2psQzFNRUNteDd3WDI4cU81WWlPM0Q4d2Z2dlNpY0paNkFON1ZSbk5nci12SFlZNA?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_033",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMirgFBVV95cUxPLUdUc0J2NFlxNGE4T2JTMUtPNWpyb193TEt4X0RGR0R3ZlBENXoxdnE4YWNueXNTZmtFM285WjdEWDdnUXRMM2VlbDN0QjNwaWFILUxvNDF2bnM0WXFUZTBGay1qd3BfanRySFFvOWNSSmh6UnprSi1GTXRTS2pvSGttUHVLcE1rTVB2c1RGdl91YUg2elNFSWRHX0FGaUxOeXcwRTE1UW9TeVFZbmc?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_034",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQVXpYTkpvbXFsUFFjTEtKTEFEU2xuNU1Ed1YydTZyZjZqX2tCeEhJaS11TmNrLXE1czVKbFozTlIzNU1jNU1ydVNYSktPeEx2andpeHhiTFdXdE5pVjF6eFQ4SDEtMnVVb2pJWk1hR3RObjdSQnhKY0RxbFRjYXB5Q0tMN0R3dnlUZDBoSHctcmkwdHhFeUZCelh4eVhXOW1RNC1TcWFKRTU4UQ?oc=5",
+        "tier": "TIER_3_INVESTOR_COMMUNITY",
+        "role": "COMMUNITY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      },
+      {
+        "id": "ev_035",
+        "source_name": "RSS Wire",
+        "domain": "news.google.com",
+        "url": "https://news.google.com/rss/articles/CBMiSkFVX3lxTE9aVjdyQ0JRSWhHY0dXVkpTU2F0SjBKY1h6VDJoeW1FVU9kbnhqX1dVVEtNczQ2VHREUnFBVGVWVU5QYTFnMUx2eE93?oc=5",
+        "tier": "TIER_3_SOCIAL_SIGNALS",
+        "role": "COMMENTARY",
+        "is_origin": false,
+        "citation_depth": 1,
+        "parent_origin_id": null,
+        "citation_text": null
+      }
+    ],
+    "edges": [],
+    "metrics": {
+      "total_nodes": 42,
+      "edges_count": 0,
+      "origin_count": 4,
+      "echo_count": 0,
+      "true_independent_count": 42,
+      "syndication_compression_ratio": 0.0
+    }
+  },
+  "saturation_summary": {
+    "steps_executed": 3,
+    "final_marginal_novelty": 0.05,
+    "final_saturation_index": 0.609,
+    "is_saturated": true,
+    "stopping_criterion_met": true,
+    "halt_reason": "Marginal novelty depleted (N_3=0.05 < 0.08)",
+    "saturation_curve": [
+      {
+        "step": 1,
+        "query_id": "q_initial_broad",
+        "query_text": "Tesla Motors",
+        "channel": "broad_discovery",
+        "candidates_count": 10,
+        "new_entities_count": 33,
+        "marginal_novelty": 0.95,
+        "cumulative_saturation": 0.174,
+        "halt_triggered": false,
+        "halt_reason": null
+      },
+      {
+        "step": 2,
+        "query_id": "q_adapt_001",
+        "query_text": "\"Tesla Motors\" \"Tesla Earnings Miss\" announcement statement partnership",
+        "channel": "web",
+        "candidates_count": 2,
+        "new_entities_count": 2,
+        "marginal_novelty": 0.7,
+        "cumulative_saturation": 0.365,
+        "halt_triggered": false,
+        "halt_reason": null
+      },
+      {
+        "step": 3,
+        "query_id": "q_adapt_002",
+        "query_text": "\"Tesla Motors\" \"Despite Strong\" announcement statement partnership",
+        "channel": "web",
+        "candidates_count": 0,
+        "new_entities_count": 0,
+        "marginal_novelty": 0.05,
+        "cumulative_saturation": 0.609,
+        "halt_triggered": true,
+        "halt_reason": "Marginal novelty depleted (N_3=0.05 < 0.08)"
+      }
+    ],
+    "total_unique_entities": 35
+  },
+  "capability_graph": [
+    {
+      "step_id": 1,
+      "platform": "news",
+      "backend": "news",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 15,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 3298,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 2,
+      "platform": "web",
+      "backend": "Jina Reader",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Playwright",
+        "RSS",
+        "Direct HTML"
+      ],
+      "fallback_used": false,
+      "result_count": 15,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 8553,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 3,
+      "platform": "rss",
+      "backend": "feedparser",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 15,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 5588,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 4,
+      "platform": "youtube",
+      "backend": "yt-dlp",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 10,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 2620,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 5,
+      "platform": "reddit",
+      "backend": "reddit",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 5,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 4227,
+      "status": "SUCCESS"
+    },
+    {
+      "step_id": 6,
+      "platform": "twitter",
+      "backend": "twitter",
+      "operation": "multi_channel_search",
+      "fallback_chain": [
+        "Jina Web",
+        "Meta API"
+      ],
+      "fallback_used": false,
+      "result_count": 1,
+      "read_depth": "SNIPPET",
+      "failure_reason": null,
+      "latency_ms": 2430,
+      "status": "SUCCESS"
+    }
+  ],
+  "status": "COMPLETED"
+}

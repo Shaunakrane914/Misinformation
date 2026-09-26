@@ -223,6 +223,9 @@ class ReplayLedger:
                     })
         return summaries
 
+    list_dossiers = list_recent_dossiers
+
+
     def replay_investigation(self, session_id: str) -> Dict[str, Any]:
         """
         Replay an investigation step-by-step to verify determinism and provenance.

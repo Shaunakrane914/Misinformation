@@ -14,7 +14,8 @@ from backend.services.research.replay_ledger import replay_ledger
 
 logger = logging.getLogger(__name__)
 
-router = APIRouter(prefix="/replay", tags=["Research Provenance & Replay"])
+router = APIRouter(prefix="/api/research/replay", tags=["Research Provenance & Replay"])
+alias_router = APIRouter(prefix="/api/replay", tags=["Research Provenance & Replay (Alias)"])
 
 
 @router.get("/dossiers", summary="List Recent Research Dossiers")
@@ -55,3 +56,8 @@ async def replay_investigation(session_id: str):
     if replay_res.get("status") == "error":
         raise HTTPException(status_code=404, detail=replay_res.get("error"))
     return replay_res
+
+alias_router.add_api_route("/dossiers", list_recent_dossiers, methods=["GET"], include_in_schema=False)
+alias_router.add_api_route("/dossiers/{session_id}", get_research_dossier, methods=["GET"], include_in_schema=False)
+alias_router.add_api_route("/reexecute/{session_id}", replay_investigation, methods=["POST"], include_in_schema=False)
+

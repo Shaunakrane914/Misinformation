@@ -7,6 +7,7 @@ to provide live, non-hallucinatory capability state for all internet channels.
 
 import json
 import logging
+import shutil
 import subprocess
 import time
 from typing import Any, Dict, List, Optional, Tuple
@@ -46,8 +47,8 @@ class DoctorBridge:
         except Exception as py_err:
             logger.debug(f"[DoctorBridge] In-process doctor probe unavailable: {py_err}")
 
-        # 2. CLI fallback: `agent-reach doctor --json`
-        if results is None:
+        # 2. CLI fallback: `agent-reach doctor --json` (only if binary exists in PATH)
+        if results is None and shutil.which("agent-reach"):
             try:
                 proc = subprocess.run(
                     ["agent-reach", "doctor", "--json"],
@@ -55,13 +56,13 @@ class DoctorBridge:
                     text=True,
                     encoding="utf-8",
                     errors="replace",
-                    timeout=15
+                    timeout=2.0
                 )
                 if proc.returncode == 0 and proc.stdout.strip():
                     results = json.loads(proc.stdout.strip())
                     logger.debug("[DoctorBridge] Subprocess `agent-reach doctor --json` succeeded")
             except Exception as cli_err:
-                logger.warning(f"[DoctorBridge] Subprocess doctor check failed: {cli_err}")
+                logger.debug(f"[DoctorBridge] Subprocess doctor check failed: {cli_err}")
 
         # 3. Resilient baseline if both calls failed (e.g. before initial install)
         if not results:

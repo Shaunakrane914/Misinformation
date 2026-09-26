@@ -299,25 +299,34 @@ class AgentReachService:
 
         channel_raw_fragments: Dict[str, List[EvidenceFragment]] = {ch: [] for ch in normalized_channel_queries}
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
+        try:
             future_to_task = {executor.submit(_run_single_query, t): t for t in tasks}
-            for fut in concurrent.futures.as_completed(future_to_task, timeout=timeout + 2.0):
-                ch_n, ch_obj, q_sp = future_to_task[fut]
-                executed_queries_count += 1
-                try:
-                    ch_ret, frags, lat, err = fut.result(timeout=task_timeout)
-                    tel = channel_telemetry_map[ch_ret]
-                    tel.latency_ms = max(tel.latency_ms, lat)
-                    if err:
-                        tel.failure_reason = err
-                    else:
-                        tel.successful_requests += 1
-                    if frags:
-                        channel_raw_fragments.setdefault(ch_ret, []).extend(frags)
-                        raw_fragments.extend(frags)
-                except Exception as ex:
-                    tel = channel_telemetry_map[ch_n]
-                    tel.failure_reason = f"Timeout/Error: {ex}"
+            try:
+                for fut in concurrent.futures.as_completed(future_to_task, timeout=timeout + 2.0):
+                    ch_n, ch_obj, q_sp = future_to_task[fut]
+                    executed_queries_count += 1
+                    try:
+                        ch_ret, frags, lat, err = fut.result(timeout=task_timeout)
+                        tel = channel_telemetry_map[ch_ret]
+                        tel.latency_ms = max(tel.latency_ms, lat)
+                        if err:
+                            tel.failure_reason = err
+                        else:
+                            tel.successful_requests += 1
+                        if frags:
+                            channel_raw_fragments.setdefault(ch_ret, []).extend(frags)
+                            raw_fragments.extend(frags)
+                    except Exception as ex:
+                        tel = channel_telemetry_map[ch_n]
+                        tel.failure_reason = f"Timeout/Error: {ex}"
+            except concurrent.futures.TimeoutError:
+                logger.warning(f"[AgentReachService] Retrieval timeout reached after {timeout + 2.0}s; collecting partial results")
+                for fut, (ch_n, _, _) in future_to_task.items():
+                    if not fut.done():
+                        channel_telemetry_map[ch_n].failure_reason = "Retrieval budget timeout"
+        finally:
+            executor.shutdown(wait=False, cancel_futures=True)
 
         # Update per-channel raw counts
         for ch_n, tel in channel_telemetry_map.items():
@@ -377,10 +386,51 @@ class AgentReachService:
         # 8. Assign semantic source roles
         self._assign_source_roles(deduped_fragments)
 
-        # 9. Build RetrievalTrace
+        # 9. Build Capability-Aware Execution Graph & RetrievalTrace
         unique_domains = len(set(urllib.parse.urlparse(f.url).netloc.lower() for f in deduped_fragments if f.url))
         indep_groups_count = len(set(f.raw_metadata.get("source_independence_group", "independent") for f in deduped_fragments))
         total_latency_ms = int((time.time() - start_ts) * 1000)
+
+        execution_graph: List[Dict[str, Any]] = []
+        native_backends_used: Set[str] = set()
+        fallbacks_used_count = 0
+        step_id = 1
+
+        for ch_n, tel in channel_telemetry_map.items():
+            if tel.requests_attempted == 0 and tel.raw_results == 0:
+                continue
+            st_info = native_doctor.get_channel_status(ch_n)
+            backend_name = st_info.get("active_backend") or tel.active_backend or ch_n
+            fallback_chain = ["Playwright", "RSS", "Direct HTML"] if ch_n == "web" else ["Jina Web", "Meta API"]
+            is_fallback = bool(tel.fallback_used or "fallback" in str(backend_name).lower())
+            if is_fallback:
+                fallbacks_used_count += 1
+            native_backends_used.add(str(backend_name))
+
+            execution_graph.append({
+                "step_id": step_id,
+                "platform": ch_n,
+                "backend": backend_name,
+                "operation": "multi_channel_search",
+                "fallback_chain": fallback_chain,
+                "fallback_used": is_fallback,
+                "result_count": tel.raw_results,
+                "read_depth": "SNIPPET",
+                "failure_reason": tel.failure_reason,
+                "latency_ms": tel.latency_ms,
+                "status": "SUCCESS" if tel.raw_results > 0 else ("FAILED" if tel.failure_reason else "EMPTY"),
+            })
+            step_id += 1
+
+        capability_summary = {
+            "total_queries": total_planned_queries,
+            "platforms_queried": len(channel_telemetry_map),
+            "native_backends_count": len(native_backends_used),
+            "fallbacks_invoked": fallbacks_used_count,
+            "raw_candidates_found": len(raw_fragments),
+            "unique_candidates": len(deduped_fragments),
+            "deeply_investigated": readable_sources,
+        }
 
         trace = RetrievalTrace(
             scan_id=f"scan_{int(start_ts)}_{abs(hash(target_name or domain)) % 10000:04d}",
@@ -391,6 +441,8 @@ class AgentReachService:
             planned_queries_count=total_planned_queries,
             executed_queries_count=executed_queries_count,
             channel_stats={ch: tel.to_dict() for ch, tel in channel_telemetry_map.items() if tel.requests_attempted > 0 or tel.raw_results > 0},
+            execution_graph=execution_graph,
+            capability_summary=capability_summary,
             total_raw=len(raw_fragments),
             total_normalized=len(raw_fragments),
             total_duplicates=total_dupes_removed,

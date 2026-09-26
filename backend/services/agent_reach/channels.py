@@ -155,6 +155,37 @@ class ChannelTelemetry:
 
 
 @dataclass
+class ExecutionGraphStep:
+    """Detailed capability-aware execution graph step for a single retrieval action."""
+    step_id: int
+    platform: str
+    backend: str
+    operation: str
+    fallback_chain: List[str] = field(default_factory=list)
+    fallback_used: bool = False
+    result_count: int = 0
+    read_depth: str = "SNIPPET"
+    failure_reason: Optional[str] = None
+    latency_ms: int = 0
+    status: str = "SUCCESS"  # SUCCESS | DEGRADED | TIMEOUT | FAILED
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "step_id": self.step_id,
+            "platform": self.platform,
+            "backend": self.backend,
+            "operation": self.operation,
+            "fallback_chain": self.fallback_chain,
+            "fallback_used": self.fallback_used,
+            "result_count": self.result_count,
+            "read_depth": self.read_depth,
+            "failure_reason": self.failure_reason,
+            "latency_ms": self.latency_ms,
+            "status": self.status,
+        }
+
+
+@dataclass
 class RetrievalTrace:
     """Complete internal retrieval telemetry trace across all stages."""
     scan_id: str
@@ -165,6 +196,8 @@ class RetrievalTrace:
     planned_queries_count: int = 0
     executed_queries_count: int = 0
     channel_stats: Dict[str, Dict[str, Any]] = field(default_factory=dict)
+    execution_graph: List[Dict[str, Any]] = field(default_factory=list)
+    capability_summary: Dict[str, Any] = field(default_factory=dict)
     total_raw: int = 0
     total_normalized: int = 0
     total_duplicates: int = 0
@@ -186,6 +219,8 @@ class RetrievalTrace:
                 "queries_executed": self.executed_queries_count,
             },
             "channels": self.channel_stats,
+            "execution_graph": self.execution_graph,
+            "capability_summary": self.capability_summary,
             "total": {
                 "raw_results": self.total_raw,
                 "normalized_results": self.total_normalized,

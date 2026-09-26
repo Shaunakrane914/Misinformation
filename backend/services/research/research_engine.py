@@ -35,6 +35,7 @@ from backend.services.research.research_models import (
     TemporalStatus,
 )
 from backend.services.research.source_independence import source_independence_engine
+from backend.services.research.source_lineage import source_lineage_engine
 from backend.services.research.source_quality import source_quality_engine
 
 logger = logging.getLogger(__name__)
@@ -338,11 +339,12 @@ class ResearchEngine:
             intent=request.intent
         )
 
-        # Stage 12: Evidence Graph Construction
+        # Stage 12: Evidence Graph & Source Lineage DAG Construction
         graph = evidence_graph_builder.build_graph(
             findings=findings,
             evidence=ranked_candidates
         )
+        lineage_graph = source_lineage_engine.build_lineage_graph(ranked_candidates)
 
         # Compile specialized source subsets (Requirement 19)
         primary_sources = [
@@ -387,6 +389,7 @@ class ResearchEngine:
             corroboration_groups=[{"group_id": gid, "item_ids": ids} for gid, ids in clusters_map.items()],
             findings=[f.to_dict() for f in findings],
             evidence_graph=graph,
+            source_lineage_graph=lineage_graph,
         )
 
         total_latency_ms = int((time.time() - start_ts) * 1000)
@@ -410,6 +413,7 @@ class ResearchEngine:
             "contradictions_found": len(contradictions),
             "findings_count": len(findings),
             "saturation": novelty_tracker.get_summary(),
+            "source_lineage": lineage_graph.get("metrics", {}),
             "total_latency_ms": total_latency_ms,
         }
 
@@ -418,7 +422,9 @@ class ResearchEngine:
             f"Forensic investigation for '{request.target}' across {len(multi_queries)} channels yielded "
             f"{len(ranked_candidates)} deduplicated candidates, with {read_telemetry['successful']} deep-read "
             f"primary/investigative documents across {len(clusters_map)} independent source groups. "
-            f"Identified {len(findings)} substantive evidence-backed findings and {len(contradictions)} conflicting signal(s)."
+            f"Identified {len(findings)} substantive evidence-backed findings, {len(contradictions)} conflicting signal(s), "
+            f"and isolated {lineage_graph.get('metrics', {}).get('origin_count', 0)} verified origin sources from "
+            f"{lineage_graph.get('metrics', {}).get('echo_count', 0)} syndicated echoes."
         )
 
         logger.info(f"[ResearchEngine] Investigation finished in {total_latency_ms}ms: {len(findings)} findings, {len(primary_sources)} primaries")
@@ -434,6 +440,7 @@ class ResearchEngine:
             findings=findings,
             contradictions=contradictions,
             source_graph=graph,
+            source_lineage_graph=lineage_graph,
             primary_sources=primary_sources,
             telemetry=telemetry,
             channel_status=channel_status,

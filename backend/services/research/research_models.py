@@ -441,6 +441,7 @@ class ResearchCorpus:
     corroboration_groups: List[Dict[str, Any]] = field(default_factory=list)
     findings: List[Dict[str, Any]] = field(default_factory=list)
     evidence_graph: Dict[str, Any] = field(default_factory=dict)
+    source_lineage_graph: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -456,6 +457,7 @@ class ResearchCorpus:
             "corroboration_groups": self.corroboration_groups,
             "findings": self.findings,
             "evidence_graph": self.evidence_graph,
+            "source_lineage_graph": self.source_lineage_graph,
         }
 
 
@@ -472,6 +474,7 @@ class ResearchResult:
     findings: List[Finding] = field(default_factory=list)
     contradictions: List[Dict[str, Any]] = field(default_factory=list)
     source_graph: Dict[str, Any] = field(default_factory=dict)
+    source_lineage_graph: Dict[str, Any] = field(default_factory=dict)
     primary_sources: List[EvidenceItem] = field(default_factory=list)
     timeline: List[Dict[str, Any]] = field(default_factory=list)
     telemetry: Dict[str, Any] = field(default_factory=dict)
@@ -521,6 +524,7 @@ class ResearchResult:
             "findings": [f.to_dict() for f in self.findings],
             "contradictions": self.contradictions,
             "source_graph": self.source_graph,
+            "source_lineage_graph": self.source_lineage_graph,
             "primary_sources": [p.to_dict() for p in self.primary_sources],
             "timeline": self.timeline,
             "telemetry": self.telemetry,

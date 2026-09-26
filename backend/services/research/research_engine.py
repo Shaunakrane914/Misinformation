@@ -16,15 +16,18 @@ from backend.services.research.contradiction_detector import contradiction_detec
 from backend.services.research.corroboration import corroboration_engine
 from backend.services.research.deep_reader import deep_reader
 from backend.services.research.evidence_graph import evidence_graph_builder
+from backend.services.research.evidence_saturation import EvidenceNoveltyTracker
 from backend.services.research.passage_extractor import passage_extractor
 from backend.services.research.primary_source_escalator import primary_source_escalator
 from backend.services.research.research_budget import ResearchBudget, default_budget
 from backend.services.research.research_models import (
     ConfidenceLevel,
     ContentDepth,
+    EpistemicState,
     EvidenceItem,
     Finding,
     FindingType,
+    QualityTensor,
     ResearchCorpus,
     ResearchRequest,
     ResearchResult,
@@ -103,6 +106,33 @@ class ResearchEngine:
             # Identify primary sources among items
             prim_sources = [it.source_name for it in items_in_class if it.primary_source or it.source_role == SourceRole.PRIMARY.value]
 
+            # Derive 6D Multidimensional Quality Tensor
+            avg_rel = sum(it.relevance_score for it in items_in_class) / max(1, len(items_in_class))
+            avg_sq = sum(it.source_quality_score for it in items_in_class) / max(1, len(items_in_class))
+            avg_rec = sum(it.recency_score for it in items_in_class) / max(1, len(items_in_class))
+            indep_axis = min(1.0, 0.35 + 0.25 * corrob["independent_group_count"])
+            prim_axis = 1.0 if prim_sources else 0.40
+            cont_axis = 0.85 if matched_cont_ids else 0.05
+
+            q_tensor = QualityTensor(
+                relevance=round(avg_rel, 3),
+                source_quality=round(avg_sq, 3),
+                independence=round(indep_axis, 3),
+                primary_weight=round(prim_axis, 3),
+                freshness=round(avg_rec, 3),
+                contradiction_level=round(cont_axis, 3),
+            )
+
+            # Evaluate 6-State Epistemic Status
+            if matched_cont_ids:
+                ep_state = EpistemicState.CONTESTED.value
+            elif prim_sources or corrob["independent_group_count"] >= 2:
+                ep_state = EpistemicState.KNOWN_FACT.value
+            elif len(items_in_class) >= 1:
+                ep_state = EpistemicState.SUPPORTED.value
+            else:
+                ep_state = EpistemicState.UNVERIFIED.value
+
             f = Finding(
                 finding_id=f"fnd_{domain[:2]}_{len(findings) + 1:03d}",
                 title=title,
@@ -110,6 +140,8 @@ class ResearchEngine:
                 type=f_type,
                 importance="HIGH" if len(prim_sources) > 0 or corrob["independent_group_count"] >= 2 else "MEDIUM",
                 confidence=corrob["confidence"],
+                epistemic_state=ep_state,
+                quality_tensor=q_tensor,
                 supporting_evidence_ids=sup_ids,
                 contradicting_evidence_ids=matched_cont_ids,
                 independence_groups=corrob["independent_groups"],
@@ -183,8 +215,22 @@ class ResearchEngine:
             query_classes=query_classes
         )
 
-        # Stage 6: Adaptive Query Expansion Loop (Requirement 11)
-        follow_up_telemetry = {"attempted": 0, "queries": []}
+        # Initialize Mathematical Evidence Novelty & Saturation Tracker
+        novelty_tracker = EvidenceNoveltyTracker(
+            saturation_threshold=0.88,
+            min_novelty_epsilon=0.08,
+            max_steps=8
+        )
+        novelty_tracker.record_step(
+            query_id="q_initial_broad",
+            query_text=request.target,
+            channel="broad_discovery",
+            evidence_snippets=[c.snippet for c in candidates[:10]],
+            explicit_entities=[request.target]
+        )
+
+        # Stage 6: Adaptive Query Expansion Loop with Saturation Halting (Requirement 11)
+        follow_up_telemetry = {"attempted": 0, "queries": [], "halted_early": False, "halt_reason": None}
         if self.budget.follow_up_budget > 0:
             follow_ups = planner.plan_adaptive_follow_ups(
                 target_name=request.target,
@@ -194,9 +240,18 @@ class ResearchEngine:
                 max_follow_ups=self.budget.follow_up_budget
             )
             for fu in follow_ups:
+                # Check dynamic evidence saturation stopping criterion
+                if novelty_tracker.is_saturated:
+                    follow_up_telemetry["halted_early"] = True
+                    follow_up_telemetry["halt_reason"] = novelty_tracker.halt_reason
+                    logger.info(f"[ResearchEngine] Halting adaptive queries early: {novelty_tracker.halt_reason}")
+                    break
+
                 follow_up_telemetry["attempted"] += 1
                 follow_up_telemetry["queries"].append(fu)
                 suggested_ch = fu.get("suggested_channels", ["web", "news"])
+                new_snippets_this_step: List[str] = []
+
                 for ch in suggested_ch[:2]:
                     try:
                         frags = agent_reach_service.search_channel(ch, fu["query_text"], limit=2)
@@ -214,8 +269,17 @@ class ResearchEngine:
                             ev_item.metadata["reason"] = fu.get("reason", "")
                             source_quality_engine.classify_and_score(ev_item, target_name=request.target)
                             candidates.append(ev_item)
+                            new_snippets_this_step.append(ev_item.snippet)
                     except Exception as e:
                         logger.debug(f"[ResearchEngine] Follow-up query error for '{fu['query_text']}': {e}")
+
+                # Record step in novelty tracker
+                novelty_tracker.record_step(
+                    query_id=fu.get("query_id", f"q_fu_{follow_up_telemetry['attempted']}"),
+                    query_text=fu.get("query_text", ""),
+                    channel=suggested_ch[0] if suggested_ch else "web",
+                    evidence_snippets=new_snippets_this_step
+                )
 
             # Re-cluster and re-rank if follow-up candidates were added
             if follow_up_telemetry["attempted"] > 0:
@@ -345,6 +409,7 @@ class ResearchEngine:
             "independent_source_groups": len(clusters_map),
             "contradictions_found": len(contradictions),
             "findings_count": len(findings),
+            "saturation": novelty_tracker.get_summary(),
             "total_latency_ms": total_latency_ms,
         }
 

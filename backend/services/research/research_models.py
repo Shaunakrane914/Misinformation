@@ -80,6 +80,55 @@ class TemporalStatus(str, Enum):
     UNKNOWN = "UNKNOWN"
 
 
+class EpistemicState(str, Enum):
+    """
+    Epistemic state distinguishing empirical verification, contestation,
+    and active refutation from lack of evidence.
+    """
+    KNOWN_FACT = "KNOWN_FACT"
+    SUPPORTED = "SUPPORTED"
+    CONTESTED = "CONTESTED"
+    UNVERIFIED = "UNVERIFIED"
+    REFUTED = "REFUTED"
+    UNKNOWN_NOT_INVESTIGATED = "UNKNOWN_NOT_INVESTIGATED"
+
+
+@dataclass
+class QualityTensor:
+    """Multidimensional quality tensor replacing 1D scalar confidence."""
+    relevance: float = 0.50
+    source_quality: float = 0.50
+    independence: float = 0.50
+    primary_weight: float = 0.50
+    freshness: float = 0.50
+    contradiction_level: float = 0.0
+
+    def to_dict(self) -> Dict[str, float]:
+        return {
+            "relevance": round(self.relevance, 3),
+            "source_quality": round(self.source_quality, 3),
+            "independence": round(self.independence, 3),
+            "primary_weight": round(self.primary_weight, 3),
+            "freshness": round(self.freshness, 3),
+            "contradiction_level": round(self.contradiction_level, 3),
+            "composite_score": self.composite_score,
+        }
+
+    @property
+    def composite_score(self) -> float:
+        """Derive calibrated composite score from multi-dimensional axes."""
+        pos = (
+            0.25 * self.relevance +
+            0.20 * self.source_quality +
+            0.20 * self.independence +
+            0.20 * self.primary_weight +
+            0.15 * self.freshness
+        )
+        penalty = 0.35 * self.contradiction_level
+        return round(max(0.0, min(1.0, pos - penalty)), 3)
+
+
+
 @dataclass
 class EvidenceItem:
     """
@@ -125,6 +174,7 @@ class EvidenceItem:
     eligible_for_read: bool = False
     selected_for_read: bool = False
     rejection_reason: Optional[str] = None
+    quality_tensor: QualityTensor = field(default_factory=QualityTensor)
     provenance: Dict[str, Any] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
@@ -222,6 +272,7 @@ class EvidenceItem:
             "eligible_for_read": self.eligible_for_read,
             "selected_for_read": self.selected_for_read,
             "rejection_reason": self.rejection_reason,
+            "quality_tensor": self.quality_tensor.to_dict() if hasattr(self.quality_tensor, "to_dict") else self.quality_tensor,
             "provenance": self.provenance,
             "metadata": self.metadata,
         }
@@ -287,6 +338,8 @@ class Finding:
     primary_sources: List[str] = field(default_factory=list)
     explanation: str = ""
     temporal_status: str = TemporalStatus.NEW_EVENT.value
+    epistemic_state: str = EpistemicState.SUPPORTED.value
+    quality_tensor: QualityTensor = field(default_factory=QualityTensor)
     catalyst_direction: Optional[str] = None  # POSITIVE | NEGATIVE | NEUTRAL | UNCERTAIN
     invalidation_criteria: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
@@ -300,6 +353,8 @@ class Finding:
             "type": self.type,
             "importance": self.importance,
             "confidence": self.confidence,
+            "epistemic_state": self.epistemic_state,
+            "quality_tensor": self.quality_tensor.to_dict() if hasattr(self.quality_tensor, "to_dict") else self.quality_tensor,
             "supporting_evidence_ids": self.supporting_evidence_ids,
             "contradicting_evidence_ids": self.contradicting_evidence_ids,
             "independence_groups": self.independence_groups,

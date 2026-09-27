@@ -83,6 +83,8 @@ port.txt
 # Test output artifacts
 scripts/*_report.json
 *.report.json
+backend/data/dossiers/*.json
+!backend/data/dossiers/.gitkeep
 
 # Large video binaries
 brag-output/*.mp4

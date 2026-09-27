@@ -94,3 +94,48 @@ def test_threat_lab_api_endpoints(test_client: TestClient):
     assert "consensus_verdict" in r3.json()
     assert "agents" in r3.json()
     assert len(r3.json()["agents"]) >= 3
+
+
+@pytest.mark.integration
+def test_verify_claim_produces_lineage_and_replay_dossier(test_client: TestClient, monkeypatch: pytest.MonkeyPatch):
+    # Mock external network scrapers for deterministic test speed
+    from backend.services.agent_reach_scraper import reach_scraper
+    monkeypatch.setattr(reach_scraper, "omni_scan", lambda **kw: {
+        "channels": {
+            "reddit": [{"title": "Reddit thread on honey", "author": "u/honeyfan", "url": "https://reddit.com/r/health/1"}],
+            "twitter": [{"title": "Tweet discussing honey vs antibiotics", "author": "@healthdoc", "url": "https://twitter.com/doc/1"}],
+            "youtube": [{"title": "Video analyzing antimicrobial properties", "url": "https://youtube.com/watch?v=1"}],
+            "news": [{"source": "Reuters Health", "title": "Clinical trials on medical honey", "url": "https://reuters.com/health/1"}]
+        }
+    })
+
+    payload = {
+        "claim": "Consuming pure raw honey eliminates bacterial infections without antibiotics."
+    }
+    resp = test_client.post("/api/claims/verify", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+
+    # 1. Assert Truth Dossier schema
+    assert data["status"] == "success"
+    assert "verdict" in data
+    assert "confidence" in data
+    assert "session_id" in data
+    assert data["session_id"].startswith("R-")
+    assert "replay_url" in data
+    assert "source_lineage" in data
+
+    lineage = data["source_lineage"]
+    assert "nodes" in lineage
+    assert "metrics" in lineage
+
+    # 2. Assert Replay Ledger endpoint retrieves this dossier
+    session_id = data["session_id"]
+    dossier_resp = test_client.get(f"/api/research/replay/dossiers/{session_id}")
+    assert dossier_resp.status_code == 200
+    dossier_data = dossier_resp.json()
+    assert dossier_data["status"] == "success"
+    assert dossier_data["dossier"]["session_id"] == session_id
+    assert len(dossier_data["dossier"]["candidate_hashes"]) > 0
+
+

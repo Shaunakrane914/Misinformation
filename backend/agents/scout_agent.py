@@ -886,9 +886,25 @@ Respond in STRICT JSON with this schema:
 
         total_time_ms = int((datetime.utcnow() - start_t).total_seconds() * 1000)
 
+        session_id = research_telemetry.get("dossier_id") or f"R-2026-SCOUT-{sym}"
+        source_lineage = getattr(research_res, "source_lineage_graph", {}) or {
+            "nodes": [],
+            "edges": [],
+            "metrics": research_telemetry.get("source_lineage", {
+                "origin_count": 0,
+                "echo_count": 0,
+                "syndication_ratio": 0.0,
+                "lineage_depth": 0
+            })
+        }
+        replay_url = f"/api/research/replay/dossiers/{session_id}"
+
         return {
             "ticker": sym,
             "company_name": company_name,
+            "session_id": session_id,
+            "replay_url": replay_url,
+            "source_lineage": source_lineage,
             "analyzed_at": datetime.utcnow().isoformat(),
             "stock": stock_data,
             "market_state": {

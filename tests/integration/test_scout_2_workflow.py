@@ -85,6 +85,21 @@ def test_scout_analyze_api_full_workflow(test_client: TestClient):
     assert "news" in data
     assert "company" in data["news"]
 
+    # 8. Replay Dossier & Source Lineage Provenance
+    assert "session_id" in data
+    assert data["session_id"].startswith("R-")
+    assert "replay_url" in data
+    assert "source_lineage" in data
+    assert "metrics" in data["source_lineage"]
+
+    # Assert Replay Ledger endpoint successfully fetches dossier
+    session_id = data["session_id"]
+    dossier_resp = test_client.get(f"/api/research/replay/dossiers/{session_id}")
+    assert dossier_resp.status_code == 200
+    d_data = dossier_resp.json()
+    assert d_data["status"] == "success"
+    assert d_data["dossier"]["session_id"] == session_id
+
 
 @pytest.mark.integration
 def test_scout_analyze_us_ticker(test_client: TestClient):

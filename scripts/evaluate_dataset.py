@@ -345,34 +345,133 @@ Machine-readable outputs are written to `docs/audit/evaluation_results.json`.
     print(f"[Evaluation] Report written to: {output_md_path}")
 
 
+def verify_replay_provenance(sample_titles: List[str]) -> Dict[str, Any]:
+    """
+    Rigorously verifies that the research replay ledger can generate and
+    deterministically reload content-addressed dossiers for evaluation queries.
+    """
+    from backend.services.research.replay_ledger import replay_ledger
+    from backend.services.research.source_lineage import SourceLineageEngine
+    from backend.services.research.research_models import EvidenceItem, SourceTier, SourceRole
+
+    results = []
+    engine = SourceLineageEngine()
+
+    for idx, title in enumerate(sample_titles[:5]):
+        sample_ev = [
+            EvidenceItem(
+                id=f"bench_ev_{idx}_1",
+                canonical_url=f"https://source-{idx}-origin.org/news",
+                title=f"Original Wire: {title[:40]}",
+                source_name="Official Wire",
+                snippet=title,
+                source_tier=SourceTier.TIER_1_ORIGINAL_DOCUMENT.value,
+                source_role=SourceRole.PRIMARY.value,
+                primary_source=True,
+            ),
+            EvidenceItem(
+                id=f"bench_ev_{idx}_2",
+                canonical_url=f"https://source-{idx}-echo.org/story",
+                title=f"Syndicated: {title[:40]}",
+                source_name="Syndicated Press",
+                snippet=title,
+                source_tier=SourceTier.TIER_2_FINANCIAL_PRESS.value,
+                source_role=SourceRole.SECONDARY.value,
+                primary_source=False,
+            )
+        ]
+        lineage_dag = engine.build_lineage_graph(sample_ev)
+        dossier_id = replay_ledger.record_investigation(
+            target=title,
+            domain="evaluation_benchmark",
+            summary=f"Automated benchmark replay verification for '{title[:50]}'",
+            candidates=sample_ev,
+            findings=[{"finding_id": f"FND-{idx}", "title": title[:60], "epistemic_state": "SUPPORTED"}],
+            queries=[{"channel": "bench", "query_text": title}],
+            telemetry={"benchmark_idx": idx},
+            lineage_graph=lineage_dag
+        )
+        loaded = replay_ledger.get_dossier(dossier_id)
+        verified = bool(loaded and loaded.get("session_id") == dossier_id and len(loaded.get("candidate_hashes", {})) == 2)
+        results.append({
+            "target": title[:50],
+            "dossier_id": dossier_id,
+            "verified": verified,
+            "fingerprints": list(loaded.get("candidate_hashes", {}).values()) if loaded else []
+        })
+
+    return {
+        "total_tested": len(results),
+        "verified_count": sum(1 for r in results if r["verified"]),
+        "replay_fidelity_ratio": round(sum(1 for r in results if r["verified"]) / max(1, len(results)), 4),
+        "traces": results
+    }
+
+
 def main():
-    parser = argparse.ArgumentParser(description="Evaluate Aegis Protocol on WELFake Dataset")
+    parser = argparse.ArgumentParser(description="Aegis Protocol — Scientific Benchmark & Replay Provenance Evaluator")
     parser.add_argument("--data", default="backend/data/WELFake_Dataset.xlsx", help="Path to WELFake dataset")
     parser.add_argument("--sample", type=int, default=100, help="Number of items in stratified sample")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for reproducibility")
+    parser.add_argument("--mode", choices=["all", "aegis", "baseline"], default="all", help="Evaluation mode to execute")
+    parser.add_argument("--target", type=str, default=None, help="Evaluate a single targeted claim or headline")
+    parser.add_argument("--domain", type=str, default="general", help="Domain classification context (general, financial, health)")
+    parser.add_argument("--verify-replay", action="store_true", help="Execute content-addressed dossier replay integrity check")
     parser.add_argument("--output-json", default="docs/audit/evaluation_results.json", help="Path for JSON metrics output")
     parser.add_argument("--output-md", default="docs/EVALUATION.md", help="Path for Markdown evaluation report")
     args = parser.parse_args()
+
+    # Targeted single-claim evaluation mode
+    if args.target:
+        print(f"\n[Aegis Benchmark] Targeted Claim Evaluation: \"{args.target}\"")
+        ingestion = get_claim_ingestion_agent()
+        investigator = get_investigator_agent()
+        from backend.agents.research_agent import ResearchAgent
+        research = ResearchAgent()
+        claim_rec = ingestion.ingest(claim_text=args.target)
+        norm_text = claim_rec.get("normalized_text", args.target)
+        evidence_json = research.gather_evidence_structured(norm_text)
+        raw_v = investigator.determine_verdict(claim_text=norm_text, evidence_json=evidence_json)
+        verdict = investigator.extract_verdict(raw_v)
+        print(f"  Target:     {args.target}")
+        print(f"  Domain:     {args.domain}")
+        print(f"  Verdict:    {verdict.get('verdict')}")
+        print(f"  Confidence: {verdict.get('confidence')}")
+        print(f"  Severity:   {verdict.get('severity')}")
+        return
 
     print(f"[Evaluation] Loading WELFake dataset from {args.data} (sample_size={args.sample}, seed={args.seed})...")
     sample_df = load_welfake_sample(args.data, sample_size=args.sample, seed=args.seed)
     print(f"[Evaluation] Loaded {len(sample_df)} stratified samples.")
 
-    print("[Evaluation] Running Baseline A (Lexical Heuristic)...")
-    base_res = evaluate_pipeline(sample_df, mode="baseline")
-    print(f"[Evaluation] Baseline A Accuracy: {base_res['accuracy']*100:.2f}%, Macro-F1: {base_res['macro_f1']:.4f}")
+    base_res = {}
+    if args.mode in ("all", "baseline"):
+        print("[Evaluation] Running Baseline A (Lexical Heuristic)...")
+        base_res = evaluate_pipeline(sample_df, mode="baseline")
+        print(f"[Evaluation] Baseline A Accuracy: {base_res['accuracy']*100:.2f}%, Macro-F1: {base_res['macro_f1']:.4f}")
 
-    print("[Evaluation] Running Aegis Protocol Investigation Pipeline...")
-    aegis_res = evaluate_pipeline(sample_df, mode="aegis")
-    print(f"[Evaluation] Aegis Protocol Accuracy: {aegis_res['accuracy']*100:.2f}%, Macro-F1: {aegis_res['macro_f1']:.4f}, Abstention Rate: {aegis_res['abstention_rate']*100:.1f}%")
+    aegis_res = {}
+    if args.mode in ("all", "aegis"):
+        print("[Evaluation] Running Aegis Protocol Investigation Pipeline...")
+        aegis_res = evaluate_pipeline(sample_df, mode="aegis")
+        print(f"[Evaluation] Aegis Protocol Accuracy: {aegis_res['accuracy']*100:.2f}%, Macro-F1: {aegis_res['macro_f1']:.4f}, Abstention Rate: {aegis_res['abstention_rate']*100:.1f}%")
+
+    replay_res = {}
+    if args.verify_replay:
+        print("[Evaluation] Verifying Replay Dossier & Source Lineage Provenance...")
+        sample_titles = sample_df["title"].dropna().tolist()[:5]
+        replay_res = verify_replay_provenance(sample_titles)
+        print(f"[Evaluation] Replay Fidelity: {replay_res['replay_fidelity_ratio']*100:.1f}% ({replay_res['verified_count']}/{replay_res['total_tested']} dossiers verified)")
 
     all_results = {
         "timestamp": time.time(),
         "dataset": args.data,
         "sample_size": args.sample,
         "seed": args.seed,
+        "mode": args.mode,
         "baseline": base_res,
-        "aegis_protocol": aegis_res
+        "aegis_protocol": aegis_res,
+        "replay_verification": replay_res
     }
 
     os.makedirs(os.path.dirname(args.output_json), exist_ok=True)
@@ -380,7 +479,8 @@ def main():
         json.dump(all_results, f, indent=2)
     print(f"[Evaluation] Machine-readable metrics written to {args.output_json}")
 
-    generate_markdown_report(base_res, aegis_res, args.output_md, args.data, args.sample)
+    if args.mode == "all" and base_res and aegis_res:
+        generate_markdown_report(base_res, aegis_res, args.output_md, args.data, args.sample)
     print("[Evaluation] Benchmark complete!")
 
 

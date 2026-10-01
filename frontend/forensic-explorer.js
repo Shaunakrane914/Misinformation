@@ -218,7 +218,7 @@
             const badgeClass = (typeStr.includes('FACT') || typeStr.includes('SUPPORT') || typeStr.includes('CONFIRM'))
               ? 'fe-badge-green'
               : ((typeStr.includes('CONTRADICT') || typeStr.includes('REFUT')) ? 'fe-badge-red' : 'fe-badge-cyan');
-            const confStr = typeof f.confidence === 'string' ? f.confidence : (f.confidence_score !== undefined ? `${Math.round(f.confidence_score * 100)}%` : '95%');
+            const confStr = typeof f.confidence === 'string' ? f.confidence : (f.confidence_score !== undefined ? `${Math.round(f.confidence_score * 100)}%` : (f.confidence !== undefined ? `${Math.round(f.confidence * 100)}%` : '—'));
             const citations = f.supporting_evidence_ids || f.evidence_ids || [];
             const title = f.title || f.claim_statement || 'Forensic Finding';
             const summary = f.statement || f.summary || f.finding_text || f.explanation || f.reasoning || '';
@@ -234,10 +234,11 @@
                 <p class="fe-fcard-summary">${escapeHtml(summary)}</p>
 
                 ${f.quality_tensor ? `
-                  <div class="fe-qt-row" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;font-family:var(--font-mono, monospace);font-size:0.7rem;">
+                  <div style="font-size:0.65rem;color:var(--text-dim,#94a3b8);margin-top:8px;font-family:var(--font-mono,monospace);">// 6D HEURISTIC QUALITY TENSOR</div>
+                  <div class="fe-qt-row" style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 10px 0;font-family:var(--font-mono, monospace);font-size:0.7rem;">
                     <span class="fe-badge" style="background:rgba(139,92,246,0.1);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);" title="Relevance">Rel: ${Math.round((f.quality_tensor.relevance || 0) * 100)}%</span>
                     <span class="fe-badge" style="background:rgba(14,165,233,0.1);color:#38bdf8;border:1px solid rgba(14,165,233,0.3);" title="Source Quality">Qual: ${Math.round((f.quality_tensor.source_quality || 0) * 100)}%</span>
-                    <span class="fe-badge" style="background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.3);" title="Independence">Indep: ${Math.round((f.quality_tensor.independence || 0) * 100)}%</span>
+                    <span class="fe-badge" style="background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.3);" title="Independence Ratio">Indep: ${Math.round((f.quality_tensor.independence || 0) * 100)}%</span>
                     <span class="fe-badge" style="background:rgba(234,179,8,0.1);color:#facc15;border:1px solid rgba(234,179,8,0.3);" title="Primary Proximity">Primary: ${Math.round((f.quality_tensor.primary_weight || 0) * 100)}%</span>
                     <span class="fe-badge" style="background:rgba(100,116,139,0.1);color:#94a3b8;border:1px solid rgba(100,116,139,0.3);" title="Freshness">Fresh: ${Math.round((f.quality_tensor.freshness || 0) * 100)}%</span>
                     ${(f.quality_tensor.contradiction_level || 0) > 0.05 ? `<span class="fe-badge fe-badge-red" title="Contradiction Penalty">Contradict: -${Math.round((f.quality_tensor.contradiction_level || 0) * 100)}%</span>` : ''}
@@ -276,23 +277,39 @@
           ${sources.map((s, idx) => {
             const sId = s.id || `ev_read_${idx + 1}`;
             const domain = s.domain || (s.url ? new URL(s.url).hostname : 'web');
-            const authScore = s.authority_score !== undefined ? Math.round(s.authority_score * 100) : 80;
+            const authScoreStr = s.authority_score !== undefined ? `Tier: ${Math.round(s.authority_score * 100)}% Authority` : 'Authority Uncalibrated';
             const role = s.source_role || s.role || 'deep_read_article';
             const charCount = s.content ? s.content.length : (s.word_count ? s.word_count * 6 : 0);
-            const mode = s.retrieval_mode || (s.provenance && s.provenance.retrieval_mode) || 'native_agent_reach';
-            const backend = s.native_backend_id || (s.provenance && s.provenance.native_backend_id) || 'Native Router';
+            const mode = s.retrieval_mode || (s.provenance && s.provenance.retrieval_mode) || 'direct_api';
+            const backend = s.native_backend_id || (s.provenance && s.provenance.native_backend_id) || 'Direct Service';
             const fallbackReason = s.fallback_reason || (s.provenance && s.provenance.fallback_reason) || null;
+
+            let modeBadge = '';
+            if (mode === 'unauthenticated_syndicated_fallback') {
+              modeBadge = `<span class="fe-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);">⚠️ Web Index Fallback (${escapeHtml(fallbackReason || 'Auth Required')})</span>`;
+            } else if (mode === 'legacy_scraper_fallback') {
+              modeBadge = `<span class="fe-badge" style="background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);">⚠️ Scraper Fallback (${escapeHtml(backend)})</span>`;
+            } else if (mode === 'native_tool_cli') {
+              modeBadge = `<span class="fe-badge" style="background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3);">⚡ Native Tool CLI (${escapeHtml(backend)})</span>`;
+            } else if (mode === 'web_search_index') {
+              modeBadge = `<span class="fe-badge" style="background:rgba(14,165,233,0.15);color:#38bdf8;border:1px solid rgba(14,165,233,0.3);">🔍 Web Search Index (${escapeHtml(backend)})</span>`;
+            } else if (mode === 'rss_feed') {
+              modeBadge = `<span class="fe-badge" style="background:rgba(168,85,247,0.15);color:#c084fc;border:1px solid rgba(168,85,247,0.3);">📰 RSS Feed (${escapeHtml(backend)})</span>`;
+            } else if (mode === 'web_reader') {
+              modeBadge = `<span class="fe-badge" style="background:rgba(20,184,166,0.15);color:#2dd4bf;border:1px solid rgba(20,184,166,0.3);">📖 Web Reader (${escapeHtml(backend)})</span>`;
+            } else if (mode === 'upstream_agent_reach') {
+              modeBadge = `<span class="fe-badge" style="background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);">⚡ Upstream Reach (${escapeHtml(backend)})</span>`;
+            } else {
+              modeBadge = `<span class="fe-badge" style="background:rgba(148,163,184,0.15);color:#cbd5e1;border:1px solid rgba(148,163,184,0.3);">⚡ Direct API (${escapeHtml(backend)})</span>`;
+            }
 
             return `
               <div class="fe-source-accordion" id="source_${escapeHtml(sId)}">
                 <div class="fe-s-header" onclick="this.parentElement.classList.toggle('open')">
                   <div class="fe-s-title-group">
                     <span class="fe-s-idx">#${idx + 1}</span>
-                    <span class="fe-badge fe-badge-tier">Tier: ${authScore}% Authority</span>
-                    ${mode === 'syndicated_fallback' 
-                      ? `<span class="fe-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);">⚠️ Web Index Fallback (${escapeHtml(fallbackReason || 'Auth Required')})</span>`
-                      : `<span class="fe-badge" style="background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3);">⚡ Native (${escapeHtml(backend)})</span>`
-                    }
+                    <span class="fe-badge fe-badge-tier">${escapeHtml(authScoreStr)}</span>
+                    ${modeBadge}
                     <strong class="fe-s-domain">${escapeHtml(domain)}</strong>
                     <span class="fe-s-title">${escapeHtml(s.title || 'Full Evidence Document')}</span>
                   </div>
@@ -304,7 +321,7 @@
                 <div class="fe-s-body">
                   <div class="fe-s-body-meta">
                     <div><strong>Destination URL:</strong> <a href="${escapeHtml(s.canonical_url || s.url)}" target="_blank" rel="noopener noreferrer" class="fe-link">${escapeHtml(s.canonical_url || s.url)} ↗</a></div>
-                    <div><strong>Role & Provenance:</strong> <span class="fe-tag">${escapeHtml(role)}</span> • ${mode === 'syndicated_fallback' ? `Fallback wire indexing (${escapeHtml(fallbackReason || 'Unauthenticated')})` : `Direct native extraction via ${escapeHtml(backend)}`}</div>
+                    <div><strong>Role & Provenance:</strong> <span class="fe-tag">${escapeHtml(role)}</span> • ${escapeHtml(mode)} via ${escapeHtml(backend)}</div>
                     ${s.published || s.published_at ? `<div><strong>Published:</strong> ${escapeHtml(s.published || s.published_at)}</div>` : ''}
                   </div>
 

@@ -85,18 +85,14 @@ class TestAgentReachChaos(unittest.TestCase):
                 self.assertIn("fallback", read_result.get("content", "").lower())
 
     def test_rss_malformed_xml_recovery(self):
-        """Feed corrupted XML/binary payloads to RSS parser; assert zero unhandled exceptions."""
+        """Feed corrupted XML/binary payloads to native feedparser; assert zero unhandled exceptions."""
+        import feedparser
         malformed_bytes = b"<?xml version='1.0'?><rss><channel><title>Broken<item><link>unclosed"
+        corrupted_feed = feedparser.parse(malformed_bytes)
         
         rss_channel = self.service.registry.get_channel("rss")
         if rss_channel:
-            with patch("requests.get") as mock_get:
-                mock_resp = MagicMock()
-                mock_resp.status_code = 200
-                mock_resp.content = malformed_bytes
-                mock_resp.text = malformed_bytes.decode('utf-8', errors='ignore')
-                mock_get.return_value = mock_resp
-
+            with patch("feedparser.parse", return_value=corrupted_feed):
                 # Should not raise exception
                 try:
                     fragments = rss_channel.search("test query", limit=5)

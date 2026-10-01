@@ -98,16 +98,54 @@ def test_threat_lab_api_endpoints(test_client: TestClient):
 
 @pytest.mark.integration
 def test_verify_claim_produces_lineage_and_replay_dossier(test_client: TestClient, monkeypatch: pytest.MonkeyPatch):
-    # Mock external network scrapers for deterministic test speed
-    from backend.services.agent_reach_scraper import reach_scraper
-    monkeypatch.setattr(reach_scraper, "omni_scan", lambda **kw: {
-        "channels": {
-            "reddit": [{"title": "Reddit thread on honey", "author": "u/honeyfan", "url": "https://reddit.com/r/health/1"}],
-            "twitter": [{"title": "Tweet discussing honey vs antibiotics", "author": "@healthdoc", "url": "https://twitter.com/doc/1"}],
-            "youtube": [{"title": "Video analyzing antimicrobial properties", "url": "https://youtube.com/watch?v=1"}],
-            "news": [{"source": "Reuters Health", "title": "Clinical trials on medical honey", "url": "https://reuters.com/health/1"}]
+    # Mock research agent structured output for deterministic execution and genuine pipeline coverage
+    from backend.agents.research_agent import ResearchAgent
+    mock_evidence = {
+        "supporting_evidence": [
+            {"source": "Reuters Health", "url": "https://reuters.com/health/1", "text": "Clinical trials show honey has topical antimicrobial properties.", "source_role": "PRIMARY"}
+        ],
+        "refuting_evidence": [
+            {"source": "World Health Organization", "url": "https://who.int/news/antibiotics", "text": "Bacterial infections require certified antibiotic regimens; untreated severe infections risk sepsis.", "source_role": "PRIMARY"}
+        ],
+        "overall_evidence_confidence": "High",
+        "contradictions": ["Disagreement between folk medicine claims and clinical trials"],
+        "research_corpus": {
+            "funnel": {
+                "queries_planned": 8,
+                "queries_executed": 8,
+                "candidates_found": 12,
+                "unique_candidates": 10,
+                "deep_reads_count": 2,
+                "primary_sources_count": 2,
+                "independent_groups_count": 2,
+                "contradictions_count": 1,
+                "findings_count": 1,
+                "saturation_score": 0.88,
+                "halt_reason": "SATURATION_THRESHOLD_REACHED",
+            },
+            "findings": [
+                {
+                    "finding_id": "FND-01",
+                    "title": "Raw Honey Antibiotic Efficacy",
+                    "statement": "Clinical trials show honey does not substitute for antibiotics in bacterial infections.",
+                    "epistemic_state": "REFUTED",
+                    "supporting_evidence_ids": ["ev_claim_1"],
+                    "contradicting_evidence_ids": ["ev_claim_2"],
+                    "quality_tensor": {
+                        "relevance": 0.95,
+                        "source_quality": 0.92,
+                        "independence": 0.88,
+                        "primary_weight": 0.90,
+                        "freshness": 0.85,
+                        "contradiction_level": 0.10,
+                        "composite_score": 0.91,
+                        "is_heuristic": True
+                    }
+                }
+            ]
         }
-    })
+    }
+    monkeypatch.setattr(ResearchAgent, "gather_evidence_structured", lambda self, text, **kw: mock_evidence)
 
     payload = {
         "claim": "Consuming pure raw honey eliminates bacterial infections without antibiotics."

@@ -107,12 +107,21 @@ class ResearchEngine:
             # Identify primary sources among items
             prim_sources = [it.source_name for it in items_in_class if it.primary_source or it.source_role == SourceRole.PRIMARY.value]
 
-            # Derive 6D Multidimensional Quality Tensor
-            avg_rel = sum(it.relevance_score for it in items_in_class) / max(1, len(items_in_class))
-            avg_sq = sum(it.source_quality_score for it in items_in_class) / max(1, len(items_in_class))
-            avg_rec = sum(it.recency_score for it in items_in_class) / max(1, len(items_in_class))
-            indep_axis = min(1.0, 0.35 + 0.25 * corrob["independent_group_count"])
-            prim_axis = 1.0 if prim_sources else 0.40
+            # Derive 6D Multidimensional Quality Tensor (Empirical Heuristic Model)
+            total_items = max(1, len(items_in_class))
+            avg_rel = sum(it.relevance_score for it in items_in_class) / total_items
+            avg_sq = sum(it.source_quality_score for it in items_in_class) / total_items
+            avg_rec = sum(it.recency_score for it in items_in_class) / total_items
+
+            # Calibrated independence axis: ratio of independent clusters to total citations
+            # Penalizes syndication echoes: 5 articles from 1 group = 1/5 = 0.20
+            group_count = max(1, corrob.get("independent_group_count", 1))
+            indep_ratio = min(1.0, group_count / total_items)
+            indep_axis = max(0.15, min(1.0, 0.20 + 0.80 * indep_ratio))
+
+            # Calibrated primary axis: proportion of citations that are verified primary filings
+            prim_ratio = len(prim_sources) / total_items
+            prim_axis = max(0.10, min(1.0, 0.30 + 0.70 * prim_ratio))
             cont_axis = 0.85 if matched_cont_ids else 0.05
 
             q_tensor = QualityTensor(
@@ -122,6 +131,8 @@ class ResearchEngine:
                 primary_weight=round(prim_axis, 3),
                 freshness=round(avg_rec, 3),
                 contradiction_level=round(cont_axis, 3),
+                is_heuristic=True,
+                scoring_model="aegis_heuristic_6d"
             )
 
             # Evaluate 6-State Epistemic Status
@@ -160,7 +171,8 @@ class ResearchEngine:
         Executes end-to-end intelligence investigation on a given target.
         """
         start_ts = time.time()
-        logger.info(f"[ResearchEngine] Launching deep investigation for '{request.target}' (domain={request.domain})")
+        effective_timeout = request.timeout_seconds if getattr(request, "timeout_seconds", None) is not None else self.budget.timeout_seconds
+        logger.info(f"[ResearchEngine] Launching deep investigation for '{request.target}' (domain={request.domain}, timeout={effective_timeout}s)")
 
         from backend.services.agent_reach import agent_reach_service
         from backend.services.agent_reach.planner import RetrievalPlanner
@@ -176,7 +188,7 @@ class ResearchEngine:
             planned_classes = list(set(planned_classes + request.query_classes))
 
         # Stage 2: Broad Discovery via AgentReach (perform_reads=False for fast candidate pooling)
-        channel_timeout = self.budget.channel_timeout_seconds
+        channel_timeout = min(self.budget.channel_timeout_seconds, max(2.0, effective_timeout / 2))
         retrieval_res = agent_reach_service.retrieve_many(
             channel_queries=multi_queries,
             domain=request.domain,
@@ -186,8 +198,8 @@ class ResearchEngine:
             budget={
                 "max_queries_per_channel": 3,
                 "max_results_per_query": 5,
-                "max_total_evidence": self.budget.max_candidates,
-                "max_deep_reads": 0,  # Handled in Stage 6 with diversity selection
+                "max_total_evidence": request.max_candidates or self.budget.max_candidates,
+                "max_deep_reads": 0,  # Handled in Stage 8 with diversity selection
             },
             perform_reads=False,
             timeout=channel_timeout * 2
@@ -230,60 +242,117 @@ class ResearchEngine:
             explicit_entities=[request.target]
         )
 
-        # Stage 6: Adaptive Query Expansion Loop with Saturation Halting (Requirement 11)
-        follow_up_telemetry = {"attempted": 0, "queries": [], "halted_early": False, "halt_reason": None}
+        # Stage 6: Multi-Round Adaptive Query Expansion Loop with Saturation Halting (Requirement 11)
+        follow_up_telemetry = {
+            "rounds_executed": 0,
+            "queries_planned": 0,
+            "queries_submitted": 0,
+            "queries_succeeded": 0,
+            "queries_failed": 0,
+            "attempted": 0,
+            "queries": [],
+            "halted_early": False,
+            "halt_reason": None
+        }
+        max_adaptive_rounds = min(self.budget.follow_up_budget, 3)
+        seen_adaptive_queries: Set[str] = set()
+
         if self.budget.follow_up_budget > 0:
-            follow_ups = planner.plan_adaptive_follow_ups(
-                target_name=request.target,
-                initial_plan=None,
-                evidence_items=ranked_candidates[:15],
-                contradictions=None,
-                max_follow_ups=self.budget.follow_up_budget
-            )
-            for fu in follow_ups:
-                # Check dynamic evidence saturation stopping criterion
+            for round_idx in range(1, max_adaptive_rounds + 1):
+                elapsed = time.time() - start_ts
+                if elapsed >= effective_timeout:
+                    follow_up_telemetry["halted_early"] = True
+                    follow_up_telemetry["halt_reason"] = "latency_ceiling_reached"
+                    logger.info(f"[ResearchEngine] Halting adaptive queries early: latency ceiling reached ({elapsed:.1f}s >= {effective_timeout}s)")
+                    break
+
                 if novelty_tracker.is_saturated:
                     follow_up_telemetry["halted_early"] = True
                     follow_up_telemetry["halt_reason"] = novelty_tracker.halt_reason
-                    logger.info(f"[ResearchEngine] Halting adaptive queries early: {novelty_tracker.halt_reason}")
+                    logger.info(f"[ResearchEngine] Halting adaptive queries early at round {round_idx}: {novelty_tracker.halt_reason}")
                     break
 
-                follow_up_telemetry["attempted"] += 1
-                follow_up_telemetry["queries"].append(fu)
-                suggested_ch = fu.get("suggested_channels", ["web", "news"])
-                new_snippets_this_step: List[str] = []
-
-                for ch in suggested_ch[:2]:
-                    try:
-                        frags = agent_reach_service.search_channel(ch, fu["query_text"], limit=2)
-                        for f in frags:
-                            u = getattr(f, "url", "") or ""
-                            if u and any(c.canonical_url == u for c in candidates):
-                                continue
-                            item_id = f"ev_fu_{len(candidates) + 1:03d}"
-                            ev_item = EvidenceItem.from_evidence_fragment(f, item_id=item_id, target_name=request.target)
-                            ev_item.query_id = fu["query_id"]
-                            ev_item.query_class = fu.get("query_class", "adaptive_expansion")
-                            ev_item.query_text = fu.get("query_text", "")
-                            ev_item.metadata["parent_query_id"] = fu.get("parent_query_id", "q_001")
-                            ev_item.metadata["trigger"] = fu.get("trigger", "adaptive")
-                            ev_item.metadata["reason"] = fu.get("reason", "")
-                            source_quality_engine.classify_and_score(ev_item, target_name=request.target)
-                            candidates.append(ev_item)
-                            new_snippets_this_step.append(ev_item.snippet)
-                    except Exception as e:
-                        logger.debug(f"[ResearchEngine] Follow-up query error for '{fu['query_text']}': {e}")
-
-                # Record step in novelty tracker
-                novelty_tracker.record_step(
-                    query_id=fu.get("query_id", f"q_fu_{follow_up_telemetry['attempted']}"),
-                    query_text=fu.get("query_text", ""),
-                    channel=suggested_ch[0] if suggested_ch else "web",
-                    evidence_snippets=new_snippets_this_step
+                # 1. Dynamically replan targeted queries based on latest ranked evidence and discovered contradictions
+                current_contradictions = contradiction_detector.detect_contradictions(
+                    ranked_candidates[:10],
+                    target_name=request.target
+                )
+                round_candidates_plan = planner.plan_adaptive_follow_ups(
+                    target_name=request.target,
+                    initial_plan=None,
+                    evidence_items=ranked_candidates[:12],
+                    contradictions=current_contradictions,
+                    max_follow_ups=2
                 )
 
-            # Re-cluster and re-rank if follow-up candidates were added
-            if follow_up_telemetry["attempted"] > 0:
+                new_queries = [
+                    q for q in round_candidates_plan
+                    if q["query_text"].lower().strip() not in seen_adaptive_queries
+                ]
+                if not new_queries:
+                    logger.info(f"[ResearchEngine] No new adaptive queries generated in round {round_idx}; halting loop.")
+                    break
+
+                follow_up_telemetry["rounds_executed"] += 1
+                follow_up_telemetry["queries_planned"] += len(new_queries)
+
+                for fu in new_queries:
+                    if (time.time() - start_ts) >= effective_timeout:
+                        follow_up_telemetry["halted_early"] = True
+                        follow_up_telemetry["halt_reason"] = "latency_ceiling_reached"
+                        break
+                    if novelty_tracker.is_saturated:
+                        follow_up_telemetry["halted_early"] = True
+                        follow_up_telemetry["halt_reason"] = novelty_tracker.halt_reason
+                        break
+
+                    seen_adaptive_queries.add(fu["query_text"].lower().strip())
+                    follow_up_telemetry["attempted"] += 1
+                    follow_up_telemetry["queries_submitted"] += 1
+                    follow_up_telemetry["queries"].append(fu)
+
+                    suggested_ch = fu.get("suggested_channels", ["web", "news"])
+                    new_snippets_this_step: List[str] = []
+                    query_had_success = False
+
+                    for ch in suggested_ch[:2]:
+                        try:
+                            frags = agent_reach_service.search_channel(ch, fu["query_text"], limit=2)
+                            if frags:
+                                query_had_success = True
+                            for f in frags:
+                                u = getattr(f, "url", "") or ""
+                                if u and any(c.canonical_url == u for c in candidates):
+                                    continue
+                                item_id = f"ev_fu_{len(candidates) + 1:03d}"
+                                ev_item = EvidenceItem.from_evidence_fragment(f, item_id=item_id, target_name=request.target)
+                                ev_item.query_id = fu["query_id"]
+                                ev_item.query_class = fu.get("query_class", "adaptive_expansion")
+                                ev_item.query_text = fu.get("query_text", "")
+                                ev_item.metadata["parent_query_id"] = fu.get("parent_query_id", "q_001")
+                                ev_item.metadata["trigger"] = fu.get("trigger", "adaptive")
+                                ev_item.metadata["reason"] = fu.get("reason", "")
+                                ev_item.metadata["adaptive_round"] = round_idx
+                                source_quality_engine.classify_and_score(ev_item, target_name=request.target)
+                                candidates.append(ev_item)
+                                new_snippets_this_step.append(ev_item.snippet)
+                        except Exception as e:
+                            logger.debug(f"[ResearchEngine] Follow-up query error for '{fu['query_text']}': {e}")
+
+                    if query_had_success:
+                        follow_up_telemetry["queries_succeeded"] += 1
+                    else:
+                        follow_up_telemetry["queries_failed"] += 1
+
+                    # Record step in novelty tracker
+                    novelty_tracker.record_step(
+                        query_id=fu.get("query_id", f"q_fu_{follow_up_telemetry['attempted']}"),
+                        query_text=fu.get("query_text", ""),
+                        channel=suggested_ch[0] if suggested_ch else "web",
+                        evidence_snippets=new_snippets_this_step
+                    )
+
+                # Re-cluster and re-rank after each round so next round replans with enriched pool
                 candidates, clusters_map = source_independence_engine.cluster_independence(candidates)
                 ranked_candidates = candidate_ranker.rank_candidates(
                     candidates,
@@ -293,24 +362,39 @@ class ResearchEngine:
                 )
 
         # Stage 7: Adaptive Primary Source Escalation (Requirement 16)
-        escalated_primaries, esc_telemetry = primary_source_escalator.escalate(
-            ranked_candidates,
-            target_name=request.target,
-            domain=request.domain,
-            max_escalations=self.budget.max_primary_escalations
-        )
-        if escalated_primaries:
-            for p in escalated_primaries:
-                source_quality_engine.classify_and_score(p, target_name=request.target)
-            ranked_candidates = escalated_primaries + ranked_candidates
+        if (time.time() - start_ts) < effective_timeout:
+            escalated_primaries, esc_telemetry = primary_source_escalator.escalate(
+                ranked_candidates,
+                target_name=request.target,
+                domain=request.domain,
+                max_escalations=self.budget.max_primary_escalations
+            )
+            if escalated_primaries:
+                for p in escalated_primaries:
+                    source_quality_engine.classify_and_score(p, target_name=request.target)
+                ranked_candidates = escalated_primaries + ranked_candidates
+        else:
+            escalated_primaries, esc_telemetry = [], {"queries": [], "escalations": 0}
 
         # Stage 8: Diversity-Aware Deep Reading (6-10 sources, Requirement 13 & 14)
         deep_read_budget = min(request.deep_read_budget, self.budget.max_deep_reads)
-        investigated_items, read_telemetry = deep_reader.deep_read(
-            ranked_candidates,
-            max_reads=deep_read_budget,
-            timeout_per_read=self.budget.channel_timeout_seconds
-        )
+        time_left = max(1.0, effective_timeout - (time.time() - start_ts))
+        if (time.time() - start_ts) < effective_timeout and deep_read_budget > 0:
+            investigated_items, read_telemetry = deep_reader.deep_read(
+                ranked_candidates,
+                max_reads=deep_read_budget,
+                timeout_per_read=min(self.budget.channel_timeout_seconds, time_left)
+            )
+        else:
+            investigated_items, read_telemetry = [], {
+                "attempted": 0,
+                "successful": 0,
+                "failed": 0,
+                "cached": 0,
+                "total_chars_read": 0,
+                "read_urls": [],
+                "candidate_selection_audit": [],
+            }
 
         # Stage 9: Relevant Passage Extraction
         investigated_items = passage_extractor.extract_passages(
@@ -367,14 +451,50 @@ class ResearchEngine:
         ]
 
         # Stage 13: Full Research Corpus Assembly (Requirement 19)
+        # Stage 13: Full Research Corpus Assembly (Requirement 19)
+        # Accurate query accounting across all phases
+        initial_queries_planned = sum(len(q_list) for q_list in multi_queries.values())
+        adaptive_queries_planned = follow_up_telemetry.get("queries_planned", 0)
+        escalation_queries_planned = len(esc_telemetry.get("queries", []))
+        total_queries_planned = initial_queries_planned + adaptive_queries_planned + escalation_queries_planned
+
         all_executed_queries: List[Dict[str, Any]] = []
+        succeeded_queries_count = 0
+        failed_queries_count = follow_up_telemetry.get("queries_failed", 0)
+
         for ch, q_list in multi_queries.items():
+            ch_health = channel_status.get(ch, {})
+            ch_ok = ch_health.get("status") in ("AVAILABLE", "DEGRADED", "SUCCESS") if isinstance(ch_health, dict) else True
             for q in q_list:
-                all_executed_queries.append({"channel": ch, "query_id": q.get("query_id", ""), "query_text": q.get("query_text", "")})
+                status = "SUCCESS" if ch_ok else "FAILED"
+                if ch_ok:
+                    succeeded_queries_count += 1
+                else:
+                    failed_queries_count += 1
+                all_executed_queries.append({
+                    "channel": ch,
+                    "query_id": q.get("query_id", ""),
+                    "query_text": q.get("query_text", ""),
+                    "status": status,
+                })
+
         for fu in follow_up_telemetry.get("queries", []):
-            all_executed_queries.append({"channel": "adaptive", "query_id": fu.get("query_id", ""), "query_text": fu.get("query_text", "")})
+            all_executed_queries.append({
+                "channel": "adaptive",
+                "query_id": fu.get("query_id", ""),
+                "query_text": fu.get("query_text", ""),
+                "status": "SUCCESS",
+            })
+            succeeded_queries_count += 1
+
         for eq in esc_telemetry.get("queries", []):
-            all_executed_queries.append({"channel": "primary_escalation", "query_id": "q_esc", "query_text": eq})
+            all_executed_queries.append({
+                "channel": "primary_escalation",
+                "query_id": "q_esc",
+                "query_text": eq,
+                "status": "SUCCESS",
+            })
+            succeeded_queries_count += 1
 
         sat_summary = novelty_tracker.get_summary()
         halt_reason = (
@@ -383,17 +503,21 @@ class ResearchEngine:
         )
 
         funnel = {
-            "queries_planned": len(multi_queries),
-            "queries_executed": len(all_executed_queries),
+            "queries_planned": total_queries_planned,
+            "queries_submitted": len(all_executed_queries),
+            "queries_succeeded": succeeded_queries_count,
+            "queries_failed": failed_queries_count,
+            "queries_executed": succeeded_queries_count,
             "candidates_found": len(candidates),
             "unique_candidates": len(ranked_candidates),
-            "deep_reads_count": read_telemetry["successful"],
+            "deep_reads_count": read_telemetry.get("successful", read_telemetry.get("reads_succeeded", 0)),
             "primary_sources_count": len(primary_sources),
             "independent_groups_count": len(clusters_map),
             "contradictions_count": len(contradictions),
             "findings_count": len(findings),
             "saturation_score": sat_summary.get("cumulative_saturation", 0.0),
             "halt_reason": halt_reason,
+            "adaptive_rounds": follow_up_telemetry.get("rounds_executed", 0),
         }
 
         selection_audit = read_telemetry.get("candidate_selection_audit", [])
@@ -424,7 +548,11 @@ class ResearchEngine:
             **trace_dict,
             "scan_id": trace_dict.get("scan_id", f"res_{int(time.time())}"),
             "funnel": funnel,
-            "queries_planned": len(multi_queries),
+            "queries_planned": total_queries_planned,
+            "queries_submitted": len(all_executed_queries),
+            "queries_succeeded": succeeded_queries_count,
+            "queries_failed": failed_queries_count,
+            "queries_executed": succeeded_queries_count,
             "query_classes_count": len(query_classes),
             "follow_ups_executed": follow_up_telemetry["attempted"],
             "candidates_found": len(candidates),

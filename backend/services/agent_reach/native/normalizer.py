@@ -9,7 +9,7 @@ import re
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
-from backend.services.agent_reach.channels import EvidenceFragment
+from backend.services.agent_reach.channels import EvidenceFragment, RetrievalMode
 
 
 def _clean_html_text(text: str) -> str:
@@ -54,6 +54,8 @@ class NativeNormalizer:
                 snippet=desc[:300],
                 score=float(min(stars, 100)),
                 retrieval_method="gh_cli",
+                retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
+                native_backend_id="gh-cli",
                 channel_name="github",
                 content_depth="SNIPPET",
                 query_id=query_id,
@@ -108,6 +110,8 @@ class NativeNormalizer:
                 snippet=snippet,
                 score=50.0,
                 retrieval_method="yt_dlp",
+                retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
+                native_backend_id="yt-dlp",
                 channel_name="youtube",
                 content_depth="VIDEO_METADATA",
                 query_id=query_id,
@@ -150,6 +154,8 @@ class NativeNormalizer:
                 snippet=content[:300] if content else title,
                 score=40.0 + min(replies, 40),
                 retrieval_method="v2ex_public_api",
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="v2ex-public-api",
                 channel_name="v2ex",
                 content_depth="FULL_ARTICLE" if len(content) > 300 else "SNIPPET",
                 query_id=query_id,
@@ -192,6 +198,8 @@ class NativeNormalizer:
                 snippet=desc[:300] if desc else f"Bilibili video by {author}",
                 score=45.0,
                 retrieval_method="bilibili_search_api",
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="bilibili-search-api",
                 channel_name="bilibili",
                 content_depth="VIDEO_METADATA",
                 query_id=query_id,
@@ -232,6 +240,8 @@ class NativeNormalizer:
                 snippet=summary[:300],
                 score=60.0,
                 retrieval_method="feedparser",
+                retrieval_mode=RetrievalMode.RSS_FEED.value,
+                native_backend_id="feedparser",
                 channel_name=channel_name,
                 content_depth="SNIPPET",
                 query_id=query_id,

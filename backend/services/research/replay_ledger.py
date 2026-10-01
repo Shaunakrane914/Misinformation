@@ -264,11 +264,14 @@ class ReplayLedger:
             "target": dossier.get("target"),
             "domain": dossier.get("domain"),
             "replayed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            "replay_mode": "trace_playback",
+            "integrity_status": "cryptographically_sealed_trace",
+            "deterministic_reproducibility": "SEALED_AUDIT_TRACE_PLAYBACK",
             "total_queries_replayed": len(dossier.get("queries_executed", [])),
             "candidates_integrity_verified": verified_candidates,
             "findings_verified": len(dossier.get("findings_provenance", [])),
             "playback_steps": replay_steps,
-            "deterministic_reproducibility": "100%_VERIFIED",
+            "audit_disclosure": "Replay executes cryptographically sealed trace playback of original retrieval, normalization, and decision checkpoints without re-querying live external endpoints.",
         }
 
 

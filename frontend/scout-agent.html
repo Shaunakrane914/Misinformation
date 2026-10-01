@@ -594,13 +594,16 @@
       const sat = data.saturation || {};
       const sessionId = data.session_id || null;
 
-      const price = stock.current_price ? Number(stock.current_price).toFixed(2) : '0.00';
-      const prevClose = stock.prev_close ? Number(stock.prev_close).toFixed(2) : '0.00';
-      const delta = stock.drop_percent != null ? Number(stock.drop_percent).toFixed(2) : '0.00';
-      const deltaColor = delta < -2.0 ? 'var(--rose)' : (delta > 1.0 ? 'var(--emerald)' : '#fbbf24');
-      const zScore = stock.z_score != null ? Number(stock.z_score).toFixed(2) : '0.00';
+      const hasPrice = stock.current_price != null && stock.current_price !== "";
+      const price = hasPrice ? Number(stock.current_price).toFixed(2) : '—';
+      const prevClose = (stock.prev_close != null && stock.prev_close !== "") ? Number(stock.prev_close).toFixed(2) : '—';
+      const hasDelta = stock.drop_percent != null && stock.drop_percent !== "";
+      const delta = hasDelta ? Number(stock.drop_percent).toFixed(2) : null;
+      const deltaStr = hasDelta ? `${delta > 0 ? '+' : ''}${delta}%` : '—';
+      const deltaColor = hasDelta ? (delta < -2.0 ? 'var(--rose)' : (delta > 1.0 ? 'var(--emerald)' : '#fbbf24')) : 'var(--text-dim)';
+      const zScoreStr = (stock.z_score != null && stock.z_score !== "") ? `${Number(stock.z_score).toFixed(2)}σ` : '—';
       const isCrashing = stock.is_crashing;
-      const symPrefix = stock.currency === 'INR' ? '₹' : '$';
+      const symPrefix = hasPrice ? (stock.currency === 'INR' ? '₹' : '$') : '';
 
       let html = '';
 
@@ -617,15 +620,15 @@
               <div class="snap-lbl">Last Price (${esc(stock.currency || 'USD')})</div>
             </div>
             <div class="snap-card">
-              <div class="snap-val" style="color:${deltaColor}">${delta > 0 ? '+' : ''}${delta}%</div>
+              <div class="snap-val" style="color:${deltaColor}">${deltaStr}</div>
               <div class="snap-lbl">24h Price Change</div>
             </div>
             <div class="snap-card">
-              <div class="snap-val">${symPrefix}${prevClose}</div>
+              <div class="snap-val">${prevClose !== '—' ? symPrefix : ''}${prevClose}</div>
               <div class="snap-lbl">Previous Close</div>
             </div>
             <div class="snap-card">
-              <div class="snap-val" style="color:${Math.abs(zScore)>=2 ? 'var(--rose)' : '#c4b5fd'}">${zScore}σ</div>
+              <div class="snap-val" style="color:${stock.z_score != null && Math.abs(stock.z_score) >= 2 ? 'var(--rose)' : '#c4b5fd'}">${zScoreStr}</div>
               <div class="snap-lbl">Volatility Dispersion (Z-Score)</div>
             </div>
             <div class="snap-card">
@@ -640,10 +643,10 @@
           </div>
         </div>
 
-        <!-- 2. FORENSIC EVIDENCE NAVIGATOR -->
+        <!-- 2. FORENSIC INVESTIGATION WORKSPACE -->
         <div class="intel-section ae-reveal" style="padding:16px 20px;">
           <div class="intel-section-title" style="margin-bottom:8px;">
-            <span>// 02 · FORENSIC EVIDENCE NAVIGATOR &amp; RETRIEVAL FUNNEL</span>
+            <span>// 02 · FORENSIC INVESTIGATION WORKSPACE &amp; RETRIEVAL FUNNEL</span>
             <span class="intel-count-badge" style="color:var(--accent);border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.08);">
               Adaptive Saturation Engine
             </span>
@@ -652,36 +655,7 @@
         </div>
       `;
 
-      // 3. WHAT CHANGED (TOP DEVELOPMENTS)
-      const topNews = news.slice(0, 3);
-      html += `
-        <div class="intel-section ae-reveal">
-          <div class="intel-section-title">
-            <span>// 03 · WHAT CHANGED (CORE BREAKING DEVELOPMENTS)</span>
-            <span class="intel-count-badge">Executive Synthesis</span>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:12px;">
-            ${topNews.length === 0 ? '<div style="color:var(--text-dim);font-size:0.86rem;">No breaking shifts identified in current scan window.</div>' : topNews.map((item, idx) => `
-              <div style="background:rgba(139,92,246,0.06);border-left:3px solid #8b5cf6;border-radius:6px;padding:14px 18px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
-                <div style="flex:1;min-width:260px;">
-                  <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-                    <span style="font-weight:700;color:#fff;font-size:0.95rem;">${idx + 1}. ${esc(item.title)}</span>
-                    ${getEpistemicBadge(idx === 0 ? 'KNOWN_FACT' : 'SUPPORTED')}
-                  </div>
-                  <div style="font-size:0.83rem;color:#cbd5e1;line-height:1.5;">${esc(item.summary || item.snippet || '')}</div>
-                </div>
-                <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:0.74rem;">
-                  <span style="color:var(--text-dim);">${esc(item.source || 'Wire')}</span>
-                  <button class="ae-btn-why" onclick="openWhyDrawer('news', ${idx})">Why this finding? &nearr;</button>
-                  ${item.source_url || item.url ? `<a href="${esc(item.source_url || item.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open ↗</a>` : ''}
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-
-      // 4. CATALYSTS & RISKS MATRIX
+      // 03. CATALYSTS & RISKS MATRIX
       const posCats = catalysts.positive || [];
       const negCats = catalysts.negative || [];
       const unresCats = catalysts.unresolved || [];
@@ -689,7 +663,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 04 · CATALYSTS &amp; HEADWINDS MATRIX</span>
+            <span>// 03 · CATALYSTS &amp; HEADWINDS MATRIX</span>
             <span class="intel-count-badge">${narratives.length} Themes &bull; Epistemic Grounding</span>
           </div>
 
@@ -756,102 +730,7 @@
         </div>
       `;
 
-      // 5. PRIMARY DISCLOSURES & REGULATORY FILINGS
-      html += `
-        <div class="intel-section ae-reveal">
-          <div class="intel-section-title">
-            <span>// 05 · PRIMARY REGULATORY DISCLOSURES &amp; IR FILINGS</span>
-            <span class="intel-count-badge">${primarySources.length} Verified Filings</span>
-          </div>
-          ${primarySources.length === 0 ? `
-            <div style="padding:16px;background:rgba(0,0,0,0.25);border-radius:8px;font-size:0.85rem;color:var(--text-muted);">
-              No regulatory filings (SEC/EDGAR/NSE/BSE) required escalation during this nominal scan window. All findings corroborate through verified financial newswires.
-            </div>
-          ` : `
-            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px;">
-              ${primarySources.map((ps, idx) => `
-                <div style="background:rgba(16,185,129,0.06);border:1px solid rgba(16,185,129,0.25);border-radius:10px;padding:14px 18px;">
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                    <span class="badge-role badge-primary">PRIMARY REGULATORY</span>
-                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${esc(ps.source || 'Filing Portal')}</span>
-                  </div>
-                  <div style="font-weight:700;color:#fff;font-size:0.9rem;margin-bottom:6px;">${esc(ps.title)}</div>
-                  <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;margin-bottom:10px;">${esc(ps.snippet || '')}</div>
-                  <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <button class="ae-btn-why" onclick="openWhyDrawer('primary', ${idx})">Why this finding? &nearr;</button>
-                    ${ps.url ? `<a href="${esc(ps.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">View Filing ↗</a>` : ''}
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-          `}
-        </div>
-      `;
-
-      // 6. SOURCE LINEAGE DAG & SYNDICATION GRAPH
-      const metrics = (lineage && lineage.metrics) ? lineage.metrics : {};
-      const echoCount = metrics.echo_count != null ? metrics.echo_count : (lineage.echo_count != null ? lineage.echo_count : sources.filter(s => s.is_syndicated).length);
-      const wireRoots = metrics.primary_origins != null ? metrics.primary_origins : (lineage.primary_origins != null ? lineage.primary_origins : (primarySources.length || (sources.length ? 1 : 0)));
-      const compressionRatio = metrics.compression_ratio != null ? Number(metrics.compression_ratio).toFixed(1) : (metrics.syndication_ratio != null ? Number(metrics.syndication_ratio).toFixed(1) : (echoCount > 0 ? (sources.length / Math.max(1, sources.length - echoCount)).toFixed(1) : '1.0'));
-      const syndGroups = (data.corroboration_groups && data.corroboration_groups.length > 0)
-        ? data.corroboration_groups
-        : ((lineage && lineage.groups && lineage.groups.length > 0) ? lineage.groups : []);
-
-      html += `
-        <div class="intel-section ae-reveal">
-          <div class="intel-section-title">
-            <span>// 06 · SOURCE LINEAGE DAG &amp; SYNDICATION GRAPH</span>
-            <span class="intel-count-badge" style="color:var(--accent);border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.1);">
-              ${compressionRatio}x Echo Compression
-            </span>
-          </div>
-          <div class="lineage-box">
-            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
-              <div style="font-size:0.85rem;color:var(--text-muted);max-width:680px;line-height:1.5;">
-                Aegis isolates true primary wire origins from syndicated press republishing, preventing circular confirmation loops where multiple articles repeat the same underlying release.
-              </div>
-              <div style="display:flex;gap:10px;font-family:var(--font-mono);font-size:0.75rem;">
-                <span style="background:rgba(16,185,129,0.12);padding:4px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.3);color:var(--emerald);">
-                  ${wireRoots} Wire Roots
-                </span>
-                <span style="background:rgba(0,229,255,0.12);padding:4px 8px;border-radius:6px;border:1px solid rgba(0,229,255,0.3);color:var(--accent);">
-                  ${echoCount} Collapsed Echoes
-                </span>
-              </div>
-            </div>
-
-            <!-- Visual Lineage Tree -->
-            <div class="lineage-tree">
-              ${syndGroups.length > 0 ? syndGroups.map(g => `
-                <div class="lineage-root" style="margin-bottom:12px;">
-                  <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <div style="font-weight:700;font-size:0.88rem;color:var(--emerald);">
-                      &bull; Primary Origin: ${esc(g.primary_source_name || g.canonical_source || 'Wire Source')}
-                    </div>
-                    <span class="badge-role badge-primary">ORIGINAL WIRE</span>
-                  </div>
-                  ${(g.echo_sources || g.member_sources || []).length > 0 ? `
-                    <div class="lineage-echoes">
-                      ${(g.echo_sources || g.member_sources || []).map(echo => `
-                        <div class="lineage-echo-item">
-                          <span>&bull; ${esc(echo.source || echo.domain || 'Syndicated Outlet')} &bull; <em>"${esc((echo.title || echo.snippet || '').slice(0, 80))}"</em></span>
-                          <span style="font-family:var(--font-mono);color:var(--text-dim);font-size:0.72rem;">ECHO (Depth 1)</span>
-                        </div>
-                      `).join('')}
-                    </div>
-                  ` : '<div style="font-size:0.78rem;color:var(--text-dim);padding:6px 0 0 14px;">No republished echoes detected for this wire root.</div>'}
-                </div>
-              `).join('') : `
-                <div style="padding:14px;background:rgba(0,0,0,0.25);border-radius:8px;font-size:0.82rem;color:var(--text-muted);">
-                  Zero syndicated echo chains detected — all ${sources.length} indexed records represent independent reporting or direct primary filings.
-                </div>
-              `}
-            </div>
-          </div>
-        </div>
-      `;
-
-      // 07. CONTRADICTIONS & EPISTEMIC TAXONOMY
+      // 04. CONTRADICTIONS & EPISTEMIC TAXONOMY
       const cFor = contradictions.for || [];
       const cAgainst = contradictions.against || [];
       const rumors = misinfo.rumors_detected || [];
@@ -859,7 +738,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 07 · CONTRADICTION ANALYSIS &amp; EPISTEMIC TAXONOMY</span>
+            <span>// 04 · CONTRADICTION ANALYSIS &amp; DISINFORMATION RISK</span>
             <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'NOMINAL')}</span>
           </div>
 
@@ -897,7 +776,7 @@
         </div>
       `;
 
-      // 08. SOCIAL & VIDEO INTELLIGENCE
+      // 05. MULTI-CHANNEL SOCIAL & VIDEO SIGNALS
       const reddit = social.reddit || [];
       const twitter = social.twitter || [];
       const youtube = social.youtube || [];
@@ -905,7 +784,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 08 · MULTI-CHANNEL SOCIAL &amp; VIDEO DISCOURSE</span>
+            <span>// 05 · MULTI-CHANNEL SOCIAL &amp; VIDEO SIGNALS</span>
             <span class="intel-count-badge">${reddit.length + twitter.length + youtube.length} Signals</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
@@ -960,7 +839,7 @@
         </div>
       `;
 
-      // 09. IMMUTABLE REPLAY LEDGER & EVIDENCE SATURATION STOPPING
+      // 06. IMMUTABLE REPLAY LEDGER & EVIDENCE SATURATION STOPPING
       const marginalNoveltyStr = (sat && sat.marginal_novelty != null) ? Number(sat.marginal_novelty).toFixed(3) : (data.marginal_novelty != null ? Number(data.marginal_novelty).toFixed(3) : '—');
       const satScoreStr = (sat && sat.saturation_score != null) ? Number(sat.saturation_score).toFixed(3) : (data.saturation_score != null ? Number(data.saturation_score).toFixed(3) : (data.funnel && data.funnel.saturation_score != null ? Number(data.funnel.saturation_score).toFixed(3) : '—'));
       const haltReasonStr = sat.halt_reason || (data.funnel && data.funnel.halt_reason) || (sat.is_saturated ? 'Dynamic Saturation Ceiling' : 'Quorum Met');
@@ -968,7 +847,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 09 · REPLAY TRACE &amp; EVIDENCE SATURATION PROVENANCE</span>
+            <span>// 06 · REPLAY TRACE &amp; SATURATION PROVENANCE</span>
             <span class="intel-count-badge" style="color:var(--emerald);border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.1);">
               ${sessionId ? `Dossier: ${esc(sessionId)}` : 'Live Telemetry'}
             </span>
@@ -993,26 +872,7 @@
         </div>
       `;
 
-      // 10. SOURCE EXPLORER & WHY-THIS-FINDING PROVENANCE INSPECTOR
-      html += `
-        <div class="intel-section ae-reveal" id="sourceExplorerSection">
-          <div class="intel-section-title">
-            <span>// 10 · SOURCE EXPLORER &amp; PROVENANCE INSPECTOR</span>
-            <span class="intel-count-badge">${sources.length} Indexed Records</span>
-          </div>
-          <div class="explorer-filters">
-            <button class="filter-btn active" onclick="filterSources('ALL')">ALL (${sources.length})</button>
-            <button class="filter-btn" onclick="filterSources('PRIMARY')">PRIMARY (${primarySources.length})</button>
-            <button class="filter-btn" onclick="filterSources('NEWS')">NEWS (${news.length})</button>
-            <button class="filter-btn" onclick="filterSources('SOCIAL')">SOCIAL (${reddit.length + twitter.length})</button>
-            <button class="filter-btn" onclick="filterSources('VIDEO')">VIDEO (${youtube.length})</button>
-          </div>
-          <div class="source-table" id="sourceExplorerList"></div>
-        </div>
-      `;
-
       root.innerHTML = html;
-      renderSourceExplorerList(sources);
 
       // Mount Native Forensic Funnel & Evidence Navigator
       const feMount = document.getElementById('forensicMount');
@@ -1042,63 +902,6 @@
         }
         explorer.setData(corpusPayload);
       }
-    }
-
-    function filterSources(filterType) {
-      currentFilter = filterType;
-      const btns = document.querySelectorAll('.filter-btn');
-      btns.forEach(b => {
-        if (b.textContent.startsWith(filterType)) b.classList.add('active');
-        else b.classList.remove('active');
-      });
-
-      if (!currentResearchData || !currentResearchData.sources) return;
-      const all = currentResearchData.sources;
-      let filtered = all;
-
-      if (filterType === 'PRIMARY') {
-        filtered = all.filter(s => s.source_role === 'PRIMARY');
-      } else if (filterType === 'NEWS') {
-        filtered = all.filter(s => s.channel === 'news' || s.source_role === 'SECONDARY');
-      } else if (filterType === 'SOCIAL') {
-        filtered = all.filter(s => s.channel === 'reddit' || s.channel === 'twitter');
-      } else if (filterType === 'VIDEO') {
-        filtered = all.filter(s => s.channel === 'youtube');
-      }
-
-      renderSourceExplorerList(filtered);
-    }
-
-    function renderSourceExplorerList(list) {
-      const container = document.getElementById('sourceExplorerList');
-      if (!container) return;
-
-      if (!list || list.length === 0) {
-        container.innerHTML = `<div class="empty-state">No sources matching the selected filter.</div>`;
-        return;
-      }
-
-      container.innerHTML = list.map((s, idx) => `
-        <div class="source-row">
-          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px;">
-            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-              <span style="font-family:var(--font-mono);font-size:0.7rem;color:#a78bfa;font-weight:700;">${esc(s.evidence_id || 'EV-' + (idx+1))}</span>
-              ${getRoleBadge(s.source_role)}
-              <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${esc(s.source)} · ${esc(s.channel)}</span>
-            </div>
-            <div style="display:flex;gap:8px;align-items:center;">
-              <button class="ae-btn-why" onclick="openWhyDrawer('source', ${idx})">Why this finding? &nearr;</button>
-              ${s.url ? `<a href="${esc(s.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open ↗</a>` : `<span class="ae-no-link">No URL</span>`}
-            </div>
-          </div>
-          <div style="font-weight:700;font-size:0.9rem;margin-bottom:4px;color:var(--text);">${esc(s.title)}</div>
-          <div style="font-size:0.8rem;color:var(--text-muted);line-height:1.5;">${esc(s.snippet)}</div>
-          <div style="display:flex;gap:14px;margin-top:8px;font-size:0.72rem;font-family:var(--font-mono);color:var(--text-dim);">
-            <span>Published: ${esc(s.published_at || 'Recent')}</span>
-            <span>Syndication Group: ${esc(s.independence_group || 'independent')}</span>
-          </div>
-        </div>
-      `).join('');
     }
 
     // ── Interactive "Why this finding?" Provenance Drawer ──

@@ -95,15 +95,17 @@ class EpistemicState(str, Enum):
 
 @dataclass
 class QualityTensor:
-    """Multidimensional quality tensor replacing 1D scalar confidence."""
+    """Multidimensional quality tensor representing heuristic evidence quality."""
     relevance: float = 0.50
     source_quality: float = 0.50
     independence: float = 0.50
     primary_weight: float = 0.50
     freshness: float = 0.50
     contradiction_level: float = 0.0
+    is_heuristic: bool = True
+    scoring_model: str = "aegis_heuristic_6d"
 
-    def to_dict(self) -> Dict[str, float]:
+    def to_dict(self) -> Dict[str, Any]:
         return {
             "relevance": round(self.relevance, 3),
             "source_quality": round(self.source_quality, 3),
@@ -112,11 +114,13 @@ class QualityTensor:
             "freshness": round(self.freshness, 3),
             "contradiction_level": round(self.contradiction_level, 3),
             "composite_score": self.composite_score,
+            "is_heuristic": self.is_heuristic,
+            "scoring_model": self.scoring_model,
         }
 
     @property
     def composite_score(self) -> float:
-        """Derive calibrated composite score from multi-dimensional axes."""
+        """Derive heuristic composite score from multi-dimensional axes."""
         pos = (
             0.25 * self.relevance +
             0.20 * self.source_quality +
@@ -167,7 +171,7 @@ class EvidenceItem:
     claims: List[str] = field(default_factory=list)
     topics: List[str] = field(default_factory=list)
     retrieval_status: str = "SUCCESS"  # SUCCESS | DEGRADED | TIMEOUT | EMPTY
-    retrieval_mode: str = "native_agent_reach"  # native_agent_reach | direct_api | syndicated_fallback | cached
+    retrieval_mode: str = "direct_api"
     native_backend_id: Optional[str] = None
     fallback_reason: Optional[str] = None
     is_authenticated: bool = False
@@ -310,11 +314,11 @@ class EvidenceItem:
             query_id=getattr(fragment, "query_id", ""),
             query_class=getattr(fragment, "query_class", "general"),
             query_text=getattr(fragment, "query_text", ""),
-            retrieval_mode=getattr(fragment, "retrieval_mode", "native_agent_reach"),
+            retrieval_mode=getattr(fragment, "retrieval_mode", "direct_api"),
             native_backend_id=getattr(fragment, "native_backend_id", None),
             fallback_reason=getattr(fragment, "fallback_reason", None),
             is_authenticated=getattr(fragment, "is_authenticated", False),
-            published_at=getattr(fragment, "published", "") or "Recent",
+            published_at=getattr(fragment, "published", "") or "",
             discovered_at=getattr(fragment, "retrieved_at", "") or datetime.now(timezone.utc).isoformat(),
             content_depth=getattr(fragment, "content_depth", ContentDepth.SNIPPET.value),
             snippet=getattr(fragment, "snippet", "") or getattr(fragment, "content", "")[:280],
@@ -326,7 +330,7 @@ class EvidenceItem:
             primary_source=raw_meta.get("source_role") == SourceRole.PRIMARY.value,
             provenance={
                 "retrieval_method": getattr(fragment, "retrieval_method", "agent_reach"),
-                "retrieval_mode": getattr(fragment, "retrieval_mode", "native_agent_reach"),
+                "retrieval_mode": getattr(fragment, "retrieval_mode", "direct_api"),
                 "native_backend_id": getattr(fragment, "native_backend_id", None),
                 "fallback_reason": getattr(fragment, "fallback_reason", None),
                 "score": getattr(fragment, "score", 0.0),

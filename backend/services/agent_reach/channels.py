@@ -20,6 +20,20 @@ class ChannelStatus(str, Enum):
     AUTH_REQUIRED = "AUTH_REQUIRED"
 
 
+class RetrievalMode(str, Enum):
+    """Accurate classification of the retrieval backend mechanism used."""
+    UPSTREAM_AGENT_REACH = "upstream_agent_reach"
+    NATIVE_TOOL_CLI = "native_tool_cli"
+    DIRECT_API = "direct_api"
+    WEB_SEARCH_INDEX = "web_search_index"
+    RSS_FEED = "rss_feed"
+    WEB_READER = "web_reader"
+    UNAUTHENTICATED_SYNDICATED_FALLBACK = "unauthenticated_syndicated_fallback"
+    LEGACY_SCRAPER_FALLBACK = "legacy_scraper_fallback"
+    CACHED = "cached"
+    UNKNOWN = "unknown"
+
+
 @dataclass
 class EvidenceFragment:
     """
@@ -42,7 +56,7 @@ class EvidenceFragment:
     query_id: str = ""
     query_class: str = ""
     query_text: str = ""
-    retrieval_mode: str = "native_agent_reach"  # native_agent_reach | direct_api | syndicated_fallback | cached
+    retrieval_mode: str = RetrievalMode.UNKNOWN.value
     native_backend_id: Optional[str] = None
     fallback_reason: Optional[str] = None
     is_authenticated: bool = False
@@ -111,6 +125,9 @@ class EvidenceFragment:
             snippet=snippet,
             score=float(data.get("score", 0)),
             retrieval_method=data.get("retrieval_method", "agent_reach"),
+            retrieval_mode=data.get("retrieval_mode", RetrievalMode.LEGACY_SCRAPER_FALLBACK.value),
+            native_backend_id=data.get("backend", "legacy_scraper"),
+            fallback_reason="NATIVE_TOOL_UNAVAILABLE",
             channel_name=channel_name,
             content_depth=depth,
             query_id=query_id or data.get("query_id", ""),
@@ -120,7 +137,8 @@ class EvidenceFragment:
                 k: v for k, v in data.items()
                 if k not in ("platform", "title", "content", "url", "author",
                              "published", "snippet", "score", "retrieval_method",
-                             "content_depth", "query_id", "query_class", "query_text")
+                             "content_depth", "query_id", "query_class", "query_text",
+                             "retrieval_mode", "backend")
             },
         )
 

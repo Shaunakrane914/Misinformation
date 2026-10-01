@@ -886,7 +886,7 @@ Respond in STRICT JSON with this schema:
 
         total_time_ms = int((datetime.utcnow() - start_t).total_seconds() * 1000)
 
-        session_id = research_telemetry.get("dossier_id") or f"R-2026-SCOUT-{sym}"
+        session_id = research_telemetry.get("dossier_id") or None
         source_lineage = getattr(research_res, "source_lineage_graph", {}) or {
             "nodes": [],
             "edges": [],
@@ -897,7 +897,7 @@ Respond in STRICT JSON with this schema:
                 "lineage_depth": 0
             })
         }
-        replay_url = f"/api/research/replay/dossiers/{session_id}"
+        replay_url = f"/api/research/replay/dossiers/{session_id}" if session_id else None
 
         corpus_dict = getattr(research_res, "research_corpus", None) or {}
         funnel = research_telemetry.get("funnel") or corpus_dict.get("funnel") or {

@@ -113,8 +113,15 @@ class EvidenceNoveltyTracker:
 
         # 3. Calculate Marginal Novelty
         if step == 1:
-            marginal_novelty = 0.95 if evidence_snippets else 0.50
-            new_entities_count = len(step_entities)
+            # Step 1: Compute initial marginal novelty from token and entity diversity
+            if not evidence_snippets:
+                marginal_novelty = 0.0
+                new_entities_count = 0
+            else:
+                shingle_factor = min(1.0, len(step_shingles) / 30.0) if step_shingles else 0.50
+                entity_factor = min(1.0, len(step_entities) / 5.0) if step_entities else 0.50
+                marginal_novelty = max(0.40, min(1.0, 0.40 + 0.35 * entity_factor + 0.25 * shingle_factor))
+                new_entities_count = len(step_entities)
         else:
             # Entity Novelty
             new_entities = step_entities - self._accumulated_entities
@@ -138,7 +145,7 @@ class EvidenceNoveltyTracker:
         self._accumulated_entities.update(step_entities)
         self._accumulated_shingles.update(step_shingles)
 
-        # 4. Calculate Cumulative Saturation
+        # 4. Calculate Cumulative Saturation (Aegis Heuristic Stopping Policy)
         prior_novelties = [r.marginal_novelty for r in self._step_records] + [marginal_novelty]
         mean_novelty = sum(prior_novelties) / len(prior_novelties)
         cumulative_saturation = max(0.0, min(1.0, 1.0 - (mean_novelty * (1.0 / (1.0 + 0.15 * step)))))
@@ -199,6 +206,8 @@ class EvidenceNoveltyTracker:
             "final_saturation_index": round(final_rec.cumulative_saturation, 3),
             "is_saturated": self._is_saturated,
             "stopping_criterion_met": self._is_saturated,
+            "stopping_policy": "aegis_heuristic_decay",
+            "is_heuristic": True,
             "halt_reason": self._halt_reason or "Completed standard budget",
             "saturation_curve": self.get_saturation_curve(),
             "total_unique_entities": len(self._accumulated_entities),

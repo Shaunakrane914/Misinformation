@@ -357,9 +357,9 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
         # Construct Source Lineage DAG for claim evidence
         lineage_candidates: List[EvidenceItem] = []
         for idx, s in enumerate(supporting_list + refuting_list):
-            cand_url = s.get("url") or f"https://verified-source-{idx}.org"
-            cand_source = s.get("source") or "News Wire"
-            cand_text = s.get("text") or ""
+            cand_url = s.get("url") or s.get("canonical_url") or ""
+            cand_source = s.get("source") or s.get("source_name") or "News Wire"
+            cand_text = s.get("text") or s.get("snippet") or ""
             is_primary = any(w in cand_source.lower() for w in ["reuters", "ap", "bloomberg", "registry", "official", "sec"])
             lineage_candidates.append(EvidenceItem(
                 id=f"ev_claim_{idx+1}",
@@ -370,7 +370,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 source_tier=SourceTier.TIER_1_ORIGINAL_DOCUMENT.value if is_primary else SourceTier.TIER_2_FINANCIAL_PRESS.value,
                 source_role=SourceRole.PRIMARY.value if is_primary else SourceRole.SECONDARY.value,
                 primary_source=is_primary,
-                relevance_score=0.92 if is_primary else 0.85
+                relevance_score=s.get("relevance_score") or (0.85 if is_primary else 0.70)
             ))
 
         lineage_engine = SourceLineageEngine()
@@ -445,31 +445,23 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "queries_executed": len(lineage_candidates),
                 "candidates_found": len(lineage_candidates),
                 "unique_candidates": len(lineage_candidates),
-                "deep_reads_count": min(len(lineage_candidates), 4),
+                "deep_reads_count": 0,
                 "primary_sources_count": sum(1 for c in lineage_candidates if c.primary_source),
                 "independent_groups_count": len(lineage_graph.get("nodes", [])),
                 "contradictions_count": len(evidence_json.get("contradictions", [])),
-                "findings_count": 1,
-                "saturation_score": 0.90,
-                "halt_reason": "SATURATION_THRESHOLD_REACHED",
+                "findings_count": 1 if lineage_candidates else 0,
+                "saturation_score": None,
+                "halt_reason": "UNAVAILABLE_NO_CORPUS",
             },
-            "findings": evidence_json.get("research_corpus", {}).get("findings") or [{
+            "findings": evidence_json.get("research_corpus", {}).get("findings") or ([{
                 "finding_id": "FND-01",
                 "title": norm_text[:80],
                 "statement": explanation,
                 "epistemic_state": "KNOWN_FACT" if clean_verdict == "TRUE" else ("REFUTED" if clean_verdict == "FALSE" else "CONTESTED"),
                 "supporting_evidence_ids": [c.id for c in lineage_candidates[:2]],
                 "contradicting_evidence_ids": [c.id for c in lineage_candidates[2:4]],
-                "quality_tensor": {
-                    "relevance": 0.92,
-                    "source_quality": 0.90,
-                    "independence": 0.85,
-                    "primary_weight": 0.90 if any(c.primary_source for c in lineage_candidates) else 0.50,
-                    "freshness": 0.88,
-                    "contradiction_level": 0.85 if clean_verdict in ("FALSE", "MISLEADING") else 0.10,
-                    "composite_score": conf_int / 100.0
-                }
-            }],
+                "quality_tensor": None,
+            }] if lineage_candidates else []),
             "sources": [c.to_dict() for c in lineage_candidates],
             "candidate_selection_audit": evidence_json.get("research_corpus", {}).get("candidate_selection_audit") or [],
             "channel_telemetry": evidence_json.get("research_corpus", {}).get("channel_telemetry") or {},

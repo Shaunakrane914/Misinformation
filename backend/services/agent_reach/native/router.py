@@ -14,7 +14,7 @@ import time
 import urllib.parse
 from typing import Any, Dict, List, Optional, Tuple
 
-from backend.services.agent_reach.channels import ChannelStatus, EvidenceFragment
+from backend.services.agent_reach.channels import ChannelStatus, EvidenceFragment, RetrievalMode
 from backend.services.agent_reach.native.channel_capabilities import get_capability
 from backend.services.agent_reach.native.doctor import native_doctor
 from backend.services.agent_reach.native.errors import AuthRequiredError, NativeReachError
@@ -109,6 +109,7 @@ class NativeRouter:
                     fragments = self._fallback_github_rest(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "GitHub REST API"
+                    telemetry["retrieval_mode"] = RetrievalMode.DIRECT_API.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
             # ── 2. YouTube (Primary: yt-dlp) ──
@@ -127,6 +128,7 @@ class NativeRouter:
                     fragments = self._fallback_youtube_scraper(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy YouTube Scraper"
+                    telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
             # ── 3. V2EX (Native Public REST API — Zero Config) ──
@@ -177,6 +179,7 @@ class NativeRouter:
                     fragments = self._fallback_news_scraper(wire_query, limit=limit, channel_name="rss", query_id=query_id, query_class=query_class, query_text=wire_query)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy News Scraper"
+                    telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
             # ── 6. News Channel (Native Google News RSS via feedparser) ──
@@ -197,6 +200,7 @@ class NativeRouter:
                     fragments = self._fallback_news_scraper(query, limit=limit, channel_name="news", query_id=query_id, query_class=query_class, query_text=q_text)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy News Scraper"
+                    telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
             # ── 7. Web Channel (Direct Bing Search with redirect unpacking) ──
@@ -212,6 +216,7 @@ class NativeRouter:
                     fragments = self._fallback_web_scraper(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy Web Scraper"
+                    telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
             # ── 8. Jina Reader Channel (Direct URL Fetch) ──
@@ -230,6 +235,8 @@ class NativeRouter:
                         snippet=content[:300],
                         score=85.0,
                         retrieval_method="jina_reader",
+                        retrieval_mode=RetrievalMode.WEB_READER.value,
+                        native_backend_id="jina-reader",
                         channel_name="jina_reader",
                         content_depth="FULL_ARTICLE" if len(content) > 500 else "SNIPPET",
                         query_id=query_id,
@@ -271,7 +278,7 @@ class NativeRouter:
                             f.platform = f"{platform.capitalize()} (Web Index Fallback)"
                             f.channel_name = "web_syndication"
                             f.retrieval_method = f"{platform}_web_index"
-                            f.retrieval_mode = "syndicated_fallback"
+                            f.retrieval_mode = RetrievalMode.UNAUTHENTICATED_SYNDICATED_FALLBACK.value
                             f.native_backend_id = "google-rss-index"
                             f.fallback_reason = "AUTH_REQUIRED_NO_SESSION"
                             f.is_authenticated = False
@@ -281,7 +288,7 @@ class NativeRouter:
                         telemetry["fallback_used"] = True
                         telemetry["fallback_backend"] = "Google RSS (Unauthenticated Index)"
                         telemetry["fallback_reason"] = "AUTH_REQUIRED_NO_SESSION"
-                        telemetry["retrieval_mode"] = "syndicated_fallback"
+                        telemetry["retrieval_mode"] = RetrievalMode.UNAUTHENTICATED_SYNDICATED_FALLBACK.value
                     except Exception:
                         telemetry["status"] = "AUTH_REQUIRED"
                         telemetry["error"] = str(auth_err)
@@ -318,11 +325,11 @@ class NativeRouter:
 
         # Enforce typed provenance fields on all produced fragments
         for f in fragments:
-            if not getattr(f, "retrieval_mode", None) or f.retrieval_mode == "native_agent_reach":
+            if not getattr(f, "retrieval_mode", None) or f.retrieval_mode == RetrievalMode.UNKNOWN.value:
                 if telemetry.get("fallback_used"):
-                    f.retrieval_mode = "syndicated_fallback"
+                    f.retrieval_mode = telemetry.get("retrieval_mode") or RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                 else:
-                    f.retrieval_mode = "native_agent_reach"
+                    f.retrieval_mode = RetrievalMode.DIRECT_API.value
             if not getattr(f, "native_backend_id", None):
                 f.native_backend_id = telemetry.get("fallback_backend") or active_backend
             if telemetry.get("fallback_used") and not getattr(f, "fallback_reason", None):
@@ -441,6 +448,8 @@ class NativeRouter:
                     snippet=snippet[:300],
                     score=75.0,
                     retrieval_method="bing_search",
+                    retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+                    native_backend_id="bing-search-index",
                     channel_name="web",
                     query_id=query_id,
                     query_class=query_class,
@@ -486,6 +495,9 @@ class NativeRouter:
                     snippet=desc[:200],
                     score=float(min(stars, 100)),
                     retrieval_method="github_rest_fallback",
+                    retrieval_mode=RetrievalMode.DIRECT_API.value,
+                    native_backend_id="github-rest-api",
+                    fallback_reason="GH_CLI_UNAVAILABLE",
                     channel_name="github",
                     query_id=query_id,
                     query_class=query_class,
@@ -533,7 +545,12 @@ class NativeRouter:
     def _fallback_web_scraper(self, query: str, limit: int = 6, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
         """Fallback: Legacy web scraper."""
         scraper = _get_legacy_scraper()
-        raw_items = scraper.search_web(query, limit=limit)
+        if hasattr(scraper, "search_web"):
+            raw_items = scraper.search_web(query, limit=limit)
+        elif hasattr(scraper, "search_news"):
+            raw_items = scraper.search_news(query, limit=limit)
+        else:
+            raw_items = []
         return [
             EvidenceFragment.from_scraper_dict(
                 item,

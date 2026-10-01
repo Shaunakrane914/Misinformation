@@ -367,6 +367,12 @@ class AgentReachScraper:
 
         return results[:limit]
 
+    def search_web(self, query: str, limit: int = 8) -> List[Dict[str, Any]]:
+        """
+        Search open web using news/RSS aggregation fallback.
+        """
+        return self.search_news(query, limit=limit)
+
     # ─────────────────────────────────────────────────────────────────────────
     # 5. JINA READER CLEAN MARKDOWN EXTRACTOR
     # ─────────────────────────────────────────────────────────────────────────

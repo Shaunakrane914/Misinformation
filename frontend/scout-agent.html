@@ -7,6 +7,7 @@
   <meta name="description" content="Autonomous financial information research workspace. Integrates market quote telemetry, Agent Reach multi-channel discovery, primary filing escalation, source independence verification, and evidence-grounded intelligence.">
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="forensic-explorer.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -591,7 +592,7 @@
       const misinfo = data.misinformation || {};
       const lineage = data.source_lineage || {};
       const sat = data.saturation || {};
-      const sessionId = data.session_id || 'R-2026-65C59C';
+      const sessionId = data.session_id || null;
 
       const price = stock.current_price ? Number(stock.current_price).toFixed(2) : '0.00';
       const prevClose = stock.prev_close ? Number(stock.prev_close).toFixed(2) : '0.00';
@@ -638,14 +639,25 @@
             <strong>Data Freshness:</strong> ${esc(stock.data_source || 'Daily Close series via Financial REST Provider')}.
           </div>
         </div>
+
+        <!-- 2. FORENSIC EVIDENCE NAVIGATOR -->
+        <div class="intel-section ae-reveal" style="padding:16px 20px;">
+          <div class="intel-section-title" style="margin-bottom:8px;">
+            <span>// 02 · FORENSIC EVIDENCE NAVIGATOR &amp; RETRIEVAL FUNNEL</span>
+            <span class="intel-count-badge" style="color:var(--accent);border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.08);">
+              Adaptive Saturation Engine
+            </span>
+          </div>
+          <div id="forensicMount"></div>
+        </div>
       `;
 
-      // 2. WHAT CHANGED (TOP DEVELOPMENTS)
+      // 3. WHAT CHANGED (TOP DEVELOPMENTS)
       const topNews = news.slice(0, 3);
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 02 · WHAT CHANGED (CORE BREAKING DEVELOPMENTS)</span>
+            <span>// 03 · WHAT CHANGED (CORE BREAKING DEVELOPMENTS)</span>
             <span class="intel-count-badge">Executive Synthesis</span>
           </div>
           <div style="display:flex;flex-direction:column;gap:12px;">
@@ -669,7 +681,7 @@
         </div>
       `;
 
-      // 3. CATALYSTS & RISKS MATRIX
+      // 4. CATALYSTS & RISKS MATRIX
       const posCats = catalysts.positive || [];
       const negCats = catalysts.negative || [];
       const unresCats = catalysts.unresolved || [];
@@ -677,7 +689,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 03 · CATALYSTS &amp; HEADWINDS MATRIX</span>
+            <span>// 04 · CATALYSTS &amp; HEADWINDS MATRIX</span>
             <span class="intel-count-badge">${narratives.length} Themes &bull; Epistemic Grounding</span>
           </div>
 
@@ -744,11 +756,11 @@
         </div>
       `;
 
-      // 4. PRIMARY DISCLOSURES & REGULATORY FILINGS
+      // 5. PRIMARY DISCLOSURES & REGULATORY FILINGS
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 04 · PRIMARY REGULATORY DISCLOSURES &amp; IR FILINGS</span>
+            <span>// 05 · PRIMARY REGULATORY DISCLOSURES &amp; IR FILINGS</span>
             <span class="intel-count-badge">${primarySources.length} Verified Filings</span>
           </div>
           ${primarySources.length === 0 ? `
@@ -776,15 +788,19 @@
         </div>
       `;
 
-      // 5. SOURCE LINEAGE DAG & SYNDICATION GRAPH
-      const echoCount = (lineage.metrics && lineage.metrics.echo_count) ? lineage.metrics.echo_count : 14;
-      const wireRoots = (lineage.metrics && lineage.metrics.primary_origins) ? lineage.metrics.primary_origins : 4;
-      const compressionRatio = (lineage.metrics && lineage.metrics.compression_ratio) ? lineage.metrics.compression_ratio : 3.4;
+      // 6. SOURCE LINEAGE DAG & SYNDICATION GRAPH
+      const metrics = (lineage && lineage.metrics) ? lineage.metrics : {};
+      const echoCount = metrics.echo_count != null ? metrics.echo_count : (lineage.echo_count != null ? lineage.echo_count : sources.filter(s => s.is_syndicated).length);
+      const wireRoots = metrics.primary_origins != null ? metrics.primary_origins : (lineage.primary_origins != null ? lineage.primary_origins : (primarySources.length || (sources.length ? 1 : 0)));
+      const compressionRatio = metrics.compression_ratio != null ? Number(metrics.compression_ratio).toFixed(1) : (metrics.syndication_ratio != null ? Number(metrics.syndication_ratio).toFixed(1) : (echoCount > 0 ? (sources.length / Math.max(1, sources.length - echoCount)).toFixed(1) : '1.0'));
+      const syndGroups = (data.corroboration_groups && data.corroboration_groups.length > 0)
+        ? data.corroboration_groups
+        : ((lineage && lineage.groups && lineage.groups.length > 0) ? lineage.groups : []);
 
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 05 · SOURCE LINEAGE DAG &amp; SYNDICATION GRAPH</span>
+            <span>// 06 · SOURCE LINEAGE DAG &amp; SYNDICATION GRAPH</span>
             <span class="intel-count-badge" style="color:var(--accent);border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.1);">
               ${compressionRatio}x Echo Compression
             </span>
@@ -792,7 +808,7 @@
           <div class="lineage-box">
             <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
               <div style="font-size:0.85rem;color:var(--text-muted);max-width:680px;line-height:1.5;">
-                Aegis isolates true primary wire origins from syndicated press republishing. Prevents circular confirmation loops where 14 articles repeat the same underlying PR release.
+                Aegis isolates true primary wire origins from syndicated press republishing, preventing circular confirmation loops where multiple articles repeat the same underlying release.
               </div>
               <div style="display:flex;gap:10px;font-family:var(--font-mono);font-size:0.75rem;">
                 <span style="background:rgba(16,185,129,0.12);padding:4px 8px;border-radius:6px;border:1px solid rgba(16,185,129,0.3);color:var(--emerald);">
@@ -806,34 +822,36 @@
 
             <!-- Visual Lineage Tree -->
             <div class="lineage-tree">
-              <div class="lineage-root">
-                <div style="display:flex;justify-content:space-between;align-items:center;">
-                  <div style="font-weight:700;font-size:0.88rem;color:var(--emerald);">
-                    &bull; Primary Origin: Reuters / Official Corporate Wire Release
+              ${syndGroups.length > 0 ? syndGroups.map(g => `
+                <div class="lineage-root" style="margin-bottom:12px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div style="font-weight:700;font-size:0.88rem;color:var(--emerald);">
+                      &bull; Primary Origin: ${esc(g.primary_source_name || g.canonical_source || 'Wire Source')}
+                    </div>
+                    <span class="badge-role badge-primary">ORIGINAL WIRE</span>
                   </div>
-                  <span class="badge-role badge-primary">ORIGINAL WIRE</span>
+                  ${(g.echo_sources || g.member_sources || []).length > 0 ? `
+                    <div class="lineage-echoes">
+                      ${(g.echo_sources || g.member_sources || []).map(echo => `
+                        <div class="lineage-echo-item">
+                          <span>&bull; ${esc(echo.source || echo.domain || 'Syndicated Outlet')} &bull; <em>"${esc((echo.title || echo.snippet || '').slice(0, 80))}"</em></span>
+                          <span style="font-family:var(--font-mono);color:var(--text-dim);font-size:0.72rem;">ECHO (Depth 1)</span>
+                        </div>
+                      `).join('')}
+                    </div>
+                  ` : '<div style="font-size:0.78rem;color:var(--text-dim);padding:6px 0 0 14px;">No republished echoes detected for this wire root.</div>'}
                 </div>
-                <div class="lineage-echoes">
-                  <div class="lineage-echo-item">
-                    <span>&bull; Yahoo Finance &bull; <em>"Tata Motors updates commercial division guidance"</em> (Syndicated verbatim)</span>
-                    <span style="font-family:var(--font-mono);color:var(--text-dim);font-size:0.72rem;">ECHO (Depth 1)</span>
-                  </div>
-                  <div class="lineage-echo-item">
-                    <span>&bull; MarketWatch &bull; <em>"Automaker reports expansion in EV bus pipeline"</em> (Attributed to Reuters)</span>
-                    <span style="font-family:var(--font-mono);color:var(--text-dim);font-size:0.72rem;">ECHO (Depth 1)</span>
-                  </div>
-                  <div class="lineage-echo-item">
-                    <span>&bull; Financial Express &bull; <em>"Key takeaways from commercial vehicle disclosure"</em></span>
-                    <span style="font-family:var(--font-mono);color:var(--text-dim);font-size:0.72rem;">ECHO (Depth 1)</span>
-                  </div>
+              `).join('') : `
+                <div style="padding:14px;background:rgba(0,0,0,0.25);border-radius:8px;font-size:0.82rem;color:var(--text-muted);">
+                  Zero syndicated echo chains detected — all ${sources.length} indexed records represent independent reporting or direct primary filings.
                 </div>
-              </div>
+              `}
             </div>
           </div>
         </div>
       `;
 
-      // 6. CONTRADICTIONS & EPISTEMIC TAXONOMY
+      // 07. CONTRADICTIONS & EPISTEMIC TAXONOMY
       const cFor = contradictions.for || [];
       const cAgainst = contradictions.against || [];
       const rumors = misinfo.rumors_detected || [];
@@ -841,7 +859,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 06 · CONTRADICTION ANALYSIS &amp; EPISTEMIC TAXONOMY</span>
+            <span>// 07 · CONTRADICTION ANALYSIS &amp; EPISTEMIC TAXONOMY</span>
             <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'NOMINAL')}</span>
           </div>
 
@@ -867,7 +885,7 @@
           <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-family:var(--font-mono);font-size:0.8rem;">
               <span>Disinformation Vulnerability Status: <strong style="color:${misinfo.status === 'ELEVATED' ? 'var(--rose)' : 'var(--emerald)'}">${esc(misinfo.status || 'NOMINAL')}</strong></span>
-              <span>Evidence Quality Score: <strong>${Math.round((misinfo.evidence_quality_score || 0.88) * 100)}%</strong></span>
+              <span>Evidence Quality Score: <strong>${misinfo.evidence_quality_score != null ? Math.round(misinfo.evidence_quality_score * 100) + '%' : '—'}</strong></span>
             </div>
             ${rumors.length > 0 ? `
               <div style="color:var(--rose);font-size:0.82rem;font-weight:600;margin-top:8px;">Suspicious Discourse / Unverified Rumors:</div>
@@ -879,7 +897,7 @@
         </div>
       `;
 
-      // 7. SOCIAL & VIDEO INTELLIGENCE
+      // 08. SOCIAL & VIDEO INTELLIGENCE
       const reddit = social.reddit || [];
       const twitter = social.twitter || [];
       const youtube = social.youtube || [];
@@ -887,7 +905,7 @@
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 07 · MULTI-CHANNEL SOCIAL &amp; VIDEO DISCOURSE</span>
+            <span>// 08 · MULTI-CHANNEL SOCIAL &amp; VIDEO DISCOURSE</span>
             <span class="intel-count-badge">${reddit.length + twitter.length + youtube.length} Signals</span>
           </div>
           <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
@@ -942,24 +960,28 @@
         </div>
       `;
 
-      // 8. IMMUTABLE REPLAY LEDGER & EVIDENCE SATURATION STOPPING
+      // 09. IMMUTABLE REPLAY LEDGER & EVIDENCE SATURATION STOPPING
+      const marginalNoveltyStr = (sat && sat.marginal_novelty != null) ? Number(sat.marginal_novelty).toFixed(3) : (data.marginal_novelty != null ? Number(data.marginal_novelty).toFixed(3) : '—');
+      const satScoreStr = (sat && sat.saturation_score != null) ? Number(sat.saturation_score).toFixed(3) : (data.saturation_score != null ? Number(data.saturation_score).toFixed(3) : (data.funnel && data.funnel.saturation_score != null ? Number(data.funnel.saturation_score).toFixed(3) : '—'));
+      const haltReasonStr = sat.halt_reason || (data.funnel && data.funnel.halt_reason) || (sat.is_saturated ? 'Dynamic Saturation Ceiling' : 'Quorum Met');
+
       html += `
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
-            <span>// 08 · REPLAY TRACE &amp; EVIDENCE SATURATION PROVENANCE</span>
+            <span>// 09 · REPLAY TRACE &amp; EVIDENCE SATURATION PROVENANCE</span>
             <span class="intel-count-badge" style="color:var(--emerald);border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.1);">
-              Dossier: ${esc(sessionId)}
+              ${sessionId ? `Dossier: ${esc(sessionId)}` : 'Live Telemetry'}
             </span>
           </div>
           <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;background:rgba(0,0,0,0.35);padding:18px;border-radius:12px;border:1px solid rgba(255,255,255,0.07);">
             <div>
               <div style="font-family:var(--font-mono);font-size:0.92rem;font-weight:800;color:var(--accent);margin-bottom:4px;">
-                SESSION ID: ${esc(sessionId)}
+                SESSION ID: ${esc(sessionId || 'N/A')}
               </div>
               <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">
-                Stopping status: <strong>${sat.is_saturated ? 'Saturated Early Stop' : 'Standard Quorum Met'}</strong> &bull;
-                Marginal Novelty: <strong>${sat.marginal_novelty != null ? sat.marginal_novelty.toFixed(3) : '0.040'}</strong> &bull;
-                Cumulative Saturation: <strong>${sat.saturation_score != null ? sat.saturation_score.toFixed(3) : '0.880'}</strong>
+                Stopping status: <strong>${esc(haltReasonStr)}</strong> &bull;
+                Marginal Novelty: <strong>${marginalNoveltyStr}</strong> &bull;
+                Cumulative Saturation: <strong>${satScoreStr}</strong>
               </div>
             </div>
             <div style="display:flex;gap:10px;">
@@ -971,11 +993,11 @@
         </div>
       `;
 
-      // 9. SOURCE EXPLORER & WHY-THIS-FINDING PROVENANCE INSPECTOR
+      // 10. SOURCE EXPLORER & WHY-THIS-FINDING PROVENANCE INSPECTOR
       html += `
         <div class="intel-section ae-reveal" id="sourceExplorerSection">
           <div class="intel-section-title">
-            <span>// 09 · SOURCE EXPLORER &amp; PROVENANCE INSPECTOR</span>
+            <span>// 10 · SOURCE EXPLORER &amp; PROVENANCE INSPECTOR</span>
             <span class="intel-count-badge">${sources.length} Indexed Records</span>
           </div>
           <div class="explorer-filters">
@@ -991,6 +1013,35 @@
 
       root.innerHTML = html;
       renderSourceExplorerList(sources);
+
+      // Mount Native Forensic Funnel & Evidence Navigator
+      const feMount = document.getElementById('forensicMount');
+      if (feMount && window.ForensicExplorer) {
+        const explorer = new window.ForensicExplorer(feMount);
+        const corpusPayload = (data.research_corpus && Object.keys(data.research_corpus).length > 0)
+          ? data.research_corpus
+          : {
+              funnel: data.funnel || {},
+              grounded_findings: data.findings || data.grounded_findings || [],
+              findings: data.findings || data.grounded_findings || [],
+              evidence: data.sources || [],
+              raw_candidates: data.raw_candidates || data.candidates || data.sources || [],
+              ranked_candidates: data.ranked_candidates || data.sources || [],
+              deep_read_sources: data.deep_read_sources || (data.sources ? data.sources.filter(s => s.content_depth === 'DEEP_READ') : []),
+              primary_sources: data.primary_sources || (data.sources ? data.sources.filter(s => s.source_role === 'PRIMARY') : []),
+              corroboration_groups: data.corroboration_groups || (data.source_lineage && data.source_lineage.groups) || [],
+              candidate_selection_audit: data.candidate_selection_audit || [],
+              queries: data.queries || [],
+              contradictions: data.contradictions || [],
+              evidence_graph: data.source_lineage || {},
+              channel_telemetry: data.channel_telemetry || {},
+              saturation: data.saturation || {},
+            };
+        if (data.funnel && !corpusPayload.funnel) {
+          corpusPayload.funnel = data.funnel;
+        }
+        explorer.setData(corpusPayload);
+      }
     }
 
     function filterSources(filterType) {
@@ -1057,71 +1108,66 @@
       const titleEl = document.getElementById('drawerFindingTitle');
       const bodyEl = document.getElementById('drawerBody');
 
+      let item = {};
       let itemTitle = 'Finding Inspection';
       let epistemic = 'SUPPORTED';
-      let tensor = {
-        source_credibility: 0.92,
-        factual_consistency: 0.88,
-        recency_decay: 0.94,
-        corroboration_depth: 0.85,
-        cross_platform_diversity: 0.78,
-        primary_source_proximity: 0.82,
-        composite_quality: 0.87
-      };
       let snippet = 'Corroborated across independent reporting channels.';
       let rationale = 'High convergence across wire reporting and official statements with 0 active rebuttals.';
       let url = '';
 
       if (type === 'news' && currentResearchData?.news) {
         const arr = (currentResearchData.news.company || currentResearchData.news);
-        const item = arr[idx] || {};
+        item = arr[idx] || {};
         itemTitle = item.title || 'Breaking Development';
         snippet = item.summary || item.snippet || '';
         url = item.source_url || item.url || '';
-        if (idx === 0) {
-          epistemic = 'KNOWN_FACT';
-          tensor.primary_source_proximity = 0.95;
-          tensor.source_credibility = 0.96;
-        }
+        epistemic = idx === 0 ? 'KNOWN_FACT' : (item.epistemic_state || 'SUPPORTED');
+        rationale = item.rationale || 'Wire reporting corroborated across financial market press.';
       } else if (type === 'primary' && currentResearchData?.primary_sources) {
-        const item = currentResearchData.primary_sources[idx] || {};
+        item = currentResearchData.primary_sources[idx] || {};
         itemTitle = item.title || 'Official Filing';
         snippet = item.snippet || '';
         url = item.url || '';
         epistemic = 'KNOWN_FACT';
-        tensor.primary_source_proximity = 1.00;
-        tensor.source_credibility = 0.98;
-        rationale = 'Primary regulatory filing registered with exchange authority; definitive ground truth.';
+        rationale = item.rationale || 'Primary regulatory filing registered with exchange authority; definitive ground truth.';
       } else if (type === 'source' && currentResearchData?.sources) {
-        const item = currentResearchData.sources[idx] || {};
+        item = currentResearchData.sources[idx] || {};
         itemTitle = item.title || 'Indexed Evidence Record';
         snippet = item.snippet || '';
         url = item.url || '';
-        if (item.source_role === 'PRIMARY') {
-          epistemic = 'KNOWN_FACT';
-          tensor.primary_source_proximity = 1.00;
-        } else if (item.source_role === 'COMMUNITY') {
-          epistemic = 'UNVERIFIED';
-          tensor.source_credibility = 0.45;
-          tensor.primary_source_proximity = 0.20;
-          rationale = 'Social media cashtag chatter; speculative retail sentiment without authoritative filing.';
-        }
+        epistemic = item.source_role === 'PRIMARY' ? 'KNOWN_FACT' : (item.source_role === 'COMMUNITY' ? 'UNVERIFIED' : 'SUPPORTED');
+        rationale = item.source_role === 'COMMUNITY'
+          ? 'Social media discourse; speculative retail sentiment without authoritative filing.'
+          : (item.source_role === 'PRIMARY' ? 'Official regulatory portal disclosure.' : 'Financial news report.');
       } else if (type === 'pos') {
-        const item = currentResearchData?.catalysts?.positive?.[idx] || {};
+        item = currentResearchData?.catalysts?.positive?.[idx] || {};
         itemTitle = item.catalyst || 'Positive Catalyst';
         epistemic = 'SUPPORTED';
+        snippet = item.catalyst || '';
+        rationale = 'Extracted positive catalyst from confirmed announcements.';
       } else if (type === 'neg') {
-        const item = currentResearchData?.catalysts?.negative?.[idx] || {};
+        item = currentResearchData?.catalysts?.negative?.[idx] || {};
         itemTitle = item.catalyst || 'Negative Headwind';
         epistemic = 'CONTESTED';
-        tensor.factual_consistency = 0.60;
-        rationale = 'Headwind claim has conflicting commentary in market reports.';
+        snippet = item.catalyst || '';
+        rationale = 'Headwind signal detected in reporting; conflicting commentary observed.';
       } else if (type === 'unres') {
-        const item = currentResearchData?.catalysts?.unresolved?.[idx] || {};
+        item = currentResearchData?.catalysts?.unresolved?.[idx] || {};
         itemTitle = item.factor || item.catalyst || 'Unresolved Factor';
         epistemic = 'UNVERIFIED';
-        tensor.source_credibility = 0.55;
+        snippet = item.factor || '';
+        rationale = 'Discourse signal under observation with incomplete confirmation.';
       }
+
+      let tensor = (item && item.quality_tensor) ? item.quality_tensor : {
+        source_credibility: item.source_role === 'PRIMARY' ? 0.98 : (item.source_tier === 1 ? 0.90 : 0.70),
+        factual_consistency: item.factual_consistency != null ? item.factual_consistency : 0.85,
+        recency_decay: item.recency_decay != null ? item.recency_decay : 0.90,
+        corroboration_depth: item.corroboration_depth != null ? item.corroboration_depth : 0.80,
+        cross_platform_diversity: item.cross_platform_diversity != null ? item.cross_platform_diversity : 0.75,
+        primary_source_proximity: item.source_role === 'PRIMARY' ? 1.00 : (item.is_primary ? 0.95 : 0.60),
+        composite_quality: item.quality_score != null ? item.quality_score : 0.80
+      };
 
       titleEl.textContent = `// PROVENANCE · ${itemTitle.slice(0, 32)}...`;
 
@@ -1176,7 +1222,7 @@
           <div style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:10px;padding:12px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
             <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">COMPOSITE QUALITY SCORE:</span>
             <span style="font-family:var(--font-mono);font-size:1.1rem;font-weight:800;color:var(--accent);">
-              ${(tensor.composite_quality || 0.88).toFixed(2)} / 1.00
+              ${tensor.composite_quality != null ? Number(tensor.composite_quality).toFixed(2) : '—'} / 1.00
             </span>
           </div>
         </div>

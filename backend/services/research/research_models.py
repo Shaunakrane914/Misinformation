@@ -167,6 +167,10 @@ class EvidenceItem:
     claims: List[str] = field(default_factory=list)
     topics: List[str] = field(default_factory=list)
     retrieval_status: str = "SUCCESS"  # SUCCESS | DEGRADED | TIMEOUT | EMPTY
+    retrieval_mode: str = "native_agent_reach"  # native_agent_reach | direct_api | syndicated_fallback | cached
+    native_backend_id: Optional[str] = None
+    fallback_reason: Optional[str] = None
+    is_authenticated: bool = False
     read_status: str = "NOT_ATTEMPTED"  # NOT_ATTEMPTED | SUCCESS | FAILED | SKIPPED
     extraction_status: str = "NOT_ATTEMPTED"  # NOT_ATTEMPTED | SUCCESS | EMPTY
     contradiction_flag: bool = False
@@ -265,6 +269,10 @@ class EvidenceItem:
             "claims": self.claims,
             "topics": self.topics,
             "retrieval_status": self.retrieval_status,
+            "retrieval_mode": self.retrieval_mode,
+            "native_backend_id": self.native_backend_id,
+            "fallback_reason": self.fallback_reason,
+            "is_authenticated": self.is_authenticated,
             "read_status": self.read_status,
             "extraction_status": self.extraction_status,
             "contradiction_flag": self.contradiction_flag,
@@ -302,6 +310,10 @@ class EvidenceItem:
             query_id=getattr(fragment, "query_id", ""),
             query_class=getattr(fragment, "query_class", "general"),
             query_text=getattr(fragment, "query_text", ""),
+            retrieval_mode=getattr(fragment, "retrieval_mode", "native_agent_reach"),
+            native_backend_id=getattr(fragment, "native_backend_id", None),
+            fallback_reason=getattr(fragment, "fallback_reason", None),
+            is_authenticated=getattr(fragment, "is_authenticated", False),
             published_at=getattr(fragment, "published", "") or "Recent",
             discovered_at=getattr(fragment, "retrieved_at", "") or datetime.now(timezone.utc).isoformat(),
             content_depth=getattr(fragment, "content_depth", ContentDepth.SNIPPET.value),
@@ -314,6 +326,9 @@ class EvidenceItem:
             primary_source=raw_meta.get("source_role") == SourceRole.PRIMARY.value,
             provenance={
                 "retrieval_method": getattr(fragment, "retrieval_method", "agent_reach"),
+                "retrieval_mode": getattr(fragment, "retrieval_mode", "native_agent_reach"),
+                "native_backend_id": getattr(fragment, "native_backend_id", None),
+                "fallback_reason": getattr(fragment, "fallback_reason", None),
                 "score": getattr(fragment, "score", 0.0),
             },
             metadata=raw_meta
@@ -429,10 +444,12 @@ class ResearchCorpus:
     """
     Full research corpus retaining the complete evidence surface (Requirement 19).
     """
+    funnel: Dict[str, Any] = field(default_factory=dict)
     queries: List[Dict[str, Any]] = field(default_factory=list)
     raw_candidates: List[Dict[str, Any]] = field(default_factory=list)
     ranked_candidates: List[Dict[str, Any]] = field(default_factory=list)
     deep_read_sources: List[Dict[str, Any]] = field(default_factory=list)
+    candidate_selection_audit: List[Dict[str, Any]] = field(default_factory=list)
     primary_sources: List[Dict[str, Any]] = field(default_factory=list)
     social_sources: List[Dict[str, Any]] = field(default_factory=list)
     video_sources: List[Dict[str, Any]] = field(default_factory=list)
@@ -442,13 +459,16 @@ class ResearchCorpus:
     findings: List[Dict[str, Any]] = field(default_factory=list)
     evidence_graph: Dict[str, Any] = field(default_factory=dict)
     source_lineage_graph: Dict[str, Any] = field(default_factory=dict)
+    channel_telemetry: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
+            "funnel": self.funnel,
             "queries": self.queries,
             "raw_candidates": self.raw_candidates,
             "ranked_candidates": self.ranked_candidates,
             "deep_read_sources": self.deep_read_sources,
+            "candidate_selection_audit": self.candidate_selection_audit,
             "primary_sources": self.primary_sources,
             "social_sources": self.social_sources,
             "video_sources": self.video_sources,
@@ -458,6 +478,7 @@ class ResearchCorpus:
             "findings": self.findings,
             "evidence_graph": self.evidence_graph,
             "source_lineage_graph": self.source_lineage_graph,
+            "channel_telemetry": self.channel_telemetry,
         }
 
 

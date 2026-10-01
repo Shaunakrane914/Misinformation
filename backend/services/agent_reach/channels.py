@@ -42,6 +42,10 @@ class EvidenceFragment:
     query_id: str = ""
     query_class: str = ""
     query_text: str = ""
+    retrieval_mode: str = "native_agent_reach"  # native_agent_reach | direct_api | syndicated_fallback | cached
+    native_backend_id: Optional[str] = None
+    fallback_reason: Optional[str] = None
+    is_authenticated: bool = False
     raw_metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -56,6 +60,10 @@ class EvidenceFragment:
             "snippet": self.snippet,
             "score": self.score,
             "retrieval_method": self.retrieval_method,
+            "retrieval_mode": self.retrieval_mode,
+            "native_backend_id": self.native_backend_id,
+            "fallback_reason": self.fallback_reason,
+            "is_authenticated": self.is_authenticated,
             "retrieved_at": self.retrieved_at,
             "channel_name": self.channel_name,
             "content_depth": self.content_depth,

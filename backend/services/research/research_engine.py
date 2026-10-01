@@ -376,11 +376,35 @@ class ResearchEngine:
         for eq in esc_telemetry.get("queries", []):
             all_executed_queries.append({"channel": "primary_escalation", "query_id": "q_esc", "query_text": eq})
 
+        sat_summary = novelty_tracker.get_summary()
+        halt_reason = (
+            follow_up_telemetry.get("halt_reason") or
+            ("SATURATION_THRESHOLD_REACHED" if sat_summary.get("is_saturated") else "BUDGET_CEILING")
+        )
+
+        funnel = {
+            "queries_planned": len(multi_queries),
+            "queries_executed": len(all_executed_queries),
+            "candidates_found": len(candidates),
+            "unique_candidates": len(ranked_candidates),
+            "deep_reads_count": read_telemetry["successful"],
+            "primary_sources_count": len(primary_sources),
+            "independent_groups_count": len(clusters_map),
+            "contradictions_count": len(contradictions),
+            "findings_count": len(findings),
+            "saturation_score": sat_summary.get("cumulative_saturation", 0.0),
+            "halt_reason": halt_reason,
+        }
+
+        selection_audit = read_telemetry.get("candidate_selection_audit", [])
+
         corpus = ResearchCorpus(
+            funnel=funnel,
             queries=all_executed_queries,
             raw_candidates=[c.to_dict() for c in candidates],
             ranked_candidates=[r.to_dict() for r in ranked_candidates],
             deep_read_sources=[i.to_dict() for i in investigated_items],
+            candidate_selection_audit=selection_audit,
             primary_sources=[p.to_dict() for p in primary_sources],
             social_sources=[s.to_dict() for s in social_sources],
             video_sources=[v.to_dict() for v in video_sources],
@@ -390,6 +414,7 @@ class ResearchEngine:
             findings=[f.to_dict() for f in findings],
             evidence_graph=graph,
             source_lineage_graph=lineage_graph,
+            channel_telemetry=channel_status,
         )
 
         total_latency_ms = int((time.time() - start_ts) * 1000)
@@ -398,6 +423,7 @@ class ResearchEngine:
         telemetry = {
             **trace_dict,
             "scan_id": trace_dict.get("scan_id", f"res_{int(time.time())}"),
+            "funnel": funnel,
             "queries_planned": len(multi_queries),
             "query_classes_count": len(query_classes),
             "follow_ups_executed": follow_up_telemetry["attempted"],
@@ -405,14 +431,14 @@ class ResearchEngine:
             "candidates_ranked": len(ranked_candidates),
             "deep_read_attempted": read_telemetry["attempted"],
             "deep_read_success": read_telemetry["successful"],
-            "candidate_selection_audit": read_telemetry.get("candidate_selection_audit", []),
+            "candidate_selection_audit": selection_audit,
             "total_chars_read": read_telemetry["total_chars_read"],
             "primary_sources_found": len(primary_sources),
             "escalations": esc_telemetry,
             "independent_source_groups": len(clusters_map),
             "contradictions_found": len(contradictions),
             "findings_count": len(findings),
-            "saturation": novelty_tracker.get_summary(),
+            "saturation": sat_summary,
             "source_lineage": lineage_graph.get("metrics", {}),
             "total_latency_ms": total_latency_ms,
         }

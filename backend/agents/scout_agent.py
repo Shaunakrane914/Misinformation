@@ -899,12 +899,31 @@ Respond in STRICT JSON with this schema:
         }
         replay_url = f"/api/research/replay/dossiers/{session_id}"
 
+        corpus_dict = getattr(research_res, "research_corpus", None) or {}
+        funnel = research_telemetry.get("funnel") or corpus_dict.get("funnel") or {
+            "queries_planned": len(retrieval_plan.get("query_classes", [])),
+            "queries_executed": len(all_sources),
+            "candidates_found": len(all_sources),
+            "unique_candidates": max(0, len(all_sources) - syndicated_count),
+            "deep_reads_count": research_telemetry.get("deep_read_success", 0),
+            "primary_sources_count": len(primary_sources),
+            "independent_groups_count": research_telemetry.get("independent_source_groups", 0),
+            "contradictions_count": len(reasoning.get("contradictions", {}).get("for", [])),
+            "findings_count": len(research_findings),
+            "saturation_score": research_telemetry.get("saturation", {}).get("cumulative_saturation", 0.0),
+            "halt_reason": research_telemetry.get("saturation", {}).get("halt_reason") or "BUDGET_CEILING",
+        }
+
         return {
             "ticker": sym,
             "company_name": company_name,
             "session_id": session_id,
             "replay_url": replay_url,
             "source_lineage": source_lineage,
+            "funnel": funnel,
+            "candidate_selection_audit": research_telemetry.get("candidate_selection_audit", []) or corpus_dict.get("candidate_selection_audit", []),
+            "channel_telemetry": channel_health,
+            "research_corpus": corpus_dict,
             "analyzed_at": datetime.utcnow().isoformat(),
             "stock": stock_data,
             "market_state": {

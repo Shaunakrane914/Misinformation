@@ -1018,10 +1018,12 @@
       const feMount = document.getElementById('heroModalForensicMount');
       if (feMount && window.ForensicExplorer) {
         const explorer = new window.ForensicExplorer(feMount);
-        if (claim.id) {
-          explorer.loadFromClaimId(claim.id);
-        } else if (claim.research_corpus) {
+        if (claim.research_corpus && Object.keys(claim.research_corpus).length > 0) {
           explorer.setData(claim.research_corpus);
+        } else if (claim.funnel || claim.findings) {
+          explorer.setData(claim);
+        } else if (claim.id) {
+          explorer.loadFromClaimId(claim.id);
         }
       }
     }

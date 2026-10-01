@@ -31,6 +31,13 @@
     return count > 1000 ? `${(count / 1000).toFixed(1)}k chars` : `${count} chars`;
   }
 
+  function formatMetric(val, fallback = '—') {
+    if (val === null || val === undefined || Number.isNaN(val)) {
+      return `<span title="Metric not measured or unavailable">${fallback}</span>`;
+    }
+    return escapeHtml(String(val));
+  }
+
   class ForensicExplorer {
     constructor(container, options = {}) {
       this.container = typeof container === 'string' ? document.querySelector(container) : container;
@@ -86,16 +93,19 @@
     render() {
       if (!this.container || !this.corpus) return;
 
-      const funnel = this.corpus.funnel || {
-        queries_planned: this.corpus.queries_planned || 12,
-        queries_executed: this.corpus.queries_executed || 12,
-        candidates_found: this.corpus.candidates_found || (this.corpus.raw_candidates ? this.corpus.raw_candidates.length : 0),
-        candidates_ranked: this.corpus.candidates_ranked || (this.corpus.ranked_candidates ? this.corpus.ranked_candidates.length : 0),
-        deep_reads_count: this.corpus.deep_read_success || (this.corpus.deep_read_sources ? this.corpus.deep_read_sources.length : 0),
-        primary_sources_count: this.corpus.primary_sources_found || (this.corpus.primary_sources ? this.corpus.primary_sources.length : 0),
-        independent_groups_count: this.corpus.independent_source_groups || (this.corpus.corroboration_groups ? this.corpus.corroboration_groups.length : 0),
-        contradictions_count: this.corpus.contradictions_found || (this.corpus.contradictions ? this.corpus.contradictions.length : 0),
-        findings_count: this.corpus.findings_count || (this.corpus.grounded_findings ? this.corpus.grounded_findings.length : 0),
+      const f_data = this.corpus.funnel || {};
+      const funnel = {
+        queries_planned: f_data.queries_planned != null ? f_data.queries_planned : (this.corpus.queries ? this.corpus.queries.length : null),
+        queries_executed: f_data.queries_executed != null ? f_data.queries_executed : (this.corpus.queries ? this.corpus.queries.length : null),
+        candidates_found: f_data.candidates_found != null ? f_data.candidates_found : (this.corpus.raw_candidates ? this.corpus.raw_candidates.length : (this.corpus.candidates ? this.corpus.candidates.length : null)),
+        candidates_ranked: f_data.candidates_ranked != null ? f_data.candidates_ranked : (this.corpus.ranked_candidates ? this.corpus.ranked_candidates.length : (this.corpus.evidence ? this.corpus.evidence.length : null)),
+        deep_reads_count: f_data.deep_reads_count != null ? f_data.deep_reads_count : (this.corpus.deep_read_sources ? this.corpus.deep_read_sources.length : (this.corpus.deep_read_success || 0)),
+        primary_sources_count: f_data.primary_sources_count != null ? f_data.primary_sources_count : (this.corpus.primary_sources ? this.corpus.primary_sources.length : (this.corpus.primary_sources_found || 0)),
+        independent_groups_count: f_data.independent_groups_count != null ? f_data.independent_groups_count : (this.corpus.corroboration_groups ? this.corpus.corroboration_groups.length : (this.corpus.independent_source_groups || null)),
+        contradictions_count: f_data.contradictions_count != null ? f_data.contradictions_count : (this.corpus.contradictions ? this.corpus.contradictions.length : (this.corpus.contradictions_found || 0)),
+        findings_count: f_data.findings_count != null ? f_data.findings_count : (this.corpus.grounded_findings ? this.corpus.grounded_findings.length : (this.corpus.findings ? this.corpus.findings.length : 0)),
+        saturation_score: f_data.saturation_score != null ? f_data.saturation_score : null,
+        halt_reason: f_data.halt_reason || null,
       };
 
       const findings = this.corpus.grounded_findings || this.corpus.findings || [];
@@ -110,32 +120,32 @@
           <!-- 1. Forensic Funnel Ribbon -->
           <div class="fe-funnel-ribbon" role="region" aria-label="Investigation Pipeline Metrics">
             <div class="fe-funnel-step" data-tab="audit" title="Multi-angle queries decomposed by domain planner">
-              <span class="fe-f-val">${funnel.queries_planned || funnel.queries_executed || 0}</span>
+              <span class="fe-f-val">${formatMetric(funnel.queries_planned != null ? funnel.queries_planned : funnel.queries_executed)}</span>
               <span class="fe-f-lbl">QUERIES</span>
             </div>
             <div class="fe-f-arrow">→</div>
             <div class="fe-funnel-step" data-tab="audit" title="Raw evidence fragments collected across active backends">
-              <span class="fe-f-val">${funnel.candidates_found || 0}</span>
+              <span class="fe-f-val">${formatMetric(funnel.candidates_found)}</span>
               <span class="fe-f-lbl">DISCOVERED</span>
             </div>
             <div class="fe-f-arrow">→</div>
             <div class="fe-funnel-step" data-tab="groups" title="Independent publishing groups after wire deduplication">
-              <span class="fe-f-val">${funnel.independent_groups_count || groups.length || 0}</span>
+              <span class="fe-f-val">${formatMetric(funnel.independent_groups_count != null ? funnel.independent_groups_count : groups.length)}</span>
               <span class="fe-f-lbl">INDEP GROUPS</span>
             </div>
             <div class="fe-f-arrow">→</div>
             <div class="fe-funnel-step fe-step-read" data-tab="sources" title="Full articles retrieved and parsed (2.5k–25k characters)">
-              <span class="fe-f-val">${funnel.deep_reads_count || deepSources.length || 0}</span>
+              <span class="fe-f-val">${formatMetric(funnel.deep_reads_count != null ? funnel.deep_reads_count : deepSources.length)}</span>
               <span class="fe-f-lbl">DEEP READ</span>
             </div>
             <div class="fe-f-arrow">→</div>
             <div class="fe-funnel-step fe-step-primary" data-tab="primaries" title="Escalated regulatory filings (BSE/NSE/SEC) & official IR">
-              <span class="fe-f-val">${funnel.primary_sources_count || primaries.length || 0}</span>
+              <span class="fe-f-val">${formatMetric(funnel.primary_sources_count != null ? funnel.primary_sources_count : primaries.length)}</span>
               <span class="fe-f-lbl">PRIMARIES</span>
             </div>
             <div class="fe-f-arrow">→</div>
             <div class="fe-funnel-step fe-step-findings" data-tab="findings" title="Synthesized forensic findings with verified provenance">
-              <span class="fe-f-val">${findings.length || funnel.findings_count || 0}</span>
+              <span class="fe-f-val">${formatMetric(findings.length || funnel.findings_count)}</span>
               <span class="fe-f-lbl">FINDINGS</span>
             </div>
           </div>
@@ -222,6 +232,17 @@
                 </div>
                 <h4 class="fe-fcard-title">${escapeHtml(title)}</h4>
                 <p class="fe-fcard-summary">${escapeHtml(summary)}</p>
+
+                ${f.quality_tensor ? `
+                  <div class="fe-qt-row" style="display:flex;gap:6px;flex-wrap:wrap;margin:10px 0;font-family:var(--font-mono, monospace);font-size:0.7rem;">
+                    <span class="fe-badge" style="background:rgba(139,92,246,0.1);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);" title="Relevance">Rel: ${Math.round((f.quality_tensor.relevance || 0) * 100)}%</span>
+                    <span class="fe-badge" style="background:rgba(14,165,233,0.1);color:#38bdf8;border:1px solid rgba(14,165,233,0.3);" title="Source Quality">Qual: ${Math.round((f.quality_tensor.source_quality || 0) * 100)}%</span>
+                    <span class="fe-badge" style="background:rgba(16,185,129,0.1);color:#34d399;border:1px solid rgba(16,185,129,0.3);" title="Independence">Indep: ${Math.round((f.quality_tensor.independence || 0) * 100)}%</span>
+                    <span class="fe-badge" style="background:rgba(234,179,8,0.1);color:#facc15;border:1px solid rgba(234,179,8,0.3);" title="Primary Proximity">Primary: ${Math.round((f.quality_tensor.primary_weight || 0) * 100)}%</span>
+                    <span class="fe-badge" style="background:rgba(100,116,139,0.1);color:#94a3b8;border:1px solid rgba(100,116,139,0.3);" title="Freshness">Fresh: ${Math.round((f.quality_tensor.freshness || 0) * 100)}%</span>
+                    ${(f.quality_tensor.contradiction_level || 0) > 0.05 ? `<span class="fe-badge fe-badge-red" title="Contradiction Penalty">Contradict: -${Math.round((f.quality_tensor.contradiction_level || 0) * 100)}%</span>` : ''}
+                  </div>
+                ` : ''}
                 
                 ${citations.length > 0 ? `
                   <div class="fe-fcard-citations">
@@ -256,8 +277,11 @@
             const sId = s.id || `ev_read_${idx + 1}`;
             const domain = s.domain || (s.url ? new URL(s.url).hostname : 'web');
             const authScore = s.authority_score !== undefined ? Math.round(s.authority_score * 100) : 80;
-            const role = s.role || 'deep_read_article';
+            const role = s.source_role || s.role || 'deep_read_article';
             const charCount = s.content ? s.content.length : (s.word_count ? s.word_count * 6 : 0);
+            const mode = s.retrieval_mode || (s.provenance && s.provenance.retrieval_mode) || 'native_agent_reach';
+            const backend = s.native_backend_id || (s.provenance && s.provenance.native_backend_id) || 'Native Router';
+            const fallbackReason = s.fallback_reason || (s.provenance && s.provenance.fallback_reason) || null;
 
             return `
               <div class="fe-source-accordion" id="source_${escapeHtml(sId)}">
@@ -265,6 +289,10 @@
                   <div class="fe-s-title-group">
                     <span class="fe-s-idx">#${idx + 1}</span>
                     <span class="fe-badge fe-badge-tier">Tier: ${authScore}% Authority</span>
+                    ${mode === 'syndicated_fallback' 
+                      ? `<span class="fe-badge" style="background:rgba(245,158,11,0.15);color:#f59e0b;border:1px solid rgba(245,158,11,0.3);">⚠️ Web Index Fallback (${escapeHtml(fallbackReason || 'Auth Required')})</span>`
+                      : `<span class="fe-badge" style="background:rgba(16,185,129,0.15);color:#10b981;border:1px solid rgba(16,185,129,0.3);">⚡ Native (${escapeHtml(backend)})</span>`
+                    }
                     <strong class="fe-s-domain">${escapeHtml(domain)}</strong>
                     <span class="fe-s-title">${escapeHtml(s.title || 'Full Evidence Document')}</span>
                   </div>
@@ -275,9 +303,9 @@
                 </div>
                 <div class="fe-s-body">
                   <div class="fe-s-body-meta">
-                    <div><strong>Destination URL:</strong> <a href="${escapeHtml(s.url)}" target="_blank" rel="noopener noreferrer" class="fe-link">${escapeHtml(s.url)} ↗</a></div>
-                    <div><strong>Role & Provenance:</strong> <span class="fe-tag">${escapeHtml(role)}</span> • ${escapeHtml(s.provenance || 'Retrieved via Native Deep Reader')}</div>
-                    ${s.published ? `<div><strong>Published:</strong> ${escapeHtml(s.published)}</div>` : ''}
+                    <div><strong>Destination URL:</strong> <a href="${escapeHtml(s.canonical_url || s.url)}" target="_blank" rel="noopener noreferrer" class="fe-link">${escapeHtml(s.canonical_url || s.url)} ↗</a></div>
+                    <div><strong>Role & Provenance:</strong> <span class="fe-tag">${escapeHtml(role)}</span> • ${mode === 'syndicated_fallback' ? `Fallback wire indexing (${escapeHtml(fallbackReason || 'Unauthenticated')})` : `Direct native extraction via ${escapeHtml(backend)}`}</div>
+                    ${s.published || s.published_at ? `<div><strong>Published:</strong> ${escapeHtml(s.published || s.published_at)}</div>` : ''}
                   </div>
 
                   <div class="fe-s-excerpt-box">

@@ -268,11 +268,20 @@ class NativeRouter:
                             res.get("items", []), channel_name=platform, query_id=query_id, query_class=query_class, query_text=q_text
                         )
                         for f in fragments:
-                            f.platform = platform.capitalize()
+                            f.platform = f"{platform.capitalize()} (Web Index Fallback)"
+                            f.channel_name = "web_syndication"
                             f.retrieval_method = f"{platform}_web_index"
+                            f.retrieval_mode = "syndicated_fallback"
+                            f.native_backend_id = "google-rss-index"
+                            f.fallback_reason = "AUTH_REQUIRED_NO_SESSION"
+                            f.is_authenticated = False
+                            f.raw_metadata["source_tier"] = "TIER_3_AGGREGATE"
+                            f.raw_metadata["honest_disclosure"] = f"Platform API session unavailable for {platform}; retrieved via public web syndication index"
                         telemetry["status"] = "SUCCESS" if fragments else "AUTH_REQUIRED"
                         telemetry["fallback_used"] = True
                         telemetry["fallback_backend"] = "Google RSS (Unauthenticated Index)"
+                        telemetry["fallback_reason"] = "AUTH_REQUIRED_NO_SESSION"
+                        telemetry["retrieval_mode"] = "syndicated_fallback"
                     except Exception:
                         telemetry["status"] = "AUTH_REQUIRED"
                         telemetry["error"] = str(auth_err)
@@ -306,6 +315,19 @@ class NativeRouter:
             telemetry["error"] = str(e)
 
         telemetry["latency_ms"] = int((time.perf_counter() - t0) * 1000)
+
+        # Enforce typed provenance fields on all produced fragments
+        for f in fragments:
+            if not getattr(f, "retrieval_mode", None) or f.retrieval_mode == "native_agent_reach":
+                if telemetry.get("fallback_used"):
+                    f.retrieval_mode = "syndicated_fallback"
+                else:
+                    f.retrieval_mode = "native_agent_reach"
+            if not getattr(f, "native_backend_id", None):
+                f.native_backend_id = telemetry.get("fallback_backend") or active_backend
+            if telemetry.get("fallback_used") and not getattr(f, "fallback_reason", None):
+                f.fallback_reason = telemetry.get("fallback_reason") or "PRIMARY_UNAVAILABLE"
+
         return fragments, telemetry
 
     def execute_channel_read(self, url: str, max_chars: int = 4000, **kwargs) -> Dict[str, Any]:

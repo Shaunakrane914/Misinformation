@@ -5,6 +5,8 @@ Ingests, normalizes (Unicode NFC, whitespace collapsing, punctuation trimming),
 validates, and deduplicates incoming claims against the persistent database.
 """
 
+from __future__ import annotations
+
 import hashlib
 import logging
 import re
@@ -12,6 +14,7 @@ import unicodedata
 from typing import Dict, Optional, List, Any
 
 from backend.db.database import get_claim_by_hash, insert_claim
+from backend.services.research.research_models import AtomicClaim
 
 logger = logging.getLogger(__name__)
 
@@ -120,13 +123,11 @@ class ClaimIngestionAgent:
             "source_url": source_url
         }
 
-    def decompose_claim(self, claim_text: str) -> List["AtomicClaim"]:
+    def decompose_claim(self, claim_text: str) -> List[AtomicClaim]:
         """
         Decompose a compound claim statement into verifiable atomic claims.
         Extracts entities, verifiable dimensions, and assigns unique claim IDs.
         """
-        from backend.services.research.research_models import AtomicClaim
-
         raw = (claim_text or "").strip()
         if not raw:
             return []

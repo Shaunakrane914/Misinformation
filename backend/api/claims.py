@@ -16,6 +16,11 @@ from collections import Counter
 from datetime import datetime
 from typing import Any, Dict, List, Optional
 
+try:
+    import numpy as np
+except ImportError:
+    np = None
+
 from fastapi import APIRouter, BackgroundTasks, HTTPException
 from pydantic import BaseModel, Field, model_validator
 
@@ -218,7 +223,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             counts = Counter(tokens)
             total_t = len(tokens)
             entropy = round(-sum((c / total_t) * math.log2(c / total_t) for c in counts.values()), 2)
-            if len(counts) >= 5:
+            if np is not None and len(counts) >= 5:
                 ranks = np.arange(1, len(counts) + 1)
                 freqs = np.array(sorted(counts.values(), reverse=True))
                 corr = np.corrcoef(np.log(ranks), np.log(freqs))[0, 1]

@@ -1,5 +1,10 @@
 # Aegis Protocol — Architecture Review
-**Audit Date**: September 21, 2026
+**Audit Date**: October 2, 2026 *(updated from September 21, 2026)*
+**Version**: 3.7.0
+
+> **v3.7.0 Delta** — Multi-intent hero launcher, cross-agent URL routing (`?q=` param prefill),
+> immutable cache headers on Netlify, `GET /health` liveness probe, and `.editorconfig`
+> for code-style consistency. See `CHANGELOG.md` for full details.
 
 ---
 

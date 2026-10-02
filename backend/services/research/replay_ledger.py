@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 DOSSIER_STORAGE_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "dossiers")
 
 
-@dataclass
+@dataclass(slots=True)
 class DecisionRecord:
     """An explicit automated investigative decision taken during research."""
     timestamp: float

@@ -139,7 +139,7 @@ except (ImportError, ModuleNotFoundError):
 @app.on_event("startup")
 async def startup_event():
     logger.info("=" * 80)
-    logger.info("[FastAPI] Aegis Protocol API v3.5.1 — STARTING (Modular Architecture)")
+    logger.info("[FastAPI] Aegis Protocol API v3.7.0 — STARTING (Modular Architecture)")
     logger.info(f"[FastAPI] Supabase URL: {os.getenv('SUPABASE_URL', 'NOT SET (Using Local SQLite)')}")
     logger.info("[FastAPI] Agents: ClaimIngestion | Research | Investigator | Trending | Scout | BrandShield | PersonalWatch")
     logger.info("=" * 80)
@@ -170,6 +170,24 @@ async def shutdown_event():
     logger.info("=" * 80)
     logger.info("[FastAPI] Aegis Protocol API — SHUTTING DOWN")
     logger.info("=" * 80)
+
+
+# ── Liveness / Readiness Probe ───────────────────────────────────────────────
+_START_TIME = time.time()
+
+
+@app.get("/health", tags=["System"], summary="Liveness Probe")
+async def health_check():
+    """
+    Lightweight liveness probe for Render, Netlify, and uptime monitors.
+    Returns version, status, and uptime in seconds.
+    """
+    return {
+        "status": "ok",
+        "version": "3.7.0",
+        "uptime_seconds": round(time.time() - _START_TIME, 1),
+        "timestamp": datetime.utcnow().isoformat() + "Z",
+    }
 
 
 # ── Frontend HTML Page Routes ────────────────────────────────────────────────

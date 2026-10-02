@@ -1,8 +1,28 @@
 """
 Aegis Protocol — Claims & Truth Verification Router
-===================================================
+====================================================
 Manages synchronous Truth Dossier generation, asynchronous background claim ingestion,
 and status/evidence retrieval.
+
+Endpoints
+---------
+POST /api/claims/verify       — Synchronous multi-agent fact-check (returns full Truth Dossier).
+POST /api/claims/submit       — Async claim ingestion; queues a background investigation.
+POST /api/ingest              — Alias for /api/claims/submit.
+POST /api/submit              — Alias for /api/claims/submit.
+GET  /api/claims/{id}         — Retrieve claim status and verdict by ID.
+GET  /api/claims/{id}/research — Full forensic research corpus for a claim.
+GET  /api/claims/{id}/evidence — All evidence records linked to a claim.
+GET  /api/claims             — Paginated list of all known claims.
+
+Design Decisions
+----------------
+- quality_tensor is NEVER synthesised with hardcoded values; it is None when no genuine
+  research corpus was produced, and quality_status reflects this as UNAVAILABLE_NO_CORPUS.
+- narrative_forensics (Mandelbrot R², Hawkes R₀, Shannon entropy) are computed only when
+  the claim text has ≥10 tokens; fields are None otherwise (no fake defaults).
+- Source lineage DAG is always constructed from actual evidence candidates — never from
+  placeholder nodes.
 """
 
 import time

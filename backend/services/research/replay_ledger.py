@@ -64,10 +64,28 @@ class ResearchDossier:
 
 
 class ReplayLedger:
-    """Persistent ledger storing and replaying research dossiers."""
+    """
+    Persistent ledger storing and replaying research dossiers.
 
-    def __init__(self, storage_dir: Optional[str] = None):
-        self.storage_dir = storage_dir or DOSSIER_STORAGE_DIR
+    Each investigation is assigned a canonical session ID in the format
+    ``R-<YEAR>-<6HEX>`` (e.g. ``R-2026-A3F1C0``).
+
+    Storage Strategy
+    ----------------
+    - **In-memory cache** (``_memory_cache``): O(1) retrieval for recently
+      recorded dossiers within the same process lifetime.
+    - **Disk persistence** (``storage_dir``): JSON files written atomically;
+      ignored by git via ``.gitignore`` to keep the repository clean.
+
+    Thread Safety
+    -------------
+    The in-memory cache is a plain ``dict`` — safe for single-threaded async
+    use. Under true multi-process deployments, rely on disk files as the
+    authoritative source of truth.
+    """
+
+    def __init__(self, storage_dir: Optional[str] = None) -> None:
+        self.storage_dir: str = storage_dir or DOSSIER_STORAGE_DIR
         os.makedirs(self.storage_dir, exist_ok=True)
         self._memory_cache: Dict[str, Dict[str, Any]] = {}
 

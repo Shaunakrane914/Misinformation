@@ -1999,12 +1999,96 @@ select:focus-visible,
   box-shadow: 0 0 8px var(--emerald);
 }
 
+}
+
 .agent-stage-desc {
   font-size: 0.76rem;
   color: var(--text-muted);
   line-height: 1.35;
 }
 
+/* ── Hero Multi-Intent Investigation Launcher ── */
+.hero-intent-bar {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 18px auto 0;
+  max-width: 720px;
+}
 
+.hero-intent-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.18s, background 0.18s, color 0.18s;
+  font-family: var(--font-main);
+}
 
+.hero-intent-btn:hover {
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text);
+}
 
+.hero-intent-btn.active {
+  border-color: var(--accent);
+  background: rgba(0, 229, 255, 0.08);
+  color: var(--accent);
+}
+
+.hero-divider-line {
+  width: 100%;
+  max-width: 640px;
+  height: 1px;
+  background: var(--border-subtle);
+  margin: 22px auto 14px;
+}
+
+.hero-suggestions-title {
+  font-size: 0.72rem;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.hero-suggestion-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-muted);
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: border-color 0.16s, background 0.16s, color 0.16s;
+  font-family: var(--font-main);
+  white-space: nowrap;
+}
+
+.hero-suggestion-chip:hover {
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--text);
+}
+
+.hero-suggestion-chip strong {
+  font-size: 0.68rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  opacity: 0.7;
+}

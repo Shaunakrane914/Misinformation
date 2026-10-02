@@ -1,7 +1,20 @@
+# Aegis Protocol — Netlify Deployment Config
+# Version: 3.7.0 | Updated: 2026-10-02
+
 [build]
   base      = "frontend"
   publish   = "."
   functions = "netlify/functions"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
 # 1. Netlify functions endpoints
 [[redirects]]

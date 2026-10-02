@@ -1,5 +1,5 @@
 # Aegis Protocol — Testing Baseline & Quality Report
-**Audit Date**: September 21, 2026
+**Audit Date**: October 2, 2026 *(updated — v3.7.0)*
 
 ---
 
@@ -31,3 +31,28 @@ Existing validation consisted entirely of standalone verification scripts locate
 2. **Missing Test Fixtures & Mocks**:
    - `MockGeminiProvider`: Returns deterministic JSON responses without making live network calls or consuming tokens.
    - `MockReachScraper`: Returns predictable news/social snippets for deterministic claim investigation tests.
+
+---
+
+## 3. v3.7.0 Test Status *(Updated October 2, 2026)*
+
+**All deficits from §2 are now resolved.**
+
+| Test File | Tests | Status | Coverage Area |
+|---|---|---|---|
+| `test_claim_quality_integrity.py` | 2 | ✅ PASS | `quality_tensor` / `quality_status` honesty |
+| `test_query_execution_telemetry.py` | 5 | ✅ PASS | `QueryExecutionRecord`, funnel counters, telemetry |
+| `test_provenance_deduplication.py` | 4 | ✅ PASS | `EvidenceFragment` lineage, dedup merge |
+| `test_replay_verification.py` | 7 | ✅ PASS | `ReplayLedger` trace/refetch modes + API |
+| `test_doctor_status_semantics.py` | 6 | ✅ PASS | `DoctorBridge` canonical status codes |
+| **Total** | **24** | **✅ 24/24 PASS** | Core service integrity |
+
+### Additional v3.7.0 Test Infrastructure
+- **`tests/unit/conftest.py`** — Shared fixtures: `api_client`, `fresh_ledger`, `sample_quality_tensor`, `sample_dossier`, `mock_research_no_corpus`, `mock_investigator_false`.
+- **`pytest.ini`** — Configured with `asyncio_mode = auto`, `rerun_on_failure = 2`, and `testpaths = tests/`.
+
+### Integrity Guarantees Enforced by Tests
+- `quality_tensor` is **never** synthesised from hardcoded defaults; confirmed `None` when no corpus exists.
+- `quality_status` is exactly `UNAVAILABLE_NO_CORPUS` or `VERIFIED_CORPUS` — no other values.
+- `ReplayLedger.replay_investigation(mode="trace_playback")` never makes live network calls.
+- `DoctorBridge.get_canonical_status_code("youtube")` returns `DEGRADED` for rate-limited channels, **not** `AUTH_REQUIRED`.

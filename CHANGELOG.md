@@ -7,7 +7,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.7.0] - 2026-10-02
+
+### Added
+- **Multi-Intent Investigation Launcher**: Replaced hero preset buttons with a 5-category intent switcher (Verify Claim / Trending Topic / Company Scout / Brand Shield / Personal Watch) with dynamic placeholder, button label, and suggestion chips per intent.
+- **Cross-Agent URL Routing**: All 5 agent pages (`submit`, `scout`, `trending`, `brandshield`, `personal-watch`) now support `?q=` URL parameter prefill that auto-populates the input and triggers the scan on page load. Each agent also supports its own semantic key (`?claim=`, `?ticker=`, `?topic=`, `?brand=`, `?person=`).
+- **Hero Intent Bar CSS Tokens**: Added `.hero-intent-bar`, `.hero-intent-btn`, `.hero-suggestion-chip`, `.hero-divider-line`, and `.hero-suggestions-title` utility classes to `aegis-theme.css`.
+- **WCAG Accessibility Hardening**: Added descriptive `aria-label` attributes to all agent search input fields (BrandShield, Personal Watch, Trending, Scout).
+- **Memory Optimization**: Enabled `__slots__` on `DecisionRecord` dataclass in `replay_ledger.py` to reduce per-instance heap overhead.
+- **24 Verified Passing Unit Tests**: Consolidated unit suite covering claim quality integrity, query execution telemetry, provenance deduplication, replay verification, and doctor status semantics — all 24 tests passing.
+
+### Changed
+- `aegis-nav.js`: Routing now uses intent-based query key mapping for all agent pages.
+- `index.html`: Hero section rebuilt with intent switcher and suggestion chips; removed static preset buttons.
+
+---
+
 ## [3.6.1] - 2026-09-22
+
 
 ### Added
 - **Trending Agent 2.0 Discovery & Intelligence Engine**: Rebuilt from headline aggregator into an investigative trend engine answering what, why, when, and where a trend started with velocity tracking and syndication clustering.

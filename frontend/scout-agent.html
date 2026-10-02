@@ -479,7 +479,7 @@
           `);
         });
 
-        rendered.push(`<span class="channel-pill" style="margin-left:auto;color:var(--text-dim);">Live Doctor &bull; ${data.agent_reach?.version || '1.5.0'} (${ch.web?.backend || 'Native'})</span>`);
+        rendered.push(`<span class="channel-pill" style="margin-left:auto;color:var(--text-dim);">Live Doctor &bull; ${data.agent_reach?.version || 'Unknown'} (${ch.web?.backend || 'Unknown'})</span>`);
         strip.innerHTML = rendered.join('');
       } catch (e) {
         // keep baseline
@@ -962,15 +962,7 @@
         rationale = 'Discourse signal under observation with incomplete confirmation.';
       }
 
-      let tensor = (item && item.quality_tensor) ? item.quality_tensor : {
-        source_credibility: item.source_role === 'PRIMARY' ? 0.98 : (item.source_tier === 1 ? 0.90 : 0.70),
-        factual_consistency: item.factual_consistency != null ? item.factual_consistency : 0.85,
-        recency_decay: item.recency_decay != null ? item.recency_decay : 0.90,
-        corroboration_depth: item.corroboration_depth != null ? item.corroboration_depth : 0.80,
-        cross_platform_diversity: item.cross_platform_diversity != null ? item.cross_platform_diversity : 0.75,
-        primary_source_proximity: item.source_role === 'PRIMARY' ? 1.00 : (item.is_primary ? 0.95 : 0.60),
-        composite_quality: item.quality_score != null ? item.quality_score : 0.80
-      };
+      let tensor = (item && item.quality_tensor) ? item.quality_tensor : null;
 
       titleEl.textContent = `// PROVENANCE · ${itemTitle.slice(0, 32)}...`;
 
@@ -988,46 +980,58 @@
         </div>
 
         <div>
-          <div style="font-family:var(--font-mono);font-size:0.78rem;font-weight:700;color:var(--accent);margin-bottom:12px;">
+          <div style="font-family:var(--font-mono);font-size:0.78rem;font-weight:700;color:${tensor ? 'var(--accent)' : 'var(--text-dim)'};margin-bottom:12px;">
             // 6D QUALITY TENSOR EVALUATION (Q = Σ w_i · T_i)
           </div>
 
+          ${tensor ? `
           <div class="tensor-bar-row">
-            <div class="tensor-bar-lbl"><span>Source Credibility</span><span>${(tensor.source_credibility*100).toFixed(0)}%</span></div>
-            <div class="tensor-track"><div class="tensor-fill" style="width:${tensor.source_credibility*100}%;"></div></div>
+            <div class="tensor-bar-lbl"><span>Source Credibility</span><span>${tensor.source_credibility != null ? (tensor.source_credibility*100).toFixed(0) + '%' : '—'}</span></div>
+            <div class="tensor-track"><div class="tensor-fill" style="width:${(tensor.source_credibility || 0)*100}%;"></div></div>
           </div>
 
           <div class="tensor-bar-row">
-            <div class="tensor-bar-lbl"><span>Factual Consistency</span><span>${(tensor.factual_consistency*100).toFixed(0)}%</span></div>
-            <div class="tensor-track"><div class="tensor-fill" style="width:${tensor.factual_consistency*100}%;"></div></div>
+            <div class="tensor-bar-lbl"><span>Factual Consistency</span><span>${tensor.factual_consistency != null ? (tensor.factual_consistency*100).toFixed(0) + '%' : '—'}</span></div>
+            <div class="tensor-track"><div class="tensor-fill" style="width:${(tensor.factual_consistency || 0)*100}%;"></div></div>
           </div>
 
           <div class="tensor-bar-row">
-            <div class="tensor-bar-lbl"><span>Recency Decay Factor</span><span>${(tensor.recency_decay*100).toFixed(0)}%</span></div>
-            <div class="tensor-track"><div class="tensor-fill" style="width:${tensor.recency_decay*100}%;"></div></div>
+            <div class="tensor-bar-lbl"><span>Recency Decay Factor</span><span>${tensor.recency_decay != null ? (tensor.recency_decay*100).toFixed(0) + '%' : '—'}</span></div>
+            <div class="tensor-track"><div class="tensor-fill" style="width:${(tensor.recency_decay || 0)*100}%;"></div></div>
           </div>
 
           <div class="tensor-bar-row">
-            <div class="tensor-bar-lbl"><span>Corroboration Depth</span><span>${(tensor.corroboration_depth*100).toFixed(0)}%</span></div>
-            <div class="tensor-track"><div class="tensor-fill" style="width:${tensor.corroboration_depth*100}%;"></div></div>
+            <div class="tensor-bar-lbl"><span>Corroboration Depth</span><span>${tensor.corroboration_depth != null ? (tensor.corroboration_depth*100).toFixed(0) + '%' : '—'}</span></div>
+            <div class="tensor-track"><div class="tensor-fill" style="width:${(tensor.corroboration_depth || 0)*100}%;"></div></div>
           </div>
 
           <div class="tensor-bar-row">
-            <div class="tensor-bar-lbl"><span>Cross-Platform Diversity</span><span>${(tensor.cross_platform_diversity*100).toFixed(0)}%</span></div>
-            <div class="tensor-track"><div class="tensor-fill" style="width:${tensor.cross_platform_diversity*100}%;"></div></div>
+            <div class="tensor-bar-lbl"><span>Cross-Platform Diversity</span><span>${tensor.cross_platform_diversity != null ? (tensor.cross_platform_diversity*100).toFixed(0) + '%' : '—'}</span></div>
+            <div class="tensor-track"><div class="tensor-fill" style="width:${(tensor.cross_platform_diversity || 0)*100}%;"></div></div>
           </div>
 
           <div class="tensor-bar-row">
-            <div class="tensor-bar-lbl"><span>Primary Source Proximity</span><span>${(tensor.primary_source_proximity*100).toFixed(0)}%</span></div>
-            <div class="tensor-track"><div class="tensor-fill" style="width:${tensor.primary_source_proximity*100}%;background:linear-gradient(90deg, #10b981, #00e5ff);"></div></div>
+            <div class="tensor-bar-lbl"><span>Primary Source Proximity</span><span>${tensor.primary_source_proximity != null ? (tensor.primary_source_proximity*100).toFixed(0) + '%' : '—'}</span></div>
+            <div class="tensor-track"><div class="tensor-fill" style="width:${(tensor.primary_source_proximity || 0)*100}%;background:linear-gradient(90deg, #10b981, #00e5ff);"></div></div>
           </div>
 
           <div style="background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);border-radius:10px;padding:12px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
             <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">COMPOSITE QUALITY SCORE:</span>
             <span style="font-family:var(--font-mono);font-size:1.1rem;font-weight:800;color:var(--accent);">
-              ${tensor.composite_quality != null ? Number(tensor.composite_quality).toFixed(2) : '—'} / 1.00
+              ${tensor.composite_quality != null ? Number(tensor.composite_quality).toFixed(2) : (item && item.quality_score != null ? Number(item.quality_score).toFixed(2) : '—')} / 1.00
             </span>
           </div>
+          ` : `
+          <div style="background:rgba(255,255,255,0.03);border:1px dashed rgba(255,255,255,0.15);border-radius:8px;padding:16px;text-align:center;color:var(--text-dim);font-size:0.82rem;line-height:1.5;">
+            Quality data unavailable — empirical tensor not computed for this finding.
+          </div>
+          <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px;margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">COMPOSITE QUALITY SCORE:</span>
+            <span style="font-family:var(--font-mono);font-size:1.1rem;font-weight:800;color:var(--text-dim);">
+              — / 1.00
+            </span>
+          </div>
+          `}
         </div>
 
         <div>

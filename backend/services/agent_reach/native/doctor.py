@@ -101,19 +101,23 @@ class DoctorBridge:
     def get_canonical_status_code(self, platform: str) -> str:
         """
         Map upstream doctor status to Aegis status taxonomy:
-        AVAILABLE | DEGRADED | UNAVAILABLE | AUTH_REQUIRED
+        AVAILABLE | DEGRADED | AUTH_REQUIRED | UNAVAILABLE | ERROR
         """
         st = self.get_channel_status(platform)
-        status = st.get("status", "off")
-        msg = st.get("message", "").lower()
+        status = str(st.get("status", "off")).lower()
+        msg = str(st.get("message", "")).lower()
         active = st.get("active_backend")
 
+        if status in ("error", "exception", "failed"):
+            return "ERROR"
+        if any(auth_kw in msg for auth_kw in ("cookie", "login", "session", "认证", "token", "auth", "credential")) or status == "auth_required":
+            return "AUTH_REQUIRED"
         if status == "ok" and active:
             return "AVAILABLE"
-        if "cookie" in msg or "login" in msg or "session" in msg or "认证" in msg or "token" in msg or status == "warn":
-            return "AUTH_REQUIRED"
-        if status == "warn":
+        if status in ("warn", "degraded") or (status == "ok" and not active):
             return "DEGRADED"
+        if status in ("off", "unavailable", "disabled"):
+            return "UNAVAILABLE"
         return "UNAVAILABLE"
 
     def _generate_fallback_baseline(self) -> Dict[str, Dict[str, Any]]:

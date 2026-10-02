@@ -7,9 +7,12 @@ Adaptive Primary Escalation -> Diversity Deep Reading -> Passage Extraction ->
 Contradiction Detection -> Independent Corroboration -> Evidence Graph -> Grounded Findings.
 """
 
+from datetime import datetime
 import logging
 import time
 from typing import Any, Dict, List, Optional, Set, Tuple
+
+from backend.services.agent_reach.channels import QueryExecutionRecord
 
 from backend.services.research.candidate_ranker import candidate_ranker
 from backend.services.research.contradiction_detector import contradiction_detector
@@ -256,6 +259,7 @@ class ResearchEngine:
         }
         max_adaptive_rounds = min(self.budget.follow_up_budget, 3)
         seen_adaptive_queries: Set[str] = set()
+        adaptive_query_records: List[QueryExecutionRecord] = []
 
         if self.budget.follow_up_budget > 0:
             for round_idx in range(1, max_adaptive_rounds + 1):
@@ -296,14 +300,32 @@ class ResearchEngine:
                 follow_up_telemetry["rounds_executed"] += 1
                 follow_up_telemetry["queries_planned"] += len(new_queries)
 
-                for fu in new_queries:
-                    if (time.time() - start_ts) >= effective_timeout:
+                for fu_idx, fu in enumerate(new_queries):
+                    if (time.time() - start_ts) >= effective_timeout or novelty_tracker.is_saturated:
+                        reason = "latency_ceiling_reached" if (time.time() - start_ts) >= effective_timeout else novelty_tracker.halt_reason
                         follow_up_telemetry["halted_early"] = True
-                        follow_up_telemetry["halt_reason"] = "latency_ceiling_reached"
-                        break
-                    if novelty_tracker.is_saturated:
-                        follow_up_telemetry["halted_early"] = True
-                        follow_up_telemetry["halt_reason"] = novelty_tracker.halt_reason
+                        follow_up_telemetry["halt_reason"] = reason
+                        # Record remaining planned queries as SKIPPED
+                        for remaining_fu in new_queries[fu_idx:]:
+                            if remaining_fu["query_text"].lower().strip() not in seen_adaptive_queries:
+                                seen_adaptive_queries.add(remaining_fu["query_text"].lower().strip())
+                                rem_ch = remaining_fu.get("suggested_channels", ["web"])[0] if remaining_fu.get("suggested_channels") else "web"
+                                adaptive_query_records.append(QueryExecutionRecord(
+                                    query_id=remaining_fu["query_id"],
+                                    channel=rem_ch,
+                                    query_text=remaining_fu["query_text"],
+                                    query_class=remaining_fu.get("query_class", "adaptive_expansion"),
+                                    phase="adaptive",
+                                    status="SKIPPED",
+                                    started_at=datetime.utcnow().isoformat(),
+                                    completed_at=datetime.utcnow().isoformat(),
+                                    latency_ms=0,
+                                    result_count_raw=0,
+                                    result_count_normalized=0,
+                                    error=reason,
+                                    retrieval_mode="skipped",
+                                    backend_id=rem_ch,
+                                ))
                         break
 
                     seen_adaptive_queries.add(fu["query_text"].lower().strip())
@@ -314,12 +336,17 @@ class ResearchEngine:
                     suggested_ch = fu.get("suggested_channels", ["web", "news"])
                     new_snippets_this_step: List[str] = []
                     query_had_success = False
+                    q_start_time = time.time()
+                    q_started_at = datetime.utcnow().isoformat()
+                    fu_error: Optional[str] = None
+                    raw_fu_count = 0
 
                     for ch in suggested_ch[:2]:
                         try:
                             frags = agent_reach_service.search_channel(ch, fu["query_text"], limit=2)
                             if frags:
                                 query_had_success = True
+                                raw_fu_count += len(frags)
                             for f in frags:
                                 u = getattr(f, "url", "") or ""
                                 if u and any(c.canonical_url == u for c in candidates):
@@ -337,12 +364,42 @@ class ResearchEngine:
                                 candidates.append(ev_item)
                                 new_snippets_this_step.append(ev_item.snippet)
                         except Exception as e:
+                            fu_error = str(e)
                             logger.debug(f"[ResearchEngine] Follow-up query error for '{fu['query_text']}': {e}")
 
+                    q_lat = int((time.time() - q_start_time) * 1000)
+                    q_completed_at = datetime.utcnow().isoformat()
+
                     if query_had_success:
+                        fu_status = "SUCCESS"
                         follow_up_telemetry["queries_succeeded"] += 1
-                    else:
+                    elif fu_error:
+                        fu_status = "TIMEOUT" if "timeout" in fu_error.lower() else "FAILED"
                         follow_up_telemetry["queries_failed"] += 1
+                    else:
+                        fu_status = "SUCCESS" if raw_fu_count > 0 else "FAILED"
+                        if fu_status == "SUCCESS":
+                            follow_up_telemetry["queries_succeeded"] += 1
+                        else:
+                            follow_up_telemetry["queries_failed"] += 1
+
+                    primary_ch = suggested_ch[0] if suggested_ch else "web"
+                    adaptive_query_records.append(QueryExecutionRecord(
+                        query_id=fu["query_id"],
+                        channel=primary_ch,
+                        query_text=fu["query_text"],
+                        query_class=fu.get("query_class", "adaptive_expansion"),
+                        phase="adaptive",
+                        status=fu_status,
+                        started_at=q_started_at,
+                        completed_at=q_completed_at,
+                        latency_ms=q_lat,
+                        result_count_raw=raw_fu_count,
+                        result_count_normalized=len(new_snippets_this_step),
+                        error=fu_error,
+                        retrieval_mode="direct",
+                        backend_id=primary_ch,
+                    ))
 
                     # Record step in novelty tracker
                     novelty_tracker.record_step(
@@ -362,6 +419,7 @@ class ResearchEngine:
                 )
 
         # Stage 7: Adaptive Primary Source Escalation (Requirement 16)
+        escalation_query_records: List[QueryExecutionRecord] = []
         if (time.time() - start_ts) < effective_timeout:
             escalated_primaries, esc_telemetry = primary_source_escalator.escalate(
                 ranked_candidates,
@@ -373,6 +431,26 @@ class ResearchEngine:
                 for p in escalated_primaries:
                     source_quality_engine.classify_and_score(p, target_name=request.target)
                 ranked_candidates = escalated_primaries + ranked_candidates
+
+            for idx, eq_text in enumerate(esc_telemetry.get("queries", [])):
+                q_id = f"q_esc_{idx + 1:03d}"
+                prim_count = sum(1 for p in (escalated_primaries or []) if p.metadata.get("primary_query_id") == q_id or p.metadata.get("escalation_query") == eq_text)
+                escalation_query_records.append(QueryExecutionRecord(
+                    query_id=q_id,
+                    channel="web",
+                    query_text=eq_text,
+                    query_class="primary_escalation",
+                    phase="escalation",
+                    status="SUCCESS" if prim_count > 0 or esc_telemetry.get("escalation_queries_executed", 0) > 0 else "FAILED",
+                    started_at=datetime.utcnow().isoformat(),
+                    completed_at=datetime.utcnow().isoformat(),
+                    latency_ms=0,
+                    result_count_raw=prim_count,
+                    result_count_normalized=prim_count,
+                    error=None,
+                    retrieval_mode="direct",
+                    backend_id="web",
+                ))
         else:
             escalated_primaries, esc_telemetry = [], {"queries": [], "escalations": 0}
 
@@ -451,50 +529,45 @@ class ResearchEngine:
         ]
 
         # Stage 13: Full Research Corpus Assembly (Requirement 19)
-        # Stage 13: Full Research Corpus Assembly (Requirement 19)
-        # Accurate query accounting across all phases
-        initial_queries_planned = sum(len(q_list) for q_list in multi_queries.values())
-        adaptive_queries_planned = follow_up_telemetry.get("queries_planned", 0)
-        escalation_queries_planned = len(esc_telemetry.get("queries", []))
-        total_queries_planned = initial_queries_planned + adaptive_queries_planned + escalation_queries_planned
+        # Accurate query accounting across all phases derived from canonical execution records
+        initial_records = getattr(retrieval_res, "query_records", []) or []
+        if not initial_records:
+            for ch, q_list in multi_queries.items():
+                ch_health = channel_status.get(ch, {})
+                ch_ok = ch_health.get("status") in ("AVAILABLE", "DEGRADED", "SUCCESS") if isinstance(ch_health, dict) else True
+                for q in q_list:
+                    initial_records.append(QueryExecutionRecord(
+                        query_id=q.get("query_id", ""),
+                        channel=ch,
+                        query_text=q.get("query_text", ""),
+                        query_class=q.get("query_class", "general"),
+                        phase="initial",
+                        status="SUCCESS" if ch_ok else "FAILED",
+                        started_at=datetime.utcnow().isoformat(),
+                        completed_at=datetime.utcnow().isoformat(),
+                        latency_ms=0,
+                        result_count_raw=0,
+                        result_count_normalized=0,
+                        error=None if ch_ok else f"Channel {ch} unavailable",
+                        retrieval_mode="direct",
+                        backend_id=ch,
+                    ))
 
-        all_executed_queries: List[Dict[str, Any]] = []
-        succeeded_queries_count = 0
-        failed_queries_count = follow_up_telemetry.get("queries_failed", 0)
+        all_query_records: List[QueryExecutionRecord] = list(initial_records) + adaptive_query_records + escalation_query_records
 
-        for ch, q_list in multi_queries.items():
-            ch_health = channel_status.get(ch, {})
-            ch_ok = ch_health.get("status") in ("AVAILABLE", "DEGRADED", "SUCCESS") if isinstance(ch_health, dict) else True
-            for q in q_list:
-                status = "SUCCESS" if ch_ok else "FAILED"
-                if ch_ok:
-                    succeeded_queries_count += 1
-                else:
-                    failed_queries_count += 1
-                all_executed_queries.append({
-                    "channel": ch,
-                    "query_id": q.get("query_id", ""),
-                    "query_text": q.get("query_text", ""),
-                    "status": status,
-                })
+        queries_planned = len(all_query_records)
+        queries_skipped = sum(1 for q in all_query_records if q.status == "SKIPPED")
+        queries_submitted = queries_planned - queries_skipped
+        queries_started = queries_submitted
+        queries_succeeded = sum(1 for q in all_query_records if q.status == "SUCCESS")
+        queries_failed = sum(1 for q in all_query_records if q.status == "FAILED")
+        queries_timed_out = sum(1 for q in all_query_records if q.status == "TIMEOUT")
+        queries_auth_required = sum(1 for q in all_query_records if q.status == "AUTH_REQUIRED")
+        queries_executed = queries_succeeded + queries_failed + queries_timed_out + queries_auth_required
 
-        for fu in follow_up_telemetry.get("queries", []):
-            all_executed_queries.append({
-                "channel": "adaptive",
-                "query_id": fu.get("query_id", ""),
-                "query_text": fu.get("query_text", ""),
-                "status": "SUCCESS",
-            })
-            succeeded_queries_count += 1
-
-        for eq in esc_telemetry.get("queries", []):
-            all_executed_queries.append({
-                "channel": "primary_escalation",
-                "query_id": "q_esc",
-                "query_text": eq,
-                "status": "SUCCESS",
-            })
-            succeeded_queries_count += 1
+        all_executed_queries: List[Dict[str, Any]] = [
+            q.to_dict() if hasattr(q, "to_dict") else q for q in all_query_records
+        ]
 
         sat_summary = novelty_tracker.get_summary()
         halt_reason = (
@@ -503,11 +576,15 @@ class ResearchEngine:
         )
 
         funnel = {
-            "queries_planned": total_queries_planned,
-            "queries_submitted": len(all_executed_queries),
-            "queries_succeeded": succeeded_queries_count,
-            "queries_failed": failed_queries_count,
-            "queries_executed": succeeded_queries_count,
+            "queries_planned": queries_planned,
+            "queries_submitted": queries_submitted,
+            "queries_started": queries_started,
+            "queries_succeeded": queries_succeeded,
+            "queries_failed": queries_failed,
+            "queries_timed_out": queries_timed_out,
+            "queries_auth_required": queries_auth_required,
+            "queries_skipped": queries_skipped,
+            "queries_executed": queries_executed,
             "candidates_found": len(candidates),
             "unique_candidates": len(ranked_candidates),
             "deep_reads_count": read_telemetry.get("successful", read_telemetry.get("reads_succeeded", 0)),
@@ -548,11 +625,16 @@ class ResearchEngine:
             **trace_dict,
             "scan_id": trace_dict.get("scan_id", f"res_{int(time.time())}"),
             "funnel": funnel,
-            "queries_planned": total_queries_planned,
-            "queries_submitted": len(all_executed_queries),
-            "queries_succeeded": succeeded_queries_count,
-            "queries_failed": failed_queries_count,
-            "queries_executed": succeeded_queries_count,
+            "queries_planned": queries_planned,
+            "queries_submitted": queries_submitted,
+            "queries_started": queries_started,
+            "queries_succeeded": queries_succeeded,
+            "queries_failed": queries_failed,
+            "queries_timed_out": queries_timed_out,
+            "queries_auth_required": queries_auth_required,
+            "queries_skipped": queries_skipped,
+            "queries_executed": queries_executed,
+            "query_records": all_executed_queries,
             "query_classes_count": len(query_classes),
             "follow_ups_executed": follow_up_telemetry["attempted"],
             "candidates_found": len(candidates),
@@ -597,7 +679,7 @@ class ResearchEngine:
             telemetry["dossier_id"] = dossier_id
         except Exception as e_dos:
             logger.debug(f"[ResearchEngine] Dossier recording notice: {e_dos}")
-            telemetry["dossier_id"] = f"R-2026-TEMP-{int(time.time())}"
+            telemetry["dossier_id"] = None
 
         logger.info(f"[ResearchEngine] Investigation finished in {total_latency_ms}ms (dossier={telemetry.get('dossier_id')}): {len(findings)} findings, {len(primary_sources)} primaries")
 

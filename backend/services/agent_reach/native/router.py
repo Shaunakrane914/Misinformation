@@ -46,6 +46,37 @@ class NativeRouter:
         self.executor = native_executor
         self.normalizer = native_normalizer
 
+    @staticmethod
+    def _tag_fragments(
+        frags: List[EvidenceFragment],
+        requested_channel: str,
+        actual_channel: str,
+        mode: str,
+        backend_id: str,
+        fallback_reason: Optional[str] = None,
+        is_authenticated: bool = False,
+    ) -> List[EvidenceFragment]:
+        for f in frags:
+            f.requested_channel = requested_channel
+            f.actual_retrieval_channel = actual_channel
+            if not f.channel_name:
+                f.channel_name = actual_channel
+            f.retrieval_mode = mode
+            f.native_backend_id = backend_id
+            f.fallback_reason = fallback_reason
+            f.is_authenticated = is_authenticated
+            f.retrieval_lineage = [{
+                "channel": actual_channel,
+                "requested_channel": requested_channel,
+                "query_id": getattr(f, "query_id", ""),
+                "retrieval_mode": mode,
+                "backend_id": backend_id,
+                "fallback_reason": fallback_reason,
+                "is_authenticated": is_authenticated,
+                "retrieved_at": getattr(f, "retrieved_at", ""),
+            }]
+        return frags
+
     def execute_channel_query(
         self,
         platform: str,
@@ -101,14 +132,17 @@ class NativeRouter:
                         res.get("items", []), query_id=query_id, query_class=query_class, query_text=q_text
                     )
                     if fragments:
+                        self._tag_fragments(fragments, "github", "github", RetrievalMode.DIRECT_API.value, "gh-cli", None, True)
                         telemetry["status"] = "SUCCESS"
                     else:
                         raise NativeReachError("Native gh CLI returned no items, trying REST fallback")
                 except Exception as e_gh:
                     logger.debug(f"[NativeRouter] GitHub native path notice: {e_gh}. Trying REST fallback.")
                     fragments = self._fallback_github_rest(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
+                    self._tag_fragments(fragments, "github", "github", RetrievalMode.DIRECT_API.value, "GitHub REST API", "GH_CLI_UNAVAILABLE", False)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "GitHub REST API"
+                    telemetry["fallback_reason"] = "GH_CLI_UNAVAILABLE"
                     telemetry["retrieval_mode"] = RetrievalMode.DIRECT_API.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
@@ -120,14 +154,17 @@ class NativeRouter:
                         res.get("items", []), query_id=query_id, query_class=query_class, query_text=q_text
                     )
                     if fragments:
+                        self._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.DIRECT_API.value, "yt-dlp", None, False)
                         telemetry["status"] = "SUCCESS"
                     else:
                         raise NativeReachError("Native yt-dlp returned no items, trying legacy fallback")
                 except Exception as e_yt:
                     logger.debug(f"[NativeRouter] YouTube native path notice: {e_yt}. Trying legacy fallback.")
                     fragments = self._fallback_youtube_scraper(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
+                    self._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, "Legacy YouTube Scraper", "YT_DLP_UNAVAILABLE", False)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy YouTube Scraper"
+                    telemetry["fallback_reason"] = "YT_DLP_UNAVAILABLE"
                     telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
@@ -145,6 +182,7 @@ class NativeRouter:
                 fragments = self.normalizer.normalize_v2ex_topics(
                     raw_items[:limit], query_id=query_id, query_class=query_class, query_text=q_text
                 )
+                self._tag_fragments(fragments, "v2ex", "v2ex", RetrievalMode.DIRECT_API.value, "v2ex-public-api", None, False)
                 telemetry["status"] = "SUCCESS"
 
             # ── 4. Bilibili (Native Public Search API — Zero Config) ──
@@ -153,6 +191,7 @@ class NativeRouter:
                 fragments = self.normalizer.normalize_bilibili_videos(
                     res.get("items", []), query_id=query_id, query_class=query_class, query_text=q_text
                 )
+                self._tag_fragments(fragments, "bilibili", "bilibili", RetrievalMode.DIRECT_API.value, "bilibili-public-api", None, False)
                 telemetry["status"] = "SUCCESS"
 
             # ── 5. RSS / PR Wires (Native feedparser) ──
@@ -171,14 +210,17 @@ class NativeRouter:
                         res.get("items", []), channel_name=platform, query_id=query_id, query_class=query_class, query_text=wire_query
                     )
                     if fragments:
+                        self._tag_fragments(fragments, "rss", "rss", RetrievalMode.DIRECT_API.value, "feedparser-google-rss", None, False)
                         telemetry["status"] = "SUCCESS"
                     else:
                         raise NativeReachError("Native RSS returned no entries, trying legacy fallback")
                 except Exception as e_rss:
                     logger.debug(f"[NativeRouter] RSS native path notice: {e_rss}. Trying legacy fallback.")
                     fragments = self._fallback_news_scraper(wire_query, limit=limit, channel_name="rss", query_id=query_id, query_class=query_class, query_text=wire_query)
+                    self._tag_fragments(fragments, "rss", "rss", RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, "Legacy News Scraper", "RSS_UNAVAILABLE", False)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy News Scraper"
+                    telemetry["fallback_reason"] = "RSS_UNAVAILABLE"
                     telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
@@ -192,14 +234,17 @@ class NativeRouter:
                         res.get("items", []), channel_name="news", query_id=query_id, query_class=query_class, query_text=q_text
                     )
                     if fragments:
+                        self._tag_fragments(fragments, "news", "news", RetrievalMode.DIRECT_API.value, "feedparser-google-news", None, False)
                         telemetry["status"] = "SUCCESS"
                     else:
                         raise NativeReachError("News RSS returned no entries, trying legacy fallback")
                 except Exception as e_news:
                     logger.debug(f"[NativeRouter] News native path notice: {e_news}. Trying legacy fallback.")
                     fragments = self._fallback_news_scraper(query, limit=limit, channel_name="news", query_id=query_id, query_class=query_class, query_text=q_text)
+                    self._tag_fragments(fragments, "news", "news", RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, "Legacy News Scraper", "NEWS_FEED_UNAVAILABLE", False)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy News Scraper"
+                    telemetry["fallback_reason"] = "NEWS_FEED_UNAVAILABLE"
                     telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
@@ -208,14 +253,17 @@ class NativeRouter:
                 try:
                     fragments = self._execute_web_search(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
                     if fragments:
+                        self._tag_fragments(fragments, "web", "web", RetrievalMode.DIRECT_API.value, "bing-search-rss", None, False)
                         telemetry["status"] = "SUCCESS"
                     else:
                         raise NativeReachError("Web search returned no items, trying legacy fallback")
                 except Exception as e_web:
                     logger.debug(f"[NativeRouter] Web search notice: {e_web}. Trying legacy fallback.")
                     fragments = self._fallback_web_scraper(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
+                    self._tag_fragments(fragments, "web", "web", RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, "Legacy Web Scraper", "BING_SEARCH_UNAVAILABLE", False)
                     telemetry["fallback_used"] = True
                     telemetry["fallback_backend"] = "Legacy Web Scraper"
+                    telemetry["fallback_reason"] = "BING_SEARCH_UNAVAILABLE"
                     telemetry["retrieval_mode"] = RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
                     telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
@@ -238,6 +286,8 @@ class NativeRouter:
                         retrieval_mode=RetrievalMode.WEB_READER.value,
                         native_backend_id="jina-reader",
                         channel_name="jina_reader",
+                        requested_channel="jina_reader",
+                        actual_retrieval_channel="jina_reader",
                         content_depth="FULL_ARTICLE" if len(content) > 500 else "SNIPPET",
                         query_id=query_id,
                         query_class=query_class,
@@ -248,6 +298,7 @@ class NativeRouter:
                         }
                     )
                     fragments = [frag]
+                    self._tag_fragments(fragments, "jina_reader", "jina_reader", RetrievalMode.WEB_READER.value, "jina-reader", None, False)
                     telemetry["status"] = "SUCCESS"
                 else:
                     telemetry["status"] = "FAILED"
@@ -274,14 +325,18 @@ class NativeRouter:
                         fragments = self.normalizer.normalize_rss_entries(
                             res.get("items", []), channel_name=platform, query_id=query_id, query_class=query_class, query_text=q_text
                         )
+                        self._tag_fragments(
+                            fragments,
+                            requested_channel=platform,
+                            actual_channel="web_syndication",
+                            mode=RetrievalMode.UNAUTHENTICATED_SYNDICATED_FALLBACK.value,
+                            backend_id="google-rss-index",
+                            fallback_reason="AUTH_REQUIRED_NO_SESSION",
+                            is_authenticated=False
+                        )
                         for f in fragments:
                             f.platform = f"{platform.capitalize()} (Web Index Fallback)"
-                            f.channel_name = "web_syndication"
                             f.retrieval_method = f"{platform}_web_index"
-                            f.retrieval_mode = RetrievalMode.UNAUTHENTICATED_SYNDICATED_FALLBACK.value
-                            f.native_backend_id = "google-rss-index"
-                            f.fallback_reason = "AUTH_REQUIRED_NO_SESSION"
-                            f.is_authenticated = False
                             f.raw_metadata["source_tier"] = "TIER_3_AGGREGATE"
                             f.raw_metadata["honest_disclosure"] = f"Platform API session unavailable for {platform}; retrieved via public web syndication index"
                         telemetry["status"] = "SUCCESS" if fragments else "AUTH_REQUIRED"
@@ -311,6 +366,7 @@ class NativeRouter:
             # ── 11. Generic Platform Dispatch ──
             else:
                 fragments = self._execute_web_search(query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text)
+                self._tag_fragments(fragments, platform, platform, RetrievalMode.DIRECT_API.value, active_backend or "generic-search", None, False)
                 telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
 
         except AuthRequiredError as auth_err:
@@ -323,17 +379,12 @@ class NativeRouter:
 
         telemetry["latency_ms"] = int((time.perf_counter() - t0) * 1000)
 
-        # Enforce typed provenance fields on all produced fragments
+        # Defensive check to ensure provenance attributes are populated
         for f in fragments:
-            if not getattr(f, "retrieval_mode", None) or f.retrieval_mode == RetrievalMode.UNKNOWN.value:
-                if telemetry.get("fallback_used"):
-                    f.retrieval_mode = telemetry.get("retrieval_mode") or RetrievalMode.LEGACY_SCRAPER_FALLBACK.value
-                else:
-                    f.retrieval_mode = RetrievalMode.DIRECT_API.value
-            if not getattr(f, "native_backend_id", None):
-                f.native_backend_id = telemetry.get("fallback_backend") or active_backend
-            if telemetry.get("fallback_used") and not getattr(f, "fallback_reason", None):
-                f.fallback_reason = telemetry.get("fallback_reason") or "PRIMARY_UNAVAILABLE"
+            if not getattr(f, "requested_channel", None):
+                f.requested_channel = platform
+            if not getattr(f, "actual_retrieval_channel", None):
+                f.actual_retrieval_channel = getattr(f, "channel_name", None) or platform
 
         return fragments, telemetry
 

@@ -376,6 +376,19 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
         lineage_engine = SourceLineageEngine()
         lineage_graph = lineage_engine.build_lineage_graph(lineage_candidates)
 
+        genuine_corpus = evidence_json.get("research_corpus")
+        rc_dict = genuine_corpus if isinstance(genuine_corpus, dict) else {}
+        genuine_tensor = None
+        if isinstance(genuine_corpus, dict) and genuine_corpus.get("findings"):
+            for f in genuine_corpus["findings"]:
+                if isinstance(f, dict) and f.get("quality_tensor"):
+                    genuine_tensor = f["quality_tensor"]
+                    break
+        elif isinstance(evidence_json.get("quality_tensor"), dict):
+            genuine_tensor = evidence_json["quality_tensor"]
+
+        quality_status = "VERIFIED_CORPUS" if genuine_tensor is not None else "UNAVAILABLE_NO_CORPUS"
+
         # Register immutable research dossier into ReplayLedger
         session_id = replay_ledger.record_investigation(
             target=norm_text,
@@ -386,15 +399,8 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "finding_id": "FND-01",
                 "title": norm_text[:100],
                 "epistemic_state": "KNOWN_FACT" if clean_verdict == "TRUE" else ("REFUTED" if clean_verdict == "FALSE" else "CONTESTED"),
-                "quality_tensor": {
-                    "source_credibility": 0.95 if clean_verdict in ("TRUE", "FALSE") else 0.75,
-                    "factual_consistency": 0.90,
-                    "recency_decay": 0.92,
-                    "corroboration_depth": min(1.0, 0.5 + (len(lineage_candidates) * 0.1)),
-                    "cross_platform_diversity": 0.80,
-                    "primary_source_proximity": 0.90 if any(c.primary_source for c in lineage_candidates) else 0.65,
-                    "composite_quality": conf_int / 100.0,
-                },
+                "quality_tensor": genuine_tensor,
+                "quality_status": quality_status,
                 "supporting_evidence_ids": [c.id for c in lineage_candidates[:2]],
                 "contradicting_evidence_ids": [c.id for c in lineage_candidates[2:4]],
                 "primary_sources": [c.canonical_url for c in lineage_candidates if c.primary_source],
@@ -409,6 +415,8 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             "claim": norm_text,
             "claim_hash": claim_hash,
             "session_id": session_id,
+            "quality_tensor": genuine_tensor,
+            "quality_status": quality_status,
             "replay_url": f"/api/research/replay/dossiers/{session_id}",
             "source_lineage": lineage_graph,
             "verdict": clean_verdict,
@@ -440,7 +448,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             "execution_time_seconds": duration,
             "agents_executed": ["ClaimIngestionAgent", "ResearchAgent", "InvestigatorAgent"],
             "claim_id": claim_hash,
-            "funnel": evidence_json.get("research_corpus", {}).get("funnel") or {
+            "funnel": rc_dict.get("funnel") or {
                 "queries_planned": len(lineage_candidates),
                 "queries_executed": len(lineage_candidates),
                 "candidates_found": len(lineage_candidates),
@@ -453,7 +461,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "saturation_score": None,
                 "halt_reason": "UNAVAILABLE_NO_CORPUS",
             },
-            "findings": evidence_json.get("research_corpus", {}).get("findings") or ([{
+            "findings": rc_dict.get("findings") or ([{
                 "finding_id": "FND-01",
                 "title": norm_text[:80],
                 "statement": explanation,
@@ -463,9 +471,9 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "quality_tensor": None,
             }] if lineage_candidates else []),
             "sources": [c.to_dict() for c in lineage_candidates],
-            "candidate_selection_audit": evidence_json.get("research_corpus", {}).get("candidate_selection_audit") or [],
-            "channel_telemetry": evidence_json.get("research_corpus", {}).get("channel_telemetry") or {},
-            "research_funnel": db.get_claim_research_funnel(claim_hash) or (evidence_json.get("research_corpus", {}).get("funnel") if evidence_json.get("research_corpus") else None),
+            "candidate_selection_audit": rc_dict.get("candidate_selection_audit") or [],
+            "channel_telemetry": rc_dict.get("channel_telemetry") or {},
+            "research_funnel": db.get_claim_research_funnel(claim_hash) or (rc_dict.get("funnel") if evidence_json.get("research_corpus") else None),
             "has_research_corpus": bool(evidence_json.get("research_corpus")),
             "research_url": f"/api/claims/{claim_hash}/research" if evidence_json.get("research_corpus") else None
         }

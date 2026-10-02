@@ -183,6 +183,7 @@ class EvidenceItem:
     selected_for_read: bool = False
     rejection_reason: Optional[str] = None
     quality_tensor: QualityTensor = field(default_factory=QualityTensor)
+    retrieval_lineage: List[Dict[str, Any]] = field(default_factory=list)
     provenance: Dict[str, Any] = field(default_factory=dict)
     metadata: Dict[str, Any] = field(default_factory=dict)
 
@@ -277,6 +278,7 @@ class EvidenceItem:
             "native_backend_id": self.native_backend_id,
             "fallback_reason": self.fallback_reason,
             "is_authenticated": self.is_authenticated,
+            "retrieval_lineage": self.retrieval_lineage,
             "read_status": self.read_status,
             "extraction_status": self.extraction_status,
             "contradiction_flag": self.contradiction_flag,
@@ -303,6 +305,18 @@ class EvidenceItem:
         
         # Metadata pass-through
         raw_meta = getattr(fragment, "raw_metadata", {}) or {}
+        lineage = list(getattr(fragment, "retrieval_lineage", None) or [])
+        if not lineage:
+            lineage = [{
+                "channel": getattr(fragment, "actual_retrieval_channel", "") or getattr(fragment, "channel_name", "") or getattr(fragment, "platform", ""),
+                "requested_channel": getattr(fragment, "requested_channel", "") or getattr(fragment, "channel_name", "") or getattr(fragment, "platform", ""),
+                "query_id": getattr(fragment, "query_id", ""),
+                "retrieval_mode": getattr(fragment, "retrieval_mode", "direct_api"),
+                "backend_id": getattr(fragment, "native_backend_id", None),
+                "fallback_reason": getattr(fragment, "fallback_reason", None),
+                "is_authenticated": getattr(fragment, "is_authenticated", False),
+                "retrieved_at": getattr(fragment, "retrieved_at", "") or datetime.now(timezone.utc).isoformat(),
+            }]
         
         return cls(
             id=item_id,
@@ -318,6 +332,7 @@ class EvidenceItem:
             native_backend_id=getattr(fragment, "native_backend_id", None),
             fallback_reason=getattr(fragment, "fallback_reason", None),
             is_authenticated=getattr(fragment, "is_authenticated", False),
+            retrieval_lineage=lineage,
             published_at=getattr(fragment, "published", "") or "",
             discovered_at=getattr(fragment, "retrieved_at", "") or datetime.now(timezone.utc).isoformat(),
             content_depth=getattr(fragment, "content_depth", ContentDepth.SNIPPET.value),

@@ -19,6 +19,7 @@ from backend.services.agent_reach.channels import (
     ChannelStatus,
     ChannelTelemetry,
     EvidenceFragment,
+    QueryExecutionRecord,
     RetrievalResult,
     RetrievalTrace,
 )
@@ -249,17 +250,39 @@ class AgentReachService:
                 queries_attempted=[],
             )
 
-        # Prepare execution tasks
+        # Prepare execution tasks and query execution records
         tasks = []  # (ch_name, channel_obj, query_spec)
         available_channels = {c.name: c for c in self.registry.get_available()}
+        query_records_map: Dict[str, QueryExecutionRecord] = {}
 
         for ch_name, queries in normalized_channel_queries.items():
             telemetry = channel_telemetry_map.setdefault(ch_name, ChannelTelemetry(channel=ch_name))
             telemetry.queries_attempted = [q["query_text"] for q in queries]
             telemetry.requests_attempted = len(queries)
 
+            st_info = native_doctor.get_channel_status(ch_name)
+            backend_id = st_info.get("active_backend") or ch_name
+
             if ch_name not in available_channels:
                 telemetry.failure_reason = f"Channel {ch_name} status is {telemetry.status}"
+                for q_spec in queries:
+                    rec = QueryExecutionRecord(
+                        query_id=q_spec["query_id"],
+                        channel=ch_name,
+                        query_text=q_spec["query_text"],
+                        query_class=q_spec["query_class"],
+                        phase="initial",
+                        status="SKIPPED",
+                        started_at=datetime.utcnow().isoformat(),
+                        completed_at=datetime.utcnow().isoformat(),
+                        latency_ms=0,
+                        result_count_raw=0,
+                        result_count_normalized=0,
+                        error=f"Channel {ch_name} status is {telemetry.status}",
+                        retrieval_mode="skipped",
+                        backend_id=backend_id,
+                    )
+                    query_records_map[q_spec["query_id"]] = rec
                 continue
 
             channel_obj = available_channels[ch_name]
@@ -270,9 +293,12 @@ class AgentReachService:
         raw_fragments: List[EvidenceFragment] = []
         executed_queries_count = 0
 
-        def _run_single_query(task_tuple) -> Tuple[str, List[EvidenceFragment], int, Optional[str]]:
+        def _run_single_query(task_tuple) -> Tuple[str, List[EvidenceFragment], int, Optional[str], QueryExecutionRecord]:
             ch_n, ch_obj, q_sp = task_tuple
+            started_at = datetime.utcnow().isoformat()
             t0 = time.time()
+            st_info = native_doctor.get_channel_status(ch_n)
+            backend_id = st_info.get("active_backend") or ch_n
             try:
                 frags = ch_obj.search(
                     q_sp["query_text"],
@@ -282,6 +308,7 @@ class AgentReachService:
                     query_text=q_sp["query_text"],
                     domain=domain
                 )
+                completed_at = datetime.utcnow().isoformat()
                 lat = int((time.time() - t0) * 1000)
                 for f in frags or []:
                     if not getattr(f, "query_id", "") and q_sp.get("query_id"):
@@ -292,10 +319,65 @@ class AgentReachService:
                         f.query_text = q_sp["query_text"]
                     if not getattr(f, "channel_name", ""):
                         f.channel_name = ch_n
-                return ch_n, frags or [], lat, None
+                    if not getattr(f, "requested_channel", ""):
+                        f.requested_channel = ch_n
+                    if not getattr(f, "actual_retrieval_channel", ""):
+                        f.actual_retrieval_channel = f.channel_name or ch_n
+                    # Update initial lineage record if needed
+                    for lin in getattr(f, "retrieval_lineage", []):
+                        if not lin.get("query_id"):
+                            lin["query_id"] = q_sp["query_id"]
+                        if not lin.get("requested_channel"):
+                            lin["requested_channel"] = ch_n
+                        if not lin.get("channel"):
+                            lin["channel"] = f.actual_retrieval_channel
+
+                q_rec = QueryExecutionRecord(
+                    query_id=q_sp["query_id"],
+                    channel=ch_n,
+                    query_text=q_sp["query_text"],
+                    query_class=q_sp["query_class"],
+                    phase="initial",
+                    status="SUCCESS",
+                    started_at=started_at,
+                    completed_at=completed_at,
+                    latency_ms=lat,
+                    result_count_raw=len(frags or []),
+                    result_count_normalized=0,
+                    error=None,
+                    retrieval_mode="direct",
+                    backend_id=backend_id,
+                )
+                return ch_n, frags or [], lat, None, q_rec
             except Exception as e:
+                completed_at = datetime.utcnow().isoformat()
                 lat = int((time.time() - t0) * 1000)
-                return ch_n, [], lat, str(e)
+                err_str = str(e)
+                err_lower = err_str.lower()
+                if "timeout" in err_lower:
+                    q_status = "TIMEOUT"
+                elif any(auth_kw in err_lower for auth_kw in ("auth", "login", "401", "403", "credential")):
+                    q_status = "AUTH_REQUIRED"
+                else:
+                    q_status = "FAILED"
+
+                q_rec = QueryExecutionRecord(
+                    query_id=q_sp["query_id"],
+                    channel=ch_n,
+                    query_text=q_sp["query_text"],
+                    query_class=q_sp["query_class"],
+                    phase="initial",
+                    status=q_status,
+                    started_at=started_at,
+                    completed_at=completed_at,
+                    latency_ms=lat,
+                    result_count_raw=0,
+                    result_count_normalized=0,
+                    error=err_str,
+                    retrieval_mode="direct",
+                    backend_id=backend_id,
+                )
+                return ch_n, [], lat, err_str, q_rec
 
         channel_raw_fragments: Dict[str, List[EvidenceFragment]] = {ch: [] for ch in normalized_channel_queries}
 
@@ -307,7 +389,8 @@ class AgentReachService:
                     ch_n, ch_obj, q_sp = future_to_task[fut]
                     executed_queries_count += 1
                     try:
-                        ch_ret, frags, lat, err = fut.result(timeout=task_timeout)
+                        ch_ret, frags, lat, err, q_rec = fut.result(timeout=task_timeout)
+                        query_records_map[q_rec.query_id] = q_rec
                         tel = channel_telemetry_map[ch_ret]
                         tel.latency_ms = max(tel.latency_ms, lat)
                         if err:
@@ -320,11 +403,44 @@ class AgentReachService:
                     except Exception as ex:
                         tel = channel_telemetry_map[ch_n]
                         tel.failure_reason = f"Timeout/Error: {ex}"
+                        query_records_map[q_sp["query_id"]] = QueryExecutionRecord(
+                            query_id=q_sp["query_id"],
+                            channel=ch_n,
+                            query_text=q_sp["query_text"],
+                            query_class=q_sp["query_class"],
+                            phase="initial",
+                            status="TIMEOUT" if isinstance(ex, concurrent.futures.TimeoutError) else "FAILED",
+                            started_at=datetime.utcnow().isoformat(),
+                            completed_at=datetime.utcnow().isoformat(),
+                            latency_ms=int(task_timeout * 1000),
+                            result_count_raw=0,
+                            result_count_normalized=0,
+                            error=str(ex),
+                            retrieval_mode="direct",
+                            backend_id=native_doctor.get_channel_status(ch_n).get("active_backend") or ch_n,
+                        )
             except concurrent.futures.TimeoutError:
                 logger.warning(f"[AgentReachService] Retrieval timeout reached after {timeout + 2.0}s; collecting partial results")
-                for fut, (ch_n, _, _) in future_to_task.items():
+                for fut, (ch_n, _, q_sp) in future_to_task.items():
                     if not fut.done():
                         channel_telemetry_map[ch_n].failure_reason = "Retrieval budget timeout"
+                        if q_sp["query_id"] not in query_records_map:
+                            query_records_map[q_sp["query_id"]] = QueryExecutionRecord(
+                                query_id=q_sp["query_id"],
+                                channel=ch_n,
+                                query_text=q_sp["query_text"],
+                                query_class=q_sp["query_class"],
+                                phase="initial",
+                                status="TIMEOUT",
+                                started_at=datetime.utcnow().isoformat(),
+                                completed_at=datetime.utcnow().isoformat(),
+                                latency_ms=int(task_timeout * 1000),
+                                result_count_raw=0,
+                                result_count_normalized=0,
+                                error="Retrieval budget timeout",
+                                retrieval_mode="direct",
+                                backend_id=native_doctor.get_channel_status(ch_n).get("active_backend") or ch_n,
+                            )
         finally:
             executor.shutdown(wait=False, cancel_futures=True)
 
@@ -348,10 +464,22 @@ class AgentReachService:
         if len(deduped_fragments) > max_total_ev:
             deduped_fragments = deduped_fragments[:max_total_ev]
 
+        # Calculate per-query normalized result counts
+        for f in deduped_fragments:
+            frag_qids = set()
+            if getattr(f, "query_id", None):
+                frag_qids.add(f.query_id)
+            for lin in getattr(f, "retrieval_lineage", []):
+                if lin.get("query_id"):
+                    frag_qids.add(lin["query_id"])
+            for qid in frag_qids:
+                if qid in query_records_map:
+                    query_records_map[qid].result_count_normalized += 1
+
         # Calculate per-channel final and duplicates
         final_by_ch: Dict[str, int] = {}
         for f in deduped_fragments:
-            ch_k = f.channel_name or "unknown"
+            ch_k = getattr(f, "requested_channel", None) or f.channel_name or "unknown"
             final_by_ch[ch_k] = final_by_ch.get(ch_k, 0) + 1
 
         for ch_n, tel in channel_telemetry_map.items():
@@ -473,6 +601,7 @@ class AgentReachService:
             source_article=source_doc,
             retrieval_trace=trace.to_dict(),
             trace_obj=trace,
+            query_records=list(query_records_map.values()),
         )
 
     def retrieve(
@@ -562,35 +691,66 @@ class AgentReachService:
         self,
         fragments: List[EvidenceFragment]
     ) -> Tuple[List[EvidenceFragment], int]:
-        """Deduplicate fragments across multiple search providers and channels with fine-grained precision."""
-        seen_urls: Set[str] = set()
-        seen_titles: Set[str] = set()
+        """Deduplicate fragments across multiple search providers and channels with fine-grained precision while preserving lineage."""
+        seen_urls: Dict[str, EvidenceFragment] = {}
+        seen_titles: Dict[str, EvidenceFragment] = {}
         unique: List[EvidenceFragment] = []
         dupes_count = 0
+
+        def _merge_into_canonical(canonical: EvidenceFragment, incoming: EvidenceFragment):
+            # 1. Merge retrieval_lineage
+            incoming_lineage = getattr(incoming, "retrieval_lineage", []) or []
+            existing_lineage = getattr(canonical, "retrieval_lineage", []) or []
+            for item in incoming_lineage:
+                if not any(
+                    e.get("channel") == item.get("channel") and
+                    e.get("requested_channel") == item.get("requested_channel") and
+                    e.get("query_id") == item.get("query_id") and
+                    e.get("backend_id") == item.get("backend_id")
+                    for e in existing_lineage
+                ):
+                    existing_lineage.append(item)
+            canonical.retrieval_lineage = existing_lineage
+
+            # 2. Retain richer snippet/content
+            if len(incoming.content or "") > len(canonical.content or ""):
+                canonical.content = incoming.content
+                canonical.content_depth = incoming.content_depth
+            if len(incoming.snippet or "") > len(canonical.snippet or ""):
+                canonical.snippet = incoming.snippet
 
         for f in fragments:
             norm_url = self._normalize_url(f.url)
             norm_title = re.sub(r'[^a-z0-9]', '', f.title.lower())
 
+            matched_canonical: Optional[EvidenceFragment] = None
+
             # URL matching: exact normalized URL is an unequivocal duplicate
             if norm_url and norm_url in seen_urls:
-                dupes_count += 1
-                continue
+                matched_canonical = seen_urls[norm_url]
+            else:
+                # Title matching: require full title match (> 25 characters) on the same domain or exact match
+                domain = urllib.parse.urlparse(f.url).netloc.lower() if f.url else ""
+                title_key = f"{domain}:{norm_title}" if domain else norm_title
 
-            # Title matching: require full title match (> 25 characters) on the same domain or exact match
-            domain = urllib.parse.urlparse(f.url).netloc.lower() if f.url else ""
-            title_key = f"{domain}:{norm_title}" if domain else norm_title
+                if norm_title and len(norm_title) > 25:
+                    if title_key in seen_titles:
+                        matched_canonical = seen_titles[title_key]
+                    elif norm_title in seen_titles:
+                        matched_canonical = seen_titles[norm_title]
 
-            if norm_title and len(norm_title) > 25 and (title_key in seen_titles or norm_title in seen_titles):
+            if matched_canonical is not None:
                 dupes_count += 1
+                _merge_into_canonical(matched_canonical, f)
                 continue
 
             if norm_url:
-                seen_urls.add(norm_url)
+                seen_urls[norm_url] = f
             if norm_title:
-                seen_titles.add(norm_title)
+                seen_titles[norm_title] = f
+                domain = urllib.parse.urlparse(f.url).netloc.lower() if f.url else ""
                 if domain:
-                    seen_titles.add(title_key)
+                    seen_titles[f"{domain}:{norm_title}"] = f
 
             unique.append(f)
 

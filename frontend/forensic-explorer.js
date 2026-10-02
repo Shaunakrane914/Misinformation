@@ -218,7 +218,8 @@
             const badgeClass = (typeStr.includes('FACT') || typeStr.includes('SUPPORT') || typeStr.includes('CONFIRM'))
               ? 'fe-badge-green'
               : ((typeStr.includes('CONTRADICT') || typeStr.includes('REFUT')) ? 'fe-badge-red' : 'fe-badge-cyan');
-            const confStr = typeof f.confidence === 'string' ? f.confidence : (f.confidence_score !== undefined ? `${Math.round(f.confidence_score * 100)}%` : (f.confidence !== undefined ? `${Math.round(f.confidence * 100)}%` : '—'));
+            const confRaw = typeof f.confidence === 'string' ? f.confidence : (f.confidence_score !== undefined ? `${Math.round(f.confidence_score * 100)}%` : (f.confidence !== undefined ? `${Math.round(f.confidence * 100)}%` : null));
+            const confStr = confRaw ? `${escapeHtml(confRaw)} Confidence` : 'Confidence unavailable';
             const citations = f.supporting_evidence_ids || f.evidence_ids || [];
             const title = f.title || f.claim_statement || 'Forensic Finding';
             const summary = f.statement || f.summary || f.finding_text || f.explanation || f.reasoning || '';
@@ -228,7 +229,7 @@
                 <div class="fe-fcard-header">
                   <span class="fe-fcard-num">#${idx + 1}</span>
                   <span class="fe-badge ${badgeClass}">${escapeHtml(typeStr)}</span>
-                  <span class="fe-fcard-conf">${escapeHtml(confStr)} Confidence</span>
+                  <span class="fe-fcard-conf">${confStr}</span>
                 </div>
                 <h4 class="fe-fcard-title">${escapeHtml(title)}</h4>
                 <p class="fe-fcard-summary">${escapeHtml(summary)}</p>
@@ -277,11 +278,11 @@
           ${sources.map((s, idx) => {
             const sId = s.id || `ev_read_${idx + 1}`;
             const domain = s.domain || (s.url ? new URL(s.url).hostname : 'web');
-            const authScoreStr = s.authority_score !== undefined ? `Tier: ${Math.round(s.authority_score * 100)}% Authority` : 'Authority Uncalibrated';
-            const role = s.source_role || s.role || 'deep_read_article';
+            const authScoreStr = s.authority_score !== undefined ? `Tier: ${Math.round(s.authority_score * 100)}% Authority` : 'Authority uncalibrated';
+            const role = s.source_role || s.role || 'Unknown';
             const charCount = s.content ? s.content.length : (s.word_count ? s.word_count * 6 : 0);
-            const mode = s.retrieval_mode || (s.provenance && s.provenance.retrieval_mode) || 'direct_api';
-            const backend = s.native_backend_id || (s.provenance && s.provenance.native_backend_id) || 'Direct Service';
+            const mode = s.retrieval_mode || (s.provenance && s.provenance.retrieval_mode) || 'Unknown';
+            const backend = s.native_backend_id || (s.provenance && s.provenance.native_backend_id) || 'Unknown';
             const fallbackReason = s.fallback_reason || (s.provenance && s.provenance.fallback_reason) || null;
 
             let modeBadge = '';
@@ -387,7 +388,7 @@
         return `
           <div class="fe-empty-state">
             <span class="fe-empty-icon">⑂</span>
-            <p>Source syndication clustering identified single independent reporting tracks.</p>
+            <p>Independence not established.</p>
           </div>
         `;
       }
@@ -406,7 +407,7 @@
               <div class="fe-group-card">
                 <div class="fe-group-header">
                   <div class="fe-group-title">
-                    <strong>${escapeHtml(g.group_name || 'Independent Syndicate')}</strong>
+                    <strong>${escapeHtml(g.group_name || 'Independence not established')}</strong>
                     <span class="fe-badge ${badgeClass}">${badgeLabel}</span>
                   </div>
                   <span class="fe-group-count">${g.articles_count || 1} copies clustered</span>
@@ -472,9 +473,9 @@
 
                   return `
                     <tr class="${selected ? 'row-selected' : ''}">
-                      <td style="font-family:var(--font-mono);font-weight:700;">#${a.rank || '-'}</td>
-                      <td style="font-family:var(--font-mono);">${escapeHtml(a.candidate_id || '-')}</td>
-                      <td style="font-family:var(--font-mono);">${a.score !== undefined ? a.score.toFixed(3) : '-'}</td>
+                      <td style="font-family:var(--font-mono);font-weight:700;">${a.rank != null ? `#${a.rank}` : '—'}</td>
+                      <td style="font-family:var(--font-mono);">${escapeHtml(a.candidate_id || '—')}</td>
+                      <td style="font-family:var(--font-mono);">${a.score !== undefined && a.score !== null ? a.score.toFixed(3) : '—'}</td>
                       <td>${eligBadge}</td>
                       <td>${decBadge}</td>
                       <td>${reason}</td>

@@ -46,18 +46,23 @@ async def get_research_dossier(session_id: str):
 
 
 @router.post("/reexecute/{session_id}", summary="Replay Investigation Trace")
-async def replay_investigation(session_id: str):
+@router.get("/reexecute/{session_id}", summary="Replay Investigation Trace (GET)", include_in_schema=False)
+async def replay_investigation(
+    session_id: str,
+    mode: str = Query("trace_playback", description="Replay mode: 'trace_playback' or 'refetch_verification'")
+):
     """
-    Reruns the deterministic playback of an investigation.
-    Validates candidate content hashes, checks decision criteria, and verifies reproduction.
+    Reruns the playback of an investigation.
+    'trace_playback' verifies structural and hash integrity from the ledger.
+    'refetch_verification' re-fetches source URLs live to check for content drift.
     """
     clean_id = session_id.strip()
-    replay_res = replay_ledger.replay_investigation(clean_id)
+    replay_res = replay_ledger.replay_investigation(clean_id, mode=mode)
     if replay_res.get("status") == "error":
         raise HTTPException(status_code=404, detail=replay_res.get("error"))
     return replay_res
 
 alias_router.add_api_route("/dossiers", list_recent_dossiers, methods=["GET"], include_in_schema=False)
 alias_router.add_api_route("/dossiers/{session_id}", get_research_dossier, methods=["GET"], include_in_schema=False)
-alias_router.add_api_route("/reexecute/{session_id}", replay_investigation, methods=["POST"], include_in_schema=False)
+alias_router.add_api_route("/reexecute/{session_id}", replay_investigation, methods=["POST", "GET"], include_in_schema=False)
 

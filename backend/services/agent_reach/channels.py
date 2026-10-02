@@ -18,6 +18,44 @@ class ChannelStatus(str, Enum):
     DEGRADED = "DEGRADED"
     UNAVAILABLE = "UNAVAILABLE"
     AUTH_REQUIRED = "AUTH_REQUIRED"
+    ERROR = "ERROR"
+
+
+@dataclass
+class QueryExecutionRecord:
+    """Canonical execution record for an attempted retrieval query."""
+    query_id: str
+    channel: str
+    query_text: str
+    query_class: Optional[str] = None
+    phase: str = "initial"  # "initial" | "adaptive" | "primary_escalation"
+    status: str = "PLANNED"  # "PLANNED" | "SUBMITTED" | "SUCCESS" | "FAILED" | "TIMEOUT" | "AUTH_REQUIRED" | "SKIPPED"
+    started_at: Optional[str] = None
+    completed_at: Optional[str] = None
+    latency_ms: Optional[int] = None
+    result_count_raw: Optional[int] = None
+    result_count_normalized: Optional[int] = None
+    error: Optional[str] = None
+    retrieval_mode: Optional[str] = None
+    backend_id: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "query_id": self.query_id,
+            "channel": self.channel,
+            "query_text": self.query_text,
+            "query_class": self.query_class,
+            "phase": self.phase,
+            "status": self.status,
+            "started_at": self.started_at,
+            "completed_at": self.completed_at,
+            "latency_ms": self.latency_ms,
+            "result_count_raw": self.result_count_raw,
+            "result_count_normalized": self.result_count_normalized,
+            "error": self.error,
+            "retrieval_mode": self.retrieval_mode,
+            "backend_id": self.backend_id,
+        }
 
 
 class RetrievalMode(str, Enum):
@@ -60,7 +98,27 @@ class EvidenceFragment:
     native_backend_id: Optional[str] = None
     fallback_reason: Optional[str] = None
     is_authenticated: bool = False
+    requested_channel: str = ""
+    actual_retrieval_channel: str = ""
+    retrieval_lineage: List[Dict[str, Any]] = field(default_factory=list)
     raw_metadata: Dict[str, Any] = field(default_factory=dict)
+
+    def __post_init__(self):
+        if not self.requested_channel:
+            self.requested_channel = self.channel_name or self.platform
+        if not self.actual_retrieval_channel:
+            self.actual_retrieval_channel = self.channel_name or self.platform
+        if not self.retrieval_lineage:
+            self.retrieval_lineage = [{
+                "channel": self.actual_retrieval_channel or self.channel_name or self.platform,
+                "requested_channel": self.requested_channel or self.channel_name or self.platform,
+                "query_id": self.query_id,
+                "retrieval_mode": self.retrieval_mode,
+                "backend_id": self.native_backend_id,
+                "fallback_reason": self.fallback_reason,
+                "is_authenticated": self.is_authenticated,
+                "retrieved_at": self.retrieved_at,
+            }]
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to dictionary for API responses and JSON storage."""
@@ -84,6 +142,9 @@ class EvidenceFragment:
             "query_id": self.query_id,
             "query_class": self.query_class,
             "query_text": self.query_text,
+            "requested_channel": self.requested_channel,
+            "actual_retrieval_channel": self.actual_retrieval_channel,
+            "retrieval_lineage": self.retrieval_lineage,
             "raw_metadata": self.raw_metadata,
         }
 
@@ -296,6 +357,7 @@ class RetrievalResult:
     source_article: Optional[Dict[str, Any]] = None
     retrieval_trace: Optional[Dict[str, Any]] = None
     trace_obj: Optional["RetrievalTrace"] = None
+    query_records: List[QueryExecutionRecord] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize for API responses."""
@@ -308,6 +370,7 @@ class RetrievalResult:
             "retrieval_plan": self.retrieval_plan,
             "source_article": self.source_article,
             "retrieval_trace": self.retrieval_trace,
+            "query_records": [q.to_dict() if hasattr(q, "to_dict") else q for q in self.query_records],
         }
 
     # ── Backward-compatible accessors ─────────────────────────────────────

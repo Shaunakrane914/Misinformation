@@ -1038,6 +1038,15 @@
     window.addEventListener('DOMContentLoaded', () => {
       // Initialize with empty state note
       updateVelocityChart([]);
+      const urlParams = new URLSearchParams(window.location.search);
+      const q = urlParams.get('q') || urlParams.get('topic');
+      if (q) {
+        const inp = document.getElementById('scanQueryInput');
+        if (inp) {
+          inp.value = q;
+          runTrendingScan();
+        }
+      }
     });
   </script>
 </body>

@@ -939,6 +939,19 @@
     document.getElementById('personInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') triggerScan();
     });
+
+    // Support URL param prefill: ?q=... or ?person=...
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const q = urlParams.get('q') || urlParams.get('person');
+      if (q) {
+        const inp = document.getElementById('personInput');
+        if (inp) {
+          inp.value = q;
+          triggerScan();
+        }
+      }
+    });
   </script>
 </body>
 </html>

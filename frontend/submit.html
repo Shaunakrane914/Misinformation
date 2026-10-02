@@ -414,6 +414,20 @@
       }
     }
 
+    // Support URL param prefill: ?q=... or ?claim=...
+    document.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const initialQuery = urlParams.get('q') || urlParams.get('claim');
+      if (initialQuery && claimInput) {
+        claimInput.value = initialQuery;
+        if (charCounter) charCounter.textContent = `${initialQuery.length} / 1000`;
+        setTimeout(() => {
+          const form = document.querySelector('form');
+          if (form) form.dispatchEvent(new Event('submit', { cancelable: true, bubbles: true }));
+        }, 250);
+      }
+    });
+
     function esc(s) {
       if (!s) return '';
       return String(s)

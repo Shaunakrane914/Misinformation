@@ -1063,9 +1063,15 @@
       if (e.key === 'Enter') analyzeStock();
     });
 
-    // Run initial Doctor load and search on page load
+    // Run initial Doctor load and search on page load (support ?q= or ?ticker= prefill)
     window.addEventListener('DOMContentLoaded', () => {
       loadLiveDoctorStatus();
+      const urlParams = new URLSearchParams(window.location.search);
+      const q = urlParams.get('q') || urlParams.get('ticker');
+      if (q) {
+        const inp = document.getElementById('tickerInput');
+        if (inp) inp.value = q;
+      }
       analyzeStock();
     });
   </script>

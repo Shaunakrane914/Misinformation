@@ -114,6 +114,81 @@
       border: 1px solid var(--border);
     }
 
+    /* ── Hero Intent Switcher ── */
+    .hero-intent-bar {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 18px auto 22px;
+      max-width: 700px;
+    }
+    .hero-intent-btn {
+      background: rgba(13, 17, 26, 0.85);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 7px 14px;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      transition: all 0.18s ease;
+      backdrop-filter: blur(12px);
+    }
+    .hero-intent-btn:hover {
+      border-color: rgba(255, 255, 255, 0.25);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+    .hero-intent-btn.active {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 0 16px rgba(0, 229, 255, 0.15);
+    }
+    .hero-divider-line {
+      width: 100%;
+      max-width: 560px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.08), transparent);
+      margin: 0 auto 18px;
+    }
+    .hero-suggestions-title {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .hero-suggestion-chip {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 11px;
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s ease;
+    }
+    .hero-suggestion-chip:hover {
+      border-color: rgba(255, 255, 255, 0.22);
+      color: #fff;
+      background: rgba(255, 255, 255, 0.06);
+    }
+    .hero-suggestion-chip strong {
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.68rem;
+    }
+
     /* ── Bento Grid ── */
     .bento-container {
       max-width: 1240px;
@@ -228,34 +303,61 @@
         <span class="gradient-word">Aegis intercepts it.</span>
       </h1>
 
-      <p class="hero-subheading">
-        An autonomous multi-agent intelligence network monitoring financial markets, viral discourse, and corporate reputation in real-time—issuing verifiable truth dossiers in under 18 seconds.
+      <p class="hero-subheading" style="margin-bottom:20px;font-size:1.1rem;font-weight:600;color:#fff;">
+        What do you want to investigate?
       </p>
 
-      <!-- Instant Claim Search Bar -->
-      <form onsubmit="handleHeroSubmit(event)" class="hero-search-wrapper">
+      <!-- Multi-Intent Universal Search Bar -->
+      <form onsubmit="handleHeroSubmit(event)" class="hero-search-wrapper" style="margin-bottom:14px;">
         <div class="hero-search-box">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="heroInput" class="hero-search-input" placeholder="Paste any rumor, tweet, or claim to verify..." required>
+          <input type="text" id="heroInput" class="hero-search-input" placeholder="Paste a claim, company, topic, brand or name..." autocomplete="off" required>
           <span class="cmd-badge">⌘K</span>
-          <button type="submit" class="ae-btn ae-btn-primary" style="padding:8px 18px;font-size:0.86rem;">
-            Verify
+          <button type="submit" id="heroSubmitBtn" class="ae-btn ae-btn-primary" style="padding:8px 18px;font-size:0.86rem;">
+            Verify Claim
           </button>
         </div>
       </form>
 
-      <!-- Preset Suggestions -->
-      <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;">
-        <span style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);">PRESETS:</span>
-        <button type="button" onclick="runPresetIntercept('Deepfake audio of tech CEO causes premarket selloff')" class="ae-badge ae-badge-zinc" style="border:1px solid var(--border);cursor:pointer;background:rgba(255,255,255,0.04);color:var(--text-muted);">
-          Deepfake Audio Incident
+      <!-- 5 Question Intent Selectors -->
+      <div class="hero-intent-bar" id="heroIntentBar">
+        <button type="button" class="hero-intent-btn active" data-intent="verify" onclick="setHeroIntent('verify')">
+          <span>🛡</span> Verify a Claim
         </button>
-        <button type="button" onclick="runPresetIntercept('5G millimeter wave towers alter cellular metabolism')" class="ae-badge ae-badge-zinc" style="border:1px solid var(--border);cursor:pointer;background:rgba(255,255,255,0.04);color:var(--text-muted);">
-          5G Health Advisory
+        <button type="button" class="hero-intent-btn" data-intent="trending" onclick="setHeroIntent('trending')">
+          <span>◉</span> What's Trending
         </button>
-        <a href="submit.html" class="ae-badge ae-badge-blue" style="text-decoration:none;">
-          Threat Analysis Matrix
-        </a>
+        <button type="button" class="hero-intent-btn" data-intent="company" onclick="setHeroIntent('company')">
+          <span>📈</span> Investigate Company
+        </button>
+        <button type="button" class="hero-intent-btn" data-intent="brand" onclick="setHeroIntent('brand')">
+          <span>🏢</span> Protect Brand
+        </button>
+        <button type="button" class="hero-intent-btn" data-intent="identity" onclick="setHeroIntent('identity')">
+          <span>👤</span> Protect Identity
+        </button>
+      </div>
+
+      <div class="hero-divider-line"></div>
+
+      <!-- Recent / Suggested Investigations -->
+      <div class="hero-suggestions-title">Recent / Suggested Investigations</div>
+      <div style="display:flex;gap:8px;justify-content:center;align-items:center;flex-wrap:wrap;max-width:820px;margin:0 auto;">
+        <button type="button" onclick="dispatchInvestigation('Drinking warm lemon water cures diabetes', 'verify')" class="hero-suggestion-chip">
+          <strong>CLAIM</strong> Drinking lemon water cures diabetes
+        </button>
+        <button type="button" onclick="dispatchInvestigation('Global semiconductor export restrictions', 'trending')" class="hero-suggestion-chip">
+          <strong>TREND</strong> Semiconductor export restrictions
+        </button>
+        <button type="button" onclick="dispatchInvestigation('Tata Motors', 'company')" class="hero-suggestion-chip">
+          <strong>COMPANY</strong> Tata Motors
+        </button>
+        <button type="button" onclick="dispatchInvestigation('Nike counterfeit footwear listings', 'brand')" class="hero-suggestion-chip">
+          <strong>BRAND</strong> Counterfeit Footwear
+        </button>
+        <button type="button" onclick="dispatchInvestigation('Executive deepfake audio authorization', 'identity')" class="hero-suggestion-chip">
+          <strong>IDENTITY</strong> CEO Deepfake Audio
+        </button>
       </div>
     </div>
   </section>
@@ -1032,11 +1134,50 @@
       if (activeHeroPoll) clearInterval(activeHeroPoll);
       document.getElementById('inHeroModal').classList.remove('open');
     }
+    let activeIntent = 'verify';
+    const intentConfig = {
+      verify:   { page: 'submit.html',            btnLabel: 'Verify Claim',        param: 'q', ph: 'Paste any rumor, tweet, or statement to verify...' },
+      trending: { page: 'trending-agent.html',    btnLabel: 'Scan Trend',          param: 'q', ph: 'Enter a topic, hashtag, or region (e.g. Mumbai, AI Act)...' },
+      company:  { page: 'scout-agent.html',       btnLabel: 'Investigate Company', param: 'q', ph: 'Enter company name or ticker (e.g. Tata Motors, NVDA)...' },
+      brand:    { page: 'brandshield-agent.html', btnLabel: 'Protect Brand',       param: 'q', ph: 'Enter brand or product name (e.g. Nike, Acme Corp)...' },
+      identity: { page: 'personal-watch-agent.html', btnLabel: 'Audit Identity',   param: 'q', ph: "Enter person's name or public alias (e.g. Shaunak Rane)..." }
+    };
+
+    function setHeroIntent(intent) {
+      activeIntent = intent;
+      document.querySelectorAll('.hero-intent-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.intent === intent);
+      });
+      const cfg = intentConfig[intent];
+      const input = document.getElementById('heroInput');
+      const submitBtn = document.getElementById('heroSubmitBtn');
+      if (cfg) {
+        if (input) {
+          input.placeholder = cfg.ph;
+          input.focus();
+        }
+        if (submitBtn) submitBtn.textContent = cfg.btnLabel;
+      }
+    }
+
     function handleHeroSubmit(e) {
       e.preventDefault();
       const val = document.getElementById('heroInput').value.trim();
-      if (val) openHeroModal(val);
+      if (!val) return;
+      if (activeIntent === 'verify') {
+        openHeroModal(val);
+      } else {
+        dispatchInvestigation(val, activeIntent);
+      }
     }
+
+    function dispatchInvestigation(query, intent) {
+      const targetIntent = intent || activeIntent;
+      const cfg = intentConfig[targetIntent] || intentConfig.verify;
+      const targetUrl = `${cfg.page}?${cfg.param}=${encodeURIComponent(query)}`;
+      window.location.href = targetUrl;
+    }
+
     function runPresetIntercept(text) {
       document.getElementById('heroInput').value = text;
       openHeroModal(text);

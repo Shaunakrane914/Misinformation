@@ -26,20 +26,38 @@
   }
   fav.href = `data:image/svg+xml,${encodeURIComponent(faviconSvg)}`;
 
-  // ── 2. Top Navigation Bar Definition ──
+  // ── 2. Top Navigation Bar Definition (Human-Facing Questions) ──
   const pages = {
-    home:      { href: 'index.html',     label: 'Home' },
-    agents:    { href: 'agents.html',    label: 'Agents' },
-    submit:    { href: 'submit.html',    label: 'Submit Claim' },
-    dashboard: { href: 'dashboard.html', label: 'Dashboard' },
-    benchmark: { href: 'benchmark.html', label: 'Benchmark' },
-    status:    { href: 'status.html',    label: 'Status' },
-    about:     { href: 'about.html',     label: 'About' }
+    home:       { href: 'index.html',                 label: 'Home' },
+    verify:     { href: 'submit.html',                label: 'Verify a Claim' },
+    trending:   { href: 'trending-agent.html',        label: "What's Trending" },
+    company:    { href: 'scout-agent.html',           label: 'Investigate Company' },
+    brand:      { href: 'brandshield-agent.html',     label: 'Protect Brand' },
+    identity:   { href: 'personal-watch-agent.html',  label: 'Protect Identity' }
   };
 
-  const active = (window.AEGIS_ACTIVE || '').toLowerCase();
+  const activeRaw = (window.AEGIS_ACTIVE || '').toLowerCase();
+  const activeMap = {
+    home: 'home',
+    index: 'home',
+    verify: 'verify',
+    submit: 'verify',
+    claim: 'verify',
+    lab: 'verify',
+    trending: 'trending',
+    trend: 'trending',
+    company: 'company',
+    scout: 'company',
+    brand: 'brand',
+    brandshield: 'brand',
+    identity: 'identity',
+    personal: 'identity',
+    'personal-watch': 'identity'
+  };
+  const active = activeMap[activeRaw] || activeRaw;
+
   const linksHtml = Object.entries(pages).map(([key, p]) => {
-    const isAct = (key === active) || (key === 'submit' && active === 'lab');
+    const isAct = (key === active);
     const cls = isAct ? 'ae-nav-link ae-active' : 'ae-nav-link';
     return `<a href="${p.href}" class="${cls}">${p.label}</a>`;
   }).join('');
@@ -96,7 +114,7 @@
           <kbd style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:1px 4px;border-radius:4px;font-size:0.68rem;">⌘K</kbd>
         </button>
         <a href="submit.html" class="ae-nav-submit-btn">
-          <span>Submit Claim</span>
+          <span>Verify a Claim</span>
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
         </a>
       </div>
@@ -112,20 +130,22 @@
 
   document.body.prepend(header);
 
-  // ── 3. Command Palette Modal Engine ──
+  // ── 3. Command Palette Modal Engine (Actions vs System) ──
   const cmdPaletteItems = [
-    { label: 'Home', href: 'index.html', group: 'Navigation', key: 'Home' },
-    { label: 'Agents Overview', href: 'agents.html', group: 'Navigation', key: 'Agents' },
-    { label: 'Submit Claim to Verify', href: 'submit.html', group: 'Actions', key: 'Verify' },
-    { label: 'Live Dashboard', href: 'dashboard.html', group: 'Navigation', key: 'Dash' },
-    { label: 'System Status', href: 'status.html', group: 'System', key: 'Status' },
-    { label: 'Trending Agent (Viral Social Media)', href: 'trending-agent.html', group: 'Agents', key: 'Trend' },
-    { label: 'Scout Agent (Stocks & Financial Markets)', href: 'scout-agent.html', group: 'Agents', key: 'Scout' },
-    { label: 'BrandShield (Corporate & Brand Defense)', href: 'brandshield-agent.html', group: 'Agents', key: 'Brand' },
-    { label: 'Personal Watch (Defamation & People)', href: 'personal-watch-agent.html', group: 'Agents', key: 'Watch' },
-    { label: 'Threat Intelligence Lab (Deterministic Bench)', href: 'lab.html', group: 'Tools', key: 'Lab' },
-    { label: 'Research Benchmark (Empirical & Chaos Suite)', href: 'benchmark.html', group: 'Tools', key: 'Bench' },
-    { label: 'Changelog', href: 'changelog.html', group: 'System', key: 'Logs' }
+    // Actions
+    { label: 'Verify a Claim', desc: 'Is this message or viral claim true?', href: 'submit.html', group: 'Actions', key: 'Verify' },
+    { label: "What's Trending", desc: 'What is blowing up right now, and should I care?', href: 'trending-agent.html', group: 'Actions', key: 'Trending' },
+    { label: 'Investigate a Company', desc: 'What happened to this stock, and what caused the move?', href: 'scout-agent.html', group: 'Actions', key: 'Company' },
+    { label: 'Protect a Brand', desc: 'Counterfeits, fake reviews, and smear campaigns', href: 'brandshield-agent.html', group: 'Actions', key: 'Brand' },
+    { label: 'Protect an Identity', desc: 'Impersonation, scam claims, and deepfake signals', href: 'personal-watch-agent.html', group: 'Actions', key: 'Identity' },
+
+    // System
+    { label: 'Agent Architecture', desc: '7 specialized autonomous forensic agents', href: 'agents.html', group: 'System', key: 'Architecture' },
+    { label: 'Live Dashboard', desc: 'Real-time telemetry and rotating claims feed', href: 'dashboard.html', group: 'System', key: 'Dashboard' },
+    { label: 'System Status', desc: 'Channel availability & native doctor diagnostics', href: 'status.html', group: 'System', key: 'Status' },
+    { label: 'Research Benchmark', desc: 'Empirical verification & chaos test suites', href: 'benchmark.html', group: 'System', key: 'Benchmark' },
+    { label: 'Changelog', desc: 'Version history & protocol updates', href: 'changelog.html', group: 'System', key: 'Changelog' },
+    { label: 'About Aegis', desc: 'Mission, epistemic standards, and architecture', href: 'about.html', group: 'System', key: 'About' }
   ];
 
   function initCommandPalette() {
@@ -160,12 +180,15 @@
         return;
       }
       list.innerHTML = filteredItems.map((item, idx) => `
-        <a href="${item.href}" class="cmd-item ${idx === selectedIndex ? 'selected' : ''}" data-idx="${idx}">
-          <div style="display:flex;align-items:center;gap:10px;">
-            <span style="font-size:0.75rem;color:var(--accent);font-family:var(--font-mono);background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.18);padding:2px 6px;border-radius:4px;">${item.group}</span>
-            <span>${item.label}</span>
+        <a href="${item.href}" class="cmd-item ${idx === selectedIndex ? 'selected' : ''}" data-idx="${idx}" style="display:flex;align-items:center;justify-content:space-between;padding:10px 14px;border-bottom:1px solid rgba(255,255,255,0.04);text-decoration:none;">
+          <div style="display:flex;align-items:center;gap:12px;min-width:0;">
+            <span style="font-size:0.7rem;color:${item.group === 'Actions' ? 'var(--accent)' : 'var(--text-dim)'};font-family:var(--font-mono);background:rgba(255,255,255,0.04);border:1px solid var(--border);padding:2px 6px;border-radius:4px;flex-shrink:0;">${item.group}</span>
+            <div style="min-width:0;">
+              <div style="font-weight:600;color:#fff;font-size:0.86rem;">${item.label}</div>
+              ${item.desc ? `<div style="font-size:0.74rem;color:var(--text-muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${item.desc}</div>` : ''}
+            </div>
           </div>
-          <span class="cmd-item-key">${item.key}</span>
+          <span class="cmd-item-key" style="flex-shrink:0;margin-left:12px;">${item.key}</span>
         </a>
       `).join('');
 
@@ -216,6 +239,7 @@
       const q = input.value.trim().toLowerCase();
       filteredItems = cmdPaletteItems.filter(item => 
         item.label.toLowerCase().includes(q) ||
+        (item.desc && item.desc.toLowerCase().includes(q)) ||
         item.group.toLowerCase().includes(q) ||
         item.key.toLowerCase().includes(q)
       );

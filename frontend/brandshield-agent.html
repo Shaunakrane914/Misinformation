@@ -816,6 +816,19 @@
     }
 
     document.getElementById('brandInput').addEventListener('keydown', e => { if (e.key === 'Enter') scanBrand(); });
+
+    // Support URL param prefill: ?q=... or ?brand=...
+    window.addEventListener('DOMContentLoaded', () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const q = urlParams.get('q') || urlParams.get('brand');
+      if (q) {
+        const inp = document.getElementById('brandInput');
+        if (inp) {
+          inp.value = q;
+          scanBrand();
+        }
+      }
+    });
   </script>
 </body>
 </html>

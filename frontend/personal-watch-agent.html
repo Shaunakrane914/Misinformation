@@ -411,32 +411,34 @@
       let data = null;
       let errorMsg = null;
 
-      for (const ep of endpoints) {
-        try {
-          const resp = await fetch(ep, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            signal: AbortSignal.timeout(20000)
-          });
-          if (resp.ok) {
-            data = await resp.json();
-            break;
+      try {
+        for (const ep of endpoints) {
+          try {
+            const resp = await fetch(ep, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload),
+              signal: AbortSignal.timeout(35000)
+            });
+            if (resp.ok) {
+              data = await resp.json();
+              break;
+            }
+          } catch (err) {
+            errorMsg = err.message;
           }
-        } catch (err) {
-          errorMsg = err.message;
         }
-      }
 
-      clearLoadingAnimation();
-      btn.disabled = false;
-      btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Scan Identity`;
-
-      if (data) {
-        currentData = data;
-        renderDashboard(data);
-      } else {
-        renderTruthfulError(errorMsg || 'No response from intelligence nodes');
+        if (data) {
+          currentData = data;
+          renderDashboard(data);
+        } else {
+          renderTruthfulError(errorMsg || 'No response from intelligence nodes');
+        }
+      } finally {
+        clearLoadingAnimation();
+        btn.disabled = false;
+        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Scan Identity`;
       }
     }
 

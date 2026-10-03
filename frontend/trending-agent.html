@@ -523,6 +523,7 @@
         mode: currentMode
       };
 
+      let result = null;
       const configuredApi = window.AEGIS_API_BASE ? `${window.AEGIS_API_BASE}/api/trending/scan` : null;
       const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const endpoints = [
@@ -537,7 +538,7 @@
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload),
-            signal: AbortSignal.timeout(7000)
+            signal: AbortSignal.timeout(25000)
           });
           if (resp.ok) {
             result = await resp.json();

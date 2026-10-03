@@ -314,6 +314,8 @@ class BrandShieldAgent:
         for ev in evidence_list:
             text = f"{ev.get('title', '')} {ev.get('snippet', '')} {ev.get('content', '')}".strip()
             text_lower = text.lower()
+            text_clean = re.sub(r'[^a-z0-9\s]', ' ', text_lower)
+            text_clean = " ".join(text_clean.split())
             if any(k in text_lower for k in review_keywords) or len(text.split()) >= 15:
                 # Tokenize into normalized words (length >= 3)
                 words = set(re.findall(r'[a-z]{3,}', text_lower))
@@ -322,6 +324,7 @@ class BrandShieldAgent:
                         "evidence_id": ev.get("evidence_id", ""),
                         "platform": ev.get("platform", "Web"),
                         "text": text,
+                        "text_clean": text_clean,
                         "words": words
                     })
 
@@ -338,7 +341,7 @@ class BrandShieldAgent:
                 "cluster_notes": "Minimum candidate volume not met for empirical similarity clustering."
             }
 
-        # Deterministic pairwise Jaccard similarity
+        # Deterministic pairwise similarity and verbatim phrasing check
         duplicate_pairs = []
         n = len(review_candidates)
         for i in range(n):
@@ -349,12 +352,32 @@ class BrandShieldAgent:
                 if union_len == 0:
                     continue
                 jaccard = len(w1 & w2) / union_len
-                # Threshold for high lexical overlap (near-duplicate text)
-                if jaccard >= 0.65:
-                    duplicate_pairs.append((i, j, round(jaccard, 2)))
+
+                # Check for shared long phrase (5+ consecutive words)
+                t1 = review_candidates[i]["text_clean"]
+                t2 = review_candidates[j]["text_clean"]
+                has_shared_phrase = False
+                words1 = t1.split()
+                if len(words1) >= 5:
+                    for k in range(len(words1) - 4):
+                        phrase = " ".join(words1[k:k+5])
+                        if phrase in t2:
+                            has_shared_phrase = True
+                            break
+
+                if jaccard >= 0.65 or has_shared_phrase:
+                    overlap_score = round(max(jaccard, 0.80 if has_shared_phrase else jaccard), 2)
+                    duplicate_pairs.append((i, j, overlap_score))
 
         if duplicate_pairs:
             near_duplicate_clusters = len(duplicate_pairs)
+            signals_found = []
+            for p in duplicate_pairs[:5]:
+                c1 = review_candidates[p[0]]
+                c2 = review_candidates[p[1]]
+                signals_found.append(
+                    f"Match between {c1['evidence_id']} and {c2['evidence_id']} ({int(p[2]*100)}% overlap): \"{c1['text'][:65]}...\""
+                )
             return {
                 "status": "SUSPICIOUS_PATTERNS_DETECTED",
                 "review_manipulation_detected": True,
@@ -362,11 +385,8 @@ class BrandShieldAgent:
                 "confidence": 0.85,
                 "signals_analyzed": signals_analyzed,
                 "near_duplicate_clusters": near_duplicate_clusters,
-                "signals_found": [
-                    f"Cluster overlap between {review_candidates[p[0]]['evidence_id']} and {review_candidates[p[1]]['evidence_id']} (similarity {p[2]})"
-                    for p in duplicate_pairs[:5]
-                ],
-                "cluster_notes": f"Identified {near_duplicate_clusters} near-duplicate phrasing pairs exceeding 0.65 lexical similarity."
+                "signals_found": signals_found,
+                "cluster_notes": f"Identified {near_duplicate_clusters} near-duplicate phrasing pairs exceeding lexical similarity threshold."
             }
         else:
             return {
@@ -410,10 +430,16 @@ class BrandShieldAgent:
         # Prepare untrusted evidence boundary
         evidence_blocks = []
         for e in evidence_list:
+            ev_id = e.get("evidence_id", "ev_001")
+            plat = e.get("platform", "Web")
+            role = e.get("source_role", "COMMUNITY")
+            title = e.get("title", "")
+            url = e.get("url", "")
+            snip = (e.get("snippet") or e.get("content") or "")[:300]
             evidence_blocks.append(
-                f"[ID: {e['evidence_id']} | Platform: {e['platform']} | Role: {e['source_role']} | Title: {e['title']}]\n"
-                f"URL: {e['url']}\n"
-                f"Excerpt: {e['snippet'][:300]}\n"
+                f"[ID: {ev_id} | Platform: {plat} | Role: {role} | Title: {title}]\n"
+                f"URL: {url}\n"
+                f"Excerpt: {snip}\n"
             )
         boundary_text = "<evidence_untrusted>\n" + "\n".join(evidence_blocks) + "\n</evidence_untrusted>"
 
@@ -532,7 +558,21 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
                     brand_info, parsed.get("threats", []), parsed.get("claims", []), evidence_list
                 )
                 # Ensure review_intel is always deterministically verified from actual evidence text
-                parsed["review_intel"] = self.screen_review_patterns(evidence_list)
+                review_intel = self.screen_review_patterns(evidence_list)
+                parsed["review_intel"] = review_intel
+                if review_intel.get("review_manipulation_detected") and not any(t.get("type") == "FAKE_REVIEW" for t in parsed.get("threats", [])):
+                    parsed.setdefault("threats", []).append({
+                        "threat_id": f"thr_{len(parsed.get('threats', []))+1:03d}",
+                        "type": "FAKE_REVIEW",
+                        "title": f"Coordinated review pattern: {review_intel.get('near_duplicate_clusters', 1)} clusters detected",
+                        "summary": review_intel.get("assessment", "Near-duplicate review signals detected."),
+                        "severity": "medium",
+                        "confidence": 0.85,
+                        "status": "investigating",
+                        "platforms": ["Web"],
+                        "evidence_ids": [e["evidence_id"] for e in evidence_list[:2]],
+                        "origin_evidence_id": evidence_list[0]["evidence_id"] if evidence_list else ""
+                    })
                 return parsed
         except Exception as e:
             logger.warning(f"[BrandShield 2.0:synthesize] Gemini synthesis notice, using grounded rule-based parsing: {e}")
@@ -683,6 +723,19 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
 
         # Grounded Review Pattern Screening via pairwise lexical overlap
         review_intel = self.screen_review_patterns(evidence_list)
+        if review_intel.get("review_manipulation_detected") and not any(t.get("type") == "FAKE_REVIEW" for t in threats):
+            threats.append({
+                "threat_id": f"thr_{len(threats)+1:03d}",
+                "type": "FAKE_REVIEW",
+                "title": f"Coordinated review pattern: {review_intel.get('near_duplicate_clusters', 1)} clusters detected",
+                "summary": review_intel.get("assessment", "Near-duplicate review signals detected."),
+                "severity": "medium",
+                "confidence": 0.85,
+                "status": "investigating",
+                "platforms": ["Web"],
+                "evidence_ids": [e["evidence_id"] for e in evidence_list[:2]],
+                "origin_evidence_id": evidence_list[0]["evidence_id"] if evidence_list else ""
+            })
 
         dossiers = self._build_investigation_dossiers(brand_info, threats, claims, evidence_list)
 

@@ -207,6 +207,23 @@ class TestProductHonestyAndIntegrity:
         assert res_templated["review_manipulation_detected"] is True
         assert res_templated["signals_analyzed"] == 2
         assert res_templated["near_duplicate_clusters"] >= 1
+        assert len(res_templated["signals_found"]) >= 1
+
+        # Case 4: Single review with keyword density cannot declare 'no manipulation'
+        single_review = [
+            {"evidence_id": "ev_1", "title": "Review rating five star seller feedback", "snippet": "Customer review rating five star feedback on order delivered.", "platform": "Web"}
+        ]
+        res_single = agent.screen_review_patterns(single_review)
+        assert res_single["status"] == "INSUFFICIENT_EVIDENCE"
+        assert res_single["review_manipulation_detected"] is False
+        assert res_single["signals_analyzed"] == 1
+
+        # Case 5: End-to-end synthesis links FAKE_REVIEW threat when manipulation is detected
+        synth_res = agent._synthesize_brand_threats(brand_info, templated_evidence)
+        assert synth_res["review_intel"]["review_manipulation_detected"] is True
+        fake_threats = [t for t in synth_res.get("threats", []) if t.get("type") == "FAKE_REVIEW"]
+        assert len(fake_threats) >= 1
+        assert "ev_1" in fake_threats[0]["evidence_ids"]
 
     def test_h_doctor_status_marks_unprobed_baseline_as_unknown_not_available(self):
         """DoctorBridge fallback baseline must mark capabilities as not_probed / UNKNOWN, not available."""

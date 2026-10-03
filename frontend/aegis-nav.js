@@ -133,19 +133,19 @@
   // ── 3. Command Palette Modal Engine (Actions vs System) ──
   const cmdPaletteItems = [
     // Actions
-    { label: 'Verify a Claim', desc: 'Is this message or viral claim true?', href: 'submit.html', group: 'Actions', key: 'Verify' },
-    { label: "What's Trending", desc: 'What is blowing up right now, and should I care?', href: 'trending-agent.html', group: 'Actions', key: 'Trending' },
-    { label: 'Investigate a Company', desc: 'What happened to this stock, and what caused the move?', href: 'scout-agent.html', group: 'Actions', key: 'Company' },
-    { label: 'Protect a Brand', desc: 'Counterfeits, fake reviews, and smear campaigns', href: 'brandshield-agent.html', group: 'Actions', key: 'Brand' },
-    { label: 'Protect an Identity', desc: 'Impersonation, scam claims, and deepfake signals', href: 'personal-watch-agent.html', group: 'Actions', key: 'Identity' },
+    { label: 'Analyze a Claim', desc: 'Verify factual assertions with multi-source evidence', href: 'submit.html', group: 'Actions', key: 'Analyze' },
+    { label: 'Explore Trending Claims', desc: 'Review circulating claims across active channels', href: 'trending-agent.html', group: 'Actions', key: 'Trending' },
+    { label: 'Investigate a Company', desc: 'Analyze corporate signals, filings, and market rumors', href: 'scout-agent.html', group: 'Actions', key: 'Company' },
+    { label: 'Monitor a Brand', desc: 'Screen product listings, customer reviews, and smear campaigns', href: 'brandshield-agent.html', group: 'Actions', key: 'Brand' },
+    { label: 'Check Public Signals', desc: 'Screen for impersonations, compromised accounts, and scam signals', href: 'personal-watch-agent.html', group: 'Actions', key: 'Signals' },
+    { label: 'View Evidence & Claims', desc: 'Browse completed investigations and source records', href: 'dashboard.html', group: 'Actions', key: 'Evidence' },
 
-    // System
-    { label: 'Agent Architecture', desc: '7 specialized autonomous forensic agents', href: 'agents.html', group: 'System', key: 'Architecture' },
-    { label: 'Live Dashboard', desc: 'Real-time telemetry and rotating claims feed', href: 'dashboard.html', group: 'System', key: 'Dashboard' },
-    { label: 'System Status', desc: 'Channel availability & native doctor diagnostics', href: 'status.html', group: 'System', key: 'Status' },
-    { label: 'Research Benchmark', desc: 'Empirical verification & chaos test suites', href: 'benchmark.html', group: 'System', key: 'Benchmark' },
-    { label: 'Changelog', desc: 'Version history & protocol updates', href: 'changelog.html', group: 'System', key: 'Changelog' },
-    { label: 'About Aegis', desc: 'Mission, epistemic standards, and architecture', href: 'about.html', group: 'System', key: 'About' }
+    // System & Architecture
+    { label: 'System Status', desc: 'Channel availability and capability diagnostics', href: 'status.html', group: 'System', key: 'Status' },
+    { label: 'Analysis Capabilities', desc: 'Domain modules and deterministic pipeline specifications', href: 'agents.html', group: 'System', key: 'Capabilities' },
+    { label: 'Verification Benchmarks', desc: 'Empirical verification and test suite results', href: 'benchmark.html', group: 'System', key: 'Benchmark' },
+    { label: 'Version & Changelog', desc: 'Changelog and system release history', href: 'changelog.html', group: 'System', key: 'Changelog' },
+    { label: 'Methodology & Standards', desc: 'Epistemic verification standards and source lineage design', href: 'about.html', group: 'System', key: 'About' }
   ];
 
   function initCommandPalette() {

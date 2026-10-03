@@ -506,7 +506,7 @@
           if (res.ok) {
             const sub = await res.json();
             if (sub.claim_id) {
-              setStage('stg_contradict', 'Checking Contradictions across Multi-Agent Swarm...');
+              setStage('stg_contradict', 'Cross-referencing evidence and checking contradictions...');
               for (let i = 0; i < 6; i++) {
                 await new Promise(r => setTimeout(r, 900));
                 if (i === 2) setStage('stg_weight', 'Evaluating Evidence Strength & Independence...');

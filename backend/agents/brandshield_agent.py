@@ -289,6 +289,97 @@ class BrandShieldAgent:
     # 3. Grounded Threat & Claim Reasoning Engine
     # ─────────────────────────────────────────────────────────────────────────
 
+    def screen_review_patterns(self, evidence_list: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Deterministic review-pattern screening over retrieved evidence.
+        Uses text normalization and pairwise Jaccard word-set similarity
+        to detect near-duplicate wording or coordinated phrasing across review signals.
+        Never fabricates conclusions without real pairwise analysis.
+        """
+        if not evidence_list:
+            return {
+                "status": "INSUFFICIENT_EVIDENCE",
+                "review_manipulation_detected": False,
+                "assessment": "Insufficient evidence: no review signals retrieved for pattern screening.",
+                "confidence": None,
+                "signals_analyzed": 0,
+                "near_duplicate_clusters": 0,
+                "signals_found": [],
+                "cluster_notes": "No reviews were retrieved by active search channels."
+            }
+
+        # Filter signals that contain consumer review, feedback, rating, complaint, or seller discourse
+        review_keywords = ("review", "rating", "seller", "customer", "star", "feedback", "complaint", "order", "buyer", "refund", "delivered")
+        review_candidates = []
+        for ev in evidence_list:
+            text = f"{ev.get('title', '')} {ev.get('snippet', '')} {ev.get('content', '')}".strip()
+            text_lower = text.lower()
+            if any(k in text_lower for k in review_keywords) or len(text.split()) >= 15:
+                # Tokenize into normalized words (length >= 3)
+                words = set(re.findall(r'[a-z]{3,}', text_lower))
+                if len(words) >= 4:
+                    review_candidates.append({
+                        "evidence_id": ev.get("evidence_id", ""),
+                        "platform": ev.get("platform", "Web"),
+                        "text": text,
+                        "words": words
+                    })
+
+        signals_analyzed = len(review_candidates)
+        if signals_analyzed < 2:
+            return {
+                "status": "INSUFFICIENT_EVIDENCE",
+                "review_manipulation_detected": False,
+                "assessment": f"Insufficient review signals retrieved ({signals_analyzed} signals identified). At least 2 candidate texts are required for pairwise pattern analysis.",
+                "confidence": None,
+                "signals_analyzed": signals_analyzed,
+                "near_duplicate_clusters": 0,
+                "signals_found": [c["text"][:120] for c in review_candidates],
+                "cluster_notes": "Minimum candidate volume not met for empirical similarity clustering."
+            }
+
+        # Deterministic pairwise Jaccard similarity
+        duplicate_pairs = []
+        n = len(review_candidates)
+        for i in range(n):
+            for j in range(i + 1, n):
+                w1 = review_candidates[i]["words"]
+                w2 = review_candidates[j]["words"]
+                union_len = len(w1 | w2)
+                if union_len == 0:
+                    continue
+                jaccard = len(w1 & w2) / union_len
+                # Threshold for high lexical overlap (near-duplicate text)
+                if jaccard >= 0.65:
+                    duplicate_pairs.append((i, j, round(jaccard, 2)))
+
+        if duplicate_pairs:
+            near_duplicate_clusters = len(duplicate_pairs)
+            return {
+                "status": "SUSPICIOUS_PATTERNS_DETECTED",
+                "review_manipulation_detected": True,
+                "assessment": f"Review-pattern screening completed. {signals_analyzed} review signals analyzed; {near_duplicate_clusters} near-duplicate text pairs identified.",
+                "confidence": 0.85,
+                "signals_analyzed": signals_analyzed,
+                "near_duplicate_clusters": near_duplicate_clusters,
+                "signals_found": [
+                    f"Cluster overlap between {review_candidates[p[0]]['evidence_id']} and {review_candidates[p[1]]['evidence_id']} (similarity {p[2]})"
+                    for p in duplicate_pairs[:5]
+                ],
+                "cluster_notes": f"Identified {near_duplicate_clusters} near-duplicate phrasing pairs exceeding 0.65 lexical similarity."
+            }
+        else:
+            return {
+                "status": "SCREENED_NO_REPETITION_FOUND",
+                "review_manipulation_detected": False,
+                "assessment": f"Review-pattern screening completed. {signals_analyzed} review signals analyzed. Pairwise text comparison found no duplicate or coordinated phrasing patterns (threshold 0.65).",
+                "confidence": None,
+                "signals_analyzed": signals_analyzed,
+                "near_duplicate_clusters": 0,
+                "signals_found": [],
+                "cluster_notes": f"{signals_analyzed} review signals evaluated for lexical overlap. All signals exhibit natural lexical variance."
+            }
+
     def _synthesize_brand_threats(
         self,
         brand_info: Dict[str, Any],
@@ -308,14 +399,7 @@ class BrandShieldAgent:
                 "dossiers": [],
                 "counterfeits": [],
                 "impersonations": [],
-                "review_intel": {
-                    "status": "INSUFFICIENT_EVIDENCE_TO_ASSESS",
-                    "review_manipulation_detected": False,
-                    "assessment": "Insufficient evidence: no review signals retrieved to assess manipulation.",
-                    "confidence": None,
-                    "signals_found": [],
-                    "cluster_notes": "No reviews were retrieved by active search channels."
-                },
+                "review_intel": self.screen_review_patterns([]),
                 "recommendations": ["No qualifying threat signals found in the sources checked. Expand coverage channels or check primary registries."],
                 "ai_enrichment": "NOT_REQUIRED_EMPTY_DATA"
             }
@@ -447,6 +531,8 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
                 parsed["dossiers"] = self._build_investigation_dossiers(
                     brand_info, parsed.get("threats", []), parsed.get("claims", []), evidence_list
                 )
+                # Ensure review_intel is always deterministically verified from actual evidence text
+                parsed["review_intel"] = self.screen_review_patterns(evidence_list)
                 return parsed
         except Exception as e:
             logger.warning(f"[BrandShield 2.0:synthesize] Gemini synthesis notice, using grounded rule-based parsing: {e}")
@@ -595,25 +681,8 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
             "evidence_ids": [e["evidence_id"] for e in evidence_list[:5]]
         })
 
-        review_ev_count = sum(1 for e in evidence_list if any(k in (e.get("title", "") + e.get("snippet", "")).lower() for k in ("review", "rating", "seller", "customer", "star", "feedback")))
-        if review_ev_count >= 4:
-            review_intel = {
-                "status": "EVALUATED",
-                "review_manipulation_detected": False,
-                "assessment": "No suspicious review manipulation pattern identified across retrieved review signals.",
-                "confidence": None,
-                "signals_found": [],
-                "cluster_notes": f"Analyzed {review_ev_count} consumer commentary signals. No duplicate or coordinated phrasing patterns detected."
-            }
-        else:
-            review_intel = {
-                "status": "INSUFFICIENT_EVIDENCE_TO_ASSESS",
-                "review_manipulation_detected": False,
-                "assessment": f"Insufficient review signals retrieved ({review_ev_count} found) to assess astroturfing or review manipulation.",
-                "confidence": None,
-                "signals_found": [],
-                "cluster_notes": "Minimum 4 indexed consumer reviews required for empirical clustering."
-            }
+        # Grounded Review Pattern Screening via pairwise lexical overlap
+        review_intel = self.screen_review_patterns(evidence_list)
 
         dossiers = self._build_investigation_dossiers(brand_info, threats, claims, evidence_list)
 

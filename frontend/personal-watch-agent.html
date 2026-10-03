@@ -245,9 +245,9 @@
 
   <div class="ae-page">
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_03 · Personal Threat Intelligence</div>
-      <h1>Personal <span>Watch 2.0</span></h1>
-      <p>OSINT identity monitoring and online threat investigation for public figures, executives, creators, and VIPs. Investigates impersonations, phishing, deepfake claims, false announcements, and coordinated smear campaigns with clickable source links.</p>
+      <div class="agent-tag"><span class="dot"></span>Public Signals &amp; Identity Monitoring</div>
+      <h1>Personal <span>Watch</span></h1>
+      <p>Public signal monitoring and claim verification for individuals, executives, and creators. Screens for impersonations, phishing, unverified statements, and circulating claims with source attribution.</p>
 
       <!-- Real Runtime Telemetry Ribbon -->
       <div class="tel-ribbon">
@@ -575,9 +575,9 @@
             </div>
           </div>
           <div style="text-align:right;">
-            <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">EVIDENCE CONFIDENCE</div>
-            <div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:800;color:${subject.confidence > 0.8 ? 'var(--emerald)' : '#fbbf24'};">
-              ${subject.confidence != null ? Math.round(subject.confidence * 100) + '% Verified' : 'Confidence unavailable'}
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">PROFILE RESOLUTION</div>
+            <div style="font-family:var(--font-mono);font-size:0.85rem;font-weight:700;color:${subject.confidence != null ? 'var(--emerald)' : 'var(--text-dim)'};">
+              ${subject.confidence != null ? 'OBSERVED FOOTPRINT' : 'UNVERIFIED PROFILE'}
             </div>
           </div>
         </div>

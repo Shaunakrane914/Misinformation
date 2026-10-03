@@ -25,6 +25,8 @@ from starlette.middleware.gzip import GZipMiddleware
 from starlette.responses import FileResponse, JSONResponse
 from dotenv import load_dotenv
 
+from backend import __version__
+
 load_dotenv()
 
 # Configure structured logging
@@ -92,7 +94,7 @@ Aegis Protocol orchestrates a coordinated swarm of 7 specialized AI agents and z
 - **PersonalWatchAgent**: High-profile VIP protection, audio/video deepfake analysis, and impersonation detection.
 - **AgentReach Scraper**: Zero-cost scraper fabric spanning Reddit, Twitter/X, YouTube, Google News, and Jina Reader.
 """,
-    version="3.5.1",
+    version=__version__,
     openapi_tags=tags_metadata
 )
 

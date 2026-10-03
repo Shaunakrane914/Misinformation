@@ -15,6 +15,7 @@ J. Doctor status never maps unprobed bootstrap states to AVAILABLE.
 K. API deployment status endpoint reports real counts.
 """
 
+import os
 import pytest
 import re
 from pathlib import Path
@@ -34,15 +35,31 @@ class TestProductHonestyAndIntegrity:
         return TestClient(app)
 
     def test_a_deployment_status_endpoint_returns_real_counts(self, client):
-        """Endpoint /api/system/deployment-status must report honest non-fabricated counts."""
+        """Endpoint /api/system/deployment-status must report honest non-fabricated counts and distinct timestamps."""
         resp = client.get("/api/system/deployment-status")
         assert resp.status_code == 200
         data = resp.json()
         assert "investigations_completed" in data
         assert isinstance(data["investigations_completed"], int)
         assert data["supported_channel_count"] >= 14
-        assert data["active_agent_count"] == 7
-        assert data["architecture_claims"]["swarms_claim"] == "7 Specialized Domain Engines"
+
+        # Behavioral agent count verification: registered count must equal specialized agent list length
+        assert data["registered_agent_count"] == len(data["specialized_agents"])
+        assert data["healthy_agent_count"] <= data["registered_agent_count"]
+
+        # Active agent count must not be hardcoded to registered count on an on-demand architecture
+        assert data["active_agent_count"] is None
+        assert data["active_agent_count_status"] == "NOT_APPLICABLE_ON_DEMAND_EXECUTION"
+
+        # Deployment ID must not be a fabricated static string when no deployment environment exists
+        if not any(k in os.environ for k in ("DEPLOYMENT_ID", "RENDER_SERVICE_ID", "VERCEL_GIT_COMMIT_SHA")):
+            assert data["deployment_id"] is None
+            assert data["deployment_id_status"] == "UNAVAILABLE"
+
+        # Timestamp semantics: response_generated_at must exist and not be confused with probe timestamp
+        assert "response_generated_at" in data
+        assert data["last_capability_probe_status"] in ("PROBED", "NOT_PROBED")
+        assert data["last_successful_backend_sync_status"] == "UNAVAILABLE"
 
     def test_b_homepage_contains_no_fake_telemetry(self):
         """frontend/index.html must not contain the old hardcoded 142,800+, 16.2s, 99.4%, or 4 Swarms."""
@@ -155,15 +172,41 @@ class TestProductHonestyAndIntegrity:
             assert hawkes is None or hawkes != 2.45, "Found verdict-dependent Hawkes R0 2.45"
             assert hawkes != 1.65, "Found verdict-dependent Hawkes R0 1.65"
 
-    def test_g_brandshield_insufficient_evidence_is_not_no_threat(self):
-        """BrandShield must return INSUFFICIENT_EVIDENCE_TO_ASSESS when fewer than 4 reviews exist."""
+    def test_g_brandshield_deterministic_review_pattern_screening(self):
+        """BrandShield must use genuine text screening rather than keyword counting."""
         agent = BrandShieldAgent()
+
+        # Case 1: Empty retrieval yields INSUFFICIENT_EVIDENCE
         brand_info = agent.resolve_brand_entity("Acme Corp")
-        res = agent._synthesize_brand_threats(brand_info, [])
-        review_intel = res.get("review_intel", {})
-        assert review_intel.get("status") == "INSUFFICIENT_EVIDENCE_TO_ASSESS"
-        assert review_intel.get("confidence") is None
-        assert review_intel.get("review_manipulation_detected") is False
+        res_empty = agent._synthesize_brand_threats(brand_info, [])
+        review_empty = res_empty.get("review_intel", {})
+        assert review_empty.get("status") in ("INSUFFICIENT_EVIDENCE", "INSUFFICIENT_EVIDENCE_TO_ASSESS")
+        assert review_empty.get("confidence") is None
+        assert review_empty.get("review_manipulation_detected") is False
+        assert review_empty.get("signals_analyzed") == 0
+
+        # Case 2: Natural diverse reviews do not trigger duplicate clusters
+        diverse_evidence = [
+            {"evidence_id": "ev_1", "title": "Great customer service and fast shipping", "snippet": "I ordered this product last week and the customer support was very helpful.", "platform": "Web"},
+            {"evidence_id": "ev_2", "title": "Disappointed with battery life rating", "snippet": "The device discharges after five hours of continuous heavy usage.", "platform": "Reddit"},
+            {"evidence_id": "ev_3", "title": "Review of new firmware update release", "snippet": "The manufacturer fixed the bluetooth connectivity glitch in the latest patch.", "platform": "Web"},
+        ]
+        res_diverse = agent.screen_review_patterns(diverse_evidence)
+        assert res_diverse["status"] == "SCREENED_NO_REPETITION_FOUND"
+        assert res_diverse["review_manipulation_detected"] is False
+        assert res_diverse["signals_analyzed"] == 3
+        assert res_diverse["near_duplicate_clusters"] == 0
+
+        # Case 3: Actual near-duplicate text triggers manipulation cluster
+        templated_evidence = [
+            {"evidence_id": "ev_1", "title": "Best purchase ever five star seller highly recommend", "snippet": "Amazing product best purchase ever five star seller highly recommend to everyone excellent quality.", "platform": "Web"},
+            {"evidence_id": "ev_2", "title": "Best purchase ever five star seller highly recommend", "snippet": "Amazing item best purchase ever five star seller highly recommend to everyone excellent build.", "platform": "Web"},
+        ]
+        res_templated = agent.screen_review_patterns(templated_evidence)
+        assert res_templated["status"] == "SUSPICIOUS_PATTERNS_DETECTED"
+        assert res_templated["review_manipulation_detected"] is True
+        assert res_templated["signals_analyzed"] == 2
+        assert res_templated["near_duplicate_clusters"] >= 1
 
     def test_h_doctor_status_marks_unprobed_baseline_as_unknown_not_available(self):
         """DoctorBridge fallback baseline must mark capabilities as not_probed / UNKNOWN, not available."""
@@ -193,3 +236,13 @@ class TestProductHonestyAndIntegrity:
         assert data["latency_ms"] == 124
         assert data["result_count_raw"] == 0
         assert data["error"] == "Network timeout"
+
+    def test_j_api_root_information_contract(self, client):
+        """Root /api/ must report authoritative version and honest deterministic architecture."""
+        resp = client.get("/api/")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert data["version"] == "3.7.0"
+        assert "Modular Multi-Agent Swarm with Zero-Cost Omni-Scraper Fabric" not in data.get("architecture", "")
+        assert data["architecture"] == "Deterministic Evidence Pipeline with Selective Semantic AI"
+        assert "registered_modules" in data

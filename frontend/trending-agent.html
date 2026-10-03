@@ -249,11 +249,11 @@
   <div class="ae-page">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_01 · Trending Engine 2.0</div>
-      <h1><span>Trend Intelligence</span> &amp; Discovery</h1>
-      <p>Autonomous trend intelligence across entertainment, cinema, technology, and culture. Discovers emerging narratives, monitors velocity, verifies circulating claims, and attributes sources with zero synthetic hallucinations.</p>
+      <div class="agent-tag"><span class="dot"></span>Trending Signals &amp; Narrative Velocity</div>
+      <h1><span>Trend Analysis</span> &amp; Signal Discovery</h1>
+      <p>Trend analysis across entertainment, cinema, technology, and culture. Collects and compares currently available signals, analyzes velocity, and attributes sources with evidence verification.</p>
       
-      <!-- REAL-TIME TELEMETRY RIBBON -->
+      <!-- METRIC OVERVIEW RIBBON -->
       <div class="tel-ribbon">
         <div class="tel-cell"><span class="tel-val" id="telSignals">0</span><span class="tel-key">Signals Retrieved</span></div>
         <div class="tel-cell"><span class="tel-val" id="telSources" style="color:var(--accent)">0</span><span class="tel-key">Unique Sources</span></div>
@@ -523,10 +523,13 @@
         mode: currentMode
       };
 
+      const configuredApi = window.AEGIS_API_BASE ? `${window.AEGIS_API_BASE}/api/trending/scan` : null;
       const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-      const endpoints = isLocalHost
-        ? ['/api/trending/scan', 'http://127.0.0.1:8000/api/trending/scan']
-        : ['/api/trending/scan', 'https://misinformation-1ouh.onrender.com/api/trending/scan'];
+      const endpoints = [
+        configuredApi,
+        '/api/trending/scan',
+        isLocalHost ? 'http://127.0.0.1:8000/api/trending/scan' : null
+      ].filter(Boolean);
 
       for (const ep of endpoints) {
         try {

@@ -214,15 +214,15 @@
 
   <div class="ae-page">
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>AGENT_04 · Brand Protection Node</div>
-      <h1>Brand<span>Shield 2.0</span></h1>
-      <p>Forensic brand protection and online threat intelligence. Investigates counterfeits, brand impersonation, review manipulation, and coordinated smear campaigns with verifiable source attribution.</p>
+      <div class="agent-tag"><span class="dot"></span>Brand Monitoring &amp; Source Verification</div>
+      <h1>Brand<span>Shield</span></h1>
+      <p>Evidence-based brand monitoring and threat analysis. Screens product listings, consumer signals, reviews, and circulating claims with source attribution.</p>
       
       <div class="tel-ribbon">
         <div class="tel-cell"><span class="tel-val" id="telSources">Standby</span><span class="tel-key">Sources Scanned</span></div>
-        <div class="tel-cell"><span class="tel-val" id="telChannels" style="color:var(--accent)">6 Active</span><span class="tel-key">Channel Feeds</span></div>
-        <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:#fbbf24">0 Flagged</span><span class="tel-key">Active Threats</span></div>
-        <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">100% Verified</span><span class="tel-key">Syndication Audit</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telChannels" style="color:var(--accent)">Available</span><span class="tel-key">Channel Feeds</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:#fbbf24">0 Flagged</span><span class="tel-key">Threat Signals</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">Audited</span><span class="tel-key">Syndication Audit</span></div>
         <div class="tel-cell"><span class="tel-val" id="telStatus" style="color:#10b981">READY</span><span class="tel-key">System Status</span></div>
       </div>
     </div>
@@ -580,18 +580,19 @@
         `;
       }
 
-      // 4. Review Manipulation & Astroturfing Intelligence
-      const isInsufficient = reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
+      // 4. Review Pattern Screening & Manipulation Intelligence
+      const isInsufficient = reviewIntel.status === 'INSUFFICIENT_EVIDENCE' || reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
+      const isSuspicious = reviewIntel.review_manipulation_detected || reviewIntel.status === 'SUSPICIOUS_PATTERNS_DETECTED';
       const statusTitle = isInsufficient
-        ? '⚪ INSUFFICIENT EVIDENCE TO ASSESS'
-        : (reviewIntel.review_manipulation_detected ? '⚠️ MANIPULATION PATTERN DETECTED' : '✓ NO SUSPICIOUS PATTERN FOUND');
-      const statusColor = isInsufficient ? 'var(--text-dim)' : (reviewIntel.review_manipulation_detected ? 'var(--rose)' : '#10b981');
-      const confDisplay = reviewIntel.confidence != null ? `CONFIDENCE: ${Math.round(reviewIntel.confidence * 100)}%` : 'CONFIDENCE: UNAVAILABLE';
+        ? '⚪ INSUFFICIENT EVIDENCE FOR REVIEW SCREENING'
+        : (isSuspicious ? '⚠️ NEAR-DUPLICATE REVIEW PATTERNS DETECTED' : '✓ SCREENED: NO DUPLICATE CLUSTERS DETECTED');
+      const statusColor = isInsufficient ? 'var(--text-dim)' : (isSuspicious ? 'var(--rose)' : '#10b981');
+      const confDisplay = reviewIntel.confidence != null ? `CONFIDENCE: ${Math.round(reviewIntel.confidence * 100)}%` : 'CONFIDENCE: NOT_APPLICABLE';
 
       html += `
-        <div class="sec-hdr">REVIEW INTELLIGENCE &amp; MANIPULATION AUDIT</div>
+        <div class="sec-hdr">REVIEW PATTERN SCREENING &amp; DUPLICATION AUDIT</div>
         <div class="scan-card ae-reveal" style="padding:20px;">
-          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;flex-wrap:wrap;">
             <span style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:${statusColor};">
               ${statusTitle}
             </span>
@@ -600,10 +601,13 @@
             </span>
           </div>
           <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:8px;">
-            ${escapeHtml(reviewIntel.assessment || 'No anomalous review bursts detected.')}
+            ${escapeHtml(reviewIntel.assessment || 'No anomalous review signals detected.')}
           </div>
-          <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">
-            AUDIT FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'Natural lexical variance.')}
+          <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-top:6px;">
+            SCREENING DATA: ${reviewIntel.signals_analyzed || 0} signals analyzed &bull; ${reviewIntel.near_duplicate_clusters || 0} near-duplicate clusters identified
+          </div>
+          <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-top:3px;">
+            FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'Natural lexical variance across retrieved signals.')}
           </div>
         </div>
       `;

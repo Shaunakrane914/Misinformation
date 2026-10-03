@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="forensic-explorer.js"></script>
+  <script src="unified-report-renderer.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -901,6 +902,15 @@
           corpusPayload.funnel = data.funnel;
         }
         explorer.setData(corpusPayload);
+      }
+
+      // Mount Unified Investigation Report (schema v3.8.0)
+      if (data.unified_report && window.renderUnifiedReport) {
+        const urWrap = document.createElement('div');
+        urWrap.id = 'scoutUnifiedReportContainer';
+        urWrap.style.marginTop = '28px';
+        root.appendChild(urWrap);
+        window.renderUnifiedReport(urWrap, data.unified_report);
       }
     }
 

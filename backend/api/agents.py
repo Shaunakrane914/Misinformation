@@ -19,6 +19,7 @@ from pydantic import BaseModel, Field
 
 from backend.db import database as db
 from backend.agents.trending_agent import TrendingAgent
+from backend.services.report_builder import ReportBuilder
 
 logger = logging.getLogger(__name__)
 
@@ -190,6 +191,17 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
             if quote_data and quote_data.get("current_price", 0) > 0:
                 result["stock"] = quote_data
 
+        # ── Unified Report (schema v3.8.0) ────────────────────────────────────
+        try:
+            _unified = ReportBuilder.from_scout_result(
+                query=request.query or request.ticker,
+                scout_data=result,
+            )
+            result["unified_report"] = _unified.to_dict()
+        except Exception as _ur_err:
+            logger.warning(f"[Scout] unified_report assembly note: {_ur_err}")
+            result["unified_report"] = None
+
         return result
     except Exception as e:
         logger.error(f"[API] Error in scout analysis: {str(e)}")
@@ -219,6 +231,18 @@ async def trending_scan(request: TrendingScanRequest):
         except Exception as alert_err:
             logger.warning(f"Alert check note: {alert_err}")
             result["alerts"] = []
+
+        # ── Unified Report (schema v3.8.0) ────────────────────────────────────
+        try:
+            _unified = ReportBuilder.from_trending_result(
+                query=target_name,
+                trend_data=result,
+            )
+            result["unified_report"] = _unified.to_dict()
+        except Exception as _ur_err:
+            logger.warning(f"[Trending] unified_report assembly note: {_ur_err}")
+            result["unified_report"] = None
+
         return result
     except Exception as e:
         logger.error(f"[API] Trending scan failed: {e}")
@@ -294,6 +318,18 @@ async def personal_watch_scan(request: PersonalScanRequest):
             "query": request.query
         }
         results = process_personal_watch(vip_profile)
+
+        # ── Unified Report (schema v3.8.0) ────────────────────────────────────
+        try:
+            _unified = ReportBuilder.from_personal_result(
+                query=request.query or request.name,
+                personal_data=results if isinstance(results, dict) else {},
+            )
+            if isinstance(results, dict):
+                results["unified_report"] = _unified.to_dict()
+        except Exception as _ur_err:
+            logger.warning(f"[PersonalWatch] unified_report assembly note: {_ur_err}")
+
         return results
     except Exception as e:
         logger.error(f"[API] Personal Watch scan failed: {str(e)}")
@@ -314,6 +350,18 @@ async def brandshield_scan(request: BrandShieldScanRequest):
     try:
         agent = get_brandshield_agent()
         results = agent.scan(brand_name=request.brand_name, query=request.query)
+
+        # ── Unified Report (schema v3.8.0) ────────────────────────────────────
+        try:
+            _unified = ReportBuilder.from_brandshield_result(
+                query=request.query or request.brand_name,
+                brand_data=results if isinstance(results, dict) else {},
+            )
+            if isinstance(results, dict):
+                results["unified_report"] = _unified.to_dict()
+        except Exception as _ur_err:
+            logger.warning(f"[BrandShield] unified_report assembly note: {_ur_err}")
+
         return results
     except Exception as e:
         logger.error(f"[API] BrandShield scan failed: {str(e)}")

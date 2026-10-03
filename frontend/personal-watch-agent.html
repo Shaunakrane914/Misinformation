@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Personal Watch 2.0 — Personal Identity & Online Threat Intelligence</title>
   <link rel="stylesheet" href="aegis-theme.css">
+  <script src="unified-report-renderer.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -748,6 +749,15 @@
 
       // 9. Source Explorer (All Clickable Sources)
       renderSourceExplorer(mount, evidence);
+
+      // 10. Unified Investigation Report (schema v3.8.0)
+      if (data.unified_report && window.renderUnifiedReport) {
+        const urWrap = document.createElement('div');
+        urWrap.id = 'personalUnifiedReportContainer';
+        urWrap.style.marginTop = '28px';
+        mount.appendChild(urWrap);
+        window.renderUnifiedReport(urWrap, data.unified_report);
+      }
     }
 
     function renderSourceExplorer(container, evidence) {

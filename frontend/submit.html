@@ -14,6 +14,7 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="gemini-client.js"></script>
   <script src="forensic-explorer.js"></script>
+  <script src="unified-report-renderer.js"></script>
 
   <style>
     .claim-hero {
@@ -391,6 +392,24 @@
         <div id="evidenceRowsContainer">
           <!-- Reusable Aegis Evidence Rows rendered here -->
         </div>
+      </div>
+
+      <!-- LEVEL 4: UNIFIED INVESTIGATION REPORT (Schema v3.8.0) -->
+      <div id="unifiedReportSection" class="ae-reveal" style="margin-bottom:40px;display:none;">
+        <div style="margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;">
+          <div>
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;">
+              Aegis Protocol Standard v3.8.0
+            </div>
+            <h3 style="font-size:1.05rem;font-weight:700;color:#fff;margin-top:2px;">
+              Unified Investigation Report &amp; Quality Tensor
+            </h3>
+          </div>
+          <span class="ae-badge ae-badge-cyan" style="font-size:0.7rem;font-family:var(--font-mono);">
+            Unified Schema
+          </span>
+        </div>
+        <div id="unifiedReportMount"></div>
       </div>
 
     </div>
@@ -778,6 +797,16 @@ Output strictly valid JSON with this exact schema:
       if (feMount && window.ForensicExplorer && targetClaimId) {
         const explorer = new window.ForensicExplorer(feMount);
         explorer.loadFromClaimId(targetClaimId);
+      }
+
+      // Mount Unified Report (schema v3.8.0)
+      const urSection = document.getElementById('unifiedReportSection');
+      const urMount = document.getElementById('unifiedReportMount');
+      if (urSection && urMount && window.renderUnifiedReport && data.unified_report) {
+        urSection.style.display = 'block';
+        window.renderUnifiedReport(urMount, data.unified_report);
+      } else if (urSection) {
+        urSection.style.display = 'none';
       }
     }
 

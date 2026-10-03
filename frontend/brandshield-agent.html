@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>BrandShield 2.0 — Brand Protection & Online Threat Intelligence</title>
   <link rel="stylesheet" href="aegis-theme.css">
+  <script src="unified-report-renderer.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -671,6 +672,15 @@
       `;
 
       container.innerHTML = html;
+
+      // Mount Unified Investigation Report (schema v3.8.0)
+      if (data.unified_report && window.renderUnifiedReport) {
+        const urWrap = document.createElement('div');
+        urWrap.id = 'brandshieldUnifiedReportContainer';
+        urWrap.style.marginTop = '28px';
+        container.appendChild(urWrap);
+        window.renderUnifiedReport(urWrap, data.unified_report);
+      }
     }
 
     function renderSourceCards(items) {

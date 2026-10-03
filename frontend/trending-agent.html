@@ -6,6 +6,7 @@
   <title>Trending Agent 2.0 — Trend Discovery & Intelligence Engine</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="unified-report-renderer.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -419,6 +420,9 @@
           </div>
         </div>
       </div>
+
+      <!-- UNIFIED INVESTIGATION REPORT (Schema v3.8.0) -->
+      <div id="trendingUnifiedReportContainer" style="margin-top:36px;display:none;"></div>
     </div>
 
     <!-- DOSSIER DETAIL MODAL -->
@@ -775,6 +779,15 @@
         `;
       } else {
         document.getElementById('boxOfficePanel').style.display = 'none';
+      }
+
+      // 9. Unified Investigation Report (schema v3.8.0)
+      const urMount = document.getElementById('trendingUnifiedReportContainer');
+      if (urMount && window.renderUnifiedReport && data.unified_report) {
+        urMount.style.display = 'block';
+        window.renderUnifiedReport(urMount, data.unified_report);
+      } else if (urMount) {
+        urMount.style.display = 'none';
       }
     }
 

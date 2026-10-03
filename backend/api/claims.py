@@ -49,6 +49,7 @@ from backend.workers.claim_worker import process_claim
 from backend.services.research.source_lineage import SourceLineageEngine
 from backend.services.research.replay_ledger import replay_ledger
 from backend.services.research.research_models import EvidenceItem, SourceRole, SourceTier
+from backend.services.report_builder import ReportBuilder
 
 logger = logging.getLogger(__name__)
 
@@ -500,6 +501,21 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
 
         if evidence_json.get("research_corpus"):
             db.save_claim_research(claim_hash, evidence_json["research_corpus"])
+
+        # ── Unified Report (schema v3.8.0) ────────────────────────────────────
+        try:
+            _unified = ReportBuilder.from_claim_result(
+                claim_text=norm_text,
+                verdict=investigation_res if isinstance(investigation_res, dict) else None,
+                corpus=None,  # structured corpus not yet wired through evidence_json path
+                execution_log=rc_dict.get("query_log") or [],
+                queries_planned=len(lineage_candidates),
+            )
+            resp_payload["unified_report"] = _unified.to_dict()
+        except Exception as _ur_err:
+            logger.warning(f"[VerifySync] unified_report assembly note: {_ur_err}")
+            resp_payload["unified_report"] = None
+
         return resp_payload
     except HTTPException:
         raise

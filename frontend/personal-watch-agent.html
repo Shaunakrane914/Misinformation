@@ -577,7 +577,7 @@
           <div style="text-align:right;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">EVIDENCE CONFIDENCE</div>
             <div style="font-family:var(--font-mono);font-size:1.1rem;font-weight:800;color:${subject.confidence > 0.8 ? 'var(--emerald)' : '#fbbf24'};">
-              ${Math.round((subject.confidence || 0.75) * 100)}% Verified
+              ${subject.confidence != null ? Math.round(subject.confidence * 100) + '% Verified' : 'Confidence unavailable'}
             </div>
           </div>
         </div>
@@ -640,7 +640,7 @@
             <div class="threat-desc">${escapeHtml(threat.reason || '')}</div>
             <div class="threat-footer">
               <div class="threat-meta">
-                <span>Confidence: <strong>${Math.round((threat.confidence || 0.8) * 100)}%</strong></span>
+                <span>Confidence: <strong>${threat.confidence != null ? Math.round(threat.confidence * 100) + '%' : 'Unavailable'}</strong></span>
                 <span>Evidence Records: <strong>${(threat.evidence_ids || []).length}</strong></span>
               </div>
               <button class="dossier-btn" onclick="openDossier(${idx})">
@@ -716,7 +716,7 @@
               </div>
               <div style="font-size:0.88rem;color:#fff;line-height:1.5;margin-bottom:10px;">${escapeHtml(c.text || '')}</div>
               <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">
-                Confidence: ${Math.round((c.confidence || 0.7) * 100)}% · ${(c.evidence_ids || []).length} Source(s)
+                Confidence: ${c.confidence != null ? Math.round(c.confidence * 100) + '%' : 'Unavailable'} · ${(c.evidence_ids || []).length} Source(s)
               </div>
             </div>
           `;

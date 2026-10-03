@@ -525,8 +525,8 @@
 
       const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const endpoints = isLocalHost
-        ? ['/api/trending/scan', 'https://misinformation-1ouh.onrender.com/api/trending/scan']
-        : ['http://127.0.0.1:8000/api/trending/scan', '/api/trending/scan', 'https://misinformation-1ouh.onrender.com/api/trending/scan'];
+        ? ['/api/trending/scan', 'http://127.0.0.1:8000/api/trending/scan']
+        : ['/api/trending/scan', 'https://misinformation-1ouh.onrender.com/api/trending/scan'];
 
       for (const ep of endpoints) {
         try {

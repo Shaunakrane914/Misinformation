@@ -432,25 +432,27 @@ class ResearchEngine:
                     source_quality_engine.classify_and_score(p, target_name=request.target)
                 ranked_candidates = escalated_primaries + ranked_candidates
 
-            for idx, eq_text in enumerate(esc_telemetry.get("queries", [])):
-                q_id = f"q_esc_{idx + 1:03d}"
-                prim_count = sum(1 for p in (escalated_primaries or []) if p.metadata.get("primary_query_id") == q_id or p.metadata.get("escalation_query") == eq_text)
-                escalation_query_records.append(QueryExecutionRecord(
-                    query_id=q_id,
-                    channel="web",
-                    query_text=eq_text,
-                    query_class="primary_escalation",
-                    phase="escalation",
-                    status="SUCCESS" if prim_count > 0 or esc_telemetry.get("escalation_queries_executed", 0) > 0 else "FAILED",
-                    started_at=datetime.utcnow().isoformat(),
-                    completed_at=datetime.utcnow().isoformat(),
-                    latency_ms=0,
-                    result_count_raw=prim_count,
-                    result_count_normalized=prim_count,
-                    error=None,
-                    retrieval_mode="direct",
-                    backend_id="web",
-                ))
+            escalation_query_records = esc_telemetry.get("execution_records") or []
+            if not escalation_query_records and esc_telemetry.get("queries"):
+                for idx, eq_text in enumerate(esc_telemetry.get("queries", [])):
+                    q_id = f"q_esc_{idx + 1:03d}"
+                    prim_count = sum(1 for p in (escalated_primaries or []) if p.metadata.get("primary_query_id") == q_id or p.metadata.get("escalation_query") == eq_text)
+                    escalation_query_records.append(QueryExecutionRecord(
+                        query_id=q_id,
+                        channel="web",
+                        query_text=eq_text,
+                        query_class="primary_escalation",
+                        phase="escalation",
+                        status="SUCCESS" if prim_count > 0 else "NO_RESULTS",
+                        started_at=None,
+                        completed_at=None,
+                        latency_ms=None,
+                        result_count_raw=prim_count,
+                        result_count_normalized=prim_count,
+                        error=None,
+                        retrieval_mode="direct",
+                        backend_id="web",
+                    ))
         else:
             escalated_primaries, esc_telemetry = [], {"queries": [], "escalations": 0}
 
@@ -533,8 +535,6 @@ class ResearchEngine:
         initial_records = getattr(retrieval_res, "query_records", []) or []
         if not initial_records:
             for ch, q_list in multi_queries.items():
-                ch_health = channel_status.get(ch, {})
-                ch_ok = ch_health.get("status") in ("AVAILABLE", "DEGRADED", "SUCCESS") if isinstance(ch_health, dict) else True
                 for q in q_list:
                     initial_records.append(QueryExecutionRecord(
                         query_id=q.get("query_id", ""),
@@ -542,13 +542,13 @@ class ResearchEngine:
                         query_text=q.get("query_text", ""),
                         query_class=q.get("query_class", "general"),
                         phase="initial",
-                        status="SUCCESS" if ch_ok else "FAILED",
-                        started_at=datetime.utcnow().isoformat(),
-                        completed_at=datetime.utcnow().isoformat(),
-                        latency_ms=0,
+                        status="UNRECORDED",
+                        started_at=None,
+                        completed_at=None,
+                        latency_ms=None,
                         result_count_raw=0,
                         result_count_normalized=0,
-                        error=None if ch_ok else f"Channel {ch} unavailable",
+                        error="Execution record not captured by upstream retrieval layer",
                         retrieval_mode="direct",
                         backend_id=ch,
                     ))

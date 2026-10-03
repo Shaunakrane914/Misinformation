@@ -203,10 +203,10 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                     investigation_res = investigator_agent.extract_verdict(investigation_res)
             except Exception as e_inv2:
                 investigation_res = {
-                    "verdict": "False" if any(w in norm_text.lower() for w in ["hoax", "fake", "dismantled", "cure cancer with lemon", "flat earth", "boiling seawater"]) else "Misleading",
-                    "confidence": 0.88,
-                    "reasoning": "Empirical analysis against verified registries failed to substantiate the claim.",
-                    "severity": "High"
+                    "verdict": "Unverified",
+                    "confidence": None,
+                    "reasoning": "Investigation incomplete due to downstream processing error.",
+                    "severity": "Low"
                 }
 
         if isinstance(investigation_res, str):
@@ -250,17 +250,21 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 corr = np.corrcoef(np.log(ranks), np.log(freqs))[0, 1]
                 mandel_r2 = round(float(corr ** 2), 2) if not np.isnan(corr) else None
 
-        verdict_str = str(investigation_res.get("verdict", "False")).strip().upper()
-        if "TRUE" in verdict_str:
+        verdict_str = str(investigation_res.get("verdict", "Unverified")).strip().upper()
+        if "TRUE" in verdict_str and "PARTIALLY" not in verdict_str and "NOT TRUE" not in verdict_str:
             clean_verdict = "TRUE"
         elif "FALSE" in verdict_str:
             clean_verdict = "FALSE"
-        else:
+        elif "MISLEADING" in verdict_str:
             clean_verdict = "MISLEADING"
+        elif "INSUFFICIENT" in verdict_str:
+            clean_verdict = "INSUFFICIENT_EVIDENCE"
+        else:
+            clean_verdict = "UNVERIFIED"
 
-        raw_conf = investigation_res.get("confidence", 0.90)
-        conf_int = int(raw_conf * 100) if raw_conf <= 1.0 else int(raw_conf)
-        hawkes_r0 = 2.45 if clean_verdict == "FALSE" else (1.65 if clean_verdict == "MISLEADING" else 0.45)
+        raw_conf = investigation_res.get("confidence")
+        conf_int = int(raw_conf * 100) if (raw_conf is not None and raw_conf <= 1.0) else (int(raw_conf) if raw_conf is not None else None)
+        hawkes_r0 = None  # Hawkes R0 requires actual time-series event sequence observations
 
         # Category detection
         lower_claim = norm_text.lower()
@@ -283,14 +287,14 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                     "source": s.get("source") or s.get("source_name") or "Primary Source",
                     "platform": s.get("platform") or "Wire",
                     "text": s.get("text") or s.get("summary") or str(s),
-                    "url": s.get("url") or "#"
+                    "url": s.get("url") or None
                 })
             elif isinstance(s, str):
                 supporting_list.append({
                     "source": "Corroborating Document",
                     "platform": "Wire",
                     "text": s,
-                    "url": "#"
+                    "url": None
                 })
 
         refuting_list = []
@@ -300,31 +304,17 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                     "source": r.get("source") or r.get("source_name") or "Registry Fact-Check",
                     "platform": r.get("platform") or "Fact-Check",
                     "text": r.get("text") or r.get("summary") or str(r),
-                    "url": r.get("url") or "#"
+                    "url": r.get("url") or None
                 })
             elif isinstance(r, str):
                 refuting_list.append({
                     "source": "Fact-Checking Registry",
                     "platform": "Fact-Check",
                     "text": r,
-                    "url": "#"
+                    "url": None
                 })
 
-        explanation = investigation_res.get("reasoning") or "Multi-agent verification completed."
-        if not refuting_list and clean_verdict in ("FALSE", "MISLEADING"):
-            refuting_list.append({
-                "source": "AP & Reuters Fact-Check Registry",
-                "platform": "Primary Wire",
-                "text": explanation,
-                "url": "https://www.reuters.com/fact-check/"
-            })
-        if not supporting_list and clean_verdict == "TRUE":
-            supporting_list.append({
-                "source": "Verified Official Records",
-                "platform": "Primary Source",
-                "text": explanation,
-                "url": "#"
-            })
+        explanation = investigation_res.get("reasoning") or "Multi-source evidence review completed."
 
         debunk_stmt = f"Aegis Fact-Check: Empirical verification concluded the claim '{norm_text[:60]}...' is {clean_verdict}. {explanation[:120]}"
         duration = round(time.perf_counter() - start_time, 2)
@@ -353,9 +343,9 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "summary": reddit_items[0].get("title", "Community discussions analyzed.")[:80] if reddit_items else "No public community threads discovered."
             },
             "twitter": {
-                "virality": "Elevated" if (hawkes_r0 is not None and hawkes_r0 >= 1.5 and twitter_items) else "Low",
-                "bot_ratio": f"{min(76, max(12, int(mandel_r2 * 80)))}%" if mandel_r2 is not None else "Unmeasured",
-                "cashtag": "#FactCheckAlert",
+                "virality": "Unmeasured (no time-series stream)",
+                "bot_ratio": "Unmeasured",
+                "cashtag": None,
                 "mentions": len(twitter_items)
             },
             "youtube": {
@@ -363,8 +353,8 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "finding": youtube_items[0].get("title", "Video discussions indexed.")[:60] if youtube_items else "Zero video analyses returned."
             },
             "news": {
-                "registry_status": "Verified Wire Match" if clean_verdict == "TRUE" else ("Debunked by Wire Services" if news_items else "No Wire Records"),
-                "top_wire": news_items[0].get("source", "Associated Press") if news_items else "Public Wire Index",
+                "registry_status": "Wire Match" if news_items else "No Wire Records",
+                "top_wire": news_items[0].get("source") if news_items else None,
                 "articles_count": len(news_items)
             },
             "raw_signals": {
@@ -455,16 +445,20 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             "social_radar": social_radar,
             "forensic_risk": {
                 "mandelbrot_r2": mandel_r2,
-                "synthetic_marker": "AI Synthetic / Astroturf" if (mandel_r2 is not None and mandel_r2 >= 0.90) else ("Organic Human Discourse" if mandel_r2 is not None else "Insufficient Tokens"),
-                "hawkes_r0": hawkes_r0,
+                "synthetic_marker": "Unusual Text Frequency Correlation" if (mandel_r2 is not None and mandel_r2 >= 0.90) else ("Standard Lexical Distribution" if mandel_r2 is not None else "Insufficient Tokens"),
+                "hawkes_r0": None,
+                "hawkes_status": "UNAVAILABLE",
+                "hawkes_reason": "No time-series event sequence observations available",
                 "entropy_bits": entropy,
-                "polarization_score": min(95, int(hawkes_r0 * 35)) if hawkes_r0 is not None else 0
+                "polarization_score": None,
+                "polarization_status": "UNAVAILABLE",
+                "polarization_reason": "No sentiment-polarized discourse corpus available"
             },
             "debunk_statement": debunk_stmt,
             "action_package": {
                 "copy_debunk": debunk_stmt,
-                "tweet_rebuttal": f"ALERT: The claim that '{norm_text[:50]}...' has been verified as {clean_verdict} by @AegisProtocol. Provenance analysis refutes this assertion. Read the truth dossier: https://agenticai914.netlify.app/submit.html?claim={urllib.parse.quote_plus(norm_text[:40])}",
-                "press_notice": f"OFFICIAL CORRECTION: Fact-checking confirms statement '{norm_text}' lacks empirical substantiation. Global wire records refute this occurrence."
+                "tweet_rebuttal": f"Empirical fact-check for '{norm_text[:50]}...': {clean_verdict}. Details: https://agenticai914.netlify.app/submit.html?claim={urllib.parse.quote_plus(norm_text[:40])}",
+                "press_notice": f"Correction Notice: Research regarding '{norm_text}' concluded {clean_verdict}."
             },
             "execution_time_seconds": duration,
             "agents_executed": ["ClaimIngestionAgent", "ResearchAgent", "InvestigatorAgent"],

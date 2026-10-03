@@ -312,16 +312,17 @@
   }
 
   // ── 6. Global High-Craft Progress & Loading Bar for All Agents ──
+  // ── 6. Global High-Craft Progress & Loading Bar for All Agents ──
   window.createAgentProgressBar = function(containerTarget, options = {}) {
     const container = typeof containerTarget === 'string' ? document.querySelector(containerTarget) : containerTarget;
     if (!container) return null;
 
-    const title = options.title || 'Executing Multi-Channel Agent Intelligence...';
+    const title = options.title || 'Executing Multi-Channel Research & Verification...';
     const stages = options.stages || [
-      { name: '01 · Ingestion', desc: 'Agent Reach dispatch & query expansion' },
-      { name: '02 · Retrieval', desc: 'Scanning News, Web, Regulatory & Social feeds' },
-      { name: '03 · Synthesis', desc: 'Deduplication, wire clustering & corroboration' },
-      { name: '04 · Verdict', desc: 'Bayesian evidence matrix & consensus scoring' }
+      { name: '01 · Ingestion', desc: 'Query expansion and channel routing' },
+      { name: '02 · Retrieval', desc: 'Retrieving evidence across primary and public channels' },
+      { name: '03 · Synthesis', desc: 'Deduplication, source lineage and contradiction detection' },
+      { name: '04 · Synthesis', desc: 'Evidence scoring and report synthesis' }
     ];
 
     const box = document.createElement('div');
@@ -332,17 +333,24 @@
           <div class="agent-progress-spinner" id="apbSpinner"></div>
           <div>
             <div class="agent-progress-title" id="apbTitle">${window.escapeHtml(title)}</div>
-            <div style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px;" id="apbSub">Pipeline running autonomously via Agent Reach</div>
+            <div style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);margin-top:2px;" id="apbSub">Searching sources &amp; retrieving verified evidence...</div>
           </div>
         </div>
         <div class="agent-progress-meta">
-          <span class="agent-progress-pct" id="apbPct">12%</span>
+          <span class="agent-progress-pct" id="apbPct" style="letter-spacing:0.04em;">SEARCHING</span>
           <span class="agent-progress-timer" id="apbTimer">0.0s</span>
         </div>
       </div>
-      <div class="agent-progress-track">
-        <div class="agent-progress-bar" id="apbBar" style="width: 12%;"></div>
+      <div class="agent-progress-track" style="overflow:hidden;position:relative;">
+        <div class="agent-progress-bar" id="apbBar" style="width: 100%; animation: apbPulse 1.8s ease-in-out infinite;"></div>
       </div>
+      <style>
+        @keyframes apbPulse {
+          0% { opacity: 0.35; transform: scaleX(0.7); transform-origin: left; }
+          50% { opacity: 0.9; transform: scaleX(1); transform-origin: center; }
+          100% { opacity: 0.35; transform: scaleX(0.7); transform-origin: right; }
+        }
+      </style>
       <div class="agent-progress-stages">
         ${stages.map((st, idx) => `
           <div class="agent-stage-col ${idx === 0 ? 'active' : ''}" id="apbStage_${idx}">
@@ -360,7 +368,6 @@
     container.appendChild(box);
 
     const startTime = performance.now();
-    let currentPct = 12;
     let currentStage = 0;
 
     const timerInterval = setInterval(() => {
@@ -369,24 +376,7 @@
       if (timerEl) timerEl.textContent = `${elapsed}s`;
     }, 100);
 
-    const autoStepInterval = setInterval(() => {
-      if (currentPct < 28) {
-        currentPct += 4;
-        setStage(0);
-      } else if (currentPct < 58) {
-        currentPct += 3;
-        setStage(1);
-      } else if (currentPct < 84) {
-        currentPct += 2;
-        setStage(2);
-      } else if (currentPct < 94) {
-        currentPct += 0.5;
-        setStage(3);
-      }
-      updateBar(currentPct);
-    }, 250);
-
-    function setStage(idx) {
+    function setStage(idx, stageName) {
       currentStage = idx;
       stages.forEach((_, i) => {
         const el = document.getElementById(`apbStage_${i}`);
@@ -399,27 +389,23 @@
           el.className = 'agent-stage-col';
         }
       });
-    }
-
-    function updateBar(pct, subText) {
-      const bar = document.getElementById('apbBar');
       const pctEl = document.getElementById('apbPct');
-      const subEl = document.getElementById('apbSub');
-      const rounded = Math.min(100, Math.round(pct));
-      if (bar) bar.style.width = `${rounded}%`;
-      if (pctEl) pctEl.textContent = `${rounded}%`;
-      if (subText && subEl) subEl.textContent = subText;
+      if (pctEl && stageName) {
+        pctEl.textContent = stageName.toUpperCase();
+      }
     }
 
     return {
-      set(pct, stageIdx, subText) {
-        currentPct = pct;
-        if (typeof stageIdx === 'number') setStage(stageIdx);
-        updateBar(pct, subText);
+      set(pctOrLabel, stageIdx, subText) {
+        if (typeof stageIdx === 'number') setStage(stageIdx, typeof pctOrLabel === 'string' ? pctOrLabel : undefined);
+        const subEl = document.getElementById('apbSub');
+        if (subText && subEl) subEl.textContent = subText;
+      },
+      setStage(idx, label) {
+        setStage(idx, label);
       },
       finish(doneCallback) {
         clearInterval(timerInterval);
-        clearInterval(autoStepInterval);
         stages.forEach((_, i) => {
           const el = document.getElementById(`apbStage_${i}`);
           if (el) el.className = 'agent-stage-col complete';
@@ -429,11 +415,12 @@
         const spinner = document.getElementById('apbSpinner');
         const subEl = document.getElementById('apbSub');
         if (bar) {
+          bar.style.animation = 'none';
           bar.style.width = '100%';
           bar.style.background = 'linear-gradient(90deg, #10b981, #00e5ff)';
         }
         if (pctEl) {
-          pctEl.textContent = '100%';
+          pctEl.textContent = 'COMPLETE';
           pctEl.style.color = 'var(--emerald)';
           pctEl.style.borderColor = 'var(--emerald)';
           pctEl.style.background = 'rgba(16, 185, 129, 0.15)';
@@ -442,19 +429,19 @@
           spinner.style.borderTopColor = 'var(--emerald)';
           spinner.style.animation = 'none';
         }
-        if (subEl) subEl.textContent = 'Pipeline execution complete — rendering intelligence artifacts';
+        if (subEl) subEl.textContent = 'Execution finished — rendering evidence report';
         setTimeout(() => {
           if (doneCallback) doneCallback();
-        }, 350);
+        }, 200);
       },
       error(errMsg) {
         clearInterval(timerInterval);
-        clearInterval(autoStepInterval);
         const bar = document.getElementById('apbBar');
         const pctEl = document.getElementById('apbPct');
         const subEl = document.getElementById('apbSub');
         const titleEl = document.getElementById('apbTitle');
         if (bar) {
+          bar.style.animation = 'none';
           bar.style.background = 'var(--rose)';
         }
         if (pctEl) {
@@ -463,7 +450,7 @@
           pctEl.style.borderColor = 'var(--rose)';
         }
         if (titleEl) titleEl.style.color = 'var(--rose)';
-        if (subEl) subEl.textContent = errMsg || 'Agent analysis timed out or encountered an error';
+        if (subEl) subEl.textContent = errMsg || 'Investigation encountered an error or timeout';
       }
     };
   };

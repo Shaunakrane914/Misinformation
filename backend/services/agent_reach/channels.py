@@ -19,6 +19,8 @@ class ChannelStatus(str, Enum):
     UNAVAILABLE = "UNAVAILABLE"
     AUTH_REQUIRED = "AUTH_REQUIRED"
     ERROR = "ERROR"
+    UNKNOWN = "UNKNOWN"
+    NOT_PROBED = "NOT_PROBED"
 
 
 @dataclass

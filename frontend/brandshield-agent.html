@@ -581,15 +581,22 @@
       }
 
       // 4. Review Manipulation & Astroturfing Intelligence
+      const isInsufficient = reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
+      const statusTitle = isInsufficient
+        ? '⚪ INSUFFICIENT EVIDENCE TO ASSESS'
+        : (reviewIntel.review_manipulation_detected ? '⚠️ MANIPULATION PATTERN DETECTED' : '✓ NO SUSPICIOUS PATTERN FOUND');
+      const statusColor = isInsufficient ? 'var(--text-dim)' : (reviewIntel.review_manipulation_detected ? 'var(--rose)' : '#10b981');
+      const confDisplay = reviewIntel.confidence != null ? `CONFIDENCE: ${Math.round(reviewIntel.confidence * 100)}%` : 'CONFIDENCE: UNAVAILABLE';
+
       html += `
         <div class="sec-hdr">REVIEW INTELLIGENCE &amp; MANIPULATION AUDIT</div>
         <div class="scan-card ae-reveal" style="padding:20px;">
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
-            <span style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:${reviewIntel.review_manipulation_detected ? 'var(--rose)' : '#10b981'};">
-              ${reviewIntel.review_manipulation_detected ? '⚠️ MANIPULATION PATTERN DETECTED' : '✓ NO ASTROTURFING PATTERN DETECTED'}
+            <span style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:${statusColor};">
+              ${statusTitle}
             </span>
             <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">
-              CONFIDENCE: ${Math.round((reviewIntel.confidence || 0.65) * 100)}%
+              ${confDisplay}
             </span>
           </div>
           <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:8px;">
@@ -771,7 +778,7 @@
                 ${escapeHtml(d.threat_type)}
               </span>
               <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);padding:4px 8px;background:rgba(255,255,255,0.03);border-radius:4px;">
-                CONFIDENCE: ${Math.round((d.confidence || 0.8) * 100)}%
+                CONFIDENCE: ${d.confidence != null ? Math.round(d.confidence * 100) + '%' : 'UNAVAILABLE'}
               </span>
               <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;padding:4px 8px;background:rgba(16,185,129,0.08);border-radius:4px;">
                 STATUS: ${(d.status || 'UNVERIFIED').toUpperCase()}

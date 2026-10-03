@@ -107,9 +107,9 @@ async def process_claim(claim_id: str):
             except Exception as e_inv2:
                 verdict_json = {
                     "verdict": "Unverified",
-                    "confidence": 0.50,
-                    "severity": "Medium",
-                    "reasoning": "Multi-source evidence review completed with partial ambiguity."
+                    "confidence": None,
+                    "severity": "Low",
+                    "reasoning": "Investigation incomplete due to downstream processing error."
                 }
 
         if isinstance(verdict_json, str):
@@ -144,13 +144,6 @@ async def process_claim(claim_id: str):
                         "stance": "supporting" if inv.get("support_score", 0.5) >= 0.5 else "refuting",
                         "source_url": inv.get("url")
                     })
-
-        if not evidence_items_to_insert:
-            evidence_items_to_insert.append({
-                "summary": verdict_json.get("reasoning") or "Multi-source evidence evaluated across global repositories.",
-                "stance": "supporting" if final_verdict == "true" else "refuting",
-                "source_url": source_url
-            })
 
         # Step 8: Insert evidence items into database
         logger.info(f"[ClaimWorker] [{claim_id}] Inserting {len(evidence_items_to_insert)} evidence items into database")

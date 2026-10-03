@@ -7,8 +7,11 @@ within secondary articles and adaptively searches for the authoritative original
 
 import logging
 import re
+import time
+from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
+from backend.services.agent_reach.channels import QueryExecutionRecord
 from backend.services.research.research_models import ContentDepth, EvidenceItem, SourceRole, SourceTier
 
 logger = logging.getLogger(__name__)
@@ -111,6 +114,7 @@ class PrimarySourceEscalator:
                 seen_queries.add(spec["query"])
                 unique_specs.append(spec)
 
+        execution_records: List[QueryExecutionRecord] = []
         for spec in unique_specs[:max_escalations]:
             eq = spec["query"]
             originating_id = spec["originating_id"]
@@ -119,11 +123,22 @@ class PrimarySourceEscalator:
 
             telemetry["escalation_queries_executed"] += 1
             telemetry["queries"].append(eq)
+
+            q_start_time = time.time()
+            q_started_at = datetime.utcnow().isoformat()
+            q_status = "SUCCESS"
+            q_error = None
+            frags_retrieved = 0
+            actual_channel = "web"
+
             try:
                 # Query Web and RSS channels
                 frags = agent_reach_service.search_channel("web", eq, limit=2)
+                frags_retrieved = len(frags)
                 if not frags:
+                    actual_channel = "rss"
                     frags = agent_reach_service.search_channel("rss", eq, limit=2)
+                    frags_retrieved = len(frags)
 
                 for f in frags:
                     u = f.url or ""
@@ -148,8 +163,31 @@ class PrimarySourceEscalator:
                     telemetry["primary_sources_found"] += 1
 
             except Exception as e:
+                q_status = "FAILED"
+                q_error = str(e)
                 logger.debug(f"[PrimarySourceEscalator] Escalation query error for '{eq}': {e}")
 
+            q_latency = int((time.time() - q_start_time) * 1000)
+            q_completed_at = datetime.utcnow().isoformat()
+
+            execution_records.append(QueryExecutionRecord(
+                query_id=q_id,
+                channel=actual_channel,
+                query_text=eq,
+                query_class="primary_escalation",
+                phase="escalation",
+                status=q_status,
+                started_at=q_started_at,
+                completed_at=q_completed_at,
+                latency_ms=q_latency,
+                result_count_raw=frags_retrieved,
+                result_count_normalized=sum(1 for p in discovered_primaries if p.metadata.get("primary_query_id") == q_id),
+                error=q_error,
+                retrieval_mode="direct",
+                backend_id=actual_channel
+            ))
+
+        telemetry["execution_records"] = execution_records
         return discovered_primaries, telemetry
 
 

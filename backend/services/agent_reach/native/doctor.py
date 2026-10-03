@@ -10,7 +10,7 @@ import logging
 import shutil
 import subprocess
 import time
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 logger = logging.getLogger(__name__)
 
@@ -98,16 +98,21 @@ class DoctorBridge:
         st = self.get_channel_status(platform)
         return st.get("status") == "ok" and bool(st.get("active_backend"))
 
-    def get_canonical_status_code(self, platform: str) -> str:
+    def get_canonical_status_code(self, platform: Union[str, Dict[str, Any]]) -> str:
         """
         Map upstream doctor status to Aegis status taxonomy:
-        AVAILABLE | DEGRADED | AUTH_REQUIRED | UNAVAILABLE | ERROR
+        AVAILABLE | DEGRADED | AUTH_REQUIRED | UNAVAILABLE | ERROR | UNKNOWN
         """
-        st = self.get_channel_status(platform)
+        if isinstance(platform, dict):
+            st = platform
+        else:
+            st = self.get_channel_status(platform)
         status = str(st.get("status", "off")).lower()
         msg = str(st.get("message", "")).lower()
         active = st.get("active_backend")
 
+        if status in ("unknown", "not_probed"):
+            return "UNKNOWN"
         if status in ("error", "exception", "failed"):
             return "ERROR"
         if any(auth_kw in msg for auth_kw in ("cookie", "login", "session", "认证", "token", "auth", "credential")) or status == "auth_required":
@@ -118,17 +123,17 @@ class DoctorBridge:
             return "DEGRADED"
         if status in ("off", "unavailable", "disabled"):
             return "UNAVAILABLE"
-        return "UNAVAILABLE"
+        return "UNKNOWN"
 
     def _generate_fallback_baseline(self) -> Dict[str, Dict[str, Any]]:
-        """Static baseline for bootstrap scenarios where upstream package is initializing."""
+        """Static baseline for bootstrap scenarios where upstream capability has not been probed yet."""
         return {
-            "web": {"status": "ok", "active_backend": "Jina Reader", "tier": 0, "message": "Jina Reader active"},
-            "rss": {"status": "ok", "active_backend": "feedparser", "tier": 0, "message": "feedparser active"},
-            "v2ex": {"status": "ok", "active_backend": "V2EX API (public)", "tier": 0, "message": "V2EX public API active"},
-            "bilibili": {"status": "ok", "active_backend": "B站搜索 API", "tier": 1, "message": "Bilibili public search active"},
-            "youtube": {"status": "warn", "active_backend": "yt-dlp", "tier": 0, "message": "yt-dlp installed"},
-            "github": {"status": "warn", "active_backend": "gh CLI", "tier": 0, "message": "gh CLI installed"},
+            "web": {"status": "not_probed", "active_backend": None, "tier": 0, "message": "Capability not yet probed (bootstrap baseline)"},
+            "rss": {"status": "not_probed", "active_backend": None, "tier": 0, "message": "Capability not yet probed (bootstrap baseline)"},
+            "v2ex": {"status": "not_probed", "active_backend": None, "tier": 0, "message": "Capability not yet probed (bootstrap baseline)"},
+            "bilibili": {"status": "not_probed", "active_backend": None, "tier": 1, "message": "Capability not yet probed (bootstrap baseline)"},
+            "youtube": {"status": "not_probed", "active_backend": None, "tier": 0, "message": "Capability not yet probed (bootstrap baseline)"},
+            "github": {"status": "not_probed", "active_backend": None, "tier": 0, "message": "Capability not yet probed (bootstrap baseline)"},
         }
 
 

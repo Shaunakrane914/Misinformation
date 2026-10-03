@@ -404,9 +404,8 @@
       };
 
       const endpoints = [
-        '/api/personal/scan',
-        '/api/personal-watch/scan',
-        'https://misinformation-1ouh.onrender.com/api/personal/scan'
+        (window.getAegisApiUrl ? window.getAegisApiUrl('/api/personal/scan') : '/api/personal/scan'),
+        '/api/personal-watch/scan'
       ];
       let data = null;
       let errorMsg = null;

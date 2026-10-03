@@ -15,12 +15,10 @@ Key Capabilities:
 """
 
 import logging
-import os
 import re
 import json
-import urllib.parse
 from datetime import datetime
-from typing import Any, Dict, List, Optional, Tuple, Set
+from typing import Any, Dict, List, Optional, Tuple
 
 from duckduckgo_search import DDGS
 
@@ -133,10 +131,8 @@ class BrandShieldAgent:
 
         try:
             try:
-                from backend.services.agent_reach import agent_reach_service
                 from backend.services.agent_reach.planner import RetrievalPlanner
             except (ImportError, ModuleNotFoundError):
-                from services.agent_reach import agent_reach_service
                 from services.agent_reach.planner import RetrievalPlanner
 
             logger.info(f"[BrandShield 2.0] Launching multi-query Agent Reach retrieval for '{target_name}' (domain=brand)")

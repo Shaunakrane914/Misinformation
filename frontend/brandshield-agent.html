@@ -346,9 +346,8 @@
         let data = null;
         let lastErr = null;
         const endpoints = [
-          '/api/brandshield/scan',
-          '/brandshield/scan',
-          'https://misinformation-1ouh.onrender.com/api/brandshield/scan'
+          (window.getAegisApiUrl ? window.getAegisApiUrl('/api/brandshield/scan') : '/api/brandshield/scan'),
+          '/brandshield/scan'
         ];
 
         for (const ep of endpoints) {

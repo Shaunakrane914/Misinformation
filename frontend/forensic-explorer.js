@@ -56,8 +56,7 @@
       `;
 
       const endpoints = [
-        `/api/claims/${encodeURIComponent(claimId)}/research`,
-        `https://misinformation-1ouh.onrender.com/api/claims/${encodeURIComponent(claimId)}/research`
+        (window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${encodeURIComponent(claimId)}/research`) : `/api/claims/${encodeURIComponent(claimId)}/research`)
       ];
 
       for (const ep of endpoints) {

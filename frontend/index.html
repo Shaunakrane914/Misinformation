@@ -974,7 +974,9 @@
 
       try {
         let submitData = null;
-        const submitEndpoints = ['/api/claims/submit', 'https://misinformation-1ouh.onrender.com/api/claims/submit'];
+        const submitEndpoints = [
+          (window.getAegisApiUrl ? window.getAegisApiUrl('/api/claims/submit') : '/api/claims/submit')
+        ];
         for (const ep of submitEndpoints) {
           try {
             const submitRes = await fetch(ep, {
@@ -996,8 +998,7 @@
         const claimId = submitData.claim_id;
 
         const pollEndpoints = [
-          `/api/claims/${claimId}`,
-          `https://misinformation-1ouh.onrender.com/api/claims/${claimId}`
+          (window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${claimId}`) : `/api/claims/${claimId}`)
         ];
 
         // If completed immediately (e.g. cached claim)

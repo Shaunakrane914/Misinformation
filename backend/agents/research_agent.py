@@ -8,10 +8,8 @@ Google Gemini reasoning with prompt injection defense.
 
 import json
 import logging
-import re
 from typing import Any, Dict, List, Optional
 
-from backend.schemas.claim_schemas import EvidenceItem
 from backend.services.gemini_service import gemini_service
 from backend.services.research import research_engine, ResearchRequest, ResearchResult
 

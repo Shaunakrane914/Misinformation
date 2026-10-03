@@ -287,9 +287,9 @@
   </footer>
 
   <script>
-    const BACKEND = (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
-      ? ''
-      : 'https://misinformation-1ouh.onrender.com';
+    const BACKEND = (typeof window !== 'undefined' && window.AEGIS_API_BASE)
+      ? window.AEGIS_API_BASE.replace(/\/+$/, '')
+      : '';
     let autoRefreshTimer = null;
 
     const urlParams = new URLSearchParams(window.location.search);
@@ -464,8 +464,7 @@
       try {
         let data = null;
         const endpoints = [
-          `/api/claims/${encodeURIComponent(id)}`,
-          `https://misinformation-1ouh.onrender.com/api/claims/${encodeURIComponent(id)}`
+          (window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${encodeURIComponent(id)}`) : `/api/claims/${encodeURIComponent(id)}`)
         ];
 
         for (const ep of endpoints) {

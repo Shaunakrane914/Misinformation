@@ -6,10 +6,8 @@
 
 window.GeminiClient = (() => {
   const ENDPOINTS = [
-    '/api/gemini',
-    '/.netlify/functions/gemini',
-    'https://misinformation-1ouh.onrender.com/api/gemini',
-    'https://misinformation-1ouh.onrender.com/.netlify/functions/gemini'
+    (window.getAegisApiUrl ? window.getAegisApiUrl('/api/gemini') : '/api/gemini'),
+    '/.netlify/functions/gemini'
   ];
 
   /**

@@ -13,7 +13,6 @@ source-grounded forensic verdicts and auditable evidence chains matching:
 
 import json
 import logging
-import re
 from typing import Any, Dict, List, Optional
 
 from backend.schemas.claim_schemas import SeverityLevel, VerdictType

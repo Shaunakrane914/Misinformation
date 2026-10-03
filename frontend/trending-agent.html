@@ -524,13 +524,9 @@
       };
 
       let result = null;
-      const configuredApi = window.AEGIS_API_BASE ? `${window.AEGIS_API_BASE}/api/trending/scan` : null;
-      const isLocalHost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
       const endpoints = [
-        configuredApi,
-        '/api/trending/scan',
-        isLocalHost ? 'http://127.0.0.1:8000/api/trending/scan' : null
-      ].filter(Boolean);
+        (window.getAegisApiUrl ? window.getAegisApiUrl('/api/trending/scan') : '/api/trending/scan')
+      ];
 
       for (const ep of endpoints) {
         try {

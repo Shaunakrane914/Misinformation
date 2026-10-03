@@ -2,7 +2,7 @@
 FastAPI Backend for Aegis Protocol — Multi-Agent Threat Intelligence & Verification
 =====================================================================================
 
-v3.5.1 — Modular APIRouter Architecture
+v3.7.0 — Modular APIRouter Architecture
 - Deconstructed domain routing across backend/api/ (claims, agent_reach, threat_lab, agents, system)
 - Synchronous 5-section Truth Dossier verification endpoint (/api/claims/verify)
 - Domain-specialized Omni-Channel scraper endpoint (/api/agent-reach/omni-scan)
@@ -50,7 +50,7 @@ tags_metadata = [
     },
     {
         "name": "BrandShield Agent (Brand Defense)",
-        "description": "Cross-platform fake review detection, counterfeit product identification, and brand smear campaign forensics.",
+        "description": "Cross-platform review pattern screening, counterfeit product identification, and brand smear campaign forensics.",
     },
     {
         "name": "Personal Watch Agent (VIP Protection)",
@@ -58,15 +58,15 @@ tags_metadata = [
     },
     {
         "name": "Trending & Contagion Agent",
-        "description": "Viral narrative tracking, Hawkes process contagion modeling, and instant crisis response statement generation.",
+        "description": "Viral narrative tracking, multi-channel acceleration modeling, and crisis response statement generation.",
     },
     {
         "name": "Agent Reach (Omni-Channel Scrapers)",
-        "description": "Zero-cost, zero-API-key scraper fabric across Reddit, Twitter/X, YouTube, News Wires, and Jina Reader.",
+        "description": "Zero-cost scraper fabric across Reddit, Twitter/X, YouTube, News Wires, and Jina Reader.",
     },
     {
         "name": "Threat Intelligence Lab",
-        "description": "Mathematical physics instruments: Mandelbrot token rank-frequency regression, Hawkes blast radius, and Byzantine fault-tolerant consensus.",
+        "description": "Empirical threat analytics: token frequency analysis, narrative blast radius, and Byzantine fault-tolerant consensus.",
     },
     {
         "name": "War Room & Incident Response",
@@ -84,15 +84,15 @@ app = FastAPI(
     description="""
 ### Real-Time Misinformation Detection, Market Threat Defense & Forensic Truth Dossier
 
-Aegis Protocol orchestrates a coordinated swarm of 7 specialized AI agents and zero-cost scraping fabric:
+Aegis Protocol orchestrates a deterministic evidence pipeline with 7 specialized domain modules and multi-channel scraping fabric:
 - **ClaimIngestionAgent**: Cryptographic hash normalization and deduplication.
 - **ResearchAgent**: Multi-source evidence gathering with dynamic Gemini rotation and AgentReach.
 - **InvestigatorAgent**: Stance classification, Bayesian evidence matrix, and contradiction detection.
-- **TrendingAgent**: Viral narrative velocity, Hawkes self-exciting point processes, and crisis PR generation.
+- **TrendingAgent**: Viral narrative velocity tracking and crisis response generation.
 - **ScoutAgent**: Stock drop anomaly detection, Yahoo Finance telemetry, and short-seller attack correlation.
-- **BrandShieldAgent**: E-commerce counterfeit detection and fake review ring forensics.
+- **BrandShieldAgent**: E-commerce counterfeit detection and review pattern screening.
 - **PersonalWatchAgent**: High-profile VIP protection, audio/video deepfake analysis, and impersonation detection.
-- **AgentReach Scraper**: Zero-cost scraper fabric spanning Reddit, Twitter/X, YouTube, Google News, and Jina Reader.
+- **AgentReach Scraper**: Multi-platform scraper fabric spanning Reddit, Twitter/X, YouTube, Google News, and Jina Reader.
 """,
     version=__version__,
     openapi_tags=tags_metadata

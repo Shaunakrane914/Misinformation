@@ -84,9 +84,9 @@ const STATIC_CLAIMS = [
 // ─────────────────────────────────────────────
 // CONFIG
 // ─────────────────────────────────────────────
-const BACKEND_BASE = (typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'))
-  ? ''
-  : 'https://misinformation-1ouh.onrender.com';
+const BACKEND_BASE = (typeof window !== 'undefined' && window.AEGIS_API_BASE)
+  ? window.AEGIS_API_BASE.replace(/\/+$/, '')
+  : '';
 const API_URL = `${BACKEND_BASE}/api/dashboard/claims`;
 const HEALTH_URL = `${BACKEND_BASE}/api/dashboard/claims`;
 

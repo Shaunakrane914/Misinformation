@@ -789,7 +789,9 @@
       }, 100);
 
       let data = null;
-      const endpoints = ['/api/lab/synthetic-detect', 'https://misinformation-1ouh.onrender.com/api/lab/synthetic-detect'];
+      const endpoints = [
+        (window.getAegisApiUrl ? window.getAegisApiUrl('/api/lab/synthetic-detect') : '/api/lab/synthetic-detect')
+      ];
       for (const ep of endpoints) {
         try {
           if (progFill) progFill.style.width = '60%';
@@ -1113,7 +1115,9 @@
       }, 100);
 
       let data = null;
-      const blastEndpoints = ['/api/lab/blast-radius', 'https://misinformation-1ouh.onrender.com/api/lab/blast-radius'];
+      const blastEndpoints = [
+        (window.getAegisApiUrl ? window.getAegisApiUrl('/api/lab/blast-radius') : '/api/lab/blast-radius')
+      ];
       for (const ep of blastEndpoints) {
         try {
           if (progFill) progFill.style.width = '65%';
@@ -1265,7 +1269,9 @@
       }, 100);
 
       let data = null;
-      const consensusEndpoints = ['/api/lab/consensus', 'https://misinformation-1ouh.onrender.com/api/lab/consensus'];
+      const consensusEndpoints = [
+        (window.getAegisApiUrl ? window.getAegisApiUrl('/api/lab/consensus') : '/api/lab/consensus')
+      ];
       for (const ep of consensusEndpoints) {
         try {
           if (progFill) progFill.style.width = '65%';

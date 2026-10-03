@@ -524,8 +524,7 @@
         let data = null;
         let lastErr = null;
         const endpoints = [
-          '/api/scout/analyze',
-          'https://misinformation-1ouh.onrender.com/api/scout/analyze'
+          (window.getAegisApiUrl ? window.getAegisApiUrl('/api/scout/analyze') : '/api/scout/analyze')
         ];
 
         for (const ep of endpoints) {

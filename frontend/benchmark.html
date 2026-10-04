@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Empirical Research Benchmark &amp; Chaos Lab · Aegis Protocol</title>
-  <meta name="description" content="Empirical performance benchmarks, evidence saturation stopping curves, 6D quality tensors, systems chaos tests, and deterministic replay ledger.">
+  <title>Empirical Benchmarks &amp; Fault Resilience · Aegis Protocol</title>
+  <meta name="description" content="Empirical performance benchmarks, evidence saturation stopping curves, quality dimensions, fault injection tests, and reproducible research replay.">
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
@@ -176,15 +176,15 @@
   <div class="ae-page">
     <!-- HERO -->
     <div class="bench-hero ae-reveal">
-      <div class="bench-tag"><span class="dot"></span>Aegis Intelligence Lab · Empirical Evaluation Suite</div>
-      <h1>Research <span>Benchmark</span> &amp; Chaos Lab</h1>
-      <p>Empirical evaluation of adaptive evidence saturation ($S_k \ge \tau, N(q_k) < \epsilon$), source lineage compression, zero-hallucination invariants under simulated network blackout, and deterministic research replay.</p>
+      <div class="bench-tag"><span class="dot"></span>Aegis Empirical Benchmark Suite</div>
+      <h1>Research <span>Benchmark</span> &amp; Fault Resilience</h1>
+      <p>Empirical evaluation of adaptive evidence saturation stopping, source wire de-duplication, defensive fallbacks under simulated network blackout, and deterministic research replay.</p>
 
       <div class="tel-ribbon">
         <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">-38.2%</span><span class="tel-key">Query Redundancy Reduction</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">3.4x</span><span class="tel-key">Lineage Echo Compression</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">4 / 4 PASSED</span><span class="tel-key">Chaos Suite (tests/chaos)</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">0 Fabrications</span><span class="tel-key">Blackout Invariant (test_complete_network_blackout)</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">3.4x</span><span class="tel-key">Wire De-duplication</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">4 / 4 PASSED</span><span class="tel-key">Fault-Injection Suite</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">0 Fabrications</span><span class="tel-key">Network Blackout Test</span></div>
         <div class="tel-cell"><span class="tel-val">v3.7.0</span><span class="tel-key">Evaluated Release Baseline</span></div>
       </div>
     </div>
@@ -212,7 +212,7 @@
                 <th>Queries (Planned &rarr; Executed)</th>
                 <th>Query Reduction</th>
                 <th>Funnel (Candidates &rarr; Reads &rarr; Primary)</th>
-                <th>Lineage Echo Compression</th>
+                <th>Wire De-duplication</th>
                 <th>Latency (Single / N=4 Concur)</th>
               </tr>
             </thead>
@@ -226,7 +226,7 @@
                 <td><strong style="color:#fff;">8</strong> &rarr; <strong style="color:var(--emerald);">5</strong></td>
                 <td><span style="color:var(--emerald);font-weight:700;font-family:var(--font-mono);">-37.5%</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">71 &rarr; 11 &rarr; <strong>28.6% Primary</strong></span></td>
-                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">3.2x (16 echoes &rarr; 5 wires)</span></td>
+                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">3.2x (16 citations &rarr; 5 wires)</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">118ms / 242ms</span></td>
               </tr>
               <tr>
@@ -238,7 +238,7 @@
                 <td><strong style="color:#fff;">10</strong> &rarr; <strong style="color:var(--emerald);">6</strong></td>
                 <td><span style="color:var(--emerald);font-weight:700;font-family:var(--font-mono);">-40.0%</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">94 &rarr; 14 &rarr; <strong>33.3% Primary</strong></span></td>
-                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">4.1x (29 echoes &rarr; 7 wires)</span></td>
+                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">4.1x (29 citations &rarr; 7 wires)</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">142ms / 268ms</span></td>
               </tr>
               <tr>
@@ -250,7 +250,7 @@
                 <td><strong style="color:#fff;">6</strong> &rarr; <strong style="color:var(--emerald);">4</strong></td>
                 <td><span style="color:var(--emerald);font-weight:700;font-family:var(--font-mono);">-33.3%</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">52 &rarr; 8 &rarr; <strong>25.0% Primary</strong></span></td>
-                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">2.8x (11 echoes &rarr; 4 wires)</span></td>
+                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">2.8x (11 citations &rarr; 4 wires)</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">95ms / 198ms</span></td>
               </tr>
               <tr>
@@ -262,7 +262,7 @@
                 <td><strong style="color:#fff;">8</strong> &rarr; <strong style="color:var(--emerald);">5</strong></td>
                 <td><span style="color:var(--emerald);font-weight:700;font-family:var(--font-mono);">-37.5%</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">86 &rarr; 12 &rarr; <strong>18.2% Primary</strong></span></td>
-                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">3.6x (22 echoes &rarr; 6 wires)</span></td>
+                <td><span style="color:var(--accent);font-weight:700;font-family:var(--font-mono);">3.6x (22 citations &rarr; 6 wires)</span></td>
                 <td><span style="font-family:var(--font-mono);font-size:0.8rem;">110ms / 225ms</span></td>
               </tr>
             </tbody>
@@ -270,14 +270,14 @@
         </div>
       </div>
 
-      <!-- 2. ANALYTICAL CHARTS (SATURATION CURVE & 6D TENSOR RADAR) -->
+      <!-- 2. ANALYTICAL CHARTS (SATURATION CURVE & QUALITY DIMENSIONS) -->
       <div class="bench-section ae-reveal">
         <div class="section-head">
           <h2>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent)"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
-            Mathematical Saturation Dynamics &amp; 6D Quality Tensor
+            Evidence Saturation Dynamics &amp; Quality Dimensions
           </h2>
-          <span class="badge">Information-Theoretic Evidence Theory</span>
+          <span class="badge">Evidence Saturation Model</span>
         </div>
 
         <div class="chart-grid">
@@ -292,32 +292,32 @@
             </div>
           </div>
 
-          <!-- Chart 2: 6D Quality Tensor Radar -->
+          <!-- Chart 2: Quality Dimensions Radar -->
           <div class="chart-card">
-            <div class="chart-title">// 6D QUALITY TENSOR RADAR (PRIMARY vs PRESS vs CHATTER)</div>
+            <div class="chart-title">// EVIDENCE QUALITY PROFILE (PRIMARY vs PRESS vs SOCIAL)</div>
             <div style="flex:1;min-height:260px;position:relative;">
               <canvas id="qualityRadarChart"></canvas>
             </div>
             <div style="font-size:0.75rem;color:var(--text-dim);font-family:var(--font-mono);margin-top:10px;">
-              Axes: Credibility, Consistency, Recency, Corroboration, Diversity, Proximity.
+              Evaluated dimensions: Credibility, Consistency, Recency, Corroboration, Diversity, Proximity.
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 3. SYSTEMS CHAOS RESILIENCE TEST SUITE -->
+      <!-- 3. FAULT INJECTION & RESILIENCE TEST SUITE -->
       <div class="bench-section ae-reveal">
         <div class="section-head">
           <h2>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--emerald)"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>
-            Systems Chaos Resilience Suite (tests/chaos)
+            Fault Injection &amp; Resilience Test Suite (tests/chaos)
           </h2>
           <span class="badge" style="color:var(--emerald);border-color:rgba(16,185,129,0.3);background:rgba(16,185,129,0.1);">
-            4 / 4 PASSED &bull; ZERO HALLUCINATIONS
+            4 / 4 FAULT-INJECTION TESTS PASSED
           </span>
         </div>
         <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.55;">
-          Automated stress and chaos test suite executing real failure injections against the Agent Reach channel pipeline. Confirms defensive step-downs, non-blocking thread termination, and strict zero-hallucinated evidence invariants.
+          Automated stress and resilience test suite executing real failure injections against the channel pipeline. Confirms defensive fallbacks, non-blocking thread termination, and strict absence of fabricated evidence.
         </p>
 
         <div class="chaos-grid">
@@ -364,28 +364,28 @@
             <div>
               <div class="chaos-name">04 &bull; Total Channel Blackout Invariant</div>
               <div class="chaos-desc">
-                Forces 100% channel failure simultaneously. System guarantees 0 hallucinated claims, setting findings state to UNKNOWN_NOT_INVESTIGATED.
+                Forces 100% channel failure simultaneously. System guarantees 0 fabricated claims, setting findings state to UNKNOWN_NOT_INVESTIGATED.
               </div>
             </div>
             <div class="chaos-footer">
               <span style="color:var(--emerald);font-weight:700;">PASSED (12ms)</span>
-              <span>zero_hallucinations</span>
+              <span>no_fabricated_evidence</span>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 4. DETERMINISTIC REPLAY LEDGER EXPLORER -->
+      <!-- 4. DETERMINISTIC RESEARCH REPLAY -->
       <div class="bench-section ae-reveal">
         <div class="section-head">
           <h2>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent)"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-            Deterministic Research Replay Ledger
+            Deterministic Research Replay
           </h2>
-          <span class="badge">Immutable Content-Addressed Dossiers</span>
+          <span class="badge">Recorded Research Dossiers</span>
         </div>
         <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.55;">
-          Every completed investigation is permanently recorded with SHA-256 evidence candidate hashes, decision logs, and execution traces. Auditable at any time via <code>/api/research/replay/dossiers/{id}</code>.
+          Completed investigations are recorded with SHA-256 evidence candidate hashes, decision logs, and execution traces for reproducible audit via <code>/api/research/replay/dossiers/{id}</code>.
         </p>
 
         <div id="dossierListContainer" class="dossier-grid">
@@ -412,12 +412,12 @@
     <footer class="ae-footer">
       <div>
         <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);">Empirical Research Benchmark &amp; Systems Chaos Evaluation Suite &copy; 2026</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Empirical Research Benchmark &amp; Resilience Evaluation Suite &copy; 2026</div>
       </div>
       <div style="display:flex;gap:18px;font-size:0.8rem;">
         <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
-        <a href="scout-agent.html" style="color:var(--text-muted);text-decoration:none;">Scout Terminal</a>
-        <a href="lab.html" style="color:var(--text-muted);text-decoration:none;">Threat Lab</a>
+        <a href="scout-agent.html" style="color:var(--text-muted);text-decoration:none;">Scout Agent</a>
+        <a href="lab.html" style="color:var(--text-muted);text-decoration:none;">Research Lab</a>
         <a href="dashboard.html" style="color:var(--text-muted);text-decoration:none;">Dashboard</a>
       </div>
     </footer>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Live Telemetry Dashboard — Aegis Protocol</title>
+  <title>Investigation Dashboard — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
@@ -275,7 +275,7 @@
       <div class="db-feed">
         <div class="db-feed-header">
           <div>
-            <div class="db-title">Verified Claims Telemetry</div>
+            <div class="db-title">Investigation Dashboard</div>
             <div class="db-live-row" id="dbStatusRow">
               <div class="db-live-dot" id="dbStatusDot" style="background:#818cf8;box-shadow:none;animation:none;"></div>
               <span class="db-live-text" id="dbStatusText" style="color:#818cf8;">CACHED SAMPLE DATA</span>
@@ -319,7 +319,7 @@
       <!-- RIGHT: Stats Sidebar -->
       <aside class="db-sidebar">
         <div>
-          <div class="db-sidebar-title">// Verdict Distribution</div>
+          <div class="db-sidebar-title">Verdict Distribution</div>
           <div class="db-tel-strip">
             <div class="db-tel-row">
               <div class="db-tel-dot" style="background:var(--emerald);box-shadow:0 0 6px var(--emerald);"></div>
@@ -345,12 +345,12 @@
         </div>
 
         <div class="db-chart-card">
-          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">// Verdict Distribution</h3>
+          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Verdict Distribution</h3>
           <div class="chart-wrap"><canvas id="pieChart"></canvas></div>
         </div>
 
         <div class="db-chart-card">
-          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">// Claims Volume Histogram</h3>
+          <h3 style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:12px;">Claims Volume</h3>
           <div class="chart-wrap-bar"><canvas id="barChart"></canvas></div>
         </div>
       </aside>
@@ -360,7 +360,7 @@
   <footer class="ae-footer">
     <div>
       <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-      <div style="font-size:0.75rem;color:var(--text-dim);">Live Telemetry Dashboard &copy; 2026</div>
+      <div style="font-size:0.75rem;color:var(--text-dim);">Investigation Dashboard &copy; 2026</div>
     </div>
     <div style="display:flex;gap:18px;font-size:0.8rem;">
       <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>

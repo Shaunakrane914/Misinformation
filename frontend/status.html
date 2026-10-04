@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Claim Status & Telemetry — Aegis Protocol</title>
-  <meta name="description" content="View real-time investigation timeline, evidence log, and final verdict for any claim ID.">
+  <title>Claim Investigation Status — Aegis Protocol</title>
+  <meta name="description" content="View investigation timeline, evidence records, and final assessment for any claim ID.">
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="forensic-explorer.js"></script>
   <style>
@@ -267,12 +267,12 @@
 
   <div class="status-container">
     <div class="ae-reveal" style="margin-bottom:32px;">
-      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// REAL-TIME AUDIT LOG</div>
+      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// INVESTIGATION STATUS</div>
       <h1 style="font-size:clamp(2rem, 3.5vw, 2.6rem);font-weight:800;letter-spacing:-0.03em;color:#fff;">
         Claim Status &amp; Investigation Log
       </h1>
       <p style="color:var(--text-muted);font-size:0.98rem;max-width:600px;margin-top:6px;">
-        Lookup any claim ID to inspect parallel agent research, evidence provenance, and the Byzantine consensus verdict.
+        Lookup any claim ID to inspect source retrieval, evidence comparison, and the final assessment.
       </p>
     </div>
 
@@ -402,7 +402,7 @@
         s3Desc = 'No verifiable external evidence found for this claim.';
       }
 
-      // Stage 4: Epistemic Analysis & Verification
+      // Stage 4: Evidence Analysis & Synthesis
       let s4State = 'NOT_STARTED';
       let s4Desc = 'Cross-referencing source lineage and evidence confidence';
       if (data.verdict) {
@@ -419,12 +419,12 @@
         s4Desc = 'Insufficient evidence to compute definitive verdict.';
       }
 
-      // Stage 5: Final Truth Dossier
+      // Stage 5: Final Assessment Report
       let s5State = 'NOT_STARTED';
-      let s5Desc = 'Packaging provenance trail and audit log';
+      let s5Desc = 'Packaging evidence trail and findings summary';
       if (isCompleted) {
         s5State = 'COMPLETE';
-        s5Desc = 'Truth dossier finalized and locked in audit ledger';
+        s5Desc = 'Investigation report finalized and recorded';
       } else if (isFailed) {
         s5State = 'FAILED';
         s5Desc = 'Investigation failed: ' + (data.error || 'Pipeline execution interrupted');
@@ -527,7 +527,7 @@
             <div class="ae-loading-top">
               <div class="ae-loading-title-wrap">
                 <div class="ae-radar-spinner"></div>
-                <div class="ae-loading-title">Retrieving Cluster Telemetry for <span style="color:var(--accent);">${id.slice(0, 8)}...</span></div>
+                <div class="ae-loading-title">Retrieving Investigation Status for <span style="color:var(--accent);">${id.slice(0, 8)}...</span></div>
               </div>
               <div class="ae-loading-timer-badge" id="statusElapsedBadge">
                 <span style="width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 6px var(--accent);"></span>

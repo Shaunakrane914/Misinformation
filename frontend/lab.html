@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Threat Intelligence Lab — Aegis Protocol</title>
-  <meta name="description" content="Physics-first deterministic analysis instruments: Mandelbrot token-rank regression, Hawkes point-process contagion modeling, and Byzantine swarm consensus.">
+  <title>Research &amp; Simulation Lab — Aegis Protocol</title>
+  <meta name="description" content="Research and simulation instruments: Zipf-Mandelbrot token-rank regression, Hawkes point-process diffusion modeling, and Byzantine outlier-tolerant consensus.">
   <link rel="stylesheet" href="aegis-theme.css">
 
   <style>
@@ -320,13 +320,13 @@
     <div style="max-width:1320px;margin:0 auto 36px;padding:32px 48px;" class="ae-reveal">
       <div class="lab-hero-badge">
         <span class="pulse-dot-cyan"></span>
-        RESEARCH &amp; MATHEMATICAL SIMULATION INSTRUMENTS
+        RESEARCH &amp; SIMULATION MODELS
       </div>
       <h1 style="font-family:var(--font-display);font-size:clamp(2.2rem, 4vw, 3.4rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:12px;">
-        Threat Intelligence Lab
+        Research &amp; Simulation Lab
       </h1>
       <p style="font-size:1.05rem;color:var(--text-muted);max-width:680px;line-height:1.6;">
-        Explore the algorithmic foundations of the Aegis Protocol: live Zipf-Mandelbrot token frequency regression (computed from text), stochastic Hawkes epidemic cascade simulation, and Weighted-MSR Byzantine outlier pruning models.
+        Explore the algorithmic foundations of the Aegis Protocol: live Zipf-Mandelbrot token frequency regression, Hawkes point-process diffusion simulation, and Weighted-MSR outlier pruning models.
       </p>
     </div>
 
@@ -340,11 +340,11 @@
         </button>
         <button class="lab-tab-btn" onclick="switchLabTab('blast')">
           <span class="tab-num">02</span>
-          Hawkes Contagion Physics
+          Diffusion Simulation
         </button>
         <button class="lab-tab-btn" onclick="switchLabTab('consensus')">
           <span class="tab-num">03</span>
-          Byzantine Swarm Consensus
+          Consensus Model
         </button>
       </div>
 
@@ -355,7 +355,7 @@
         <div class="instrument-card">
           <div class="instrument-header">
             <div>
-              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:4px;">// INSTRUMENT_01: STATISTICAL_FINGERPRINTING</div>
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:4px;">// 01: TEXT_FREQUENCY_ANALYSIS</div>
               <div class="instrument-title">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00f0ff" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                 Mandelbrot Power-Law Regression
@@ -363,19 +363,19 @@
             </div>
             <div class="ae-badge ae-badge-green">
               <span class="pulse-dot-cyan" style="background:#10b981;box-shadow:0 0 8px #10b981;"></span>
-              POWER-LAW SCANNER ARMED
+              ANALYSIS READY
             </div>
           </div>
 
           <p style="font-size:0.92rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
-            Autoregressive LLM transformers sample token sequences with strictly bounded power-law decay ($P(r) = P_0(r+\beta)^{-\gamma}$) and suppressed lexical entropy. Human composition exhibits spontaneous burstiness and colloquial dispersion.
+            Language models sample token sequences with smooth power-law decay ($P(r) = P_0(r+\beta)^{-\gamma}$) and low lexical variance. Human writing exhibits natural burstiness and higher vocabulary dispersion.
           </p>
 
           <!-- Sample Pills -->
-          <div style="font-size:0.75rem;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:6px;">QUICK LOAD DATASET SAMPLES:</div>
+          <div style="font-size:0.75rem;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:6px;">SAMPLE TEXTS:</div>
           <div class="sample-pills">
-            <button class="sample-pill" onclick="loadSampleText('ai-pr')">Synthetic AI Press Release</button>
-            <button class="sample-pill" onclick="loadSampleText('ai-tech')">Synthetic AI Tech Summary</button>
+            <button class="sample-pill" onclick="loadSampleText('ai-pr')">AI Press Release</button>
+            <button class="sample-pill" onclick="loadSampleText('ai-tech')">AI Technical Summary</button>
             <button class="sample-pill" onclick="loadSampleText('human-forum')">Human Forum Discussion</button>
             <button class="sample-pill" onclick="loadSampleText('human-essay')">Human Narrative Prose</button>
           </div>
@@ -391,7 +391,7 @@
               <button class="ae-btn ae-btn-ghost" style="padding:9px 18px;font-size:0.85rem;" onclick="document.getElementById('syntheticTextInput').value='';updateTokenCount();">Clear</button>
               <button id="btnScanSynthetic" class="ae-btn ae-btn-primary" onclick="runSyntheticDetection()">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                Execute Mandelbrot Scan
+                Analyze Text
               </button>
             </div>
           </div>
@@ -466,8 +466,8 @@
             <!-- Verdict Banner -->
             <div id="syntheticVerdictBanner" class="verdict-banner verdict-synthetic">
               <div>
-                <div style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:4px;">DIAGNOSTIC VERDICT</div>
-                <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:800;" id="syntheticVerdictTitle">SYNTHETIC // HIGH PROBABILITY AI</div>
+                <div style="font-family:var(--font-mono);font-size:0.72rem;letter-spacing:0.1em;color:var(--text-dim);margin-bottom:4px;">ANALYSIS RESULT</div>
+                <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:800;" id="syntheticVerdictTitle">SYNTHETIC (LIKELY AI-GENERATED)</div>
                 <p id="syntheticVerdictAnalysis" style="font-size:0.88rem;color:var(--text);margin-top:8px;max-width:700px;line-height:1.6;"></p>
               </div>
               <div id="syntheticVerdictBadge" class="ae-badge ae-badge-red" style="font-size:0.9rem;padding:8px 18px;">
@@ -486,24 +486,24 @@
         <div class="instrument-card">
           <div class="instrument-header">
             <div>
-              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--amber);letter-spacing:0.1em;margin-bottom:4px;">// INSTRUMENT_02: STOCHASTIC_EPIDEMIOLOGY</div>
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--amber);letter-spacing:0.1em;margin-bottom:4px;">// 02: INFORMATION_DIFFUSION</div>
               <div class="instrument-title">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
-                Hawkes Process Contagion Simulator
+                Hawkes Process Diffusion Simulator
               </div>
             </div>
             <div class="ae-badge ae-badge-yellow">
               <span class="pulse-dot-cyan" style="background:#f59e0b;box-shadow:0 0 8px #f59e0b;"></span>
-              POINT PROCESS READY
+              MODEL READY
             </div>
           </div>
 
           <p style="font-size:0.92rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
-            Simulates viral cascade dynamics via self-exciting Hawkes point processes: $\lambda(t) = \mu + \sum_{t_i < t} \alpha e^{-\beta(t - t_i)}$. Computes effective reproduction number $R_0 = \alpha / \beta$ and simulates live network node infection and autonomous defense swarm containment.
+            Simulates information diffusion dynamics via self-exciting Hawkes point processes: $\lambda(t) = \mu + \sum_{t_i < t} \alpha e^{-\beta(t - t_i)}$. Computes effective reproduction number $R_0 = \alpha / \beta$ to model network spread and verified corroboration.
           </p>
 
           <!-- Vector Pills -->
-          <div style="font-size:0.75rem;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:6px;">SELECT PRESET THREAT VECTOR:</div>
+          <div style="font-size:0.75rem;font-family:var(--font-mono);color:var(--text-dim);margin-bottom:6px;">SELECT PRESET TOPIC:</div>
           <div class="sample-pills">
             <button class="sample-pill" onclick="loadBlastSample('ceo-audio')">Deepfake CEO Audio Leak</button>
             <button class="sample-pill" onclick="loadBlastSample('vaccine-rumor')">5G Municipal Water Contamination</button>
@@ -512,11 +512,11 @@
 
           <div style="display:grid;grid-template-columns:1fr 2fr;gap:16px;margin-bottom:18px;">
             <div>
-              <label style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:6px;">VECTOR TARGET</label>
+              <label style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:6px;">TOPIC</label>
               <input id="blastTopicInput" class="lab-input" value="Deepfake CEO Audio Leak">
             </div>
             <div>
-              <label style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:6px;">NARRATIVE PAYLOAD</label>
+              <label style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);display:block;margin-bottom:6px;">CLAIM OR NARRATIVE</label>
               <input id="blastClaimInput" class="lab-input" value="Leaked tape captures executive confessing to systemic liquidity shortfall.">
             </div>
           </div>
@@ -524,7 +524,7 @@
           <div style="display:flex;justify-content:flex-end;">
             <button id="btnModelBlast" class="ae-btn ae-btn-primary" onclick="runBlastRadiusModel()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-              Simulate Contagion &amp; Swarm Containment
+              Run Diffusion Simulation
             </button>
           </div>
 
@@ -534,7 +534,7 @@
               <div class="ae-loading-top">
                 <div class="ae-loading-title-wrap">
                   <div class="ae-radar-spinner"></div>
-                  <div class="ae-loading-title">Solving Hawkes Point-Process Contagion Cascade</div>
+                  <div class="ae-loading-title">Simulating Hawkes Information Diffusion</div>
                 </div>
                 <div class="ae-loading-timer-badge" id="blastElapsedBadge">
                   <span style="width:6px;height:6px;border-radius:50%;background:var(--amber);box-shadow:0 0 6px var(--amber);"></span>
@@ -578,7 +578,7 @@
               <div class="metric-card">
                 <div class="metric-label">24h Network Reach</div>
                 <div class="metric-value" id="blastReach" style="color:var(--cyan);">34,280</div>
-                <div class="metric-sub">Projected infected nodes</div>
+                <div class="metric-sub">Projected reach</div>
               </div>
             </div>
 
@@ -587,14 +587,14 @@
               <div class="particle-simulation-wrap">
                 <canvas id="contagionCanvas"></canvas>
                 <div style="position:absolute;bottom:12px;left:14px;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);background:rgba(3,7,18,0.75);padding:4px 10px;border-radius:8px;border:1px solid var(--border);">
-                  SIMULATION: <span style="color:#ff4d88;">RED = CONTAGION</span> &nbsp;|&nbsp; <span style="color:var(--cyan);">CYAN = DEFENSE SWARM</span>
+                  SIMULATION: <span style="color:#ff4d88;">RED = SPREAD</span> &nbsp;|&nbsp; <span style="color:var(--cyan);">CYAN = VERIFIED CORROBORATION</span>
                 </div>
               </div>
 
               <!-- 24h Hourly Spread Bar Chart -->
               <div style="background:rgba(3,7,18,0.7);border:1px solid var(--border);border-radius:18px;padding:24px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                  <div style="font-weight:700;font-size:0.92rem;color:#fff;">24h Contagion Velocity (Nodes/Hour)</div>
+                  <div style="font-weight:700;font-size:0.92rem;color:#fff;">24h Spread Velocity (Nodes/Hour)</div>
                   <span id="blastThreatBadge" class="ae-badge ae-badge-red">CRITICAL</span>
                 </div>
                 <div id="blastBarChartWrap" style="height:210px;display:flex;align-items:flex-end;gap:4px;padding-top:20px;"></div>
@@ -604,10 +604,10 @@
             <!-- Recommendation -->
             <div class="verdict-banner" style="background:rgba(15,23,42,0.9);border:1px solid var(--border);margin-top:20px;">
               <div>
-                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--amber);letter-spacing:0.1em;margin-bottom:4px;">CONTAINMENT DIRECTIVE</div>
+                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--amber);letter-spacing:0.1em;margin-bottom:4px;">SIMULATION SUMMARY</div>
                 <p id="blastRecommendationText" style="font-size:0.88rem;color:var(--text);line-height:1.6;"></p>
               </div>
-              <a href="scout-agent.html" class="ae-btn ae-btn-primary" style="font-size:0.85rem;padding:9px 18px;">Deploy Swarm Neutralizer</a>
+              <a href="scout-agent.html" class="ae-btn ae-btn-primary" style="font-size:0.85rem;padding:9px 18px;">Investigate Claim Evidence →</a>
             </div>
           </div>
 
@@ -615,26 +615,26 @@
       </div>
 
       <!-- ════════════════════════════════════════════════════════════════════ -->
-      <!-- PANEL 3: BYZANTINE CONSENSUS SWARM                                  -->
+      <!-- PANEL 3: BYZANTINE CONSENSUS                                        -->
       <!-- ════════════════════════════════════════════════════════════════════ -->
       <div id="panel-consensus" class="lab-panel ae-reveal">
         <div class="instrument-card">
           <div class="instrument-header">
             <div>
-              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--purple);letter-spacing:0.1em;margin-bottom:4px;">// INSTRUMENT_03: BYZANTINE_FAULT_TOLERANCE</div>
+              <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--purple);letter-spacing:0.1em;margin-bottom:4px;">// 03: OUTLIER_PRUNING</div>
               <div class="instrument-title">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                Byzantine Swarm Consensus Engine
+                Byzantine Consensus Model
               </div>
             </div>
             <div class="ae-badge ae-badge-purple">
               <span class="pulse-dot-cyan" style="background:#a855f7;box-shadow:0 0 8px #a855f7;"></span>
-              W-MSR FILTER ACTIVE
+              W-MSR PRUNING READY
             </div>
           </div>
 
           <p style="font-size:0.92rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
-            Executes parallel adversarial verification across multi-agent nodes. Uses Weighted Mean Subsequence Reduction (W-MSR) to prune compromised, hallucinating, or sycophantic outlier nodes before calculating consensus.
+            Evaluates multi-source verification using Weighted Mean Subsequence Reduction (W-MSR) to prune inconsistent or outlier model assessments before computing consensus.
           </p>
 
           <!-- Sample Claims -->
@@ -651,7 +651,7 @@
           <div style="display:flex;justify-content:flex-end;margin-top:14px;">
             <button id="btnRunConsensus" class="ae-btn ae-btn-primary" onclick="runByzantineConsensus()">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
-              Launch Swarm Consensus Vote
+              Run Consensus Model
             </button>
           </div>
 
@@ -661,7 +661,7 @@
               <div class="ae-loading-top">
                 <div class="ae-loading-title-wrap">
                   <div class="ae-radar-spinner"></div>
-                  <div class="ae-loading-title">Convening Byzantine Swarm Arbitrators &amp; Pruning Outliers</div>
+                  <div class="ae-loading-title">Evaluating Multi-Source Assessments &amp; Pruning Outliers</div>
                 </div>
                 <div class="ae-loading-timer-badge" id="byzLabElapsedBadge">
                   <span style="width:6px;height:6px;border-radius:50%;background:var(--purple);box-shadow:0 0 6px var(--purple);"></span>
@@ -694,13 +694,13 @@
 
             <div id="consensusVerdictCard" class="verdict-banner verdict-synthetic" style="margin-top:28px;">
               <div>
-                <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);letter-spacing:0.12em;margin-bottom:4px;">BYZANTINE SWARM CONVERGENCE (W-MSR FILTERED)</div>
+                <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);letter-spacing:0.12em;margin-bottom:4px;">CONSENSUS EVALUATION (W-MSR FILTERED)</div>
                 <div style="font-family:var(--font-display);font-size:1.4rem;font-weight:800;" id="consensusVerdictTitle">CONVERGED: FALSE</div>
                 <p id="consensusSynthesisReport" style="font-size:0.88rem;color:var(--text);margin-top:8px;max-width:700px;line-height:1.6;"></p>
               </div>
               <div style="text-align:right;">
                 <div class="ae-badge ae-badge-blue" id="consensusConfBadge" style="font-size:1rem;padding:8px 20px;">89.5% CONFIDENCE</div>
-                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:6px;">FAULT TOLERANCE: k=1 OUTLIER REMOVED</div>
+                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-top:6px;">Trimmed outlier: 1 score pruned</div>
               </div>
             </div>
           </div>
@@ -824,7 +824,7 @@
       if (prevEl) prevEl.style.display = 'none';
 
       btn.disabled = false;
-      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Execute Mandelbrot Scan`;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> Analyze Text`;
 
       renderSyntheticResults(data);
     }
@@ -906,16 +906,16 @@
 
       if (isSynth) {
         banner.className = 'verdict-banner verdict-synthetic';
-        title.innerText = 'SYNTHETIC // HIGH PROBABILITY AI';
+        title.innerText = 'SYNTHETIC (LIKELY AI-GENERATED)';
         title.style.color = '#ff4d88';
         badge.className = 'ae-badge ae-badge-red';
         badge.innerText = `${data.confidence}% SYNTHETIC`;
       } else {
         banner.className = 'verdict-banner verdict-human';
-        title.innerText = 'AUTHENTIC // HUMAN WRITTEN';
+        title.innerText = 'ORGANIC (LIKELY HUMAN-WRITTEN)';
         title.style.color = '#34d399';
         badge.className = 'ae-badge ae-badge-green';
-        badge.innerText = `${data.confidence}% HUMAN`;
+        badge.innerText = `${data.confidence}% ORGANIC`;
       }
       analysis.innerText = data.analysis;
 
@@ -1013,7 +1013,7 @@
         });
       }
 
-      // Defense Swarm Interceptor nodes (Cyan)
+      // Corroborating verification nodes (Cyan)
       for (let i = 0; i < 14; i++) {
         particles.push({
           x: Math.random() * canvas.width,
@@ -1149,7 +1149,7 @@
       if (prevEl) prevEl.style.display = 'none';
 
       btn.disabled = false;
-      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Simulate Contagion & Swarm Containment`;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run Diffusion Simulation`;
 
       renderBlastResults(data);
     }
@@ -1178,7 +1178,7 @@
         hourly.push({ hour: h, new_nodes: newNodes, cumulative_nodes: cum, intensity });
       }
 
-      const threatLevel = r0 >= 1.6 ? 'CRITICAL CONTAGION' : (r0 >= 1.0 ? 'ELEVATED' : 'NOMINAL');
+      const threatLevel = r0 >= 1.6 ? 'CRITICAL SPREAD' : (r0 >= 1.0 ? 'ELEVATED SPREAD' : 'NOMINAL');
 
       return {
         status: 'success',
@@ -1192,8 +1192,8 @@
         hourly_distribution: hourly,
         epicenter: topic || 'ORIGIN_NODE',
         containment_recommendation: r0 >= 1.4
-          ? 'Initiate immediate automated debunker deployment across Tier-1 ingestion nodes. Isolate synthetic cluster vectors.'
-          : 'Maintain passive monitoring; cascade velocity remains sub-critical under current network topology.'
+          ? 'Prioritize evidence verification and primary-source retrieval. Spread rate exceeds baseline threshold.'
+          : 'Diffusion velocity remains within normal baseline limits.'
       };
     }
 
@@ -1303,7 +1303,7 @@
       if (prevEl) prevEl.style.display = 'none';
 
       btn.disabled = false;
-      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Launch Swarm Consensus Vote`;
+      btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg> Run Consensus Model`;
 
       renderConsensusResults(data);
     }
@@ -1316,7 +1316,7 @@
         {
           id: 'agent-skeptic',
           name: 'Skeptic Node (Falsification)',
-          role: 'Hostile falsification & counter-evidence hunting',
+          role: 'Systematic falsification & counter-evidence hunting',
           verdict: isFalse ? 'FALSE' : 'TRUE',
           confidence: 94.0,
           reasoning: 'Primary evidentiary records and published astrophysics debunk the alleged premise.',
@@ -1325,7 +1325,7 @@
         {
           id: 'agent-empirical',
           name: 'Empirical Node (Fact Matrix)',
-          role: 'Neutral evidentiary consensus & source triangulation',
+          role: 'Cross-source verification & factual consistency',
           verdict: isFalse ? 'FALSE' : 'TRUE',
           confidence: 91.0,
           reasoning: 'Multi-source historical verification and empirical documentation contradict claim.',
@@ -1334,7 +1334,7 @@
         {
           id: 'agent-adversary',
           name: 'Adversary Node (Cognitive Bias)',
-          role: 'Boundary stress-testing & semantic ambiguity audit',
+          role: 'Edge case testing & ambiguity check',
           verdict: isFalse ? 'MISLEADING' : 'FALSE',
           confidence: 38.0,
           reasoning: 'Semantic drift detected in speculative social propagation vectors.',
@@ -1350,7 +1350,7 @@
         outlier_pruned_name: 'Adversary Node (Cognitive Bias)',
         consensus_verdict: isFalse ? 'FALSE' : 'TRUE',
         consensus_confidence: 92.5,
-        epistemic_synthesis: `Byzantine Swarm converged on ${isFalse ? 'FALSE' : 'TRUE'} (92.5% confidence) after pruning divergent telemetry from Adversary Node via W-MSR subsequence filter.`
+        epistemic_synthesis: `Consensus evaluated as ${isFalse ? 'FALSE' : 'TRUE'} (92.5% confidence) after pruning divergent score from Adversary Node via W-MSR filter.`
       };
     }
 

@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Architecture & Engineering Specifications — Aegis Protocol</title>
-  <meta name="description" content="Physics-first architectural specifications, mathematical formulations, and interactive protocol execution pipeline of the Aegis Protocol.">
+  <title>Architecture &amp; Methodology — Aegis Protocol</title>
+  <meta name="description" content="Architecture, empirical verification pipeline, and research methods of the Aegis Protocol.">
   <link rel="stylesheet" href="aegis-theme.css">
   <style>
     .about-container {
@@ -34,7 +34,53 @@
     }
     .arch-ribbon strong { color: #fff; }
 
-    /* ── Interactive Pipeline Breadcrumbs (Archetype C) ── */
+    /* ── How Aegis Works Step Cards ── */
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .step-card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: border-color 0.2s ease, transform 0.2s ease;
+    }
+    .step-card:hover {
+      border-color: rgba(0, 240, 255, 0.3);
+      transform: translateY(-2px);
+    }
+    .step-badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--accent);
+      background: rgba(0, 229, 255, 0.08);
+      border: 1px solid rgba(0, 229, 255, 0.2);
+      border-radius: 6px;
+      padding: 2px 8px;
+      display: inline-block;
+      width: fit-content;
+    }
+    .step-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      margin: 0;
+    }
+    .step-desc {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0;
+    }
+
+    /* ── Interactive Pipeline Breadcrumbs ── */
     .pipeline-nav {
       display: flex;
       align-items: center;
@@ -218,6 +264,7 @@
       .stage-spec-grid { grid-template-columns: repeat(2, 1fr); }
       .payload-diff-grid { grid-template-columns: 1fr; }
       .about-container { padding-left: 20px; padding-right: 20px; }
+      .steps-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -229,26 +276,71 @@
     
     <!-- Top Spec Header Ribbon -->
     <div class="arch-ribbon ae-reveal">
-      <span>PROTOCOL SPEC: <strong>AEGIS v3.7.0 (RFC-089 SPECIFICATION)</strong></span>
+      <span>AEGIS PROTOCOL <strong>v3.7.0</strong></span>
       <span style="color:var(--border-hover);">│</span>
-      <span>PIPELINE: <strong style="color:var(--purple);">MULTI-SOURCE EVIDENCE RESEARCH</strong></span>
+      <span>MULTI-SOURCE RETRIEVAL</span>
       <span style="color:var(--border-hover);">│</span>
-      <span>ANALYSIS: <strong style="color:var(--cyan);">SOURCE LINEAGE &amp; CORROBORATION</strong></span>
+      <span>SOURCE LINEAGE &amp; DE-DUPLICATION</span>
       <span style="color:var(--border-hover);">│</span>
-      <span>EPIDEMIOLOGY: <strong style="color:var(--amber);">HAWKES POINT SIMULATION</strong></span>
+      <span>OUTLIER-RESISTANT CONSENSUS</span>
       <span style="color:var(--border-hover);">│</span>
-      <span>PERSISTENCE: <strong style="color:var(--emerald);">SHA-256 AUDIT STORE</strong></span>
+      <span>PERSISTED AUDIT TRAIL</span>
     </div>
 
     <!-- Page Title -->
-    <div class="ae-reveal" style="margin-bottom:28px;">
+    <div class="ae-reveal" style="margin-bottom:32px;">
       <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// ARCHITECTURE &amp; METHODOLOGY</div>
       <h1 style="font-size:clamp(2rem, 3.8vw, 3rem);font-weight:800;letter-spacing:-0.03em;color:#fff;">
-        Protocol Architecture &amp; Methodology
+        How Aegis Investigates Claims
       </h1>
-      <p style="color:var(--text-muted);font-size:0.96rem;max-width:760px;line-height:1.6;margin-top:4px;">
-        Aegis separates verifiable fact-checking from black-box LLM hallucinations by anchoring investigations in multi-source retrieval, source lineage tracking, and explicit uncertainty quantification across four transparent architectural tiers.
+      <p style="color:var(--text-muted);font-size:0.98rem;max-width:760px;line-height:1.6;margin-top:4px;">
+        Investigate a claim. See the evidence. Understand the uncertainty. Aegis grounds fact-checking in multi-source retrieval, source lineage tracking, and explicit confidence scores rather than ungrounded model outputs.
       </p>
+    </div>
+
+    <!-- ── HOW AEGIS WORKS (5 CORE STEPS) ── -->
+    <div class="ae-reveal" style="margin-bottom:12px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;">
+        <span class="ae-badge ae-badge-cyan">INVESTIGATION PIPELINE</span>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">5-STEP EMPIRICAL VERIFICATION PROCESS</span>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <span class="step-badge">STEP 01</span>
+          <h3 class="step-title">Normalize the Claim</h3>
+          <p class="step-desc">
+            Cleans input text, strips prompt-injection payloads, extracts core named entities, and computes an idempotency hash to prevent duplicate workloads.
+          </p>
+        </div>
+        <div class="step-card">
+          <span class="step-badge">STEP 02</span>
+          <h3 class="step-title">Retrieve Evidence</h3>
+          <p class="step-desc">
+            Formulates targeted search queries across public web sources, news archives, and primary registries (SEC, PubMed, government bureaus).
+          </p>
+        </div>
+        <div class="step-card">
+          <span class="step-badge">STEP 03</span>
+          <h3 class="step-title">Compare Sources</h3>
+          <p class="step-desc">
+            Identifies syndicated wire bulletins (collapsing replicated articles to their origin) and isolates direct contradictions between opposing reports.
+          </p>
+        </div>
+        <div class="step-card">
+          <span class="step-badge">STEP 04</span>
+          <h3 class="step-title">Assess Evidence Quality</h3>
+          <p class="step-desc">
+            Ranks source authority, domain independence, and evidence saturation to distinguish genuine corroboration from echo-chamber repeats.
+          </p>
+        </div>
+        <div class="step-card">
+          <span class="step-badge">STEP 05</span>
+          <h3 class="step-title">Synthesize Assessment</h3>
+          <p class="step-desc">
+            Produces a structured verdict with calibrated confidence bounds, key findings, unresolved gaps, and a verifiable evidence chain of custody.
+          </p>
+        </div>
+      </div>
     </div>
 
     <!-- ── TIER 1: PRODUCTION IMPLEMENTATION ── -->
@@ -312,36 +404,43 @@
     <div class="ae-reveal" style="margin-bottom:44px;">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <span class="ae-badge ae-badge-blue">TIER 2 &bull; RESEARCH METHODOLOGY</span>
-        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">MATHEMATICAL &amp; ANALYTICAL FOUNDATIONS</span>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">MATHEMATICAL &amp; STATISTICAL INSTRUMENTS</span>
       </div>
       <h2 style="font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:12px;">
-        Analytical &amp; Epistemic Methodology
+        Research &amp; Simulation Methods
       </h2>
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
-        <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
-          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:6px;">// SOURCE LINEAGE DE-DUPLICATION</div>
-          <h3 style="color:#fff;font-size:1rem;font-weight:700;margin-bottom:8px;">Syndication Clustering</h3>
+        <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:22px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);margin-bottom:6px;">// STATISTICAL TEXT ANALYSIS</div>
+          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Zipf-Mandelbrot Regression</h3>
           <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
-            When ten media outlets publish identical text originated from a single wire bulletin (AP, Reuters, PR Newswire), naïve consensus models treat them as 10 independent confirmations. Aegis extracts root domain lineage to collapse wire syndications into a single origin node.
+            Measures lexical entropy and token frequency decay ($P(r) = P_0(r+\beta)^{-\gamma}$). Autoregressive language models sample with bounded variance and high fit ($R^2 > 0.93$), whereas human writing exhibits natural burstiness and lexical dispersion.
           </p>
         </div>
-        <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
-          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--purple);margin-bottom:6px;">// TRIMMED CONSENSUS (W-MSR INVARIANT)</div>
-          <h3 style="color:#fff;font-size:1rem;font-weight:700;margin-bottom:8px;">Outlier-Resistant Score Aggregation</h3>
+        <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:22px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--amber);margin-bottom:6px;">// INFORMATION DIFFUSION DYNAMICS</div>
+          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Hawkes Point-Process Modeling</h3>
           <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
-            Inspired by the Weighted Mean-Subsequence-Reduced (W-MSR) algorithm from distributed fault tolerance, Aegis prunes extreme score outliers before calculating weighted consensus to avoid sycophantic or degraded vector distortions.
+            Models narrative propagation as self-exciting point processes ($\lambda(t) = \mu + \sum_{t_i < t} \alpha e^{-\beta(t - t_i)}$). Calculates the reproduction number ($R_0 = \alpha / \beta$) to determine whether a claim is diffusing super-critically across networks.
+          </p>
+        </div>
+        <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:22px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--purple);margin-bottom:6px;">// FAULT-TOLERANT AGGREGATION</div>
+          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Weighted-MSR Outlier Pruning</h3>
+          <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
+            Derived from the Weighted Mean-Subsequence-Reduced algorithm in distributed systems. Eliminates the extreme highest and lowest evaluator scores before computing consensus, preventing hallucinating or sycophantic outlier evaluations from skewing the verdict.
           </p>
         </div>
       </div>
     </div>
 
-    <!-- ── TIER 3: SIMULATION & DEMONSTRATION ── -->
+    <!-- ── TIER 3: SIMULATION INSTRUMENT ── -->
     <div class="ae-reveal" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
       <div style="display:flex;align-items:center;gap:10px;">
         <span class="ae-badge ae-badge-amber">TIER 3 &bull; SIMULATION INSTRUMENT</span>
-        <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--accent);letter-spacing:0.08em;">// 6-STAGE ARBITRATION PIPELINE SIMULATOR</span>
+        <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--accent);letter-spacing:0.08em;">// INTERACTIVE STAGE INSPECTOR</span>
       </div>
-      <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">CLICK STAGE TO INSPECT SPECIFICATION</span>
+      <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">CLICK STAGE TO INSPECT DATA CONTRACT</span>
     </div>
 
     <div class="pipeline-nav ae-reveal" id="pipelineNav">
@@ -352,27 +451,27 @@
       <span class="pipe-arrow">→</span>
       <button class="pipe-step-btn" onclick="inspectStage(2)" id="pstep_2">
         <span class="step-num-pill">02</span>
-        <span>Zipf-Mandelbrot R²</span>
+        <span>Retrieve Evidence</span>
       </button>
       <span class="pipe-arrow">→</span>
       <button class="pipe-step-btn" onclick="inspectStage(3)" id="pstep_3">
         <span class="step-num-pill">03</span>
-        <span>Hawkes R₀ Cascade</span>
+        <span>Lineage De-dup</span>
       </button>
       <span class="pipe-arrow">→</span>
       <button class="pipe-step-btn" onclick="inspectStage(4)" id="pstep_4">
         <span class="step-num-pill">04</span>
-        <span>4-Agent Swarm</span>
+        <span>Stance &amp; Contrast</span>
       </button>
       <span class="pipe-arrow">→</span>
       <button class="pipe-step-btn" onclick="inspectStage(5)" id="pstep_5">
         <span class="step-num-pill">05</span>
-        <span>W-MSR Consensus</span>
+        <span>Trimmed Consensus</span>
       </button>
       <span class="pipe-arrow">→</span>
       <button class="pipe-step-btn" onclick="inspectStage(6)" id="pstep_6">
         <span class="step-num-pill">06</span>
-        <span>Truth Dossier</span>
+        <span>Evidence Dossier</span>
       </button>
     </div>
 
@@ -508,69 +607,69 @@
         outPayload: '{\\n  "claim_id": "0x9c8c267e_nvda",\\n  "entities": ["Deepfake", "CEO", "NVDA"],\\n  "normalized": "Deepfake CEO audio leak causes NVDA premarket drop"\\n}'
       },
       2: {
-        label: 'STAGE 02 &bull; SPECTRAL WATERMARKING',
-        name: 'Zipf-Mandelbrot Token-Rank Power-Law Regression',
-        desc: 'Evaluates the token distribution of ingested text against Mandelbrot frequency decay law. Autoregressive LLMs exhibit low variance and high R² > 0.93; organic human text exhibits burstiness.',
-        badge: 'ANALYTICAL MODEL &bull; FREQUENCY DECAY',
-        budget: '< 10ms',
-        complexity: 'O(V \\log V) Sort',
-        invariant: 'f(r) \\sim C / (r + \\beta)^\\gamma',
-        fault: 'Low-Sample Fallback (N < 20)',
-        formula: 'f(r) = \\frac{C}{(r + \\beta)^\\gamma}, \\quad R^2 = 1 - \\frac{\\sum (y_i - \\hat{y}_i)^2}{\\sum (y_i - \\bar{y})^2}',
-        inPayload: '{\\n  "tokens": ["executive", "liquidity", "shortfall", "premarket"],\\n  "unique_count": 84\\n}',
-        outPayload: '{\\n  "r_squared": 0.984,\\n  "shannon_entropy": 4.82,\\n  "verdict": "SYNTHETIC_HIGH_CONFIDENCE"\\n}'
-      },
-      3: {
-        label: 'STAGE 03 &bull; EPIDEMIOLOGY & BLAST RADIUS',
-        name: 'Hawkes Self-Exciting Contagion Physics Modeling',
-        desc: 'Calculates the viral cascade trajectory and reproduction ratio R₀ across social networks using stochastic point-process arrivals and exponential decay kernels.',
-        badge: 'SIMULATION MODEL &bull; REPRODUCTION RATIO',
-        budget: '< 15ms',
-        complexity: 'O(K \\cdot T) Time Simulation',
-        invariant: 'R_0 = \\alpha / \\beta',
-        fault: 'Sub-critical Damping',
-        formula: '\\lambda(t) = \\mu + \\sum_{t_i < t} \\alpha e^{-\\beta(t - t_i)}, \\quad R_0 = \\frac{\\alpha}{\\beta}',
-        inPayload: '{\\n  "epicenter": "Deepfake CEO Audio",\\n  "initial_burst": 140,\\n  "window": "24h"\\n}',
-        outPayload: '{\\n  "reproduction_r0": 2.14,\\n  "24h_reach": 34280,\\n  "threat_level": "CRITICAL_CONTAGION"\\n}'
-      },
-      4: {
-        label: 'STAGE 04 &bull; PARALLEL DOMAIN SWARM',
-        name: '4-Agent Domain Swarm Investigation',
-        desc: 'Dispatches Scout (Financial), Trending (Social), BrandShield (Reputation), and Personal Watch (VIP) across zero-cost serverless scrapers to gather real evidence.',
-        badge: 'PARALLEL PIPELINE &bull; RETRIEVAL NODES',
+        label: 'STAGE 02 &bull; MULTI-SOURCE RETRIEVAL',
+        name: 'Targeted Retrieval &amp; Source Corpus Construction',
+        desc: 'Plans specific search queries across open web, wire archives, and primary registries (SEC filings, biomedical databases, official gazettes) to build the initial research corpus.',
+        badge: 'RETRIEVAL PIPELINE &bull; DIVERSE SOURCES',
         budget: '< 850ms',
         complexity: 'Parallel Async I/O',
-        invariant: '|Evidence| >= 3 Provenance Nodes',
-        fault: 'Auto-Retry on Vector Timeout',
-        formula: '\\text{Swarm}(x) = \\bigcup_{k=1}^4 \\text{Agent}_k(x) \\implies \\{ \\text{Evidence}_1, \\dots, \\text{Evidence}_M \\}',
-        inPayload: '{\\n  "query": "NVDA",\\n  "swarm_nodes": ["scout", "trending", "brandshield", "personal"]\\n}',
-        outPayload: '{\\n  "findings_count": 6,\\n  "stance_matrix": {"supporting": 1, "refuting": 5},\\n  "confidence": 0.96\\n}'
+        invariant: '|Sources| >= 3 Independent Domains',
+        fault: 'Adaptive Query Refinement',
+        formula: '\\text{Corpus}(q) = \\bigcup_{k=1}^K \\text{QueryEngine}(q_k) \\implies \\{ S_1, \\dots, S_M \\}',
+        inPayload: '{\\n  "query": "Leaked executive audio NVDA liquidity",\\n  "channels": ["news", "official_filings", "web"]\\n}',
+        outPayload: '{\\n  "candidates_retrieved": 14,\\n  "primary_records": 3,\\n  "unique_domains": 8\\n}'
+      },
+      3: {
+        label: 'STAGE 03 &bull; LINEAGE &amp; DE-DUPLICATION',
+        name: 'Wire Syndication Lineage &amp; Source Collapsing',
+        desc: 'Identifies syndicated wire bulletins (AP, Reuters, PR Newswire) replicated across multiple republishing outlets, collapsing duplicate reports into their root source to prevent artificial consensus.',
+        badge: 'LINEAGE DAG &bull; WIRE COLLAPSING',
+        budget: '< 15ms',
+        complexity: 'O(N^2) Similarity / Domain Lineage',
+        invariant: 'Syndications -> Single Root Node',
+        fault: 'Original Wire Extracted',
+        formula: '\\text{DAG}(S) = \\text{RootMap}(\\{ s_i \\mid s_i \\sim s_{\\text{wire}} \\})',
+        inPayload: '{\\n  "republished_articles": 9,\\n  "syndication_wire": "PR_Newswire"\\n}',
+        outPayload: '{\\n  "collapsed_nodes": 1,\\n  "effective_source_count": 4,\\n  "independent_perspectives": 3\\n}'
+      },
+      4: {
+        label: 'STAGE 04 &bull; STANCE &amp; CONTRADICTION ANALYSIS',
+        name: 'Stance Classification &amp; Contradiction Detection',
+        desc: 'Extracts claims and evidence passages from retrieved sources, determines their stance (supporting, refuting, or neutral), and highlights direct factual contradictions.',
+        badge: 'EVIDENCE CLASSIFIER &bull; STANCE MATRIX',
+        budget: '< 450ms',
+        complexity: 'Passage Semantic Alignment',
+        invariant: '\\sum P(\\text{stance}) = 1.0',
+        fault: 'Neutral Fallback on Ambiguity',
+        formula: '\\text{Stance}(S_i, q) \\in \\{ \\text{SUPPORT}, \\text{REFUTE}, \\text{NEUTRAL} \\}',
+        inPayload: '{\\n  "passages": 18,\\n  "claim": "NVDA CEO audio confession"\\n}'
+        outPayload: '{\\n  "supporting": 0,\\n  "refuting": 6,\\n  "contradictions_flagged": 2,\\n  "preliminary_verdict": "FALSE"\\n}'
       },
       5: {
-        label: 'STAGE 05 &bull; OUTLIER PRUNING',
-        name: 'Weighted-MSR Subsequence Outlier Filtering',
-        desc: 'Filters rogue, compromised, or sycophantic agent votes by eliminating the k highest and k lowest deviations from median before computing weighted consensus.',
+        label: 'STAGE 05 &bull; TRIMMED CONSENSUS',
+        name: 'Weighted-MSR Outlier Pruning',
+        desc: 'Prunes extreme highest and lowest evaluator scores before calculating weighted consensus to avoid sycophantic, hallucinated, or degraded evaluator distortion.',
         badge: 'FILTER SPECIFICATION &bull; F=1 PRUNED',
         budget: '< 10ms',
         complexity: 'O(N \\log N) Sorting',
         invariant: 'N > 3F + 1',
         fault: '1 Outlier Score Pruned',
         formula: 'v_{\\text{consensus}} = \\frac{\\sum_{i \\in \\mathcal{N} \\setminus \\mathcal{R}} w_i v_i}{\\sum_{i \\in \\mathcal{N} \\setminus \\mathcal{R}} w_i}',
-        inPayload: '{\\n  "votes": [\\n    {"node": "research", "val": 0.95},\\n    {"node": "investigator", "val": 0.92},\\n    {"node": "adversary_rogue", "val": 0.38}\\n  ]\\n}',
-        outPayload: '{\\n  "pruned": "adversary_rogue",\\n  "converged_verdict": "FALSE",\\n  "final_confidence": 0.94\\n}'
+        inPayload: '{\\n  "evaluations": [\\n    {"evaluator": "skeptic", "score": 0.05},\\n    {"evaluator": "empirical", "score": 0.08},\\n    {"evaluator": "adversary_outlier", "score": 0.65}\\n  ]\\n}',
+        outPayload: '{\\n  "pruned": "adversary_outlier",\\n  "converged_verdict": "FALSE",\\n  "final_confidence": 0.94\\n}'
       },
       6: {
-        label: 'STAGE 06 &bull; TRUTH DOSSIER ARBITRATION',
-        name: 'Truth Dossier Finalization & Audit Storage',
-        desc: 'Issues an immutable verification dossier containing the formal verdict, evidence provenance list, mathematical metrics, and signed telemetry broadcast.',
-        badge: 'DOSSIER SPECIFICATION &bull; AUDIT TRAIL',
-        budget: '< 20ms',
-        complexity: 'O(1) Finalization',
-        invariant: 'Verdict \\in {TRUE, FALSE, MISLEADING}',
-        fault: 'CDC WebSocket Broadcast',
-        formula: '\\text{Dossier} = \\langle \\text{ClaimId}, \\text{Verdict}, \\text{Conf}, R^2, R_0, \\text{Provenance} \\rangle',
-        inPayload: '{\\n  "claim_id": "0x9c8c267e_nvda",\\n  "verdict": "FALSE",\\n  "conf": 0.95\\n}',
-        outPayload: '{\\n  "status": "completed",\\n  "dossier_url": "/status.html?id=0x9c8c267e_nvda",\\n  "broadcast_epoch": 1789620472\\n}'
+        label: 'STAGE 06 &bull; GROUNDED SYNTHESIS',
+        name: 'Evidence Dossier &amp; Provenance Ledger',
+        desc: 'Compiles the formal verdict, explicit confidence bounds, key corroborating and refuting evidence passages, and a complete source provenance ledger.',
+        badge: 'AUDIT TRAIL &bull; PERSISTED DOSSIER',
+        budget: '< 25ms',
+        complexity: 'O(1) Dossier Finalization',
+        invariant: 'Verdict \\in {TRUE, FALSE, MISLEADING, UNVERIFIED}',
+        fault: 'Stored in Database',
+        formula: '\\text{Dossier} = \\langle \\text{ClaimId}, \\text{Verdict}, \\text{Confidence}, \\text{ProvenanceLedger} \\rangle',
+        inPayload: '{\\n  "claim_id": "0x9c8c267e_nvda",\\n  "verdict": "FALSE",\\n  "confidence": 0.95\\n}',
+        outPayload: '{\\n  "status": "completed",\\n  "dossier_url": "/submit.html?id=0x9c8c267e_nvda",\\n  "sources_cited": 6\\n}'
       }
     };
 

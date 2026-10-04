@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Personal Watch 2.0 — Personal Identity & Online Threat Intelligence</title>
+  <title>Public Profile &amp; Impersonation Verification — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
   <style>
@@ -245,9 +245,9 @@
 
   <div class="ae-page">
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>Public Signals &amp; Identity Monitoring</div>
+      <div class="agent-tag"><span class="dot"></span>Public Profile &amp; Signal Verification</div>
       <h1>Personal <span>Watch</span></h1>
-      <p>Public signal monitoring and claim verification for individuals, executives, and creators. Screens for impersonations, phishing, unverified statements, and circulating claims with source attribution.</p>
+      <p>Public signal monitoring and claim verification for individuals, executives, and public figures. Screens for impersonations, misleading claims, and unauthorized statements with source attribution.</p>
 
       <!-- Real Runtime Telemetry Ribbon -->
       <div class="tel-ribbon">
@@ -292,13 +292,13 @@
               <option value="public_figure">Public Figure</option>
               <option value="executive">Executive / CEO</option>
               <option value="creator">Creator / Influencer</option>
-              <option value="vip">VIP / High Net Worth</option>
+              <option value="leader">Organization Leader</option>
               <option value="researcher">Researcher / Academic</option>
               <option value="employee">Employee / Specialist</option>
             </select>
           </div>
           <div>
-            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">OFFICIAL TWITTER HANDLE</label>
+            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">OFFICIAL SOCIAL HANDLE</label>
             <input type="text" id="officialTwitter" placeholder="@handle">
           </div>
           <div>
@@ -320,7 +320,7 @@
     <footer class="ae-footer">
       <div>
         <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);">Personal Watch 2.0 Module · Autonomous OSINT Defense &copy; 2026</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Personal Watch Module · Public Profile Monitoring &amp; Verification &copy; 2026</div>
       </div>
       <div style="display:flex;gap:18px;font-size:0.8rem;">
         <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
@@ -357,12 +357,12 @@
     function showLoadingAnimation(targetName) {
       const mount = document.getElementById('loadingMount');
       activeProgressBar = window.createAgentProgressBar ? window.createAgentProgressBar(mount, {
-        title: `Personal Watch 2.0: Investigating ${escapeHtml(targetName)}`,
+        title: `Personal Watch: Investigating ${escapeHtml(targetName)}`,
         stages: [
-          { name: '01 · OSINT Ingestion', desc: 'Agent Reach targeted multi-platform dispatch' },
-          { name: '02 · Query Classes', desc: 'Defamation, deepfakes, impersonation & leaks' },
-          { name: '03 · Deduplication', desc: 'Cross-platform wire syndication & group clustering' },
-          { name: '04 · Risk Triage', desc: '14-class taxonomy scoring & defense brief' }
+          { name: '01 · Source Retrieval', desc: 'Targeted multi-platform search dispatch' },
+          { name: '02 · Signal Categorization', desc: 'Impersonation, claims & public statements' },
+          { name: '03 · De-duplication', desc: 'Cross-platform syndication & source clustering' },
+          { name: '04 · Synthesis', desc: 'Evidence summary & verified findings' }
         ]
       }) : null;
     }

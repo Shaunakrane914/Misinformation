@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Investigator Agent — Forensic Case Dossier · Aegis Protocol</title>
-  <meta name="description" content="Forensic case dossier interface. Traces evidence chains, known facts, unresolved gaps, and source relationships.">
-  <meta property="og:title" content="Investigator Agent — Forensic Case Dossier · Aegis Protocol">
-  <meta property="og:description" content="Forensic case dossier interface. Traces evidence chains, known facts, unresolved gaps, and source relationships.">
+  <title>Investigator Agent — Case Evidence &amp; Findings · Aegis Protocol</title>
+  <meta name="description" content="Case investigation interface. Traces evidence sequences, known facts, unresolved gaps, and source relationships.">
+  <meta property="og:title" content="Investigator Agent — Case Evidence &amp; Findings · Aegis Protocol">
+  <meta property="og:description" content="Case investigation interface. Traces evidence sequences, known facts, unresolved gaps, and source relationships.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Investigator Agent — Aegis Protocol">
@@ -147,10 +147,10 @@
     <div class="aegis-orientation-banner ae-reveal">
       <div class="aegis-orientation-q">
         <span class="aegis-orientation-dot" style="background:#818cf8;box-shadow:0 0 8px #818cf8;"></span>
-        <span>FORENSIC INVESTIGATION OBJECTIVE</span>
+        <span>INVESTIGATION OBJECTIVE</span>
       </div>
       <div class="aegis-orientation-goal">
-        What are the established facts, what remains unresolved, and what does the step-by-step evidence chain prove from origin to refutation?
+        What are the established facts, what remains unresolved, and what does the step-by-step evidence chain show from origin to corroboration?
       </div>
     </div>
 
@@ -159,7 +159,7 @@
       <form id="caseForm" onsubmit="handleCaseSubmit(event)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <label style="font-size:0.9rem;font-weight:700;color:#fff;" for="caseInput">
-            Case Subject / Disinformation Vector <span style="color:var(--rose)">*</span>
+            Case Subject or Claim <span style="color:var(--rose)">*</span>
           </label>
           <span id="charCount" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">0 / 500</span>
         </div>
@@ -183,12 +183,12 @@
 
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
           <span style="font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);">
-            Deterministic provenance tracking &bull; Chain of custody analysis
+            Evidence sequence tracking &bull; Source corroboration analysis
           </span>
           
           <button type="submit" id="submitBtn" class="ae-btn ae-btn-primary" style="padding:11px 26px;font-size:0.9rem;background:linear-gradient(135deg, #818cf8, #6366f1);border-color:#818cf8;">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <span>Open Forensic Case</span>
+            <span>Open Investigation</span>
           </button>
         </div>
       </form>
@@ -198,10 +198,10 @@
     <div id="loadingBox" class="ae-card" style="padding:28px;text-align:center;display:none;margin-bottom:32px;">
       <div style="display:inline-flex;align-items:center;gap:8px;color:#818cf8;font-weight:700;font-size:0.92rem;">
         <span class="aegis-orientation-dot" style="background:#818cf8;box-shadow:0 0 8px #818cf8;"></span>
-        <span>Tracing provenance chain &amp; assembling forensic case dossier...</span>
+        <span>Tracing evidence sequence &amp; assembling case findings...</span>
       </div>
       <div style="font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);margin-top:8px;">
-        Auditing initial vector &bull; Correlating independent corroborators &bull; Testing refuting archives
+        Auditing initial statement &bull; Correlating independent sources &bull; Testing refuting archives
       </div>
     </div>
 
@@ -213,7 +213,7 @@
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:14px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:4px;">
-              CASE DOSSIER <span id="caseIdBadge" style="color:var(--text-dim);font-weight:700;">NO CASE LOADED</span>
+              CASE INVESTIGATION <span id="caseIdBadge" style="color:var(--text-dim);font-weight:700;">NO CASE LOADED</span>
             </div>
             <div id="displayCaseSubject" style="font-size:1.22rem;font-weight:700;color:#fff;line-height:1.45;max-width:850px;"></div>
           </div>
@@ -225,7 +225,7 @@
 
         <div class="aegis-bottomline">
           <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:#818cf8;margin-bottom:4px;text-transform:uppercase;">
-            Forensic Determination
+            Investigation Findings
           </div>
           <div id="forensicSummaryText" style="color:#e2e8f0;font-size:0.92rem;line-height:1.6;"></div>
         </div>
@@ -254,9 +254,9 @@
       <div class="ae-card ae-reveal" style="padding:26px;margin-bottom:24px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <h3 style="font-size:1.05rem;font-weight:700;color:#fff;">
-            Evidence Chain of Custody
+            Evidence Sequence &amp; Trail
           </h3>
-          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Trace: Origin &rarr; Amplification &rarr; Corroboration &rarr; Refutation</span>
+          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Trace: Origin &rarr; Spread &rarr; Corroboration &rarr; Resolution</span>
         </div>
 
         <div class="chain-container" id="evidenceChainContainer">
@@ -280,7 +280,7 @@
       <!-- LEVEL 2: INVESTIGATION NOTES -->
       <div class="ae-card ae-reveal" style="padding:22px;margin-bottom:24px;background:rgba(12,16,28,0.7);">
         <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
-          Forensic Investigation Notes &amp; Recommended Containment
+          Investigation Notes &amp; Verification Context
         </div>
         <div id="investigationNotesText" style="color:#cbd5e1;font-size:0.88rem;line-height:1.65;"></div>
       </div>
@@ -290,7 +290,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:#818cf8;letter-spacing:0.08em;text-transform:uppercase;">
-              Level 3 · Forensic Evidence Explorer
+              Level 3 · Evidence Explorer
             </div>
             <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Complete Audit Trail &amp; Archival Excerpts</h4>
           </div>

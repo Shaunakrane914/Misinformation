@@ -234,7 +234,7 @@
                 <p class="fe-fcard-summary">${escapeHtml(summary)}</p>
 
                 ${f.quality_tensor ? `
-                  <div style="font-size:0.65rem;color:var(--text-dim,#94a3b8);margin-top:8px;font-family:var(--font-mono,monospace);">// 6D HEURISTIC QUALITY TENSOR</div>
+                  <div style="font-size:0.65rem;color:var(--text-dim,#94a3b8);margin-top:8px;font-family:var(--font-mono,monospace);">// EVIDENCE QUALITY DIMENSIONS</div>
                   <div class="fe-qt-row" style="display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 10px 0;font-family:var(--font-mono, monospace);font-size:0.7rem;">
                     <span class="fe-badge" style="background:rgba(139,92,246,0.1);color:#c4b5fd;border:1px solid rgba(139,92,246,0.3);" title="Relevance">Rel: ${Math.round((f.quality_tensor.relevance || 0) * 100)}%</span>
                     <span class="fe-badge" style="background:rgba(14,165,233,0.1);color:#38bdf8;border:1px solid rgba(14,165,233,0.3);" title="Source Quality">Qual: ${Math.round((f.quality_tensor.source_quality || 0) * 100)}%</span>

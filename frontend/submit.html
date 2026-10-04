@@ -380,9 +380,9 @@
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;text-transform:uppercase;">
-              Level 3 · Full Evidence Explorer
+              Level 3 · Evidence Explorer
             </div>
-            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Complete Source Provenance &amp; Disclosures</h4>
+            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Source Verification &amp; Citations</h4>
           </div>
           <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Click any row to inspect technical details</span>
         </div>
@@ -402,7 +402,7 @@
               Aegis Protocol Standard v3.8.0
             </div>
             <h3 style="font-size:1.05rem;font-weight:700;color:#fff;margin-top:2px;">
-              Unified Investigation Report &amp; Quality Tensor
+              Evidence Assessment &amp; Quality Profile
             </h3>
           </div>
           <span class="ae-badge ae-badge-cyan" style="font-size:0.7rem;font-family:var(--font-mono);">
@@ -491,7 +491,7 @@
       workspace.style.display = 'none';
 
       try {
-        setStage('stg_ingest', 'Searching Wire Registries & Primary Documents...');
+        setStage('stg_ingest', 'Searching news sources and public archives...');
         
         let reportData = null;
 
@@ -531,7 +531,7 @@
 
         // Fallback to client Gemini if backend was unreachable or returned incomplete
         if (!reportData || !reportData.claim || !reportData.claim.verdict) {
-          setStage('stg_synthesize', 'Synthesizing Forensic Truth Assessment...');
+          setStage('stg_synthesize', 'Synthesizing evidence assessment...');
           reportData = await runClientFactCheck(text, url);
         }
 

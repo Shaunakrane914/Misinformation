@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Trending Agent 2.0 — Trend Discovery & Intelligence Engine</title>
+  <title>Topic Momentum &amp; Trend Discovery — Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="unified-report-renderer.js"></script>
@@ -249,9 +249,9 @@
   <div class="ae-page">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>Trending Signals &amp; Narrative Velocity</div>
-      <h1><span>Trend Analysis</span> &amp; Signal Discovery</h1>
-      <p>Trend analysis across entertainment, cinema, technology, and culture. Collects and compares currently available signals, analyzes velocity, and attributes sources with evidence verification.</p>
+      <div class="agent-tag"><span class="dot"></span>Trend Signals &amp; Public Discourse</div>
+      <h1><span>Trend Analysis</span> &amp; Public Signals</h1>
+      <p>Topic and narrative analysis across entertainment, cinema, technology, and culture. Collects public signals, measures momentum, and verifies claims with source attribution.</p>
       
       <!-- METRIC OVERVIEW RIBBON -->
       <div class="tel-ribbon">
@@ -319,7 +319,7 @@
             <div class="panel-header">
               <div class="panel-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18M18 9l-5 5-4-4-6 6"/></svg>
-                Verified Trend Velocity &amp; Momentum
+                Trend Velocity &amp; Momentum
               </div>
               <span style="font-size:0.72rem;font-family:var(--font-mono);color:var(--text-dim);" id="chartStatusBadge">Snapshot History</span>
             </div>
@@ -336,7 +336,7 @@
             <div class="panel-header">
               <div class="panel-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                Discovered Trend Clusters
+                Discovered Topics &amp; Narratives
               </div>
               <span class="t-tag active" id="clusterCountTag">0 Clusters</span>
             </div>
@@ -371,7 +371,7 @@
             <div class="panel-header">
               <div class="panel-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-                Verified Trend Chronology
+                Chronological Timeline
               </div>
             </div>
             <div class="tl-wrap" id="timelineList">
@@ -379,12 +379,12 @@
             </div>
           </div>
 
-          <!-- BOX OFFICE TELEMETRY CARD -->
+          <!-- BOX OFFICE ESTIMATES CARD -->
           <div class="panel" id="boxOfficePanel" style="display:none;">
             <div class="panel-header">
               <div class="panel-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><path d="M16 2v5M8 2v5"/></svg>
-                Trade &amp; Box Office Telemetry
+                Trade &amp; Box Office Estimates
               </div>
             </div>
             <div id="boxOfficeContent" style="font-size:0.84rem;color:var(--text-muted);">
@@ -399,7 +399,7 @@
         <div class="panel-header">
           <div class="panel-title">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h7"/></svg>
-            Interactive Evidence Explorer
+            Source Evidence Explorer
           </div>
           <span style="font-size:0.75rem;font-family:var(--font-mono);color:var(--text-dim);" id="evidenceCountBadge">0 Evidence Items</span>
         </div>
@@ -436,7 +436,7 @@
     <footer class="ae-footer">
       <div>
         <div style="font-weight:700;color:#fff;font-size:0.95rem;margin-bottom:2px;">Aegis Protocol</div>
-        <div style="font-size:0.75rem;color:var(--text-dim);">Trending Agent 2.0 · Autonomous Trend Discovery &copy; 2026</div>
+        <div style="font-size:0.75rem;color:var(--text-dim);">Trending Module · Topic Momentum &amp; Signal Discovery &copy; 2026</div>
       </div>
       <div style="display:flex;gap:18px;font-size:0.8rem;">
         <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
@@ -488,7 +488,7 @@
         <div style="padding:20px;display:flex;flex-direction:column;gap:12px;">
           <div style="display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:0.8rem;color:#f472b6;">
             <div class="skeleton-bar" style="width:12px;height:12px;border-radius:50%;background:#f472b6;"></div>
-            <span>Agent Reach scanning multi-channel radar for "${esc(query)}"...</span>
+            <span>Searching public sources for "${esc(query)}"...</span>
           </div>
           <div class="skeleton-bar" style="height:18px;width:70%;"></div>
           <div class="skeleton-bar" style="height:14px;width:95%;"></div>
@@ -507,12 +507,12 @@
       showLoadingState(query);
 
       const progress = window.createAgentProgressBar ? window.createAgentProgressBar('#trendingProgressMount', {
-        title: `Trending Radar: Scanning Multi-Channel Feeds for "${esc(query)}"`,
+        title: `Trending: Scanning Public Feeds for "${esc(query)}"`,
         stages: [
-          { name: '01 · Radar Ingestion', desc: 'Google News RSS & X/Reddit public streams' },
-          { name: '02 · Velocity Tracking', desc: 'Narrative acceleration & cluster detection' },
-          { name: '03 · Hawkes Modeling', desc: 'Contagion R₀ score & self-exciting cascade' },
-          { name: '04 · Verification', desc: 'Fact-checking claims against wire evidence' }
+          { name: '01 · Source Retrieval', desc: 'Google News RSS & public discourse feeds' },
+          { name: '02 · Signal Analysis', desc: 'Narrative momentum & cluster detection' },
+          { name: '03 · Diffusion Modeling', desc: 'Hawkes process diffusion modeling' },
+          { name: '04 · Verification', desc: 'Comparing claims against wire evidence' }
         ]
       }) : null;
 
@@ -624,8 +624,8 @@
         document.getElementById('boxOfficePanel').style.display = 'block';
         document.getElementById('boxOfficeContent').innerHTML = `
           <div style="background:rgba(0,0,0,0.25);border:1px solid var(--border);border-radius:10px;padding:12px;">
-            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#fbcfe8;margin-bottom:4px;">${esc(data.box_office.source || 'Trade Telemetry')}</div>
-            <div style="font-size:0.85rem;color:var(--text);">${esc(data.box_office.message || 'Box office telemetry unavailable')}</div>
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#fbcfe8;margin-bottom:4px;">${esc(data.box_office.source || 'Trade Estimates')}</div>
+            <div style="font-size:0.85rem;color:var(--text);">${esc(data.box_office.message || 'Box office data unavailable')}</div>
           </div>
         `;
       } else {

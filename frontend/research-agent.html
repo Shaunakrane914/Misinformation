@@ -221,7 +221,7 @@
 
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
           <span style="font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);">
-            Multi-source evidence synthesis &bull; Zero fabricated citations
+            Evidence-based synthesis &bull; Citations linked to retrieved sources
           </span>
           
           <button type="submit" id="submitBtn" class="ae-btn ae-btn-primary" style="padding:11px 26px;font-size:0.9rem;background:linear-gradient(135deg, #38bdf8, #0284c7);border-color:#38bdf8;">
@@ -236,17 +236,17 @@
     <div id="loadingBox" class="ae-card" style="padding:28px;text-align:center;display:none;margin-bottom:32px;">
       <div style="display:inline-flex;align-items:center;gap:8px;color:#38bdf8;font-weight:700;font-size:0.92rem;">
         <span class="aegis-orientation-dot" style="background:#38bdf8;box-shadow:0 0 8px #38bdf8;"></span>
-        <span id="loadLabel">Retrieving primary sources and reporting...</span>
+        <span id="loadLabel">Searching sources and compiling reporting...</span>
       </div>
       <div style="font-family:var(--font-mono);font-size:0.76rem;color:var(--text-dim);margin-top:8px;">
-        Comparing evidence &bull; Identifying contradictions &bull; Compiling source list
+        Comparing evidence &bull; Checking contradictions &bull; Compiling source list
       </div>
     </div>
 
     <!-- Results Workspace -->
     <div id="researchWorkspace" style="display:none;">
 
-      <!-- LEVEL 1: ORIENTATION (Research Question & Core Synthesis) -->
+      <!-- LEVEL 1: ORIENTATION (Assessment & Summary) -->
       <div class="ae-card ae-reveal" style="padding:28px 32px;margin-bottom:24px;border-left:4px solid #38bdf8;" id="level1Card">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:14px;">
           <div>
@@ -262,17 +262,17 @@
 
         <div class="aegis-bottomline">
           <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:#38bdf8;margin-bottom:4px;text-transform:uppercase;">
-            Summary &amp; Findings
+            Assessment &amp; Summary
           </div>
           <div id="executiveSynthesisText" style="color:#e2e8f0;font-size:0.92rem;line-height:1.6;"></div>
         </div>
       </div>
 
-      <!-- LEVEL 2: KEY FINDINGS (CLUSTERED WITH SOURCES) -->
+      <!-- LEVEL 2: WHAT THE EVIDENCE SUPPORTS -->
       <div class="ae-card ae-reveal" style="padding:26px;margin-bottom:24px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
           <h3 style="font-size:1.05rem;font-weight:700;color:#fff;display:flex;align-items:center;gap:8px;">
-            Key Findings &amp; Evidence Clusters
+            What the Evidence Supports
           </h3>
           <span id="findingsCountBadge" style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">
             No findings yet
@@ -284,13 +284,13 @@
         </div>
       </div>
 
-      <!-- LEVEL 2: SOURCE READING LIST -->
+      <!-- LEVEL 3: RELEVANT SOURCES -->
       <div class="ae-card ae-reveal" style="padding:26px;margin-bottom:24px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
           <h3 style="font-size:1.05rem;font-weight:700;color:#fff;">
-            Verified Sources &amp; Coverage
+            Relevant Sources &amp; Coverage
           </h3>
-          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Primary filings &amp; authoritative reporting</span>
+          <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Reporting and public documents</span>
         </div>
 
         <div style="overflow-x:auto;">
@@ -310,22 +310,22 @@
         </div>
       </div>
 
-      <!-- LEVEL 2: CONTRADICTIONS & UNCERTAINTIES -->
+      <!-- LEVEL 4: UNCERTAINTIES & LIMITATIONS -->
       <div class="aegis-unknown-box ae-reveal" style="margin-bottom:24px;">
-        <h4>Contradictions &amp; Evidence Uncertainties</h4>
+        <h4>What Remains Uncertain &amp; Limitations</h4>
         <ul id="uncertaintiesList">
           <li>Comparing contradictory reports across independent outlets...</li>
         </ul>
       </div>
 
-      <!-- LEVEL 3: RAW EVIDENCE DRAWER -->
+      <!-- LEVEL 5: EVIDENCE EXPLORER & CITATIONS -->
       <div class="ae-card ae-reveal" style="padding:24px;margin-bottom:40px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:#38bdf8;letter-spacing:0.08em;text-transform:uppercase;">
-              Level 3 · Evidence Explorer
+              Evidence Explorer
             </div>
-            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Complete Primary Excerpts &amp; Citations</h4>
+            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Primary Excerpts &amp; Citations</h4>
           </div>
           <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Expand rows for excerpt details</span>
         </div>

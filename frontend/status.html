@@ -462,8 +462,8 @@
           <div class="tl-item"><div class="tl-dot ${tlDotClass(s1State)}">${tlDotIcon(s1State)}</div><div><div class="tl-title">Claim Ingested ${tlBadge(s1State)}</div><div class="tl-desc">${s1Desc}</div>${data.created_at ? `<div class="tl-time">${new Date(data.created_at).toLocaleString()}</div>` : ''}</div></div>
           <div class="tl-item"><div class="tl-dot ${tlDotClass(s2State)}">${tlDotIcon(s2State)}</div><div><div class="tl-title">Claim Normalization ${tlBadge(s2State)}</div><div class="tl-desc">${s2Desc}</div></div></div>
           <div class="tl-item"><div class="tl-dot ${tlDotClass(s3State)}">${tlDotIcon(s3State)}</div><div><div class="tl-title">Multi-Source Retrieval ${tlBadge(s3State)}</div><div class="tl-desc">${s3Desc}</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s4State)}">${tlDotIcon(s4State)}</div><div><div class="tl-title">Epistemic Analysis ${tlBadge(s4State)}</div><div class="tl-desc">${s4Desc}</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s5State)}">${tlDotIcon(s5State)}</div><div><div class="tl-title">Truth Dossier ${tlBadge(s5State)}</div><div class="tl-desc">${s5Desc}</div>${data.updated_at && isCompleted ? `<div class="tl-time">${new Date(data.updated_at).toLocaleString()}</div>` : ''}</div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s4State)}">${tlDotIcon(s4State)}</div><div><div class="tl-title">Evidence Comparison ${tlBadge(s4State)}</div><div class="tl-desc">${s4Desc}</div></div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s5State)}">${tlDotIcon(s5State)}</div><div><div class="tl-title">Evidence Assessment ${tlBadge(s5State)}</div><div class="tl-desc">${s5Desc}</div>${data.updated_at && isCompleted ? `<div class="tl-time">${new Date(data.updated_at).toLocaleString()}</div>` : ''}</div></div>
         </div>`;
 
       if (data.reasoning) {
@@ -472,7 +472,7 @@
       }
 
       if (data.evidence && data.evidence.length > 0) {
-        html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// HARVESTED EVIDENCE (${data.evidence.length} items)</div>
+        html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// RETRIEVED EVIDENCE (${data.evidence.length} items)</div>
           <div class="evidence-list">`;
         data.evidence.forEach((ev, i) => {
           html += `<div class="ev-item">
@@ -484,7 +484,7 @@
         html += `</div>`;
       }
 
-      html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// FORENSIC RESEARCH FUNNEL &amp; SOURCE EXPLORER</div>
+      html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// RESEARCH FUNNEL &amp; SOURCE EXPLORER</div>
         <div id="statusForensicMount"></div>`;
 
       if (isPending) {

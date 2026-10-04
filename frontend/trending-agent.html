@@ -336,13 +336,13 @@
             <div class="panel-header">
               <div class="panel-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                Discovered Topics &amp; Narratives
+                Observed Topics &amp; Discussion Activity
               </div>
               <span class="t-tag active" id="clusterCountTag">0 Clusters</span>
             </div>
             <div id="trendsFeed">
               <div style="text-align:center;padding:40px;color:var(--text-dim);font-size:0.86rem;">
-                Click <strong>Scan Engine</strong> above to discover live trends and investigate narratives.
+                Click <strong>Scan Trends</strong> above to explore emerging topics and associated claims.
               </div>
             </div>
           </div>
@@ -355,13 +355,13 @@
             <div class="panel-header">
               <div class="panel-title">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                Circulating Claims &amp; Verification
+                Claims Associated With This Trend
               </div>
               <span class="t-tag" id="claimsCountTag">0 Claims</span>
             </div>
             <div id="claimsList">
               <div style="text-align:center;padding:30px;color:var(--text-dim);font-size:0.84rem;">
-                Verified claims will be extracted from retrieved evidence.
+                Claims associated with this topic will appear here after evidence analysis.
               </div>
             </div>
           </div>
@@ -666,24 +666,24 @@
         card.innerHTML = `
           <div class="trend-top">
             <div class="trend-topic">${esc(t.topic)}</div>
-            <span class="t-tag ${velClass}">${esc(velStatus)}</span>
+            <span class="t-tag ${velClass}">Observed Velocity: ${esc(velStatus)}</span>
           </div>
           <div class="trend-badge-row">
             <span class="t-tag">${esc(t.category.toUpperCase())}</span>
-            <span class="t-tag">SENTIMENT: ${esc(t.sentiment)}</span>
-            <span class="t-tag ${misClass}">MISINFO RISK: ${esc(t.misinformation_risk)}</span>
+            <span class="t-tag">OBSERVED ACTIVITY</span>
+            <span class="t-tag ${misClass}">SIGNAL RISK: ${esc(t.misinformation_risk)}</span>
           </div>
           <div class="trend-metrics-grid">
-            <div class="tm-cell"><span class="tm-val">${t.signal_count}</span><span class="tm-lbl">Signals</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.unique_source_count}</span><span class="tm-lbl">Sources</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.independent_source_count}</span><span class="tm-lbl">Groups</span></div>
+            <div class="tm-cell"><span class="tm-val">${t.signal_count}</span><span class="tm-lbl">Observed Signals</span></div>
+            <div class="tm-cell"><span class="tm-val">${t.unique_source_count}</span><span class="tm-lbl">Reporting Outlets</span></div>
+            <div class="tm-cell"><span class="tm-val">${t.independent_source_count}</span><span class="tm-lbl">Independent Groups</span></div>
             <div class="tm-cell"><span class="tm-val">${t.platform_count}</span><span class="tm-lbl">Platforms</span></div>
           </div>
           <div class="origin-note">
             First observed on <strong>${esc(t.origin.first_observed_platform.toUpperCase())}</strong> via <em>${esc(t.origin.first_observed_source)}</em>
             ${t.origin.amplification_platforms && t.origin.amplification_platforms.length > 0 ? ` · Amplified by ${t.origin.amplification_platforms.map(p => esc(p.toUpperCase())).join(', ')}` : ''}
           </div>
-          <button class="btn-dossier" onclick="openDossier(${idx})">Investigate Trend Dossier ↗</button>
+          <button class="btn-dossier" onclick="openDossier(${idx})">Examine Topic Evidence ↗</button>
         `;
         feed.appendChild(card);
       });
@@ -708,15 +708,15 @@
         const card = document.createElement('div');
         card.className = 'claim-card';
         const urlLink = c.source_urls && c.source_urls.length > 0 ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Open Source ↗</a>` : '';
+        const claimStatusLabel = c.status === 'VERIFIED' ? 'Corroborated by independent sources' : c.status === 'CONTRADICTED' ? 'Contradicted by evidence' : 'Mixed / Unconfirmed';
         card.innerHTML = `
           <div class="claim-top">
-            <span class="c-status ${c.status}">${c.status}</span>
+            <span class="c-status ${c.status}">${claimStatusLabel}</span>
             ${urlLink}
           </div>
           <div class="claim-text">"${esc(c.claim_text)}"</div>
           <div class="claim-meta">
-            <span>Supporting: ${c.supporting_sources}</span>
-            <span>Contradicting: ${c.contradicting_sources}</span>
+            <span>Evidence: ${c.supporting_sources || 0} supporting &bull; ${c.contradicting_sources || 0} contradicting</span>
           </div>
         `;
         container.appendChild(card);

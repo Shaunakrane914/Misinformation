@@ -121,16 +121,48 @@
           <span class="cl-date">October 2026</span>
           <span class="ae-badge ae-badge-green" style="font-size:0.65rem;">LATEST</span>
         </div>
-        <div class="cl-title">Evidence-First UX Redesign, Epistemic Demarcation &amp; Linguistic Restraint</div>
+        <div class="cl-title">Evidence-First Information Architecture &amp; Language Restraint</div>
 
         <div class="cl-group">
-          <div class="cl-group-label feat">Design &amp; Language Architecture</div>
+          <div class="cl-group-label feat">Added</div>
           <ul class="cl-items">
-            <li class="cl-item"><strong>Linguistic Restraint &amp; Sentence Case</strong>: Reduced ALL CAPS by ~80%, eliminated military/sci-fi clichés (containment, cyber-defense, radar, swarm), and restored quiet evidence-first product language.</li>
-            <li class="cl-item"><strong>Strict Three-Layer Epistemic Separation</strong>: Segregated <strong>Observed</strong> (retrieved URLs and text), <strong>Inferred</strong> (system synthesis and reasoning), and <strong>Simulated</strong> (theoretical mathematical models) across all interfaces.</li>
-            <li class="cl-item"><strong>Preserved Domain Workbenches</strong>: Kept all 6 specialized agent workbenches (Scout, Trending, BrandShield, Personal Watch, Investigator, Research) intact with transparent source attribution and honest empty states.</li>
-            <li class="cl-item"><strong>Eliminated Fake Precision</strong>: Replaced synthetic telemetry increments and artificial percentages with verifiable milestones and measured query latency.</li>
-            <li class="cl-item"><strong>Formal Epistemic Boundaries</strong>: Added explicit "What Aegis Does Not Claim" disclosures across verification and methodology pages.</li>
+            <li class="cl-item"><strong>Platform-neutral keyboard shortcut</strong>: Updated search trigger on <a href="index.html" style="color:var(--accent);">frontend/index.html</a> to <code>Ctrl/⌘ K</code>.</li>
+            <li class="cl-item"><strong>Standardized agent card schema</strong>: Structured all 6 workbenches on <a href="agents.html" style="color:var(--accent);">frontend/agents.html</a> with uniform fields: <code>WHAT IT DOES</code>, <code>BEST FOR</code>, <code>SOURCES / INPUTS</code>, and collapsible <code>Technical details</code>.</li>
+            <li class="cl-item"><strong>Empirical scoping notes</strong>: Added explicit test suite sample boundaries (N=4, release v3.7.0 baseline) to <a href="benchmark.html" style="color:var(--accent);">frontend/benchmark.html</a>.</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label perf">Changed</div>
+          <ul class="cl-items">
+            <li class="cl-item"><strong>Observation &rarr; Pattern &rarr; Assessment workflow</strong>: Reframed <a href="brandshield-agent.html" style="color:var(--accent);">BrandShield</a> and <a href="personal-watch-agent.html" style="color:var(--accent);">Personal Watch</a> around observed signals and verified patterns rather than indiscriminate threat alarms.</li>
+            <li class="cl-item"><strong>Plain-language translations</strong>: Clarified mathematical instruments (Zipf-Mandelbrot, Hawkes point processes, Weighted-MSR consensus) in plain English before presenting formal equations in <a href="about.html" style="color:var(--accent);">about.html</a>.</li>
+            <li class="cl-item"><strong>Scout signal discovery</strong>: Replaced hyperbolic anomaly labeling with clear relative descriptions: <code>Activity is X standard deviations above recent baseline</code>.</li>
+            <li class="cl-item"><strong>Trending corroboration breakdown</strong>: Separated raw volume metrics from factual claim corroboration on <a href="trending-agent.html" style="color:var(--accent);">trending-agent.html</a>.</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label fix">Fixed</div>
+          <ul class="cl-items">
+            <li class="cl-item"><strong>Card 04 structural integrity</strong>: Restored missing closing tag and action button on Personal Watch card in <a href="agents.html" style="color:var(--accent);">frontend/agents.html</a>.</li>
+            <li class="cl-item"><strong>Navigation link cleanup</strong>: Replaced legacy "Threat Lab" references with "Research Lab" in <a href="about.html" style="color:var(--accent);">about.html</a> and global footer.</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label chore">Removed</div>
+          <ul class="cl-items">
+            <li class="cl-item"><strong>Theatrical and military terminology</strong>: Removed unnecessary uses of <em>swarm</em>, <em>containment</em>, <em>defense</em>, <em>arsenal</em>, and <em>threat command</em> across <a href="lab.html" style="color:var(--accent);">frontend/lab.html</a>.</li>
+            <li class="cl-item"><strong>Absolute benchmark headlines</strong>: Replaced <code>ZERO HALLUCINATIONS</code> and <code>100% VERIFIED</code> with scoped test statements (<code>4/4 regression cases passed</code>).</li>
+          </ul>
+        </div>
+
+        <div class="cl-group">
+          <div class="cl-group-label feat" style="color:#a855f7;">Tests</div>
+          <ul class="cl-items">
+            <li class="cl-item"><strong>Integrity test suite</strong>: Validated all 11 test cases in <code>tests/unit/test_product_honesty_and_integrity.py</code> (100% passing).</li>
+            <li class="cl-item"><strong>Unit test regression run</strong>: Executed full suite across claim ingestion, reach engines, and database persistence.</li>
           </ul>
         </div>
       </div>

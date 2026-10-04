@@ -271,16 +271,16 @@
   <div class="ae-page">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
-      <div class="agent-tag"><span class="dot"></span>Scout Agent &bull; Financial Research Workspace</div>
+      <div class="agent-tag"><span class="dot"></span>Scout Agent &bull; Emerging Information &amp; Financial Signals</div>
       <h1>Scout <span>Agent</span></h1>
-      <p>Investigate company claims with traceable evidence. Correlates market quotes, statutory regulatory filings (SEC, NSE/BSE), and multi-channel public discussion to verify financial rumors.</p>
+      <p>Emerging information and financial signal discovery. Correlates market quotes, statutory regulatory filings (SEC, NSE/BSE), and multi-channel public discussion to verify financial rumors.</p>
       
       <div class="tel-ribbon">
         <div class="tel-cell"><span class="tel-val">Live Quotes</span><span class="tel-key">Market Data</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">Activity Volume</span><span class="tel-key">Signal Anomaly</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">Activity Volume</span><span class="tel-key">Observed Signal</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">Multi-Channel</span><span class="tel-key">Source Coverage</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">Audit Trail</span><span class="tel-key">Source Ledger</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">ONLINE</span><span class="tel-key">Module Status</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">READY</span><span class="tel-key">Module Status</span></div>
       </div>
     </div>
 
@@ -629,26 +629,26 @@
             </div>
             <div class="snap-card">
               <div class="snap-val" style="color:${stock.z_score != null && Math.abs(stock.z_score) >= 2 ? 'var(--rose)' : '#c4b5fd'}">${zScoreStr}</div>
-              <div class="snap-lbl">Volatility Dispersion (Z-Score)</div>
+              <div class="snap-lbl">${stock.z_score != null && Math.abs(stock.z_score) >= 2 ? `Activity is ${Math.abs(Number(stock.z_score)).toFixed(1)}σ above baseline` : 'Trading Volume Dispersion'}</div>
             </div>
             <div class="snap-card">
               <div class="snap-val" style="color:${isCrashing ? 'var(--rose)' : 'var(--emerald)'}">
-                ${isCrashing ? 'ANOMALY DETECTED' : 'NOMINAL'}
+                ${isCrashing ? 'UNUSUAL DISPERSION' : 'NOMINAL'}
               </div>
-              <div class="snap-lbl">Market Condition</div>
+              <div class="snap-lbl">Observed Condition</div>
             </div>
           </div>
           <div class="freshness-note">
-            <strong>Data Freshness:</strong> ${esc(stock.data_source || 'Daily Close series via Financial REST Provider')}.
+            <strong>Data Source:</strong> ${esc(stock.data_source || 'Daily Close series via Financial REST Provider')}.
           </div>
         </div>
 
-        <!-- 2. FORENSIC INVESTIGATION WORKSPACE -->
+        <!-- 2. EVIDENCE RETRIEVAL WORKSPACE -->
         <div class="intel-section ae-reveal" style="padding:16px 20px;">
           <div class="intel-section-title" style="margin-bottom:8px;">
-            <span>// 02 · FORENSIC INVESTIGATION WORKSPACE &amp; RETRIEVAL FUNNEL</span>
+            <span>// 02 · MULTI-SOURCE EVIDENCE RETRIEVAL</span>
             <span class="intel-count-badge" style="color:var(--accent);border-color:rgba(0,229,255,0.3);background:rgba(0,229,255,0.08);">
-              Adaptive Saturation Engine
+              Evidence Discovery Funnel
             </span>
           </div>
           <div id="forensicMount"></div>

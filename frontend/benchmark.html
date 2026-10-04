@@ -183,8 +183,8 @@
       <div class="tel-ribbon">
         <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">-38.2%</span><span class="tel-key">Query Redundancy Reduction</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">3.4x</span><span class="tel-key">Wire De-duplication</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">4 / 4 PASSED</span><span class="tel-key">Fault-Injection Suite</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">0 Fabrications</span><span class="tel-key">Network Blackout Test</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">4 / 4 PASSED</span><span class="tel-key">Regression Test Suite</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">0 Fabricated Cases</span><span class="tel-key">Blackout Test (4/4 suite)</span></div>
         <div class="tel-cell"><span class="tel-val">v3.7.0</span><span class="tel-key">Evaluated Release Baseline</span></div>
       </div>
     </div>
@@ -197,10 +197,10 @@
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--accent)"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
             Multi-Entity Empirical Performance Matrix
           </h2>
-          <span class="badge">HISTORICAL RECORDED RUN &bull; N=4 TARGETS &bull; v3.7.0</span>
+          <span class="badge">RECORDED EVALUATION &bull; N=4 SAMPLE TARGETS &bull; v3.7.0</span>
         </div>
         <p style="font-size:0.86rem;color:var(--text-muted);margin-bottom:14px;line-height:1.55;">
-          Recorded evaluation runs across corporate and narrative entities comparing unguided query fan-out against Aegis Protocol's adaptive saturation stopping and source lineage deduplication. (Evaluated on release v3.7.0; reproducible via <code>tests/chaos/test_agent_reach_chaos.py</code>).
+          Recorded evaluation runs across sample corporate and narrative entities comparing unguided query fan-out against adaptive saturation stopping and source lineage deduplication. (Evaluated on release v3.7.0 regression suite; reproducible via <code>tests/chaos/test_agent_reach_chaos.py</code>. Results are scoped to this test suite and do not represent universal guarantees).
         </p>
 
         <div class="bench-table-wrap">
@@ -362,9 +362,9 @@
 
           <div class="chaos-card pass">
             <div>
-              <div class="chaos-name">04 &bull; Total Channel Blackout Invariant</div>
+              <div class="chaos-name">04 &bull; Total Channel Blackout Test</div>
               <div class="chaos-desc">
-                Forces 100% channel failure simultaneously. System guarantees 0 fabricated claims, setting findings state to UNKNOWN_NOT_INVESTIGATED.
+                Simulates total channel failure simultaneously. Confirms 0 fabricated claims in this regression suite (4/4 tests), safely defaulting findings to UNKNOWN_NOT_INVESTIGATED.
               </div>
             </div>
             <div class="chaos-footer">
@@ -705,7 +705,7 @@
           { step_number: 3, type: "DECISION_CHECKPOINT", stage: "SourceLineage", rationale: "Deduplicated 16 echoes back to Reuters wire origin.", decision_type: "DEDUPLICATION" },
           { step_number: 4, type: "DECISION_CHECKPOINT", stage: "EvidenceSaturation", rationale: "S_5=0.88 >= 0.85, N(q_5)=0.04 < 0.08. Early stopping triggered.", decision_type: "SATURATION_HALT" }
         ],
-        deterministic_reproducibility: "100%_VERIFIED"
+        deterministic_reproducibility: "4/4_REGRESSION_PASSED"
       }, null, 2));
     }
 

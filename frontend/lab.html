@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="aegis-theme.css">
 
   <style>
-    /* ── Threat Intelligence Lab Layout ── */
+    /* ── Research & Simulation Lab Layout ── */
     .lab-hero-badge {
       display: inline-flex;
       align-items: center;
@@ -253,14 +253,14 @@
       display: block;
     }
 
-    /* ── Byzantine Agent Cards ── */
-    .agents-swarm-grid {
+    /* ── Consensus Node Cards ── */
+    .consensus-nodes-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 20px;
       margin-top: 24px;
     }
-    .swarm-agent-card {
+    .consensus-node-card {
       background: rgba(3, 7, 18, 0.6);
       border: 1px solid var(--border);
       border-radius: 18px;
@@ -268,7 +268,7 @@
       position: relative;
       transition: all 0.3s ease;
     }
-    .swarm-agent-card.outlier-pruned {
+    .consensus-node-card.outlier-pruned {
       opacity: 0.4;
       filter: grayscale(0.8);
       border-color: rgba(255, 0, 85, 0.4);
@@ -597,15 +597,15 @@
               <div class="particle-simulation-wrap">
                 <canvas id="contagionCanvas"></canvas>
                 <div style="position:absolute;bottom:12px;left:14px;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);background:rgba(3,7,18,0.75);padding:4px 10px;border-radius:8px;border:1px solid var(--border);">
-                  SIMULATION: <span style="color:#ff4d88;">RED = SPREAD</span> &nbsp;|&nbsp; <span style="color:var(--cyan);">CYAN = VERIFIED CORROBORATION</span>
+                  SIMULATION MODEL: <span style="color:#ff4d88;">RED = REPRODUCTION</span> &nbsp;|&nbsp; <span style="color:var(--cyan);">CYAN = CORROBORATING CITATIONS</span>
                 </div>
               </div>
 
               <!-- 24h Hourly Spread Bar Chart -->
               <div style="background:rgba(3,7,18,0.7);border:1px solid var(--border);border-radius:18px;padding:24px;">
                 <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
-                  <div style="font-weight:700;font-size:0.92rem;color:#fff;">24h Spread Velocity (Nodes/Hour)</div>
-                  <span id="blastThreatBadge" class="ae-badge ae-badge-red">CRITICAL</span>
+                  <div style="font-weight:700;font-size:0.92rem;color:#fff;">24h Simulated Spread Velocity (Nodes/Hour)</div>
+                  <span id="blastThreatBadge" class="ae-badge ae-badge-red">HIGH SPREAD RATE</span>
                 </div>
                 <div id="blastBarChartWrap" style="height:210px;display:flex;align-items:flex-end;gap:4px;padding-top:20px;"></div>
               </div>
@@ -614,10 +614,10 @@
             <!-- Recommendation -->
             <div class="verdict-banner" style="background:rgba(15,23,42,0.9);border:1px solid var(--border);margin-top:20px;">
               <div>
-                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--amber);letter-spacing:0.1em;margin-bottom:4px;">SIMULATION SUMMARY</div>
+                <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--amber);letter-spacing:0.1em;margin-bottom:4px;">SIMULATION INTERPRETATION &amp; ASSUMPTIONS</div>
                 <p id="blastRecommendationText" style="font-size:0.88rem;color:var(--text);line-height:1.6;"></p>
               </div>
-              <a href="scout-agent.html" class="ae-btn ae-btn-primary" style="font-size:0.85rem;padding:9px 18px;">Investigate Claim Evidence →</a>
+              <a href="scout-agent.html" class="ae-btn ae-btn-primary" style="font-size:0.85rem;padding:9px 18px;">Investigate Claim Evidence &rarr;</a>
             </div>
           </div>
 
@@ -700,7 +700,7 @@
 
           <!-- Consensus Results -->
           <div id="consensusResults" style="display:none;margin-top:32px;">
-            <div class="agents-swarm-grid" id="swarmCardsGrid"></div>
+            <div class="consensus-nodes-grid" id="swarmCardsGrid"></div>
 
             <div id="consensusVerdictCard" class="verdict-banner verdict-synthetic" style="margin-top:28px;">
               <div>
@@ -1031,7 +1031,7 @@
           vx: (Math.random() - 0.5) * 2,
           vy: (Math.random() - 0.5) * 2,
           radius: 3.5,
-          type: 'defense',
+          type: 'corroboration',
           color: '#00f0ff'
         });
       }
@@ -1053,7 +1053,7 @@
               ctx.beginPath();
               ctx.moveTo(particles[i].x, particles[i].y);
               ctx.lineTo(particles[j].x, particles[j].y);
-              ctx.strokeStyle = particles[i].type === 'defense' || particles[j].type === 'defense'
+              ctx.strokeStyle = particles[i].type === 'corroboration' || particles[j].type === 'corroboration'
                 ? `rgba(0, 240, 255, ${1 - dist / 65})`
                 : `rgba(255, 0, 85, ${0.6 * (1 - dist / 65)})`;
               ctx.lineWidth = 0.8;
@@ -1188,7 +1188,7 @@
         hourly.push({ hour: h, new_nodes: newNodes, cumulative_nodes: cum, intensity });
       }
 
-      const threatLevel = r0 >= 1.6 ? 'CRITICAL SPREAD' : (r0 >= 1.0 ? 'ELEVATED SPREAD' : 'NOMINAL');
+      const threatLevel = r0 >= 1.6 ? 'HIGH SPREAD RATE' : (r0 >= 1.0 ? 'ELEVATED SPREAD' : 'SUBCRITICAL');
 
       return {
         status: 'success',
@@ -1202,8 +1202,8 @@
         hourly_distribution: hourly,
         epicenter: topic || 'ORIGIN_NODE',
         containment_recommendation: r0 >= 1.4
-          ? 'Prioritize evidence verification and primary-source retrieval. Spread rate exceeds baseline threshold.'
-          : 'Diffusion velocity remains within normal baseline limits.'
+          ? 'Simulation interpretation: Model indicates supercritical branching (R₀ > 1.0). Primary-source documentation and verifiable citations are necessary to reduce viral transmission.'
+          : 'Simulation interpretation: Model indicates subcritical decay. Spread velocity is expected to attenuate without active secondary amplification.'
       };
     }
 
@@ -1217,7 +1217,7 @@
 
       const badge = document.getElementById('blastThreatBadge');
       badge.innerText = data.threat_level;
-      if (data.threat_level.includes('CRITICAL')) badge.className = 'ae-badge ae-badge-red';
+      if (data.threat_level.includes('HIGH')) badge.className = 'ae-badge ae-badge-red';
       else if (data.threat_level.includes('ELEVATED')) badge.className = 'ae-badge ae-badge-yellow';
       else badge.className = 'ae-badge ae-badge-green';
 
@@ -1242,7 +1242,7 @@
       startContagionPhysics(data.reproduction_number_r0);
     }
 
-    // ── Byzantine Swarm Consensus ──
+    // ── Byzantine Consensus Model ──
     const CONSENSUS_SAMPLES = {
       'moon-hoax': "Apollo 11 moon landing broadcast was pre-recorded in a Nevada military studio.",
       'alkaline-water': "Drinking alkaline water destroys viral lipid envelopes upon contact.",
@@ -1375,7 +1375,7 @@
         const badgeCls = agent.verdict === 'FALSE' ? 'ae-badge-red' : (agent.verdict === 'TRUE' ? 'ae-badge-green' : 'ae-badge-yellow');
 
         const card = document.createElement('div');
-        card.className = `swarm-agent-card ${isOutlier ? 'outlier-pruned' : ''}`;
+        card.className = `consensus-node-card ${isOutlier ? 'outlier-pruned' : ''}`;
         card.innerHTML = `
           ${isOutlier ? '<div class="pruned-badge">[W-MSR PRUNED: μ ± 2σ]</div>' : ''}
           <div style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);margin-bottom:4px;">${agent.id.toUpperCase()}</div>

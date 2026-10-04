@@ -225,36 +225,36 @@
 
         <div class="aegis-bottomline">
           <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:#818cf8;margin-bottom:4px;text-transform:uppercase;">
-            Investigation Findings
+            Assessment &amp; Summary
           </div>
           <div id="forensicSummaryText" style="color:#e2e8f0;font-size:0.92rem;line-height:1.6;"></div>
         </div>
       </div>
 
-      <!-- LEVEL 2: WHAT WE KNOW vs WHAT WE DON'T KNOW -->
+      <!-- LEVEL 2: ESTABLISHED FACTS vs CONTRADICTIONS & GAPS -->
       <div class="forensic-two-col ae-reveal">
-        <!-- Known Facts -->
+        <!-- Established Facts -->
         <div class="aegis-why-box" style="margin-bottom:0;">
-          <h4>Known Facts (Verified)</h4>
+          <h4>Established Facts</h4>
           <ul id="knownFactsList">
             <li>Extracting empirical facts verified across primary sources...</li>
           </ul>
         </div>
 
-        <!-- Unresolved Gaps -->
+        <!-- Contradictions & Gaps -->
         <div class="aegis-unknown-box" style="margin-bottom:0;">
-          <h4>Unresolved / Investigative Gaps</h4>
+          <h4>Contradictions &amp; Unresolved Gaps</h4>
           <ul id="unresolvedList">
             <li>Isolating unverified aspects and missing records...</li>
           </ul>
         </div>
       </div>
 
-      <!-- LEVEL 2: EVIDENCE CHAIN -->
+      <!-- LEVEL 2: EVIDENCE SEQUENCE -->
       <div class="ae-card ae-reveal" style="padding:26px;margin-bottom:24px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
           <h3 style="font-size:1.05rem;font-weight:700;color:#fff;">
-            Evidence Sequence &amp; Trail
+            Evidence Sequence
           </h3>
           <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Trace: Origin &rarr; Spread &rarr; Corroboration &rarr; Resolution</span>
         </div>
@@ -264,11 +264,11 @@
         </div>
       </div>
 
-      <!-- LEVEL 2: SOURCE GRAPH & RELATIONSHIPS -->
+      <!-- LEVEL 2: SOURCE INDEPENDENCE & PROVENANCE -->
       <div class="ae-card ae-reveal" style="padding:26px;margin-bottom:24px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
           <h3 style="font-size:1.05rem;font-weight:700;color:#fff;">
-            Source Clusters &amp; Independence Relationships
+            Source Independence &amp; Provenance
           </h3>
           <span id="clusterCountBadge" style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">
             2 independent groups
@@ -277,22 +277,22 @@
         <div id="sourceClustersContainer" style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:14px;"></div>
       </div>
 
-      <!-- LEVEL 2: INVESTIGATION NOTES -->
+      <!-- LEVEL 2: LIMITATIONS & NOTES -->
       <div class="ae-card ae-reveal" style="padding:22px;margin-bottom:24px;background:rgba(12,16,28,0.7);">
         <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:8px;">
-          Investigation Notes &amp; Verification Context
+          Limitations &amp; Verification Notes
         </div>
         <div id="investigationNotesText" style="color:#cbd5e1;font-size:0.88rem;line-height:1.65;"></div>
       </div>
 
-      <!-- LEVEL 3: RAW EVIDENCE DRAWER -->
+      <!-- LEVEL 3: TECHNICAL TRACE & ARCHIVAL EXCERPTS -->
       <div class="ae-card ae-reveal" style="padding:24px;margin-bottom:40px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:#818cf8;letter-spacing:0.08em;text-transform:uppercase;">
-              Level 3 · Evidence Explorer
+              Technical Trace
             </div>
-            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Complete Audit Trail &amp; Archival Excerpts</h4>
+            <h4 style="font-size:0.98rem;color:#fff;margin-top:2px;">Audit Trail &amp; Archival Excerpts</h4>
           </div>
           <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Expand for technical metadata</span>
         </div>
@@ -570,7 +570,7 @@ Output strictly valid JSON with this exact schema:
               </div>
               <div style="display:flex;gap:14px;font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);margin-bottom:12px;">
                 <span>Role: <strong style="color:#fff;">${esc(node.source_role)}</strong></span>
-                <span>Observed: <strong style="color:var(--accent);">${esc(node.timestamp || 'Real-Time')}</strong></span>
+                <span>Observed: <strong style="color:var(--accent);">${esc(node.timestamp || 'Indexed timestamp')}</strong></span>
               </div>
               <div>
                 ${safeUrl ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" class="aegis-open-src-btn">Open original &nearr;</a>` : `<span style="font-size:0.74rem;color:var(--text-dim);">Direct link unavailable</span>`}

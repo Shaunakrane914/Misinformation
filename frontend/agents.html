@@ -240,7 +240,7 @@
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
-      margin-bottom: 24px;
+      margin-bottom: 18px;
     }
     .agent-feed-tag {
       font-family: var(--font-mono);
@@ -253,6 +253,46 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
+    }
+
+    /* Best For & Tech Details */
+    .agent-best-for {
+      font-size: 0.82rem;
+      color: #cbd5e1;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 8px;
+      padding: 8px 12px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+    .agent-best-for strong {
+      color: #fff;
+    }
+    .agent-tech-details {
+      margin-top: 6px;
+      margin-bottom: 18px;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 10px 14px;
+      background: rgba(5, 7, 12, 0.5);
+    }
+    .agent-tech-details summary {
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      color: var(--card-accent, var(--accent));
+      user-select: none;
+      font-weight: 600;
+    }
+    .agent-tech-details summary:hover {
+      text-decoration: underline;
+    }
+    .agent-tech-content {
+      margin-top: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.5;
     }
 
     /* ── Prominent Launch Agent Button ── */
@@ -397,213 +437,190 @@
       </button>
     </div>
 
-    <!-- ── 4 DEDICATED AGENT CARDS ── -->
+    <!-- ── 6 DEDICATED AGENT WORKBENCHES ── -->
     <div class="agents-grid ae-reveal" id="agentsDeck">
       
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 01: SCOUT AGENT (FINANCIAL SENTINEL)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="financial" style="--card-accent:#00e5ff;--card-glow:rgba(0,229,255,0.3);--card-icon-bg:rgba(0,229,255,0.12);--card-btn-bg:linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);--card-btn-color:#000;">
+      <!-- CARD 01: SCOUT AGENT -->
+      <div class="agent-card" data-category="financial" style="--card-accent:#00e5ff;--card-glow:rgba(0,229,255,0.2);--card-icon-bg:rgba(0,229,255,0.1);--card-btn-bg:linear-gradient(135deg, #00e5ff 0%, #0284c7 100%);--card-btn-color:#000;">
         <div>
           <div class="agent-card-top">
             <div class="agent-icon-badge-group">
               <div class="agent-avatar-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M3 3v18h18"/>
                   <path d="m19 9-5 5-4-4-3 3"/>
                   <circle cx="19" cy="9" r="2" fill="currentColor"/>
                 </svg>
               </div>
               <div>
-                <div class="agent-designation">AGENT 01 // FINANCIAL ANALYSIS</div>
+                <div class="agent-designation">Financial Markets &amp; Filings</div>
                 <div class="agent-name">Scout Agent</div>
               </div>
             </div>
             <div class="agent-status-indicator">
               <span class="agent-pulse-dot"></span>
-              <span>Financial Module &bull; Ready</span>
+              <span>Available &bull; On Demand</span>
             </div>
           </div>
 
-          <div class="agent-role-subtitle">Market Volatility &amp; Corporate Disclosures</div>
           <p class="agent-mission">
-            Correlates equity price movements with unverified rumors, news reports, and statutory filings.
+            Discovers emerging financial discussions, analyzes unusual price volatility, and cross-references market rumors against statutory regulatory filings.
           </p>
 
-          <div class="agent-capabilities-list">
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Price Movement &amp; Volatility Metrics:</strong> Intraday price movement analysis and statistical dispersion scoring across tracked equities.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Statutory Filing Cross-Referencing:</strong> Automatic reconciliation against SEC EDGAR and corporate statutory filings.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Market Rumor Triangulation:</strong> Corroborates unverified discussion chatter against official news before market panic spreads.</span>
-            </div>
+          <div class="agent-best-for">
+            <strong>Best for:</strong> Tracking market rumors, abnormal trading volatility, and corroborating corporate announcements with SEC filings.
           </div>
 
-          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-label">Sources &amp; Inputs</div>
           <div class="agent-feeds-tags">
             <span class="agent-feed-tag">&#9650; Financial Market Quotes</span>
-            <span class="agent-feed-tag">&#9670; SEC EDGAR Regulatory Filings</span>
-            <span class="agent-feed-tag">&#9632; Public Discussion Forums</span>
-            <span class="agent-feed-tag">&#9679; Financial News Wires</span>
+            <span class="agent-feed-tag">&#9670; SEC EDGAR Filings</span>
+            <span class="agent-feed-tag">&#9632; Corporate Press Wires</span>
+            <span class="agent-feed-tag">&#9679; Financial Forums</span>
           </div>
+
+          <details class="agent-tech-details">
+            <summary>Technical details</summary>
+            <div class="agent-tech-content">
+              Measures volume and return deviations as standard deviations (Z-scores) from recent baselines. Cross-checks entity mentions against verified SEC CIK registries and corporate 8-K/10-Q filing indexes.
+            </div>
+          </details>
         </div>
 
         <div>
           <a href="scout-agent.html" class="agent-launch-btn">
-            <span>Launch Scout Agent</span>
+            <span>Open Scout Agent</span>
             <span class="launch-arrow">&rarr;</span>
           </a>
           <div class="agent-card-bottom">
             <span>API: <code>POST /api/scout/analyze</code></span>
-            <a href="scout-agent.html">Open Dedicated Console &rarr;</a>
+            <a href="scout-agent.html">Open Console &rarr;</a>
           </div>
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 02: TRENDING AGENT (VIRAL SOCIAL RADAR)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="social" style="--card-accent:#f472b6;--card-glow:rgba(244,114,182,0.3);--card-icon-bg:rgba(244,114,182,0.12);--card-btn-bg:linear-gradient(135deg, #f472b6 0%, #db2777 100%);--card-btn-color:#000;">
+      <!-- CARD 02: TRENDING AGENT -->
+      <div class="agent-card" data-category="social" style="--card-accent:#f472b6;--card-glow:rgba(244,114,182,0.2);--card-icon-bg:rgba(244,114,182,0.1);--card-btn-bg:linear-gradient(135deg, #f472b6 0%, #db2777 100%);--card-btn-color:#000;">
         <div>
           <div class="agent-card-top">
             <div class="agent-icon-badge-group">
               <div class="agent-avatar-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/>
                 </svg>
               </div>
               <div>
-                <div class="agent-designation">AGENT 02 // TREND ANALYSIS</div>
+                <div class="agent-designation">Emerging Topics &amp; Signals</div>
                 <div class="agent-name">Trending Agent</div>
               </div>
             </div>
             <div class="agent-status-indicator">
               <span class="agent-pulse-dot"></span>
-              <span>Narrative Tracking &bull; Ready</span>
+              <span>Available &bull; On Demand</span>
             </div>
           </div>
 
-          <div class="agent-role-subtitle">Narrative Velocity &amp; Public Discourse Tracking</div>
           <p class="agent-mission">
-            Identifies emerging viral narratives and discussion patterns across public channels using velocity metrics and diffusion modeling.
+            Tracks discussion velocity and volume acceleration across public channels to surface emerging narratives before they consolidate.
           </p>
 
-          <div class="agent-capabilities-list">
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Diffusion Velocity Metrics:</strong> Estimates viral reproductive parameters (R₀) to analyze narrative acceleration.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Coordinated Pattern Detection:</strong> Flags synchronized phrase dissemination and repetition across independent groups.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Multi-Channel Ingestion:</strong> Ingests zero-token RSS news clusters, public Reddit feeds, and public discussion channels.</span>
-            </div>
+          <div class="agent-best-for">
+            <strong>Best for:</strong> Early observation of rapidly spreading topics, discussion velocity comparisons, and multi-channel rumor discovery.
           </div>
 
-          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-label">Sources &amp; Inputs</div>
           <div class="agent-feeds-tags">
-            <span class="agent-feed-tag">&#9650; Public Reddit Archive</span>
-            <span class="agent-feed-tag">&#9670; Google News Syndication RSS</span>
-            <span class="agent-feed-tag">&#9632; Public Discussion Streams</span>
-            <span class="agent-feed-tag">&#9679; Hawkes Diffusion Pipeline</span>
+            <span class="agent-feed-tag">&#9650; Public News RSS Syndication</span>
+            <span class="agent-feed-tag">&#9670; Public Forum Streams</span>
+            <span class="agent-feed-tag">&#9632; Multi-Channel Feeds</span>
+            <span class="agent-feed-tag">&#9679; Historical Volume Baselines</span>
           </div>
+
+          <details class="agent-tech-details">
+            <summary>Technical details</summary>
+            <div class="agent-tech-content">
+              Calculates velocity relative to 7-day trailing moving averages. Separates volume detection from claim verification, clustering posts by semantic similarity to identify synchronized repetition.
+            </div>
+          </details>
         </div>
 
         <div>
           <a href="trending-agent.html" class="agent-launch-btn">
-            <span>Launch Trending Agent</span>
+            <span>Open Trending Agent</span>
             <span class="launch-arrow">&rarr;</span>
           </a>
           <div class="agent-card-bottom">
             <span>API: <code>POST /api/trending/scan</code></span>
-            <a href="trending-agent.html">Open Dedicated Console &rarr;</a>
+            <a href="trending-agent.html">Open Console &rarr;</a>
           </div>
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 03: BRANDSHIELD AGENT (CORPORATE REPUTATION)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="brand" style="--card-accent:#10b981;--card-glow:rgba(168,85,247,0.3);--card-icon-bg:rgba(16,185,129,0.12);--card-btn-bg:linear-gradient(135deg, #10b981 0%, #059669 100%);--card-btn-color:#000;">
+      <!-- CARD 03: BRANDSHIELD AGENT -->
+      <div class="agent-card" data-category="brand" style="--card-accent:#10b981;--card-glow:rgba(16,185,129,0.2);--card-icon-bg:rgba(16,185,129,0.1);--card-btn-bg:linear-gradient(135deg, #10b981 0%, #059669 100%);--card-btn-color:#000;">
         <div>
           <div class="agent-card-top">
             <div class="agent-icon-badge-group">
               <div class="agent-avatar-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                   <path d="m9 12 2 2 4-4"/>
                 </svg>
               </div>
               <div>
-                <div class="agent-designation">AGENT 03 // BRAND PROTECTION</div>
+                <div class="agent-designation">Brand &amp; Entity Monitoring</div>
                 <div class="agent-name">BrandShield Agent</div>
               </div>
             </div>
             <div class="agent-status-indicator">
               <span class="agent-pulse-dot"></span>
-              <span>Brand Defense &bull; Ready</span>
+              <span>Available &bull; On Demand</span>
             </div>
           </div>
 
-          <div class="agent-role-subtitle">Brand Protection &amp; Online Threat Intelligence</div>
           <p class="agent-mission">
-            Screens product listings, customer reviews, lookalike domain signals, and smear campaigns with structured evidence attribution.
+            Screens marketplace product listings, customer reviews, and domain registrations for duplicate content and potential impersonation patterns.
           </p>
 
-          <div class="agent-capabilities-list">
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Product Listing Analysis:</strong> Scans indexed catalogs and search feeds for unauthorized brand marks.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Review Pattern Analysis:</strong> Evaluates sentiment anomalies and suspicious review clustering.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Domain Typosquatting Audits:</strong> Evaluates lookalike domains and credential risk patterns.</span>
-            </div>
+          <div class="agent-best-for">
+            <strong>Best for:</strong> Brand impersonation screening, duplicate review detection, and lookalike domain evaluation.
           </div>
 
-          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-label">Sources &amp; Inputs</div>
           <div class="agent-feeds-tags">
-            <span class="agent-feed-tag">&#9650; Public Search &amp; Catalogs</span>
-            <span class="agent-feed-tag">&#9670; Digital Media Syndication</span>
-            <span class="agent-feed-tag">&#9632; Public Review Outlets</span>
-            <span class="agent-feed-tag">&#9679; Domain Intelligence Registries</span>
+            <span class="agent-feed-tag">&#9650; Public Search Feeds</span>
+            <span class="agent-feed-tag">&#9670; Marketplace Catalogs</span>
+            <span class="agent-feed-tag">&#9632; Consumer Review Outlets</span>
+            <span class="agent-feed-tag">&#9679; Domain Registries</span>
           </div>
+
+          <details class="agent-tech-details">
+            <summary>Technical details</summary>
+            <div class="agent-tech-content">
+              Applies text similarity heuristics (n-gram overlap, burst timing) across review corpora and evaluates edit-distance strings for domain typosquatting detection. Distinguishes observed similarity from proven coordinated campaigns.
+            </div>
+          </details>
         </div>
 
         <div>
           <a href="brandshield-agent.html" class="agent-launch-btn">
-            <span>Launch BrandShield Agent</span>
+            <span>Open BrandShield Agent</span>
             <span class="launch-arrow">&rarr;</span>
           </a>
           <div class="agent-card-bottom">
             <span>API: <code>POST /api/brandshield/scan</code></span>
-            <a href="brandshield-agent.html">Open Dedicated Console &rarr;</a>
+            <a href="brandshield-agent.html">Open Console &rarr;</a>
           </div>
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 04: PERSONAL WATCH AGENT (VIP & EXECUTIVE DEFENSE)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="vip" style="--card-accent:#a855f7;--card-glow:rgba(168,85,247,0.3);--card-icon-bg:rgba(168,85,247,0.12);--card-btn-bg:linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);--card-btn-color:#fff;">
+      <!-- CARD 04: PERSONAL WATCH AGENT -->
+      <div class="agent-card" data-category="vip" style="--card-accent:#a855f7;--card-glow:rgba(168,85,247,0.2);--card-icon-bg:rgba(168,85,247,0.1);--card-btn-bg:linear-gradient(135deg, #a855f7 0%, #7c3aed 100%);--card-btn-color:#fff;">
         <div>
           <div class="agent-card-top">
             <div class="agent-icon-badge-group">
               <div class="agent-avatar-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
                   <circle cx="12" cy="7" r="4"/>
                   <path d="M22 11c0 2.21-1.79 4-4 4"/>
@@ -611,55 +628,59 @@
                 </svg>
               </div>
               <div>
-                <div class="agent-designation">AGENT 04 // PROFILE MONITORING</div>
+                <div class="agent-designation">Public Mentions &amp; Identity</div>
                 <div class="agent-name">Personal Watch Agent</div>
               </div>
             </div>
             <div class="agent-status-indicator">
-              <span class="agent-pulse-dot"></span>
-              <span>Profile Verification &bull; Ready</span>
+              <span class="agent-pulse-dot" style="background:#a855f7;box-shadow:0 0 8px #a855f7;"></span>
+              <span>Available &bull; On Demand</span>
             </div>
           </div>
 
-          <div class="agent-role-subtitle">Public Signals &amp; Identity Monitoring</div>
           <p class="agent-mission">
-            Monitors public statements, verifies purported quotes, and checks for impersonation accounts across social platforms.
+            Monitors public statements, verifies purported quotes against official transcripts, and checks for impersonation accounts across public channels.
           </p>
 
-          <div class="agent-capabilities-list">
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Quote Verification:</strong> Cross-references alleged statements against official media transcripts and press archives.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Impersonation Account Auditing:</strong> Identifies unverified social handles impersonating key individuals.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Claim Coverage Analysis:</strong> Compares viral allegations against credible reporting and direct statements.</span>
-            </div>
+          <div class="agent-best-for">
+            <strong>Best for:</strong> Quote verification, executive or public figure impersonation checks, and public allegation corroboration.
           </div>
 
-          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-label">Sources &amp; Inputs</div>
           <div class="agent-feeds-tags">
-            <span class="agent-feed-tag">&#9650; Public Social Signals</span>
+            <span class="agent-feed-tag">&#9650; Public Social Channels</span>
             <span class="agent-feed-tag">&#9670; News Wire Transcripts</span>
             <span class="agent-feed-tag">&#9632; Official Public Statements</span>
-            <span class="agent-feed-tag">&#9679; Fact-Check Registries</span>
+            <span class="agent-feed-tag">&#9679; Fact-Checking Archives</span>
           </div>
+
+          <details class="agent-tech-details">
+            <summary>Technical details</summary>
+            <div class="agent-tech-content">
+              Performs string normalization and fuzzy attribution across verified speech transcripts and press releases. Avoids claiming someone is 'cleared' when insufficient data exists.
+            </div>
+          </details>
         </div>
 
         <div>
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 05: INVESTIGATOR AGENT (CASE EVIDENCE & FINDINGS)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="investigation" style="--card-accent:#818cf8;--card-glow:rgba(129,140,248,0.3);--card-icon-bg:rgba(129,140,248,0.12);--card-btn-bg:linear-gradient(135deg, #818cf8 0%, #6366f1 100%);--card-btn-color:#fff;">
+          <a href="personal-watch-agent.html" class="agent-launch-btn">
+            <span>Open Personal Watch Agent</span>
+            <span class="launch-arrow">&rarr;</span>
+          </a>
+          <div class="agent-card-bottom">
+            <span>API: <code>POST /api/personal/scan</code></span>
+            <a href="personal-watch-agent.html">Open Console &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CARD 05: INVESTIGATOR AGENT -->
+      <div class="agent-card" data-category="investigation" style="--card-accent:#818cf8;--card-glow:rgba(129,140,248,0.2);--card-icon-bg:rgba(129,140,248,0.1);--card-btn-bg:linear-gradient(135deg, #818cf8 0%, #6366f1 100%);--card-btn-color:#fff;">
         <div>
           <div class="agent-card-top">
             <div class="agent-icon-badge-group">
               <div class="agent-avatar-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                   <polyline points="14 2 14 8 20 8"/>
                   <line x1="16" y1="13" x2="8" y2="13"/>
@@ -668,119 +689,107 @@
                 </svg>
               </div>
               <div>
-                <div class="agent-designation">AGENT 05 // CASE INVESTIGATION</div>
+                <div class="agent-designation">Case Evidence &amp; Provenance</div>
                 <div class="agent-name">Investigator Agent</div>
               </div>
             </div>
             <div class="agent-status-indicator">
               <span class="agent-pulse-dot" style="background:#818cf8;box-shadow:0 0 8px #818cf8;"></span>
-              <span>Case Synthesis &bull; Ready</span>
+              <span>Available &bull; On Demand</span>
             </div>
           </div>
 
-          <div class="agent-role-subtitle">Evidence Sequence &amp; Source Corroboration</div>
           <p class="agent-mission">
-            Assembles case dossiers: traces origin-to-amplification timelines, isolates verified facts from unresolved gaps, and maps source independence.
+            Conducts structured claim investigations: breaks down assertions, maps evidence chronologically, separates verified facts from gaps, and tests source independence.
           </p>
 
-          <div class="agent-capabilities-list">
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Evidence Sequence Trail:</strong> Step-by-step chronology from origin to secondary amplification to official confirmation.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Known Facts vs Gaps:</strong> Explicit epistemic separation of empirically verified records versus unindexed missing data.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Source Cluster Independence:</strong> Classifies whether sources are dependent amplifiers or independent origin records.</span>
-            </div>
+          <div class="agent-best-for">
+            <strong>Best for:</strong> In-depth claim dossiers, multi-source corroboration, evidence sequence tracing, and provenance graph analysis.
           </div>
 
-          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-label">Sources &amp; Inputs</div>
           <div class="agent-feeds-tags">
             <span class="agent-feed-tag">&#9650; Statutory Registries</span>
             <span class="agent-feed-tag">&#9670; Independent Wire Desks</span>
             <span class="agent-feed-tag">&#9632; Discussion Timelines</span>
             <span class="agent-feed-tag">&#9679; Primary Excerpt Archive</span>
           </div>
+
+          <details class="agent-tech-details">
+            <summary>Technical details</summary>
+            <div class="agent-tech-content">
+              Constructs DAG-based evidence graphs, extracts temporal contradictions, and identifies syndication lineage to prevent circular reporting from inflating confidence.
+            </div>
+          </details>
         </div>
 
         <div>
           <a href="investigator-agent.html" class="agent-launch-btn">
-            <span>Launch Investigator Agent</span>
+            <span>Open Investigator Agent</span>
             <span class="launch-arrow">&rarr;</span>
           </a>
           <div class="agent-card-bottom">
             <span>API: <code>POST /api/claims/verify</code></span>
-            <a href="investigator-agent.html">Open Dedicated Console &rarr;</a>
+            <a href="investigator-agent.html">Open Console &rarr;</a>
           </div>
         </div>
       </div>
 
-      <!-- ══════════════════════════════════════════════════════════
-           CARD 06: RESEARCH AGENT (EVIDENCE RESEARCH WORKSPACE)
-           ══════════════════════════════════════════════════════════ -->
-      <div class="agent-card" data-category="research" style="--card-accent:#38bdf8;--card-glow:rgba(56,189,248,0.3);--card-icon-bg:rgba(56,189,248,0.12);--card-btn-bg:linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);--card-btn-color:#000;">
+      <!-- CARD 06: RESEARCH AGENT -->
+      <div class="agent-card" data-category="research" style="--card-accent:#38bdf8;--card-glow:rgba(56,189,248,0.2);--card-icon-bg:rgba(56,189,248,0.1);--card-btn-bg:linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);--card-btn-color:#000;">
         <div>
           <div class="agent-card-top">
             <div class="agent-icon-badge-group">
               <div class="agent-avatar-icon">
-                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <circle cx="12" cy="12" r="10"/>
                   <line x1="2" y1="12" x2="22" y2="12"/>
                   <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
                 </svg>
               </div>
               <div>
-                <div class="agent-designation">AGENT 06 // DEEP RESEARCH</div>
+                <div class="agent-designation">Open Scientific &amp; Web Inquiry</div>
                 <div class="agent-name">Research Agent</div>
               </div>
             </div>
             <div class="agent-status-indicator">
               <span class="agent-pulse-dot" style="background:#38bdf8;box-shadow:0 0 8px #38bdf8;"></span>
-              <span>Research Synthesis &bull; Ready</span>
+              <span>Available &bull; On Demand</span>
             </div>
           </div>
 
-          <div class="agent-role-subtitle">Multi-Source Synthesis &amp; Contradiction Audit</div>
           <p class="agent-mission">
-            Deep inquiry workspace that clusters multi-source evidence around key findings, why they matter, contradictions, and curated source reading lists.
+            Provides an open inquiry workbench that synthesizes evidence around complex research questions, explicitly separating corroborated facts from gaps and unknowns.
           </p>
 
-          <div class="agent-capabilities-list">
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Clustered Key Findings:</strong> Summarizes supported facts alongside rationale explaining why each finding matters.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Contradiction Highlighting:</strong> Surfaces conflicting reports across independent outlets without smoothing over discrepancies.</span>
-            </div>
-            <div class="agent-cap-item">
-              <span class="agent-cap-bullet">&#9670;</span>
-              <span><strong>Curated Reading List:</strong> Verified primary source links with explicit role tags (Registry, News, Industry, Academic).</span>
-            </div>
+          <div class="agent-best-for">
+            <strong>Best for:</strong> Multi-perspective research questions, literature comparison, contradiction audits, and curated reading lists.
           </div>
 
-          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-label">Sources &amp; Inputs</div>
           <div class="agent-feeds-tags">
             <span class="agent-feed-tag">&#9650; Academic Repositories</span>
             <span class="agent-feed-tag">&#9670; Verified Global Wires</span>
             <span class="agent-feed-tag">&#9632; Regulatory Documents</span>
             <span class="agent-feed-tag">&#9679; Primary Citation Index</span>
           </div>
+
+          <details class="agent-tech-details">
+            <summary>Technical details</summary>
+            <div class="agent-tech-content">
+              Organizes multi-round query expansion into clustered findings, surfaces discrepancies across distinct publisher types, and compiles categorized primary reading lists.
+            </div>
+          </details>
         </div>
 
         <div>
           <a href="research-agent.html" class="agent-launch-btn">
-            <span>Launch Research Agent</span>
+            <span>Open Research Agent</span>
             <span class="launch-arrow">&rarr;</span>
           </a>
           <div class="agent-card-bottom">
             <span>API: <code>POST /api/research/query</code></span>
-            <a href="research-agent.html">Open Dedicated Console &rarr;</a>
+            <a href="research-agent.html">Open Console &rarr;</a>
           </div>
         </div>
       </div>

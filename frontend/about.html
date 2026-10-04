@@ -412,23 +412,32 @@
       <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
         <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:22px;">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--cyan);margin-bottom:6px;">// STATISTICAL TEXT ANALYSIS</div>
-          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Zipf-Mandelbrot Regression</h3>
-          <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
-            Measures lexical entropy and token frequency decay ($P(r) = P_0(r+\beta)^{-\gamma}$). Autoregressive language models sample with bounded variance and high fit ($R^2 > 0.93$), whereas human writing exhibits natural burstiness and lexical dispersion.
+          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Token Frequency Regularity (Zipf-Mandelbrot)</h3>
+          <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.55;margin-bottom:8px;">
+            <strong>Plain English:</strong> How predictable is the word frequency pattern? Machine-generated text tends to follow rigid statistical rank decay, whereas human writing shows irregular bursts and lexical variety.
+          </p>
+          <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.5;margin:0;">
+            Mathematical formula: $P(r) = P_0(r+\beta)^{-\gamma}$. Autoregressive models exhibit low lexical variance ($R^2 > 0.93$), which the Research Lab compares against empirical baselines.
           </p>
         </div>
         <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:22px;">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--amber);margin-bottom:6px;">// INFORMATION DIFFUSION DYNAMICS</div>
-          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Hawkes Point-Process Modeling</h3>
-          <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
-            Models narrative propagation as self-exciting point processes ($\lambda(t) = \mu + \sum_{t_i < t} \alpha e^{-\beta(t - t_i)}$). Calculates the reproduction number ($R_0 = \alpha / \beta$) to determine whether a claim is diffusing super-critically across networks.
+          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Diffusion Dynamics (Hawkes Processes)</h3>
+          <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.55;margin-bottom:8px;">
+            <strong>Plain English:</strong> Is discussion spreading organically or through self-exciting cascade bursts? Models whether new mentions arrive at a steady rate or trigger sudden viral re-shares.
+          </p>
+          <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.5;margin:0;">
+            Mathematical formula: $\lambda(t) = \mu + \sum_{t_i < t} \alpha e^{-\beta(t - t_i)}$. Computes reproduction ratio $R_0 = \alpha / \beta$ in simulation.
           </p>
         </div>
         <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:22px;">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--purple);margin-bottom:6px;">// FAULT-TOLERANT AGGREGATION</div>
-          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Weighted-MSR Outlier Pruning</h3>
-          <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
-            Derived from the Weighted Mean-Subsequence-Reduced algorithm in distributed systems. Eliminates the extreme highest and lowest evaluator scores before computing consensus, preventing hallucinating or sycophantic outlier evaluations from skewing the verdict.
+          <h3 style="color:#fff;font-size:1.05rem;font-weight:700;margin-bottom:8px;">Outlier Score Trimming (Weighted-MSR)</h3>
+          <p style="color:#cbd5e1;font-size:0.86rem;line-height:1.55;margin-bottom:8px;">
+            <strong>Plain English:</strong> Can we reach reliable agreement when one evaluator is biased or hallucinating? Prunes extreme high and low ratings so a single divergent score doesn't distort the consensus.
+          </p>
+          <p style="color:var(--text-muted);font-size:0.82rem;line-height:1.5;margin:0;">
+            Based on the Weighted Mean-Subsequence-Reduced protocol from distributed consensus, filtering outlier nodes before final score weighting.
           </p>
         </div>
       </div>
@@ -600,7 +609,7 @@
       <a href="index.html" style="color:var(--text-muted);text-decoration:none;">Home</a>
       <a href="agents.html" style="color:var(--text-muted);text-decoration:none;">Agents</a>
       <a href="submit.html" style="color:var(--accent);text-decoration:none;">Submit Claim</a>
-      <a href="lab.html" style="color:var(--text-muted);text-decoration:none;">Threat Lab</a>
+      <a href="lab.html" style="color:var(--text-muted);text-decoration:none;">Research Lab</a>
     </div>
   </footer>
 

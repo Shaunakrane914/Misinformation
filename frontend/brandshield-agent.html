@@ -216,12 +216,12 @@
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>BrandShield Agent &bull; Observed Review &amp; Marketplace Signals</div>
       <h1>BrandShield <span>Agent</span></h1>
-      <p>Evidence-based brand monitoring and signal verification. Screens product listings, consumer signals, reviews, and circulating claims with source attribution.</p>
+      <p>Evidence-based brand observation and pattern screening. Screens marketplace listings, consumer signals, reviews, and circulating claims with source attribution.</p>
       
       <div class="tel-ribbon">
         <div class="tel-cell"><span class="tel-val" id="telSources">Standby</span><span class="tel-key">Sources Scanned</span></div>
         <div class="tel-cell"><span class="tel-val" id="telChannels" style="color:var(--accent)">Available</span><span class="tel-key">Channel Feeds</span></div>
-        <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:#fbbf24">0 Flagged</span><span class="tel-key">Threat Signals</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:#fbbf24">0 Flagged</span><span class="tel-key">Observed Signals</span></div>
         <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">Audited</span><span class="tel-key">Syndication Audit</span></div>
         <div class="tel-cell"><span class="tel-val" id="telStatus" style="color:#10b981">READY</span><span class="tel-key">System Status</span></div>
       </div>
@@ -454,7 +454,7 @@
           </div>
           <div class="snap-card">
             <span class="snap-val" style="color:${highSevThreats.length > 0 ? 'var(--rose)' : 'var(--emerald)'};">${highSevThreats.length}</span>
-            <span class="snap-lbl">High-Priority Threats</span>
+            <span class="snap-lbl">Priority Signals</span>
           </div>
           <div class="snap-card">
             <span class="snap-val" style="color:${unverifiedClaims.length > 0 ? '#fbbf24' : 'var(--emerald)'};">${unverifiedClaims.length}</span>
@@ -462,11 +462,11 @@
           </div>
           <div class="snap-card">
             <span class="snap-val" style="color:${counterfeits > 0 ? '#fbbf24' : 'var(--text-dim)'};">${counterfeits}</span>
-            <span class="snap-lbl">Suspicious Listings</span>
+            <span class="snap-lbl">Listing Signals</span>
           </div>
           <div class="snap-card">
             <span class="snap-val" style="color:${impersonations > 0 ? 'var(--rose)' : 'var(--emerald)'};">${impersonations}</span>
-            <span class="snap-lbl">Impersonation Signals</span>
+            <span class="snap-lbl">Potential Impersonation</span>
           </div>
         </div>
       `;
@@ -475,7 +475,7 @@
       if (sources.length === 0 && threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin:24px 0;">
-            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Verified Public Threat Evidence Found</div>
+            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Verified Public Evidence Found</div>
             <div>No matching adversarial or deceptive public signals were retrieved for "${escapeHtml(data.brand_name)}" across active search channels.</div>
             <div style="font-size:0.8rem;color:var(--text-dim);margin-top:8px;">
               Possible causes: obscure keyword, search provider rate limits, or genuine absence of indexed public complaints.
@@ -487,13 +487,13 @@
         return;
       }
 
-      // 3. Top Threats (Human-Centered 4-Question Cards)
-      html += `<div class="sec-hdr">TOP THREATS REQUIRING ATTENTION (${threats.length})</div>`;
+      // 3. Observed Signals (Observation -> Pattern -> Assessment)
+      html += `<div class="sec-hdr">OBSERVED SIGNALS &amp; PATTERNS (${threats.length})</div>`;
       if (threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin-bottom:20px;">
-            <div style="color:#10b981;font-weight:700;margin-bottom:4px;">No Active Brand Threats Identified</div>
-            <div>Public discussions reflect standard consumer queries or positive brand mentions without coordinated attacks.</div>
+            <div style="color:#10b981;font-weight:700;margin-bottom:4px;">No Suspicious Patterns Detected</div>
+            <div>Public discussions reflect standard consumer queries or positive brand mentions without observed duplicate clusters.</div>
           </div>
         `;
       } else {
@@ -507,26 +507,27 @@
               <div class="threat-header" style="margin-bottom:12px;">
                 <div>
                   <span class="threat-type-badge" style="color:${sevColor};background:rgba(255,255,255,0.06);border:1px solid ${sevColor};">
-                    ${escapeHtml(t.type || 'THREAT')}
+                    ${escapeHtml(t.type || 'OBSERVED PATTERN')}
                   </span>
                   <span style="font-weight:700;font-size:1.02rem;color:#fff;margin-left:10px;">
                     ${escapeHtml(t.title)}
                   </span>
                 </div>
                 <button class="dossier-btn" onclick="openDossierModal(${idx})">
-                  Investigate Threat ↗
+                  Examine Evidence ↗
                 </button>
               </div>
 
-              <!-- 4 Essential Questions -->
+              <!-- Observation -> Pattern -> Assessment -->
               <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;margin-bottom:12px;font-size:0.85rem;line-height:1.5;">
                 <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
-                  <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Why Flagged</div>
+                  <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Observation &amp; Pattern</div>
                   <div style="color:#cbd5e1;">${escapeHtml(t.summary || 'Unverified pattern detected.')}</div>
                 </div>
                 <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
-                  <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Severity &amp; Status</div>
-                  <div style="color:${sevColor};font-weight:600;">${escapeHtml(t.severity || 'Medium').toUpperCase()} PRIORITY &bull; ${(t.status || 'Under Investigation').toUpperCase()}</div>
+                  <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Assessment</div>
+                  <div style="color:${sevColor};font-weight:600;">${escapeHtml(t.severity || 'Medium').toUpperCase()} PRIORITY &bull; ${(t.status || 'Under Review').toUpperCase()}</div>
+                  <div style="font-size:0.78rem;color:var(--text-dim);margin-top:3px;">Pattern observed; requires source corroboration before establishing coordination.</div>
                 </div>
               </div>
 
@@ -547,7 +548,7 @@
       const listingThreats = threats.filter(t => (t.type || '').toLowerCase().includes('counterfeit') || (t.type || '').toLowerCase().includes('listing') || (t.type || '').toLowerCase().includes('scam'));
       if (listingThreats.length > 0) {
         html += `
-          <div class="sec-hdr">SUSPICIOUS MARKETPLACE LISTINGS &amp; PRODUCT SIGNALS</div>
+          <div class="sec-hdr">POTENTIAL IMPERSONATION &amp; PRODUCT SIGNALS</div>
           <div class="scan-card ae-reveal" style="padding:0;overflow:hidden;margin-bottom:28px;">
             <table class="aegis-compact-table">
               <thead>
@@ -565,10 +566,10 @@
                     <td><strong>${escapeHtml((lt.platforms || ['Marketplace'])[0])}</strong></td>
                     <td style="color:#fff;font-weight:600;">${escapeHtml(lt.title)}</td>
                     <td style="font-family:var(--font-mono);color:var(--text-dim);">${escapeHtml(lt.seller || '@unverified')}</td>
-                    <td><span class="ae-badge ae-badge-red" style="font-size:0.7rem;">${escapeHtml(lt.type || 'Suspicious')}</span></td>
+                    <td><span class="ae-badge ae-badge-red" style="font-size:0.7rem;">${escapeHtml(lt.type || 'Signal')}</span></td>
                     <td>
                       <button class="aegis-open-src-btn" style="padding:3px 8px;font-size:0.72rem;" onclick="openDossierModal(${lIdx})">
-                        Investigate ↗
+                        Examine ↗
                       </button>
                     </td>
                   </tr>
@@ -579,12 +580,12 @@
         `;
       }
 
-      // 4. Review Pattern Screening & Manipulation Intelligence
+      // 4. Review Pattern Screening & Duplication Audit
       const isInsufficient = reviewIntel.status === 'INSUFFICIENT_EVIDENCE' || reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
       const isSuspicious = reviewIntel.review_manipulation_detected || reviewIntel.status === 'SUSPICIOUS_PATTERNS_DETECTED';
       const statusTitle = isInsufficient
         ? '⚪ INSUFFICIENT EVIDENCE FOR REVIEW SCREENING'
-        : (isSuspicious ? '⚠️ NEAR-DUPLICATE REVIEW PATTERNS DETECTED' : '✓ SCREENED: NO DUPLICATE CLUSTERS DETECTED');
+        : (isSuspicious ? '⚠️ REVIEW SIMILARITY OBSERVED (POSSIBLE DUPLICATE CLUSTER)' : '✓ SCREENED: NO DUPLICATE CLUSTERS DETECTED');
       const statusColor = isInsufficient ? 'var(--text-dim)' : (isSuspicious ? 'var(--rose)' : '#10b981');
       const confDisplay = reviewIntel.confidence != null ? `CONFIDENCE: ${Math.round(reviewIntel.confidence * 100)}%` : 'CONFIDENCE: NOT_APPLICABLE';
 
@@ -609,7 +610,7 @@
             FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'Natural lexical variance across retrieved signals.')}
           </div>
           <div style="font-size:0.75rem;color:var(--text-dim);margin-top:8px;font-style:italic;line-height:1.4;">
-            Epistemic note: Observed signals indicate duplicated or templated reviews across clusters, but do not by themselves establish coordinated fraud without vendor corroboration.
+            Assessment: This pattern is consistent with copied content, but does not by itself establish coordinated manipulation.
           </div>
           ${(isSuspicious && reviewIntel.signals_found && reviewIntel.signals_found.length > 0) ? `
             <div style="margin-top:10px;padding:8px 12px;background:rgba(244,63,94,0.06);border-radius:8px;border:1px solid rgba(244,63,94,0.2);">

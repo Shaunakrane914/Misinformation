@@ -28,15 +28,15 @@ To maintain strict scientific integrity, Aegis Protocol explicitly separates **w
 | :--- | :--- | :--- | :--- |
 | 🛡️ **Claim Ingestion Engine** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication, dual-column extraction | **Production / Implemented** | Tested (`pytest`), 100% deterministic |
 | 🌐 **Agent Reach Layer** | 14-channel capability registry, domain retrieval planner, wire syndication clustering, SSRF defense | **Production / Implemented** | Tested (`pytest`), RFC 3986 URL parsing |
-| ⚡ **Learned Evidence Reranker** | 7-feature linear model (TF-IDF similarity, title Jaccard, domain credibility prior, entity match) | **Production / Implemented** | **MRR: 0.20 → 1.00 (+0.80)**, 0.27ms p50 |
-| 📊 **Classical Supervised Baseline** | TF-IDF (10k unigram+bigram) + L2 Logistic Regression on held-out test split | **Production / Implemented** | **88.92% Accuracy, 0.8890 F1** ($N=3,068$) |
+| ⚡ **Learned Evidence Reranker** | 7-feature linear ranking model (pairwise cross-entropy fit on train pairs, evaluated on held-out test queries) | **Production / Tested** | **MRR: 0.20 → 1.00 (+0.80)**, 0.26ms p50 |
+| 📊 **Classical Supervised Baseline** | Deduplicated TF-IDF (10k unigram+bigram) + L2 Logistic Regression on held-out test split | **Production / Implemented** | **88.50% Accuracy, 0.8850 F1** ($N=2,948$) |
 | ⚖️ **Investigator Agent** | Structured forensic case dossiers, 6-verdict taxonomy, evidence limitations disclosure | **Production / Implemented** | Tested (`pytest`), schema validated |
 | 🔬 **Research Agent** | Multi-source investigation, primary source escalation, corroboration scoring | **Production / Implemented** | Tested (`pytest`), passage extraction |
 | 🔍 **Scout Agent (Financial)** | Yahoo Finance real-time price feeds, volume z-scores, event-clustered news correlation | **Production / Implemented** | Tested (`pytest`), ticker validation |
 | 📈 **Trending Agent (Viral Claims)** | Multi-channel RSS discovery, velocity estimation, narrative summary dossiers | **Production / Implemented** | Tested (`pytest`), sentiment baseline |
 | 🛡️ **BrandShield Agent** | Brand threat cards, suspicious listing audit, coordinated astroturfing heuristic | **Production / Implemented** | Tested (`pytest`), 4-question threat cards |
 | 👤 **Personal Watch Agent** | Executive & public figure monitoring across news and web channels with severity triage | **Production / Implemented** | Tested (`pytest`), diff classification |
-| 🇮🇳 **India Multilingual Track** | Curated gold benchmark across English, Hindi, Marathi, and Hinglish across 5 civic domains | **Production / Implemented** | Gold institutional annotations |
+| 🇮🇳 **India Multilingual Track** | Curated gold benchmark across English, Hindi, Marathi, and Hinglish across 5 civic domains (14 claims) | **Research / Prototype** | Gold institutional annotations (Curated Prototype) |
 | ⚡ **Hawkes Process Blast Radius** | Point-process self-excitation simulation ($\lambda(t) = \mu + \sum \alpha e^{-\beta(t-t_i)}$), $R_0$ velocity | **Simulated / Demonstration** | Algorithmic model demo |
 | 📐 **Zipf-Mandelbrot Detector** | Token-rank power-law fit ($P(r) = P_0(r+\beta)^{-\gamma}$) evaluating $R^2$, Shannon entropy, TTR | **Simulated / Experimental** | Statistical distribution analysis |
 | 🏛️ **Byzantine Swarm Consensus** | Multi-node consensus with Weighted Mean Subsequence Reduction (W-MSR) outlier pruning | **Simulated / Experimental** | Resilient aggregation model |
@@ -51,18 +51,20 @@ Earlier project documentation cited a **93.33% accuracy** on a 50-sample slice o
 
 ### Audited Real-World Baselines
 
-1. **Supervised Classical ML Baseline (WELFake Held-Out Test Split, $N=3,068$)**:
-   - **Accuracy**: **88.92%** (95% Wilson Score CI: `[87.76%, 89.98%]`)
-   - **Macro-F1**: **0.8890** (95% Non-parametric Bootstrap CI: `[0.8776, 0.9008]`)
-   - **Macro-Precision**: 0.8891 | **Macro-Recall**: 0.8890
-   - **Expected Calibration Error (ECE)**: 0.0832 | **Brier Score**: 0.0921
-   - **Inference Throughput**: ~72,500 samples/sec (CPU-only, 0.042s for 3,068 items)
-   - **Zero ground-truth leakage**: TF-IDF and Logistic Regression fit strictly on the 14,312-sample training split.
+1. **Supervised Classical ML Baseline (WELFake Held-Out Test Split, $N=2,948$)**:
+   - **Accuracy**: **88.50%** (95% Wilson Score CI: `[87.30%, 89.60%]`)
+   - **Macro-F1**: **0.8850** (95% Non-parametric Bootstrap CI: `[0.8731, 0.8958]`)
+   - **Macro-Precision**: 0.8850 | **Macro-Recall**: 0.8850
+   - **Expected Calibration Error (ECE)**: 0.0887 | **Brier Score**: 0.0945
+   - **Inference Throughput**: ~72,000 samples/sec (CPU-only, 0.041s for 2,948 items)
+   - **Zero ground-truth or content leakage**: 800 duplicate titles removed pre-split; exact zero duplicate titles across train ($N=13,752$), val ($N=2,947$), and test ($N=2,948$) partitions.
 
-2. **Learned Evidence Reranker Evaluation (Multi-Candidate Pools)**:
+2. **Learned Evidence Reranker Evaluation (Pairwise-Trained on Held-Out Test Queries)**:
+   - **Training Protocol**: Pairwise cross-entropy fit (`reranker.fit()`) via L-BFGS on training claim-evidence candidate pairs.
+   - **Evaluation**: Evaluated on held-out test queries with 15 candidate documents each (including distracting negatives).
    - **Mean Reciprocal Rank (MRR)**: Raw Search = 0.2000 → Reranked = **1.0000** ($\Delta +0.8000$)
    - **Recall@5**: 1.0000 | **Recall@10**: 1.0000
-   - **Median Latency (p50)**: **0.27 ms** | **Model Size**: 192 bytes
+   - **Median Latency (p50)**: **0.26 ms** | **Model Size**: 136 bytes
 
 For full methodology, calibration reliability diagrams, and ablation analysis, see [`docs/EVALUATION.md`](docs/EVALUATION.md).
 

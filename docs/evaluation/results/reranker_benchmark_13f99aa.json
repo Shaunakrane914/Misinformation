@@ -1,0 +1,59 @@
+{
+  "experiment_id": "reranker_trained_eval_13f99aa",
+  "taxonomy_category": "offline_ml_benchmark",
+  "benchmark_type": "Supervised Evidence Reranking Benchmark (Held-Out Test Queries)",
+  "scientific_disclosure": "Candidate pools use 15 candidates/query (2 relevant targets at raw rank 4 and 9; 13 distractors). The reranker was trained on training pairs and evaluated strictly on held-out queries.",
+  "git_commit": "13f99aa35bc94bbeb4954d4c68b5f380af5deb73",
+  "timestamp_utc": "2026-10-04T10:18:12.988404+00:00",
+  "training": {
+    "training_items_count": 7,
+    "training_pairs_count": 28,
+    "is_custom_trained": true,
+    "train_time_sec": 0.0039
+  },
+  "evaluation": {
+    "held_out_queries_count": 7,
+    "candidates_per_query": 15
+  },
+  "reranker": {
+    "model": "learned_evidence_reranker",
+    "feature_dim": 7,
+    "query_count": 7,
+    "raw_retrieval": {
+      "query_count": 7,
+      "mrr": 0.2,
+      "recall@1": 0.0,
+      "recall@3": 0.0,
+      "recall@5": 1.0,
+      "recall@10": 1.0
+    },
+    "reranked_retrieval": {
+      "query_count": 7,
+      "mrr": 1.0,
+      "recall@1": 1.0,
+      "recall@3": 1.0,
+      "recall@5": 1.0,
+      "recall@10": 1.0
+    },
+    "deltas": {
+      "mrr_delta": 0.8,
+      "recall_at_5_delta": 0.0,
+      "recall_at_10_delta": 0.0
+    },
+    "performance": {
+      "latency_p50_ms": 0.52,
+      "latency_p95_ms": 0.81,
+      "memory_footprint_bytes": 136
+    },
+    "weights": {
+      "tfidf_similarity": 0.3257,
+      "title_overlap": 0.6155,
+      "snippet_overlap": 0.1412,
+      "domain_credibility": 0.8807,
+      "entity_match": 1.0526,
+      "primary_signal": 1.957,
+      "length_ratio": 0.2416,
+      "intercept": -2.8863
+    }
+  }
+}

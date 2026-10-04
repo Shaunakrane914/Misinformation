@@ -216,9 +216,9 @@ class SinglePromptLLMBaseline:
 
             raw_response = gemini_service.generate_text(
                 prompt=f"{self.SYSTEM_PROMPT}\n\n{user_content}",
+                allow_mock_fallback=self.allow_mock,
             )
             latency_ms = (time.perf_counter() - t0) * 1000.0
-
 
             # Restore original mock mode
             gemini_service.mock_mode = original_mock
@@ -249,7 +249,7 @@ class SinglePromptLLMBaseline:
                 "abstained": abstained,
                 "reasoning": parsed.get("reasoning", ""),
                 "latency_ms": round(latency_ms, 2),
-                "provider": "offline_mock" if gemini_service.mock_mode else "live_gemini",
+                "provider": "offline_mock" if self.allow_mock else "live_gemini",
                 "model": self.model_name,
             }
         except Exception as exc:
@@ -266,3 +266,4 @@ class SinglePromptLLMBaseline:
                 "provider": "error",
                 "model": self.model_name,
             }
+

@@ -201,11 +201,22 @@ class GeminiService:
     def mock_mode(self, val: bool) -> None:
         self.use_mock = val
 
-    def generate_text(self, prompt: str, system_instruction: Optional[str] = None) -> str:
+    def generate_text(
+        self,
+        prompt: str,
+        system_instruction: Optional[str] = None,
+        allow_mock_fallback: bool = True,
+    ) -> str:
         """
         Generate text completion with model and key fallback.
+        If allow_mock_fallback is False (e.g. during scientific evaluation),
+        raises RuntimeError when live calls fail or when no live keys are configured.
         """
         if self.use_mock or not self.api_keys:
+            if not allow_mock_fallback:
+                raise RuntimeError(
+                    "Live Gemini provider unavailable and mock fallback disabled (scientific mode)"
+                )
             return self.mock_provider.generate_content(prompt, self.models[0])
 
         headers = {"Content-Type": "application/json"}
@@ -269,9 +280,14 @@ class GeminiService:
                     logger.warning(f"[GeminiService] Error calling {model}: {e}")
                     last_error = e
 
-        # If all live models fail, fallback safely to deterministic mock provider
+        # If all live models fail, fallback safely to deterministic mock provider unless disabled
+        if not allow_mock_fallback:
+            raise RuntimeError(
+                f"All live Gemini calls failed ({last_error}). Mock fallback disabled for scientific evaluation."
+            )
         logger.warning(f"[GeminiService] All Gemini calls failed ({last_error}). Falling back to resilient local mock.")
         return self.mock_provider.generate_content(prompt, self.models[0])
+
 
     async def generate_text_async(self, prompt: str, system_instruction: Optional[str] = None) -> str:
         """

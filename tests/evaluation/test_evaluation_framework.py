@@ -93,12 +93,20 @@ def test_welfake_stratified_split_isolation():
     val_df = splits["val"]
     test_df = splits["test"]
 
-    # Ratio assertions: 70 / 15 / 15
+    # Ratio assertions: 70 / 15 / 15 on content-deduplicated dataset
     total = len(train_df) + len(val_df) + len(test_df)
-    assert total == 20447
+    assert total == 19647
     assert abs(len(train_df) / total - 0.70) < 0.01
     assert abs(len(val_df) / total - 0.15) < 0.01
     assert abs(len(test_df) / total - 0.15) < 0.01
+
+    # Zero content overlap across partitions
+    train_titles = set(train_df["normalized_title"])
+    val_titles = set(val_df["normalized_title"])
+    test_titles = set(test_df["normalized_title"])
+    assert len(train_titles & test_titles) == 0
+    assert len(train_titles & val_titles) == 0
+    assert len(val_titles & test_titles) == 0
 
     # Class balance preserved in each split
     train_prop = train_df["label"].mean()
@@ -108,6 +116,7 @@ def test_welfake_stratified_split_isolation():
     # Determinism across runs with same seed
     splits2 = ds.get_splits(seed=42)
     assert splits["test"]["title"].iloc[0] == splits2["test"]["title"].iloc[0]
+
 
 
 # ── 3. STATISTICAL UNCERTAINTY & CONFIDENCE INTERVALS ────────────────────

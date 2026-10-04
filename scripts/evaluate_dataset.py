@@ -88,6 +88,18 @@ def parse_args():
         default="docs/evaluation/results",
         help="Directory to save machine-readable JSON evaluation results",
     )
+    parser.add_argument(
+        "--target",
+        type=str,
+        default=None,
+        help="Optional single target claim to run empirical verification on (CI compatibility)",
+    )
+    parser.add_argument(
+        "--domain",
+        type=str,
+        default="general",
+        help="Domain classification context (general, financial, health)",
+    )
     return parser.parse_args()
 
 
@@ -96,6 +108,30 @@ def main():
     print("=" * 80)
     print("           AEGIS PROTOCOL - SCIENTIFIC BENCHMARK SUITE")
     print("=" * 80)
+
+    # 0. CI Single Target Claim Verification Mode
+    if args.target:
+        print(f"\n[Aegis Benchmark] Targeted Claim Evaluation: \"{args.target}\"")
+        from backend.agents.claim_ingestion_agent import get_claim_ingestion_agent
+        from backend.agents.investigator_agent import get_investigator_agent
+        from backend.agents.research_agent import ResearchAgent
+
+        ingestion = get_claim_ingestion_agent()
+        investigator = get_investigator_agent()
+        research = ResearchAgent()
+
+        claim_rec = ingestion.ingest(claim_text=args.target)
+        norm_text = claim_rec.get("normalized_text", args.target)
+        evidence_json = research.gather_evidence_structured(norm_text)
+        raw_v = investigator.determine_verdict(claim_text=norm_text, evidence_json=evidence_json)
+        verdict = investigator.extract_verdict(raw_v)
+        print(f"  Target:     {args.target}")
+        print(f"  Domain:     {args.domain}")
+        print(f"  Verdict:    {verdict.get('verdict')}")
+        print(f"  Confidence: {verdict.get('confidence')}")
+        print(f"  Severity:   {verdict.get('severity')}")
+        print("\nTargeted claim verification complete.")
+        return
 
     # 1. Dataset Accounting & Audit
     if args.dataset == "welfake" or args.mode in ("classical_ml", "all_offline"):

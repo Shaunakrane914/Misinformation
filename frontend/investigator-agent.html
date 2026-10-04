@@ -349,16 +349,16 @@
       } finally {
         loadBox.style.display = 'none';
         btn.disabled = false;
-        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Open Forensic Case</span>`;
+        btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Open Investigation</span>`;
       }
     }
 
     async function runForensicInvestigation(subject) {
       if (typeof window.askGemini === 'function') {
-        const prompt = `You are the Aegis Investigator Agent assembling a forensic case dossier.
+        const prompt = `You are the Aegis Investigator Agent assembling an investigation case dossier.
 Subject: "${subject}"
 
-Produce a structured forensic intelligence dossier.
+Produce a structured investigation dossier.
 Output strictly valid JSON with this exact schema:
 {
   "case_id": "CASE-2026-X49",
@@ -404,7 +404,7 @@ Output strictly valid JSON with this exact schema:
     {
       "group_id": "G-1",
       "title": "Unverified Social Amplification Cluster",
-      "members": ["Anonymous forum post", "X Cashtag Bot Swarm"],
+      "members": ["Anonymous forum post", "Unverified social posts"],
       "independence": "Dependent (Repeats identical phrasing)"
     },
     {
@@ -414,7 +414,7 @@ Output strictly valid JSON with this exact schema:
       "independence": "Independent (Primary documentary proof)"
     }
   ],
-  "investigation_notes": "Summary of analyst recommended actions, debunk statement, and counter-measure strategy."
+  "investigation_notes": "Summary of source findings, primary record gaps, and recommended verification steps."
 }`;
         try {
           const raw = await window.askGemini(prompt, 'gemini-1.5-flash');

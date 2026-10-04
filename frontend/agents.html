@@ -337,19 +337,27 @@
       </div>
       <span class="telemetry-divider">│</span>
       <div class="telemetry-ribbon-item">
-        <span>FINANCIAL MARKETS: <strong style="color:var(--emerald);">SCOUT</strong></span>
+        <span>FINANCIAL: <strong style="color:var(--cyan);">SCOUT</strong></span>
       </div>
       <span class="telemetry-divider">│</span>
       <div class="telemetry-ribbon-item">
-        <span>VIRAL TRENDS: <strong style="color:var(--purple);">TRENDING</strong></span>
+        <span>TRENDS: <strong style="color:#f472b6;">TRENDING</strong></span>
       </div>
       <span class="telemetry-divider">│</span>
       <div class="telemetry-ribbon-item">
-        <span>BRAND PROTECTION: <strong style="color:var(--cyan);">BRANDSHIELD</strong></span>
+        <span>BRAND: <strong style="color:var(--emerald);">BRANDSHIELD</strong></span>
       </div>
       <span class="telemetry-divider">│</span>
       <div class="telemetry-ribbon-item">
-        <span>PROFILE MONITORING: <strong style="color:var(--amber);">PERSONAL WATCH</strong></span>
+        <span>PROFILES: <strong style="color:#a855f7;">PERSONAL WATCH</strong></span>
+      </div>
+      <span class="telemetry-divider">│</span>
+      <div class="telemetry-ribbon-item">
+        <span>CASES: <strong style="color:#818cf8;">INVESTIGATOR</strong></span>
+      </div>
+      <span class="telemetry-divider">│</span>
+      <div class="telemetry-ribbon-item">
+        <span>RESEARCH: <strong style="color:#38bdf8;">RESEARCH</strong></span>
       </div>
     </div>
 
@@ -360,26 +368,32 @@
         How Aegis Investigates Across Domains
       </h1>
       <p style="color:var(--text-muted);font-size:0.98rem;max-width:780px;line-height:1.65;margin:0;">
-        Specialized analysis modules tailored for financial equities, viral social claims, brand reputation, and public profile verification. Select a domain module to launch a focused investigation.
+        Specialized analysis modules tailored for financial equities, viral trends, brand protection, profile monitoring, case investigations, and open scientific inquiry.
       </p>
     </div>
 
     <!-- Filter Control Bar -->
     <div class="agent-filter-bar ae-reveal">
       <button type="button" class="agent-filter-btn active" onclick="filterAgents('all', this)">
-        <span>All Modules</span>
+        <span>All Modules (6)</span>
       </button>
       <button type="button" class="agent-filter-btn" onclick="filterAgents('financial', this)">
-        <span>Financial Markets (Scout)</span>
+        <span>Financial (Scout)</span>
       </button>
       <button type="button" class="agent-filter-btn" onclick="filterAgents('social', this)">
-        <span>Viral Trends (Trending)</span>
+        <span>Trends (Trending)</span>
       </button>
       <button type="button" class="agent-filter-btn" onclick="filterAgents('brand', this)">
-        <span>Brand Defense (BrandShield)</span>
+        <span>Brand (BrandShield)</span>
       </button>
       <button type="button" class="agent-filter-btn" onclick="filterAgents('vip', this)">
-        <span>Profile Verification (Personal Watch)</span>
+        <span>Profiles (Personal Watch)</span>
+      </button>
+      <button type="button" class="agent-filter-btn" onclick="filterAgents('investigation', this)">
+        <span>Cases (Investigator)</span>
+      </button>
+      <button type="button" class="agent-filter-btn" onclick="filterAgents('research', this)">
+        <span>Research (Research)</span>
       </button>
     </div>
 
@@ -637,13 +651,136 @@
         </div>
 
         <div>
-          <a href="personal-watch-agent.html" class="agent-launch-btn">
-            <span>Launch Personal Watch Agent</span>
+      <!-- ══════════════════════════════════════════════════════════
+           CARD 05: INVESTIGATOR AGENT (CASE EVIDENCE & FINDINGS)
+           ══════════════════════════════════════════════════════════ -->
+      <div class="agent-card" data-category="investigation" style="--card-accent:#818cf8;--card-glow:rgba(129,140,248,0.3);--card-icon-bg:rgba(129,140,248,0.12);--card-btn-bg:linear-gradient(135deg, #818cf8 0%, #6366f1 100%);--card-btn-color:#fff;">
+        <div>
+          <div class="agent-card-top">
+            <div class="agent-icon-badge-group">
+              <div class="agent-avatar-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+                  <polyline points="14 2 14 8 20 8"/>
+                  <line x1="16" y1="13" x2="8" y2="13"/>
+                  <line x1="16" y1="17" x2="8" y2="17"/>
+                  <polyline points="10 9 9 9 8 9"/>
+                </svg>
+              </div>
+              <div>
+                <div class="agent-designation">AGENT 05 // CASE INVESTIGATION</div>
+                <div class="agent-name">Investigator Agent</div>
+              </div>
+            </div>
+            <div class="agent-status-indicator">
+              <span class="agent-pulse-dot" style="background:#818cf8;box-shadow:0 0 8px #818cf8;"></span>
+              <span>Case Synthesis &bull; Ready</span>
+            </div>
+          </div>
+
+          <div class="agent-role-subtitle">Evidence Sequence &amp; Source Corroboration</div>
+          <p class="agent-mission">
+            Assembles case dossiers: traces origin-to-amplification timelines, isolates verified facts from unresolved gaps, and maps source independence.
+          </p>
+
+          <div class="agent-capabilities-list">
+            <div class="agent-cap-item">
+              <span class="agent-cap-bullet">&#9670;</span>
+              <span><strong>Evidence Sequence Trail:</strong> Step-by-step chronology from origin to secondary amplification to official confirmation.</span>
+            </div>
+            <div class="agent-cap-item">
+              <span class="agent-cap-bullet">&#9670;</span>
+              <span><strong>Known Facts vs Gaps:</strong> Explicit epistemic separation of empirically verified records versus unindexed missing data.</span>
+            </div>
+            <div class="agent-cap-item">
+              <span class="agent-cap-bullet">&#9670;</span>
+              <span><strong>Source Cluster Independence:</strong> Classifies whether sources are dependent amplifiers or independent origin records.</span>
+            </div>
+          </div>
+
+          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-tags">
+            <span class="agent-feed-tag">&#9650; Statutory Registries</span>
+            <span class="agent-feed-tag">&#9670; Independent Wire Desks</span>
+            <span class="agent-feed-tag">&#9632; Discussion Timelines</span>
+            <span class="agent-feed-tag">&#9679; Primary Excerpt Archive</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="investigator-agent.html" class="agent-launch-btn">
+            <span>Launch Investigator Agent</span>
             <span class="launch-arrow">&rarr;</span>
           </a>
           <div class="agent-card-bottom">
-            <span>API: <code>POST /api/personal/scan</code></span>
-            <a href="personal-watch-agent.html">Open Dedicated Console &rarr;</a>
+            <span>API: <code>POST /api/claims/verify</code></span>
+            <a href="investigator-agent.html">Open Dedicated Console &rarr;</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════════════
+           CARD 06: RESEARCH AGENT (EVIDENCE RESEARCH WORKSPACE)
+           ══════════════════════════════════════════════════════════ -->
+      <div class="agent-card" data-category="research" style="--card-accent:#38bdf8;--card-glow:rgba(56,189,248,0.3);--card-icon-bg:rgba(56,189,248,0.12);--card-btn-bg:linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);--card-btn-color:#000;">
+        <div>
+          <div class="agent-card-top">
+            <div class="agent-icon-badge-group">
+              <div class="agent-avatar-icon">
+                <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <circle cx="12" cy="12" r="10"/>
+                  <line x1="2" y1="12" x2="22" y2="12"/>
+                  <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+                </svg>
+              </div>
+              <div>
+                <div class="agent-designation">AGENT 06 // DEEP RESEARCH</div>
+                <div class="agent-name">Research Agent</div>
+              </div>
+            </div>
+            <div class="agent-status-indicator">
+              <span class="agent-pulse-dot" style="background:#38bdf8;box-shadow:0 0 8px #38bdf8;"></span>
+              <span>Research Synthesis &bull; Ready</span>
+            </div>
+          </div>
+
+          <div class="agent-role-subtitle">Multi-Source Synthesis &amp; Contradiction Audit</div>
+          <p class="agent-mission">
+            Deep inquiry workspace that clusters multi-source evidence around key findings, why they matter, contradictions, and curated source reading lists.
+          </p>
+
+          <div class="agent-capabilities-list">
+            <div class="agent-cap-item">
+              <span class="agent-cap-bullet">&#9670;</span>
+              <span><strong>Clustered Key Findings:</strong> Summarizes supported facts alongside rationale explaining why each finding matters.</span>
+            </div>
+            <div class="agent-cap-item">
+              <span class="agent-cap-bullet">&#9670;</span>
+              <span><strong>Contradiction Highlighting:</strong> Surfaces conflicting reports across independent outlets without smoothing over discrepancies.</span>
+            </div>
+            <div class="agent-cap-item">
+              <span class="agent-cap-bullet">&#9670;</span>
+              <span><strong>Curated Reading List:</strong> Verified primary source links with explicit role tags (Registry, News, Industry, Academic).</span>
+            </div>
+          </div>
+
+          <div class="agent-feeds-label">Integrated Data Sources</div>
+          <div class="agent-feeds-tags">
+            <span class="agent-feed-tag">&#9650; Academic Repositories</span>
+            <span class="agent-feed-tag">&#9670; Verified Global Wires</span>
+            <span class="agent-feed-tag">&#9632; Regulatory Documents</span>
+            <span class="agent-feed-tag">&#9679; Primary Citation Index</span>
+          </div>
+        </div>
+
+        <div>
+          <a href="research-agent.html" class="agent-launch-btn">
+            <span>Launch Research Agent</span>
+            <span class="launch-arrow">&rarr;</span>
+          </a>
+          <div class="agent-card-bottom">
+            <span>API: <code>POST /api/research/query</code></span>
+            <a href="research-agent.html">Open Dedicated Console &rarr;</a>
           </div>
         </div>
       </div>

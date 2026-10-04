@@ -54,6 +54,7 @@ aegis.db
 # Temporary files
 *.log
 *.tmp
+.wrangler/
 personal_api.txt
 append_function.py
 FORCE_CRASH_TEST

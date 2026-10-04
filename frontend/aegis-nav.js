@@ -14,6 +14,10 @@
   };
   window.sanitizeText = window.escapeHtml;
 
+  // ── Version Identity ──
+  window.AEGIS_VERSION = '3.7.0';
+  window.AEGIS_RELEASE_DATE = '2026-10-02';
+
   // ── Standardized API Endpoint Resolver ──
   window.getAegisApiUrl = function(path) {
     if (!path) return '';
@@ -146,11 +150,14 @@
     { label: 'Investigate a Company', desc: 'Analyze corporate signals, filings, and market rumors', href: 'scout-agent.html', group: 'Actions', key: 'Company' },
     { label: 'Monitor a Brand', desc: 'Screen product listings, customer reviews, and smear campaigns', href: 'brandshield-agent.html', group: 'Actions', key: 'Brand' },
     { label: 'Check Public Signals', desc: 'Screen for impersonations, compromised accounts, and scam signals', href: 'personal-watch-agent.html', group: 'Actions', key: 'Signals' },
+    { label: 'Forensic Case Investigator', desc: 'Case dossier review and chain-of-custody tracking', href: 'investigator-agent.html', group: 'Actions', key: 'Case' },
+    { label: 'Deep Research Agent', desc: 'Direct multi-channel intelligence query and passage extraction', href: 'research-agent.html', group: 'Actions', key: 'Research' },
     { label: 'View Evidence & Claims', desc: 'Browse completed investigations and source records', href: 'dashboard.html', group: 'Actions', key: 'Evidence' },
 
     // System & Architecture
     { label: 'System Status', desc: 'Channel availability and capability diagnostics', href: 'status.html', group: 'System', key: 'Status' },
     { label: 'Analysis Capabilities', desc: 'Domain modules and deterministic pipeline specifications', href: 'agents.html', group: 'System', key: 'Capabilities' },
+    { label: 'Threat Intelligence Lab', desc: 'Mathematical modeling and contagion simulation instruments', href: 'lab.html', group: 'System', key: 'Lab' },
     { label: 'Verification Benchmarks', desc: 'Empirical verification and test suite results', href: 'benchmark.html', group: 'System', key: 'Benchmark' },
     { label: 'Version & Changelog', desc: 'Changelog and system release history', href: 'changelog.html', group: 'System', key: 'Changelog' },
     { label: 'Methodology & Standards', desc: 'Epistemic verification standards and source lineage design', href: 'about.html', group: 'System', key: 'About' }
@@ -329,8 +336,8 @@
     const stages = options.stages || [
       { name: '01 · Ingestion', desc: 'Query expansion and channel routing' },
       { name: '02 · Retrieval', desc: 'Retrieving evidence across primary and public channels' },
-      { name: '03 · Synthesis', desc: 'Deduplication, source lineage and contradiction detection' },
-      { name: '04 · Synthesis', desc: 'Evidence scoring and report synthesis' }
+      { name: '03 · Analysis', desc: 'Deduplication, source lineage and contradiction detection' },
+      { name: '04 · Synthesis', desc: 'Evidence scoring and forensic report synthesis' }
     ];
 
     const box = document.createElement('div');

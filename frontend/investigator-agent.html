@@ -213,13 +213,13 @@
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:14px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:4px;">
-              CASE DOSSIER <span id="caseIdBadge" style="color:#818cf8;font-weight:700;">#CASE-2026-A109</span>
+              CASE DOSSIER <span id="caseIdBadge" style="color:var(--text-dim);font-weight:700;">NO CASE LOADED</span>
             </div>
             <div id="displayCaseSubject" style="font-size:1.22rem;font-weight:700;color:#fff;line-height:1.45;max-width:850px;"></div>
           </div>
           <div style="display:flex;gap:10px;align-items:center;">
-            <span id="caseAssessmentPill" class="aegis-verdict-badge false">FABRICATION</span>
-            <span id="casePriorityPill" class="aegis-strength-pill strong">HIGH PRIORITY</span>
+            <span id="caseAssessmentPill" class="aegis-verdict-badge unverified">UNVERIFIED</span>
+            <span id="casePriorityPill" class="aegis-strength-pill limited">STANDBY</span>
           </div>
         </div>
 
@@ -442,42 +442,42 @@ Output strictly valid JSON with this exact schema:
         ],
         evidence_chain: [
           {
-            step_title: "1. Initial Vector Emergence",
-            source_name: "Anonymous Discussion Board",
+            step_title: "1. Vector Analysis",
+            source_name: "Unverified Secondary Source",
             source_role: "ORIGIN",
             timestamp: "T-0h",
-            details: "Unsubstantiated text assertion posted with no cryptographic signature or attached documents.",
-            url: "https://www.reuters.com"
+            details: "Unsubstantiated text assertion analyzed without cryptographic signature or attached documents.",
+            url: ""
           },
           {
-            step_title: "2. Social Amplification",
-            source_name: "Unverified Syndication Accounts",
+            step_title: "2. Amplification Check",
+            source_name: "Circulating Mentions",
             source_role: "AMPLIFIER",
             timestamp: "T+45m",
-            details: "Circulated via high-frequency cashtag accounts to trigger automated scraping bots.",
-            url: "https://www.reuters.com"
+            details: "Circulated via secondary discussion channels without primary documentation.",
+            url: ""
           },
           {
-            step_title: "3. Archival Contradiction",
-            source_name: "Statutory Wire & Fact-Check Registry",
+            step_title: "3. Registry Cross-Check",
+            source_name: "Statutory Registry & Wire Index",
             source_role: "CONTRADICTION",
             timestamp: "T+2h",
-            details: "Official government and corporate records confirm baseline empirical continuity.",
-            url: "https://www.sec.gov"
+            details: "Monitored primary registries show no corresponding official filings matching the claim.",
+            url: ""
           }
         ],
         source_clusters: [
           {
             group_id: "G-1",
-            title: "Anonymous Social Network",
-            members: ["Forum thread", "Syndication bots"],
-            independence: "Dependent (Echo-chamber propagation)"
+            title: "Secondary Discussion Cluster",
+            members: ["Unverified social mention", "Secondary post"],
+            independence: "Dependent (Repeated statement)"
           },
           {
             group_id: "G-2",
-            title: "Audited Wire Services",
-            members: ["Reuters", "Associated Press"],
-            independence: "Independent (Empirical newsroom standards)"
+            title: "Public Archival Registries",
+            members: ["Statutory Filing Index", "Wire Service Index"],
+            independence: "Independent Baseline"
           }
         ],
         investigation_notes: "Issue structured counter-narrative referencing official regulatory filings. Maintain monitoring on syndication handles."

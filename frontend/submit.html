@@ -497,7 +497,7 @@
 
         // Try backend submission
         try {
-          const res = await fetch('/api/claims/', {
+          const res = await fetch((window.getAegisApiUrl ? window.getAegisApiUrl('/api/claims/') : '/api/claims/'), {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ claim_text: text, source_url: url || undefined }),
@@ -510,13 +510,15 @@
               for (let i = 0; i < 6; i++) {
                 await new Promise(r => setTimeout(r, 900));
                 if (i === 2) setStage('stg_weight', 'Evaluating Evidence Strength & Independence...');
-                const pollRes = await fetch(`/api/claims/${sub.claim_id}`, { signal: AbortSignal.timeout(4000) });
+                const pollUrl = window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${sub.claim_id}`) : `/api/claims/${sub.claim_id}`;
+                const pollRes = await fetch(pollUrl, { signal: AbortSignal.timeout(4000) });
                 if (pollRes.ok) {
                   const pollData = await pollRes.json();
                   const c = pollData.claim || pollData;
                   if (c && (c.status === 'completed' || c.status === 'failed')) {
                     reportData = pollData;
                     reportData.claim_id = sub.claim_id;
+                    reportData._mode = 'BACKEND_INVESTIGATION';
                     break;
                   }
                 }
@@ -527,7 +529,7 @@
           console.warn('[Aegis Claim] Backend polling note:', backendErr.message);
         }
 
-        // Fallback to client Gemini if backend was asleep or returned incomplete
+        // Fallback to client Gemini if backend was unreachable or returned incomplete
         if (!reportData || !reportData.claim || !reportData.claim.verdict) {
           setStage('stg_synthesize', 'Synthesizing Forensic Truth Assessment...');
           reportData = await runClientFactCheck(text, url);
@@ -570,7 +572,7 @@ Output strictly valid JSON with this exact schema:
       "source_role": "PRIMARY" | "SECONDARY" | "FACT-CHECK",
       "independence_group": "G-1",
       "text": "Exact factual quote or empirical finding",
-      "url": "https://... or empty string if offline archive"
+      "url": ""
     }
   ],
   "refuting_evidence": [
@@ -579,37 +581,37 @@ Output strictly valid JSON with this exact schema:
       "source_role": "PRIMARY" | "SECONDARY" | "FACT-CHECK",
       "independence_group": "G-2",
       "text": "Exact contradiction or refutation point",
-      "url": "https://..."
+      "url": ""
     }
   ],
-  "timeline": [
-    {
-      "time": "Approximate date or timestamp",
-      "event": "What occurred or was published"
-    }
-  ]
-}`;
+  "timeline": []
+}
+
+CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty string unless it is a well-known canonical government/official URL.`;
         try {
           const raw = await window.askGemini(prompt, 'gemini-1.5-flash');
           const clean = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
-          return JSON.parse(clean);
+          const parsed = JSON.parse(clean);
+          parsed._mode = 'AI_SYNTHESIS';
+          return parsed;
         } catch (e) {
-          console.error('[Client FactCheck] JSON parse failed, using structured fallback:', e);
+          console.warn('[Client FactCheck] Direct model evaluation note:', e.message || e);
         }
       }
 
-      // Clean fallback if no AI key configured
+      // Honest fallback when neither backend nor client AI is connected
       return {
+        _mode: 'INSUFFICIENT_EVIDENCE',
         verdict: "UNVERIFIED",
-        evidence_strength: "Limited",
-        bottom_line: "Insufficient empirical evidence was retrieved from primary registries to confirm or refute this assertion.",
+        evidence_strength: "Insufficient",
+        bottom_line: "Investigation Inconclusive: Backend research service is currently unreachable and primary verification registries could not be retrieved.",
         why: [
-          "No primary governmental, academic, or wire archive confirms the statement.",
-          "Secondary circulating mentions lack corroborating document IDs or timestamps."
+          "Primary governmental, academic, or corporate registries could not be retrieved in offline/unconnected mode.",
+          "Live multi-channel retrieval requires an active backend connection or configured AI reasoning key."
         ],
         what_is_unknown: [
-          "Original author identity or primary motivation has not been verified.",
-          "Underlying primary records remain unindexed."
+          "Original author attribution and primary documentation remain unverified.",
+          "Verification requires active channel access to establish empirical consensus."
         ],
         supporting_evidence: [],
         refuting_evidence: [],
@@ -644,7 +646,15 @@ Output strictly valid JSON with this exact schema:
 
       const bottomLine = data.bottom_line || claimObj.explanation || claimObj.reasoning || "Empirical fact-checking and multi-agent synthesis completed.";
       document.getElementById('bottomLineText').textContent = bottomLine;
-      document.getElementById('auditTimestamp').textContent = `Audit Completed: ${new Date().toLocaleTimeString()} · Level 1 Validated`;
+
+      const execMode = data._mode || 'BACKEND_INVESTIGATION';
+      let modeText = 'Verified Multi-Source Evidence Pipeline';
+      if (execMode === 'AI_SYNTHESIS') {
+        modeText = 'AI Synthesis (Direct Model Reasoning · Primary Retrieval Inactive)';
+      } else if (execMode === 'INSUFFICIENT_EVIDENCE') {
+        modeText = 'Inconclusive (Insufficient Verifiable Records)';
+      }
+      document.getElementById('auditTimestamp').textContent = `Audit Completed: ${new Date().toLocaleTimeString()} · ${modeText}`;
 
       // Level 2: Why Box (2-4 points)
       const whyList = document.getElementById('whyPointsList');

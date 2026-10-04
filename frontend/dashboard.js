@@ -320,7 +320,14 @@ async function pollBackend() {
         if (claimsRes.ok) {
           const data = await claimsRes.json();
           if (data && data.length > 0) {
+            data.forEach(c => c._origin = 'LIVE_VERIFIED');
             renderClaims(data);
+            const dot = document.getElementById('dbStatusDot');
+            const txt = document.getElementById('dbStatusText');
+            const sub = document.getElementById('dbStatusSub');
+            if (dot) { dot.style.background = 'var(--emerald)'; dot.style.boxShadow = '0 0 10px var(--emerald)'; }
+            if (txt) { txt.style.color = 'var(--emerald)'; txt.textContent = 'LIVE FEED'; }
+            if (sub) { sub.textContent = `Updated ${new Date().toLocaleTimeString()} · Connected to backend`; }
             setStatusBanner("live");
             applyFilters(); // Re-apply any active filters
             return;
@@ -333,6 +340,8 @@ async function pollBackend() {
     await new Promise(res => setTimeout(res, INTERVAL_MS));
   }
   // After max attempts, give up gracefully
+  const sub = document.getElementById('dbStatusSub');
+  if (sub) sub.textContent = 'Backend offline · Showing historical reference records';
   setStatusBanner("error");
 }
 

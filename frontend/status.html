@@ -169,9 +169,27 @@
       font-weight: 700;
       margin-top: 2px;
     }
-    .tl-dot.done  { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
-    .tl-dot.active{ background: rgba(0, 229, 255, 0.15); color: var(--accent); border: 1px solid rgba(0, 229, 255, 0.4); animation: pulseDot 1.5s infinite; }
-    .tl-dot.wait  { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); border: 1px solid var(--border); }
+    .tl-dot.done      { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tl-dot.active    { background: rgba(0, 229, 255, 0.15); color: var(--accent); border: 1px solid rgba(0, 229, 255, 0.4); animation: pulseDot 1.5s infinite; }
+    .tl-dot.failed    { background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .tl-dot.skipped   { background: rgba(245, 158, 11, 0.12); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tl-dot.wait      { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); border: 1px solid var(--border); }
+    .tl-badge {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+      letter-spacing: 0.04em;
+    }
+    .tl-badge-done    { background: rgba(16, 185, 129, 0.15); color: var(--emerald); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .tl-badge-active  { background: rgba(0, 229, 255, 0.15); color: var(--accent); border: 1px solid rgba(0, 229, 255, 0.3); }
+    .tl-badge-failed  { background: rgba(244, 63, 94, 0.15); color: var(--rose); border: 1px solid rgba(244, 63, 94, 0.3); }
+    .tl-badge-skipped { background: rgba(245, 158, 11, 0.15); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .tl-badge-wait    { background: rgba(255, 255, 255, 0.05); color: var(--text-dim); border: 1px solid var(--border); }
     .tl-title {
       font-size: 0.9rem;
       font-weight: 700;
@@ -313,36 +331,116 @@
     }
 
     function tlDotClass(state) {
-      if (state === 'done') return 'done';
-      if (state === 'active') return 'active';
+      if (state === 'COMPLETE') return 'done';
+      if (state === 'RUNNING') return 'active';
+      if (state === 'FAILED') return 'failed';
+      if (state === 'SKIPPED') return 'skipped';
       return 'wait';
     }
 
     function tlDotIcon(state) {
-      if (state === 'done') return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
-      if (state === 'active') return '';
+      if (state === 'COMPLETE') return '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>';
+      if (state === 'FAILED') return '<span style="font-size:12px;font-weight:900;">✕</span>';
+      if (state === 'SKIPPED') return '<span style="font-size:10px;">—</span>';
       return '';
+    }
+
+    function tlBadge(state) {
+      const clsMap = {
+        'COMPLETE': 'tl-badge-done',
+        'RUNNING': 'tl-badge-active',
+        'FAILED': 'tl-badge-failed',
+        'SKIPPED': 'tl-badge-skipped',
+        'UNAVAILABLE': 'tl-badge-wait',
+        'NOT_STARTED': 'tl-badge-wait'
+      };
+      return `<span class="tl-badge ${clsMap[state] || 'tl-badge-wait'}">${state}</span>`;
     }
 
     function renderResult(data) {
       const area = document.getElementById('resultArea');
       const isCompleted = data.status === 'completed';
-      const isPending = data.status === 'pending';
+      const isPending = data.status === 'pending' || data.status === 'processing';
+      const isFailed = data.status === 'failed';
 
-      const s1 = data.created_at ? 'done' : 'active';
-      const s2 = data.normalized_text ? 'done' : (isPending ? 'active' : 'wait');
-      const s3 = (data.evidence && data.evidence.length > 0) ? 'done' : (isPending ? 'active' : 'wait');
-      const s4 = data.verdict ? 'done' : (isPending ? 'active' : 'wait');
-      const s5 = isCompleted ? 'done' : (isPending ? 'active' : 'wait');
+      // Stage 1: Claim Ingestion
+      const s1State = (data.created_at || data.claim_text) ? 'COMPLETE' : 'NOT_STARTED';
+      const s1Desc = data.claim_id ? `Claim registered with unique identifier ${data.claim_id.slice(0, 8)}...` : 'Claim ingested into persistence store';
+
+      // Stage 2: Normalization
+      let s2State = 'NOT_STARTED';
+      let s2Desc = 'Semantic tokenization and syntax parsing';
+      if (data.normalized_text) {
+        s2State = 'COMPLETE';
+        s2Desc = `Normalized text: "${data.normalized_text.slice(0, 90)}${data.normalized_text.length > 90 ? '...' : ''}"`;
+      } else if (isPending) {
+        s2State = 'RUNNING';
+        s2Desc = 'Normalizing statement syntax...';
+      } else if (isFailed) {
+        s2State = 'FAILED';
+        s2Desc = 'Normalization halted due to execution failure.';
+      } else if (isCompleted) {
+        s2State = 'SKIPPED';
+        s2Desc = 'Raw claim verified without separate normalization record.';
+      }
+
+      // Stage 3: Multi-Source Evidence Retrieval
+      let s3State = 'NOT_STARTED';
+      let s3Desc = 'Searching academic, regulatory, and public archives';
+      const evCount = (data.evidence && Array.isArray(data.evidence)) ? data.evidence.length : 0;
+      if (evCount > 0) {
+        s3State = 'COMPLETE';
+        s3Desc = `${evCount} verifiable source records retrieved and indexed`;
+      } else if (isPending) {
+        s3State = 'RUNNING';
+        s3Desc = 'Retrieving evidence across configured channels...';
+      } else if (isFailed) {
+        s3State = 'FAILED';
+        s3Desc = 'Evidence retrieval encountered an error.';
+      } else if (isCompleted) {
+        s3State = 'UNAVAILABLE';
+        s3Desc = 'No verifiable external evidence found for this claim.';
+      }
+
+      // Stage 4: Epistemic Analysis & Verification
+      let s4State = 'NOT_STARTED';
+      let s4Desc = 'Cross-referencing source lineage and evidence confidence';
+      if (data.verdict) {
+        s4State = 'COMPLETE';
+        s4Desc = `Verdict rendered: ${String(data.verdict).toUpperCase()}${data.confidence != null ? ` (${Math.round(data.confidence * 100)}% confidence)` : ''}`;
+      } else if (isPending) {
+        s4State = 'RUNNING';
+        s4Desc = 'Weighing source reliability and independence...';
+      } else if (isFailed) {
+        s4State = 'FAILED';
+        s4Desc = 'Verification stopped before synthesis.';
+      } else if (isCompleted) {
+        s4State = 'SKIPPED';
+        s4Desc = 'Insufficient evidence to compute definitive verdict.';
+      }
+
+      // Stage 5: Final Truth Dossier
+      let s5State = 'NOT_STARTED';
+      let s5Desc = 'Packaging provenance trail and audit log';
+      if (isCompleted) {
+        s5State = 'COMPLETE';
+        s5Desc = 'Truth dossier finalized and locked in audit ledger';
+      } else if (isFailed) {
+        s5State = 'FAILED';
+        s5Desc = 'Investigation failed: ' + (data.error || 'Pipeline execution interrupted');
+      } else if (isPending) {
+        s5State = 'RUNNING';
+        s5Desc = 'Awaiting pipeline completion...';
+      }
 
       const confPct = data.confidence != null ? Math.round(data.confidence * 100) : null;
 
       let html = `<div class="result-card ae-reveal visible">`;
 
       html += `<div class="verdict-row">
-        <span class="v-badge v-status">${data.status.toUpperCase()}</span>
-        ${data.verdict ? `<span class="v-badge ${verdictBadgeClass(data.verdict)}">${data.verdict.toUpperCase()}</span>` : ''}
-        ${data.severity ? `<span class="v-badge" style="background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">${data.severity.toUpperCase()}</span>` : ''}
+        <span class="v-badge v-status">${(data.status || 'UNKNOWN').toUpperCase()}</span>
+        ${data.verdict ? `<span class="v-badge ${verdictBadgeClass(data.verdict)}">${String(data.verdict).toUpperCase()}</span>` : ''}
+        ${data.severity ? `<span class="v-badge" style="background:rgba(245,158,11,0.1);color:#fbbf24;border:1px solid rgba(245,158,11,0.2);">${String(data.severity).toUpperCase()}</span>` : ''}
       </div>`;
 
       if (data.claim_text || data.normalized_text) {
@@ -361,11 +459,11 @@
 
       html += `<div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-top:24px;margin-bottom:8px;">// INVESTIGATION TIMELINE</div>
         <div class="timeline">
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s1)}">${tlDotIcon(s1)}</div><div><div class="tl-title">Claim Ingested</div><div class="tl-desc">Dispatched to autonomous ingestion queues</div>${data.created_at ? `<div class="tl-time">${new Date(data.created_at).toLocaleString()}</div>` : ''}</div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s2)}">${tlDotIcon(s2)}</div><div><div class="tl-title">Normalization &amp; Spectral Fit</div><div class="tl-desc">Zipf-Mandelbrot rank regression and semantic normalization</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s3)}">${tlDotIcon(s3)}</div><div><div class="tl-title">Multi-Agent Research</div><div class="tl-desc">Scouting market anomalies, RSS feeds, and social graphs</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s4)}">${tlDotIcon(s4)}</div><div><div class="tl-title">Byzantine Arbitration</div><div class="tl-desc">W-MSR outlier pruning and consensus voting</div></div></div>
-          <div class="tl-item"><div class="tl-dot ${tlDotClass(s5)}">${tlDotIcon(s5)}</div><div><div class="tl-title">Dossier Finalized</div><div class="tl-desc">Verifiable truth dossier generated</div>${data.updated_at && isCompleted ? `<div class="tl-time">${new Date(data.updated_at).toLocaleString()}</div>` : ''}</div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s1State)}">${tlDotIcon(s1State)}</div><div><div class="tl-title">Claim Ingested ${tlBadge(s1State)}</div><div class="tl-desc">${s1Desc}</div>${data.created_at ? `<div class="tl-time">${new Date(data.created_at).toLocaleString()}</div>` : ''}</div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s2State)}">${tlDotIcon(s2State)}</div><div><div class="tl-title">Claim Normalization ${tlBadge(s2State)}</div><div class="tl-desc">${s2Desc}</div></div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s3State)}">${tlDotIcon(s3State)}</div><div><div class="tl-title">Multi-Source Retrieval ${tlBadge(s3State)}</div><div class="tl-desc">${s3Desc}</div></div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s4State)}">${tlDotIcon(s4State)}</div><div><div class="tl-title">Epistemic Analysis ${tlBadge(s4State)}</div><div class="tl-desc">${s4Desc}</div></div></div>
+          <div class="tl-item"><div class="tl-dot ${tlDotClass(s5State)}">${tlDotIcon(s5State)}</div><div><div class="tl-title">Truth Dossier ${tlBadge(s5State)}</div><div class="tl-desc">${s5Desc}</div>${data.updated_at && isCompleted ? `<div class="tl-time">${new Date(data.updated_at).toLocaleString()}</div>` : ''}</div></div>
         </div>`;
 
       if (data.reasoning) {

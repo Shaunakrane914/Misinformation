@@ -263,3 +263,50 @@ class TestProductHonestyAndIntegrity:
         assert "Modular Multi-Agent Swarm with Zero-Cost Omni-Scraper Fabric" not in data.get("architecture", "")
         assert data["architecture"] == "Deterministic Evidence Pipeline with Selective Semantic AI"
         assert "registered_modules" in data
+
+    def test_k_frontend_runtime_truth_and_integrity(self):
+        """Frontend files must enforce honest initial states, valid 404 routing, and no synthetic fallbacks."""
+        # 1. 404 page & redirects
+        assert Path("frontend/404.html").exists(), "frontend/404.html missing"
+        redirects = Path("frontend/_redirects").read_text(encoding="utf-8")
+        assert "/* /index.html 200" not in redirects, "Catch-all 200 mask must be removed"
+
+        # 2. Version 3.7.0 across shared nav
+        nav = Path("frontend/aegis-nav.js").read_text(encoding="utf-8")
+        assert "window.AEGIS_VERSION = '3.7.0'" in nav, "Nav missing authoritative version 3.7.0"
+
+        # 3. submit.html: distinct AI_SYNTHESIS vs BACKEND_INVESTIGATION
+        sub = Path("frontend/submit.html").read_text(encoding="utf-8")
+        assert "AI_SYNTHESIS" in sub
+        assert "reuters.com" not in sub
+
+        # 4. investigator-agent.html: honest initial state
+        inv = Path("frontend/investigator-agent.html").read_text(encoding="utf-8")
+        assert "NO CASE LOADED" in inv
+        assert "CASE-2026-A109" not in inv
+
+        # 5. research-agent.html: honest initial state
+        res = Path("frontend/research-agent.html").read_text(encoding="utf-8")
+        assert "Awaiting Research Inquiry" in res
+        assert "No findings yet" in res
+
+        # 6. trending-agent.html: no synthetic fallback generator
+        tr = Path("frontend/trending-agent.html").read_text(encoding="utf-8")
+        assert "generateResilientTrendingFallback" not in tr
+        assert "signals_retrieved: 18" not in tr
+
+        # 7. dashboard: cached sample badge
+        dash = Path("frontend/dashboard.html").read_text(encoding="utf-8")
+        assert "CACHED SAMPLE DATA" in dash
+
+        # 8. about.html: 4 clear tiers
+        ab = Path("frontend/about.html").read_text(encoding="utf-8")
+        assert "TIER 1 &bull; PRODUCTION IMPLEMENTATION" in ab
+        assert "TIER 2 &bull; RESEARCH METHODOLOGY" in ab
+        assert "TIER 3 &bull; SIMULATION INSTRUMENT" in ab
+        assert "TIER 4 &bull; RESEARCH ROADMAP" in ab
+
+        # 9. status.html: dynamic timeline states
+        st = Path("frontend/status.html").read_text(encoding="utf-8")
+        assert "tlBadge" in st
+        assert "COMPLETE" in st and "RUNNING" in st and "FAILED" in st

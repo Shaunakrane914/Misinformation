@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>404 — Route Not Found · Aegis Protocol</title>
+  <link rel="stylesheet" href="aegis-theme.css">
+  <style>
+    .not-found-wrap {
+      min-height: calc(100vh - 120px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+    .not-found-code {
+      font-family: var(--font-mono);
+      font-size: 5rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      background: linear-gradient(135deg, #f43f5e, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      line-height: 1;
+      margin-bottom: 16px;
+    }
+    .not-found-title {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .not-found-desc {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 480px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+    .not-found-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body>
+  <script src="aegis-nav.js"></script>
+  <main class="not-found-wrap">
+    <div class="not-found-code">404</div>
+    <h1 class="not-found-title">Route Not Found</h1>
+    <p class="not-found-desc">
+      The requested resource or endpoint does not exist on this Aegis node. Verify the URL or return to verified investigative workflows.
+    </p>
+    <div class="not-found-actions">
+      <a href="index.html" class="ae-nav-submit-btn" style="text-decoration:none;">
+        <span>Return to Homepage</span>
+      </a>
+      <a href="submit.html" class="hero-intent-btn" style="text-decoration:none;">
+        <span>Verify a Claim</span>
+      </a>
+    </div>
+  </main>
+</body>
+</html>

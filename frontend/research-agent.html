@@ -256,7 +256,7 @@
             <div id="displayQuestion" style="font-size:1.22rem;font-weight:700;color:#fff;line-height:1.45;max-width:850px;"></div>
           </div>
           <div style="display:flex;gap:10px;align-items:center;">
-            <span id="evidenceStrengthBadge" class="aegis-strength-pill strong">Evidence: Strong</span>
+            <span id="evidenceStrengthBadge" class="aegis-strength-pill limited">Awaiting Research Inquiry</span>
           </div>
         </div>
 
@@ -275,7 +275,7 @@
             Key Findings &amp; Evidence Clusters
           </h3>
           <span id="findingsCountBadge" style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">
-            3 core findings
+            No findings yet
           </span>
         </div>
 
@@ -436,64 +436,26 @@ Output strictly valid JSON with this exact schema:
         try {
           const raw = await window.askGemini(prompt, 'gemini-1.5-flash');
           const clean = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
-          return JSON.parse(clean);
+          const parsed = JSON.parse(clean);
+          parsed._mode = 'AI_SYNTHESIS';
+          return parsed;
         } catch (err) {
           console.warn('[Research] Parse error, using structured template:', err);
         }
       }
 
-      // High-craft fallback
+      // Honest fallback when neither backend nor client AI is connected
       return {
-        evidence_strength: "Moderate",
-        executive_synthesis: `Analysis of available regulatory archives and market reports indicates consistent developments regarding "${question.slice(0, 45)}...".`,
-        findings: [
-          {
-            headline: "Primary operational announcements confirmed in corporate filings",
-            statement: "Target entities published updated compliance filings detailing production timelines and contractual contingencies.",
-            why_it_matters: "This establishes binding legal obligations rather than speculative social rumors.",
-            supporting_sources: [
-              { name: "Regulatory Filing Archive", role: "PRIMARY", url: "https://www.sec.gov" },
-              { name: "Reuters Financial Desk", role: "SECONDARY", url: "https://www.reuters.com" }
-            ]
-          },
-          {
-            headline: "Secondary supply chain reallocations underway across regional hubs",
-            statement: "Industry analysts document re-routed logistics channels to mitigate near-term tariff adjustments.",
-            why_it_matters: "Shifts capital expenditure burdens across suppliers over the next 2-4 quarters.",
-            supporting_sources: [
-              { name: "Nikkei Asia Logistics Review", role: "SECONDARY", url: "https://asia.nikkei.com" }
-            ]
-          }
-        ],
-        reading_list: [
-          {
-            title: "Corporate Gazette and Quarterly Regulatory Disclosure",
-            publisher: "SEC Regulatory Archive",
-            role: "PRIMARY",
-            focus: "Statutory capital expenditure breakdown",
-            url: "https://www.sec.gov"
-          },
-          {
-            title: "Global Supply Chain Rebalancing Dispatch",
-            publisher: "Reuters Financial Desk",
-            role: "SECONDARY",
-            focus: "Regional market distribution overview",
-            url: "https://www.reuters.com"
-          }
-        ],
+        _mode: 'UNAVAILABLE',
+        evidence_strength: "Insufficient",
+        executive_synthesis: `Research service offline: No live backend connection or AI key configured to execute dynamic channel discovery for "${question.slice(0, 45)}...".`,
+        findings: [],
+        reading_list: [],
         uncertainties: [
-          "Definitive enforcement dates remain subject to pending statutory guidance.",
-          "Long-term margin impacts differ between independent broker evaluations."
+          "Active network connection to primary registries or AI research engine is required to extract verified findings.",
+          "Live multi-channel retrieval requires an active backend or configured Gemini key."
         ],
-        raw_excerpts: [
-          {
-            source_name: "SEC Regulatory Archive",
-            source_role: "PRIMARY",
-            independence_group: "G-01",
-            excerpt: "Statutory statements confirm operational timelines submitted under audited guidelines.",
-            url: "https://www.sec.gov"
-          }
-        ]
+        raw_excerpts: []
       };
     }
 
@@ -510,10 +472,18 @@ Output strictly valid JSON with this exact schema:
 
       // Level 2: Findings Clustered with Sources
       const findings = data.findings || [];
-      document.getElementById('findingsCountBadge').textContent = `${findings.length} core findings`;
+      document.getElementById('findingsCountBadge').textContent = `${findings.length} findings`;
 
       const fContainer = document.getElementById('findingsContainer');
-      fContainer.innerHTML = findings.map((f, i) => {
+      if (findings.length === 0) {
+        fContainer.innerHTML = `
+          <div style="background:rgba(9,13,22,0.7);border:1px solid var(--border);border-radius:12px;padding:24px;text-align:center;color:var(--text-muted);">
+            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Empirical Findings Generated</div>
+            <div style="font-size:0.86rem;line-height:1.5;">Live multi-channel retrieval is currently unavailable. Connect a backend instance or configure Gemini API key to execute live deep research.</div>
+          </div>
+        `;
+      } else {
+        fContainer.innerHTML = findings.map((f, i) => {
         const sources = f.supporting_sources || [];
         return `
           <div class="finding-cluster-card">

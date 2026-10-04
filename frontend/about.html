@@ -229,32 +229,119 @@
     
     <!-- Top Spec Header Ribbon -->
     <div class="arch-ribbon ae-reveal">
-      <span>PROTOCOL: <strong>AEGIS-v3.2_RFC-089</strong></span>
+      <span>PROTOCOL SPEC: <strong>AEGIS v3.7.0 (RFC-089 SPECIFICATION)</strong></span>
       <span style="color:var(--border-hover);">│</span>
-      <span>ARBITRATION: <strong style="color:var(--purple);">W-MSR (F=1 FAULT TOLERANT)</strong></span>
+      <span>PIPELINE: <strong style="color:var(--purple);">MULTI-SOURCE EVIDENCE RESEARCH</strong></span>
       <span style="color:var(--border-hover);">│</span>
-      <span>DETERMINISM: <strong style="color:var(--cyan);">STATISTICAL POWER-LAW REGRESSION</strong></span>
+      <span>ANALYSIS: <strong style="color:var(--cyan);">SOURCE LINEAGE &amp; CORROBORATION</strong></span>
       <span style="color:var(--border-hover);">│</span>
-      <span>EPIDEMIOLOGY: <strong style="color:var(--amber);">HAWKES POINT PROCESS (R₀)</strong></span>
+      <span>EPIDEMIOLOGY: <strong style="color:var(--amber);">HAWKES POINT SIMULATION</strong></span>
       <span style="color:var(--border-hover);">│</span>
-      <span>HASH: <strong style="color:var(--emerald);">SHA-256 IDEMPOTENT</strong></span>
+      <span>PERSISTENCE: <strong style="color:var(--emerald);">SHA-256 AUDIT STORE</strong></span>
     </div>
 
     <!-- Page Title -->
     <div class="ae-reveal" style="margin-bottom:28px;">
-      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// SPECIFICATIONS & FORMAL METHODS</div>
+      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// ARCHITECTURE &amp; METHODOLOGY</div>
       <h1 style="font-size:clamp(2rem, 3.8vw, 3rem);font-weight:800;letter-spacing:-0.03em;color:#fff;">
-        Protocol Architecture &amp; Engineering
+        Protocol Architecture &amp; Methodology
       </h1>
-      <p style="color:var(--text-muted);font-size:0.96rem;max-width:680px;line-height:1.6;margin-top:4px;">
-        Traditional fact-checking relies on opaque LLM prompts. Aegis anchors evidence verification in deterministic statistical physics, rank-frequency power-law regressions, and Byzantine fault-tolerant swarm consensus.
+      <p style="color:var(--text-muted);font-size:0.96rem;max-width:760px;line-height:1.6;margin-top:4px;">
+        Aegis separates verifiable fact-checking from black-box LLM hallucinations by anchoring investigations in multi-source retrieval, source lineage tracking, and explicit uncertainty quantification across four transparent architectural tiers.
       </p>
     </div>
 
-    <!-- Interactive Protocol Pipeline Simulator (Archetype C) -->
+    <!-- ── TIER 1: PRODUCTION IMPLEMENTATION ── -->
+    <div class="ae-reveal" style="margin-bottom:44px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span class="ae-badge ae-badge-green">TIER 1 &bull; PRODUCTION IMPLEMENTATION</span>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">ACTIVE RUNTIME CAPABILITIES</span>
+      </div>
+      <h2 style="font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:12px;">
+        Subsystems Running in Production
+      </h2>
+      <p style="color:var(--text-muted);font-size:0.9rem;max-width:760px;line-height:1.55;margin-bottom:18px;">
+        These components run deterministically in the deployed FastAPI backend to plan queries, extract content passages, score corroboration, and persist evidence.
+      </p>
+
+      <table class="arch-matrix-table">
+        <thead>
+          <tr>
+            <th>SUBSYSTEM</th>
+            <th>IMPLEMENTATION COMPONENT</th>
+            <th>RUNTIME ROLE &amp; DATA CONTRACT</th>
+            <th>OPERATIONAL STATUS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">ResearchEngine</td>
+            <td style="font-family:var(--font-mono);color:var(--cyan);">backend/research/engine.py</td>
+            <td>Plans targeted multi-channel queries, gathers search candidates, retrieves full content text, escalates primary sources (SEC, PubMed, government bureaus), and constructs ResearchCorpus.</td>
+            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Investigator Pipeline</td>
+            <td style="font-family:var(--font-mono);color:var(--purple);">backend/agents/investigator_agent.py</td>
+            <td>Analyzes stance clusters, identifies contradictions between retrieved sources, calculates weighted confidence, and generates structured Truth Dossiers.</td>
+            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Domain Agents</td>
+            <td style="font-family:var(--font-mono);color:var(--accent);">backend/api/ (Scout, Brand, Watch, Trending)</td>
+            <td>Specialized retrieval endpoints for market anomaly catalysts, product review pattern screening, VIP impersonation alerts, and social signal velocity.</td>
+            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Ingestion &amp; Dedup</td>
+            <td style="font-family:var(--font-mono);color:#fff;">backend/agents/claim_ingestion_agent.py</td>
+            <td>Unicode NFKC normalization, heuristic prompt-injection stripping, entity extraction, and SHA-256 idempotency hashing to prevent duplicate investigations.</td>
+            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PRODUCTION</span></td>
+          </tr>
+          <tr>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Provenance Ledger</td>
+            <td style="font-family:var(--font-mono);color:var(--emerald);">backend/database.py (SQLite)</td>
+            <td>Records each retrieved source URL, domain metadata, retrieval timestamp, stance category, and execution time log.</td>
+            <td><span class="ae-badge ae-badge-green">ACTIVE &bull; PERSISTED</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── TIER 2: RESEARCH METHODOLOGY ── -->
+    <div class="ae-reveal" style="margin-bottom:44px;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span class="ae-badge ae-badge-blue">TIER 2 &bull; RESEARCH METHODOLOGY</span>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">MATHEMATICAL &amp; ANALYTICAL FOUNDATIONS</span>
+      </div>
+      <h2 style="font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:12px;">
+        Analytical &amp; Epistemic Methodology
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+        <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);margin-bottom:6px;">// SOURCE LINEAGE DE-DUPLICATION</div>
+          <h3 style="color:#fff;font-size:1rem;font-weight:700;margin-bottom:8px;">Syndication Clustering</h3>
+          <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
+            When ten media outlets publish identical text originated from a single wire bulletin (AP, Reuters, PR Newswire), naïve consensus models treat them as 10 independent confirmations. Aegis extracts root domain lineage to collapse wire syndications into a single origin node.
+          </p>
+        </div>
+        <div style="background:var(--surface-card);border:1px solid var(--border);border-radius:14px;padding:20px;">
+          <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--purple);margin-bottom:6px;">// TRIMMED CONSENSUS (W-MSR INVARIANT)</div>
+          <h3 style="color:#fff;font-size:1rem;font-weight:700;margin-bottom:8px;">Outlier-Resistant Score Aggregation</h3>
+          <p style="color:var(--text-muted);font-size:0.86rem;line-height:1.55;margin:0;">
+            Inspired by the Weighted Mean-Subsequence-Reduced (W-MSR) algorithm from distributed fault tolerance, Aegis prunes extreme score outliers before calculating weighted consensus to avoid sycophantic or degraded vector distortions.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TIER 3: SIMULATION & DEMONSTRATION ── -->
     <div class="ae-reveal" style="margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
-      <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--accent);letter-spacing:0.08em;">// 6-STAGE ARBITRATION PIPELINE SIMULATOR</span>
-      <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">CLICK STAGE TO INSPECT RUNTIME STATE</span>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <span class="ae-badge ae-badge-amber">TIER 3 &bull; SIMULATION INSTRUMENT</span>
+        <span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--accent);letter-spacing:0.08em;">// 6-STAGE ARBITRATION PIPELINE SIMULATOR</span>
+      </div>
+      <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">CLICK STAGE TO INSPECT SPECIFICATION</span>
     </div>
 
     <div class="pipeline-nav ae-reveal" id="pipelineNav">
@@ -300,14 +387,14 @@
             Strips adversarial prompt-injection payloads, normalizes unicode confusables, extracts core named entities $(E \subset T)$, and assigns an immutable SHA-256 claim hash to eliminate duplicate workload.
           </p>
         </div>
-        <div class="ae-badge ae-badge-green" id="stgStatusBadge">STAGE VERIFIED &bull; IDEMPOTENT</div>
+        <div class="ae-badge ae-badge-zinc" id="stgStatusBadge">SIMULATED SPECIFICATION &bull; IDEMPOTENT</div>
       </div>
 
       <!-- Stage Specs -->
       <div class="stage-spec-grid">
         <div class="stage-spec-item">
-          <span class="stage-spec-label">EXECUTION BUDGET</span>
-          <span class="stage-spec-val" id="stgBudget">&lt; 12ms</span>
+          <span class="stage-spec-label">ESTIMATED BUDGET</span>
+          <span class="stage-spec-val" id="stgBudget">&lt; 15ms</span>
         </div>
         <div class="stage-spec-item">
           <span class="stage-spec-label">COMPLEXITY</span>
@@ -318,7 +405,7 @@
           <span class="stage-spec-val" id="stgInvariant">SHA256(Raw) == ClusterKey</span>
         </div>
         <div class="stage-spec-item">
-          <span class="stage-spec-label">FAULT TOLERANCE</span>
+          <span class="stage-spec-label">FAULT MITIGATION</span>
           <span class="stage-spec-val" id="stgFault">Prompt Injection Stripped</span>
         </div>
       </div>
@@ -333,7 +420,7 @@
 
       <!-- Live Payload Mutation Diff -->
       <div>
-        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);margin-bottom:6px;">// RUNTIME PAYLOAD MUTATION DIFF</div>
+        <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);margin-bottom:6px;">// SAMPLE PAYLOAD MUTATION DIFF</div>
         <div class="payload-diff-grid">
           <div class="payload-card">
             <div class="payload-header">INPUT PAYLOAD [RAW BUFFER]</div>
@@ -348,52 +435,43 @@
 
     </div>
 
-    <!-- Core Technology Architecture Matrix -->
+    <!-- ── TIER 4: FUTURE RESEARCH ROADMAP ── -->
     <div class="ae-reveal" style="margin-top:48px;">
-      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;">// SYSTEM SUBSYSTEM ARCHITECTURE MATRIX</div>
-      <h2 style="font-size:1.6rem;font-weight:800;color:#fff;letter-spacing:-0.03em;">
-        Deterministic Subsystems &amp; Infrastructure
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span class="ae-badge ae-badge-zinc">TIER 4 &bull; RESEARCH ROADMAP</span>
+        <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">EXPERIMENTAL / NOT YET IN PRODUCTION</span>
+      </div>
+      <h2 style="font-size:1.5rem;font-weight:800;color:#fff;letter-spacing:-0.03em;margin-bottom:12px;">
+        Planned Technical Explorations
       </h2>
       
       <table class="arch-matrix-table">
         <thead>
           <tr>
-            <th>SUBSYSTEM</th>
-            <th>ENGINE / FRAMEWORK</th>
-            <th>MATHEMATICAL &amp; ARCHITECTURAL ROLE</th>
-            <th>LATENCY SPEC</th>
+            <th>RESEARCH AREA</th>
+            <th>PROPOSED METHOD</th>
+            <th>TARGET OUTCOME</th>
+            <th>ROADMAP STATUS</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Spectral Engine</td>
-            <td style="font-family:var(--font-mono);color:var(--cyan);">Zipf-Mandelbrot Least-Squares</td>
-            <td>Computes $f(r) = C/(r+\beta)^\gamma$ to calculate determination $R^2$ and Shannon entropy $H(X)$, identifying autoregressive LLM watermarks.</td>
-            <td style="font-family:var(--font-mono);color:var(--emerald);">&lt; 8ms</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Decentralized Quorums</td>
+            <td style="font-family:var(--font-mono);color:var(--purple);">Multi-Node BFT Ledger</td>
+            <td>Federated Byzantine consensus across multiple cloud providers with cryptographic threshold signing.</td>
+            <td><span class="ae-badge ae-badge-zinc">RESEARCH RFC</span></td>
           </tr>
           <tr>
-            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Epidemic Modeler</td>
-            <td style="font-family:var(--font-mono);color:var(--amber);">Hawkes Self-Exciting Process</td>
-            <td>Models conditional arrival intensity $\lambda(t) = \mu + \sum \alpha e^{-\beta(t-t_i)}$ to calculate reproduction ratio $R_0 = \alpha/\beta$.</td>
-            <td style="font-family:var(--font-mono);color:var(--emerald);">&lt; 14ms</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Cryptographic Proofs</td>
+            <td style="font-family:var(--font-mono);color:var(--cyan);">zk-SNARK Provenance</td>
+            <td>Generate zero-knowledge proofs validating that a cited URL contained an exact substring at retrieval timestamp.</td>
+            <td><span class="ae-badge ae-badge-zinc">PROTOTYPE EXPERIMENT</span></td>
           </tr>
           <tr>
-            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Byzantine Quorum</td>
-            <td style="font-family:var(--font-mono);color:var(--purple);">Weighted-MSR Subsequence Filter</td>
-            <td>Prunes $F=1$ extreme outlier agent score before computing trimmed super-majority consensus $\sum w_i v_i / \sum w_i$.</td>
-            <td style="font-family:var(--font-mono);color:var(--emerald);">&lt; 6ms</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Neural Reasoning</td>
-            <td style="font-family:var(--font-mono);color:var(--accent);">Gemini 2.5 Flash</td>
-            <td>High-throughput evidence stance synthesis and contradiction extraction across retrieved news repositories and Wikipedia revisions.</td>
-            <td style="font-family:var(--font-mono);color:var(--emerald);">&lt; 1.2s</td>
-          </tr>
-          <tr>
-            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Zero-Cost Ingestion</td>
-            <td style="font-family:var(--font-mono);color:#fff;">FastAPI + Serverless Scrapers</td>
-            <td>Ingests Yahoo Finance intraday charts, PullPush Reddit feeds, and Google News RSS without third-party API token consumption.</td>
-            <td style="font-family:var(--font-mono);color:var(--emerald);">&lt; 850ms</td>
+            <td style="font-family:var(--font-mono);font-weight:700;color:#fff;">Audio Phase Spectrogram</td>
+            <td style="font-family:var(--font-mono);color:var(--amber);">Continuous STFT Phase Analysis</td>
+            <td>Hardware-accelerated audio feature extraction for detecting deepfake vocoder phase discontinuities in streaming media.</td>
+            <td><span class="ae-badge ae-badge-zinc">RESEARCH SPECIFICATION</span></td>
           </tr>
         </tbody>
       </table>
@@ -420,8 +498,8 @@
         label: 'STAGE 01 &bull; INGESTION & NORMALIZATION',
         name: 'Ingestion, Entity Extraction & SHA-256 Idempotency',
         desc: 'Strips adversarial prompt-injection payloads, normalizes unicode confusables, extracts core named entities, and assigns an immutable SHA-256 claim hash to eliminate duplicate workload.',
-        badge: 'STAGE VERIFIED &bull; IDEMPOTENT',
-        budget: '< 12ms',
+        badge: 'SIMULATED SPECIFICATION &bull; IDEMPOTENT',
+        budget: '< 15ms',
         complexity: 'O(N) Token Scan',
         invariant: 'SHA256(Raw) == ClusterKey',
         fault: 'Prompt Injection Stripped',
@@ -433,8 +511,8 @@
         label: 'STAGE 02 &bull; SPECTRAL WATERMARKING',
         name: 'Zipf-Mandelbrot Token-Rank Power-Law Regression',
         desc: 'Evaluates the token distribution of ingested text against Mandelbrot frequency decay law. Autoregressive LLMs exhibit low variance and high R² > 0.93; organic human text exhibits burstiness.',
-        badge: 'SPECTRAL FIT &bull; R² > 0.93 AI THRESHOLD',
-        budget: '< 8ms',
+        badge: 'ANALYTICAL MODEL &bull; FREQUENCY DECAY',
+        budget: '< 10ms',
         complexity: 'O(V \\log V) Sort',
         invariant: 'f(r) \\sim C / (r + \\beta)^\\gamma',
         fault: 'Low-Sample Fallback (N < 20)',
@@ -446,8 +524,8 @@
         label: 'STAGE 03 &bull; EPIDEMIOLOGY & BLAST RADIUS',
         name: 'Hawkes Self-Exciting Contagion Physics Modeling',
         desc: 'Calculates the viral cascade trajectory and reproduction ratio R₀ across social networks using stochastic point-process arrivals and exponential decay kernels.',
-        badge: 'CONTAGION MODEL &bull; R₀ CRITICAL THRESHOLD',
-        budget: '< 14ms',
+        badge: 'SIMULATION MODEL &bull; REPRODUCTION RATIO',
+        budget: '< 15ms',
         complexity: 'O(K \\cdot T) Time Simulation',
         invariant: 'R_0 = \\alpha / \\beta',
         fault: 'Sub-critical Damping',
@@ -459,7 +537,7 @@
         label: 'STAGE 04 &bull; PARALLEL DOMAIN SWARM',
         name: '4-Agent Domain Swarm Investigation',
         desc: 'Dispatches Scout (Financial), Trending (Social), BrandShield (Reputation), and Personal Watch (VIP) across zero-cost serverless scrapers to gather real evidence.',
-        badge: '4/4 SWARM VECTORS ACTIVE',
+        badge: 'PARALLEL PIPELINE &bull; RETRIEVAL NODES',
         budget: '< 850ms',
         complexity: 'Parallel Async I/O',
         invariant: '|Evidence| >= 3 Provenance Nodes',
@@ -469,24 +547,24 @@
         outPayload: '{\\n  "findings_count": 6,\\n  "stance_matrix": {"supporting": 1, "refuting": 5},\\n  "confidence": 0.96\\n}'
       },
       5: {
-        label: 'STAGE 05 &bull; BYZANTINE FAULT TOLERANCE',
+        label: 'STAGE 05 &bull; OUTLIER PRUNING',
         name: 'Weighted-MSR Subsequence Outlier Filtering',
         desc: 'Filters rogue, compromised, or sycophantic agent votes by eliminating the k highest and k lowest deviations from median before computing weighted consensus.',
-        badge: 'W-MSR FILTER ACTIVE &bull; F=1 PRUNED',
-        budget: '< 6ms',
+        badge: 'FILTER SPECIFICATION &bull; F=1 PRUNED',
+        budget: '< 10ms',
         complexity: 'O(N \\log N) Sorting',
         invariant: 'N > 3F + 1',
-        fault: '1 Rogued Agent Pruned',
+        fault: '1 Outlier Score Pruned',
         formula: 'v_{\\text{consensus}} = \\frac{\\sum_{i \\in \\mathcal{N} \\setminus \\mathcal{R}} w_i v_i}{\\sum_{i \\in \\mathcal{N} \\setminus \\mathcal{R}} w_i}',
         inPayload: '{\\n  "votes": [\\n    {"node": "research", "val": 0.95},\\n    {"node": "investigator", "val": 0.92},\\n    {"node": "adversary_rogue", "val": 0.38}\\n  ]\\n}',
         outPayload: '{\\n  "pruned": "adversary_rogue",\\n  "converged_verdict": "FALSE",\\n  "final_confidence": 0.94\\n}'
       },
       6: {
         label: 'STAGE 06 &bull; TRUTH DOSSIER ARBITRATION',
-        name: 'Cryptographic Dossier Finalization & Broadcast',
+        name: 'Truth Dossier Finalization & Audit Storage',
         desc: 'Issues an immutable verification dossier containing the formal verdict, evidence provenance list, mathematical metrics, and signed telemetry broadcast.',
-        badge: 'IMMUTABLE DOSSIER ISSUED',
-        budget: '< 18ms',
+        badge: 'DOSSIER SPECIFICATION &bull; AUDIT TRAIL',
+        budget: '< 20ms',
         complexity: 'O(1) Finalization',
         invariant: 'Verdict \\in {TRUE, FALSE, MISLEADING}',
         fault: 'CDC WebSocket Broadcast',

@@ -1,5 +1,3 @@
-# Cloudflare Pages & Static Hosting Redirects
-# Note: Cloudflare Pages serves static files (HTML, CSS, JS, images) automatically.
-# The rule below provides SPA client-side fallback for unmatched routes.
-
-/*    /index.html   200
+# Cloudflare Pages Redirects & Routing Rules
+# Note: Static assets and HTML files are served automatically.
+# Missing routes automatically fall back to /404.html with status 404.

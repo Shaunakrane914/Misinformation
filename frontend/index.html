@@ -1232,7 +1232,9 @@
       document.getElementById('scrubberBlast').innerText = blast;
     };
 
-    // ── Command Palette (⌘K) ──
+    // ── Command Palette (⌘K / Ctrl+K) ──
+    const isMacPlatform = typeof navigator !== 'undefined' && /Mac|iPhone|iPod|iPad/i.test(navigator.platform || navigator.userAgent);
+    document.querySelectorAll('.cmd-badge').forEach(el => { el.textContent = isMacPlatform ? '⌘K' : 'Ctrl+K'; });
     const modal = document.getElementById('cmdPalette');
     const input = document.getElementById('cmdInput');
 

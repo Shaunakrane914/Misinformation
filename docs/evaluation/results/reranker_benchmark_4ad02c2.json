@@ -1,15 +1,15 @@
 {
-  "experiment_id": "reranker_trained_eval_13f99aa",
+  "experiment_id": "reranker_trained_eval_4ad02c2",
   "taxonomy_category": "offline_ml_benchmark",
   "benchmark_type": "Supervised Evidence Reranking Benchmark (Held-Out Test Queries)",
   "scientific_disclosure": "Candidate pools use 15 candidates/query (2 relevant targets at raw rank 4 and 9; 13 distractors). The reranker was trained on training pairs and evaluated strictly on held-out queries.",
-  "git_commit": "13f99aa35bc94bbeb4954d4c68b5f380af5deb73",
-  "timestamp_utc": "2026-10-04T10:18:12.988404+00:00",
+  "git_commit": "4ad02c2842227a48cc58a954df0d711e741f9053",
+  "timestamp_utc": "2026-10-04T10:19:39.010769+00:00",
   "training": {
     "training_items_count": 7,
     "training_pairs_count": 28,
     "is_custom_trained": true,
-    "train_time_sec": 0.0039
+    "train_time_sec": 0.0045
   },
   "evaluation": {
     "held_out_queries_count": 7,
@@ -41,8 +41,8 @@
       "recall_at_10_delta": 0.0
     },
     "performance": {
-      "latency_p50_ms": 0.52,
-      "latency_p95_ms": 0.81,
+      "latency_p50_ms": 0.62,
+      "latency_p95_ms": 0.7,
       "memory_footprint_bytes": 136
     },
     "weights": {

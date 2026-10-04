@@ -1,8 +1,8 @@
 {
   "experiment_id": "classical_ml_welfake_51928c80b75e",
   "taxonomy_category": "offline_ml_benchmark",
-  "git_commit": "13f99aa35bc94bbeb4954d4c68b5f380af5deb73",
-  "timestamp_utc": "2026-10-04T10:18:12.937360+00:00",
+  "git_commit": "4ad02c2842227a48cc58a954df0d711e741f9053",
+  "timestamp_utc": "2026-10-04T10:19:38.951111+00:00",
   "dataset": {
     "name": "WELFake",
     "task": "Article/Headline Classification (Binary)",
@@ -36,7 +36,7 @@
   "model": {
     "name": "TF-IDF + L2 Logistic Regression",
     "type": "Supervised Classical ML",
-    "train_time_sec": 0.4978516999981366,
+    "train_time_sec": 0.9095094000003883,
     "hyperparameters": {
       "max_features": 10000,
       "ngram_range": [
@@ -46,7 +46,7 @@
       "C": 1.0,
       "max_iter": 1000,
       "random_state": 42,
-      "train_time_sec": 0.498
+      "train_time_sec": 0.91
     }
   },
   "results": {
@@ -54,8 +54,8 @@
       "model": "tfidf_logistic_regression",
       "split": "test",
       "sample_count": 2948,
-      "inference_time_sec": 0.068,
-      "throughput_samples_per_sec": 43136.9,
+      "inference_time_sec": 0.085,
+      "throughput_samples_per_sec": 34841.6,
       "metrics": {
         "sample_count": 2948,
         "accuracy": 0.885,
@@ -155,15 +155,15 @@
         "C": 1.0,
         "max_iter": 1000,
         "random_state": 42,
-        "train_time_sec": 0.498
+        "train_time_sec": 0.91
       }
     },
     "validation": {
       "model": "tfidf_logistic_regression",
       "split": "validation",
       "sample_count": 2947,
-      "inference_time_sec": 0.071,
-      "throughput_samples_per_sec": 41358.5,
+      "inference_time_sec": 0.074,
+      "throughput_samples_per_sec": 39892.9,
       "metrics": {
         "sample_count": 2947,
         "accuracy": 0.8863,
@@ -263,7 +263,7 @@
         "C": 1.0,
         "max_iter": 1000,
         "random_state": 42,
-        "train_time_sec": 0.498
+        "train_time_sec": 0.91
       }
     }
   },

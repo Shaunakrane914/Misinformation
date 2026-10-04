@@ -206,29 +206,31 @@
 
   <div class="claim-hero">
     
-    <!-- Orientation Question Banner -->
-    <div class="aegis-orientation-banner ae-reveal">
-      <div class="aegis-orientation-q">
-        <span class="aegis-orientation-dot"></span>
-        <span>PRIMARY INVESTIGATIVE QUESTION</span>
+    <!-- Workspace Header -->
+    <div style="margin-bottom:28px;" class="ae-reveal">
+      <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:6px;text-transform:uppercase;">
+        // Investigation Workspace
       </div>
-      <div class="aegis-orientation-goal">
-        Is this claim true, false, misleading, or unresolved? What evidence supports that assessment, and what remains unknown?
-      </div>
+      <h1 style="font-size:2.2rem;font-weight:800;letter-spacing:-0.03em;color:#fff;margin-bottom:8px;">
+        Investigate a claim
+      </h1>
+      <p style="color:var(--text-muted);font-size:0.95rem;line-height:1.55;max-width:720px;">
+        Check any assertion, quote, or report against independent sources. Aegis compares contradictions and shows the evidence behind each conclusion.
+      </p>
     </div>
 
     <!-- Input Card -->
     <div class="claim-input-card ae-reveal">
       <form id="claimSubmitForm" onsubmit="handleClaimVerification(event)">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-          <label style="font-size:0.9rem;font-weight:700;color:#fff;" for="claimText">
-            Claim Under Investigation <span style="color:var(--rose)">*</span>
+          <label style="font-size:0.92rem;font-weight:700;color:#fff;" for="claimText">
+            What do you want to verify? <span style="color:var(--rose)">*</span>
           </label>
           <span id="charCount" style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">0 / 1000</span>
         </div>
 
         <textarea id="claimText" class="form-textarea" rows="3"
-          placeholder="Paste claim, breaking news assertion, quote, or viral rumor to verify..." required></textarea>
+          placeholder="Paste claim, breaking statement, quote, or rumor to verify..." required></textarea>
 
         <!-- Presets -->
         <div class="preset-chips">
@@ -247,28 +249,55 @@
           </button>
         </div>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:20px;flex-wrap:wrap;gap:12px;">
-          <input type="url" id="sourceUrl" class="ae-input" placeholder="Optional source URL to audit (e.g. https://...)" style="flex:1;min-width:240px;background:rgba(4,7,13,0.85);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#fff;font-size:0.86rem;">
-          
-          <button type="submit" id="verifyBtn" class="ae-btn ae-btn-primary" style="padding:11px 26px;font-size:0.9rem;">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            <span>Verify Claim</span>
-          </button>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;">
+          <div>
+            <label style="font-size:0.78rem;font-family:var(--font-mono);color:var(--text-dim);display:block;margin-bottom:6px;" for="sourceUrl">
+              OPTIONAL URL
+            </label>
+            <input type="url" id="sourceUrl" class="ae-input" placeholder="https://example.com/article" style="width:100%;background:rgba(4,7,13,0.85);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#fff;font-size:0.86rem;">
+          </div>
+          <div>
+            <label style="font-size:0.78rem;font-family:var(--font-mono);color:var(--text-dim);display:block;margin-bottom:6px;" for="sourceContext">
+              OPTIONAL CONTEXT / ENTITY
+            </label>
+            <input type="text" id="sourceContext" class="ae-input" placeholder="e.g. Health Ministry, Corporate announcement" style="width:100%;background:rgba(4,7,13,0.85);border:1px solid var(--border);border-radius:10px;padding:10px 14px;color:#fff;font-size:0.86rem;">
+          </div>
+        </div>
+
+        <!-- Investigation Settings -->
+        <div style="display:flex;gap:20px;align-items:center;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--border);font-size:0.82rem;color:var(--text-muted);">
+          <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">SETTINGS:</span>
+          <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" id="setSearchRecent" checked style="accent-color:var(--accent);"> Search recent sources
+          </label>
+          <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" id="setCheckContradict" checked style="accent-color:var(--accent);"> Check contradictions
+          </label>
+          <label style="display:inline-flex;align-items:center;gap:6px;cursor:pointer;">
+            <input type="checkbox" id="setPreferPrimary" checked style="accent-color:var(--accent);"> Prefer primary records
+          </label>
+
+          <div style="margin-left:auto;">
+            <button type="submit" id="verifyBtn" class="ae-btn ae-btn-primary" style="padding:10px 24px;font-size:0.9rem;">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              <span>Start Investigation</span>
+            </button>
+          </div>
         </div>
       </form>
     </div>
 
     <!-- Staged Progress Loading Indicator -->
     <div id="evalStageBox" class="eval-stage-box">
-      <div style="display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:700;font-size:0.92rem;">
+      <div style="display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:600;font-size:0.92rem;">
         <span class="aegis-orientation-dot" style="width:8px;height:8px;"></span>
-        <span id="stageLabel">Harvesting Primary Registries &amp; Wire Archives...</span>
+        <span id="stageLabel">Checking the claim against retrieved sources...</span>
       </div>
       <div class="stage-steps-list">
-        <span id="stg_ingest" class="stage-step-item active">1. Search Primary Sources</span>
+        <span id="stg_ingest" class="stage-step-item active">1. Search Recent Sources</span>
         <span id="stg_contradict" class="stage-step-item">2. Check Contradictions</span>
         <span id="stg_weight" class="stage-step-item">3. Evaluate Evidence Strength</span>
-        <span id="stg_synthesize" class="stage-step-item">4. Formulate Verdict</span>
+        <span id="stg_synthesize" class="stage-step-item">4. Synthesize Assessment</span>
       </div>
     </div>
 
@@ -279,8 +308,8 @@
       <div class="ae-card ae-reveal" style="padding:28px 32px;margin-bottom:24px;border-left:4px solid var(--accent);" id="level1Card">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:16px;margin-bottom:16px;">
           <div>
-            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:6px;">
-              EVALUATED STATEMENT
+            <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);letter-spacing:0.08em;margin-bottom:6px;text-transform:uppercase;">
+              Claim Statement
             </div>
             <div id="verdictClaimQuote" style="font-size:1.25rem;font-weight:700;color:#fff;line-height:1.45;max-width:850px;">
               &ldquo;Claim statement under review&rdquo;
@@ -288,7 +317,7 @@
           </div>
           <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
             <div id="verdictPill" class="aegis-verdict-badge unverified">
-              UNVERIFIED
+              UNRESOLVED
             </div>
             <div id="strengthPill" class="aegis-strength-pill limited">
               Evidence: Limited
@@ -298,17 +327,17 @@
 
         <div class="aegis-bottomline">
           <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:var(--accent);margin-bottom:4px;text-transform:uppercase;">
-            Bottom Line Assessment
+            Assessment Summary
           </div>
           <div id="bottomLineText" style="color:#e2e8f0;font-size:0.92rem;line-height:1.6;">
-            Evaluating verified empirical records...
+            Checking the claim against retrieved sources.
           </div>
         </div>
 
         <div style="display:flex;justify-content:space-between;align-items:center;margin-top:18px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.06);font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">
           <span id="auditTimestamp">Audit: Just now</span>
           <a href="#evidenceMatrixSection" class="ae-btn ae-btn-secondary" style="padding:6px 14px;font-size:0.74rem;">
-            Investigate Evidence &darr;
+            Inspect Evidence &darr;
           </a>
         </div>
       </div>
@@ -622,29 +651,40 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
     function renderClaimWorkspace(claimText, data) {
       const claimObj = data.claim || data;
       const rawVerdict = (claimObj.verdict || "UNVERIFIED").toUpperCase();
-      let verdict = "UNVERIFIED";
-      if (rawVerdict.includes("TRUE")) verdict = "TRUE";
-      else if (rawVerdict.includes("FALSE")) verdict = "FALSE";
-      else if (rawVerdict.includes("MISLEADING")) verdict = "MISLEADING";
+      let verdict = "UNRESOLVED";
+      let displayVerdict = "UNRESOLVED";
+      if (rawVerdict.includes("TRUE")) {
+        verdict = "true";
+        displayVerdict = "LIKELY TRUE";
+      } else if (rawVerdict.includes("FALSE")) {
+        verdict = "false";
+        displayVerdict = "LIKELY FALSE";
+      } else if (rawVerdict.includes("MISLEADING")) {
+        verdict = "misleading";
+        displayVerdict = "MISLEADING";
+      } else {
+        verdict = "unverified";
+        displayVerdict = "UNRESOLVED";
+      }
 
       // Evidence strength: Strong, Moderate, Limited, Insufficient
       let strength = data.evidence_strength || claimObj.evidence_strength || "Limited";
       if (!["Strong", "Moderate", "Limited", "Insufficient"].includes(strength)) {
-        strength = verdict === 'UNVERIFIED' ? 'Insufficient' : 'Moderate';
+        strength = verdict === 'unverified' ? 'Insufficient' : 'Moderate';
       }
 
       // Level 1: Orientation
       document.getElementById('verdictClaimQuote').innerHTML = `&ldquo;${esc(claimText)}&rdquo;`;
       
       const vPill = document.getElementById('verdictPill');
-      vPill.className = `aegis-verdict-badge ${verdict.toLowerCase()}`;
-      vPill.textContent = verdict;
+      vPill.className = `aegis-verdict-badge ${verdict}`;
+      vPill.textContent = displayVerdict;
 
       const sPill = document.getElementById('strengthPill');
       sPill.className = `aegis-strength-pill ${strength.toLowerCase()}`;
       sPill.textContent = `Evidence: ${strength}`;
 
-      const bottomLine = data.bottom_line || claimObj.explanation || claimObj.reasoning || "Empirical fact-checking and multi-agent synthesis completed.";
+      const bottomLine = data.bottom_line || claimObj.explanation || claimObj.reasoning || "Checking the claim against retrieved sources.";
       document.getElementById('bottomLineText').textContent = bottomLine;
 
       const execMode = data._mode || 'BACKEND_INVESTIGATION';

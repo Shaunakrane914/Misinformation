@@ -1,0 +1,107 @@
+{
+  "experiment_id": "india_multilingual_llm_only_ad8d1c6",
+  "taxonomy_category": "llm_only_benchmark",
+  "git_commit": "ad8d1c6dac8173fbdaf973bbd434cddb6d2e76d3",
+  "timestamp_utc": "2026-10-04T09:57:03.657567+00:00",
+  "provider": "offline_mock",
+  "sample_count": 4,
+  "metrics": {
+    "sample_count": 4,
+    "accuracy": 0.0,
+    "accuracy_95ci": [
+      0.0,
+      0.4899
+    ],
+    "macro_f1": 0.0,
+    "macro_f1_95ci": [
+      0.0,
+      0.0
+    ],
+    "macro_precision": 0.0,
+    "macro_recall": 0.0,
+    "per_class": {
+      "class_0_real": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 1
+      },
+      "class_1_fake": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "f1": 0.0,
+        "support": 3
+      }
+    },
+    "confusion_matrix": {
+      "tn": 0,
+      "fp": 0,
+      "fn": 0,
+      "tp": 0,
+      "interpretation": {
+        "true_negatives": "Real verified news correctly classified as Real",
+        "false_positives": "Real news incorrectly flagged as Fake (Type I error)",
+        "false_negatives": "Fake news missed and passed as Real (Type II error)",
+        "true_positives": "Fake news correctly identified as Fake"
+      }
+    },
+    "bootstrap_parameters": {
+      "resamples": 1000,
+      "confidence_level": 0.95,
+      "seed": 42,
+      "interval_type": "percentile"
+    },
+    "mean_confidence": 0.96,
+    "median_confidence": 0.96
+  },
+  "traces": [
+    {
+      "claim_id": "IN-HLTH-001",
+      "language": "English",
+      "domain": "Public Health",
+      "ground_truth": "False",
+      "prediction": "Unverified",
+      "prediction_int": -1,
+      "confidence": 0.96,
+      "abstained": true,
+      "latency_ms": 0.03,
+      "provider": "offline_mock"
+    },
+    {
+      "claim_id": "IN-HLTH-002",
+      "language": "Hindi",
+      "domain": "Public Health",
+      "ground_truth": "False",
+      "prediction": "Unverified",
+      "prediction_int": -1,
+      "confidence": 0.96,
+      "abstained": true,
+      "latency_ms": 0.02,
+      "provider": "offline_mock"
+    },
+    {
+      "claim_id": "IN-HLTH-003",
+      "language": "Marathi",
+      "domain": "Public Health",
+      "ground_truth": "False",
+      "prediction": "Unverified",
+      "prediction_int": -1,
+      "confidence": 0.96,
+      "abstained": true,
+      "latency_ms": 0.01,
+      "provider": "offline_mock"
+    },
+    {
+      "claim_id": "IN-HLTH-004",
+      "language": "Hinglish",
+      "domain": "Public Health",
+      "ground_truth": "True",
+      "prediction": "Unverified",
+      "prediction_int": -1,
+      "confidence": 0.96,
+      "abstained": true,
+      "latency_ms": 0.01,
+      "provider": "offline_mock"
+    }
+  ]
+}

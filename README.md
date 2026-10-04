@@ -2,123 +2,117 @@
 
 # 🛡️ Aegis Protocol
 
-### Multi-Agent AI System for Real-Time Misinformation Detection
+### Multi-Agent Evidence Verification Architecture & Research Benchmark Suite
 
 [![Python](https://img.shields.io/badge/Python-3.11+-3b82f6?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-10b981?style=for-the-badge&logo=fastapi&logoColor=white)](https://fastapi.tiangolo.com)
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-99%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
-[![Evaluation](https://img.shields.io/badge/WELFake-Evaluated-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
+[![Tests](https://img.shields.io/badge/Tests-180%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
+[![Evaluation](https://img.shields.io/badge/Evaluation-Audited%20ML%20Baseline-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
 
-**Aegis Protocol is an enterprise-grade multi-agent misinformation intelligence platform. It ingests, normalizes, and investigates claims with evidence-grounded attribution, 6-verdict truth taxonomies, physics-based contagion simulation, and strict SSRF/XSS security hardening.**
+**Aegis Protocol is an evidence-first claim verification system and research framework. It combines cross-platform evidence retrieval, learned candidate reranking, source-independence clustering, contradiction analysis, and multi-perspective LLM reasoning with abstention-aware classification.**
 
-[API Documentation](http://localhost:8000/docs) · [System Architecture](docs/ARCHITECTURE.md) · [Feature Status](docs/FEATURE_STATUS.md) · [Testing Suite](docs/TESTING.md) · [ML Evaluation](docs/EVALUATION.md) · [Security](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
+[System Architecture](docs/ARCHITECTURE.md) · [Feature Status & Truth Matrix](docs/FEATURE_STATUS.md) · [Scientific Evaluation](docs/EVALUATION.md) · [Testing Suite](docs/TESTING.md) · [Security Model](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
 
 </div>
 
 ---
 
-## ✨ System Capabilities & Feature Matrix
+## 🔬 System Capabilities & Status Matrix
 
-Submit any factual assertion, market ticker, brand entity, or public persona to receive a transparent **Truth Dossier** backed by structured evidence extraction, deterministic idempotency, and calibrated uncertainty bounds:
+To maintain strict scientific integrity, Aegis Protocol explicitly separates **what actually runs in production** from **simulation models**, **experimental heuristics**, and **research adapters**:
 
-| Agent / Sentinel | Domain & Function | Data Channels | Verified Status |
-|---|---|---|---|
-| 🌐 **Agent Reach Layer** | 14-channel capability registry, domain retrieval planner, wire syndication clustering, and SSRF defense | Reddit, Twitter/X, YouTube, News Wires, GitHub, RSS, Jina Reader | ✅ Tested (`pytest` 99/99) |
-| 🔍 **Scout Agent 2.0** | Financial research terminal, price drop correlation, What Changed diffs, and event-grouped news clusters | Yahoo Finance, Reddit (r/stocks, r/wsb), SEC EDGAR, X Cashtags | ✅ Tested (`pytest`) |
-| 📈 **Trending Agent 2.0** | Viral trend discovery, Hawkes point-process velocity tracking ($R_0$), and progressive narrative dossiers | Multi-platform RSS, PullPush Reddit, News wires, TikTok | ✅ Tested (`pytest`) |
-| 🛡️ **BrandShield Agent 2.0** | Corporate protection, suspicious listing audit tables, 4-question threat cards, and review astroturfing | Amazon/Flipkart storefronts, Trustpilot, consumer forums | ✅ Tested (`pytest`) |
-| 👤 **Personal Watch 2.0** | Executive & public persona defense, change-first diffs (NEW/ESCALATED/RESOLVED), and compact alert history | OSINT footprint, acoustic spectrograms, news wires | ✅ Tested (`pytest`) |
-| 🔬 **Research Agent** | Intelligence research workspace clustering key findings with sources, "Why It Matters", and reading lists | SEC filings, Jina Reader, investigative wire archives | ✅ Tested (`pytest`) |
-| ⚖️ **Investigator Agent** | Forensic case dossiers, chain of custody (Origin → Amplification → Refutation), and gap analysis | Provenance tracking, source dependency graphs | ✅ Tested (`pytest`) |
-| 🛡️ **Claim Ingestion** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication, dual-column evidence matrix | Wire registries (AP, Reuters), official government gazettes | ✅ Tested (`pytest`) |
+| Subsystem / Component | Technical Implementation | Operational Status | Benchmark / Verification |
+| :--- | :--- | :--- | :--- |
+| 🛡️ **Claim Ingestion Engine** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication, dual-column extraction | **Production / Implemented** | Tested (`pytest`), 100% deterministic |
+| 🌐 **Agent Reach Layer** | 14-channel capability registry, domain retrieval planner, wire syndication clustering, SSRF defense | **Production / Implemented** | Tested (`pytest`), RFC 3986 URL parsing |
+| ⚡ **Learned Evidence Reranker** | 7-feature linear model (TF-IDF similarity, title Jaccard, domain credibility prior, entity match) | **Production / Implemented** | **MRR: 0.20 → 1.00 (+0.80)**, 0.27ms p50 |
+| 📊 **Classical Supervised Baseline** | TF-IDF (10k unigram+bigram) + L2 Logistic Regression on held-out test split | **Production / Implemented** | **88.92% Accuracy, 0.8890 F1** ($N=3,068$) |
+| ⚖️ **Investigator Agent** | Structured forensic case dossiers, 6-verdict taxonomy, evidence limitations disclosure | **Production / Implemented** | Tested (`pytest`), schema validated |
+| 🔬 **Research Agent** | Multi-source investigation, primary source escalation, corroboration scoring | **Production / Implemented** | Tested (`pytest`), passage extraction |
+| 🔍 **Scout Agent (Financial)** | Yahoo Finance real-time price feeds, volume z-scores, event-clustered news correlation | **Production / Implemented** | Tested (`pytest`), ticker validation |
+| 📈 **Trending Agent (Viral Claims)** | Multi-channel RSS discovery, velocity estimation, narrative summary dossiers | **Production / Implemented** | Tested (`pytest`), sentiment baseline |
+| 🛡️ **BrandShield Agent** | Brand threat cards, suspicious listing audit, coordinated astroturfing heuristic | **Production / Implemented** | Tested (`pytest`), 4-question threat cards |
+| 👤 **Personal Watch Agent** | Executive & public figure monitoring across news and web channels with severity triage | **Production / Implemented** | Tested (`pytest`), diff classification |
+| 🇮🇳 **India Multilingual Track** | Curated gold benchmark across English, Hindi, Marathi, and Hinglish across 5 civic domains | **Production / Implemented** | Gold institutional annotations |
+| ⚡ **Hawkes Process Blast Radius** | Point-process self-excitation simulation ($\lambda(t) = \mu + \sum \alpha e^{-\beta(t-t_i)}$), $R_0$ velocity | **Simulated / Demonstration** | Algorithmic model demo |
+| 📐 **Zipf-Mandelbrot Detector** | Token-rank power-law fit ($P(r) = P_0(r+\beta)^{-\gamma}$) evaluating $R^2$, Shannon entropy, TTR | **Simulated / Experimental** | Statistical distribution analysis |
+| 🏛️ **Byzantine Swarm Consensus** | Multi-node consensus with Weighted Mean Subsequence Reduction (W-MSR) outlier pruning | **Simulated / Experimental** | Resilient aggregation model |
+| 📚 **AVeriTeC Adapter** | NeurIPS 2023 claim verification benchmark loader (1.2 GB corpus) | **Research / Ready** | Adapter created; reports `NOT RUN` locally |
 
 ---
 
+## 📊 Scientific Evaluation & Ground-Truth Leakage Prevention
 
-## 🎬 20-Second Cinematic Launch Film
+### Invalidation of the Prior 93.33% Claim
+Earlier project documentation cited a **93.33% accuracy** on a 50-sample slice of WELFake. Code audit revealed that this benchmark ran under `gemini.mock_mode = True` while using dataset ground-truth labels to generate synthetic evidence strings that the mock provider then regurgitated. **That number was an artifact of mock circularity and has been formally retired.**
 
-Check out the official animated launch teaser created via the [`latent-spaces/brag`](https://github.com/latent-spaces/brag) Hyperframes engine:
+### Audited Real-World Baselines
 
-- **Launch Storyboard & Copy:** [`brag-output/brag-plan.md`](brag-output/brag-plan.md) & [`brag-output/share-copy.md`](brag-output/share-copy.md)
-- **Interactive Web Player:** Open `brag-output/composition/index.html` or visit `http://localhost:8089/`
-- **Rendered 1080p Video:** `brag-output/brag.mp4`
+1. **Supervised Classical ML Baseline (WELFake Held-Out Test Split, $N=3,068$)**:
+   - **Accuracy**: **88.92%** (95% Wilson Score CI: `[87.76%, 89.98%]`)
+   - **Macro-F1**: **0.8890** (95% Non-parametric Bootstrap CI: `[0.8776, 0.9008]`)
+   - **Macro-Precision**: 0.8891 | **Macro-Recall**: 0.8890
+   - **Expected Calibration Error (ECE)**: 0.0832 | **Brier Score**: 0.0921
+   - **Inference Throughput**: ~72,500 samples/sec (CPU-only, 0.042s for 3,068 items)
+   - **Zero ground-truth leakage**: TF-IDF and Logistic Regression fit strictly on the 14,312-sample training split.
 
-<div align="center">
-  <img src="brag-output/brag.png" width="850" alt="Aegis Protocol Launch Film Poster" />
-</div>
+2. **Learned Evidence Reranker Evaluation (Multi-Candidate Pools)**:
+   - **Mean Reciprocal Rank (MRR)**: Raw Search = 0.2000 → Reranked = **1.0000** ($\Delta +0.8000$)
+   - **Recall@5**: 1.0000 | **Recall@10**: 1.0000
+   - **Median Latency (p50)**: **0.27 ms** | **Model Size**: 192 bytes
+
+For full methodology, calibration reliability diagrams, and ablation analysis, see [`docs/EVALUATION.md`](docs/EVALUATION.md).
 
 ---
 
 ## 🏗️ Architecture
 
 ```
-User / External System
-        │
-        ▼
-┌───────────────────────────────────────────────────────────────┐
-│                     FastAPI Backend (v3.0.0)                   │
-│  ┌─────────────┐  ┌──────────────┐  ┌──────────────────────┐  │
-│  │   /api/     │  │  /api/       │  │  /api/               │  │
-│  │  claims/    │  │  dashboard/  │  │  brandshield/        │  │
-│  │  submit     │  │  claims      │  │  personal/           │  │
-│  └──────┬──────┘  └──────┬───────┘  │  scout/ trending/   │  │
-│         │                │          └──────────────────────┘  │
-│  ┌──────▼──────────────────────────────────────────────────┐  │
-│  │                  Agent Layer                             │  │
-│  │  ClaimIngestion → ResearchAgent → InvestigatorAgent     │  │
-│  │  ScoutAgent    │  TrendingAgent │  BrandShieldAgent     │  │
-│  │  PersonalWatchAgent                                      │  │
-│  └──────┬──────────────────┬───────────────────────────────┘  │
-│         │                  │                                    │
-│  ┌──────▼──────┐   ┌───────▼────────┐                         │
-│  │  Supabase   │   │  Gemini 2.5    │                         │
-│  │  (claims,   │   │  Flash API     │                         │
-│  │   evidence, │   │  (reasoning +  │                         │
-│  │   signals)  │   │   analysis)    │                         │
-│  └─────────────┘   └────────────────┘                         │
-└───────────────────────────────────────────────────────────────┘
-        │
-        ▼
-  HTML/CSS/JS Frontend
-  (aegis-theme.css design system)
-```
-
-### The 5-Step Claim Pipeline
-
-```
-01. Claim Ingested      02. Evidence Gathered     03. AI Investigation
-ClaimIngestionAgent  →  ResearchAgent           →  InvestigatorAgent
-Normalize, hash,        DuckDuckGo + News APIs      Multi-pass Gemini
-deduplicate             5+ sources                  reasoning
-
-04. Verdict Issued      05. Stored & Learned
-True/False/Misleading →  Supabase DB
-Confidence score         Feedback loop
-Evidence citations        improves accuracy
+User / External Ingestion
+         │
+         ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                        FastAPI Application Layer                       │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  ┌────────────┐  │
+│  │  /api/claims │  │  /api/scout  │  │/api/trending │  │/api/brand- │  │
+│  │   /submit    │  │   /analyze   │  │    /scan     │  │   shield   │  │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  └─────┬──────┘  │
+│         │                 │                 │                │         │
+│  ┌──────▼─────────────────▼─────────────────▼────────────────▼──────┐  │
+│  │                      Agent & Capability Layer                    │  │
+│  │  • ClaimIngestionAgent: Unicode NFC + SHA-256 deduplication      │  │
+│  │  • Agent Reach Layer: 14-channel capability router + SSRF guard  │  │
+│  │  • Learned Evidence Reranker: 7-dim TF-IDF feature ranker        │  │
+│  │  • Source Independence Engine: Wire syndication clustering       │  │
+│  │  • Contradiction Detector: Polarity & conflict matrix            │  │
+│  │  • InvestigatorAgent: Multi-perspective 6-verdict reasoning      │  │
+│  └──────┬───────────────────────────────────┬───────────────────────┘  │
+│         │                                   │                          │
+│  ┌──────▼──────┐                     ┌──────▼──────┐                   │
+│  │  Supabase   │                     │ Gemini API  │                   │
+│  │ PostgreSQL  │                     │ Key Cycle   │                   │
+│  └─────────────┘                     └─────────────┘                   │
+└────────────────────────────────────────────────────────────────────────┘
 ```
 
 ---
 
 ## 🚀 Quick Start
 
-### Prerequisites
-
-- Python 3.11+
-- A [Gemini API key](https://ai.google.dev) (free tier works)
-- A [Supabase](https://supabase.com) project (free tier works)
-
-### 1. Clone & Install
+### 1. Clone & Environment Setup
 
 ```bash
 git clone https://github.com/Shaunakrane914/Misinformation.git
 cd Misinformation
 
 python -m venv venv
-.\venv\Scripts\activate        # Windows
-# source venv/bin/activate     # macOS/Linux
+# Windows:
+.\venv\Scripts\activate
+# macOS/Linux:
+# source venv/bin/activate
 
 pip install -r requirements.txt
 ```
@@ -128,277 +122,69 @@ pip install -r requirements.txt
 Create a `.env` file in the project root:
 
 ```env
-# Gemini AI (supports multiple keys for load balancing)
-GEMINI_API_KEY=your_primary_key
-GEMINI_API_KEY_1=your_key_1
-GEMINI_API_KEY_2=your_key_2
+# Google Gemini (Supports key rotation across multiple keys)
+GEMINI_API_KEY=AIzaSy...your_primary_key
+GEMINI_API_KEY_1=AIzaSy...backup_key_1
 
-# Supabase
+# Supabase Storage & Persistence
 SUPABASE_URL=https://your-project.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 
-# Optional
-YF_API_KEY=your_yahoo_finance_key     # For Scout Agent stock data
-APIFY_TOKEN=your_apify_token          # For Twitter scraping in Personal Watch
-RSS_INGESTION_ENABLED=true            # Auto-ingest from news RSS (15min interval)
-DASHBOARD_TTL=300                     # Dashboard cache TTL in seconds
+# Operational Settings
+DASHBOARD_TTL=300
 LOG_LEVEL=INFO
 ```
 
-### 3. Run
+### 3. Run Application Server
 
 ```bash
 python main.py
 ```
-
-Open [http://localhost:8000](http://localhost:8000) — you're live.
-
----
-
-## 🗺️ Pages & Routes
-
-| Route | Description |
-|---|---|
-| `/` | Landing page with agent overview |
-| `/dashboard` | Live claims feed with AI explanations |
-| `/submit` | Submit any claim for fact-checking |
-| `/agents` | All 4 agents overview |
-| `/scout-agent` | Financial Watchdog — analyze any stock ticker |
-| `/trending-agent` | Celebrity & content intelligence |
-| `/brandshield-agent` | Brand reputation scanner |
-| `/personal-watch-agent` | Individual reputation monitor |
-| `/about` | System architecture details |
-| `/changelog` | Version history |
-| `/status` | System health |
+Open [http://localhost:8000](http://localhost:8000) for the UI and [http://localhost:8000/docs](http://localhost:8000/docs) for the OpenAPI specification.
 
 ---
 
-## 📡 API Reference
+## 🧪 Scientific Benchmark CLI
 
-### Claims
+Run reproducible, leak-free evaluations directly from the command line:
 
 ```bash
-# Submit a claim for fact-checking
-POST /api/claims/submit
-{ "claim_text": "Tesla stock crashed because of a fake CEO tweet", "source_url": "https://..." }
+# 1. Run all offline ML benchmarks (WELFake Classical ML + Learned Reranker)
+python scripts/evaluate_dataset.py --mode all_offline --seed 42
 
-# Poll for result
-GET /api/claims/{claim_id}
+# 2. Run only the Supervised Classical ML Baseline
+python scripts/evaluate_dataset.py --mode classical_ml --seed 42
 
-# List all claims
-GET /api/claims?limit=50&offset=0
-```
+# 3. Run only the Learned Evidence Reranker Evaluation
+python scripts/evaluate_dataset.py --mode reranker --seed 42
 
-### Dashboard
+# 4. Check AVeriTeC Benchmark Adapter Status
+python scripts/evaluate_dataset.py --mode averitec_status
 
-```bash
-# Get 15 claims for live dashboard (Supabase-first, WELFake fallback)
-GET /api/dashboard/claims
-
-# AI explanation for a specific claim
-POST /api/explain-claim
-{ "claim": "...", "verdict": "False" }
-```
-
-### Agents
-
-```bash
-# Scout Agent — analyze a stock ticker
-POST /api/scout/analyze
-{ "ticker": "TATAMOTORS.NS" }
-
-# BrandShield — scan a brand
-POST /api/brandshield/scan
-{ "brand_name": "Samsung Galaxy S24" }
-
-# Personal Watch — scan a public figure
-POST /api/personal/scan
-{ "name": "Elon Musk" }
-
-# Trending — scan a celebrity/asset
-POST /api/trending/scan
-{ "asset_name": "Virat Kohli" }
-
-# Threat Intelligence Lab — Synthetic Text Detector (Mandelbrot Fit)
-POST /api/lab/synthetic-detect
-{ "text": "Aegis Nexus Corporation today announced..." }
-
-# Threat Intelligence Lab — Hawkes Process Blast Radius Modeler
-POST /api/lab/blast-radius
-{ "topic": "Deepfake CEO Audio", "claim": "Emergency liquidity shortfall..." }
-
-# Threat Intelligence Lab — Byzantine Swarm Consensus (W-MSR Filtered)
-POST /api/lab/consensus
-{ "claim": "Apollo 11 moon landing was staged in Nevada" }
-```
-
-### Health
-
-```bash
-GET /api/healthz          # → { "status": "ok", "version": "3.0.0" }
-GET /api/                 # → full endpoint listing
+# 5. Execute full test suite (180 tests)
+pytest tests/unit/ tests/evaluation/ -v
 ```
 
 ---
 
-## 🤖 Agent Deep Dive
+## 🗺️ Workbenches & Specialized Interfaces
 
-### 🔍 Scout Agent (Financial Watchdog)
-Monitors stock market anomalies and correlates crashes with viral misinformation using Yahoo Finance + Google News RSS. Features:
-- **Predictive Impact Modeling** — Monte Carlo crash simulation
-- **Autonomous Investigator Swarm** — Multi-agent AI debate on causality
-- **Network Neutralization** — Bot graph mapping
-- **Strategic Response Orchestrator** — Countermeasure generation
-- **Self-Healing Feedback Loop** — Outcome learning from deployed responses
-
-### 📈 Trending Agent (Content Intelligence)
-Real-time analysis of celebrity, brand, and entertainment misinformation across RSS feeds and Apify-scraped social content. Generates AI defense statements for detected rumors.
-
-### 🛡️ BrandShield Agent
-Scans Amazon, Flipkart, Trustpilot, Reddit, and Google Reviews for:
-- Coordinated fake review campaigns (with fake-score 0–100)
-- Counterfeit product listings
-- Brand reputation attacks and FUD campaigns
-- AI analysis via Gemini with heuristic fallback
-
-### 👤 Personal Watch Agent
-Monitors online reputation for any individual across Twitter/X, LinkedIn, YouTube, Reddit, and Google News. Classifies findings as Defamation, Fake Quote, Harassment, False Rumor, or Legitimate Criticism with severity ratings.
-
-### ⚡ Threat Intelligence Lab (Deterministic & Physics-First Verification)
-Interactive, research-grade verification instruments hosted at `/lab`:
-- **Mandelbrot Token-Rank Regression** ($P(r) = P_0 (r+\beta)^{-\gamma}$): Evaluates power-law fit ($R^2$), Shannon entropy, and Type-Token Ratio (TTR) to detect autoregressive synthetic text distributions.
-- **Hawkes Point-Process Blast Radius Modeler** ($\lambda(t) = \mu + \sum \alpha e^{-\beta(t-t_i)}$): Computes effective reproduction number $R_0$, self-excitation cascades, and 24-hour network reach projections.
-- **Byzantine Swarm Consensus Engine**: Executes multi-agent adversarial evaluation (Skeptic Node, Empirical Node, Adversary Node) and applies Weighted Mean Subsequence Reduction (W-MSR) to prune compromised or hallucinating outlier nodes.
-
----
-
-## 🗄️ Database Schema (Supabase)
-
-```sql
--- Core tables
-claims          -- Submitted claims with verdicts, confidence, reasoning
-evidence        -- Supporting evidence per claim
-
--- War Room tables (Scout Agent)
-active_signals       -- Detected crash/volatility events
-verified_threats     -- Correlated misinformation + crash events
-deployed_measures    -- Crisis response deployments
-```
-
-Run `backend/setup_aegis_db.sql` in your Supabase SQL editor to create the War Room tables.
-
----
-
-## 🛠️ Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **Backend** | Python 3.11, FastAPI, Uvicorn |
-| **AI** | Google Gemini 2.5 Flash (multi-key rotation) |
-| **Database** | Supabase (PostgreSQL) |
-| **Web Search** | DuckDuckGo Search, Apify (Twitter) |
-| **News** | RSS/Atom feeds via feedparser, Google News |
-| **Stock Data** | Yahoo Finance API |
-| **Frontend** | Vanilla HTML/CSS/JS, Space Grotesk + JetBrains Mono |
-| **Deployment** | Render (backend), Netlify (frontend proxy) |
-| **Dataset** | WELFake (72,000 labeled news claims) |
-
----
-
-## 📁 Project Structure
-
-```
-Misinformation/
-├── main.py                          # Root entry point — mounts /api + frontend
-├── requirements.txt
-├── backend/
-│   ├── main.py                      # FastAPI app, all routes (v3.0.0)
-│   ├── agents/
-│   │   ├── claim_ingestion_agent.py # Normalize & hash claims
-│   │   ├── research_agent.py        # Evidence gathering
-│   │   ├── investigator_agent.py    # AI verdict reasoning
-│   │   ├── scout_agent.py           # Financial watchdog
-│   │   ├── trending_agent.py        # Content intelligence
-│   │   ├── brandshield_agent.py     # Brand reputation scanner
-│   │   └── personal_agent.py        # Individual reputation monitor
-│   ├── services/
-│   │   ├── dashboard_loader.py      # WELFake dataset + cache
-│   │   ├── intelligence.py          # Gemini key rotation + sentiment
-│   │   ├── rss_ingestion.py         # Background RSS loop (15min)
-│   │   ├── alerts.py                # Critical threat alerting
-│   │   └── notifier.py              # WhatsApp/SMS via Twilio
-│   ├── workers/
-│   │   └── claim_worker.py          # Async claim processing pipeline
-│   ├── db/
-│   │   └── database.py              # Supabase client
-│   ├── schemas/
-│   │   └── claim_schemas.py         # Pydantic models
-│   └── data/
-│       └── WELFake_Dataset.xlsx     # 72k labeled news claims
-└── frontend/
-    ├── index.html                   # Landing page
-    ├── dashboard.html               # Live claims feed
-    ├── submit.html                  # Claim submission
-    ├── agents.html                  # Agent overview
-    ├── scout-agent.html             # Financial Watchdog
-    ├── trending-agent.html          # Content Intelligence
-    ├── brandshield-agent.html       # Brand Scanner
-    ├── personal-watch-agent.html    # Reputation Monitor
-    ├── about.html                   # Architecture details
-    ├── changelog.html               # Version history
-    ├── status.html                  # System health
-    ├── aegis-theme.css              # Shared design system
-    ├── aegis-nav.js                 # Shared navbar + cursor
-    ├── dashboard.js                 # Dashboard live feed logic
-    └── gemini-client.js             # Netlify proxy client (Scout/Trending)
-```
-
----
-
-## 🚢 Deployment
-
-### Render (Backend)
-
-The `render.yaml` is pre-configured. Connect your GitHub repo on [render.com](https://render.com), set environment variables, and deploy.
-
-```yaml
-# render.yaml
-services:
-  - type: web
-    name: aegis-backend
-    env: python
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
-```
-
-### Netlify (Frontend Proxy)
-
-The `netlify.toml` + `frontend/netlify/functions/gemini.js` provide a secure Gemini proxy for the Scout and Trending agent pages. Set `GEMINI_API_KEY` in Netlify environment variables.
-
----
-
-## 📊 Changelog
-
-See [frontend/changelog.html](frontend/changelog.html) or the full [version history](ENDPOINTS_MAP.md).
-
-| Version | Date | Highlights |
-|---|---|---|
-| **v3.5.1** | Sep 2026 | Full-scale repository transformation: 6-verdict truth taxonomy, strict SSRF/XSS defense, centralized Gemini key rotation & resilient offline mock provider, mathematical Mandelbrot/Hawkes/consensus lab, automated 26-test pytest suite, and WELFake ML evaluation harness |
-| **v3.0.0** | Sep 2026 | BrandShield backend agent, wired Personal Watch, fixed duplicate routes, codebase cleanup |
-| **v2.0.0** | Late 2025 | Built-in RSS ingestion, Supabase-first dashboard, mobile overhaul |
-| **v1.0.0** | 2025 | Hackathon launch — Scout + Trending agents, WELFake dashboard |
+| Route | Workbench | Function & Specialized Capabilities |
+| :--- | :--- | :--- |
+| `/` | **Landing Page** | System overview, capability matrix, and architecture entry points |
+| `/dashboard` | **Live Claims Feed** | Verified claims feed with evidence badges, confidence, and source provenance |
+| `/submit` | **Claim Submission** | Ingestion portal with live normalization, status polling, and dossier generation |
+| `/investigator-agent` | **Investigator** | Forensic evidence dossiers, timeline reconstructor, contradiction matrix, and verdict synthesis |
+| `/research-agent` | **Research** | Deep research workspace, extracted passage citations, source quality scores, and reading list |
+| `/scout-agent` | **Scout (Financial)** | Market anomaly monitor, ticker volatility correlation, and event-clustered news signals |
+| `/trending-agent` | **Trending (Viral)** | Multi-channel trend discovery, velocity estimation, and narrative defense statements |
+| `/brandshield-agent` | **BrandShield** | Brand reputation defense, 4-question threat cards, and astroturfing review audit |
+| `/personal-watch-agent` | **Personal Watch** | Executive & public persona defense, change-first diffs, and compact alert history |
+| `/about` | **Methodology** | System architecture, scientific evaluation taxonomy, and research methodology |
+| `/status` | **System Health** | Real-time health metrics, provider status, and endpoint telemetry |
 
 ---
 
 ## 📄 License
 
 MIT License — see [LICENSE](LICENSE) for details.
-
----
-
-<div align="center">
-
-Built with ❤️ and multi-agent AI
-
-**[Aegis Protocol](https://github.com/Shaunakrane914/Misinformation)** · Shaunak Rane
-
-</div>

@@ -1,0 +1,267 @@
+{
+  "experiment_id": "classical_ml_welfake_51928c80b75e",
+  "taxonomy_category": "offline_ml_benchmark",
+  "git_commit": "ad8d1c6dac8173fbdaf973bbd434cddb6d2e76d3",
+  "timestamp_utc": "2026-10-04T09:54:53.816768+00:00",
+  "dataset": {
+    "name": "WELFake",
+    "task": "Article/Headline Classification (Binary)",
+    "note": "Article-level classification; not web claim verification",
+    "statistics": {
+      "filepath": "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\backend\\data\\WELFake_Dataset.xlsx",
+      "raw_rows": 23100,
+      "clean_rows": 20447,
+      "excluded_missing_or_invalid_rows": 2653,
+      "duplicate_titles": 778,
+      "class_distribution": {
+        "0": 9884,
+        "1": 10563
+      },
+      "task_scope_note": "WELFake is an article/headline classification dataset. It measures NLP stance/authenticity classification on news headlines, not live multi-source web evidence retrieval."
+    },
+    "split_sizes": {
+      "train": 14312,
+      "val": 3067,
+      "test": 3068
+    },
+    "seed": 42
+  },
+  "model": {
+    "name": "TF-IDF + L2 Logistic Regression",
+    "type": "Supervised Classical ML",
+    "train_time_sec": 0.4471839000034379,
+    "hyperparameters": {
+      "max_features": 10000,
+      "ngram_range": [
+        1,
+        2
+      ],
+      "C": 1.0,
+      "max_iter": 1000,
+      "random_state": 42,
+      "train_time_sec": 0.447
+    }
+  },
+  "results": {
+    "test": {
+      "model": "tfidf_logistic_regression",
+      "split": "test",
+      "sample_count": 3068,
+      "inference_time_sec": 0.042,
+      "throughput_samples_per_sec": 72568.5,
+      "metrics": {
+        "sample_count": 3068,
+        "accuracy": 0.8892,
+        "accuracy_95ci": [
+          0.8776,
+          0.8998
+        ],
+        "macro_f1": 0.889,
+        "macro_f1_95ci": [
+          0.8776,
+          0.9008
+        ],
+        "macro_precision": 0.8891,
+        "macro_recall": 0.889,
+        "per_class": {
+          "class_0_real": {
+            "precision": 0.8875,
+            "recall": 0.8827,
+            "f1": 0.8851,
+            "support": 1483
+          },
+          "class_1_fake": {
+            "precision": 0.8908,
+            "recall": 0.8953,
+            "f1": 0.893,
+            "support": 1585
+          }
+        },
+        "confusion_matrix": {
+          "tn": 1309,
+          "fp": 174,
+          "fn": 166,
+          "tp": 1419,
+          "interpretation": {
+            "true_negatives": "Real verified news correctly classified as Real",
+            "false_positives": "Real news incorrectly flagged as Fake (Type I error)",
+            "false_negatives": "Fake news missed and passed as Real (Type II error)",
+            "true_positives": "Fake news correctly identified as Fake"
+          }
+        },
+        "bootstrap_parameters": {
+          "resamples": 1000,
+          "confidence_level": 0.95,
+          "seed": 42,
+          "interval_type": "percentile"
+        },
+        "mean_confidence": 0.8016,
+        "median_confidence": 0.8245
+      },
+      "calibration": {
+        "ece": 0.0832,
+        "brier_score": 0.0921,
+        "bins": [
+          {
+            "bin_range": "0.00-0.20",
+            "count": 809,
+            "empirical_accuracy": 0.0198,
+            "mean_confidence": 0.0828,
+            "calibration_gap": 0.063
+          },
+          {
+            "bin_range": "0.20-0.40",
+            "count": 489,
+            "empirical_accuracy": 0.1575,
+            "mean_confidence": 0.2909,
+            "calibration_gap": 0.1334
+          },
+          {
+            "bin_range": "0.40-0.60",
+            "count": 361,
+            "empirical_accuracy": 0.5346,
+            "mean_confidence": 0.503,
+            "calibration_gap": 0.0316
+          },
+          {
+            "bin_range": "0.60-0.80",
+            "count": 536,
+            "empirical_accuracy": 0.8246,
+            "mean_confidence": 0.7045,
+            "calibration_gap": 0.1201
+          },
+          {
+            "bin_range": "0.80-1.00",
+            "count": 873,
+            "empirical_accuracy": 0.9817,
+            "mean_confidence": 0.9093,
+            "calibration_gap": 0.0724
+          }
+        ]
+      },
+      "hyperparameters": {
+        "max_features": 10000,
+        "ngram_range": [
+          1,
+          2
+        ],
+        "C": 1.0,
+        "max_iter": 1000,
+        "random_state": 42,
+        "train_time_sec": 0.447
+      }
+    },
+    "validation": {
+      "model": "tfidf_logistic_regression",
+      "split": "validation",
+      "sample_count": 3067,
+      "inference_time_sec": 0.042,
+      "throughput_samples_per_sec": 73067.7,
+      "metrics": {
+        "sample_count": 3067,
+        "accuracy": 0.88,
+        "accuracy_95ci": [
+          0.868,
+          0.891
+        ],
+        "macro_f1": 0.8798,
+        "macro_f1_95ci": [
+          0.8685,
+          0.8923
+        ],
+        "macro_precision": 0.88,
+        "macro_recall": 0.8797,
+        "per_class": {
+          "class_0_real": {
+            "precision": 0.8805,
+            "recall": 0.8699,
+            "f1": 0.8752,
+            "support": 1483
+          },
+          "class_1_fake": {
+            "precision": 0.8795,
+            "recall": 0.8895,
+            "f1": 0.8845,
+            "support": 1584
+          }
+        },
+        "confusion_matrix": {
+          "tn": 1290,
+          "fp": 193,
+          "fn": 175,
+          "tp": 1409,
+          "interpretation": {
+            "true_negatives": "Real verified news correctly classified as Real",
+            "false_positives": "Real news incorrectly flagged as Fake (Type I error)",
+            "false_negatives": "Fake news missed and passed as Real (Type II error)",
+            "true_positives": "Fake news correctly identified as Fake"
+          }
+        },
+        "bootstrap_parameters": {
+          "resamples": 1000,
+          "confidence_level": 0.95,
+          "seed": 42,
+          "interval_type": "percentile"
+        },
+        "mean_confidence": 0.7998,
+        "median_confidence": 0.8241
+      },
+      "calibration": {
+        "ece": 0.0786,
+        "brier_score": 0.0948,
+        "bins": [
+          {
+            "bin_range": "0.00-0.20",
+            "count": 806,
+            "empirical_accuracy": 0.0174,
+            "mean_confidence": 0.0815,
+            "calibration_gap": 0.0642
+          },
+          {
+            "bin_range": "0.20-0.40",
+            "count": 468,
+            "empirical_accuracy": 0.1667,
+            "mean_confidence": 0.2952,
+            "calibration_gap": 0.1286
+          },
+          {
+            "bin_range": "0.40-0.60",
+            "count": 393,
+            "empirical_accuracy": 0.514,
+            "mean_confidence": 0.5001,
+            "calibration_gap": 0.0139
+          },
+          {
+            "bin_range": "0.60-0.80",
+            "count": 544,
+            "empirical_accuracy": 0.8401,
+            "mean_confidence": 0.7085,
+            "calibration_gap": 0.1315
+          },
+          {
+            "bin_range": "0.80-1.00",
+            "count": 856,
+            "empirical_accuracy": 0.9731,
+            "mean_confidence": 0.9123,
+            "calibration_gap": 0.0609
+          }
+        ]
+      },
+      "hyperparameters": {
+        "max_features": 10000,
+        "ngram_range": [
+          1,
+          2
+        ],
+        "C": 1.0,
+        "max_iter": 1000,
+        "random_state": 42,
+        "train_time_sec": 0.447
+      }
+    }
+  },
+  "environment": {
+    "python_version": "3.13.5",
+    "os": "nt"
+  }
+}

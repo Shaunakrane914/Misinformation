@@ -2,8 +2,11 @@ services:
   - type: web
     name: aegis-protocol
     env: python
+    region: oregon
+    plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    startCommand: uvicorn backend.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/healthz
     envVars:
       - key: GEMINI_API_KEY
         sync: false

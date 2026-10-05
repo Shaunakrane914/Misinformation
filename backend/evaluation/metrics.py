@@ -353,6 +353,133 @@ def compute_retrieval_metrics(
     }
 
 
+def compute_grounded_answer_metrics(
+    eval_records: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Computes grounded-answer, citation correctness, and hallucination metrics:
+    - Grounded Answer Rate: answers where 100% of material factual claims are supported
+    - Citation Correctness: citations where the cited source entails/supports the attached claim
+    - Citation Completeness: proportion of factual claims that have citations
+    - Unsupported Claim Rate: proportion of factual statements that lack evidence support
+    """
+    total_answers = len(eval_records)
+    if total_answers == 0:
+        return {
+            "total_answers": 0,
+            "grounded_answer_rate": 0.0,
+            "citation_correctness": 0.0,
+            "citation_completeness": 0.0,
+            "unsupported_claim_rate": 0.0,
+        }
+
+    fully_grounded = 0
+    total_statements = 0
+    supported_statements = 0
+    cited_statements = 0
+    total_citations = 0
+    correct_citations = 0
+
+    for rec in eval_records:
+        n_stmts = rec.get("factual_statements", 0)
+        n_supp = rec.get("supported_statements", 0)
+        n_cited = rec.get("cited_statements", 0)
+        citations = rec.get("citations", [])
+
+        total_statements += n_stmts
+        supported_statements += n_supp
+        cited_statements += n_cited
+
+        is_grounded = rec.get("has_full_grounding", False) or (n_stmts > 0 and n_supp >= n_stmts)
+        if is_grounded:
+            fully_grounded += 1
+
+        for c in citations:
+            total_citations += 1
+            if c.get("is_correct", False) or c.get("supports_claim", False):
+                correct_citations += 1
+
+    grounded_rate = fully_grounded / total_answers
+    citation_corr = (correct_citations / total_citations) if total_citations > 0 else 1.0
+    citation_comp = (cited_statements / total_statements) if total_statements > 0 else 1.0
+    unsupported_rate = (1.0 - (supported_statements / total_statements)) if total_statements > 0 else 0.0
+
+    return {
+        "total_answers": total_answers,
+        "fully_grounded_answers": fully_grounded,
+        "grounded_answer_rate": round(grounded_rate, 4),
+        "total_statements": total_statements,
+        "supported_statements": supported_statements,
+        "unsupported_claim_rate": round(unsupported_rate, 4),
+        "total_citations": total_citations,
+        "correct_citations": correct_citations,
+        "citation_correctness": round(citation_corr, 4),
+        "citation_completeness": round(citation_comp, 4),
+    }
+
+
+def compute_tool_call_metrics(
+    tool_records: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Computes LLM agent tool-execution engineering metrics:
+    - Tool-Call Success Rate: successful calls / attempted calls
+    - Parameter Validity Rate: valid arguments / attempted calls
+    - Retry Rate: calls requiring retries / attempted calls
+    - Useful Query Rate: executed queries yielding relevant evidence / total queries
+    - Query Efficiency: evidence items / executed queries
+    - Tool Failure Breakdown: categorized error causes
+    """
+    total_calls = len(tool_records)
+    if total_calls == 0:
+        return {
+            "total_calls": 0,
+            "tool_call_success_rate": 0.0,
+            "parameter_validity_rate": 0.0,
+            "retry_rate": 0.0,
+            "useful_query_rate": 0.0,
+            "query_efficiency": 0.0,
+            "failure_breakdown": {},
+        }
+
+    successful_calls = 0
+    valid_params = 0
+    retried_calls = 0
+    useful_queries = 0
+    total_evidence_items = 0
+    failure_breakdown: Dict[str, int] = {}
+
+    for tr in tool_records:
+        if tr.get("valid_args", True):
+            valid_params += 1
+
+        status = tr.get("status", "success")
+        if status == "success":
+            successful_calls += 1
+        else:
+            err = tr.get("error_type", "unknown_error")
+            failure_breakdown[err] = failure_breakdown.get(err, 0) + 1
+
+        if tr.get("retries", 0) > 0:
+            retried_calls += 1
+
+        ev_count = tr.get("evidence_produced", 0)
+        total_evidence_items += ev_count
+        if ev_count > 0:
+            useful_queries += 1
+
+    return {
+        "total_calls": total_calls,
+        "successful_calls": successful_calls,
+        "tool_call_success_rate": round(successful_calls / total_calls, 4),
+        "parameter_validity_rate": round(valid_params / total_calls, 4),
+        "retry_rate": round(retried_calls / total_calls, 4),
+        "useful_query_rate": round(useful_queries / total_calls, 4),
+        "query_efficiency": round(total_evidence_items / total_calls, 4),
+        "failure_breakdown": failure_breakdown,
+    }
+
+
 def mcnemar_significance_test(
     y_true: List[int],
     y_pred_a: List[int],

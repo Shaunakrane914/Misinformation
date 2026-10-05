@@ -54,6 +54,7 @@ def parse_args():
             "ablation",
             "india_track",
             "averitec_status",
+            "fever_status",
             "all_offline",
         ],
         default="classical_ml",
@@ -274,6 +275,17 @@ def main():
         print(f"  * Repository: {status['official_repository']}")
         print(f"  * Paper:      {status['paper']}")
         print(f"  * Protocol:   {status['official_protocol_summary']}")
+
+    elif args.mode == "fever_status":
+        print("\n[CHECKING] FEVER Benchmark Adapter Status...")
+        from backend.evaluation.datasets.fever import FEVERAdapter
+        fev = FEVERAdapter()
+        status = fev.status()
+        print(f"  * Status:     {status['status']}")
+        print(f"  * Reason:     {status['reason']}")
+        print(f"  * URL:        {status.get('official_url', 'https://fever.ai/')}")
+        print(f"  * Paper:      {status.get('paper', '')}")
+        print(f"  * Tasks:      {', '.join(status.get('task_decomposition', []))}")
 
     elif args.mode == "all_offline":
         print("\n[RUNNING] All Offline ML Benchmarks (Zero Network / Zero Mock)...")

@@ -311,3 +311,89 @@ def test_india_multilingual_track_properties():
         assert item["label"] in (0, 1)
         assert item["canonical_verdict"] in ("True", "False")
         assert "verification_source" in item
+
+
+# ── 11. FEVER ADAPTER STATUS AND RETRIEVAL EVALUATION ────────────────────
+
+def test_fever_adapter_status_and_evaluation():
+    """Verifies FEVER adapter reports status and computes gold sentence recall."""
+    from backend.evaluation.datasets.fever import FEVERAdapter
+    fever = FEVERAdapter()
+    status = fever.status()
+    assert "status" in status
+    assert status["status"] in ("READY", "NOT RUN")
+    if status["status"] == "NOT RUN":
+        assert "fever.ai" in status["reason"]
+
+    # Test retrieval evaluation helper
+    retrieved = ["Page_A", "Page_B", "Page_C"]
+    gold = [{"page": "Page_B", "sentence_id": 4}]
+    res = FEVERAdapter.evaluate_evidence_retrieval(retrieved, gold, k_list=(1, 2, 5))
+    assert res["recall@1"] == 0.0
+    assert res["recall@2"] == 1.0
+    assert res["recall@5"] == 1.0
+
+
+# ── 12. GROUNDED-ANSWER AND CITATION METRICS ─────────────────────────────
+
+def test_grounded_answer_and_citation_metrics():
+    """Verifies calculation of grounded-answer rate and citation correctness."""
+    from backend.evaluation.metrics import compute_grounded_answer_metrics
+
+    records = [
+        {
+            "answer_id": "ans_1",
+            "factual_statements": 3,
+            "supported_statements": 3,
+            "cited_statements": 3,
+            "has_full_grounding": True,
+            "citations": [
+                {"is_correct": True},
+                {"is_correct": True},
+            ],
+        },
+        {
+            "answer_id": "ans_2",
+            "factual_statements": 4,
+            "supported_statements": 2,
+            "cited_statements": 2,
+            "has_full_grounding": False,
+            "citations": [
+                {"is_correct": True},
+                {"is_correct": False},
+            ],
+        },
+    ]
+
+    metrics = compute_grounded_answer_metrics(records)
+    assert metrics["total_answers"] == 2
+    assert metrics["fully_grounded_answers"] == 1
+    assert metrics["grounded_answer_rate"] == 0.5000
+    assert metrics["unsupported_claim_rate"] == round((7 - 5) / 7, 4)
+    assert metrics["total_citations"] == 4
+    assert metrics["correct_citations"] == 3
+    assert metrics["citation_correctness"] == round(3 / 4, 4)
+
+
+# ── 13. TOOL-CALL AND AGENT EXECUTION METRICS ────────────────────────────
+
+def test_tool_call_metrics_computation():
+    """Verifies LLM agent tool-call success, parameter validity, and error breakdown."""
+    from backend.evaluation.metrics import compute_tool_call_metrics
+
+    tool_logs = [
+        {"tool_name": "agent_reach_search", "valid_args": True, "status": "success", "retries": 0, "evidence_produced": 5},
+        {"tool_name": "agent_reach_search", "valid_args": True, "status": "failure", "error_type": "rate_limit", "retries": 1, "evidence_produced": 0},
+        {"tool_name": "read_url", "valid_args": False, "status": "failure", "error_type": "malformed_query", "retries": 0, "evidence_produced": 0},
+        {"tool_name": "read_url", "valid_args": True, "status": "success", "retries": 0, "evidence_produced": 2},
+    ]
+
+    metrics = compute_tool_call_metrics(tool_logs)
+    assert metrics["total_calls"] == 4
+    assert metrics["successful_calls"] == 2
+    assert metrics["tool_call_success_rate"] == 0.5000
+    assert metrics["parameter_validity_rate"] == 0.7500
+    assert metrics["retry_rate"] == 0.2500
+    assert metrics["useful_query_rate"] == 0.5000
+    assert metrics["failure_breakdown"]["rate_limit"] == 1
+    assert metrics["failure_breakdown"]["malformed_query"] == 1

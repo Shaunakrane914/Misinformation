@@ -519,6 +519,8 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
 
 
 @router.post("/api/claims/submit", response_model=ClaimSubmitResponse, summary="Async Claim Ingestion & Queuing")
+@router.post("/api/claims", response_model=ClaimSubmitResponse)
+@router.post("/api/claims/", response_model=ClaimSubmitResponse)
 @router.post("/api/ingest", response_model=ClaimSubmitResponse)
 @router.post("/api/submit", response_model=ClaimSubmitResponse)
 async def submit_claim(request: ClaimSubmitRequest, background_tasks: BackgroundTasks):

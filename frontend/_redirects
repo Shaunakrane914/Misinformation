@@ -1,3 +1,7 @@
 # Cloudflare Pages Redirects & Routing Rules
+# Proxy backend API requests to Render
+/api/*  https://misinformation-1ouh.onrender.com/api/:splat  200
+
 # Note: Static assets and HTML files are served automatically.
 # Missing routes automatically fall back to /404.html with status 404.
+

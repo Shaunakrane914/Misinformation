@@ -18,6 +18,14 @@
   window.AEGIS_VERSION = '3.7.0';
   window.AEGIS_RELEASE_DATE = '2026-10-02';
 
+  // ── Standardized Production Backend Base Resolution ──
+  const isLocalDev = typeof window !== 'undefined' && (
+    window.location.hostname === 'localhost' ||
+    window.location.hostname === '127.0.0.1' ||
+    window.location.hostname === '0.0.0.0'
+  );
+  window.AEGIS_API_BASE = window.AEGIS_API_BASE || (isLocalDev ? '' : 'https://misinformation-1ouh.onrender.com');
+
   // ── Standardized API Endpoint Resolver ──
   window.getAegisApiUrl = function(path) {
     if (!path) return '';

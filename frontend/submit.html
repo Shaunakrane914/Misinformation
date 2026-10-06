@@ -506,8 +506,9 @@
 
     async function handleClaimVerification(e) {
       e.preventDefault();
-      const text = (claimInput.value || '').trim();
-      const url = (document.getElementById('sourceUrl').value || '').trim();
+      const inputEl = document.getElementById('claimText') || document.getElementById('claimInput') || claimInput;
+      const text = (inputEl && inputEl.value ? inputEl.value : '').trim();
+      const url = (document.getElementById('sourceUrl') ? document.getElementById('sourceUrl').value : '').trim();
       if (!text) return;
 
       const btn = document.getElementById('verifyBtn');
@@ -519,57 +520,106 @@
       stageBox.style.display = 'block';
       workspace.style.display = 'none';
 
+      // Stage progression timer for smooth UX while multi-agent pipeline runs
+      let stageTimer = null;
+      let stageStep = 0;
+      setStage('stg_ingest', '1. Ingesting claim & querying news wires, registries, and archives...');
+      stageTimer = setInterval(() => {
+        stageStep++;
+        if (stageStep === 3) {
+          setStage('stg_contradict', '2. Cross-referencing evidence and detecting contradictions...');
+        } else if (stageStep === 8) {
+          setStage('stg_weight', '3. Evaluating source independence & evidence weight...');
+        } else if (stageStep === 14) {
+          setStage('stg_synthesize', '4. Multi-agent stance synthesis & Truth Dossier generation...');
+        }
+      }, 1000);
+
       try {
-        setStage('stg_ingest', 'Searching news sources and public archives...');
-        
         let reportData = null;
 
-        // Try backend submission
+        // 1. Primary: Synchronous Multi-Agent Fact-Check (/api/claims/verify)
         try {
-          const res = await fetch((window.getAegisApiUrl ? window.getAegisApiUrl('/api/claims/') : '/api/claims/'), {
+          const verifyUrl = window.getAegisApiUrl ? window.getAegisApiUrl('/api/claims/verify') : '/api/claims/verify';
+          console.info('[Aegis Claim] Dispatching to verification pipeline:', verifyUrl);
+          const res = await fetch(verifyUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ claim_text: text, source_url: url || undefined }),
-            signal: AbortSignal.timeout(6000)
+            signal: AbortSignal.timeout(45000)
           });
           if (res.ok) {
-            const sub = await res.json();
-            if (sub.claim_id) {
-              setStage('stg_contradict', 'Cross-referencing evidence and checking contradictions...');
-              for (let i = 0; i < 6; i++) {
-                await new Promise(r => setTimeout(r, 900));
-                if (i === 2) setStage('stg_weight', 'Evaluating Evidence Strength & Independence...');
-                const pollUrl = window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${sub.claim_id}`) : `/api/claims/${sub.claim_id}`;
-                const pollRes = await fetch(pollUrl, { signal: AbortSignal.timeout(4000) });
-                if (pollRes.ok) {
-                  const pollData = await pollRes.json();
-                  const c = pollData.claim || pollData;
-                  if (c && (c.status === 'completed' || c.status === 'failed')) {
-                    reportData = pollData;
-                    reportData.claim_id = sub.claim_id;
-                    reportData._mode = 'BACKEND_INVESTIGATION';
-                    break;
-                  }
-                }
-              }
+            const data = await res.json();
+            if (data && (data.verdict || (data.claim && data.claim.verdict))) {
+              reportData = data;
+              reportData._mode = 'BACKEND_INVESTIGATION';
             }
+          } else {
+            console.warn('[Aegis Claim] /api/claims/verify responded with HTTP', res.status);
           }
-        } catch (backendErr) {
-          console.warn('[Aegis Claim] Backend polling note:', backendErr.message);
+        } catch (verifyErr) {
+          console.warn('[Aegis Claim] Direct verify pipeline notice:', verifyErr.message);
         }
 
-        // Fallback to client Gemini if backend was unreachable or returned incomplete
-        if (!reportData || !reportData.claim || !reportData.claim.verdict) {
+        // 2. Secondary fallback: Async Submission & Polling (/api/claims/submit)
+        if (!reportData || !reportData.verdict) {
+          try {
+            const submitEndpoints = [
+              (window.getAegisApiUrl ? window.getAegisApiUrl('/api/claims/submit') : '/api/claims/submit'),
+              (window.getAegisApiUrl ? window.getAegisApiUrl('/api/claims/') : '/api/claims/')
+            ];
+            for (const ep of submitEndpoints) {
+              try {
+                const subRes = await fetch(ep, {
+                  method: 'POST',
+                  headers: { 'Content-Type': 'application/json' },
+                  body: JSON.stringify({ claim_text: text, source_url: url || undefined }),
+                  signal: AbortSignal.timeout(10000)
+                });
+                if (subRes.ok) {
+                  const sub = await subRes.json();
+                  if (sub.claim_id) {
+                    for (let i = 0; i < 20; i++) {
+                      await new Promise(r => setTimeout(r, 1200));
+                      const pollUrl = window.getAegisApiUrl ? window.getAegisApiUrl(`/api/claims/${sub.claim_id}`) : `/api/claims/${sub.claim_id}`;
+                      const pollRes = await fetch(pollUrl, { signal: AbortSignal.timeout(6000) });
+                      if (pollRes.ok) {
+                        const pollData = await pollRes.json();
+                        const c = pollData.claim || pollData;
+                        if (c && (c.status === 'completed' || c.status === 'failed')) {
+                          reportData = pollData;
+                          reportData.claim_id = sub.claim_id;
+                          reportData._mode = 'BACKEND_INVESTIGATION';
+                          break;
+                        }
+                      }
+                    }
+                    if (reportData) break;
+                  }
+                }
+              } catch (_) {}
+            }
+          } catch (asyncErr) {
+            console.warn('[Aegis Claim] Async polling notice:', asyncErr.message);
+          }
+        }
+
+        // 3. Fallback to client Gemini ONLY if backend completely unreachable
+        if (!reportData || (!reportData.verdict && (!reportData.claim || !reportData.claim.verdict))) {
+          if (stageTimer) clearInterval(stageTimer);
           setStage('stg_synthesize', 'Synthesizing evidence assessment...');
           reportData = await runClientFactCheck(text, url);
         }
 
+        if (stageTimer) clearInterval(stageTimer);
         renderClaimWorkspace(text, reportData);
 
       } catch (err) {
+        if (stageTimer) clearInterval(stageTimer);
         console.error('[Aegis Claim] Error:', err);
         renderErrorState(text, err.message);
       } finally {
+        if (stageTimer) clearInterval(stageTimer);
         stageBox.style.display = 'none';
         btn.disabled = false;
         btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Verify Claim</span>`;
@@ -693,6 +743,8 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
         modeText = 'AI Synthesis (Direct Model Reasoning · Primary Retrieval Inactive)';
       } else if (execMode === 'INSUFFICIENT_EVIDENCE') {
         modeText = 'Inconclusive (Insufficient Verifiable Records)';
+      } else if (data.agents_executed && data.agents_executed.length) {
+        modeText = `Live Multi-Agent Pipeline (${data.agents_executed.join(' → ')})`;
       }
       document.getElementById('auditTimestamp').textContent = `Audit Completed: ${new Date().toLocaleTimeString()} · ${modeText}`;
 

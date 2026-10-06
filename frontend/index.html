@@ -859,7 +859,7 @@
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ claim_text: claimText }),
-              signal: AbortSignal.timeout(6000)
+              signal: AbortSignal.timeout(20000)
             });
             if (submitRes.ok) {
               submitData = await submitRes.json();

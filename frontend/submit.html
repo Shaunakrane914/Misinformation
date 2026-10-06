@@ -699,9 +699,9 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
     }
 
     function renderClaimWorkspace(claimText, data) {
-      const claimObj = data.claim || data;
-      const rawVerdict = (claimObj.verdict || "UNVERIFIED").toUpperCase();
-      let verdict = "UNRESOLVED";
+      const claimObj = (typeof data.claim === 'object' && data.claim !== null) ? data.claim : data;
+      const rawVerdict = String(data.verdict || claimObj.verdict || "UNVERIFIED").toUpperCase();
+      let verdict = "unverified";
       let displayVerdict = "UNRESOLVED";
       if (rawVerdict.includes("TRUE")) {
         verdict = "true";
@@ -718,7 +718,11 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
       }
 
       // Evidence strength: Strong, Moderate, Limited, Insufficient
-      let strength = data.evidence_strength || claimObj.evidence_strength || "Limited";
+      let strength = data.evidence_strength || claimObj.evidence_strength;
+      if (!strength && (data.confidence || claimObj.confidence)) {
+        const conf = Number(data.confidence || claimObj.confidence);
+        strength = conf >= 75 ? "Strong" : (conf >= 50 ? "Moderate" : "Limited");
+      }
       if (!["Strong", "Moderate", "Limited", "Insufficient"].includes(strength)) {
         strength = verdict === 'unverified' ? 'Insufficient' : 'Moderate';
       }
@@ -734,7 +738,7 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
       sPill.className = `aegis-strength-pill ${strength.toLowerCase()}`;
       sPill.textContent = `Evidence: ${strength}`;
 
-      const bottomLine = data.bottom_line || claimObj.explanation || claimObj.reasoning || "Checking the claim against retrieved sources.";
+      const bottomLine = data.bottom_line || data.debunk_statement || data.explanation || claimObj.explanation || claimObj.reasoning || "Checking the claim against retrieved sources.";
       document.getElementById('bottomLineText').textContent = bottomLine;
 
       const execMode = data._mode || 'BACKEND_INVESTIGATION';
@@ -765,25 +769,31 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
       unknownList.innerHTML = unknownPoints.map(pt => `<li>${esc(pt)}</li>`).join('');
 
       // Level 2: Dual-Column Evidence Matrix
-      let supporting = data.supporting_evidence || [];
-      let refuting = data.refuting_evidence || [];
+      const mapItem = (ev) => ({
+        source_name: ev.source_name || ev.source || ev.publisher || ev.platform || "Archival Source",
+        source_role: ev.source_role || (ev.is_primary ? "PRIMARY" : (ev.platform === 'Wire' ? 'PRIMARY' : 'FACT-CHECK')),
+        independence_group: ev.independence_group || (ev.platform ? `GRP-${ev.platform}` : 'G-1'),
+        text: ev.text || ev.evidence_text || ev.summary || ev.content || "Empirical observation cross-referenced.",
+        url: ev.url && ev.url !== '#' ? ev.url : ''
+      });
 
-      // Normalize if backend returned flat evidence list
-      if (!supporting.length && !refuting.length && Array.isArray(claimObj.evidence)) {
-        claimObj.evidence.forEach(ev => {
-          const item = {
-            source_name: ev.source_name || ev.publisher || "Archival Source",
-            source_role: ev.source_role || (ev.is_primary ? "PRIMARY" : "SECONDARY"),
-            independence_group: ev.independence_group || "G-1",
-            text: ev.evidence_text || ev.summary || "Empirical statement cross-verified.",
-            url: ev.url && ev.url !== '#' ? ev.url : ''
-          };
-          if ((ev.stance || '').toLowerCase() === 'supporting' || (ev.stance || '').toLowerCase() === 'supports') {
-            supporting.push(item);
-          } else {
-            refuting.push(item);
-          }
-        });
+      let supporting = (data.supporting_evidence || []).map(mapItem);
+      let refuting = (data.refuting_evidence || []).map(mapItem);
+
+      // If flat list was returned
+      if (!supporting.length && !refuting.length) {
+        const flatEv = data.evidence || claimObj.evidence || data.evidence_chain || [];
+        if (Array.isArray(flatEv)) {
+          flatEv.forEach(ev => {
+            const item = mapItem(ev);
+            const stance = (ev.stance || '').toLowerCase();
+            if (stance === 'supporting' || stance === 'supports' || stance === 'true') {
+              supporting.push(item);
+            } else {
+              refuting.push(item);
+            }
+          });
+        }
       }
 
       document.getElementById('supportCountBadge').textContent = supporting.length;

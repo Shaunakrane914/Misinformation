@@ -1429,8 +1429,16 @@ class NativeRouter:
         if not query_text:
             return []
 
-        # 1. Determine target channels
-        channels = request.allowed_channels or ["web", "news"]
+        # 1. Determine target channels with profile preferences
+        channels = list(request.allowed_channels) if request.allowed_channels else ["web", "news"]
+        if request.profile and request.profile.preferred_platforms:
+            for pref in request.profile.preferred_platforms:
+                if pref not in channels and not request.allowed_channels:
+                    channels.append(pref)
+            # Sort channels to prioritize agent's preferred platforms first
+            pref_set = set(request.profile.preferred_platforms)
+            channels.sort(key=lambda c: 0 if c in pref_set else 1)
+
         all_candidates: List[CandidateSource] = []
 
         # 2. Candidate Discovery via SearchDiscoveryAdapter
@@ -1511,6 +1519,17 @@ class NativeRouter:
                     cand.passed_hard_gates = False
                     cand.gate_failure_reason = "Failed entity anti-token-cheat gate"
                     continue
+            # Profile-aware scoring adjustments
+            if request.profile:
+                if request.profile.need_primary_source and any(
+                    p in cand.canonical_url.lower()
+                    for p in ("sec.gov", "investor.", "ir.", "edgar.", "prnewswire.com", "businesswire.com")
+                ):
+                    cand.semantic_score = min(100.0, cand.semantic_score + 20.0)
+                if request.profile.need_engagement and cand.platform in ("twitter", "x", "reddit", "youtube"):
+                    cand.semantic_score = min(100.0, cand.semantic_score + 10.0)
+                if cand.platform in request.profile.preferred_platforms:
+                    cand.semantic_score = min(100.0, cand.semantic_score + 5.0)
 
             passed_candidates.append(cand)
 
@@ -1549,7 +1568,11 @@ class NativeRouter:
                 doc = adapter.acquire(cand, request)
                 if doc.status == "SUCCESS":
                     succ_acquisitions += 1
-                    return adapter.normalize(doc, cand, request)
+                    frags = adapter.normalize(doc, cand, request)
+                    if request.profile:
+                        for f in frags:
+                            f.content_depth = request.profile.content_depth
+                    return frags
                 else:
                     # Fallback to index snippet
                     fallback_attempts += 1

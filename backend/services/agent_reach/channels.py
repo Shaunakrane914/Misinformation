@@ -432,6 +432,15 @@ class EvidenceFragment:
                 "observation_id": self.observation_id,
             }]
 
+    @property
+    def metadata(self) -> Dict[str, Any]:
+        """Convenience alias for raw_metadata."""
+        return self.raw_metadata
+
+    @metadata.setter
+    def metadata(self, val: Dict[str, Any]) -> None:
+        self.raw_metadata = val
+
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to dictionary for API responses and JSON storage."""
         return {

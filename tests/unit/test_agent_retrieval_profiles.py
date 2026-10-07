@@ -98,3 +98,77 @@ def test_retrieval_request_serialization_with_profile():
     assert data["profile"] is not None
     assert data["profile"]["content_depth"] == "FULL_ARTICLE"
     assert "financial_facts" in data["profile"]["required_fields"]
+
+
+def test_brandshield_acquisition_behavioral_customization():
+    """Verify BrandShieldAcquisition marketplace and complaint extraction behavior."""
+    from backend.services.agent_reach.channels import FetchedDocument, CandidateSource
+    acq = BrandShieldAcquisition()
+    cand = CandidateSource(url="https://amazon.com/dp/B000TEST", platform="web", title="Official Brand Sneakers $120.00")
+    cand.metadata["is_marketplace"] = True
+    doc = FetchedDocument(url=cand.url, status="SUCCESS", raw_content="Fake knockoff review complaint for $89.99. Customer reported fake knockoff.")
+    req = RetrievalRequest(agent="brandshield", entity="BrandX", intent="reviews")
+
+    frags = acq.normalize(doc, cand, req)
+    assert len(frags) > 0
+    f = frags[0]
+    assert f.content_depth == "PARTIAL_CONTENT"
+    assert f.metadata.get("marketplace_listing") is True
+    assert "counterfeit_indicators" in f.metadata
+    assert "price" in f.metadata
+
+
+def test_trending_acquisition_behavioral_customization():
+    """Verify TrendingAcquisition social origin and wire syndication tagging."""
+    from backend.services.agent_reach.channels import FetchedDocument, CandidateSource
+    acq = TrendingAcquisition()
+    cand = CandidateSource(url="https://reuters.com/article/tech-update", platform="news", title="Tech News")
+    doc = FetchedDocument(url=cand.url, status="SUCCESS", raw_content="Reuters tech news breaking story", raw_metadata={"likes": 1200, "views": 50000})
+    req = RetrievalRequest(agent="trending", entity="Tech", intent="trends")
+
+    frags = acq.normalize(doc, cand, req)
+    assert len(frags) > 0
+    f = frags[0]
+    assert f.content_depth == "SNIPPET"
+    assert f.metadata.get("is_wire_syndication") is True
+    assert f.metadata.get("likes") == 1200
+
+
+def test_scout_acquisition_behavioral_customization():
+    """Verify ScoutAcquisition primary filing classification and full article depth."""
+    from backend.services.agent_reach.channels import FetchedDocument, CandidateSource
+    acq = ScoutAcquisition()
+    cand = CandidateSource(url="https://sec.gov/edgar/data/0001/10-k.htm", platform="web", title="10-K Annual Report")
+    doc = FetchedDocument(url=cand.url, status="SUCCESS", raw_content="Full annual report body with $1.4B revenue.")
+    req = RetrievalRequest(agent="scout", entity="Company", intent="10-K")
+
+    frags = acq.normalize(doc, cand, req)
+    assert len(frags) > 0
+    f = frags[0]
+    assert f.content_depth == "FULL_ARTICLE"
+    assert f.metadata.get("is_primary_source") is True
+    assert f.metadata.get("financial_domain") is True
+
+
+def test_personal_watch_acquisition_pii_sanitization():
+    """Verify PersonalWatchAcquisition actively redacts sensitive private PII."""
+    from backend.services.agent_reach.channels import FetchedDocument, CandidateSource
+    acq = PersonalWatchAcquisition()
+    cand = CandidateSource(url="https://example.com/exec-profile", platform="web", title="Executive Profile")
+    doc = FetchedDocument(
+        url=cand.url,
+        status="SUCCESS",
+        raw_content="CEO John Doe can be reached at 555-123-4567 or SSN 123-45-6789 living at 742 Evergreen Terrace.",
+    )
+    req = RetrievalRequest(agent="personal", entity="John Doe", intent="profile")
+
+    frags = acq.normalize(doc, cand, req)
+    assert len(frags) > 0
+    f = frags[0]
+    assert f.metadata.get("pii_filtered") is True
+    assert "555-123-4567" not in f.content
+    assert "[REDACTED_PHONE]" in f.content
+    assert "123-45-6789" not in f.content
+    assert "[REDACTED_SSN]" in f.content
+    assert "742 Evergreen Terrace" not in f.content
+

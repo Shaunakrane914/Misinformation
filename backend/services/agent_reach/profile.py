@@ -137,8 +137,28 @@ def get_agent_profile(agent_name: str) -> RetrievalProfile:
 
 # ── Domain-Specific Acquisition Implementations ─────────────────────────────
 
+import re
+import urllib.parse
+
+
 class BrandShieldAcquisition(AgentAcquisitionBase):
-    """Custom acquisition strategy optimized for brand protection & marketplace listings."""
+    """
+    Custom acquisition strategy optimized for brand protection & marketplace listings.
+    Behaviorally prioritizes marketplace listings, seller identification, product pricing,
+    and user complaint comments.
+    """
+
+    MARKETPLACE_DOMAINS = (
+        "amazon.", "ebay.", "etsy.", "aliexpress.", "walmart.", "target.",
+        "shopify.com", "myshopify.com", "dhgate.", "wish.com", "temu."
+    )
+
+    COMPLAINT_PATTERNS = re.compile(
+        r"\b(counterfeit|fake|knockoff|replica|scam|broken|fraud|defective|rip[\s-]?off|stolen)\b",
+        re.IGNORECASE
+    )
+
+    PRICE_PATTERN = re.compile(r"(\$|€|£|₹|\bUSD\b|\bEUR\b|\bINR\b)\s?(\d+(?:[,\.]\d+)?)", re.IGNORECASE)
 
     def __init__(self, profile: Optional[RetrievalProfile] = None):
         self.profile = profile or BRANDSHIELD_PROFILE
@@ -147,13 +167,68 @@ class BrandShieldAcquisition(AgentAcquisitionBase):
         return self.profile
 
     def discover(self, query: str, limit: int = 5) -> List[CandidateSource]:
+        """
+        Marketplace & complaint-heavy candidate discovery.
+        Formulates e-commerce, counterfeit, and complaint-targeted search queries.
+        """
         from backend.services.agent_reach.native.adapters.search import SearchDiscoveryAdapter
-        return SearchDiscoveryAdapter().discover_candidates(query=query, limit=limit)
+        search_adapter = SearchDiscoveryAdapter()
+
+        brand_queries = [
+            f"{query} official store counterfeit fake replica",
+            f"{query} seller price discount shop buy",
+            f"site:reddit.com {query} scam complaint fake defective",
+        ]
+
+        candidates: List[CandidateSource] = []
+        for q in brand_queries:
+            discovered = search_adapter.discover_candidates(query=q, limit=limit)
+            for cand in discovered:
+                # Tag marketplace and complaint indicators
+                url_low = (cand.canonical_url or cand.url).lower()
+                is_marketplace = any(d in url_low for d in self.MARKETPLACE_DOMAINS)
+                has_complaint = bool(self.COMPLAINT_PATTERNS.search(f"{cand.title} {cand.snippet}"))
+
+                cand.metadata["is_marketplace"] = is_marketplace
+                cand.metadata["has_complaint_signal"] = has_complaint
+
+                # Boost semantic score for marketplace listings or explicit complaints
+                if is_marketplace:
+                    cand.semantic_score = min(100.0, cand.semantic_score + 15.0)
+                if has_complaint:
+                    cand.semantic_score = min(100.0, cand.semantic_score + 10.0)
+
+                candidates.append(cand)
+
+        # Deduplicate candidates by canonical URL
+        seen_urls = set()
+        deduped = []
+        for c in sorted(candidates, key=lambda x: x.semantic_score, reverse=True):
+            if c.canonical_url not in seen_urls:
+                seen_urls.add(c.canonical_url)
+                deduped.append(c)
+        return deduped[:limit]
 
     def acquire(self, candidate: CandidateSource, request: RetrievalRequest) -> FetchedDocument:
+        """
+        Targeted acquisition extracting product details, seller info, and forum comments.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
-        return adapter.acquire(candidate, request)
+
+        # Ensure request preserves BrandShield's need_comments and structured metadata
+        req_copy = RetrievalRequest(
+            request_id=request.request_id,
+            agent="brandshield",
+            entity=request.entity,
+            intent=request.intent,
+            task_type="READ" if candidate.url.startswith("http") else "SEARCH",
+            scope=request.scope,
+            candidate_budget=request.candidate_budget,
+            profile=self.profile,
+            metadata=dict(request.metadata, need_comments=self.profile.need_comments),
+        )
+        return adapter.acquire(candidate, req_copy)
 
     def normalize(
         self,
@@ -161,22 +236,52 @@ class BrandShieldAcquisition(AgentAcquisitionBase):
         candidate: CandidateSource,
         request: RetrievalRequest,
     ) -> List[EvidenceFragment]:
+        """
+        Normalizes into EvidenceFragment with seller, price, and counterfeit metadata.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+
         for f in frags:
             f.content_depth = self.profile.content_depth
+            text_corpus = f"{f.title} {f.content} {f.snippet}"
+
+            # Extract seller / store domain
+            parsed_url = urllib.parse.urlparse(f.url)
+            f.metadata["domain"] = parsed_url.netloc
+            f.metadata["seller"] = f.author or parsed_url.netloc
+
+            # Detect price references
+            price_match = self.PRICE_PATTERN.search(text_corpus)
+            if price_match:
+                f.metadata["price"] = f"{price_match.group(1)}{price_match.group(2)}"
+
+            # Detect counterfeit indicators
+            f.metadata["counterfeit_indicators"] = self.COMPLAINT_PATTERNS.findall(text_corpus)
+            f.metadata["marketplace_listing"] = candidate.metadata.get("is_marketplace", False)
+
         return frags
 
     def health(self) -> Dict[str, Any]:
-        return {"agent": self.profile.agent, "status": "HEALTHY", "depth": self.profile.content_depth}
+        return {
+            "agent": self.profile.agent,
+            "status": "HEALTHY",
+            "depth": self.profile.content_depth,
+            "strategy": "marketplace_and_complaint_harvesting"
+        }
 
     def capabilities(self) -> Dict[str, Any]:
         return self.profile.to_dict()
 
 
 class TrendingAcquisition(AgentAcquisitionBase):
-    """Custom acquisition strategy optimized for real-time trend discovery and narrative flow."""
+    """
+    Custom acquisition strategy optimized for viral velocity, narrative diffusion,
+    and wire syndication detection.
+    """
+
+    WIRE_OUTLETS = ("reuters.com", "apnews.com", "bloomberg.com", "afp.com", "upi.com")
 
     def __init__(self, profile: Optional[RetrievalProfile] = None):
         self.profile = profile or TRENDING_PROFILE
@@ -185,10 +290,40 @@ class TrendingAcquisition(AgentAcquisitionBase):
         return self.profile
 
     def discover(self, query: str, limit: int = 5) -> List[CandidateSource]:
+        """
+        Social-first candidate discovery with velocity and breaking news focus.
+        """
         from backend.services.agent_reach.native.adapters.search import SearchDiscoveryAdapter
-        return SearchDiscoveryAdapter().discover_candidates(query=query, limit=limit)
+        search_adapter = SearchDiscoveryAdapter()
+
+        velocity_queries = [
+            f"{query} viral trending discussion",
+            f"{query} breaking news controversy",
+        ]
+
+        candidates: List[CandidateSource] = []
+        for q in velocity_queries:
+            discovered = search_adapter.discover_candidates(query=q, limit=limit)
+            for cand in discovered:
+                plat = cand.platform.lower()
+                # Social sources get prioritization for trend velocity
+                if plat in ("twitter", "x", "reddit", "youtube"):
+                    cand.semantic_score = min(100.0, cand.semantic_score + 10.0)
+                    cand.metadata["social_origin"] = True
+                candidates.append(cand)
+
+        seen_urls = set()
+        deduped = []
+        for c in sorted(candidates, key=lambda x: x.semantic_score, reverse=True):
+            if c.canonical_url not in seen_urls:
+                seen_urls.add(c.canonical_url)
+                deduped.append(c)
+        return deduped[:limit]
 
     def acquire(self, candidate: CandidateSource, request: RetrievalRequest) -> FetchedDocument:
+        """
+        Acquires candidate with focus on engagement metrics and propagation timestamps.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         return adapter.acquire(candidate, request)
@@ -199,22 +334,54 @@ class TrendingAcquisition(AgentAcquisitionBase):
         candidate: CandidateSource,
         request: RetrievalRequest,
     ) -> List[EvidenceFragment]:
+        """
+        Normalizes into EvidenceFragment with engagement metrics and syndication tags.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+
         for f in frags:
             f.content_depth = self.profile.content_depth
+            netloc = urllib.parse.urlparse(f.url).netloc.lower()
+
+            # Identify wire syndication vs independent narrative post
+            is_wire = any(w in netloc for w in self.WIRE_OUTLETS)
+            f.metadata["is_wire_syndication"] = is_wire
+            f.metadata["social_origin"] = candidate.metadata.get("social_origin", False)
+
+            # Preserve engagement signals
+            if "likes" in doc.raw_metadata:
+                f.metadata["likes"] = doc.raw_metadata["likes"]
+            if "retweets" in doc.raw_metadata:
+                f.metadata["retweets"] = doc.raw_metadata["retweets"]
+            if "views" in doc.raw_metadata:
+                f.metadata["views"] = doc.raw_metadata["views"]
+
         return frags
 
     def health(self) -> Dict[str, Any]:
-        return {"agent": self.profile.agent, "status": "HEALTHY", "depth": self.profile.content_depth}
+        return {
+            "agent": self.profile.agent,
+            "status": "HEALTHY",
+            "depth": self.profile.content_depth,
+            "strategy": "social_velocity_and_wire_syndication"
+        }
 
     def capabilities(self) -> Dict[str, Any]:
         return self.profile.to_dict()
 
 
 class ScoutAcquisition(AgentAcquisitionBase):
-    """Custom acquisition strategy optimized for financial data, filings, and corporate news."""
+    """
+    Custom acquisition strategy optimized for financial filings, earnings reports,
+    M&A deal values, and primary regulatory documents.
+    Enforces deep paragraph-level acquisition rather than headline snippets.
+    """
+
+    PRIMARY_FINANCIAL_DOMAINS = (
+        "sec.gov", "investor.", "ir.", "edgar.", "prnewswire.com", "businesswire.com"
+    )
 
     def __init__(self, profile: Optional[RetrievalProfile] = None):
         self.profile = profile or SCOUT_PROFILE
@@ -223,13 +390,61 @@ class ScoutAcquisition(AgentAcquisitionBase):
         return self.profile
 
     def discover(self, query: str, limit: int = 5) -> List[CandidateSource]:
+        """
+        Financial & regulatory candidate discovery. Formulates primary filing,
+        earnings, and M&A queries, promoting SEC and IR candidates.
+        """
         from backend.services.agent_reach.native.adapters.search import SearchDiscoveryAdapter
-        return SearchDiscoveryAdapter().discover_candidates(query=query, limit=limit)
+        search_adapter = SearchDiscoveryAdapter()
+
+        financial_queries = [
+            f"{query} SEC filing 10-K 10-Q press release IR",
+            f"{query} earnings revenue guidance EBITDA deal valuation",
+            f"{query} acquisition merger regulatory filing",
+        ]
+
+        candidates: List[CandidateSource] = []
+        for q in financial_queries:
+            discovered = search_adapter.discover_candidates(query=q, limit=limit)
+            for cand in discovered:
+                url_low = (cand.canonical_url or cand.url).lower()
+                is_primary = any(p in url_low for p in self.PRIMARY_FINANCIAL_DOMAINS)
+                cand.metadata["is_primary_source"] = is_primary
+
+                # Heavy boost for primary regulatory filings and investor relations
+                if is_primary:
+                    cand.semantic_score = min(100.0, cand.semantic_score + 25.0)
+
+                candidates.append(cand)
+
+        seen_urls = set()
+        deduped = []
+        for c in sorted(candidates, key=lambda x: x.semantic_score, reverse=True):
+            if c.canonical_url not in seen_urls:
+                seen_urls.add(c.canonical_url)
+                deduped.append(c)
+        return deduped[:limit]
 
     def acquire(self, candidate: CandidateSource, request: RetrievalRequest) -> FetchedDocument:
+        """
+        Deep acquisition enforcing full paragraph extraction for financial numbers.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
-        return adapter.acquire(candidate, request)
+
+        # Force full content depth in retrieval request for Scout
+        req_copy = RetrievalRequest(
+            request_id=request.request_id,
+            agent="scout",
+            entity=request.entity,
+            intent=request.intent,
+            task_type="READ" if candidate.url.startswith("http") else "SEARCH",
+            scope=request.scope,
+            candidate_budget=request.candidate_budget,
+            profile=self.profile,
+            metadata=dict(request.metadata, need_full_article=True),
+        )
+        return adapter.acquire(candidate, req_copy)
 
     def normalize(
         self,
@@ -237,22 +452,46 @@ class ScoutAcquisition(AgentAcquisitionBase):
         candidate: CandidateSource,
         request: RetrievalRequest,
     ) -> List[EvidenceFragment]:
+        """
+        Normalizes into FULL_ARTICLE EvidenceFragment records with financial metadata.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+
         for f in frags:
-            f.content_depth = self.profile.content_depth
+            f.content_depth = self.profile.content_depth  # FULL_ARTICLE
+            url_low = f.url.lower()
+            is_primary = any(p in url_low for p in self.PRIMARY_FINANCIAL_DOMAINS)
+            f.metadata["is_primary_source"] = is_primary
+            f.metadata["financial_domain"] = True
+
         return frags
 
     def health(self) -> Dict[str, Any]:
-        return {"agent": self.profile.agent, "status": "HEALTHY", "depth": self.profile.content_depth}
+        return {
+            "agent": self.profile.agent,
+            "status": "HEALTHY",
+            "depth": self.profile.content_depth,
+            "strategy": "primary_filing_and_full_article_extraction"
+        }
 
     def capabilities(self) -> Dict[str, Any]:
         return self.profile.to_dict()
 
 
 class PersonalWatchAcquisition(AgentAcquisitionBase):
-    """Custom acquisition strategy with active privacy preservation and executive monitoring."""
+    """
+    Custom acquisition strategy for executive monitoring, public statements,
+    and verified professional announcements, with strict automated PII filtering.
+    """
+
+    PII_PHONE_PATTERN = re.compile(r"(\+?\d{1,3}[-.\s]?)?\(?\d{3}\)?[-.\s]?\d{3}[-.\s]?\d{4}")
+    PII_SSN_PATTERN = re.compile(r"\b\d{3}-\d{2}-\d{4}\b")
+    PII_ADDRESS_PATTERN = re.compile(
+        r"\b\d{1,5}\s+[A-Za-z0-9\.\s]+(Street|St|Avenue|Ave|Road|Rd|Drive|Dr|Lane|Ln|Boulevard|Blvd|Terrace|Ter|Way|Place|Pl|Court|Ct)\b",
+        re.IGNORECASE
+    )
 
     def __init__(self, profile: Optional[RetrievalProfile] = None):
         self.profile = profile or PERSONAL_WATCH_PROFILE
@@ -261,10 +500,40 @@ class PersonalWatchAcquisition(AgentAcquisitionBase):
         return self.profile
 
     def discover(self, query: str, limit: int = 5) -> List[CandidateSource]:
+        """
+        Executive statement & verified announcement candidate discovery.
+        """
         from backend.services.agent_reach.native.adapters.search import SearchDiscoveryAdapter
-        return SearchDiscoveryAdapter().discover_candidates(query=query, limit=limit)
+        search_adapter = SearchDiscoveryAdapter()
+
+        executive_queries = [
+            f'"{query}" official statement announcement appointment',
+            f'"{query}" interview transcript career resignation',
+            f'"{query}" public address executive verified',
+        ]
+
+        candidates: List[CandidateSource] = []
+        for q in executive_queries:
+            discovered = search_adapter.discover_candidates(query=q, limit=limit)
+            for cand in discovered:
+                url_low = cand.canonical_url.lower()
+                # Prioritize verified public statement sources
+                if any(k in url_low for k in ("linkedin.com", "twitter.com", "x.com", "press", "news")):
+                    cand.semantic_score = min(100.0, cand.semantic_score + 10.0)
+                candidates.append(cand)
+
+        seen_urls = set()
+        deduped = []
+        for c in sorted(candidates, key=lambda x: x.semantic_score, reverse=True):
+            if c.canonical_url not in seen_urls:
+                seen_urls.add(c.canonical_url)
+                deduped.append(c)
+        return deduped[:limit]
 
     def acquire(self, candidate: CandidateSource, request: RetrievalRequest) -> FetchedDocument:
+        """
+        Acquires candidate focusing on quoted public statements and verified accounts.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         return adapter.acquire(candidate, request)
@@ -275,15 +544,44 @@ class PersonalWatchAcquisition(AgentAcquisitionBase):
         candidate: CandidateSource,
         request: RetrievalRequest,
     ) -> List[EvidenceFragment]:
+        """
+        Normalizes evidence while actively redacting sensitive private PII.
+        """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+
         for f in frags:
             f.content_depth = self.profile.content_depth
+
+            # Automated PII sanitization across snippet and content
+            sanitized_content = self._sanitize_pii(f.content)
+            sanitized_snippet = self._sanitize_pii(f.snippet)
+
+            f.content = sanitized_content
+            f.snippet = sanitized_snippet
+            f.metadata["pii_filtered"] = True
+            f.metadata["public_figure_monitoring"] = True
+
         return frags
 
+    def _sanitize_pii(self, text: str) -> str:
+        """Redact phone numbers, SSNs, and residential street addresses."""
+        if not text:
+            return ""
+        text = self.PII_PHONE_PATTERN.sub("[REDACTED_PHONE]", text)
+        text = self.PII_SSN_PATTERN.sub("[REDACTED_SSN]", text)
+        text = self.PII_ADDRESS_PATTERN.sub("[REDACTED_RESIDENTIAL_ADDRESS]", text)
+        return text
+
     def health(self) -> Dict[str, Any]:
-        return {"agent": self.profile.agent, "status": "HEALTHY", "depth": self.profile.content_depth}
+        return {
+            "agent": self.profile.agent,
+            "status": "HEALTHY",
+            "depth": self.profile.content_depth,
+            "strategy": "executive_statements_with_pii_sanitization"
+        }
 
     def capabilities(self) -> Dict[str, Any]:
         return self.profile.to_dict()
+

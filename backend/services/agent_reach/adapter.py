@@ -15,11 +15,14 @@ from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.agent_reach.channels import (
+    CandidateSource,
     Channel,
     ChannelStatus,
     ChannelTelemetry,
     EvidenceFragment,
+    FetchedDocument,
     QueryExecutionRecord,
+    RetrievalRequest,
     RetrievalResult,
     RetrievalTrace,
 )
@@ -176,6 +179,27 @@ class AgentReachService:
             logger.warning(f"[AgentReachService] Channel '{channel_name}' search failed: {e}")
             self.registry.mark_degraded(channel_name)
             return []
+
+    def execute(self, request: RetrievalRequest) -> List[EvidenceFragment]:
+        """
+        Canonical acquisition entrypoint for domain agents.
+        Acquires evidence through the unified acquisition fabric.
+        """
+        return native_router.execute_retrieval_request(request)
+
+    def retrieve(self, request_or_query: Any, **kwargs) -> RetrievalResult:
+        """
+        Universal retrieve method. Accepts either a typed RetrievalRequest or legacy query string.
+        """
+        if isinstance(request_or_query, RetrievalRequest):
+            frags = self.execute(request_or_query)
+            return RetrievalResult(
+                query=request_or_query.query or request_or_query.entity,
+                domain=request_or_query.agent,
+                fragments=frags,
+                total_signals=len(frags),
+            )
+        return self.omni_scan(request_or_query, **kwargs)
 
     def retrieve_many(
         self,

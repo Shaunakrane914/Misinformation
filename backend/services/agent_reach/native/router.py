@@ -19,21 +19,44 @@ import urllib.parse
 import urllib.request
 from typing import Any, Dict, List, Optional, Tuple
 
-from backend.services.agent_reach.channels import ChannelStatus, EvidenceFragment, RetrievalMode
+from backend.services.agent_reach.channels import (
+    CandidateSource,
+    ChannelStatus,
+    EvidenceFragment,
+    FetchedDocument,
+    RetrievalMode,
+    RetrievalRequest,
+)
+from backend.services.agent_reach.native.adapters import (
+    GitHubAdapter,
+    RedditAdapter,
+    SearchDiscoveryAdapter,
+    TwitterAdapter,
+    WebAdapter,
+    YouTubeAdapter,
+)
+from backend.services.agent_reach.native.cache import social_cache
 from backend.services.agent_reach.native.channel_capabilities import get_capability
 from backend.services.agent_reach.native.doctor import native_doctor
 from backend.services.agent_reach.native.errors import AuthRequiredError, NativeReachError
 from backend.services.agent_reach.native.executor import native_executor
 from backend.services.agent_reach.native.normalizer import native_normalizer
+from backend.services.agent_reach.native.route_policy import RoutePolicyEngine
 from backend.services.agent_reach.native.source_discovery import (
     TWITTER_RESERVED_PATHS,
     SourceDiscoveryResult,
+    check_entity_semantic_match,
+    discover_sources_from_search,
+    evaluate_content_relevance,
     extract_reddit_source,
     extract_x_source,
-    discover_sources_from_search,
     generate_discovery_queries,
     is_valid_content_source,
     resolve_bing_redirect,
+)
+from backend.services.agent_reach.native.telemetry import (
+    AcquisitionTelemetryRecord,
+    acquisition_telemetry,
 )
 from backend.services.url_validator import is_safe_url
 
@@ -67,6 +90,14 @@ class NativeRouter:
         self.use_arctic_shift = os.getenv("AEGIS_REDDIT_ARCTIC_SHIFT", "true").lower() in ("true", "1", "yes")
         self.use_fxtwitter = os.getenv("AEGIS_X_FXTWITTER", "true").lower() in ("true", "1", "yes")
         self.use_social_url_discovery = os.getenv("AEGIS_SOCIAL_URL_DISCOVERY", "true").lower() in ("true", "1", "yes")
+
+        # Modular platform adapters for shared acquisition fabric
+        self.web_adapter = WebAdapter()
+        self.reddit_adapter = RedditAdapter()
+        self.twitter_adapter = TwitterAdapter()
+        self.youtube_adapter = YouTubeAdapter()
+        self.github_adapter = GitHubAdapter()
+        self.search_adapter = SearchDiscoveryAdapter()
 
     def _get_social_cache(self, key: str) -> Optional[Any]:
         """Fetch unexpired item from in-memory cache."""
@@ -1106,7 +1137,7 @@ class NativeRouter:
                             "fallback_used": False,
                         }
 
-        # 3. Standard Web Document: Native Jina Reader
+        # 3. Standard Web Document: Scrapling HTTP Primary -> Playwright Rescue
         try:
             res = self.executor.execute_web_read(url)
             content = res.get("content", "")
@@ -1119,11 +1150,11 @@ class NativeRouter:
                     "markdown": content[:max_chars],
                     "url": url,
                     "char_count": len(content),
-                    "backend": "Jina Reader",
+                    "backend": res.get("backend", "scrapling_http"),
                     "fallback_used": False,
                 }
-        except Exception as e_jina:
-            logger.debug(f"[NativeRouter] Native Jina read notice: {e_jina}. Trying fallback scraper.")
+        except Exception as e_web:
+            logger.debug(f"[NativeRouter] Native web read notice: {e_web}. Trying fallback scraper.")
 
         # 2. Fallback: Legacy reach scraper
         try:
@@ -1372,6 +1403,194 @@ class NativeRouter:
             )
             for item in raw_items
         ]
+
+    def execute_retrieval_request(self, request: RetrievalRequest) -> List[EvidenceFragment]:
+        """
+        One shared authoritative retrieval pipeline (Policy D) used by all four domain agents.
+        Enforces:
+          - Discovery separated from Source Selection separated from Content Extraction
+          - Hard source gates (scope, entity anti-cheat, url structure, doc type)
+          - Knee: Top-5 semantic candidate selection by default
+          - Escalation: Top-10 only when evidence is weak or conflicting
+          - Specialist mirror / native / Scrapling HTTP acquisition
+          - Normalization into EvidenceFragment with full provenance and evidence IDs
+        """
+        t0 = time.perf_counter()
+        query_text = request.query or request.entity or request.intent
+        if not query_text:
+            return []
+
+        # 1. Determine target channels
+        channels = request.allowed_channels or ["web", "news"]
+        all_candidates: List[CandidateSource] = []
+
+        # 2. Candidate Discovery via SearchDiscoveryAdapter
+        for ch in channels:
+            try:
+                cands = self.search_adapter.discover_candidates(
+                    query=query_text,
+                    platform=ch,
+                    entity=request.entity,
+                    limit=max(request.candidate_budget * 2, 10),
+                )
+                all_candidates.extend(cands)
+            except Exception as e_disc:
+                logger.debug(f"[NativeRouter] Candidate discovery error for channel {ch}: {e_disc}")
+
+        # If no candidates from search discovery, create fallback candidate from direct query/URL
+        if not all_candidates:
+            if "http://" in query_text or "https://" in query_text:
+                all_candidates.append(
+                    CandidateSource(
+                        url=query_text,
+                        platform="web",
+                        title=f"Direct URL: {query_text}",
+                        passed_hard_gates=True,
+                    )
+                )
+
+        # 3. Hard Source Gates & Semantic Scoring
+        passed_candidates: List[CandidateSource] = []
+        for cand in all_candidates:
+            # Platform & structure validation
+            url_lower = cand.canonical_url.lower()
+            if not is_valid_content_source(
+                SourceDiscoveryResult(
+                    platform=cand.platform,
+                    canonical_url=cand.canonical_url,
+                    source_type=cand.metadata.get("source_type", "post"),
+                    external_id=cand.metadata.get("external_id", "ext_1"),
+                    handle=cand.metadata.get("handle"),
+                    subreddit=cand.metadata.get("subreddit"),
+                ),
+                task_type=request.task_type
+            ):
+                cand.passed_hard_gates = False
+                cand.gate_failure_reason = "URL structure or reserved path check failed"
+                continue
+
+            # Scope gate
+            if request.scope:
+                req_scope = request.scope.lower().strip()
+                if req_scope.startswith("r/") and cand.metadata.get("subreddit"):
+                    if cand.metadata.get("subreddit").lower() != req_scope[2:]:
+                        cand.passed_hard_gates = False
+                        cand.gate_failure_reason = f"Subreddit mismatch: expected {req_scope}"
+                        continue
+                elif req_scope.startswith("@") and cand.metadata.get("handle"):
+                    if cand.metadata.get("handle").lower() != req_scope[1:]:
+                        cand.passed_hard_gates = False
+                        cand.gate_failure_reason = f"Handle mismatch: expected {req_scope}"
+                        continue
+
+            # Entity relevance & anti-token cheat gate
+            eval_res = evaluate_content_relevance(
+                content=f"{cand.title} {cand.snippet}",
+                target_entity=request.entity,
+                target_topic=request.intent,
+                target_claim=request.intent,
+                platform=cand.platform,
+                candidate_metadata=cand.metadata,
+                requested_scope=request.scope,
+                task_type=request.task_type,
+            )
+
+            cand.semantic_score = eval_res["semantic_score"]
+            if not eval_res["accepted"] and request.entity and len(request.entity.strip()) > 3:
+                # If strict entity required and did not match
+                if not eval_res.get("entity_match"):
+                    cand.passed_hard_gates = False
+                    cand.gate_failure_reason = "Failed entity anti-token-cheat gate"
+                    continue
+
+            passed_candidates.append(cand)
+
+        # 4. Semantic Ranking & Knee Selection (Default Top-5)
+        passed_candidates.sort(key=lambda c: c.semantic_score, reverse=True)
+
+        # Decide candidate depth (Top-5 default, Top-10 escalation if evidence weak)
+        target_budget = request.candidate_budget or 5
+        weak_evidence = (
+            len(passed_candidates) < 3
+            or (passed_candidates and passed_candidates[0].semantic_score < 40.0)
+        )
+        if weak_evidence and len(passed_candidates) > target_budget:
+            # Escalate up to 10
+            target_budget = min(10, len(passed_candidates))
+            escalation_used = True
+        else:
+            escalation_used = False
+
+        selected_candidates = passed_candidates[:target_budget]
+        if not selected_candidates and all_candidates:
+            # Graceful safety fallback if all failed hard gates
+            selected_candidates = all_candidates[:3]
+
+        # 5. Acquire Content via Specialist Adapters
+        final_fragments: List[EvidenceFragment] = []
+        for cand in selected_candidates:
+            adapter = self.web_adapter
+            if self.reddit_adapter.can_handle(cand):
+                adapter = self.reddit_adapter
+            elif self.twitter_adapter.can_handle(cand):
+                adapter = self.twitter_adapter
+            elif self.youtube_adapter.can_handle(cand):
+                adapter = self.youtube_adapter
+            elif self.github_adapter.can_handle(cand):
+                adapter = self.github_adapter
+
+            try:
+                doc = adapter.acquire(cand, request)
+                if doc.status == "SUCCESS":
+                    frags = adapter.normalize(doc, cand, request)
+                    final_fragments.extend(frags)
+                else:
+                    # Fallback to index snippet
+                    idx_frags = self.search_adapter.normalize(
+                        FetchedDocument(
+                            url=cand.url,
+                            status="SUCCESS",
+                            backend_id="search_index_fallback",
+                            retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+                            raw_content=json.dumps({"title": cand.title, "snippet": cand.snippet, "url": cand.url}),
+                        ),
+                        cand,
+                        request,
+                    )
+                    final_fragments.extend(idx_frags)
+            except Exception as e_acq:
+                logger.debug(f"[NativeRouter] Adapter {adapter.backend_id} acquisition error for {cand.url}: {e_acq}")
+
+        # 6. Deduplicate & Record Telemetry
+        seen_urls = set()
+        deduped_fragments: List[EvidenceFragment] = []
+        for f in final_fragments:
+            if f.url and f.url in seen_urls:
+                continue
+            seen_urls.add(f.url)
+            deduped_fragments.append(f)
+
+        lat_ms = int((time.perf_counter() - t0) * 1000)
+        acquisition_telemetry.record_attempt(
+            AcquisitionTelemetryRecord(
+                request_id=request.request_id,
+                query_id=request.query,
+                agent=request.agent,
+                platform=",".join(channels),
+                backend="shared_acquisition_fabric",
+                route_selected="policy_d",
+                route_attempts=len(channels),
+                latency_ms=lat_ms,
+                result_count=len(deduped_fragments),
+                candidate_count=len(all_candidates),
+                candidates_selected_deep_read=len(selected_candidates),
+                fallback_used=escalation_used,
+                final_retrieval_mode=deduped_fragments[0].retrieval_mode if deduped_fragments else "none",
+                source_selection_rationale=f"Selected {len(selected_candidates)} candidates via Policy D semantic rubric",
+            )
+        )
+
+        return deduped_fragments
 
 
 # Global singleton instance

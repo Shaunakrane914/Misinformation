@@ -44,43 +44,99 @@ class NativeExecutor:
     def __init__(self):
         self.profile = get_runtime_profile()
 
-    # ── 1. Web Page Reading (Jina Reader) ──────────────────────────────────
+    # ── 1. Web Page Reading (Scrapling HTTP Primary -> Playwright Rescue) ──
 
     def execute_web_read(self, url: str, timeout: float = DEFAULT_TIMEOUT_SECONDS) -> Dict[str, Any]:
-        """Read any public web page into clean Markdown via Jina Reader."""
+        """
+        Read any public web page following Policy D:
+        Primary: Scrapling HTTP / curl_cffi lightweight extraction
+        Secondary: Playwright rescue strictly when JS rendering or challenge encountered
+        """
         clean_url = url.strip()
         safe, reason = is_safe_url(clean_url)
         if not safe:
             raise SecurityPolicyViolation(f"URL failed SSRF validation: {clean_url} ({reason})")
 
-        jina_url = f"https://r.jina.ai/{clean_url}"
         t0 = time.perf_counter()
-        req = urllib.request.Request(
-            jina_url,
-            headers={
-                "User-Agent": _USER_AGENT,
-                "Accept": "text/plain",
-                "X-No-Cache": "true",
-            }
-        )
+        active_backend = "scrapling_http"
+        markdown_text = ""
+        status_code = 200
 
+        # Primary: Scrapling HTTP
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw_bytes = resp.read(MAX_OUTPUT_BYTES)
-                markdown_text = raw_bytes.decode("utf-8", errors="replace")
-                latency_ms = int((time.perf_counter() - t0) * 1000)
-                return {
-                    "platform": "web",
-                    "backend": "Jina Reader",
-                    "operation": "web.read",
-                    "status": "SUCCESS",
-                    "url": clean_url,
-                    "content": markdown_text,
-                    "char_count": len(markdown_text),
-                    "latency_ms": latency_ms,
-                }
-        except Exception as e:
-            raise BackendExecutionError("web", "Jina Reader", f"curl {jina_url}", 1, str(e))
+            from scrapling import Fetcher
+            headers = {
+                "User-Agent": _USER_AGENT,
+                "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            }
+            resp = Fetcher.get(clean_url, headers=headers, timeout=timeout)
+            status_code = getattr(resp, "status", 200)
+            raw_text = resp.text if hasattr(resp, "text") else str(resp)
+
+            # Clean HTML to readable text/markdown
+            import re
+            cleaned = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", raw_text, flags=re.IGNORECASE)
+            cleaned = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", cleaned, flags=re.IGNORECASE)
+            cleaned = re.sub(r"<[^>]+>", " ", cleaned)
+            markdown_text = re.sub(r"\s+", " ", cleaned).strip()
+
+        except Exception as e_scrapling:
+            logger.debug(f"[NativeExecutor] Scrapling read error for {clean_url}: {e_scrapling}")
+            status_code = 500
+
+        # Secondary: Playwright Rescue (only if lightweight HTTP returned empty/blocked)
+        if len(markdown_text) < 250 or status_code in (403, 503):
+            try:
+                from playwright.sync_api import sync_playwright
+                with sync_playwright() as p:
+                    browser = p.chromium.launch(headless=True)
+                    page = browser.new_page()
+                    page.set_default_timeout(int(timeout * 1000))
+                    page.goto(clean_url, wait_until="domcontentloaded")
+                    html_content = page.content()
+                    browser.close()
+                    import re
+                    c_clean = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", html_content, flags=re.IGNORECASE)
+                    c_clean = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", c_clean, flags=re.IGNORECASE)
+                    c_clean = re.sub(r"<[^>]+>", " ", c_clean)
+                    p_text = re.sub(r"\s+", " ", c_clean).strip()
+                    if len(p_text) > len(markdown_text):
+                        markdown_text = p_text
+                        active_backend = "playwright_rescue"
+            except Exception as e_pw:
+                logger.debug(f"[NativeExecutor] Playwright rescue notice for {clean_url}: {e_pw}")
+
+        # If both failed, try Jina Reader as emergency fallback
+        if len(markdown_text) < 100:
+            try:
+                jina_url = f"https://r.jina.ai/{clean_url}"
+                req = urllib.request.Request(
+                    jina_url,
+                    headers={"User-Agent": _USER_AGENT, "Accept": "text/plain", "X-No-Cache": "true"}
+                )
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    raw_bytes = resp.read(MAX_OUTPUT_BYTES)
+                    j_text = raw_bytes.decode("utf-8", errors="replace").strip()
+                    if len(j_text) > len(markdown_text):
+                        markdown_text = j_text
+                        active_backend = "jina_reader_fallback"
+            except Exception as e_jina:
+                logger.debug(f"[NativeExecutor] Emergency Jina fallback error: {e_jina}")
+
+        latency_ms = int((time.perf_counter() - t0) * 1000)
+        if not markdown_text:
+            raise BackendExecutionError("web", active_backend, clean_url, 1, "Failed to retrieve content via Scrapling/Playwright")
+
+        return {
+            "platform": "web",
+            "backend": active_backend,
+            "operation": "web.read",
+            "status": "SUCCESS",
+            "url": clean_url,
+            "content": markdown_text,
+            "char_count": len(markdown_text),
+            "latency_ms": latency_ms,
+        }
 
     # ── 2. GitHub CLI (gh) ────────────────────────────────────────────────
 
@@ -158,13 +214,50 @@ class NativeExecutor:
         except Exception as e:
             raise BackendExecutionError("github", "gh CLI", " ".join(cmd), 1, str(e))
 
-    # ── 3. YouTube (yt-dlp) ────────────────────────────────────────────────
+    # ── 3. YouTube (In-Process yt-dlp Import Primary) ──────────────────────
 
     def execute_youtube_search(self, query: str, limit: int = 5, timeout: float = DEFAULT_TIMEOUT_SECONDS) -> Dict[str, Any]:
-        """Search YouTube videos using yt-dlp JSON dump."""
+        """
+        Search YouTube videos using in-process yt-dlp Python import as primary path.
+        Eliminates subprocess spawn latency and PATH dependency.
+        """
+        t0 = time.perf_counter()
+        items = []
+
+        # Primary: in-process yt_dlp import
+        try:
+            import yt_dlp
+            search_expr = f"ytsearch{min(limit, 10)}:{query.strip()}"
+            ydl_opts = {
+                "quiet": True,
+                "no_warnings": True,
+                "skip_download": True,
+                "extract_flat": True,
+            }
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                info = ydl.extract_info(search_expr, download=False)
+                entries = info.get("entries", []) if info else []
+                for entry in entries:
+                    if entry:
+                        items.append(entry)
+
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            return {
+                "platform": "youtube",
+                "backend": "yt-dlp",
+                "operation": "youtube.search",
+                "status": "SUCCESS",
+                "items": items,
+                "count": len(items),
+                "latency_ms": latency_ms,
+            }
+        except Exception as e_inprocess:
+            logger.debug(f"[NativeExecutor] In-process yt_dlp search notice: {e_inprocess}. Trying subprocess fallback.")
+
+        # Secondary fallback: subprocess if in-process failed
         ytdlp_bin = shutil.which("yt-dlp")
         if not ytdlp_bin:
-            raise BackendExecutionError("youtube", "yt-dlp", "yt-dlp search", 127, "yt-dlp not found on PATH")
+            raise BackendExecutionError("youtube", "yt-dlp", "yt-dlp search", 127, "yt-dlp executable or module failed")
 
         search_expr = f"ytsearch{min(limit, 10)}:{query.strip()}"
         cmd = [
@@ -175,7 +268,6 @@ class NativeExecutor:
             "--ignore-errors",
             search_expr
         ]
-        t0 = time.perf_counter()
         try:
             res = subprocess.run(
                 cmd,
@@ -186,7 +278,6 @@ class NativeExecutor:
                 timeout=timeout
             )
             latency_ms = int((time.perf_counter() - t0) * 1000)
-            items = []
             for line in res.stdout.splitlines():
                 line = line.strip()
                 if line and line.startswith("{"):

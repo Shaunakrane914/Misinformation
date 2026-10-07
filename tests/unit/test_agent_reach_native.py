@@ -112,11 +112,11 @@ def test_native_executor_ssrf_protection():
 
 
 def test_native_executor_auth_guard():
-    """Verify session-required channels raise AuthRequiredError when session absent."""
+    """Verify session-required channels (e.g. facebook) raise AuthRequiredError when session absent."""
     executor = NativeExecutor()
     with pytest.raises(AuthRequiredError) as exc_info:
-        executor.guard_authenticated_channel("twitter", "search")
-    assert exc_info.value.platform == "twitter"
+        executor.guard_authenticated_channel("facebook", "search")
+    assert exc_info.value.platform == "facebook"
     assert "session" in str(exc_info.value).lower()
 
 

@@ -1,0 +1,39 @@
+{
+  "url_called": "https://api.fxtwitter.com/NASA",
+  "latency_ms": 401,
+  "status": 200,
+  "payload": {
+    "code": 200,
+    "message": "OK",
+    "user": {
+      "screen_name": "NASA",
+      "url": "https://x.com/NASA",
+      "id": "11348282",
+      "followers": 92375048,
+      "following": 115,
+      "likes": 17013,
+      "media_count": 28179,
+      "tweets": 74382,
+      "name": "NASA",
+      "description": "Making the seemingly impossible, possible. \u2728",
+      "raw_description": {
+        "text": "Making the seemingly impossible, possible. \u2728",
+        "facets": []
+      },
+      "location": "Pale Blue Dot",
+      "banner_url": "https://pbs.twimg.com/profile_banners/11348282/1788992290",
+      "avatar_url": "https://pbs.twimg.com/profile_images/1321163587679784960/0ZxKlEKB_normal.jpg",
+      "joined": "Wed Dec 19 20:20:32 +0000 2007",
+      "protected": false,
+      "website": {
+        "url": "http://www.nasa.gov/",
+        "display_url": "nasa.gov"
+      },
+      "verification": {
+        "verified": true,
+        "verified_at": null,
+        "type": "government"
+      }
+    }
+  }
+}

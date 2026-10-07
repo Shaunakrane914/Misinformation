@@ -1,0 +1,8 @@
+{
+  "url_called": "https://api.fxtwitter.com/search?q=James+Webb+Space+Telescope+Carina+Nebula",
+  "latency_ms": 701,
+  "status": 404,
+  "payload": {
+    "error": "FxTwitter is a status/profile mirror and does not provide an arbitrary keyword search index."
+  }
+}

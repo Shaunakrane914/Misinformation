@@ -1,0 +1,66 @@
+{
+  "url_called": "https://api.fxtwitter.com/Twitter/status/10000000000",
+  "latency_ms": 426,
+  "status": 200,
+  "payload": {
+    "code": 200,
+    "message": "OK",
+    "tweet": {
+      "url": "https://x.com/WishingOnThat/status/10000000000",
+      "id": "10000000000",
+      "text": "So yea im watchin the haunting of molly hartley fast forward 2 tha gud stuff\rOver & Out",
+      "raw_text": {
+        "text": "So yea im watchin the haunting of molly hartley fast forward 2 tha gud stuff\rOver & Out",
+        "display_text_range": [
+          0,
+          87
+        ],
+        "facets": []
+      },
+      "author": {
+        "screen_name": "WishingOnThat",
+        "url": "https://x.com/WishingOnThat",
+        "id": "15865364",
+        "followers": 277,
+        "following": 155,
+        "likes": 10574,
+        "media_count": 387,
+        "name": "Kimmie",
+        "description": "Im Tha Director & Ur My Audience Enyoy :-) I Dont Wanna Meet Anyone On Here.. I Jus Enjoy Reposting & Adding My Nuisances To It..",
+        "raw_description": {
+          "text": "Im Tha Director & Ur My Audience Enyoy :-) I Dont Wanna Meet Anyone On Here.. I Jus Enjoy Reposting & Adding My Nuisances To It..",
+          "facets": []
+        },
+        "location": "Heaven",
+        "banner_url": "https://pbs.twimg.com/profile_banners/15865364/1623205476",
+        "avatar_url": "https://pbs.twimg.com/profile_images/1402451530704474112/1h_FT4wL_200x200.jpg",
+        "joined": "Fri Aug 15 17:41:48 +0000 2008",
+        "protected": false,
+        "website": null,
+        "verification": {
+          "verified": false,
+          "verified_at": null,
+          "type": null
+        },
+        "avatar_color": null
+      },
+      "replies": 6,
+      "retweets": 500,
+      "likes": 458,
+      "bookmarks": 3,
+      "quotes": 6,
+      "created_at": "Fri Mar 05 00:54:11 +0000 2010",
+      "created_timestamp": 1267750451,
+      "views": null,
+      "is_note_tweet": false,
+      "community_note": null,
+      "lang": "en",
+      "replying_to": null,
+      "replying_to_status": null,
+      "twitter_card": "tweet",
+      "color": null,
+      "provider": "twitter",
+      "reposted_by": null
+    }
+  }
+}

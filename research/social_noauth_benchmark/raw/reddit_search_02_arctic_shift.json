@@ -1,0 +1,9 @@
+{
+  "url_called": "https://arctic-shift.photon-reddit.com/api/posts/search?subreddit=science&query=mRNA+vaccine+clinical+trial&limit=5&sort=desc",
+  "latency_ms": 1265,
+  "status": 422,
+  "payload": {
+    "error": "HTTP Error 422: Unprocessable Entity",
+    "body": "{\"data\":null,\"error\":\"Timeout. Maybe slow down a bit\"}"
+  }
+}

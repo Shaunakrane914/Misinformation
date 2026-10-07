@@ -107,25 +107,25 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
     ),
     "twitter": PlatformCapability(
         platform="twitter",
-        display_name="Twitter / X Feeds & Search",
-        operations={"search", "read", "feed", "user_posts", "article"},
-        auth_mode="cookie_required",
-        tier=1,
-        cloud_safe=False,
-        backends=["twitter-cli", "OpenCLI", "bird CLI (legacy)"],
+        display_name="Twitter / X Public Mirror & Status",
+        operations={"search", "read", "status", "profile", "feed"},
+        auth_mode="none",  # Zero-auth public retrieval via FxTwitter; auth not required for public retrieval
+        tier=0,
+        cloud_safe=True,
+        backends=["FxTwitter", "Bing Search Index", "Google RSS"],
         doc_ref="agent_reach/skill/references/social.md",
-        fallback_chain=["OpenCLI"]
+        fallback_chain=["Bing Search Index", "Google RSS"]
     ),
     "reddit": PlatformCapability(
         platform="reddit",
-        display_name="Reddit Discussions & Comments",
+        display_name="Reddit Discussions & Comments (Arctic Shift)",
         operations={"search", "read", "comments"},
-        auth_mode="session_required",
-        tier=1,
-        cloud_safe=False,
-        backends=["OpenCLI", "rdt-cli"],
+        auth_mode="none",  # Zero-auth public retrieval via Arctic Shift; auth not required for public retrieval
+        tier=0,
+        cloud_safe=True,
+        backends=["Arctic Shift", "Bing Search Index", "Google RSS"],
         doc_ref="agent_reach/skill/references/social.md",
-        fallback_chain=["rdt-cli"]
+        fallback_chain=["Bing Search Index", "Google RSS"]
     ),
     "xueqiu": PlatformCapability(
         platform="xueqiu",

@@ -1,0 +1,395 @@
+{
+  "beautifulsoup_requests": [
+    {
+      "page_id": "G01",
+      "url": "https://example.com",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 577,
+      "text_length": 171,
+      "latency_ms": 1099,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G02",
+      "url": "https://quotes.toscrape.com/js/",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 5806,
+      "text_length": 91,
+      "latency_ms": 5144,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G03",
+      "url": "https://quotes.toscrape.com/scroll",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 2671,
+      "text_length": 95,
+      "latency_ms": 5589,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G04",
+      "url": "https://httpbin.org/delay/1",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 350,
+      "text_length": 349,
+      "latency_ms": 3415,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G05",
+      "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 2243816,
+      "text_length": 231050,
+      "latency_ms": 7186,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G06",
+      "url": "https://books.toscrape.com/",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 51274,
+      "text_length": 1851,
+      "latency_ms": 3695,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G07",
+      "url": "https://github.com/torvalds",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 215746,
+      "text_length": 3841,
+      "latency_ms": 4112,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G08",
+      "url": "https://github.com/microsoft/playwright/releases",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 530336,
+      "text_length": 38114,
+      "latency_ms": 5157,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G09",
+      "url": "https://httpbin.org/json",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 429,
+      "text_length": 410,
+      "latency_ms": 5705,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G10",
+      "url": "https://httpbin.org/headers",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 217,
+      "text_length": 216,
+      "latency_ms": 3502,
+      "js_rendered": false
+    }
+  ],
+  "scrapling_fetcher": [
+    {
+      "page_id": "G01",
+      "url": "https://example.com",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 577,
+      "text_length": 0,
+      "latency_ms": 890,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G02",
+      "url": "https://quotes.toscrape.com/js/",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 5808,
+      "text_length": 0,
+      "latency_ms": 2994,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G03",
+      "url": "https://quotes.toscrape.com/scroll",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 2673,
+      "text_length": 0,
+      "latency_ms": 3104,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G04",
+      "url": "https://httpbin.org/delay/1",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 1045,
+      "text_length": 0,
+      "latency_ms": 4401,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G05",
+      "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 2252172,
+      "text_length": 0,
+      "latency_ms": 2365,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G06",
+      "url": "https://books.toscrape.com/",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 51294,
+      "text_length": 0,
+      "latency_ms": 2682,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G07",
+      "url": "https://github.com/torvalds",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 215781,
+      "text_length": 0,
+      "latency_ms": 2749,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G08",
+      "url": "https://github.com/microsoft/playwright/releases",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 531073,
+      "text_length": 0,
+      "latency_ms": 1504,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G09",
+      "url": "https://httpbin.org/json",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 429,
+      "text_length": 0,
+      "latency_ms": 2174,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G10",
+      "url": "https://httpbin.org/headers",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 912,
+      "text_length": 0,
+      "latency_ms": 1066,
+      "js_rendered": false
+    }
+  ],
+  "playwright_headless": [
+    {
+      "page_id": "G01",
+      "url": "https://example.com",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 1989,
+      "text_length": 917,
+      "latency_ms": 10804,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G02",
+      "url": "https://quotes.toscrape.com/js/",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 8940,
+      "text_length": 1499,
+      "latency_ms": 11901,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G03",
+      "url": "https://quotes.toscrape.com/scroll",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 2681,
+      "text_length": 82,
+      "latency_ms": 10613,
+      "js_rendered": false
+    },
+    {
+      "page_id": "G04",
+      "url": "https://httpbin.org/delay/1",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 1133,
+      "text_length": 970,
+      "latency_ms": 6197,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G05",
+      "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 2564782,
+      "text_length": 196935,
+      "latency_ms": 8561,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G06",
+      "url": "https://books.toscrape.com/",
+      "status": "FAILED",
+      "error": "Page.goto: Timeout 12000ms exceeded.\nCall log:\n  - navigating to \"https://books.toscrape.com/\", waiting until \"domcontentloaded\"\n",
+      "latency_ms": 16164
+    },
+    {
+      "page_id": "G07",
+      "url": "https://github.com/torvalds",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 503853,
+      "text_length": 2118,
+      "latency_ms": 8321,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G08",
+      "url": "https://github.com/microsoft/playwright/releases",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 582281,
+      "text_length": 27219,
+      "latency_ms": 6626,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G09",
+      "url": "https://httpbin.org/json",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 616,
+      "text_length": 429,
+      "latency_ms": 8414,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G10",
+      "url": "https://httpbin.org/headers",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 1000,
+      "text_length": 837,
+      "latency_ms": 6219,
+      "js_rendered": true
+    }
+  ],
+  "current_aegis_reader": [
+    {
+      "page_id": "G01",
+      "url": "https://example.com",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 1034,
+      "text_length": 1034,
+      "latency_ms": 5833,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G02",
+      "url": "https://quotes.toscrape.com/js/",
+      "status": "FAILED",
+      "error": "The read operation timed out",
+      "latency_ms": 17581
+    },
+    {
+      "page_id": "G03",
+      "url": "https://quotes.toscrape.com/scroll",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 1156,
+      "text_length": 1156,
+      "latency_ms": 5217,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G04",
+      "url": "https://httpbin.org/delay/1",
+      "status": "FAILED",
+      "error": "HTTP Error 403: Forbidden",
+      "latency_ms": 859
+    },
+    {
+      "page_id": "G05",
+      "url": "https://en.wikipedia.org/wiki/Artificial_intelligence",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 197091,
+      "text_length": 197091,
+      "latency_ms": 7222,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G06",
+      "url": "https://books.toscrape.com/",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 8414,
+      "text_length": 8414,
+      "latency_ms": 7040,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G07",
+      "url": "https://github.com/torvalds",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 12901,
+      "text_length": 12901,
+      "latency_ms": 3679,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G08",
+      "url": "https://github.com/microsoft/playwright/releases",
+      "status": "SUCCESS",
+      "http_status": 200,
+      "content_length": 37387,
+      "text_length": 37387,
+      "latency_ms": 5864,
+      "js_rendered": true
+    },
+    {
+      "page_id": "G09",
+      "url": "https://httpbin.org/json",
+      "status": "FAILED",
+      "error": "HTTP Error 403: Forbidden",
+      "latency_ms": 1080
+    },
+    {
+      "page_id": "G10",
+      "url": "https://httpbin.org/headers",
+      "status": "FAILED",
+      "error": "HTTP Error 403: Forbidden",
+      "latency_ms": 710
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "url_called": "https://api.apify.com/v2/acts/apidojo~tweet-scraper/runs",
+  "actor": "apidojo/tweet-scraper",
+  "latency_ms": 777,
+  "status": 402,
+  "payload": {
+    "error": {
+      "type": "x402-payment-required",
+      "message": "Request not authenticated. Add your Apify API token, or a PAYMENT-SIGNATURE header for x402 payment. See https://docs.apify.com/api/v2#/introduction/authentication"
+    }
+  }
+}

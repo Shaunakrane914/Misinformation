@@ -1,0 +1,39 @@
+{
+  "url_called": "https://api.fxtwitter.com/BarackObama",
+  "latency_ms": 406,
+  "status": 200,
+  "payload": {
+    "code": 200,
+    "message": "OK",
+    "user": {
+      "screen_name": "BarackObama",
+      "url": "https://x.com/BarackObama",
+      "id": "813286",
+      "followers": 118978263,
+      "following": 499913,
+      "likes": 57,
+      "media_count": 2851,
+      "tweets": 17553,
+      "name": "Barack Obama",
+      "description": "Dad, husband, President, citizen.",
+      "raw_description": {
+        "text": "Dad, husband, President, citizen.",
+        "facets": []
+      },
+      "location": "Washington, DC",
+      "banner_url": "https://pbs.twimg.com/profile_banners/813286/1712782825",
+      "avatar_url": "https://pbs.twimg.com/profile_images/1329647526807543809/2SGvnHYV_normal.jpg",
+      "joined": "Mon Mar 05 22:08:25 +0000 2007",
+      "protected": false,
+      "website": {
+        "url": "http://barackobamabooks.com",
+        "display_url": "barackobamabooks.com"
+      },
+      "verification": {
+        "verified": true,
+        "verified_at": null,
+        "type": "individual"
+      }
+    }
+  }
+}

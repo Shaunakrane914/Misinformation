@@ -40,6 +40,8 @@ from backend.services.research.research_models import (
 from backend.services.research.source_independence import source_independence_engine
 from backend.services.research.source_lineage import source_lineage_engine
 from backend.services.research.source_quality import source_quality_engine
+from backend.services.research.relevance_gate import relevance_gate
+from backend.services.research.evidence_integrity import evidence_integrity_validator
 
 logger = logging.getLogger(__name__)
 
@@ -213,19 +215,27 @@ class ResearchEngine:
         trace_dict = retrieval_res.retrieval_trace or {}
 
         # Stage 3: Candidate Normalization & Source Quality Classification
-        candidates: List[EvidenceItem] = []
+        raw_candidates: List[EvidenceItem] = []
         for idx, frag in enumerate(raw_fragments):
             item_id = f"ev_{idx + 1:03d}"
             ev_item = EvidenceItem.from_evidence_fragment(frag, item_id=item_id, target_name=request.target)
             source_quality_engine.classify_and_score(ev_item, target_name=request.target)
-            candidates.append(ev_item)
+            raw_candidates.append(ev_item)
 
-        # Stage 4: Syndication Clustering & True Independence Scoring
-        candidates, clusters_map = source_independence_engine.cluster_independence(candidates)
+        # Stage 3b: Hard Deterministic Relevance Gate (Requirement 7 & 18)
+        accepted_candidates, initial_rejected = relevance_gate.filter_candidates(
+            raw_candidates,
+            target_entity=request.target,
+            domain=request.domain
+        )
+        all_rejected_audit: List[Dict[str, Any]] = list(initial_rejected)
+
+        # Stage 4: Syndication Clustering & True Independence Scoring (Strictly on accepted candidates)
+        accepted_candidates, clusters_map = source_independence_engine.cluster_independence(accepted_candidates)
 
         # Stage 5: Deterministic Candidate Ranking
         ranked_candidates = candidate_ranker.rank_candidates(
-            candidates,
+            accepted_candidates,
             target_name=request.target,
             intent=request.intent,
             query_classes=query_classes
@@ -241,7 +251,7 @@ class ResearchEngine:
             query_id="q_initial_broad",
             query_text=request.target,
             channel="broad_discovery",
-            evidence_snippets=[c.snippet for c in candidates[:10]],
+            evidence_snippets=[c.snippet for c in accepted_candidates[:10]],
             explicit_entities=[request.target]
         )
 
@@ -261,13 +271,16 @@ class ResearchEngine:
         seen_adaptive_queries: Set[str] = set()
         adaptive_query_records: List[QueryExecutionRecord] = []
 
+        # Bound discovery and adaptive search by discovery timeout to prevent deep read starvation
+        discovery_ceiling = min(effective_timeout, self.budget.discovery_timeout_seconds)
+
         if self.budget.follow_up_budget > 0:
             for round_idx in range(1, max_adaptive_rounds + 1):
                 elapsed = time.time() - start_ts
-                if elapsed >= effective_timeout:
+                if elapsed >= discovery_ceiling:
                     follow_up_telemetry["halted_early"] = True
-                    follow_up_telemetry["halt_reason"] = "latency_ceiling_reached"
-                    logger.info(f"[ResearchEngine] Halting adaptive queries early: latency ceiling reached ({elapsed:.1f}s >= {effective_timeout}s)")
+                    follow_up_telemetry["halt_reason"] = "discovery_timeout_reached"
+                    logger.info(f"[ResearchEngine] Halting adaptive queries early: discovery timeout reached ({elapsed:.1f}s >= {discovery_ceiling}s)")
                     break
 
                 if novelty_tracker.is_saturated:
@@ -301,8 +314,8 @@ class ResearchEngine:
                 follow_up_telemetry["queries_planned"] += len(new_queries)
 
                 for fu_idx, fu in enumerate(new_queries):
-                    if (time.time() - start_ts) >= effective_timeout or novelty_tracker.is_saturated:
-                        reason = "latency_ceiling_reached" if (time.time() - start_ts) >= effective_timeout else novelty_tracker.halt_reason
+                    if (time.time() - start_ts) >= discovery_ceiling or novelty_tracker.is_saturated:
+                        reason = "discovery_timeout_reached" if (time.time() - start_ts) >= discovery_ceiling else novelty_tracker.halt_reason
                         follow_up_telemetry["halted_early"] = True
                         follow_up_telemetry["halt_reason"] = reason
                         # Record remaining planned queries as SKIPPED
@@ -341,6 +354,7 @@ class ResearchEngine:
                     fu_error: Optional[str] = None
                     raw_fu_count = 0
 
+                    fu_candidates: List[EvidenceItem] = []
                     for ch in suggested_ch[:2]:
                         try:
                             frags = agent_reach_service.search_channel(ch, fu["query_text"], limit=2)
@@ -349,9 +363,9 @@ class ResearchEngine:
                                 raw_fu_count += len(frags)
                             for f in frags:
                                 u = getattr(f, "url", "") or ""
-                                if u and any(c.canonical_url == u for c in candidates):
+                                if u and any(c.canonical_url == u for c in (accepted_candidates + raw_candidates)):
                                     continue
-                                item_id = f"ev_fu_{len(candidates) + 1:03d}"
+                                item_id = f"ev_fu_{len(accepted_candidates) + len(all_rejected_audit) + 1:03d}"
                                 ev_item = EvidenceItem.from_evidence_fragment(f, item_id=item_id, target_name=request.target)
                                 ev_item.query_id = fu["query_id"]
                                 ev_item.query_class = fu.get("query_class", "adaptive_expansion")
@@ -361,11 +375,21 @@ class ResearchEngine:
                                 ev_item.metadata["reason"] = fu.get("reason", "")
                                 ev_item.metadata["adaptive_round"] = round_idx
                                 source_quality_engine.classify_and_score(ev_item, target_name=request.target)
-                                candidates.append(ev_item)
-                                new_snippets_this_step.append(ev_item.snippet)
+                                fu_candidates.append(ev_item)
                         except Exception as e:
                             fu_error = str(e)
                             logger.debug(f"[ResearchEngine] Follow-up query error for '{fu['query_text']}': {e}")
+
+                    # Hard filter follow-up items through relevance gate
+                    fu_accepted, fu_rejected = relevance_gate.filter_candidates(
+                        fu_candidates,
+                        target_entity=request.target,
+                        domain=request.domain
+                    )
+                    all_rejected_audit.extend(fu_rejected)
+                    for acc_item in fu_accepted:
+                        accepted_candidates.append(acc_item)
+                        new_snippets_this_step.append(acc_item.snippet)
 
                     q_lat = int((time.time() - q_start_time) * 1000)
                     q_completed_at = datetime.utcnow().isoformat()
@@ -410,9 +434,9 @@ class ResearchEngine:
                     )
 
                 # Re-cluster and re-rank after each round so next round replans with enriched pool
-                candidates, clusters_map = source_independence_engine.cluster_independence(candidates)
+                accepted_candidates, clusters_map = source_independence_engine.cluster_independence(accepted_candidates)
                 ranked_candidates = candidate_ranker.rank_candidates(
-                    candidates,
+                    accepted_candidates,
                     target_name=request.target,
                     intent=request.intent,
                     query_classes=query_classes
@@ -430,7 +454,13 @@ class ResearchEngine:
             if escalated_primaries:
                 for p in escalated_primaries:
                     source_quality_engine.classify_and_score(p, target_name=request.target)
-                ranked_candidates = escalated_primaries + ranked_candidates
+                esc_acc, esc_rej = relevance_gate.filter_candidates(
+                    escalated_primaries,
+                    target_entity=request.target,
+                    domain=request.domain
+                )
+                all_rejected_audit.extend(esc_rej)
+                ranked_candidates = esc_acc + ranked_candidates
 
             escalation_query_records = esc_telemetry.get("execution_records") or []
             if not escalation_query_records and esc_telemetry.get("queries"):
@@ -456,14 +486,14 @@ class ResearchEngine:
         else:
             escalated_primaries, esc_telemetry = [], {"queries": [], "escalations": 0}
 
-        # Stage 8: Diversity-Aware Deep Reading (6-10 sources, Requirement 13 & 14)
+        # Stage 8: Diversity-Aware Deep Reading (Requirement 13 & 14)
         deep_read_budget = min(request.deep_read_budget, self.budget.max_deep_reads)
-        time_left = max(1.0, effective_timeout - (time.time() - start_ts))
-        if (time.time() - start_ts) < effective_timeout and deep_read_budget > 0:
+        time_left = max(2.0, effective_timeout - (time.time() - start_ts))
+        if (time.time() - start_ts) < effective_timeout and deep_read_budget > 0 and ranked_candidates:
             investigated_items, read_telemetry = deep_reader.deep_read(
                 ranked_candidates,
                 max_reads=deep_read_budget,
-                timeout_per_read=min(self.budget.channel_timeout_seconds, time_left)
+                timeout_per_read=min(self.budget.channel_timeout_seconds, time_left / max(1, deep_read_budget))
             )
         else:
             investigated_items, read_telemetry = [], {
@@ -503,6 +533,14 @@ class ResearchEngine:
             intent=request.intent
         )
 
+        # Stage 11.5: Hard Referential Integrity Validation (Requirement 8)
+        valid_findings, integrity_report = evidence_integrity_validator.validate(
+            findings=findings,
+            evidence_pool=ranked_candidates,
+            fail_on_invalid=True
+        )
+        findings = valid_findings
+
         # Stage 12: Evidence Graph & Source Lineage DAG Construction
         graph = evidence_graph_builder.build_graph(
             findings=findings,
@@ -531,7 +569,6 @@ class ResearchEngine:
         ]
 
         # Stage 13: Full Research Corpus Assembly (Requirement 19)
-        # Accurate query accounting across all phases derived from canonical execution records
         initial_records = getattr(retrieval_res, "query_records", []) or []
         if not initial_records:
             for ch, q_list in multi_queries.items():
@@ -585,7 +622,9 @@ class ResearchEngine:
             "queries_auth_required": queries_auth_required,
             "queries_skipped": queries_skipped,
             "queries_executed": queries_executed,
-            "candidates_found": len(candidates),
+            "candidates_found": len(raw_candidates),
+            "candidates_accepted": len(accepted_candidates),
+            "candidates_rejected": len(all_rejected_audit),
             "unique_candidates": len(ranked_candidates),
             "deep_reads_count": read_telemetry.get("successful", read_telemetry.get("reads_succeeded", 0)),
             "primary_sources_count": len(primary_sources),
@@ -602,7 +641,7 @@ class ResearchEngine:
         corpus = ResearchCorpus(
             funnel=funnel,
             queries=all_executed_queries,
-            raw_candidates=[c.to_dict() for c in candidates],
+            raw_candidates=[c.to_dict() for c in raw_candidates],
             ranked_candidates=[r.to_dict() for r in ranked_candidates],
             deep_read_sources=[i.to_dict() for i in investigated_items],
             candidate_selection_audit=selection_audit,
@@ -637,7 +676,9 @@ class ResearchEngine:
             "query_records": all_executed_queries,
             "query_classes_count": len(query_classes),
             "follow_ups_executed": follow_up_telemetry["attempted"],
-            "candidates_found": len(candidates),
+            "candidates_found": len(raw_candidates),
+            "candidates_accepted": len(accepted_candidates),
+            "candidates_rejected": len(all_rejected_audit),
             "candidates_ranked": len(ranked_candidates),
             "deep_read_attempted": read_telemetry["attempted"],
             "deep_read_success": read_telemetry["successful"],
@@ -648,6 +689,7 @@ class ResearchEngine:
             "independent_source_groups": len(clusters_map),
             "contradictions_found": len(contradictions),
             "findings_count": len(findings),
+            "integrity_report": integrity_report.to_dict(),
             "saturation": sat_summary,
             "source_lineage": lineage_graph.get("metrics", {}),
             "total_latency_ms": total_latency_ms,
@@ -688,7 +730,7 @@ class ResearchEngine:
             target=request.target,
             domain=request.domain,
             summary=summary,
-            candidates=candidates,
+            candidates=raw_candidates,
             investigated_sources=investigated_items,
             evidence=ranked_candidates,
             findings=findings,
@@ -700,6 +742,10 @@ class ResearchEngine:
             channel_status=channel_status,
             retrieval_trace=trace_dict,
             research_corpus=corpus.to_dict(),
+            accepted_evidence=ranked_candidates,
+            rejected_evidence=all_rejected_audit,
+            integrity_report=integrity_report.to_dict(),
+            budget_telemetry=self.budget.to_dict(),
         )
 
 

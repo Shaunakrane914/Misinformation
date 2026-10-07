@@ -20,6 +20,12 @@ ALLOWED_SCHEMES: Set[str] = {"http", "https"}
 # Allowed ports for public web fetching
 ALLOWED_PORTS: Set[int] = {80, 443}
 
+# Approved zero-auth social evidence mirror hostnames (HTTPS port 443 only)
+APPROVED_SOCIAL_MIRROR_HOSTNAMES: Set[str] = {
+    "api.fxtwitter.com",
+    "arctic-shift.photon-reddit.com",
+}
+
 # Known cloud metadata hostnames
 BLOCKED_HOSTNAMES: Set[str] = {
     "metadata.google.internal",

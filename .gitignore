@@ -86,8 +86,17 @@ scripts/*_report.json
 *.report.json
 backend/data/dossiers/*.json
 !backend/data/dossiers/.gitkeep
+artifacts/
+research/scraper_bakeoff/repos/
 
 # Large video binaries
 brag-output/*.mp4
 *.mp4
+
+# Scratch research notes
+temp_user_prompts.txt
+final_report_prompt.txt
+found_questions.txt
+full_mission_mandate.txt
+questions_full.txt
 

@@ -1,0 +1,16 @@
+[
+  {
+    "username": "nasa",
+    "status": "FAILED",
+    "error": "JSON Query to api/v1/users/web_profile_info/: Expecting value: line 1 column 1 (char 0)",
+    "latency_ms": 5615,
+    "direct_platform_access": false
+  },
+  {
+    "username": "instagram",
+    "status": "FAILED",
+    "error": "JSON Query to api/v1/users/web_profile_info/: Expecting value: line 1 column 1 (char 0)",
+    "latency_ms": 4926,
+    "direct_platform_access": false
+  }
+]

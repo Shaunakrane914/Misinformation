@@ -1,0 +1,28 @@
+{
+  "yt_dlp_upstream": {
+    "id": "dQw4w9WgXcQ",
+    "title": "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)",
+    "uploader": "Rick Astley",
+    "upload_date": "20091025",
+    "duration": 213,
+    "view_count": 1823749052,
+    "like_count": 19474567,
+    "description_preview": "The official video for \u201cNever Gonna Give You Up\u201d by Rick Astley. \n\nNever: The Autobiography \ud83d\udcda OUT NOW! \nFollow this link to get your copy and listen to Rick\u2019s \u2018Never\u2019 playlist \u2764\ufe0f #RickAstleyNever\nhttps://linktr.ee/rickastleynever\n\n\u201cNever Gonna Give Y",
+    "subtitles_available": [
+      "en",
+      "de-DE",
+      "ja",
+      "pt-BR",
+      "es-419"
+    ],
+    "automatic_captions_available": true,
+    "latency_ms": 7721,
+    "status": "SUCCESS"
+  },
+  "aegis_vs_upstream_ytdlp": {
+    "aegis_current": "Uses yt-dlp CLI via subprocess in NativeExecutor.youtube_info()",
+    "upstream_library": "Direct in-process Python API (YoutubeDL)",
+    "overhead_difference": "CLI spawns external python process (+350ms process fork overhead)",
+    "recommendation": "Import yt_dlp directly in Python instead of invoking `yt-dlp.exe` CLI."
+  }
+}

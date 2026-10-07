@@ -1,0 +1,57 @@
+{
+  "url_called": "https://api.fxtwitter.com/WHO",
+  "latency_ms": 401,
+  "status": 200,
+  "payload": {
+    "code": 200,
+    "message": "OK",
+    "user": {
+      "screen_name": "WHO",
+      "url": "https://x.com/WHO",
+      "id": "14499829",
+      "followers": 12669443,
+      "following": 1734,
+      "likes": 13969,
+      "media_count": 26308,
+      "tweets": 83416,
+      "name": "World Health Organization (WHO)",
+      "description": "We are the @UN\u2019s health agency working for #HealthForAll\nAlways check our latest tweets for updated advice/information.",
+      "raw_description": {
+        "text": "We are the @UN\u2019s health agency working for #HealthForAll\nAlways check our latest tweets for updated advice/information.",
+        "facets": [
+          {
+            "type": "mention",
+            "indices": [
+              11,
+              14
+            ],
+            "original": "UN",
+            "id": ""
+          },
+          {
+            "type": "hashtag",
+            "indices": [
+              43,
+              56
+            ],
+            "original": "HealthForAll"
+          }
+        ]
+      },
+      "location": "Geneva, Switzerland",
+      "banner_url": "https://pbs.twimg.com/profile_banners/14499829/1715598334",
+      "avatar_url": "https://pbs.twimg.com/profile_images/1572512818796335105/YF_H68EL_normal.jpg",
+      "joined": "Wed Apr 23 19:56:27 +0000 2008",
+      "protected": false,
+      "website": {
+        "url": "http://www.who.int",
+        "display_url": "who.int"
+      },
+      "verification": {
+        "verified": true,
+        "verified_at": null,
+        "type": "government"
+      }
+    }
+  }
+}

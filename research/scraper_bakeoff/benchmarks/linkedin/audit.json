@@ -1,0 +1,11 @@
+{
+  "linkedin": {
+    "candidate": "linkedin_scraper (joeyism)",
+    "access_method": "BROWSER_AUTHENTICATED",
+    "driver": "Async Playwright",
+    "auth_required": "YES (li_at session cookie)",
+    "direct_content": true,
+    "reliability": "MEDIUM (LinkedIn updates DOM frequently; datacenter IPs trigger checkpoint)",
+    "aegis_fit": "EXCELLENT as authenticated specialist; FALLBACK to Google RSS / Bing when unauthenticated."
+  }
+}

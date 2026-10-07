@@ -1,0 +1,11 @@
+{
+  "facebook": {
+    "candidate": "facebook-scraper (kevinzg)",
+    "access_method": "DIRECT_AUTHENTICATED / MOBILE_HTML",
+    "driver": "Requests + mobile HTML parsing",
+    "auth_required": "YES (c_user + xs cookies for non-public)",
+    "direct_content": true,
+    "reliability": "LOW (Heavy dependency conflict with modern Python; Facebook aggressively blocks mbasic)",
+    "aegis_fit": "POOR. Better handled via Playwright with user session or Google News syndication."
+  }
+}

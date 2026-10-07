@@ -1,0 +1,380 @@
+{
+  "CURRENT": {
+    "bilibili": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "boss": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "facebook": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "general_web": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 48.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 52.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "github": {
+      "DIRECT_NATIVE": 100.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "instagram": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "jina_reader": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 100.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "linkedin": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "news": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 100.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "reddit": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "rss": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 100.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "tiktok": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "twitter": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "v2ex": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 100.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "xiaohongshu": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "xueqiu": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "youtube": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 100.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    }
+  },
+  "CANDIDATE": {
+    "bilibili": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "boss": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "facebook": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "general_web": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 90.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 10.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "github": {
+      "DIRECT_NATIVE": 100.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "instagram": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "jina_reader": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 100.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "linkedin": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "news": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 100.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "reddit": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 6.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 94.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "rss": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 100.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "tiktok": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "twitter": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 28.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 72.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "v2ex": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 100.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "xiaohongshu": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "xueqiu": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 100.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 0.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    },
+    "youtube": {
+      "DIRECT_NATIVE": 0.0,
+      "DIRECT_PUBLIC": 0.0,
+      "PUBLIC_MIRROR": 0.0,
+      "THIRD_PARTY_SCRAPER": 0.0,
+      "SEARCH_INDEX": 0.0,
+      "RSS_SYNDICATION": 0.0,
+      "SPECIALIST": 100.0,
+      "NO_VALID_RETRIEVAL": 0.0,
+      "AUTH_REQUIRED": 0.0
+    }
+  }
+}

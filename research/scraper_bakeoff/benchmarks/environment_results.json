@@ -1,0 +1,90 @@
+{
+  "playwright": {
+    "component": "playwright",
+    "category": "Generic Browser",
+    "status": "SUCCESS",
+    "latency_ms": 38,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "scrapling": {
+    "component": "scrapling",
+    "category": "Adaptive Scraper",
+    "status": "SUCCESS",
+    "latency_ms": 160,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "crawlee": {
+    "component": "crawlee",
+    "category": "Crawling Framework",
+    "status": "SUCCESS",
+    "latency_ms": 741,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "scrapy": {
+    "component": "scrapy",
+    "category": "Crawling Framework",
+    "status": "SUCCESS",
+    "latency_ms": 244,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "instaloader": {
+    "component": "instaloader",
+    "category": "Instagram Specialist",
+    "status": "SUCCESS",
+    "latency_ms": 16,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "twscrape": {
+    "component": "twscrape",
+    "category": "X/Twitter Specialist",
+    "status": "SUCCESS",
+    "latency_ms": 266,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "praw": {
+    "component": "praw",
+    "category": "Reddit Specialist",
+    "status": "SUCCESS",
+    "latency_ms": 52,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "yt_dlp": {
+    "component": "yt_dlp",
+    "category": "YouTube Specialist",
+    "status": "SUCCESS",
+    "latency_ms": 165,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "TikTokApi": {
+    "component": "TikTokApi",
+    "category": "TikTok Specialist",
+    "status": "SUCCESS",
+    "latency_ms": 22,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "linkedin_scraper": {
+    "component": "linkedin_scraper",
+    "category": "LinkedIn Specialist",
+    "status": "SUCCESS",
+    "latency_ms": 17,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  },
+  "facebook_scraper": {
+    "component": "facebook_scraper",
+    "category": "Facebook Specialist",
+    "status": "SUCCESS",
+    "latency_ms": 215,
+    "error": null,
+    "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]"
+  }
+}

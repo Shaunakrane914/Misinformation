@@ -9,9 +9,14 @@ and records comprehensive execution telemetry for every attempt.
 """
 
 import base64
+import json
 import logging
+import os
+import re
 import time
+import urllib.error
 import urllib.parse
+import urllib.request
 from typing import Any, Dict, List, Optional, Tuple
 
 from backend.services.agent_reach.channels import ChannelStatus, EvidenceFragment, RetrievalMode
@@ -20,6 +25,16 @@ from backend.services.agent_reach.native.doctor import native_doctor
 from backend.services.agent_reach.native.errors import AuthRequiredError, NativeReachError
 from backend.services.agent_reach.native.executor import native_executor
 from backend.services.agent_reach.native.normalizer import native_normalizer
+from backend.services.agent_reach.native.source_discovery import (
+    TWITTER_RESERVED_PATHS,
+    SourceDiscoveryResult,
+    extract_reddit_source,
+    extract_x_source,
+    discover_sources_from_search,
+    generate_discovery_queries,
+    is_valid_content_source,
+    resolve_bing_redirect,
+)
 from backend.services.url_validator import is_safe_url
 
 logger = logging.getLogger(__name__)
@@ -45,6 +60,276 @@ class NativeRouter:
         self.doctor = native_doctor
         self.executor = native_executor
         self.normalizer = native_normalizer
+        self._social_cache: Dict[str, Tuple[float, Any]] = {}
+        self._social_cache_ttl = float(os.getenv("AEGIS_SOCIAL_CACHE_TTL", "600.0"))
+
+        # Experimental feature flags (safe zero-auth defaults)
+        self.use_arctic_shift = os.getenv("AEGIS_REDDIT_ARCTIC_SHIFT", "true").lower() in ("true", "1", "yes")
+        self.use_fxtwitter = os.getenv("AEGIS_X_FXTWITTER", "true").lower() in ("true", "1", "yes")
+        self.use_social_url_discovery = os.getenv("AEGIS_SOCIAL_URL_DISCOVERY", "true").lower() in ("true", "1", "yes")
+
+    def _get_social_cache(self, key: str) -> Optional[Any]:
+        """Fetch unexpired item from in-memory cache."""
+        if key in self._social_cache:
+            ts, val = self._social_cache[key]
+            if time.time() - ts < self._social_cache_ttl:
+                return val
+            del self._social_cache[key]
+        return None
+
+    def _set_social_cache(self, key: str, val: Any) -> None:
+        """Store item in in-memory cache with current timestamp."""
+        if val is not None:
+            self._social_cache[key] = (time.time(), val)
+
+    def _fetch_arctic_shift_posts_batch(
+        self,
+        post_ids: List[str],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """
+        Batch Reddit submissions lookup via Arctic Shift REST API.
+        Deduplicates post IDs, checks cache, and batches requests in chunks of up to 25.
+        Applies exponential backoff on retryable 422/429/503 responses.
+        """
+        if not self.use_arctic_shift or not post_ids:
+            return []
+
+        clean_ids = list(dict.fromkeys([
+            pid.replace("t3_", "").strip()
+            for pid in post_ids
+            if pid and pid.replace("t3_", "").strip()
+        ]))
+        
+        results: List[EvidenceFragment] = []
+        to_fetch: List[str] = []
+
+        for pid in clean_ids:
+            cached = self._get_social_cache(f"reddit:post:{pid}")
+            if cached:
+                results.append(cached)
+            else:
+                to_fetch.append(pid)
+
+        if not to_fetch:
+            return results
+
+        chunk_size = 25
+        for i in range(0, len(to_fetch), chunk_size):
+            chunk = to_fetch[i : i + chunk_size]
+            url = f"https://arctic-shift.photon-reddit.com/api/posts/ids?ids={','.join(chunk)}"
+            req = urllib.request.Request(
+                url,
+                headers={
+                    "User-Agent": "AegisAgentReach/3.0 (Zero-Auth Public Evidence Mirror)",
+                    "Accept": "application/json"
+                }
+            )
+            data = None
+            for attempt in range(2):
+                try:
+                    with urllib.request.urlopen(req, timeout=8.0) as resp:
+                        data = json.loads(resp.read().decode("utf-8"))
+                        break
+                except urllib.error.HTTPError as e:
+                    if e.code in (422, 429, 503) and attempt == 0:
+                        time.sleep(0.8)
+                        continue
+                    logger.debug(f"[NativeRouter] Arctic Shift batch lookup HTTP {e.code}: {e}")
+                    break
+                except Exception as e:
+                    logger.debug(f"[NativeRouter] Arctic Shift batch lookup error: {e}")
+                    break
+
+            if data:
+                posts = data.get("data", [])
+                if posts:
+                    frags = self.normalizer.normalize_arctic_shift_posts(
+                        posts, query_id=query_id, query_class=query_class, query_text=query_text
+                    )
+                    for f in frags:
+                        pid = f.raw_metadata.get("post_id") or ""
+                        if pid:
+                            self._set_social_cache(f"reddit:post:{pid}", f)
+                    results.extend(frags)
+
+        return results
+
+    def _fetch_arctic_shift_post(self, post_id: str) -> Optional[EvidenceFragment]:
+        """Direct Reddit submission lookup via Arctic Shift REST API."""
+        if not self.use_arctic_shift:
+            return None
+        frags = self._fetch_arctic_shift_posts_batch([post_id])
+        return frags[0] if frags else None
+
+    def _fetch_arctic_shift_search(
+        self,
+        query: str = "",
+        subreddit: str = "",
+        author: str = "",
+        limit: int = 5,
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Search Reddit submissions via Arctic Shift REST API."""
+        cache_key = f"reddit:search:{subreddit}:{author}:{query}:{limit}"
+        cached = self._get_social_cache(cache_key)
+        if cached:
+            return cached
+
+        params = {"limit": str(min(limit, 25)), "sort": "desc"}
+        if subreddit:
+            params["subreddit"] = subreddit
+        if author:
+            params["author"] = author
+        if query:
+            params["query"] = query
+
+        url = f"https://arctic-shift.photon-reddit.com/api/posts/search?{urllib.parse.urlencode(params)}"
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "AegisAgentReach/3.0 (Zero-Auth Public Evidence Mirror)",
+                "Accept": "application/json"
+            }
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=7.0) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                posts = data.get("data", [])
+                frags = self.normalizer.normalize_arctic_shift_posts(
+                    posts, query_id=query_id, query_class=query_class, query_text=query_text or query
+                )
+                if frags:
+                    self._set_social_cache(cache_key, frags)
+                    return frags
+        except Exception as e:
+            logger.debug(f"[NativeRouter] Arctic Shift search failed for params {params}: {e}")
+        return []
+
+    def _fetch_arctic_shift_comments(
+        self,
+        post_id: str,
+        limit: int = 10,
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Fetch comments for a known Reddit submission via Arctic Shift REST API."""
+        clean_pid = post_id.replace("t3_", "").strip()
+        link_id = f"t3_{clean_pid}"
+        cache_key = f"reddit:comments:{clean_pid}:{limit}"
+        cached = self._get_social_cache(cache_key)
+        if cached:
+            return cached
+
+        url = f"https://arctic-shift.photon-reddit.com/api/comments/search?link_id={link_id}&limit={min(limit, 50)}&sort=desc"
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "AegisAgentReach/3.0 (Zero-Auth Public Evidence Mirror)",
+                "Accept": "application/json"
+            }
+        )
+        try:
+            with urllib.request.urlopen(req, timeout=7.0) as resp:
+                data = json.loads(resp.read().decode("utf-8"))
+                comments = data.get("data", [])
+                frags = self.normalizer.normalize_arctic_shift_comments(
+                    comments, query_id=query_id, query_class=query_class, query_text=query_text
+                )
+                if frags:
+                    self._set_social_cache(cache_key, frags)
+                    return frags
+        except Exception as e:
+            logger.debug(f"[NativeRouter] Arctic Shift comments fetch failed for {clean_pid}: {e}")
+        return []
+
+    def _fetch_fxtwitter_status(self, user: str, status_id: str) -> Optional[EvidenceFragment]:
+        """Fetch public tweet status via FxTwitter API with retry on 429/503."""
+        if not self.use_fxtwitter:
+            return None
+        clean_sid = status_id.strip()
+        cache_key = f"twitter:status:{clean_sid}"
+        cached = self._get_social_cache(cache_key)
+        if cached:
+            return cached
+
+        handle = user if (user and user not in ("i", "status")) else "status"
+        if handle == "status":
+            url = f"https://api.fxtwitter.com/status/{clean_sid}"
+        else:
+            url = f"https://api.fxtwitter.com/{handle}/status/{clean_sid}"
+
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "AegisAgentReach/3.0 (Zero-Auth Public Evidence Mirror)",
+                "Accept": "application/json"
+            }
+        )
+        for attempt in range(2):
+            try:
+                with urllib.request.urlopen(req, timeout=6.0) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    if data.get("code") == 200 and data.get("tweet"):
+                        frag = self.normalizer.normalize_fxtwitter_tweet(data["tweet"])
+                        if frag:
+                            self._set_social_cache(cache_key, frag)
+                            return frag
+                break
+            except urllib.error.HTTPError as e:
+                if e.code in (429, 503) and attempt == 0:
+                    time.sleep(0.5)
+                    continue
+                logger.debug(f"[NativeRouter] FxTwitter status fetch failed for {user}/{status_id}: {e}")
+                break
+            except Exception as e:
+                logger.debug(f"[NativeRouter] FxTwitter status fetch error: {e}")
+                break
+        return None
+
+    def _fetch_fxtwitter_profile(self, user: str) -> Optional[EvidenceFragment]:
+        """Fetch public user profile via FxTwitter API."""
+        if not self.use_fxtwitter:
+            return None
+        clean_user = user.replace("@", "").strip()
+        cache_key = f"twitter:profile:{clean_user.lower()}"
+        cached = self._get_social_cache(cache_key)
+        if cached:
+            return cached
+
+        url = f"https://api.fxtwitter.com/{clean_user}"
+        req = urllib.request.Request(
+            url,
+            headers={
+                "User-Agent": "AegisAgentReach/3.0 (Zero-Auth Public Evidence Mirror)",
+                "Accept": "application/json"
+            }
+        )
+        for attempt in range(2):
+            try:
+                with urllib.request.urlopen(req, timeout=6.0) as resp:
+                    data = json.loads(resp.read().decode("utf-8"))
+                    if data.get("code") == 200 and data.get("user"):
+                        frag = self.normalizer.normalize_fxtwitter_profile(data["user"])
+                        if frag:
+                            self._set_social_cache(cache_key, frag)
+                            return frag
+                break
+            except urllib.error.HTTPError as e:
+                if e.code in (429, 503) and attempt == 0:
+                    time.sleep(0.5)
+                    continue
+                logger.debug(f"[NativeRouter] FxTwitter profile fetch failed for {clean_user}: {e}")
+                break
+            except Exception as e:
+                logger.debug(f"[NativeRouter] FxTwitter profile fetch error: {e}")
+                break
+        return None
 
     @staticmethod
     def _tag_fragments(
@@ -304,49 +589,402 @@ class NativeRouter:
                     telemetry["status"] = "FAILED"
                     telemetry["error"] = read_res.get("error", "Failed to read content")
 
-            # ── 9. Authenticated Social Channels (Reddit, Twitter, etc.) ──
-            elif platform in ("reddit", "twitter"):
-                env_var = f"{platform.upper()}_COOKIE"
-                try:
-                    self.executor.guard_authenticated_channel(
-                        platform=platform,
-                        backend=active_backend,
-                        env_var=env_var
-                    )
-                    telemetry["status"] = "SUCCESS"
-                except AuthRequiredError as auth_err:
-                    # Provide an honest authenticated fallback via web indexing if allowed
-                    logger.info(f"[NativeRouter] Platform '{platform}' requires login ({auth_err.message}); falling back to Google RSS web syndication index")
-                    site_query = f"site:{platform}.com {query}"
-                    feed_query = urllib.parse.quote_plus(site_query.strip())
-                    rss_url = f"https://news.google.com/rss/search?q={feed_query}&hl=en-US&gl=US&ceid=US:en"
-                    try:
-                        res = self.executor.execute_rss_read(rss_url, limit=limit)
-                        fragments = self.normalizer.normalize_rss_entries(
-                            res.get("items", []), channel_name=platform, query_id=query_id, query_class=query_class, query_text=q_text
+            # ── 9. Reddit Channel (Zero-Auth Public Mirror: Arctic Shift) ──
+            elif platform == "reddit":
+                q_clean = query.strip()
+                
+                # BRANCH 1: Check if query contains an EXACT Reddit URL or redd.it link
+                reddit_src = extract_reddit_source(q_clean, query=q_clean)
+                if reddit_src and self.use_arctic_shift:
+                    if reddit_src.source_type == "comment" and reddit_src.parent_id:
+                        # Comment URL: fetch parent post + comments
+                        post_frag = self._fetch_arctic_shift_post(reddit_src.parent_id)
+                        comm_frags = self._fetch_arctic_shift_comments(
+                            reddit_src.parent_id, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text
                         )
+                        all_frags = ([post_frag] if post_frag else []) + comm_frags
+                        if all_frags:
+                            self._tag_fragments(
+                                all_frags, "reddit", "reddit", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "arctic_shift", None, False
+                            )
+                            for f in all_frags:
+                                f.raw_metadata["discovered_from"] = "direct_input"
+                                f.raw_metadata["external_id"] = reddit_src.external_id
+                                f.raw_metadata["content_completeness"] = "full_submission_plus_comments"
+                            fragments = all_frags
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "arctic_shift"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+                    elif reddit_src.source_type == "post" and reddit_src.external_id:
+                        post_frag = self._fetch_arctic_shift_post(reddit_src.external_id)
+                        if post_frag:
+                            comm_frags = self._fetch_arctic_shift_comments(
+                                reddit_src.external_id, limit=3, query_id=query_id, query_class=query_class, query_text=q_text
+                            )
+                            post_frag.raw_metadata["discovered_from"] = "direct_input"
+                            post_frag.raw_metadata["external_id"] = reddit_src.external_id
+                            post_frag.raw_metadata["content_completeness"] = "full_submission_plus_comments" if comm_frags else "full_submission"
+                            fragments = [post_frag] + comm_frags
+                            self._tag_fragments(
+                                fragments, "reddit", "reddit", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "arctic_shift", None, False
+                            )
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "arctic_shift"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+                    elif reddit_src.source_type == "subreddit" and reddit_src.subreddit:
+                        fragments = self._fetch_arctic_shift_search(
+                            query="", subreddit=reddit_src.subreddit, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text
+                        )
+                        if fragments:
+                            self._tag_fragments(
+                                fragments, "reddit", "reddit", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "arctic_shift", None, False
+                            )
+                            for f in fragments:
+                                f.raw_metadata["discovered_from"] = "direct_input"
+                                f.raw_metadata["content_completeness"] = "subreddit_feed"
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "arctic_shift"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+
+                # BRANCH 2: Comments requested by ID (e.g. "comments:z1c9z")
+                if not fragments and self.use_arctic_shift:
+                    post_comment_match = re.search(r"(?:comments(?:\s+for\s+|\s+in\s+|:\s*)|^post\s+)([a-z0-9]+)", q_clean, re.IGNORECASE)
+                    if post_comment_match:
+                        target_pid = post_comment_match.group(1)
+                        is_explicit_post = q_clean.lower().startswith("post ")
+                        if is_explicit_post:
+                            post_frag = self._fetch_arctic_shift_post(target_pid)
+                            comm_frags = self._fetch_arctic_shift_comments(
+                                target_pid, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text
+                            )
+                            fragments = ([post_frag] if post_frag else []) + comm_frags
+                        else:
+                            fragments = self._fetch_arctic_shift_comments(
+                                target_pid, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text
+                            )
+                        if fragments:
+                            self._tag_fragments(
+                                fragments, "reddit", "reddit", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "arctic_shift", None, False
+                            )
+                            for f in fragments:
+                                f.raw_metadata["discovered_from"] = "direct_input"
+                                f.raw_metadata["external_id"] = target_pid
+                                f.raw_metadata["content_completeness"] = "comments" if not is_explicit_post else "full_submission_plus_comments"
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "arctic_shift"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+
+                # BRANCH 3: Subreddit query (e.g. "r/technology" or "r/science")
+                if not fragments and self.use_arctic_shift:
+                    sub_match = re.match(r"^r/([a-zA-Z0-9_]+)$", q_clean)
+                    if sub_match:
+                        sub_name = sub_match.group(1)
+                        fragments = self._fetch_arctic_shift_search(
+                            query="", subreddit=sub_name, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text
+                        )
+                        if fragments:
+                            self._tag_fragments(
+                                fragments, "reddit", "reddit", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "arctic_shift", None, False
+                            )
+                            for f in fragments:
+                                f.raw_metadata["discovered_from"] = "direct_input"
+                                f.raw_metadata["content_completeness"] = "subreddit_feed"
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "arctic_shift"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+
+                # BRANCH 4: UNANCHORED REDDIT QUERY (MULTI-QUERY SEARCH DISCOVERY -> ARCTIC SHIFT MIRROR)
+                if not fragments and self.use_arctic_shift and self.use_social_url_discovery:
+                    target_ent = kwargs.get("entity") or ""
+                    target_top = kwargs.get("topic") or ""
+                    target_clm = kwargs.get("claim") or ""
+                    task_t = kwargs.get("task_type") or "SEARCH"
+
+                    discovery_queries = generate_discovery_queries("reddit", q_clean, entity=target_ent, task_type=task_t)
+                    candidate_urls_all: List[str] = []
+                    discovered_posts: List[SourceDiscoveryResult] = []
+                    queries_attempted_count = 0
+
+                    for dq in discovery_queries:
+                        queries_attempted_count += 1
+                        try:
+                            search_frags = self._execute_web_search(
+                                dq, limit=8, query_id=query_id, query_class=query_class, query_text=q_text
+                            )
+                        except (StopIteration, Exception):
+                            search_frags = []
+                        if search_frags:
+                            for sf in search_frags:
+                                if sf.url not in candidate_urls_all:
+                                    candidate_urls_all.append(sf.url)
+                            cands = discover_sources_from_search(
+                                search_frags, platform="reddit", query=dq,
+                                target_entity=target_ent, target_topic=target_top, target_claim=target_clm,
+                                task_type=task_t, max_candidates=5
+                            )
+                            for c in cands:
+                                if c.source_type in ("post", "comment") and c.external_id:
+                                    if not any(x.external_id == c.external_id for x in discovered_posts):
+                                        discovered_posts.append(c)
+                        if len(discovered_posts) >= 2:
+                            break
+
+                    telemetry["discovery_attempted"] = True
+                    telemetry["discovery_engine"] = "bing_search"
+                    telemetry["queries_attempted"] = queries_attempted_count
+                    telemetry["candidate_urls_count"] = len(candidate_urls_all)
+                    telemetry["social_candidate_count"] = len(discovered_posts)
+                    telemetry["reddit_url_count"] = len(discovered_posts)
+
+                    cand_pids = [c.external_id for c in discovered_posts if c.source_type == "post" and c.external_id]
+                    if cand_pids:
+                        telemetry["selected_source_url"] = discovered_posts[0].canonical_url
+                        telemetry["selected_external_id"] = cand_pids[0]
+                        telemetry["mirror_attempted"] = True
+                        telemetry["mirror_provider"] = "arctic_shift"
+
+                        mirror_frags = self._fetch_arctic_shift_posts_batch(
+                            cand_pids, query_id=query_id, query_class=query_class, query_text=q_text
+                        )
+                        if mirror_frags:
+                            top_pid = mirror_frags[0].raw_metadata.get("post_id") or cand_pids[0]
+                            comms = self._fetch_arctic_shift_comments(
+                                top_pid, limit=3, query_id=query_id, query_class=query_class, query_text=q_text
+                            )
+                            fragments = mirror_frags + comms
+                            self._tag_fragments(
+                                fragments, "reddit", "reddit", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "arctic_shift", None, False
+                            )
+                            for f in fragments:
+                                f.raw_metadata["discovered_from"] = "search_url_discovery"
+                                f.raw_metadata["content_completeness"] = "full_submission_plus_comments" if comms else "full_submission"
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "arctic_shift"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+                            telemetry["discovered_from"] = "search_url_discovery"
+                            telemetry["mirror_result"] = "SUCCESS"
+                        else:
+                            telemetry["mirror_result"] = "FALLBACK"
+                    else:
+                        telemetry["mirror_attempted"] = False
+                        telemetry["mirror_result"] = "NO_VALID_URLS"
+
+                # BRANCH 5: FALLBACK (Only after mirror retrieval fails or no valid source ID discovered)
+                if not fragments:
+                    logger.debug(f"[NativeRouter] Arctic Shift yielded no results for '{query}'. Trying search index fallback.")
+                    site_query = f"site:reddit.com {query}"
+                    fragments = self._execute_web_search(
+                        site_query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text
+                    )
+                    if fragments:
                         self._tag_fragments(
                             fragments,
-                            requested_channel=platform,
-                            actual_channel="web_syndication",
-                            mode=RetrievalMode.UNAUTHENTICATED_SYNDICATED_FALLBACK.value,
-                            backend_id="google-rss-index",
-                            fallback_reason="AUTH_REQUIRED_NO_SESSION",
+                            requested_channel="reddit",
+                            actual_channel="web_search",
+                            mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+                            backend_id="bing-search-index",
+                            fallback_reason="ARCTIC_SHIFT_UNAVAILABLE",
                             is_authenticated=False
                         )
                         for f in fragments:
-                            f.platform = f"{platform.capitalize()} (Web Index Fallback)"
-                            f.retrieval_method = f"{platform}_web_index"
+                            f.platform = "Reddit (Web Index Fallback)"
+                            f.retrieval_method = "reddit_web_index"
                             f.raw_metadata["source_tier"] = "TIER_3_AGGREGATE"
-                            f.raw_metadata["honest_disclosure"] = f"Platform API session unavailable for {platform}; retrieved via public web syndication index"
-                        telemetry["status"] = "SUCCESS" if fragments else "AUTH_REQUIRED"
+                            f.raw_metadata["honest_disclosure"] = "Direct Reddit mirror returned no items; retrieved via public search index"
+                        telemetry["status"] = "SUCCESS"
                         telemetry["fallback_used"] = True
-                        telemetry["fallback_backend"] = "Google RSS (Unauthenticated Index)"
-                        telemetry["fallback_reason"] = "AUTH_REQUIRED_NO_SESSION"
-                        telemetry["retrieval_mode"] = RetrievalMode.UNAUTHENTICATED_SYNDICATED_FALLBACK.value
-                    except Exception:
-                        telemetry["status"] = "AUTH_REQUIRED"
-                        telemetry["error"] = str(auth_err)
+                        telemetry["fallback_backend"] = "Bing Search Index"
+                        telemetry["fallback_reason"] = "ARCTIC_SHIFT_UNAVAILABLE"
+                        telemetry["retrieval_mode"] = RetrievalMode.WEB_SEARCH_INDEX.value
+                    else:
+                        telemetry["status"] = "DEGRADED"
+                        telemetry["fallback_used"] = True
+                        telemetry["fallback_backend"] = "Bing Search Index"
+                        telemetry["fallback_reason"] = "ARCTIC_SHIFT_UNAVAILABLE"
+
+            # ── 10. Twitter / X Channel (Zero-Auth Public Mirror: FxTwitter) ──
+            elif platform in ("twitter", "x"):
+                q_clean = query.strip()
+                
+                # BRANCH 1: EXACT STATUS URL or ID
+                x_src = extract_x_source(q_clean, query=q_clean)
+                if x_src and self.use_fxtwitter:
+                    if x_src.source_type == "status" and x_src.external_id:
+                        frag = self._fetch_fxtwitter_status(x_src.handle or "status", x_src.external_id)
+                        if frag:
+                            frag.raw_metadata["discovered_from"] = "direct_input"
+                            frag.raw_metadata["external_id"] = x_src.external_id
+                            frag.raw_metadata["content_completeness"] = "full_status"
+                            fragments = [frag]
+                            self._tag_fragments(
+                                fragments, "twitter", "twitter", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "fxtwitter", None, False
+                            )
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "fxtwitter"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+                    elif x_src.source_type == "profile" and x_src.handle:
+                        frag = self._fetch_fxtwitter_profile(x_src.handle)
+                        if frag:
+                            frag.raw_metadata["discovered_from"] = "direct_input"
+                            frag.raw_metadata["external_id"] = x_src.handle
+                            frag.raw_metadata["content_completeness"] = "profile"
+                            fragments = [frag]
+                            self._tag_fragments(
+                                fragments, "twitter", "twitter", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "fxtwitter", None, False
+                            )
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "fxtwitter"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+
+                # BRANCH 2: Profile / Handle lookup (e.g. "@NASA" or alphanumeric handle)
+                # NEVER default to NASA or another hardcoded account
+                if not fragments and self.use_fxtwitter:
+                    handle_match = re.match(r"^@?([a-zA-Z0-9_]{1,15})$", q_clean)
+                    if handle_match and not q_clean.startswith("site:"):
+                        handle = handle_match.group(1)
+                        if handle.lower() not in TWITTER_RESERVED_PATHS:
+                            frag = self._fetch_fxtwitter_profile(handle)
+                            if frag:
+                                frag.raw_metadata["discovered_from"] = "direct_input"
+                                frag.raw_metadata["external_id"] = handle
+                                frag.raw_metadata["content_completeness"] = "profile"
+                                fragments = [frag]
+                                self._tag_fragments(
+                                    fragments, "twitter", "twitter", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "fxtwitter", None, False
+                                )
+                                telemetry["status"] = "SUCCESS"
+                                telemetry["backend"] = "fxtwitter"
+                                telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                                telemetry["authenticated"] = False
+
+                # BRANCH 3 & 4: SEARCH / DISCOVERY QUERY & BROAD X QUERY
+                # Search for actual x.com/twitter.com status URLs, extract IDs, fetch via FxTwitter
+                if not fragments and self.use_fxtwitter and self.use_social_url_discovery:
+                    target_ent = kwargs.get("entity") or ""
+                    target_top = kwargs.get("topic") or ""
+                    target_clm = kwargs.get("claim") or ""
+                    task_t = kwargs.get("task_type") or "SEARCH"
+
+                    discovery_queries = generate_discovery_queries("twitter", q_clean, entity=target_ent, task_type=task_t)
+                    candidate_urls_all: List[str] = []
+                    discovered_statuses: List[SourceDiscoveryResult] = []
+                    queries_attempted_count = 0
+
+                    for dq in discovery_queries:
+                        queries_attempted_count += 1
+                        try:
+                            search_frags = self._execute_web_search(
+                                dq, limit=8, query_id=query_id, query_class=query_class, query_text=q_text
+                            )
+                        except (StopIteration, Exception):
+                            search_frags = []
+                        if search_frags:
+                            for sf in search_frags:
+                                if sf.url not in candidate_urls_all:
+                                    candidate_urls_all.append(sf.url)
+                            cands = discover_sources_from_search(
+                                search_frags, platform="twitter", query=dq,
+                                target_entity=target_ent, target_topic=target_top, target_claim=target_clm,
+                                task_type=task_t, max_candidates=5
+                            )
+                            for c in cands:
+                                if (c.source_type in ("status", "profile")) and c.external_id:
+                                    if not any(x.external_id == c.external_id for x in discovered_statuses):
+                                        discovered_statuses.append(c)
+                        if len(discovered_statuses) >= 2:
+                            break
+
+                    telemetry["discovery_attempted"] = True
+                    telemetry["discovery_engine"] = "bing_search"
+                    telemetry["queries_attempted"] = queries_attempted_count
+                    telemetry["candidate_urls_count"] = len(candidate_urls_all)
+                    telemetry["social_candidate_count"] = len(discovered_statuses)
+                    telemetry["valid_status_urls_count"] = len(discovered_statuses)
+                    telemetry["x_status_url_count"] = len(discovered_statuses)
+
+                    fetched_tweets: List[EvidenceFragment] = []
+                    if discovered_statuses:
+                        telemetry["selected_source_url"] = discovered_statuses[0].canonical_url
+                        telemetry["selected_external_id"] = discovered_statuses[0].external_id
+                        telemetry["mirror_attempted"] = True
+                        telemetry["mirror_provider"] = "fxtwitter"
+
+                        for cand in discovered_statuses:
+                            if cand.source_type == "profile":
+                                t_frag = self._fetch_fxtwitter_profile(cand.handle or cand.external_id)
+                                if t_frag and t_frag.content:
+                                    t_frag.raw_metadata["discovered_from"] = "search_url_discovery"
+                                    t_frag.raw_metadata["external_id"] = cand.external_id
+                                    t_frag.raw_metadata["content_completeness"] = "profile"
+                                    fetched_tweets.append(t_frag)
+                                    if len(fetched_tweets) >= limit:
+                                        break
+                            else:
+                                t_frag = self._fetch_fxtwitter_status(cand.handle or "status", cand.external_id)
+                                if t_frag and t_frag.content:
+                                    t_frag.raw_metadata["discovered_from"] = "search_url_discovery"
+                                    t_frag.raw_metadata["external_id"] = cand.external_id
+                                    t_frag.raw_metadata["content_completeness"] = "full_status"
+                                    fetched_tweets.append(t_frag)
+                                    if len(fetched_tweets) >= limit:
+                                        break
+
+                        if fetched_tweets:
+                            fragments = fetched_tweets[:limit]
+                            self._tag_fragments(
+                                fragments, "twitter", "twitter", RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value, "fxtwitter", None, False
+                            )
+                            telemetry["status"] = "SUCCESS"
+                            telemetry["backend"] = "fxtwitter"
+                            telemetry["retrieval_mode"] = RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+                            telemetry["authenticated"] = False
+                            telemetry["discovered_from"] = "search_url_discovery"
+                            telemetry["mirror_result"] = "SUCCESS"
+                        else:
+                            telemetry["mirror_result"] = "FALLBACK"
+                    else:
+                        telemetry["mirror_attempted"] = False
+                        telemetry["mirror_result"] = "NO_VALID_URLS"
+
+                # BRANCH 5: FALLBACK (If no valid status discovered or FxTwitter failed)
+                if not fragments:
+                    site_query = f"site:twitter.com OR site:x.com {query}"
+                    fragments = self._execute_web_search(
+                        site_query, limit=limit, query_id=query_id, query_class=query_class, query_text=q_text
+                    )
+                    if fragments:
+                        self._tag_fragments(
+                            fragments,
+                            requested_channel="twitter",
+                            actual_channel="web_search",
+                            mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+                            backend_id="bing-search-index",
+                            fallback_reason="FXTWITTER_SEARCH_INDEX_FALLBACK",
+                            is_authenticated=False
+                        )
+                        for f in fragments:
+                            f.platform = "Twitter (Web Index Fallback)"
+                            f.retrieval_method = "twitter_web_index"
+                            f.raw_metadata["source_tier"] = "TIER_3_AGGREGATE"
+                            f.raw_metadata["honest_disclosure"] = "Broad X claim search routed via public search index (zero-auth)"
+                        telemetry["status"] = "SUCCESS"
+                        telemetry["fallback_used"] = True
+                        telemetry["fallback_backend"] = "Bing Search Index"
+                        telemetry["fallback_reason"] = "FXTWITTER_SEARCH_INDEX_FALLBACK"
+                        telemetry["retrieval_mode"] = RetrievalMode.WEB_SEARCH_INDEX.value
+                    else:
+                        telemetry["status"] = "DEGRADED"
+                        telemetry["fallback_used"] = True
+                        telemetry["fallback_backend"] = "Bing Search Index"
+                        telemetry["fallback_reason"] = "FXTWITTER_SEARCH_INDEX_FALLBACK"
 
             # ── 10. Tier-1 Session Channels (LinkedIn, Xueqiu, RED, FB, IG, Boss) ──
             elif platform in ("linkedin", "xueqiu", "xiaohongshu", "instagram", "facebook", "boss"):
@@ -407,7 +1045,68 @@ class NativeRouter:
                 "url": url,
             }
 
-        # 1. Primary: Native Jina Reader
+        parsed = urllib.parse.urlparse(url)
+        netloc = parsed.netloc.lower()
+        path = parsed.path.strip("/")
+
+        # 1. Specialized Zero-Auth Social: Twitter / X
+        if "twitter.com" in netloc or "x.com" in netloc:
+            x_src = extract_x_source(url)
+            if x_src and self.use_fxtwitter:
+                if x_src.source_type == "status" and x_src.external_id:
+                    frag = self._fetch_fxtwitter_status(x_src.handle or "status", x_src.external_id)
+                    if frag and frag.content:
+                        return {
+                            "status": "success",
+                            "title": frag.title,
+                            "content": frag.content[:max_chars],
+                            "markdown": f"### {frag.title}\n\n{frag.content}\n\n*Metrics: {frag.raw_metadata}*",
+                            "url": url,
+                            "char_count": len(frag.content),
+                            "backend": "fxtwitter",
+                            "fallback_used": False,
+                        }
+                elif x_src.source_type == "profile" and x_src.handle:
+                    frag = self._fetch_fxtwitter_profile(x_src.handle)
+                    if frag and frag.content:
+                        return {
+                            "status": "success",
+                            "title": frag.title,
+                            "content": frag.content[:max_chars],
+                            "markdown": f"### {frag.title}\n\n{frag.content}",
+                            "url": url,
+                            "char_count": len(frag.content),
+                            "backend": "fxtwitter",
+                            "fallback_used": False,
+                        }
+
+        # 2. Specialized Zero-Auth Social: Reddit
+        if "reddit.com" in netloc or "redd.it" in netloc:
+            red_src = extract_reddit_source(url)
+            if red_src and self.use_arctic_shift:
+                target_pid = red_src.parent_id if red_src.source_type == "comment" else red_src.external_id
+                if target_pid:
+                    frag = self._fetch_arctic_shift_post(target_pid)
+                    comments = self._fetch_arctic_shift_comments(target_pid, limit=5)
+                    if frag and frag.content:
+                        comm_md = ""
+                        if comments:
+                            comm_md = "\n\n### Top Comments\n" + "\n\n".join(
+                                [f"**{c.author}** ({int(c.score)} pts):\n{c.content}" for c in comments[:3]]
+                            )
+                        full_body = frag.content + comm_md
+                        return {
+                            "status": "success",
+                            "title": frag.title,
+                            "content": full_body[:max_chars],
+                            "markdown": f"### {frag.title}\n**Author**: {frag.author}\n\n{full_body[:max_chars]}\n\n*Source: {frag.url}*",
+                            "url": url,
+                            "char_count": len(full_body),
+                            "backend": "arctic_shift",
+                            "fallback_used": False,
+                        }
+
+        # 3. Standard Web Document: Native Jina Reader
         try:
             res = self.executor.execute_web_read(url)
             content = res.get("content", "")
@@ -461,9 +1160,10 @@ class NativeRouter:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.9",
+            "Cookie": "SRCHHPGUSR=ADLT=OFF&NRSLT=20",
         }
 
-        url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}"
+        url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}&setlang=en&cc=US"
         resp = requests.get(url, headers=headers, timeout=6.0)
         if resp.status_code == 200:
             soup = BeautifulSoup(resp.text, "html.parser")
@@ -476,15 +1176,7 @@ class NativeRouter:
                     continue
                 title = h2.get_text(separator=" ", strip=True)
                 raw_href = a["href"]
-
-                dest_url = raw_href
-                if "bing.com/ck/a?" in raw_href and "&u=a1" in raw_href:
-                    try:
-                        encoded_part = raw_href.split("&u=a1")[1].split("&")[0]
-                        padded = encoded_part + "=" * (-len(encoded_part) % 4)
-                        dest_url = base64.b64decode(padded).decode("utf-8", errors="ignore")
-                    except Exception:
-                        dest_url = raw_href
+                dest_url = resolve_bing_redirect(raw_href) or raw_href
 
                 p = el.find("div", class_="b_caption") or el.find("p")
                 snippet = p.get_text(separator=" ", strip=True) if p else title
@@ -510,6 +1202,74 @@ class NativeRouter:
                         "raw_url": raw_href,
                     }
                 ))
+
+        # Complement with Yahoo search for social platform discovery
+        if any(term in clean_q.lower() for term in ("reddit", "twitter", "x.com")):
+            social_urls = [f.url for f in fragments if any(dom in f.url for dom in ("reddit.com", "x.com", "twitter.com"))]
+            if len(social_urls) < 3:
+                yahoo_frags = self._execute_yahoo_search(clean_q, limit=limit, query_id=query_id, query_class=query_class, query_text=query_text)
+                for yf in yahoo_frags:
+                    if not any(f.url == yf.url for f in fragments):
+                        fragments.append(yf)
+        return fragments
+
+    def _execute_yahoo_search(self, query: str, limit: int = 6, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
+        """Execute public zero-auth Yahoo search to uncover social URLs."""
+        import requests
+        from bs4 import BeautifulSoup
+
+        clean_q = query.strip()
+        fragments: List[EvidenceFragment] = []
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
+
+        url = f"https://search.yahoo.com/search?p={urllib.parse.quote_plus(clean_q)}"
+        try:
+            resp = requests.get(url, headers=headers, timeout=6.0)
+            if resp.status_code == 200:
+                soup = BeautifulSoup(resp.text, "html.parser")
+                for a in soup.find_all("a", href=True):
+                    href = a["href"]
+                    if "/RU=" in href:
+                        try:
+                            raw_dest = href.split("/RU=")[1].split("/RK=")[0]
+                            dest_url = urllib.parse.unquote(raw_dest)
+                        except Exception:
+                            continue
+
+                        if not any(domain in dest_url for domain in ("reddit.com", "x.com", "twitter.com")):
+                            continue
+                        if any(f.url == dest_url for f in fragments):
+                            continue
+
+                        title = a.get_text(separator=" ", strip=True) or f"Result from {urllib.parse.urlparse(dest_url).netloc}"
+                        fragments.append(EvidenceFragment(
+                            platform="Web",
+                            title=title,
+                            content=title,
+                            url=dest_url,
+                            author=urllib.parse.urlparse(dest_url).netloc or "Web",
+                            published="Recent",
+                            snippet=title,
+                            score=75.0,
+                            retrieval_method="yahoo_search",
+                            retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+                            native_backend_id="yahoo-search-discovery",
+                            channel_name="web",
+                            query_id=query_id,
+                            query_class=query_class,
+                            query_text=query_text or query,
+                            raw_metadata={
+                                "backend": "Yahoo Search",
+                                "raw_url": href,
+                            }
+                        ))
+                        if len(fragments) >= limit:
+                            break
+        except Exception as e_y:
+            logger.debug(f"[NativeRouter] Yahoo discovery query notice: {e_y}")
         return fragments
 
     def _fallback_github_rest(self, query: str, limit: int = 5, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:

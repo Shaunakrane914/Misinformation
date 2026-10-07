@@ -1,0 +1,26 @@
+{
+  "A_bing_only": {
+    "reddit_url_discovery_rate": 0.88,
+    "reddit_correct_source_rate": 0.72,
+    "reddit_claim_support_rate": 0.65,
+    "x_url_discovery_rate": 0.89,
+    "x_correct_source_rate": 0.68,
+    "x_claim_support_rate": 0.58
+  },
+  "B_bing_plus_yahoo": {
+    "reddit_url_discovery_rate": 0.98,
+    "reddit_correct_source_rate": 0.84,
+    "reddit_claim_support_rate": 0.75,
+    "x_url_discovery_rate": 0.95,
+    "x_correct_source_rate": 0.78,
+    "x_claim_support_rate": 0.69
+  },
+  "C_bing_yahoo_query_expansion": {
+    "reddit_url_discovery_rate": 1.0,
+    "reddit_correct_source_rate": 0.76,
+    "reddit_claim_support_rate": 0.72,
+    "x_url_discovery_rate": 0.95,
+    "x_correct_source_rate": 0.34,
+    "x_claim_support_rate": 0.25
+  }
+}

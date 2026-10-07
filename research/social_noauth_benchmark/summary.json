@@ -1,0 +1,120 @@
+{
+  "arctic_shift": {
+    "tool": "arctic_shift",
+    "platform": "reddit",
+    "total_cases": 15,
+    "success_count": 8,
+    "success_rate": 0.5333,
+    "full_text_count": 7,
+    "full_text_rate": 0.4667,
+    "useful_evidence_count": 2,
+    "useful_evidence_rate": 0.1333,
+    "direct_public_rate": 0.5333,
+    "auth_required_rate": 0.0,
+    "mean_latency_ms": 2476.53,
+    "p50_latency_ms": 2038,
+    "p95_latency_ms": 10038,
+    "failure_categories": [
+      "HTTP_422_Unprocessable Entity",
+      "NETWORK_ERROR_TimeoutError",
+      "POST_NOT_FOUND_IN_INDEX"
+    ]
+  },
+  "apify_reddit": {
+    "tool": "apify_reddit",
+    "platform": "reddit",
+    "total_cases": 15,
+    "success_count": 0,
+    "success_rate": 0.0,
+    "full_text_count": 0,
+    "full_text_rate": 0.0,
+    "useful_evidence_count": 0,
+    "useful_evidence_rate": 0.0,
+    "direct_public_rate": 0.0,
+    "auth_required_rate": 1.0,
+    "mean_latency_ms": 898.73,
+    "p50_latency_ms": 890,
+    "p95_latency_ms": 1093,
+    "failure_categories": [
+      "APIFY_PLATFORM_AUTH_REQUIRED_NO_TOKEN"
+    ]
+  },
+  "fxtwitter": {
+    "tool": "fxtwitter",
+    "platform": "x",
+    "total_cases": 11,
+    "success_count": 6,
+    "success_rate": 0.5455,
+    "full_text_count": 2,
+    "full_text_rate": 0.1818,
+    "useful_evidence_count": 3,
+    "useful_evidence_rate": 0.2727,
+    "direct_public_rate": 0.5455,
+    "auth_required_rate": 0.0,
+    "mean_latency_ms": 869.82,
+    "p50_latency_ms": 643,
+    "p95_latency_ms": 2365,
+    "failure_categories": [
+      "FEATURE_NOT_SUPPORTED_SEARCH_404",
+      "HTTP_404_Not Found"
+    ]
+  },
+  "apify_x": {
+    "tool": "apify_x",
+    "platform": "x",
+    "total_cases": 11,
+    "success_count": 0,
+    "success_rate": 0.0,
+    "full_text_count": 0,
+    "full_text_rate": 0.0,
+    "useful_evidence_count": 0,
+    "useful_evidence_rate": 0.0,
+    "direct_public_rate": 0.0,
+    "auth_required_rate": 1.0,
+    "mean_latency_ms": 983.27,
+    "p50_latency_ms": 1013,
+    "p95_latency_ms": 1345,
+    "failure_categories": [
+      "APIFY_PLATFORM_AUTH_REQUIRED_NO_TOKEN"
+    ]
+  },
+  "apify_facebook": {
+    "tool": "apify_facebook",
+    "platform": "facebook",
+    "total_cases": 10,
+    "success_count": 0,
+    "success_rate": 0.0,
+    "full_text_count": 0,
+    "full_text_rate": 0.0,
+    "useful_evidence_count": 0,
+    "useful_evidence_rate": 0.0,
+    "direct_public_rate": 0.0,
+    "auth_required_rate": 1.0,
+    "mean_latency_ms": 857.6,
+    "p50_latency_ms": 845,
+    "p95_latency_ms": 1041,
+    "failure_categories": [
+      "APIFY_PLATFORM_AUTH_REQUIRED_NO_TOKEN"
+    ]
+  },
+  "facebook_direct_public": {
+    "tool": "facebook_direct_public",
+    "platform": "facebook",
+    "total_cases": 10,
+    "success_count": 0,
+    "success_rate": 0.0,
+    "full_text_count": 0,
+    "full_text_rate": 0.0,
+    "useful_evidence_count": 0,
+    "useful_evidence_rate": 0.0,
+    "direct_public_rate": 0.0,
+    "auth_required_rate": 1.0,
+    "mean_latency_ms": 604.6,
+    "p50_latency_ms": 742,
+    "p95_latency_ms": 887,
+    "failure_categories": [
+      "AUTH_REQUIRED_EMPTY_GUEST_DOM",
+      "AUTH_REQUIRED_LOGIN_WALL_SPA"
+    ]
+  }
+}

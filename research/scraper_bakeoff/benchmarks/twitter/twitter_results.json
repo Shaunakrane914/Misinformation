@@ -1,0 +1,36 @@
+{
+  "twscrape_architecture": {
+    "status": "VALIDATED",
+    "access_model": "GraphQL Account Pooling with Cookie Rotation",
+    "db_file": "accounts.db",
+    "endpoints_supported": [
+      "SearchTimeline",
+      "TweetDetail",
+      "UserByScreenName",
+      "UserTweets",
+      "UserTweetsAndReplies",
+      "Followers",
+      "Following"
+    ],
+    "authentication_required": "YES (Twitter User Credentials in Pool for GraphQL writes/deep reads)",
+    "rate_limit_resilience": "HIGH (Auto account rotation on 429)",
+    "direct_platform_access": true,
+    "content_type": "DIRECT_CONTENT"
+  },
+  "direct_vs_syndicated": {
+    "direct_x_content": {
+      "source": "x.com/i/api/graphql (twscrape)",
+      "structure": "Full JSON AST with user_results, legacy tweet, retweet_count, view_count",
+      "authenticity": "100% First-Party Origin",
+      "media_entities": "Direct video MP4 URLs, photo URLs, reply hierarchy",
+      "latency_typical": "450ms"
+    },
+    "syndicated_search_index": {
+      "source": "Bing / Google Index Mention",
+      "structure": "Truncated HTML meta-description snippet",
+      "authenticity": "Secondary/Aggregator",
+      "media_entities": "None",
+      "latency_typical": "713ms"
+    }
+  }
+}

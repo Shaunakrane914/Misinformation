@@ -1,0 +1,38 @@
+{
+  "baseline_native": {
+    "total_runs": 12,
+    "success_count": 7,
+    "success_rate": 0.5833,
+    "auth_required_count": 5,
+    "auth_required_rate": 0.4167,
+    "mean_latency_ms": 2361.9,
+    "p50_latency_ms": 2197,
+    "p95_latency_ms": 11343,
+    "avg_content_chars_per_success": 1444.3,
+    "backends_used": [
+      "Legacy Reach Scraper",
+      "twitter-cli",
+      "OpenCLI",
+      "Jina Reader"
+    ]
+  },
+  "trial_candidate": {
+    "total_runs": 12,
+    "success_count": 12,
+    "success_rate": 1.0,
+    "auth_required_count": 0,
+    "auth_required_rate": 0.0,
+    "mean_latency_ms": 1313.0,
+    "p50_latency_ms": 753,
+    "p95_latency_ms": 4657,
+    "avg_content_chars_per_success": 860.5,
+    "backends_used": [
+      "trial_noauth_router",
+      "FxTwitter Profile Mirror",
+      "Arctic Shift Mirror",
+      "fxtwitter-profile",
+      "FxTwitter Mirror",
+      "Jina Reader"
+    ]
+  }
+}

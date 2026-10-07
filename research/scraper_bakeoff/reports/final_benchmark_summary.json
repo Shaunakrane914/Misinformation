@@ -1,0 +1,454 @@
+{
+  "run_id": "fullscale_live_1791285451",
+  "timestamp": "2026-10-06T16:48:44.860971",
+  "total_observations": 740,
+  "total_cases": 340,
+  "elapsed_seconds": 73.5,
+  "system_cpu_threads": 16,
+  "candidates_evaluated": 18,
+  "records": [
+    {
+      "candidate": "beautifulsoup_requests",
+      "platform": "general_web",
+      "sample_size": 50,
+      "successes": 40,
+      "valid_availability_rate": 0.8,
+      "wilson_ci_95": [
+        0.6696,
+        0.8876
+      ],
+      "direct_retrieval_rate": 0.8,
+      "avg_entity_relevance": 2.04,
+      "avg_topic_relevance": 1.68,
+      "avg_claim_relevance": 1.32,
+      "avg_content_support": 2.08,
+      "avg_completeness": 70.2,
+      "latency_p50_ms": 866.9,
+      "latency_p90_ms": 1427.39,
+      "latency_p95_ms": 1973.42,
+      "latency_p99_ms": 3293.5,
+      "failure_breakdown": {
+        "HTTP_ERROR_403": 7,
+        "UNKNOWN_FAILURE": 3
+      },
+      "aegis_fit_score": 77.8
+    },
+    {
+      "candidate": "current_aegis_reader",
+      "platform": "general_web",
+      "sample_size": 50,
+      "successes": 24,
+      "valid_availability_rate": 0.48,
+      "wilson_ci_95": [
+        0.348,
+        0.6149
+      ],
+      "direct_retrieval_rate": 0.48,
+      "avg_entity_relevance": 1.3,
+      "avg_topic_relevance": 1.2,
+      "avg_claim_relevance": 0.78,
+      "avg_content_support": 1.38,
+      "avg_completeness": 46.6,
+      "latency_p50_ms": 1485.68,
+      "latency_p90_ms": 4006.33,
+      "latency_p95_ms": 6438.68,
+      "latency_p99_ms": 12067.47,
+      "failure_breakdown": {
+        "HTTP_ERROR_403": 7,
+        "UNKNOWN_FAILURE": 1,
+        "RATE_LIMITED_429": 16,
+        "TIMEOUT": 2
+      },
+      "aegis_fit_score": 54.7
+    },
+    {
+      "candidate": "scrapling_http",
+      "platform": "general_web",
+      "sample_size": 50,
+      "successes": 45,
+      "valid_availability_rate": 0.9,
+      "wilson_ci_95": [
+        0.7864,
+        0.9565
+      ],
+      "direct_retrieval_rate": 0.9,
+      "avg_entity_relevance": 2.32,
+      "avg_topic_relevance": 1.9,
+      "avg_claim_relevance": 1.5,
+      "avg_content_support": 2.32,
+      "avg_completeness": 82.0,
+      "latency_p50_ms": 697.88,
+      "latency_p90_ms": 1478.27,
+      "latency_p95_ms": 1989.23,
+      "latency_p99_ms": 2748.31,
+      "failure_breakdown": {
+        "UNKNOWN_FAILURE": 3,
+        "HTTP_ERROR_403": 2
+      },
+      "aegis_fit_score": 85.7
+    },
+    {
+      "candidate": "playwright_headless",
+      "platform": "general_web",
+      "sample_size": 50,
+      "successes": 40,
+      "valid_availability_rate": 0.8,
+      "wilson_ci_95": [
+        0.6696,
+        0.8876
+      ],
+      "direct_retrieval_rate": 0.8,
+      "avg_entity_relevance": 1.94,
+      "avg_topic_relevance": 1.68,
+      "avg_claim_relevance": 1.26,
+      "avg_content_support": 2.08,
+      "avg_completeness": 72.4,
+      "latency_p50_ms": 2778.48,
+      "latency_p90_ms": 4116.81,
+      "latency_p95_ms": 4730.95,
+      "latency_p99_ms": 5256.49,
+      "failure_breakdown": {
+        "HTTP_ERROR_403": 7,
+        "UNKNOWN_FAILURE": 3
+      },
+      "aegis_fit_score": 75.1
+    },
+    {
+      "candidate": "praw_oauth",
+      "platform": "reddit",
+      "sample_size": 50,
+      "successes": 0,
+      "valid_availability_rate": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        0.0714
+      ],
+      "direct_retrieval_rate": 1.0,
+      "avg_entity_relevance": 0.0,
+      "avg_topic_relevance": 0.0,
+      "avg_claim_relevance": 0.0,
+      "avg_content_support": 0.0,
+      "avg_completeness": 0.0,
+      "latency_p50_ms": 12.01,
+      "latency_p90_ms": 12.01,
+      "latency_p95_ms": 12.01,
+      "latency_p99_ms": 12.01,
+      "failure_breakdown": {
+        "AUTH_REQUIRED": 50
+      },
+      "aegis_fit_score": 34.2
+    },
+    {
+      "candidate": "reddit_unauth_json",
+      "platform": "reddit",
+      "sample_size": 50,
+      "successes": 0,
+      "valid_availability_rate": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        0.0714
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 0.0,
+      "avg_topic_relevance": 0.0,
+      "avg_claim_relevance": 0.0,
+      "avg_content_support": 0.0,
+      "avg_completeness": 0.0,
+      "latency_p50_ms": 303.85,
+      "latency_p90_ms": 461.02,
+      "latency_p95_ms": 1062.31,
+      "latency_p99_ms": 1305.63,
+      "failure_breakdown": {
+        "HTTP_ERROR_403": 45,
+        "UNKNOWN_FAILURE": 5
+      },
+      "aegis_fit_score": 14.4
+    },
+    {
+      "candidate": "reddit_bing_fallback",
+      "platform": "reddit",
+      "sample_size": 50,
+      "successes": 50,
+      "valid_availability_rate": 1.0,
+      "wilson_ci_95": [
+        0.9286,
+        1.0
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 3.0,
+      "avg_topic_relevance": 3.0,
+      "avg_claim_relevance": 1.0,
+      "avg_content_support": 1.0,
+      "avg_completeness": 80.0,
+      "latency_p50_ms": 490.97,
+      "latency_p90_ms": 644.27,
+      "latency_p95_ms": 802.17,
+      "latency_p99_ms": 1140.24,
+      "failure_breakdown": {},
+      "aegis_fit_score": 70.6
+    },
+    {
+      "candidate": "twitter_bing_fallback",
+      "platform": "twitter",
+      "sample_size": 50,
+      "successes": 50,
+      "valid_availability_rate": 1.0,
+      "wilson_ci_95": [
+        0.9286,
+        1.0
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 3.0,
+      "avg_topic_relevance": 3.0,
+      "avg_claim_relevance": 1.0,
+      "avg_content_support": 1.0,
+      "avg_completeness": 80.0,
+      "latency_p50_ms": 512.22,
+      "latency_p90_ms": 788.76,
+      "latency_p95_ms": 1038.75,
+      "latency_p99_ms": 1307.37,
+      "failure_breakdown": {},
+      "aegis_fit_score": 70.6
+    },
+    {
+      "candidate": "twitter_direct",
+      "platform": "twitter",
+      "sample_size": 50,
+      "successes": 40,
+      "valid_availability_rate": 0.8,
+      "wilson_ci_95": [
+        0.6696,
+        0.8876
+      ],
+      "direct_retrieval_rate": 0.76,
+      "avg_entity_relevance": 2.32,
+      "avg_topic_relevance": 1.3,
+      "avg_claim_relevance": 0.78,
+      "avg_content_support": 1.52,
+      "avg_completeness": 65.2,
+      "latency_p50_ms": 1376.82,
+      "latency_p90_ms": 1728.47,
+      "latency_p95_ms": 1862.31,
+      "latency_p99_ms": 2056.19,
+      "failure_breakdown": {
+        "UNKNOWN_FAILURE": 10
+      },
+      "aegis_fit_score": 74.2
+    },
+    {
+      "candidate": "youtube_bing_fallback",
+      "platform": "youtube",
+      "sample_size": 50,
+      "successes": 50,
+      "valid_availability_rate": 1.0,
+      "wilson_ci_95": [
+        0.9286,
+        1.0
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 3.0,
+      "avg_topic_relevance": 3.0,
+      "avg_claim_relevance": 1.0,
+      "avg_content_support": 1.0,
+      "avg_completeness": 80.0,
+      "latency_p50_ms": 402.05,
+      "latency_p90_ms": 674.71,
+      "latency_p95_ms": 711.7,
+      "latency_p99_ms": 1231.94,
+      "failure_breakdown": {},
+      "aegis_fit_score": 70.7
+    },
+    {
+      "candidate": "ytdlp_python_import",
+      "platform": "youtube",
+      "sample_size": 50,
+      "successes": 46,
+      "valid_availability_rate": 0.92,
+      "wilson_ci_95": [
+        0.8116,
+        0.9685
+      ],
+      "direct_retrieval_rate": 0.92,
+      "avg_entity_relevance": 0.2,
+      "avg_topic_relevance": 0.12,
+      "avg_claim_relevance": 0.08,
+      "avg_content_support": 0.28,
+      "avg_completeness": 42.4,
+      "latency_p50_ms": 5566.65,
+      "latency_p90_ms": 23062.99,
+      "latency_p95_ms": 23876.23,
+      "latency_p99_ms": 24494.28,
+      "failure_breakdown": {
+        "UNKNOWN_FAILURE": 4
+      },
+      "aegis_fit_score": 66.1
+    },
+    {
+      "candidate": "instagram_bing_fallback",
+      "platform": "instagram",
+      "sample_size": 50,
+      "successes": 50,
+      "valid_availability_rate": 1.0,
+      "wilson_ci_95": [
+        0.9286,
+        1.0
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 3.0,
+      "avg_topic_relevance": 1.9,
+      "avg_claim_relevance": 0.92,
+      "avg_content_support": 1.0,
+      "avg_completeness": 77.6,
+      "latency_p50_ms": 381.18,
+      "latency_p90_ms": 461.68,
+      "latency_p95_ms": 539.55,
+      "latency_p99_ms": 1090.47,
+      "failure_breakdown": {},
+      "aegis_fit_score": 68.5
+    },
+    {
+      "candidate": "instaloader_unauth",
+      "platform": "instagram",
+      "sample_size": 50,
+      "successes": 0,
+      "valid_availability_rate": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        0.0714
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 0.0,
+      "avg_topic_relevance": 0.0,
+      "avg_claim_relevance": 0.0,
+      "avg_content_support": 0.0,
+      "avg_completeness": 0.0,
+      "latency_p50_ms": 1210.64,
+      "latency_p90_ms": 3224.49,
+      "latency_p95_ms": 3728.36,
+      "latency_p99_ms": 4701.13,
+      "failure_breakdown": {
+        "AUTH_REQUIRED": 50
+      },
+      "aegis_fit_score": 13.0
+    },
+    {
+      "candidate": "aegis_native_github",
+      "platform": "github",
+      "sample_size": 25,
+      "successes": 25,
+      "valid_availability_rate": 1.0,
+      "wilson_ci_95": [
+        0.8668,
+        1.0
+      ],
+      "direct_retrieval_rate": 1.0,
+      "avg_entity_relevance": 2.4,
+      "avg_topic_relevance": 2.92,
+      "avg_claim_relevance": 1.8,
+      "avg_content_support": 2.24,
+      "avg_completeness": 75.2,
+      "latency_p50_ms": 476.54,
+      "latency_p90_ms": 824.19,
+      "latency_p95_ms": 1443.46,
+      "latency_p99_ms": 1606.15,
+      "failure_breakdown": {},
+      "aegis_fit_score": 92.4
+    },
+    {
+      "candidate": "aegis_native_bilibili",
+      "platform": "bilibili",
+      "sample_size": 20,
+      "successes": 0,
+      "valid_availability_rate": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        0.1611
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 0.0,
+      "avg_topic_relevance": 0.0,
+      "avg_claim_relevance": 0.0,
+      "avg_content_support": 0.0,
+      "avg_completeness": 0.0,
+      "latency_p50_ms": 859.53,
+      "latency_p90_ms": 969.06,
+      "latency_p95_ms": 1043.97,
+      "latency_p99_ms": 1091.62,
+      "failure_breakdown": {
+        "HTTP_ERROR_412": 20
+      },
+      "aegis_fit_score": 13.9
+    },
+    {
+      "candidate": "tiktok_live_http",
+      "platform": "tiktok",
+      "sample_size": 15,
+      "successes": 15,
+      "valid_availability_rate": 1.0,
+      "wilson_ci_95": [
+        0.7961,
+        1.0
+      ],
+      "direct_retrieval_rate": 1.0,
+      "avg_entity_relevance": 0.93,
+      "avg_topic_relevance": 0.0,
+      "avg_claim_relevance": 1.87,
+      "avg_content_support": 1.87,
+      "avg_completeness": 48.7,
+      "latency_p50_ms": 433.42,
+      "latency_p90_ms": 544.63,
+      "latency_p95_ms": 551.27,
+      "latency_p99_ms": 563.21,
+      "failure_breakdown": {},
+      "aegis_fit_score": 82.0
+    },
+    {
+      "candidate": "linkedin_live_http",
+      "platform": "linkedin",
+      "sample_size": 15,
+      "successes": 0,
+      "valid_availability_rate": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        0.2039
+      ],
+      "direct_retrieval_rate": 0.0,
+      "avg_entity_relevance": 0.0,
+      "avg_topic_relevance": 0.0,
+      "avg_claim_relevance": 0.0,
+      "avg_content_support": 0.0,
+      "avg_completeness": 0.0,
+      "latency_p50_ms": 424.68,
+      "latency_p90_ms": 482.22,
+      "latency_p95_ms": 525.89,
+      "latency_p99_ms": 587.78,
+      "failure_breakdown": {
+        "UNKNOWN_FAILURE": 15
+      },
+      "aegis_fit_score": 14.3
+    },
+    {
+      "candidate": "facebook_live_http",
+      "platform": "facebook",
+      "sample_size": 15,
+      "successes": 15,
+      "valid_availability_rate": 1.0,
+      "wilson_ci_95": [
+        0.7961,
+        1.0
+      ],
+      "direct_retrieval_rate": 1.0,
+      "avg_entity_relevance": 1.0,
+      "avg_topic_relevance": 0.0,
+      "avg_claim_relevance": 2.0,
+      "avg_content_support": 2.0,
+      "avg_completeness": 50.0,
+      "latency_p50_ms": 1495.08,
+      "latency_p90_ms": 1701.0,
+      "latency_p95_ms": 1774.21,
+      "latency_p99_ms": 1893.64,
+      "failure_breakdown": {},
+      "aegis_fit_score": 81.6
+    }
+  ]
+}

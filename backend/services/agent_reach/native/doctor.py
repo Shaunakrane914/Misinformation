@@ -78,6 +78,30 @@ class DoctorBridge:
 
     def get_channel_status(self, platform: str) -> Dict[str, Any]:
         """Get live health and active backend for a specific platform."""
+        plat_lower = platform.lower()
+        if plat_lower == "reddit":
+            return {
+                "status": "ok",
+                "name": "reddit",
+                "message": "Zero-auth public retrieval available via Arctic Shift (Authentication NOT REQUIRED for public retrieval)",
+                "tier": 0,
+                "backends": ["Arctic Shift", "Bing Search Index"],
+                "active_backend": "Arctic Shift",
+                "zero_auth": "AVAILABLE",
+                "auth_required": False,
+            }
+        if plat_lower in ("twitter", "x"):
+            return {
+                "status": "ok",
+                "name": "twitter",
+                "message": "Zero-auth public retrieval available via FxTwitter (Authentication NOT REQUIRED for supported public retrieval)",
+                "tier": 0,
+                "backends": ["FxTwitter", "Bing Search Index"],
+                "active_backend": "FxTwitter",
+                "zero_auth": "AVAILABLE",
+                "auth_required": False,
+            }
+
         all_results = self.check_all()
         return all_results.get(platform, {
             "status": "off",

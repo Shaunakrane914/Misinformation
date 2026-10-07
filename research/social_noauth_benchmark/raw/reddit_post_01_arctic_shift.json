@@ -1,0 +1,48 @@
+{
+  "url_called": "https://arctic-shift.photon-reddit.com/api/posts/ids?ids=z1c9z",
+  "latency_ms": 1968,
+  "status": 200,
+  "payload": {
+    "data": [
+      {
+        "approved_by": null,
+        "author": "PresidentObama",
+        "author_flair_css_class": "obama",
+        "author_flair_text": "Obama",
+        "banned_by": null,
+        "clicked": false,
+        "created": 1346274096,
+        "created_utc": 1346270496,
+        "distinguished": null,
+        "domain": "self.IAmA",
+        "downs": 225969,
+        "edited": 1346276503,
+        "hidden": false,
+        "id": "z1c9z",
+        "is_self": true,
+        "likes": null,
+        "link_flair_css_class": "politics",
+        "link_flair_text": "",
+        "media": null,
+        "media_embed": {},
+        "name": "t3_z1c9z",
+        "num_comments": 24213,
+        "num_reports": null,
+        "over_18": false,
+        "permalink": "/r/IAmA/comments/z1c9z/i_am_barack_obama_president_of_the_united_states/",
+        "saved": false,
+        "score": 14761,
+        "selftext": "Hi, I\u2019m Barack Obama, President of the United States. Ask me anything. I\u2019ll be taking your questions for half an hour starting at about 4:30 ET.\n\nProof it's me: https://twitter.com/BarackObama/status/240903767350968320\n\nWe're running early and will get started soon.\n\nUPDATE: Hey everybody - this is barack. Just finished a great rally in Charlottesville, and am looking forward to your questions. At the top, I do want to say that our thoughts and prayers are with folks who are dealing with Hurricane Isaac in the Gulf, and to let them know that we are going to be coordinating with state and local officials to make sure that we give families everything they need to recover.\n\nVerification photo: http://i.imgur.com/oz0a7.jpg\n\nLAST UPDATE: I need to get going so I'm back in DC in time for dinner. But I want to thank everybody at reddit for participating - this is an example of how technology and the internet can empower the sorts of conversations that strengthen our democracy over the long run. AND REMEMBER TO VOTE IN NOVEMBER - if you need to know how to register, go to http://gottaregister.com. By the way, if you want to know what I think about this whole reddit experience - NOT BAD!\n\nhttp://www.barackobama.com/reddit\n[edit: link fixed by staff]",
+        "selftext_html": "<!-- SC_OFF --><div class=\"md\"><p>Hi, I\u2019m Barack Obama, President of the United States. Ask me anything. I\u2019ll be taking your questions for half an hour starting at about 4:30 ET.</p>\n\n<p>Proof it&#39;s me: <a href=\"https://twitter.com/BarackObama/status/240903767350968320\">https://twitter.com/BarackObama/status/240903767350968320</a></p>\n\n<p>We&#39;re running early and will get started soon.</p>\n\n<p>UPDATE: Hey everybody - this is barack. Just finished a great rally in Charlottesville, and am looking forward to your questions. At the top, I do want to say that our thoughts and prayers are with folks who are dealing with Hurricane Isaac in the Gulf, and to let them know that we are going to be coordinating with state and local officials to make sure that we give families everything they need to recover.</p>\n\n<p>Verification photo: <a href=\"http://i.imgur.com/oz0a7.jpg\">http://i.imgur.com/oz0a7.jpg</a></p>\n\n<p>LAST UPDATE: I need to get going so I&#39;m back in DC in time for dinner. But I want to thank everybody at reddit for participating - this is an example of how technology and the internet can empower the sorts of conversations that strengthen our democracy over the long run. AND REMEMBER TO VOTE IN NOVEMBER - if you need to know how to register, go to <a href=\"http://gottaregister.com\">http://gottaregister.com</a>. By the way, if you want to know what I think about this whole reddit experience - NOT BAD!</p>\n\n<p><a href=\"http://www.barackobama.com/reddit\">http://www.barackobama.com/reddit</a>\n[edit: link fixed by staff]</p>\n</div><!-- SC_ON -->",
+        "spoiler": false,
+        "subreddit": "IAmA",
+        "subreddit_id": "t5_2qzb6",
+        "thumbnail": "self",
+        "title": "I am Barack Obama, President of the United States -- AMA",
+        "ups": 14761,
+        "url": "http://www.reddit.com/r/IAmA/comments/z1c9z/i_am_barack_obama_president_of_the_united_states/",
+        "upvote_ratio": 1
+      }
+    ]
+  }
+}

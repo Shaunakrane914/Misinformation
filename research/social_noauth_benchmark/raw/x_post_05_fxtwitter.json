@@ -1,0 +1,9 @@
+{
+  "url_called": "https://api.fxtwitter.com/NASA/status/999999999999999999",
+  "latency_ms": 2275,
+  "status": 404,
+  "payload": {
+    "error": "HTTP Error 404: Not Found",
+    "body": "{\"code\":404,\"message\":\"NOT_FOUND\",\"tweet\":null}"
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "timestamp": 1791286302.9629588,
+  "general_web_resources": {
+    "beautifulsoup": {
+      "avg_latency_ms": 567.12,
+      "rss_memory_delta_mb": 35.7,
+      "processes_spawned": 0,
+      "startup_cost_ms": 0.5
+    },
+    "scrapling_http": {
+      "avg_latency_ms": 365.3,
+      "rss_memory_delta_mb": 7.06,
+      "processes_spawned": 0,
+      "startup_cost_ms": 1.2
+    },
+    "playwright_headless": {
+      "avg_latency_ms": 976.53,
+      "rss_memory_delta_mb": 9.43,
+      "processes_spawned": 3,
+      "startup_cost_ms": 420.78
+    }
+  },
+  "youtube_execution_comparison": {
+    "import_avg_latency_ms": 2191.49,
+    "cli_avg_latency_ms": 3040.35,
+    "cli_subprocess_overhead_ms": 848.86,
+    "import_success_count": 4,
+    "cli_success_count": 4,
+    "field_completeness_rate": 1.0
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "POLICY_A_vs_POLICY_B": {
+    "comparison": "POLICY_A vs POLICY_B",
+    "mcnemar_useful_evidence": {
+      "chi2": 5.8226,
+      "p_value": 0.015821714823512887,
+      "p_value_formatted": "0.0158",
+      "p_value_approx": 0.015822,
+      "significant_p05": true,
+      "significant_p01": false,
+      "b_wins_A": 41,
+      "c_wins_B": 21,
+      "discordant_pairs": 62
+    },
+    "mcnemar_first_party_direct": {
+      "chi2": 43.0222,
+      "p_value": 5.4121612887326314e-11,
+      "p_value_formatted": "5.41e-11",
+      "p_value_approx": 5.41e-11,
+      "significant_p05": true,
+      "significant_p01": true,
+      "b_wins_A": 0,
+      "c_wins_B": 45,
+      "discordant_pairs": 45
+    },
+    "bootstrap_latency_difference": {
+      "mean_diff": -1242.4214,
+      "ci_lower": -1666.9343,
+      "ci_upper": -852.2014,
+      "significant": true
+    }
+  },
+  "POLICY_A_vs_POLICY_C": {
+    "comparison": "POLICY_A vs POLICY_C",
+    "mcnemar_useful_evidence": {
+      "chi2": 47.0204,
+      "p_value": 7.0251371934582854e-12,
+      "p_value_formatted": "7.03e-12",
+      "p_value_approx": 7.03e-12,
+      "significant_p05": true,
+      "significant_p01": true,
+      "b_wins_A": 49,
+      "c_wins_B": 0,
+      "discordant_pairs": 49
+    },
+    "mcnemar_first_party_direct": {
+      "chi2": 23.04,
+      "p_value": 1.5866563039511898e-06,
+      "p_value_formatted": "1.59e-06",
+      "p_value_approx": 1.59e-06,
+      "significant_p05": true,
+      "significant_p01": true,
+      "b_wins_A": 25,
+      "c_wins_B": 0,
+      "discordant_pairs": 25
+    },
+    "bootstrap_latency_difference": {
+      "mean_diff": 322.5677,
+      "ci_lower": 211.0384,
+      "ci_upper": 460.0952,
+      "significant": true
+    }
+  },
+  "POLICY_B_vs_POLICY_C": {
+    "comparison": "POLICY_B vs POLICY_C",
+    "mcnemar_useful_evidence": {
+      "chi2": 7.1927,
+      "p_value": 0.0073202363357446594,
+      "p_value_formatted": "0.0073",
+      "p_value_approx": 0.00732,
+      "significant_p05": true,
+      "significant_p01": true,
+      "b_wins_A": 69,
+      "c_wins_B": 40,
+      "discordant_pairs": 109
+    },
+    "mcnemar_first_party_direct": {
+      "chi2": 68.0143,
+      "p_value": 1.623152868833746e-16,
+      "p_value_formatted": "1.62e-16",
+      "p_value_approx": 1.62e-16,
+      "significant_p05": true,
+      "significant_p01": true,
+      "b_wins_A": 70,
+      "c_wins_B": 0,
+      "discordant_pairs": 70
+    },
+    "bootstrap_latency_difference": {
+      "mean_diff": 1564.9891,
+      "ci_lower": 1189.2443,
+      "ci_upper": 1971.5043,
+      "significant": true
+    }
+  },
+  "POLICY_B_vs_POLICY_D": {
+    "comparison": "POLICY_B vs POLICY_D",
+    "mcnemar_useful_evidence": {
+      "chi2": 0.0,
+      "p_value_approx": 1.0,
+      "significant_p05": false,
+      "significant_p01": false,
+      "b_wins_A": 0,
+      "c_wins_B": 0,
+      "discordant_pairs": 0
+    },
+    "mcnemar_first_party_direct": {
+      "chi2": 0.0,
+      "p_value_approx": 1.0,
+      "significant_p05": false,
+      "significant_p01": false,
+      "b_wins_A": 0,
+      "c_wins_B": 0,
+      "discordant_pairs": 0
+    },
+    "bootstrap_latency_difference": {
+      "mean_diff": 189.076,
+      "ci_lower": 86.1728,
+      "ci_upper": 292.1048,
+      "significant": true
+    }
+  }
+}

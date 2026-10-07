@@ -256,9 +256,9 @@ def test_velocity_and_snapshot_persistence(agent: TrendingAgent):
     """Test velocity calculations and snapshot storage across multiple scans."""
     topic = "Major Project Announcement"
 
-    # Scan 1: initial observation
+    # Scan 1: initial observation (insufficient history on single observation)
     vel_1 = agent._calculate_velocity(topic, signal_count=10, source_count=4, platform_count=2)
-    assert vel_1["status"] == "EMERGING"
+    assert vel_1["status"] == "INSUFFICIENT_HISTORY"
     assert len(vel_1["history"]) == 1
 
     # Scan 2: growth observation

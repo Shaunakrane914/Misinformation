@@ -1,0 +1,8 @@
+{
+  "url_called": "https://api.fxtwitter.com/search?q=World+Health+Assembly+pandemic+treaty",
+  "latency_ms": 662,
+  "status": 404,
+  "payload": {
+    "error": "FxTwitter is a status/profile mirror and does not provide an arbitrary keyword search index."
+  }
+}

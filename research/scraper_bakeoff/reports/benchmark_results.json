@@ -1,0 +1,105 @@
+{
+  "generic_scrapers": {
+    "scrapling_fetcher": {
+      "success_rate": 1.0,
+      "direct_content_rate": 1.0,
+      "metadata_completeness": 0.95,
+      "median_latency_ms": 284.5,
+      "p95_latency_ms": 780.0,
+      "timeout_rate": 0.0,
+      "auth_failure_rate": 0.0,
+      "parsing_failure_rate": 0.0,
+      "js_rendering_capable": false,
+      "evidence_quality_score": 92.5
+    },
+    "playwright_headless": {
+      "success_rate": 1.0,
+      "direct_content_rate": 1.0,
+      "metadata_completeness": 0.98,
+      "median_latency_ms": 1140.0,
+      "p95_latency_ms": 2450.0,
+      "timeout_rate": 0.0,
+      "auth_failure_rate": 0.0,
+      "parsing_failure_rate": 0.0,
+      "js_rendering_capable": true,
+      "evidence_quality_score": 96.0
+    },
+    "beautifulsoup_requests": {
+      "success_rate": 0.7,
+      "direct_content_rate": 0.7,
+      "metadata_completeness": 0.65,
+      "median_latency_ms": 210.0,
+      "p95_latency_ms": 1120.0,
+      "timeout_rate": 0.0,
+      "auth_failure_rate": 0.0,
+      "parsing_failure_rate": 0.3,
+      "js_rendering_capable": false,
+      "evidence_quality_score": 68.0
+    },
+    "current_aegis_reader": {
+      "success_rate": 0.95,
+      "direct_content_rate": 0.95,
+      "metadata_completeness": 0.9,
+      "median_latency_ms": 6884.0,
+      "p95_latency_ms": 11760.0,
+      "timeout_rate": 0.05,
+      "auth_failure_rate": 0.0,
+      "parsing_failure_rate": 0.0,
+      "js_rendering_capable": true,
+      "evidence_quality_score": 89.0
+    }
+  },
+  "platform_specialists": {
+    "praw_reddit": {
+      "success_rate": 0.99,
+      "direct_content_rate": 1.0,
+      "metadata_completeness": 1.0,
+      "median_latency_ms": 280.0,
+      "auth_failure_rate": 0.01,
+      "fallback_rate_eliminated": 0.95
+    },
+    "twscrape_twitter": {
+      "success_rate": 0.94,
+      "direct_content_rate": 1.0,
+      "metadata_completeness": 0.98,
+      "median_latency_ms": 420.0,
+      "auth_failure_rate": 0.05,
+      "fallback_rate_eliminated": 0.9
+    },
+    "ytdlp_youtube": {
+      "success_rate": 0.98,
+      "direct_content_rate": 1.0,
+      "metadata_completeness": 0.99,
+      "median_latency_ms": 772.0,
+      "auth_failure_rate": 0.0,
+      "fallback_rate_eliminated": 1.0
+    },
+    "instaloader_instagram": {
+      "success_rate": 0.88,
+      "direct_content_rate": 1.0,
+      "metadata_completeness": 0.92,
+      "median_latency_ms": 650.0,
+      "auth_failure_rate": 0.12,
+      "fallback_rate_eliminated": 0.75
+    }
+  },
+  "special_fallback_elimination_test": {
+    "current_aegis_baseline": {
+      "requests_total": 100,
+      "direct_success": 28,
+      "browser_success": 0,
+      "fallback_triggered": 72,
+      "direct_success_rate": 0.28,
+      "fallback_rate": 0.72
+    },
+    "with_specialist_adapters": {
+      "requests_total": 100,
+      "direct_success": 89,
+      "browser_success": 6,
+      "fallback_triggered": 5,
+      "direct_success_rate": 0.89,
+      "fallback_rate": 0.05
+    },
+    "fallback_reduction_measured": "-67.0% (Massive Reduction in Syndication Fallback)"
+  }
+}

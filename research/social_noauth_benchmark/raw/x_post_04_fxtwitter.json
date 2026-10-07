@@ -1,0 +1,9 @@
+{
+  "url_called": "https://api.fxtwitter.com/OpenAI/status/1790072080357986494",
+  "latency_ms": 2365,
+  "status": 404,
+  "payload": {
+    "error": "HTTP Error 404: Not Found",
+    "body": "{\"code\":404,\"message\":\"NOT_FOUND\",\"tweet\":null}"
+  }
+}

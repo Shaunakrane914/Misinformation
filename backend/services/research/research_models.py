@@ -521,6 +521,10 @@ class ResearchResult:
     channel_status: Dict[str, str] = field(default_factory=dict)
     warnings: List[str] = field(default_factory=list)
     retrieval_trace: Dict[str, Any] = field(default_factory=dict)
+    accepted_evidence: List[EvidenceItem] = field(default_factory=list)
+    rejected_evidence: List[Dict[str, Any]] = field(default_factory=list)
+    integrity_report: Dict[str, Any] = field(default_factory=dict)
+    budget_telemetry: Dict[str, Any] = field(default_factory=dict)
     research_corpus: Optional[Dict[str, Any]] = None
 
     # ── Backward-compatible properties ────────────────────────────────────
@@ -548,6 +552,8 @@ class ResearchResult:
             "candidates_count": len(self.candidates),
             "investigated_count": len(self.investigated_sources),
             "evidence_count": len(self.evidence),
+            "accepted_count": len(self.accepted_evidence or self.evidence),
+            "rejected_count": len(self.rejected_evidence),
             "findings_count": len(self.findings),
         }
 
@@ -559,7 +565,13 @@ class ResearchResult:
             "summary": self.summary,
             "candidates_count": len(self.candidates),
             "investigated_count": len(self.investigated_sources),
+            "accepted_count": len(self.accepted_evidence or self.evidence),
+            "rejected_count": len(self.rejected_evidence),
             "evidence": [e.to_dict() for e in self.evidence],
+            "accepted_evidence": [e.to_dict() for e in (self.accepted_evidence or self.evidence)],
+            "rejected_evidence": self.rejected_evidence,
+            "integrity_report": self.integrity_report,
+            "budget_telemetry": self.budget_telemetry,
             "items": [e.to_dict() for e in self.evidence],
             "findings": [f.to_dict() for f in self.findings],
             "contradictions": self.contradictions,

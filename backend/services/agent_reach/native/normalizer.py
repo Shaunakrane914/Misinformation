@@ -252,7 +252,229 @@ class NativeNormalizer:
                 }
             )
             fragments.append(frag)
+    @staticmethod
+    def normalize_arctic_shift_posts(
+        raw_posts: List[Dict[str, Any]],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Normalize Arctic Shift Reddit submissions."""
+        fragments: List[EvidenceFragment] = []
+        for p in raw_posts:
+            post_id = p.get("id", "")
+            title = p.get("title", "") or "Reddit Post"
+            selftext = p.get("selftext", "") or ""
+            link_url = p.get("url", "")
+            is_self = p.get("is_self", True)
+            
+            # If link submission without selftext, document the link target honestly
+            if not selftext and link_url and not is_self:
+                content = f"[Reddit Link Submission]: {title}\nTarget URL: {link_url}"
+            else:
+                content = selftext if selftext else title
+
+            author_raw = p.get("author") or "[deleted]"
+            author = f"u/{author_raw}" if not author_raw.startswith("u/") else author_raw
+            subreddit = p.get("subreddit", "")
+            score = float(p.get("score", 0))
+            num_comments = int(p.get("num_comments", 0))
+            created_utc = str(p.get("created_utc", ""))
+            permalink = f"https://reddit.com{p.get('permalink')}" if p.get("permalink") else (link_url or f"https://reddit.com/r/{subreddit}/comments/{post_id}")
+
+            frag = EvidenceFragment(
+                platform="reddit",
+                title=f"{title} (r/{subreddit})" if subreddit else title,
+                content=content,
+                url=permalink,
+                author=author,
+                published=created_utc,
+                snippet=content[:300],
+                score=score,
+                retrieval_method="arctic_shift",
+                retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
+                native_backend_id="arctic_shift",
+                channel_name="reddit",
+                content_depth="FULL_ARTICLE" if len(content) > 300 else ("PARTIAL_CONTENT" if len(content) > 50 else "SNIPPET"),
+                query_id=query_id,
+                query_class=query_class,
+                query_text=query_text,
+                requested_channel="reddit",
+                actual_retrieval_channel="reddit",
+                is_authenticated=False,
+                raw_metadata={
+                    "backend": "arctic_shift",
+                    "post_id": post_id,
+                    "subreddit": subreddit,
+                    "score": score,
+                    "num_comments": num_comments,
+                    "link_url": link_url,
+                    "source_tier": "SPECIALIST_MIRROR",
+                    "mirror_backend": "arctic-shift",
+                }
+            )
+            fragments.append(frag)
         return fragments
+
+    @staticmethod
+    def normalize_arctic_shift_comments(
+        raw_comments: List[Dict[str, Any]],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Normalize Arctic Shift Reddit comments."""
+        fragments: List[EvidenceFragment] = []
+        for c in raw_comments:
+            cid = c.get("id", "")
+            body = c.get("body", "") or ""
+            author_raw = c.get("author") or "[deleted]"
+            author = f"u/{author_raw}" if not author_raw.startswith("u/") else author_raw
+            link_id = str(c.get("link_id", "")).replace("t3_", "")
+            subreddit = c.get("subreddit", "")
+            score = float(c.get("score", 0))
+            created_utc = str(c.get("created_utc", ""))
+            permalink = f"https://reddit.com/comments/{link_id}/_/{cid}" if link_id else ""
+
+            frag = EvidenceFragment(
+                platform="reddit",
+                title=f"Comment by {author} on Reddit post {link_id}",
+                content=body,
+                url=permalink,
+                author=author,
+                published=created_utc,
+                snippet=body[:300],
+                score=score,
+                retrieval_method="arctic_shift",
+                retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
+                native_backend_id="arctic_shift",
+                channel_name="reddit",
+                content_depth="FULL_ARTICLE" if len(body) > 300 else "SNIPPET",
+                query_id=query_id,
+                query_class=query_class,
+                query_text=query_text,
+                requested_channel="reddit",
+                actual_retrieval_channel="reddit",
+                is_authenticated=False,
+                raw_metadata={
+                    "backend": "arctic_shift",
+                    "comment_id": cid,
+                    "link_id": link_id,
+                    "parent_id": c.get("parent_id", ""),
+                    "subreddit": subreddit,
+                    "score": score,
+                    "source_tier": "SPECIALIST_MIRROR",
+                }
+            )
+            fragments.append(frag)
+        return fragments
+
+    @staticmethod
+    def normalize_fxtwitter_tweet(
+        tw: Dict[str, Any],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> Optional[EvidenceFragment]:
+        """Normalize FxTwitter public status JSON object."""
+        if not tw:
+            return None
+        author_obj = tw.get("author", {})
+        screen_name = author_obj.get("screen_name", "") or "user"
+        name = author_obj.get("name", "") or screen_name
+        author = f"@{screen_name}"
+        text = tw.get("text", "") or ""
+        tid = tw.get("id", "")
+        url = tw.get("url") or f"https://x.com/{screen_name}/status/{tid}"
+        created = str(tw.get("created_at") or tw.get("created_timestamp") or "")
+
+        likes = tw.get("likes", 0)
+        retweets = tw.get("retweets", 0)
+        replies = tw.get("replies", 0)
+        views = tw.get("views")
+        media_list = [m.get("url") for m in tw.get("media", {}).get("all", []) if m.get("url")]
+
+        return EvidenceFragment(
+            platform="twitter",
+            title=f"Post by {name} ({author})",
+            content=text,
+            url=url,
+            author=author,
+            published=created,
+            snippet=text[:300],
+            score=float(likes),
+            retrieval_method="fxtwitter",
+            retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
+            native_backend_id="fxtwitter",
+            channel_name="twitter",
+            content_depth="FULL_ARTICLE" if len(text) > 0 else "SNIPPET",
+            query_id=query_id,
+            query_class=query_class,
+            query_text=query_text,
+            requested_channel="twitter",
+            actual_retrieval_channel="twitter",
+            is_authenticated=False,
+            raw_metadata={
+                "backend": "fxtwitter",
+                "tweet_id": tid,
+                "likes": likes,
+                "retweets": retweets,
+                "replies": replies,
+                "views": views,
+                "media_urls": media_list,
+                "source_tier": "SPECIALIST_MIRROR",
+                "mirror_backend": "fxtwitter",
+            }
+        )
+
+    @staticmethod
+    def normalize_fxtwitter_profile(
+        u: Dict[str, Any],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> Optional[EvidenceFragment]:
+        """Normalize FxTwitter public profile JSON object."""
+        if not u:
+            return None
+        screen_name = u.get("screen_name", "") or "user"
+        name = u.get("name", "") or screen_name
+        author = f"@{screen_name}"
+        desc = u.get("description", "") or f"Public profile of {author}"
+        url = f"https://x.com/{screen_name}"
+        joined = str(u.get("joined", ""))
+        followers = u.get("followers", 0)
+        tweets_count = u.get("tweets", 0)
+
+        return EvidenceFragment(
+            platform="twitter",
+            title=f"Profile: {name} ({author})",
+            content=desc,
+            url=url,
+            author=author,
+            published=joined,
+            snippet=desc[:300],
+            score=float(followers),
+            retrieval_method="fxtwitter",
+            retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
+            native_backend_id="fxtwitter",
+            channel_name="twitter",
+            content_depth="PARTIAL_CONTENT",
+            query_id=query_id,
+            query_class=query_class,
+            query_text=query_text,
+            requested_channel="twitter",
+            actual_retrieval_channel="twitter",
+            is_authenticated=False,
+            raw_metadata={
+                "backend": "fxtwitter",
+                "screen_name": screen_name,
+                "followers": followers,
+                "tweets_count": tweets_count,
+                "source_tier": "SPECIALIST_MIRROR",
+                "mirror_backend": "fxtwitter",
+            }
+        )
 
 
 # Global singleton instance

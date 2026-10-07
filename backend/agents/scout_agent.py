@@ -724,6 +724,27 @@ Respond in STRICT JSON with this schema:
             retrieval_trace = {}
             channel_health = {}
 
+        # 2b. Scout Proprietary Source Engine Acquisition Pass
+        scout_result = None
+        try:
+            from backend.services.agent_reach.scout import scout_source_engine, ScoutSourceRequest
+            scout_req = ScoutSourceRequest(
+                query=query or f"{company_name} quarterly results earnings guidance corporate announcements",
+                target_entity=company_name,
+                tickers=[sym],
+                max_candidates=5,
+                allow_social=True
+            )
+            scout_result = scout_source_engine.execute(scout_req)
+            existing_urls = {getattr(e, "canonical_url", "") or getattr(e, "url", "") for e in evidence_items}
+            for sev in scout_result.evidence_items:
+                sev_frag = sev.to_evidence_fragment()
+                if (sev_frag.url or sev_frag.canonical_url) not in existing_urls:
+                    evidence_items.append(sev_frag)
+                    existing_urls.add(sev_frag.url or sev_frag.canonical_url)
+        except Exception as e_scout:
+            logger.debug(f"[ScoutAgent:analyze_stock] ScoutSourceEngine notice: {e_scout}")
+
         # 3. Classify & Group Fragments
         primary_sources = []
         news_items = []
@@ -981,8 +1002,52 @@ Respond in STRICT JSON with this schema:
                 "Social channels operate via public feeds without authenticated enterprise firehoses.",
                 "All citations reflect retrieved public web records; user verification of primary filings is recommended."
             ],
-            "short_attack_correlation": short_attack_correlation
+            "short_attack_correlation": short_attack_correlation,
+            "financial_facts": [f.__dict__ for f in scout_result.financial_facts] if scout_result else [],
+            "corporate_events": [e.__dict__ for e in scout_result.events] if scout_result else [],
+            "story_clusters": [c.__dict__ for c in scout_result.clusters] if scout_result else [],
+            "epistemic_status": scout_result.epistemic_status if scout_result else "REPORTED",
+            "scout_source_telemetry": scout_result.telemetry if scout_result else {}
         }
+
+    def acquire_market_intelligence(
+        self,
+        ticker: str,
+        query: Optional[str] = None,
+        max_candidates: int = 5,
+        allow_social: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Direct interface to Scout's proprietary Source Acquisition Engine.
+        Returns structured financial facts, corporate events, story clusters,
+        contradiction records, and normalized evidence fragments.
+        """
+        sym, company_name = self.resolve_ticker_and_company(ticker)
+        from backend.services.agent_reach.scout import scout_source_engine, ScoutSourceRequest
+        req = ScoutSourceRequest(
+            query=query or f"{company_name} financial guidance corporate events earnings",
+            target_entity=company_name,
+            tickers=[sym],
+            max_candidates=max_candidates,
+            allow_social=allow_social
+        )
+        res = scout_source_engine.execute(req)
+        return {
+            "query": res.query,
+            "entity": res.entity,
+            "ticker": sym,
+            "epistemic_status": res.epistemic_status,
+            "primary_source_present": res.primary_source_present,
+            "independent_source_count": res.independent_source_count,
+            "financial_facts": [f.__dict__ for f in res.financial_facts],
+            "events": [e.__dict__ for e in res.events],
+            "clusters": [c.__dict__ for c in res.clusters],
+            "contradictions": [k.__dict__ for k in res.contradictions],
+            "evidence_count": len(res.evidence_items),
+            "evidence": [ev.to_evidence_fragment().to_dict() for ev in res.evidence_items],
+            "telemetry": res.telemetry
+        }
+
 
 
 

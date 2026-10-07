@@ -279,15 +279,32 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
         else:
             category = "GLOBAL INFORMATION FORENSICS"
 
-        # Evidence Formatting
+        # Evidence Formatting with Relevance Gate Filtering
+        from backend.services.research.relevance_gate import relevance_gate
+        rejected_claim_evidence = []
+
         supporting_list = []
         for s in evidence_json.get("supporting_evidence", []):
+            text_val = s.get("text") or s.get("summary") or str(s) if isinstance(s, dict) else str(s)
+            title_val = s.get("title") or s.get("source") or text_val[:60] if isinstance(s, dict) else text_val[:60]
+            url_val = s.get("url") if isinstance(s, dict) else None
+            
+            assess = relevance_gate.evaluate_item(
+                type("Item", (), {"id": "sup", "title": title_val, "snippet": text_val, "url": url_val or ""})(),
+                target_entity=norm_text,
+                domain="fact_check"
+            )
+            if not assess.is_accepted:
+                rejected_claim_evidence.append(assess.to_dict())
+                logger.info(f"[VerifySync] Rejecting off-topic supporting item: {assess.rejection_reason}")
+                continue
+
             if isinstance(s, dict):
                 supporting_list.append({
                     "source": s.get("source") or s.get("source_name") or "Primary Source",
                     "platform": s.get("platform") or "Wire",
-                    "text": s.get("text") or s.get("summary") or str(s),
-                    "url": s.get("url") or None
+                    "text": text_val,
+                    "url": url_val
                 })
             elif isinstance(s, str):
                 supporting_list.append({
@@ -299,16 +316,30 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
 
         refuting_list = []
         for r in evidence_json.get("refuting_evidence", []):
+            text_val = r.get("text") or r.get("summary") or str(r) if isinstance(r, dict) else str(r)
+            title_val = r.get("title") or r.get("source") or text_val[:60] if isinstance(r, dict) else text_val[:60]
+            url_val = r.get("url") if isinstance(r, dict) else None
+
+            assess = relevance_gate.evaluate_item(
+                type("Item", (), {"id": "ref", "title": title_val, "snippet": text_val, "url": url_val or ""})(),
+                target_entity=norm_text,
+                domain="fact_check"
+            )
+            if not assess.is_accepted:
+                rejected_claim_evidence.append(assess.to_dict())
+                logger.info(f"[VerifySync] Rejecting off-topic refuting item: {assess.rejection_reason}")
+                continue
+
             if isinstance(r, dict):
                 refuting_list.append({
-                    "source": r.get("source") or r.get("source_name") or "Registry Fact-Check",
+                    "source": r.get("source") or r.get("source_name") or "Fact-Check Report",
                     "platform": r.get("platform") or "Fact-Check",
-                    "text": r.get("text") or r.get("summary") or str(r),
-                    "url": r.get("url") or None
+                    "text": text_val,
+                    "url": url_val
                 })
             elif isinstance(r, str):
                 refuting_list.append({
-                    "source": "Fact-Checking Registry",
+                    "source": "Fact-Checking Document",
                     "platform": "Fact-Check",
                     "text": r,
                     "url": None
@@ -442,6 +473,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             "primary_sources": evidence_json.get("primary_sources", []),
             "supporting_evidence": supporting_list,
             "refuting_evidence": refuting_list,
+            "rejected_evidence": rejected_claim_evidence,
             "social_radar": social_radar,
             "forensic_risk": {
                 "mandelbrot_r2": mandel_r2,

@@ -43,6 +43,36 @@ except ImportError:
     ApifyClient = None
 
 
+def _parse_timestamp_epoch(ts: Any) -> float:
+    """Robustly parse ISO, RFC-2822, or date strings to UTC epoch for monotonic comparisons."""
+    if not ts:
+        return 0.0
+    ts_str = str(ts).strip()
+    try:
+        return datetime.fromisoformat(ts_str.replace("Z", "+00:00")).timestamp()
+    except Exception:
+        pass
+    try:
+        import email.utils
+        dt = email.utils.parsedate_to_datetime(ts_str)
+        if dt:
+            return dt.timestamp()
+    except Exception:
+        pass
+    for fmt in ("%Y-%m-%d %H:%M:%S", "%Y-%m-%d", "%d %b %Y", "%b %d, %Y"):
+        try:
+            return datetime.strptime(ts_str, fmt).replace(tzinfo=timezone.utc).timestamp()
+        except Exception:
+            pass
+    rel_match = re.search(r'(\d+)\s*(hour|hr|minute|min|day|sec)', ts_str.lower())
+    if rel_match:
+        val = int(rel_match.group(1))
+        unit = rel_match.group(2)
+        sec = val * 3600 if "h" in unit else (val * 60 if "m" in unit else (val * 86400 if "d" in unit else val))
+        return time.time() - sec
+    return 0.0
+
+
 # ── Structured Trend Data Models ─────────────────────────────────────────────
 
 @dataclass
@@ -536,10 +566,14 @@ class TrendingAgent:
             if not items:
                 continue
 
-            # Sort items by date
-            sorted_items = sorted(items, key=lambda x: x.published_at)
+            # Sort items by parsed date epoch to guarantee monotonic emergence window
+            sorted_items = sorted(items, key=lambda x: _parse_timestamp_epoch(x.published_at))
             first_ev = sorted_items[0]
             latest_ev = sorted_items[-1]
+
+            # In the unlikely event dates resolve backwards, swap to maintain monotonic window
+            if _parse_timestamp_epoch(first_ev.published_at) > _parse_timestamp_epoch(latest_ev.published_at):
+                first_ev, latest_ev = latest_ev, first_ev
 
             # Unique & independent source counts
             unique_sources = len({it.source.lower() for it in items})
@@ -577,8 +611,10 @@ class TrendingAgent:
             }
 
             # Trend Nature Classification
-            v_status = velocity.get("status", "STABLE")
-            if v_status == "ACCELERATING" and unique_platforms >= 3:
+            v_status = velocity.get("velocity_status") or velocity.get("status", "INSUFFICIENT_HISTORY")
+            if v_status == "INSUFFICIENT_HISTORY" or len(velocity.get("history", [])) <= 1:
+                trend_nature = "NEWLY_OBSERVED"
+            elif v_status == "ACCELERATING" and unique_platforms >= 3:
                 trend_nature = "VIRAL"
             elif unique_platforms >= 2 and independent_groups >= 2:
                 trend_nature = "TRENDING"
@@ -589,12 +625,18 @@ class TrendingAgent:
             elif len(items) >= 5:
                 trend_nature = "HIGH_VOLUME"
             else:
-                trend_nature = "NEWLY_EMERGING"
+                trend_nature = "NEWLY_OBSERVED"
 
-            why_trending = (
-                f"Circulating across {unique_platforms} platform(s) with {independent_groups} independent source group(s) "
-                f"and {len(items)} verified evidence signals ({v_status.lower()} velocity)."
-            )
+            if v_status == "INSUFFICIENT_HISTORY":
+                why_trending = (
+                    f"Circulating across {unique_platforms} platform(s) with {independent_groups} independent source group(s) "
+                    f"and {len(items)} verified evidence signals (single observation baseline; rate of change requires second scan)."
+                )
+            else:
+                why_trending = (
+                    f"Circulating across {unique_platforms} platform(s) with {independent_groups} independent source group(s) "
+                    f"and {len(items)} verified evidence signals ({v_status.lower()} velocity)."
+                )
 
             emergence_window = f"{first_ev.published_at} to {latest_ev.published_at}"
             underlying_event = first_ev.title
@@ -782,8 +824,9 @@ class TrendingAgent:
             return {
                 "signals_per_hour": 0.0,
                 "growth_rate_pct": 0.0,
-                "status": "EMERGING",
-                "message": "First observation recorded. Minimum 2 scans required for velocity tracking.",
+                "status": "INSUFFICIENT_HISTORY",
+                "velocity_status": "INSUFFICIENT_HISTORY",
+                "message": "First observation recorded. Minimum 2 scans required for velocity tracking; rate of change cannot be measured from a single scan.",
                 "history": [current_snap]
             }
 
@@ -820,6 +863,7 @@ class TrendingAgent:
             "signals_per_hour": signals_per_hour,
             "growth_rate_pct": growth_pct,
             "status": status,
+            "velocity_status": status,
             "message": f"Momentum measured across {len(history)} verified scan intervals.",
             "history": history
         }
@@ -882,7 +926,7 @@ class TrendingAgent:
             ex = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:
                 fut = ex.submit(research_engine.investigate, research_req)
-                research_res = fut.result(timeout=3.0)
+                research_res = fut.result(timeout=10.0)
             finally:
                 ex.shutdown(wait=False, cancel_futures=True)
             retrieval_trace = research_res.telemetry
@@ -963,10 +1007,20 @@ class TrendingAgent:
         else:
             channel_health["instagram"] = {"status": "skipped", "retrieved_count": 0, "latency_ms": 0}
 
+        # 5b. Relevance Gate filtering across all gathered evidence
+        from backend.services.research.relevance_gate import relevance_gate
+        accepted_ev, _ = relevance_gate.filter_candidates(
+            all_raw_evidence,
+            target_entity=target_query,
+            domain="trending"
+        )
+        # Fall back to raw if gate filtered everything (e.g. niche query)
+        usable_evidence = accepted_ev if accepted_ev else all_raw_evidence
+
         # Deduplicate evidence by clean title/content
         seen_titles = set()
         deduped_evidence: List[TrendEvidence] = []
-        for ev in all_raw_evidence:
+        for ev in usable_evidence:
             norm_k = re.sub(r'[^a-zA-Z0-9]', '', ev.title.lower()[:50])
             if norm_k not in seen_titles:
                 seen_titles.add(norm_k)
@@ -980,9 +1034,9 @@ class TrendingAgent:
         if check_box_office or entity_res.get("category") == "cinema":
             box_office_data = self.fetch_box_office(target_query)
 
-        # 8. Timeline Construction (Strictly from actual source publication timestamps)
+        # 8. Timeline Construction (Strictly monotonic by parsed source publication timestamps)
         timeline = []
-        for ev in sorted(deduped_evidence, key=lambda x: x.published_at)[:10]:
+        for ev in sorted(deduped_evidence, key=lambda x: _parse_timestamp_epoch(x.published_at))[:10]:
             timeline.append({
                 "timestamp": ev.published_at,
                 "platform": ev.platform,
@@ -1008,6 +1062,9 @@ class TrendingAgent:
                 "sentiment": -40 if any(w in ev.title.lower() for w in ["boycott", "scandal", "leak", "fake"]) else 25
             })
 
+        threat_count = sum(1 for f in feed_items if f.get("is_threat"))
+        safe_count = len(feed_items) - threat_count
+
         scan_duration = round(time.time() - start_time, 2)
 
         # Truthful empty state notice
@@ -1028,6 +1085,8 @@ class TrendingAgent:
             "asset_name": asset_name,
             "identifiers": identifiers,
             "threats": feed_items,
+            "threat_count": threat_count,
+            "safe_count": safe_count,
             "sources": {
                 "news": [e.to_dict() for e in deduped_evidence if e.platform == "news"],
                 "paparazzi": paparazzi_items,
@@ -1038,7 +1097,9 @@ class TrendingAgent:
                 "paparazzi": len(paparazzi_items),
                 "news": len([e for e in deduped_evidence if e.platform == "news"]),
                 "fan_wars": len([e for e in deduped_evidence if e.platform in ["twitter", "reddit", "youtube"]]),
-                "total_threats": sum(1 for f in feed_items if f.get("is_threat")),
+                "total_threats": threat_count,
+                "threat_count": threat_count,
+                "safe_count": safe_count,
                 "total_items": len(feed_items)
             },
 

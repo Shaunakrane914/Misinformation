@@ -1,0 +1,11 @@
+{
+  "tiktok": {
+    "candidate": "TikTok-Api (davidteather)",
+    "access_method": "BROWSER_PUBLIC / SIGNED_API",
+    "driver": "Playwright + stealth + ms_token signature",
+    "auth_required": "NO for public trending/videos; Session optional",
+    "direct_content": true,
+    "reliability": "MEDIUM-HIGH (Requires browser daemon for signature generation)",
+    "aegis_fit": "GOOD for BrandShield & Trending viral verification."
+  }
+}

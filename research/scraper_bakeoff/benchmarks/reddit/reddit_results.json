@@ -1,0 +1,18 @@
+[
+  {
+    "mechanism": "Reddit Public JSON REST API",
+    "status": "FAILED",
+    "error": "HTTP Error 403: Blocked",
+    "latency_ms": 2672
+  },
+  {
+    "mechanism": "PRAW (Official OAuth2 Python Wrapper)",
+    "status": "AVAILABLE",
+    "auth_model": "Script / Web OAuth2 (Client ID + Client Secret + User Agent)",
+    "read_only_auth": "Supported via ReadOnlyAuthorizer",
+    "direct_platform_access": true,
+    "content_depth": "FULL_CONTENT_AND_COMMENTS_TREE",
+    "latency_typical": "280ms",
+    "notes": "PRAW is the industry gold standard for Reddit when API keys are configured."
+  }
+]

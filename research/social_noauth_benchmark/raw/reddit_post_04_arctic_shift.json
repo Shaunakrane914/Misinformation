@@ -1,0 +1,8 @@
+{
+  "url_called": "https://arctic-shift.photon-reddit.com/api/posts/ids?ids=s6hgyg",
+  "latency_ms": 2100,
+  "status": 200,
+  "payload": {
+    "data": []
+  }
+}

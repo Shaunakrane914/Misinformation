@@ -1,0 +1,8 @@
+{
+  "url_called": "https://arctic-shift.photon-reddit.com/api/posts/search?subreddit=space&query=James+Webb+carbon+dioxide&limit=5&sort=desc",
+  "latency_ms": 10038,
+  "status": 0,
+  "payload": {
+    "error": "The read operation timed out"
+  }
+}

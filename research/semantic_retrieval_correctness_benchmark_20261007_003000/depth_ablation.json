@@ -1,0 +1,46 @@
+{
+  "reddit": {
+    "top_1": {
+      "correct_source_rate": 0.67,
+      "claim_support_rate": 0.46,
+      "false_positive_rate": 0.26
+    },
+    "top_3": {
+      "correct_source_rate": 0.75,
+      "claim_support_rate": 0.63,
+      "false_positive_rate": 0.2
+    },
+    "top_5": {
+      "correct_source_rate": 0.76,
+      "claim_support_rate": 0.65,
+      "false_positive_rate": 0.18
+    },
+    "top_10": {
+      "correct_source_rate": 0.76,
+      "claim_support_rate": 0.72,
+      "false_positive_rate": 0.18
+    }
+  },
+  "twitter": {
+    "top_1": {
+      "correct_source_rate": 0.31,
+      "claim_support_rate": 0.23,
+      "false_positive_rate": 0.15
+    },
+    "top_3": {
+      "correct_source_rate": 0.34,
+      "claim_support_rate": 0.23,
+      "false_positive_rate": 0.13
+    },
+    "top_5": {
+      "correct_source_rate": 0.34,
+      "claim_support_rate": 0.23,
+      "false_positive_rate": 0.13
+    },
+    "top_10": {
+      "correct_source_rate": 0.34,
+      "claim_support_rate": 0.25,
+      "false_positive_rate": 0.13
+    }
+  }
+}

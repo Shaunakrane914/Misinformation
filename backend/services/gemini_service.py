@@ -42,12 +42,21 @@ class MockGeminiProvider:
         prompt_lower = prompt.lower()
         # 1. Evidence extraction mock
         if "search and summarize evidence" in prompt_lower or "supporting_evidence" in prompt_lower:
-            if any(w in prompt_lower for w in ["lemon", "diabetes", "microchip", "flat earth", "hoax", "fake", "5g"]):
+            if any(w in prompt_lower for w in ["lemon", "diabetes", "cure cancer", "blood sugar"]):
                 return json.dumps({
                     "supporting_evidence": [],
                     "refuting_evidence": [
-                        "Peer-reviewed clinical trials confirm this intervention has no demonstrable glycemic efficacy.",
-                        "Endocrine society guidelines and WHO registries explicitly debunk this treatment claim."
+                        "Clinical research and medical guidance indicate this intervention has no demonstrated therapeutic efficacy.",
+                        "Health regulatory authorities have debunked claims of rapid curative properties."
+                    ],
+                    "overall_evidence_confidence": 0.05
+                })
+            elif any(w in prompt_lower for w in ["whatsapp", "red tick", "three tick", "tick"]):
+                return json.dumps({
+                    "supporting_evidence": [],
+                    "refuting_evidence": [
+                        "Official platform documentation confirms tick marks denote delivery and read status only.",
+                        "Fact-checking organizations confirmed no government enforcement action is indicated by message checkmarks."
                     ],
                     "overall_evidence_confidence": 0.05
                 })
@@ -62,9 +71,9 @@ class MockGeminiProvider:
                 })
             else:
                 return json.dumps({
-                    "supporting_evidence": ["Initial preliminary reporting observed in primary media wires."],
-                    "refuting_evidence": ["Secondary sources note lack of independent corroboration."],
-                    "overall_evidence_confidence": 0.45
+                    "supporting_evidence": [],
+                    "refuting_evidence": ["Verified public reporting and official registries indicate no substantiation for this claim."],
+                    "overall_evidence_confidence": 0.35
                 })
 
         # 2. Verdict synthesis mock

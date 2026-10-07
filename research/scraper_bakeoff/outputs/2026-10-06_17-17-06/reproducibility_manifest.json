@@ -1,0 +1,18 @@
+{
+  "timestamp": "2026-10-06_17-17-06",
+  "hardware": "13th Gen Intel Core i5-13450HX (16 logical threads, 16GB RAM)",
+  "os": "win32",
+  "python_version": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "frozen_dataset_cases": 340,
+  "policies_tested": [
+    "POLICY_A",
+    "POLICY_B",
+    "POLICY_C",
+    "POLICY_D"
+  ],
+  "concurrency_workers": 16,
+  "timeout_network_sec": 6.0,
+  "timeout_browser_ms": 12000,
+  "credential_mode": "ZERO_CONFIG",
+  "output_directory": "C:\\Users\\Shaunak Rane\\Desktop\\Projects\\Misinformation\\research\\scraper_bakeoff\\outputs\\2026-10-06_17-17-06"
+}

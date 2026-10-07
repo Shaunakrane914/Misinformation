@@ -65,6 +65,7 @@ class RetrievalMode(str, Enum):
     UPSTREAM_AGENT_REACH = "upstream_agent_reach"
     NATIVE_TOOL_CLI = "native_tool_cli"
     DIRECT_API = "direct_api"
+    ZERO_AUTH_PUBLIC_MIRROR = "zero_auth_public_mirror"
     WEB_SEARCH_INDEX = "web_search_index"
     RSS_FEED = "rss_feed"
     WEB_READER = "web_reader"
@@ -149,6 +150,23 @@ class EvidenceFragment:
             "retrieval_lineage": self.retrieval_lineage,
             "raw_metadata": self.raw_metadata,
         }
+
+    # ── Dict-like compatibility ───────────────────────────────────────────
+    def __getitem__(self, key: str) -> Any:
+        if hasattr(self, key):
+            return getattr(self, key)
+        if key in self.raw_metadata:
+            return self.raw_metadata[key]
+        raise KeyError(key)
+
+    def get(self, key: str, default: Any = None) -> Any:
+        try:
+            return self[key]
+        except KeyError:
+            return default
+
+    def __contains__(self, key: str) -> bool:
+        return hasattr(self, key) or (hasattr(self, "raw_metadata") and key in self.raw_metadata)
 
     @classmethod
     def from_scraper_dict(

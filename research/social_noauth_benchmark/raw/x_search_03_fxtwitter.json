@@ -1,0 +1,8 @@
+{
+  "url_called": "https://api.fxtwitter.com/search?q=Artemis+lunar+mission+Moon",
+  "latency_ms": 664,
+  "status": 404,
+  "payload": {
+    "error": "FxTwitter is a status/profile mirror and does not provide an arbitrary keyword search index."
+  }
+}

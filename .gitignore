@@ -38,6 +38,7 @@ wheels/
 # Database
 *.db
 *.sqlite
+.scraper_health_history.json
 *.sqlite3
 aegis.db
 

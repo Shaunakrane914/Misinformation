@@ -166,19 +166,23 @@ def test_production_removal_isolation():
     Verify production acquisition fabric functions cleanly even if scraper.py
     and scrapers/ are completely unreferenced (Section 18).
     """
+    import os
     import sys
     from backend.services.agent_reach.native.router import NativeRouter
     from backend.services.agent_reach.channels import RetrievalRequest
 
     router = NativeRouter()
     assert router is not None
-    # Verify no scraper modules were imported into production packages
+    # Verify the laboratory module (root scraper.py or scrapers package) is never imported into production
     for mod in list(sys.modules.keys()):
         if mod.startswith("backend."):
             mod_obj = sys.modules[mod]
             if mod_obj and hasattr(mod_obj, "__file__") and mod_obj.__file__:
-                assert "scraper.py" not in mod_obj.__file__
-                assert "scrapers" not in mod_obj.__file__
+                # Root laboratory CLI scraper.py must not be imported
+                assert os.path.basename(mod_obj.__file__) != "scraper.py"
+                # Laboratory package 'scrapers' directory must not be in production file path
+                parts = os.path.normpath(mod_obj.__file__).split(os.sep)
+                assert "scrapers" not in parts
 
 
 def test_backend_truthfulness_and_adapter_coupling():

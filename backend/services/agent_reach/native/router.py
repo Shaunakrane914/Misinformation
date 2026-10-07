@@ -1560,6 +1560,8 @@ class NativeRouter:
                 mirror_reqs += 1
             elif decision.primary_backend == "search_discovery":
                 search_reqs += 1
+            elif decision.primary_backend in ("playwright_rescue", "browser"):
+                browser_reqs += 1
 
             # Authoritative adapter derived directly from RouteDecision via AdapterRegistry
             adapter = self.adapter_registry.get_adapter_for_decision(decision, cand)

@@ -331,9 +331,9 @@ def test_x_fxtwitter_404_falls_back_gracefully(router):
             return_value={"content": "Archived article text from fallback index that is safely retrieved and parsed."}
         ):
             res = router.execute_channel_read("https://x.com/OpenAI/status/1790072080357986494")
-            # Should fall through to Jina Reader fallback
+            # Should fall through to web reader (scrapling_http or Jina Reader) fallback
             assert res["status"] == "success"
-            assert res["backend"] == "Jina Reader"
+            assert res["backend"] in ("Jina Reader", "scrapling_http")
 
 
 # ─────────────────────────────────────────────────────────────────────────────

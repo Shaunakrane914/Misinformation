@@ -23,22 +23,22 @@ class ScraperLabRunner:
     def __init__(self, history_file: str = ".scraper_health_history.json"):
         self.history_file = history_file
 
-    def run_platform_test(self, platform: str) -> Optional[ScraperLabResult]:
+    def run_platform_test(self, platform: str, live_network: bool = True) -> Optional[ScraperLabResult]:
         """Execute canary test for a single platform."""
         test_impl = scraper_test_registry.get_test(platform)
         if not test_impl:
             return None
         fixture = get_canary_fixture(test_impl.platform)
-        result = test_impl.run_canary(fixture)
+        result = test_impl.run_canary(fixture, live_network=live_network)
         self.record_history([result])
         return result
 
-    def run_all(self) -> List[ScraperLabResult]:
+    def run_all(self, live_network: bool = True) -> List[ScraperLabResult]:
         """Execute canary tests across all registered platforms."""
         results: List[ScraperLabResult] = []
         for test_impl in scraper_test_registry.list_all():
             fixture = get_canary_fixture(test_impl.platform)
-            res = test_impl.run_canary(fixture)
+            res = test_impl.run_canary(fixture, live_network=live_network)
             results.append(res)
         self.record_history(results)
         return results
@@ -59,10 +59,11 @@ class ScraperLabRunner:
         self,
         platform: str,
         extracted: Dict[str, Any]
-    ) -> Dict[str, bool]:
+    ) -> Dict[str, Any]:
         """
         Verify if the extracted fields from this website satisfy the required fields
-        for each of the 4 production domain agents (Section 46).
+        for each of the 4 production domain agents.
+        Returns completeness percentage, missing fields, and contract satisfaction.
         """
         from backend.services.agent_reach.profile import (
             BRANDSHIELD_PROFILE,
@@ -71,15 +72,32 @@ class ScraperLabRunner:
             TRENDING_PROFILE,
         )
 
-        def _check_overlap(required: List[str]) -> bool:
-            # Matches if at least core fields are present in extracted keys
-            return any(k in extracted for k in required)
+        def _evaluate_agent_contract(required: List[str]) -> Dict[str, Any]:
+            present = [k for k in required if k in extracted and extracted[k]]
+            missing = [k for k in required if k not in extracted or not extracted[k]]
+            completeness = (len(present) / len(required)) * 100.0 if required else 100.0
+            satisfied = completeness >= 50.0
+            return {
+                "present_fields": present,
+                "missing_fields": missing,
+                "completeness_pct": round(completeness, 1),
+                "satisfied": satisfied,
+            }
+
+        bs_eval = _evaluate_agent_contract(BRANDSHIELD_PROFILE.required_fields)
+        tr_eval = _evaluate_agent_contract(TRENDING_PROFILE.required_fields)
+        sc_eval = _evaluate_agent_contract(SCOUT_PROFILE.required_fields)
+        pw_eval = _evaluate_agent_contract(PERSONAL_WATCH_PROFILE.required_fields)
 
         return {
-            "brandshield_compatible": _check_overlap(BRANDSHIELD_PROFILE.required_fields),
-            "trending_compatible": _check_overlap(TRENDING_PROFILE.required_fields),
-            "scout_compatible": _check_overlap(SCOUT_PROFILE.required_fields),
-            "personal_watch_compatible": _check_overlap(PERSONAL_WATCH_PROFILE.required_fields),
+            "brandshield": bs_eval,
+            "brandshield_compatible": bs_eval["satisfied"],
+            "trending": tr_eval,
+            "trending_compatible": tr_eval["satisfied"],
+            "scout": sc_eval,
+            "scout_compatible": sc_eval["satisfied"],
+            "personal_watch": pw_eval,
+            "personal_watch_compatible": pw_eval["satisfied"],
         }
 
     def record_history(self, results: List[ScraperLabResult]) -> None:

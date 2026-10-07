@@ -44,17 +44,21 @@ def main():
         help="Target platform (reddit, x, youtube, github, web, google_news, instagram, facebook, tiktok, linkedin, bilibili)",
     )
     test_parser.add_argument("--json", action="store_true", help="Output results as JSON")
+    test_parser.add_argument("--offline", action="store_true", help="Run fast offline validation using fixture payload")
 
     # Command: test-all
     test_all_parser = subparsers.add_parser("test-all", help="Run canaries across all registered platforms")
     test_all_parser.add_argument("--json", action="store_true", help="Output results as JSON")
+    test_all_parser.add_argument("--offline", action="store_true", help="Run fast offline validation using fixture payload")
 
     # Command: health
-    subparsers.add_parser("health", help="Display health summary table")
+    health_parser = subparsers.add_parser("health", help="Display health summary table")
+    health_parser.add_argument("--offline", action="store_true", help="Run fast offline validation using fixture payload")
 
     # Command: report
     report_parser = subparsers.add_parser("report", help="Display comprehensive health and schema report")
     report_parser.add_argument("--json", action="store_true", help="Output report as JSON")
+    report_parser.add_argument("--offline", action="store_true", help="Run fast offline validation using fixture payload")
 
     args = parser.parse_args()
 
@@ -63,9 +67,10 @@ def main():
         sys.exit(0)
 
     runner = ScraperLabRunner()
+    is_live = not getattr(args, "offline", False)
 
     if args.command == "test":
-        res = runner.run_platform_test(args.platform)
+        res = runner.run_platform_test(args.platform, live_network=is_live)
         if not res:
             print(f"Error: Unknown platform '{args.platform}'. Available: {scraper_test_registry.list_platforms()}")
             sys.exit(1)
@@ -75,18 +80,18 @@ def main():
             print(format_health_report([res]))
 
     elif args.command == "test-all":
-        results = runner.run_all()
+        results = runner.run_all(live_network=is_live)
         if getattr(args, "json", False):
             print(json.dumps([r.to_dict() for r in results], indent=2))
         else:
             print(format_health_report(results))
 
     elif args.command == "health":
-        results = runner.run_all()
+        results = runner.run_all(live_network=is_live)
         print(format_summary_table(results))
 
     elif args.command == "report":
-        results = runner.run_all()
+        results = runner.run_all(live_network=is_live)
         if getattr(args, "json", False):
             print(json.dumps([r.to_dict() for r in results], indent=2))
         else:

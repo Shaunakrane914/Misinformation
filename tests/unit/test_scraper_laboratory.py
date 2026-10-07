@@ -40,7 +40,7 @@ def test_canary_execution_and_result_contract():
     Verify each test scraper executes its canary and returns a compliant ScraperLabResult.
     """
     runner = ScraperLabRunner()
-    results = runner.run_all()
+    results = runner.run_all(live_network=False)
     assert len(results) >= 11
 
     for res in results:
@@ -102,8 +102,8 @@ def test_failure_classification_categories():
 
 def test_production_contract_support_evaluation():
     """
-    Verify ScraperLabRunner evaluates whether website extraction supports
-    production domain contracts (Section 46).
+    Verify ScraperLabRunner evaluates whether website extraction satisfies
+    production domain contracts with exact completeness and missing fields.
     """
     runner = ScraperLabRunner()
     extracted_reddit = {
@@ -114,10 +114,32 @@ def test_production_contract_support_evaluation():
         "selftext": "Found fake seller on marketplace",
         "brand": "Nike",
         "seller": "unknown_shop",
+        "product": "Air Max",
+        "price": "$90",
+        "url": "https://reddit.com/r/technology/comments/fake",
+        "domain": "reddit.com",
     }
     compat = runner.evaluate_production_contract_support("reddit", extracted_reddit)
     assert compat["brandshield_compatible"] is True
-    assert compat["trending_compatible"] is True
+    assert compat["brandshield"]["completeness_pct"] >= 70.0
+    assert "brand" in compat["brandshield"]["present_fields"]
+    assert "seller" in compat["brandshield"]["present_fields"]
+    # Distinguishes that counterfeit post does NOT satisfy Trending contract
+    assert compat["trending_compatible"] is False
+
+    extracted_trending = {
+        "title": "Breaking Tech Trend",
+        "author": "viral_user",
+        "timestamp": "2026-10-07T12:00:00Z",
+        "platform": "twitter",
+        "content": "Full viral thread discussion",
+        "engagement": 45000,
+        "narrative": "AI breakthrough",
+        "claim": "Major efficiency leap",
+    }
+    compat_tr = runner.evaluate_production_contract_support("twitter", extracted_trending)
+    assert compat_tr["trending_compatible"] is True
+    assert compat_tr["trending"]["completeness_pct"] == 100.0
 
 
 def test_website_capability_registry_fields():

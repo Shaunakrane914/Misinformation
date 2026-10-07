@@ -23,7 +23,11 @@ class BilibiliScraperTest(WebsiteScraperTest):
     def required_fields(self) -> List[str]:
         return ["title", "snippet", "url"]
 
-    def run_canary(self, canary_fixture: Dict[str, Any]) -> ScraperLabResult:
+    def run_canary(
+        self,
+        canary_fixture: Dict[str, Any],
+        live_network: bool = True
+    ) -> ScraperLabResult:
         t0 = time.perf_counter()
         target_url = canary_fixture.get("target_url", "https://www.bilibili.com/video/BV1xx411c7mD")
 

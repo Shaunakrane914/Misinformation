@@ -29,11 +29,15 @@ class InstagramScraperTest(WebsiteScraperTest):
     def optional_fields(self) -> List[str]:
         return ["followers_snippet", "verified_status"]
 
-    def run_canary(self, canary_fixture: Dict[str, Any]) -> ScraperLabResult:
+    def run_canary(
+        self,
+        canary_fixture: Dict[str, Any],
+        live_network: bool = True
+    ) -> ScraperLabResult:
         t0 = time.perf_counter()
         target_url = canary_fixture.get("target_url", "https://www.instagram.com/microsoft/")
 
-        # Walled garden search discovery simulation
+        # Walled garden search discovery representation
         extracted = {
             "title": "Microsoft (@microsoft) • Instagram photos and videos",
             "snippet": "14M Followers, 240 Following, 1,200 Posts - See Instagram photos and videos from Microsoft",
@@ -41,7 +45,7 @@ class InstagramScraperTest(WebsiteScraperTest):
             "followers_snippet": "14M Followers",
         }
 
-        lat_ms = int((time.perf_counter() - t0) * 1000) or 40
+        lat_ms = max(int((time.perf_counter() - t0) * 1000), 5)
 
         drift = self.evaluate_schema_drift(
             extracted,

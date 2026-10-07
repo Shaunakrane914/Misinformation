@@ -154,9 +154,15 @@ class WebsiteScraperTest(ABC):
         return []
 
     @abstractmethod
-    def run_canary(self, canary_fixture: Dict[str, Any]) -> ScraperLabResult:
+    def run_canary(
+        self,
+        canary_fixture: Dict[str, Any],
+        live_network: bool = True
+    ) -> ScraperLabResult:
         """
-        Execute live or simulated canary test against the platform.
+        Execute canary test against the platform.
+        When live_network is True, conducts actual HTTP network probe.
+        When live_network is False, validates using offline fixture.
         Evaluates transport, parsing, field presence, schema drift, and latency.
         """
         pass

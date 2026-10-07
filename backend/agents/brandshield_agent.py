@@ -883,22 +883,22 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
         dated_evidence = [e for e in evidence_items if e.get("published_at") and e.get("published_at") != "Recent"]
         for e in dated_evidence[:8]:
             timeline.append({
-                "time": e["published_at"],
-                "platform": e["platform"],
-                "title": e["title"],
-                "url": e["url"],
-                "has_url": e["has_url"],
-                "source_role": e["source_role"]
+                "time": e.get("published_at") or e.get("published", "Recent"),
+                "platform": e.get("platform", "Web"),
+                "title": e.get("title", ""),
+                "url": e.get("url", ""),
+                "has_url": e.get("has_url", bool(e.get("url"))),
+                "source_role": e.get("source_role", "COMMUNITY")
             })
         if not timeline and evidence_items:
             for e in evidence_items[:5]:
                 timeline.append({
                     "time": e.get("published_at") or "Monitored Stream",
-                    "platform": e["platform"],
-                    "title": e["title"],
-                    "url": e["url"],
-                    "has_url": e["has_url"],
-                    "source_role": e["source_role"]
+                    "platform": e.get("platform", "Web"),
+                    "title": e.get("title", ""),
+                    "url": e.get("url", ""),
+                    "has_url": e.get("has_url", bool(e.get("url"))),
+                    "source_role": e.get("source_role", "COMMUNITY")
                 })
 
         duration_ms = int((datetime.utcnow() - start_time).total_seconds() * 1000)

@@ -185,7 +185,7 @@ class ScoutExtractionEngine:
                                 evidence_ids=[ev_id],
                             )
                         )
-                        if "deal" in text_lower or "acquisition" in text_lower or "valuation" in text_lower:
+                        if any(k in text_lower for k in ("deal", "acquisition", "acquire", "valuation", "buyout", "merger", "takeover")):
                             extracted_deal_values.append((full_val, match.group(0), ev_id))
                     except Exception:
                         pass

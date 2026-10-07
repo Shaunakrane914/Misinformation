@@ -1522,9 +1522,6 @@ class NativeRouter:
             escalation_used = False
 
         selected_candidates = passed_candidates[:target_budget]
-        if not selected_candidates and all_candidates:
-            # Graceful safety fallback if all failed hard gates
-            selected_candidates = all_candidates[:3]
 
         # 5. Acquire Content via Specialist Adapters
         final_fragments: List[EvidenceFragment] = []

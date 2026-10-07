@@ -854,12 +854,19 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
     # 4. Main Scan Execution
     # ─────────────────────────────────────────────────────────────────────────
 
-    def scan(self, brand_name: str, query: Optional[str] = None) -> Dict[str, Any]:
+    def scan(
+        self,
+        brand_name: str = "",
+        query: Optional[str] = None,
+        brand_input: Optional[str] = None,
+        **kwargs: Any
+    ) -> Dict[str, Any]:
         """
         Execute full BrandShield 2.0 brand protection and threat intelligence scan.
         """
+        effective_name = (brand_name or brand_input or kwargs.get("brand") or "").strip()
         start_time = datetime.utcnow()
-        clean_input = query.strip() if query else brand_name.strip()
+        clean_input = query.strip() if query else effective_name
         logger.info(f"[BrandShield 2.0] Executing scan for input: '{clean_input}'")
 
         # 1. Entity Resolution
@@ -1018,7 +1025,7 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
         Partitions reasoning into OBSERVED -> INFERRED -> UNCERTAIN and produces
         structured brand & company protection intelligence without hallucinating severity.
         """
-        scan_res = self.scan(brand_input=entity_input)
+        scan_res = self.scan(brand_name=entity_input)
         entity_info = scan_res.get("entity", {})
         canonical_brand = scan_res.get("brand", entity_input)
         ent_type = entity_type or entity_info.get("entity_type", "brand")
@@ -1033,14 +1040,18 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
         # 1. Observed facts (Directly supported by retrieved evidence: domains, listings, filings)
         observed: List[str] = []
         for t in threats[:4]:
-            t_name = t.get("threat_name") or t.get("threat_type", "THREAT")
-            desc = t.get("description", "")
-            plat = t.get("platform", "web")
+            t_name = t.get("threat_name") or t.get("threat_type") or t.get("type", "THREAT")
+            desc = t.get("description") or t.get("title") or t.get("summary", "")
+            plat = t.get("platform") if isinstance(t.get("platform"), str) else (t.get("platforms", ["web"])[0] if t.get("platforms") else "web")
             observed.append(f"Observed {t_name} on {plat}: {desc}")
         for s in scan_res.get("counterfeits", [])[:2]:
-            observed.append(f"Identified suspicious/counterfeit asset: {s.get('title')} ({s.get('platform')})")
+            s_title = s.get("title") or s.get("product", "Suspected Product")
+            s_plat = s.get("platform") or s.get("marketplace_or_domain", "Web")
+            observed.append(f"Identified suspicious/counterfeit asset: {s_title} ({s_plat})")
         for imp in scan_res.get("impersonations", [])[:2]:
-            observed.append(f"Identified potential brand impersonation: {imp.get('title')} ({imp.get('platform')})")
+            imp_title = imp.get("title") or imp.get("handle_or_domain", "Suspected Impersonator")
+            imp_plat = imp.get("platform", "Web")
+            observed.append(f"Identified potential brand impersonation: {imp_title} ({imp_plat})")
         if not observed and evidence_items:
             observed.append(f"Retrieved {len(evidence_items)} active public web citations across {len(scan_res.get('platforms', []))} platforms.")
 
@@ -1056,9 +1067,9 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
 
         # 3. Uncertain / Unknown (Unverified consumer FUD, unconfirmed rumors)
         uncertain: List[str] = []
-        unverified_rumors = [t for t in threats if t.get("threat_type") == "UNVERIFIED_RUMOR"]
+        unverified_rumors = [t for t in threats if t.get("threat_type") in ("UNVERIFIED_RUMOR", "RUMOR") or t.get("type") == "RUMOR"]
         for r in unverified_rumors:
-            uncertain.append(f"Unsubstantiated public discourse: {r.get('description')}")
+            uncertain.append(f"Unsubstantiated public discourse: {r.get('description') or r.get('title', '')}")
         for contra in scan_res.get("contradictions", []):
             uncertain.append(f"Contradiction flagged in public claims: {contra}")
         if not evidence_items:
@@ -1078,6 +1089,14 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
         fallback_used = retrieval_trace.get("fallback_rate", 0.0) > 0.0
         fallback_reason = "SEARCH_INDEX_FALLBACK" if fallback_used else None
 
+        # Build clean recommendations list supporting both strings and structured dicts
+        clean_recs = []
+        for r in recommendations:
+            if isinstance(r, str) and r.strip():
+                clean_recs.append(r.strip())
+            elif isinstance(r, dict) and r.get("action"):
+                clean_recs.append(r.get("action").strip())
+
         return {
             "agent": "brandshield",
             "entity": canonical_brand,
@@ -1093,7 +1112,7 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
             "sources": evidence_items,
             "corroboration": scan_res.get("findings_structured", []),
             "contradictions": scan_res.get("contradictions", []),
-            "recommended_attention": [r.get("action") for r in recommendations if r.get("action")] or ["Continue passive monitoring"],
+            "recommended_attention": clean_recs or ["Continue passive monitoring"],
             "retrieval": {
                 "direct": not fallback_used,
                 "fallback_used": fallback_used,

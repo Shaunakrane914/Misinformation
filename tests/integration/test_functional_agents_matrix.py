@@ -96,6 +96,46 @@ def test_brandshield_normal_positive_case():
 
 
 @pytest.mark.integration
+def test_brandshield_structured_intelligence_interface():
+    """Verify BrandShield structured intelligence public contract (generate_brandshield_intelligence)."""
+    agent = BrandShieldAgent()
+    mock_evidence = [
+        {
+            "evidence_id": "ev_001",
+            "title": "Nike Official Store and Footwear Catalog",
+            "content": "Explore new running shoe releases, Air Max lineups, and athletic apparel directly from Nike.",
+            "snippet": "Explore new running shoe releases, Air Max lineups, and athletic apparel directly from Nike.",
+            "url": "https://nike.com/running",
+            "has_url": True,
+            "source": "Nike Official",
+            "platform": "Web",
+            "author": "Nike Inc.",
+            "published_at": "2026-10-01T10:00:00Z",
+            "retrieved_at": "2026-10-07T12:00:00Z",
+            "source_role": "PRIMARY",
+            "source_tier": "TIER_1_OFFICIAL_FILING",
+            "independence_group": "independent",
+            "is_primary": True,
+            "content_depth": "FULL_ARTICLE",
+            "query_id": "q_01",
+            "query_class": "official",
+            "query_text": "Nike products",
+        }
+    ]
+    with patch.object(agent, "search_brand_evidence", return_value=(mock_evidence, {"web": "healthy (1)"}, {"trace": {}}, 0)):
+        res = agent.generate_brandshield_intelligence("Nike")
+        assert res is not None
+        assert res.get("agent") == "brandshield"
+        assert res.get("entity") == "Nike"
+        assert "observed" in res
+        assert "inferred" in res
+        assert "uncertain" in res
+        assert "sources" in res
+        assert "recommended_attention" in res
+        assert "retrieval" in res
+
+
+@pytest.mark.integration
 def test_trending_normal_positive_case():
     """Verify Trending resolves entity mode and returns structured trend intelligence."""
     agent = TrendingAgent()

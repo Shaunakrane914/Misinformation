@@ -21,7 +21,9 @@ import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
-from duckduckgo_search import DDGS
+from backend.services.agent_reach import agent_reach_service
+from backend.services.agent_reach.channels import RetrievalRequest
+from backend.services.agent_reach.extraction import brandshield_extractor
 
 logger = logging.getLogger(__name__)
 
@@ -245,38 +247,40 @@ class BrandShieldAgent:
                 "query_text": query_text,
             })
 
-        # If Agent Reach returned fewer than 4 items, fall back to DDGS to ensure baseline web discovery
+        # If evidence count is low, supplement via shared acquisition fabric
         if len(evidence_items) < 4:
             try:
-                logger.info(f"[BrandShield 2.0] Supplementing with DDGS for '{target_name} reviews complaints'")
-                ddgs = DDGS()
-                ddg_results = ddgs.text(f"{target_name} reviews complaints controversy", max_results=6)
-                for r in ddg_results:
-                    href = r.get("href", "")
-                    title = r.get("title", "")
-                    body = r.get("body", "")
-                    if any(e["url"] == href for e in evidence_items if e["url"]):
+                logger.info(f"[BrandShield 2.0] Supplementing via shared acquisition fabric for '{target_name} reviews complaints'")
+                supp_req = RetrievalRequest(
+                    agent="brandshield",
+                    entity=target_name,
+                    intent=f"{target_name} reviews complaints controversy",
+                    allowed_channels=["web", "news"],
+                    candidate_budget=5,
+                )
+                supp_frags = agent_reach_service.execute(supp_req)
+                for sf in supp_frags:
+                    if sf.url and any(e["url"] == sf.url for e in evidence_items if e["url"]):
                         continue
-
                     evidence_items.append({
-                        "evidence_id": f"ev_{len(evidence_items)+1:03d}",
-                        "title": title,
-                        "content": body,
-                        "snippet": body[:240],
-                        "url": href,
-                        "has_url": bool(href and href.startswith("http")),
-                        "source": "Web",
-                        "platform": "Web",
-                        "author": urllib.parse.urlparse(href).netloc if href else "Web",
-                        "published_at": "Recent",
-                        "retrieved_at": datetime.utcnow().isoformat() + "Z",
+                        "evidence_id": sf.evidence_id or f"ev_{len(evidence_items)+1:03d}",
+                        "title": sf.title,
+                        "content": sf.content,
+                        "snippet": sf.snippet[:240],
+                        "url": sf.url,
+                        "has_url": bool(sf.url and sf.url.startswith("http")),
+                        "source": sf.platform.title() if sf.platform else "Web",
+                        "platform": sf.platform.title() if sf.platform else "Web",
+                        "author": sf.author or (urllib.parse.urlparse(sf.url).netloc if sf.url else "Web"),
+                        "published_at": sf.published or "Recent",
+                        "retrieved_at": sf.retrieved_at,
                         "source_role": "DISCOVERY",
                         "source_tier": "TIER_3_AGGREGATE",
                         "independence_group": "independent",
                         "is_primary": False,
                     })
-            except Exception as d_err:
-                logger.debug(f"[BrandShield 2.0] DDGS fallback notice: {d_err}")
+            except Exception as supp_err:
+                logger.debug(f"[BrandShield 2.0] Shared fabric supplement notice: {supp_err}")
 
         # Limit total evidence count
         evidence_items = evidence_items[:max_results]

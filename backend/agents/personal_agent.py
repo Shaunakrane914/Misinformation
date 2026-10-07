@@ -28,8 +28,10 @@ import urllib.parse
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple, Set
 
-from duckduckgo_search import DDGS
 from apify_client import ApifyClient
+from backend.services.agent_reach import agent_reach_service
+from backend.services.agent_reach.channels import RetrievalRequest
+from backend.services.agent_reach.extraction import personal_watch_extractor
 
 logger = logging.getLogger(__name__)
 
@@ -352,36 +354,44 @@ class PersonalWatchAgent:
             logger.error(f"[PersonalWatch 2.0] ResearchEngine investigate error: {reach_err}")
             self._last_research_res = None
 
-        # Web search supplement via DDGS if evidence count is low
+        # Web search supplement via shared acquisition fabric if evidence count is low
         if len(evidence_items) < 4:
             try:
                 channel_health["web"] = "querying"
-                ddgs = DDGS()
-                results = list(ddgs.text(f'"{target_name}" controversy OR deepfake OR impersonation', max_results=6))
+                supp_req = RetrievalRequest(
+                    agent="personal",
+                    entity=target_name,
+                    intent=f'"{target_name}" controversy OR deepfake OR impersonation',
+                    allowed_channels=["web", "news"],
+                    candidate_budget=5,
+                )
+                supp_frags = agent_reach_service.execute(supp_req)
                 web_count = 0
-                for r in results:
+                for sf in supp_frags:
+                    if sf.url and any(e["url"] == sf.url for e in evidence_items if e["url"]):
+                        continue
                     evidence_items.append({
-                        "evidence_id": f"ev_web_{hashlib.md5((r.get('href','') or '').encode()).hexdigest()[:8]}",
+                        "evidence_id": sf.evidence_id or f"ev_web_{hashlib.md5((sf.url or '').encode()).hexdigest()[:8]}",
                         "subject": target_name,
-                        "platform": "Web",
-                        "source": self._extract_domain(r.get("href", "")),
-                        "title": r.get("title", ""),
-                        "content": f"{r.get('title', '')} - {r.get('body', '')}",
-                        "snippet": r.get("body", ""),
-                        "url": r.get("href", ""),
-                        "canonical_url": r.get("href", ""),
-                        "author": "Web Publisher",
-                        "published_at": "Recent",
-                        "retrieved_at": _utcnow_iso(),
+                        "platform": sf.platform.title() if sf.platform else "Web",
+                        "source": self._extract_domain(sf.url) if sf.url else "Web",
+                        "title": sf.title,
+                        "content": sf.content or f"{sf.title} - {sf.snippet}",
+                        "snippet": sf.snippet,
+                        "url": sf.url,
+                        "canonical_url": sf.url,
+                        "author": sf.author or "Web Publisher",
+                        "published_at": sf.published or "Recent",
+                        "retrieved_at": sf.retrieved_at or _utcnow_iso(),
                         "source_role": "WEB_REFERENCE",
                         "source_tier": "TIER_2_COMMUNITY_WEB",
-                        "retrieval_method": "DuckDuckGo Text Search",
+                        "retrieval_method": "Agent Reach Shared Fabric",
                         "metadata": {}
                     })
                     web_count += 1
                 channel_health["web"] = f"active ({web_count})"
-            except Exception as ddg_err:
-                logger.debug(f"[PersonalWatch 2.0] Web search fallback notice: {ddg_err}")
+            except Exception as supp_err:
+                logger.debug(f"[PersonalWatch 2.0] Shared fabric supplement notice: {supp_err}")
                 channel_health["web"] = "offline"
 
         # Deduplication & Source Independence Grouping

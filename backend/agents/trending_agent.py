@@ -34,6 +34,10 @@ from dataclasses import dataclass, field, asdict
 import feedparser
 import requests
 
+from backend.services.agent_reach import agent_reach_service
+from backend.services.agent_reach.channels import RetrievalRequest
+from backend.services.agent_reach.extraction import trending_extractor
+
 logger = logging.getLogger(__name__)
 
 # Try importing ApifyClient safely
@@ -335,10 +339,34 @@ class TrendingAgent:
     # ─────────────────────────────────────────────────────────────────────────
 
     def fetch_news(self, keyword: str, limit: int = 8) -> List[Dict[str, Any]]:
-        """Fetch Google News RSS headlines with clean URL and source parsing."""
+        """Fetch news headlines via shared acquisition fabric with clean URL and source parsing."""
         if not keyword:
             return []
 
+        try:
+            req = RetrievalRequest(
+                agent="trending",
+                entity=keyword,
+                intent=f"{keyword} news headlines",
+                allowed_channels=["news", "web"],
+                candidate_budget=limit,
+            )
+            frags = agent_reach_service.execute(req)
+            if frags:
+                headlines: List[Dict[str, Any]] = []
+                for f in frags[:limit]:
+                    headlines.append({
+                        "title": f.title or "News Headline",
+                        "link": f.url or "Source URL unavailable",
+                        "published": f.published or datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                        "source": f.author or f.platform.title(),
+                        "summary": f.snippet or f.content[:240],
+                    })
+                return headlines
+        except Exception as reach_err:
+            logger.debug(f"[TrendingAgent] Shared fabric fetch_news notice: {reach_err}")
+
+        # Emergency fallback to RSS if shared fabric yielded no items
         feed_url = (
             "https://news.google.com/rss/search?"
             f"q={urllib.parse.quote_plus(keyword)}&hl=en-IN&gl=IN&ceid=IN:en"
@@ -346,7 +374,7 @@ class TrendingAgent:
         try:
             parsed = feedparser.parse(feed_url)
             entries = parsed.get("entries", [])[:limit]
-            headlines: List[Dict[str, Any]] = []
+            headlines = []
             for entry in entries:
                 src_info = entry.get("source")
                 source_title = src_info.get("title") if isinstance(src_info, dict) else "Google News"
@@ -1148,7 +1176,7 @@ class TrendingAgent:
         Partitions reasoning into OBSERVED -> INFERRED -> UNCERTAIN and produces
         structured celebrity and entertainment intelligence with zero fabricated engagement counts.
         """
-        scan_res = self.scan(
+        scan_res = self.scan_trends(
             asset_name=person,
             identifiers={"box_office": check_box_office, "paparazzi": check_paparazzi}
         )

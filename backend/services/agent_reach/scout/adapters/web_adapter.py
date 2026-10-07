@@ -43,15 +43,34 @@ class GenericWebAdapter(ScoutSourceAdapter):
         # 1. Direct HTTP GET with browser session
         status, text, headers, latency_ms, err = scout_transport.get(target_url, timeout=9.0)
 
-        method = "direct_http"
-        # 2. Jina Reader fallback if page is too short or blocked
+        method = "scrapling_http"
+        # 2. Scrapling / Playwright rescue if page is too short or blocked
         if (status != 200 or len(text) < 200) and request.allow_fallback:
-            jina_url = f"https://r.jina.ai/{target_url}"
-            j_status, j_text, j_headers, j_lat, j_err = scout_transport.get(jina_url, timeout=10.0)
-            if j_status == 200 and len(j_text) > 200:
-                status, text, headers, latency_ms = j_status, j_text, j_headers, j_lat
-                method = "jina_reader"
-                err = None
+            try:
+                from scrapling import Fetcher
+                s_resp = Fetcher.get(target_url, timeout=9.0)
+                s_text = s_resp.text if hasattr(s_resp, "text") else str(s_resp)
+                if len(s_text) > 200:
+                    status, text, method = 200, s_text, "scrapling_http"
+                    err = None
+            except Exception as e_sc:
+                logger.debug(f"[GenericWebAdapter] Scrapling fallback notice: {e_sc}")
+
+            if len(text) < 200:
+                try:
+                    from playwright.sync_api import sync_playwright
+                    with sync_playwright() as p:
+                        browser = p.chromium.launch(headless=True)
+                        page = browser.new_page()
+                        page.set_default_timeout(10000)
+                        page.goto(target_url, wait_until="domcontentloaded")
+                        pw_text = page.content()
+                        browser.close()
+                        if len(pw_text) > 200:
+                            status, text, method = 200, pw_text, "playwright_rescue"
+                            err = None
+                except Exception as e_pw:
+                    logger.debug(f"[GenericWebAdapter] Playwright rescue notice: {e_pw}")
 
         from datetime import datetime, timezone
         return RawSource(

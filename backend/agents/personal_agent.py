@@ -1216,10 +1216,113 @@ Return a STRICT JSON object:
             "limitations": limitations
         }
 
+    def generate_personal_watch_intelligence(
+        self,
+        person: str,
+        monitoring_scope: Optional[List[str]] = None,
+        category: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Aegis Protocol Output Contract implementation for Personal Watch Agent.
+        Adheres strictly to the specification in backend/Prompts/personal_watch_agent.md (Section 16).
+        Partitions reasoning into OBSERVED -> INFERRED -> UNCERTAIN and produces
+        structured personal intelligence with zero doxxing and strict privacy boundaries.
+        """
+        profile = {
+            "name": person,
+            "category": category or "public_figure",
+            "monitoring_scope": monitoring_scope or ["public statements", "career moves", "publications"]
+        }
+        scan_res = self.scan(vip_profile=profile)
+        subject_info = scan_res.get("subject", {})
+        canonical_name = subject_info.get("canonical_name") or person
+        confidence = float(subject_info.get("confidence", 0.85))
+
+        evidence_items = scan_res.get("evidence", [])
+        threats = scan_res.get("threats", [])
+        claims = scan_res.get("claims", [])
+        changes = scan_res.get("changes", {})
+        timeline = scan_res.get("timeline", [])
+
+        # 1. Observed facts (Directly supported by public official profiles, articles)
+        observed: List[str] = []
+        for ev in evidence_items[:5]:
+            observed.append(f"Public citation ({ev.get('platform')}/{ev.get('source')}): {ev.get('title')}")
+        for imp in scan_res.get("suspected_impersonations", [])[:2]:
+            observed.append(f"Discovered lookalike/impersonation profile: {imp.get('title')}")
+
+        # 2. Inferred interpretations (Analysis of changes, campaign coordination)
+        inferred: List[str] = []
+        if changes.get("has_changes"):
+            inferred.append("Material change detected across monitored public profiles since previous interval.")
+        else:
+            inferred.append("Public footprint remains consistent with baseline activity.")
+        if scan_res.get("high_risk_count", 0) > 0:
+            inferred.append(f"High-priority threat exposure detected: {scan_res.get('high_risk_count')} severe vectors flagged.")
+
+        # 3. Uncertain / Unknown (Unverified gossip, speculative third-party rumors)
+        uncertain: List[str] = []
+        for c in claims:
+            if c.get("status") in ("unverified", "unknown"):
+                uncertain.append(f"Unverified public claim: {c.get('claim_text')}")
+        for contra in scan_res.get("contradictions", []):
+            uncertain.append(f"Contradictory statement noted: {contra}")
+        if not evidence_items:
+            uncertain.append(f"No public signals found for {canonical_name} within requested monitoring scope.")
+
+        # Determine status
+        status = "no_material_change"
+        if scan_res.get("contradictions"):
+            status = "contradicted"
+        elif changes.get("has_changes"):
+            status = "material_change"
+        elif any(c.get("status") == "verified" for c in claims):
+            status = "confirmed"
+        elif evidence_items:
+            status = "new_information"
+
+        # Determine retrieval directness & fallback
+        retrieval_trace = scan_res.get("retrieval_trace", {})
+        fallback_used = retrieval_trace.get("fallback_rate", 0.0) > 0.0
+        fallback_reason = "SEARCH_INDEX_FALLBACK" if fallback_used else None
+
+        # Privacy flags
+        privacy_flags = [
+            "PII_GUARD_ACTIVE: Private contact details, residential addresses, and family data strictly suppressed."
+        ]
+        if any(t.get("threat_type") == "DOXXING_PRIVACY" for t in threats):
+            privacy_flags.append("POTENTIAL_PUBLIC_LEAK_SIGNAL: Public mention of leaked credentials or private files detected.")
+
+        return {
+            "agent": "personal_watch",
+            "person": canonical_name,
+            "identity_confidence": round(confidence, 2),
+            "monitoring_scope": monitoring_scope or ["public statements", "career moves", "publications"],
+            "status": status,
+            "updates": changes.get("new_threats", []) + changes.get("resolved_threats", []),
+            "observed": observed,
+            "inferred": inferred,
+            "uncertain": uncertain,
+            "timeline": timeline,
+            "sources": evidence_items,
+            "corroboration": scan_res.get("findings", []),
+            "contradictions": scan_res.get("contradictions", []),
+            "privacy_flags": privacy_flags,
+            "retrieval": {
+                "direct": not fallback_used,
+                "fallback_used": fallback_used,
+                "fallback_reason": fallback_reason
+            }
+        }
+
+    # Backward-compatible alias
+    generate_intelligence = generate_personal_watch_intelligence
+
 
 # Singleton and backward-compatible alias
 PersonalAgent = PersonalWatchAgent
 personal_watch_agent = PersonalWatchAgent()
+
 
 
 def process_personal_watch(vip_profile: Dict[str, Any]) -> Dict[str, Any]:

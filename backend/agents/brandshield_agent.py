@@ -979,6 +979,104 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
             ]
         }
 
+    def generate_brandshield_intelligence(
+        self,
+        entity_input: str,
+        entity_type: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Aegis Protocol Output Contract implementation for BrandShield Agent.
+        Adheres strictly to the specification in backend/Prompts/brandshield_agent.md (Section 14).
+        Partitions reasoning into OBSERVED -> INFERRED -> UNCERTAIN and produces
+        structured brand & company protection intelligence without hallucinating severity.
+        """
+        scan_res = self.scan(brand_input=entity_input)
+        entity_info = scan_res.get("entity", {})
+        canonical_brand = scan_res.get("brand", entity_input)
+        ent_type = entity_type or entity_info.get("entity_type", "brand")
+        confidence = float(entity_info.get("confidence", 0.85))
+
+        threats = scan_res.get("threats", [])
+        evidence_items = scan_res.get("evidence", [])
+        narratives = scan_res.get("narratives", [])
+        timeline = scan_res.get("timeline", [])
+        recommendations = scan_res.get("recommendations", [])
+
+        # 1. Observed facts (Directly supported by retrieved evidence: domains, listings, filings)
+        observed: List[str] = []
+        for t in threats[:4]:
+            t_name = t.get("threat_name") or t.get("threat_type", "THREAT")
+            desc = t.get("description", "")
+            plat = t.get("platform", "web")
+            observed.append(f"Observed {t_name} on {plat}: {desc}")
+        for s in scan_res.get("counterfeits", [])[:2]:
+            observed.append(f"Identified suspicious/counterfeit asset: {s.get('title')} ({s.get('platform')})")
+        for imp in scan_res.get("impersonations", [])[:2]:
+            observed.append(f"Identified potential brand impersonation: {imp.get('title')} ({imp.get('platform')})")
+        if not observed and evidence_items:
+            observed.append(f"Retrieved {len(evidence_items)} active public web citations across {len(scan_res.get('platforms', []))} platforms.")
+
+        # 2. Inferred interpretations (Analytical threat severity & impact conclusions)
+        inferred: List[str] = []
+        high_threats = [t for t in threats if t.get("severity") in ("high", "critical")]
+        if high_threats:
+            inferred.append(f"High-priority threat exposure detected: {len(high_threats)} severe brand/customer-risk vectors identified.")
+        elif threats:
+            inferred.append("Moderate brand threat vectors identified; manageable via routine monitoring and response.")
+        else:
+            inferred.append("Brand security perimeter stable; no acute coordinated smear or counterfeit campaigns detected.")
+
+        # 3. Uncertain / Unknown (Unverified consumer FUD, unconfirmed rumors)
+        uncertain: List[str] = []
+        unverified_rumors = [t for t in threats if t.get("threat_type") == "UNVERIFIED_RUMOR"]
+        for r in unverified_rumors:
+            uncertain.append(f"Unsubstantiated public discourse: {r.get('description')}")
+        for contra in scan_res.get("contradictions", []):
+            uncertain.append(f"Contradiction flagged in public claims: {contra}")
+        if not evidence_items:
+            uncertain.append(f"Zero public threat signals discovered in current scan window for {canonical_brand}.")
+
+        # Determine overall risk level
+        risk_level = "low"
+        if any(t.get("severity") == "critical" for t in threats):
+            risk_level = "critical"
+        elif any(t.get("severity") == "high" for t in threats):
+            risk_level = "high"
+        elif any(t.get("severity") == "medium" for t in threats):
+            risk_level = "moderate"
+
+        # Determine retrieval directness & fallback
+        retrieval_trace = scan_res.get("retrieval_trace", {})
+        fallback_used = retrieval_trace.get("fallback_rate", 0.0) > 0.0
+        fallback_reason = "SEARCH_INDEX_FALLBACK" if fallback_used else None
+
+        return {
+            "agent": "brandshield",
+            "entity": canonical_brand,
+            "entity_type": ent_type if ent_type in ("brand", "company", "product", "domain", "account") else "brand",
+            "identity_confidence": round(confidence, 2),
+            "threats": threats,
+            "risk_level": risk_level,
+            "observed": observed,
+            "inferred": inferred,
+            "uncertain": uncertain,
+            "narrative_clusters": narratives,
+            "timeline": timeline,
+            "sources": evidence_items,
+            "corroboration": scan_res.get("findings_structured", []),
+            "contradictions": scan_res.get("contradictions", []),
+            "recommended_attention": [r.get("action") for r in recommendations if r.get("action")] or ["Continue passive monitoring"],
+            "retrieval": {
+                "direct": not fallback_used,
+                "fallback_used": fallback_used,
+                "fallback_reason": fallback_reason
+            }
+        }
+
+    # Backward-compatible alias
+    generate_intelligence = generate_brandshield_intelligence
+
 
 # Global agent instance
 brandshield_agent = BrandShieldAgent()
+

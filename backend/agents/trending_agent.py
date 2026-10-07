@@ -1134,3 +1134,106 @@ class TrendingAgent:
             },
             "limitations": limitations
         }
+
+    def generate_trending_intelligence(
+        self,
+        person: str,
+        trend_window: str = "24h",
+        check_paparazzi: bool = False,
+        check_box_office: bool = False
+    ) -> Dict[str, Any]:
+        """
+        Aegis Protocol Output Contract implementation for Trending Agent.
+        Adheres strictly to the specification in backend/Prompts/trending_agent.md (Section 14).
+        Partitions reasoning into OBSERVED -> INFERRED -> UNCERTAIN and produces
+        structured celebrity and entertainment intelligence with zero fabricated engagement counts.
+        """
+        scan_res = self.scan(
+            asset_name=person,
+            identifiers={"box_office": check_box_office, "paparazzi": check_paparazzi}
+        )
+
+        entity_res = scan_res.get("entity_resolution", {})
+        canonical_name = entity_res.get("resolved_entity") or person
+        confidence = float(entity_res.get("confidence", 0.85))
+
+        evidence_items = scan_res.get("evidence", [])
+        trends = scan_res.get("trends", [])
+        narratives = []
+        for t in trends:
+            for narr in t.get("narratives", []):
+                narratives.append(narr)
+
+        # 1. Observed facts (Directly supported by retrieved news/event evidence)
+        observed: List[str] = []
+        for ev in evidence_items[:5]:
+            observed.append(f"Direct publication ({ev.get('platform')}/{ev.get('source')}): {ev.get('title')}")
+        box_office = scan_res.get("box_office", {})
+        if box_office.get("reported_gross"):
+            observed.append(f"Reported box office revenue: {box_office.get('reported_gross')}")
+
+        # 2. Inferred interpretations (Analytical trend velocity & narrative trajectories)
+        inferred: List[str] = []
+        for t in trends[:3]:
+            vel = t.get("velocity", {}).get("label", "STABLE")
+            inferred.append(f"Narrative '{t.get('topic')}' exhibits {vel} spread velocity across {t.get('platform_count', 1)} platforms.")
+        if not inferred and evidence_items:
+            inferred.append(f"Public attention is steady with {len(evidence_items)} recorded signals.")
+
+        # 3. Uncertain / Unknown (Viral rumors, uncorroborated social claims)
+        uncertain: List[str] = []
+        for t in trends:
+            if t.get("misinformation_risk") in ("HIGH", "MEDIUM"):
+                uncertain.append(f"Potential unverified viral narrative: {t.get('topic')} ({t.get('misinformation_rationale')})")
+        for contra in scan_res.get("contradictions", []):
+            uncertain.append(f"Contradictory reporting detected: {contra}")
+        if not evidence_items:
+            uncertain.append(f"No verified public signals discovered in current monitoring window for {canonical_name}.")
+
+        # Compute sentiment contract
+        primary_sentiment = "neutral"
+        sentiment_conf = 0.50
+        sample_basis = f"Sampled {len(evidence_items)} public articles/posts"
+        if trends:
+            primary_sentiment = trends[0].get("sentiment", "NEUTRAL").lower()
+            sentiment_conf = 0.75
+
+        # Determine retrieval directness & fallback
+        retrieval_trace = scan_res.get("retrieval_trace", {})
+        fallback_used = retrieval_trace.get("fallback_rate", 0.0) > 0.0
+        fallback_reason = "SEARCH_INDEX_FALLBACK" if fallback_used else None
+
+        return {
+            "agent": "trending",
+            "person": canonical_name,
+            "identity_confidence": round(confidence, 2),
+            "trend_window": trend_window,
+            "top_trends": trends,
+            "narrative_clusters": narratives,
+            "timeline": scan_res.get("timeline", []),
+            "observed": observed,
+            "inferred": inferred,
+            "uncertain": uncertain,
+            "sentiment": {
+                "direction": primary_sentiment if primary_sentiment in ("positive", "negative", "mixed", "neutral", "unknown") else "neutral",
+                "confidence": sentiment_conf,
+                "sample_basis": sample_basis
+            },
+            "sources": evidence_items,
+            "corroboration": scan_res.get("findings", []),
+            "contradictions": scan_res.get("contradictions", []),
+            "retrieval": {
+                "direct": not fallback_used,
+                "fallback_used": fallback_used,
+                "fallback_reason": fallback_reason
+            }
+        }
+
+    # Backward-compatible alias
+    generate_intelligence = generate_trending_intelligence
+    scan_trends = scan
+
+
+# Agent instance for external use
+trending_agent = TrendingAgent()
+

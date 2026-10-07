@@ -1048,10 +1048,132 @@ Respond in STRICT JSON with this schema:
             "telemetry": res.telemetry
         }
 
+    def generate_scout_intelligence(
+        self,
+        subject: str,
+        query: Optional[str] = None,
+        max_candidates: int = 5,
+        allow_social: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Aegis Protocol Output Contract implementation for Scout Agent.
+        Adheres strictly to the specification in backend/Prompts/scout_agent.md (Section 17).
+        Partitions reasoning into OBSERVED -> INFERRED -> UNCERTAIN and produces
+        structured market intelligence without hallucinating certainty.
+        """
+        sym, company_name = self.resolve_ticker_and_company(subject)
+        acq_intel = self.acquire_market_intelligence(
+            ticker=sym,
+            query=query,
+            max_candidates=max_candidates,
+            allow_social=allow_social
+        )
+        stock_impact = self.check_stock_impact(sym)
+        volatility = stock_impact.get("volatility_analysis", {})
+        prediction = stock_impact.get("prediction", {})
 
+        # 1. Observed facts (Directly supported by retrieved evidence & telemetry)
+        observed: List[str] = []
+        for fact in acq_intel.get("financial_facts", []):
+            cur = fact.get("currency", "USD")
+            metric = fact.get("metric", "metric")
+            raw_val = fact.get("raw_value", "")
+            direction = fact.get("direction", "neutral")
+            observed.append(f"Reported {metric} of {raw_val} ({cur}, direction: {direction})")
+        for ev in acq_intel.get("events", []):
+            ev_type = ev.get("event_type", "EVENT")
+            summary = ev.get("summary", "")
+            observed.append(f"Observed corporate event [{ev_type}]: {summary}")
+        if stock_impact.get("current_price"):
+            observed.append(
+                f"Observed market price for {sym}: ${stock_impact.get('current_price')} "
+                f"(volatility status: {volatility.get('volatility_status', 'STABLE')}, z-score: {volatility.get('z_score', 0.0)})"
+            )
+
+        # 2. Inferred interpretations (Reasonable conclusions marked as interpretation)
+        inferred: List[str] = []
+        if acq_intel.get("epistemic_status") == "OFFICIAL":
+            inferred.append(f"Official primary documentation confirms company communications for {company_name}.")
+        elif acq_intel.get("epistemic_status") == "MULTIPLE_SOURCES":
+            inferred.append(f"Multiple independent reporting streams corroborate current narrative for {company_name}.")
+        
+        vol_stat = volatility.get("volatility_status", "STABLE")
+        if vol_stat == "SIGMA_EVENT":
+            inferred.append(f"Statistical sigma anomaly detected in price series; high sensitivity to current news catalysts.")
+        elif vol_stat == "HIGH_VOLATILITY":
+            inferred.append(f"Elevated price variance observed; market is actively pricing in event uncertainty.")
+        else:
+            inferred.append(f"Price action is consistent with orderly market trading range.")
+
+        # 3. Uncertain / Unknown (Rumors, conflicting reports, unverified chatter)
+        uncertain: List[str] = []
+        if acq_intel.get("epistemic_status") in ("UNCONFIRMED", "REPORTED"):
+            uncertain.append(f"Information remains in REPORTED status without primary regulatory filing confirmation.")
+        for contra in acq_intel.get("contradictions", []):
+            field_name = contra.get("field", "data point")
+            vals = contra.get("values", [])
+            uncertain.append(f"Conflicting reporting detected for {field_name}: competing values {vals}.")
+        if not acq_intel.get("financial_facts") and not acq_intel.get("events"):
+            uncertain.append(f"Limited public structured filings discovered in current retrieval window.")
+
+        # Market impact calculation
+        direction = "neutral"
+        if prediction.get("catalyst_direction"):
+            direction = prediction.get("catalyst_direction").lower()
+        elif volatility.get("z_score", 0.0) > 1.5:
+            direction = "bullish"
+        elif volatility.get("z_score", 0.0) < -1.5:
+            direction = "bearish"
+        
+        confidence = 0.85 if acq_intel.get("primary_source_present") else (0.70 if acq_intel.get("independent_source_count", 0) > 1 else 0.50)
+        if acq_intel.get("contradictions"):
+            confidence = max(0.30, confidence - 0.25)
+
+        # Risk flags
+        risk_flags: List[str] = []
+        if acq_intel.get("contradictions"):
+            risk_flags.append("UNRESOLVED_SOURCE_CONTRADICTIONS")
+        if vol_stat in ("SIGMA_EVENT", "HIGH_VOLATILITY"):
+            risk_flags.append(f"PRICE_VOLATILITY_{vol_stat}")
+        if acq_intel.get("epistemic_status") == "UNCONFIRMED":
+            risk_flags.append("UNVERIFIED_RUMOR_STATUS")
+
+        # Determine retrieval directness & fallback
+        telemetry = acq_intel.get("telemetry", {})
+        fallback_used = telemetry.get("fallback_rate", 0.0) > 0.0
+        fallback_reason = "SEARCH_INDEX_FALLBACK" if fallback_used else None
+
+        return {
+            "agent": "scout",
+            "subject": sym,
+            "market_context": f"Asset: {company_name} ({sym}) | Primary source present: {acq_intel.get('primary_source_present')} | Epistemic status: {acq_intel.get('epistemic_status')}",
+            "observed": observed,
+            "inferred": inferred,
+            "uncertain": uncertain,
+            "events": acq_intel.get("events", []),
+            "sources": acq_intel.get("evidence", []),
+            "corroboration": acq_intel.get("clusters", []),
+            "contradictions": acq_intel.get("contradictions", []),
+            "price_context": volatility,
+            "market_impact": {
+                "direction": direction if direction in ("bullish", "bearish", "mixed", "neutral", "unknown") else "neutral",
+                "horizon": "days",
+                "confidence": round(confidence, 2)
+            },
+            "risk_flags": risk_flags,
+            "retrieval": {
+                "direct": not fallback_used,
+                "fallback_used": fallback_used,
+                "fallback_reason": fallback_reason
+            }
+        }
+
+    # Backward-compatible alias
+    generate_intelligence = generate_scout_intelligence
 
 
 # Agent instance for external use
+
 scout_agent = ScoutAgent()
 
 

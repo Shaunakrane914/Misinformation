@@ -259,7 +259,9 @@ class BrandShieldAcquisition(AgentAcquisitionBase):
 
             # Detect counterfeit indicators
             f.metadata["counterfeit_indicators"] = self.COMPLAINT_PATTERNS.findall(text_corpus)
-            f.metadata["marketplace_listing"] = candidate.metadata.get("is_marketplace", False)
+            is_mkt = any(m in parsed_url.netloc for m in self.MARKETPLACE_DOMAINS) or candidate.metadata.get("is_marketplace", False)
+            f.metadata["marketplace_listing"] = is_mkt
+            f.metadata["is_marketplace"] = is_mkt
 
         return frags
 
@@ -584,4 +586,20 @@ class PersonalWatchAcquisition(AgentAcquisitionBase):
 
     def capabilities(self) -> Dict[str, Any]:
         return self.profile.to_dict()
+
+
+AGENT_ACQUISITION_STRATEGIES: Dict[str, AgentAcquisitionBase] = {
+    "brandshield": BrandShieldAcquisition(),
+    "trending": TrendingAcquisition(),
+    "scout": ScoutAcquisition(),
+    "personal": PersonalWatchAcquisition(),
+    "personal_watch": PersonalWatchAcquisition(),
+}
+
+
+def get_agent_acquisition_strategy(agent_name: str) -> Optional[AgentAcquisitionBase]:
+    """Retrieve the domain-specific acquisition strategy instance for an agent."""
+    key = (agent_name or "").lower().strip()
+    return AGENT_ACQUISITION_STRATEGIES.get(key)
+
 

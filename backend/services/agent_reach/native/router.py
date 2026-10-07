@@ -1454,6 +1454,16 @@ class NativeRouter:
             except Exception as e_disc:
                 logger.debug(f"[NativeRouter] Candidate discovery error for channel {ch}: {e_disc}")
 
+        # 2b. Agent-Specific Strategy Candidate Discovery
+        from backend.services.agent_reach.profile import get_agent_acquisition_strategy
+        strat = get_agent_acquisition_strategy(request.agent)
+        if strat:
+            try:
+                strat_cands = strat.discover(query=query_text, limit=min(request.candidate_budget, 5))
+                all_candidates.extend(strat_cands)
+            except Exception as e_sdisc:
+                logger.debug(f"[NativeRouter] Strategy discovery error for {request.agent}: {e_sdisc}")
+
         # If no candidates from search discovery, create fallback candidate from direct query/URL
         if not all_candidates:
             if "http://" in query_text or "https://" in query_text:
@@ -1571,7 +1581,12 @@ class NativeRouter:
                 if doc.status == "SUCCESS":
                     succ_acquisitions += 1
                     frags = adapter.normalize(doc, cand, request)
-                    if request.profile:
+                    # Domain-specific strategy normalization if agent strategy registered
+                    from backend.services.agent_reach.profile import get_agent_acquisition_strategy
+                    strat = get_agent_acquisition_strategy(request.agent)
+                    if strat:
+                        frags = strat.normalize(doc, cand, request)
+                    elif request.profile:
                         for f in frags:
                             f.content_depth = request.profile.content_depth
                     return frags

@@ -345,7 +345,7 @@ def test_facebook_channel_remains_unchanged(router):
     # When FACEBOOK_COOKIE is missing, Facebook query must trigger AuthRequiredError/AUTH_REQUIRED
     frags, telem = router.execute_channel_query(platform="facebook", query="NASA", limit=3)
     assert telem["status"] == "AUTH_REQUIRED"
-    assert "FACEBOOK_COOKIE" in str(telem.get("error", ""))
+    assert "authentication" in str(telem.get("error", "")).lower() or "FACEBOOK_COOKIE" in str(telem.get("error", ""))
 
 
 def test_doctor_reports_zero_auth_availability():

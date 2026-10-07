@@ -648,8 +648,8 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
                 })
                 counterfeits.append({
                     "product": target_name,
-                    "marketplace_or_domain": ev["platform"],
-                    "seller": ev["author"] or "Unspecified Seller",
+                    "marketplace_or_domain": ev.get("platform", "Web"),
+                    "seller": ev.get("author") or "Unspecified Seller",
                     "risk_level": "high",
                     "evidence_ids": [ev["evidence_id"]]
                 })
@@ -682,8 +682,8 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
                     "origin_evidence_id": ev["evidence_id"]
                 })
                 impersonations.append({
-                    "handle_or_domain": ev["author"] or ev["title"][:30],
-                    "platform": ev["platform"],
+                    "handle_or_domain": ev.get("author") or ev.get("title", "")[:30],
+                    "platform": ev.get("platform", "Web"),
                     "risk_level": "medium",
                     "evidence_ids": [ev["evidence_id"]]
                 })
@@ -975,8 +975,8 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
                 "channels": channel_health,
                 "latency_ms": duration_ms,
                 "total_sources": len(evidence_items),
-                "unique_sources": max(0, len(evidence_items) - syndicated_count),
-                "syndicated_sources": syndicated_count,
+                "unique_sources": max(0, len(evidence_items) - (syndicated_count or 0)),
+                "syndicated_sources": syndicated_count or 0,
                 "deep_reads": plan.get("trace", {}).get("deep_read_success", 0),
                 "trace": plan.get("trace", {}),
             },

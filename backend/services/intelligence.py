@@ -18,11 +18,11 @@ GEMINI_KEYS = []
 for k, v in sorted(os.environ.items()):
     if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_") or k.startswith("GEMINI_KEY_"):
         clean_v = v.strip().strip('"').strip("'")
-        if clean_v and clean_v not in GEMINI_KEYS:
+        if clean_v and clean_v.startswith("AIzaSy") and clean_v not in GEMINI_KEYS:
             GEMINI_KEYS.append(clean_v)
 
 if not GEMINI_KEYS:
-    logger.warning("[Intelligence] No GEMINI_API_KEY found.")
+    logger.info("[Intelligence] No valid AIzaSy Gemini API key found; offline heuristic reasoning active.")
 else:
     logger.info(f"[Intelligence] Loaded {len(GEMINI_KEYS)} Gemini API key(s) for load balancing")
 

@@ -7,7 +7,7 @@ and EvidenceFragment models.
 """
 
 from abc import ABC, abstractmethod
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 from backend.services.agent_reach.channels import (
     CandidateSource,
     EvidenceFragment,
@@ -53,3 +53,17 @@ class PlatformAdapter(ABC):
         Normalize fetched document into canonical EvidenceFragment records.
         Preserves honest provenance, retrieval mode, and lineage.
         """
+
+    def discover(self, query: str, limit: int = 5) -> List[CandidateSource]:
+        """Optional candidate discovery hook for adapters that support native search."""
+        return []
+
+    def health(self) -> Dict[str, Any]:
+        """Expose a lightweight health/capability status without making outbound probes."""
+        return {
+            "platform": self.platform,
+            "backend_id": self.backend_id,
+            "status": "AVAILABLE",
+            "auth_required": False,
+            "cloud_safe": True,
+        }

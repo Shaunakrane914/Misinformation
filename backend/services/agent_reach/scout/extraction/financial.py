@@ -47,6 +47,10 @@ class FinancialNumberExtractor:
         "gbp": "GBP",
     }
 
+    def extract_from_text(self, text: str, source_url: str = "") -> List[FinancialFact]:
+        """Alias for compatibility with shared scout extraction pipeline."""
+        return self.extract_facts(text)
+
     def extract_facts(self, text: str) -> List[FinancialFact]:
         facts: List[FinancialFact] = []
         if not text:

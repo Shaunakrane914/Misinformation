@@ -17,6 +17,11 @@ class TemporalExtractor:
     - event_at: real-world corporate action timestamp
     """
 
+    def extract(self, text: str, raw_published: str = "") -> dict:
+        """Extract and disambiguate published_at and event_at."""
+        pub_iso, event_iso = self.disambiguate(raw_published, text)
+        return {"published_at": pub_iso, "event_at": event_iso}
+
     def disambiguate(
         self,
         raw_published: str,

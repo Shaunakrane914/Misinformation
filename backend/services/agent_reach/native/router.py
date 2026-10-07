@@ -41,7 +41,13 @@ from backend.services.agent_reach.native.doctor import native_doctor
 from backend.services.agent_reach.native.errors import AuthRequiredError, NativeReachError
 from backend.services.agent_reach.native.executor import native_executor
 from backend.services.agent_reach.native.normalizer import native_normalizer
-from backend.services.agent_reach.native.route_policy import RoutePolicyEngine
+from backend.services.agent_reach.native.evidence_sufficiency import (
+    evidence_sufficiency_evaluator,
+)
+from backend.services.agent_reach.native.route_policy import (
+    RouteDecision,
+    RoutePolicyEngine,
+)
 from backend.services.agent_reach.native.source_discovery import (
     TWITTER_RESERVED_PATHS,
     SourceDiscoveryResult,
@@ -1505,45 +1511,37 @@ class NativeRouter:
 
             passed_candidates.append(cand)
 
-        # 4. Semantic Ranking & Knee Selection (Default Top-5)
+        # 4. Semantic Ranking & Default Top-5 Selection
         passed_candidates.sort(key=lambda c: c.semantic_score, reverse=True)
+        initial_budget = min(request.candidate_budget or 5, len(passed_candidates))
+        selected_candidates = passed_candidates[:initial_budget]
 
-        # Decide candidate depth (Top-5 default, Top-10 escalation if evidence weak)
-        target_budget = request.candidate_budget or 5
-        weak_evidence = (
-            len(passed_candidates) < 3
-            or (passed_candidates and passed_candidates[0].semantic_score < 40.0)
-        )
-        if weak_evidence and len(passed_candidates) > target_budget:
-            # Escalate up to 10
-            target_budget = min(10, len(passed_candidates))
-            escalation_used = True
-        else:
-            escalation_used = False
-
-        selected_candidates = passed_candidates[:target_budget]
-
-        # 5. Acquire Content via Specialist Adapters
-        final_fragments: List[EvidenceFragment] = []
-        for cand in selected_candidates:
+        def _acquire_candidate(cand: CandidateSource) -> List[EvidenceFragment]:
+            # Authoritative route decision via RoutePolicyEngine
+            decision = RoutePolicyEngine.decide_route(
+                platform=cand.platform,
+                request_id=request.request_id,
+                task_type=request.task_type,
+                is_url=bool(cand.url and cand.url.startswith("http"))
+            )
+            # Match adapter by primary_backend or platform
             adapter = self.web_adapter
-            if self.reddit_adapter.can_handle(cand):
+            if decision.primary_backend == "arctic_shift" or self.reddit_adapter.can_handle(cand):
                 adapter = self.reddit_adapter
-            elif self.twitter_adapter.can_handle(cand):
+            elif decision.primary_backend == "fxtwitter" or self.twitter_adapter.can_handle(cand):
                 adapter = self.twitter_adapter
-            elif self.youtube_adapter.can_handle(cand):
+            elif decision.primary_backend == "yt_dlp_in_process" or self.youtube_adapter.can_handle(cand):
                 adapter = self.youtube_adapter
-            elif self.github_adapter.can_handle(cand):
+            elif decision.primary_backend == "gh_api" or self.github_adapter.can_handle(cand):
                 adapter = self.github_adapter
 
             try:
                 doc = adapter.acquire(cand, request)
                 if doc.status == "SUCCESS":
-                    frags = adapter.normalize(doc, cand, request)
-                    final_fragments.extend(frags)
+                    return adapter.normalize(doc, cand, request)
                 else:
                     # Fallback to index snippet
-                    idx_frags = self.search_adapter.normalize(
+                    return self.search_adapter.normalize(
                         FetchedDocument(
                             url=cand.url,
                             status="SUCCESS",
@@ -1554,9 +1552,28 @@ class NativeRouter:
                         cand,
                         request,
                     )
-                    final_fragments.extend(idx_frags)
             except Exception as e_acq:
                 logger.debug(f"[NativeRouter] Adapter {adapter.backend_id} acquisition error for {cand.url}: {e_acq}")
+                return []
+
+        # 5. Acquire Content: Initial Top-5 Batch
+        final_fragments: List[EvidenceFragment] = []
+        for cand in selected_candidates:
+            final_fragments.extend(_acquire_candidate(cand))
+
+        # 6. Evaluate Evidence Sufficiency & Evidence-Driven Escalation to Top-10
+        remaining_candidates = passed_candidates[initial_budget:min(10, len(passed_candidates))]
+        sufficiency_eval = evidence_sufficiency_evaluator.evaluate(
+            final_fragments,
+            request,
+            remaining_candidates_count=len(remaining_candidates)
+        )
+        escalation_used = False
+        if sufficiency_eval.should_escalate and remaining_candidates:
+            escalation_used = True
+            logger.info(f"[NativeRouter] Escalating candidate depth for {request.request_id}: {sufficiency_eval.reasons}")
+            for cand in remaining_candidates:
+                final_fragments.extend(_acquire_candidate(cand))
 
         # 6. Deduplicate & Record Telemetry
         seen_urls = set()

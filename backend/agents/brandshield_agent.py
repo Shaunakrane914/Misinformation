@@ -593,11 +593,33 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
         brand_name = brand_info.get("brand", "Unknown")
         target_name = brand_info.get("resolved_entity", brand_name)
 
-        threats = []
-        claims = []
+        # Real execution stage: invoke BrandShieldExtractionEngine
+        from backend.services.agent_reach.channels import EvidenceFragment
+        from backend.services.agent_reach.extraction import brandshield_extractor
+        frags = [
+            EvidenceFragment(
+                platform=ev.get("platform", "web"),
+                title=ev.get("title", ""),
+                content=ev.get("snippet", "") or ev.get("content", ""),
+                snippet=ev.get("snippet", ""),
+                url=ev.get("url", ""),
+                author=ev.get("author", ""),
+                published=ev.get("published", ""),
+                evidence_id=ev.get("evidence_id", ""),
+            )
+            for ev in evidence_list
+        ]
+        extracted_intel = brandshield_extractor.extract_brand_intelligence(
+            brand_name=target_name,
+            product_name=brand_info.get("product", ""),
+            fragments=frags,
+        )
+
+        threats = [t.to_dict() if hasattr(t, "to_dict") else t for t in extracted_intel.threats]
+        claims = [c.to_dict() if hasattr(c, "to_dict") else c for c in extracted_intel.claims]
         narratives = []
-        counterfeits = []
-        impersonations = []
+        counterfeits = [c.to_dict() if hasattr(c, "to_dict") else c for c in extracted_intel.counterfeits]
+        impersonations = [i.to_dict() if hasattr(i, "to_dict") else i for i in extracted_intel.impersonations]
 
         counterfeit_kw = ["counterfeit", "fake", "replica", "clone", "knockoff", "first copy", "unauthorized seller"]
         scam_kw = ["scam", "phishing", "fraud", "stolen", "hack", "giveaway", "free gift"]
@@ -787,9 +809,9 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
             dossiers.append({
                 "dossier_id": f"dos_{t['threat_id']}",
                 "threat_id": t["threat_id"],
-                "threat_title": t["title"],
-                "threat_type": t["type"],
-                "severity": t["severity"],
+                "threat_title": t.get("title", ""),
+                "threat_type": t.get("threat_type") or t.get("type", "UNKNOWN"),
+                "severity": t.get("severity", "MEDIUM"),
                 "confidence": t.get("confidence", 0.8),
                 "status": t.get("status", "unverified"),
                 "first_seen": origin_ev.get("published_at") if origin_ev else "Recent",

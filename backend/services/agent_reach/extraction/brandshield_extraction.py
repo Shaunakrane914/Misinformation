@@ -55,6 +55,7 @@ class BrandThreatRecord:
         return {
             "threat_id": self.threat_id,
             "threat_type": self.threat_type,
+            "type": self.threat_type,
             "severity": self.severity,
             "title": self.title,
             "description": self.description,
@@ -267,6 +268,9 @@ class BrandShieldExtractionEngine:
             "signals_analyzed": len(fragments),
             "duplicate_pairs": [],
         }
+
+    # Canonical alias
+    extract_brand_intelligence = extract
 
 
 brandshield_extractor = BrandShieldExtractionEngine()

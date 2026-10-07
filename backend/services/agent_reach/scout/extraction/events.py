@@ -68,6 +68,10 @@ class CorporateEventExtractor:
         ]),
     ]
 
+    def extract_from_text(self, text: str, source_url: str = "", company_name: str = "", ticker: str = "") -> List[CorporateEvent]:
+        """Alias for compatibility with shared scout extraction pipeline."""
+        return self.extract_events(text, company_name=company_name, ticker=ticker)
+
     def extract_events(self, text: str, company_name: str = "", ticker: str = "") -> List[CorporateEvent]:
         import re
         events: List[CorporateEvent] = []

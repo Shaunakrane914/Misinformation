@@ -85,6 +85,27 @@ class PersonalWatchExtractionResult:
     total_signals_analyzed: int = 0
     extracted_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
+    @property
+    def threats(self) -> List[Dict[str, Any]]:
+        return [
+            {
+                "threat_id": a.get("alert_id", "thr_01"),
+                "threat_type": "IMPERSONATION",
+                "risk_level": a.get("threat_level", "HIGH"),
+                "title": a.get("summary", "Impersonation risk"),
+                "reason": a.get("summary", "Lookalike account"),
+                "platform": a.get("platform", "Web"),
+                "evidence_ids": a.get("evidence_ids", []),
+                "confidence": 0.85,
+                "indicators": ["Lookalike account"],
+            }
+            for a in self.impersonation_alerts
+        ]
+
+    @property
+    def impersonations(self) -> List[Dict[str, Any]]:
+        return self.impersonation_alerts
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "target_person": self.target_person,
@@ -92,6 +113,8 @@ class PersonalWatchExtractionResult:
             "career_events": [c.to_dict() for c in self.career_events],
             "public_statements": [s.to_dict() for s in self.public_statements],
             "impersonation_alerts": self.impersonation_alerts,
+            "threats": self.threats,
+            "impersonations": self.impersonations,
             "timeline": self.timeline,
             "privacy_filtered_count": self.privacy_filtered_count,
             "total_signals_analyzed": self.total_signals_analyzed,
@@ -109,11 +132,13 @@ class PersonalWatchExtractionEngine:
     def extract(
         self,
         fragments: List[EvidenceFragment],
-        target_person: str,
+        target_person: str = "",
+        person_name: str = "",
     ) -> PersonalWatchExtractionResult:
         """
         Extract career milestones, statements, and impersonation alerts under strict privacy controls.
         """
+        target = target_person or person_name or "Individual"
         career_events: List[CareerEvent] = []
         public_statements: List[PublicStatement] = []
         impersonation_alerts: List[Dict[str, Any]] = []
@@ -182,7 +207,7 @@ class PersonalWatchExtractionEngine:
                 })
 
         return PersonalWatchExtractionResult(
-            target_person=target_person,
+            target_person=target,
             identity_confidence=0.95,
             career_events=career_events,
             public_statements=public_statements,
@@ -191,6 +216,9 @@ class PersonalWatchExtractionEngine:
             privacy_filtered_count=privacy_filtered,
             total_signals_analyzed=len(fragments),
         )
+
+    # Canonical alias
+    extract_personal_intelligence = extract
 
 
 personal_watch_extractor = PersonalWatchExtractionEngine()

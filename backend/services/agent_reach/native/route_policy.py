@@ -34,6 +34,49 @@ WALLED_GARDEN_PLATFORMS = {
 }
 
 
+from dataclasses import dataclass, field
+
+
+@dataclass
+class RouteDecision:
+    """
+    Canonical route decision specifying the primary and fallback backends,
+    retrieval mode, timeout, authentication status, and policy version.
+    """
+    request_id: str
+    platform: str
+    route_class: str
+    primary_backend: str
+    fallback_backends: List[str]
+    retrieval_mode: str
+    authentication_required: bool
+    max_attempts: int
+    timeout_ms: int
+    reason: str
+    policy_version: str = "policy_d_v3"
+    is_walled_garden: bool = False
+    requires_search_discovery: bool = False
+    browser_rescue_permitted: bool = False
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "request_id": self.request_id,
+            "platform": self.platform,
+            "route_class": self.route_class,
+            "primary_backend": self.primary_backend,
+            "fallback_backends": self.fallback_backends,
+            "retrieval_mode": self.retrieval_mode,
+            "authentication_required": self.authentication_required,
+            "max_attempts": self.max_attempts,
+            "timeout_ms": self.timeout_ms,
+            "reason": self.reason,
+            "policy_version": self.policy_version,
+            "is_walled_garden": self.is_walled_garden,
+            "requires_search_discovery": self.requires_search_discovery,
+            "browser_rescue_permitted": self.browser_rescue_permitted,
+        }
+
+
 class RoutePolicyEngine:
     """
     Determines the optimal, smallest appropriate route for a candidate or channel request.
@@ -41,64 +84,139 @@ class RoutePolicyEngine:
     """
 
     @classmethod
+    def decide_route(
+        cls,
+        platform: str,
+        request_id: str = "",
+        task_type: str = "SEARCH",
+        is_url: bool = False
+    ) -> RouteDecision:
+        """
+        Authoritative routing decision generator enforcing Policy D.
+        """
+        ch = platform.lower().strip()
+
+        if ch == "github":
+            return RouteDecision(
+                request_id=request_id,
+                platform="github",
+                route_class=RouteClass.NATIVE_API.value,
+                primary_backend="gh_api",
+                fallback_backends=["web_search_index"],
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                authentication_required=False,
+                max_attempts=2,
+                timeout_ms=5000,
+                reason="Native GitHub API / gh tool provides deterministic structured metadata",
+                policy_version="policy_d_v3",
+                is_walled_garden=False,
+                requires_search_discovery=False,
+                browser_rescue_permitted=False,
+            )
+
+        if ch == "reddit":
+            return RouteDecision(
+                request_id=request_id,
+                platform="reddit",
+                route_class=RouteClass.SPECIALIST_ADAPTER.value,
+                primary_backend="arctic_shift",
+                fallback_backends=["web_search_index"],
+                retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
+                authentication_required=False,
+                max_attempts=2,
+                timeout_ms=7000,
+                reason="Zero-auth Arctic Shift public mirror; avoids doomed unauth Reddit JSON API",
+                policy_version="policy_d_v3",
+                is_walled_garden=False,
+                requires_search_discovery=not is_url,
+                browser_rescue_permitted=False,
+            )
+
+        if ch in ("twitter", "x"):
+            return RouteDecision(
+                request_id=request_id,
+                platform="twitter",
+                route_class=RouteClass.SPECIALIST_ADAPTER.value,
+                primary_backend="fxtwitter",
+                fallback_backends=["web_search_index"],
+                retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
+                authentication_required=False,
+                max_attempts=2,
+                timeout_ms=6000,
+                reason="Zero-auth FxTwitter public status mirror; avoids rate-limited login walls",
+                policy_version="policy_d_v3",
+                is_walled_garden=False,
+                requires_search_discovery=not is_url,
+                browser_rescue_permitted=False,
+            )
+
+        if ch == "youtube":
+            return RouteDecision(
+                request_id=request_id,
+                platform="youtube",
+                route_class=RouteClass.SPECIALIST_ADAPTER.value,
+                primary_backend="yt_dlp_in_process",
+                fallback_backends=["web_search_index"],
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                authentication_required=False,
+                max_attempts=2,
+                timeout_ms=10000,
+                reason="In-process yt-dlp Python import; eliminates 848ms process spawn overhead",
+                policy_version="policy_d_v3",
+                is_walled_garden=False,
+                requires_search_discovery=False,
+                browser_rescue_permitted=False,
+            )
+
+        if ch in WALLED_GARDEN_PLATFORMS:
+            return RouteDecision(
+                request_id=request_id,
+                platform=ch,
+                route_class=RouteClass.SEARCH_DISCOVERY.value,
+                primary_backend="search_discovery",
+                fallback_backends=[],
+                retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+                authentication_required=False,
+                max_attempts=1,
+                timeout_ms=6000,
+                reason=WALLED_GARDEN_PLATFORMS[ch],
+                policy_version="policy_d_v3",
+                is_walled_garden=True,
+                requires_search_discovery=True,
+                browser_rescue_permitted=False,
+            )
+
+        # Default general web / news / rss
+        return RouteDecision(
+            request_id=request_id,
+            platform="web",
+            route_class=RouteClass.SCRAPLING_HTTP.value,
+            primary_backend="scrapling_http",
+            fallback_backends=["playwright_rescue", "web_search_index"],
+            retrieval_mode=RetrievalMode.WEB_READER.value,
+            authentication_required=False,
+            max_attempts=2,
+            timeout_ms=8000,
+            reason="Policy D: Scrapling HTTP primary; Playwright strictly secondary rescue",
+            policy_version="policy_d_v3",
+            is_walled_garden=False,
+            requires_search_discovery=False,
+            browser_rescue_permitted=True,
+        )
+
+    @classmethod
     def resolve_channel_route(cls, channel: str) -> Dict[str, Any]:
         """
         Determine the primary and fallback route for a given channel name.
+        Maintains backward compatibility with legacy consumers.
         """
-        ch = channel.lower().strip()
-
-        if ch == "github":
-            return {
-                "route_class": RouteClass.NATIVE_API.value,
-                "primary_backend": "gh_api",
-                "fallback_backend": "web_search_index",
-                "reason": "Native GitHub API / gh tool provides deterministic structured metadata",
-                "retrieval_mode": RetrievalMode.DIRECT_API.value,
-            }
-
-        if ch == "reddit":
-            return {
-                "route_class": RouteClass.SPECIALIST_ADAPTER.value,
-                "primary_backend": "arctic_shift",
-                "fallback_backend": "web_search_index",
-                "reason": "Zero-auth Arctic Shift public mirror; avoids doomed unauth Reddit JSON API",
-                "retrieval_mode": RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
-            }
-
-        if ch in ("twitter", "x"):
-            return {
-                "route_class": RouteClass.SPECIALIST_ADAPTER.value,
-                "primary_backend": "fxtwitter",
-                "fallback_backend": "web_search_index",
-                "reason": "Zero-auth FxTwitter public status mirror; avoids rate-limited login walls",
-                "retrieval_mode": RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
-            }
-
-        if ch == "youtube":
-            return {
-                "route_class": RouteClass.SPECIALIST_ADAPTER.value,
-                "primary_backend": "yt_dlp_in_process",
-                "fallback_backend": "web_search_index",
-                "reason": "In-process yt-dlp Python import; eliminates 848ms process spawn overhead",
-                "retrieval_mode": RetrievalMode.DIRECT_API.value,
-            }
-
-        if ch in WALLED_GARDEN_PLATFORMS:
-            return {
-                "route_class": RouteClass.SEARCH_DISCOVERY.value,
-                "primary_backend": "search_discovery",
-                "fallback_backend": None,
-                "reason": WALLED_GARDEN_PLATFORMS[ch],
-                "retrieval_mode": RetrievalMode.WEB_SEARCH_INDEX.value,
-            }
-
-        # Default general web / news / rss
+        decision = cls.decide_route(platform=channel)
         return {
-            "route_class": RouteClass.SCRAPLING_HTTP.value,
-            "primary_backend": "scrapling_http",
-            "fallback_backend": "playwright_rescue",
-            "reason": "Policy D: Scrapling HTTP primary; Playwright strictly secondary rescue",
-            "retrieval_mode": RetrievalMode.WEB_READER.value,
+            "route_class": decision.route_class,
+            "primary_backend": decision.primary_backend,
+            "fallback_backend": decision.fallback_backends[0] if decision.fallback_backends else None,
+            "reason": decision.reason,
+            "retrieval_mode": decision.retrieval_mode,
         }
 
     @classmethod

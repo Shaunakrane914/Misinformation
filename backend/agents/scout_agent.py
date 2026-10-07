@@ -1032,6 +1032,16 @@ Respond in STRICT JSON with this schema:
             allow_social=allow_social
         )
         res = scout_source_engine.execute(req)
+
+        # Real execution stage: invoke ScoutExtractionEngine
+        from backend.services.agent_reach.extraction import scout_extractor
+        extracted_intel = scout_extractor.extract_market_intelligence(
+            symbol=sym,
+            company_name=company_name,
+            fragments=[ev.to_evidence_fragment() for ev in res.evidence_items],
+            market_telemetry={"ticker": sym}
+        )
+
         return {
             "query": res.query,
             "entity": res.entity,
@@ -1039,10 +1049,10 @@ Respond in STRICT JSON with this schema:
             "epistemic_status": res.epistemic_status,
             "primary_source_present": res.primary_source_present,
             "independent_source_count": res.independent_source_count,
-            "financial_facts": [f.__dict__ for f in res.financial_facts],
-            "events": [e.__dict__ for e in res.events],
+            "financial_facts": [f.__dict__ for f in res.financial_facts] or [f.to_dict() for f in extracted_intel.financial_facts],
+            "events": [e.__dict__ for e in res.events] or [e.to_dict() for e in extracted_intel.corporate_events],
             "clusters": [c.__dict__ for c in res.clusters],
-            "contradictions": [k.__dict__ for k in res.contradictions],
+            "contradictions": [k.__dict__ for k in res.contradictions] or [c.to_dict() for c in extracted_intel.contradictions],
             "evidence_count": len(res.evidence_items),
             "evidence": [ev.to_evidence_fragment().to_dict() for ev in res.evidence_items],
             "telemetry": res.telemetry

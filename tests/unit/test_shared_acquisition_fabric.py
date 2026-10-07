@@ -38,7 +38,8 @@ from backend.services.agent_reach.native.adapters import (
     YouTubeAdapter,
 )
 from backend.services.agent_reach.native.cache import SocialCache
-from backend.services.agent_reach.native.route_policy import RouteClass, RoutePolicyEngine
+from backend.services.agent_reach.native.evidence_sufficiency import evidence_sufficiency_evaluator
+from backend.services.agent_reach.native.route_policy import RouteClass, RouteDecision, RoutePolicyEngine
 from backend.services.agent_reach.native.router import native_router
 from backend.services.agent_reach.native.telemetry import acquisition_telemetry
 from backend.services.agent_reach.extraction import (
@@ -509,3 +510,244 @@ def test_no_raw_scrapers_in_agents():
     assert "from backend.services.agent_reach import agent_reach_service" in tr_source
     assert "from backend.services.agent_reach import agent_reach_service" in bs_source
     assert "from backend.services.agent_reach import agent_reach_service" in pa_source
+
+
+# ── 12. ARCHITECTURE ENFORCEMENT & EVIDENCE IDENTITY TESTS ────────────────────
+
+def test_evidence_identity_stability_and_observation_separation():
+    """
+    Invariant 13 & 14:
+    Evidence identity must be stable across repeated observations of the same source.
+    Retrieval timestamp must be observation metadata, not part of source identity.
+    """
+    url = "https://www.reuters.com/technology/nvidia-earnings-q3-record-revenue"
+    t1 = "2026-10-01T10:00:00Z"
+    t2 = "2026-10-02T10:00:00Z"
+
+    frag1 = EvidenceFragment(
+        platform="web",
+        url=url,
+        title="NVIDIA beats Q3 earnings",
+        author="Reuters",
+        retrieved_at=t1,
+        content="NVIDIA reported record revenue of $35B."
+    )
+    frag2 = EvidenceFragment(
+        platform="web",
+        url=url,
+        title="NVIDIA beats Q3 earnings",
+        author="Reuters",
+        retrieved_at=t2,
+        content="NVIDIA reported record revenue of $35B with revised outlook."
+    )
+
+    # Source ID and Evidence ID must remain stable across observations
+    assert frag1.source_id == frag2.source_id
+    assert frag1.evidence_id == frag2.evidence_id
+    assert frag1.evidence_id.startswith("ev_")
+    assert frag1.source_id.startswith("src_")
+
+    # Observation ID must be distinct because retrieved_at and content changed
+    assert frag1.observation_id != frag2.observation_id
+    assert frag1.observation_id.startswith("obs_")
+    assert frag2.observation_id.startswith("obs_")
+
+
+def test_route_decision_contract_and_authoritative_engine():
+    """
+    Invariant 5:
+    RoutePolicyEngine is the authoritative dispatch decider returning typed RouteDecision.
+    """
+    # Reddit -> Specialist Arctic Shift Mirror
+    r_dec = RoutePolicyEngine.decide_route("reddit")
+    assert isinstance(r_dec, RouteDecision)
+    assert r_dec.primary_backend == "arctic_shift"
+    assert r_dec.retrieval_mode == RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value
+    assert r_dec.policy_version == "policy_d_v3"
+
+    # YouTube -> In-process yt-dlp
+    yt_dec = RoutePolicyEngine.decide_route("youtube")
+    assert yt_dec.primary_backend == "yt_dlp_in_process"
+    assert yt_dec.retrieval_mode == RetrievalMode.DIRECT_API.value
+
+    # GitHub -> Native API
+    gh_dec = RoutePolicyEngine.decide_route("github")
+    assert gh_dec.primary_backend == "gh_api"
+    assert gh_dec.retrieval_mode == RetrievalMode.DIRECT_API.value
+
+    # Walled Garden Instagram -> Search Discovery
+    ig_dec = RoutePolicyEngine.decide_route("instagram")
+    assert ig_dec.is_walled_garden is True
+    assert ig_dec.requires_search_discovery is True
+    assert ig_dec.primary_backend == "search_discovery"
+
+    # General Web -> Scrapling HTTP primary, Playwright rescue permitted
+    web_dec = RoutePolicyEngine.decide_route("web")
+    assert web_dec.primary_backend == "scrapling_http"
+    assert web_dec.browser_rescue_permitted is True
+    assert "playwright_rescue" in web_dec.fallback_backends
+
+
+def test_scout_does_not_bypass_shared_fabric():
+    """
+    Invariant 4 & Section 50:
+    Verify ScoutSourceEngine delegates network acquisition to the Shared Acquisition Fabric.
+    Scout must NOT run its own independent scraper stack.
+    """
+    from backend.services.agent_reach.scout.engine import scout_source_engine
+    from backend.services.agent_reach.scout.models import ScoutSourceRequest
+
+    mock_frag = EvidenceFragment(
+        evidence_id="ev_scout_shared_01",
+        platform="web",
+        url="https://finance.yahoo.com/news/nvidia-guidance-increase",
+        title="NVIDIA raises annual guidance to $120B",
+        content="NVIDIA reported quarterly revenue of $35.1B and raised capex guidance.",
+        author="Yahoo Finance",
+        published="2026-10-07T12:00:00Z"
+    )
+
+    with patch("backend.services.agent_reach.scout.engine.agent_reach_service.execute", return_value=[mock_frag]) as mock_exec:
+        req = ScoutSourceRequest(
+            query="NVIDIA capex guidance",
+            target_entity="NVIDIA",
+            tickers=["NVDA"],
+            max_candidates=3
+        )
+        res = scout_source_engine.execute(req)
+
+        # Proves Scout delegated acquisition directly to Shared Acquisition Fabric
+        assert mock_exec.called
+        assert len(res.evidence_items) == 1
+        assert res.evidence_items[0].evidence_id == "ev_scout_shared_01"
+        assert res.entity == "NVIDIA"
+        assert len(res.financial_facts) > 0  # Domain financial extraction executed!
+
+
+def test_all_four_domain_extractors_are_actually_executed():
+    """
+    Invariant 20 & Section 49:
+    Prove that all four domain extraction engines are actually invoked in their pipelines.
+    """
+    from backend.services.agent_reach.extraction import (
+        brandshield_extractor,
+        trending_extractor,
+        scout_extractor,
+        personal_watch_extractor,
+    )
+    from backend.agents.brandshield_agent import BrandShieldAgent
+    from backend.agents.trending_agent import TrendingAgent
+    from backend.agents.personal_agent import PersonalWatchAgent
+    from backend.agents.scout_agent import ScoutAgent
+
+    # 1. BrandShield spy
+    with patch.object(brandshield_extractor, "extract_brand_intelligence", wraps=brandshield_extractor.extract_brand_intelligence) as bs_spy:
+        bs_agent = BrandShieldAgent()
+        ev_items = [{
+            "platform": "reddit",
+            "title": "Cheap counterfeit Rolex watches on sale",
+            "snippet": "Replica fake Rolex clone for $50",
+            "author": "seller1",
+            "evidence_id": "ev_bs_test_1"
+        }]
+        bs_res = bs_agent._heuristic_threat_synthesis({"brand": "Rolex", "resolved_entity": "Rolex"}, ev_items)
+        assert bs_spy.called
+        assert len(bs_res["threats"]) > 0
+
+    # 2. Trending spy
+    with patch.object(trending_extractor, "extract_trending_intelligence", wraps=trending_extractor.extract_trending_intelligence) as tr_spy:
+        from backend.agents.trending_agent import TrendEvidence
+        tr_agent = TrendingAgent()
+        tr_ev = [TrendEvidence(
+            source="Reuters",
+            platform="news",
+            title="OpenAI announces new reasoning architecture",
+            content="OpenAI unveiled next-gen model.",
+            url="https://reuters.com/ai",
+            published_at="2026-10-07T12:00:00Z",
+            evidence_id="ev_tr_test_1",
+            source_role="PRIMARY"
+        )]
+        tr_trends = tr_agent._heuristic_trend_clustering(tr_ev, {"resolved_entity": "OpenAI"})
+        assert tr_spy.called
+        assert len(tr_trends) > 0
+
+    # 3. Personal Watch spy
+    with patch.object(personal_watch_extractor, "extract_personal_intelligence", wraps=personal_watch_extractor.extract_personal_intelligence) as pw_spy:
+        pw_agent = PersonalWatchAgent()
+        pw_ev = [{
+            "platform": "twitter",
+            "title": "Fake parody profile of Satya Nadella",
+            "content": "Lookalike account impersonating Satya Nadella.",
+            "author": "impersonator",
+            "evidence_id": "ev_pw_test_1"
+        }]
+        pw_res = pw_agent._heuristic_threat_synthesis("Satya Nadella", pw_ev)
+        assert pw_spy.called
+        assert len(pw_res["threats"]) > 0
+
+    # 4. Scout spy
+    with patch.object(scout_extractor, "extract_market_intelligence", wraps=scout_extractor.extract_market_intelligence) as sc_spy:
+        sc_agent = ScoutAgent()
+        mock_frag = EvidenceFragment(
+            evidence_id="ev_sc_01",
+            platform="web",
+            url="https://news.com/nvda",
+            title="NVIDIA beats revenue estimates with $35B",
+            content="Revenue hit $35.0B beating forecasts.",
+            author="Bloomberg",
+            published="2026-10-07T12:00:00Z"
+        )
+        with patch("backend.services.agent_reach.scout.engine.agent_reach_service.execute", return_value=[mock_frag]):
+            sc_intel = sc_agent.acquire_market_intelligence("NVDA", max_candidates=2)
+            assert sc_spy.called
+            assert len(sc_intel["financial_facts"]) > 0
+
+
+def test_evidence_sufficiency_top_5_to_10_escalation():
+    """
+    Invariant 7 & 8:
+    Top-5 is default. Top-10 escalation occurs only when evidence sufficiency fails.
+    """
+    req = RetrievalRequest(agent="scout", entity="NVIDIA")
+
+    # 1. Weak evidence: Only 1 snippet, low score -> Must escalate if more candidates available
+    weak_frags = [
+        EvidenceFragment(
+            platform="web",
+            title="NVIDIA snippet only",
+            content="",
+            snippet="Short snippet",
+            score=25.0,
+            content_depth="SNIPPET"
+        )
+    ]
+    eval_res = evidence_sufficiency_evaluator.evaluate(weak_frags, req, remaining_candidates_count=5)
+    assert eval_res.is_sufficient is False
+    assert eval_res.should_escalate is True
+    assert len(eval_res.reasons) > 0
+
+    # 2. Strong evidence: 2 independent sources with full articles and high score -> Must NOT escalate
+    strong_frags = [
+        EvidenceFragment(
+            platform="sec_edgar",
+            url="https://sec.gov/edgar/data/1045810/nvda-10q",
+            author="NVIDIA",
+            title="NVIDIA Official 10-Q Filing",
+            content="Official quarterly report on financial performance..." * 20,
+            score=95.0,
+            content_depth="FULL_ARTICLE"
+        ),
+        EvidenceFragment(
+            platform="web",
+            url="https://bloomberg.com/article2",
+            author="Bloomberg",
+            title="NVIDIA second source",
+            content="Independent corroboration of production volumes..." * 20,
+            score=88.0,
+            content_depth="FULL_ARTICLE"
+        )
+    ]
+    strong_eval = evidence_sufficiency_evaluator.evaluate(strong_frags, req, remaining_candidates_count=5)
+    assert strong_eval.is_sufficient is True
+    assert strong_eval.should_escalate is False

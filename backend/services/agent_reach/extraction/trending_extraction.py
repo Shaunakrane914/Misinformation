@@ -120,11 +120,13 @@ class TrendingExtractionEngine:
     def extract(
         self,
         fragments: List[EvidenceFragment],
-        target_entity: str,
+        target_entity: str = "",
+        target_name: str = "",
     ) -> TrendingExtractionResult:
         """
         Extract topics, narratives, claims, and syndication clusters from normalized evidence.
         """
+        entity = target_entity or target_name or "Topic"
         observed: List[str] = []
         inferred: List[str] = []
         uncertain: List[str] = []
@@ -231,7 +233,7 @@ class TrendingExtractionEngine:
             uncertain.append("Limited sample size across public mirrors may underrepresent offline coverage.")
 
         return TrendingExtractionResult(
-            target_entity=target_entity,
+            target_entity=entity,
             identity_confidence=0.95,
             trends=trends,
             narrative_clusters=narratives,
@@ -242,6 +244,9 @@ class TrendingExtractionEngine:
             syndication_groups=syndication_groups,
             total_signals=len(fragments),
         )
+
+    # Canonical alias
+    extract_trending_intelligence = extract
 
 
 trending_extractor = TrendingExtractionEngine()

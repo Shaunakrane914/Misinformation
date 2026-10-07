@@ -35,7 +35,7 @@ import feedparser
 import requests
 
 from backend.services.agent_reach import agent_reach_service
-from backend.services.agent_reach.channels import RetrievalRequest
+from backend.services.agent_reach.channels import EvidenceFragment, RetrievalRequest
 from backend.services.agent_reach.extraction import trending_extractor
 
 logger = logging.getLogger(__name__)
@@ -86,16 +86,16 @@ class TrendEvidence:
     source: str                      # Outlet name, subreddit, handle, or channel
     title: str
     content: str
-    snippet: str
-    url: str                         # Validated real URL (never '#' or invented)
-    canonical_url: str
-    author: str
-    published_at: str                # Real ISO or formatted timestamp
-    retrieved_at: str                # ISO timestamp
-    source_role: str                 # "PRIMARY" | "SECONDARY" | "COMMUNITY" | "COMMENTARY" | "DIRECT_MEDIA" | "DISCOVERY"
-    source_tier: str                 # "TIER_1" | "TIER_2" | "TIER_3" | "TIER_4"
-    source_group_id: str             # Group ID for wire syndication / copies (e.g. "G-01")
-    retrieval_method: str            # "agent_reach" | "apify" | "google_news" | "direct_web"
+    snippet: str = ""
+    url: str = ""                         # Validated real URL (never '#' or invented)
+    canonical_url: str = ""
+    author: str = ""
+    published_at: str = ""                # Real ISO or formatted timestamp
+    retrieved_at: str = ""                # ISO timestamp
+    source_role: str = "COMMUNITY"        # "PRIMARY" | "SECONDARY" | "COMMUNITY" | "COMMENTARY" | "DIRECT_MEDIA" | "DISCOVERY"
+    source_tier: str = "TIER_3"           # "TIER_1" | "TIER_2" | "TIER_3" | "TIER_4"
+    source_group_id: str = "G-01"         # Group ID for wire syndication / copies (e.g. "G-01")
+    retrieval_method: str = "agent_reach" # "agent_reach" | "apify" | "google_news" | "direct_web"
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -564,6 +564,26 @@ class TrendingAgent:
         if not evidence_list:
             return []
 
+        # Real execution stage: invoke TrendingExtractionEngine
+        from backend.services.agent_reach.extraction import trending_extractor
+        frags = [
+            EvidenceFragment(
+                platform=ev.platform,
+                title=ev.title,
+                content=ev.content,
+                snippet=ev.content[:200] if ev.content else "",
+                url=ev.url,
+                author=ev.source,
+                published=ev.published_at,
+                evidence_id=ev.evidence_id,
+            )
+            for ev in evidence_list
+        ]
+        trending_intel = trending_extractor.extract_trending_intelligence(
+            target_name=entity_info.get("resolved_entity", "Topic"),
+            fragments=frags,
+        )
+
         # Keywords for common topic categorization
         categories = {
             "announcement": ["announce", "project", "reveal", "trailer", "release", "launch", "cast", "signed"],
@@ -706,6 +726,8 @@ class TrendingAgent:
             t_idx += 1
 
         return trends
+
+    _heuristic_trend_clustering = _cluster_trends
 
     def _extract_narratives_from_cluster(self, items: List[TrendEvidence]) -> List[Dict[str, Any]]:
         """Extract dominant narrative angles with evidence citations."""

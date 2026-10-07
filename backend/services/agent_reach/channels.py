@@ -214,6 +214,70 @@ class FetchedDocument:
         }
 
 
+class ContentDepth(str, Enum):
+    """Accurate classification of the level of evidence detail acquired."""
+    HEADLINE_ONLY = "HEADLINE_ONLY"
+    SNIPPET = "SNIPPET"
+    PARTIAL_CONTENT = "PARTIAL_CONTENT"
+    FULL_ARTICLE = "FULL_ARTICLE"
+    STRUCTURED_METADATA = "STRUCTURED_METADATA"
+    TRANSCRIPT = "TRANSCRIPT"
+    SOCIAL_POST = "SOCIAL_POST"
+    COMMENT = "COMMENT"
+    PROFILE = "PROFILE"
+
+
+@dataclass
+class SourceRecord:
+    """
+    Immutable identity of an external source (invariant across observations).
+    """
+    source_id: str
+    platform: str
+    canonical_url: str
+    external_id: str = ""
+    author: str = ""
+    publisher: str = ""
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "source_id": self.source_id,
+            "platform": self.platform,
+            "canonical_url": self.canonical_url,
+            "external_id": self.external_id,
+            "author": self.author,
+            "publisher": self.publisher,
+        }
+
+
+@dataclass
+class EvidenceObservation:
+    """
+    Time-varying observation record of an external source at a specific point in time.
+    Preserves historical changes, engagement growth, and content revisions.
+    """
+    observation_id: str
+    source_id: str
+    content_hash: str
+    retrieved_at: str
+    retrieval_mode: str
+    backend_id: str
+    content_depth: str
+    provenance: Dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "observation_id": self.observation_id,
+            "source_id": self.source_id,
+            "content_hash": self.content_hash,
+            "retrieved_at": self.retrieved_at,
+            "retrieval_mode": self.retrieval_mode,
+            "backend_id": self.backend_id,
+            "content_depth": self.content_depth,
+            "provenance": self.provenance,
+        }
+
+
 @dataclass
 class EvidenceFragment:
     """
@@ -243,13 +307,31 @@ class EvidenceFragment:
     requested_channel: str = ""
     actual_retrieval_channel: str = ""
     evidence_id: str = ""
+    source_id: str = ""
+    observation_id: str = ""
     retrieval_lineage: List[Dict[str, Any]] = field(default_factory=list)
     raw_metadata: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self):
+        # 1. Compute stable immutable source_id (Invariant across repeated retrievals)
+        clean_url = (self.url or "").split("#")[0].strip()
+        # Keep query parameters only for video identifiers
+        if "youtube.com" not in clean_url and "youtu.be" not in clean_url:
+            clean_url = clean_url.split("?")[0].rstrip("/").lower()
+        base_source_str = f"{self.platform.lower().strip()}:{clean_url}:{self.author.lower().strip()}"
+        if not self.source_id:
+            self.source_id = f"src_{hashlib.sha256(base_source_str.encode('utf-8', errors='ignore')).hexdigest()[:12]}"
+        
+        # 2. Stable evidence_id maps to stable source identity
         if not self.evidence_id:
-            base_str = f"{self.platform}:{self.url}:{self.title}:{self.retrieved_at}"
-            self.evidence_id = f"ev_{hashlib.sha256(base_str.encode('utf-8', errors='ignore')).hexdigest()[:12]}"
+            self.evidence_id = f"ev_{hashlib.sha256(base_source_str.encode('utf-8', errors='ignore')).hexdigest()[:12]}"
+
+        # 3. Time-varying observation_id tracks this specific retrieval observation
+        content_fingerprint = hashlib.sha256((self.content or self.snippet or self.title or "").encode("utf-8", errors="ignore")).hexdigest()[:12]
+        obs_key = f"{self.source_id}:{content_fingerprint}:{self.retrieved_at}"
+        if not self.observation_id:
+            self.observation_id = f"obs_{hashlib.sha256(obs_key.encode('utf-8', errors='ignore')).hexdigest()[:12]}"
+
         if not self.requested_channel:
             self.requested_channel = self.channel_name or self.platform
         if not self.actual_retrieval_channel:
@@ -264,12 +346,16 @@ class EvidenceFragment:
                 "fallback_reason": self.fallback_reason,
                 "is_authenticated": self.is_authenticated,
                 "retrieved_at": self.retrieved_at,
+                "source_id": self.source_id,
+                "observation_id": self.observation_id,
             }]
 
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to dictionary for API responses and JSON storage."""
         return {
             "evidence_id": self.evidence_id,
+            "source_id": self.source_id,
+            "observation_id": self.observation_id,
             "platform": self.platform,
             "title": self.title,
             "content": self.content,

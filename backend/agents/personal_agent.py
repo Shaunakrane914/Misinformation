@@ -679,10 +679,31 @@ Return a STRICT JSON object:
         Deterministic, offline fallback synthesis when Gemini is unavailable.
         Classifies threats using regex keywords and provenance matching without hallucinating.
         """
-        threats: List[Dict[str, Any]] = []
+        # Real execution stage: invoke PersonalWatchExtractionEngine
+        from backend.services.agent_reach.channels import EvidenceFragment
+        from backend.services.agent_reach.extraction import personal_watch_extractor
+        frags = [
+            EvidenceFragment(
+                platform=ev.get("platform", "web"),
+                title=ev.get("title", ""),
+                content=ev.get("content", "") or ev.get("snippet", ""),
+                snippet=ev.get("snippet", "") or ev.get("content", "")[:200],
+                url=ev.get("url", ""),
+                author=ev.get("author", ""),
+                published=ev.get("published", ""),
+                evidence_id=ev.get("evidence_id", ""),
+            )
+            for ev in evidence_list
+        ]
+        personal_intel = personal_watch_extractor.extract_personal_intelligence(
+            person_name=subject_name,
+            fragments=frags,
+        )
+
+        threats: List[Dict[str, Any]] = [t.to_dict() if hasattr(t, "to_dict") else t for t in personal_intel.threats]
         claims: List[Dict[str, Any]] = []
         narratives: List[Dict[str, Any]] = []
-        impersonations: List[Dict[str, Any]] = []
+        impersonations: List[Dict[str, Any]] = [i.to_dict() if hasattr(i, "to_dict") else i for i in personal_intel.impersonations]
         scams: List[Dict[str, Any]] = []
         deepfakes: List[Dict[str, Any]] = []
 

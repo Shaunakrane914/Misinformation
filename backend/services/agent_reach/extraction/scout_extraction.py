@@ -126,12 +126,16 @@ class ScoutExtractionEngine:
     def extract(
         self,
         fragments: List[EvidenceFragment],
-        ticker_or_company: str,
+        ticker_or_company: str = "",
+        symbol: str = "",
+        company_name: str = "",
         market_telemetry: Optional[Dict[str, Any]] = None,
+        **kwargs,
     ) -> ScoutExtractionResult:
         """
         Extract financial facts, corporate catalysts, and contradictions from normalized evidence.
         """
+        target = symbol or company_name or ticker_or_company or "ENTITY"
         financial_facts: List[FinancialFact] = []
         corporate_events: List[CorporateEvent] = []
         contradictions: List[FinancialContradiction] = []
@@ -262,7 +266,7 @@ class ScoutExtractionEngine:
                     break
 
         return ScoutExtractionResult(
-            ticker_or_company=ticker_or_company,
+            ticker_or_company=target,
             financial_facts=financial_facts,
             corporate_events=corporate_events,
             contradictions=contradictions,
@@ -270,6 +274,9 @@ class ScoutExtractionEngine:
             market_sentiment="BULLISH" if len(corporate_events) > 0 and "beat" in str(corporate_events) else "NEUTRAL",
             total_signals_analyzed=len(fragments),
         )
+
+    # Canonical alias
+    extract_market_intelligence = extract
 
 
 scout_extractor = ScoutExtractionEngine()

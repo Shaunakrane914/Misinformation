@@ -136,3 +136,60 @@ class ScraperLabRunner:
                 return json.load(f)
         except Exception:
             return []
+
+    def compute_historical_delta(self, platform: str) -> Dict[str, Any]:
+        """
+        Analyze what changed on this website compared to historical runs (Section 16).
+        Returns actionable diagnosis comparing current status with past runs.
+        """
+        history = self.get_history()
+        plat = platform.lower().strip()
+        past_results = []
+        for snap in history:
+            for r in snap.get("results", []):
+                if r.get("platform", "").lower() == plat:
+                    past_results.append(r)
+
+        if not past_results:
+            return {
+                "platform": plat,
+                "has_history": False,
+                "diagnosis": "No prior runs recorded for this platform.",
+            }
+
+        curr = past_results[-1]
+        prev = past_results[-2] if len(past_results) >= 2 else past_results[-1]
+
+        curr_fields = set(curr.get("extracted_fields", {}).keys())
+        prev_fields = set(prev.get("extracted_fields", {}).keys())
+
+        lat_delta = curr.get("latency_ms", 0) - prev.get("latency_ms", 0)
+        fb_delta = curr.get("fallback_count", 0) - prev.get("fallback_count", 0)
+
+        # Diagnose state change
+        curr_status = curr.get("health_status", "UNKNOWN")
+        prev_status = prev.get("health_status", "UNKNOWN")
+        if curr_status == prev_status and curr_status == "HEALTHY":
+            diag = "Platform health remains stable with consistent latency and schema."
+        elif curr_status != prev_status and curr_status == "DEGRADED":
+            diag = f"Platform degraded: fallback or latency elevated ({lat_delta:+d} ms)."
+        elif curr_status != prev_status and curr_status == "UNHEALTHY":
+            diag = f"Platform unhealthy: error class {curr.get('error_class')} ({curr.get('error_message')})."
+        else:
+            diag = f"Status: {curr_status} (previously {prev_status})."
+
+        return {
+            "platform": plat,
+            "has_history": True,
+            "current_status": curr_status,
+            "previous_status": prev_status,
+            "current_backend": curr.get("actual_backend", curr.get("backend")),
+            "previous_backend": prev.get("actual_backend", prev.get("backend")),
+            "missing_fields": list(prev_fields - curr_fields),
+            "new_fields": list(curr_fields - prev_fields),
+            "latency_delta_ms": lat_delta,
+            "fallback_delta": fb_delta,
+            "failure_class": curr.get("error_class"),
+            "diagnosis": diag,
+        }
+

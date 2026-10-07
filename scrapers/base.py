@@ -71,6 +71,8 @@ class ScraperLabResult:
       - Did schema drift occur?
       - Was fallback triggered?
       - What are the latency percentiles?
+      - Are live health and offline fixture validation strictly separated?
+      - Is the reported backend truthful to the actual production adapter exercised?
     """
     platform: str
     target_url_or_id: str
@@ -95,6 +97,46 @@ class ScraperLabResult:
     extracted_fields: Dict[str, Any] = field(default_factory=dict)
     schema_drift: SchemaDriftReport = field(default_factory=SchemaDriftReport)
     tested_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+    # Truthful Backend & Production Adapter Verification (Section 3)
+    declared_backend: str = ""
+    actual_backend: str = ""
+    adapter_name: str = ""
+    probe_method: str = "production_adapter"  # "production_adapter" | "auxiliary_probe"
+    production_path_verified: bool = True
+
+    # Live vs. Offline Contract Separation (Section 8)
+    probe_mode: str = "live"                  # "live" | "offline"
+    live_transport_success: bool = False
+    live_parse_success: bool = False
+    live_field_completeness: float = 0.0
+    live_latency_ms: int = 0
+    fixture_contract_valid: bool = False
+    fixture_field_completeness: float = 0.0
+    fixture_schema_valid: bool = False
+
+    # Policy D / Rescue Diagnostics (Section 4)
+    browser_used: bool = False
+    fallback_reason: Optional[str] = None
+
+    # Network Telemetry (Section 15)
+    http_requests: int = 0
+    http_failures: int = 0
+    status_codes: List[int] = field(default_factory=list)
+    timeout_count: int = 0
+    rate_limit_count: int = 0
+    agent_contracts: Dict[str, Dict[str, Any]] = field(default_factory=dict)
+
+    def __post_init__(self):
+        if not self.declared_backend:
+            self.declared_backend = self.backend
+        if not self.actual_backend:
+            self.actual_backend = self.backend
+        if self.probe_mode == "live":
+            self.live_transport_success = self.transport_success
+            self.live_parse_success = self.parse_success
+            self.live_field_completeness = self.field_completeness
+            self.live_latency_ms = self.latency_ms
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -121,6 +163,27 @@ class ScraperLabResult:
             "extracted_fields": {k: str(v)[:100] for k, v in self.extracted_fields.items()},
             "schema_drift": self.schema_drift.to_dict(),
             "tested_at": self.tested_at,
+            "declared_backend": self.declared_backend,
+            "actual_backend": self.actual_backend,
+            "adapter_name": self.adapter_name,
+            "probe_method": self.probe_method,
+            "production_path_verified": self.production_path_verified,
+            "probe_mode": self.probe_mode,
+            "live_transport_success": self.live_transport_success,
+            "live_parse_success": self.live_parse_success,
+            "live_field_completeness": round(self.live_field_completeness, 2),
+            "live_latency_ms": self.live_latency_ms,
+            "fixture_contract_valid": self.fixture_contract_valid,
+            "fixture_field_completeness": round(self.fixture_field_completeness, 2),
+            "fixture_schema_valid": self.fixture_schema_valid,
+            "browser_used": self.browser_used,
+            "fallback_reason": self.fallback_reason,
+            "http_requests": self.http_requests,
+            "http_failures": self.http_failures,
+            "status_codes": self.status_codes,
+            "timeout_count": self.timeout_count,
+            "rate_limit_count": self.rate_limit_count,
+            "agent_contracts": self.agent_contracts,
         }
 
 

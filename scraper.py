@@ -60,6 +60,11 @@ def main():
     report_parser.add_argument("--json", action="store_true", help="Output report as JSON")
     report_parser.add_argument("--offline", action="store_true", help="Run fast offline validation using fixture payload")
 
+    # Command: history <platform>
+    hist_parser = subparsers.add_parser("history", help="Display historical health and delta diagnosis")
+    hist_parser.add_argument("platform", nargs="?", default=None, help="Target platform (optional)")
+    hist_parser.add_argument("--json", action="store_true", help="Output delta as JSON")
+
     args = parser.parse_args()
 
     if not args.command:
@@ -96,6 +101,21 @@ def main():
             print(json.dumps([r.to_dict() for r in results], indent=2))
         else:
             print(format_health_report(results))
+
+    elif args.command == "history":
+        platforms = [args.platform] if args.platform else scraper_test_registry.list_platforms()
+        deltas = [runner.compute_historical_delta(p) for p in platforms]
+        if getattr(args, "json", False):
+            print(json.dumps(deltas, indent=2))
+        else:
+            for d in deltas:
+                print(f"[{d['platform'].upper()}] {d['diagnosis']}")
+                if d.get("has_history"):
+                    print(f"  Status: {d['previous_status']} -> {d['current_status']}")
+                    print(f"  Backend: {d['previous_backend']} -> {d['current_backend']}")
+                    print(f"  Latency Delta: {d['latency_delta_ms']:+d} ms")
+                    print(f"  Fallback Delta: {d['fallback_delta']:+d}")
+                print()
 
 
 if __name__ == "__main__":

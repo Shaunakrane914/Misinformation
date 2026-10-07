@@ -6,7 +6,7 @@ and runtime constraints across all 16 platforms supported by upstream Agent Reac
 """
 
 from dataclasses import dataclass, field
-from typing import Dict, List, Set
+from typing import Any, Dict, List, Optional, Set
 
 
 @dataclass(frozen=True)
@@ -222,3 +222,237 @@ def get_capability(platform: str) -> PlatformCapability:
             fallback_chain=[]
         )
     )
+
+
+# ── Structured Website Capability Registry ──────────────────────────────────
+
+@dataclass
+class WebsiteCapabilityRecord:
+    """
+    Structured website/platform capability definition according to Section 24.
+    Used by both production planning and the scraper testing laboratory.
+    """
+    platform: str
+    supported_operations: List[str]
+    primary_backend: str
+    fallback_backend: str
+    auth_required: bool
+    zero_auth_supported: bool
+    discovery_supported: bool
+    structured_metadata_supported: bool
+    full_content_supported: bool
+    comments_supported: bool
+    transcript_supported: bool
+    engagement_supported: bool
+    current_schema_version: str = "v1.0"
+    last_tested: str = ""
+    health_status: str = "HEALTHY"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "platform": self.platform,
+            "supported_operations": self.supported_operations,
+            "primary_backend": self.primary_backend,
+            "fallback_backend": self.fallback_backend,
+            "auth_required": self.auth_required,
+            "zero_auth_supported": self.zero_auth_supported,
+            "discovery_supported": self.discovery_supported,
+            "structured_metadata_supported": self.structured_metadata_supported,
+            "full_content_supported": self.full_content_supported,
+            "comments_supported": self.comments_supported,
+            "transcript_supported": self.transcript_supported,
+            "engagement_supported": self.engagement_supported,
+            "current_schema_version": self.current_schema_version,
+            "last_tested": self.last_tested,
+            "health_status": self.health_status,
+        }
+
+
+class WebsiteCapabilityRegistry:
+    """
+    Central registry of website capabilities and supported operations.
+    """
+
+    def __init__(self):
+        self._registry: Dict[str, WebsiteCapabilityRecord] = {}
+        self._init_defaults()
+
+    def _init_defaults(self):
+        records = [
+            WebsiteCapabilityRecord(
+                platform="reddit",
+                supported_operations=["search", "read_post", "read_comments", "subreddit_posts"],
+                primary_backend="arctic_shift",
+                fallback_backend="web_search_index",
+                auth_required=False,
+                zero_auth_supported=True,
+                discovery_supported=True,
+                structured_metadata_supported=True,
+                full_content_supported=True,
+                comments_supported=True,
+                transcript_supported=False,
+                engagement_supported=True,
+                current_schema_version="reddit_v2",
+            ),
+            WebsiteCapabilityRecord(
+                platform="x",
+                supported_operations=["read_status", "read_profile", "search"],
+                primary_backend="fxtwitter",
+                fallback_backend="web_search_index",
+                auth_required=False,
+                zero_auth_supported=True,
+                discovery_supported=True,
+                structured_metadata_supported=True,
+                full_content_supported=True,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=True,
+                current_schema_version="fxtwitter_v1",
+            ),
+            WebsiteCapabilityRecord(
+                platform="youtube",
+                supported_operations=["read_metadata", "read_transcript", "search"],
+                primary_backend="yt_dlp_in_process",
+                fallback_backend="web_search_index",
+                auth_required=False,
+                zero_auth_supported=True,
+                discovery_supported=True,
+                structured_metadata_supported=True,
+                full_content_supported=True,
+                comments_supported=True,
+                transcript_supported=True,
+                engagement_supported=True,
+                current_schema_version="ytdlp_v1",
+            ),
+            WebsiteCapabilityRecord(
+                platform="github",
+                supported_operations=["read_repo", "read_issues", "read_prs", "read_releases", "search"],
+                primary_backend="gh_api",
+                fallback_backend="web_search_index",
+                auth_required=False,
+                zero_auth_supported=True,
+                discovery_supported=True,
+                structured_metadata_supported=True,
+                full_content_supported=True,
+                comments_supported=True,
+                transcript_supported=False,
+                engagement_supported=True,
+                current_schema_version="gh_rest_v3",
+            ),
+            WebsiteCapabilityRecord(
+                platform="web",
+                supported_operations=["read_article", "search", "read_snippet"],
+                primary_backend="scrapling_http",
+                fallback_backend="playwright_rescue",
+                auth_required=False,
+                zero_auth_supported=True,
+                discovery_supported=True,
+                structured_metadata_supported=True,
+                full_content_supported=True,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=False,
+                current_schema_version="article_v1",
+            ),
+            WebsiteCapabilityRecord(
+                platform="google_news",
+                supported_operations=["search", "read_feed", "read_article"],
+                primary_backend="rss_feed",
+                fallback_backend="web_search_index",
+                auth_required=False,
+                zero_auth_supported=True,
+                discovery_supported=True,
+                structured_metadata_supported=True,
+                full_content_supported=False,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=False,
+                current_schema_version="rss_v2",
+            ),
+            WebsiteCapabilityRecord(
+                platform="instagram",
+                supported_operations=["search_discovery", "read_snippet"],
+                primary_backend="search_discovery",
+                fallback_backend="web_search_index",
+                auth_required=True,
+                zero_auth_supported=False,
+                discovery_supported=True,
+                structured_metadata_supported=False,
+                full_content_supported=False,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=False,
+                current_schema_version="walled_v1",
+            ),
+            WebsiteCapabilityRecord(
+                platform="facebook",
+                supported_operations=["search_discovery", "read_snippet"],
+                primary_backend="search_discovery",
+                fallback_backend="web_search_index",
+                auth_required=True,
+                zero_auth_supported=False,
+                discovery_supported=True,
+                structured_metadata_supported=False,
+                full_content_supported=False,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=False,
+                current_schema_version="walled_v1",
+            ),
+            WebsiteCapabilityRecord(
+                platform="tiktok",
+                supported_operations=["search_discovery", "read_snippet"],
+                primary_backend="search_discovery",
+                fallback_backend="web_search_index",
+                auth_required=True,
+                zero_auth_supported=False,
+                discovery_supported=True,
+                structured_metadata_supported=False,
+                full_content_supported=False,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=False,
+                current_schema_version="walled_v1",
+            ),
+            WebsiteCapabilityRecord(
+                platform="linkedin",
+                supported_operations=["search_discovery", "read_snippet"],
+                primary_backend="search_discovery",
+                fallback_backend="web_search_index",
+                auth_required=True,
+                zero_auth_supported=False,
+                discovery_supported=True,
+                structured_metadata_supported=False,
+                full_content_supported=False,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=False,
+                current_schema_version="walled_v1",
+            ),
+            WebsiteCapabilityRecord(
+                platform="bilibili",
+                supported_operations=["search_discovery", "read_snippet"],
+                primary_backend="search_discovery",
+                fallback_backend="web_search_index",
+                auth_required=False,
+                zero_auth_supported=True,
+                discovery_supported=True,
+                structured_metadata_supported=True,
+                full_content_supported=False,
+                comments_supported=False,
+                transcript_supported=False,
+                engagement_supported=False,
+                current_schema_version="bilibili_v1",
+            ),
+        ]
+        for r in records:
+            self._registry[r.platform] = r
+
+    def get(self, platform: str) -> Optional[WebsiteCapabilityRecord]:
+        return self._registry.get((platform or "").lower().strip())
+
+    def list_all(self) -> List[WebsiteCapabilityRecord]:
+        return list(self._registry.values())
+
+
+website_capability_registry = WebsiteCapabilityRegistry()

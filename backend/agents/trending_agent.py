@@ -344,12 +344,14 @@ class TrendingAgent:
             return []
 
         try:
+            from backend.services.agent_reach.profile import TRENDING_PROFILE
             req = RetrievalRequest(
                 agent="trending",
                 entity=keyword,
                 intent=f"{keyword} news headlines",
                 allowed_channels=["news", "web"],
                 candidate_budget=limit,
+                profile=TRENDING_PROFILE,
             )
             frags = agent_reach_service.execute(req)
             if frags:

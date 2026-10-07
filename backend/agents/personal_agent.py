@@ -358,12 +358,14 @@ class PersonalWatchAgent:
         if len(evidence_items) < 4:
             try:
                 channel_health["web"] = "querying"
+                from backend.services.agent_reach.profile import PERSONAL_WATCH_PROFILE
                 supp_req = RetrievalRequest(
                     agent="personal",
                     entity=target_name,
                     intent=f'"{target_name}" controversy OR deepfake OR impersonation',
                     allowed_channels=["web", "news"],
                     candidate_budget=5,
+                    profile=PERSONAL_WATCH_PROFILE,
                 )
                 supp_frags = agent_reach_service.execute(supp_req)
                 web_count = 0

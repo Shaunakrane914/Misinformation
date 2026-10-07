@@ -65,6 +65,8 @@ class ScoutSourceEngine:
         if request.allow_social:
             channels.extend(["reddit", "twitter"])
 
+        from backend.services.agent_reach.profile import SCOUT_PROFILE
+
         retrieval_request = RetrievalRequest(
             request_id=f"scout_{int(time.time()*1000)}",
             agent="scout",
@@ -75,6 +77,7 @@ class ScoutSourceEngine:
             allowed_channels=channels,
             candidate_budget=request.max_candidates or 5,
             query=request.query,
+            profile=SCOUT_PROFILE,
             metadata={"tickers": request.tickers},
         )
 

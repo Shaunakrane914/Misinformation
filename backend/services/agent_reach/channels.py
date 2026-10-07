@@ -78,10 +78,47 @@ class RetrievalMode(str, Enum):
 
 
 @dataclass
+class RetrievalProfile:
+    """
+    Domain-specific retrieval configuration defining an agent's evidence expectations,
+    required fields, preferred platforms, content depth, and extraction requirements.
+    """
+    agent: str
+    required_fields: List[str] = field(default_factory=list)
+    preferred_platforms: List[str] = field(default_factory=list)
+    content_depth: str = "SNIPPET"
+    max_candidates: int = 5
+    max_deep_reads: int = 3
+    need_comments: bool = False
+    need_transcript: bool = False
+    need_engagement: bool = False
+    need_structured_metadata: bool = False
+    need_primary_source: bool = False
+    extraction_hints: Dict[str, Any] = field(default_factory=dict)
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "agent": self.agent,
+            "required_fields": self.required_fields,
+            "preferred_platforms": self.preferred_platforms,
+            "content_depth": self.content_depth,
+            "max_candidates": self.max_candidates,
+            "max_deep_reads": self.max_deep_reads,
+            "need_comments": self.need_comments,
+            "need_transcript": self.need_transcript,
+            "need_engagement": self.need_engagement,
+            "need_structured_metadata": self.need_structured_metadata,
+            "need_primary_source": self.need_primary_source,
+            "extraction_hints": self.extraction_hints,
+        }
+
+
+@dataclass
 class RetrievalRequest:
     """
     Canonical request sent by any domain agent to the shared retrieval fabric.
-    Encapsulates identity, task parameters, channel boundaries, and candidate budget.
+    Encapsulates identity, task parameters, channel boundaries, candidate budget,
+    and agent-specific retrieval profile.
     """
     request_id: str = field(default_factory=lambda: f"req_{uuid.uuid4().hex[:10]}")
     agent: str = "generic"                    # "brandshield" | "trending" | "scout" | "personal"
@@ -94,6 +131,7 @@ class RetrievalRequest:
     candidate_budget: int = 5                # Default Top-5 semantic candidate knee
     query: str = ""                          # Optional pre-formulated query string
     query_constraints: Dict[str, Any] = field(default_factory=dict)
+    profile: Optional[RetrievalProfile] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -109,8 +147,52 @@ class RetrievalRequest:
             "candidate_budget": self.candidate_budget,
             "query": self.query,
             "query_constraints": self.query_constraints,
+            "profile": self.profile.to_dict() if self.profile else None,
             "metadata": self.metadata,
         }
+
+
+class AgentAcquisitionBase(ABC):
+    """
+    Standard interface for all agent-specific acquisition implementations.
+    Enforces that custom acquisition logic respects common contracts,
+    returns normalized EvidenceFragment records, and exposes capability metadata.
+    """
+
+    @abstractmethod
+    def get_profile(self) -> RetrievalProfile:
+        """Return the agent's configured retrieval profile."""
+        pass
+
+    @abstractmethod
+    def discover(self, query: str, limit: int = 5) -> List[Any]:
+        """Stage 1: Cheap metadata and search candidate discovery."""
+        pass
+
+    @abstractmethod
+    def acquire(self, candidate: Any, request: RetrievalRequest) -> Any:
+        """Stage 2: Targeted candidate retrieval respecting required fields."""
+        pass
+
+    @abstractmethod
+    def normalize(
+        self,
+        doc: Any,
+        candidate: Any,
+        request: RetrievalRequest,
+    ) -> List[Any]:
+        """Convert fetched document into canonical EvidenceFragment records."""
+        pass
+
+    @abstractmethod
+    def health(self) -> Dict[str, Any]:
+        """Machine-readable health and status check."""
+        pass
+
+    @abstractmethod
+    def capabilities(self) -> Dict[str, Any]:
+        """Machine-readable capability and constraint descriptor."""
+        pass
 
 
 @dataclass

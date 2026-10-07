@@ -251,12 +251,14 @@ class BrandShieldAgent:
         if len(evidence_items) < 4:
             try:
                 logger.info(f"[BrandShield 2.0] Supplementing via shared acquisition fabric for '{target_name} reviews complaints'")
+                from backend.services.agent_reach.profile import BRANDSHIELD_PROFILE
                 supp_req = RetrievalRequest(
                     agent="brandshield",
                     entity=target_name,
                     intent=f"{target_name} reviews complaints controversy",
                     allowed_channels=["web", "news"],
                     candidate_budget=5,
+                    profile=BRANDSHIELD_PROFILE,
                 )
                 supp_frags = agent_reach_service.execute(supp_req)
                 for sf in supp_frags:

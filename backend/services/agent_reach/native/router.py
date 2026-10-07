@@ -28,6 +28,8 @@ from backend.services.agent_reach.channels import (
     RetrievalRequest,
 )
 from backend.services.agent_reach.native.adapters import (
+    AdapterRegistry,
+    adapter_registry,
     GitHubAdapter,
     RedditAdapter,
     SearchDiscoveryAdapter,
@@ -97,13 +99,14 @@ class NativeRouter:
         self.use_fxtwitter = os.getenv("AEGIS_X_FXTWITTER", "true").lower() in ("true", "1", "yes")
         self.use_social_url_discovery = os.getenv("AEGIS_SOCIAL_URL_DISCOVERY", "true").lower() in ("true", "1", "yes")
 
-        # Modular platform adapters for shared acquisition fabric
-        self.web_adapter = WebAdapter()
-        self.reddit_adapter = RedditAdapter()
-        self.twitter_adapter = TwitterAdapter()
-        self.youtube_adapter = YouTubeAdapter()
-        self.github_adapter = GitHubAdapter()
-        self.search_adapter = SearchDiscoveryAdapter()
+        # Authoritative adapter registry for shared acquisition fabric
+        self.adapter_registry = adapter_registry
+        self.web_adapter = adapter_registry.web_adapter
+        self.reddit_adapter = adapter_registry.reddit_adapter
+        self.twitter_adapter = adapter_registry.twitter_adapter
+        self.youtube_adapter = adapter_registry.youtube_adapter
+        self.github_adapter = adapter_registry.github_adapter
+        self.search_adapter = adapter_registry.search_adapter
 
     def _get_social_cache(self, key: str) -> Optional[Any]:
         """Fetch unexpired item from in-memory cache."""
@@ -1516,7 +1519,17 @@ class NativeRouter:
         initial_budget = min(request.candidate_budget or 5, len(passed_candidates))
         selected_candidates = passed_candidates[:initial_budget]
 
+        discovery_reqs = len(channels)
+        acq_attempts = 0
+        succ_acquisitions = 0
+        fallback_attempts = 0
+        search_reqs = len(channels)
+        mirror_reqs = 0
+        browser_reqs = 0
+
         def _acquire_candidate(cand: CandidateSource) -> List[EvidenceFragment]:
+            nonlocal acq_attempts, succ_acquisitions, fallback_attempts, search_reqs, mirror_reqs, browser_reqs
+            acq_attempts += 1
             # Authoritative route decision via RoutePolicyEngine
             decision = RoutePolicyEngine.decide_route(
                 platform=cand.platform,
@@ -1524,23 +1537,23 @@ class NativeRouter:
                 task_type=request.task_type,
                 is_url=bool(cand.url and cand.url.startswith("http"))
             )
-            # Match adapter by primary_backend or platform
-            adapter = self.web_adapter
-            if decision.primary_backend == "arctic_shift" or self.reddit_adapter.can_handle(cand):
-                adapter = self.reddit_adapter
-            elif decision.primary_backend == "fxtwitter" or self.twitter_adapter.can_handle(cand):
-                adapter = self.twitter_adapter
-            elif decision.primary_backend == "yt_dlp_in_process" or self.youtube_adapter.can_handle(cand):
-                adapter = self.youtube_adapter
-            elif decision.primary_backend == "gh_api" or self.github_adapter.can_handle(cand):
-                adapter = self.github_adapter
+            if decision.primary_backend in ("arctic_shift", "fxtwitter"):
+                mirror_reqs += 1
+            elif decision.primary_backend == "search_discovery":
+                search_reqs += 1
+
+            # Authoritative adapter derived directly from RouteDecision via AdapterRegistry
+            adapter = self.adapter_registry.get_adapter_for_decision(decision, cand)
 
             try:
                 doc = adapter.acquire(cand, request)
                 if doc.status == "SUCCESS":
+                    succ_acquisitions += 1
                     return adapter.normalize(doc, cand, request)
                 else:
                     # Fallback to index snippet
+                    fallback_attempts += 1
+                    search_reqs += 1
                     return self.search_adapter.normalize(
                         FetchedDocument(
                             url=cand.url,
@@ -1553,6 +1566,7 @@ class NativeRouter:
                         request,
                     )
             except Exception as e_acq:
+                fallback_attempts += 1
                 logger.debug(f"[NativeRouter] Adapter {adapter.backend_id} acquisition error for {cand.url}: {e_acq}")
                 return []
 
@@ -1596,7 +1610,17 @@ class NativeRouter:
                 route_attempts=len(channels),
                 latency_ms=lat_ms,
                 result_count=len(deduped_fragments),
+                discovery_requests=discovery_reqs,
                 candidate_count=len(all_candidates),
+                acquisition_attempts=acq_attempts,
+                successful_acquisitions=succ_acquisitions,
+                fallback_attempts=fallback_attempts,
+                search_requests=search_reqs,
+                mirror_requests=mirror_reqs,
+                browser_requests=browser_reqs,
+                cache_hits=0,
+                cache_misses=acq_attempts,
+                final_fragments=len(deduped_fragments),
                 candidates_selected_deep_read=len(selected_candidates),
                 fallback_used=escalation_used,
                 final_retrieval_mode=deduped_fragments[0].retrieval_mode if deduped_fragments else "none",

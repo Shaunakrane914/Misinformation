@@ -51,7 +51,17 @@ class AcquisitionTelemetryRecord:
     fallback_used: bool = False
     fallback_reason: Optional[str] = None
     cache_hit: bool = False
+    discovery_requests: int = 0
     candidate_count: int = 0
+    acquisition_attempts: int = 0
+    successful_acquisitions: int = 0
+    fallback_attempts: int = 0
+    search_requests: int = 0
+    mirror_requests: int = 0
+    browser_requests: int = 0
+    cache_hits: int = 0
+    cache_misses: int = 0
+    final_fragments: int = 0
     candidates_selected_deep_read: int = 0
     final_retrieval_mode: str = ""
     source_selection_rationale: str = ""
@@ -72,7 +82,17 @@ class AcquisitionTelemetryRecord:
             "fallback_used": self.fallback_used,
             "fallback_reason": self.fallback_reason,
             "cache_hit": self.cache_hit,
+            "discovery_requests": self.discovery_requests,
             "candidate_count": self.candidate_count,
+            "acquisition_attempts": self.acquisition_attempts,
+            "successful_acquisitions": self.successful_acquisitions,
+            "fallback_attempts": self.fallback_attempts,
+            "search_requests": self.search_requests,
+            "mirror_requests": self.mirror_requests,
+            "browser_requests": self.browser_requests,
+            "cache_hits": self.cache_hits,
+            "cache_misses": self.cache_misses,
+            "final_fragments": self.final_fragments,
             "candidates_selected_deep_read": self.candidates_selected_deep_read,
             "final_retrieval_mode": self.final_retrieval_mode,
             "source_selection_rationale": self.source_selection_rationale,

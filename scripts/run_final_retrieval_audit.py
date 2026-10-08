@@ -195,16 +195,15 @@ class AuthoritativeAuditCollector:
             start_iso = datetime.now(timezone.utc).isoformat()
             read_id = f"read_{uuid.uuid4().hex[:8]}"
 
-            plat = args[0] if len(args) > 0 else kwargs.get("platform", "unknown")
-            url = args[1] if len(args) > 1 else kwargs.get("url", "")
+            # execute_channel_read signature: execute_channel_read(self, url: str, max_chars: int = 4000, **kwargs) -> Dict[str, Any]
+            url = args[0] if len(args) > 0 else kwargs.get("url", "")
             q_id = kwargs.get("query_id", "")
             cand_id = kwargs.get("candidate_id", "")
 
-            fragment = None
-            telemetry = {}
+            read_res = {}
             error_msg = None
             try:
-                fragment, telemetry = collector._orig_execute_read(*args, **kwargs)
+                read_res = collector._orig_execute_read(*args, **kwargs)
             except Exception as ex:
                 error_msg = str(ex)
                 raise ex
@@ -212,25 +211,26 @@ class AuthoritativeAuditCollector:
                 duration_ms = int((time.perf_counter() - t0) * 1000)
                 end_iso = datetime.now(timezone.utc).isoformat()
 
-                backend_used = telemetry.get("backend") or telemetry.get("backend_id") or "unknown"
-                mode = telemetry.get("retrieval_mode") or "direct"
-                fb_used = bool(telemetry.get("fallback_used"))
-                fb_backend = telemetry.get("fallback_backend")
-                fb_reason = telemetry.get("fallback_reason")
+                backend_used = read_res.get("backend") or read_res.get("backend_id") or "unknown"
+                mode = read_res.get("retrieval_mode") or "direct"
+                fb_used = bool(read_res.get("fallback_used"))
+                fb_backend = read_res.get("fallback_backend")
+                fb_reason = read_res.get("fallback_reason")
 
-                content_len = len(getattr(fragment, "content", "") or "") if fragment else 0
-                success = bool(fragment and content_len > 60)
+                content_str = (read_res.get("markdown") or read_res.get("content") or "")
+                content_len = len(content_str)
+                success = bool(read_res.get("status") in ("success", "fallback_soup") and content_len >= 30)
 
                 read_record = {
                     "read_id": read_id,
                     "agent": collector.current_agent,
                     "query_id": q_id,
                     "candidate_id": cand_id,
-                    "channel": plat,
-                    "requested_channel": plat,
-                    "actual_channel": plat,
+                    "channel": read_res.get("channel") or "web",
+                    "requested_channel": read_res.get("channel") or "web",
+                    "actual_channel": read_res.get("channel") or "web",
                     "url": url,
-                    "source_id": getattr(fragment, "source_id", "") or f"src_{hash(url) & 0xffffffff:08x}",
+                    "source_id": f"src_{hash(url) & 0xffffffff:08x}",
                     "started_at": start_iso,
                     "completed_at": end_iso,
                     "duration_ms": duration_ms,
@@ -240,14 +240,14 @@ class AuthoritativeAuditCollector:
                     "fallback_used": fb_used,
                     "fallback_backend": fb_backend,
                     "fallback_reason": fb_reason,
-                    "error_message": error_msg,
+                    "error_message": error_msg or (read_res.get("error") if not success else None),
                     "content_length_chars": content_len,
                     "useful_content_extracted": success,
-                    "raw_telemetry": telemetry
+                    "raw_telemetry": read_res
                 }
                 collector.acquisition_reads.append(read_record)
 
-            return fragment, telemetry
+            return read_res
 
         def hooked_filter_candidates(candidates, target_entity, domain="general", intent=""):
             accepted, rejected = collector._orig_filter_candidates(
@@ -297,7 +297,7 @@ class AuthoritativeAuditCollector:
                 candidates, target_name=target_name, intent=intent, query_classes=query_classes
             )
             for rank_idx, r in enumerate(ranked):
-                c_id = getattr(r, "id", None) or getattr(r, "candidate_id", None)
+                c_id = getattr(r, "discovered_id", None) or getattr(r, "id", None) or getattr(r, "candidate_id", None)
                 r_id = getattr(r, "ranked_id", f"cand_rank_{c_id}")
                 r.ranked_id = r_id
                 collector.ranked_events.append({
@@ -569,6 +569,23 @@ def run_final_retrieval_audit():
     return audit_data
 
 
+def safe_rate(numerator: int, denominator: int) -> Any:
+    """Computes rate safely or returns NOT_APPLICABLE if denominator is 0."""
+    if denominator == 0:
+        return "NOT_APPLICABLE"
+    return round(float(numerator) / float(denominator), 3)
+
+
+def format_rate_pct(rate: Any) -> str:
+    """Formats numeric rate as percentage or 'N/A' if not applicable."""
+    if rate == "NOT_APPLICABLE" or rate is None:
+        return "N/A"
+    try:
+        return f"{float(rate) * 100:.1f}%"
+    except Exception:
+        return "N/A"
+
+
 def analyze_authoritative_run(
     collector: AuthoritativeAuditCollector,
     results: Dict[str, Any],
@@ -611,7 +628,7 @@ def analyze_authoritative_run(
         disc_executed = len(qs)
         disc_succeeded = sum(1 for q in qs if q["status"] == "SUCCESS")
         disc_failed = sum(1 for q in qs if q["status"] != "SUCCESS")
-        disc_succ_rate = round(disc_succeeded / max(1, disc_executed), 3)
+        disc_succ_rate = safe_rate(disc_succeeded, disc_executed)
 
         # Track discovery query fallbacks
         for q in qs:
@@ -682,7 +699,7 @@ def analyze_authoritative_run(
                     seen_sel_acc.add(k)
                     accepted_events.append(s)
         accepted_cands_count = len(accepted_events)
-        cand_acceptance_rate = round(accepted_cands_count / max(1, ranked_cands_count), 3)
+        cand_acceptance_rate = safe_rate(accepted_cands_count, ranked_cands_count)
 
         # -------------------------------------------------------------
         # 3. ACQUISITIONS (Observed acquisition attempt events)
@@ -732,14 +749,15 @@ def analyze_authoritative_run(
                 reason_counts[r_code] = reason_counts.get(r_code, 0) + 1
 
         acquired_cands_count = native_acq_succ + specialist_acq_succ + fallback_acq_succ
-        acq_success_rate = round(acquired_cands_count / max(1, candidate_acq_attempts), 3)
-        specialist_acq_rate = round(specialist_acq_succ / max(1, specialist_acq_attempts), 3) if specialist_acq_attempts else 1.0
-        fallback_acq_rate = round(fallback_acq_succ / max(1, fallback_acq_attempts), 3) if fallback_acq_attempts else 1.0
+        acq_success_rate = safe_rate(acquired_cands_count, candidate_acq_attempts)
+        specialist_acq_rate = safe_rate(specialist_acq_succ, specialist_acq_attempts)
+        fallback_acq_rate = safe_rate(fallback_acq_succ, fallback_acq_attempts)
 
         # -------------------------------------------------------------
         # 4. FINAL EVIDENCE & REVIEWS
         # -------------------------------------------------------------
         total_ev = len(raw_final_ev)
+        final_evidence_yield = safe_rate(total_ev, acquired_cands_count)
         reviewed_ev, tp_cnt, fp_cnt, amb_cnt = review_final_evidence_records_rule_based(
             agent_name=a,
             evidence_list=raw_final_ev,
@@ -748,16 +766,16 @@ def analyze_authoritative_run(
         )
         all_reviewed_evidence[a] = reviewed_ev
 
-        fp_rate = round(fp_cnt / max(1, total_ev), 3)
-        tp_rate = round(tp_cnt / max(1, total_ev), 3)
+        fp_rate = safe_rate(fp_cnt, total_ev)
+        tp_rate = safe_rate(tp_cnt, total_ev)
 
         social_ev_count = sum(
             1 for e in raw_final_ev
             if any(p in str(e.get("platform", "")).lower() or p in str(e.get("url", "")).lower()
                    for p in ["twitter", "x.com", "reddit", "youtube"])
         )
-        social_contrib_rate = round(social_ev_count / max(1, total_ev), 3)
-        fb_rate = round(fallback_acq_attempts / max(1, candidate_acq_attempts), 3)
+        social_contrib_rate = safe_rate(social_ev_count, total_ev)
+        fb_rate = safe_rate(fallback_acq_attempts, candidate_acq_attempts)
 
         unique_urls = list(set(e.get("url") for e in raw_final_ev if e.get("url") and str(e.get("url")).startswith("http")))
         unique_domains = list(set(urllib.parse.urlparse(u).netloc.lower() for u in unique_urls if u))
@@ -773,6 +791,16 @@ def analyze_authoritative_run(
             discovered_events=disc_events,
         )
         no_synth, synth_violations = validate_no_synthetic_events(a, reviewed_ev, acq_attempts)
+
+        # Fail-closed lineage status determination
+        if accepted_cands_count > 0 and candidate_acq_attempts > 0 and acquired_cands_count == 0:
+            lineage_status = "ACQUISITION_FAILURE"
+        elif total_ev > 0 and val_result.valid_lineage_count < total_ev:
+            lineage_status = "FAIL"
+        elif val_result.is_valid and no_synth:
+            lineage_status = val_result.completeness_status
+        else:
+            lineage_status = val_result.completeness_status or "FAIL"
 
         # -------------------------------------------------------------
         # 6. FUNNEL INVARIANTS ASSERTION
@@ -808,6 +836,7 @@ def analyze_authoritative_run(
             "fallback_acquisition_success_rate": fallback_acq_rate,
             "failed_acquisition_attempts": failed_acq,
             "final_evidence": total_ev,
+            "final_evidence_yield": final_evidence_yield,
             "true_positives": tp_cnt,
             "false_positives": fp_cnt,
             "ambiguous": amb_cnt,
@@ -818,7 +847,7 @@ def analyze_authoritative_run(
             "fallback_rate": fb_rate,
             "false_positive_rate": fp_rate,
             "social_contribution_rate": social_contrib_rate,
-            "lineage_status": "OBSERVED" if (val_result.is_valid and no_synth) else "FAIL",
+            "lineage_status": lineage_status,
         }
 
         # Provenance Lineage Records directly from verified evidence items
@@ -873,66 +902,85 @@ def analyze_authoritative_run(
             "reasons": ", ".join(sorted(stats["reasons"]))
         })
 
-    # Social Funnels
+    # Social Funnels (derived strictly from identical candidate discovery and acquisition events)
     social_funnels = {}
     for a in agent_names:
         qs = per_agent_queries[a]
         evs = all_reviewed_evidence[a]
+        agent_acqs = [acq for acq in collector.acquisition_attempts if acq["agent"] == a]
 
+        # Twitter / X
         tw_qs = [q for q in qs if q["requested_channel"] in ("twitter", "x")]
         tw_cands = [c for q in tw_qs for c in q.get("candidates", [])]
         tw_concrete = sum(1 for c in tw_cands if "status" in c.get("url", "") or "x.com" in c.get("url", "") or "twitter.com" in c.get("url", ""))
-        tw_fx = [q for q in tw_qs if q["backend"] == "fxtwitter"]
+        tw_acqs = [
+            acq for acq in agent_acqs
+            if acq.get("backend") == "fxtwitter" or "twitter.com" in acq.get("url", "").lower() or "x.com" in acq.get("url", "").lower() or acq.get("channel") in ("twitter", "x")
+        ]
+        tw_spec_attempts = sum(1 for acq in tw_acqs if acq.get("backend") == "fxtwitter")
+        tw_spec_succ = sum(1 for acq in tw_acqs if acq.get("backend") == "fxtwitter" and acq.get("status") == "SUCCESS" and acq.get("useful_content_extracted"))
         tw_ev = [e for e in evs if "x.com" in str(e.get("url", "")) or "twitter" in str(e.get("platform", "")).lower()]
 
+        # Reddit
         rd_qs = [q for q in qs if q["requested_channel"] == "reddit"]
         rd_cands = [c for q in rd_qs for c in q.get("candidates", [])]
         rd_concrete = sum(1 for c in rd_cands if "comments" in c.get("url", "") or "reddit.com/r/" in c.get("url", ""))
-        rd_as = [q for q in rd_qs if q["backend"] == "arctic_shift"]
+        rd_acqs = [
+            acq for acq in agent_acqs
+            if acq.get("backend") == "arctic_shift" or "reddit.com" in acq.get("url", "").lower() or "redd.it" in acq.get("url", "").lower() or acq.get("channel") == "reddit"
+        ]
+        rd_spec_attempts = sum(1 for acq in rd_acqs if acq.get("backend") == "arctic_shift")
+        rd_spec_succ = sum(1 for acq in rd_acqs if acq.get("backend") == "arctic_shift" and acq.get("status") == "SUCCESS" and acq.get("useful_content_extracted"))
         rd_ev = [e for e in evs if "reddit" in str(e.get("url", "")) or "reddit" in str(e.get("platform", "")).lower()]
 
+        # YouTube
         yt_qs = [q for q in qs if q["requested_channel"] == "youtube"]
         yt_cands = [c for q in yt_qs for c in q.get("candidates", [])]
         yt_concrete = sum(1 for c in yt_cands if "watch?v=" in c.get("url", "") or "youtu.be" in c.get("url", ""))
-        yt_dl = [q for q in yt_qs if q["backend"] == "yt-dlp"]
+        yt_acqs = [
+            acq for acq in agent_acqs
+            if acq.get("backend") == "yt-dlp" or "youtube.com" in acq.get("url", "").lower() or "youtu.be" in acq.get("url", "").lower() or acq.get("channel") == "youtube"
+        ]
+        yt_spec_attempts = sum(1 for acq in yt_acqs if acq.get("backend") == "yt-dlp")
+        yt_spec_succ = sum(1 for acq in yt_acqs if acq.get("backend") == "yt-dlp" and acq.get("status") == "SUCCESS" and acq.get("useful_content_extracted"))
         yt_ev = [e for e in evs if "youtube" in str(e.get("url", "")) or "youtube" in str(e.get("platform", "")).lower()]
 
         social_funnels[a] = {
             "twitter": {
                 "discovered": len(tw_cands),
                 "concrete_targets": tw_concrete,
-                "specialist_attempts": len(tw_fx),
-                "successes": sum(1 for q in tw_fx if q["status"] == "SUCCESS"),
-                "failures": sum(1 for q in tw_fx if q["status"] != "SUCCESS"),
-                "fallback_attempts": sum(1 for q in tw_qs if q["fallback_occurred"]),
-                "fallback_successes": sum(1 for q in tw_qs if q["fallback_occurred"] and q["status"] == "SUCCESS"),
+                "specialist_attempts": tw_spec_attempts,
+                "successes": tw_spec_succ,
+                "failures": tw_spec_attempts - tw_spec_succ,
+                "fallback_attempts": sum(1 for acq in tw_acqs if acq.get("fallback_used")),
+                "fallback_successes": sum(1 for acq in tw_acqs if acq.get("fallback_used") and acq.get("status") == "SUCCESS" and acq.get("useful_content_extracted")),
                 "final_evidence": len(tw_ev),
-                "true_positives": sum(1 for e in tw_ev if e["review_verdict"] == "TRUE_POSITIVE"),
-                "false_positives": sum(1 for e in tw_ev if e["review_verdict"] == "FALSE_POSITIVE"),
+                "true_positives": sum(1 for e in tw_ev if e.get("review_verdict") == "TRUE_POSITIVE"),
+                "false_positives": sum(1 for e in tw_ev if e.get("review_verdict") == "FALSE_POSITIVE"),
             },
             "reddit": {
                 "discovered": len(rd_cands),
                 "concrete_targets": rd_concrete,
-                "specialist_attempts": len(rd_as),
-                "successes": sum(1 for q in rd_as if q["status"] == "SUCCESS"),
-                "failures": sum(1 for q in rd_as if q["status"] != "SUCCESS"),
-                "fallback_attempts": sum(1 for q in rd_qs if q["fallback_occurred"]),
-                "fallback_successes": sum(1 for q in rd_qs if q["fallback_occurred"] and q["status"] == "SUCCESS"),
+                "specialist_attempts": rd_spec_attempts,
+                "successes": rd_spec_succ,
+                "failures": rd_spec_attempts - rd_spec_succ,
+                "fallback_attempts": sum(1 for acq in rd_acqs if acq.get("fallback_used")),
+                "fallback_successes": sum(1 for acq in rd_acqs if acq.get("fallback_used") and acq.get("status") == "SUCCESS" and acq.get("useful_content_extracted")),
                 "final_evidence": len(rd_ev),
-                "true_positives": sum(1 for e in rd_ev if e["review_verdict"] == "TRUE_POSITIVE"),
-                "false_positives": sum(1 for e in rd_ev if e["review_verdict"] == "FALSE_POSITIVE"),
+                "true_positives": sum(1 for e in rd_ev if e.get("review_verdict") == "TRUE_POSITIVE"),
+                "false_positives": sum(1 for e in rd_ev if e.get("review_verdict") == "FALSE_POSITIVE"),
             },
             "youtube": {
                 "discovered": len(yt_cands),
                 "concrete_targets": yt_concrete,
-                "specialist_attempts": len(yt_dl),
-                "successes": sum(1 for q in yt_dl if q["status"] == "SUCCESS"),
-                "failures": sum(1 for q in yt_dl if q["status"] != "SUCCESS"),
-                "fallback_attempts": sum(1 for q in yt_qs if q["fallback_occurred"]),
-                "fallback_successes": sum(1 for q in yt_qs if q["fallback_occurred"] and q["status"] == "SUCCESS"),
+                "specialist_attempts": yt_spec_attempts,
+                "successes": yt_spec_succ,
+                "failures": yt_spec_attempts - yt_spec_succ,
+                "fallback_attempts": sum(1 for acq in yt_acqs if acq.get("fallback_used")),
+                "fallback_successes": sum(1 for acq in yt_acqs if acq.get("fallback_used") and acq.get("status") == "SUCCESS" and acq.get("useful_content_extracted")),
                 "final_evidence": len(yt_ev),
-                "true_positives": sum(1 for e in yt_ev if e["review_verdict"] == "TRUE_POSITIVE"),
-                "false_positives": sum(1 for e in yt_ev if e["review_verdict"] == "FALSE_POSITIVE"),
+                "true_positives": sum(1 for e in yt_ev if e.get("review_verdict") == "TRUE_POSITIVE"),
+                "false_positives": sum(1 for e in yt_ev if e.get("review_verdict") == "FALSE_POSITIVE"),
             }
         }
 
@@ -943,6 +991,18 @@ def analyze_authoritative_run(
     total_tw_fx_succ = sum(social_funnels[a]["twitter"]["successes"] for a in agent_names)
     total_tw_fx_fail = sum(social_funnels[a]["twitter"]["failures"] for a in agent_names)
     assert total_tw_fx_succ + total_tw_fx_fail == total_tw_fx_att, "FxTwitter successes + failures != attempts"
+
+    # Enforce Test 4 invariant: specialist attempts in executive waterfall == specialist attempts in social funnels
+    total_specialist_attempts_exec = sum(waterfall[a]["specialist_acquisition_attempts"] for a in agent_names)
+    total_specialist_attempts_social = sum(
+        social_funnels[a]["twitter"]["specialist_attempts"] +
+        social_funnels[a]["reddit"]["specialist_attempts"] +
+        social_funnels[a]["youtube"]["specialist_attempts"]
+        for a in agent_names
+    )
+    assert total_specialist_attempts_exec == total_specialist_attempts_social, (
+        f"Specialist accounting mismatch: exec ({total_specialist_attempts_exec}) != social ({total_specialist_attempts_social})"
+    )
 
     return {
         "execution_timestamp": datetime.now(timezone.utc).isoformat(),
@@ -1024,6 +1084,7 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
     lines.append("- **Candidate Acquisition Success Rate** = `(native_acq_succ + specialist_acq_succ + fallback_acq_succ) / candidate_acquisition_attempts` *(Bounded in [0.0, 1.0])*")
     lines.append("- **Specialist Acquisition Success Rate** = `specialist_acquisition_successes / specialist_acquisition_attempts`")
     lines.append("- **Fallback Acquisition Success Rate** = `fallback_acquisition_successes / fallback_acquisition_attempts`")
+    lines.append("- **Final Evidence Yield** = `final_evidence / acquired_candidates`")
     lines.append("- **Fallback Attempt Rate** = `fallback_acquisition_attempts / candidate_acquisition_attempts`")
     lines.append("- **False-Positive Rate** = `false_positive_final_evidence / total_final_evidence`")
     lines.append("- **Social Contribution Rate** = `social_final_evidence / total_final_evidence`")
@@ -1036,15 +1097,16 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
         ("Candidate acquisition success rate", "candidate_acquisition_success_rate"),
         ("Specialist acquisition success rate", "specialist_acquisition_success_rate"),
         ("Fallback acquisition success rate", "fallback_acquisition_success_rate"),
+        ("Final evidence yield", "final_evidence_yield"),
         ("Fallback rate", "fallback_rate"),
         ("False-positive rate", "false_positive_rate"),
         ("Social contribution rate", "social_contribution_rate"),
     ]
     for label, key in rates_display:
-        bs_r = f"{w['BrandShield'].get(key, 0.0) * 100:.1f}%"
-        tr_r = f"{w['Trending'].get(key, 0.0) * 100:.1f}%"
-        sc_r = f"{w['Scout'].get(key, 0.0) * 100:.1f}%"
-        pw_r = f"{w['Personal Watch'].get(key, 0.0) * 100:.1f}%"
+        bs_r = format_rate_pct(w['BrandShield'].get(key))
+        tr_r = format_rate_pct(w['Trending'].get(key))
+        sc_r = format_rate_pct(w['Scout'].get(key))
+        pw_r = format_rate_pct(w['Personal Watch'].get(key))
         lines.append(f"| **{label}** | {bs_r} | {tr_r} | {sc_r} | {pw_r} |")
     lines.append("")
 

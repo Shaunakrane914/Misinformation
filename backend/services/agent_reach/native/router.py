@@ -1146,7 +1146,38 @@ class NativeRouter:
                             "fallback_used": False,
                         }
 
-        # 3. Standard Web Document: Scrapling HTTP Primary -> Playwright Rescue
+        # 3. Specialized Video: YouTube via yt-dlp
+        if "youtube.com" in netloc or "youtu.be" in netloc:
+            try:
+                import yt_dlp
+                ydl_opts = {
+                    "quiet": True,
+                    "no_warnings": True,
+                    "skip_download": True,
+                    "extract_flat": True,
+                }
+                with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                    info = ydl.extract_info(url, download=False)
+                if info:
+                    title = info.get("title") or "YouTube Video"
+                    desc = info.get("description") or ""
+                    uploader = info.get("uploader") or info.get("channel") or "YouTube Channel"
+                    content = f"Title: {title}\nChannel: {uploader}\n\nDescription:\n{desc}"
+                    if len(content.strip()) > 30:
+                        return {
+                            "status": "success",
+                            "title": title,
+                            "content": content[:max_chars],
+                            "markdown": f"### {title}\n**Channel**: {uploader}\n\n{desc[:max_chars]}\n\n*Source: {url}*",
+                            "url": url,
+                            "char_count": len(content),
+                            "backend": "yt-dlp",
+                            "fallback_used": False,
+                        }
+            except Exception as e_yt:
+                logger.debug(f"[NativeRouter] yt-dlp read notice for {url}: {e_yt}")
+
+        # 4. Standard Web Document: Scrapling HTTP Primary -> Playwright Rescue
         try:
             res = self.executor.execute_web_read(url)
             content = res.get("content", "")

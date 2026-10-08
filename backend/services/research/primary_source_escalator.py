@@ -147,7 +147,7 @@ class PrimarySourceEscalator:
                         continue
 
                     # Create typed EvidenceItem with Requirement 16 provenance
-                    item_id = f"esc_prim_{len(candidates) + len(discovered_primaries) + 1:03d}"
+                    item_id = getattr(f, "candidate_id", None) or getattr(f, "evidence_id", None) or f"esc_prim_{len(candidates) + len(discovered_primaries) + 1:03d}"
                     prim_item = EvidenceItem.from_evidence_fragment(f, item_id=item_id, target_name=clean_target)
                     prim_item.primary_source = True
                     prim_item.source_role = SourceRole.PRIMARY.value

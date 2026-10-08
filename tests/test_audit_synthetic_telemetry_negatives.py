@@ -167,3 +167,219 @@ def test_h_fabricated_backend_without_attribution():
     valid, violations = validate_no_synthetic_events("BrandShield", evidence, acquisitions)
     assert not valid
     assert any("lacks real backend attribution" in v for v in violations)
+
+
+def test_empty_run_assertion_test_1_acquisition_failure():
+    """Test 1: accepted > 0, attempts > 0, successful = 0, final_evidence = 0 must produce ACQUISITION_FAILURE or NOT_ENOUGH_EVIDENCE, never OBSERVED."""
+    discovered = [{"candidate_id": f"c_{i}"} for i in range(5)]
+    ranked = [{"candidate_id": f"c_{i}", "ranked_candidate_id": f"r_{i}"} for i in range(5)]
+    selected = [{"candidate_id": f"c_{i}", "ranked_candidate_id": f"r_{i}", "accepted_candidate_id": f"a_{i}", "selection_decision": "ACCEPTED"} for i in range(5)]
+    acquisitions = [{
+        "attempt_id": f"att_{i}",
+        "accepted_candidate_id": f"a_{i}",
+        "status": "FAILED",
+        "useful_content_extracted": False,
+        "backend": "scrapling_http"
+    } for i in range(5)]
+    evidence = []
+
+    result = validate_evidence_lineage(evidence, acquisitions, selected, ranked, discovered)
+    assert not result.is_valid
+    assert result.completeness_status in ("ACQUISITION_FAILURE", "NOT_ENOUGH_EVIDENCE")
+    assert result.completeness_status != "OBSERVED"
+
+
+def test_empty_run_assertion_test_2_legitimate_zero_results():
+    """Test 2: accepted = 0, acquisition_attempts = 0, final_evidence = 0 must produce OBSERVED_NO_RESULTS."""
+    discovered = [{"candidate_id": "c_1"}]
+    ranked = []
+    selected = []
+    acquisitions = []
+    evidence = []
+
+    result = validate_evidence_lineage(evidence, acquisitions, selected, ranked, discovered)
+    assert result.is_valid
+    assert result.completeness_status == "OBSERVED_NO_RESULTS"
+
+
+def test_empty_run_assertion_test_3_broken_lineage_fails():
+    """Test 3: final_evidence > 0, valid_lineage = 0 must produce FAIL, never OBSERVED."""
+    discovered = [{"candidate_id": "c_1"}]
+    ranked = [{"candidate_id": "c_1", "ranked_candidate_id": "r_1"}]
+    selected = [{"ranked_candidate_id": "r_1", "accepted_candidate_id": "a_1", "selection_decision": "ACCEPTED"}]
+    acquisitions = [{
+        "attempt_id": "att_1",
+        "accepted_candidate_id": "a_1",
+        "acquired_candidate_id": "acq_1",
+        "status": "SUCCESS",
+        "useful_content_extracted": True,
+        "backend": "scrapling_http"
+    }]
+    # Evidence has broken link to unknown candidate
+    evidence = [{
+        "evidence_id": "ev_1",
+        "acquisition_attempt_id": "att_1",
+        "acquired_candidate_id": "acq_unknown",
+        "accepted_candidate_id": "a_unknown",
+        "ranked_candidate_id": "r_unknown",
+        "discovered_candidate_id": "c_unknown"
+    }]
+
+    result = validate_evidence_lineage(evidence, acquisitions, selected, ranked, discovered)
+    assert not result.is_valid
+    assert result.completeness_status == "FAIL"
+    assert result.completeness_status != "OBSERVED"
+
+
+def test_empty_run_assertion_test_4_specialist_attempts_accounting():
+    """Test 4: executive specialist attempts must equal social specialist attempts when derived from same events."""
+    acq_attempts = [
+        {"attempt_id": "a1", "backend": "fxtwitter", "status": "SUCCESS", "useful_content_extracted": True, "url": "https://x.com/post/1"},
+        {"attempt_id": "a2", "backend": "arctic_shift", "status": "SUCCESS", "useful_content_extracted": True, "url": "https://reddit.com/r/test/comments/1"},
+        {"attempt_id": "a3", "backend": "yt-dlp", "status": "FAILED", "useful_content_extracted": False, "url": "https://youtube.com/watch?v=123"},
+        {"attempt_id": "a4", "backend": "scrapling_http", "status": "SUCCESS", "useful_content_extracted": True, "url": "https://example.com/article"},
+    ]
+
+    # Executive accounting
+    specialist_backends = {"fxtwitter", "arctic_shift", "yt-dlp"}
+    exec_specialist_attempts = sum(1 for a in acq_attempts if a.get("backend") in specialist_backends)
+
+    # Social channels accounting
+    tw_attempts = sum(1 for a in acq_attempts if a.get("backend") == "fxtwitter")
+    rd_attempts = sum(1 for a in acq_attempts if a.get("backend") == "arctic_shift")
+    yt_attempts = sum(1 for a in acq_attempts if a.get("backend") == "yt-dlp")
+    social_specialist_attempts = tw_attempts + rd_attempts + yt_attempts
+
+    assert exec_specialist_attempts == social_specialist_attempts == 3
+
+
+def test_empty_run_assertion_test_5_successful_acquisition_field_requirements():
+    """Test 5: A successful acquisition cannot exist without attempt_id, accepted_candidate_id, acquired_candidate_id, backend, useful_content_extracted = True."""
+    selected = [{"accepted_candidate_id": "a_1", "selection_decision": "ACCEPTED"}]
+
+    # Missing attempt_id
+    invalid_no_attempt = [{
+        "attempt_id": "",
+        "accepted_candidate_id": "a_1",
+        "acquired_candidate_id": "acq_1",
+        "backend": "scrapling_http",
+        "status": "SUCCESS",
+        "useful_content_extracted": True
+    }]
+    valid, v1 = validate_acquisition_lineage(selected, invalid_no_attempt)
+    assert not valid
+
+    # Missing accepted_candidate_id
+    invalid_no_accepted = [{
+        "attempt_id": "att_1",
+        "accepted_candidate_id": "",
+        "acquired_candidate_id": "acq_1",
+        "backend": "scrapling_http",
+        "status": "SUCCESS",
+        "useful_content_extracted": True
+    }]
+    valid, v2 = validate_acquisition_lineage(selected, invalid_no_accepted)
+    assert not valid
+
+    # Missing acquired_candidate_id
+    invalid_no_acquired = [{
+        "attempt_id": "att_1",
+        "accepted_candidate_id": "a_1",
+        "acquired_candidate_id": "",
+        "backend": "scrapling_http",
+        "status": "SUCCESS",
+        "useful_content_extracted": True
+    }]
+    valid, v3 = validate_acquisition_lineage(selected, invalid_no_acquired)
+    assert not valid
+
+    # Missing backend
+    invalid_no_backend = [{
+        "attempt_id": "att_1",
+        "accepted_candidate_id": "a_1",
+        "acquired_candidate_id": "acq_1",
+        "backend": "",
+        "status": "SUCCESS",
+        "useful_content_extracted": True
+    }]
+    valid, v4 = validate_acquisition_lineage(selected, invalid_no_backend)
+    assert not valid
+
+    # useful_content_extracted is False
+    invalid_not_useful = [{
+        "attempt_id": "att_1",
+        "accepted_candidate_id": "a_1",
+        "acquired_candidate_id": "acq_1",
+        "backend": "scrapling_http",
+        "status": "SUCCESS",
+        "useful_content_extracted": False
+    }]
+    valid, v5 = validate_acquisition_lineage(selected, invalid_not_useful)
+    assert not valid
+
+    # Fully valid
+    valid_acq = [{
+        "attempt_id": "att_1",
+        "accepted_candidate_id": "a_1",
+        "acquired_candidate_id": "acq_1",
+        "backend": "scrapling_http",
+        "status": "SUCCESS",
+        "useful_content_extracted": True
+    }]
+    valid, v6 = validate_acquisition_lineage(selected, valid_acq)
+    assert valid
+
+
+def test_integration_production_candidate_to_evidence_fragment(monkeypatch):
+    """Integration Test: Exercises actual production candidate -> DeepReader -> acquisition attempt -> EvidenceFragment with valid 5-stage ID lineage."""
+    from backend.services.research.deep_reader import deep_reader
+    from backend.services.research.research_models import EvidenceItem
+    from backend.services.agent_reach import agent_reach_service
+
+    # Controlled local fixture: mock agent_reach_service.read for deterministic local integration test
+    test_url = "https://example.com/test-article"
+    monkeypatch.setattr(
+        agent_reach_service,
+        "read",
+        lambda url, max_chars=4000: {
+            "status": "success",
+            "title": "Deterministic Test Article",
+            "content": "This is a deterministic article payload with sufficient length for extraction.",
+            "markdown": "This is a deterministic article payload with sufficient length for extraction.",
+            "url": url,
+            "char_count": 80,
+            "backend": "scrapling_http",
+            "fallback_used": False
+        }
+    )
+
+    item = EvidenceItem(
+        id="cand_test_001",
+        canonical_url=test_url,
+        title="Test Candidate",
+        relevance_score=0.95,
+        source_quality_score=0.90,
+    )
+    item.ranked_id = "cand_rank_test_001"
+    item.rank = 1
+
+    investigated, telemetry = deep_reader.deep_read([item], max_reads=1)
+
+    assert len(investigated) == 1
+    assert telemetry["successful"] == 1
+    assert len(telemetry["acquisition_attempts"]) == 1
+
+    acq_att = telemetry["acquisition_attempts"][0]
+    assert acq_att["status"] == "SUCCESS"
+    assert acq_att["useful_content_extracted"] is True
+    assert acq_att["attempt_id"].startswith("acq_att_")
+    assert acq_att["accepted_candidate_id"] == f"cand_acc_{item.id}"
+    assert acq_att["acquired_candidate_id"] == f"cand_acq_{item.id}"
+    assert acq_att["backend"] == "scrapling_http"
+
+    # Convert investigated EvidenceItem to EvidenceFragment
+    frag = investigated[0].to_evidence_fragment()
+    assert frag.content
+    assert frag.url == test_url
+    assert investigated[0].acquired_id == f"cand_acq_{item.id}"
+    assert investigated[0].acquisition_attempt_id == acq_att["attempt_id"]

@@ -13,6 +13,10 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 class TelemetryObservationStatus(str, Enum):
     OBSERVED = "OBSERVED"
+    OBSERVED_NO_RESULTS = "OBSERVED_NO_RESULTS"
+    ACQUISITION_FAILURE = "ACQUISITION_FAILURE"
+    NOT_ENOUGH_EVIDENCE = "NOT_ENOUGH_EVIDENCE"
+    FAIL = "FAIL"
     INFERRED = "INFERRED"
     NOT_OBSERVED = "NOT_OBSERVED"
     INVALID = "INVALID"
@@ -125,12 +129,16 @@ def validate_acquisition_lineage(
 
         # Validate success criteria
         if a.get("status") == "SUCCESS":
-            if not a.get("useful_content_extracted"):
-                violations.append(f"Acquisition '{att_id}' marked SUCCESS but useful_content_extracted is False")
-            if not a.get("backend"):
-                violations.append(f"Acquisition '{att_id}' marked SUCCESS without backend attribution")
+            if not a.get("attempt_id"):
+                violations.append("Successful acquisition missing attempt_id")
+            if not a.get("accepted_candidate_id"):
+                violations.append(f"Successful acquisition '{att_id}' missing accepted_candidate_id")
             if not a.get("acquired_candidate_id"):
                 violations.append(f"Successful acquisition '{att_id}' missing acquired_candidate_id")
+            if not a.get("backend"):
+                violations.append(f"Acquisition '{att_id}' marked SUCCESS without backend attribution")
+            if not a.get("useful_content_extracted"):
+                violations.append(f"Acquisition '{att_id}' marked SUCCESS but useful_content_extracted is False")
 
     return len(violations) == 0, violations
 
@@ -237,8 +245,33 @@ def validate_evidence_lineage(
         valid_count += 1
 
     total_ev = len(final_evidence_records)
-    is_valid = (len(violations) == 0 and valid_count == total_ev)
-    completeness = "OBSERVED" if is_valid else ("NOT_ENOUGH_EVIDENCE" if unobserved_acquisitions > 0 or synthetic_detected > 0 else "FAIL")
+    accepted_count = len(acc_map)
+    acq_attempts_count = len(acq_map)
+    successful_acqs_count = len(acquired_to_att)
+
+    if total_ev > 0:
+        if len(violations) == 0 and valid_count == total_ev:
+            is_valid = True
+            completeness = TelemetryObservationStatus.OBSERVED.value
+        else:
+            is_valid = False
+            if unobserved_acquisitions > 0 or synthetic_detected > 0:
+                completeness = TelemetryObservationStatus.NOT_ENOUGH_EVIDENCE.value
+            else:
+                completeness = TelemetryObservationStatus.FAIL.value
+    else:
+        # total_ev == 0
+        if accepted_count > 0 or acq_attempts_count > 0:
+            is_valid = False
+            completeness = TelemetryObservationStatus.ACQUISITION_FAILURE.value
+            violations.append(
+                f"Acquisition pipeline failed: {accepted_count} candidate(s) accepted, "
+                f"{acq_attempts_count} acquisition attempt(s), {successful_acqs_count} successful, "
+                f"producing 0 final evidence."
+            )
+        else:
+            is_valid = True
+            completeness = TelemetryObservationStatus.OBSERVED_NO_RESULTS.value
 
     return LineageValidationResult(
         is_valid=is_valid,

@@ -366,7 +366,7 @@ class ResearchEngine:
                                 u = getattr(f, "url", "") or ""
                                 if u and any(c.canonical_url == u for c in (accepted_candidates + raw_candidates)):
                                     continue
-                                item_id = f"ev_fu_{len(accepted_candidates) + len(all_rejected_audit) + 1:03d}"
+                                item_id = getattr(f, "candidate_id", None) or getattr(f, "evidence_id", None) or f"ev_fu_{len(accepted_candidates) + len(all_rejected_audit) + 1:03d}"
                                 ev_item = EvidenceItem.from_evidence_fragment(f, item_id=item_id, target_name=request.target)
                                 ev_item.query_id = fu["query_id"]
                                 ev_item.query_class = fu.get("query_class", "adaptive_expansion")

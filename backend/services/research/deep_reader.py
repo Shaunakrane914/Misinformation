@@ -56,6 +56,8 @@ class DeepReader:
         selected: List[EvidenceItem] = []
         domain_items: Dict[str, List[EvidenceItem]] = {}
         seen_wire_families: Set[str] = set()
+        seen_selected_ids: Set[str] = set()
+        seen_selected_urls: Set[str] = set()
         primary_satisfied_count = 0
         audit: List[Dict[str, Any]] = []
 
@@ -73,11 +75,15 @@ class DeepReader:
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "unsupported_read"
-            elif any(sd in url.lower() for sd in ["twitter.com", "x.com", "reddit.com", "instagram.com", "facebook.com", "threads.net"]):
+            elif any(sd in url.lower() for sd in ["instagram.com", "facebook.com", "threads.net"]):
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "social_only"
-            elif any(sd in url.lower() for sd in ["youtube.com", "youtu.be", "bilibili.com"]):
+            elif any(sd in url.lower() for sd in ["twitter.com", "x.com", "reddit.com"]) and item.content_depth == ContentDepth.SOCIAL_POST.value:
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = "social_only"
+            elif any(sd in url.lower() for sd in ["bilibili.com"]):
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "video_requires_transcript"
@@ -100,6 +106,9 @@ class DeepReader:
                 break
             if not item.eligible_for_read:
                 continue
+            if item.id in seen_selected_ids or (item.canonical_url and item.canonical_url in seen_selected_urls):
+                item.rejection_reason = "duplicate_candidate"
+                continue
 
             domain = item.source_domain.lower() if item.source_domain else "other"
             if item.primary_source or item.source_role == SourceRole.PRIMARY.value or item.official_source:
@@ -109,6 +118,9 @@ class DeepReader:
                 selected.append(item)
                 item.selected_for_read = True
                 item.rejection_reason = None
+                seen_selected_ids.add(item.id)
+                if item.canonical_url:
+                    seen_selected_urls.add(item.canonical_url)
                 primary_satisfied_count += 1
                 domain_items.setdefault(domain, []).append(item)
                 if item.source_family_id:
@@ -118,7 +130,8 @@ class DeepReader:
         for item in ranked_candidates:
             if not item.eligible_for_read:
                 continue
-            if item in selected:
+            if item in selected or item.id in seen_selected_ids or (item.canonical_url and item.canonical_url in seen_selected_urls):
+                item.rejection_reason = "duplicate_candidate"
                 continue
 
             domain = item.source_domain.lower() if item.source_domain else "other"
@@ -143,6 +156,9 @@ class DeepReader:
             selected.append(item)
             item.selected_for_read = True
             item.rejection_reason = None
+            seen_selected_ids.add(item.id)
+            if item.canonical_url:
+                seen_selected_urls.add(item.canonical_url)
             domain_items.setdefault(domain, []).append(item)
             if item.source_family_id:
                 seen_wire_families.add(item.source_family_id)
@@ -247,11 +263,12 @@ class DeepReader:
                         item, read_res, attempt_id, dur_ms = fut.result(timeout=0.1)
                         res_status = read_res.get("status", "FAILED")
                         orig_item.read_status = res_status.upper()
-                        backend_used = read_res.get("backend") or "jina_reader"
+                        backend_used = read_res.get("backend") or read_res.get("backend_id") or "scrapling_http"
                         
-                        has_markdown = bool(read_res.get("status") in ("success", "fallback_soup") and read_res.get("markdown"))
-                        md = read_res.get("markdown", "").strip() if has_markdown else ""
-                        useful = bool(has_markdown and len(md) >= 60)
+                        transport_success = bool(read_res.get("status") in ("success", "fallback_soup"))
+                        content_body = (read_res.get("markdown") or read_res.get("content") or "").strip()
+                        content_extraction_success = bool(transport_success and len(content_body) >= 30)
+                        useful = bool(transport_success and content_extraction_success)
 
                         attempt_record = {
                             "attempt_id": attempt_id,
@@ -265,15 +282,17 @@ class DeepReader:
                             "fallback_used": bool(read_res.get("fallback_used")),
                             "fallback_backend": read_res.get("fallback_backend"),
                             "duration_ms": dur_ms,
+                            "transport_success": transport_success,
+                            "content_extraction_success": content_extraction_success,
                             "useful_content_extracted": useful,
-                            "char_count": len(md) if useful else 0,
+                            "char_count": len(content_body) if useful else 0,
                             "error_message": read_res.get("error") if not useful else None,
                         }
 
                         if useful:
-                            orig_item.content = md
+                            orig_item.content = content_body
                             orig_item.metadata["read_success"] = True
-                            orig_item.metadata["char_count"] = len(md)
+                            orig_item.metadata["char_count"] = len(content_body)
                             orig_item.acquisition_attempt_id = attempt_id
                             orig_item.acquired_id = f"cand_acq_{orig_item.id}"
                             attempt_record["acquired_candidate_id"] = orig_item.acquired_id
@@ -281,16 +300,16 @@ class DeepReader:
                             # Upgrade content depth
                             if orig_item.primary_source:
                                 orig_item.content_depth = ContentDepth.PRIMARY_DOCUMENT.value
-                            elif len(md) > 1000:
+                            elif len(content_body) > 1000:
                                 orig_item.content_depth = ContentDepth.FULL_ARTICLE.value
                             else:
                                 orig_item.content_depth = ContentDepth.PARTIAL_CONTENT.value
 
                             telemetry["successful"] += 1
-                            telemetry["total_chars_read"] += len(md)
+                            telemetry["total_chars_read"] += len(content_body)
                             telemetry["read_urls"].append(orig_item.canonical_url)
                         else:
-                            orig_item.read_status = "EMPTY_CONTENT" if has_markdown else "FAILED"
+                            orig_item.read_status = "EMPTY_CONTENT" if transport_success else "FAILED"
                             telemetry["failed"] += 1
 
                         telemetry["acquisition_attempts"].append(attempt_record)

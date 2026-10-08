@@ -53,6 +53,16 @@ class NativeExecutor:
         Secondary: Playwright rescue strictly when JS rendering or challenge encountered
         """
         clean_url = url.strip()
+        # Resolve Google News redirect URLs to original publisher URLs if needed
+        if "news.google.com" in clean_url and ("/articles/" in clean_url or "/read/" in clean_url):
+            try:
+                from googlenewsdecoder import gnewsdecoder
+                dec_res = gnewsdecoder(clean_url)
+                if dec_res.get("success") and dec_res.get("decoded_url"):
+                    clean_url = dec_res["decoded_url"]
+            except Exception as e_dec:
+                logger.debug(f"[NativeExecutor] Google News URL decode notice for {clean_url}: {e_dec}")
+
         safe, reason = is_safe_url(clean_url)
         if not safe:
             raise SecurityPolicyViolation(f"URL failed SSRF validation: {clean_url} ({reason})")

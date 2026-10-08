@@ -305,6 +305,24 @@ class EvidenceItem:
             "metadata": self.metadata,
         }
 
+    def to_evidence_fragment(self) -> Any:
+        """Convert this EvidenceItem into an AgentReach EvidenceFragment."""
+        from backend.services.agent_reach.channels import EvidenceFragment
+        return EvidenceFragment(
+            platform=self.channel or "web",
+            title=self.title,
+            content=self.content,
+            url=self.canonical_url,
+            author=self.source_name,
+            published=self.published_at,
+            snippet=self.snippet,
+            query_id=self.query_id,
+            query_class=self.query_class,
+            query_text=self.query_text,
+            evidence_id=self.id,
+            retrieval_lineage=list(self.retrieval_lineage),
+        )
+
     @classmethod
     def from_evidence_fragment(
         cls,

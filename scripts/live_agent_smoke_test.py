@@ -44,6 +44,8 @@ from backend.agents.trending_agent import TrendingAgent
 from backend.agents.scout_agent import ScoutAgent
 from backend.agents.personal_agent import PersonalWatchAgent
 
+DEFAULT_ARTIFACT_PATH = os.path.join(ROOT_DIR, "artifacts", "live_agent_smoke_result.json")
+
 
 def get_git_commit() -> str:
     """Retrieve current commit hash for audit trail."""
@@ -335,6 +337,7 @@ def run_live_smoke_suite(
     simulate_failure_agent: Optional[str] = None,
     target_agent: Optional[str] = None,
     fail_fast: bool = False,
+    output_path: Optional[str] = None,
 ) -> Tuple[bool, Dict[str, Any], int]:
     """
     Execute all 4 agent verifications with strict per-agent status tracking (PASS|FAIL|SKIP).
@@ -471,10 +474,9 @@ def run_live_smoke_suite(
         }
     }
 
-    # Save to artifacts/live_agent_smoke_result.json
-    artifacts_dir = os.path.join(ROOT_DIR, "artifacts")
-    os.makedirs(artifacts_dir, exist_ok=True)
-    artifact_path = os.path.join(artifacts_dir, "live_agent_smoke_result.json")
+    # Save to artifacts/live_agent_smoke_result.json or custom output_path
+    artifact_path = output_path or DEFAULT_ARTIFACT_PATH
+    os.makedirs(os.path.dirname(os.path.abspath(artifact_path)), exist_ok=True)
     try:
         with open(artifact_path, "w", encoding="utf-8") as f:
             json.dump(artifact_report, f, indent=2)

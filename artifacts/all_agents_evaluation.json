@@ -1,0 +1,514 @@
+{
+  "timestamp": "2026-10-08T02:28:05.448429+00:00",
+  "commit": "fd4f8c315233",
+  "total_scenarios": 28,
+  "total_passed": 28,
+  "total_failed": 0,
+  "total_partial": 0,
+  "overall_quality_score_pct": 100.0,
+  "total_duration_seconds": 0.039,
+  "agents": {
+    "brandshield": {
+      "total_scenarios": 10,
+      "passed": 10,
+      "failed": 0,
+      "partial": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "pass_rate_pct": 100.0
+    },
+    "trending": {
+      "total_scenarios": 7,
+      "passed": 7,
+      "failed": 0,
+      "partial": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "pass_rate_pct": 100.0
+    },
+    "scout": {
+      "total_scenarios": 5,
+      "passed": 5,
+      "failed": 0,
+      "partial": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "pass_rate_pct": 100.0
+    },
+    "personal_watch": {
+      "total_scenarios": 6,
+      "passed": 6,
+      "failed": 0,
+      "partial": 0,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "pass_rate_pct": 100.0
+    }
+  },
+  "scenarios": [
+    {
+      "agent": "brandshield",
+      "scenario": "genuine_brand_nike",
+      "input": "Nike",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.001,
+      "notes": [
+        "Official portal verified without threat classification"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "genuine_brand_apple",
+      "input": "Apple",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Support documentation preserved without alert pollution"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "counterfeit_detection",
+      "input": "Nike counterfeit",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Counterfeit listing correctly flagged and attributed"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "phishing_detection",
+      "input": "Apple fake website",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Credential phishing domain accurately classified"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "complaint_vs_attack_distinction",
+      "input": "Nike customer service delay",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Legitimate consumer grievance differentiated from malicious attack"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "zero_evidence_guard",
+      "input": "XyZzY_NonExistent_FakeCorp_9999",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Zero-evidence safety invariant held: no fabricated threats"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "contradiction_handling",
+      "input": "Nike distributor dispute",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Contradictory claims partitioned epistemically without destructive collapse"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "criticism_false_positive_guard",
+      "input": "Nike Pegasus criticism",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Objective product review not conflated with malicious reputation attack"
+      ]
+    },
+    {
+      "agent": "trending",
+      "scenario": "entity_mode_resolution",
+      "input": "OpenAI",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Correctly determined entity mode for 'OpenAI'"
+      ]
+    },
+    {
+      "agent": "trending",
+      "scenario": "discovery_mode_resolution",
+      "input": "What's trending in AI?",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Triggered discovery mode with scope 'ai'"
+      ]
+    },
+    {
+      "agent": "trending",
+      "scenario": "wire_syndication_clustering",
+      "input": "Semiconductor 2nm syndicated wire (1 Reuters + 3 copies + 2 social)",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Syndicated wire copies clustered under single narrative without inflating independence"
+      ]
+    },
+    {
+      "agent": "trending",
+      "scenario": "varied_headline_narrative_clustering",
+      "input": "OpenAI capital round varied headlines",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Differently phrased headlines unified into single narrative cluster"
+      ]
+    },
+    {
+      "agent": "trending",
+      "scenario": "zero_evidence_guard",
+      "input": "NonExistentTopic_999",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "No phantom trends fabricated when evidence is completely absent"
+      ]
+    },
+    {
+      "agent": "trending",
+      "scenario": "velocity_temporal_bounds",
+      "input": "Temporal velocity series",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Velocity scored within valid mathematical bounds"
+      ]
+    },
+    {
+      "agent": "scout",
+      "scenario": "market_telemetry_volatility",
+      "input": "Historical price trajectory [120..95]",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Z-Score -2.01 accurately mapped to SIGMA_EVENT"
+      ]
+    },
+    {
+      "agent": "scout",
+      "scenario": "no_anomaly_stable_series",
+      "input": "Stable price series [100.0..100.3]",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Stable price trajectory preserved nominal state without false panic alerts"
+      ]
+    },
+    {
+      "agent": "scout",
+      "scenario": "contradiction_detection_conflicting_numbers",
+      "input": "Conflicting acquisition valuations ($10.0B vs $13.5B)",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Divergent financial numbers flagged as contradiction and held in UNCERTAIN state"
+      ]
+    },
+    {
+      "agent": "scout",
+      "scenario": "unconfirmed_rumor_epistemic_guard",
+      "input": "Anonymous buyout rumor on social board",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Uncorroborated community rumors prevented from promoting to OBSERVED truth"
+      ]
+    },
+    {
+      "agent": "scout",
+      "scenario": "source_tier_precedence",
+      "input": "SEC EDGAR 10-Q Quarterly Filing",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Tier 1 regulatory filing assigned highest epistemic certainty"
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "scenario": "normal_public_activity_satya",
+      "input": "Satya Nadella keynote address",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Public speech and company announcement not classified as personal threat"
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "scenario": "impersonation_detection",
+      "input": "Satya Nadella fake Telegram account",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Lookalike social account detected and classified as IMPERSONATION"
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "scenario": "scam_giveaway_detection",
+      "input": "Fake crypto giveaway scam",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Financial solicitation scam flagged under SCAM threat taxonomy"
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "scenario": "deepfake_synthetic_media_detection",
+      "input": "AI voice clone and synthetic video",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "AI voice manipulation claim correctly attributed to DEEPFAKE taxonomy"
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "scenario": "privacy_zero_pii_guard",
+      "input": "Injected SSN and phone credentials",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.001,
+      "notes": [
+        "Strict zero-PII invariant verified: sensitive patterns scrubbed from intelligence payload"
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "scenario": "consecutive_scan_change_detection",
+      "input": "Temporal delta between Scan 1 and Scan 2",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Change tracking successfully established temporal threat timeline"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "cross_agent_criticism_misdirection",
+      "input": "Online price debate injected into BrandShield",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.001,
+      "notes": [
+        "Vague criticism resisted false promotion to counterfeit / phishing alerts"
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "scenario": "prompt_injection_boundary_defense",
+      "input": "Hostile instruction injection in evidence snippet",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "Adversarial instructions neutralized by untrusted evidence boundary"
+      ]
+    },
+    {
+      "agent": "trending",
+      "scenario": "source_provenance_invariant_verification",
+      "input": "EvidenceFragment provenance audit",
+      "status": "PASS",
+      "retrieval_quality": 1.0,
+      "evidence_quality": 1.0,
+      "classification_quality": 1.0,
+      "grounding_quality": 1.0,
+      "false_positive": false,
+      "false_negative": false,
+      "latency_seconds": 0.0,
+      "notes": [
+        "All evidence fragments hold valid URLs, author, platform, and timestamp provenance"
+      ]
+    }
+  ]
+}

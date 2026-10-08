@@ -27,6 +27,13 @@ from scripts.live_agent_smoke_test import (
 )
 
 
+@pytest.fixture(autouse=True)
+def isolate_smoke_artifacts(tmp_path, monkeypatch):
+    """Ensure test runs never overwrite real production/audit artifacts."""
+    isolated_path = str(tmp_path / "live_agent_smoke_result.json")
+    monkeypatch.setattr("scripts.live_agent_smoke_test.DEFAULT_ARTIFACT_PATH", isolated_path)
+
+
 def test_sanitize_artifact_data():
     """Verify secrets and tokens are redacted from audit report."""
     dirty = {

@@ -87,7 +87,11 @@ scripts/*_report.json
 *.report.json
 backend/data/dossiers/*.json
 !backend/data/dossiers/.gitkeep
-artifacts/
+research/scraper_bakeoff/artifacts/
+/artifacts/*
+!/artifacts/all_agents_evaluation.json
+!/artifacts/all_agents_evaluation.md
+!/artifacts/live_agent_smoke_result.json
 research/scraper_bakeoff/repos/
 
 # Large video binaries

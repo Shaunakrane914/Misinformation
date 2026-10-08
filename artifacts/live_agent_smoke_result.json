@@ -1,0 +1,74 @@
+{
+  "timestamp": "2026-10-08T02:24:59.281041+00:00",
+  "commit": "fd4f8c315233",
+  "overall_status": "PASS",
+  "passed_count": 4,
+  "total_count": 4,
+  "total_duration_sec": 103.29,
+  "agents": {
+    "brandshield": {
+      "status": "PASS",
+      "duration_sec": 42.69,
+      "error": null,
+      "details": {
+        "entity": "Nike",
+        "sources_count": 19,
+        "threat_count": 6,
+        "risk_level": "low",
+        "platforms": [
+          "rss",
+          "web",
+          "news",
+          "youtube"
+        ],
+        "observed_count": 6,
+        "inferred_count": 1,
+        "uncertain_count": 0,
+        "fallback_used": false
+      }
+    },
+    "trending": {
+      "status": "PASS",
+      "duration_sec": 21.44,
+      "error": null,
+      "details": {
+        "discovery_mode": "discovery",
+        "discovery_scope": "ai",
+        "discovery_trends_count": 2,
+        "entity_mode": "entity",
+        "entity_resolved": "OpenAI",
+        "entity_trends_count": 1,
+        "total_evidence_collected": 12
+      }
+    },
+    "scout": {
+      "status": "PASS",
+      "duration_sec": 25.83,
+      "error": null,
+      "details": {
+        "ticker": "NVDA",
+        "price": 237.47,
+        "z_score": 0.43,
+        "volatility_status": "STABLE",
+        "observed_count": 1,
+        "inferred_count": 1,
+        "uncertain_count": 1,
+        "sources_count": 0
+      }
+    },
+    "personal_watch": {
+      "status": "PASS",
+      "duration_sec": 13.3,
+      "error": null,
+      "details": {
+        "canonical_name": "Satya Nadella",
+        "category": "executive",
+        "evidence_count": 17,
+        "threat_count": 0,
+        "timeline_count": 12,
+        "changes_count": 1,
+        "pii_detected": false
+      }
+    }
+  }
+}

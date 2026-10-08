@@ -8,11 +8,17 @@ Validates mathematical correctness, accounting invariants, and metric rigor:
    candidates_discovered -> hard_gate_passes -> hard_gate_rejects -> ranked_candidates ->
    accepted_candidates -> acquired_candidates -> final_evidence
 4. Fallback arithmetic invariant (attempts == successes + failures for every backend)
-5. Semantic & structural false-positive review (TRUE_POSITIVE, FALSE_POSITIVE, AMBIGUOUS)
+5. Deterministic rule-based review (TRUE_POSITIVE, FALSE_POSITIVE, AMBIGUOUS) with review_basis
 6. Concrete social URL accounting (X status/profile, Reddit post/comment, YouTube video)
-7. Provenance preservation across fallback chains (Attempt 1 FxTwitter FAILED, Attempt 2 Bing SUCCESS)
-8. Invariants A through H (bounds, exclusivity, negative context rejection)
+7. Provenance preservation across fallback chains
+8. Invariants A through H
 9. BrandShield X resolution regression (real X URL reaches FxTwitter, generic text is rejected)
+10. Specific audit integrity tests:
+    - accepted_candidates is not automatically equal to ranked_candidates (acceptance rate < 100%)
+    - no stale metrics in generated Markdown (dynamic wall-clock time & channels)
+    - 66/70 X resolution is reported as 94.3%, not 100%
+    - heuristic review is not labeled semantic or manual
+    - final verdict cannot claim General Relevance FIXED merely because FP=0
 """
 
 import pytest
@@ -49,7 +55,6 @@ class TestAcquisitionAccounting:
         Total attempts = native_successes + specialist_successes + fallback_successes + failed_attempts.
         Success rate must NEVER exceed 1.0 (100%).
         """
-        # Simulated run with 10 total attempts: 4 native, 3 specialist, 2 fallback, 1 failed
         native_successes = 4
         specialist_successes = 3
         fallback_successes = 2
@@ -63,7 +68,7 @@ class TestAcquisitionAccounting:
 
         success_rate = successful_attempts / total_attempts
         assert 0.0 <= success_rate <= 1.0
-        assert success_rate == 0.90  # Exactly 90%, NOT 110.5%!
+        assert success_rate == 0.90  # Exactly 90%, NOT >100%
 
     def test_acquisition_rate_assert_fails_if_over_one(self):
         """Audit must throw AssertionError if double-counting causes rate > 1.0."""
@@ -79,27 +84,46 @@ class TestCandidateFunnelMetrics:
         """
         Verify distinct stages:
         candidates_discovered >= hard_gate_passes
-        hard_gate_passes + hard_gate_rejects == candidates_discovered
-        ranked_candidates == hard_gate_passes
+        hard_gate_passes + hard_gate_rejects <= candidates_discovered
+        ranked_candidates == hard_gate_passes (after clustering)
         accepted_candidates <= ranked_candidates
         candidate_acceptance_rate == accepted_candidates / ranked_candidates
         final_evidence <= accepted_candidates
         """
         discovered = 100
         rejects = 30
-        passes = discovered - rejects  # 70
-        ranked = passes                # 70
-        accepted = 25                  # Selected by ranking/relevance threshold
-        final_evidence = 20            # Survived deduplication and corroboration
+        passes = 60  # deduplicated gate evaluation
+        ranked = passes  # 60 entering ranking
+        accepted = 25   # Selected from ranked pool for acquisition
+        final_evidence = 20
 
-        assert passes + rejects == discovered
+        assert passes + rejects <= discovered
         assert accepted <= ranked
         acceptance_rate = round(accepted / ranked, 3)
         assert 0.0 <= acceptance_rate <= 1.0
-        assert acceptance_rate == round(25 / 70, 3)
+        assert acceptance_rate == round(25 / 60, 3)
         assert final_evidence <= accepted
-        # final_evidence must NOT be used as accepted_candidates
         assert accepted != final_evidence
+
+    def test_accepted_candidates_not_automatically_equal_to_ranked_candidates(self):
+        """
+        Test that candidate acceptance represents actual selection for acquisition
+        from the ranked pool and does NOT fabricate a fixed 100% acceptance rate.
+        """
+        ranked_pool = [f"cand_{i:03d}" for i in range(1, 41)]  # 40 ranked candidates
+        deep_read_budget = 8
+        # Specialist targets extending beyond standard deep read window
+        specialist_targets = ["cand_009", "cand_010"]
+
+        # Selection policy: deep read budget + specialist social targets
+        accepted_candidates = list(set(ranked_pool[:deep_read_budget] + specialist_targets))
+        assert len(accepted_candidates) == 10
+        assert len(accepted_candidates) < len(ranked_pool)
+
+        acceptance_rate = len(accepted_candidates) / len(ranked_pool)
+        assert acceptance_rate == 10 / 40  # 25.0%, NOT 100%
+        assert 0.0 < acceptance_rate < 1.0
+        assert len(accepted_candidates) <= len(ranked_pool)
 
 
 class TestFallbackArithmetic:
@@ -114,7 +138,7 @@ class TestFallbackArithmetic:
             assert stats["attempts"] == stats["successes"] + stats["failures"], f"Accounting mismatch on {be}"
 
 
-class TestSemanticFalsePositiveReview:
+class TestDeterministicQualityReview:
     def test_three_way_classification(self):
         """
         Evaluates entity_correct, intent_relevant, and source_correct
@@ -139,6 +163,36 @@ class TestSemanticFalsePositiveReview:
         # Item 4: Unverified third party forum rumor
         assert classify_evidence(True, True, False) == "AMBIGUOUS"
 
+    def test_heuristic_review_not_labeled_semantic_or_manual(self):
+        """
+        The review is deterministic rule-based (EntityResolver tokens, lexical overlap, etc.).
+        It must record review_basis and NOT be labeled as 'human manual review' or 'ML semantic'.
+        """
+        valid_review_bases = {
+            "ENTITY_RULE",
+            "INTENT_LEXICAL",
+            "KNOWN_HARD_NEGATIVE",
+            "SOURCE_URL_CHECK",
+            "MODEL_SEMANTIC",
+            "HUMAN_REVIEW"
+        }
+        item_review = {
+            "evidence_id": "ev_001",
+            "title": "Microsoft Issues Security Patch for Windows",
+            "url": "https://msrc.microsoft.com/update-guide",
+            "entity_score": 0.95,
+            "intent_score": 0.85,
+            "source_quality_score": 0.95,
+            "review_verdict": "TRUE_POSITIVE",
+            "rejection_or_ambiguity_reason": "Passes canonical entity and intent lexical thresholds",
+            "review_basis": "ENTITY_RULE",
+        }
+        assert item_review["review_basis"] in valid_review_bases
+        assert item_review["review_basis"] not in ("MODEL_SEMANTIC", "HUMAN_REVIEW")
+        assert "entity_score" in item_review
+        assert "intent_score" in item_review
+        assert "rejection_or_ambiguity_reason" in item_review
+
 
 class TestBrandShieldXResolution:
     def test_brandshield_discovers_and_resolves_concrete_x_status(self):
@@ -162,6 +216,18 @@ class TestBrandShieldXResolution:
         generic_snippet = "There was widespread discussion on Twitter about Microsoft cloud issues."
         cand = extract_x_source(generic_snippet)
         assert cand is None
+
+    def test_x_concrete_resolution_reported_truthfully(self):
+        """
+        When 70 X candidates are discovered and 66 are resolved to concrete targets,
+        the resolution rate must be reported as 66 / 70 = 94.3%, NOT 100%.
+        """
+        discovered = 70
+        concrete = 66
+        rate = round(concrete / discovered, 3)
+        assert rate == 0.943
+        assert f"{rate * 100:.1f}%" == "94.3%"
+        assert rate < 1.0
 
 
 class TestAuditInvariantsAThroughH:
@@ -224,3 +290,185 @@ class TestAuditInvariantsAThroughH:
         )
         assert not ass.is_accepted
         assert ass.rejection_stage in ("HARD_GATE_ERROR", "ENTITY_RESOLUTION_ERROR")
+
+
+class TestMarkdownReportIntegrity:
+    def test_no_stale_metrics_in_generated_markdown(self):
+        """
+        Verify that generated markdown does NOT contain stale hardcoded metrics:
+        - No hardcoded '90.52s'
+        - No hardcoded 'full 6-channel investigations'
+        - No '100% of discovered candidates' for X when concrete < discovered
+        """
+        from scripts.run_final_retrieval_audit import generate_final_audit_markdown
+
+        sample_audit_data = {
+            "execution_timestamp": "2026-10-08T15:00:00Z",
+            "total_wall_clock_seconds": 105.2,
+            "investigation_target": "Microsoft and Satya Nadella",
+            "executive_waterfall": {
+                "BrandShield": {
+                    "channels_planned": 7,
+                    "candidates_discovered": 97,
+                    "hard_gate_passes": 24,
+                    "hard_gate_rejects": 17,
+                    "ranked_candidates": 24,
+                    "accepted_candidates": 12,
+                    "acquisition_attempts": 21,
+                    "native_successes": 11,
+                    "specialist_successes": 6,
+                    "fallback_successes": 4,
+                    "failed_attempts": 0,
+                    "final_evidence": 20,
+                    "true_positives": 9,
+                    "false_positives": 0,
+                    "ambiguous": 11,
+                    "unique_domains": 7,
+                    "runtime_seconds": 16.77,
+                    "candidate_acceptance_rate": 0.50,
+                    "acquisition_success_rate": 1.0,
+                    "fallback_rate": 0.19,
+                    "false_positive_rate": 0.0,
+                    "social_contribution_rate": 0.20,
+                },
+                "Trending": {
+                    "channels_planned": 8,
+                    "candidates_discovered": 107,
+                    "hard_gate_passes": 65,
+                    "hard_gate_rejects": 14,
+                    "ranked_candidates": 65,
+                    "accepted_candidates": 16,
+                    "acquisition_attempts": 24,
+                    "native_successes": 14,
+                    "specialist_successes": 6,
+                    "fallback_successes": 4,
+                    "failed_attempts": 0,
+                    "final_evidence": 33,
+                    "true_positives": 31,
+                    "false_positives": 0,
+                    "ambiguous": 2,
+                    "unique_domains": 6,
+                    "runtime_seconds": 12.99,
+                    "candidate_acceptance_rate": 0.246,
+                    "acquisition_success_rate": 1.0,
+                    "fallback_rate": 0.167,
+                    "false_positive_rate": 0.0,
+                    "social_contribution_rate": 0.182,
+                },
+                "Scout": {
+                    "channels_planned": 6,
+                    "candidates_discovered": 152,
+                    "hard_gate_passes": 40,
+                    "hard_gate_rejects": 2,
+                    "ranked_candidates": 40,
+                    "accepted_candidates": 18,
+                    "acquisition_attempts": 48,
+                    "native_successes": 21,
+                    "specialist_successes": 9,
+                    "fallback_successes": 8,
+                    "failed_attempts": 10,
+                    "final_evidence": 40,
+                    "true_positives": 26,
+                    "false_positives": 0,
+                    "ambiguous": 14,
+                    "unique_domains": 8,
+                    "runtime_seconds": 58.97,
+                    "candidate_acceptance_rate": 0.45,
+                    "acquisition_success_rate": 0.792,
+                    "fallback_rate": 0.167,
+                    "false_positive_rate": 0.0,
+                    "social_contribution_rate": 0.175,
+                },
+                "Personal Watch": {
+                    "channels_planned": 5,
+                    "candidates_discovered": 78,
+                    "hard_gate_passes": 6,
+                    "hard_gate_rejects": 34,
+                    "ranked_candidates": 6,
+                    "accepted_candidates": 5,
+                    "acquisition_attempts": 20,
+                    "native_successes": 9,
+                    "specialist_successes": 7,
+                    "fallback_successes": 2,
+                    "failed_attempts": 2,
+                    "final_evidence": 6,
+                    "true_positives": 6,
+                    "false_positives": 0,
+                    "ambiguous": 0,
+                    "unique_domains": 2,
+                    "runtime_seconds": 16.48,
+                    "candidate_acceptance_rate": 0.833,
+                    "acquisition_success_rate": 0.90,
+                    "fallback_rate": 0.10,
+                    "false_positive_rate": 0.0,
+                    "social_contribution_rate": 0.167,
+                },
+            },
+            "exact_fallback_breakdown": [
+                {
+                    "backend": "Bing Search Index",
+                    "attempts": 12,
+                    "successes": 12,
+                    "failures": 0,
+                    "reasons": "ARCTIC_SHIFT_UNAVAILABLE"
+                }
+            ],
+            "social_funnels": {
+                "BrandShield": {
+                    "twitter": {"discovered": 15, "concrete_targets": 15, "specialist_attempts": 3, "successes": 3, "failures": 0, "fallback_attempts": 0, "final_evidence": 1, "true_positives": 1, "false_positives": 0},
+                    "reddit": {"discovered": 15, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 3, "final_evidence": 0, "true_positives": 0, "false_positives": 0},
+                    "youtube": {"discovered": 15, "concrete_targets": 15, "specialist_attempts": 3, "successes": 3, "failures": 0, "fallback_attempts": 0, "final_evidence": 3, "true_positives": 1, "false_positives": 0},
+                },
+                "Trending": {
+                    "twitter": {"discovered": 15, "concrete_targets": 15, "specialist_attempts": 3, "successes": 3, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0},
+                    "reddit": {"discovered": 18, "concrete_targets": 8, "specialist_attempts": 1, "successes": 1, "failures": 0, "fallback_attempts": 2, "final_evidence": 0, "true_positives": 0, "false_positives": 0},
+                    "youtube": {"discovered": 10, "concrete_targets": 10, "specialist_attempts": 2, "successes": 2, "failures": 0, "fallback_attempts": 0, "final_evidence": 6, "true_positives": 5, "false_positives": 0},
+                },
+                "Scout": {
+                    "twitter": {"discovered": 27, "concrete_targets": 23, "specialist_attempts": 5, "successes": 5, "failures": 0, "fallback_attempts": 1, "final_evidence": 1, "true_positives": 1, "false_positives": 0},
+                    "reddit": {"discovered": 23, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 6, "final_evidence": 0, "true_positives": 0, "false_positives": 0},
+                    "youtube": {"discovered": 14, "concrete_targets": 14, "specialist_attempts": 4, "successes": 4, "failures": 0, "fallback_attempts": 0, "final_evidence": 6, "true_positives": 5, "false_positives": 0},
+                },
+                "Personal Watch": {
+                    "twitter": {"discovered": 13, "concrete_targets": 13, "specialist_attempts": 3, "successes": 3, "failures": 0, "fallback_attempts": 0, "final_evidence": 1, "true_positives": 1, "false_positives": 0},
+                    "reddit": {"discovered": 24, "concrete_targets": 24, "specialist_attempts": 3, "successes": 3, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0},
+                    "youtube": {"discovered": 5, "concrete_targets": 5, "specialist_attempts": 2, "successes": 2, "failures": 0, "fallback_attempts": 1, "final_evidence": 0, "true_positives": 0, "false_positives": 0},
+                },
+            }
+        }
+
+        md = generate_final_audit_markdown(sample_audit_data)
+        assert "90.52s" not in md, "Found stale runtime 90.52s in generated markdown!"
+        assert "full 6-channel investigations" not in md, "Found stale channel claim in generated markdown!"
+        assert "105.2s" in md, "Markdown must include current runtime (105.2s)"
+        assert "94.3%" in md, "66/70 X resolution must be reported as 94.3%"
+        assert "100% of discovered candidates were validated" not in md
+
+    def test_verdict_cannot_claim_general_relevance_fixed_merely_on_fp_zero(self):
+        """
+        Verify that having 0 false positives in a heuristic audit does NOT mark
+        'General Relevance' as FIXED. It must be PARTIALLY FIXED or NOT ENOUGH EVIDENCE.
+        """
+        from scripts.run_final_retrieval_audit import generate_final_audit_markdown
+
+        sample_data = {
+            "execution_timestamp": "2026-10-08T15:00:00Z",
+            "total_wall_clock_seconds": 100.0,
+            "investigation_target": "Microsoft",
+            "executive_waterfall": {
+                "BrandShield": {"channels_planned": 7, "candidates_discovered": 10, "hard_gate_passes": 5, "hard_gate_rejects": 5, "ranked_candidates": 5, "accepted_candidates": 3, "acquisition_attempts": 3, "native_successes": 2, "specialist_successes": 1, "fallback_successes": 0, "failed_attempts": 0, "final_evidence": 3, "true_positives": 3, "false_positives": 0, "ambiguous": 0, "unique_domains": 2, "runtime_seconds": 10.0, "candidate_acceptance_rate": 0.60, "acquisition_success_rate": 1.0, "fallback_rate": 0.0, "false_positive_rate": 0.0, "social_contribution_rate": 0.0},
+                "Trending": {"channels_planned": 8, "candidates_discovered": 10, "hard_gate_passes": 5, "hard_gate_rejects": 5, "ranked_candidates": 5, "accepted_candidates": 3, "acquisition_attempts": 3, "native_successes": 2, "specialist_successes": 1, "fallback_successes": 0, "failed_attempts": 0, "final_evidence": 3, "true_positives": 3, "false_positives": 0, "ambiguous": 0, "unique_domains": 2, "runtime_seconds": 10.0, "candidate_acceptance_rate": 0.60, "acquisition_success_rate": 1.0, "fallback_rate": 0.0, "false_positive_rate": 0.0, "social_contribution_rate": 0.0},
+                "Scout": {"channels_planned": 6, "candidates_discovered": 10, "hard_gate_passes": 5, "hard_gate_rejects": 5, "ranked_candidates": 5, "accepted_candidates": 3, "acquisition_attempts": 3, "native_successes": 2, "specialist_successes": 1, "fallback_successes": 0, "failed_attempts": 0, "final_evidence": 3, "true_positives": 3, "false_positives": 0, "ambiguous": 0, "unique_domains": 2, "runtime_seconds": 10.0, "candidate_acceptance_rate": 0.60, "acquisition_success_rate": 1.0, "fallback_rate": 0.0, "false_positive_rate": 0.0, "social_contribution_rate": 0.0},
+                "Personal Watch": {"channels_planned": 5, "candidates_discovered": 10, "hard_gate_passes": 5, "hard_gate_rejects": 5, "ranked_candidates": 5, "accepted_candidates": 3, "acquisition_attempts": 3, "native_successes": 2, "specialist_successes": 1, "fallback_successes": 0, "failed_attempts": 0, "final_evidence": 3, "true_positives": 3, "false_positives": 0, "ambiguous": 0, "unique_domains": 2, "runtime_seconds": 10.0, "candidate_acceptance_rate": 0.60, "acquisition_success_rate": 1.0, "fallback_rate": 0.0, "false_positive_rate": 0.0, "social_contribution_rate": 0.0},
+            },
+            "exact_fallback_breakdown": [],
+            "social_funnels": {
+                "BrandShield": {"twitter": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "reddit": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "youtube": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}},
+                "Trending": {"twitter": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "reddit": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "youtube": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}},
+                "Scout": {"twitter": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "reddit": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "youtube": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}},
+                "Personal Watch": {"twitter": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "reddit": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}, "youtube": {"discovered": 0, "concrete_targets": 0, "specialist_attempts": 0, "successes": 0, "failures": 0, "fallback_attempts": 0, "final_evidence": 0, "true_positives": 0, "false_positives": 0}},
+            }
+        }
+        md = generate_final_audit_markdown(sample_data)
+        assert "General Relevance:       FIXED" not in md, "General Relevance must not be declared FIXED on heuristic review alone!"
+        assert "PARTIALLY FIXED / NOT ENOUGH EVIDENCE" in md

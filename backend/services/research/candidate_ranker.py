@@ -174,6 +174,10 @@ class CandidateRanker(CandidateReranker):
 
         # Sort descending by candidate score
         ranked = sorted(candidates, key=lambda x: x.metadata.get("candidate_score", 0.0), reverse=True)
+        for rank_idx, item in enumerate(ranked):
+            item.metadata["rank"] = rank_idx + 1
+            if not getattr(item, "ranked_id", None):
+                item.ranked_id = f"cand_rank_{item.id}"
         return ranked
 
 

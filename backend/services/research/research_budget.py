@@ -18,7 +18,7 @@ class ResearchBudget:
     discovery_budget: int = 40
     follow_up_budget: int = 3
     primary_escalation_budget: int = 2
-    deep_read_budget: int = 6
+    deep_read_budget: int = 15
     transcript_budget: int = 2
     contradiction_resolution_budget: int = 2
     timeout_seconds: float = 20.0

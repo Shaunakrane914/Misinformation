@@ -182,6 +182,13 @@ class EvidenceItem:
     eligible_for_read: bool = False
     selected_for_read: bool = False
     rejection_reason: Optional[str] = None
+    discovered_id: str = ""
+    ranked_id: str = ""
+    accepted_id: str = ""
+    acquisition_attempt_id: str = ""
+    acquired_id: str = ""
+    selection_decision: str = "UNEVALUATED"  # ACCEPTED | REJECTED | UNEVALUATED
+    selection_reason: Optional[str] = None
     quality_tensor: QualityTensor = field(default_factory=QualityTensor)
     retrieval_lineage: List[Dict[str, Any]] = field(default_factory=list)
     provenance: Dict[str, Any] = field(default_factory=dict)
@@ -236,6 +243,13 @@ class EvidenceItem:
         return {
             "id": self.id,
             "evidence_id": self.id,
+            "discovered_id": self.discovered_id or self.id,
+            "ranked_id": self.ranked_id,
+            "accepted_id": self.accepted_id,
+            "acquisition_attempt_id": self.acquisition_attempt_id,
+            "acquired_id": self.acquired_id,
+            "selection_decision": self.selection_decision,
+            "selection_reason": self.selection_reason,
             "canonical_url": self.canonical_url,
             "url": self.canonical_url,
             "has_url": bool(self.canonical_url and self.canonical_url.startswith("http")),
@@ -318,8 +332,11 @@ class EvidenceItem:
                 "retrieved_at": getattr(fragment, "retrieved_at", "") or datetime.now(timezone.utc).isoformat(),
             }]
         
+        disc_id = getattr(fragment, "candidate_id", None) or getattr(fragment, "evidence_id", None) or f"cand_disc_{item_id}"
+
         return cls(
             id=item_id,
+            discovered_id=disc_id,
             canonical_url=url,
             title=getattr(fragment, "title", "") or f"{target_name} Signal",
             source_name=source_name,
@@ -448,7 +465,7 @@ class ResearchRequest:
     intent: str = "general intelligence acquisition"
     query_classes: Optional[List[str]] = None
     required_source_roles: Optional[List[str]] = None
-    deep_read_budget: int = 8
+    deep_read_budget: int = 15
     corroboration_budget: int = 5
     max_candidates: int = 40
     time_scope: str = "recent"

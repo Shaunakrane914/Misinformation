@@ -9,16 +9,17 @@ preserves original snippets, and enriches evidence to FULL_ARTICLE depth.
 import concurrent.futures
 import logging
 import time
+import uuid
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import ContentDepth, EvidenceItem, SourceRole, SourceTier
 
 logger = logging.getLogger(__name__)
 
-# Skip domains where direct text article reading is not applicable or blocked
-SKIP_READ_DOMAINS = {
-    "youtube.com", "youtu.be", "twitter.com", "x.com", "reddit.com",
-    "instagram.com", "tiktok.com", "facebook.com"
+# Skip domains where direct text article reading is strictly blocked / requires closed auth
+UNSUPPORTED_AUTH_DOMAINS = {
+    "instagram.com", "tiktok.com", "facebook.com", "threads.net", "linkedin.com", "weibo.com"
 }
 
 
@@ -32,7 +33,7 @@ class DeepReader:
     def _select_read_candidates(
         self,
         ranked_candidates: List[EvidenceItem],
-        max_reads: int = 8
+        max_reads: int = 15
     ) -> Tuple[List[EvidenceItem], List[Dict[str, Any]]]:
         """
         Selects top candidate sources prioritizing:
@@ -42,8 +43,12 @@ class DeepReader:
         
         Audits every candidate with:
         - candidate_id
+        - ranked_candidate_id
+        - accepted_candidate_id
         - rank
         - score
+        - selection_decision (ACCEPTED | REJECTED)
+        - selection_reason
         - eligible_for_read
         - selected
         - rejection_reason
@@ -56,6 +61,11 @@ class DeepReader:
 
         # Step 1: Preliminary Eligibility Assessment
         for rank, item in enumerate(ranked_candidates, 1):
+            if not getattr(item, "ranked_id", None):
+                item.ranked_id = f"cand_rank_{item.id}"
+            if not getattr(item, "rank", None):
+                item.rank = rank
+
             url = item.canonical_url or ""
             score = item.metadata.get("candidate_score", item.relevance_score)
 
@@ -93,7 +103,7 @@ class DeepReader:
 
             domain = item.source_domain.lower() if item.source_domain else "other"
             if item.primary_source or item.source_role == SourceRole.PRIMARY.value or item.official_source:
-                if primary_satisfied_count >= 3:
+                if primary_satisfied_count >= 5:
                     item.rejection_reason = "primary_already_satisfied"
                     continue
                 selected.append(item)
@@ -137,17 +147,28 @@ class DeepReader:
             if item.source_family_id:
                 seen_wire_families.add(item.source_family_id)
 
-        # Build audit list for all candidates
+        # Assign explicit 5-stage selection telemetry and build audit list
         for rank, item in enumerate(ranked_candidates, 1):
             if item.selected_for_read:
+                item.accepted_id = f"cand_acc_{item.id}"
+                item.selection_decision = "ACCEPTED"
+                item.selection_reason = "PRIMARY_DOCUMENT" if (item.primary_source or item.official_source) else "DIVERSE_SOURCE"
                 item.rejection_reason = None
-            elif item.eligible_for_read and not item.rejection_reason:
-                item.rejection_reason = "read_budget_exhausted"
+            else:
+                item.accepted_id = None
+                item.selection_decision = "REJECTED"
+                if item.eligible_for_read and not item.rejection_reason:
+                    item.rejection_reason = "read_budget_exhausted"
+                item.selection_reason = item.rejection_reason or "read_budget_exhausted"
 
             audit.append({
                 "candidate_id": item.id,
+                "ranked_candidate_id": item.ranked_id,
+                "accepted_candidate_id": item.accepted_id,
                 "rank": rank,
                 "score": round(float(item.metadata.get("candidate_score", item.relevance_score)), 3),
+                "selection_decision": item.selection_decision,
+                "selection_reason": item.selection_reason,
                 "eligible_for_read": item.eligible_for_read,
                 "selected": item.selected_for_read,
                 "rejection_reason": item.rejection_reason,
@@ -158,11 +179,12 @@ class DeepReader:
     def deep_read(
         self,
         ranked_candidates: List[EvidenceItem],
-        max_reads: int = 8,
+        max_reads: int = 15,
         timeout_per_read: float = 6.0
     ) -> Tuple[List[EvidenceItem], Dict[str, Any]]:
         """
         Deep-reads top diverse candidates using bounded concurrency and caching.
+        Emits observed acquisition attempts with explicit attempt IDs and lineage.
 
         Returns:
             Tuple of (investigated_items, deep_read_telemetry)
@@ -179,80 +201,148 @@ class DeepReader:
             "total_chars_read": 0,
             "read_urls": [],
             "candidate_selection_audit": audit,
+            "acquisition_attempts": [],
         }
 
-        def _fetch_url(item: EvidenceItem) -> Tuple[EvidenceItem, Dict[str, Any]]:
+        def _fetch_url(item: EvidenceItem, attempt_id: str) -> Tuple[EvidenceItem, Dict[str, Any], str, float]:
             url = item.canonical_url
+            t0 = time.perf_counter()
             # Check cache
             if url in self._cache:
                 cached_res, ts = self._cache[url]
                 if (now - ts) < self.cache_ttl:
-                    return item, cached_res
+                    dur_ms = round((time.perf_counter() - t0) * 1000, 2)
+                    return item, cached_res, attempt_id, dur_ms
 
             try:
                 res = agent_reach_service.read(url, max_chars=4000)
+                dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                 if res.get("status") in ("success", "fallback_soup") and res.get("markdown"):
                     self._cache[url] = (res, now)
-                return item, res
+                return item, res, attempt_id, dur_ms
             except Exception as e:
+                dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                 logger.debug(f"[DeepReader] Failed reading {url}: {e}")
-                return item, {"status": "error", "error": str(e), "url": url}
+                return item, {"status": "error", "error": str(e), "url": url}, attempt_id, dur_ms
+
+        # Prepare attempt IDs
+        candidate_attempts = []
+        for item in candidates_to_read:
+            att_id = f"acq_att_{uuid.uuid4().hex[:10]}"
+            candidate_attempts.append((item, att_id))
 
         # Execute bounded concurrent reading
-        max_workers = min(len(candidates_to_read) or 1, 5)
+        max_workers = min(len(candidate_attempts) or 1, 6)
         completed_futures = set()
         with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-            future_to_item = {executor.submit(_fetch_url, item): item for item in candidates_to_read}
+            future_to_info = {
+                executor.submit(_fetch_url, item, att_id): (item, att_id)
+                for item, att_id in candidate_attempts
+            }
             try:
-                for fut in concurrent.futures.as_completed(future_to_item, timeout=max(4.0, timeout_per_read * 1.5)):
+                for fut in concurrent.futures.as_completed(future_to_info, timeout=max(5.0, timeout_per_read * 2.0)):
                     completed_futures.add(fut)
-                    orig_item = future_to_item[fut]
+                    orig_item, att_id = future_to_info[fut]
                     try:
-                        item, read_res = fut.result(timeout=0.1)
-                        orig_item.read_status = read_res.get("status", "FAILED").upper()
+                        item, read_res, attempt_id, dur_ms = fut.result(timeout=0.1)
+                        res_status = read_res.get("status", "FAILED")
+                        orig_item.read_status = res_status.upper()
+                        backend_used = read_res.get("backend") or "jina_reader"
                         
-                        if read_res.get("status") in ("success", "fallback_soup") and read_res.get("markdown"):
-                            md = read_res["markdown"].strip()
-                            if len(md) > 200:
-                                orig_item.content = md
-                                orig_item.metadata["read_success"] = True
-                                orig_item.metadata["char_count"] = len(md)
-                                
-                                # Upgrade content depth
-                                if orig_item.primary_source:
-                                    orig_item.content_depth = ContentDepth.PRIMARY_DOCUMENT.value
-                                elif len(md) > 1000:
-                                    orig_item.content_depth = ContentDepth.FULL_ARTICLE.value
-                                else:
-                                    orig_item.content_depth = ContentDepth.PARTIAL_CONTENT.value
+                        has_markdown = bool(read_res.get("status") in ("success", "fallback_soup") and read_res.get("markdown"))
+                        md = read_res.get("markdown", "").strip() if has_markdown else ""
+                        useful = bool(has_markdown and len(md) >= 60)
 
-                                telemetry["successful"] += 1
-                                telemetry["total_chars_read"] += len(md)
-                                telemetry["read_urls"].append(orig_item.canonical_url)
+                        attempt_record = {
+                            "attempt_id": attempt_id,
+                            "candidate_id": orig_item.id,
+                            "ranked_candidate_id": getattr(orig_item, "ranked_id", f"cand_rank_{orig_item.id}"),
+                            "accepted_candidate_id": orig_item.accepted_id,
+                            "url": orig_item.canonical_url,
+                            "channel": getattr(orig_item, "channel", "web"),
+                            "status": "SUCCESS" if useful else "FAILED",
+                            "backend": backend_used,
+                            "fallback_used": bool(read_res.get("fallback_used")),
+                            "fallback_backend": read_res.get("fallback_backend"),
+                            "duration_ms": dur_ms,
+                            "useful_content_extracted": useful,
+                            "char_count": len(md) if useful else 0,
+                            "error_message": read_res.get("error") if not useful else None,
+                        }
+
+                        if useful:
+                            orig_item.content = md
+                            orig_item.metadata["read_success"] = True
+                            orig_item.metadata["char_count"] = len(md)
+                            orig_item.acquisition_attempt_id = attempt_id
+                            orig_item.acquired_id = f"cand_acq_{orig_item.id}"
+                            attempt_record["acquired_candidate_id"] = orig_item.acquired_id
+                            
+                            # Upgrade content depth
+                            if orig_item.primary_source:
+                                orig_item.content_depth = ContentDepth.PRIMARY_DOCUMENT.value
+                            elif len(md) > 1000:
+                                orig_item.content_depth = ContentDepth.FULL_ARTICLE.value
                             else:
-                                orig_item.read_status = "EMPTY_CONTENT"
-                                telemetry["failed"] += 1
+                                orig_item.content_depth = ContentDepth.PARTIAL_CONTENT.value
+
+                            telemetry["successful"] += 1
+                            telemetry["total_chars_read"] += len(md)
+                            telemetry["read_urls"].append(orig_item.canonical_url)
                         else:
+                            orig_item.read_status = "EMPTY_CONTENT" if has_markdown else "FAILED"
                             telemetry["failed"] += 1
+
+                        telemetry["acquisition_attempts"].append(attempt_record)
 
                     except Exception as ex:
                         orig_item.read_status = "TIMEOUT"
                         telemetry["failed"] += 1
+                        telemetry["acquisition_attempts"].append({
+                            "attempt_id": att_id,
+                            "candidate_id": orig_item.id,
+                            "ranked_candidate_id": getattr(orig_item, "ranked_id", f"cand_rank_{orig_item.id}"),
+                            "accepted_candidate_id": orig_item.accepted_id,
+                            "url": orig_item.canonical_url,
+                            "channel": getattr(orig_item, "channel", "web"),
+                            "status": "FAILED",
+                            "backend": "timeout",
+                            "duration_ms": int(timeout_per_read * 1000),
+                            "useful_content_extracted": False,
+                            "char_count": 0,
+                            "error_message": str(ex),
+                        })
                         logger.debug(f"[DeepReader] Task error on {orig_item.canonical_url}: {ex}")
 
             except concurrent.futures.TimeoutError:
                 logger.info("[DeepReader] Bounded deep-reading deadline reached; preserving existing reads.")
-                for fut, orig_item in future_to_item.items():
+                for fut, (orig_item, att_id) in future_to_info.items():
                     if fut not in completed_futures:
                         orig_item.read_status = "TIMEOUT"
                         telemetry["failed"] += 1
+                        telemetry["acquisition_attempts"].append({
+                            "attempt_id": att_id,
+                            "candidate_id": orig_item.id,
+                            "ranked_candidate_id": getattr(orig_item, "ranked_id", f"cand_rank_{orig_item.id}"),
+                            "accepted_candidate_id": orig_item.accepted_id,
+                            "url": orig_item.canonical_url,
+                            "channel": getattr(orig_item, "channel", "web"),
+                            "status": "FAILED",
+                            "backend": "timeout",
+                            "duration_ms": int(timeout_per_read * 1000),
+                            "useful_content_extracted": False,
+                            "char_count": 0,
+                            "error_message": "ThreadPoolExecutor timeout",
+                        })
 
         # Non-read items retain their status
         for c in ranked_candidates:
             if c not in candidates_to_read:
                 c.read_status = "SKIPPED"
 
-        return candidates_to_read, telemetry
+        # Return only successfully investigated items for strict evidence lineage
+        successful_investigated = [c for c in candidates_to_read if getattr(c, "acquired_id", None) and getattr(c, "acquisition_attempt_id", None)]
+        return successful_investigated, telemetry
 
 
 deep_reader = DeepReader()

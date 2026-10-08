@@ -700,7 +700,7 @@ Respond in STRICT JSON with this schema:
                 "independent_reporting", "community_signal", "contradiction"
             ],
             required_source_roles=["PRIMARY", "SECONDARY", "COMMUNITY"],
-            deep_read_budget=6,
+            deep_read_budget=15,
             corroboration_budget=4,
         )
         research_res = None
@@ -724,26 +724,7 @@ Respond in STRICT JSON with this schema:
             retrieval_trace = {}
             channel_health = {}
 
-        # 2b. Scout Proprietary Source Engine Acquisition Pass
         scout_result = None
-        try:
-            from backend.services.agent_reach.scout import scout_source_engine, ScoutSourceRequest
-            scout_req = ScoutSourceRequest(
-                query=query or f"{company_name} quarterly results earnings guidance corporate announcements",
-                target_entity=company_name,
-                tickers=[sym],
-                max_candidates=5,
-                allow_social=True
-            )
-            scout_result = scout_source_engine.execute(scout_req)
-            existing_urls = {getattr(e, "canonical_url", "") or getattr(e, "url", "") for e in evidence_items}
-            for sev in scout_result.evidence_items:
-                sev_frag = sev.to_evidence_fragment()
-                if (sev_frag.url or sev_frag.canonical_url) not in existing_urls:
-                    evidence_items.append(sev_frag)
-                    existing_urls.add(sev_frag.url or sev_frag.canonical_url)
-        except Exception as e_scout:
-            logger.debug(f"[ScoutAgent:analyze_stock] ScoutSourceEngine notice: {e_scout}")
 
         # 3. Classify & Group Fragments
         primary_sources = []
@@ -801,6 +782,13 @@ Respond in STRICT JSON with this schema:
 
             source_record = {
                 "evidence_id": e_id,
+                "discovered_candidate_id": getattr(item, "discovered_id", getattr(item, "id", None)) if hasattr(item, "id") else item.get("discovered_id", item.get("id")),
+                "ranked_candidate_id": getattr(item, "ranked_id", None) if hasattr(item, "id") else item.get("ranked_id"),
+                "accepted_candidate_id": getattr(item, "accepted_id", None) if hasattr(item, "id") else item.get("accepted_id"),
+                "acquisition_attempt_id": getattr(item, "acquisition_attempt_id", None) if hasattr(item, "id") else item.get("acquisition_attempt_id"),
+                "acquired_candidate_id": getattr(item, "acquired_id", None) if hasattr(item, "id") else item.get("acquired_id"),
+                "selection_decision": getattr(item, "selection_decision", "ACCEPTED") if hasattr(item, "id") else item.get("selection_decision", "ACCEPTED"),
+                "selection_reason": getattr(item, "selection_reason", "ACQUIRED_EVIDENCE") if hasattr(item, "id") else item.get("selection_reason", "ACQUIRED_EVIDENCE"),
                 "title": title,
                 "url": url,
                 "has_url": bool(url),

@@ -96,6 +96,13 @@ class TrendEvidence:
     source_tier: str = "TIER_3"           # "TIER_1" | "TIER_2" | "TIER_3" | "TIER_4"
     source_group_id: str = "G-01"         # Group ID for wire syndication / copies (e.g. "G-01")
     retrieval_method: str = "agent_reach" # "agent_reach" | "apify" | "google_news" | "direct_web"
+    discovered_candidate_id: Optional[str] = None
+    ranked_candidate_id: Optional[str] = None
+    accepted_candidate_id: Optional[str] = None
+    acquisition_attempt_id: Optional[str] = None
+    acquired_candidate_id: Optional[str] = None
+    selection_decision: Optional[str] = None
+    selection_reason: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -972,7 +979,7 @@ class TrendingAgent:
                 domain="trending",
                 intent=f"discover emerging viral trends, public narratives, and cross-channel discourse for {target_query}",
                 query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
-                deep_read_budget=0,
+                deep_read_budget=15,
                 corroboration_budget=2,
             )
             research_res = research_engine.investigate(research_req)
@@ -1004,6 +1011,13 @@ class TrendingAgent:
                     source_tier=tier,
                     source_group_id=group,
                     retrieval_method="agent_reach",
+                    discovered_candidate_id=getattr(item, "discovered_id", getattr(item, "id", None)),
+                    ranked_candidate_id=getattr(item, "ranked_id", None),
+                    accepted_candidate_id=getattr(item, "accepted_id", None),
+                    acquisition_attempt_id=getattr(item, "acquisition_attempt_id", None),
+                    acquired_candidate_id=getattr(item, "acquired_id", None),
+                    selection_decision=getattr(item, "selection_decision", "ACCEPTED"),
+                    selection_reason=getattr(item, "selection_reason", "ACQUIRED_EVIDENCE"),
                     metadata={
                         "content_depth": item.content_depth,
                         "query_id": item.query_id,
@@ -1024,35 +1038,7 @@ class TrendingAgent:
         except Exception as reach_err:
             logger.warning(f"[TrendingAgent] ResearchEngine investigate encountered: {reach_err}")
 
-        # 4. Direct Google News Retrieval (Guarantees fresh headlines)
-        news_raw = self.fetch_news(target_query, limit=8)
-        if news_raw:
-            news_norm = self._normalize_evidence(news_raw, "news", retrieval_method="google_news")
-            all_raw_evidence.extend(news_norm)
-            channel_health["news"] = {
-                "status": "ok",
-                "retrieved_count": len(news_raw),
-                "latency_ms": 120
-            }
-        elif "news" not in channel_health:
-            channel_health["news"] = {"status": "unavailable", "retrieved_count": 0, "latency_ms": 0}
 
-        # 5. Paparazzi / Instagram (Apify)
-        paparazzi_items: List[Dict[str, Any]] = []
-        if instagram_url:
-            paparazzi_items = self.fetch_paparazzi(instagram_url)
-            if paparazzi_items:
-                ig_norm = self._normalize_evidence(paparazzi_items, "instagram", retrieval_method="apify")
-                all_raw_evidence.extend(ig_norm)
-                channel_health["instagram"] = {
-                    "status": "ok",
-                    "retrieved_count": len(paparazzi_items),
-                    "latency_ms": 500
-                }
-            else:
-                channel_health["instagram"] = {"status": "unavailable", "retrieved_count": 0, "latency_ms": 0}
-        else:
-            channel_health["instagram"] = {"status": "skipped", "retrieved_count": 0, "latency_ms": 0}
 
         # 5b. Relevance Gate filtering across all gathered evidence
         from backend.services.research.relevance_gate import relevance_gate
@@ -1127,6 +1113,8 @@ class TrendingAgent:
             primary_trend = trends[0]
             chart_history = primary_trend.velocity.get("history", [])
 
+        paparazzi_items = [e.to_dict() for e in deduped_evidence if e.platform in ["instagram", "paparazzi"]]
+
         return {
             # Legacy fields for backward compatibility
             "asset_name": asset_name,
@@ -1177,6 +1165,7 @@ class TrendingAgent:
                 "platforms_active": len(platform_breakdown),
                 "discovered_trends": len(trends),
                 "deep_reads": retrieval_trace.get("deep_read_success", 0),
+                "acquisition_attempts": retrieval_trace.get("acquisition_attempts", []),
                 "scan_duration_s": scan_duration
             },
             "limitations": limitations

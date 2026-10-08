@@ -272,7 +272,7 @@ class PersonalWatchAgent:
                 domain="personal",
                 intent=f"monitor personal identity threat surface, impersonation profiles, synthetic deepfakes, scams, and false claims for {target_name}",
                 query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
-                deep_read_budget=6,
+                deep_read_budget=15,
                 corroboration_budget=4,
             )
             research_res = research_engine.investigate(research_req)
@@ -302,6 +302,13 @@ class PersonalWatchAgent:
                     q_text = f.query_text
                     excerpt = f.relevant_excerpt
                     indep_group = f.independence_group
+                    disc_id = getattr(f, "discovered_id", getattr(f, "id", None))
+                    rank_id = getattr(f, "ranked_id", None)
+                    acc_id = getattr(f, "accepted_id", None)
+                    att_id = getattr(f, "acquisition_attempt_id", None)
+                    acq_id = getattr(f, "acquired_id", None)
+                    sel_dec = getattr(f, "selection_decision", "ACCEPTED")
+                    sel_rea = getattr(f, "selection_reason", "ACQUIRED_EVIDENCE")
                 else:
                     url = getattr(f, "url", "")
                     title = getattr(f, "title", "")
@@ -320,6 +327,13 @@ class PersonalWatchAgent:
                     q_text = getattr(f, "query_text", "")
                     excerpt = ""
                     indep_group = "independent"
+                    disc_id = getattr(f, "id", None)
+                    rank_id = None
+                    acc_id = None
+                    att_id = None
+                    acq_id = None
+                    sel_dec = None
+                    sel_rea = None
 
                 ch = (channel or platform or "Web").title()
                 norm_dict = {
@@ -335,6 +349,13 @@ class PersonalWatchAgent:
                     "platform": platform,
                     "source_role": role,
                     "source_tier": tier,
+                    "discovered_candidate_id": disc_id,
+                    "ranked_candidate_id": rank_id,
+                    "accepted_candidate_id": acc_id,
+                    "acquisition_attempt_id": att_id,
+                    "acquired_candidate_id": acq_id,
+                    "selection_decision": sel_dec,
+                    "selection_reason": sel_rea,
                     "metadata": {
                         "content_depth": depth,
                         "query_id": q_id,
@@ -354,47 +375,7 @@ class PersonalWatchAgent:
             logger.error(f"[PersonalWatch 2.0] ResearchEngine investigate error: {reach_err}")
             self._last_research_res = None
 
-        # Web search supplement via shared acquisition fabric if evidence count is low
-        if len(evidence_items) < 4:
-            try:
-                channel_health["web"] = "querying"
-                from backend.services.agent_reach.profile import PERSONAL_WATCH_PROFILE
-                supp_req = RetrievalRequest(
-                    agent="personal",
-                    entity=target_name,
-                    intent=f'"{target_name}" controversy OR deepfake OR impersonation',
-                    allowed_channels=["web", "news"],
-                    candidate_budget=5,
-                    profile=PERSONAL_WATCH_PROFILE,
-                )
-                supp_frags = agent_reach_service.execute(supp_req)
-                web_count = 0
-                for sf in supp_frags:
-                    if sf.url and any(e["url"] == sf.url for e in evidence_items if e["url"]):
-                        continue
-                    evidence_items.append({
-                        "evidence_id": sf.evidence_id or f"ev_web_{hashlib.md5((sf.url or '').encode()).hexdigest()[:8]}",
-                        "subject": target_name,
-                        "platform": sf.platform.title() if sf.platform else "Web",
-                        "source": self._extract_domain(sf.url) if sf.url else "Web",
-                        "title": sf.title,
-                        "content": sf.content or f"{sf.title} - {sf.snippet}",
-                        "snippet": sf.snippet,
-                        "url": sf.url,
-                        "canonical_url": sf.url,
-                        "author": sf.author or "Web Publisher",
-                        "published_at": sf.published or "Recent",
-                        "retrieved_at": sf.retrieved_at or _utcnow_iso(),
-                        "source_role": "WEB_REFERENCE",
-                        "source_tier": "TIER_2_COMMUNITY_WEB",
-                        "retrieval_method": "Agent Reach Shared Fabric",
-                        "metadata": {}
-                    })
-                    web_count += 1
-                channel_health["web"] = f"active ({web_count})"
-            except Exception as supp_err:
-                logger.debug(f"[PersonalWatch 2.0] Shared fabric supplement notice: {supp_err}")
-                channel_health["web"] = "offline"
+
 
         # Deduplication & Source Independence Grouping
         deduped, syndication_count = self._deduplicate_and_group_evidence(evidence_items)
@@ -430,6 +411,13 @@ class PersonalWatchAgent:
 
         return {
             "evidence_id": evidence_id,
+            "discovered_candidate_id": item.get("discovered_candidate_id"),
+            "ranked_candidate_id": item.get("ranked_candidate_id"),
+            "accepted_candidate_id": item.get("accepted_candidate_id"),
+            "acquisition_attempt_id": item.get("acquisition_attempt_id"),
+            "acquired_candidate_id": item.get("acquired_candidate_id"),
+            "selection_decision": item.get("selection_decision"),
+            "selection_reason": item.get("selection_reason"),
             "subject": subject,
             "platform": platform,
             "source": source,

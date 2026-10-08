@@ -154,7 +154,7 @@ class BrandShieldAgent:
                 domain="brand",
                 intent=f"investigate brand reputation, counterfeits, impersonations, phishing, and online threats for {target_name}",
                 query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
-                deep_read_budget=6,
+                deep_read_budget=15,
                 corroboration_budget=4,
             )
             research_res = research_engine.investigate(research_req)
@@ -202,6 +202,13 @@ class BrandShieldAgent:
                 query_class = f.query_class
                 query_text = f.query_text
                 is_primary = f.primary_source or role in ("PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY")
+                disc_id = getattr(f, "discovered_id", getattr(f, "id", None))
+                rank_id = getattr(f, "ranked_id", None)
+                acc_id = getattr(f, "accepted_id", None)
+                att_id = getattr(f, "acquisition_attempt_id", None)
+                acq_id = getattr(f, "acquired_id", None)
+                sel_dec = getattr(f, "selection_decision", "ACCEPTED")
+                sel_rea = getattr(f, "selection_reason", "ACQUIRED_EVIDENCE")
             else:
                 url = f.url or ""
                 title = f.title or f"{target_name} Signal"
@@ -220,6 +227,13 @@ class BrandShieldAgent:
                 query_class = getattr(f, "query_class", "general")
                 query_text = getattr(f, "query_text", "")
                 is_primary = role == "PRIMARY"
+                disc_id = getattr(f, "id", None)
+                rank_id = None
+                acc_id = None
+                att_id = None
+                acq_id = None
+                sel_dec = None
+                sel_rea = None
 
             norm_url = url.lower()
             if any(m in norm_url for m in primary_markers):
@@ -232,6 +246,13 @@ class BrandShieldAgent:
 
             evidence_items.append({
                 "evidence_id": f"ev_{idx+1:03d}",
+                "discovered_candidate_id": disc_id,
+                "ranked_candidate_id": rank_id,
+                "accepted_candidate_id": acc_id,
+                "acquisition_attempt_id": att_id,
+                "acquired_candidate_id": acq_id,
+                "selection_decision": sel_dec,
+                "selection_reason": sel_rea,
                 "title": title,
                 "content": content,
                 "snippet": snippet,
@@ -252,42 +273,7 @@ class BrandShieldAgent:
                 "query_text": query_text,
             })
 
-        # If evidence count is low, supplement via shared acquisition fabric
-        if len(evidence_items) < 4:
-            try:
-                logger.info(f"[BrandShield 2.0] Supplementing via shared acquisition fabric for '{target_name} reviews complaints'")
-                from backend.services.agent_reach.profile import BRANDSHIELD_PROFILE
-                supp_req = RetrievalRequest(
-                    agent="brandshield",
-                    entity=target_name,
-                    intent=f"{target_name} reviews complaints controversy",
-                    allowed_channels=["web", "news"],
-                    candidate_budget=5,
-                    profile=BRANDSHIELD_PROFILE,
-                )
-                supp_frags = agent_reach_service.execute(supp_req)
-                for sf in supp_frags:
-                    if sf.url and any(e["url"] == sf.url for e in evidence_items if e["url"]):
-                        continue
-                    evidence_items.append({
-                        "evidence_id": sf.evidence_id or f"ev_{len(evidence_items)+1:03d}",
-                        "title": sf.title,
-                        "content": sf.content,
-                        "snippet": sf.snippet[:240],
-                        "url": sf.url,
-                        "has_url": bool(sf.url and sf.url.startswith("http")),
-                        "source": sf.platform.title() if sf.platform else "Web",
-                        "platform": sf.platform.title() if sf.platform else "Web",
-                        "author": sf.author or (urllib.parse.urlparse(sf.url).netloc if sf.url else "Web"),
-                        "published_at": sf.published or "Recent",
-                        "retrieved_at": sf.retrieved_at,
-                        "source_role": "DISCOVERY",
-                        "source_tier": "TIER_3_AGGREGATE",
-                        "independence_group": "independent",
-                        "is_primary": False,
-                    })
-            except Exception as supp_err:
-                logger.debug(f"[BrandShield 2.0] Shared fabric supplement notice: {supp_err}")
+
 
         # Limit total evidence count
         evidence_items = evidence_items[:max_results]

@@ -217,7 +217,7 @@ class ResearchEngine:
         # Stage 3: Candidate Normalization & Source Quality Classification
         raw_candidates: List[EvidenceItem] = []
         for idx, frag in enumerate(raw_fragments):
-            item_id = f"ev_{idx + 1:03d}"
+            item_id = getattr(frag, "candidate_id", None) or getattr(frag, "evidence_id", None) or f"ev_{idx + 1:03d}"
             ev_item = EvidenceItem.from_evidence_fragment(frag, item_id=item_id, target_name=request.target)
             source_quality_engine.classify_and_score(ev_item, target_name=request.target)
             raw_candidates.append(ev_item)
@@ -273,7 +273,7 @@ class ResearchEngine:
         adaptive_query_records: List[QueryExecutionRecord] = []
 
         # Bound discovery and adaptive search by discovery timeout to prevent deep read starvation
-        discovery_ceiling = min(effective_timeout, self.budget.discovery_timeout_seconds)
+        discovery_ceiling = min(effective_timeout * 0.45, self.budget.discovery_timeout_seconds)
 
         if self.budget.follow_up_budget > 0:
             for round_idx in range(1, max_adaptive_rounds + 1):
@@ -489,13 +489,13 @@ class ResearchEngine:
             escalated_primaries, esc_telemetry = [], {"queries": [], "escalations": 0}
 
         # Stage 8: Diversity-Aware Deep Reading (Requirement 13 & 14)
-        deep_read_budget = min(request.deep_read_budget, self.budget.max_deep_reads)
-        time_left = max(2.0, effective_timeout - (time.time() - start_ts))
-        if (time.time() - start_ts) < effective_timeout and deep_read_budget > 0 and ranked_candidates:
+        deep_read_budget = max(request.deep_read_budget, self.budget.max_deep_reads)
+        time_left = max(3.0, effective_timeout - (time.time() - start_ts))
+        if deep_read_budget > 0 and ranked_candidates:
             investigated_items, read_telemetry = deep_reader.deep_read(
                 ranked_candidates,
                 max_reads=deep_read_budget,
-                timeout_per_read=min(self.budget.channel_timeout_seconds, time_left / max(1, deep_read_budget))
+                timeout_per_read=min(self.budget.channel_timeout_seconds, max(4.0, time_left))
             )
         else:
             investigated_items, read_telemetry = [], {
@@ -685,6 +685,7 @@ class ResearchEngine:
             "deep_read_attempted": read_telemetry["attempted"],
             "deep_read_success": read_telemetry["successful"],
             "candidate_selection_audit": selection_audit,
+            "acquisition_attempts": read_telemetry.get("acquisition_attempts", []),
             "total_chars_read": read_telemetry["total_chars_read"],
             "primary_sources_found": len(primary_sources),
             "escalations": esc_telemetry,
@@ -734,7 +735,7 @@ class ResearchEngine:
             summary=summary,
             candidates=raw_candidates,
             investigated_sources=investigated_items,
-            evidence=ranked_candidates,
+            evidence=investigated_items,
             findings=findings,
             contradictions=contradictions,
             source_graph=graph,
@@ -744,7 +745,7 @@ class ResearchEngine:
             channel_status=channel_status,
             retrieval_trace=trace_dict,
             research_corpus=corpus.to_dict(),
-            accepted_evidence=ranked_candidates,
+            accepted_evidence=investigated_items,
             rejected_evidence=all_rejected_audit,
             integrity_report=integrity_report.to_dict(),
             budget_telemetry=self.budget.to_dict(),

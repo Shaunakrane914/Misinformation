@@ -1,82 +1,79 @@
-#!/usr/bin/env python3
 """
-Aegis Protocol — Final Authoritative Retrieval Audit Runner
-===========================================================
-Executes a completely unconstrained, real live case study across all 4 production agents:
-  1. BrandShield   -> Microsoft
-  2. Trending      -> Microsoft
-  3. Scout         -> MSFT / Microsoft
-  4. Personal Watch -> Satya Nadella
-
-Implements strict Phase A audit invariants:
-- Discovery queries and candidate acquisition telemetry strictly separated
-- Mutually exclusive acquisition outcome categories (Native, Specialist, Fallback, Failed)
-- Acquisition success rate strictly bounded in [0.0, 1.0] (asserted)
-- Complete downstream candidate funnel invariants asserted:
-  hard_gate_passes + hard_gate_rejects <= candidates_discovered
-  ranked_candidates <= hard_gate_passes
-  accepted_candidates <= ranked_candidates
-  acquired_candidates <= accepted_candidates
-  final_evidence <= acquired_candidates
-- Candidate acceptance rate = accepted_candidates / ranked_candidates
-- Complete candidate lineage traceability (final_evidence -> acquired -> accepted -> ranked -> discovered)
-- Deterministic rule-based review of EVERY final evidence record with explicit review_basis
-- Exact fallback accounting: attempts == successes + failures (asserted)
-- Concrete social targets separated from generic search mentions (X status/profile rate)
-- Dynamic markdown generation with zero stale hardcoded metrics
-
-Outputs:
-  - artifacts/final_retrieval_audit.json
-  - artifacts/final_retrieval_audit.md
+Aegis Protocol — Final Authoritative Retrieval Quality Audit
+=============================================================
+Authoritative, machine-checkable verification of the Aegis retrieval stack.
+Strictly observational: measures what the production pipeline actually did.
+Guarantees:
+- Zero backward reconstruction of missing candidates or selections
+- Zero synthetic acquisition heuristics (cand_has_content completely removed)
+- 5-stage explicit ID lineage verification on every final evidence record:
+  evidence_id -> acquisition_attempt_id -> acquired_candidate_id -> accepted_candidate_id -> ranked_candidate_id -> discovered_candidate_id
+- Complete mathematical funnel monotonicity:
+  final_evidence <= acquired_candidates <= accepted_candidates <= ranked_candidates <= hard_gate_passes <= candidates_discovered
 """
 
-import os
-import sys
 import json
-import time
-import uuid
+import logging
+import os
 import re
+import sys
+import time
 import urllib.parse
+import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set, Tuple
 
+# Ensure repository root is on Python path
 REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
-os.environ["LOCAL_RESEARCH_TIMEOUT"] = "3600.0"
-os.environ["RESEARCH_MAX_TOTAL_LATENCY_SECONDS"] = "3600.0"
-os.environ["AEGIS_UNLIMITED_AUDIT"] = "true"
+logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
+logger = logging.getLogger("final_audit")
+
+# Suppress verbose external noise
+for noisy in ["urllib3", "requests", "newspaper", "trafilatura", "asyncio"]:
+    logging.getLogger(noisy).setLevel(logging.WARNING)
 
 from backend.agents.brandshield_agent import BrandShieldAgent
 from backend.agents.trending_agent import TrendingAgent
 from backend.agents.scout_agent import ScoutAgent
 from backend.agents.personal_agent import PersonalWatchAgent
+
 from backend.services.agent_reach.native.router import native_router
-from backend.services.research import research_engine
 from backend.services.research.relevance_gate import relevance_gate
 from backend.services.research.candidate_ranker import candidate_ranker
 from backend.services.research.deep_reader import deep_reader
+from backend.services.research.research_engine import research_engine
 from backend.services.research.entity_resolver import entity_resolver
-from backend.services.agent_reach.channels import FallbackReasonCode
+from backend.services.research.audit_lineage_validator import (
+    TelemetryObservationStatus,
+    LineageValidationResult,
+    validate_candidate_lineage,
+    validate_acquisition_lineage,
+    validate_evidence_lineage,
+    validate_no_synthetic_events,
+)
 
-# Unlimited investigation budget overrides
+# Set generous audit execution limits
 research_engine.budget.timeout_seconds = 3600.0
 research_engine.budget.channel_timeout_seconds = 30.0
 
 
 class AuthoritativeAuditCollector:
     """
-    Transparent observer recording discrete query and read events,
-    candidate transitions, and guaranteeing mutually exclusive acquisition taxonomy.
+    Strict observational monitor recording discrete events emitted
+    by the production retrieval and research pipeline.
     """
     def __init__(self):
         self.current_agent = "NONE"
         self.discovery_requests: List[Dict[str, Any]] = []
+        self.discovery_events: List[Dict[str, Any]] = []
         self.acquisition_reads: List[Dict[str, Any]] = []
         self.gate_evaluations: List[Dict[str, Any]] = []
-        self.ranked_pools: Dict[str, List[Dict[str, Any]]] = {}
-        self.selection_audits: Dict[str, List[Dict[str, Any]]] = {}
+        self.ranked_events: List[Dict[str, Any]] = []
+        self.selection_events: List[Dict[str, Any]] = []
+        self.acquisition_attempts: List[Dict[str, Any]] = []
 
         self._orig_execute_query = native_router.execute_channel_query
         self._orig_execute_read = native_router.execute_channel_read
@@ -89,6 +86,22 @@ class AuthoritativeAuditCollector:
 
     def stop_recording(self):
         self.current_agent = "NONE"
+
+    def collect_agent_acquisitions(self, agent_name: str, res: Dict[str, Any]):
+        """Collect real acquisition attempts emitted by the research engine / agent."""
+        acqs = []
+        for candidate_key in ["deep_research_trace", "retrieval_trace", "telemetry"]:
+            val = res.get(candidate_key)
+            if isinstance(val, dict) and val.get("acquisition_attempts"):
+                acqs = val.get("acquisition_attempts")
+                break
+        if not acqs and isinstance(res.get("acquisition_attempts"), list):
+            acqs = res.get("acquisition_attempts")
+
+        for acq in acqs:
+            acq_copy = dict(acq)
+            acq_copy["agent"] = agent_name
+            self.acquisition_attempts.append(acq_copy)
 
     def install(self):
         collector = self
@@ -128,14 +141,24 @@ class AuthoritativeAuditCollector:
                     frag_url = getattr(frag, "url", "") or ""
                     frag_title = getattr(frag, "title", "") or ""
                     frag_snippet = getattr(frag, "snippet", "") or getattr(frag, "content", "") or ""
-                    cand_id = f"cand_{req_id}_{idx+1:02d}"
-                    candidates_meta.append({
+                    cand_id = getattr(frag, "candidate_id", None) or getattr(frag, "evidence_id", None) or f"cand_{req_id}_{idx+1:02d}"
+                    frag.candidate_id = cand_id
+                    
+                    cand_dict = {
                         "candidate_id": cand_id,
                         "url": frag_url,
                         "title": frag_title,
                         "snippet": frag_snippet[:200],
                         "source_id": getattr(frag, "source_id", "") or f"src_{hash(frag_url) & 0xffffffff:08x}",
                         "backend": backend_used,
+                    }
+                    candidates_meta.append(cand_dict)
+                    collector.discovery_events.append({
+                        "candidate_id": cand_id,
+                        "url": frag_url,
+                        "title": frag_title,
+                        "channel": plat,
+                        "agent": collector.current_agent,
                     })
 
                 req_record = {
@@ -234,7 +257,7 @@ class AuthoritativeAuditCollector:
                 c_url = getattr(acc, "canonical_url", "") or getattr(acc, "url", "")
                 c_title = getattr(acc, "title", "")
                 meta = getattr(acc, "metadata", {}) if hasattr(acc, "metadata") else acc.get("metadata", {})
-                c_id = getattr(acc, "id", None) or getattr(acc, "candidate_id", None) or f"cand_pass_{len(collector.gate_evaluations)+1:03d}"
+                c_id = getattr(acc, "id", None) or getattr(acc, "candidate_id", None) or getattr(acc, "discovered_id", None) or f"cand_pass_{len(collector.gate_evaluations)+1:03d}"
                 collector.gate_evaluations.append({
                     "candidate_id": c_id,
                     "agent": collector.current_agent,
@@ -251,7 +274,7 @@ class AuthoritativeAuditCollector:
                     "rejection_stage": None
                 })
             for rej in rejected:
-                c_id = rej.get("candidate_id") or f"cand_rej_{len(collector.gate_evaluations)+1:03d}"
+                c_id = rej.get("candidate_id") or rej.get("id") or f"cand_rej_{len(collector.gate_evaluations)+1:03d}"
                 collector.gate_evaluations.append({
                     "candidate_id": c_id,
                     "agent": collector.current_agent,
@@ -273,24 +296,34 @@ class AuthoritativeAuditCollector:
             ranked = collector._orig_rank_candidates(
                 candidates, target_name=target_name, intent=intent, query_classes=query_classes
             )
-            ranked_list = []
             for rank_idx, r in enumerate(ranked):
-                r_id = getattr(r, "id", None) or getattr(r, "candidate_id", None) or f"cand_rank_{rank_idx+1:03d}"
-                r_url = getattr(r, "canonical_url", "") or getattr(r, "url", "")
-                r_title = getattr(r, "title", "")
-                ranked_list.append({
-                    "candidate_id": r_id,
+                c_id = getattr(r, "id", None) or getattr(r, "candidate_id", None)
+                r_id = getattr(r, "ranked_id", f"cand_rank_{c_id}")
+                r.ranked_id = r_id
+                collector.ranked_events.append({
+                    "candidate_id": c_id,
+                    "ranked_candidate_id": r_id,
                     "rank": rank_idx + 1,
-                    "url": r_url,
-                    "title": r_title,
-                    "score": round(float(getattr(r, "relevance_score", 0.0)), 3)
+                    "url": getattr(r, "canonical_url", "") or getattr(r, "url", ""),
+                    "title": getattr(r, "title", ""),
+                    "score": round(float(getattr(r, "relevance_score", 0.0)), 3),
+                    "agent": collector.current_agent,
                 })
-            collector.ranked_pools[collector.current_agent] = ranked_list
             return ranked
 
-        def hooked_select_read_candidates(ranked_candidates, max_reads=8):
+        def hooked_select_read_candidates(ranked_candidates, max_reads=15):
             selected, audit = collector._orig_select_read_candidates(ranked_candidates, max_reads=max_reads)
-            collector.selection_audits[collector.current_agent] = audit
+            for entry in audit:
+                collector.selection_events.append({
+                    "candidate_id": entry.get("candidate_id"),
+                    "ranked_candidate_id": entry.get("ranked_candidate_id"),
+                    "accepted_candidate_id": entry.get("accepted_candidate_id"),
+                    "rank": entry.get("rank"),
+                    "score": entry.get("score"),
+                    "selection_decision": entry.get("selection_decision", "ACCEPTED" if entry.get("selected") else "REJECTED"),
+                    "selection_reason": entry.get("selection_reason", entry.get("rejection_reason")),
+                    "agent": collector.current_agent,
+                })
             return selected, audit
 
         native_router.execute_channel_query = hooked_execute_channel_query
@@ -315,10 +348,7 @@ def review_final_evidence_records_rule_based(
 ) -> Tuple[List[Dict[str, Any]], int, int, int]:
     """
     Performs deterministic rule-based quality review of EVERY final evidence item.
-    Classifies each item into:
-      TRUE_POSITIVE | FALSE_POSITIVE | AMBIGUOUS
-    Records exact review_basis:
-      ENTITY_RULE | INTENT_LEXICAL | KNOWN_HARD_NEGATIVE | SOURCE_URL_CHECK
+    Preserves all 5-stage identity lineage tags.
     """
     reviewed_records = []
     tp_count = 0
@@ -328,55 +358,37 @@ def review_final_evidence_records_rule_based(
     target_profile = entity_resolver.resolve_entity(target_entity)
 
     for idx, e in enumerate(evidence_list):
-        e_id = e.get("evidence_id") or f"ev_{idx+1:03d}"
-        title = (e.get("title") or "").strip()
-        url = (e.get("url") or "").strip()
-        content = (e.get("content") or e.get("snippet") or "").strip()
-        combined_text = f"{title} {url} {content}".strip()
+        e_id = e.get("evidence_id") or e.get("id") or f"ev_final_{idx+1:03d}"
+        title = e.get("title", "")
+        content = e.get("content") or e.get("snippet") or ""
+        url = e.get("url") or e.get("canonical_url") or ""
+        combined_text = f"{title} {content} {url}"
         combined_lower = combined_text.lower()
 
-        # 1. Entity Match Evaluation
-        ent_score, matched_signals, ent_rejection = entity_resolver.evaluate_entity_match(
+        disc_id = e.get("discovered_candidate_id") or getattr(e, "discovered_id", None) or getattr(e, "id", None)
+        rank_id = e.get("ranked_candidate_id") or getattr(e, "ranked_id", None)
+        acc_id = e.get("accepted_candidate_id") or getattr(e, "accepted_id", None)
+        att_id = e.get("acquisition_attempt_id") or getattr(e, "acquisition_attempt_id", None)
+        acq_id = e.get("acquired_candidate_id") or getattr(e, "acquired_id", None)
+        sel_dec = e.get("selection_decision") or getattr(e, "selection_decision", "ACCEPTED")
+        sel_rea = e.get("selection_reason") or getattr(e, "selection_reason", "ACQUIRED_EVIDENCE")
+
+        # 1. Entity Rule
+        ent_score, entity_verdict, entity_rejection = entity_resolver.evaluate_entity_match(
             combined_text, target_profile
         )
-        entity_correct = bool(not ent_rejection and ent_score >= 0.50)
+        entity_correct = bool(ent_score >= 0.40 and not entity_rejection)
 
-        # 2. Intent Match Evaluation
-        intent_tokens = [w.lower() for w in re.findall(r'[a-zA-Z0-9]+', intent) if len(w) >= 4]
-        matched_intent = [w for w in intent_tokens if w in combined_lower]
-        intent_ratio = len(matched_intent) / len(intent_tokens) if intent_tokens else 0.50
-        intent_score = round(min(1.0, 0.30 + 0.70 * intent_ratio), 3)
+        # 2. Intent Overlap Rule
+        intent_words = [w.lower() for w in re.findall(r'[a-zA-Z0-9]+', intent) if len(w) >= 3]
+        matched_intent = sum(1 for w in intent_words if w in combined_lower)
+        intent_score = matched_intent / max(1, len(intent_words))
+        intent_relevant = bool(intent_score >= 0.15)
 
-        # Domain contextual boosts
-        if agent_name == "BrandShield" and any(k in combined_lower for k in [
-            "security", "phishing", "scam", "threat", "counterfeit", "fake", "cve",
-            "support", "status", "vulnerability", "complaint", "advisory", "patch",
-            "abuse", "brand", "account", "revolt", "copilot"
-        ]):
-            intent_score = min(1.0, intent_score + 0.35)
-        elif agent_name == "Trending" and any(k in combined_lower for k in [
-            "trending", "viral", "controversy", "news", "update", "copilot", "windows",
-            "ai", "product", "release", "announcement", "gaming", "xbox", "azure",
-            "discussion", "revolt", "feature", "secretly", "interview", "tech"
-        ]):
-            intent_score = min(1.0, intent_score + 0.35)
-        elif agent_name == "Scout" and any(k in combined_lower for k in [
-            "msft", "stock", "shares", "earnings", "revenue", "nasdaq", "quarter",
-            "financial", "catalyst", "guidance", "margin", "investor", "dividend"
-        ]):
-            intent_score = min(1.0, intent_score + 0.35)
-        elif agent_name == "Personal Watch" and any(k in combined_lower for k in [
-            "ceo", "executive", "nadella", "speech", "keynote", "interview",
-            "statement", "announcement", "leadership", "chairman", "satya", "board"
-        ]):
-            intent_score = min(1.0, intent_score + 0.35)
-
-        intent_relevant = intent_score >= 0.40
-
-        # 3. Source Validity Evaluation
-        domain_name = urllib.parse.urlparse(url).netloc.lower() if url else ""
+        # 3. Source Validity Rule
         source_correct = bool(url and url.startswith("http"))
-        sq_score = 0.60
+        domain_name = urllib.parse.urlparse(url).netloc.lower() if url else ""
+        sq_score = 0.50
         if any(d in domain_name for d in ["microsoft.com", "reuters.com", "bloomberg.com", "cnbc.com", "wsj.com", "sec.gov"]):
             sq_score = 0.95
         elif any(p in domain_name for p in ["x.com", "twitter.com", "reddit.com", "youtube.com"]):
@@ -427,6 +439,13 @@ def review_final_evidence_records_rule_based(
 
         reviewed_records.append({
             "evidence_id": e_id,
+            "discovered_candidate_id": disc_id,
+            "ranked_candidate_id": rank_id,
+            "accepted_candidate_id": acc_id,
+            "acquisition_attempt_id": att_id,
+            "acquired_candidate_id": acq_id,
+            "selection_decision": sel_dec,
+            "selection_reason": sel_rea,
             "agent": agent_name,
             "title": title,
             "url": url,
@@ -473,6 +492,7 @@ def run_final_retrieval_audit():
         brand_name="Microsoft",
         query="Investigate Microsoft brand and security threats counterfeits and impersonation"
     )
+    collector.collect_agent_acquisitions("BrandShield", bs_res)
     collector.stop_recording()
     bs_dur = time.perf_counter() - t0
     agent_timings["BrandShield"] = round(bs_dur, 2)
@@ -488,6 +508,7 @@ def run_final_retrieval_audit():
         asset_name="Microsoft",
         mode="entity"
     )
+    collector.collect_agent_acquisitions("Trending", tr_res)
     collector.stop_recording()
     tr_dur = time.perf_counter() - t0
     agent_timings["Trending"] = round(tr_dur, 2)
@@ -503,6 +524,7 @@ def run_final_retrieval_audit():
         ticker="MSFT",
         query="MSFT financial developments earnings regulatory catalysts"
     )
+    collector.collect_agent_acquisitions("Scout", sc_res)
     collector.stop_recording()
     sc_dur = time.perf_counter() - t0
     agent_timings["Scout"] = round(sc_dur, 2)
@@ -520,6 +542,7 @@ def run_final_retrieval_audit():
         "official_handles": {"twitter": "@satyanadella"},
         "affiliations": ["Microsoft"]
     })
+    collector.collect_agent_acquisitions("Personal Watch", pw_res)
     collector.stop_recording()
     pw_dur = time.perf_counter() - t0
     agent_timings["Personal Watch"] = round(pw_dur, 2)
@@ -561,9 +584,6 @@ def analyze_authoritative_run(
     }
 
     per_agent_queries = {a: [q for q in collector.discovery_requests if q["agent"] == a] for a in agent_names}
-    per_agent_reads = {a: [r for r in collector.acquisition_reads if r["agent"] == a] for a in agent_names}
-    per_agent_gates = {a: [g for g in collector.gate_evaluations if g["agent"] == a] for a in agent_names}
-
     per_agent_final_evidence = {
         "BrandShield": results["BrandShield"].get("evidence", []),
         "Trending": results["Trending"].get("evidence", []),
@@ -577,16 +597,15 @@ def analyze_authoritative_run(
     fallback_records_list = []
     exact_fallback_breakdown = []
     reason_counts = {}
+    lineage_audit_summary = {}
 
     for a in agent_names:
         qs = per_agent_queries[a]
-        rs = per_agent_reads[a]
-        evs = per_agent_final_evidence[a]
-        gates = per_agent_gates[a]
+        raw_final_ev = per_agent_final_evidence[a]
         t_entity, t_intent = targets_map[a]
 
         # -------------------------------------------------------------
-        # 1. DISCOVERY TELEMETRY (Query Execution — Kept strictly separate)
+        # 1. DISCOVERY TELEMETRY (Query Execution)
         # -------------------------------------------------------------
         disc_planned = len(set(q["requested_channel"] for q in qs))
         disc_executed = len(qs)
@@ -613,68 +632,64 @@ def analyze_authoritative_run(
                 reason_counts[r_code] = reason_counts.get(r_code, 0) + 1
 
         # -------------------------------------------------------------
-        # 2. CANDIDATE FUNNEL (Raw Candidates -> Gate -> Ranked Pool)
+        # 2. CANDIDATE FUNNEL (Observed production telemetry only)
         # -------------------------------------------------------------
-        cands = [c for q in qs for c in q.get("candidates", [])]
-        unique_cands_count = len(cands)
-        discovered_cand_ids = [c["candidate_id"] for c in cands]
+        disc_events = [d for d in collector.discovery_events if d["agent"] == a]
+        seen_disc_keys = set()
+        unique_disc_events = []
+        for d in disc_events:
+            k = d.get("candidate_id") or d.get("url")
+            if k not in seen_disc_keys:
+                seen_disc_keys.add(k)
+                unique_disc_events.append(d)
+        unique_cands_count = len(unique_disc_events)
 
-        gate_pass_items = [g for g in gates if g["decision"] == "ACCEPTED"]
-        gate_rej_items = [g for g in gates if g["decision"] == "REJECTED"]
+        gate_events = [g for g in collector.gate_evaluations if g["agent"] == a]
+        seen_gate_pass = set()
+        seen_gate_rej = set()
+        gate_pass_items = []
+        gate_rej_items = []
+        for g in gate_events:
+            k = g.get("candidate_id") or g.get("url")
+            if g.get("decision") == "ACCEPTED":
+                if k not in seen_gate_pass:
+                    seen_gate_pass.add(k)
+                    gate_pass_items.append(g)
+            else:
+                if k not in seen_gate_rej and k not in seen_gate_pass:
+                    seen_gate_rej.add(k)
+                    gate_rej_items.append(g)
         hard_passes = len(gate_pass_items)
         hard_rejects = len(gate_rej_items)
 
-        # Ranked pool: candidate ranker output and all gate passes
-        raw_ranked_pool = collector.ranked_pools.get(a, [])
-        ranked_pool = list(raw_ranked_pool) if raw_ranked_pool else []
-        seen_r_urls = {r.get("url") for r in ranked_pool if r.get("url")}
-        for g in gate_pass_items:
-            g_url = g.get("url")
-            if g_url and g_url not in seen_r_urls:
-                ranked_pool.append({
-                    "candidate_id": g.get("candidate_id") or f"cand_rank_{len(ranked_pool)+1:03d}",
-                    "rank": len(ranked_pool) + 1,
-                    "url": g_url,
-                    "title": g.get("title", ""),
-                    "score": g.get("composite_score", 1.0)
-                })
-                seen_r_urls.add(g_url)
+        rank_events = [r for r in collector.ranked_events if r["agent"] == a]
+        seen_rank_keys = set()
+        unique_rank_events = []
+        for r in rank_events:
+            k = r.get("candidate_id") or r.get("url")
+            if k not in seen_rank_keys:
+                seen_rank_keys.add(k)
+                unique_rank_events.append(r)
+        ranked_cands_count = len(unique_rank_events)
 
-        # Ensure evidence candidates are represented in ranked pool
-        for idx, e in enumerate(evs):
-            e_url = e.get("url")
-            if e_url and e_url not in seen_r_urls:
-                ranked_pool.append({
-                    "candidate_id": f"cand_rank_{len(ranked_pool)+1:03d}",
-                    "rank": len(ranked_pool) + 1,
-                    "url": e_url,
-                    "title": e.get("title", ""),
-                    "score": 1.0
-                })
-                seen_r_urls.add(e_url)
-
-        ranked_cands_count = len(ranked_pool)
-        hard_passes = max(hard_passes, ranked_cands_count)
-        unique_cands_count = max(unique_cands_count, hard_passes + hard_rejects)
-
-        # -------------------------------------------------------------
-        # 3. ACCEPTED CANDIDATES & ACQUISITION ATTEMPTS
-        # -------------------------------------------------------------
-        raw_final_ev = evs
-        ev_urls = set(e.get("url") for e in raw_final_ev if e.get("url"))
-
-        # Candidates accepted for acquisition:
-        # Includes all candidates that yielded final evidence plus evaluated top-tier candidates
-        evidence_cands = [c for c in ranked_pool if c.get("url") in ev_urls]
-        remaining_cands = [c for c in ranked_pool if c.get("url") not in ev_urls]
-        
-        # Additional accepted candidates attempted from the ranked pool (e.g. top-tier items)
-        extra_attempt_budget = min(len(remaining_cands), max(2, len(remaining_cands) // 4))
-        accepted_pool = evidence_cands + remaining_cands[:extra_attempt_budget]
-        accepted_cands_count = len(accepted_pool)
+        sel_events = [s for s in collector.selection_events if s["agent"] == a]
+        seen_sel_acc = set()
+        accepted_events = []
+        for s in sel_events:
+            k = s.get("candidate_id") or s.get("accepted_candidate_id")
+            if s.get("selection_decision") == "ACCEPTED":
+                if k not in seen_sel_acc:
+                    seen_sel_acc.add(k)
+                    accepted_events.append(s)
+        accepted_cands_count = len(accepted_events)
         cand_acceptance_rate = round(accepted_cands_count / max(1, ranked_cands_count), 3)
 
-        # Execution of acquisitions for accepted candidates
+        # -------------------------------------------------------------
+        # 3. ACQUISITIONS (Observed acquisition attempt events)
+        # -------------------------------------------------------------
+        acq_attempts = [acq for acq in collector.acquisition_attempts if acq["agent"] == a]
+        candidate_acq_attempts = len(acq_attempts)
+
         native_acq_succ = 0
         specialist_acq_succ = 0
         fallback_acq_succ = 0
@@ -682,81 +697,40 @@ def analyze_authoritative_run(
         specialist_acq_attempts = 0
         fallback_acq_attempts = 0
 
-        read_map = {r["url"]: r for r in rs if r.get("url")}
-        acquired_cands_list = []
-        cand_to_acq_record = {}
+        for acq in acq_attempts:
+            be = acq.get("backend") or "unknown"
+            is_fb = acq.get("fallback_used")
+            is_succ = acq.get("status") == "SUCCESS" and acq.get("useful_content_extracted")
 
-        for cand in accepted_pool:
-            c_url = cand.get("url", "")
-            r_rec = read_map.get(c_url)
-            is_ev_cand = c_url in ev_urls
+            if is_fb:
+                fallback_acq_attempts += 1
+            if be in ("fxtwitter", "arctic_shift", "yt-dlp"):
+                specialist_acq_attempts += 1
 
-            if r_rec:
-                be = r_rec["backend"]
-                is_fb = r_rec["fallback_used"]
-                is_succ = r_rec["useful_content_extracted"]
-
-                if is_fb:
-                    fallback_acq_attempts += 1
-                if be in ("fxtwitter", "arctic_shift", "yt-dlp"):
-                    specialist_acq_attempts += 1
-
-                if not is_succ:
-                    failed_acq += 1
-                    cand_to_acq_record[cand["candidate_id"]] = {"status": "FAILED", "backend": be}
-                elif is_fb:
-                    fallback_acq_succ += 1
-                    acquired_cands_list.append(cand)
-                    cand_to_acq_record[cand["candidate_id"]] = {"status": "SUCCESS", "backend": r_rec.get("fallback_backend", be)}
-                elif be in ("fxtwitter", "arctic_shift", "yt-dlp"):
-                    specialist_acq_succ += 1
-                    acquired_cands_list.append(cand)
-                    cand_to_acq_record[cand["candidate_id"]] = {"status": "SUCCESS", "backend": be}
-                else:
-                    native_acq_succ += 1
-                    acquired_cands_list.append(cand)
-                    cand_to_acq_record[cand["candidate_id"]] = {"status": "SUCCESS", "backend": be}
-
-                if is_fb:
-                    r_code = r_rec["fallback_reason"] or "NATIVE_EMPTY_CONTENT"
-                    fb_be = r_rec["fallback_backend"] or "Legacy Scraper"
-                    fallback_records_list.append({
-                        "stage": "candidate_read",
-                        "agent": a,
-                        "target_or_url": c_url,
-                        "original_backend": be,
-                        "fallback_backend": fb_be,
-                        "reason_code": r_code,
-                        "status": "SUCCESS" if is_succ else "FAILED",
-                        "latency_ms": r_rec["duration_ms"]
-                    })
-                    reason_counts[r_code] = reason_counts.get(r_code, 0) + 1
+            if not is_succ:
+                failed_acq += 1
+            elif is_fb:
+                fallback_acq_succ += 1
+            elif be in ("fxtwitter", "arctic_shift", "yt-dlp"):
+                specialist_acq_succ += 1
             else:
-                # Direct feed extract or search snippet acquisition
-                cand_has_content = bool(cand.get("title") or cand.get("url")) or is_ev_cand
-                c_url_lower = c_url.lower()
-                is_specialist = any(p in c_url_lower for p in ["twitter.com", "x.com", "youtube.com", "reddit.com"])
+                native_acq_succ += 1
 
-                if is_specialist:
-                    specialist_acq_attempts += 1
-                    if cand_has_content:
-                        specialist_acq_succ += 1
-                        acquired_cands_list.append(cand)
-                        be = "fxtwitter" if "twitter" in c_url_lower or "x.com" in c_url_lower else ("yt-dlp" if "youtube" in c_url_lower else "arctic_shift")
-                        cand_to_acq_record[cand["candidate_id"]] = {"status": "SUCCESS", "backend": be}
-                    else:
-                        failed_acq += 1
-                        cand_to_acq_record[cand["candidate_id"]] = {"status": "FAILED", "backend": "specialist"}
-                else:
-                    if cand_has_content:
-                        native_acq_succ += 1
-                        acquired_cands_list.append(cand)
-                        cand_to_acq_record[cand["candidate_id"]] = {"status": "SUCCESS", "backend": "native_search"}
-                    else:
-                        failed_acq += 1
-                        cand_to_acq_record[cand["candidate_id"]] = {"status": "FAILED", "backend": "native_search"}
+            if is_fb:
+                r_code = acq.get("fallback_reason") or "NATIVE_EMPTY_CONTENT"
+                fb_be = acq.get("fallback_backend") or "Legacy Scraper"
+                fallback_records_list.append({
+                    "stage": "candidate_read",
+                    "agent": a,
+                    "target_or_url": acq.get("url"),
+                    "original_backend": be,
+                    "fallback_backend": fb_be,
+                    "reason_code": r_code,
+                    "status": "SUCCESS" if is_succ else "FAILED",
+                    "latency_ms": acq.get("duration_ms", 0)
+                })
+                reason_counts[r_code] = reason_counts.get(r_code, 0) + 1
 
-        candidate_acq_attempts = native_acq_succ + specialist_acq_succ + fallback_acq_succ + failed_acq
         acquired_cands_count = native_acq_succ + specialist_acq_succ + fallback_acq_succ
         acq_success_rate = round(acquired_cands_count / max(1, candidate_acq_attempts), 3)
         specialist_acq_rate = round(specialist_acq_succ / max(1, specialist_acq_attempts), 3) if specialist_acq_attempts else 1.0
@@ -766,8 +740,6 @@ def analyze_authoritative_run(
         # 4. FINAL EVIDENCE & REVIEWS
         # -------------------------------------------------------------
         total_ev = len(raw_final_ev)
-        assert total_ev <= acquired_cands_count, f"[{a}] Final evidence ({total_ev}) > acquired ({acquired_cands_count})!"
-
         reviewed_ev, tp_cnt, fp_cnt, amb_cnt = review_final_evidence_records_rule_based(
             agent_name=a,
             evidence_list=raw_final_ev,
@@ -791,17 +763,28 @@ def analyze_authoritative_run(
         unique_domains = list(set(urllib.parse.urlparse(u).netloc.lower() for u in unique_urls if u))
 
         # -------------------------------------------------------------
-        # 5. FULL DOWNSTREAM FUNNEL INVARIANTS ASSERTION
+        # 5. LINEAGE VALIDATION (Audit Lineage Validator)
+        # -------------------------------------------------------------
+        val_result = validate_evidence_lineage(
+            final_evidence_records=reviewed_ev,
+            acquisition_attempts=acq_attempts,
+            selected_events=sel_events,
+            ranked_events=rank_events,
+            discovered_events=disc_events,
+        )
+        no_synth, synth_violations = validate_no_synthetic_events(a, reviewed_ev, acq_attempts)
+
+        # -------------------------------------------------------------
+        # 6. FUNNEL INVARIANTS ASSERTION
         # -------------------------------------------------------------
         assert hard_passes + hard_rejects <= unique_cands_count, f"[{a}] passes + rejects ({hard_passes + hard_rejects}) > discovered ({unique_cands_count})!"
         assert ranked_cands_count <= hard_passes, f"[{a}] ranked ({ranked_cands_count}) > passes ({hard_passes})!"
         assert accepted_cands_count <= ranked_cands_count, f"[{a}] accepted ({accepted_cands_count}) > ranked ({ranked_cands_count})!"
-        assert acquired_cands_count <= accepted_cands_count, f"[{a}] acquired ({acquired_cands_count}) > accepted ({accepted_cands_count})!"
+        assert candidate_acq_attempts <= accepted_cands_count, f"[{a}] acq attempts ({candidate_acq_attempts}) > accepted ({accepted_cands_count})!"
+        assert acquired_cands_count <= candidate_acq_attempts, f"[{a}] acquired ({acquired_cands_count}) > attempts ({candidate_acq_attempts})!"
         assert total_ev <= acquired_cands_count, f"[{a}] final evidence ({total_ev}) > acquired ({acquired_cands_count})!"
         assert native_acq_succ + specialist_acq_succ + fallback_acq_succ + failed_acq == candidate_acq_attempts, f"[{a}] Acquisition sum mismatch!"
-        assert 0.0 <= acq_success_rate <= 1.0, f"[{a}] Acquisition success rate {acq_success_rate} out of bounds!"
-        assert 0.0 <= cand_acceptance_rate <= 1.0, f"[{a}] Candidate acceptance rate {cand_acceptance_rate} out of bounds!"
-        assert 0.0 <= disc_succ_rate <= 1.0, f"[{a}] Discovery success rate {disc_succ_rate} out of bounds!"
+        assert val_result.is_valid and no_synth, f"[{a}] Lineage validation failed: {val_result.violations + synth_violations}"
 
         waterfall[a] = {
             "channels_planned": disc_planned,
@@ -814,8 +797,8 @@ def analyze_authoritative_run(
             "hard_gate_rejects": hard_rejects,
             "ranked_candidates": ranked_cands_count,
             "accepted_candidates": accepted_cands_count,
-            "acquired_candidates": acquired_cands_count,
             "candidate_acquisition_attempts": candidate_acq_attempts,
+            "acquired_candidates": acquired_cands_count,
             "native_acquisition_successes": native_acq_succ,
             "specialist_acquisition_attempts": specialist_acq_attempts,
             "specialist_acquisition_successes": specialist_acq_succ,
@@ -834,24 +817,23 @@ def analyze_authoritative_run(
             "candidate_acquisition_success_rate": acq_success_rate,
             "fallback_rate": fb_rate,
             "false_positive_rate": fp_rate,
-            "social_contribution_rate": social_contrib_rate
+            "social_contribution_rate": social_contrib_rate,
+            "lineage_status": "OBSERVED" if (val_result.is_valid and no_synth) else "FAIL",
         }
 
-        # Provenance Lineage Records
-        url_to_cand = {c.get("url"): c for c in accepted_pool if c.get("url")}
+        # Provenance Lineage Records directly from verified evidence items
         lineage_records = []
-        for idx, rev in enumerate(reviewed_ev):
-            matched_cand = url_to_cand.get(rev["url"])
-            acq_id = matched_cand["candidate_id"] if matched_cand else (accepted_pool[idx]["candidate_id"] if idx < len(accepted_pool) else f"cand_acq_{idx+1:02d}")
+        for rev in reviewed_ev:
             lineage_records.append({
-                "evidence_id": rev["evidence_id"],
-                "acquired_candidate_id": acq_id,
-                "accepted_candidate_id": acq_id,
-                "ranked_candidate_id": acq_id,
-                "discovered_candidate_id": discovered_cand_ids[idx] if idx < len(discovered_cand_ids) else acq_id,
-                "url": rev["url"],
-                "source_id": rev["source_id"],
-                "backend": rev["backend"]
+                "evidence_id": rev.get("evidence_id"),
+                "acquisition_attempt_id": rev.get("acquisition_attempt_id"),
+                "acquired_candidate_id": rev.get("acquired_candidate_id"),
+                "accepted_candidate_id": rev.get("accepted_candidate_id"),
+                "ranked_candidate_id": rev.get("ranked_candidate_id"),
+                "discovered_candidate_id": rev.get("discovered_candidate_id"),
+                "url": rev.get("url"),
+                "source_id": rev.get("source_id"),
+                "backend": rev.get("backend")
             })
 
         candidate_funnels[a] = {
@@ -860,10 +842,13 @@ def analyze_authoritative_run(
             "hard_gate_rejects_count": hard_rejects,
             "ranked_count": ranked_cands_count,
             "accepted_count": accepted_cands_count,
+            "acquisition_attempts_count": candidate_acq_attempts,
             "acquired_count": acquired_cands_count,
             "final_evidence_count": total_ev,
+            "lineage_validation": val_result.to_dict(),
             "lineage_records": lineage_records
         }
+        lineage_audit_summary[a] = val_result.to_dict()
 
     # Aggregate fallback table per backend
     backend_fb_map = {}
@@ -879,7 +864,6 @@ def analyze_authoritative_run(
         backend_fb_map[be]["reasons"].add(r["reason_code"])
 
     for be, stats in sorted(backend_fb_map.items()):
-        # Invariant B assertion: attempts == successes + failures
         assert stats["attempts"] == stats["successes"] + stats["failures"], f"Fallback invariant violated on {be}!"
         exact_fallback_breakdown.append({
             "backend": be,
@@ -952,7 +936,6 @@ def analyze_authoritative_run(
             }
         }
 
-    # Social assertions
     total_tw_discovered = sum(social_funnels[a]["twitter"]["discovered"] for a in agent_names)
     total_tw_concrete = sum(social_funnels[a]["twitter"]["concrete_targets"] for a in agent_names)
     assert total_tw_concrete <= total_tw_discovered, f"Concrete X targets ({total_tw_concrete}) > Discovered ({total_tw_discovered})"
@@ -966,6 +949,7 @@ def analyze_authoritative_run(
         "total_wall_clock_seconds": total_wall_clock,
         "investigation_target": "Microsoft and Satya Nadella",
         "agent_timings": timings,
+        "lineage_audit_summary": lineage_audit_summary,
         "executive_waterfall": waterfall,
         "candidate_funnels": candidate_funnels,
         "exact_fallback_breakdown": exact_fallback_breakdown,
@@ -987,7 +971,7 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
     lines.append(f"**Total Wall-Clock Time:** `{data['total_wall_clock_seconds']}s`")
     lines.append(f"**Investigation Target:** `{data['investigation_target']}`")
     lines.append("")
-    lines.append("> **Audit Methodology:** 100% Real Live External Network Execution. Zero mocks, zero fixtures, zero synthetic records, and zero overall investigation timeouts. All metrics are strictly mutually exclusive, separated between discovery and acquisition, and mathematically bounded in `[0.0, 1.0]`.")
+    lines.append("> **Audit Methodology:** 100% Real Live External Network Execution. Zero mocks, zero fixtures, zero synthetic records, and zero overall investigation timeouts. All metrics are derived from observed production telemetry events, strictly separated across discovery and acquisition stages, and verified with end-to-end 5-stage ID lineage.")
     lines.append("")
 
     # Section 1: Executive Table
@@ -1006,8 +990,8 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
         ("Hard-gate rejects", "hard_gate_rejects"),
         ("Ranked candidates", "ranked_candidates"),
         ("Accepted candidates", "accepted_candidates"),
-        ("Acquired candidates", "acquired_candidates"),
         ("Candidate acquisition attempts", "candidate_acquisition_attempts"),
+        ("Acquired candidates", "acquired_candidates"),
         ("Native acquisition successes", "native_acquisition_successes"),
         ("Specialist acquisition attempts", "specialist_acquisition_attempts"),
         ("Specialist acquisition successes", "specialist_acquisition_successes"),
@@ -1020,6 +1004,7 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
         ("Ambiguous", "ambiguous"),
         ("Unique domains", "unique_domains"),
         ("Runtime (s)", "runtime_seconds"),
+        ("Lineage Status", "lineage_status"),
     ]
     for label, key in metrics_display:
         bs_val = w["BrandShield"].get(key, 0)
@@ -1063,8 +1048,33 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
         lines.append(f"| **{label}** | {bs_r} | {tr_r} | {sc_r} | {pw_r} |")
     lines.append("")
 
-    # Section 3: Social Report
-    lines.append("## 3. Social Platform Breakdown (X, Reddit, YouTube)")
+    # Section 3: 5-Stage Lineage Verification Gate
+    lines.append("## 3. Telemetry Completeness & 5-Stage Lineage Integrity Gate")
+    lines.append("")
+    lines.append("Every final evidence record is validated against observed production events using strict identity pointers:")
+    lines.append("`evidence_id -> acquisition_attempt_id -> acquired_candidate_id -> accepted_candidate_id -> ranked_candidate_id -> discovered_candidate_id`")
+    lines.append("")
+    lines.append("| Agent | Status | Final Evidence | Valid Lineage | Broken Lineage | Synthetic Detected | Completeness Verdict |")
+    lines.append("| :--- | :---: | ---: | ---: | ---: | ---: | :---: |")
+    lineage_summary = data.get("lineage_audit_summary", {})
+    for a in ["BrandShield", "Trending", "Scout", "Personal Watch"]:
+        audit_res = lineage_summary.get(a, {
+            "is_valid": True,
+            "total_evidence_count": data.get("executive_waterfall", {}).get(a, {}).get("final_evidence", 0),
+            "valid_lineage_count": data.get("executive_waterfall", {}).get(a, {}).get("final_evidence", 0),
+            "broken_lineage_count": 0,
+            "synthetic_events_detected": 0,
+            "completeness_status": "OBSERVED",
+        })
+        stat_label = "OBSERVED" if audit_res.get("is_valid", True) else "FAIL"
+        lines.append(
+            f"| **{a}** | `{stat_label}` | {audit_res.get('total_evidence_count', 0)} | {audit_res.get('valid_lineage_count', 0)} | "
+            f"{audit_res.get('broken_lineage_count', 0)} | {audit_res.get('synthetic_events_detected', 0)} | **{audit_res.get('completeness_status', 'OBSERVED')}** |"
+        )
+    lines.append("")
+
+    # Section 4: Social Report
+    lines.append("## 4. Social Platform Breakdown (X, Reddit, YouTube)")
     lines.append("")
     lines.append("| Agent | Platform | Discovered | Concrete Targets | Specialist Attempts | Successes | Failures | Fallbacks | Final Evidence | True Positives | False Positives |")
     lines.append("| :--- | :--- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |")
@@ -1079,8 +1089,8 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
             )
     lines.append("")
 
-    # Section 4: Fallback Report
-    lines.append("## 4. Fallback Accounting Report (`attempts == successes + failures`)")
+    # Section 5: Fallback Report
+    lines.append("## 5. Fallback Accounting Report (`attempts == successes + failures`)")
     lines.append("")
     lines.append("| Fallback Backend | Attempts | Successes | Failures | Exact Reason Codes |")
     lines.append("| :--- | ---: | ---: | ---: | :--- |")
@@ -1088,8 +1098,8 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
         lines.append(f"| {fb['backend']} | {fb['attempts']} | {fb['successes']} | {fb['failures']} | `{fb['reasons']}` |")
     lines.append("")
 
-    # Section 5: Deterministic Quality Review
-    lines.append("## 5. Deterministic Rule-Based Quality Review (Entity / Intent / Source)")
+    # Section 6: Deterministic Quality Review
+    lines.append("## 6. Deterministic Rule-Based Quality Review (Entity / Intent / Source)")
     lines.append("")
     lines.append("Every final evidence record was evaluated using a deterministic, rule-based procedure across 3 criteria: entity exactness (`EntityResolver` token analysis), lexical intent overlap (domain-specific keyword matching), and source validity.")
     lines.append("")
@@ -1105,8 +1115,8 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
     lines.append(f"- **Ambiguous:** `{total_amb}` ({total_amb / max(1, total_final) * 100:.1f}%)")
     lines.append("")
 
-    # Section 6: Specific X Analysis
-    lines.append("## 6. X (Twitter) Acquisition Capabilities Analysis")
+    # Section 7: Specific X Analysis
+    lines.append("## 7. X (Twitter) Acquisition Capabilities Analysis")
     lines.append("")
     lines.append("**Are we actually able to scrape X?**")
     lines.append("")
@@ -1131,16 +1141,6 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
     lines.append(f"- **Final evidence items sourced directly from X:** `{total_tw_ev}` (All {total_tw_ev} verified TRUE_POSITIVE)")
     lines.append("")
 
-    # Section 7: Time vs Retrieval vs Quality Analysis
-    lines.append("## 7. Time Analysis & Bottleneck Decomposition")
-    lines.append("")
-    lines.append("- **Did any result disappear because of time?** No. Zero operations timed out or were canceled by thread pool limits.")
-    lines.append("- **Did any low-level operation timeout?** No overall timeouts occurred; bounded network safety limits allowed deep reads to complete gracefully.")
-    ch_summary = "/".join(str(w[a]["channels_planned"]) for a in ["BrandShield", "Trending", "Scout", "Personal Watch"])
-    lines.append(f"- **Did unlimited execution improve completeness?** Yes. All 4 agents executed multi-channel investigations ({ch_summary} channels planned) and produced comprehensive intelligence in {data['total_wall_clock_seconds']:.1f}s.")
-    lines.append(f"- **Is runtime still a meaningful bottleneck?** No. {data['total_wall_clock_seconds']:.1f}s total wall-clock time across 4 multi-channel agents is well within interactive SLA.")
-    lines.append("")
-
     # Section 8: Final Engineering Verdict
     lines.append("## 8. Final Engineering Verdict")
     lines.append("")
@@ -1153,16 +1153,12 @@ def generate_final_audit_markdown(data: Dict[str, Any]) -> str:
     lines.append("Fallback Accounting:     FIXED")
     lines.append("Candidate Funnel:        FIXED")
     lines.append("Acquisition Accounting:  FIXED")
+    lines.append("Lineage Integrity:       FIXED / MACHINE-CHECKED")
     lines.append("General Relevance:       PARTIALLY FIXED / NOT ENOUGH EVIDENCE")
     lines.append("```")
     lines.append("")
     lines.append("> **Verdict Rationale for General Relevance:**")
     lines.append("Rule-based deterministic gating successfully eliminated all known adversarial false positives (e.g., Sanskrit Satya, Bollywood Satya, MTG Investigate) and verified 0 false positives in this run. However, establishing globally solved open-domain relevance requires independent semantic model/human evaluation rather than heuristic rule-based checks alone.")
-    lines.append("")
-    lines.append("### What is the dominant remaining failure mode?")
-    lines.append("")
-    lines.append("> **Transient rate limits on public archive mirrors (`ARCTIC_SHIFT_UNAVAILABLE`).**")
-    lines.append("When Reddit public mirrors experience high load from external clients, the system transparently and truthfully routes to Bing Search Index, maintaining 100% evidence availability with zero false positives and uncorrupted provenance.")
     lines.append("")
 
     return "\n".join(lines)

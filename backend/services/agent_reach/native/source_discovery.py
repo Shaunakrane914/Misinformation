@@ -215,222 +215,52 @@ def is_valid_content_source(
 def extract_reddit_source(url_or_text: str, query: str = "") -> Optional[SourceDiscoveryResult]:
     """
     Parse a Reddit URL and extract canonical post ID, comment ID, or subreddit.
-    
-    Supported formats:
-      - reddit.com/r/<sub_name>/comments/<post_id>/<slug>/<comment_id>
-      - reddit.com/r/<sub_name>/comments/<post_id>/<slug>
-      - reddit.com/r/<sub_name>/comments/<post_id>
-      - old.reddit.com/r/<sub_name>/comments/<post_id>
-      - reddit.com/comments/<post_id>
-      - redd.it/<post_id>
-      - reddit.com/r/<sub_name> (subreddit feed)
-    
-    Rejects:
-      - reddit.com/search?q=...
-      - reddit.com/user/<username>
-      - reddit.com/settings, generic landing pages
-      - Non-reddit domains
+    Delegates to SocialTargetResolver for robust canonicalization.
     """
     if not url_or_text or not isinstance(url_or_text, str):
         return None
 
     clean_str = resolve_bing_redirect(url_or_text.strip())
-
-    # Unwrap markdown links: [title](url)
-    md_match = re.search(r"\((https?://[^\s)]+)\)", clean_str)
-    if md_match:
-        clean_str = md_match.group(1)
-
-    try:
-        parsed = urllib.parse.urlparse(clean_str)
-    except Exception:
-        return None
-
-    netloc = parsed.netloc.lower()
-    if not ("reddit.com" in netloc or netloc == "redd.it"):
-        return None
-
-    if "//" in parsed.path:
-        return None
-
-    path = parsed.path.strip("/")
-    parts = [p for p in path.split("/") if p]
-
-    # Handle short URL: redd.it/<post_id>
-    if netloc == "redd.it":
-        if parts:
-            pid = parts[0].strip()
-            if re.match(r"^[a-z0-9]+$", pid, re.IGNORECASE):
-                return SourceDiscoveryResult(
-                    platform="reddit",
-                    canonical_url=f"https://www.reddit.com/comments/{pid}",
-                    source_type="post",
-                    external_id=pid,
-                    discovered_from="search_url_discovery" if query else "direct_input",
-                    discovery_query=query,
-                    confidence=0.95
-                )
-        return None
-
-    # Reject non-content paths (search, settings, user, etc.)
-    if not parts or parts[0] in REDDIT_RESERVED_PATHS:
-        return None
-
-    # Format 1: /r/<subreddit>/comments/<post_id>/[slug]/[comment_id]
-    if len(parts) >= 4 and parts[0] == "r" and parts[2] in ("comments", "gallery"):
-        sub_name = parts[1]
-        pid = parts[3]
-        cid = None
-        if len(parts) >= 6 and re.match(r"^[a-z0-9]+$", parts[5], re.IGNORECASE):
-            cid = parts[5]
-        elif len(parts) == 5 and re.match(r"^[a-z0-9]+$", parts[4], re.IGNORECASE) and len(parts[4]) >= 6:
-            cid = parts[4]
-        
-        if re.match(r"^[a-z0-9]+$", pid, re.IGNORECASE):
-            if cid and re.match(r"^[a-z0-9]+$", cid, re.IGNORECASE):
-                return SourceDiscoveryResult(
-                    platform="reddit",
-                    canonical_url=f"https://www.reddit.com/r/{sub_name}/comments/{pid}/_/{cid}",
-                    source_type="comment",
-                    external_id=cid,
-                    parent_id=pid,
-                    subreddit=sub_name,
-                    discovered_from="search_url_discovery" if query else "direct_input",
-                    discovery_query=query,
-                    confidence=1.0
-                )
-            return SourceDiscoveryResult(
-                platform="reddit",
-                canonical_url=f"https://www.reddit.com/r/{sub_name}/comments/{pid}",
-                source_type="post",
-                external_id=pid,
-                subreddit=sub_name,
-                discovered_from="search_url_discovery" if query else "direct_input",
-                discovery_query=query,
-                confidence=1.0
-            )
-
-    # Format 2: /comments/<post_id>
-    if len(parts) >= 2 and parts[0] == "comments":
-        pid = parts[1]
-        if re.match(r"^[a-z0-9]+$", pid, re.IGNORECASE):
-            return SourceDiscoveryResult(
-                platform="reddit",
-                canonical_url=f"https://www.reddit.com/comments/{pid}",
-                source_type="post",
-                external_id=pid,
-                discovered_from="search_url_discovery" if query else "direct_input",
-                discovery_query=query,
-                confidence=0.9
-            )
-
-    # Format 3: /r/<subreddit>/ or /r/<subreddit> (subreddit feed)
-    if len(parts) == 2 and parts[0] == "r":
-        sub_name = parts[1]
-        if sub_name not in REDDIT_RESERVED_PATHS and sub_name != "comments" and re.match(r"^[a-zA-Z0-9_]+$", sub_name):
-            return SourceDiscoveryResult(
-                platform="reddit",
-                canonical_url=f"https://www.reddit.com/r/{sub_name}",
-                source_type="subreddit",
-                external_id=sub_name,
-                subreddit=sub_name,
-                discovered_from="search_url_discovery" if query else "direct_input",
-                discovery_query=query,
-                confidence=0.85
-            )
-
+    from backend.services.agent_reach.native.social_resolver import social_target_resolver
+    resolved = social_target_resolver.resolve_reddit(clean_str)
+    if resolved:
+        return SourceDiscoveryResult(
+            platform="reddit",
+            canonical_url=resolved.canonical_url,
+            source_type=resolved.target_type,
+            external_id=resolved.external_id,
+            handle=resolved.handle,
+            subreddit=resolved.container,
+            parent_id=resolved.parent_id,
+            discovered_from="search_url_discovery" if query else "direct_input",
+            discovery_query=query,
+            confidence=resolved.confidence
+        )
     return None
 
 
 def extract_x_source(url_or_text: str, query: str = "") -> Optional[SourceDiscoveryResult]:
     """
     Parse an X/Twitter URL and extract canonical status ID or user profile handle.
-    
-    Supported formats:
-      - x.com/<handle>/status/<status_id>
-      - twitter.com/<handle>/status/<status_id>
-      - x.com/i/status/<status_id>
-      - x.com/status/<status_id>
-      - x.com/<handle> (profile)
-    
-    Rejects:
-      - x.com/search?q=...
-      - x.com/home, x.com/explore, generic landing pages
-      - Non-X domains
+    Delegates to SocialTargetResolver for robust canonicalization.
     """
     if not url_or_text or not isinstance(url_or_text, str):
         return None
 
     clean_str = resolve_bing_redirect(url_or_text.strip())
-
-    # Unwrap markdown links: [title](url)
-    md_match = re.search(r"\((https?://[^\s)]+)\)", clean_str)
-    if md_match:
-        clean_str = md_match.group(1)
-
-    try:
-        parsed = urllib.parse.urlparse(clean_str)
-    except Exception:
-        return None
-
-    netloc = parsed.netloc.lower()
-    if not ("twitter.com" in netloc or "x.com" in netloc):
-        return None
-
-    path = parsed.path.strip("/")
-    parts = [p for p in path.split("/") if p]
-
-    if not parts:
-        return None
-
-    # Format 1: /<handle>/status/<status_id>
-    if len(parts) >= 3 and parts[1] == "status":
-        handle = parts[0]
-        sid = parts[2]
-        # Status ID must be numerical
-        if re.match(r"^\d+$", sid):
-            clean_handle = handle if handle not in ("i", "status") else None
-            return SourceDiscoveryResult(
-                platform="twitter",
-                canonical_url=f"https://x.com/{clean_handle or 'i'}/status/{sid}",
-                source_type="status",
-                external_id=sid,
-                handle=clean_handle,
-                discovered_from="search_url_discovery" if query else "direct_input",
-                discovery_query=query,
-                confidence=1.0
-            )
-
-    # Format 2: /status/<status_id> or /i/status/<status_id>
-    if (len(parts) == 2 and parts[0] == "status" and re.match(r"^\d+$", parts[1])) or \
-       (len(parts) == 3 and parts[0] == "i" and parts[1] == "status" and re.match(r"^\d+$", parts[2])):
-        sid = parts[1] if parts[0] == "status" else parts[2]
+    from backend.services.agent_reach.native.social_resolver import social_target_resolver
+    resolved = social_target_resolver.resolve_twitter(clean_str)
+    if resolved:
         return SourceDiscoveryResult(
             platform="twitter",
-            canonical_url=f"https://x.com/i/status/{sid}",
-            source_type="status",
-            external_id=sid,
-            handle=None,
+            canonical_url=resolved.canonical_url,
+            source_type=resolved.target_type,
+            external_id=resolved.external_id,
+            handle=resolved.handle,
             discovered_from="search_url_discovery" if query else "direct_input",
             discovery_query=query,
-            confidence=0.95
+            confidence=resolved.confidence
         )
-
-    # Format 3: Profile URL /<handle>
-    if len(parts) == 1:
-        handle = parts[0].lstrip("@").strip()
-        if handle and handle.lower() not in TWITTER_RESERVED_PATHS and re.match(r"^[a-zA-Z0-9_]{1,25}$", handle):
-            return SourceDiscoveryResult(
-                platform="twitter",
-                canonical_url=f"https://x.com/{handle}",
-                source_type="profile",
-                external_id=handle,
-                handle=handle,
-                discovered_from="search_url_discovery" if query else "direct_input",
-                discovery_query=query,
-                confidence=0.85
-            )
-
     return None
 
 

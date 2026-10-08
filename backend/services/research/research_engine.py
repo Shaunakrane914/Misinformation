@@ -226,7 +226,8 @@ class ResearchEngine:
         accepted_candidates, initial_rejected = relevance_gate.filter_candidates(
             raw_candidates,
             target_entity=request.target,
-            domain=request.domain
+            domain=request.domain,
+            intent=request.intent
         )
         all_rejected_audit: List[Dict[str, Any]] = list(initial_rejected)
 
@@ -384,7 +385,8 @@ class ResearchEngine:
                     fu_accepted, fu_rejected = relevance_gate.filter_candidates(
                         fu_candidates,
                         target_entity=request.target,
-                        domain=request.domain
+                        domain=request.domain,
+                        intent=request.intent
                     )
                     all_rejected_audit.extend(fu_rejected)
                     for acc_item in fu_accepted:

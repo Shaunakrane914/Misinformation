@@ -504,12 +504,12 @@ class RetrievalPlanner:
                 f"{target} unauthorized seller fake store clone listing",
             ],
             "phishing_scam": [
-                f"{target} scam fake website phishing",
-                f"{target} fake giveaway promotion fraud",
+                f"{target} phishing scam",
+                f"{target} security threat phishing",
             ],
             "impersonation": [
-                f"{target} fake account impersonation",
-                f"{target} fake customer support handle verified",
+                f"{target} fake support impersonation",
+                f"{target} spoofed fake account",
             ],
             "reviews": [
                 f"{target} fake reviews review manipulation",

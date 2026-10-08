@@ -360,6 +360,82 @@ class EvidenceObservation:
         }
 
 
+class FallbackReasonCode(str, Enum):
+    """Authoritative machine-readable fallback reason taxonomy."""
+    NATIVE_NO_RESULTS = "NATIVE_NO_RESULTS"
+    NATIVE_EMPTY_CONTENT = "NATIVE_EMPTY_CONTENT"
+    NATIVE_CONTENT_TOO_SHORT = "NATIVE_CONTENT_TOO_SHORT"
+    NATIVE_EXCEPTION = "NATIVE_EXCEPTION"
+    HTTP_403 = "HTTP_403"
+    HTTP_404 = "HTTP_404"
+    HTTP_429 = "HTTP_429"
+    HTTP_5XX = "HTTP_5XX"
+    DNS_FAILURE = "DNS_FAILURE"
+    CONNECTION_TIMEOUT = "CONNECTION_TIMEOUT"
+    READ_TIMEOUT = "READ_TIMEOUT"
+    PARSER_FAILURE = "PARSER_FAILURE"
+    JS_REQUIRED = "JS_REQUIRED"
+    BOT_CHALLENGE = "BOT_CHALLENGE"
+    AUTH_REQUIRED = "AUTH_REQUIRED"
+    INVALID_URL = "INVALID_URL"
+    SSRF_BLOCK = "SSRF_BLOCK"
+    MIRROR_UNAVAILABLE = "MIRROR_UNAVAILABLE"
+    SEARCH_INDEX_EMPTY = "SEARCH_INDEX_EMPTY"
+    NORMALIZATION_FAILURE = "NORMALIZATION_FAILURE"
+    RELEVANCE_REJECTION = "RELEVANCE_REJECTION"
+    OTHER = "OTHER"
+
+
+@dataclass
+class AcquisitionAttempt:
+    """
+    Forensic record of a discrete retrieval attempt against an external backend.
+    Preserves multi-phase attempts, latency, HTTP codes, and fallback triggers.
+    """
+    attempt_id: str = field(default_factory=lambda: f"att_{uuid.uuid4().hex[:10]}")
+    agent: str = "generic"
+    query_id: str = ""
+    candidate_id: str = ""
+    source_id: str = ""
+    url: str = ""
+    requested_channel: str = ""
+    actual_channel: str = ""
+    backend: str = ""
+    retrieval_mode: str = ""
+    started_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    completed_at: str = ""
+    latency_ms: int = 0
+    status: str = "INITIATED"           # SUCCESS | FAILED | TIMEOUT | BLOCKED
+    fallback_used: bool = False
+    fallback_backend: Optional[str] = None
+    fallback_reason: Optional[str] = None
+    http_status: Optional[int] = None
+    error: Optional[str] = None
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "attempt_id": self.attempt_id,
+            "agent": self.agent,
+            "query_id": self.query_id,
+            "candidate_id": self.candidate_id,
+            "source_id": self.source_id,
+            "url": self.url,
+            "requested_channel": self.requested_channel,
+            "actual_channel": self.actual_channel,
+            "backend": self.backend,
+            "retrieval_mode": self.retrieval_mode,
+            "started_at": self.started_at,
+            "completed_at": self.completed_at,
+            "latency_ms": self.latency_ms,
+            "status": self.status,
+            "fallback_used": self.fallback_used,
+            "fallback_backend": self.fallback_backend,
+            "fallback_reason": self.fallback_reason,
+            "http_status": self.http_status,
+            "error": self.error,
+        }
+
+
 @dataclass
 class EvidenceFragment:
     """

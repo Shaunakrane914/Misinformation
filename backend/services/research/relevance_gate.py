@@ -1,77 +1,45 @@
 """
-Aegis Protocol — Hard Relevance Gate & Provenance Validation Engine
-====================================================================
-Operates strictly BEFORE finding synthesis to prevent semantically
-contaminated evidence (e.g. credit scores in Nike brand scans, bank portals
-in NVDA semiconductor scans, or medical trials in tech claims) from entering
-the evidence pool or being synthesized into findings.
+Aegis Protocol — Hard Relevance Gate & Multi-Stage Provenance Validation Engine
+================================================================================
+Operates strictly BEFORE finding synthesis and deep reading to prevent semantically
+contaminated evidence (e.g. Magic the Gathering cards in Microsoft investigations,
+unrelated Bollywood movies or Sanskrit philosophical concepts in Satya Nadella scans)
+from entering the evidence pool.
 
-Evaluates every evidence item deterministically:
-- Direct entity matching in title, snippet, and canonical URL
-- Domain-aware entity aliases and core terminology
-- Strict negative domain heuristic rejection
-- Full provenance recording: preserves accepted and rejected evidence
+Evaluates every evidence item across dedicated orthogonal dimensions:
+1. Hard Entity Gate & Multi-Word Disambiguation (entity_score)
+2. Negative Context & Domain Contamination Rejection (hard negative filters)
+3. Intent & Topic Alignment (intent_score)
+4. Source Legitimacy & Structural Platform Validity (source_quality_score)
+5. Final Acceptance Decision with stage-level rejection accounting
 """
 
 import re
 import urllib.parse
-from typing import Any, Dict, List, Optional, Set, Tuple
 from dataclasses import dataclass, field, asdict
+from typing import Any, Dict, List, Optional, Set, Tuple
 
-# Known entity alias dictionary for high-precision entity resolution
-KNOWN_ENTITY_ALIASES: Dict[str, Dict[str, Any]] = {
-    "nike": {
-        "aliases": ["nike", "air max", "jordan", "swoosh", "sneaker", "dunk", "air force 1"],
-        "negative_terms": ["cibil", "credit score", "bankbazaar", "paisabazaar", "cibil score", "loan approval", "equifax", "experian report"],
-        "domain_type": "brand"
-    },
-    "nvda": {
-        "aliases": ["nvidia", "nvda", "blackwell", "jensen", "jensen huang", "geforce", "gpu", "semiconductor", "cuda"],
-        "negative_terms": ["bank of baroda", "unesco", "teams tenant", "microsoft teams", "xiaomi", "charging", "kiosk", "mortgage", "world heritage list"],
-        "domain_type": "financial"
-    },
-    "nvidia": {
-        "aliases": ["nvidia", "nvda", "blackwell", "jensen", "jensen huang", "geforce", "gpu", "semiconductor", "cuda"],
-        "negative_terms": ["bank of baroda", "unesco", "teams tenant", "microsoft teams", "xiaomi", "charging", "kiosk", "mortgage", "world heritage list"],
-        "domain_type": "financial"
-    },
-    "tesla": {
-        "aliases": ["tesla", "tsla", "elon", "elon musk", "robotaxi", "musk", "fsd", "cybertruck", "gigafactory"],
-        "negative_terms": ["recipe", "fashion week", "horoscope", "cricket score"],
-        "domain_type": "financial"
-    },
-    "tsla": {
-        "aliases": ["tesla", "tsla", "elon", "elon musk", "robotaxi", "musk", "fsd", "cybertruck", "gigafactory"],
-        "negative_terms": ["recipe", "fashion week", "horoscope", "cricket score"],
-        "domain_type": "financial"
-    },
-    "sam altman": {
-        "aliases": ["sam altman", "altman", "openai", "sama", "@sama", "samuel altman"],
-        "negative_terms": ["google chrome", "chrome download", "download chrome", "chrome support", "printer driver", "samsung galaxy", "zhihu.com"],
-        "domain_type": "personal"
-    },
-    "whatsapp": {
-        "aliases": ["whatsapp", "red ticks", "three ticks", "tick", "meta", "messaging app"],
-        "negative_terms": ["glycemic", "endocrine", "diabetes", "insulin", "oncology", "clinical trial", "blood sugar", "therapeutic efficacy", "chemotherapy"],
-        "domain_type": "fact_check"
-    },
-    "ai regulation": {
-        "aliases": ["ai regulation", "artificial intelligence", "eu ai act", "regulation", "ai policy", "white house executive order"],
-        "negative_terms": ["recipe", "horoscope", "cricket score", "glycemic", "skin care", "dietary supplement"],
-        "domain_type": "general"
-    }
-}
+from backend.services.research.entity_resolver import (
+    ACTION_VERBS,
+    GENERAL_STOPWORDS,
+    TargetEntity,
+    entity_resolver,
+)
 
 
 @dataclass
 class RelevanceAssessment:
     evidence_id: str
-    relevance_score: float                  # 0.0 to 1.0
+    relevance_score: float                  # Composite 0.0 to 1.0
     relevance_class: str                    # DIRECT | RELATED | WEAK | UNRELATED | REJECTED
     is_accepted: bool
+    entity_score: float = 0.0               # Orthogonal entity alignment
+    intent_score: float = 0.0               # Orthogonal intent alignment
+    source_quality_score: float = 0.50      # Orthogonal source quality
     matched_entities: List[str] = field(default_factory=list)
     matched_terms: List[str] = field(default_factory=list)
     rejection_reason: Optional[str] = None
+    rejection_stage: Optional[str] = None   # HARD_GATE_ERROR | ENTITY_RESOLUTION_ERROR | RELEVANCE_REJECTION
     title: str = ""
     url: str = ""
 
@@ -81,138 +49,157 @@ class RelevanceAssessment:
 
 class RelevanceGate:
     """
-    Deterministic hybrid gate ensuring that only verifiably relevant evidence
-    survives to deep reading and grounded finding synthesis.
+    Deterministic multi-stage hybrid gate ensuring that only verifiably relevant,
+    entity-grounded evidence survives to deep reading and grounded finding synthesis.
     """
 
     def __init__(self, acceptance_threshold: float = 0.35):
         self.acceptance_threshold = acceptance_threshold
 
-    def _resolve_target_profile(self, target: str) -> Dict[str, Any]:
-        """Resolve aliases and negative terms for a target entity."""
-        t_clean = target.lower().strip()
-        
-        # Check direct alias dictionary
-        for key, profile in KNOWN_ENTITY_ALIASES.items():
-            if key in t_clean or t_clean in key:
-                return profile
-
-        # Dynamic fallback generation from target string
-        words = [w for w in re.split(r'[^a-zA-Z0-9]', t_clean) if len(w) >= 3]
-        return {
-            "aliases": [target.lower()] + words,
-            "negative_terms": [],
-            "domain_type": "general"
-        }
-
     def evaluate_item(
         self,
         item: Any,
         target_entity: str,
-        domain: str = "general"
+        domain: str = "general",
+        intent: str = ""
     ) -> RelevanceAssessment:
         """
         Evaluate a single candidate EvidenceItem or dict.
+        Separates entity matching from intent matching and applies strict hard gates.
         """
         if isinstance(item, dict):
             e_id = item.get("id") or item.get("evidence_id") or "ev_unknown"
             title = (item.get("title") or item.get("headline") or "").strip()
             snippet = (item.get("relevant_excerpt") or item.get("snippet") or item.get("content") or "").strip()
             url = item.get("canonical_url") or item.get("url") or ""
+            source = item.get("source") or item.get("platform") or ""
         else:
             e_id = getattr(item, "id", None) or getattr(item, "evidence_id", "ev_unknown")
             title = (getattr(item, "title", None) or getattr(item, "headline", "") or "").strip()
             snippet = (getattr(item, "relevant_excerpt", None) or getattr(item, "snippet", None) or getattr(item, "content", "") or "").strip()
             url = getattr(item, "canonical_url", None) or getattr(item, "url", "") or ""
-        
-        combined_text = f"{title} {snippet} {url}".lower()
+            source = getattr(item, "source_name", None) or getattr(item, "platform", "") or ""
+
+        combined_text = f"{title} {snippet} {url}".strip()
+        combined_lower = combined_text.lower()
         title_lower = title.lower()
 
-        profile = self._resolve_target_profile(target_entity)
-        aliases = profile.get("aliases", [target_entity.lower()])
-        negatives = profile.get("negative_terms", [])
+        # ── Stage 1: Resolve Canonical Target Entity ──
+        parsed_req = entity_resolver.parse_request(target_entity, domain=domain)
+        target_profile = parsed_req.target_entity
 
-        # 1. Hard Negative Check (Immediate rejection)
-        for neg in negatives:
-            if neg in combined_text:
-                return RelevanceAssessment(
-                    evidence_id=e_id,
-                    relevance_score=0.05,
-                    relevance_class="REJECTED",
-                    is_accepted=False,
-                    rejection_reason=f"Matches known off-topic contamination marker: '{neg}'",
-                    title=title,
-                    url=url
-                )
+        # ── Stage 2: Orthogonal Entity Match & Negative Disambiguation ──
+        entity_score, matched_signals, entity_reject_reason = entity_resolver.evaluate_entity_match(
+            combined_text, target_profile
+        )
 
-        # Domain-specific cross-domain contaminations:
-        # If technical / tech rumor, reject medical trial jargon unless claim is medical
-        if domain in ("fact_check", "trending", "technical", "financial", "brand"):
+        # Hard Entity Rejection: If entity score is too low or negative collision triggered
+        if entity_reject_reason or entity_score < self.acceptance_threshold:
+            rejection_stage = "ENTITY_RESOLUTION_ERROR" if "Ambiguous" in str(entity_reject_reason) or "first_name" in str(entity_reject_reason) else "HARD_GATE_ERROR"
+            return RelevanceAssessment(
+                evidence_id=e_id,
+                relevance_score=entity_score,
+                relevance_class="REJECTED",
+                is_accepted=False,
+                entity_score=entity_score,
+                intent_score=0.0,
+                source_quality_score=0.50,
+                matched_entities=matched_signals,
+                rejection_reason=entity_reject_reason or f"Failed entity gate: score {entity_score} < {self.acceptance_threshold}",
+                rejection_stage=rejection_stage,
+                title=title,
+                url=url
+            )
+
+        # ── Stage 3: Cross-Domain Medical / Non-Tech Contamination Check ──
+        if domain in ("fact_check", "trending", "technical", "financial", "brand", "personal"):
             is_medical_claim = any(m in target_entity.lower() for m in ["cancer", "diabetes", "cure", "health", "disease", "vaccine", "medicine"])
             if not is_medical_claim:
-                medical_jargon = ["glycemic efficacy", "endocrine society", "peer-reviewed clinical trials", "blood glucose", "placebo-controlled trial"]
+                medical_jargon = ["glycemic efficacy", "endocrine society", "peer-reviewed clinical trials", "blood glucose", "placebo-controlled trial", "oncology regimen"]
                 for med in medical_jargon:
-                    if med in combined_text:
+                    if med in combined_lower:
                         return RelevanceAssessment(
                             evidence_id=e_id,
                             relevance_score=0.02,
                             relevance_class="REJECTED",
                             is_accepted=False,
-                            rejection_reason=f"Unrelated clinical/medical terminology ('{med}') in non-medical claim",
+                            entity_score=entity_score,
+                            intent_score=0.0,
+                            source_quality_score=0.10,
+                            rejection_reason=f"Unrelated clinical/medical terminology ('{med}') in non-medical investigation",
+                            rejection_stage="HARD_GATE_ERROR",
                             title=title,
                             url=url
                         )
 
-        # 2. Entity / Alias Matching
-        matched_aliases = [a for a in aliases if a in combined_text]
-        matched_in_title = [a for a in aliases if a in title_lower]
-        
-        # Domain token matching (specific key nouns from target)
-        target_tokens = [w for w in re.split(r'[^a-zA-Z0-9]', target_entity.lower()) if len(w) >= 4]
-        token_matches = [t for t in target_tokens if t in combined_text]
+        # ── Stage 4: Orthogonal Intent Scoring ──
+        intent_score = 0.50  # Neutral base
+        intent_text = intent or target_entity
+        intent_tokens = [
+            w.lower() for w in re.findall(r'[a-zA-Z0-9]+', intent_text)
+            if len(w) >= 4 and w.lower() not in GENERAL_STOPWORDS and w.lower() not in ACTION_VERBS
+        ]
+        matched_intent_terms = [t for t in intent_tokens if t in combined_lower]
 
-        # 3. Calculate Normalized Relevance Score
-        score = 0.0
-        if matched_in_title:
-            score += 0.60
-        if matched_aliases:
-            score += 0.25
-        if len(token_matches) >= 2:
-            score += 0.15
-        elif len(token_matches) == 1:
-            score += 0.05
+        if intent_tokens:
+            intent_ratio = len(matched_intent_terms) / len(intent_tokens)
+            intent_score = round(min(1.0, 0.30 + 0.70 * intent_ratio), 3)
 
-        # Check URL domain alignment
+        # Boost intent if domain-specific threat/financial terms appear
+        if domain == "brand":
+            threat_terms = ["counterfeit", "fake", "phishing", "scam", "impersonation", "recall", "lawsuit", "complaint", "vulnerability"]
+            if any(t in combined_lower for t in threat_terms):
+                intent_score = min(1.0, intent_score + 0.25)
+        elif domain == "financial":
+            fin_terms = ["earnings", "revenue", "guidance", "stock", "shares", "sec", "10-k", "10-q", "quarter", "operating margin"]
+            if any(t in combined_lower for t in fin_terms):
+                intent_score = min(1.0, intent_score + 0.25)
+
+        # ── Stage 5: Source Quality & Platform Structure Check ──
+        sq_score = 0.60
         domain_name = urllib.parse.urlparse(url).netloc.lower() if url else ""
-        if any(a.replace(" ", "") in domain_name for a in aliases):
-            score = min(1.0, score + 0.20)
+        if domain_name:
+            if any(ext in domain_name for ext in [".gov", ".edu", "sec.gov", "microsoft.com", "reuters.com", "bloomberg.com", "wsj.com", "cnbc.com"]):
+                sq_score = 0.95
+            elif any(plat in domain_name for plat in ["x.com", "twitter.com", "reddit.com", "youtube.com"]):
+                sq_score = 0.85
+            elif "stackoverflow.com" in domain_name or "zhihu.com" in domain_name:
+                sq_score = 0.40  # Generic developer / Q&A forums penalized unless tech domain
 
-        score = round(min(1.0, max(0.0, score)), 3)
+        # ── Stage 6: Calculate Composite Relevance Score ──
+        # Formula: 50% entity match, 35% intent match, 15% source quality
+        composite_score = round(0.50 * entity_score + 0.35 * intent_score + 0.15 * sq_score, 3)
 
-        # 4. Classify
-        if score >= 0.80 and matched_in_title:
+        # Classify
+        if composite_score >= 0.80 and any("canonical_phrase" in s or "token_cooccurrence" in s for s in matched_signals):
             rel_class = "DIRECT"
-        elif score >= 0.50:
+        elif composite_score >= 0.55:
             rel_class = "RELATED"
-        elif score >= self.acceptance_threshold:
+        elif composite_score >= self.acceptance_threshold:
             rel_class = "WEAK"
         else:
             rel_class = "UNRELATED"
 
-        is_acc = score >= self.acceptance_threshold
+        is_acc = composite_score >= self.acceptance_threshold and entity_score >= self.acceptance_threshold
 
         reason = None
+        rejection_stage = None
         if not is_acc:
-            reason = f"Insufficient entity relevance score ({score} < {self.acceptance_threshold}); zero target entity tokens matched in title."
+            reason = f"Composite relevance score below threshold ({composite_score} < {self.acceptance_threshold})"
+            rejection_stage = "SEMANTIC_RANKING_ERROR"
 
         return RelevanceAssessment(
             evidence_id=e_id,
-            relevance_score=score,
+            relevance_score=composite_score,
             relevance_class=rel_class,
             is_accepted=is_acc,
-            matched_entities=matched_aliases,
-            matched_terms=token_matches,
+            entity_score=entity_score,
+            intent_score=intent_score,
+            source_quality_score=sq_score,
+            matched_entities=matched_signals,
+            matched_terms=matched_intent_terms,
             rejection_reason=reason,
+            rejection_stage=rejection_stage,
             title=title,
             url=url
         )
@@ -221,17 +208,20 @@ class RelevanceGate:
         self,
         candidates: List[Any],
         target_entity: str,
-        domain: str = "general"
+        domain: str = "general",
+        intent: str = ""
     ) -> Tuple[List[Any], List[Dict[str, Any]]]:
         """
         Partition candidates into accepted items and rejected audit records.
-        Updates item metadata with relevance assessment.
+        Updates item metadata with detailed multi-dimensional assessment.
         """
         accepted = []
         rejected_audit = []
 
         for item in candidates:
-            assessment = self.evaluate_item(item, target_entity=target_entity, domain=domain)
+            assessment = self.evaluate_item(
+                item, target_entity=target_entity, domain=domain, intent=intent
+            )
             
             # Tag metadata on object if supported
             if hasattr(item, "relevance_score"):
@@ -239,12 +229,18 @@ class RelevanceGate:
             if hasattr(item, "metadata") and isinstance(item.metadata, dict):
                 item.metadata["relevance_class"] = assessment.relevance_class
                 item.metadata["relevance_score"] = assessment.relevance_score
+                item.metadata["entity_score"] = assessment.entity_score
+                item.metadata["intent_score"] = assessment.intent_score
                 item.metadata["matched_entities"] = assessment.matched_entities
                 item.metadata["rejection_reason"] = assessment.rejection_reason
+                item.metadata["rejection_stage"] = assessment.rejection_stage
             elif isinstance(item, dict):
                 item["relevance_score"] = assessment.relevance_score
                 item["relevance_class"] = assessment.relevance_class
+                item["entity_score"] = assessment.entity_score
+                item["intent_score"] = assessment.intent_score
                 item["rejection_reason"] = assessment.rejection_reason
+                item["rejection_stage"] = assessment.rejection_stage
 
             if assessment.is_accepted:
                 accepted.append(item)

@@ -52,6 +52,7 @@ KNOWN_BRAND_CATALOG = {
     "SONY": {"brand": "Sony", "products": ["PLAYSTATION 5", "PS5", "BRAVIA", "WH-1000XM5", "XPERIA"]},
     "TESLA": {"brand": "Tesla", "products": ["MODEL 3", "MODEL Y", "MODEL S", "MODEL X", "CYBERTRUCK", "FSD"]},
     "ADIDAS": {"brand": "Adidas", "products": ["ULTRABOOST", "SAMBA", "STAN SMITH", "YEEZY", "GAZELLE"]},
+    "MICROSOFT": {"brand": "Microsoft", "products": ["WINDOWS", "AZURE", "OFFICE", "COPILOT", "XBOX", "SURFACE", "DEFENDER", "TEAMS"]},
 }
 
 
@@ -73,14 +74,18 @@ class BrandShieldAgent:
         Normalize and resolve brand vs product distinctions.
         E.g. 'Nike Air Max' -> brand: 'Nike', product: 'Air Max', type: 'product'.
         """
-        clean_text = raw_input.strip()
+        from backend.services.research.entity_resolver import entity_resolver
+        parsed_req = entity_resolver.parse_request(raw_input, domain="brand")
+        canonical_target = parsed_req.target_entity.canonical_name
+
+        clean_text = canonical_target if canonical_target != "Unknown" else raw_input.strip()
         upper_text = clean_text.upper()
 
         detected_brand = clean_text
         detected_product = None
         entity_type = "brand"
-        aliases: List[str] = []
-        confidence = 0.70
+        aliases: List[str] = parsed_req.target_entity.aliases or []
+        confidence = 0.85
 
         for key, info in KNOWN_BRAND_CATALOG.items():
             if key in upper_text or upper_text.startswith(key):
@@ -94,7 +99,7 @@ class BrandShieldAgent:
                 break
 
         # Fallback heuristic: check if input has 3+ words (likely brand + product)
-        if entity_type == "brand" and len(clean_text.split()) >= 2:
+        if entity_type == "brand" and len(clean_text.split()) >= 2 and detected_brand not in [b["brand"] for b in KNOWN_BRAND_CATALOG.values()]:
             parts = clean_text.split()
             detected_brand = parts[0]
             detected_product = " ".join(parts[1:])
@@ -866,7 +871,7 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
         """
         effective_name = (brand_name or brand_input or kwargs.get("brand") or "").strip()
         start_time = datetime.utcnow()
-        clean_input = query.strip() if query else effective_name
+        clean_input = effective_name if effective_name else (query.strip() if query else "")
         logger.info(f"[BrandShield 2.0] Executing scan for input: '{clean_input}'")
 
         # 1. Entity Resolution

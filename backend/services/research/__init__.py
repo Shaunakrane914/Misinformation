@@ -21,7 +21,9 @@ from backend.services.research.research_models import (
 )
 from backend.services.research.source_quality import SourceQualityEngine, source_quality_engine
 from backend.services.research.source_independence import SourceIndependenceEngine, source_independence_engine
-from backend.services.research.candidate_ranker import CandidateRanker, candidate_ranker
+from backend.services.research.relevance_gate import RelevanceGate, relevance_gate, RelevanceAssessment
+from backend.services.research.entity_resolver import EntityResolver, entity_resolver, TargetEntity, ParsedInvestigationRequest
+from backend.services.research.candidate_ranker import CandidateRanker, candidate_ranker, CandidateReranker, candidate_reranker
 from backend.services.research.deep_reader import DeepReader, deep_reader
 from backend.services.research.passage_extractor import PassageExtractor, passage_extractor
 from backend.services.research.primary_source_escalator import PrimarySourceEscalator, primary_source_escalator
@@ -34,7 +36,39 @@ from backend.services.research.research_engine import ResearchEngine, research_e
 __all__ = [
     "AtomicClaim",
     "CandidateRanker",
+    "CandidateReranker",
     "ConfidenceLevel",
+    "ContentDepth",
+    "ContradictionDetector",
+    "ContradictionType",
+    "CorroborationEngine",
+    "DeepReader",
+    "EntityResolver",
+    "EvidenceGraphBuilder",
+    "EvidenceItem",
+    "Finding",
+    "FindingType",
+    "ParsedInvestigationRequest",
+    "PassageExtractor",
+    "PrimarySourceEscalator",
+    "RelevanceAssessment",
+    "RelevanceGate",
+    "ResearchBudget",
+    "ResearchEngine",
+    "ResearchRequest",
+    "ResearchResult",
+    "SourceIndependenceEngine",
+    "SourceQualityEngine",
+    "SourceRole",
+    "SourceTier",
+    "TargetEntity",
+    "TemporalStatus",
+    "candidate_ranker",
+    "candidate_reranker",
+    "contradiction_detector",
+    "corroboration_engine",
+    "entity_resolver",
+    "relevance_gate",
     "ContentDepth",
     "ContradictionDetector",
     "ContradictionType",

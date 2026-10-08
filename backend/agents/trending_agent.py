@@ -978,7 +978,7 @@ class TrendingAgent:
             ex = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:
                 fut = ex.submit(research_engine.investigate, research_req)
-                research_res = fut.result(timeout=10.0)
+                research_res = fut.result(timeout=35.0)
             finally:
                 ex.shutdown(wait=False, cancel_futures=True)
             retrieval_trace = research_res.telemetry

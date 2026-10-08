@@ -71,7 +71,12 @@ class NativeExecutor:
             }
             resp = Fetcher.get(clean_url, headers=headers, timeout=timeout)
             status_code = getattr(resp, "status", 200)
-            raw_text = resp.text if hasattr(resp, "text") else str(resp)
+            if hasattr(resp, "body") and isinstance(resp.body, bytes):
+                raw_text = resp.body.decode("utf-8", errors="replace")
+            elif hasattr(resp, "html_content"):
+                raw_text = str(resp.html_content)
+            else:
+                raw_text = resp.text if hasattr(resp, "text") else str(resp)
 
             # Clean HTML to readable text/markdown
             import re
@@ -84,8 +89,33 @@ class NativeExecutor:
             logger.debug(f"[NativeExecutor] Scrapling read error for {clean_url}: {e_scrapling}")
             status_code = 500
 
+        # Fast HTTP fallback if scrapling returned insufficient text
+        if len(markdown_text) < 100:
+            try:
+                import urllib.request
+                import re
+                req = urllib.request.Request(
+                    clean_url,
+                    headers={
+                        "User-Agent": _USER_AGENT,
+                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+                    }
+                )
+                with urllib.request.urlopen(req, timeout=timeout) as resp:
+                    raw_bytes = resp.read(MAX_OUTPUT_BYTES)
+                    raw_text = raw_bytes.decode("utf-8", errors="replace")
+                    cleaned = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", raw_text, flags=re.IGNORECASE)
+                    cleaned = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", cleaned, flags=re.IGNORECASE)
+                    cleaned = re.sub(r"<[^>]+>", " ", cleaned)
+                    u_text = re.sub(r"\s+", " ", cleaned).strip()
+                    if len(u_text) > len(markdown_text):
+                        markdown_text = u_text
+                        active_backend = "native_http_reader"
+            except Exception as e_http:
+                logger.debug(f"[NativeExecutor] Fast HTTP fallback notice for {clean_url}: {e_http}")
+
         # Secondary: Playwright Rescue (only if lightweight HTTP returned empty/blocked)
-        if len(markdown_text) < 250 or status_code in (403, 503):
+        if len(markdown_text) < 100 or status_code in (403, 503):
             try:
                 from playwright.sync_api import sync_playwright
                 with sync_playwright() as p:

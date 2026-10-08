@@ -88,6 +88,13 @@ def is_ip_blocked(ip_str: str) -> bool:
         return True
 
 
+import time
+
+# Thread-safe in-memory DNS resolution cache: host -> (is_valid, error_msg, expiry_timestamp)
+_DNS_CACHE: dict = {}
+_DNS_CACHE_TTL = 300.0  # 5 minutes
+
+
 def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool, str]:
     """
     Validate whether a given URL is safe to fetch from the server.
@@ -136,23 +143,42 @@ def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool,
         if port not in ALLOWED_PORTS:
             return False, f"Port {port} is not permitted. Only standard web ports (80, 443) are allowed."
 
-    # 6. Check if hostname is directly an IP literal
+    # 6. Check DNS cache
+    now = time.time()
+    if host_lower in _DNS_CACHE:
+        cached_valid, cached_err, expiry = _DNS_CACHE[host_lower]
+        if now < expiry:
+            return cached_valid, cached_err
+
+    # 7. Check if hostname is directly an IP literal
     try:
         ip_obj = ipaddress.ip_address(host_lower)
         if is_ip_blocked(str(ip_obj)):
+            _DNS_CACHE[host_lower] = (False, f"Direct access to private or reserved IP '{host}' is blocked (SSRF protection).", now + _DNS_CACHE_TTL)
             return False, f"Direct access to private or reserved IP '{host}' is blocked (SSRF protection)."
     except ValueError:
-        # Hostname is a domain name, resolve via DNS
+        # Hostname is a domain name, resolve via DNS with bounded timeout
+        old_timeout = socket.getdefaulttimeout()
         try:
+            socket.setdefaulttimeout(2.5)
             addr_info = socket.getaddrinfo(host_lower, None)
             resolved_ips = {item[4][0] for item in addr_info if item[4]}
             for ip in resolved_ips:
                 if is_ip_blocked(ip):
-                    return False, f"Hostname '{host}' resolved to restricted IP address '{ip}' (SSRF protection)."
+                    err = f"Hostname '{host}' resolved to restricted IP address '{ip}' (SSRF protection)."
+                    _DNS_CACHE[host_lower] = (False, err, now + _DNS_CACHE_TTL)
+                    return False, err
+            _DNS_CACHE[host_lower] = (True, "", now + _DNS_CACHE_TTL)
         except socket.gaierror as e:
-            return False, f"DNS resolution failed for hostname '{host}': {e}"
+            err = f"DNS resolution failed for hostname '{host}': {e}"
+            _DNS_CACHE[host_lower] = (False, err, now + 60.0)
+            return False, err
         except Exception as e:
-            return False, f"Error validating host '{host}': {e}"
+            err = f"Error validating host '{host}': {e}"
+            _DNS_CACHE[host_lower] = (False, err, now + 60.0)
+            return False, err
+        finally:
+            socket.setdefaulttimeout(old_timeout)
 
     return True, ""
 

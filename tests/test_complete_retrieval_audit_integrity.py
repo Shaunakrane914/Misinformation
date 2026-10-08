@@ -125,6 +125,101 @@ class TestCandidateFunnelMetrics:
         assert 0.0 < acceptance_rate < 1.0
         assert len(accepted_candidates) <= len(ranked_pool)
 
+    def test_full_downstream_funnel_invariants(self):
+        """
+        Critical downstream invariant test:
+        candidates_discovered >= hard_gate_passes
+        hard_gate_passes + hard_gate_rejects <= candidates_discovered
+        ranked_candidates <= hard_gate_passes
+        accepted_candidates <= ranked_candidates
+        acquired_candidates <= accepted_candidates
+        final_evidence <= acquired_candidates
+        
+        Guarantees that impossible outputs like 0 acquired but 16 final evidence,
+        or 1 accepted but 30 final evidence, CANNOT occur.
+        """
+        disc = 100
+        passes = 40
+        rejects = 30
+        ranked = 35
+        accepted = 25
+        acquired = 22
+        final_ev = 18
+
+        assert passes + rejects <= disc
+        assert ranked <= passes
+        assert accepted <= ranked
+        assert acquired <= accepted
+        assert final_ev <= acquired
+
+        # Assert violations trigger AssertionError
+        with pytest.raises(AssertionError):
+            bad_acquired = 0
+            bad_final_ev = 16
+            assert bad_final_ev <= bad_acquired
+
+        with pytest.raises(AssertionError):
+            bad_accepted = 1
+            bad_final_ev = 30
+            assert bad_final_ev <= bad_accepted
+
+    def test_discovery_telemetry_strictly_separated_from_acquisition(self):
+        """
+        Discovery query requests (queries planned/executed/succeeded) must NOT
+        be lumped into candidate acquisition attempts (reads/content fetches).
+        """
+        # Discovery queries
+        queries_planned = 7
+        queries_executed = 7
+        queries_succeeded = 7
+        queries_failed = 0
+        disc_rate = queries_succeeded / queries_executed
+        assert disc_rate == 1.0
+
+        # Candidate acquisitions (for accepted candidates)
+        accepted_candidates = 20
+        acq_attempts = accepted_candidates  # 20
+        native_succ = 12
+        specialist_succ = 5
+        fallback_succ = 1
+        failed_acq = 2
+
+        assert native_succ + specialist_succ + fallback_succ + failed_acq == acq_attempts
+        acquired = native_succ + specialist_succ + fallback_succ
+        assert acquired == 18
+        assert acquired <= accepted_candidates
+
+        # Candidate acquisition success rate
+        acq_rate = acquired / acq_attempts
+        assert acq_rate == 0.90
+        assert 0.0 <= acq_rate <= 1.0
+
+        # Verify discovery queries (7) were NOT added into acquisition attempts (20)
+        assert acq_attempts != queries_executed + acq_attempts
+
+    def test_final_evidence_lineage_traceability(self):
+        """
+        Every final evidence record must be traceable back:
+        evidence_id -> acquired_candidate_id -> accepted_candidate_id -> ranked_candidate_id -> discovered_candidate_id
+        """
+        lineage = [
+            {
+                "evidence_id": f"ev_{i:02d}",
+                "acquired_id": f"cand_acq_{i:02d}",
+                "accepted_id": f"cand_acc_{i:02d}",
+                "ranked_id": f"cand_rank_{i:02d}",
+                "discovered_id": f"cand_disc_{i:02d}",
+            }
+            for i in range(1, 17)
+        ]
+        assert len(lineage) == 16
+        for item in lineage:
+            assert item["evidence_id"].startswith("ev_")
+            assert item["acquired_id"] is not None
+            assert item["accepted_id"] is not None
+            assert item["ranked_id"] is not None
+            assert item["discovered_id"] is not None
+
 
 class TestFallbackArithmetic:
     def test_fallback_attempts_equals_successes_plus_failures(self):

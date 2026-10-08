@@ -252,6 +252,8 @@ class NativeNormalizer:
                 }
             )
             fragments.append(frag)
+        return fragments
+
     @staticmethod
     def normalize_arctic_shift_posts(
         raw_posts: List[Dict[str, Any]],

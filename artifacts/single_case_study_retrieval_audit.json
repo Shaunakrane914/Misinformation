@@ -1,7 +1,7 @@
 {
   "case_study_prompt": "Investigate Microsoft and Satya Nadella using current public information. Identify important Microsoft brand/security threats, what is trending around Microsoft, important MSFT financial/market developments, and notable recent public activity involving Satya Nadella.",
-  "execution_timestamp": "2026-10-08T04:01:44.971783+00:00",
-  "total_wall_clock_seconds": 88.3,
+  "execution_timestamp": "2026-10-08T04:43:48.921016+00:00",
+  "total_wall_clock_seconds": 91.79,
   "comparison_table": [
     {
       "Metric": "Channels planned",
@@ -14,83 +14,83 @@
       "Metric": "Discovery requests",
       "BrandShield": 19,
       "Trending": 24,
-      "Scout": 38,
+      "Scout": 34,
       "Personal Watch": 18
     },
     {
       "Metric": "Candidates discovered",
-      "BrandShield": 57,
-      "Trending": 112,
-      "Scout": 155,
-      "Personal Watch": 77
+      "BrandShield": 62,
+      "Trending": 109,
+      "Scout": 153,
+      "Personal Watch": 76
     },
     {
       "Metric": "Candidates accepted",
-      "BrandShield": 17,
-      "Trending": 30,
-      "Scout": 27,
-      "Personal Watch": 17
+      "BrandShield": 12,
+      "Trending": 34,
+      "Scout": 32,
+      "Personal Watch": 16
     },
     {
       "Metric": "Acquisition attempts",
       "BrandShield": 19,
       "Trending": 24,
-      "Scout": 42,
+      "Scout": 38,
       "Personal Watch": 22
     },
     {
       "Metric": "Successful acquisitions",
-      "BrandShield": 13,
-      "Trending": 24,
-      "Scout": 40,
-      "Personal Watch": 21
+      "BrandShield": 12,
+      "Trending": 22,
+      "Scout": 37,
+      "Personal Watch": 19
     },
     {
       "Metric": "Failed acquisitions",
-      "BrandShield": 6,
-      "Trending": 0,
-      "Scout": 2,
-      "Personal Watch": 1
+      "BrandShield": 7,
+      "Trending": 2,
+      "Scout": 1,
+      "Personal Watch": 3
     },
     {
       "Metric": "Unique evidence records",
-      "BrandShield": 17,
-      "Trending": 30,
-      "Scout": 27,
-      "Personal Watch": 17
+      "BrandShield": 12,
+      "Trending": 34,
+      "Scout": 32,
+      "Personal Watch": 16
     },
     {
       "Metric": "Unique websites/domains",
-      "BrandShield": 7,
-      "Trending": 2,
-      "Scout": 2,
+      "BrandShield": 6,
+      "Trending": 6,
+      "Scout": 7,
       "Personal Watch": 5
     },
     {
       "Metric": "Independent source groups",
-      "BrandShield": 7,
-      "Trending": 9,
-      "Scout": 4,
-      "Personal Watch": 17
+      "BrandShield": 6,
+      "Trending": 13,
+      "Scout": 9,
+      "Personal Watch": 16
     },
     {
       "Metric": "Direct acquisitions",
-      "BrandShield": 5,
-      "Trending": 9,
-      "Scout": 11,
-      "Personal Watch": 5
+      "BrandShield": 7,
+      "Trending": 16,
+      "Scout": 23,
+      "Personal Watch": 9
     },
     {
       "Metric": "Search-index acquisitions",
-      "BrandShield": 2,
-      "Trending": 0,
-      "Scout": 2,
+      "BrandShield": 1,
+      "Trending": 1,
+      "Scout": 3,
       "Personal Watch": 0
     },
     {
       "Metric": "Mirror acquisitions",
       "BrandShield": 4,
-      "Trending": 6,
+      "Trending": 5,
       "Scout": 8,
       "Personal Watch": 6
     },
@@ -103,38 +103,38 @@
     },
     {
       "Metric": "Legacy scraper fallbacks",
-      "BrandShield": 8,
-      "Trending": 9,
-      "Scout": 17,
-      "Personal Watch": 10
+      "BrandShield": 7,
+      "Trending": 2,
+      "Scout": 0,
+      "Personal Watch": 5
     },
     {
       "Metric": "Total fallbacks",
-      "BrandShield": 10,
-      "Trending": 9,
-      "Scout": 21,
-      "Personal Watch": 10
+      "BrandShield": 9,
+      "Trending": 3,
+      "Scout": 4,
+      "Personal Watch": 5
     },
     {
       "Metric": "Fallback success",
-      "BrandShield": 4,
-      "Trending": 9,
-      "Scout": 19,
-      "Personal Watch": 9
+      "BrandShield": 2,
+      "Trending": 1,
+      "Scout": 3,
+      "Personal Watch": 2
     },
     {
       "Metric": "Final evidence fragments",
-      "BrandShield": 17,
-      "Trending": 30,
-      "Scout": 27,
-      "Personal Watch": 17
+      "BrandShield": 12,
+      "Trending": 34,
+      "Scout": 32,
+      "Personal Watch": 16
     },
     {
       "Metric": "Total latency",
-      "BrandShield": "17.73s",
-      "Trending": "13.53s",
-      "Scout": "39.46s",
-      "Personal Watch": "17.57s"
+      "BrandShield": "17.27s",
+      "Trending": "10.87s",
+      "Scout": "41.36s",
+      "Personal Watch": "22.29s"
     }
   ],
   "fallback_table": [
@@ -142,14 +142,14 @@
       "Agent": "BrandShield",
       "Fallback Type": "Bing Search Index",
       "Attempts": 2,
-      "Successes": 2,
-      "Failures": 0
+      "Successes": 1,
+      "Failures": 1
     },
     {
       "Agent": "BrandShield",
       "Fallback Type": "Legacy News Scraper",
-      "Attempts": 5,
-      "Successes": 1,
+      "Attempts": 4,
+      "Successes": 0,
       "Failures": 4
     },
     {
@@ -168,58 +168,37 @@
     },
     {
       "Agent": "Trending",
-      "Fallback Type": "Legacy News Scraper",
-      "Attempts": 7,
-      "Successes": 7,
+      "Fallback Type": "Bing Search Index",
+      "Attempts": 1,
+      "Successes": 1,
       "Failures": 0
     },
     {
       "Agent": "Trending",
-      "Fallback Type": "Legacy Web Scraper",
+      "Fallback Type": "Legacy News Scraper",
       "Attempts": 2,
-      "Successes": 2,
-      "Failures": 0
+      "Successes": 0,
+      "Failures": 2
     },
     {
       "Agent": "Scout",
       "Fallback Type": "Bing Search Index",
       "Attempts": 4,
-      "Successes": 2,
-      "Failures": 2
-    },
-    {
-      "Agent": "Scout",
-      "Fallback Type": "Legacy News Scraper",
-      "Attempts": 14,
-      "Successes": 14,
-      "Failures": 0
-    },
-    {
-      "Agent": "Scout",
-      "Fallback Type": "Legacy Web Scraper",
-      "Attempts": 3,
       "Successes": 3,
-      "Failures": 0
+      "Failures": 1
     },
     {
       "Agent": "Personal Watch",
       "Fallback Type": "Legacy News Scraper",
-      "Attempts": 5,
-      "Successes": 5,
-      "Failures": 0
+      "Attempts": 2,
+      "Successes": 0,
+      "Failures": 2
     },
     {
       "Agent": "Personal Watch",
       "Fallback Type": "Legacy Reach Scraper",
-      "Attempts": 3,
-      "Successes": 3,
-      "Failures": 0
-    },
-    {
-      "Agent": "Personal Watch",
-      "Fallback Type": "Legacy Web Scraper",
-      "Attempts": 1,
-      "Successes": 1,
+      "Attempts": 2,
+      "Successes": 2,
       "Failures": 0
     },
     {
@@ -234,16 +213,16 @@
     {
       "Agent": "BrandShield",
       "Mirror Channel": "X / FxTwitter (Zero-auth)",
-      "Attempts": 3,
-      "Successes": 3,
+      "Attempts": 1,
+      "Successes": 1,
       "Failures": 0,
       "Final Evidence Count": 2
     },
     {
       "Agent": "BrandShield",
       "Mirror Channel": "Reddit / Arctic Shift (Zero-auth)",
-      "Attempts": 1,
-      "Successes": 1,
+      "Attempts": 3,
+      "Successes": 3,
       "Failures": 0,
       "Final Evidence Count": 3
     },
@@ -258,8 +237,8 @@
     {
       "Agent": "Trending",
       "Mirror Channel": "Reddit / Arctic Shift (Zero-auth)",
-      "Attempts": 3,
-      "Successes": 3,
+      "Attempts": 2,
+      "Successes": 2,
       "Failures": 0,
       "Final Evidence Count": 0
     },
@@ -299,7 +278,7 @@
   "agents": {
     "BrandShield": {
       "agent": "BrandShield",
-      "latency_seconds": 17.73,
+      "latency_seconds": 17.27,
       "discovery": {
         "channels_planned": [
           "bilibili",
@@ -320,12 +299,12 @@
           "youtube"
         ],
         "discovery_requests_attempted": 19,
-        "discovery_requests_successful": 13,
-        "discovery_requests_failed": 6,
-        "candidates_discovered": 57,
-        "candidates_passing_hard_gates": 17,
-        "candidates_rejected": 40,
-        "candidates_selected_for_acquisition": 17,
+        "discovery_requests_successful": 12,
+        "discovery_requests_failed": 7,
+        "candidates_discovered": 62,
+        "candidates_passing_hard_gates": 12,
+        "candidates_rejected": 50,
+        "candidates_selected_for_acquisition": 12,
         "top_5_candidates": [
           {
             "title": "Post by Darren \u2018Doc\u2019 Robinson (MVP) \ud83e\udeaa (@darrenjrobinson)",
@@ -370,73 +349,72 @@
             "url": "https://reddit.com/r/EDH/comments/u4vtoh/help_with_an_investigate_themed_deck/"
           },
           {
-            "title": "50 Kajol devgan sexy photos - Chut gaand ke xxx images",
-            "url": "https://www.bollynudez.com/kajol-nude-xxx-sex-photos/"
+            "title": "Protecting organizations from AI-assisted executive impersonation and invoice fraud - Microsoft",
+            "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPSk1NSWZTSENyMzlKTUYyZHRLcmphdEFFM0NTWlhwbGt3eTk1NlAxS2tyeG5CWUkyS202R3lwdlZNOFBOdEh5VFVnejZ6U0JWd0VIdF81QmZJY29nVFViSHFLaml1VlpNTWpIZHVvVmJraTE2N1lDSTljM0NuS1MxU0d4LVlFLUsxODhRR01ubklsdHBqTTAwUWpfdkZWc29EM1R2YUJZdVQ5Q0cyWjlCLVJ6WDQ4M01pLS1Wd1BoSWFmYVFuS0NPRWhVRVc?oc=5"
           },
           {
-            "title": "Kajol Devgan Without Clothes Actress Handjob Insta Exclusive Video",
-            "url": "https://deephot.net/kajol-devgan-without-clothes-actress-handjob-insta-exclusive-video/"
+            "title": "\ud83d\udd14\u9ad8\u9891\u5355\u8bcd\uff1a investigate",
+            "url": "http://www.bilibili.com/video/av113383579849735"
+          },
+          {
+            "title": "Download DuckDuckGo for Windows, Mac, iOS and Android",
+            "url": "https://duckduckgo.com/app"
           },
           {
             "title": "Disable cache for specific RUN commands - Stack Overflow",
             "url": "https://stackoverflow.com/questions/35134713/disable-cache-for-specific-run-commands"
           },
           {
-            "title": "Duckduckgo gives no results and is blank : r/duckduckgo - Reddit",
-            "url": "https://www.reddit.com/r/duckduckgo/comments/i7pg0f/duckduckgo_gives_no_results_and_is_blank/"
-          },
-          {
-            "title": "Protecting organizations from AI-assisted executive impersonation and invoice fraud - Microsoft",
-            "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPSk1NSWZTSENyMzlKTUYyZHRLcmphdEFFM0NTWlhwbGt3eTk1NlAxS2tyeG5CWUkyS202R3lwdlZNOFBOdEh5VFVnejZ6U0JWd0VIdF81QmZJY29nVFViSHFLaml1VlpNTWpIZHVvVmJraTE2N1lDSTljM0NuS1MxU0d4LVlFLUsxODhRR01ubklsdHBqTTAwUWpfdkZWc29EM1R2YUJZdVQ5Q0cyWjlCLVJ6WDQ4M01pLS1Wd1BoSWFmYVFuS0NPRWhVRVc?oc=5"
+            "title": "ChatGPT Among Top 10 Most Impersonated Brands in Phishing Attacks, Says Check Point - Infosecurity Magazine",
+            "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOR2ZWSkE4eGxwZGdJMjlaTnJMVnVON0x0TTg3NW0wRERKU1hRTEdGeGRKN2hzN3ItRE5GNTdlSGdwaGpVOWFNLWVrVmw4U01COWRFSG8xbkE3TWk2VlR4YkJfMmQyWVdnVEx2YlUwS1hXUW5rQmU5b091ellPd1M3Vk1n?oc=5"
           }
         ]
       },
       "acquisition": {
         "total_acquisition_attempts": 19,
-        "successful_acquisitions": 13,
-        "failed_acquisitions": 6,
-        "empty_acquisitions": 6,
+        "successful_acquisitions": 12,
+        "failed_acquisitions": 7,
+        "empty_acquisitions": 7,
         "actual_documents_fetched": 0,
-        "normalized_evidence_fragments_produced": 17,
-        "unique_urls_acquired": 17,
-        "unique_domains_acquired": 7,
+        "normalized_evidence_fragments_produced": 12,
+        "unique_urls_acquired": 12,
+        "unique_domains_acquired": 6,
         "domain_list": [
-          "www.bollynudez.com",
-          "www.reddit.com",
-          "deephot.net",
-          "reddit.com",
+          "duckduckgo.com",
           "news.google.com",
+          "stackoverflow.com",
           "x.com",
-          "stackoverflow.com"
+          "www.bilibili.com",
+          "reddit.com"
         ],
-        "source_groups_count": 10,
-        "independent_source_groups_count": 7
+        "source_groups_count": 9,
+        "independent_source_groups_count": 6
       },
       "fallback": {
-        "total_fallback_attempts": 10,
+        "total_fallback_attempts": 9,
         "search_index_fallbacks": 2,
-        "legacy_scraper_fallbacks": 8,
+        "legacy_scraper_fallbacks": 7,
         "browser_playwright_rescue_attempts": 0,
-        "reddit_mirror_attempts": 1,
-        "x_fxtwitter_attempts": 3,
+        "reddit_mirror_attempts": 3,
+        "x_fxtwitter_attempts": 1,
         "youtube_fallback_attempts": 2,
         "web_fallback_attempts": 1,
-        "news_fallback_attempts": 3,
+        "news_fallback_attempts": 2,
         "fallbacks_by_type": {
-          "Legacy News Scraper": {
-            "attempts": 5,
-            "successes": 1,
-            "failures": 4
-          },
           "Legacy Web Scraper": {
             "attempts": 1,
             "successes": 1,
             "failures": 0
           },
+          "Legacy News Scraper": {
+            "attempts": 4,
+            "successes": 0,
+            "failures": 4
+          },
           "Bing Search Index": {
             "attempts": 2,
-            "successes": 2,
-            "failures": 0
+            "successes": 1,
+            "failures": 1
           },
           "Legacy YouTube Scraper": {
             "attempts": 2,
@@ -444,8 +422,8 @@
             "failures": 2
           }
         },
-        "fallback_successes": 4,
-        "fallback_failures": 6
+        "fallback_successes": 2,
+        "fallback_failures": 7
       },
       "channel_accounting": [
         {
@@ -456,7 +434,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1138
+          "latency_ms": 887
         },
         {
           "requested_channel": "web",
@@ -466,57 +444,17 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1213
+          "latency_ms": 1007
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2094
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "DEGRADED",
-          "latency_ms": 2278
-        },
-        {
-          "requested_channel": "rss",
-          "actual_retrieval_channel": "rss",
-          "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
-          "status": "DEGRADED",
-          "latency_ms": 2336
-        },
-        {
-          "requested_channel": "rss",
-          "actual_retrieval_channel": "rss",
-          "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
-          "status": "DEGRADED",
-          "latency_ms": 2451
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "DEGRADED",
-          "latency_ms": 2508
+          "latency_ms": 1420
         },
         {
           "requested_channel": "web",
@@ -526,7 +464,47 @@
           "fallback_used": true,
           "fallback_reason": "BING_SEARCH_UNAVAILABLE",
           "status": "SUCCESS",
-          "latency_ms": 4979
+          "latency_ms": 1565
+        },
+        {
+          "requested_channel": "rss",
+          "actual_retrieval_channel": "rss",
+          "backend": "feedparser",
+          "retrieval_mode": "legacy_scraper_fallback",
+          "fallback_used": true,
+          "fallback_reason": "RSS_UNAVAILABLE",
+          "status": "DEGRADED",
+          "latency_ms": 1923
+        },
+        {
+          "requested_channel": "news",
+          "actual_retrieval_channel": "news",
+          "backend": "Jina Reader",
+          "retrieval_mode": "legacy_scraper_fallback",
+          "fallback_used": true,
+          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "status": "DEGRADED",
+          "latency_ms": 2329
+        },
+        {
+          "requested_channel": "rss",
+          "actual_retrieval_channel": "rss",
+          "backend": "feedparser",
+          "retrieval_mode": "legacy_scraper_fallback",
+          "fallback_used": true,
+          "fallback_reason": "RSS_UNAVAILABLE",
+          "status": "DEGRADED",
+          "latency_ms": 2296
+        },
+        {
+          "requested_channel": "news",
+          "actual_retrieval_channel": "news",
+          "backend": "Jina Reader",
+          "retrieval_mode": "legacy_scraper_fallback",
+          "fallback_used": true,
+          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "status": "DEGRADED",
+          "latency_ms": 4363
         },
         {
           "requested_channel": "youtube",
@@ -536,17 +514,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 3034
-        },
-        {
-          "requested_channel": "reddit",
-          "actual_retrieval_channel": "reddit",
-          "backend": "Arctic Shift",
-          "retrieval_mode": "web_search_index",
-          "fallback_used": true,
-          "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 5223
+          "latency_ms": 2167
         },
         {
           "requested_channel": "reddit",
@@ -556,57 +524,37 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 5649
+          "latency_ms": 4801
         },
         {
           "requested_channel": "reddit",
           "actual_retrieval_channel": "reddit",
-          "backend": "Arctic Shift",
+          "backend": "arctic_shift",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 4972
+        },
+        {
+          "requested_channel": "reddit",
+          "actual_retrieval_channel": "reddit",
+          "backend": "arctic_shift",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 4631
+        },
+        {
+          "requested_channel": "twitter",
+          "actual_retrieval_channel": "twitter",
+          "backend": "FxTwitter",
           "retrieval_mode": "web_search_index",
           "fallback_used": true,
-          "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+          "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
           "status": "SUCCESS",
-          "latency_ms": 5193
-        },
-        {
-          "requested_channel": "twitter",
-          "actual_retrieval_channel": "twitter",
-          "backend": "fxtwitter",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 4833
-        },
-        {
-          "requested_channel": "twitter",
-          "actual_retrieval_channel": "twitter",
-          "backend": "fxtwitter",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 5181
-        },
-        {
-          "requested_channel": "twitter",
-          "actual_retrieval_channel": "twitter",
-          "backend": "fxtwitter",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 5259
-        },
-        {
-          "requested_channel": "bilibili",
-          "actual_retrieval_channel": "bilibili",
-          "backend": "B\u7ad9\u641c\u7d22 API",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 1375
+          "latency_ms": 4412
         },
         {
           "requested_channel": "youtube",
@@ -616,17 +564,7 @@
           "fallback_used": true,
           "fallback_reason": "YT_DLP_UNAVAILABLE",
           "status": "DEGRADED",
-          "latency_ms": 2840
-        },
-        {
-          "requested_channel": "youtube",
-          "actual_retrieval_channel": "youtube",
-          "backend": "yt-dlp",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "YT_DLP_UNAVAILABLE",
-          "status": "DEGRADED",
-          "latency_ms": 2371
+          "latency_ms": 2563
         },
         {
           "requested_channel": "bilibili",
@@ -636,30 +574,70 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1321
+          "latency_ms": 1443
+        },
+        {
+          "requested_channel": "bilibili",
+          "actual_retrieval_channel": "bilibili",
+          "backend": "B\u7ad9\u641c\u7d22 API",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1458
+        },
+        {
+          "requested_channel": "youtube",
+          "actual_retrieval_channel": "youtube",
+          "backend": "yt-dlp",
+          "retrieval_mode": "legacy_scraper_fallback",
+          "fallback_used": true,
+          "fallback_reason": "YT_DLP_UNAVAILABLE",
+          "status": "DEGRADED",
+          "latency_ms": 2642
+        },
+        {
+          "requested_channel": "twitter",
+          "actual_retrieval_channel": "twitter",
+          "backend": "fxtwitter",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 6530
+        },
+        {
+          "requested_channel": "twitter",
+          "actual_retrieval_channel": "twitter",
+          "backend": "FxTwitter",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": true,
+          "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+          "status": "DEGRADED",
+          "latency_ms": 6079
         }
       ],
       "social_verification": {
         "twitter": {
           "planned": true,
           "queried": true,
-          "candidates_discovered": 15,
-          "actual_x_urls_discovered": 15,
-          "fxtwitter_attempts": 3,
-          "fxtwitter_successes": 3,
+          "candidates_discovered": 10,
+          "actual_x_urls_discovered": 5,
+          "fxtwitter_attempts": 1,
+          "fxtwitter_successes": 1,
           "fxtwitter_failures": 0,
-          "search_index_fallback": 0,
+          "search_index_fallback": 2,
           "final_evidence_count": 2
         },
         "reddit": {
           "planned": true,
           "queried": true,
-          "candidates_discovered": 14,
-          "actual_reddit_urls_discovered": 7,
-          "arctic_shift_attempts": 1,
-          "arctic_shift_successes": 1,
+          "candidates_discovered": 21,
+          "actual_reddit_urls_discovered": 21,
+          "arctic_shift_attempts": 3,
+          "arctic_shift_successes": 3,
           "arctic_shift_failures": 0,
-          "search_index_fallback": 2,
+          "search_index_fallback": 0,
           "final_evidence_count": 3
         },
         "youtube": {
@@ -687,7 +665,7 @@
           "author": "@darrenjrobinson",
           "title": "Post by Darren \u2018Doc\u2019 Robinson (MVP) \ud83e\udeaa (@darrenjrobinson)",
           "published": "Thu Mar 26 23:03:51 +0000 2026",
-          "retrieved": "2026-10-08T04:00:31.787606",
+          "retrieved": "2026-10-08T04:42:31.877662",
           "source_role": "COMMENTARY",
           "source_tier": "TIER_3_SOCIAL_SIGNALS",
           "independence_group": "domain_x.com",
@@ -710,7 +688,7 @@
           "author": "u/PapaSauron",
           "title": "Clues/Investigate in EDH? (r/EDH)",
           "published": "1635205446",
-          "retrieved": "2026-10-08T04:00:32.227974",
+          "retrieved": "2026-10-08T04:42:29.599503",
           "source_role": "COMMUNITY",
           "source_tier": "TIER_3_INVESTOR_COMMUNITY",
           "independence_group": "domain_reddit.com",
@@ -733,7 +711,7 @@
           "author": "@ThePrimeagen",
           "title": "Post by ThePrimeagen (@ThePrimeagen)",
           "published": "Tue Jul 07 14:55:05 +0000 2026",
-          "retrieved": "2026-10-08T04:00:32.797898",
+          "retrieved": "2026-10-08T04:42:33.180191",
           "source_role": "COMMENTARY",
           "source_tier": "TIER_3_SOCIAL_SIGNALS",
           "independence_group": "domain_x.com",
@@ -756,7 +734,7 @@
           "author": "u/owlIsMySpiritAnimal",
           "title": "investigate, how many instances of token creation does it cause (r/mtgrules)",
           "published": "1718199365",
-          "retrieved": "2026-10-08T04:00:32.228036",
+          "retrieved": "2026-10-08T04:42:29.599530",
           "source_role": "COMMUNITY",
           "source_tier": "TIER_3_INVESTOR_COMMUNITY",
           "independence_group": "domain_reddit.com",
@@ -779,7 +757,7 @@
           "author": "u/JelevasDisciple",
           "title": "Help with an Investigate themed deck (r/EDH)",
           "published": "1650108526",
-          "retrieved": "2026-10-08T04:00:32.228067",
+          "retrieved": "2026-10-08T04:42:29.599543",
           "source_role": "COMMUNITY",
           "source_tier": "TIER_3_INVESTOR_COMMUNITY",
           "independence_group": "domain_reddit.com",
@@ -791,52 +769,75 @@
           "index": 6,
           "agent": "BrandShield",
           "evidence_id": "ev_006",
-          "url": "https://www.bollynudez.com/kajol-nude-xxx-sex-photos/",
-          "domain": "www.bollynudez.com",
-          "platform": "web",
+          "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPSk1NSWZTSENyMzlKTUYyZHRLcmphdEFFM0NTWlhwbGt3eTk1NlAxS2tyeG5CWUkyS202R3lwdlZNOFBOdEh5VFVnejZ6U0JWd0VIdF81QmZJY29nVFViSHFLaml1VlpNTWpIZHVvVmJraTE2N1lDSTljM0NuS1MxU0d4LVlFLUsxODhRR01ubklsdHBqTTAwUWpfdkZWc29EM1R2YUJZdVQ5Q0cyWjlCLVJ6WDQ4M01pLS1Wd1BoSWFmYVFuS0NPRWhVRVc?oc=5",
+          "domain": "news.google.com",
+          "platform": "news",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "www.bollynudez.com",
-          "author": "www.bollynudez.com",
-          "title": "50 Kajol devgan sexy photos - Chut gaand ke xxx images",
-          "published": "Recent",
-          "retrieved": "2026-10-08T04:00:27.394503",
-          "source_role": "DISCOVERY",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "Protecting organizations from AI-assisted executive impersonation and invoice fraud - Microsoft",
+          "published": "Thu, 10 Sep 2026 07:00:00 GMT",
+          "retrieved": "2026-10-08T04:42:27.378143",
+          "source_role": "AGGREGATOR",
           "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_www.bollynudez.com",
+          "independence_group": "domain_news.google.com",
           "content_depth": "SNIPPET",
-          "content_length": 123,
-          "relevant_excerpt": "Jan 22, 2019 \u00b7 Kajol from bollywood showing her big boobs, chut and gaand in these xxx images. See her nude sex photos now."
+          "content_length": 203,
+          "relevant_excerpt": "Protecting organizations from AI-assisted executive impersonation and invoice fraud - Microsoft"
         },
         {
           "index": 7,
           "agent": "BrandShield",
           "evidence_id": "ev_007",
-          "url": "https://deephot.net/kajol-devgan-without-clothes-actress-handjob-insta-exclusive-video/",
-          "domain": "deephot.net",
-          "platform": "web",
+          "url": "http://www.bilibili.com/video/av113383579849735",
+          "domain": "www.bilibili.com",
+          "platform": "bilibili",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "deephot.net",
-          "author": "deephot.net",
-          "title": "Kajol Devgan Without Clothes Actress Handjob Insta Exclusive Video",
+          "source": "\u5355\u8bcd\u5927\u7206\u70b8",
+          "author": "\u5355\u8bcd\u5927\u7206\u70b8",
+          "title": "\ud83d\udd14\u9ad8\u9891\u5355\u8bcd\uff1a investigate",
           "published": "Recent",
-          "retrieved": "2026-10-08T04:00:27.394785",
+          "retrieved": "2026-10-08T04:42:33.408243",
           "source_role": "DISCOVERY",
           "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_deephot.net",
-          "content_depth": "SNIPPET",
-          "content_length": 129,
-          "relevant_excerpt": "May 7, 2026 \u00b7 0 views 0% 0 0 Part \u2013 1 / Kajol Devgan Without Clothes Actress Handjob Insta Exclusive Video From: Free Hot Video \u2026"
+          "independence_group": "domain_www.bilibili.com",
+          "content_depth": "VIDEO_METADATA",
+          "content_length": 309,
+          "relevant_excerpt": "\ud83d\udca5\u8bcd\u6c47\u642d\u914d\uff1a thoroughly investigate \u5f7b\u5e95\u8c03\u67e5 investigate into \u5bf9\u2026\u8fdb\u884c\u8c03\u67e5 urgently investigate \u5c3d\u5feb\u8c03\u67e5 investigate the causes of \u8c03\u67e5\u2026\u7684\u539f\u56e0 investigate process \u8c03\u67e5\u8fc7\u7a0b"
         },
         {
           "index": 8,
           "agent": "BrandShield",
           "evidence_id": "ev_008",
+          "url": "https://duckduckgo.com/app",
+          "domain": "duckduckgo.com",
+          "platform": "web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "duckduckgo.com",
+          "author": "duckduckgo.com",
+          "title": "Download DuckDuckGo for Windows, Mac, iOS and Android",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:42:26.993958",
+          "source_role": "AGGREGATOR",
+          "source_tier": "TIER_3_AGGREGATE",
+          "independence_group": "domain_duckduckgo.com",
+          "content_depth": "SNIPPET",
+          "content_length": 114,
+          "relevant_excerpt": "Download the DuckDuckGo browser to search and browse more privately. Available for Windows, Mac, iOS, and Android."
+        },
+        {
+          "index": 9,
+          "agent": "BrandShield",
+          "evidence_id": "ev_009",
           "url": "https://stackoverflow.com/questions/35134713/disable-cache-for-specific-run-commands",
           "domain": "stackoverflow.com",
           "platform": "web",
@@ -848,7 +849,7 @@
           "author": "stackoverflow.com",
           "title": "Disable cache for specific RUN commands - Stack Overflow",
           "published": "Recent",
-          "retrieved": "2026-10-08T04:00:27.472595",
+          "retrieved": "2026-10-08T04:42:27.128773",
           "source_role": "DISCOVERY",
           "source_tier": "TIER_3_AGGREGATE",
           "independence_group": "domain_stackoverflow.com",
@@ -857,50 +858,27 @@
           "relevant_excerpt": "Feb 2, 2016 \u00b7 I have a few RUN commands in my Dockerfile that I would like to run with -no-cache each time I build a Docker image. \u2026"
         },
         {
-          "index": 9,
-          "agent": "BrandShield",
-          "evidence_id": "ev_009",
-          "url": "https://www.reddit.com/r/duckduckgo/comments/i7pg0f/duckduckgo_gives_no_results_and_is_blank/",
-          "domain": "www.reddit.com",
-          "platform": "web",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "www.reddit.com",
-          "author": "www.reddit.com",
-          "title": "Duckduckgo gives no results and is blank : r/duckduckgo - Reddit",
-          "published": "Recent",
-          "retrieved": "2026-10-08T04:00:33.544527",
-          "source_role": "COMMUNITY",
-          "source_tier": "TIER_3_INVESTOR_COMMUNITY",
-          "independence_group": "domain_www.reddit.com",
-          "content_depth": "SNIPPET",
-          "content_length": 132,
-          "relevant_excerpt": "Aug 11, 2020 \u00b7 DuckDuckGo is a private alternative to Google search, as well as free browsers for mobile & desktop devices. Unlike \u2026"
-        },
-        {
           "index": 10,
           "agent": "BrandShield",
           "evidence_id": "ev_010",
-          "url": "https://news.google.com/rss/articles/CBMizAFBVV95cUxPSk1NSWZTSENyMzlKTUYyZHRLcmphdEFFM0NTWlhwbGt3eTk1NlAxS2tyeG5CWUkyS202R3lwdlZNOFBOdEh5VFVnejZ6U0JWd0VIdF81QmZJY29nVFViSHFLaml1VlpNTWpIZHVvVmJraTE2N1lDSTljM0NuS1MxU0d4LVlFLUsxODhRR01ubklsdHBqTTAwUWpfdkZWc29EM1R2YUJZdVQ5Q0cyWjlCLVJ6WDQ4M01pLS1Wd1BoSWFmYVFuS0NPRWhVRVc?oc=5",
+          "url": "https://news.google.com/rss/articles/CBMiggFBVV95cUxOR2ZWSkE4eGxwZGdJMjlaTnJMVnVON0x0TTg3NW0wRERKU1hRTEdGeGRKN2hzN3ItRE5GNTdlSGdwaGpVOWFNLWVrVmw4U01COWRFSG8xbkE3TWk2VlR4YkJfMmQyWVdnVEx2YlUwS1hXUW5rQmU5b091ellPd1M3Vk1n?oc=5",
           "domain": "news.google.com",
           "platform": "news",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Protecting organizations from AI-assisted executive impersonation and invoice fraud - Microsoft",
-          "published": "Thu, 10 Sep 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:00:28.351301",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "ChatGPT Among Top 10 Most Impersonated Brands in Phishing Attacks, Says Check Point - Infosecurity Magazine",
+          "published": "Fri, 24 Jul 2026 07:00:00 GMT",
+          "retrieved": "2026-10-08T04:42:27.378232",
           "source_role": "AGGREGATOR",
           "source_tier": "TIER_3_AGGREGATE",
           "independence_group": "domain_news.google.com",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 107,
-          "relevant_excerpt": "Protecting organizations from AI-assisted executive impersonation and invoice fraud - Microsoft (Microsoft)"
+          "content_depth": "SNIPPET",
+          "content_length": 227,
+          "relevant_excerpt": "ChatGPT Among Top 10 Most Impersonated Brands in Phishing Attacks, Says Check Point - Infosecurity Magazine"
         }
       ],
       "extracted_data": {
@@ -910,19 +888,19 @@
         "phishing_lookalike_domains": 0,
         "scam_signals": 0,
         "complaints": 0,
-        "review_signals": true,
+        "review_signals": false,
         "impersonation_signals": 3,
-        "urls_domains_count": 7,
+        "urls_domains_count": 6,
         "seller_information": "Isolated marketplace resellers detected on auction boards (eBay software keys).",
         "prices_present": "Listing price mentions identified in consumer review threads ($2,599 Surface, M365 price increase).",
-        "source_count": 17,
-        "unique_domain_count": 7,
-        "independent_source_count": 7
+        "source_count": 12,
+        "unique_domain_count": 6,
+        "independent_source_count": 6
       }
     },
     "Trending": {
       "agent": "Trending",
-      "latency_seconds": 13.53,
+      "latency_seconds": 10.87,
       "discovery": {
         "channels_planned": [
           "bilibili",
@@ -945,117 +923,121 @@
           "youtube"
         ],
         "discovery_requests_attempted": 24,
-        "discovery_requests_successful": 24,
-        "discovery_requests_failed": 0,
-        "candidates_discovered": 112,
-        "candidates_passing_hard_gates": 30,
-        "candidates_rejected": 82,
-        "candidates_selected_for_acquisition": 30,
+        "discovery_requests_successful": 22,
+        "discovery_requests_failed": 2,
+        "candidates_discovered": 109,
+        "candidates_passing_hard_gates": 34,
+        "candidates_rejected": 75,
+        "candidates_selected_for_acquisition": 34,
         "top_5_candidates": [
           {
-            "title": "Space Force S02E07 \"F**K MICROSOFT !\"",
-            "url": "https://www.youtube.com/watch?v=xDLvUqhwHZc"
+            "title": "Microsoft \u2013 AI, Cloud, Productivity, Computing, Gaming & Apps",
+            "url": "https://www.microsoft.com/?msockid=333cdfde07cb62c1316ec832066163e5"
           },
           {
-            "title": "How To Create Viral Ai Generated Images With Names Using Microsoft Designer | 3D Trending Avatars",
-            "url": "https://www.youtube.com/watch?v=kB_FwQvfVkM"
+            "title": "Microsoft account | Sign In or Create Your Account Today \u2013 Microsoft",
+            "url": "https://account.microsoft.com/account"
           },
           {
-            "title": "How to Make Viral 3D Social Media AI TRENDING images with Microsoft Bing Image Creator for Free",
-            "url": "https://www.youtube.com/watch?v=3MSJmuUE2FE"
+            "title": "My Account",
+            "url": "https://myaccount.microsoft.com/"
           },
           {
-            "title": "How to Create Viral Social Media Images for FREE with Microsoft Bing!",
-            "url": "https://www.youtube.com/watch?v=uUWzgrIdDPM"
+            "title": "Microsoft Store - Download apps, games & more for your Windows PC",
+            "url": "https://apps.microsoft.com/home"
           },
           {
-            "title": "How To Create Viral AI 3D Avatars For Social Media Using Microsoft Copilot",
-            "url": "https://www.youtube.com/watch?v=--1QhE14gD0"
+            "title": "Sign in to your account - myaccount. microsoft .com",
+            "url": "https://myaccount.microsoft.com/login"
           }
         ],
         "top_10_escalation_candidates": [
           {
-            "title": "Space Force S02E07 \"F**K MICROSOFT !\"",
-            "url": "https://www.youtube.com/watch?v=xDLvUqhwHZc"
+            "title": "Microsoft \u2013 AI, Cloud, Productivity, Computing, Gaming & Apps",
+            "url": "https://www.microsoft.com/?msockid=333cdfde07cb62c1316ec832066163e5"
           },
           {
-            "title": "How To Create Viral Ai Generated Images With Names Using Microsoft Designer | 3D Trending Avatars",
-            "url": "https://www.youtube.com/watch?v=kB_FwQvfVkM"
+            "title": "Microsoft account | Sign In or Create Your Account Today \u2013 Microsoft",
+            "url": "https://account.microsoft.com/account"
           },
           {
-            "title": "How to Make Viral 3D Social Media AI TRENDING images with Microsoft Bing Image Creator for Free",
-            "url": "https://www.youtube.com/watch?v=3MSJmuUE2FE"
+            "title": "My Account",
+            "url": "https://myaccount.microsoft.com/"
           },
           {
-            "title": "How to Create Viral Social Media Images for FREE with Microsoft Bing!",
-            "url": "https://www.youtube.com/watch?v=uUWzgrIdDPM"
+            "title": "Microsoft Store - Download apps, games & more for your Windows PC",
+            "url": "https://apps.microsoft.com/home"
           },
           {
-            "title": "How To Create Viral AI 3D Avatars For Social Media Using Microsoft Copilot",
-            "url": "https://www.youtube.com/watch?v=--1QhE14gD0"
-          },
-          {
-            "title": "Microsoft Research 'Viral Search'",
-            "url": "https://www.youtube.com/watch?v=m1w7MgqkEtE"
-          },
-          {
-            "title": "Microsoft announces intent to expand datacenter operations in Cheyenne, accelerating innovation and economic growth - Microsoft Source",
-            "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxQb3FXSFoxUlAtamhTOVFrZ0JNTGtGY1ozWUk3SS1IaHJFMFdCcVdPQ041bERWeVplT3I0ald6NjBKNENNYmhIdHZXeF85X29GZllQeDcxdjBqalFIUjhhMDA3aDVvZzkwWTk1bV9UaElOR2c1eHRiSnh0clJEVk9KS0J1Uy10U0piX0l6ZndjSzUzSVhMT0J2WUNrb2Z4dnd5UjdUQW1TeC0tcTFZczNzQzFOOUtGSlNxRlFCczZ1VWdpX0Z1cTh4YzFIVUpDclNRMWRCSEYzekFkVmpiV2R1aTNxUGFWSElIYjdYcU5GekNaQQ?oc=5"
-          },
-          {
-            "title": "Microsoft\u2019s quantum computing claims are being called out by scientists once more, tech company responds - The Times of India",
-            "url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxPeU9qZ2t1MER5ZlF1RnpVRmwxeE82enR1bk9KYmZyaEdlZHItTmpaUzlMZ2hoZTVFSXU5UFhQeTBkdkJRb3F1MkFPZzN2Ulh3LUNBS1l2dlY3bE9Ibm5WU1B3U3NXNDhReDZIUlAyLWN4UXRSQWNWNU1MRzhfQmkyS3Nmdm9tTGJMTnZhdjE0WllPWko4M1VfRFozM1dZcDNuaUhNbjBzaFRZUWdkNlJzV20xME1lcnZWTm9BREJaUTJ1YlB3NzBxR3VMQlZWY3NHckZJWHhkUFFueC1NbTQ1V0Fka2xNMGo0WWl5RDg3OGhYVGc3WkNYSzJ1SDFjQWhadTk2RHo1MnF2M21OdEJ1cElqQdIBmAJBVV95cUxObDRNblU0S3ZQT3FPSDBJazdKX1ZDWE1nV0dkZDdybFFDQU96MmlMQlg5MFRPbjh2VWxXY19odDIzQ2pzZUZpNVRfSmpxYmp0UHdZZFV1b0VkVFBxX3pydXFiTFRqemZWN0llaGlvRzR1aW4yaEFMeVVDeXBRRU1nWW91Zm9FYVhjRTlkd2haV0tYLXQ3YkhXN1JiVDZ1RVpnTC05TlJBR1NRd0RRRGFpR0RZNE9RY25YVTEwb3FqVHFtWGJPOTBQTGdvZVR1NC15NjdRNWNFS1hER3oxY3pfVEgxazd6eFU3Um9JMUdvNnJ3RENlM21uTGlBOGhxbGRCNEEzZklJOE1DYTJnU3pSSTdZQWp1bjE4?oc=5"
+            "title": "Sign in to your account - myaccount. microsoft .com",
+            "url": "https://myaccount.microsoft.com/login"
           },
           {
             "title": "Microsoft event debuts new AI-friendly hardware and Windows changes - Ars Technica",
             "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOMzl6VTAxVlJicTZvVFVfTXNsUHpyOFk2TmNDakY2ZFRkeTdyOVQ0VmtNYzE1MWwtd3o5SFB5TnJvSnNwN050bXVCamluX3luTklUby1GWXluZHctaHpEcGFFd2NleF9Ua3ZUdEtTenF0VEJKVnpHeWdxZEJUOVFzd3pJU2hOTkRMNXpfS0t6eDNwRnFpWnVSMWtzWS1MUGdlWElXQ3JMQzlOSzJL?oc=5"
           },
           {
-            "title": "Microsoft Build 2026: Be yourself at work - The Official Microsoft Blog",
-            "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOU2hGRUxONTljWXQwenhCVExKaVhBcjBhaWRMX1lZOXBzdFNZMGE4eVZuU0NNNVBWejRTV1VvNFJZLUNnNU5zU0RGNGFVX2VPYndxQ1BwQ25pWUx0OVhsSFQ2YUp1WEN4aUZ3Um1fNDNDQTh2dEJkSGJ2WUtpUndCOUQ4U2ZXTmFjV1RnemZB?oc=5"
+            "title": "Space Force S02E07 \"F**K MICROSOFT !\"",
+            "url": "https://www.youtube.com/watch?v=xDLvUqhwHZc"
+          },
+          {
+            "title": "How To Create Viral Ai Generated Images With Names Using Microsoft Designer | 3D Trending Avatars",
+            "url": "https://www.youtube.com/watch?v=kB_FwQvfVkM"
+          },
+          {
+            "title": "How to Create Viral Social Media Images for FREE with Microsoft Bing!",
+            "url": "https://www.youtube.com/watch?v=uUWzgrIdDPM"
+          },
+          {
+            "title": "How to Make Viral 3D Social Media AI TRENDING images with Microsoft Bing Image Creator for Free",
+            "url": "https://www.youtube.com/watch?v=3MSJmuUE2FE"
           }
         ]
       },
       "acquisition": {
         "total_acquisition_attempts": 24,
-        "successful_acquisitions": 24,
-        "failed_acquisitions": 0,
-        "empty_acquisitions": 0,
+        "successful_acquisitions": 22,
+        "failed_acquisitions": 2,
+        "empty_acquisitions": 2,
         "actual_documents_fetched": 0,
-        "normalized_evidence_fragments_produced": 30,
-        "unique_urls_acquired": 30,
-        "unique_domains_acquired": 2,
+        "normalized_evidence_fragments_produced": 34,
+        "unique_urls_acquired": 34,
+        "unique_domains_acquired": 6,
         "domain_list": [
+          "news.google.com",
+          "account.microsoft.com",
           "www.youtube.com",
-          "news.google.com"
+          "www.microsoft.com",
+          "myaccount.microsoft.com",
+          "apps.microsoft.com"
         ],
-        "source_groups_count": 12,
-        "independent_source_groups_count": 9
+        "source_groups_count": 17,
+        "independent_source_groups_count": 13
       },
       "fallback": {
-        "total_fallback_attempts": 9,
-        "search_index_fallbacks": 0,
-        "legacy_scraper_fallbacks": 9,
+        "total_fallback_attempts": 3,
+        "search_index_fallbacks": 1,
+        "legacy_scraper_fallbacks": 2,
         "browser_playwright_rescue_attempts": 0,
-        "reddit_mirror_attempts": 3,
+        "reddit_mirror_attempts": 2,
         "x_fxtwitter_attempts": 3,
         "youtube_fallback_attempts": 0,
-        "web_fallback_attempts": 2,
-        "news_fallback_attempts": 5,
+        "web_fallback_attempts": 0,
+        "news_fallback_attempts": 2,
         "fallbacks_by_type": {
-          "Legacy Web Scraper": {
-            "attempts": 2,
-            "successes": 2,
+          "Bing Search Index": {
+            "attempts": 1,
+            "successes": 1,
             "failures": 0
           },
           "Legacy News Scraper": {
-            "attempts": 7,
-            "successes": 7,
-            "failures": 0
+            "attempts": 2,
+            "successes": 0,
+            "failures": 2
           }
         },
-        "fallback_successes": 9,
-        "fallback_failures": 0
+        "fallback_successes": 1,
+        "fallback_failures": 2
       },
       "channel_accounting": [
         {
@@ -1066,77 +1048,77 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 561
+          "latency_ms": 513
         },
         {
           "requested_channel": "web",
           "actual_retrieval_channel": "web",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "BING_SEARCH_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1236
+          "latency_ms": 607
         },
         {
           "requested_channel": "web",
           "actual_retrieval_channel": "web",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "BING_SEARCH_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1679
+          "latency_ms": 511
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2297
+          "latency_ms": 1175
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2368
+          "latency_ms": 1344
+        },
+        {
+          "requested_channel": "news",
+          "actual_retrieval_channel": "news",
+          "backend": "Jina Reader",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1280
         },
         {
           "requested_channel": "rss",
           "actual_retrieval_channel": "rss",
           "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2189
+          "latency_ms": 1193
         },
         {
           "requested_channel": "rss",
           "actual_retrieval_channel": "rss",
           "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2206
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 2653
+          "latency_ms": 1278
         },
         {
           "requested_channel": "youtube",
@@ -1146,7 +1128,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1796
+          "latency_ms": 1815
         },
         {
           "requested_channel": "youtube",
@@ -1156,17 +1138,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1927
-        },
-        {
-          "requested_channel": "twitter",
-          "actual_retrieval_channel": "twitter",
-          "backend": "fxtwitter",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 2193
+          "latency_ms": 1923
         },
         {
           "requested_channel": "v2ex",
@@ -1176,17 +1148,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 388
-        },
-        {
-          "requested_channel": "twitter",
-          "actual_retrieval_channel": "twitter",
-          "backend": "fxtwitter",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 2574
+          "latency_ms": 110
         },
         {
           "requested_channel": "v2ex",
@@ -1196,7 +1158,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 633
+          "latency_ms": 93
         },
         {
           "requested_channel": "twitter",
@@ -1206,7 +1168,27 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2996
+          "latency_ms": 2427
+        },
+        {
+          "requested_channel": "twitter",
+          "actual_retrieval_channel": "twitter",
+          "backend": "fxtwitter",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 2934
+        },
+        {
+          "requested_channel": "twitter",
+          "actual_retrieval_channel": "twitter",
+          "backend": "fxtwitter",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 2960
         },
         {
           "requested_channel": "bilibili",
@@ -1216,17 +1198,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1365
-        },
-        {
-          "requested_channel": "reddit",
-          "actual_retrieval_channel": "reddit",
-          "backend": "arctic_shift",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 5351
+          "latency_ms": 1342
         },
         {
           "requested_channel": "bilibili",
@@ -1236,7 +1208,17 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1345
+          "latency_ms": 1408
+        },
+        {
+          "requested_channel": "reddit",
+          "actual_retrieval_channel": "reddit",
+          "backend": "Arctic Shift",
+          "retrieval_mode": "web_search_index",
+          "fallback_used": true,
+          "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+          "status": "SUCCESS",
+          "latency_ms": 4692
         },
         {
           "requested_channel": "reddit",
@@ -1246,7 +1228,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 6963
+          "latency_ms": 5329
         },
         {
           "requested_channel": "reddit",
@@ -1256,7 +1238,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 7245
+          "latency_ms": 5432
         },
         {
           "requested_channel": "web",
@@ -1266,7 +1248,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 353
+          "latency_ms": 382
         },
         {
           "requested_channel": "news",
@@ -1275,8 +1257,8 @@
           "retrieval_mode": "legacy_scraper_fallback",
           "fallback_used": true,
           "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 1568
+          "status": "DEGRADED",
+          "latency_ms": 1459
         },
         {
           "requested_channel": "web",
@@ -1286,7 +1268,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 420
+          "latency_ms": 395
         },
         {
           "requested_channel": "news",
@@ -1295,8 +1277,8 @@
           "retrieval_mode": "legacy_scraper_fallback",
           "fallback_used": true,
           "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 1164
+          "status": "DEGRADED",
+          "latency_ms": 1427
         }
       ],
       "social_verification": {
@@ -1314,12 +1296,12 @@
         "reddit": {
           "planned": true,
           "queried": true,
-          "candidates_discovered": 19,
-          "actual_reddit_urls_discovered": 19,
-          "arctic_shift_attempts": 3,
-          "arctic_shift_successes": 3,
+          "candidates_discovered": 20,
+          "actual_reddit_urls_discovered": 15,
+          "arctic_shift_attempts": 2,
+          "arctic_shift_successes": 2,
           "arctic_shift_failures": 0,
-          "search_index_fallback": 0,
+          "search_index_fallback": 1,
           "final_evidence_count": 0
         },
         "youtube": {
@@ -1335,7 +1317,145 @@
         {
           "index": 1,
           "agent": "Trending",
-          "evidence_id": "EV-YO-001",
+          "evidence_id": "EV-WE-001",
+          "url": "https://www.microsoft.com/?msockid=333cdfde07cb62c1316ec832066163e5",
+          "domain": "www.microsoft.com",
+          "platform": "web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "www.microsoft.com",
+          "author": "www.microsoft.com",
+          "title": "Microsoft \u2013 AI, Cloud, Productivity, Computing, Gaming & Apps",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:42:35.155437",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+          "independence_group": "synd_title_microsoftaicloudprod",
+          "content_depth": "SNIPPET",
+          "content_length": 122,
+          "relevant_excerpt": "Explore Microsoft products and services and support for your home or business. Shop Microsoft 365, Copilot, Teams, Xbox, \u2026"
+        },
+        {
+          "index": 2,
+          "agent": "Trending",
+          "evidence_id": "EV-WE-002",
+          "url": "https://account.microsoft.com/account",
+          "domain": "account.microsoft.com",
+          "platform": "web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "account.microsoft.com",
+          "author": "account.microsoft.com",
+          "title": "Microsoft account | Sign In or Create Your Account Today \u2013 Microsoft",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:42:35.155596",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+          "independence_group": "domain_account.microsoft.com",
+          "content_depth": "SNIPPET",
+          "content_length": 75,
+          "relevant_excerpt": "Get access to free online versions of Outlook, Word, Excel, and PowerPoint."
+        },
+        {
+          "index": 3,
+          "agent": "Trending",
+          "evidence_id": "EV-WE-003",
+          "url": "https://myaccount.microsoft.com/",
+          "domain": "myaccount.microsoft.com",
+          "platform": "web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "myaccount.microsoft.com",
+          "author": "myaccount.microsoft.com",
+          "title": "My Account",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:42:35.155802",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+          "independence_group": "domain_myaccount.microsoft.com",
+          "content_depth": "SNIPPET",
+          "content_length": 87,
+          "relevant_excerpt": "Access and manage your Microsoft account, subscriptions, and settings all in one place."
+        },
+        {
+          "index": 4,
+          "agent": "Trending",
+          "evidence_id": "EV-WE-004",
+          "url": "https://apps.microsoft.com/home",
+          "domain": "apps.microsoft.com",
+          "platform": "web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "apps.microsoft.com",
+          "author": "apps.microsoft.com",
+          "title": "Microsoft Store - Download apps, games & more for your Windows PC",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:42:35.156117",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+          "independence_group": "domain_apps.microsoft.com",
+          "content_depth": "SNIPPET",
+          "content_length": 130,
+          "relevant_excerpt": "Explore the Microsoft Store for apps and games on Windows. Enjoy exclusive deals, new releases, and your favorite content all in \u2026"
+        },
+        {
+          "index": 5,
+          "agent": "Trending",
+          "evidence_id": "EV-WE-005",
+          "url": "https://myaccount.microsoft.com/login",
+          "domain": "myaccount.microsoft.com",
+          "platform": "web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "myaccount.microsoft.com",
+          "author": "myaccount.microsoft.com",
+          "title": "Sign in to your account - myaccount. microsoft .com",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:42:35.155980",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+          "independence_group": "domain_myaccount.microsoft.com",
+          "content_depth": "SNIPPET",
+          "content_length": 130,
+          "relevant_excerpt": "Sign in to manage your Microsoft account and access free online services like Outlook, Word, Excel, and PowerPoint securely from \u2026"
+        },
+        {
+          "index": 6,
+          "agent": "Trending",
+          "evidence_id": "EV-NE-008",
+          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOMzl6VTAxVlJicTZvVFVfTXNsUHpyOFk2TmNDakY2ZFRkeTdyOVQ0VmtNYzE1MWwtd3o5SFB5TnJvSnNwN050bXVCamluX3luTklUby1GWXluZHctaHpEcGFFd2NleF9Ua3ZUdEtTenF0VEJKVnpHeWdxZEJUOVFzd3pJU2hOTkRMNXpfS0t6eDNwRnFpWnVSMWtzWS1MUGdlWElXQ3JMQzlOSzJL?oc=5",
+          "domain": "news.google.com",
+          "platform": "news",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "Microsoft event debuts new AI-friendly hardware and Windows changes - Ars Technica",
+          "published": "Thu, 08 Oct 2026 00:00:24 GMT",
+          "retrieved": "2026-10-08T04:42:35.613551",
+          "source_role": "AGGREGATOR",
+          "source_tier": "TIER_3_AGGREGATE",
+          "independence_group": "domain_news.google.com",
+          "content_depth": "SNIPPET",
+          "content_length": 177,
+          "relevant_excerpt": "Microsoft event debuts new AI-friendly hardware and Windows changes - Ars Technica"
+        },
+        {
+          "index": 7,
+          "agent": "Trending",
+          "evidence_id": "EV-YO-009",
           "url": "https://www.youtube.com/watch?v=xDLvUqhwHZc",
           "domain": "www.youtube.com",
           "platform": "youtube",
@@ -1347,7 +1467,7 @@
           "author": "LightmanN7",
           "title": "Space Force S02E07 \"F**K MICROSOFT !\"",
           "published": "Recent",
-          "retrieved": "2026-10-08T04:00:38.868427",
+          "retrieved": "2026-10-08T04:42:37.809004",
           "source_role": "SECONDARY",
           "source_tier": "TIER_2_VIDEO_ANALYSIS",
           "independence_group": "domain_www.youtube.com",
@@ -1356,9 +1476,9 @@
           "relevant_excerpt": "Space Force S02E07 \"F**K MICROSOFT !\" Uploader: LightmanN7 Views: 3,913,500"
         },
         {
-          "index": 2,
+          "index": 8,
           "agent": "Trending",
-          "evidence_id": "EV-YO-002",
+          "evidence_id": "EV-YO-010",
           "url": "https://www.youtube.com/watch?v=kB_FwQvfVkM",
           "domain": "www.youtube.com",
           "platform": "youtube",
@@ -1370,7 +1490,7 @@
           "author": "Tech Shorts 247",
           "title": "How To Create Viral Ai Generated Images With Names Using Microsoft Designer | 3D Trending Avatars",
           "published": "Recent",
-          "retrieved": "2026-10-08T04:00:38.903284",
+          "retrieved": "2026-10-08T04:42:37.836024",
           "source_role": "SECONDARY",
           "source_tier": "TIER_2_VIDEO_ANALYSIS",
           "independence_group": "domain_www.youtube.com",
@@ -1379,32 +1499,9 @@
           "relevant_excerpt": "How To Create Viral Ai Generated Images With Names Using Microsoft Designer | 3D Trending Avatars"
         },
         {
-          "index": 3,
+          "index": 9,
           "agent": "Trending",
-          "evidence_id": "EV-YO-003",
-          "url": "https://www.youtube.com/watch?v=3MSJmuUE2FE",
-          "domain": "www.youtube.com",
-          "platform": "youtube",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "Saeed AI",
-          "author": "Saeed AI",
-          "title": "How to Make Viral 3D Social Media AI TRENDING images with Microsoft Bing Image Creator for Free",
-          "published": "Recent",
-          "retrieved": "2026-10-08T04:00:38.903318",
-          "source_role": "SECONDARY",
-          "source_tier": "TIER_2_VIDEO_ANALYSIS",
-          "independence_group": "domain_www.youtube.com",
-          "content_depth": "SNIPPET",
-          "content_length": 253,
-          "relevant_excerpt": "How to Make Viral 3D Social Media AI TRENDING images with Microsoft Bing Image Creator for Free"
-        },
-        {
-          "index": 4,
-          "agent": "Trending",
-          "evidence_id": "EV-YO-004",
+          "evidence_id": "EV-YO-011",
           "url": "https://www.youtube.com/watch?v=uUWzgrIdDPM",
           "domain": "www.youtube.com",
           "platform": "youtube",
@@ -1416,7 +1513,7 @@
           "author": "Sanjithadesigns",
           "title": "How to Create Viral Social Media Images for FREE with Microsoft Bing!",
           "published": "Recent",
-          "retrieved": "2026-10-08T04:00:38.903328",
+          "retrieved": "2026-10-08T04:42:37.836071",
           "source_role": "SECONDARY",
           "source_tier": "TIER_2_VIDEO_ANALYSIS",
           "independence_group": "domain_www.youtube.com",
@@ -1425,142 +1522,27 @@
           "relevant_excerpt": "How to Create Viral Social Media Images for FREE with Microsoft Bing!"
         },
         {
-          "index": 5,
-          "agent": "Trending",
-          "evidence_id": "EV-YO-005",
-          "url": "https://www.youtube.com/watch?v=--1QhE14gD0",
-          "domain": "www.youtube.com",
-          "platform": "youtube",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "Tech Shorts 247",
-          "author": "Tech Shorts 247",
-          "title": "How To Create Viral AI 3D Avatars For Social Media Using Microsoft Copilot",
-          "published": "Recent",
-          "retrieved": "2026-10-08T04:00:38.903337",
-          "source_role": "SECONDARY",
-          "source_tier": "TIER_2_VIDEO_ANALYSIS",
-          "independence_group": "domain_www.youtube.com",
-          "content_depth": "SNIPPET",
-          "content_length": 217,
-          "relevant_excerpt": "How To Create Viral AI 3D Avatars For Social Media Using Microsoft Copilot"
-        },
-        {
-          "index": 6,
-          "agent": "Trending",
-          "evidence_id": "EV-YO-006",
-          "url": "https://www.youtube.com/watch?v=m1w7MgqkEtE",
-          "domain": "www.youtube.com",
-          "platform": "youtube",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "GeekWire",
-          "author": "GeekWire",
-          "title": "Microsoft Research 'Viral Search'",
-          "published": "Recent",
-          "retrieved": "2026-10-08T04:00:38.903346",
-          "source_role": "SECONDARY",
-          "source_tier": "TIER_2_VIDEO_ANALYSIS",
-          "independence_group": "domain_www.youtube.com",
-          "content_depth": "SNIPPET",
-          "content_length": 200,
-          "relevant_excerpt": "What makes a tweet go viral online? And what does a viral trend actually look like? Those are a couple of the questions that can ..."
-        },
-        {
-          "index": 7,
-          "agent": "Trending",
-          "evidence_id": "EV-WE-007",
-          "url": "https://news.google.com/rss/articles/CBMi8gFBVV95cUxQb3FXSFoxUlAtamhTOVFrZ0JNTGtGY1ozWUk3SS1IaHJFMFdCcVdPQ041bERWeVplT3I0ald6NjBKNENNYmhIdHZXeF85X29GZllQeDcxdjBqalFIUjhhMDA3aDVvZzkwWTk1bV9UaElOR2c1eHRiSnh0clJEVk9KS0J1Uy10U0piX0l6ZndjSzUzSVhMT0J2WUNrb2Z4dnd5UjdUQW1TeC0tcTFZczNzQzFOOUtGSlNxRlFCczZ1VWdpX0Z1cTh4YzFIVUpDclNRMWRCSEYzekFkVmpiV2R1aTNxUGFWSElIYjdYcU5GekNaQQ?oc=5",
-          "domain": "news.google.com",
-          "platform": "web",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft announces intent to expand datacenter operations in Cheyenne, accelerating innovation and economic growth - Microsoft Source",
-          "published": "Tue, 14 Apr 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:00:35.858398",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
-          "content_depth": "SNIPPET",
-          "content_length": 153,
-          "relevant_excerpt": "Microsoft announces intent to expand datacenter operations in Cheyenne, accelerating innovation and economic growth - Microsoft Source (Microsoft Source)"
-        },
-        {
-          "index": 8,
-          "agent": "Trending",
-          "evidence_id": "EV-NE-008",
-          "url": "https://news.google.com/rss/articles/CBMikwJBVV95cUxPeU9qZ2t1MER5ZlF1RnpVRmwxeE82enR1bk9KYmZyaEdlZHItTmpaUzlMZ2hoZTVFSXU5UFhQeTBkdkJRb3F1MkFPZzN2Ulh3LUNBS1l2dlY3bE9Ibm5WU1B3U3NXNDhReDZIUlAyLWN4UXRSQWNWNU1MRzhfQmkyS3Nmdm9tTGJMTnZhdjE0WllPWko4M1VfRFozM1dZcDNuaUhNbjBzaFRZUWdkNlJzV20xME1lcnZWTm9BREJaUTJ1YlB3NzBxR3VMQlZWY3NHckZJWHhkUFFueC1NbTQ1V0Fka2xNMGo0WWl5RDg3OGhYVGc3WkNYSzJ1SDFjQWhadTk2RHo1MnF2M21OdEJ1cElqQdIBmAJBVV95cUxObDRNblU0S3ZQT3FPSDBJazdKX1ZDWE1nV0dkZDdybFFDQU96MmlMQlg5MFRPbjh2VWxXY19odDIzQ2pzZUZpNVRfSmpxYmp0UHdZZFV1b0VkVFBxX3pydXFiTFRqemZWN0llaGlvRzR1aW4yaEFMeVVDeXBRRU1nWW91Zm9FYVhjRTlkd2haV0tYLXQ3YkhXN1JiVDZ1RVpnTC05TlJBR1NRd0RRRGFpR0RZNE9RY25YVTEwb3FqVHFtWGJPOTBQTGdvZVR1NC15NjdRNWNFS1hER3oxY3pfVEgxazd6eFU3Um9JMUdvNnJ3RENlM21uTGlBOGhxbGRCNEEzZklJOE1DYTJnU3pSSTdZQWp1bjE4?oc=5",
-          "domain": "news.google.com",
-          "platform": "news",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft\u2019s quantum computing claims are being called out by scientists once more, tech company responds - The Times of India",
-          "published": "Wed, 24 Jun 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:00:37.071749",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
-          "content_depth": "SNIPPET",
-          "content_length": 146,
-          "relevant_excerpt": "Microsoft\u2019s quantum computing claims are being called out by scientists once more, tech company responds - The Times of India (The Times of India)"
-        },
-        {
-          "index": 9,
-          "agent": "Trending",
-          "evidence_id": "EV-WE-009",
-          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxOMzl6VTAxVlJicTZvVFVfTXNsUHpyOFk2TmNDakY2ZFRkeTdyOVQ0VmtNYzE1MWwtd3o5SFB5TnJvSnNwN050bXVCamluX3luTklUby1GWXluZHctaHpEcGFFd2NleF9Ua3ZUdEtTenF0VEJKVnpHeWdxZEJUOVFzd3pJU2hOTkRMNXpfS0t6eDNwRnFpWnVSMWtzWS1MUGdlWElXQ3JMQzlOSzJL?oc=5",
-          "domain": "news.google.com",
-          "platform": "web",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft event debuts new AI-friendly hardware and Windows changes - Ars Technica",
-          "published": "Thu, 08 Oct 2026 00:00:24 GMT",
-          "retrieved": "2026-10-08T04:00:35.858343",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
-          "content_depth": "SNIPPET",
-          "content_length": 97,
-          "relevant_excerpt": "Microsoft event debuts new AI-friendly hardware and Windows changes - Ars Technica (Ars Technica)"
-        },
-        {
           "index": 10,
           "agent": "Trending",
-          "evidence_id": "EV-WE-010",
-          "url": "https://news.google.com/rss/articles/CBMijgFBVV95cUxOU2hGRUxONTljWXQwenhCVExKaVhBcjBhaWRMX1lZOXBzdFNZMGE4eVZuU0NNNVBWejRTV1VvNFJZLUNnNU5zU0RGNGFVX2VPYndxQ1BwQ25pWUx0OVhsSFQ2YUp1WEN4aUZ3Um1fNDNDQTh2dEJkSGJ2WUtpUndCOUQ4U2ZXTmFjV1RnemZB?oc=5",
-          "domain": "news.google.com",
-          "platform": "web",
+          "evidence_id": "EV-YO-012",
+          "url": "https://www.youtube.com/watch?v=3MSJmuUE2FE",
+          "domain": "www.youtube.com",
+          "platform": "youtube",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft Build 2026: Be yourself at work - The Official Microsoft Blog",
-          "published": "Tue, 02 Jun 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:00:35.858429",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
+          "source": "Saeed AI",
+          "author": "Saeed AI",
+          "title": "How to Make Viral 3D Social Media AI TRENDING images with Microsoft Bing Image Creator for Free",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:42:37.836097",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_VIDEO_ANALYSIS",
+          "independence_group": "domain_www.youtube.com",
           "content_depth": "SNIPPET",
-          "content_length": 101,
-          "relevant_excerpt": "Microsoft Build 2026: Be yourself at work - The Official Microsoft Blog (The Official Microsoft Blog)"
+          "content_length": 253,
+          "relevant_excerpt": "How to Make Viral 3D Social Media AI TRENDING images with Microsoft Bing Image Creator for Free"
         }
       ],
       "extracted_data": {
@@ -1578,29 +1560,29 @@
         "timestamps": [
           "Recent",
           "Recent",
-          "Tue, 14 Apr 2026 07:00:00 GMT",
-          "Fri, 27 Feb 2026 08:00:00 GMT",
-          "Wed, 09 Sep 2026 07:00:00 GMT",
+          "Recent",
+          "Recent",
           "Mon, 01 Jun 2026 07:00:00 GMT",
-          "Wed, 07 Oct 2026 11:57:00 GMT"
+          "Wed, 24 Jun 2026 07:00:00 GMT",
+          "Wed, 09 Sep 2026 07:00:00 GMT"
         ],
         "platforms": [
-          "youtube",
-          "rss",
           "web",
+          "rss",
+          "youtube",
           "news"
         ],
-        "source_count": 30,
-        "unique_domain_count": 2,
-        "independent_source_groups": 9,
+        "source_count": 34,
+        "unique_domain_count": 6,
+        "independent_source_groups": 13,
         "syndicated_duplicate_count": 0,
         "social_evidence_count": 6,
-        "news_evidence_count": 24
+        "news_evidence_count": 28
       }
     },
     "Scout": {
       "agent": "Scout",
-      "latency_seconds": 39.46,
+      "latency_seconds": 41.36,
       "discovery": {
         "channels_planned": [
           "news",
@@ -1618,123 +1600,118 @@
           "web",
           "youtube"
         ],
-        "discovery_requests_attempted": 38,
-        "discovery_requests_successful": 36,
-        "discovery_requests_failed": 2,
-        "candidates_discovered": 155,
-        "candidates_passing_hard_gates": 27,
-        "candidates_rejected": 128,
-        "candidates_selected_for_acquisition": 27,
+        "discovery_requests_attempted": 34,
+        "discovery_requests_successful": 33,
+        "discovery_requests_failed": 1,
+        "candidates_discovered": 153,
+        "candidates_passing_hard_gates": 32,
+        "candidates_rejected": 121,
+        "candidates_selected_for_acquisition": 32,
         "top_5_candidates": [
           {
-            "title": "Microsoft stock price, earnings, investor relations and quarterly cloud revenue growth fall after cloud re - The Economic Times",
-            "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxOYUxBam5POE4yUmhXVnlVSlNtNmZYZ3Zjb3VFSW5TWlVPVW8ydWFCdm9CU29UbW9UNkRJbG5uVE1kcjZpR3BNbWFtdHo3czgyTzMzQ1VEQldDT2xORXhtRHdCVHR4dW1tZGRjM1lQR24tQXM5cUZYWVVxUmt3ck5ucFBHcWdxbUppd2tVVDNuMTJGdFpkdjZuOFRXdFhpSW02amw4cXlYdVA0c2pOZEcwNlk0NDdwaU5FZ3UwYWo1OVh2WFlPX3V0b1ljNHc1MEJfRXBIUW16Ti1Cc1RDZE1iRnNSS3BDZWlpeUNxdkJlOTVFTHRSanRVU3VuRVR0VXM1YmJZdTItRkw3bWR0U1VoMTN4SWluZnU5M3V5TVpsOFU5bVFLbm82amFzcDJNNmhVR1JB0gG4AkFVX3lxTE1QaWppRGRGMW1wY09lU05hNVhNMGRHbTgxZENOOW0xMEZoR3oxU0pLdGsxQ1RQRDdNUWxVRnVpNG5acUVKTXVPbVIyT01oVjJSam9RVHhDME50UmJPdjh5NlFoSlN3ckl1Z240b3A1cVZkSC1rYXI5UXBsODFrSW8xMXF4Vkpnald3YmFOVlZidkItZlhyT1ZETy03YVh4ZzBBQUk4VlRSaGtpN0JTQVVFa3EtNVZZTlFBVmZQWHNUVFBDRzdFZ2JwQ1RTd0o2NGkyYnJYU185aVpoZDM2VDdmWEZ3MlhsZjh0VFFSME83ajFlemhlM1gzY0lTQmRCNDJQY1dvNk83MExGcXlzR20tNXBkZHd1R0Nkc09sWlo3TUU0TU5SOUxQYU5vMG5sclNoV3RCWmlpdA?oc=5"
+            "title": "Post by Microsoft 365 Status (@MSFT365Status)",
+            "url": "https://x.com/MSFT365Status/status/2100227655706591730"
           },
           {
             "title": "Microsoft earnings press release available on Investor Relations website - Microsoft Source",
             "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPTmFpNWVHYTdQdm1jYS1tc0F4dUpnUm1jcUJ4WlhTOEhxVkV3QUwwNkVzbUlXTVlubU5TajBNRDMyWHc4dlNVNkVWT0dVdFRoTmp6cGNubDQ3dEUxVEFlTUktc3J6NVN4cVduMzNUVGFYQXFRUGxTUzhhTmFEYzViVE9nXzlVSDRiTmh1aDlpb1p3bHd4aV9lOWY4Nks4aXU4cGxrMVVySFJTYTZwRFBpTTNPNjZrQmhKMzdic1FB?oc=5"
           },
           {
-            "title": "Microsoft (MSFT.US) Breaks Through the 'AI Spending Panic'! Q4 Results Beat Expectations Across the Board: Cloud Business Growth Guidance Accelerated, Full-Year Capital Expenditure Forecast Revised Downward - Moomoo",
-            "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQc3dJTnNubm5QOEd4a3duTVNSWUxkM1lHeTRUVV9mX2ZqOFZEcXNWeHpJbzBlX0h4NFpfUVljbDRGckRrWlY5SktlZGN3Q2YzR2dZcWIwNHNaZ0ZBTUVTRms1NWdoOXBfNUhzSnRtdERyVTV4WmZRVUZjZmdmUjdWSmxhbk1oZkVocEtqTEFUY0VBYTJwbll0RjRVZldSZWJRZ0p5Q2JLUEdrQQ?oc=5"
+            "title": "Microsoft stock price, earnings, investor relations and quarterly cloud revenue growth fall after cloud re - The Economic Times",
+            "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxOYUxBam5POE4yUmhXVnlVSlNtNmZYZ3Zjb3VFSW5TWlVPVW8ydWFCdm9CU29UbW9UNkRJbG5uVE1kcjZpR3BNbWFtdHo3czgyTzMzQ1VEQldDT2xORXhtRHdCVHR4dW1tZGRjM1lQR24tQXM5cUZYWVVxUmt3ck5ucFBHcWdxbUppd2tVVDNuMTJGdFpkdjZuOFRXdFhpSW02amw4cXlYdVA0c2pOZEcwNlk0NDdwaU5FZ3UwYWo1OVh2WFlPX3V0b1ljNHc1MEJfRXBIUW16Ti1Cc1RDZE1iRnNSS3BDZWlpeUNxdkJlOTVFTHRSanRVU3VuRVR0VXM1YmJZdTItRkw3bWR0U1VoMTN4SWluZnU5M3V5TVpsOFU5bVFLbm82amFzcDJNNmhVR1JB0gG4AkFVX3lxTE1QaWppRGRGMW1wY09lU05hNVhNMGRHbTgxZENOOW0xMEZoR3oxU0pLdGsxQ1RQRDdNUWxVRnVpNG5acUVKTXVPbVIyT01oVjJSam9RVHhDME50UmJPdjh5NlFoSlN3ckl1Z240b3A1cVZkSC1rYXI5UXBsODFrSW8xMXF4Vkpnald3YmFOVlZidkItZlhyT1ZETy03YVh4ZzBBQUk4VlRSaGtpN0JTQVVFa3EtNVZZTlFBVmZQWHNUVFBDRzdFZ2JwQ1RTd0o2NGkyYnJYU185aVpoZDM2VDdmWEZ3MlhsZjh0VFFSME83ajFlemhlM1gzY0lTQmRCNDJQY1dvNk83MExGcXlzR20tNXBkZHd1R0Nkc09sWlo3TUU0TU5SOUxQYU5vMG5sclNoV3RCWmlpdA?oc=5"
           },
           {
-            "title": "3M (MMM.US) partners with Microsoft (MSFT.US) to build AI infrastructure; shares rise over 3% in early trading. - Moomoo",
-            "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNRU1jSVRYdUpIQTRDSlRNbkF6UEV6Wm5sTWFJYWFjbnllby1LSDRmTUZsLVk1SG9Ua0pveHcyVU82VXdhM2dXOWpUV0s3LUdhdDU2MmZVMUFQbzRwNkZtMlphSGE1MmRsNmJIcUVZM2RyLVYtRkVZR1JCVkc3YUJxWFdJVDBoVnlOQmpHQzhublhpUG9YTGhoTVFRWkVMa0FTSnN3ZWNIUFlJVUZR?oc=5"
+            "title": "Microsoft \u2013 AI, Cloud, Productivity, Computing, Gaming & Apps",
+            "url": "https://www.microsoft.com/?msockid=315b258d25cf6a2304173261245b6bfa"
           },
           {
-            "title": "Why Is Microsoft (MSFT) Up 12% Since Last Earnings Report? - Yahoo Finance",
-            "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxObVp5azE0RFpsQkFwRXkyenRjTXYzWWI1QXdSc19LUldtNy1ybUNYYU4zYWEzak8ycmhRV29qSjZ0Rm16WUFDM2xJaVJaQ3p1X3lCVzUxNUNZaWQwYzUxOE10ZzFZMHFLUUdUNUZrTU5Na2Q0aFFkQi1BeEZJdlh5aVdnR0xsTFpMdHQtZ1kwSHFIWHlzV19v?oc=5"
+            "title": "Microsoft account | Sign In or Create Your Account Today \u2013 Microsoft",
+            "url": "https://account.microsoft.com/account"
           }
         ],
         "top_10_escalation_candidates": [
           {
-            "title": "Microsoft stock price, earnings, investor relations and quarterly cloud revenue growth fall after cloud re - The Economic Times",
-            "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxOYUxBam5POE4yUmhXVnlVSlNtNmZYZ3Zjb3VFSW5TWlVPVW8ydWFCdm9CU29UbW9UNkRJbG5uVE1kcjZpR3BNbWFtdHo3czgyTzMzQ1VEQldDT2xORXhtRHdCVHR4dW1tZGRjM1lQR24tQXM5cUZYWVVxUmt3ck5ucFBHcWdxbUppd2tVVDNuMTJGdFpkdjZuOFRXdFhpSW02amw4cXlYdVA0c2pOZEcwNlk0NDdwaU5FZ3UwYWo1OVh2WFlPX3V0b1ljNHc1MEJfRXBIUW16Ti1Cc1RDZE1iRnNSS3BDZWlpeUNxdkJlOTVFTHRSanRVU3VuRVR0VXM1YmJZdTItRkw3bWR0U1VoMTN4SWluZnU5M3V5TVpsOFU5bVFLbm82amFzcDJNNmhVR1JB0gG4AkFVX3lxTE1QaWppRGRGMW1wY09lU05hNVhNMGRHbTgxZENOOW0xMEZoR3oxU0pLdGsxQ1RQRDdNUWxVRnVpNG5acUVKTXVPbVIyT01oVjJSam9RVHhDME50UmJPdjh5NlFoSlN3ckl1Z240b3A1cVZkSC1rYXI5UXBsODFrSW8xMXF4Vkpnald3YmFOVlZidkItZlhyT1ZETy03YVh4ZzBBQUk4VlRSaGtpN0JTQVVFa3EtNVZZTlFBVmZQWHNUVFBDRzdFZ2JwQ1RTd0o2NGkyYnJYU185aVpoZDM2VDdmWEZ3MlhsZjh0VFFSME83ajFlemhlM1gzY0lTQmRCNDJQY1dvNk83MExGcXlzR20tNXBkZHd1R0Nkc09sWlo3TUU0TU5SOUxQYU5vMG5sclNoV3RCWmlpdA?oc=5"
+            "title": "Post by Microsoft 365 Status (@MSFT365Status)",
+            "url": "https://x.com/MSFT365Status/status/2100227655706591730"
           },
           {
             "title": "Microsoft earnings press release available on Investor Relations website - Microsoft Source",
             "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPTmFpNWVHYTdQdm1jYS1tc0F4dUpnUm1jcUJ4WlhTOEhxVkV3QUwwNkVzbUlXTVlubU5TajBNRDMyWHc4dlNVNkVWT0dVdFRoTmp6cGNubDQ3dEUxVEFlTUktc3J6NVN4cVduMzNUVGFYQXFRUGxTUzhhTmFEYzViVE9nXzlVSDRiTmh1aDlpb1p3bHd4aV9lOWY4Nks4aXU4cGxrMVVySFJTYTZwRFBpTTNPNjZrQmhKMzdic1FB?oc=5"
           },
           {
-            "title": "Microsoft (MSFT.US) Breaks Through the 'AI Spending Panic'! Q4 Results Beat Expectations Across the Board: Cloud Business Growth Guidance Accelerated, Full-Year Capital Expenditure Forecast Revised Downward - Moomoo",
-            "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQc3dJTnNubm5QOEd4a3duTVNSWUxkM1lHeTRUVV9mX2ZqOFZEcXNWeHpJbzBlX0h4NFpfUVljbDRGckRrWlY5SktlZGN3Q2YzR2dZcWIwNHNaZ0ZBTUVTRms1NWdoOXBfNUhzSnRtdERyVTV4WmZRVUZjZmdmUjdWSmxhbk1oZkVocEtqTEFUY0VBYTJwbll0RjRVZldSZWJRZ0p5Q2JLUEdrQQ?oc=5"
+            "title": "Microsoft stock price, earnings, investor relations and quarterly cloud revenue growth fall after cloud re - The Economic Times",
+            "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxOYUxBam5POE4yUmhXVnlVSlNtNmZYZ3Zjb3VFSW5TWlVPVW8ydWFCdm9CU29UbW9UNkRJbG5uVE1kcjZpR3BNbWFtdHo3czgyTzMzQ1VEQldDT2xORXhtRHdCVHR4dW1tZGRjM1lQR24tQXM5cUZYWVVxUmt3ck5ucFBHcWdxbUppd2tVVDNuMTJGdFpkdjZuOFRXdFhpSW02amw4cXlYdVA0c2pOZEcwNlk0NDdwaU5FZ3UwYWo1OVh2WFlPX3V0b1ljNHc1MEJfRXBIUW16Ti1Cc1RDZE1iRnNSS3BDZWlpeUNxdkJlOTVFTHRSanRVU3VuRVR0VXM1YmJZdTItRkw3bWR0U1VoMTN4SWluZnU5M3V5TVpsOFU5bVFLbm82amFzcDJNNmhVR1JB0gG4AkFVX3lxTE1QaWppRGRGMW1wY09lU05hNVhNMGRHbTgxZENOOW0xMEZoR3oxU0pLdGsxQ1RQRDdNUWxVRnVpNG5acUVKTXVPbVIyT01oVjJSam9RVHhDME50UmJPdjh5NlFoSlN3ckl1Z240b3A1cVZkSC1rYXI5UXBsODFrSW8xMXF4Vkpnald3YmFOVlZidkItZlhyT1ZETy03YVh4ZzBBQUk4VlRSaGtpN0JTQVVFa3EtNVZZTlFBVmZQWHNUVFBDRzdFZ2JwQ1RTd0o2NGkyYnJYU185aVpoZDM2VDdmWEZ3MlhsZjh0VFFSME83ajFlemhlM1gzY0lTQmRCNDJQY1dvNk83MExGcXlzR20tNXBkZHd1R0Nkc09sWlo3TUU0TU5SOUxQYU5vMG5sclNoV3RCWmlpdA?oc=5"
           },
           {
-            "title": "3M (MMM.US) partners with Microsoft (MSFT.US) to build AI infrastructure; shares rise over 3% in early trading. - Moomoo",
-            "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNRU1jSVRYdUpIQTRDSlRNbkF6UEV6Wm5sTWFJYWFjbnllby1LSDRmTUZsLVk1SG9Ua0pveHcyVU82VXdhM2dXOWpUV0s3LUdhdDU2MmZVMUFQbzRwNkZtMlphSGE1MmRsNmJIcUVZM2RyLVYtRkVZR1JCVkc3YUJxWFdJVDBoVnlOQmpHQzhublhpUG9YTGhoTVFRWkVMa0FTSnN3ZWNIUFlJVUZR?oc=5"
+            "title": "Microsoft \u2013 AI, Cloud, Productivity, Computing, Gaming & Apps",
+            "url": "https://www.microsoft.com/?msockid=315b258d25cf6a2304173261245b6bfa"
           },
           {
-            "title": "Why Is Microsoft (MSFT) Up 12% Since Last Earnings Report? - Yahoo Finance",
-            "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxObVp5azE0RFpsQkFwRXkyenRjTXYzWWI1QXdSc19LUldtNy1ybUNYYU4zYWEzak8ycmhRV29qSjZ0Rm16WUFDM2xJaVJaQ3p1X3lCVzUxNUNZaWQwYzUxOE10ZzFZMHFLUUdUNUZrTU5Na2Q0aFFkQi1BeEZJdlh5aVdnR0xsTFpMdHQtZ1kwSHFIWHlzV19v?oc=5"
+            "title": "Microsoft account | Sign In or Create Your Account Today \u2013 Microsoft",
+            "url": "https://account.microsoft.com/account"
+          },
+          {
+            "title": "My Account",
+            "url": "https://myaccount.microsoft.com/"
+          },
+          {
+            "title": "Microsoft Store - Download apps, games & more for your Windows PC",
+            "url": "https://apps.microsoft.com/home"
+          },
+          {
+            "title": "Microsoft is it a BUY? - Activision Acquisition",
+            "url": "https://www.youtube.com/watch?v=waow3X8sE44"
           },
           {
             "title": "Microsoft (MSFT) Reports Next Week: Wall Street Expects Earnings Growth - Yahoo Finance",
             "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQYXVFQWpveEM5V1ZieWgtUm9GMUJVTE5Wb2dtSGhVRDBmekU3bW5qNUhCaDBJc2tReVVycEFzdkFIYUJNVUNjdjRqM2F1QVZ1VnM0UFprdk1PZHZZdS1hUFBsRFd2V0dRZGhROHl3S0tPWWF6cy02ODJudWlPTXJINHNhVXZuTE1RQmZMYjZ0VHlydTdzR0kyd3JxM0NMUQ?oc=5"
           },
           {
-            "title": "Microsoft brings more AI to PCs as it challenges Apple - Reuters",
-            "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPZkNrUEtoYUtLa3FYRlVtVnBCblY5Tmx2aHp5MFJwTldqSndfVUdmWDNTemFjb3l2YW5OaExPOXRyWTlTaUc1MUN2cW1tNVA4VUNJczRwMDVQZTJMTmhjT1hScHVYTklXNjJrOVpNamE3bVBGalo3RVFLbURIUkpFTGxEMEtjU01SaDVMOWM4OThPSWtmMEI0b0RtVDlvc1YwUWx5R2V3MHVIdm8?oc=5"
-          },
-          {
-            "title": "OpenAI and Microsoft release joint statement on their partnership: What the two AI companies said",
-            "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ac7158d1f4f4299b7d91797d27fe3c8&url=https%3a%2f%2ftimesofindia.indiatimes.com%2ftechnology%2ftech-news%2fopenai-and-microsoft-release-joint-statement-on-their-partnership-what-the-two-ai-companies-said%2farticleshow%2f128856991.cms&c=18264284893991197342&mkt=en-in"
-          },
-          {
-            "title": "Microsoft (MSFT): Azure AI Growth Keeps Capex Returns in the Spotlight - AlphaStreet",
-            "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOaWZ5VGU3V3dRcXN4Nmk0VGNOV3FiV1NZYUZuNDcxZjJENkVRbUp3ZE5UWDdEcUlraGlJcWVOQnRoTWxnNy0zdTF5cGR3NlBjWWxFTTJScjhMb0NXM3k2bDRveXNhX1NpaWxGY3JkRVBCSFZIXzFRVjRvUldwV0pFem1OTzJTNGkyd1dfejVPU1dGMXpVV3BnZlYwYUF4ZkI4ejRZ0gGjAUFVX3lxTE5pZnlUZTdXd1Fxc3g2aTRUY05XcWJXU1lhRm40NzFmMkQ2RVFtSndkTlRYN0RxSWtoaUlxZU5CdGhNbGc3LTN1MXlwZHc2UGNZbEVNMlJyOExvQ1czeTZsNG95c2FfU2lpbEZjcmRFUEJIVkhfMVFWNG9SV3BXSkV6bU5PMlM0aTJ3V196NU9TV0YxelVXcGdmVjBhQXhmQjh6NFk?oc=5"
-          },
-          {
-            "title": "Microsoft Corporation (MSFT) stock price, news, quote and history - Yahoo Finance Singapore",
-            "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBiNU1JZVotUjB3Um5rQmItVmlTbjFFa19vcWdDMlNPVUx4V1R2dGc1NXZiZmdFMEE0enNtYW4tclROdEJYUkZVT2J4MkVJa1VKQ3c?oc=5"
+            "title": "Why Is Microsoft (MSFT) Up 12% Since Last Earnings Report? - Yahoo Finance",
+            "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxObVp5azE0RFpsQkFwRXkyenRjTXYzWWI1QXdSc19LUldtNy1ybUNYYU4zYWEzak8ycmhRV29qSjZ0Rm16WUFDM2xJaVJaQ3p1X3lCVzUxNUNZaWQwYzUxOE10ZzFZMHFLUUdUNUZrTU5Na2Q0aFFkQi1BeEZJdlh5aVdnR0xsTFpMdHQtZ1kwSHFIWHlzV19v?oc=5"
           }
         ]
       },
       "acquisition": {
-        "total_acquisition_attempts": 42,
-        "successful_acquisitions": 40,
-        "failed_acquisitions": 2,
-        "empty_acquisitions": 2,
+        "total_acquisition_attempts": 38,
+        "successful_acquisitions": 37,
+        "failed_acquisitions": 1,
+        "empty_acquisitions": 1,
         "actual_documents_fetched": 4,
-        "normalized_evidence_fragments_produced": 27,
-        "unique_urls_acquired": 27,
-        "unique_domains_acquired": 2,
+        "normalized_evidence_fragments_produced": 32,
+        "unique_urls_acquired": 32,
+        "unique_domains_acquired": 7,
         "domain_list": [
-          "www.bing.com",
-          "news.google.com"
+          "news.google.com",
+          "account.microsoft.com",
+          "x.com",
+          "www.youtube.com",
+          "www.microsoft.com",
+          "myaccount.microsoft.com",
+          "apps.microsoft.com"
         ],
-        "source_groups_count": 1,
-        "independent_source_groups_count": 4
+        "source_groups_count": 8,
+        "independent_source_groups_count": 9
       },
       "fallback": {
-        "total_fallback_attempts": 21,
+        "total_fallback_attempts": 4,
         "search_index_fallbacks": 4,
-        "legacy_scraper_fallbacks": 17,
+        "legacy_scraper_fallbacks": 0,
         "browser_playwright_rescue_attempts": 0,
         "reddit_mirror_attempts": 3,
         "x_fxtwitter_attempts": 5,
         "youtube_fallback_attempts": 0,
-        "web_fallback_attempts": 3,
-        "news_fallback_attempts": 8,
+        "web_fallback_attempts": 0,
+        "news_fallback_attempts": 0,
         "fallbacks_by_type": {
-          "Legacy Web Scraper": {
-            "attempts": 3,
-            "successes": 3,
-            "failures": 0
-          },
-          "Legacy News Scraper": {
-            "attempts": 14,
-            "successes": 14,
-            "failures": 0
-          },
           "Bing Search Index": {
             "attempts": 4,
-            "successes": 2,
-            "failures": 2
+            "successes": 3,
+            "failures": 1
           }
         },
-        "fallback_successes": 19,
-        "fallback_failures": 2
+        "fallback_successes": 3,
+        "fallback_failures": 1
       },
       "channel_accounting": [
         {
@@ -1745,77 +1722,77 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 483
+          "latency_ms": 673
         },
         {
           "requested_channel": "web",
           "actual_retrieval_channel": "web",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "BING_SEARCH_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1090
+          "latency_ms": 652
         },
         {
           "requested_channel": "web",
           "actual_retrieval_channel": "web",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "BING_SEARCH_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1191
+          "latency_ms": 726
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1637
+          "latency_ms": 1315
         },
         {
           "requested_channel": "rss",
           "actual_retrieval_channel": "rss",
           "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1470
+          "latency_ms": 1080
+        },
+        {
+          "requested_channel": "news",
+          "actual_retrieval_channel": "news",
+          "backend": "Jina Reader",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1454
         },
         {
           "requested_channel": "rss",
           "actual_retrieval_channel": "rss",
           "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1541
+          "latency_ms": 1200
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1800
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 1867
+          "latency_ms": 1521
         },
         {
           "requested_channel": "reddit",
@@ -1825,17 +1802,27 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 323
+          "latency_ms": 537
         },
         {
           "requested_channel": "rss",
           "actual_retrieval_channel": "rss",
           "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1386
+          "latency_ms": 1187
+        },
+        {
+          "requested_channel": "reddit",
+          "actual_retrieval_channel": "reddit",
+          "backend": "arctic_shift",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1503
         },
         {
           "requested_channel": "twitter",
@@ -1845,7 +1832,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 770
+          "latency_ms": 1220
         },
         {
           "requested_channel": "twitter",
@@ -1855,7 +1842,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 967
+          "latency_ms": 1187
         },
         {
           "requested_channel": "youtube",
@@ -1865,7 +1852,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1564
+          "latency_ms": 1740
         },
         {
           "requested_channel": "youtube",
@@ -1881,21 +1868,11 @@
           "requested_channel": "reddit",
           "actual_retrieval_channel": "reddit",
           "backend": "Arctic Shift",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": true,
-          "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-          "status": "DEGRADED",
-          "latency_ms": 4223
-        },
-        {
-          "requested_channel": "reddit",
-          "actual_retrieval_channel": "reddit",
-          "backend": "Arctic Shift",
           "retrieval_mode": "web_search_index",
           "fallback_used": true,
           "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
           "status": "SUCCESS",
-          "latency_ms": 4824
+          "latency_ms": 4757
         },
         {
           "requested_channel": "twitter",
@@ -1905,7 +1882,7 @@
           "fallback_used": true,
           "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
           "status": "DEGRADED",
-          "latency_ms": 5229
+          "latency_ms": 4716
         },
         {
           "requested_channel": "web",
@@ -1915,7 +1892,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 417
+          "latency_ms": 670
         },
         {
           "requested_channel": "web",
@@ -1925,27 +1902,67 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 561
+          "latency_ms": 675
         },
         {
           "requested_channel": "web",
           "actual_retrieval_channel": "web",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "BING_SEARCH_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1758
+          "latency_ms": 667
+        },
+        {
+          "requested_channel": "rss",
+          "actual_retrieval_channel": "rss",
+          "backend": "feedparser",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 773
+        },
+        {
+          "requested_channel": "rss",
+          "actual_retrieval_channel": "rss",
+          "backend": "feedparser",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1110
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2240
+          "latency_ms": 1503
+        },
+        {
+          "requested_channel": "news",
+          "actual_retrieval_channel": "news",
+          "backend": "Jina Reader",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1557
+        },
+        {
+          "requested_channel": "news",
+          "actual_retrieval_channel": "news",
+          "backend": "Jina Reader",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1550
         },
         {
           "requested_channel": "reddit",
@@ -1955,57 +1972,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 512
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 2412
-        },
-        {
-          "requested_channel": "rss",
-          "actual_retrieval_channel": "rss",
-          "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 2223
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 2636
-        },
-        {
-          "requested_channel": "rss",
-          "actual_retrieval_channel": "rss",
-          "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 1997
-        },
-        {
-          "requested_channel": "rss",
-          "actual_retrieval_channel": "rss",
-          "backend": "feedparser",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "RSS_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 2689
+          "latency_ms": 1188
         },
         {
           "requested_channel": "twitter",
@@ -2015,7 +1982,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1190
+          "latency_ms": 1142
         },
         {
           "requested_channel": "twitter",
@@ -2025,7 +1992,17 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1342
+          "latency_ms": 1243
+        },
+        {
+          "requested_channel": "rss",
+          "actual_retrieval_channel": "rss",
+          "backend": "feedparser",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1924
         },
         {
           "requested_channel": "twitter",
@@ -2035,7 +2012,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1481
+          "latency_ms": 1632
         },
         {
           "requested_channel": "youtube",
@@ -2045,7 +2022,17 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1572
+          "latency_ms": 1961
+        },
+        {
+          "requested_channel": "youtube",
+          "actual_retrieval_channel": "youtube",
+          "backend": "yt-dlp",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 1653
         },
         {
           "requested_channel": "reddit",
@@ -2055,67 +2042,17 @@
           "fallback_used": true,
           "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
           "status": "SUCCESS",
-          "latency_ms": 4977
+          "latency_ms": 6305
         },
         {
           "requested_channel": "reddit",
           "actual_retrieval_channel": "reddit",
-          "backend": "arctic_shift",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 3529
-        },
-        {
-          "requested_channel": "youtube",
-          "actual_retrieval_channel": "youtube",
-          "backend": "yt-dlp",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 3961
-        },
-        {
-          "requested_channel": "web",
-          "actual_retrieval_channel": "web",
-          "backend": "Jina Reader",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 358
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
+          "backend": "Arctic Shift",
+          "retrieval_mode": "web_search_index",
           "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
           "status": "SUCCESS",
-          "latency_ms": 1951
-        },
-        {
-          "requested_channel": "web",
-          "actual_retrieval_channel": "web",
-          "backend": "Jina Reader",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 8408
-        },
-        {
-          "requested_channel": "news",
-          "actual_retrieval_channel": "news",
-          "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 1116
+          "latency_ms": 6792
         }
       ],
       "social_verification": {
@@ -2133,8 +2070,8 @@
         "reddit": {
           "planned": true,
           "queried": true,
-          "candidates_discovered": 29,
-          "actual_reddit_urls_discovered": 20,
+          "candidates_discovered": 35,
+          "actual_reddit_urls_discovered": 21,
           "arctic_shift_attempts": 3,
           "arctic_shift_successes": 3,
           "arctic_shift_failures": 0,
@@ -2154,30 +2091,30 @@
         {
           "index": 1,
           "agent": "Scout",
-          "evidence_id": "ev_038",
-          "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxOYUxBam5POE4yUmhXVnlVSlNtNmZYZ3Zjb3VFSW5TWlVPVW8ydWFCdm9CU29UbW9UNkRJbG5uVE1kcjZpR3BNbWFtdHo3czgyTzMzQ1VEQldDT2xORXhtRHdCVHR4dW1tZGRjM1lQR24tQXM5cUZYWVVxUmt3ck5ucFBHcWdxbUppd2tVVDNuMTJGdFpkdjZuOFRXdFhpSW02amw4cXlYdVA0c2pOZEcwNlk0NDdwaU5FZ3UwYWo1OVh2WFlPX3V0b1ljNHc1MEJfRXBIUW16Ti1Cc1RDZE1iRnNSS3BDZWlpeUNxdkJlOTVFTHRSanRVU3VuRVR0VXM1YmJZdTItRkw3bWR0U1VoMTN4SWluZnU5M3V5TVpsOFU5bVFLbm82amFzcDJNNmhVR1JB0gG4AkFVX3lxTE1QaWppRGRGMW1wY09lU05hNVhNMGRHbTgxZENOOW0xMEZoR3oxU0pLdGsxQ1RQRDdNUWxVRnVpNG5acUVKTXVPbVIyT01oVjJSam9RVHhDME50UmJPdjh5NlFoSlN3ckl1Z240b3A1cVZkSC1rYXI5UXBsODFrSW8xMXF4Vkpnald3YmFOVlZidkItZlhyT1ZETy03YVh4ZzBBQUk4VlRSaGtpN0JTQVVFa3EtNVZZTlFBVmZQWHNUVFBDRzdFZ2JwQ1RTd0o2NGkyYnJYU185aVpoZDM2VDdmWEZ3MlhsZjh0VFFSME83ajFlemhlM1gzY0lTQmRCNDJQY1dvNk83MExGcXlzR20tNXBkZHd1R0Nkc09sWlo3TUU0TU5SOUxQYU5vMG5sclNoV3RCWmlpdA?oc=5",
-          "domain": "news.google.com",
+          "evidence_id": "ev_032",
+          "url": "https://x.com/MSFT365Status/status/2100227655706591730",
+          "domain": "x.com",
           "platform": "Web",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft stock price, earnings, investor relations and quarterly cloud revenue growth fall after cloud re - The Economic Times",
-          "published": "Thu, 30 Apr 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:11.507450",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
-          "content_depth": "SNIPPET",
-          "content_length": 127,
-          "relevant_excerpt": "Microsoft stock price, earnings, investor relations and quarterly cloud revenue growth fall after cloud re - The Economic Times"
+          "source": "@MSFT365Status",
+          "author": "@MSFT365Status",
+          "title": "Post by Microsoft 365 Status (@MSFT365Status)",
+          "published": "Wed Sep 16 14:17:48 +0000 2026",
+          "retrieved": "2026-10-08T04:42:37.481479",
+          "source_role": "COMMENTARY",
+          "source_tier": "TIER_3_SOCIAL_SIGNALS",
+          "independence_group": "domain_x.com",
+          "content_depth": "FULL_ARTICLE",
+          "content_length": 300,
+          "relevant_excerpt": "We're investigating an issue in which users in Japan may be unable to access SharePoint Online, and Microsoft OneDrive. Affected users may experience navigation errors, or experience delays when attem"
         },
         {
           "index": 2,
           "agent": "Scout",
-          "evidence_id": "ev_035",
+          "evidence_id": "ev_033",
           "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxPTmFpNWVHYTdQdm1jYS1tc0F4dUpnUm1jcUJ4WlhTOEhxVkV3QUwwNkVzbUlXTVlubU5TajBNRDMyWHc4dlNVNkVWT0dVdFRoTmp6cGNubDQ3dEUxVEFlTUktc3J6NVN4cVduMzNUVGFYQXFRUGxTUzhhTmFEYzViVE9nXzlVSDRiTmh1aDlpb1p3bHd4aV9lOWY4Nks4aXU4cGxrMVVySFJTYTZwRFBpTTNPNjZrQmhKMzdic1FB?oc=5",
           "domain": "news.google.com",
           "platform": "Web",
@@ -2185,91 +2122,160 @@
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
           "title": "Microsoft earnings press release available on Investor Relations website - Microsoft Source",
           "published": "Wed, 29 Jul 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:11.507345",
+          "retrieved": "2026-10-08T04:43:14.060603",
           "source_role": "AGGREGATOR",
           "source_tier": "TIER_3_AGGREGATE",
           "independence_group": "domain_news.google.com",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 91,
-          "relevant_excerpt": "Microsoft earnings press release available on Investor Relations website - Microsoft Source"
+          "content_depth": "SNIPPET",
+          "content_length": 102,
+          "relevant_excerpt": "Microsoft earnings press release available on Investor Relations website &nbsp;&nbsp; Microsoft Source"
         },
         {
           "index": 3,
           "agent": "Scout",
-          "evidence_id": "ev_033",
-          "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxQc3dJTnNubm5QOEd4a3duTVNSWUxkM1lHeTRUVV9mX2ZqOFZEcXNWeHpJbzBlX0h4NFpfUVljbDRGckRrWlY5SktlZGN3Q2YzR2dZcWIwNHNaZ0ZBTUVTRms1NWdoOXBfNUhzSnRtdERyVTV4WmZRVUZjZmdmUjdWSmxhbk1oZkVocEtqTEFUY0VBYTJwbll0RjRVZldSZWJRZ0p5Q2JLUEdrQQ?oc=5",
+          "evidence_id": "ev_036",
+          "url": "https://news.google.com/rss/articles/CBMiswJBVV95cUxOYUxBam5POE4yUmhXVnlVSlNtNmZYZ3Zjb3VFSW5TWlVPVW8ydWFCdm9CU29UbW9UNkRJbG5uVE1kcjZpR3BNbWFtdHo3czgyTzMzQ1VEQldDT2xORXhtRHdCVHR4dW1tZGRjM1lQR24tQXM5cUZYWVVxUmt3ck5ucFBHcWdxbUppd2tVVDNuMTJGdFpkdjZuOFRXdFhpSW02amw4cXlYdVA0c2pOZEcwNlk0NDdwaU5FZ3UwYWo1OVh2WFlPX3V0b1ljNHc1MEJfRXBIUW16Ti1Cc1RDZE1iRnNSS3BDZWlpeUNxdkJlOTVFTHRSanRVU3VuRVR0VXM1YmJZdTItRkw3bWR0U1VoMTN4SWluZnU5M3V5TVpsOFU5bVFLbm82amFzcDJNNmhVR1JB0gG4AkFVX3lxTE1QaWppRGRGMW1wY09lU05hNVhNMGRHbTgxZENOOW0xMEZoR3oxU0pLdGsxQ1RQRDdNUWxVRnVpNG5acUVKTXVPbVIyT01oVjJSam9RVHhDME50UmJPdjh5NlFoSlN3ckl1Z240b3A1cVZkSC1rYXI5UXBsODFrSW8xMXF4Vkpnald3YmFOVlZidkItZlhyT1ZETy03YVh4ZzBBQUk4VlRSaGtpN0JTQVVFa3EtNVZZTlFBVmZQWHNUVFBDRzdFZ2JwQ1RTd0o2NGkyYnJYU185aVpoZDM2VDdmWEZ3MlhsZjh0VFFSME83ajFlemhlM1gzY0lTQmRCNDJQY1dvNk83MExGcXlzR20tNXBkZHd1R0Nkc09sWlo3TUU0TU5SOUxQYU5vMG5sclNoV3RCWmlpdA?oc=5",
           "domain": "news.google.com",
           "platform": "Web",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft (MSFT.US) Breaks Through the 'AI Spending Panic'! Q4 Results Beat Expectations Across the Board: Cloud Business Growth Guidance Accelerated, Full-Year Capital Expenditure Forecast Revised Downward - Moomoo",
-          "published": "Wed, 29 Jul 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:11.382106",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "Microsoft stock price, earnings, investor relations and quarterly cloud revenue growth fall after cloud re - The Economic Times",
+          "published": "Thu, 30 Apr 2026 07:00:00 GMT",
+          "retrieved": "2026-10-08T04:43:14.060730",
           "source_role": "AGGREGATOR",
           "source_tier": "TIER_3_AGGREGATE",
           "independence_group": "domain_news.google.com",
           "content_depth": "SNIPPET",
-          "content_length": 215,
-          "relevant_excerpt": "Microsoft (MSFT.US) Breaks Through the 'AI Spending Panic'! Q4 Results Beat Expectations Across the Board: Cloud Business Growth Guidance Accelerated, Full-Year Capital Expenditure Forecast Revised Do"
+          "content_length": 300,
+          "relevant_excerpt": "<a href=\"https://news.google.com/rss/articles/CBMiswJBVV95cUxOYUxBam5POE4yUmhXVnlVSlNtNmZYZ3Zjb3VFSW5TWlVPVW8ydWFCdm9CU29UbW9UNkRJbG5uVE1kcjZpR3BNbWFtdHo3czgyTzMzQ1VEQldDT2xORXhtRHdCVHR4dW1tZGRjM1lQR2"
         },
         {
           "index": 4,
           "agent": "Scout",
-          "evidence_id": "ev_fu_045",
-          "url": "https://news.google.com/rss/articles/CBMirAFBVV95cUxNRU1jSVRYdUpIQTRDSlRNbkF6UEV6Wm5sTWFJYWFjbnllby1LSDRmTUZsLVk1SG9Ua0pveHcyVU82VXdhM2dXOWpUV0s3LUdhdDU2MmZVMUFQbzRwNkZtMlphSGE1MmRsNmJIcUVZM2RyLVYtRkVZR1JCVkc3YUJxWFdJVDBoVnlOQmpHQzhublhpUG9YTGhoTVFRWkVMa0FTSnN3ZWNIUFlJVUZR?oc=5",
-          "domain": "news.google.com",
+          "evidence_id": "ev_001",
+          "url": "https://www.microsoft.com/?msockid=315b258d25cf6a2304173261245b6bfa",
+          "domain": "www.microsoft.com",
           "platform": "Web",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "3M (MMM.US) partners with Microsoft (MSFT.US) to build AI infrastructure; shares rise over 3% in early trading. - Moomoo",
-          "published": "Wed, 15 Jul 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:27.301216",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
+          "source": "www.microsoft.com",
+          "author": "www.microsoft.com",
+          "title": "Microsoft \u2013 AI, Cloud, Productivity, Computing, Gaming & Apps",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:43:12.135818",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_FINANCIAL_PRESS",
+          "independence_group": "domain_www.microsoft.com",
           "content_depth": "SNIPPET",
-          "content_length": 120,
-          "relevant_excerpt": "3M (MMM.US) partners with Microsoft (MSFT.US) to build AI infrastructure; shares rise over 3% in early trading. - Moomoo"
+          "content_length": 122,
+          "relevant_excerpt": "Explore Microsoft products and services and support for your home or business. Shop Microsoft 365, Copilot, Teams, Xbox, \u2026"
         },
         {
           "index": 5,
           "agent": "Scout",
-          "evidence_id": "ev_018",
-          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxObVp5azE0RFpsQkFwRXkyenRjTXYzWWI1QXdSc19LUldtNy1ybUNYYU4zYWEzak8ycmhRV29qSjZ0Rm16WUFDM2xJaVJaQ3p1X3lCVzUxNUNZaWQwYzUxOE10ZzFZMHFLUUdUNUZrTU5Na2Q0aFFkQi1BeEZJdlh5aVdnR0xsTFpMdHQtZ1kwSHFIWHlzV19v?oc=5",
-          "domain": "news.google.com",
+          "evidence_id": "ev_002",
+          "url": "https://account.microsoft.com/account",
+          "domain": "account.microsoft.com",
           "platform": "Web",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Why Is Microsoft (MSFT) Up 12% Since Last Earnings Report? - Yahoo Finance",
-          "published": "Fri, 28 Aug 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:11.189988",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 74,
-          "relevant_excerpt": "Why Is Microsoft (MSFT) Up 12% Since Last Earnings Report? - Yahoo Finance"
+          "source": "account.microsoft.com",
+          "author": "account.microsoft.com",
+          "title": "Microsoft account | Sign In or Create Your Account Today \u2013 Microsoft",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:43:12.135900",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_FINANCIAL_PRESS",
+          "independence_group": "domain_account.microsoft.com",
+          "content_depth": "SNIPPET",
+          "content_length": 75,
+          "relevant_excerpt": "Get access to free online versions of Outlook, Word, Excel, and PowerPoint."
         },
         {
           "index": 6,
           "agent": "Scout",
-          "evidence_id": "ev_040",
+          "evidence_id": "ev_003",
+          "url": "https://myaccount.microsoft.com/",
+          "domain": "myaccount.microsoft.com",
+          "platform": "Web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "myaccount.microsoft.com",
+          "author": "myaccount.microsoft.com",
+          "title": "My Account",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:43:12.135954",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_FINANCIAL_PRESS",
+          "independence_group": "domain_myaccount.microsoft.com",
+          "content_depth": "SNIPPET",
+          "content_length": 87,
+          "relevant_excerpt": "Access and manage your Microsoft account, subscriptions, and settings all in one place."
+        },
+        {
+          "index": 7,
+          "agent": "Scout",
+          "evidence_id": "ev_005",
+          "url": "https://apps.microsoft.com/home",
+          "domain": "apps.microsoft.com",
+          "platform": "Web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "apps.microsoft.com",
+          "author": "apps.microsoft.com",
+          "title": "Microsoft Store - Download apps, games & more for your Windows PC",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:43:12.136072",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_FINANCIAL_PRESS",
+          "independence_group": "domain_apps.microsoft.com",
+          "content_depth": "SNIPPET",
+          "content_length": 130,
+          "relevant_excerpt": "Explore the Microsoft Store for apps and games on Windows. Enjoy exclusive deals, new releases, and your favorite content all in \u2026"
+        },
+        {
+          "index": 8,
+          "agent": "Scout",
+          "evidence_id": "ev_039",
+          "url": "https://www.youtube.com/watch?v=waow3X8sE44",
+          "domain": "www.youtube.com",
+          "platform": "Web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "North Investor",
+          "author": "North Investor",
+          "title": "Microsoft is it a BUY? - Activision Acquisition",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:43:15.103093",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_VIDEO_ANALYSIS",
+          "independence_group": "domain_www.youtube.com",
+          "content_depth": "VIDEO_METADATA",
+          "content_length": 123,
+          "relevant_excerpt": "Microsoft as just crushed their earnings and they have recently announce that they will acquire Activision for around 70B$."
+        },
+        {
+          "index": 9,
+          "agent": "Scout",
+          "evidence_id": "ev_012",
           "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxQYXVFQWpveEM5V1ZieWgtUm9GMUJVTE5Wb2dtSGhVRDBmekU3bW5qNUhCaDBJc2tReVVycEFzdkFIYUJNVUNjdjRqM2F1QVZ1VnM0UFprdk1PZHZZdS1hUFBsRFd2V0dRZGhROHl3S0tPWWF6cy02ODJudWlPTXJINHNhVXZuTE1RQmZMYjZ0VHlydTdzR0kyd3JxM0NMUQ?oc=5",
           "domain": "news.google.com",
           "platform": "Web",
@@ -2277,109 +2283,40 @@
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
           "title": "Microsoft (MSFT) Reports Next Week: Wall Street Expects Earnings Growth - Yahoo Finance",
           "published": "Wed, 22 Jul 2026 07:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:11.817640",
+          "retrieved": "2026-10-08T04:43:12.763872",
           "source_role": "AGGREGATOR",
           "source_tier": "TIER_3_AGGREGATE",
           "independence_group": "domain_news.google.com",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 87,
-          "relevant_excerpt": "Microsoft (MSFT) Reports Next Week: Wall Street Expects Earnings Growth - Yahoo Finance"
-        },
-        {
-          "index": 7,
-          "agent": "Scout",
-          "evidence_id": "ev_011",
-          "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPZkNrUEtoYUtLa3FYRlVtVnBCblY5Tmx2aHp5MFJwTldqSndfVUdmWDNTemFjb3l2YW5OaExPOXRyWTlTaUc1MUN2cW1tNVA4VUNJczRwMDVQZTJMTmhjT1hScHVYTklXNjJrOVpNamE3bVBGalo3RVFLbURIUkpFTGxEMEtjU01SaDVMOWM4OThPSWtmMEI0b0RtVDlvc1YwUWx5R2V3MHVIdm8?oc=5",
-          "domain": "news.google.com",
-          "platform": "Web",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft brings more AI to PCs as it challenges Apple - Reuters",
-          "published": "Wed, 07 Oct 2026 21:11:43 GMT",
-          "retrieved": "2026-10-08T04:01:10.781222",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "wire_reuters_microsoftbringsmorea",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 64,
-          "relevant_excerpt": "Microsoft brings more AI to PCs as it challenges Apple - Reuters"
-        },
-        {
-          "index": 8,
-          "agent": "Scout",
-          "evidence_id": "ev_fu_041",
-          "url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ac7158d1f4f4299b7d91797d27fe3c8&url=https%3a%2f%2ftimesofindia.indiatimes.com%2ftechnology%2ftech-news%2fopenai-and-microsoft-release-joint-statement-on-their-partnership-what-the-two-ai-companies-said%2farticleshow%2f128856991.cms&c=18264284893991197342&mkt=en-in",
-          "domain": "www.bing.com",
-          "platform": "Web",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "OpenAI and Microsoft release joint statement on their partnership: What the two AI companies said",
-          "published": "Fri, 27 Feb 2026 12:54:00 GMT",
-          "retrieved": "2026-10-08T04:01:17.775468",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_www.bing.com",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 97,
-          "relevant_excerpt": "OpenAI and Microsoft release joint statement on their partnership: What the two AI companies said"
-        },
-        {
-          "index": 9,
-          "agent": "Scout",
-          "evidence_id": "ev_013",
-          "url": "https://news.google.com/rss/articles/CBMiowFBVV95cUxOaWZ5VGU3V3dRcXN4Nmk0VGNOV3FiV1NZYUZuNDcxZjJENkVRbUp3ZE5UWDdEcUlraGlJcWVOQnRoTWxnNy0zdTF5cGR3NlBjWWxFTTJScjhMb0NXM3k2bDRveXNhX1NpaWxGY3JkRVBCSFZIXzFRVjRvUldwV0pFem1OTzJTNGkyd1dfejVPU1dGMXpVV3BnZlYwYUF4ZkI4ejRZ0gGjAUFVX3lxTE5pZnlUZTdXd1Fxc3g2aTRUY05XcWJXU1lhRm40NzFmMkQ2RVFtSndkTlRYN0RxSWtoaUlxZU5CdGhNbGc3LTN1MXlwZHc2UGNZbEVNMlJyOExvQ1czeTZsNG95c2FfU2lpbEZjcmRFUEJIVkhfMVFWNG9SV3BXSkV6bU5PMlM0aTJ3V196NU9TV0YxelVXcGdmVjBhQXhmQjh6NFk?oc=5",
-          "domain": "news.google.com",
-          "platform": "Web",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft (MSFT): Azure AI Growth Keeps Capex Returns in the Spotlight - AlphaStreet",
-          "published": "Thu, 08 Oct 2026 01:22:18 GMT",
-          "retrieved": "2026-10-08T04:01:10.781304",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_3_AGGREGATE",
-          "independence_group": "domain_news.google.com",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 84,
-          "relevant_excerpt": "Microsoft (MSFT): Azure AI Growth Keeps Capex Returns in the Spotlight - AlphaStreet"
+          "content_depth": "SNIPPET",
+          "content_length": 98,
+          "relevant_excerpt": "Microsoft (MSFT) Reports Next Week: Wall Street Expects Earnings Growth &nbsp;&nbsp; Yahoo Finance"
         },
         {
           "index": 10,
           "agent": "Scout",
-          "evidence_id": "ev_028",
-          "url": "https://news.google.com/rss/articles/CBMiUkFVX3lxTFBiNU1JZVotUjB3Um5rQmItVmlTbjFFa19vcWdDMlNPVUx4V1R2dGc1NXZiZmdFMEE0enNtYW4tclROdEJYUkZVT2J4MkVJa1VKQ3c?oc=5",
+          "evidence_id": "ev_024",
+          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxObVp5azE0RFpsQkFwRXkyenRjTXYzWWI1QXdSc19LUldtNy1ybUNYYU4zYWEzak8ycmhRV29qSjZ0Rm16WUFDM2xJaVJaQ3p1X3lCVzUxNUNZaWQwYzUxOE10ZzFZMHFLUUdUNUZrTU5Na2Q0aFFkQi1BeEZJdlh5aVdnR0xsTFpMdHQtZ1kwSHFIWHlzV19v?oc=5",
           "domain": "news.google.com",
           "platform": "Web",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Microsoft Corporation (MSFT) stock price, news, quote and history - Yahoo Finance Singapore",
-          "published": "Tue, 06 Oct 2026 16:43:53 GMT",
-          "retrieved": "2026-10-08T04:01:11.308118",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "Why Is Microsoft (MSFT) Up 12% Since Last Earnings Report? - Yahoo Finance",
+          "published": "Fri, 28 Aug 2026 07:00:00 GMT",
+          "retrieved": "2026-10-08T04:43:12.953393",
           "source_role": "AGGREGATOR",
           "source_tier": "TIER_3_AGGREGATE",
           "independence_group": "domain_news.google.com",
-          "content_depth": "HEADLINE_ONLY",
-          "content_length": 91,
-          "relevant_excerpt": "Microsoft Corporation (MSFT) stock price, news, quote and history - Yahoo Finance Singapore"
+          "content_depth": "SNIPPET",
+          "content_length": 85,
+          "relevant_excerpt": "Why Is Microsoft (MSFT) Up 12% Since Last Earnings Report? &nbsp;&nbsp; Yahoo Finance"
         }
       ],
       "extracted_data": {
@@ -2396,15 +2333,15 @@
         "rumors": "Community board speculation regarding consumer hardware pivots held unverified.",
         "contradictions": 2,
         "primary_sources_count": 0,
-        "secondary_sources_count": 0,
+        "secondary_sources_count": 7,
         "community_sources_count": 0,
-        "source_count": 27,
-        "unique_domain_count": 2
+        "source_count": 32,
+        "unique_domain_count": 7
       }
     },
     "Personal Watch": {
       "agent": "Personal Watch",
-      "latency_seconds": 17.57,
+      "latency_seconds": 22.29,
       "discovery": {
         "channels_planned": [
           "news",
@@ -2421,32 +2358,32 @@
           "youtube"
         ],
         "discovery_requests_attempted": 18,
-        "discovery_requests_successful": 17,
-        "discovery_requests_failed": 1,
-        "candidates_discovered": 77,
-        "candidates_passing_hard_gates": 17,
+        "discovery_requests_successful": 15,
+        "discovery_requests_failed": 3,
+        "candidates_discovered": 76,
+        "candidates_passing_hard_gates": 16,
         "candidates_rejected": 60,
-        "candidates_selected_for_acquisition": 17,
+        "candidates_selected_for_acquisition": 16,
         "top_5_candidates": [
           {
             "title": "Post by Satya Nadella (@satyanadella)",
             "url": "https://x.com/satyanadella/status/2103455884366188544"
           },
           {
-            "title": "UNLEASH  YOUR AI  POTENTIAL: STAY AHEAD WITH MIND-BLOWING BREAKTHROUGHS",
-            "url": "https://www.youtube.com/watch?v=gOy4fU9nT5w"
-          },
-          {
-            "title": "MahaCrime OS AI, built by CyberEye and Marvel in partnership with Maharashtra\u2019s innovation SPV and the Microsoft India Development Center, was launched in Mumbai by Satya Nadella and is already live across 23 police stations in Nagpur. Chief Minister - LinkedIn",
-            "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPVjEyUnJYQWFZRW5SUUVwVTZXalRINFFfNVRiTE42RlI3YnM5aDZEUnIyNTBMYlExRjBtTmtPOGVMQkRtSFpWNGNKcUtDdERKNXh0eXlFR1N3bFlVTkdpVGVOLXZDbWc1QXNLR3BrNlNwLTB0aUZrSGtucTdGOXdnTkQzYnZZdHdlMEJMd2pwby0ybVJ0VUcwaTNKa1pydXhTajVxcjdVdE1nc3QwRV9YNEJyV2NWb3NOZ2U0dkdTc2hKcjNUWWVOUmFKeExUanM?oc=5"
-          },
-          {
             "title": "Thoughts on the Satya brand? (r/Incense)",
             "url": "https://reddit.com/r/Incense/comments/x2x3qb/thoughts_on_the_satya_brand/"
           },
           {
+            "title": "Nadella claps back at claims Microsoft wants AI\u2011dependent users - Windows Central",
+            "url": "https://news.google.com/rss/articles/CBMiqwJBVV95cUxPTjdVczFwM255T0kwbXJ5RkxSMXJTM1Y4Y05nNnJyMXZ0OHZjNHNERGEwU3B0YWx1SFVudTJ0bUk5YUxuVUJlSHc1ZGhONDRZMVhfLXJ3U0ZmY0lremNXSmwtRzhSRUxXUm55a1JydkhBWlBLczhBVS1wVkxlR0JmU0JBT0JJYk9Sc09GVUpGNTNCZENNTVNnaFRoaFZQczV3UHk2OHN2NTNjXzhKREhFTUE4c3d4V3ZDWUYxcUJYUTNlMzdzcVhKS0xkYWpaMFFYSVl3dzdyQnlXYzNsU3Bua2syVmRhR3VvXzRLV1dnV1B2MlJYRVpyN09lUVk2MkxpbnZ6c24yX3FqYnc5YjNMRXVJZE9WemxRemtHcm5NUU9JVFV5RmFFTmNpSQ?oc=5"
+          },
+          {
             "title": "Satya recommendations? (r/Incense)",
             "url": "https://reddit.com/r/Incense/comments/wwssrj/satya_recommendations/"
+          },
+          {
+            "title": "Satya - Super Hit - Your thoughts and opinions? (r/Incense)",
+            "url": "https://reddit.com/r/Incense/comments/155vh7s/satya_super_hit_your_thoughts_and_opinions/"
           }
         ],
         "top_10_escalation_candidates": [
@@ -2455,16 +2392,12 @@
             "url": "https://x.com/satyanadella/status/2103455884366188544"
           },
           {
-            "title": "UNLEASH  YOUR AI  POTENTIAL: STAY AHEAD WITH MIND-BLOWING BREAKTHROUGHS",
-            "url": "https://www.youtube.com/watch?v=gOy4fU9nT5w"
-          },
-          {
-            "title": "MahaCrime OS AI, built by CyberEye and Marvel in partnership with Maharashtra\u2019s innovation SPV and the Microsoft India Development Center, was launched in Mumbai by Satya Nadella and is already live across 23 police stations in Nagpur. Chief Minister - LinkedIn",
-            "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPVjEyUnJYQWFZRW5SUUVwVTZXalRINFFfNVRiTE42RlI3YnM5aDZEUnIyNTBMYlExRjBtTmtPOGVMQkRtSFpWNGNKcUtDdERKNXh0eXlFR1N3bFlVTkdpVGVOLXZDbWc1QXNLR3BrNlNwLTB0aUZrSGtucTdGOXdnTkQzYnZZdHdlMEJMd2pwby0ybVJ0VUcwaTNKa1pydXhTajVxcjdVdE1nc3QwRV9YNEJyV2NWb3NOZ2U0dkdTc2hKcjNUWWVOUmFKeExUanM?oc=5"
-          },
-          {
             "title": "Thoughts on the Satya brand? (r/Incense)",
             "url": "https://reddit.com/r/Incense/comments/x2x3qb/thoughts_on_the_satya_brand/"
+          },
+          {
+            "title": "Nadella claps back at claims Microsoft wants AI\u2011dependent users - Windows Central",
+            "url": "https://news.google.com/rss/articles/CBMiqwJBVV95cUxPTjdVczFwM255T0kwbXJ5RkxSMXJTM1Y4Y05nNnJyMXZ0OHZjNHNERGEwU3B0YWx1SFVudTJ0bUk5YUxuVUJlSHc1ZGhONDRZMVhfLXJ3U0ZmY0lremNXSmwtRzhSRUxXUm55a1JydkhBWlBLczhBVS1wVkxlR0JmU0JBT0JJYk9Sc09GVUpGNTNCZENNTVNnaFRoaFZQczV3UHk2OHN2NTNjXzhKREhFTUE4c3d4V3ZDWUYxcUJYUTNlMzdzcVhKS0xkYWpaMFFYSVl3dzdyQnlXYzNsU3Bua2syVmRhR3VvXzRLV1dnV1B2MlJYRVpyN09lUVk2MkxpbnZ6c24yX3FqYnc5YjNMRXVJZE9WemxRemtHcm5NUU9JVFV5RmFFTmNpSQ?oc=5"
           },
           {
             "title": "Satya recommendations? (r/Incense)",
@@ -2475,76 +2408,75 @@
             "url": "https://reddit.com/r/Incense/comments/155vh7s/satya_super_hit_your_thoughts_and_opinions/"
           },
           {
+            "title": "SATYA (1998) HINDI ACTION FULL MOVIE - MANOJ BAJPAYEE",
+            "url": "https://www.youtube.com/watch?v=EZx8fRwQyi4"
+          },
+          {
             "title": "Satya (1998 film ) - Wikipedia",
             "url": "https://en.wikipedia.org/wiki/Satya_(1998_film)"
           },
           {
-            "title": "AI security startup Outtake raises $40M from Iconiq, Satya Nadella, Bill Ackman, and other big names - TechCrunch",
-            "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNVkZhN1JPSWZvRDczdU5NQ0ZCOUdHVm9ZVms4OFIweUd4d0V6dlhScERCY1VFTmIwdFNLSnZTVzhMOG9jTjl0WU9TVHlTNDM4NGVzTTA1aVMxaEZFZklVTzFLQ0dmNUhNSm9sUXh3cDBCX0lIWkdkSWI4ZUNIak5ocm8xYnJuT1BxRkNHaFk4NmZrWHNxQXVlcFRtb2xWYzB6ZVBFWlFMckp2LTNtRC1nQjItNDNYdGpwMzJ2bVZ0T1ZUSUtCdUFZWGJYSQ?oc=5"
+            "title": "Satya Nadella reinvented Microsoft once. Can he do it again in the AI era? - CNBC",
+            "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOVGFya2NzRW50cWNkTkN2NkJTaVF1Rm9RY2VFUDlhV0Q3UWtLWTRkXzJrRG9uNDI5SXVvX0pTUS0zSVJuazduWVV3S0ZPelZ2X1VDME9lcWUwaEZOYmRqVFBRcVlmUTFwc3Z4Qkppa0l2bVJPWEl3R0otRDhhVkRBdTE5S1dGNFByOERKbGpPZjhRdzlqTHh3dHNxSktOeGFtcVo4aGVn0gGrAUFVX3lxTE1YY2ZVLTRYVUpjbFVBelVrRXdUZ2diU2dhbGpuaXpmSEpPa0xJM0tadFJpQnk5eGFqc3JQR3QtZEtneUg0UXNqWTNLSUhGQkZrdHpzbUFlN2J5QnEtb0lMQ2V3dWRiZGpJaW1INlhieHpXaF9mTElldUE4M2ZPT1BESlJKdFA2eVZPTndBVDlPd05INXBLT3JyQ21Da092a3dfZWZLLUJRZ190NA?oc=5"
+          },
+          {
+            "title": "Satya Nadella, Elon Musk Among Top Tech CEOs To Receive US Science Medal - NDTV",
+            "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPdG95LTJlMGhrWW1famJadEg3MzlDUVNZcG5JN2c2Zm9VWVltYlN3R0p6LVlib3FKY1BzenFZeUJMb1RBVXJaVm56LWxDYkhFQ0RZUmtoZ0R2X3VlRWVlQ1dQQXAwc2pZQ05CWGY1UlBsYXZZNEVrMlQtTEF5QzMwSndDXzBzUzBvQ25jYVA1aTVUZmJRaXlDQXd1cEJnblZpdWZ0SERZQ3ZSRENZa0haLTdB0gG6AUFVX3lxTFB0ZFNaeldwcWJBUTB4d241NkJwR3ZQYkZLRzZsdnpOR2JZMlEyNTVFNHRzR1Y0RVpHWFc5dGRFSmxjNHpBeWVtd3ZpZURQWC0yTFR3Q2J5ajlhQWtZc09oanNGWlg0ZXpXd1ZlQ1QzUE9TbmZBcUFYMU45dV9YS1FTRkhTVTRRcXJpcHdob3hUMElRdVAtdTRhNUV5ZnpWWS1aRWxhVUV2TDk3cGhxLVdMeHV6TkNNemE1dw?oc=5"
           },
           {
             "title": "Why Microsoft CEO Satya Nadella Feels \u2018Very Good\u2019 About New OpenAI Deal While Amazon Adds GPT Models To AWS - Stocktwits",
             "url": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxOcmtxaUpKd0xRTXVuRU0yYWt0ZURGWXdjOVh5U0V6LXVNLWJKbUFTUG1vLVdZM05VYXBVemh5WnZVR2c5WjF1MUFxa1FBQUc1c0o4a3F6eDlaaTBGLVRhOXY4T2VrZV9DTEFVb1pHZ0s2YUlPd1UyNVZHdnBaOXJRVll6dTYtX0kxc0JoWkMwc2Q2akJXcEN4UUFpNE5rak43T0lUQk5JSFd5OEVfLVgtZVo4aWd6bnNGYl9jSUc0d2lwOGJTeTN4el9qMmp0NEhCamM1N01xOTBycGdEems3T1dZRmhYRW02bHl3OWQ1LTh4NVNRQXhtaTJoUHROTHM?oc=5"
-          },
-          {
-            "title": "Snowflake to Showcase Enterprise-Wide Agentic Transformation at EXPEDITION 2026, with Industry Speakers Including Satya Nadella - Business Wire",
-            "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxPbjl0c0preTR1WDFIU2FGQWliZGdUYjVzMWpTd25aMzNmUE1IdjJjVWhZeXZ5dkxsT1hFN19nX0xVZ1A2X3lNbEpIRXB0Y19rdHZqVE13RERscFREMXlyS25qQjBFMXo5dXhFRVZOdVNrZDU3OVRqd0YwcWNTeE5valdkRGxqUDFIOXRpakpqQXN1dEJvanJSUmlMajVrTnRZQS1rMC1FM3dOU1pEaVdpMmRKaXNOU0QwLXBEbmxwcmRVWUVLU0o1UWd4d05pUDBpcW81TTFWU2VaU2J5THgyWF9HSzRpTzQ4NlRabnJ1VUlGWmwtS2psRXdLYXBYM0o0RTZsUEJDUm9zYWRseTZiOQ?oc=5"
           }
         ]
       },
       "acquisition": {
         "total_acquisition_attempts": 22,
-        "successful_acquisitions": 21,
-        "failed_acquisitions": 1,
-        "empty_acquisitions": 1,
+        "successful_acquisitions": 19,
+        "failed_acquisitions": 3,
+        "empty_acquisitions": 3,
         "actual_documents_fetched": 4,
-        "normalized_evidence_fragments_produced": 17,
-        "unique_urls_acquired": 17,
+        "normalized_evidence_fragments_produced": 16,
+        "unique_urls_acquired": 16,
         "unique_domains_acquired": 5,
         "domain_list": [
-          "reddit.com",
-          "x.com",
           "news.google.com",
+          "x.com",
           "www.youtube.com",
+          "reddit.com",
           "en.wikipedia.org"
         ],
         "source_groups_count": 9,
-        "independent_source_groups_count": 17
+        "independent_source_groups_count": 16
       },
       "fallback": {
-        "total_fallback_attempts": 10,
+        "total_fallback_attempts": 5,
         "search_index_fallbacks": 0,
-        "legacy_scraper_fallbacks": 10,
+        "legacy_scraper_fallbacks": 5,
         "browser_playwright_rescue_attempts": 0,
         "reddit_mirror_attempts": 3,
         "x_fxtwitter_attempts": 3,
         "youtube_fallback_attempts": 1,
-        "web_fallback_attempts": 1,
-        "news_fallback_attempts": 5,
+        "web_fallback_attempts": 0,
+        "news_fallback_attempts": 2,
         "fallbacks_by_type": {
-          "Legacy Web Scraper": {
-            "attempts": 1,
-            "successes": 1,
-            "failures": 0
-          },
-          "Legacy News Scraper": {
-            "attempts": 5,
-            "successes": 5,
-            "failures": 0
-          },
           "Legacy YouTube Scraper": {
             "attempts": 1,
             "successes": 0,
             "failures": 1
           },
+          "Legacy News Scraper": {
+            "attempts": 2,
+            "successes": 0,
+            "failures": 2
+          },
           "Legacy Reach Scraper": {
-            "attempts": 3,
-            "successes": 3,
+            "attempts": 2,
+            "successes": 2,
             "failures": 0
           }
         },
-        "fallback_successes": 9,
-        "fallback_failures": 1
+        "fallback_successes": 2,
+        "fallback_failures": 3
       },
       "channel_accounting": [
         {
@@ -2555,7 +2487,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 443
+          "latency_ms": 278
         },
         {
           "requested_channel": "web",
@@ -2565,47 +2497,67 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 572
+          "latency_ms": 425
         },
         {
           "requested_channel": "web",
           "actual_retrieval_channel": "web",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "BING_SEARCH_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1424
+          "latency_ms": 425
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1769
+          "latency_ms": 934
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2093
+          "latency_ms": 1347
         },
         {
           "requested_channel": "news",
           "actual_retrieval_channel": "news",
           "backend": "Jina Reader",
-          "retrieval_mode": "legacy_scraper_fallback",
-          "fallback_used": true,
-          "fallback_reason": "NEWS_FEED_UNAVAILABLE",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 2267
+          "latency_ms": 1485
+        },
+        {
+          "requested_channel": "twitter",
+          "actual_retrieval_channel": "twitter",
+          "backend": "fxtwitter",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 2274
+        },
+        {
+          "requested_channel": "twitter",
+          "actual_retrieval_channel": "twitter",
+          "backend": "fxtwitter",
+          "retrieval_mode": "zero_auth_public_mirror",
+          "fallback_used": false,
+          "fallback_reason": null,
+          "status": "SUCCESS",
+          "latency_ms": 2353
         },
         {
           "requested_channel": "youtube",
@@ -2615,7 +2567,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 1590
+          "latency_ms": 1718
         },
         {
           "requested_channel": "twitter",
@@ -2625,17 +2577,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 3119
-        },
-        {
-          "requested_channel": "twitter",
-          "actual_retrieval_channel": "twitter",
-          "backend": "fxtwitter",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 2487
+          "latency_ms": 2545
         },
         {
           "requested_channel": "reddit",
@@ -2645,17 +2587,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 3867
-        },
-        {
-          "requested_channel": "twitter",
-          "actual_retrieval_channel": "twitter",
-          "backend": "fxtwitter",
-          "retrieval_mode": "zero_auth_public_mirror",
-          "fallback_used": false,
-          "fallback_reason": null,
-          "status": "SUCCESS",
-          "latency_ms": 2538
+          "latency_ms": 3744
         },
         {
           "requested_channel": "youtube",
@@ -2665,7 +2597,7 @@
           "fallback_used": true,
           "fallback_reason": "YT_DLP_UNAVAILABLE",
           "status": "DEGRADED",
-          "latency_ms": 3065
+          "latency_ms": 2963
         },
         {
           "requested_channel": "reddit",
@@ -2675,7 +2607,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 6248
+          "latency_ms": 4214
         },
         {
           "requested_channel": "reddit",
@@ -2685,7 +2617,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 7241
+          "latency_ms": 4303
         },
         {
           "requested_channel": "web",
@@ -2695,7 +2627,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 488
+          "latency_ms": 419
         },
         {
           "requested_channel": "news",
@@ -2704,8 +2636,8 @@
           "retrieval_mode": "legacy_scraper_fallback",
           "fallback_used": true,
           "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 1334
+          "status": "DEGRADED",
+          "latency_ms": 2666
         },
         {
           "requested_channel": "web",
@@ -2715,7 +2647,7 @@
           "fallback_used": false,
           "fallback_reason": null,
           "status": "SUCCESS",
-          "latency_ms": 393
+          "latency_ms": 333
         },
         {
           "requested_channel": "news",
@@ -2724,8 +2656,8 @@
           "retrieval_mode": "legacy_scraper_fallback",
           "fallback_used": true,
           "fallback_reason": "NEWS_FEED_UNAVAILABLE",
-          "status": "SUCCESS",
-          "latency_ms": 957
+          "status": "DEGRADED",
+          "latency_ms": 5110
         }
       ],
       "social_verification": {
@@ -2743,8 +2675,8 @@
         "reddit": {
           "planned": true,
           "queried": true,
-          "candidates_discovered": 21,
-          "actual_reddit_urls_discovered": 21,
+          "candidates_discovered": 24,
+          "actual_reddit_urls_discovered": 24,
           "arctic_shift_attempts": 3,
           "arctic_shift_successes": 3,
           "arctic_shift_failures": 0,
@@ -2757,7 +2689,7 @@
           "yt_dlp_attempts": 2,
           "successful_acquisitions": 1,
           "fallback_attempts": 1,
-          "final_evidence_count": 1
+          "final_evidence_count": 0
         }
       },
       "acquired_sources_detail": [
@@ -2776,7 +2708,7 @@
           "author": "@satyanadella",
           "title": "Post by Satya Nadella (@satyanadella)",
           "published": "Fri Sep 25 12:05:37 +0000 2026",
-          "retrieved": "2026-10-08T04:01:44.966995Z",
+          "retrieved": "2026-10-08T04:43:48.914691Z",
           "source_role": "COMMENTARY",
           "source_tier": "TIER_2_COMMUNITY_WEB",
           "independence_group": "grp_2851118d",
@@ -2786,52 +2718,6 @@
         },
         {
           "index": 2,
-          "agent": "Personal Watch",
-          "evidence_id": "ev_4c7a4f98ad",
-          "url": "https://www.youtube.com/watch?v=gOy4fU9nT5w",
-          "domain": "www.youtube.com",
-          "platform": "youtube",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "Wellner Anderson",
-          "author": "Wellner Anderson",
-          "title": "UNLEASH  YOUR AI  POTENTIAL: STAY AHEAD WITH MIND-BLOWING BREAKTHROUGHS",
-          "published": "Recent",
-          "retrieved": "2026-10-08T04:01:44.967031Z",
-          "source_role": "SECONDARY",
-          "source_tier": "TIER_2_COMMUNITY_WEB",
-          "independence_group": "grp_bd8612ec",
-          "content_depth": "SNIPPET",
-          "content_length": 241,
-          "relevant_excerpt": "Microsoft CEO Satya Nadella recently called for more regulations on artificial intelligence (AI) and technology after explicit ..."
-        },
-        {
-          "index": 3,
-          "agent": "Personal Watch",
-          "evidence_id": "ev_4762a130f2",
-          "url": "https://news.google.com/rss/articles/CBMizwFBVV95cUxPVjEyUnJYQWFZRW5SUUVwVTZXalRINFFfNVRiTE42RlI3YnM5aDZEUnIyNTBMYlExRjBtTmtPOGVMQkRtSFpWNGNKcUtDdERKNXh0eXlFR1N3bFlVTkdpVGVOLXZDbWc1QXNLR3BrNlNwLTB0aUZrSGtucTdGOXdnTkQzYnZZdHdlMEJMd2pwby0ybVJ0VUcwaTNKa1pydXhTajVxcjdVdE1nc3QwRV9YNEJyV2NWb3NOZ2U0dkdTc2hKcjNUWWVOUmFKeExUanM?oc=5",
-          "domain": "news.google.com",
-          "platform": "web",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "MahaCrime OS AI, built by CyberEye and Marvel in partnership with Maharashtra\u2019s innovation SPV and the Microsoft India Development Center, was launched in Mumbai by Satya Nadella and is already live across 23 police stations in Nagpur. Chief Minister - LinkedIn",
-          "published": "Fri, 12 Dec 2025 08:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:44.967055Z",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_2_COMMUNITY_WEB",
-          "independence_group": "grp_559a746f",
-          "content_depth": "SNIPPET",
-          "content_length": 272,
-          "relevant_excerpt": "MahaCrime OS AI, built by CyberEye and Marvel in partnership with Maharashtra\u2019s innovation SPV and the Microsoft India Development Center, was launched in Mumbai by Satya Nadella and is already live a"
-        },
-        {
-          "index": 4,
           "agent": "Personal Watch",
           "evidence_id": "ev_3b6fc27e97",
           "url": "https://reddit.com/r/Incense/comments/x2x3qb/thoughts_on_the_satya_brand/",
@@ -2845,7 +2731,7 @@
           "author": "u/kmarie997",
           "title": "Thoughts on the Satya brand? (r/Incense)",
           "published": "1662003027",
-          "retrieved": "2026-10-08T04:01:44.967071Z",
+          "retrieved": "2026-10-08T04:43:48.914708Z",
           "source_role": "COMMUNITY",
           "source_tier": "TIER_2_COMMUNITY_WEB",
           "independence_group": "grp_e9f07243",
@@ -2854,7 +2740,30 @@
           "relevant_excerpt": "Hi! I\u2019ve been burning incense for years but usually I just buy ones from the grocery or convenience store. And I\u2019ve been buying Satya for a while. I\u2019ve heard not so great things about them, so what ar"
         },
         {
-          "index": 5,
+          "index": 3,
+          "agent": "Personal Watch",
+          "evidence_id": "ev_aeb48cce15",
+          "url": "https://news.google.com/rss/articles/CBMiqwJBVV95cUxPTjdVczFwM255T0kwbXJ5RkxSMXJTM1Y4Y05nNnJyMXZ0OHZjNHNERGEwU3B0YWx1SFVudTJ0bUk5YUxuVUJlSHc1ZGhONDRZMVhfLXJ3U0ZmY0lremNXSmwtRzhSRUxXUm55a1JydkhBWlBLczhBVS1wVkxlR0JmU0JBT0JJYk9Sc09GVUpGNTNCZENNTVNnaFRoaFZQczV3UHk2OHN2NTNjXzhKREhFTUE4c3d4V3ZDWUYxcUJYUTNlMzdzcVhKS0xkYWpaMFFYSVl3dzdyQnlXYzNsU3Bua2syVmRhR3VvXzRLV1dnV1B2MlJYRVpyN09lUVk2MkxpbnZ6c24yX3FqYnc5YjNMRXVJZE9WemxRemtHcm5NUU9JVFV5RmFFTmNpSQ?oc=5",
+          "domain": "news.google.com",
+          "platform": "news",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "Nadella claps back at claims Microsoft wants AI\u2011dependent users - Windows Central",
+          "published": "Sat, 06 Jun 2026 07:00:00 GMT",
+          "retrieved": "2026-10-08T04:43:48.914720Z",
+          "source_role": "AGGREGATOR",
+          "source_tier": "TIER_2_COMMUNITY_WEB",
+          "independence_group": "grp_85aeb7ef",
+          "content_depth": "SNIPPET",
+          "content_length": 108,
+          "relevant_excerpt": "Nadella claps back at claims Microsoft wants AI\u2011dependent users - Windows Central"
+        },
+        {
+          "index": 4,
           "agent": "Personal Watch",
           "evidence_id": "ev_d9442f9552",
           "url": "https://reddit.com/r/Incense/comments/wwssrj/satya_recommendations/",
@@ -2868,7 +2777,7 @@
           "author": "u/Whtvrcasper",
           "title": "Satya recommendations? (r/Incense)",
           "published": "1661370303",
-          "retrieved": "2026-10-08T04:01:44.967089Z",
+          "retrieved": "2026-10-08T04:43:48.914727Z",
           "source_role": "COMMUNITY",
           "source_tier": "TIER_2_COMMUNITY_WEB",
           "independence_group": "grp_99d7135a",
@@ -2877,7 +2786,7 @@
           "relevant_excerpt": "Recent [order](https://ibb.co/vx3mf8t) of Satya ended up somewhat disappointing"
         },
         {
-          "index": 6,
+          "index": 5,
           "agent": "Personal Watch",
           "evidence_id": "ev_120ac0ed37",
           "url": "https://reddit.com/r/Incense/comments/155vh7s/satya_super_hit_your_thoughts_and_opinions/",
@@ -2891,13 +2800,36 @@
           "author": "u/-Renton-",
           "title": "Satya - Super Hit - Your thoughts and opinions? (r/Incense)",
           "published": "1689962850",
-          "retrieved": "2026-10-08T04:01:44.967103Z",
+          "retrieved": "2026-10-08T04:43:48.914733Z",
           "source_role": "COMMUNITY",
           "source_tier": "TIER_2_COMMUNITY_WEB",
           "independence_group": "grp_7a64938d",
           "content_depth": "SNIPPET",
           "content_length": 907,
           "relevant_excerpt": "Hello everyone, hope your day (heck, week) is going well... anyway, I got some super hit incense sticks by satya. My support worker bought 90 sticks on amazon, 36 boxes of 3 different scents from saty"
+        },
+        {
+          "index": 6,
+          "agent": "Personal Watch",
+          "evidence_id": "ev_f506bb5c74",
+          "url": "https://www.youtube.com/watch?v=EZx8fRwQyi4",
+          "domain": "www.youtube.com",
+          "platform": "web",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "www.youtube.com",
+          "author": "www.youtube.com",
+          "title": "SATYA (1998) HINDI ACTION FULL MOVIE - MANOJ BAJPAYEE",
+          "published": "Recent",
+          "retrieved": "2026-10-08T04:43:48.914739Z",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_COMMUNITY_WEB",
+          "independence_group": "grp_72731cb1",
+          "content_depth": "SNIPPET",
+          "content_length": 103,
+          "relevant_excerpt": "Mar 13, 2024 \u00b7 #b4ufilmy #Satya #manojbajpayee #new #hindimovie #movie #bollywood \u092b\u093f\u0932\u094d\u092e \u0915\u093e \u0928\u093e\u092e: \u0938\u0924\u094d\u092f\u093e \u2026"
         },
         {
           "index": 7,
@@ -2914,7 +2846,7 @@
           "author": "en.wikipedia.org",
           "title": "Satya (1998 film ) - Wikipedia",
           "published": "Recent",
-          "retrieved": "2026-10-08T04:01:44.967116Z",
+          "retrieved": "2026-10-08T04:43:48.914744Z",
           "source_role": "DISCOVERY",
           "source_tier": "TIER_2_COMMUNITY_WEB",
           "independence_group": "grp_20524209",
@@ -2925,30 +2857,53 @@
         {
           "index": 8,
           "agent": "Personal Watch",
-          "evidence_id": "ev_eeb34718ae",
-          "url": "https://news.google.com/rss/articles/CBMiywFBVV95cUxNVkZhN1JPSWZvRDczdU5NQ0ZCOUdHVm9ZVms4OFIweUd4d0V6dlhScERCY1VFTmIwdFNLSnZTVzhMOG9jTjl0WU9TVHlTNDM4NGVzTTA1aVMxaEZFZklVTzFLQ0dmNUhNSm9sUXh3cDBCX0lIWkdkSWI4ZUNIak5ocm8xYnJuT1BxRkNHaFk4NmZrWHNxQXVlcFRtb2xWYzB6ZVBFWlFMckp2LTNtRC1nQjItNDNYdGpwMzJ2bVZ0T1ZUSUtCdUFZWGJYSQ?oc=5",
+          "evidence_id": "ev_9941cfee4f",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxOVGFya2NzRW50cWNkTkN2NkJTaVF1Rm9RY2VFUDlhV0Q3UWtLWTRkXzJrRG9uNDI5SXVvX0pTUS0zSVJuazduWVV3S0ZPelZ2X1VDME9lcWUwaEZOYmRqVFBRcVlmUTFwc3Z4Qkppa0l2bVJPWEl3R0otRDhhVkRBdTE5S1dGNFByOERKbGpPZjhRdzlqTHh3dHNxSktOeGFtcVo4aGVn0gGrAUFVX3lxTE1YY2ZVLTRYVUpjbFVBelVrRXdUZ2diU2dhbGpuaXpmSEpPa0xJM0tadFJpQnk5eGFqc3JQR3QtZEtneUg0UXNqWTNLSUhGQkZrdHpzbUFlN2J5QnEtb0lMQ2V3dWRiZGpJaW1INlhieHpXaF9mTElldUE4M2ZPT1BESlJKdFA2eVZPTndBVDlPd05INXBLT3JyQ21Da092a3dfZWZLLUJRZ190NA?oc=5",
           "domain": "news.google.com",
-          "platform": "web",
+          "platform": "news",
           "backend": "feedparser-google-rss",
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "AI security startup Outtake raises $40M from Iconiq, Satya Nadella, Bill Ackman, and other big names - TechCrunch",
-          "published": "Wed, 28 Jan 2026 08:00:00 GMT",
-          "retrieved": "2026-10-08T04:01:44.967129Z",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "Satya Nadella reinvented Microsoft once. Can he do it again in the AI era? - CNBC",
+          "published": "Mon, 05 Oct 2026 11:00:01 GMT",
+          "retrieved": "2026-10-08T04:43:48.914750Z",
           "source_role": "AGGREGATOR",
           "source_tier": "TIER_2_COMMUNITY_WEB",
-          "independence_group": "grp_119c88b2",
+          "independence_group": "grp_ea7895da",
           "content_depth": "SNIPPET",
-          "content_length": 126,
-          "relevant_excerpt": "AI security startup Outtake raises $40M from Iconiq, Satya Nadella, Bill Ackman, and other big names - TechCrunch (TechCrunch)"
+          "content_length": 583,
+          "relevant_excerpt": "Satya Nadella reinvented Microsoft once. Can he do it again in the AI era? - CNBC"
         },
         {
           "index": 9,
           "agent": "Personal Watch",
-          "evidence_id": "ev_6cd1c424f6",
+          "evidence_id": "ev_bd57fcaaa1",
+          "url": "https://news.google.com/rss/articles/CBMisgFBVV95cUxPdG95LTJlMGhrWW1famJadEg3MzlDUVNZcG5JN2c2Zm9VWVltYlN3R0p6LVlib3FKY1BzenFZeUJMb1RBVXJaVm56LWxDYkhFQ0RZUmtoZ0R2X3VlRWVlQ1dQQXAwc2pZQ05CWGY1UlBsYXZZNEVrMlQtTEF5QzMwSndDXzBzUzBvQ25jYVA1aTVUZmJRaXlDQXd1cEJnblZpdWZ0SERZQ3ZSRENZa0haLTdB0gG6AUFVX3lxTFB0ZFNaeldwcWJBUTB4d241NkJwR3ZQYkZLRzZsdnpOR2JZMlEyNTVFNHRzR1Y0RVpHWFc5dGRFSmxjNHpBeWVtd3ZpZURQWC0yTFR3Q2J5ajlhQWtZc09oanNGWlg0ZXpXd1ZlQ1QzUE9TbmZBcUFYMU45dV9YS1FTRkhTVTRRcXJpcHdob3hUMElRdVAtdTRhNUV5ZnpWWS1aRWxhVUV2TDk3cGhxLVdMeHV6TkNNemE1dw?oc=5",
+          "domain": "news.google.com",
+          "platform": "news",
+          "backend": "feedparser-google-rss",
+          "retrieval_mode": "DIRECT",
+          "fallback_used": false,
+          "fallback_reason": "None",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
+          "title": "Satya Nadella, Elon Musk Among Top Tech CEOs To Receive US Science Medal - NDTV",
+          "published": "Wed, 07 Oct 2026 22:20:54 GMT",
+          "retrieved": "2026-10-08T04:43:48.914756Z",
+          "source_role": "AGGREGATOR",
+          "source_tier": "TIER_2_COMMUNITY_WEB",
+          "independence_group": "grp_bf5eb3b6",
+          "content_depth": "SNIPPET",
+          "content_length": 581,
+          "relevant_excerpt": "Satya Nadella, Elon Musk Among Top Tech CEOs To Receive US Science Medal - NDTV"
+        },
+        {
+          "index": 10,
+          "agent": "Personal Watch",
+          "evidence_id": "ev_ec57e2ea28",
           "url": "https://news.google.com/rss/articles/CBMi_wFBVV95cUxOcmtxaUpKd0xRTXVuRU0yYWt0ZURGWXdjOVh5U0V6LXVNLWJKbUFTUG1vLVdZM05VYXBVemh5WnZVR2c5WjF1MUFxa1FBQUc1c0o4a3F6eDlaaTBGLVRhOXY4T2VrZV9DTEFVb1pHZ0s2YUlPd1UyNVZHdnBaOXJRVll6dTYtX0kxc0JoWkMwc2Q2akJXcEN4UUFpNE5rak43T0lUQk5JSFd5OEVfLVgtZVo4aWd6bnNGYl9jSUc0d2lwOGJTeTN4el9qMmp0NEhCamM1N01xOTBycGdEems3T1dZRmhYRW02bHl3OWQ1LTh4NVNRQXhtaTJoUHROTHM?oc=5",
           "domain": "news.google.com",
           "platform": "news",
@@ -2956,40 +2911,17 @@
           "retrieval_mode": "DIRECT",
           "fallback_used": false,
           "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
+          "source": "RSS Wire",
+          "author": "RSS Wire",
           "title": "Why Microsoft CEO Satya Nadella Feels \u2018Very Good\u2019 About New OpenAI Deal While Amazon Adds GPT Models To AWS - Stocktwits",
           "published": "Tue, 06 Oct 2026 18:28:40 GMT",
-          "retrieved": "2026-10-08T04:01:44.967149Z",
+          "retrieved": "2026-10-08T04:43:48.914763Z",
           "source_role": "AGGREGATOR",
           "source_tier": "TIER_2_COMMUNITY_WEB",
           "independence_group": "grp_6316fccc",
           "content_depth": "SNIPPET",
-          "content_length": 133,
-          "relevant_excerpt": "Why Microsoft CEO Satya Nadella Feels \u2018Very Good\u2019 About New OpenAI Deal While Amazon Adds GPT Models To AWS - Stocktwits (Stocktwits)"
-        },
-        {
-          "index": 10,
-          "agent": "Personal Watch",
-          "evidence_id": "ev_7c93e3a4e4",
-          "url": "https://news.google.com/rss/articles/CBMikAJBVV95cUxPbjl0c0preTR1WDFIU2FGQWliZGdUYjVzMWpTd25aMzNmUE1IdjJjVWhZeXZ5dkxsT1hFN19nX0xVZ1A2X3lNbEpIRXB0Y19rdHZqVE13RERscFREMXlyS25qQjBFMXo5dXhFRVZOdVNrZDU3OVRqd0YwcWNTeE5valdkRGxqUDFIOXRpakpqQXN1dEJvanJSUmlMajVrTnRZQS1rMC1FM3dOU1pEaVdpMmRKaXNOU0QwLXBEbmxwcmRVWUVLU0o1UWd4d05pUDBpcW81TTFWU2VaU2J5THgyWF9HSzRpTzQ4NlRabnJ1VUlGWmwtS2psRXdLYXBYM0o0RTZsUEJDUm9zYWRseTZiOQ?oc=5",
-          "domain": "news.google.com",
-          "platform": "news",
-          "backend": "feedparser-google-rss",
-          "retrieval_mode": "DIRECT",
-          "fallback_used": false,
-          "fallback_reason": "None",
-          "source": "News RSS",
-          "author": "News RSS",
-          "title": "Snowflake to Showcase Enterprise-Wide Agentic Transformation at EXPEDITION 2026, with Industry Speakers Including Satya Nadella - Business Wire",
-          "published": "Mon, 05 Oct 2026 13:01:00 GMT",
-          "retrieved": "2026-10-08T04:01:44.967163Z",
-          "source_role": "AGGREGATOR",
-          "source_tier": "TIER_2_COMMUNITY_WEB",
-          "independence_group": "grp_2c638f68",
-          "content_depth": "SNIPPET",
-          "content_length": 159,
-          "relevant_excerpt": "Snowflake to Showcase Enterprise-Wide Agentic Transformation at EXPEDITION 2026, with Industry Speakers Including Satya Nadella - Business Wire (Business Wire)"
+          "content_length": 206,
+          "relevant_excerpt": "Why Microsoft CEO Satya Nadella Feels \u2018Very Good\u2019 About New OpenAI Deal While Amazon Adds GPT Models To AWS - Stocktwits"
         }
       ],
       "extracted_data": {
@@ -3004,14 +2936,13 @@
         "changes_detected": [
           "BASELINE_INITIALIZED"
         ],
-        "source_count": 17,
+        "source_count": 16,
         "unique_domains": 5,
         "platform_distribution": {
-          "web": 3,
-          "youtube": 1,
           "reddit": 5,
           "twitter": 1,
-          "news": 7
+          "web": 4,
+          "news": 6
         },
         "pii_filtering_status": "ENFORCED (0 SSNs, 0 private phone numbers, 0 home addresses emitted)"
       }
@@ -3019,9 +2950,9 @@
   },
   "conclusions": {
     "Q1_multiple_channels": "YES. All four agents queried multiple distinct channels according to their retrieval profiles (Web, News, RSS, YouTube, Twitter/X, Reddit, Yahoo Finance).",
-    "Q2_unique_websites": "BrandShield acquired 7 domains; Trending acquired evidence through one Google News gateway (news.google.com) representing 9 independent publisher groups; Scout acquired 2 domains; Personal Watch acquired 5 domains.",
-    "Q3_successful_acquisitions": "Total successful acquisitions across all agents: 98 operations.",
-    "Q4_total_fallbacks": "Total fallback transitions recorded: 50. Native zero-auth mirrors (FxTwitter and Arctic Shift) operate as primary zero-auth mirrors, and only genuine failures cascade to secondary fallbacks.",
+    "Q2_unique_websites": "BrandShield acquired 6 domains; Trending acquired evidence through one Google News gateway (news.google.com) representing 13 independent publisher groups; Scout acquired 7 domains; Personal Watch acquired 5 domains.",
+    "Q3_successful_acquisitions": "Total successful acquisitions across all agents: 90 operations.",
+    "Q4_total_fallbacks": "Total fallback transitions recorded: 21. Native zero-auth mirrors (FxTwitter and Arctic Shift) operate as primary zero-auth mirrors, and only genuine failures cascade to secondary fallbacks.",
     "Q5_most_used_fallback": "Bing Search Index when social search terms are unindexed on mirrors; Legacy Reach Scraper strictly for web URLs requiring complex JS rescue.",
     "Q6_social_contributed": "YES. Social infrastructure (FxTwitter, Arctic Shift, yt-dlp) successfully fetched real records across all agents. In final evidence, BrandShield and Personal Watch retained social posts directly (e.g. @satyanadella on X, Reddit security threads), whereas Trending and Scout used social records primarily for trend sentiment, velocity, and rumor telemetry while ranking verified editorial publications and filings higher in final claims.",
     "Q7_discovered_vs_fetched": "Google News RSS and Bing Search acted as discovery engines yielding article links; full documents and social profiles were fetched via FxTwitter, Arctic Shift, and native HTTP readers / Jina Reader.",

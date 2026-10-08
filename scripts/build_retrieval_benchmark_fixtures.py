@@ -1165,10 +1165,23 @@ def build_benchmark_data():
             primary_grade = 1
             primary_url = f"https://news.microsoft.com/product-update-boilerplate-{idx}"
 
+        if idx in (3, 15, 22):
+            s_query = f"Sanskrit philosophical concept of Satya truthfulness in Indian religions #{idx}"
+        elif idx in (4, 9, 18, 23):
+            s_query = f"1998 Bollywood film Satya directed by Ram Gopal Varma songs #{idx}"
+        elif idx in (5, 13, 20, 26):
+            s_query = f"Microsoft corporate product release with boilerplate Satya footer #{idx}"
+        elif q_type == "TRUE_POSITIVE":
+            s_query = f"Satya Nadella keynote address and public statement #{idx}"
+        elif q_type == "HARD_NEGATIVE":
+            s_query = f"Academic paper by other person named Satya #{idx}"
+        else:
+            s_query = f"Satya Nadella executive surveillance query #{idx}"
+
         add_scenario(
             s_id=s_id,
             agent="personal_watch",
-            query=f"Satya Nadella executive surveillance query #{idx}",
+            query=s_query,
             classification=q_type,
             canonical_entity="Satya Nadella",
             aliases=["Satya Nadella", "Nadella"],

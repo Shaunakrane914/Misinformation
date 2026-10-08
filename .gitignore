@@ -92,6 +92,8 @@ research/scraper_bakeoff/artifacts/
 !/artifacts/all_agents_evaluation.json
 !/artifacts/all_agents_evaluation.md
 !/artifacts/live_agent_smoke_result.json
+!/artifacts/single_case_4_agent_fetch_audit.json
+!/artifacts/single_case_4_agent_fetch_audit.md
 research/scraper_bakeoff/repos/
 
 # Large video binaries

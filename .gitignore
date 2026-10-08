@@ -96,6 +96,8 @@ research/scraper_bakeoff/artifacts/
 !/artifacts/single_case_4_agent_fetch_audit.md
 !/artifacts/single_case_study_retrieval_audit.json
 !/artifacts/single_case_study_retrieval_audit.md
+!/artifacts/unlimited_time_case_study_audit.json
+!/artifacts/unlimited_time_case_study_audit.md
 research/scraper_bakeoff/repos/
 
 # Large video binaries

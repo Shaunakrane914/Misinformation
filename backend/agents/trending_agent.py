@@ -975,12 +975,7 @@ class TrendingAgent:
                 deep_read_budget=0,
                 corroboration_budget=2,
             )
-            ex = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-            try:
-                fut = ex.submit(research_engine.investigate, research_req)
-                research_res = fut.result(timeout=35.0)
-            finally:
-                ex.shutdown(wait=False, cancel_futures=True)
+            research_res = research_engine.investigate(research_req)
             retrieval_trace = research_res.telemetry
             research_findings = research_res.findings
             research_contradictions = research_res.contradictions

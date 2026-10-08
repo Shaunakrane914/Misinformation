@@ -102,6 +102,8 @@ research/scraper_bakeoff/artifacts/
 !/artifacts/complete_retrieval_fix_live_audit.md
 !/artifacts/final_retrieval_audit.json
 !/artifacts/final_retrieval_audit.md
+!/artifacts/retrieval_benchmark/
+!/artifacts/retrieval_benchmark/**
 research/scraper_bakeoff/repos/
 
 # Large video binaries

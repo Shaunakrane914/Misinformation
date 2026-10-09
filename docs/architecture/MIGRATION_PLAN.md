@@ -28,7 +28,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 | **1** | **Documentation Source of Truth & Drift Reconciliation** | **P1** | Consolidate `docs/`, reconcile test counts (530 tests), archive stale audit plans. | **DELIVERED** (Commit `ba210c3`) |
 | **2** | **Build, Packaging & CI Test Suite Hygiene** | **P1** | Add `pyproject.toml`, lock dependency strategies, expand CI to 7 parallel jobs. | **PARTIALLY DELIVERED** (Packaging & CI template created; CI activation & lockfile pending) |
 | **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | **DELIVERED + PHASE 3.5 CLOSEOUT** (Canonical infrastructure service, decomposed query dispatcher, compatibility shims, isolated test outputs, and 16-channel contracts) |
-| **4** | **Research Pipeline Decomposition** | **P1** | Break 581-line `investigate()` into 10 composable pipeline stages. | Investigation pipeline passes with bit-for-bit dossier equality. |
+| **4** | **Research Pipeline Decomposition** | **P1** | Break 581-line `investigate()` into 10 composable pipeline stages. | **DELIVERED** (10 decoupled stages in `backend/application/research/`, `ResearchPipeline` coordinator, 12 golden characterization scenarios with bit-for-bit serialization equality, 628 passing tests) |
 | **5** | **Domain Agent Modularization** | **P1** | Relocate agent-specific extraction from `agent_reach/` into owning agent packages. | BrandShield, Trending, Scout, Personal Watch contract tests pass. |
 | **6** | **Centralized LLM Gateway & Validated Settings** | **P2** | Unify Gemini/mock LLM calls behind `LLMGateway`; adopt Pydantic `BaseSettings`. | Zero ad-hoc `os.getenv` in business logic; 100% deterministic offline mock tests. |
 | **7** | **Legacy Deprecation & Final Cleanup** | **P2** | Retire compatibility shims, archive dead code, verify final clean directory tree. | Zero unused shims; clean build context; 100% regression pass. |
@@ -133,25 +133,25 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 ---
 
 ### Phase 4: Research Pipeline Decomposition
-- **Priority:** P1
-- **Current State:** `ResearchEngine.investigate()` is a single 581-line monolithic method coordinating 10 stages sequentially.
-- **Target State:**
-  - Decompose `investigate()` into discrete, testable stage handlers with typed inputs and outputs:
-    1. `PlanningStage`
-    2. `DiscoveryStage`
-    3. `GatingStage` (`RelevanceGate` + `TemporalGuard`)
-    4. `PrimaryEscalationStage`
-    5. `RankingStage`
-    6. `DeepReadingStage`
-    7. `PassageExtractionStage`
-    8. `GraphConstructionStage`
-    9. `SynthesisStage`
-    10. `LedgerPersistenceStage`
-  - `ResearchEngine` acts as a clean pipeline coordinator.
+- **Status:** **DELIVERED**
+- **Priority:** P1 (Core Investigative Architecture)
+- **Delivered Architecture:**
+  - Decomposed 756-line monolithic `backend/services/research/research_engine.py` into a modular application pipeline under `backend/application/research/`:
+    - `backend/application/research/contracts.py`: Explicit typed hand-offs between stages (`QueryPlan`, `Discovery`, `RankedEvidence`, `AdaptiveEvidence`, `EscalatedEvidence`, `ReadEvidence`, `Analysis`, `AssembledResearch`).
+    - `backend/application/research/pipeline.py`: `ResearchPipeline` coordinator executing stages cleanly without owning low-level retrieval or scoring logic.
+    - `backend/application/research/acquisition.py`: `PlanningStage` (`QueryPlanningStage`), `DiscoveryStage` (`BroadDiscoveryStage`), `GatingStage` (`CandidateQualificationStage`), `RankingStage` (`IndependenceRankingStage`).
+    - `backend/application/research/adaptive.py`: `AdaptiveDiscoveryCoordinator` (`AdaptiveExpansionStage`) orchestrating multi-round adaptive query expansion, dynamic replanning from discovered contradictions, and mathematical evidence novelty/saturation tracking (`EvidenceNoveltyTracker`).
+    - `backend/application/research/reading.py`: `PrimaryEscalationStage` and `DeepReadingStage` with diversity-aware selection, budget enforcement, and acquisition attempt tracking.
+    - `backend/application/research/synthesis.py`: `PassageExtractionStage` (`PassageAnalysisStage`), `SynthesisStage` (`GroundedSynthesisStage`), `GraphConstructionStage` (`EvidenceGraphStage`), and `synthesize_grounded_findings()` maintaining deterministic 6D quality tensor evaluation.
+    - `backend/application/research/assembly.py`: `CorpusAssemblyStage`, `LedgerPersistenceStage` (`DossierRegistrationStage`), and `ResultPublicationStage` assembling funnel telemetry, persisting replay dossiers, and constructing `ResearchResult`.
+  - Converted `backend/services/research/research_engine.py` into a lean 39-line orchestrator and compatibility shim preserving `ResearchEngine`, singleton `research_engine`, and helper `_synthesize_grounded_findings`.
+  - Added 12 golden characterization scenarios in `tests/unit/test_research_pipeline_golden.py` validating bit-for-bit SHA-256 equivalence across `result_sha256`, `corpus_sha256`, `dossier_sha256`, candidate IDs, ranked IDs, rejected IDs, query execution statuses, finding IDs, candidate hashes, and lineage metrics against pre-refactor baselines.
+  - Added unit test suite `tests/unit/test_research_pipeline_stages.py` exercising all 10 stages independently with normal and empty/edge inputs.
 - **Files Affected:**
-  - `backend/services/research/research_engine.py`, new stage modules in `backend/application/research/`.
-- **Tests Required:** `tests/integration/test_claim_pipeline.py`, `tests/benchmarks/test_research_performance.py`.
-- **Acceptance Criteria:** Bit-for-bit identical `TruthDossier` and `ReplayLedger` output on benchmark claims.
+  - `backend/application/research/` (`__init__.py`, `pipeline.py`, `contracts.py`, `acquisition.py`, `adaptive.py`, `reading.py`, `synthesis.py`, `assembly.py`), `backend/services/research/research_engine.py`, `tests/unit/test_research_pipeline_golden.py`, `tests/unit/fixtures/research_phase4_golden.json`, `tests/unit/test_research_pipeline_stages.py`.
+- **Tests Required:** `tests/unit/test_research_pipeline_stages.py`, `tests/unit/test_research_pipeline_golden.py`, `tests/integration/test_claim_pipeline.py`, `tests/benchmarks/test_research_performance.py`, `tests/contract/`, `tests/security/`, `tests/chaos/`, full regression suite.
+- **Acceptance Criteria:** Bit-for-bit identical `TruthDossier` and `ReplayLedger` output across all 12 golden investigative scenarios; all 10 stages testable independently; full regression suite passes with 628 passed, 0 failed, 0 warnings.
+- **Phase 4 Validation (October 10, 2026):** Full test suite executed with 628 passed, 0 failed, 0 errors, and 0 warnings. Golden characterization test passed with 100% hash and integrity parity.
 
 ---
 

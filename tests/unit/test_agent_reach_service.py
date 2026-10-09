@@ -18,6 +18,7 @@ from unittest.mock import MagicMock, patch
 from backend.services.agent_reach.channels import (
     ChannelStatus,
     EvidenceFragment,
+    RetrievalRequest,
     RetrievalResult,
 )
 from backend.services.agent_reach.planner import RetrievalPlanner
@@ -179,3 +180,22 @@ def test_backward_compatibility_interfaces():
         doc = service.doctor()
         assert "status" in doc
         assert "channels" in doc
+
+
+def test_polymorphic_retrieve_interface():
+    service = AgentReachService()
+    req = RetrievalRequest(
+        request_id="req_test_poly",
+        agent="scout",
+        query="test polymorphic query",
+    )
+    with patch.object(service, "execute", return_value=[
+        EvidenceFragment(platform="Web", title="Doc 1", url="https://example.com/1", snippet="Snippet 1")
+    ]) as mock_exec:
+        result = service.retrieve(req)
+        assert isinstance(result, RetrievalResult)
+        assert result.query == "test polymorphic query"
+        assert result.domain == "scout"
+        assert len(result.fragments) == 1
+        assert result.total_signals == 1
+        mock_exec.assert_called_once_with(req)

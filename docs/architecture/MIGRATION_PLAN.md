@@ -27,7 +27,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 | **0** | **Baseline, Containment & Architecture Blueprints** | **P0** | Add `.dockerignore`, author ADRs, map dependencies, freeze baseline test metrics. | **DELIVERED** (Commit `47ac9d1`) |
 | **1** | **Documentation Source of Truth & Drift Reconciliation** | **P1** | Consolidate `docs/`, reconcile test counts (530 tests), archive stale audit plans. | **DELIVERED** (Commit `ba210c3`) |
 | **2** | **Build, Packaging & CI Test Suite Hygiene** | **P1** | Add `pyproject.toml`, lock dependency strategies, expand CI to 7 parallel jobs. | **PARTIALLY DELIVERED** (Packaging & CI template created; CI activation & lockfile pending) |
-| **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | `agent_reach_service` contract tests pass; all 14 channel adapters verified. |
+| **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | **DELIVERED** (Method reconciliation, modular adapters under `backend/infrastructure/acquisition/`, backward compatibility shims, 531 tests passing) |
 | **4** | **Research Pipeline Decomposition** | **P1** | Break 581-line `investigate()` into 10 composable pipeline stages. | Investigation pipeline passes with bit-for-bit dossier equality. |
 | **5** | **Domain Agent Modularization** | **P1** | Relocate agent-specific extraction from `agent_reach/` into owning agent packages. | BrandShield, Trending, Scout, Personal Watch contract tests pass. |
 | **6** | **Centralized LLM Gateway & Validated Settings** | **P2** | Unify Gemini/mock LLM calls behind `LLMGateway`; adopt Pydantic `BaseSettings`. | Zero ad-hoc `os.getenv` in business logic; 100% deterministic offline mock tests. |
@@ -96,21 +96,29 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 ---
 
 ### Phase 3: Shared Acquisition Runtime Refactor
+- **Status:** **DELIVERED**
 - **Priority:** P0 (Core Runtime Integrity)
-- **Current State:** `AgentReachService` has duplicate `retrieve` method definitions. `router.py` is 1,706 lines long, mixing social API clients, Jina fetching, search dispatch, and fallback chains.
-- **Target State:**
-  - Reconcile `AgentReachService.retrieve` to cleanly handle both `RetrievalRequest` and keyword parameters.
-  - Decompose `router.py` into modular platform adapters:
-    - `backend/infrastructure/acquisition/routing/router.py` (~250 lines)
-    - `backend/infrastructure/acquisition/adapters/social/reddit.py` (~200 lines)
-    - `backend/infrastructure/acquisition/adapters/social/twitter.py` (~150 lines)
-    - `backend/infrastructure/acquisition/adapters/web/jina.py` (~150 lines)
-    - `backend/infrastructure/acquisition/security/url_validator.py` (~120 lines)
-  - Keep `backend/services/agent_reach/adapter.py` as a re-exporting compatibility shim.
+- **Delivered Architecture:**
+  - Reconciled `AgentReachService.retrieve` in `backend/services/agent_reach/adapter.py` into a single polymorphic method supporting both `RetrievalRequest` instances and string queries; eliminated shadowed method definition.
+  - Decomposed 1,706-line monolithic `router.py` into decoupled platform adapters under `backend/infrastructure/acquisition/`:
+    - `backend/infrastructure/acquisition/security/url_validator.py`: SSRF defense with private/loopback/cloud metadata IP validation and thread-safe DNS caching.
+    - `backend/infrastructure/acquisition/adapters/base.py`: Abstract `PlatformAdapter` contract.
+    - `backend/infrastructure/acquisition/adapters/social/reddit.py`: Arctic Shift REST query/comments/post read adapter with batching, cache injection, and normalizers.
+    - `backend/infrastructure/acquisition/adapters/social/twitter.py`: FxTwitter REST status/profile lookup adapter with cache injection and normalizers.
+    - `backend/infrastructure/acquisition/adapters/web/jina.py`: Web reading adapter with Scrapling HTTP primary, legacy fallback, and Jina tertiary readers.
+    - `backend/infrastructure/acquisition/routing/router.py`: `NativeRouter` orchestrator coordinating channels, fallback cascades, and Policy D ranking.
+    - `backend/infrastructure/acquisition/service.py`: Canonical `AcquisitionService` alias.
+  - Converted legacy import locations into 100% backward-compatible re-exporting shims:
+    - `backend/services/agent_reach/adapter.py`
+    - `backend/services/agent_reach/native/router.py`
+    - `backend/services/url_validator.py`
+    - `backend/services/agent_reach/native/adapters/base.py`
+    - `backend/services/agent_reach/native/adapters/reddit.py`
+    - `backend/services/agent_reach/native/adapters/twitter.py`
 - **Files Affected:**
-  - `backend/services/agent_reach/adapter.py`, `backend/services/agent_reach/native/router.py`, new adapter modules under `backend/infrastructure/acquisition/`.
-- **Tests Required:** `tests/unit/test_agent_reach_service.py`, `tests/chaos/test_agent_reach_chaos.py`, `tests/unit/test_shared_acquisition_fabric.py`.
-- **Acceptance Criteria:** All acquisition tests pass; no method shadowing; all channel adapters functional.
+  - `backend/infrastructure/acquisition/`, `backend/services/agent_reach/adapter.py`, `backend/services/agent_reach/native/router.py`, `backend/services/url_validator.py`, `backend/services/agent_reach/native/adapters/*`, `tests/unit/test_agent_reach_service.py`.
+- **Tests Required:** `tests/unit/test_agent_reach_service.py`, `tests/chaos/test_agent_reach_chaos.py`, `tests/unit/test_shared_acquisition_fabric.py`, `tests/unit/test_zero_auth_social_retrieval.py`.
+- **Acceptance Criteria:** All acquisition tests pass; no method shadowing; all channel adapters functional; full regression suite passes with 531 passed, 0 failed, 0 warnings.
 
 ---
 

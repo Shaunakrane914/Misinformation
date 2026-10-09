@@ -187,19 +187,77 @@ class AgentReachService:
         """
         return native_router.execute_retrieval_request(request)
 
-    def retrieve(self, request_or_query: Any, **kwargs) -> RetrievalResult:
+    def retrieve(
+        self,
+        request_or_query: Any = None,
+        query: Optional[str] = None,
+        domain: str = "general",
+        channels: Optional[List[str]] = None,
+        source_url: Optional[str] = None,
+        limit_per_channel: int = 6,
+        timeout: float = 12.0,
+        **kwargs: Any,
+    ) -> RetrievalResult:
         """
-        Universal retrieve method. Accepts either a typed RetrievalRequest or legacy query string.
+        Universal, domain-planned evidence retrieval entrypoint.
+        Polymorphic: Accepts either a typed RetrievalRequest or query string.
         """
-        if isinstance(request_or_query, RetrievalRequest):
-            frags = self.execute(request_or_query)
+        target = request_or_query if request_or_query is not None else query
+        if isinstance(target, RetrievalRequest):
+            frags = self.execute(target)
             return RetrievalResult(
-                query=request_or_query.query or request_or_query.entity,
-                domain=request_or_query.agent,
+                query=target.query or target.entity,
+                domain=target.agent,
                 fragments=frags,
                 total_signals=len(frags),
             )
-        return self.omni_scan(request_or_query, **kwargs)
+
+        clean_q = str(target or "").strip()
+        plan = self.planner.plan(clean_q, domain=domain, include_channels=channels)
+        logger.info(f"[AgentReachService] Executing retrieve for '{clean_q[:40]}...' (domain={domain}): channels={plan.channels_to_query}")
+
+        # If multi_channel_queries are available from plan, use retrieve_many
+        if plan.multi_channel_queries:
+            active_queries = plan.multi_channel_queries
+            if channels:
+                active_queries = {ch: q_list for ch, q_list in active_queries.items() if ch in channels}
+
+            return self.retrieve_many(
+                channel_queries=active_queries,
+                domain=domain,
+                agent_name="agent_reach",
+                target_name=clean_q,
+                source_url=source_url,
+                budget={
+                    "max_queries_per_channel": kwargs.get("max_queries_per_channel", 3),
+                    "max_results_per_query": limit_per_channel,
+                    "max_total_evidence": kwargs.get("max_total_evidence", 40),
+                    "max_deep_reads": kwargs.get("max_deep_reads", 4),
+                },
+                perform_reads=kwargs.get("perform_reads", True),
+                timeout=timeout,
+            )
+
+        # Fallback to single-query per channel
+        single_query_matrix = {
+            ch: [{"query_id": f"{ch}_01", "query_class": "general", "query_text": plan.domain_queries.get(ch, clean_q)}]
+            for ch in plan.channels_to_query
+        }
+        return self.retrieve_many(
+            channel_queries=single_query_matrix,
+            domain=domain,
+            agent_name="agent_reach",
+            target_name=clean_q,
+            source_url=source_url,
+            budget={
+                "max_queries_per_channel": 1,
+                "max_results_per_query": limit_per_channel,
+                "max_total_evidence": 30,
+                "max_deep_reads": 3,
+            },
+            perform_reads=kwargs.get("perform_reads", True),
+            timeout=timeout,
+        )
 
     def retrieve_many(
         self,
@@ -626,66 +684,6 @@ class AgentReachService:
             retrieval_trace=trace.to_dict(),
             trace_obj=trace,
             query_records=list(query_records_map.values()),
-        )
-
-    def retrieve(
-        self,
-        query: str,
-        domain: str = "general",
-        channels: Optional[List[str]] = None,
-        source_url: Optional[str] = None,
-        limit_per_channel: int = 6,
-        timeout: float = 12.0,
-    ) -> RetrievalResult:
-        """
-        Execute domain-planned, concurrent internet evidence retrieval.
-        Automatically leverages multi-query planning and bounded concurrent execution.
-        """
-        clean_q = query.strip()
-        plan = self.planner.plan(clean_q, domain=domain, include_channels=channels)
-        logger.info(f"[AgentReachService] Executing retrieve for '{clean_q[:40]}...' (domain={domain}): channels={plan.channels_to_query}")
-
-        # If multi_channel_queries are available from plan, use retrieve_many
-        if plan.multi_channel_queries:
-            active_queries = plan.multi_channel_queries
-            if channels:
-                active_queries = {ch: q_list for ch, q_list in active_queries.items() if ch in channels}
-
-            return self.retrieve_many(
-                channel_queries=active_queries,
-                domain=domain,
-                agent_name="agent_reach",
-                target_name=clean_q,
-                source_url=source_url,
-                budget={
-                    "max_queries_per_channel": 3,
-                    "max_results_per_query": limit_per_channel,
-                    "max_total_evidence": 40,
-                    "max_deep_reads": 4,
-                },
-                perform_reads=True,
-                timeout=timeout
-            )
-
-        # Fallback to single-query per channel
-        single_query_matrix = {
-            ch: [{"query_id": f"{ch}_01", "query_class": "general", "query_text": plan.domain_queries.get(ch, clean_q)}]
-            for ch in plan.channels_to_query
-        }
-        return self.retrieve_many(
-            channel_queries=single_query_matrix,
-            domain=domain,
-            agent_name="agent_reach",
-            target_name=clean_q,
-            source_url=source_url,
-            budget={
-                "max_queries_per_channel": 1,
-                "max_results_per_query": limit_per_channel,
-                "max_total_evidence": 30,
-                "max_deep_reads": 3,
-            },
-            perform_reads=True,
-            timeout=timeout
         )
 
     # ── Deduplication & Independence Logic ──────────────────────────────────

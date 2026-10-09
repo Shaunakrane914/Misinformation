@@ -1,9 +1,7 @@
 """
-[LEGACY_COMPATIBILITY_SHIM]
-Aegis Protocol — SSRF Defense Service Shim
-===========================================
-Re-exports canonical security primitives from:
-backend.infrastructure.acquisition.security.url_validator
+Aegis Protocol — Acquisition Security Module
+=============================================
+SSRF defense, IP range validation, and safe URL verification.
 """
 
 from backend.infrastructure.acquisition.security.url_validator import (
@@ -12,8 +10,6 @@ from backend.infrastructure.acquisition.security.url_validator import (
     APPROVED_SOCIAL_MIRROR_HOSTNAMES,
     BLOCKED_HOSTNAMES,
     BLOCKED_NETWORKS,
-    _DNS_CACHE,
-    _DNS_CACHE_TTL,
     clear_dns_cache,
     is_ip_blocked,
     is_safe_url,

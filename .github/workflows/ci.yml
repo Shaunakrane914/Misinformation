@@ -2,9 +2,9 @@ name: Aegis Protocol CI & Verification Matrix
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "feat/retrieval-quality-benchmark" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "feat/retrieval-quality-benchmark" ]
 
 jobs:
   code-quality:

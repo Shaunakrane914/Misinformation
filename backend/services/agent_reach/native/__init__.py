@@ -25,7 +25,6 @@ from backend.services.agent_reach.native.errors import (
 )
 from backend.services.agent_reach.native.executor import NativeExecutor, native_executor
 from backend.services.agent_reach.native.normalizer import NativeNormalizer, native_normalizer
-from backend.services.agent_reach.native.router import NativeRouter, native_router
 from backend.services.agent_reach.native.runtime import (
     NativeRuntime,
     RuntimeProfile,
@@ -35,6 +34,14 @@ from backend.services.agent_reach.native.runtime import (
     is_tool_available,
     native_runtime,
 )
+
+
+def __getattr__(name: str):
+    """Lazily expose the legacy router path without creating import cycles."""
+    if name in {"NativeRouter", "native_router"}:
+        from backend.services.agent_reach.native.router import NativeRouter, native_router
+        return NativeRouter if name == "NativeRouter" else native_router
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
 
 __all__ = [
     "native_doctor",

@@ -27,7 +27,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 | **0** | **Baseline, Containment & Architecture Blueprints** | **P0** | Add `.dockerignore`, author ADRs, map dependencies, freeze baseline test metrics. | **DELIVERED** (Commit `47ac9d1`) |
 | **1** | **Documentation Source of Truth & Drift Reconciliation** | **P1** | Consolidate `docs/`, reconcile test counts (530 tests), archive stale audit plans. | **DELIVERED** (Commit `ba210c3`) |
 | **2** | **Build, Packaging & CI Test Suite Hygiene** | **P1** | Add `pyproject.toml`, lock dependency strategies, expand CI to 7 parallel jobs. | **PARTIALLY DELIVERED** (Packaging & CI template created; CI activation & lockfile pending) |
-| **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | **DELIVERED** (Method reconciliation, modular adapters under `backend/infrastructure/acquisition/`, backward compatibility shims, 531 tests passing) |
+| **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | **DELIVERED + PHASE 3.5 CLOSEOUT** (Canonical infrastructure service, decomposed query dispatcher, compatibility shims, isolated test outputs, and 16-channel contracts) |
 | **4** | **Research Pipeline Decomposition** | **P1** | Break 581-line `investigate()` into 10 composable pipeline stages. | Investigation pipeline passes with bit-for-bit dossier equality. |
 | **5** | **Domain Agent Modularization** | **P1** | Relocate agent-specific extraction from `agent_reach/` into owning agent packages. | BrandShield, Trending, Scout, Personal Watch contract tests pass. |
 | **6** | **Centralized LLM Gateway & Validated Settings** | **P2** | Unify Gemini/mock LLM calls behind `LLMGateway`; adopt Pydantic `BaseSettings`. | Zero ad-hoc `os.getenv` in business logic; 100% deterministic offline mock tests. |
@@ -75,11 +75,11 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 
 ### Phase 2: Build, Packaging & CI Test Suite Hygiene
 - **Status:** **PARTIALLY DELIVERED**
-  - **Delivered:** Authored PEP 517/518/621 `pyproject.toml` establishing standard project metadata, runtime dependencies, optional groups (`test`, `benchmarks`, `dev`), and `pytest` discovery. Created decoupled 7-job expanded CI matrix template at `docs/development/ci_matrix_expanded.yml`.
-  - **Pending Activation:** Activation of the expanded CI matrix directly in `.github/workflows/ci.yml` was blocked on remote push due to GitHub OAuth permissions requiring the `workflow` scope. The template is ready for manual application via GitHub Web UI or a token with `workflow` scope. The active `.github/workflows/ci.yml` continues running its existing push/PR jobs on `main`.
+  - **Delivered:** Authored PEP 517/518/621 `pyproject.toml` establishing standard project metadata, runtime dependencies, optional groups (`test`, `benchmarks`, `dev`), and `pytest` discovery. Created decoupled 7-job expanded CI matrix template at `docs/development/ci_matrix_expanded.yml`. The active three-job workflow now includes push coverage for `feat/retrieval-quality-benchmark` as well as `main`.
+  - **Pending Activation:** The expanded seven-job matrix remains a template and has not replaced the active three-job workflow. A successful local YAML parse or a feature-branch trigger does not establish that the expanded matrix is active or that a remote GitHub Actions run passed.
   - **Pending Dependency Locking:** A dedicated pinned lockfile (`requirements-lock.txt` or constraints file) is pending evaluation to guarantee bit-for-bit reproducible installs without relying on open `>=` ranges.
 - **Priority:** P1
-- **Current State:** `.github/workflows/ci.yml` remains the active workflow running on `main`. `docs/development/ci_matrix_expanded.yml` serves as the authoritative template covering all 530 regression tests and 104 Cranfield benchmark scenarios across 7 parallel jobs.
+- **Current State:** `.github/workflows/ci.yml` remains the active three-job workflow and is configured for `main` plus the Phase 3.5 feature branch. `docs/development/ci_matrix_expanded.yml` remains the proposed seven-job template. Dependency locking and expanded-matrix activation are still pending, so Phase 2 is not complete.
 - **Target State (Upon Full Activation):**
   - `.github/workflows/ci.yml` executes the 7-job parallel matrix across Python 3.11, 3.12, 3.13:
     1. **`lint-format`**: Code style and static analysis on core packages (`flake8`).
@@ -96,18 +96,22 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 ---
 
 ### Phase 3: Shared Acquisition Runtime Refactor
-- **Status:** **DELIVERED**
+- **Status:** **DELIVERED; PHASE 3.5 ARCHITECTURE CLOSEOUT IMPLEMENTED**
 - **Priority:** P0 (Core Runtime Integrity)
 - **Delivered Architecture:**
-  - Reconciled `AgentReachService.retrieve` in `backend/services/agent_reach/adapter.py` into a single polymorphic method supporting both `RetrievalRequest` instances and string queries; eliminated shadowed method definition.
+  - Reconciled `AgentReachService.retrieve` into a single polymorphic method supporting both `RetrievalRequest` instances and string queries; eliminated the shadowed method definition.
+  - Moved the complete canonical `AgentReachService` implementation into `backend/infrastructure/acquisition/service.py`. The legacy module re-exports the exact same class and singleton objects; it no longer owns a duplicate implementation.
   - Decomposed 1,706-line monolithic `router.py` into decoupled platform adapters under `backend/infrastructure/acquisition/`:
     - `backend/infrastructure/acquisition/security/url_validator.py`: SSRF defense with private/loopback/cloud metadata IP validation and thread-safe DNS caching.
     - `backend/infrastructure/acquisition/adapters/base.py`: Abstract `PlatformAdapter` contract.
     - `backend/infrastructure/acquisition/adapters/social/reddit.py`: Arctic Shift REST query/comments/post read adapter with batching, cache injection, and normalizers.
     - `backend/infrastructure/acquisition/adapters/social/twitter.py`: FxTwitter REST status/profile lookup adapter with cache injection and normalizers.
     - `backend/infrastructure/acquisition/adapters/web/jina.py`: Web reading adapter with Scrapling HTTP primary, legacy fallback, and Jina tertiary readers.
-    - `backend/infrastructure/acquisition/routing/router.py`: `NativeRouter` orchestrator coordinating channels, fallback cascades, and Policy D ranking.
-    - `backend/infrastructure/acquisition/service.py`: Canonical `AcquisitionService` alias.
+    - `backend/infrastructure/acquisition/routing/channel_dispatcher.py`: Shared handler selection, error semantics, latency, and provenance defaults.
+    - `backend/infrastructure/acquisition/routing/standard_handlers.py`: Native, feed, reader, credential-gated, and deterministic standard-channel fallbacks.
+    - `backend/infrastructure/acquisition/routing/social_handlers.py`: Reddit/X direct-source retrieval, discovery, public-mirror acquisition, and honest search-index fallback.
+    - `backend/infrastructure/acquisition/routing/router.py`: `NativeRouter` orchestration plus reusable read/search helpers and Policy D coordination. During Phase 3.5 it decreased from 1,446 to 815 physical lines, while `execute_channel_query()` decreased from 642 to 22 physical lines.
+    - `backend/infrastructure/acquisition/service.py`: Canonical acquisition-service implementation.
   - Converted legacy import locations into 100% backward-compatible re-exporting shims:
     - `backend/services/agent_reach/adapter.py`
     - `backend/services/agent_reach/native/router.py`
@@ -115,10 +119,16 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
     - `backend/services/agent_reach/native/adapters/base.py`
     - `backend/services/agent_reach/native/adapters/reddit.py`
     - `backend/services/agent_reach/native/adapters/twitter.py`
+  - Isolated benchmark and agent-quality test output in pytest temporary directories so regression runs cannot overwrite tracked evaluation artifacts.
+  - Added `docs/architecture/ACQUISITION_CHANNEL_COVERAGE.md` and executable contracts for all 16 advertised capabilities, including explicit credential-required and unsupported states.
+- **Phase 3.5 Call Flow:**
+  - Before: `AgentReachService -> NativeRouter.execute_channel_query()` contained platform selection, native calls, social discovery, fallbacks, normalization tags, errors, and telemetry in one 642-line method.
+  - After: `AgentReachService -> NativeRouter -> ChannelQueryDispatcher -> StandardChannelHandlers | SocialChannelHandlers -> existing executor/adapters/normalizer`, with shared error, latency, and provenance finalization in the dispatcher.
 - **Files Affected:**
   - `backend/infrastructure/acquisition/`, `backend/services/agent_reach/adapter.py`, `backend/services/agent_reach/native/router.py`, `backend/services/url_validator.py`, `backend/services/agent_reach/native/adapters/*`, `tests/unit/test_agent_reach_service.py`.
-- **Tests Required:** `tests/unit/test_agent_reach_service.py`, `tests/chaos/test_agent_reach_chaos.py`, `tests/unit/test_shared_acquisition_fabric.py`, `tests/unit/test_zero_auth_social_retrieval.py`.
-- **Acceptance Criteria:** All acquisition tests pass; no method shadowing; all channel adapters functional; full regression suite passes with 531 passed, 0 failed, 0 warnings.
+- **Tests Required:** Service identity and compatibility, acquisition fabric, all 16 channel contracts, zero-auth social retrieval/discovery, telemetry, provenance, SSRF/XSS security, chaos, API/contract integration, modular routers, and the complete offline pytest suite.
+- **Acceptance Criteria:** All acquisition and regression tests pass; no method shadowing; legacy imports resolve to the canonical implementation; the query router contains no multi-platform mega-method; every advertised channel has an honest executable contract; tests do not mutate tracked benchmarks. Exact test evidence is recorded from the Phase 3.5 validation run rather than retained as a stale fixed count in this roadmap.
+- **Phase 3.5 Validation (October 10, 2026):** 198 focused acquisition, compatibility, security, chaos, and API/contract tests passed in 74.97 seconds. The complete offline suite passed with 606 passed, 0 failed, 0 errors, 0 skipped, and no warning summary in 413.19 seconds (pytest exit code 0). Post-test Git hashes for the tracked retrieval benchmark summaries matched `HEAD`.
 
 ---
 

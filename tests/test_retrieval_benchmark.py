@@ -22,10 +22,12 @@ FIXTURES_DIR = Path("tests/retrieval_benchmark")
 
 
 @pytest.fixture(scope="module")
-def benchmark_results():
+def benchmark_results(tmp_path_factory):
+    """Run against frozen inputs while isolating generated outputs per test run."""
+    output_dir = tmp_path_factory.mktemp("retrieval_benchmark")
     runner = BenchmarkRunner(
         fixtures_dir=FIXTURES_DIR,
-        output_dir=Path("artifacts/retrieval_benchmark"),
+        output_dir=output_dir,
         top_k=4,
     )
     summary = runner.run_benchmark(agent_filter="all", system_filter="all")
@@ -34,7 +36,7 @@ def benchmark_results():
 
 def test_agent_metrics_are_separated(benchmark_results):
     summary, runner = benchmark_results
-    per_agent_file = Path("artifacts/retrieval_benchmark/per_agent.json")
+    per_agent_file = runner.output_dir / "per_agent.json"
     assert per_agent_file.exists()
 
     with open(per_agent_file, "r", encoding="utf-8") as f:
@@ -77,7 +79,7 @@ def test_system_ranking_divergence(benchmark_results):
     Verification that ranking systems are isolated and generate distinct orderings.
     """
     _, runner = benchmark_results
-    with open("artifacts/retrieval_benchmark/rankings.jsonl", "r", encoding="utf-8") as f:
+    with open(runner.output_dir / "rankings.jsonl", "r", encoding="utf-8") as f:
         rankings = [json.loads(line) for line in f]
 
     from collections import defaultdict

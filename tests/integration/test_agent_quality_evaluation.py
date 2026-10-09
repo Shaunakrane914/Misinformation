@@ -14,8 +14,12 @@ from scripts.evaluate_all_agents import AgentEvaluationRunner
 
 
 @pytest.fixture(scope="module")
-def eval_runner():
-    return AgentEvaluationRunner(offline_mode=True)
+def eval_runner(tmp_path_factory):
+    """Keep generated quality reports out of tracked artifact directories."""
+    return AgentEvaluationRunner(
+        offline_mode=True,
+        output_dir=str(tmp_path_factory.mktemp("agent_quality_evaluation")),
+    )
 
 
 @pytest.mark.integration

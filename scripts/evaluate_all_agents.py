@@ -108,8 +108,9 @@ class AgentEvaluationRunner:
     Computes strict non-fabricated scoring based on explicit criteria.
     """
 
-    def __init__(self, offline_mode: bool = True):
+    def __init__(self, offline_mode: bool = True, output_dir: Optional[str] = None):
         self.offline_mode = offline_mode
+        self.output_dir = output_dir or os.path.join(ROOT_DIR, "artifacts")
         self.results: List[Dict[str, Any]] = []
 
     # -------------------------------------------------------------------------
@@ -1305,7 +1306,7 @@ class AgentEvaluationRunner:
         print("-" * 64 + "\n")
 
         # Save machine-readable and markdown artifacts
-        artifacts_dir = os.path.join(ROOT_DIR, "artifacts")
+        artifacts_dir = self.output_dir
         os.makedirs(artifacts_dir, exist_ok=True)
 
         json_path = os.path.join(artifacts_dir, "all_agents_evaluation.json")

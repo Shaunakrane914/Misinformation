@@ -32,6 +32,7 @@ from backend.services.research.contradiction_detector import ContradictionDetect
 from backend.services.research.evidence_graph import EvidenceGraphBuilder, evidence_graph_builder
 from backend.services.research.research_budget import ResearchBudget, default_budget
 from backend.services.research.research_engine import ResearchEngine, research_engine
+from backend.services.research.temporal_guard import TemporalGuard, temporal_guard, TemporalAssessment
 
 __all__ = [
     "AtomicClaim",

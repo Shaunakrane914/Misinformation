@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-08T02:28:05.448429+00:00",
-  "commit": "fd4f8c315233",
+  "timestamp": "2026-10-09T05:11:39.069654+00:00",
+  "commit": "2a2c9dd2b94b",
   "total_scenarios": 28,
   "total_passed": 28,
   "total_failed": 0,
   "total_partial": 0,
   "overall_quality_score_pct": 100.0,
-  "total_duration_seconds": 0.039,
+  "total_duration_seconds": 0.081,
   "agents": {
     "brandshield": {
       "total_scenarios": 10,
@@ -73,7 +73,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.001,
+      "latency_seconds": 0.002,
       "notes": [
         "Official portal verified without threat classification"
       ]
@@ -89,7 +89,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Support documentation preserved without alert pollution"
       ]
@@ -105,7 +105,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Counterfeit listing correctly flagged and attributed"
       ]
@@ -121,7 +121,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Credential phishing domain accurately classified"
       ]
@@ -137,7 +137,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Legitimate consumer grievance differentiated from malicious attack"
       ]
@@ -153,7 +153,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Zero-evidence safety invariant held: no fabricated threats"
       ]
@@ -169,7 +169,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Contradictory claims partitioned epistemically without destructive collapse"
       ]
@@ -185,7 +185,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Objective product review not conflated with malicious reputation attack"
       ]
@@ -233,7 +233,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Syndicated wire copies clustered under single narrative without inflating independence"
       ]
@@ -249,7 +249,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Differently phrased headlines unified into single narrative cluster"
       ]
@@ -281,7 +281,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Velocity scored within valid mathematical bounds"
       ]
@@ -377,7 +377,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Public speech and company announcement not classified as personal threat"
       ]
@@ -393,7 +393,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Lookalike social account detected and classified as IMPERSONATION"
       ]
@@ -409,7 +409,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Financial solicitation scam flagged under SCAM threat taxonomy"
       ]
@@ -425,7 +425,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "AI voice manipulation claim correctly attributed to DEEPFAKE taxonomy"
       ]
@@ -441,7 +441,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.001,
+      "latency_seconds": 0.002,
       "notes": [
         "Strict zero-PII invariant verified: sensitive patterns scrubbed from intelligence payload"
       ]
@@ -489,7 +489,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.0,
+      "latency_seconds": 0.001,
       "notes": [
         "Adversarial instructions neutralized by untrusted evidence boundary"
       ]

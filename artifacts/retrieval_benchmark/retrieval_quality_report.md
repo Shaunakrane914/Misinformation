@@ -56,10 +56,18 @@ $$\text{Precision@k}(\tau) = \frac{\sum_{i=1}^{\min(|G|, k)} \mathbb{I}(g_i \ge 
   $$\frac{85}{104 \times 5} = \frac{85}{520} = 16.346\% \approx 16.35\%$$
   When evaluated with natural pool denominator $k=4$, Precision@4 is $85 / (104 \times 4) = 85 / 416 = 20.43\%$.
 
-### 2. Cranfield-Valid Recall@k
+### 2. Cranfield-Valid Recall@k vs. Success@k (HitRate@k)
 $$\text{Recall@k} = \frac{\sum_{i=1}^{\min(|G|, k)} \mathbb{I}(g_i \ge 2)}{R_{\text{query}}}$$
-- Evaluated **strictly** over queries where at least one relevant document exists ($R_{\text{query}} \ge 1$, $N=58$ scenarios).
-- Purely negative queries ($N=46$) return `None` and are excluded from the macro-average to prevent false 100% inflation.
+$$\text{Success@k} = \begin{cases} 1.0 & \text{if } \sum_{i=1}^{\min(|G|, k)} \mathbb{I}(g_i \ge 2) \ge 1 \\ 0.0 & \text{otherwise} \end{cases}$$
+
+- **Resolution of Previous Reports (53/58 = 91.38% and 51/58 = 87.93%):**
+  Earlier reports labeled 53/58 (91.38%) or 51/58 (87.93%) as "Recall@1". Investigation demonstrates that those figures were **Success@1 (HitRate@1)** under previous ranking permutations, where any query having at least one relevant candidate at Rank 1 received a full score of 1.0.
+  When evaluating standard Cranfield Recall@1, scenarios where multiple relevant candidates exist ($R_{\text{query}} > 1$, e.g., Trending and Personal Watch where $R_{\text{query}} = 2$) receive $1 / 2 = 0.50$, bringing the macro-average to **71.55%**.
+- **Evaluated Scope:** Both metrics are evaluated **strictly** over queries where at least one relevant document exists ($R_{\text{query}} \ge 1$, $N=58$ scenarios: 50 Dev, 8 Holdout).
+- **Zero-Relevant Queries:** Purely negative queries ($N=46$: 34 Dev, 12 Holdout) return `None` and are excluded from the macro-average to prevent false 100% inflation.
+- **Aggregation Formats:**
+  - **Macro-Averaged Recall@k:** Arithmetic mean of scenario-level Recall@k across all 58 evaluable queries.
+  - **Micro-Averaged Recall@k:** Total relevant candidates retrieved in top-$k$ divided by total relevant candidates in corpus ($\sum \text{retrieved}_k / 85$).
 
 ### 3. Hard-Negative Metrics (Top-1 Avoidance vs Candidate Gate Rejection)
 - **Top-1 Hard-Negative Avoidance (`top1_hard_negative_avoidance`):**
@@ -67,7 +75,7 @@ $$\text{Recall@k} = \frac{\sum_{i=1}^{\min(|G|, k)} \mathbb{I}(g_i \ge 2)}{R_{\t
   Measures whether a Grade 0 candidate is prevented from reaching Rank 1. Evaluated over all 104 scenarios possessing Grade 0 items.
 - **Candidate-Level Hard-Negative Rejection Rate (`candidate_hard_negative_rejection_rate`):**
   $$\text{Rejection Rate} = \frac{\sum_{c \in \mathcal{C}, \text{grade}(c)=0} \mathbb{I}(\text{is\_accepted}(c) = \text{False})}{\sum_{c \in \mathcal{C}} \mathbb{I}(\text{grade}(c)=0)}$$
-  Measures whether Grade 0 candidates were actively rejected by the RelevanceGate (`is_accepted == False`). Out of 147 Grade 0 candidates, exactly 124 are rejected by the hard entity/relevance gate (84.35% candidate rejection rate).
+  Measures whether Grade 0 candidates were actively rejected by the RelevanceGate (`is_accepted == False`). Out of 147 Grade 0 candidates, exactly 132 are rejected by the hard entity/relevance/temporal gate (89.80% candidate rejection rate). Never infers rejection merely from non-top-1 rank.
 
 ### 4. Entity and Intent Accuracy at Rank 1 vs Pool Densities
 - **`entity_accuracy_at_1`:** Measures whether the candidate ranked at Rank 1 matches the target entity canonical (Deterministic: 94.23%, Reranker: 86.54%).
@@ -101,9 +109,13 @@ The real neural CrossEncoder path was verified end-to-end with observable runtim
 | **Strict Precision@1 (Grade 3)** | **50.00%** (52/104) | **50.00%** (52/104) | **48.08%** (50/104) | **-1.92%** | **Degraded** |
 | **Strict Precision@3 (k=3)** | **16.99%** | **16.99%** | **16.99%** | `0.0%` | Parity |
 | **Strict Precision@4 (k=4)** | **12.74%** (53/416) | **12.74%** (53/416) | **12.74%** (53/416) | `0.0%` | Parity |
-| **Cranfield Recall@1 ($R \ge 1$)** | **71.55%** | **71.55%** | **71.55%** | `0.0%` | Parity |
-| **Cranfield Recall@3 ($R \ge 1$)** | **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
-| **Cranfield Recall@4 ($R \ge 1$)** | **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
+| **Success@1 / HitRate@1 ($R \ge 1$)** | **94.83%** (55/58) | **94.83%** (55/58) | **94.83%** (55/58) | `0.0%` | Parity |
+| **Cranfield Macro-Recall@1 ($R \ge 1$)** | **71.55%** | **71.55%** | **71.55%** | `0.0%` | Parity |
+| **Cranfield Micro-Recall@1 (Corpus 85 rel)**| **64.71%** (55/85) | **64.71%** (55/85) | **64.71%** (55/85) | `0.0%` | Parity |
+| **Cranfield Macro-Recall@3 ($R \ge 1$)** | **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
+| **Cranfield Micro-Recall@3 (Corpus 85 rel)**| **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
+| **Cranfield Macro-Recall@4 ($R \ge 1$)** | **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
+| **Cranfield Micro-Recall@4 (Corpus 85 rel)**| **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
 | **MRR (Broad)** | **54.33%** | **54.33%** | **54.33%** | `0.0%` | Parity |
 | **Strict MRR (Grade 3)** | **50.48%** | **50.48%** | **49.52%** | **-0.96%** | **Degraded** |
 | **nDCG@3** | **95.75%** | **94.72%** | **94.42%** | **-1.33%** | **Degraded** |
@@ -113,39 +125,68 @@ The real neural CrossEncoder path was verified end-to-end with observable runtim
 | **Intent Accuracy @ Rank 1** | **50.00%** (52/104) | **50.00%** (52/104) | **48.08%** (50/104) | **-1.92%** | **Degraded** |
 | **Top-k Intent Density (Pool)** | **13.94%** | **13.94%** | **13.94%** | `0.0%` | Pool Constant |
 | **Top-1 Hard-Neg Avoidance** | **96.15%** (100/104) | **92.31%** (96/104) | **92.31%** (96/104) | **-3.84%** | **Degraded** |
-| **Candidate Hard-Neg Rejection** | **84.35%** (124/147) | **84.35%** (124/147) | **84.35%** (124/147) | `0.0%` | Gate Invariant |
+| **Candidate Hard-Neg Rejection** | **89.80%** (132/147) | **89.80%** (132/147) | **89.80%** (132/147) | `0.0%` | Gate Invariant |
 
 ---
 
 ## Development vs. Holdout Generalization
 
-| Metric | Dev (N=84) — Det | Dev (N=84) — Rer | Holdout (N=20) — Det | Holdout (N=20) — Rer |
-| :--- | :---: | :---: | :---: | :---: |
-| **Broad Precision@1** | **55.95%** (47/84) | **57.14%** (48/84) | **40.00%** (8/20) | **35.00%** (7/20) |
-| **Strict Precision@1** | **52.38%** (44/84) | **52.38%** (44/84) | **40.00%** (8/20) | **30.00%** (6/20) |
-| **Cranfield Recall@1** | **70.00%** | **72.00%** | **81.25%** | **68.75%** |
-| **MRR (Broad)** | **57.74%** | **58.33%** | **40.00%** | **37.50%** |
-| **nDCG@4** | **95.90%** | **95.04%** | **95.09%** | **91.81%** |
-| **Entity Accuracy @ 1** | **95.24%** | **88.10%** | **90.00%** | **80.00%** |
-| **Top-1 Hard-Neg Avoidance** | **96.43%** | **92.86%** | **95.00%** | **90.00%** |
-| **Candidate Hard-Neg Rejection** | **84.62%** (99/117) | **84.62%** (99/117) | **83.33%** (25/30) | **83.33%** (25/30) |
+| Metric | Dev (N=84) — Det | Dev (N=84) — Rer | Holdout (N=20) — Det | Holdout (N=20) — Rer | Holdout Delta (Rer vs Det) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Broad Precision@1** | **55.95%** (47/84) | **57.14%** (48/84) | **40.00%** (8/20) | **35.00%** (7/20) | **-5.00%** |
+| **Strict Precision@1** | **52.38%** (44/84) | **52.38%** (44/84) | **40.00%** (8/20) | **30.00%** (6/20) | **-10.00%** |
+| **Success@1 / HitRate@1** | **94.00%** (47/50) | **96.00%** (48/50) | **100.00%** (8/8) | **87.50%** (7/8) | **-12.50%** |
+| **Cranfield Macro-Recall@1** | **70.00%** | **72.00%** | **81.25%** | **68.75%** | **-12.50%** |
+| **Cranfield Micro-Recall@1** | **63.51%** (47/74) | **64.86%** (48/74) | **72.73%** (8/11) | **63.64%** (7/11) | **-9.09%** |
+| **MRR (Broad)** | **57.74%** | **58.33%** | **40.00%** | **37.50%** | **-2.50%** |
+| **nDCG@4** | **95.90%** | **95.04%** | **95.09%** | **91.81%** | **-3.28%** |
+| **Entity Accuracy @ 1** | **95.24%** | **88.10%** | **90.00%** | **80.00%** | **-10.00%** |
+| **Top-1 Hard-Neg Avoidance** | **96.43%** | **92.86%** | **95.00%** | **90.00%** | **-5.00%** |
+| **Candidate Hard-Neg Rejection** | **89.74%** (105/117) | **89.74%** (105/117) | **90.00%** (27/30) | **90.00%** (27/30) | `0.0%` |
+
+> [!CAUTION]
+> **Severe Holdout Generalization Degradation:**
+> While the neural reranker marginally nudges Dev Success@1 (+2.0%), it **collapses on the un-tuned holdout set**:
+> - Holdout Success@1 drops from **100.0% to 87.5%** (-12.5%)
+> - Holdout Macro-Recall@1 drops from **81.25% to 68.75%** (-12.5%)
+> - Holdout Micro-Recall@1 drops from **72.73% to 63.64%** (-9.09%)
+> - Holdout Top-1 Hard-Negative Avoidance drops from **95.0% to 90.0%** (-5.0%)
+> This confirms that enabling the neural reranker in production would degrade performance on unseen real-world inputs.
 
 ---
 
 ## Per-Agent Performance Breakdown
 
-| Agent | Scenarios | Broad P@1 (Det / Rer) | Strict P@1 (Det / Rer) | nDCG@4 (Det / Rer) | Top-1 HN Avoidance (Det / Rer) | Cand HN Rejection |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| **BrandShield** | 26 | **65.38%** / 65.38% | **65.38%** / 65.38% | **98.85%** / 97.36% | **100.0%** / 96.15% | **94.87%** (37/39) |
-| **Trending** | 26 | **46.15%** / 46.15% | **46.15%** / 46.15% | **89.22%** / 88.02% | **84.62%** / 84.62% | **59.09%** (13/22) |
-| **Scout** | 26 | **50.00%** / 50.00% | **50.00%** / 50.00% | **97.70%** / 95.10% | **100.0%** / 88.46% | **89.74%** (35/39) |
-| **Personal Watch** | 26 | **50.00%** / 50.00% | **38.46%** / 50.00% | **97.22%** / 97.16% | **100.0%** / 100.0% | **82.50%** (39/47) |
+| Agent | Scenarios | Broad P@1 (Det / Rer) | Strict P@1 (Det / Rer) | Success@1 (Det / Rer) | Macro-Recall@1 (Det / Rer) | nDCG@4 (Det / Rer) | Top-1 HN Avoidance (Det / Rer) | Cand HN Rejection |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **BrandShield** | 26 | **65.38%** / 65.38% | **65.38%** / 65.38% | **94.44%** / 94.44% | **88.89%** / 88.89% | **98.85%** / 97.36% | **100.0%** / 96.15% | **94.87%** (37/39) |
+| **Trending** | 26 | **46.15%** / 46.15% | **46.15%** / 46.15% | **100.0%** / 100.0% | **50.00%** / 50.00% | **89.22%** / 88.02% | **84.62%** / 84.62% | **95.45%** (21/22) |
+| **Scout** | 26 | **50.00%** / 50.00% | **50.00%** / 50.00% | **86.67%** / 86.67% | **86.67%** / 86.67% | **97.70%** / 95.10% | **100.0%** / 88.46% | **89.74%** (35/39) |
+| **Personal Watch** | 26 | **50.00%** / 50.00% | **38.46%** / 50.00% | **100.0%** / 100.0% | **50.00%** / 50.00% | **97.22%** / 97.16% | **100.0%** / 100.0% | **82.50%** (39/47) |
 
 ---
 
-## Architectural Verdict & Next Steps
+## Ranker-Only Benchmark vs. Production Pipeline with Temporal Enforcement
+
+A critical architectural distinction must be maintained:
+1. **Ranker-Only Benchmark:**
+   - Evaluates static textual and cross-encoder scoring across pre-acquired candidates without discarding items prior to ranking.
+   - Measures raw scoring models' resistance to adversarial semantic distractors.
+2. **Complete Production Pipeline (`TrendingAgent` + `RelevanceGate` + `TemporalGuard`):**
+   - Active trends are protected by the full defense-in-depth pipeline.
+   - Before ranking occurs, candidates pass through `TemporalGuard`:
+     - Stale 2021 articles are rejected (`TEMPORAL_GATE_ERROR: Story published 43800.0h ago exceeds freshness window of 48.0h`).
+     - Fresh retrieval timestamps on syndicated mirrors cannot bypass stale publication dates.
+     - High semantic similarity and high lexical overlap cannot resurrect temporally rejected items.
+     - Temporally rejected items are marked `is_accepted = False` and completely excluded from final active trends.
+
+---
+
+## Architectural Verdict & Production Recommendation
 
 1. **Production Decision:** **Keep the neural reranker disabled in production (`AEGIS_SEMANTIC_RERANKER=0`)**. The deterministic baseline provides superior precision, superior hard-negative defense, zero model latency, and zero dependency risk.
-2. **Phase 2 Priority — Trending Temporal Defect:**
-   - Trending exhibits the lowest candidate-level rejection rate (59.09%) and 0.0% rejection on `TEMPORAL_NEGATIVE` scenarios because articles fetched today inherit high recency scores even if published years ago.
-   - Proceed directly to Phase 2: Implement strict ISO/RFC/epoch timestamp normalization, explicit publication vs discovery time differentiation, 48-hour temporal eligibility gating, and update policies.
+2. **Phase 2 Implementation — Trending Temporal Freshness & Gating:**
+   - **Resolved Defect:** Prior to Phase 2, Trending candidate hard-negative rejection was 59.09% (with 0.0% on `TEMPORAL_NEGATIVE`), because discovery time was conflated with publication time.
+   - **Fix Implemented:** Created `TemporalGuard` enforcing canonical ISO/RFC/epoch timestamp normalization, distinct publication vs discovery/mirror lineage, a strict 48-hour freshness window for active trending, and explicit update handling.
+   - **Measured Impact:** Trending candidate hard-negative rejection jumped from **59.09% (13/22) to 95.45% (21/22)**, with `TEMPORAL_NEGATIVE` candidate rejection reaching **100.0% (12/12)**. Overall benchmark candidate rejection improved from **84.35% (124/147) to 89.80% (132/147)**.
+   - **Adversarial Verification:** 10/10 adversarial unit tests in `tests/test_trending_temporal_guard.py` passing, verifying timezone invariance (+08:00 vs UTC), stale syndication detection, future-skew immunity, conservative missing timestamp handling, and non-temporal preservation for BrandShield, Scout, and Personal Watch.

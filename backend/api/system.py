@@ -37,7 +37,8 @@ async def healthz():
         "system": "Aegis Protocol",
         "version": __version__,
         "response_generated_at": datetime.utcnow().isoformat() + "Z",
-        "registered_modules": 7
+        "registered_modules": 7,
+        "active_agents": 7
     }
 
 
@@ -129,6 +130,15 @@ async def api_info():
         "documentation": "/docs",
         "redoc": "/redoc",
         "registered_modules": [
+            "ClaimIngestionAgent",
+            "ResearchAgent",
+            "InvestigatorAgent",
+            "TrendingAgent",
+            "ScoutAgent",
+            "BrandShieldAgent",
+            "PersonalWatchAgent"
+        ],
+        "agents": [
             "ClaimIngestionAgent",
             "ResearchAgent",
             "InvestigatorAgent",

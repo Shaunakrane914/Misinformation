@@ -230,11 +230,15 @@ class SemanticReranker:
             first_stage = item.get("first_stage_score") or item.get("relevance_score") or 0.50
             entity_score = item.get("entity_score", 0.50)
 
-            # Invariant: If entity_score is failed/zero, do NOT permit high semantic score
-            # to leak an adversarial homograph into top rank!
-            if entity_score < entity_score_threshold:
+            # Invariant: If candidate failed temporal eligibility (e.g. stale trending article),
+            # the neural reranker MUST NOT restore or promote it into top rank!
+            if item.get("temporal_eligible") is False or item.get("rejection_stage") == "TEMPORAL_GATE_ERROR":
+                rerank_score = 0.0
+            elif entity_score < entity_score_threshold:
+                # Heavy penalty for failed entity match
                 rerank_score = sem_score * 0.10
             else:
+                # Balanced hybrid second-stage: 40% first-stage gate + 60% neural cross-encoder
                 rerank_score = 0.40 * first_stage + 0.60 * sem_score
 
             item["rerank_score"] = round(rerank_score, 4)

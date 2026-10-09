@@ -108,12 +108,16 @@ class BenchmarkRunner:
             "personal_watch": "personal",
         }
         domain = domain_map.get(agent, "general")
+        # Frozen reference time for benchmark dataset invariance
+        from datetime import datetime, timezone
+        ref_time = datetime(2026, 10, 9, 12, 0, 0, tzinfo=timezone.utc)
 
         assessment = relevance_gate.evaluate_item(
             candidate,
             target_entity=target_entity,
             domain=domain,
             intent=scenario.get("expected_intent", ""),
+            reference_time=ref_time,
         )
 
         cand_copy = copy.deepcopy(candidate)
@@ -124,6 +128,10 @@ class BenchmarkRunner:
         cand_copy["relevance_class"] = assessment.relevance_class
         cand_copy["is_accepted"] = assessment.is_accepted
         cand_copy["first_stage_score"] = assessment.relevance_score
+        cand_copy["rejection_stage"] = assessment.rejection_stage
+        cand_copy["rejection_reason"] = assessment.rejection_reason
+        cand_copy["temporal_status"] = assessment.temporal_status
+        cand_copy["temporal_eligible"] = assessment.is_accepted
         return cand_copy
 
     def rank_deterministic(self, scenario: Dict[str, Any], candidates: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
@@ -166,7 +174,9 @@ class BenchmarkRunner:
             sq = c.get("source_quality_score", 0.50)
 
             # Single-stage linear blend: 30% entity, 20% intent, 10% source, 40% semantic
-            if ent < 0.35:
+            if c.get("temporal_eligible") is False or c.get("rejection_stage") == "TEMPORAL_GATE_ERROR":
+                hybrid = 0.0
+            elif ent < 0.35:
                 hybrid = (0.30 * ent + 0.20 * intent + 0.10 * sq + 0.40 * sem) * 0.15
             else:
                 hybrid = 0.30 * ent + 0.20 * intent + 0.10 * sq + 0.40 * sem
@@ -453,9 +463,13 @@ class BenchmarkRunner:
             ("Strict Precision@1 (Grade 3)", "strict_p_at_1", True),
             ("Strict Precision@3 (Grade 3)", "strict_p_at_3", True),
             ("Strict Precision@4 (Grade 3)", "strict_p_at_4", True),
-            ("Cranfield Recall@1 (R >= 1)", "recall_at_1", True),
-            ("Cranfield Recall@3 (R >= 1)", "recall_at_3", True),
-            ("Cranfield Recall@4 (Full Pool)", "recall_at_4", True),
+            ("Success@1 / HitRate@1 (R >= 1)", "success_at_1", True),
+            ("Cranfield Macro-Recall@1 (R >= 1)", "macro_recall_at_1", True),
+            ("Cranfield Micro-Recall@1 (Corpus 85 rel)", "micro_recall_at_1", True),
+            ("Cranfield Macro-Recall@3 (R >= 1)", "macro_recall_at_3", True),
+            ("Cranfield Micro-Recall@3 (Corpus 85 rel)", "micro_recall_at_3", True),
+            ("Cranfield Macro-Recall@4 (Full Pool)", "macro_recall_at_4", True),
+            ("Cranfield Micro-Recall@4 (Corpus 85 rel)", "micro_recall_at_4", True),
             ("MRR (Broad)", "mrr", True),
             ("Strict MRR (Grade 3)", "strict_mrr", True),
             ("nDCG@3", "ndcg_at_3", True),
@@ -474,7 +488,7 @@ class BenchmarkRunner:
             r_val = rer.get(key, 0.0)
             delta = r_val - d_val
             sign = "+" if delta > 0 else ""
-            delta_str = f"{sign}{delta * 100:.1f}%" if "rate" in key or "acc" in key or "p_" in key or "recall" in key or "density" in key or "avoidance" in key else f"{sign}{delta:.3f}"
+            delta_str = f"{sign}{delta * 100:.1f}%" if "rate" in key or "acc" in key or "p_" in key or "recall" in key or "success" in key or "density" in key or "avoidance" in key else f"{sign}{delta:.3f}"
             lines.append(f"| **{label}** | {d_val * 100:.1f}% | {h_val * 100:.1f}% | {r_val * 100:.1f}% | **{delta_str}** |")
 
         lines.append("")
@@ -492,6 +506,9 @@ class BenchmarkRunner:
             ("Broad P@1", "p_at_1", True),
             ("Broad P@4", "p_at_4", True),
             ("Strict P@1", "strict_p_at_1", True),
+            ("Success@1", "success_at_1", True),
+            ("Macro-Recall@1", "macro_recall_at_1", True),
+            ("Micro-Recall@1", "micro_recall_at_1", True),
             ("Cranfield Recall@3", "recall_at_3", True),
             ("MRR", "mrr", True),
             ("nDCG@4", "ndcg_at_4", True),
@@ -505,13 +522,13 @@ class BenchmarkRunner:
         lines.append("")
         lines.append("## 3. Per-Agent Performance Breakdown (Neural Reranker)")
         lines.append("")
-        lines.append("| Agent | Scenarios | Broad P@1 | Broad P@4 | Strict P@1 | Cranfield Recall@3 | nDCG@4 | Top-1 HN Avoidance | Cand HN Rejection |")
-        lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
+        lines.append("| Agent | Scenarios | Broad P@1 | Broad P@4 | Strict P@1 | Success@1 | Macro-Recall@1 | Micro-Recall@1 | nDCG@4 | Top-1 HN Avoidance | Cand HN Rejection |")
+        lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
 
         for ag in ["brandshield", "trending", "scout", "personal_watch"]:
             m = per_agent.get("reranker", {}).get(ag, {})
             lines.append(
-                f"| **{ag.title()}** | {m.get('evaluable_scenarios', 26)} | {m.get('p_at_1', 0.0)*100:.1f}% | {m.get('p_at_4', 0.0)*100:.1f}% | {m.get('strict_p_at_1', 0.0)*100:.1f}% | {m.get('recall_at_3', 0.0)*100:.1f}% | {m.get('ndcg_at_4', 0.0)*100:.1f}% | {m.get('top1_hard_negative_avoidance', 0.0)*100:.1f}% | {m.get('candidate_hard_negative_rejection_rate', 0.0)*100:.1f}% |"
+                f"| **{ag.title()}** | {m.get('evaluable_scenarios', 26)} | {m.get('p_at_1', 0.0)*100:.1f}% | {m.get('p_at_4', 0.0)*100:.1f}% | {m.get('strict_p_at_1', 0.0)*100:.1f}% | {m.get('success_at_1', 0.0)*100:.1f}% | {m.get('macro_recall_at_1', 0.0)*100:.1f}% | {m.get('micro_recall_at_1', 0.0)*100:.1f}% | {m.get('ndcg_at_4', 0.0)*100:.1f}% | {m.get('top1_hard_negative_avoidance', 0.0)*100:.1f}% | {m.get('candidate_hard_negative_rejection_rate', 0.0)*100:.1f}% |"
             )
 
         with open(self.output_dir / "summary.md", "w", encoding="utf-8") as f:

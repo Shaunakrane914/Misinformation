@@ -45,7 +45,7 @@ def test_top_k_precision_hand_calculated():
 
 
 def test_recall_at_k_hand_calculated():
-    # Pool has total_relevant = 2 (e.g. grades [3, 2, 1, 0])
+    # Multiple relevant candidates in pool: total_relevant = 2 (e.g. grades [3, 2, 1, 0])
     grades = [3, 2, 1, 0]
     # At k=1: 1 relevant retrieved out of 2 total -> 1 / 2 = 0.50
     assert compute_recall_at_k(grades, total_relevant=2, k=1, threshold=2) == 0.50
@@ -55,6 +55,45 @@ def test_recall_at_k_hand_calculated():
     assert compute_recall_at_k(grades, total_relevant=2, k=3, threshold=2) == 1.0
     # At k=4: 2 relevant retrieved out of 2 total -> 2 / 2 = 1.0
     assert compute_recall_at_k(grades, total_relevant=2, k=4, threshold=2) == 1.0
+
+    # Single relevant candidate in pool: total_relevant = 1 (e.g. grades [2, 1, 0, 0])
+    single_rel_grades = [2, 1, 0, 0]
+    # At k=1: 1 retrieved out of 1 -> 1.0
+    assert compute_recall_at_k(single_rel_grades, total_relevant=1, k=1, threshold=2) == 1.0
+    assert compute_recall_at_k(single_rel_grades, total_relevant=1, k=4, threshold=2) == 1.0
+
+    # Single relevant candidate ranked at rank 2: [1, 2, 0, 0]
+    delayed_single = [1, 2, 0, 0]
+    assert compute_recall_at_k(delayed_single, total_relevant=1, k=1, threshold=2) == 0.0
+    assert compute_recall_at_k(delayed_single, total_relevant=1, k=2, threshold=2) == 1.0
+
+
+def test_success_at_k_hand_calculated():
+    """
+    Success@k (HitRate@k) measures the presence of at least one relevant document in top-k.
+    When R_query > 1, Success@1 can be 1.0 while Recall@1 is 0.50.
+    """
+    from backend.services.research.retrieval_metrics import compute_success_at_k
+
+    # Scenario with 2 relevant items where Rank 1 is relevant: [3, 2, 1, 0]
+    grades_multi = [3, 2, 1, 0]
+    assert compute_success_at_k(grades_multi, total_relevant=2, k=1, threshold=2) == 1.0
+    assert compute_recall_at_k(grades_multi, total_relevant=2, k=1, threshold=2) == 0.50  # Divergence demonstrated!
+
+    # Scenario with 2 relevant items delayed to rank 2 and 3: [1, 2, 3, 0]
+    grades_delayed = [1, 2, 3, 0]
+    assert compute_success_at_k(grades_delayed, total_relevant=2, k=1, threshold=2) == 0.0
+    assert compute_success_at_k(grades_delayed, total_relevant=2, k=2, threshold=2) == 1.0
+    assert compute_recall_at_k(grades_delayed, total_relevant=2, k=2, threshold=2) == 0.50
+
+    # Scenario with 1 relevant item at rank 1: [3, 0, 0, 0]
+    grades_single = [3, 0, 0, 0]
+    assert compute_success_at_k(grades_single, total_relevant=1, k=1, threshold=2) == 1.0
+    assert compute_recall_at_k(grades_single, total_relevant=1, k=1, threshold=2) == 1.0
+
+    # Scenario with 0 relevant items: both return None
+    assert compute_success_at_k([1, 0, 0, 0], total_relevant=0, k=1, threshold=2) is None
+    assert compute_recall_at_k([1, 0, 0, 0], total_relevant=0, k=1, threshold=2) is None
 
 
 def test_recall_undefined_when_zero_relevant_in_pool():
@@ -153,3 +192,63 @@ def test_aggregate_metrics_excludes_undefined_recall():
     assert agg["hard_negative_rejection_rate"] == 1.0
     assert agg["top1_hard_negative_avoidance"] == 1.0
     assert "candidate_hard_negative_rejection_rate" in agg
+
+
+def test_macro_vs_micro_aggregation_hand_calculated():
+    # Scenario A: R=1, retrieves 1 relevant at rank 1 -> Recall=1.0, Success=1.0
+    s_a = {
+        "p_at_1": 1.0, "p_at_3": 0.33, "p_at_4": 0.25, "p_at_5": 0.2,
+        "strict_p_at_1": 1.0, "strict_p_at_3": 0.33, "strict_p_at_4": 0.25,
+        "success_at_1": 1.0, "success_at_3": 1.0, "success_at_4": 1.0,
+        "strict_success_at_1": 1.0,
+        "recall_at_1": 1.0, "recall_at_3": 1.0, "recall_at_4": 1.0, "recall_at_5": 1.0,
+        "total_broad_relevant": 1, "ranked_grades": [3, 1, 0, 0],
+        "mrr": 1.0, "strict_mrr": 1.0, "ndcg_at_3": 1.0, "ndcg_at_4": 1.0, "ndcg_at_5": 1.0,
+        "entity_accuracy_at_1": 1.0, "intent_accuracy_at_1": 1.0,
+        "has_hard_negative": True, "top1_is_grade0": False,
+        "grade0_total": 2, "grade0_gate_rejected": 2,
+    }
+    # Scenario B: R=2, retrieves 1 relevant at rank 1 -> Recall=0.5, Success=1.0
+    s_b = {
+        "p_at_1": 1.0, "p_at_3": 0.67, "p_at_4": 0.5, "p_at_5": 0.4,
+        "strict_p_at_1": 1.0, "strict_p_at_3": 0.33, "strict_p_at_4": 0.25,
+        "success_at_1": 1.0, "success_at_3": 1.0, "success_at_4": 1.0,
+        "strict_success_at_1": 1.0,
+        "recall_at_1": 0.5, "recall_at_3": 1.0, "recall_at_4": 1.0, "recall_at_5": 1.0,
+        "total_broad_relevant": 2, "ranked_grades": [3, 2, 0, 0],
+        "mrr": 1.0, "strict_mrr": 1.0, "ndcg_at_3": 1.0, "ndcg_at_4": 1.0, "ndcg_at_5": 1.0,
+        "entity_accuracy_at_1": 1.0, "intent_accuracy_at_1": 1.0,
+        "has_hard_negative": True, "top1_is_grade0": False,
+        "grade0_total": 2, "grade0_gate_rejected": 2,
+    }
+    # Scenario C: R=0, zero relevant candidates -> Recall=None, Success=None
+    s_c = {
+        "p_at_1": 0.0, "p_at_3": 0.0, "p_at_4": 0.0, "p_at_5": 0.0,
+        "strict_p_at_1": 0.0, "strict_p_at_3": 0.0, "strict_p_at_4": 0.0,
+        "success_at_1": None, "success_at_3": None, "success_at_4": None,
+        "strict_success_at_1": None,
+        "recall_at_1": None, "recall_at_3": None, "recall_at_4": None, "recall_at_5": None,
+        "total_broad_relevant": 0, "ranked_grades": [1, 0, 0, 0],
+        "mrr": 0.0, "strict_mrr": 0.0, "ndcg_at_3": 1.0, "ndcg_at_4": 1.0, "ndcg_at_5": 1.0,
+        "entity_accuracy_at_1": 1.0, "intent_accuracy_at_1": 0.0,
+        "has_hard_negative": True, "top1_is_grade0": False,
+        "grade0_total": 3, "grade0_gate_rejected": 3,
+    }
+
+    agg = aggregate_metrics([s_a, s_b, s_c])
+    assert agg["evaluable_scenarios"] == 3
+    assert agg["recall_evaluable_scenarios"] == 2
+    assert agg["zero_relevant_scenarios"] == 1
+    assert agg["total_broad_relevant_in_pool"] == 3
+
+    # Success@1 = (1.0 + 1.0) / 2 = 1.0 (100%)
+    assert agg["success_at_1"] == 1.0
+    assert agg["hit_rate_at_1"] == 1.0
+
+    # Macro Recall@1 = (1.0 + 0.5) / 2 = 0.75 (75%)
+    assert agg["macro_recall_at_1"] == 0.75
+    assert agg["recall_at_1"] == 0.75
+
+    # Micro Recall@1 = (1 retrieved + 1 retrieved) / (1 total + 2 total) = 2 / 3 = 0.6667 (66.67%)
+    assert agg["micro_recall_at_1"] == 0.6667
+

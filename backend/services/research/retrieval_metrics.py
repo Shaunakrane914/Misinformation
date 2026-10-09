@@ -11,29 +11,36 @@ Relevance Definitions:
 Mathematical Formulations:
 1. Precision@k:
    P@k = (Count of items in top-k with grade >= threshold) / k
-   Evaluated at natural pool cutoffs k in {1, 3, 4} (and reference k=5).
-
-2. Recall@k (Cranfield/TREC Formulation):
+   Evaluated at natural pool cutoffs k in {1, 3, 4} (and reference k=5).2. Recall@k (Cranfield/TREC Formulation):
    Recall@k = (Count of items in top-k with grade >= threshold) / R_query
    Evaluated strictly over queries with R_query >= 1. Queries with R_query == 0 return None
-   and are excluded from macro-averaging.
+   and are excluded from recall averages (reported separately as zero_relevant_scenarios).
+   - Macro-averaged Recall@k: Mean of scenario Recall@k across all queries with R_query >= 1.
+   - Micro-averaged Recall@k: (Total relevant retrieved in top-k across all queries) / (Total relevant in corpus).
 
-3. Mean Reciprocal Rank (MRR):
+3. Success@k / HitRate@k:
+   Success@k = 1.0 if (Count of items in top-k with grade >= threshold) >= 1 else 0.0
+   Evaluated strictly over queries with R_query >= 1 (returns None if R_query == 0).
+   Measures whether at least one relevant candidate was retrieved in top-k.
+   Note: At k=1, if a query has R_query == 2 and rank 1 is relevant, Success@1 is 1.0 (100%),
+   whereas Recall@1 is 1/2 = 0.50 (50%).
+
+4. Mean Reciprocal Rank (MRR):
    RR = 1 / rank* of the first candidate with grade >= threshold (1-indexed).
 
-4. Normalized Discounted Cumulative Gain (nDCG@k):
+5. Normalized Discounted Cumulative Gain (nDCG@k):
    DCG@k = sum_{i=1}^{min(|G|, k)} (2^{grade_i} - 1) / log2(i + 1)
    IDCG@k = DCG@k of the ideal ranking (sorted descending by gold grade)
    nDCG@k = DCG@k / IDCG@k
 
-5. Hard-Negative Metrics:
+6. Hard-Negative Metrics:
    - top1_hard_negative_avoidance:
      Fraction of scenarios containing Grade 0 items where Rank-1 candidate is NOT Grade 0.
    - candidate_hard_negative_rejection_rate:
      Fraction of all Grade 0 candidates in the pool that were rejected (is_accepted == False)
      by the production relevance gate.
 
-6. Entity & Intent Accuracy Metrics:
+7. Entity & Intent Accuracy Metrics:
    - entity_accuracy_at_1: Fraction of scenarios where Rank-1 matches canonical target entity.
    - top_k_entity_density: Mean fraction of top-k candidates that match canonical target entity.
    - intent_accuracy_at_1: Fraction of scenarios where Rank-1 matches intended domain intent.
@@ -56,7 +63,7 @@ def compute_precision_at_k(ranked_grades: List[int], k: int, threshold: int = 2)
 def compute_recall_at_k(ranked_grades: List[int], total_relevant: int, k: int, threshold: int = 2) -> Optional[float]:
     """
     Standard Cranfield Recall@k.
-    Returns None if total_relevant == 0 (query has no relevant documents in corpus;
+    Returns None if total_relevant <= 0 (query has no relevant documents in corpus;
     recall is undefined and excluded from macro-averaging).
     """
     if total_relevant <= 0:
@@ -64,6 +71,23 @@ def compute_recall_at_k(ranked_grades: List[int], total_relevant: int, k: int, t
     top_k_grades = ranked_grades[:k]
     relevant_retrieved = sum(1 for g in top_k_grades if g >= threshold)
     return round(min(1.0, relevant_retrieved / float(total_relevant)), 4)
+
+
+def compute_success_at_k(ranked_grades: List[int], total_relevant: int, k: int, threshold: int = 2) -> Optional[float]:
+    """
+    Success@k (also known as HitRate@k).
+    Returns 1.0 if at least one relevant candidate is retrieved in the top-k results, else 0.0.
+    Returns None if total_relevant <= 0 (query has no relevant documents in corpus;
+    success/hit rate is undefined and excluded from averages).
+    """
+    if total_relevant <= 0:
+        return None
+    top_k_grades = ranked_grades[:k]
+    return 1.0 if any(g >= threshold for g in top_k_grades) else 0.0
+
+
+# Standard alias
+compute_hit_rate_at_k = compute_success_at_k
 
 
 def compute_reciprocal_rank(ranked_grades: List[int], threshold: int = 2) -> float:
@@ -178,6 +202,17 @@ def evaluate_ranking_run(
         "strict_p_at_3": compute_precision_at_k(ranked_grades, 3, threshold=3),
         "strict_p_at_4": compute_precision_at_k(ranked_grades, 4, threshold=3),
 
+        # Success@k / HitRate@k (defined strictly if relevant items exist in pool)
+        "success_at_1": compute_success_at_k(ranked_grades, total_broad_relevant, 1, threshold=2),
+        "success_at_3": compute_success_at_k(ranked_grades, total_broad_relevant, 3, threshold=2),
+        "success_at_4": compute_success_at_k(ranked_grades, total_broad_relevant, 4, threshold=2),
+        "hit_rate_at_1": compute_success_at_k(ranked_grades, total_broad_relevant, 1, threshold=2),
+        "hit_rate_at_3": compute_success_at_k(ranked_grades, total_broad_relevant, 3, threshold=2),
+        "hit_rate_at_4": compute_success_at_k(ranked_grades, total_broad_relevant, 4, threshold=2),
+        "strict_success_at_1": compute_success_at_k(ranked_grades, total_strict_relevant, 1, threshold=3),
+        "strict_success_at_3": compute_success_at_k(ranked_grades, total_strict_relevant, 3, threshold=3),
+        "strict_success_at_4": compute_success_at_k(ranked_grades, total_strict_relevant, 4, threshold=3),
+
         # Cranfield Recall metrics (defined strictly if relevant items exist in pool)
         "recall_at_1": compute_recall_at_k(ranked_grades, total_broad_relevant, 1, threshold=2),
         "recall_at_3": compute_recall_at_k(ranked_grades, total_broad_relevant, 3, threshold=2),
@@ -212,8 +247,9 @@ def evaluate_ranking_run(
 
 def aggregate_metrics(scenario_evals: List[Dict[str, Any]]) -> Dict[str, Any]:
     """
-    Aggregate per-scenario metric results into mean macro metrics.
-    Averages recall strictly over scenarios where relevant documents exist (R_query > 0).
+    Aggregate per-scenario metric results into mean macro metrics and corpus-level micro metrics.
+    Averages recall and success strictly over scenarios where relevant documents exist (R_query > 0).
+    Queries with zero relevant documents (R_query == 0) return None and are counted separately.
     """
     if not scenario_evals:
         return {
@@ -222,9 +258,22 @@ def aggregate_metrics(scenario_evals: List[Dict[str, Any]]) -> Dict[str, Any]:
             "p_at_3": 0.0,
             "p_at_4": 0.0,
             "strict_p_at_1": 0.0,
+            "success_at_1": 0.0,
+            "success_at_3": 0.0,
+            "success_at_4": 0.0,
+            "hit_rate_at_1": 0.0,
+            "hit_rate_at_3": 0.0,
+            "hit_rate_at_4": 0.0,
+            "strict_success_at_1": 0.0,
             "recall_at_1": 0.0,
             "recall_at_3": 0.0,
             "recall_at_4": 0.0,
+            "macro_recall_at_1": 0.0,
+            "macro_recall_at_3": 0.0,
+            "macro_recall_at_4": 0.0,
+            "micro_recall_at_1": 0.0,
+            "micro_recall_at_3": 0.0,
+            "micro_recall_at_4": 0.0,
             "mrr": 0.0,
             "ndcg_at_3": 0.0,
             "ndcg_at_4": 0.0,
@@ -239,12 +288,25 @@ def aggregate_metrics(scenario_evals: List[Dict[str, Any]]) -> Dict[str, Any]:
             "hard_negative_rejection_rate": 0.0,
             "evaluable_scenarios": 0,
             "recall_evaluable_scenarios": 0,
+            "zero_relevant_scenarios": 0,
+            "total_broad_relevant_in_pool": 0,
             "hard_negative_scenarios": 0,
         }
 
     n = float(len(scenario_evals))
 
-    # Recall is averaged strictly over scenarios that have at least 1 relevant candidate
+    # Success@k / HitRate@k: macro-averaged strictly over scenarios where relevant documents exist
+    succ_evals_1 = [s["success_at_1"] for s in scenario_evals if s.get("success_at_1") is not None]
+    succ_evals_3 = [s["success_at_3"] for s in scenario_evals if s.get("success_at_3") is not None]
+    succ_evals_4 = [s["success_at_4"] for s in scenario_evals if s.get("success_at_4") is not None]
+    strict_succ_evals_1 = [s["strict_success_at_1"] for s in scenario_evals if s.get("strict_success_at_1") is not None]
+
+    mean_succ_1 = round(sum(succ_evals_1) / float(len(succ_evals_1)), 4) if succ_evals_1 else 0.0
+    mean_succ_3 = round(sum(succ_evals_3) / float(len(succ_evals_3)), 4) if succ_evals_3 else 0.0
+    mean_succ_4 = round(sum(succ_evals_4) / float(len(succ_evals_4)), 4) if succ_evals_4 else 0.0
+    mean_strict_succ_1 = round(sum(strict_succ_evals_1) / float(len(strict_succ_evals_1)), 4) if strict_succ_evals_1 else 0.0
+
+    # Macro Recall is averaged strictly over scenarios that have at least 1 relevant candidate
     recall_evals_1 = [s["recall_at_1"] for s in scenario_evals if s.get("recall_at_1") is not None]
     recall_evals_3 = [s["recall_at_3"] for s in scenario_evals if s.get("recall_at_3") is not None]
     recall_evals_4 = [s["recall_at_4"] for s in scenario_evals if s.get("recall_at_4") is not None]
@@ -254,6 +316,24 @@ def aggregate_metrics(scenario_evals: List[Dict[str, Any]]) -> Dict[str, Any]:
     mean_rec_3 = round(sum(recall_evals_3) / float(len(recall_evals_3)), 4) if recall_evals_3 else 0.0
     mean_rec_4 = round(sum(recall_evals_4) / float(len(recall_evals_4)), 4) if recall_evals_4 else 0.0
     mean_rec_5 = round(sum(recall_evals_5) / float(len(recall_evals_5)), 4) if recall_evals_5 else 0.0
+
+    # Micro Recall is the total relevant retrieved across all queries divided by total relevant available
+    tot_broad_rel = sum(s.get("total_broad_relevant", 0) for s in scenario_evals)
+    if tot_broad_rel > 0:
+        rel_ret_1 = sum(sum(1 for g in s.get("ranked_grades", [])[:1] if g >= 2) for s in scenario_evals if s.get("total_broad_relevant", 0) > 0)
+        rel_ret_3 = sum(sum(1 for g in s.get("ranked_grades", [])[:3] if g >= 2) for s in scenario_evals if s.get("total_broad_relevant", 0) > 0)
+        rel_ret_4 = sum(sum(1 for g in s.get("ranked_grades", [])[:4] if g >= 2) for s in scenario_evals if s.get("total_broad_relevant", 0) > 0)
+        rel_ret_5 = sum(sum(1 for g in s.get("ranked_grades", [])[:5] if g >= 2) for s in scenario_evals if s.get("total_broad_relevant", 0) > 0)
+
+        micro_rec_1 = round(rel_ret_1 / float(tot_broad_rel), 4)
+        micro_rec_3 = round(rel_ret_3 / float(tot_broad_rel), 4)
+        micro_rec_4 = round(rel_ret_4 / float(tot_broad_rel), 4)
+        micro_rec_5 = round(rel_ret_5 / float(tot_broad_rel), 4)
+    else:
+        micro_rec_1 = micro_rec_3 = micro_rec_4 = micro_rec_5 = 0.0
+
+    # Zero relevant scenarios
+    zero_rel_count = sum(1 for s in scenario_evals if s.get("total_broad_relevant", 0) == 0)
 
     # Top-1 Hard Negative Avoidance: over scenarios possessing grade 0 candidates
     hn_scenarios = [s for s in scenario_evals if s.get("has_hard_negative")]
@@ -281,11 +361,30 @@ def aggregate_metrics(scenario_evals: List[Dict[str, Any]]) -> Dict[str, Any]:
         "strict_p_at_3": round(sum(s["strict_p_at_3"] for s in scenario_evals) / n, 4),
         "strict_p_at_4": round(sum(s["strict_p_at_4"] for s in scenario_evals) / n, 4),
 
-        # Cranfield-valid recall
+        # Success@k / HitRate@k (macro-averaged over R_query >= 1)
+        "success_at_1": mean_succ_1,
+        "success_at_3": mean_succ_3,
+        "success_at_4": mean_succ_4,
+        "hit_rate_at_1": mean_succ_1,
+        "hit_rate_at_3": mean_succ_3,
+        "hit_rate_at_4": mean_succ_4,
+        "strict_success_at_1": mean_strict_succ_1,
+
+        # Cranfield-valid Macro Recall (mean of query recall over R_query >= 1)
         "recall_at_1": mean_rec_1,
         "recall_at_3": mean_rec_3,
         "recall_at_4": mean_rec_4,
         "recall_at_5": mean_rec_5,
+        "macro_recall_at_1": mean_rec_1,
+        "macro_recall_at_3": mean_rec_3,
+        "macro_recall_at_4": mean_rec_4,
+        "macro_recall_at_5": mean_rec_5,
+
+        # Corpus-level Micro Recall (total retrieved / total available over R_query >= 1)
+        "micro_recall_at_1": micro_rec_1,
+        "micro_recall_at_3": micro_rec_3,
+        "micro_recall_at_4": micro_rec_4,
+        "micro_recall_at_5": micro_rec_5,
 
         # Ordering & ranking
         "mrr": round(sum(s["mrr"] for s in scenario_evals) / n, 4),
@@ -307,9 +406,11 @@ def aggregate_metrics(scenario_evals: List[Dict[str, Any]]) -> Dict[str, Any]:
         "candidate_hard_negative_rejection_rate": cand_hn_rejection_rate,
         "hard_negative_rejection_rate": top1_hn_avoidance,
 
-        # Sample counts
+        # Sample and scenario counts
         "evaluable_scenarios": len(scenario_evals),
         "recall_evaluable_scenarios": len(recall_evals_1),
+        "zero_relevant_scenarios": zero_rel_count,
+        "total_broad_relevant_in_pool": tot_broad_rel,
         "hard_negative_scenarios": len(hn_scenarios),
         "total_grade0_candidates": tot_g0,
         "rejected_grade0_candidates": rej_g0,

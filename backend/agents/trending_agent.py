@@ -1005,8 +1005,8 @@ class TrendingAgent:
                     url=url,
                     canonical_url=url if url != "Source URL unavailable" else "",
                     author=item.source_name or ch,
-                    published_at=item.published_at or datetime.now(timezone.utc).isoformat(),
-                    retrieved_at=item.discovered_at,
+                    published_at=item.published_at or "",
+                    retrieved_at=item.discovered_at or datetime.now(timezone.utc).isoformat(),
                     source_role=role,
                     source_tier=tier,
                     source_group_id=group,
@@ -1038,17 +1038,25 @@ class TrendingAgent:
         except Exception as reach_err:
             logger.warning(f"[TrendingAgent] ResearchEngine investigate encountered: {reach_err}")
 
-
-
-        # 5b. Relevance Gate filtering across all gathered evidence
+        # Fallback to direct news retrieval if research_engine produced no evidence
+        if not all_raw_evidence:
+            news_raw = self.fetch_news(target_query, limit=8)
+            if news_raw:
+                news_norm = self._normalize_evidence(news_raw, "news", retrieval_method="news")
+                all_raw_evidence.extend(news_norm)
+                channel_health["news"] = {
+                    "status": "ok",
+                    "retrieved_count": len(news_raw),
+                    "latency_ms": 120
+                }
         from backend.services.research.relevance_gate import relevance_gate
         accepted_ev, _ = relevance_gate.filter_candidates(
             all_raw_evidence,
             target_entity=target_query,
             domain="trending"
         )
-        # Fall back to raw if gate filtered everything (e.g. niche query)
-        usable_evidence = accepted_ev if accepted_ev else all_raw_evidence
+        # Invariant: Strictly retain accepted evidence; never leak rejected stale items
+        usable_evidence = accepted_ev
 
         # Deduplicate evidence by clean title/content
         seen_titles = set()

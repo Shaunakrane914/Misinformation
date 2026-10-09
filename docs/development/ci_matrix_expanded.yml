@@ -158,7 +158,7 @@ jobs:
           ENVIRONMENT: test
           AEGIS_MOCK_LLM: "true"
         run: |
-          pytest -v tests/test_retrieval_benchmark.py tests/test_retrieval_metrics.py tests/test_trending_temporal_guard.py tests/test_semantic_reranker.py tests/test_retrieval_quality_hardening.py tests/benchmarks/test_research_performance.py
+          pytest -v tests/test_retrieval_benchmark.py tests/test_retrieval_metrics.py tests/test_trending_temporal_guard.py tests/test_semantic_reranker.py tests/test_retrieval_quality_hardening.py tests/test_audit_synthetic_telemetry_negatives.py tests/benchmarks/test_research_performance.py
 
   docs-validation:
     name: Documentation, Schema & Offline ML Validation
@@ -179,6 +179,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[test,benchmarks]"
           pip install -r requirements.txt
+
+      - name: Run Scientific Evaluation Framework Tests
+        env:
+          ENVIRONMENT: test
+        run: |
+          pytest -v tests/evaluation/
 
       - name: Run Learned Reranker Benchmark
         env:

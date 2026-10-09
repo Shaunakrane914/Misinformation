@@ -108,7 +108,7 @@ The single authoritative internet evidence acquisition backbone:
 | **Target Architecture** | [`docs/architecture/TARGET_ARCHITECTURE.md`](docs/architecture/TARGET_ARCHITECTURE.md) | Target modular monolith layering and boundary rules |
 | **Codebase Inventory** | [`docs/architecture/CODEBASE_INVENTORY.md`](docs/architecture/CODEBASE_INVENTORY.md) | Authoritative module, size, dependency, and defect catalog |
 | **Migration Plan** | [`docs/architecture/MIGRATION_PLAN.md`](docs/architecture/MIGRATION_PLAN.md) | Phased engineering refactoring roadmap (Phases 0–7) |
-| **Architecture Decisions** | [`docs/architecture/adr/`](docs/architecture/adr/) | Accepted & proposed ADRs (0000–0005) |
+| **Architecture Decisions** | [`docs/architecture/adr/`](docs/architecture/adr/) | Proposed ADRs 0001–0005 pending review (ADR 0000 active template) |
 | **Detailed System Fabric** | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Complete SQL schemas, UI disclosure tiers, inter-agent workflows |
 | **Feature Status** | [`docs/FEATURE_STATUS.md`](docs/FEATURE_STATUS.md) | Truth matrix separating production, prototype, and simulation |
 | **Testing & Verification** | [`docs/TESTING.md`](docs/TESTING.md) | Test suite runbook and regression test baseline (530 tests) |

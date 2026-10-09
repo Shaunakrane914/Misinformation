@@ -28,9 +28,21 @@ python -m venv venv
 # Linux / macOS:
 source venv/bin/activate
 
-# Install dependencies
+# Install dependencies (standard requirements)
 pip install -r requirements.txt
+
+# Or install editable package with test/benchmark optional dependencies:
+pip install -e ".[test,benchmarks]"
 ```
+
+### Dependency Governance & Installation Contract
+- **Packaging Standard**: [`pyproject.toml`](../../pyproject.toml) adheres to PEP 517 / PEP 518 / PEP 621, defining the project package `aegis-protocol`, core runtime dependencies, and optional dependency extras (`test`, `benchmarks`, `dev`).
+- **Developer Bootstrapping**: [`requirements.txt`](../../requirements.txt) provides standard environment installation for container builds and local development.
+- **Upstream Git Dependency**: Both files specify the pinned commit of upstream Agent Reach:
+  ```
+  agent-reach @ git+https://github.com/Panniantong/Agent-Reach.git@a19a171fa980a0785849596492e0af4db800c82f
+  ```
+- **Reproducible Dependency Status**: Dependency specifications use bounded `>=` version ranges. A dedicated lockfile (e.g. `uv.lock` or `pip-tools` constraints) is pending evaluation in subsequent phases.
 
 ---
 
@@ -124,3 +136,21 @@ pytest tests/test_retrieval_benchmark.py tests/test_retrieval_metrics.py
 - Active refactoring branch: `feat/retrieval-quality-benchmark`
 - Commit message convention: Conventional Commits (`feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`).
 - Always ensure `pytest` reports 0 failures and 0 warnings prior to committing.
+
+---
+
+## 7. Continuous Integration & Workflow Activation
+
+### Workflow Status
+- **Active Workflow**: [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml)
+  - Configured for pushes to `main` and pull requests targeting `main`.
+  - Runs code quality linting, unit/chaos test matrix, and integration benchmarks.
+- **Expanded 7-Job Matrix Template**: [`docs/development/ci_matrix_expanded.yml`](ci_matrix_expanded.yml)
+  - Covers 100% of the **530 regression tests** across 7 parallel jobs (`lint-format`, `fast-unit-chaos`, `security-invariants`, `integration`, `offline-retrieval-benchmark`, `docs-validation`, and optional nightly `live-retrieval-eval`).
+
+### Manual Workflow Activation
+GitHub security requires an OAuth token or Personal Access Token with the `workflow` scope to modify `.github/workflows/ci.yml` via git push. If pushing workflow files from your local CLI is rejected by GitHub:
+1. Open the repository on GitHub Web: `https://github.com/ShaunakRane914/Misinformation`.
+2. Navigate to `.github/workflows/ci.yml`.
+3. Copy the contents of [`docs/development/ci_matrix_expanded.yml`](ci_matrix_expanded.yml) into `.github/workflows/ci.yml`.
+4. Commit the change directly on GitHub Web to activate the 7-job parallel matrix.

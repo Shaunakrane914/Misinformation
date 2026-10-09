@@ -1,7 +1,7 @@
 # ADR 0001: Modular Monolith Layering & Architectural Boundaries
 
 ## Status
-**ACCEPTED**
+**PROPOSED (Pending Architectural Review)**
 
 ## Date
 2026-10-09

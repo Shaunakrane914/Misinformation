@@ -10,24 +10,23 @@
 
 ## 1. Overview & Architecture
 
-Aegis Protocol decomposes its REST interface into 7 modular sub-routers mounted to the root application in `backend/main.py`:
+Aegis Protocol decomposes its REST interface into 6 modular sub-routers in `backend/api/`, assembled in `backend/api/__init__.py` and mounted to the application in `backend/main.py`:
 
 ```
 backend/api/
-├── claims.py         # /api/claims/*      (Claim submission, status, verification, statistics)
-├── scout.py          # /api/scout/*       (Financial anomaly scanner, Yahoo Finance feeds)
-├── trending.py       # /api/trending/*    (Viral trend emergence, multi-channel RSS)
-├── brandshield.py    # /api/brandshield/* (Brand threat cards, astroturfing detection)
-├── personal.py       # /api/personal/*    (Executive identity defense, smear monitoring)
-├── replay.py         # /api/replay/*      (Cryptographic replay ledger, provenance chains)
-└── healthz.py        # /healthz, /api/*   (Liveness, readiness, system capability telemetry)
+├── claims.py         # /api/claims/*       (Claim submission, status, verification, statistics)
+├── agents.py         # /api/scout/*, /api/trending/*, /api/brandshield/*, /api/personal/*, /api/warroom/*
+├── agent_reach.py    # /api/agent-reach/*  (Channel capability discovery, query execution telemetry)
+├── threat_lab.py     # /api/threat-lab/*   (Zipf-Mandelbrot fit, Hawkes point-process, consensus)
+├── replay.py         # /api/replay/*       (Cryptographic replay ledger, provenance chains)
+└── system.py         # /healthz, /api/healthz, /api/system/*, /api/capabilities (Liveness & telemetry)
 ```
 
 ---
 
 ## 2. Router Specifications
 
-### 1. Claims Router (`/api/claims`)
+### 1. Claims Router (`backend/api/claims.py` → `/api/claims`)
 Handles claim ingestion, normalization, background verification, and truth dossier generation.
 
 | Method | Endpoint | Description | Request Body / Params | Response Schema |
@@ -40,47 +39,52 @@ Handles claim ingestion, normalization, background verification, and truth dossi
 
 ---
 
-### 2. Scout Financial Router (`/api/scout`)
-Coordinates financial intelligence, price anomaly correlation, and market rumour deconstruction.
+### 2. Sentinel Agents Router (`backend/api/agents.py`)
+Hosts specialized endpoints for the autonomous intelligence sentinels and war room incident response.
 
+#### Scout Financial Intelligence (`/api/scout`)
 | Method | Endpoint | Description | Request Body / Params | Response Schema |
 | :--- | :--- | :--- | :--- | :--- |
 | `POST` | `/api/scout/analyze` | Scan financial ticker or rumour against real-time price feeds, SEC filings, and volume z-scores. | `ScoutAnalysisRequest` (`ticker`, `query`, `timeframe`) | `ScoutAnalysisResponse` (market telemetry, catalysts, anomalies) |
 | `GET` | `/api/scout/catalysts` | Retrieve active market catalysts and correlated news narratives. | Query params: `ticker`, `limit` | `List[MarketCatalyst]` |
 
----
-
-### 3. Trending Viral Router (`/api/trending`)
-Monitors viral narratives, topic emergence, and velocity across multi-channel RSS feeds and social mirrors.
-
+#### Trending Viral Monitor (`/api/trending`)
 | Method | Endpoint | Description | Request Body / Params | Response Schema |
 | :--- | :--- | :--- | :--- | :--- |
 | `POST` | `/api/trending/scan` | Execute discovery scan across RSS wires and zero-auth social channels. | `TrendingScanRequest` (`query`, `categories`, `threshold`) | `TrendingScanResponse` (narrative clusters, velocity metrics) |
 | `GET` | `/api/trending/velocity` | Temporal velocity estimates and 48-hour freshness audit for trending claims. | Query params: `topic_id` | `VelocityReport` |
 
----
-
-### 4. BrandShield Router (`/api/brandshield`)
-Audits corporate brand reputation, counterfeit listings, coordinated astroturfing, and smear campaigns.
-
+#### BrandShield Asset Protection (`/api/brandshield`)
 | Method | Endpoint | Description | Request Body / Params | Response Schema |
 | :--- | :--- | :--- | :--- | :--- |
 | `POST` | `/api/brandshield/audit` | Comprehensive brand threat audit producing 4-question threat cards. | `BrandAuditRequest` (`brand_name`, `domains`, `channels`) | `BrandAuditResponse` (threat cards, counterfeit score) |
 | `GET` | `/api/brandshield/threats` | Active threat alerts, review brigading indicators, and sentiment shifts. | Query params: `brand_name` | `List[BrandThreat]` |
 
----
-
-### 5. Personal Watch Router (`/api/personal`)
-Monitors public figures and executives for impersonation, deepfakes, and identity-targeted disinformation.
-
+#### Personal Watch Identity Audit (`/api/personal`)
 | Method | Endpoint | Description | Request Body / Params | Response Schema |
 | :--- | :--- | :--- | :--- | :--- |
 | `POST` | `/api/personal/scan` | Scan OSINT news and public channels for identity threats against an executive profile. | `PersonalScanRequest` (`target_name`, `role`, `affiliations`) | `PersonalScanResponse` (identity diffs, threat severity) |
 | `GET` | `/api/personal/alerts` | Active high-priority alerts with evidence provenance links. | Query params: `target_name`, `severity` | `List[PersonalAlert]` |
 
+#### War Room Incident Response (`/api/warroom`)
+| Method | Endpoint | Description | Request Body / Params | Response Schema |
+| :--- | :--- | :--- | :--- | :--- |
+| `GET` | `/api/warroom/signals` | Live incident response threat feeds and high-velocity alerts. | None | `WarRoomSignalsResponse` |
+| `POST` | `/api/warroom/countermeasure` | Generate actionable mitigation response for high-severity narrative crisis. | `CountermeasureRequest` | `CountermeasureResponse` |
+
 ---
 
-### 6. Replay Ledger Router (`/api/replay`)
+### 3. Agent Reach Router (`backend/api/agent_reach.py` → `/api/agent-reach`)
+Exposes shared acquisition capabilities, live channel registry, and extraction telemetry.
+
+| Method | Endpoint | Description | Response Schema |
+| :--- | :--- | :--- | :--- |
+| `GET` | `/api/agent-reach/capabilities` | Health status and latency for all 14 capability channels. | `CapabilityRegistryStatus` |
+| `POST` | `/api/agent-reach/retrieve` | Direct test retrieval through the acquisition routing fabric. | `RetrievalResponse` |
+
+---
+
+### 4. Replay Ledger Router (`backend/api/replay.py` → `/api/replay`)
 Inspects immutable cryptographic provenance chains ensuring claim verification decisions are 100% reproducible.
 
 | Method | Endpoint | Description | Request Body / Params | Response Schema |
@@ -90,14 +94,26 @@ Inspects immutable cryptographic provenance chains ensuring claim verification d
 
 ---
 
-### 7. Health & Telemetry Router (`/healthz`, `/api/healthz`)
-Exposes liveness, readiness, and capability health checks.
+### 5. Threat Lab Router (`backend/api/threat_lab.py` → `/api/threat-lab`)
+Exposes physics-based threat instruments, power-law regression, and swarm consensus simulations.
+
+| Method | Endpoint | Description | Request Body / Params | Response Schema |
+| :--- | :--- | :--- | :--- | :--- |
+| `POST` | `/api/threat-lab/mandelbrot` | Calculate Zipf-Mandelbrot token-rank power-law fit ($R^2$, Shannon entropy, TTR). | `MandelbrotRequest` (`text`) | `MandelbrotResponse` |
+| `POST` | `/api/threat-lab/hawkes` | Simulate Hawkes point-process viral cascade propagation ($\lambda(t)$). | `HawkesRequest` (`events`) | `HawkesResponse` (`is_simulation: True`) |
+| `POST` | `/api/threat-lab/consensus` | Byzantine Swarm Consensus with W-MSR outlier pruning. | `ConsensusRequest` (`node_scores`) | `ConsensusResponse` (`is_simulation: True`) |
+
+---
+
+### 6. System & Telemetry Router (`backend/api/system.py`)
+Exposes liveness, readiness, deployment status, and system telemetry probes.
 
 | Method | Endpoint | Description | Response Schema |
 | :--- | :--- | :--- | :--- |
-| `GET` | `/healthz` | Lightweight Kubernetes / container liveness probe. | `{"status": "ok", "version": "4.1.0", "timestamp": "..."}` |
-| `GET` | `/api/healthz` | Readiness probe verifying database connectivity, LLM gateway status, and channel registry. | `{"status": "healthy", "database": "active", "agents": 5}` |
+| `GET` | `/healthz` or `/api/healthz` | Lightweight Kubernetes / container liveness probe. | `{"status": "ok", "system": "Aegis Protocol", "version": "...", "active_agents": 7}` |
+| `GET` | `/api/system/deployment-status` | Empirical deployment facts (database investigations count, supported channels). | `DeploymentStatusResponse` |
 | `GET` | `/api/capabilities` | Active 14-channel capability registry status and health metrics. | `List[CapabilityChannelStatus]` |
+| `GET` | `/api/system/doctor` | Comprehensive self-diagnostic verifying SQLite, Supabase, LLM, and scrapers. | `SystemDoctorResponse` |
 
 ---
 
@@ -116,7 +132,7 @@ All API endpoints return consistent HTTP error envelopes adhering to RFC 7807:
 ```
 
 ### Unified Report Schema (v3.8.0)
-All 5 domain agents produce standard `UnifiedReport` outputs (`backend/schemas/unified_report.py`) containing:
+All domain sentinels produce standard `UnifiedReport` outputs (`backend/schemas/unified_report.py`) containing:
 - `_meta`: Schema version (`3.8.0`), agent identifier, query string, timestamp.
 - `summary`: Markdown summary of findings and definitive verdict.
 - `findings`: List of empirical factual points.

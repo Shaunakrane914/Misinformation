@@ -1,7 +1,7 @@
 # ADR 0002: Single Authoritative Acquisition Runtime & Deprecation of Shadow Scrapers
 
 ## Status
-**ACCEPTED**
+**PROPOSED (Pending Architectural Review)**
 
 ## Date
 2026-10-09

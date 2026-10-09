@@ -1,7 +1,7 @@
 # ADR 0003: Canonical Evidence Provenance, Lineage, and Replay Ledger Contracts
 
 ## Status
-**ACCEPTED**
+**PROPOSED (Pending Architectural Review)**
 
 ## Date
 2026-10-09

@@ -1,7 +1,7 @@
 # ADR 0004: Centralized LLM Provider Gateway and Validated Settings
 
 ## Status
-**ACCEPTED**
+**PROPOSED (Pending Architectural Review)**
 
 ## Date
 2026-10-09

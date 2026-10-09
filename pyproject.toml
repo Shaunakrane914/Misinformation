@@ -48,6 +48,7 @@ dependencies = [
     "httpx>=0.27.0",
     "scikit-learn>=1.4.0",
     "scipy>=1.12.0",
+    "agent-reach @ git+https://github.com/Panniantong/Agent-Reach.git@a19a171fa980a0785849596492e0af4db800c82f",
 ]
 
 [project.optional-dependencies]

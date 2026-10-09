@@ -1,7 +1,7 @@
 # ADR 0005: Evaluation Benchmark Data Governance and Artifact Retention Policy
 
 ## Status
-**ACCEPTED**
+**PROPOSED (Pending Architectural Review)**
 
 ## Date
 2026-10-09

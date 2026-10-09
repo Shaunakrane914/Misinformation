@@ -10,7 +10,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 - **[Target Architecture Specification](architecture/TARGET_ARCHITECTURE.md)**: Target modular monolith architecture, layering topology, and boundary rules.
 - **[Dependency Map & Import Graph](architecture/DEPENDENCY_MAP.md)**: Concrete import relationships, singleton state, and transitional compatibility shims.
 - **[Phased Migration Plan](architecture/MIGRATION_PLAN.md)**: Phased engineering roadmap (Phases 0 through 7) with explicit acceptance gates.
-- **[Architecture Decision Records (ADRs)](architecture/adr/README.md)**: Accepted architectural records governing modularity, acquisition, evidence contracts, and data retention.
+- **[Architecture Decision Records (ADRs)](architecture/adr/README.md)**: Proposed architectural records (ADRs 0001–0005 pending review) governing modularity, acquisition, evidence contracts, and data retention.
 
 ---
 

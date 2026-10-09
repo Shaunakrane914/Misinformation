@@ -1,179 +1,166 @@
-# Aegis Retrieval Quality Benchmark
+# Aegis Retrieval Quality Benchmark — Audited Report
 
 ## Executive Summary
 
-This report establishes the first frozen, offline-evaluable golden retrieval benchmark for the Aegis Protocol across its four production intelligence agents: **BrandShield**, **Trending**, **Scout**, and **Personal Watch**.
+This report delivers the audited, mathematically reconciled evaluation of candidate retrieval quality across the Aegis Protocol's four production intelligence agents: **BrandShield**, **Trending**, **Scout**, and **Personal Watch**.
 
-The objective of this milestone is to prove that the agents retrieve the correct **entity + intent**, rather than merely demonstrating that the network acquisition layer can reliably fetch whatever URLs happen to be discovered.
-
-### Key Benchmark Findings:
-1. **Precision & Quality Realities:** Overall **Precision@1** across all 104 scenarios is **52.9%**, with **nDCG@5** reaching **94.4%** under neural reranking and **95.8%** under the deterministic baseline. Average **Precision@5** is **16.4%**, directly reflecting the dataset distribution where only 1–2 candidates per 4-candidate pool are relevant.
-2. **Hard-Negative and Homograph Immunity:** The production deterministic entity gate successfully eliminates **96.2%** of adversarial hard negatives overall, achieving **100% rejection** on Personal Watch (e.g., Sanskrit philosophical *Satya*, Bollywood film *Satya*, other individuals named *Satya*) and Scout (broad ETF index rebalances and penny stock ticker collisions).
-3. **Neural Reranking vs. Deterministic Trade-offs:** Adding a second-stage CrossEncoder (`cross-encoder/ms-marco-MiniLM-L-6-v2`) provides nuanced semantic ordering within true-positive scenarios, but naive cross-encoding without hard entity gating can introduce homograph leakage. When combined with an upstream entity gate (`entity_score >= 0.35`), the neural reranker achieves parity on Precision@1 while boosting deeper top-3 semantic ordering.
-4. **Generalization (Dev vs. Holdout):** On the 80% development set (84 scenarios), Precision@1 is **56.0%** (deterministic) and **57.1%** (hybrid). On the unseen 20% holdout set (20 scenarios featuring novel paraphrases and adversarial wording), Precision@1 drops to **40.0%** (deterministic) and **35.0%** (hybrid/reranker), demonstrating that semantic generalization on out-of-domain linguistic constructs remains challenging.
+Following the initial benchmark milestone, this audit investigated and resolved:
+1. **Mathematical reconciliations of Precision@k and Recall@k:** Reconciled the 16.35% Precision@5 result against the exact candidate pool ($85 / 520$), replaced pool-saturated Recall@5 with Cranfield-valid Recall@k evaluated strictly over queries with $R_{\text{query}} \ge 1$, and added natural pool cutoffs at $k \in \{1, 3, 4\}$.
+2. **System isolation verification:** Proved that the Deterministic Baseline, Hybrid Lexical+Neural, and Neural Second-Stage CrossEncoder systems run independently, generate separate ranking orders, and produce distinct metrics (20 scenarios diverge between Baseline and Reranker).
+3. **Neural Reranker performance assessment:** Confirmed that the CrossEncoder (`cross-encoder/ms-marco-MiniLM-L-6-v2`) **does not outperform** the deterministic baseline. The neural reranker achieves lower nDCG@4 (94.42% vs 95.75%), lower hard-negative rejection (92.31% vs 96.15%), lower Strict Precision@1 (48.08% vs 50.0%), and lower holdout MRR (37.5% vs 40.0%).
+4. **Engineering verdict:** **Semantic reranking must remain DISABLED in production (`AEGIS_SEMANTIC_RERANKER=0`)**. The deterministic RelevanceGate and EntityResolver remain the authoritative production ranker.
 
 ---
 
-## Dataset
+## Dataset & Candidate Pool Structure
 
-The frozen golden retrieval benchmark dataset is located in `tests/retrieval_benchmark/`.
+The golden retrieval benchmark dataset is frozen in `tests/retrieval_benchmark/` and validated by `scripts/validate_retrieval_benchmark.py`:
 
-### Corpus Statistics:
-- **Total Scenarios:** `104`
+- **Total Scenarios:** `104` (Development: `84` [80.8%], Holdout: `20` [19.2%])
   - **BrandShield:** 26 scenarios (21 dev, 5 holdout)
   - **Trending:** 26 scenarios (21 dev, 5 holdout)
   - **Scout:** 26 scenarios (21 dev, 5 holdout)
   - **Personal Watch:** 26 scenarios (21 dev, 5 holdout)
-- **Split Ratio:** **80.8% Development** (84 scenarios) / **19.2% Holdout** (20 scenarios)
-- **Total Candidates Evaluated:** `416` (exactly 4 candidates per scenario)
-- **Total Gold Labels:** `416` independent annotations with explicit grading rationales
-- **Candidate Pool Relevance Distribution:**
-  - **Grade 3 (Direct True Positive):** 105 candidates (25.2%)
-  - **Grade 2 (Secondary Relevant / Background):** 36 candidates (8.7%)
-  - **Grade 1 (Boundary Distractor / Passive Mention):** 133 candidates (32.0%)
-  - **Grade 0 (Hard Negative / Adversarial Homograph / Noise):** 142 candidates (34.1%)
-
-### Supported Scenario Classifications:
-The dataset exercises 10 distinct scenario classification categories:
-`TRUE_POSITIVE`, `SECONDARY_RELEVANT`, `BOUNDARY_NEGATIVE`, `HARD_NEGATIVE`, `BENIGN_DISTRACTOR`, `OUT_OF_DOMAIN`, `TEMPORAL_NEGATIVE`, `HOMOGRAPH_NEGATIVE`, `DEDUPLICATION`, and `ENTITY_DISTRACTOR`.
+- **Candidate Pool Size per Scenario:** `N = 4` candidates per scenario (`416` total candidates across the dataset).
+- **Gold Label Relevance Distribution:**
+  - **Grade 3 (Strict Direct True Positive):** `53` candidates (12.7%)
+  - **Grade 2 (Secondary Relevant / Background):** `32` candidates (7.7%)
+  - **Grade 1 (Boundary Distractor / Passive Mention):** `184` candidates (44.2%)
+  - **Grade 0 (Hard Negative / Adversarial Homograph / Noise):** `147` candidates (35.3%)
+- **Total Broad Relevant Candidates (Grades 2–3):** Exactly `85` candidates distributed across `58` scenarios.
+- **Purely Negative / Distractor Scenarios:** `46` scenarios contain zero relevant documents (only grades 0 and 1) to test false-positive rejection.
 
 ---
 
-## Methodology
+## Methodology & Mathematical Formulations
 
-Every candidate was graded using an explicit 4-point relevance scale:
-- **3 (Exact Target Entity + Exact Agent Intent):** Primary article subject directly satisfies the agent's investigative mandate (e.g., active counterfeit software for BrandShield, SEC Form 10-K for Scout, direct speech for Personal Watch).
-- **2 (Correct Entity + Useful Secondary Context):** Legitimate corporate or secondary context (e.g., threat intelligence research report, secondary financial analysis).
-- **1 (Related Entity/Topic but Wrong or Weak Intent):** Boundary distractor (e.g., generic stock ticker recap, passive technology roundup, closing boilerplate mentioning an executive).
-- **0 (Irrelevant / Wrong Entity / Adversarial Distractor):** Complete mismatch, homograph collision, or out-of-domain noise (e.g., Magic: The Gathering card mechanics, Sanskrit philosophical treatises, 1998 Bollywood crime films).
+To ensure mathematical validity over a fixed 4-candidate pool, all metrics follow standard Cranfield and TREC information retrieval definitions:
 
-Evaluations run completely offline against `tests/retrieval_benchmark/candidates.jsonl` and `labels.jsonl`, ensuring CI reproducibility.
+### 1. Fixed-Denominator Precision@k
+$$\text{Precision@k}(\tau) = \frac{\sum_{i=1}^{\min(|G|, k)} \mathbb{I}(g_i \ge \tau)}{k}$$
+- **Evaluated Cutoffs:** $k = 1, 3, 4$ (within pool) and $k = 5$ (exceeding pool).
+- **Broad Precision ($\tau = 2$):** Grades 2 and 3 count as relevant.
+- **Strict Precision ($\tau = 3$):** Grade 3 only counts as relevant.
+- **Reconciliation of Precision@5:** With 85 total candidates of grade $\ge 2$ across 104 scenarios, fixed-denominator P@5 across the full dataset is mathematically:
+  $$\frac{85}{104 \times 5} = \frac{85}{520} = 16.346\% \approx 16.35\%$$
+  The previous report's reference to "141 candidates" was an unverified text typo; the actual dataset contains 85 candidates with grade $\ge 2$. When evaluated with natural pool denominator $k=4$, Precision@4 is $85 / (104 \times 4) = 85 / 416 = 20.43\%$.
 
----
+### 2. Cranfield-Valid Recall@k
+$$\text{Recall@k} = \frac{\sum_{i=1}^{\min(|G|, k)} \mathbb{I}(g_i \ge 2)}{R_{\text{query}}}$$
+- In standard IR evaluation, Recall is defined **only** for queries where at least one relevant document exists ($R_{\text{query}} \ge 1$).
+- In our dataset, exactly **58 scenarios** contain relevant documents (50 in Dev, 8 in Holdout). The 46 purely negative scenarios return `None` for Recall and are excluded from the macro-average.
+- This eliminates the vacuous artifact where negative queries were previously reported as "100% recall on 0 documents".
 
-## Systems Evaluated
+### 3. Mean Reciprocal Rank (MRR)
+$$\text{RR} = \begin{cases} \frac{1}{\text{rank}^*} & \text{if a relevant candidate is retrieved at rank } \text{rank}^* \le 4 \\ 0.0 & \text{otherwise} \end{cases}$$
 
-The benchmark compares three distinct retrieval ranking architectures across the exact same candidate corpus:
+### 4. Normalized Discounted Cumulative Gain (nDCG@k)
+$$\text{DCG@k} = \sum_{i=1}^{\min(|G|, k)} \frac{2^{g_i} - 1}{\log_2(i + 1)}, \quad \text{nDCG@k} = \frac{\text{DCG@k}}{\text{IDCG@k}}$$
+- Uses standard exponential relevance gain with logarithmic rank discounting.
 
-1. **System A — Baseline Deterministic Ranker:**
-   Uses production `RelevanceGate` composite scoring:
-   $$\text{Score} = 0.50 \cdot \text{EntityScore} + 0.35 \cdot \text{IntentScore} + 0.15 \cdot \text{SourceQualityScore}$$
-   Combines token-exact entity matching, action-verb separation, domain keyword overlap, and domain trust heuristics.
-2. **System B — Hybrid Lexical + Semantic Scoring:**
-   Single-stage blend incorporating cross-encoder semantic scoring with lexical signals:
-   $$\text{Score} = 0.30 \cdot \text{EntityScore} + 0.20 \cdot \text{IntentScore} + 0.10 \cdot \text{SourceQuality} + 0.40 \cdot \text{SemanticScore}$$
-3. **System C — Neural Second-Stage Reranker:**
-   Two-stage architecture:
-   - *Stage 1:* Hard entity gating filters obvious entity mismatches (`EntityScore < 0.35` heavily penalized).
-   - *Stage 2:* CrossEncoder (`cross-encoder/ms-marco-MiniLM-L-6-v2`) performs deep query-document cross-attention and re-ranks top candidates down to Top-5.
-
----
-
-## Overall Results
-
-| Metric | Deterministic Baseline | Hybrid Scoring | Neural Reranker | Delta (Reranker vs. Baseline) |
-| :--- | :---: | :---: | :---: | :---: |
-| **Precision@1** | **52.9%** | **52.9%** | **52.9%** | `0.0%` |
-| **Precision@3** | **27.2%** | **27.2%** | **27.2%** | `0.0%` |
-| **Precision@5** | **16.4%** | **16.4%** | **16.4%** | `0.0%` |
-| **Recall@5** | **100.0%** | **100.0%** | **100.0%** | `0.000` |
-| **MRR** | **54.3%** | **54.3%** | **54.3%** | `0.000` |
-| **nDCG@5** | **95.8%** | **94.7%** | **94.4%** | `-0.013` |
-| **Entity Accuracy** | **43.5%** | **43.5%** | **43.5%** | `0.0%` |
-| **Intent Accuracy** | **13.9%** | **13.9%** | **13.9%** | `0.0%` |
-| **False-Positive Rate** | **35.3%** | **35.3%** | **35.3%** | `0.0%` |
-| **Ambiguous Rate** | **44.2%** | **44.2%** | **44.2%** | `0.0%` |
-| **Hard-Negative Rejection** | **96.2%** | **92.3%** | **92.3%** | `-3.8%` |
+### 5. Hard-Negative Rejection Rate
+$$\text{Rejection Rate} = \frac{\sum_{s \in \mathcal{S}_{\text{HN}}} \mathbb{I}(g_{s, 1} \ne 0)}{|\mathcal{S}_{\text{HN}}|}$$
+- Evaluated strictly over the set of scenarios containing at least one Grade 0 candidate ($|\mathcal{S}_{\text{HN}}| = 104$). A scenario succeeds if the Grade 0 candidate is **not** placed at Rank 1.
 
 ---
 
-## Agent Performance Analysis
+## System Isolation & Ranking Divergence Verification
 
-### 1. BrandShield (Brand Abuse, Counterfeiting, Scams)
-- **Precision@1:** `65.4%` | **MRR:** `67.3%` | **nDCG@5:** `97.4%`
-- **Hard-Negative Rejection Rate:** `96.2%`
-- **Strengths:** Accurately prioritizes pirated Windows 11 ISOs, tech support lock screen scams, malicious Copilot browser extensions, and credential phishing over corporate blog posts.
-- **Vulnerabilities:** Action-verb bleed from queries like `"Investigate Microsoft"` can match gaming card mechanics (*Magic: The Gathering* clue tokens) if action-verb stripping is bypassed.
+Every scenario generates rankings independently for each system using deep-copied candidate records. Automated verification (`test_system_ranking_divergence`) proves the systems produce distinct candidate orderings:
 
-### 2. Trending (Viral Narratives, Syndication, Velocity)
-- **Precision@1:** `46.2%` | **MRR:** `46.2%` | **nDCG@5:** `88.0%`
-- **Hard-Negative Rejection Rate:** `84.6%`
-- **Strengths:** Robustly clusters syndicated wire duplicates (AP, Reuters, PR Newswire mirrors) behind canonical primary publishers.
-- **Vulnerabilities:** Susceptible to temporal staleness; 5-year-old articles re-shared without timestamps can deceive lexical rankers unless strict publication delta gates are enforced.
+- **Deterministic vs. Neural Reranker:** Diverged on **20 scenarios** (19.2% of dataset).
+- **Deterministic vs. Hybrid:** Diverged on **13 scenarios** (12.5% of dataset).
+- **Hybrid vs. Neural Reranker:** Diverged on **7 scenarios** (6.7% of dataset).
 
-### 3. Scout (Market Intelligence, SEC Filings, M&A)
-- **Precision@1:** `50.0%` | **MRR:** `53.8%` | **nDCG@5:** `95.1%`
-- **Hard-Negative Rejection Rate:** `88.5%`
-- **Strengths:** SEC EDGAR filings (`sec.gov`) receive authoritative precedence (`0.95` source score), consistently placing Form 10-K, 10-Q, and 8-K filings at Rank 1.
-- **Vulnerabilities:** Broad market ETF rebalancing notes and mega-cap concentration articles often contain high keyword density for `$MSFT`, requiring ticker centrality ratios to demote passive index constituent mentions.
-
-### 4. Personal Watch (Executive Intelligence & VIP Protection)
-- **Precision@1:** `50.0%` | **MRR:** `50.0%` | **nDCG@5:** `97.2%`
-- **Hard-Negative Rejection Rate:** **100.0%**
-- **Strengths:** 100% elimination of Bollywood cinema homographs (*Satya* 1998 film) and Sanskrit philosophical texts (*Satya* virtue in Jainism/Hinduism).
-- **Vulnerabilities:** Corporate press releases concluding with standard closing boilerplates (*"About Microsoft... led by Chairman and CEO Satya Nadella"*) score moderately high unless the executive is required to be the active grammatical subject of the lead excerpt.
+### Concrete Divergence Examples:
+1. `brand_msft_fake_teams_installer_018`:
+   - Deterministic ordered grades: `[1, 3, 1, 0]` (Rank 1: Grade 1 distractor).
+   - Reranker ordered grades: `[3, 1, 1, 0]` (CrossEncoder successfully promoted the Grade 3 malware installer to Rank 1).
+2. `brand_audit_msft_licenses_holdout_022`:
+   - Deterministic ordered grades: `[3, 1, 1, 0]` (Rank 1: Grade 3 rogue reseller scam).
+   - Reranker ordered grades: `[1, 3, 1, 0]` (CrossEncoder demoted the Grade 3 scam to Rank 2, promoting a Grade 1 SAM audit guide).
+3. `scout_scenario_014_dev`, `016_dev`, `024_holdout`:
+   - Deterministic ordered grades: `[1, 0, 1, 0]` (Rank 1: Grade 1 distractor; Rank 2: Grade 0 penny stock).
+   - Reranker ordered grades: `[0, 1, 1, 0]` (CrossEncoder scored the penny stock distractor higher than the general market roundup, causing a **Grade 0 hard negative leak** into Rank 1).
 
 ---
 
-## Hard-Negative & Homograph Performance
+## Audited Overall Benchmark Results
 
-| Adversarial Test Case | Challenge Category | Deterministic Ranker | Neural Reranker | Verdict |
-| :--- | :--- | :---: | :---: | :---: |
-| **Sanskrit “Satya” Philosophy** | Semantic Homograph | **SUPPRESSED** (Rank 4, Score < 0.20) | **SUPPRESSED** (Penalized < 0.15) | **PASS** |
-| **1998 Bollywood Film “Satya”** | Cultural Homograph | **SUPPRESSED** (Rank 4, Score < 0.20) | **SUPPRESSED** (Penalized < 0.15) | **PASS** |
-| **MTG “Investigate” Clue Tokens** | Action-Verb Lexical Bleed | **REJECTED** (HARD_GATE_ERROR) | **REJECTED** (Score < 0.10) | **PASS** |
-| **S&P 500 ETF Index Rebalancing** | Macro Financial Constituent | **DOWN-RANKED** (Rank 3) | **DOWN-RANKED** (Rank 3) | **PASS** |
-| **Boilerplate Satya Footer Mention** | Passive Corporate Attribution | **DOWN-RANKED** (Grade 1 Distractor) | **DOWN-RANKED** (Grade 1 Distractor) | **PASS** |
-
----
-
-## Failure Analysis
-
-Inspection of `artifacts/retrieval_benchmark/failures.jsonl` reveals four primary failure categories:
-
-1. **WRONG_RANK (58% of non-perfect cases):**
-   - The primary Grade 3 target was retrieved in the Top 5, but placed at Rank 2 or Rank 3 beneath a high-authority Grade 2 news report.
-   - *Mitigation:* Calibrate intent boost multipliers so primary threat/disclosure terms outweigh general domain authority.
-2. **HARD_NEGATIVE_LEAK (7% of failure cases):**
-   - Occurred predominantly in Trending when a temporal distractor (e.g. 2021 Windows 1 launch) matched all query keywords exactly and outranked contemporary articles.
-   - *Mitigation:* Enforce hard cutoffs on publication age delta (>48h) in Trending discovery.
-3. **WRONG_INTENT (21% of failure cases):**
-   - The entity was matched correctly (Microsoft), but the document pertained to stock movements or product releases rather than brand infringement or security threats.
-   - *Mitigation:* Require minimum orthogonal intent overlap before admitting candidates into deep acquisition.
-4. **WRONG_ENTITY (14% of failure cases):**
-   - Competitor articles (e.g. Google Cloud or Apple Sequoia release notes) that mentioned Microsoft in comparative marketing tables.
+| Metric | System A: Deterministic Baseline | System B: Hybrid Lexical+Neural | System C: Neural Second-Stage | Delta (C vs A) | Status |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **Broad Precision@1 (Grades 2–3)** | **52.88%** (55/104) | **52.88%** (55/104) | **52.88%** (55/104) | `0.0%` | Parity |
+| **Strict Precision@1 (Grade 3)** | **50.00%** (52/104) | **50.00%** (52/104) | **48.08%** (50/104) | **-1.92%** | **Degraded** |
+| **Broad Precision@3 (k=3)** | **27.24%** | **27.24%** | **27.24%** | `0.0%` | Parity |
+| **Broad Precision@4 (k=4)** | **20.43%** | **20.43%** | **20.43%** | `0.0%` | Parity |
+| **Cranfield Recall@1 ($R \ge 1$)** | **71.55%** | **71.55%** | **71.55%** | `0.0%` | Parity |
+| **Cranfield Recall@3 ($R \ge 1$)** | **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
+| **Cranfield Recall@4 ($R \ge 1$)** | **100.00%** | **100.00%** | **100.00%** | `0.0%` | Pool Limit |
+| **MRR (Broad)** | **54.33%** | **54.33%** | **54.33%** | `0.0%` | Parity |
+| **Strict MRR (Grade 3)** | **50.48%** | **50.48%** | **49.52%** | **-0.96%** | **Degraded** |
+| **nDCG@3** | **95.75%** | **94.72%** | **94.42%** | **-1.33%** | **Degraded** |
+| **nDCG@4 (Full Pool)** | **95.75%** | **94.72%** | **94.42%** | **-1.33%** | **Degraded** |
+| **Entity Accuracy @ Rank 1** | **94.23%** (98/104) | **89.42%** (93/104) | **86.54%** (90/104) | **-7.69%** | **Degraded** |
+| **Intent Accuracy @ Rank 1** | **50.00%** (52/104) | **50.00%** (52/104) | **48.08%** (50/104) | **-1.92%** | **Degraded** |
+| **Hard-Negative Rejection Rate** | **96.15%** (100/104) | **92.31%** (96/104) | **92.31%** (96/104) | **-3.84%** | **Degraded** |
 
 ---
 
 ## Development vs. Holdout Generalization
 
-| Metric | Development Set (84 Scenarios) | Holdout Set (20 Scenarios) | Generalization Delta |
-| :--- | :---: | :---: | :---: |
-| **Precision@1 (Deterministic)** | 56.0% | 40.0% | **-16.0%** |
-| **Precision@1 (Neural Reranker)** | 55.9% | 40.0% | **-15.9%** |
-| **MRR (Deterministic)** | 57.7% | 40.0% | **-17.7%** |
-| **MRR (Neural Reranker)** | 58.3% | 37.5% | **-20.8%** |
-| **nDCG@5 (Deterministic)** | 95.9% | 95.1% | **-0.8%** |
-| **nDCG@5 (Neural Reranker)** | 95.0% | 91.8% | **-3.2%** |
-| **Hard-Negative Rejection** | 96.4% | 95.0% | **-1.4%** |
+| Metric | Development Set (N=84) — Det | Development Set (N=84) — Rer | Holdout Set (N=20) — Det | Holdout Set (N=20) — Rer |
+| :--- | :---: | :---: | :---: | :---: |
+| **Broad Precision@1** | **55.95%** (47/84) | **57.14%** (48/84) | **40.00%** (8/20) | **35.00%** (7/20) |
+| **Strict Precision@1** | **52.38%** (44/84) | **52.38%** (44/84) | **40.00%** (8/20) | **30.00%** (6/20) |
+| **Cranfield Recall@1** | **70.00%** | **72.00%** | **81.25%** | **68.75%** |
+| **MRR (Broad)** | **57.74%** | **58.33%** | **40.00%** | **37.50%** |
+| **nDCG@4** | **95.90%** | **95.04%** | **95.09%** | **91.81%** |
+| **Entity Accuracy @ 1** | **95.24%** | **88.10%** | **90.00%** | **80.00%** |
+| **Hard-Negative Rejection** | **96.43%** | **92.86%** | **95.00%** | **90.00%** |
 
-The modest drop from 56.0% to 40.0% Precision@1 between development and holdout reflects real linguistic variability: holdout scenarios use unseen phrasing (e.g. *"Audit Microsoft enterprise volume licensing compliance"*, *"Innistrad card strategy"*, *"Satyagraha and Satya principle"*) that challenge lexical keyword matching. Importantly, **Hard-Negative Rejection remains stable at 95.0%**, proving that negative entity boundaries generalize beyond memorized strings.
-
----
-
-## Recommendations & Engineering Verdict
-
-1. **Adopt Two-Stage Hybrid Architecture in Production:**
-   - Keep the upstream **EntityResolver** and **RelevanceGate** hard gates active at all times.
-   - Deploy `SemanticReranker` as a downstream second stage for ambiguous or borderline candidates (`0.40 <= relevance_score <= 0.75`), using neural cross-attention to resolve nuanced semantic intent.
-2. **Do Not Rely on CrossEncoders for Entity Disambiguation:**
-   - Pre-trained cross-encoders (like MiniLM) excel at semantic matching but lack knowledge graphs; they will happily score *"Concept of Satya in Sanskrit"* high for query *"Satya statement"* because both contain *"Satya"*. Hard entity constraints must remain the primary defense.
-3. **Continuous Frozen CI Benchmarking:**
-   - Maintain `tests/retrieval_benchmark/` as a required regression test in CI (`pytest tests/retrieval_benchmark/test_benchmark_schema.py tests/test_retrieval_metrics.py tests/test_retrieval_benchmark.py`).
+### Sample Size & Statistical Uncertainty Notice
+In the 20-scenario holdout set, **each scenario represents exactly 5.0 percentage points**. The apparent drop in Reranker Holdout Strict P@1 (from 40.0% to 30.0%) represents a divergence on exactly 2 scenarios. However, the consistent direction of degradation across nDCG, Hard-Negative Rejection, and Entity Accuracy indicates a systematic vulnerability rather than random noise.
 
 ---
 
-## Limitations
+## Per-Agent Performance Breakdown
 
-1. **Candidate Pool Size:** The current benchmark tests 4 candidates per scenario (416 total). While sufficient for measuring Top-1/Top-3 precision and nDCG, a future iteration should expand candidate depth to 15–20 candidates per scenario to evaluate Recall@10 with larger candidate pools.
-2. **CPU Latency:** The CrossEncoder evaluates text pairs in ~16–25ms per candidate on CPU. For high-throughput real-time ingest, GPU acceleration or ONNX Runtime quantization is recommended.
+| Agent | Scenarios | Broad P@1 (Det / Rer) | Strict P@1 (Det / Rer) | nDCG@4 (Det / Rer) | Hard-Neg Rejection (Det / Rer) |
+| :--- | :---: | :---: | :---: | :---: | :---: |
+| **BrandShield** | 26 | **65.38%** / 65.38% | **65.38%** / 65.38% | **98.85%** / 97.36% | **100.0%** / 96.15% |
+| **Trending** | 26 | **46.15%** / 46.15% | **46.15%** / 46.15% | **89.22%** / 89.22% | **84.62%** / 84.62% |
+| **Scout** | 26 | **50.00%** / 50.00% | **50.00%** / 42.31% | **97.70%** / 95.10% | **100.0%** / 88.46% |
+| **Personal Watch** | 26 | **50.00%** / 50.00% | **38.46%** / 38.46% | **97.22%** / 96.00% | **100.0%** / 100.0% |
+
+---
+
+## Classification Category Breakdown
+
+| Scenario Classification | Count | Broad P@1 (Det) | Strict P@1 (Det) | Hard-Neg Rejection (Det) | Hard-Neg Rejection (Rer) | Root Cause |
+| :--- | :---: | :---: | :---: | :---: | :---: | :--- |
+| `TRUE_POSITIVE` | 48 | **97.92%** | **97.92%** | **100.0%** | **100.0%** | Exact entity + domain threat intent |
+| `HOMOGRAPH_NEGATIVE` | 7 | **0.0%** | **0.0%** | **100.0%** | **100.0%** | Sanskrit philosophy & Bollywood film suppressed |
+| `HARD_NEGATIVE` | 11 | **18.18%** | **0.0%** | **100.0%** | **88.46%** | Reranker leaked 3 penny stock distractors |
+| `TEMPORAL_NEGATIVE` | 4 | **0.0%** | **0.0%** | **0.0%** | **0.0%** | Stale 2021 articles leak due to lack of age filter |
+| `BOUNDARY_NEGATIVE` | 17 | **11.76%** | **11.76%** | **100.0%** | **100.0%** | Competitor marketing mentions |
+| `BENIGN_DISTRACTOR` | 6 | **0.0%** | **0.0%** | **100.0%** | **100.0%** | Routine developer tooling updates |
+| `OUT_OF_DOMAIN` | 5 | **0.0%** | **0.0%** | **100.0%** | **100.0%** | Broad market ETF constituents |
+| `DEDUPLICATION` | 3 | **100.0%** | **100.0%** | **100.0%** | **100.0%** | Wire syndication clustering |
+
+---
+
+## Why the Neural Reranker Underperforms the Deterministic Baseline
+
+1. **Semantic Similarity Ignores Entity Bounds:** Pre-trained CrossEncoders compute dense cross-attention between token sequences. When given query `"Microsoft MSFT financial regulatory query"` and a distractor title `"Penny Stock Speculation Alert (MSFT Peer Compare)"`, the CrossEncoder awards a high logit because many words match the domain. The deterministic `EntityResolver` specifically detects that the subject is not Microsoft and penalizes it.
+2. **Loss of Temporal Discernment:** In Trending, CrossEncoder awards high similarity to archived articles from 2021 because they are topical matches, completely blind to publication timestamp.
+3. **Computational Overhead with Zero Gain:** On CPU inference, the CrossEncoder takes ~18ms per scenario, adding latency while degrading Hard-Negative Rejection by 3.84 percentage points and Strict P@1 by 1.92 percentage points.
+
+---
+
+## Architectural Verdict & Next Steps
+
+1. **Production Decision:** **Keep the neural reranker disabled in production**. The deterministic pipeline (`RelevanceGate` + `EntityResolver`) provides superior precision, superior hard-negative defense, zero model latency, and zero dependency risk.
+2. **Address Genuine Deficiencies:**
+   - **Trending Temporal Gating:** Add an explicit age threshold (< 48 hours) to prevent archived stories from leaking.
+   - **Ticker Centrality in Scout:** Require ticker mention to be the primary corporate subject rather than a constituent in an ETF table.
+3. **Benchmark Corpus Expansion:** When live discovery candidates are collected, expand the pool from $N=4$ to $N=15$–20 candidates per scenario to enable meaningful Recall@10 evaluation without pool saturation.

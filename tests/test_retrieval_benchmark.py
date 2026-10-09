@@ -7,13 +7,16 @@ critical adversarial cases:
 2. Magic: The Gathering Investigate card mechanics
 3. MSFT ETF constituent lists
 4. Boilerplate Satya Nadella closing mentions
-5. Dev vs Holdout split metrics isolation
+5. System ranking divergence (Deterministic != Hybrid != Reranker)
+6. Development vs Holdout split disjointness
+7. Reranker fallback behavior
 """
 
 import json
 import pytest
 from pathlib import Path
 from scripts.run_retrieval_quality_benchmark import BenchmarkRunner
+from backend.services.research.semantic_reranker import SemanticReranker
 
 FIXTURES_DIR = Path("tests/retrieval_benchmark")
 
@@ -23,7 +26,7 @@ def benchmark_results():
     runner = BenchmarkRunner(
         fixtures_dir=FIXTURES_DIR,
         output_dir=Path("artifacts/retrieval_benchmark"),
-        top_k=5,
+        top_k=4,
     )
     summary = runner.run_benchmark(agent_filter="all", system_filter="all")
     return summary, runner
@@ -44,12 +47,12 @@ def test_agent_metrics_are_separated(benchmark_results):
             assert ag in sys_metrics
             ag_m = sys_metrics[ag]
             assert "p_at_1" in ag_m
-            assert "p_at_5" in ag_m
+            assert "p_at_4" in ag_m
             assert "mrr" in ag_m
-            assert "ndcg_at_5" in ag_m
+            assert "ndcg_at_4" in ag_m
             assert "entity_accuracy" in ag_m
             assert "hard_negative_rejection_rate" in ag_m
-            assert ag_m["count"] >= 25
+            assert ag_m["evaluable_scenarios"] >= 25
 
 
 def test_deterministic_vs_reranker_comparison(benchmark_results):
@@ -61,12 +64,74 @@ def test_deterministic_vs_reranker_comparison(benchmark_results):
     rer_overall = summary["reranker"]["overall"]
 
     # Both systems must compute valid metrics on the identical corpus
-    assert det_overall["count"] == 104
-    assert rer_overall["count"] == 104
+    assert det_overall["evaluable_scenarios"] == 104
+    assert rer_overall["evaluable_scenarios"] == 104
     assert 0.0 <= det_overall["p_at_1"] <= 1.0
     assert 0.0 <= rer_overall["p_at_1"] <= 1.0
-    assert 0.0 <= det_overall["ndcg_at_5"] <= 1.0
-    assert 0.0 <= rer_overall["ndcg_at_5"] <= 1.0
+    assert 0.0 <= det_overall["ndcg_at_4"] <= 1.0
+    assert 0.0 <= rer_overall["ndcg_at_4"] <= 1.0
+
+
+def test_system_ranking_divergence(benchmark_results):
+    """
+    Verification that ranking systems are isolated and generate distinct orderings.
+    """
+    _, runner = benchmark_results
+    with open("artifacts/retrieval_benchmark/rankings.jsonl", "r", encoding="utf-8") as f:
+        rankings = [json.loads(line) for line in f]
+
+    from collections import defaultdict
+    by_scen_sys = defaultdict(dict)
+    for r in rankings:
+        by_scen_sys[r["scenario_id"]][r["system"]] = [c["candidate_id"] for c in r["ranked_candidates"]]
+
+    diff_det_rer = 0
+    diff_det_hyb = 0
+    for scen_id, systems in by_scen_sys.items():
+        det = systems.get("deterministic", [])
+        rer = systems.get("reranker", [])
+        hyb = systems.get("hybrid", [])
+        if det != rer:
+            diff_det_rer += 1
+        if det != hyb:
+            diff_det_hyb += 1
+
+    # In our 104 scenarios, deterministic and neural reranker must diverge on multiple scenarios
+    assert diff_det_rer >= 15, f"Expected >= 15 ranking divergences between Det and Reranker, found {diff_det_rer}"
+    assert diff_det_hyb >= 10, f"Expected >= 10 ranking divergences between Det and Hybrid, found {diff_det_hyb}"
+
+
+def test_development_and_holdout_disjointness(benchmark_results):
+    """
+    Invariance test: Development and Holdout scenario sets must be strictly disjoint.
+    """
+    _, runner = benchmark_results
+    dev_ids = {s["scenario_id"] for s in runner.scenarios if s.get("split") == "dev"}
+    holdout_ids = {s["scenario_id"] for s in runner.scenarios if s.get("split") == "holdout"}
+
+    assert len(dev_ids) == 84
+    assert len(holdout_ids) == 20
+    assert len(dev_ids.intersection(holdout_ids)) == 0, "Dev and Holdout scenario IDs must not overlap"
+
+
+def test_reranker_fallback_behavior():
+    """
+    When disabled or model loading fails, semantic reranker must degrade gracefully
+    without fabricating scores or crashing.
+    """
+    disabled_reranker = SemanticReranker(enabled=False)
+    assert not disabled_reranker.enabled
+    candidates = [
+        {"title": "Doc 1", "snippet": "Snippet 1", "relevance_score": 0.8},
+        {"title": "Doc 2", "snippet": "Snippet 2", "relevance_score": 0.4},
+    ]
+    reranked = disabled_reranker.rerank("Query", candidates, top_k=2)
+    assert len(reranked) == 2
+    assert reranked[0]["semantic_status"] == "DISABLED"
+    assert reranked[0]["semantic_score"] is None
+    assert reranked[0]["raw_cross_encoder_score"] is None
+    # Preserves first-stage order
+    assert reranked[0]["title"] == "Doc 1"
 
 
 def test_satya_homograph_cases(benchmark_results):
@@ -97,7 +162,6 @@ def test_satya_homograph_cases(benchmark_results):
     cands_movie = runner.candidates_by_scenario[movie_scenario["scenario_id"]]
     ranked_movie = runner.rank_reranker(movie_scenario, cands_movie)
     top1_movie = ranked_movie[0]
-    # Movie upload must not be approved with high entity score
     assert top1_movie.get("entity_score", 1.0) < 0.35 or top1_movie.get("rerank_score", 1.0) < 0.40
 
 
@@ -115,7 +179,6 @@ def test_mtg_investigate_case(benchmark_results):
 
     for c in ranked:
         if "Tireless Tracker" in c.get("title", ""):
-            # Must fail entity match or be heavily down-ranked
             assert c.get("entity_score", 1.0) < 0.35 or c.get("final_score", 1.0) < 0.35
 
 
@@ -133,7 +196,6 @@ def test_msft_etf_negative(benchmark_results):
 
     top1 = ranked[0]
     top1_label = runner.labels_by_cand_id[top1["candidate_id"]]
-    # Top 1 shouldn't be an unvetted broad ETF list with grade 3
     assert top1_label.get("gold_grade") <= 2
 
 
@@ -160,6 +222,6 @@ def test_holdout_vs_dev_split_separation(benchmark_results):
         sys_data = summary[sys_name]
         assert "dev" in sys_data
         assert "holdout" in sys_data
-        assert sys_data["dev"]["count"] > 0
-        assert sys_data["holdout"]["count"] > 0
-        assert sys_data["dev"]["count"] + sys_data["holdout"]["count"] == sys_data["overall"]["count"]
+        assert sys_data["dev"]["evaluable_scenarios"] > 0
+        assert sys_data["holdout"]["evaluable_scenarios"] > 0
+        assert sys_data["dev"]["evaluable_scenarios"] + sys_data["holdout"]["evaluable_scenarios"] == sys_data["overall"]["evaluable_scenarios"]

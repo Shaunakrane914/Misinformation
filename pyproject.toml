@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "aegis-protocol"
+version = "4.1.0"
+description = "Autonomous enterprise intelligence, claim verification, and misinformation deconstruction system"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+    { name = "Shaunak Rane" }
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Security",
+]
+dependencies = [
+    "fastapi>=0.110.0",
+    "uvicorn[standard]>=0.29.0",
+    "pydantic>=2.7.0",
+    "supabase>=2.4.0",
+    "google-generativeai>=0.7.0",
+    "python-dotenv>=1.0.0",
+    "python-multipart>=0.0.6",
+    "aiohttp>=3.9.1",
+    "pandas>=2.0.0",
+    "openpyxl>=3.1.2",
+    "jinja2>=3.1.2",
+    "requests>=2.31.0",
+    "apify-client",
+    "feedparser>=6.0.10",
+    "pytrends",
+    "beautifulsoup4",
+    "duckduckgo-search>=4.0.0",
+    "twilio>=8.0.0",
+    "itsdangerous>=2.1.2",
+    "aiofiles>=23.1.0",
+    "httpx>=0.27.0",
+    "scikit-learn>=1.4.0",
+    "scipy>=1.12.0",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=8.0.0",
+    "pytest-rerunfailures>=14.0.0",
+    "flake8>=7.0.0",
+]
+benchmarks = [
+    "scikit-learn>=1.4.0",
+    "scipy>=1.12.0",
+    "numpy>=1.26.0",
+]
+dev = [
+    "pytest>=8.0.0",
+    "pytest-rerunfailures>=14.0.0",
+    "flake8>=7.0.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["backend*", "scrapers*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+asyncio_mode = "auto"
+addopts = "-v --tb=short -ra"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::UserWarning",
+]
+markers = [
+    "unit: Fast deterministic unit tests (no network, no DB)",
+    "integration: Multi-component integration tests (FastAPI TestClient, in-memory DB)",
+    "security: SSRF, XSS, and adversarial security tests",
+    "slow: Long-running tests requiring live external APIs or network access",
+]

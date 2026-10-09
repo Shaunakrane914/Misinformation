@@ -1,0 +1,221 @@
+# Aegis Protocol — Expanded CI & Verification Matrix Template
+# To enable this expanded 7-job workflow on GitHub Actions, ensure your GitHub token has the 'workflow' scope,
+# or apply this file to .github/workflows/ci.yml directly on GitHub web / via admin PAT.
+
+name: Aegis Protocol CI & Verification Matrix
+
+on:
+  push:
+    branches: [ "main", "feat/**" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+    inputs:
+      run_live_eval:
+        description: 'Run live retrieval quality evaluation with network egress'
+        required: false
+        default: 'false'
+        type: boolean
+  schedule:
+    - cron: '0 3 * * *'  # Nightly at 03:00 UTC
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-format:
+    name: Lint & Code Style Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Install Tooling
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+
+      - name: Lint Python Codebase
+        run: |
+          flake8 backend scrapers tests scripts --count --select=E9,F63,F7,F82 --show-source --statistics
+
+  fast-unit-chaos:
+    name: Fast Unit & Chaos Resilience (Python ${{ matrix.python-version }})
+    needs: [lint-format]
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+          pip install -r requirements.txt
+
+      - name: Run Unit & Chaos Tests
+        env:
+          ENVIRONMENT: test
+          AEGIS_MOCK_LLM: "true"
+          AGENT_REACH_ENABLED: "true"
+        run: |
+          pytest -v tests/unit/ tests/chaos/ --maxfail=2
+
+  security-invariants:
+    name: Security & Cryptographic Invariants
+    needs: [lint-format]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+          pip install -r requirements.txt
+
+      - name: Run Security and Invariant Tests
+        env:
+          ENVIRONMENT: test
+          AEGIS_MOCK_LLM: "true"
+        run: |
+          pytest -v tests/security/ tests/test_complete_retrieval_audit_integrity.py
+
+  integration:
+    name: Route Contracts & Pipeline Integration
+    needs: [lint-format]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test]"
+          pip install -r requirements.txt
+
+      - name: Run Integration Tests
+        env:
+          ENVIRONMENT: test
+          AEGIS_MOCK_LLM: "true"
+          AGENT_REACH_ENABLED: "true"
+        run: |
+          pytest -v tests/integration/ tests/contract/ tests/test_api_endpoints.py tests/test_unified_report.py
+
+  offline-retrieval-benchmark:
+    name: Cranfield Retrieval Benchmarks & Temporal Guard
+    needs: [lint-format]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test,benchmarks]"
+          pip install -r requirements.txt
+
+      - name: Run Retrieval Benchmark & Quality Hardening Assertions
+        env:
+          ENVIRONMENT: test
+          AEGIS_MOCK_LLM: "true"
+        run: |
+          pytest -v tests/test_retrieval_benchmark.py tests/test_retrieval_metrics.py tests/test_trending_temporal_guard.py tests/test_semantic_reranker.py tests/test_retrieval_quality_hardening.py tests/benchmarks/test_research_performance.py
+
+  docs-validation:
+    name: Documentation, Schema & Offline ML Validation
+    needs: [lint-format]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test,benchmarks]"
+          pip install -r requirements.txt
+
+      - name: Run Learned Reranker Benchmark
+        env:
+          ENVIRONMENT: test
+        run: |
+          python scripts/evaluate_dataset.py --mode reranker --seed 42
+
+      - name: Check AVeriTeC Benchmark Adapter Status
+        env:
+          ENVIRONMENT: test
+        run: |
+          python scripts/evaluate_dataset.py --mode averitec_status
+
+  live-retrieval-eval:
+    name: Nightly Live Web Retrieval Quality Evaluation
+    if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.run_live_eval == true)
+    needs: [offline-retrieval-benchmark]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: 'pip'
+
+      - name: Install Dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[test,benchmarks]"
+          pip install -r requirements.txt
+
+      - name: Run Live Retrieval Evaluation
+        env:
+          ENVIRONMENT: live_evaluation
+          AGENT_REACH_ENABLED: "true"
+        run: |
+          python scripts/run_live_retrieval_quality_evaluation.py --max-candidates 50

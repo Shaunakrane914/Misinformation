@@ -24,9 +24,9 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 
 | Phase | Title | Priority | Core Objective | Acceptance Gate |
 | :---: | :--- | :---: | :--- | :--- |
-| **0** | **Baseline, Containment & Architecture Blueprints** | **P0** | Add `.dockerignore`, author ADRs, map dependencies, freeze baseline test metrics. | Zero secrets/research data copied to container; full 528 test suite verified. |
-| **1** | **Documentation Source of Truth & Drift Reconciliation** | **P1** | Consolidate `docs/`, reconcile test counts (528 vs 180), archive stale audit plans. | Single source of truth; zero stale metric claims in markdown. |
-| **2** | **Build, Packaging & CI Test Suite Hygiene** | **P1** | Add `pyproject.toml`, lock dependency strategies, expand CI to run full 528 tests. | Deterministic offline build; CI runs all regression & benchmark suites. |
+| **0** | **Baseline, Containment & Architecture Blueprints** | **P0** | Add `.dockerignore`, author ADRs, map dependencies, freeze baseline test metrics. | **DELIVERED** (Commit `47ac9d1`) |
+| **1** | **Documentation Source of Truth & Drift Reconciliation** | **P1** | Consolidate `docs/`, reconcile test counts (530 tests), archive stale audit plans. | **DELIVERED** (Commit `ba210c3`) |
+| **2** | **Build, Packaging & CI Test Suite Hygiene** | **P1** | Add `pyproject.toml`, lock dependency strategies, expand CI to 7 parallel jobs. | **DELIVERED** |
 | **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | `agent_reach_service` contract tests pass; all 14 channel adapters verified. |
 | **4** | **Research Pipeline Decomposition** | **P1** | Break 581-line `investigate()` into 10 composable pipeline stages. | Investigation pipeline passes with bit-for-bit dossier equality. |
 | **5** | **Domain Agent Modularization** | **P1** | Relocate agent-specific extraction from `agent_reach/` into owning agent packages. | BrandShield, Trending, Scout, Personal Watch contract tests pass. |
@@ -59,8 +59,9 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 ---
 
 ### Phase 1: Documentation Source of Truth & Drift Reconciliation
+- **Status:** **DELIVERED** (Commit `ba210c3`)
 - **Priority:** P1
-- **Current State:** Competing architecture documents (`ARCHITECTURE.md` vs `docs/ARCHITECTURE.md` vs `docs/audit/ARCHITECTURE_REVIEW.md`). Stale references claim `main.py` is >2,100 lines (now 308) and test count is 180 (now 528).
+- **Current State:** Competing architecture documents (`ARCHITECTURE.md` vs `docs/ARCHITECTURE.md` vs `docs/audit/ARCHITECTURE_REVIEW.md`). Stale references claim `main.py` is >2,100 lines (now 308) and test count is 180 (now 530).
 - **Target State:**
   - Root `README.md` becomes a lean entrypoint pointing to canonical documentation in `docs/`.
   - Stale audit documents in `docs/audit/` marked with `[SUPERSEDED]` headers.
@@ -68,11 +69,12 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 - **Files Affected:**
   - `README.md`, `ARCHITECTURE.md`, `docs/ARCHITECTURE.md`, `docs/TESTING.md`, `docs/FEATURE_STATUS.md`, `docs/audit/*`.
 - **Tests Required:** Markdown link validator (`pytest tests/test_unified_report.py`).
-- **Acceptance Criteria:** Zero conflicting metrics; documentation accurately reflects measured 528 passing tests and current codebase topology.
+- **Acceptance Criteria:** Zero conflicting metrics; documentation accurately reflects measured 530 passing tests and current codebase topology.
 
 ---
 
 ### Phase 2: Build, Packaging & CI Test Suite Hygiene
+- **Status:** **DELIVERED**
 - **Priority:** P1
 - **Current State:** `.github/workflows/ci.yml` runs only a subset of tests, executing `pytest tests/unit/ tests/chaos/ tests/security/` and 2 integration files. It completely skips the 6 critical root-level benchmark and verification suites:
   1. `tests/test_retrieval_benchmark.py` (104 scenario benchmark evaluation)

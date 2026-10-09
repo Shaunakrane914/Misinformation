@@ -12,7 +12,7 @@ Operates downstream of the hard entity gate and first-stage deterministic ranker
             ↓
     Semantic reranker (CrossEncoder ms-marco-MiniLM-L-6-v2)
             ↓
-    Top 5 candidates
+    Top candidates
             ↓
     Deep acquisition
             ↓
@@ -20,7 +20,7 @@ Operates downstream of the hard entity gate and first-stage deterministic ranker
 
 Invariants:
 1. Deterministic inference settings.
-2. Supports CPU and CUDA execution.
+2. Supports CPU and CUDA execution with explicit telemetry.
 3. Graceful degradation: If model is unavailable or disabled, preserves first-stage
    order and sets semantic_score=None (never fabricates fake scores).
 4. Controlled via AEGIS_SEMANTIC_RERANKER environment variable.
@@ -28,6 +28,7 @@ Invariants:
 
 import os
 import math
+import time
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
 
@@ -69,10 +70,18 @@ class SemanticReranker:
         self.top_k_output = top_k_output
         self.batch_size = batch_size
         self.device = device
+        self.device_used = "none"
 
         self._model = None
         self._available = False
         self._load_attempted = False
+        self._load_error: Optional[str] = None
+
+        # Observable telemetry
+        self.pairs_scored_count = 0
+        self.total_inference_time_sec = 0.0
+        self.inference_failure_count = 0
+        self.fallback_count = 0
 
         if self.enabled:
             self._ensure_loaded()
@@ -91,6 +100,7 @@ class SemanticReranker:
             if dev is None:
                 dev = "cuda" if torch.cuda.is_available() else "cpu"
 
+            self.device_used = dev
             logger.info("Initializing SemanticReranker with model '%s' on %s", self.model_name, dev)
             self._model = CrossEncoder(
                 self.model_name,
@@ -100,6 +110,7 @@ class SemanticReranker:
             self._available = True
             logger.info("SemanticReranker successfully initialized on %s", dev)
         except Exception as ex:
+            self._load_error = str(ex)
             logger.warning("SemanticReranker failed to load model '%s': %s", self.model_name, ex)
             self._available = False
             self._model = None
@@ -112,17 +123,33 @@ class SemanticReranker:
             return self._ensure_loaded()
         return self._available
 
+    def get_telemetry(self) -> Dict[str, Any]:
+        """Expose observable execution telemetry."""
+        return {
+            "model_name": self.model_name,
+            "enabled": self.enabled,
+            "is_available": self._available,
+            "device": self.device_used,
+            "pairs_scored": self.pairs_scored_count,
+            "inference_duration_sec": round(self.total_inference_time_sec, 3),
+            "inference_failures": self.inference_failure_count,
+            "fallback_count": self.fallback_count,
+            "load_error": self._load_error,
+        }
+
     def score_text_pairs(self, pairs: List[Tuple[str, str]]) -> List[Dict[str, float]]:
         """
         Compute CrossEncoder predictions for a list of (query, document) text pairs.
         Returns list of dicts with 'raw_score' (logit) and 'semantic_score' (sigmoid [0, 1]).
         """
         if not self.enabled or not self.is_available or not self._model:
+            self.fallback_count += len(pairs)
             return [{"raw_score": 0.0, "semantic_score": 0.0} for _ in pairs]
 
         if not pairs:
             return []
 
+        start_t = time.time()
         try:
             import torch
             with torch.no_grad():
@@ -131,6 +158,10 @@ class SemanticReranker:
                     batch_size=self.batch_size,
                     show_progress_bar=False,
                 )
+
+            elapsed = time.time() - start_t
+            self.total_inference_time_sec += elapsed
+            self.pairs_scored_count += len(pairs)
 
             results = []
             for score in logits:
@@ -141,6 +172,8 @@ class SemanticReranker:
                 })
             return results
         except Exception as ex:
+            self.inference_failure_count += 1
+            self.fallback_count += len(pairs)
             logger.error("Error during CrossEncoder inference: %s", ex)
             return [{"raw_score": 0.0, "semantic_score": 0.0} for _ in pairs]
 
@@ -153,16 +186,6 @@ class SemanticReranker:
     ) -> List[Any]:
         """
         Rerank a pool of candidates using second-stage neural cross-encoding.
-
-        Args:
-            query: The investigative intent / query string.
-            candidates: List of candidate dicts or objects.
-            top_k: Output count (defaults to self.top_k_output).
-            entity_score_threshold: Candidates strictly below this entity gate
-                                    are penalised or filtered out.
-
-        Returns:
-            Reranked list of candidates with semantic scores attached.
         """
         k_out = top_k if top_k is not None else self.top_k_output
         if not candidates:
@@ -170,6 +193,7 @@ class SemanticReranker:
 
         # Graceful degradation if disabled or model unavailable
         if not self.enabled or not self.is_available:
+            self.fallback_count += len(candidates[:k_out])
             annotated = []
             for idx, c in enumerate(candidates[:k_out]):
                 item = self._ensure_dict(c)
@@ -203,22 +227,19 @@ class SemanticReranker:
             item["raw_cross_encoder_score"] = raw_logit
             item["semantic_status"] = "SCORED"
 
-            # Retain first-stage score if present
             first_stage = item.get("first_stage_score") or item.get("relevance_score") or 0.50
             entity_score = item.get("entity_score", 0.50)
 
             # Invariant: If entity_score is failed/zero, do NOT permit high semantic score
-            # to leak an adversarial homograph (e.g. Sanskrit Satya, MTG cards) into top rank!
+            # to leak an adversarial homograph into top rank!
             if entity_score < entity_score_threshold:
-                # Heavy penalty for failed entity match
                 rerank_score = sem_score * 0.10
             else:
-                # Balanced hybrid second-stage: 40% first-stage gate + 60% neural cross-encoder
                 rerank_score = 0.40 * first_stage + 0.60 * sem_score
 
             item["rerank_score"] = round(rerank_score, 4)
 
-        # Sort descending by rerank_score, falling back to first-stage score
+        # Sort descending by rerank_score
         sorted_candidates = sorted(
             pool,
             key=lambda x: (x.get("rerank_score", 0.0), x.get("relevance_score", 0.0)),

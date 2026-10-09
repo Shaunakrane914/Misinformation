@@ -151,3 +151,5 @@ def test_aggregate_metrics_excludes_undefined_recall():
     assert agg["recall_at_1"] == 0.5
     assert agg["recall_at_4"] == 1.0
     assert agg["hard_negative_rejection_rate"] == 1.0
+    assert agg["top1_hard_negative_avoidance"] == 1.0
+    assert "candidate_hard_negative_rejection_rate" in agg

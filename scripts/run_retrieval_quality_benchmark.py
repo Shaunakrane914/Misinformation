@@ -380,6 +380,9 @@ class BenchmarkRunner:
                 cls_res = [r for r in res_list if r.get("classification") == cls_name]
                 per_class_summary[sys_name][cls_name] = aggregate_metrics(cls_res)
 
+        # Add observable reranker telemetry
+        summary["telemetry"] = self.reranker.get_telemetry()
+
         # Write artifacts
         with open(self.output_dir / "summary.json", "w", encoding="utf-8") as f:
             json.dump(summary, f, indent=2)
@@ -420,9 +423,19 @@ class BenchmarkRunner:
         lines.append("## Metric Formulation & Candidate Pool Documentation")
         lines.append("- **Total Scenarios:** `104` (Development: `84`, Holdout: `20`)")
         lines.append("- **Frozen Candidate Pool Size per Scenario:** `N = 4` (Total Candidates: `416`)")
-        lines.append("- **Relevance Labels in Corpus:** 85 broad relevant (grades 2–3) across 61 scenarios; 53 strict relevant (grade 3); 184 grade 1; 147 grade 0.")
+        lines.append("- **Relevance Labels in Corpus:** 85 broad relevant (grades 2–3) across 58 scenarios; 53 strict relevant (grade 3); 184 grade 1; 147 grade 0.")
         lines.append("- **Evaluated Cutoffs:** Natural pool cutoffs at **k = 1, 3, 4** (plus fixed k=5 reference).")
-        lines.append("- **Recall Calculation:** Standard Cranfield macro-average evaluated strictly over the `61` scenarios containing at least one relevant document ($R_{query} \\ge 1$).")
+        lines.append("- **Recall Calculation:** Standard Cranfield macro-average evaluated strictly over the `58` scenarios containing at least one relevant document ($R_{query} \\ge 1$).")
+        lines.append("")
+        lines.append("## Neural CrossEncoder Execution Telemetry")
+        telem = summary.get("telemetry", {})
+        lines.append(f"- **Configured Model:** `{telem.get('model_name', 'cross-encoder/ms-marco-MiniLM-L-6-v2')}`")
+        lines.append(f"- **Execution Device:** `{telem.get('device', 'cpu')}`")
+        lines.append(f"- **Availability Status:** `{'AVAILABLE' if telem.get('is_available') else 'UNAVAILABLE'}`")
+        lines.append(f"- **Pairs Scored:** `{telem.get('pairs_scored', 0)}`")
+        lines.append(f"- **Inference Duration:** `{telem.get('inference_duration_sec', 0.0)}s`")
+        lines.append(f"- **Inference Failures:** `{telem.get('inference_failures', 0)}`")
+        lines.append(f"- **Fallback Invocations:** `{telem.get('fallback_count', 0)}`")
         lines.append("")
         lines.append("## 1. System Comparison Matrix (Overall, N=104)")
         lines.append("")
@@ -447,9 +460,12 @@ class BenchmarkRunner:
             ("Strict MRR (Grade 3)", "strict_mrr", True),
             ("nDCG@3", "ndcg_at_3", True),
             ("nDCG@4 (Full Pool)", "ndcg_at_4", True),
-            ("Entity Accuracy @ Rank 1", "entity_accuracy", True),
-            ("Intent Accuracy @ Rank 1", "intent_accuracy", True),
-            ("Hard-Negative Rejection Rate", "hard_negative_rejection_rate", True),
+            ("Entity Accuracy @ Rank 1", "entity_accuracy_at_1", True),
+            ("Top-k Entity Density (Pool)", "top_k_entity_density", True),
+            ("Intent Accuracy @ Rank 1", "intent_accuracy_at_1", True),
+            ("Top-k Intent Density (Pool)", "top_k_intent_density", True),
+            ("Top-1 Hard-Negative Avoidance", "top1_hard_negative_avoidance", True),
+            ("Candidate Hard-Negative Rejection Rate", "candidate_hard_negative_rejection_rate", True),
         ]
 
         for label, key, _ in metrics_display:
@@ -458,7 +474,7 @@ class BenchmarkRunner:
             r_val = rer.get(key, 0.0)
             delta = r_val - d_val
             sign = "+" if delta > 0 else ""
-            delta_str = f"{sign}{delta * 100:.1f}%" if "rate" in key or "acc" in key or "p_" in key or "recall" in key else f"{sign}{delta:.3f}"
+            delta_str = f"{sign}{delta * 100:.1f}%" if "rate" in key or "acc" in key or "p_" in key or "recall" in key or "density" in key or "avoidance" in key else f"{sign}{delta:.3f}"
             lines.append(f"| **{label}** | {d_val * 100:.1f}% | {h_val * 100:.1f}% | {r_val * 100:.1f}% | **{delta_str}** |")
 
         lines.append("")
@@ -479,7 +495,8 @@ class BenchmarkRunner:
             ("Cranfield Recall@3", "recall_at_3", True),
             ("MRR", "mrr", True),
             ("nDCG@4", "ndcg_at_4", True),
-            ("Hard-Negative Rejection", "hard_negative_rejection_rate", True),
+            ("Top-1 Hard-Neg Avoidance", "top1_hard_negative_avoidance", True),
+            ("Candidate Hard-Neg Rejection", "candidate_hard_negative_rejection_rate", True),
         ]:
             lines.append(
                 f"| **{label}** | {d_dev.get(key, 0.0)*100:.1f}% | {r_dev.get(key, 0.0)*100:.1f}% | {d_hld.get(key, 0.0)*100:.1f}% | {r_hld.get(key, 0.0)*100:.1f}% |"
@@ -488,13 +505,13 @@ class BenchmarkRunner:
         lines.append("")
         lines.append("## 3. Per-Agent Performance Breakdown (Neural Reranker)")
         lines.append("")
-        lines.append("| Agent | Scenarios | Broad P@1 | Broad P@4 | Strict P@1 | Cranfield Recall@3 | nDCG@4 | Hard-Neg Rejection |")
-        lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
+        lines.append("| Agent | Scenarios | Broad P@1 | Broad P@4 | Strict P@1 | Cranfield Recall@3 | nDCG@4 | Top-1 HN Avoidance | Cand HN Rejection |")
+        lines.append("| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |")
 
         for ag in ["brandshield", "trending", "scout", "personal_watch"]:
             m = per_agent.get("reranker", {}).get(ag, {})
             lines.append(
-                f"| **{ag.title()}** | {m.get('evaluable_scenarios', 26)} | {m.get('p_at_1', 0.0)*100:.1f}% | {m.get('p_at_4', 0.0)*100:.1f}% | {m.get('strict_p_at_1', 0.0)*100:.1f}% | {m.get('recall_at_3', 0.0)*100:.1f}% | {m.get('ndcg_at_4', 0.0)*100:.1f}% | {m.get('hard_negative_rejection_rate', 0.0)*100:.1f}% |"
+                f"| **{ag.title()}** | {m.get('evaluable_scenarios', 26)} | {m.get('p_at_1', 0.0)*100:.1f}% | {m.get('p_at_4', 0.0)*100:.1f}% | {m.get('strict_p_at_1', 0.0)*100:.1f}% | {m.get('recall_at_3', 0.0)*100:.1f}% | {m.get('ndcg_at_4', 0.0)*100:.1f}% | {m.get('top1_hard_negative_avoidance', 0.0)*100:.1f}% | {m.get('candidate_hard_negative_rejection_rate', 0.0)*100:.1f}% |"
             )
 
         with open(self.output_dir / "summary.md", "w", encoding="utf-8") as f:

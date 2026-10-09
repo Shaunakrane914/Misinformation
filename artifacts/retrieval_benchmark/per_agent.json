@@ -18,12 +18,20 @@
       "ndcg_at_3": 0.9885,
       "ndcg_at_4": 0.9885,
       "ndcg_at_5": 0.9885,
+      "entity_accuracy_at_1": 0.9231,
+      "top_k_entity_density": 0.4712,
       "entity_accuracy": 0.9231,
+      "intent_accuracy_at_1": 0.5385,
+      "top_k_intent_density": 0.1731,
       "intent_accuracy": 0.5385,
+      "top1_hard_negative_avoidance": 1.0,
+      "candidate_hard_negative_rejection_rate": 0.9487,
       "hard_negative_rejection_rate": 1.0,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 18,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 39,
+      "rejected_grade0_candidates": 37
     },
     "trending": {
       "status": "EVALUATED",
@@ -43,12 +51,20 @@
       "ndcg_at_3": 0.8922,
       "ndcg_at_4": 0.8922,
       "ndcg_at_5": 0.8922,
+      "entity_accuracy_at_1": 1.0,
+      "top_k_entity_density": 0.5,
       "entity_accuracy": 1.0,
+      "intent_accuracy_at_1": 0.4615,
+      "top_k_intent_density": 0.1154,
       "intent_accuracy": 0.4615,
+      "top1_hard_negative_avoidance": 0.8462,
+      "candidate_hard_negative_rejection_rate": 0.5909,
       "hard_negative_rejection_rate": 0.8462,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 12,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 44,
+      "rejected_grade0_candidates": 26
     },
     "scout": {
       "status": "EVALUATED",
@@ -68,12 +84,20 @@
       "ndcg_at_3": 0.977,
       "ndcg_at_4": 0.977,
       "ndcg_at_5": 0.977,
+      "entity_accuracy_at_1": 1.0,
+      "top_k_entity_density": 0.3942,
       "entity_accuracy": 1.0,
+      "intent_accuracy_at_1": 0.5,
+      "top_k_intent_density": 0.1442,
       "intent_accuracy": 0.5,
+      "top1_hard_negative_avoidance": 1.0,
+      "candidate_hard_negative_rejection_rate": 0.8966,
       "hard_negative_rejection_rate": 1.0,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 15,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 29,
+      "rejected_grade0_candidates": 26
     },
     "personal_watch": {
       "status": "EVALUATED",
@@ -93,12 +117,20 @@
       "ndcg_at_3": 0.9722,
       "ndcg_at_4": 0.9722,
       "ndcg_at_5": 0.9722,
+      "entity_accuracy_at_1": 0.8462,
+      "top_k_entity_density": 0.375,
       "entity_accuracy": 0.8462,
+      "intent_accuracy_at_1": 0.5,
+      "top_k_intent_density": 0.125,
       "intent_accuracy": 0.5,
+      "top1_hard_negative_avoidance": 1.0,
+      "candidate_hard_negative_rejection_rate": 1.0,
       "hard_negative_rejection_rate": 1.0,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 13,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 35,
+      "rejected_grade0_candidates": 35
     }
   },
   "hybrid": {
@@ -120,12 +152,20 @@
       "ndcg_at_3": 0.9736,
       "ndcg_at_4": 0.9736,
       "ndcg_at_5": 0.9736,
+      "entity_accuracy_at_1": 0.8846,
+      "top_k_entity_density": 0.4712,
       "entity_accuracy": 0.8846,
+      "intent_accuracy_at_1": 0.5385,
+      "top_k_intent_density": 0.1731,
       "intent_accuracy": 0.5385,
+      "top1_hard_negative_avoidance": 0.9615,
+      "candidate_hard_negative_rejection_rate": 0.9487,
       "hard_negative_rejection_rate": 0.9615,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 18,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 39,
+      "rejected_grade0_candidates": 37
     },
     "trending": {
       "status": "EVALUATED",
@@ -145,12 +185,20 @@
       "ndcg_at_3": 0.8922,
       "ndcg_at_4": 0.8922,
       "ndcg_at_5": 0.8922,
+      "entity_accuracy_at_1": 1.0,
+      "top_k_entity_density": 0.5,
       "entity_accuracy": 1.0,
+      "intent_accuracy_at_1": 0.4615,
+      "top_k_intent_density": 0.1154,
       "intent_accuracy": 0.4615,
+      "top1_hard_negative_avoidance": 0.8462,
+      "candidate_hard_negative_rejection_rate": 0.5909,
       "hard_negative_rejection_rate": 0.8462,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 12,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 44,
+      "rejected_grade0_candidates": 26
     },
     "scout": {
       "status": "EVALUATED",
@@ -170,12 +218,20 @@
       "ndcg_at_3": 0.9509,
       "ndcg_at_4": 0.9509,
       "ndcg_at_5": 0.9509,
+      "entity_accuracy_at_1": 0.8462,
+      "top_k_entity_density": 0.3942,
       "entity_accuracy": 0.8462,
+      "intent_accuracy_at_1": 0.5,
+      "top_k_intent_density": 0.1442,
       "intent_accuracy": 0.5,
+      "top1_hard_negative_avoidance": 0.8846,
+      "candidate_hard_negative_rejection_rate": 0.8966,
       "hard_negative_rejection_rate": 0.8846,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 15,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 29,
+      "rejected_grade0_candidates": 26
     },
     "personal_watch": {
       "status": "EVALUATED",
@@ -195,12 +251,20 @@
       "ndcg_at_3": 0.9722,
       "ndcg_at_4": 0.9722,
       "ndcg_at_5": 0.9722,
+      "entity_accuracy_at_1": 0.8462,
+      "top_k_entity_density": 0.375,
       "entity_accuracy": 0.8462,
+      "intent_accuracy_at_1": 0.5,
+      "top_k_intent_density": 0.125,
       "intent_accuracy": 0.5,
+      "top1_hard_negative_avoidance": 1.0,
+      "candidate_hard_negative_rejection_rate": 1.0,
       "hard_negative_rejection_rate": 1.0,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 13,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 35,
+      "rejected_grade0_candidates": 35
     }
   },
   "reranker": {
@@ -222,12 +286,20 @@
       "ndcg_at_3": 0.9736,
       "ndcg_at_4": 0.9736,
       "ndcg_at_5": 0.9736,
+      "entity_accuracy_at_1": 0.8462,
+      "top_k_entity_density": 0.4712,
       "entity_accuracy": 0.8462,
+      "intent_accuracy_at_1": 0.5385,
+      "top_k_intent_density": 0.1731,
       "intent_accuracy": 0.5385,
+      "top1_hard_negative_avoidance": 0.9615,
+      "candidate_hard_negative_rejection_rate": 0.9487,
       "hard_negative_rejection_rate": 0.9615,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 18,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 39,
+      "rejected_grade0_candidates": 37
     },
     "trending": {
       "status": "EVALUATED",
@@ -247,12 +319,20 @@
       "ndcg_at_3": 0.8801,
       "ndcg_at_4": 0.8801,
       "ndcg_at_5": 0.8801,
+      "entity_accuracy_at_1": 1.0,
+      "top_k_entity_density": 0.5,
       "entity_accuracy": 1.0,
+      "intent_accuracy_at_1": 0.3846,
+      "top_k_intent_density": 0.1154,
       "intent_accuracy": 0.3846,
+      "top1_hard_negative_avoidance": 0.8462,
+      "candidate_hard_negative_rejection_rate": 0.5909,
       "hard_negative_rejection_rate": 0.8462,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 12,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 44,
+      "rejected_grade0_candidates": 26
     },
     "scout": {
       "status": "EVALUATED",
@@ -272,12 +352,20 @@
       "ndcg_at_3": 0.9509,
       "ndcg_at_4": 0.9509,
       "ndcg_at_5": 0.9509,
+      "entity_accuracy_at_1": 0.7692,
+      "top_k_entity_density": 0.3942,
       "entity_accuracy": 0.7692,
+      "intent_accuracy_at_1": 0.5,
+      "top_k_intent_density": 0.1442,
       "intent_accuracy": 0.5,
+      "top1_hard_negative_avoidance": 0.8846,
+      "candidate_hard_negative_rejection_rate": 0.8966,
       "hard_negative_rejection_rate": 0.8846,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 15,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 29,
+      "rejected_grade0_candidates": 26
     },
     "personal_watch": {
       "status": "EVALUATED",
@@ -297,12 +385,20 @@
       "ndcg_at_3": 0.9722,
       "ndcg_at_4": 0.9722,
       "ndcg_at_5": 0.9722,
+      "entity_accuracy_at_1": 0.8462,
+      "top_k_entity_density": 0.375,
       "entity_accuracy": 0.8462,
+      "intent_accuracy_at_1": 0.5,
+      "top_k_intent_density": 0.125,
       "intent_accuracy": 0.5,
+      "top1_hard_negative_avoidance": 1.0,
+      "candidate_hard_negative_rejection_rate": 1.0,
       "hard_negative_rejection_rate": 1.0,
       "evaluable_scenarios": 26,
       "recall_evaluable_scenarios": 13,
-      "hard_negative_scenarios": 26
+      "hard_negative_scenarios": 26,
+      "total_grade0_candidates": 35,
+      "rejected_grade0_candidates": 35
     }
   }
 }

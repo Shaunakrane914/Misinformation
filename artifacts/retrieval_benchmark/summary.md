@@ -12,7 +12,7 @@
 - **Execution Device:** `cpu`
 - **Availability Status:** `AVAILABLE`
 - **Pairs Scored:** `832`
-- **Inference Duration:** `21.463s`
+- **Inference Duration:** `14.903s`
 - **Inference Failures:** `0`
 - **Fallback Invocations:** `0`
 

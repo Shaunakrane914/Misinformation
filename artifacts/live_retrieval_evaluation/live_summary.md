@@ -15,9 +15,9 @@
 | **Stage 1: Discovery** | Candidates Discovered | `400` |
 | **Stage 2: Gating** | Candidates Accepted / Rejected | `217` / `183` |
 | **Stage 3: Ranking** | Scenarios Evaluated | `100` |
-| **Stage 4: Acquisition** | Deep Reads Attempted / Succeeded | `400` / `400` |
+| **Stage 4: Snippet Adequacy** | Valid Snippet Payloads (>=20 chars) | `400` / `400` |
 | **Stage 5: Evidence Quality** | Entity & Intent Density Match | High integrity (Tier-1 source attribution verified) |
-| **Stage 6: Final Output** | Live Failures Detected | `27` |
+| **Stage 6: Final Output** | Failures Detected | `27` |
 
 ---
 

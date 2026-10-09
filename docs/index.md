@@ -18,7 +18,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 - **[System Architecture](ARCHITECTURE.md)**: System topology, multi-agent fleet overview, and progressive disclosure UI.
 - **[Feature Status & Capabilities](FEATURE_STATUS.md)**: Current operational status across intelligence sentinels and acquisition channels.
-- **[Testing & Verification Guide](TESTING.md)**: Test execution instructions, regression test baseline (**528 passing tests**), and chaos fault injection.
+- **[Testing & Verification Guide](TESTING.md)**: Test execution instructions, regression test baseline (**530 passing tests**), and chaos fault injection.
 - **[Evaluation & Benchmarks](EVALUATION.md)**: 104-scenario / 416-candidate frozen retrieval benchmark and Cranfield metrics.
 - **[Operational Runbook](OPERATIONS.md)**: Deployment instructions, health probes, Docker setup, and environment variables.
 - **[Security Policy & SSRF Defense](SECURITY.md)**: Network isolation, URL validation, and cryptographic hash verification.

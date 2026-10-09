@@ -1,6 +1,6 @@
 {
   "run_id": "live_eval_20261009_100920",
-  "timestamp": "2026-10-09T10:09:56.230900+00:00",
+  "timestamp": "2026-10-09T15:23:36.248083+00:00",
   "live_mode": false,
   "total_queries": 100,
   "candidates_discovered": 400,
@@ -26,9 +26,9 @@
         "Multiple negative context indicators present: ['clue token', 'commander']": 1,
         "Multiple negative context indicators present: ['mtg', 'tireless tracker']": 1,
         "Ambiguous single-token match on 'mechanic' without surname ('innistrad') or organizational co-occurrence": 1,
-        "TEMPORAL_STALE: Published 87.2h ago exceeds Trending freshness window (48.0h)": 25,
-        "TEMPORAL_STALE: Published 48190.2h ago exceeds Trending freshness window (48.0h)": 4,
-        "TEMPORAL_SYNDICATED_STALE: Original story published 50578.2h ago exceeds Trending window (48.0h); fresh syndication mirror does not confer freshness": 4
+        "TEMPORAL_STALE: Published 92.4h ago exceeds Trending freshness window (48.0h)": 25,
+        "TEMPORAL_STALE: Published 48195.4h ago exceeds Trending freshness window (48.0h)": 4,
+        "TEMPORAL_SYNDICATED_STALE: Original story published 50583.4h ago exceeds Trending window (48.0h); fresh syndication mirror does not confer freshness": 4
       }
     },
     "acquisition": {
@@ -808,7 +808,7 @@
     "is_available": true,
     "device": "cpu",
     "pairs_scored": 800,
-    "inference_duration_sec": 14.596,
+    "inference_duration_sec": 15.087,
     "inference_failures": 0,
     "fallback_count": 0,
     "load_error": null

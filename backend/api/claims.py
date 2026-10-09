@@ -247,8 +247,11 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             if np is not None and len(counts) >= 5:
                 ranks = np.arange(1, len(counts) + 1)
                 freqs = np.array(sorted(counts.values(), reverse=True))
-                corr = np.corrcoef(np.log(ranks), np.log(freqs))[0, 1]
-                mandel_r2 = round(float(corr ** 2), 2) if not np.isnan(corr) else None
+                if freqs[0] > freqs[-1]:
+                    corr = np.corrcoef(np.log(ranks), np.log(freqs))[0, 1]
+                    mandel_r2 = round(float(corr ** 2), 2) if not np.isnan(corr) else None
+                else:
+                    mandel_r2 = None
 
         verdict_str = str(investigation_res.get("verdict", "Unverified")).strip().upper()
         if "TRUE" in verdict_str and "PARTIALLY" not in verdict_str and "NOT TRUE" not in verdict_str:

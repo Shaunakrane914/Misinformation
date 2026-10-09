@@ -1,7 +1,8 @@
 # Aegis Protocol — Retrieval Quality & Multi-Stage Pipeline Audit Report
 
-**Report Status:** Authoritative Live & Golden Evaluation  
+**Report Status:** Controlled Fixture Benchmark (Frozen Fixtures)  
 **Run ID:** `live_eval_20261009_100920`  
+**Evaluation Mode:** `Controlled Fixtures (Frozen Corpus)`  
 **Corpus Scope:** 100 benchmark queries (25 BrandShield, 25 Trending, 25 Scout, 25 Personal Watch)  
 **Evaluated Ranking Systems:** Deterministic Baseline, Hybrid Ranking, Hybrid + CrossEncoder (Experimental)  
 
@@ -10,6 +11,8 @@
 ## 1. Executive Summary & Verification
 
 This evaluation assesses the retrieval and ranking quality across the four Aegis investigative agents.
+**Provenance & Execution Mode:** When executed in default offline mode (`live_mode=False`), candidates and gold labels are sourced directly from the frozen benchmark fixtures (`tests/retrieval_benchmark/`) to guarantee deterministic reproducibility without external network variability. In optional live mode (`--live`), candidates are acquired via live multi-channel network queries. In this controlled fixture evaluation, Stage 4 verifies snippet payload adequacy (>= 20 chars) on existing candidate texts rather than executing live HTTP page acquisitions.
+
 The candidate pool was captured before ranking truncation, preserving full lineage, original URLs, and timestamps.
 Gold labels were maintained completely independent of production ranker outputs across four explicit relevance grades (0 = Hard Negative / Noise, 1 = Boundary Distractor, 2 = Contextual Secondary, 3 = Direct Primary Target).
 
@@ -28,7 +31,7 @@ graph TD
     A[Stage 1: Multi-Channel Discovery] -->|Discovered Candidates| B[Stage 2: Entity & Temporal Gating]
     B -->|Accepted Candidates| C[Stage 3: Candidate Ranking]
     B -->|Audit Trail| REJ[Rejected Candidates]
-    C -->|Top-K Ordered| D[Stage 4: Diversity Deep Reading]
+    C -->|Top-K Ordered| D[Stage 4: Text Adequacy Check]
     D -->|Acquired Text| E[Stage 5: Relevant Passage Extraction]
     E -->|Grounded Evidence| F[Stage 6: Final Intelligence Findings]
 ```
@@ -37,12 +40,12 @@ graph TD
 
 | Funnel Stage | Operational Objective | Observed Metric | Assessment |
 | :--- | :--- | :--- | :--- |
-| **Stage 1: Discovery** | Unconstrained candidate retrieval across channels | `400` raw candidates | High recall; preserves all source variants |
+| **Stage 1: Discovery** | Candidate retrieval across channels / fixtures | `400` raw candidates | High recall; preserves all source variants |
 | **Stage 2: Gating** | Filter entity mismatches and stale stories | `217` accepted, `183` rejected | Hard gating successfully blocks noise |
 | **Stage 3: Ranking** | Order candidates by relevance, quality, and intent | N = 100 query evaluations | Deterministic ranker preserves top-1 integrity |
-| **Stage 4: Acquisition** | Deep read top candidates with SSRF protection | `400` / `400` successful reads | 100% successful zero-auth reads |
+| **Stage 4: Snippet Adequacy** | Validate snippet payload length (>=20 chars) on frozen fixtures | 400 / 400 valid payloads | 100% valid text payloads (offline fixtures) |
 | **Stage 5: Evidence Quality** | Verify entity match, intent match, source tier | Tier-1 source attribution verified | Provenance and lineage DAG intact |
-| **Stage 6: Final Output** | Grounded findings without hallucination | `27` live edge failures flagged | Documented in `failures.jsonl` |
+| **Stage 6: Final Output** | Grounded findings without hallucination | `27` edge failures flagged | Documented in `failures.jsonl` |
 
 ---
 

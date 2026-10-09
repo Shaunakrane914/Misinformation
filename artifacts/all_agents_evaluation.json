@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-09T09:42:26.644172+00:00",
-  "commit": "b441250f65c7",
+  "timestamp": "2026-10-09T15:25:06.057518+00:00",
+  "commit": "47ac9d17a8ce",
   "total_scenarios": 28,
   "total_passed": 28,
   "total_failed": 0,
   "total_partial": 0,
   "overall_quality_score_pct": 100.0,
-  "total_duration_seconds": 0.077,
+  "total_duration_seconds": 0.047,
   "agents": {
     "brandshield": {
       "total_scenarios": 10,
@@ -153,7 +153,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.001,
+      "latency_seconds": 0.0,
       "notes": [
         "Zero-evidence safety invariant held: no fabricated threats"
       ]
@@ -249,7 +249,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.001,
+      "latency_seconds": 0.0,
       "notes": [
         "Differently phrased headlines unified into single narrative cluster"
       ]
@@ -281,7 +281,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.001,
+      "latency_seconds": 0.0,
       "notes": [
         "Velocity scored within valid mathematical bounds"
       ]
@@ -393,7 +393,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.001,
+      "latency_seconds": 0.0,
       "notes": [
         "Lookalike social account detected and classified as IMPERSONATION"
       ]

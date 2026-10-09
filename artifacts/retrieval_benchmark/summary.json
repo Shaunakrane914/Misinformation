@@ -464,7 +464,7 @@
     "is_available": true,
     "device": "cpu",
     "pairs_scored": 832,
-    "inference_duration_sec": 21.463,
+    "inference_duration_sec": 14.903,
     "inference_failures": 0,
     "fallback_count": 0,
     "load_error": null

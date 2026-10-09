@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-09T05:11:39.069654+00:00",
-  "commit": "2a2c9dd2b94b",
+  "timestamp": "2026-10-09T09:42:26.644172+00:00",
+  "commit": "b441250f65c7",
   "total_scenarios": 28,
   "total_passed": 28,
   "total_failed": 0,
   "total_partial": 0,
   "overall_quality_score_pct": 100.0,
-  "total_duration_seconds": 0.081,
+  "total_duration_seconds": 0.077,
   "agents": {
     "brandshield": {
       "total_scenarios": 10,
@@ -73,7 +73,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.002,
+      "latency_seconds": 0.001,
       "notes": [
         "Official portal verified without threat classification"
       ]
@@ -441,7 +441,7 @@
       "grounding_quality": 1.0,
       "false_positive": false,
       "false_negative": false,
-      "latency_seconds": 0.002,
+      "latency_seconds": 0.001,
       "notes": [
         "Strict zero-PII invariant verified: sensitive patterns scrubbed from intelligence payload"
       ]

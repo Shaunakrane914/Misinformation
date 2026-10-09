@@ -31,17 +31,21 @@ The golden retrieval benchmark dataset is frozen in `tests/retrieval_benchmark/`
 - **Total Broad Relevant Candidates ($\text{Grade} \ge 2$):** Exactly `85` candidates distributed across `58` scenarios (53 scenarios contain Grade 3, 5 scenarios contain Grade 2 as highest).
 - **Purely Negative / Distractor Scenarios:** `46` scenarios contain zero relevant documents (only grades 0 and 1) to evaluate false-positive rejection.
 
-### Resolution of Conflicting Gold-Label Counts
-Earlier drafts referenced "141 gold labels" or "across 61 scenarios". Investigation of Git history reveals:
-- The underlying files `tests/retrieval_benchmark/labels.jsonl` and `candidates.jsonl` have remained bit-for-bit identical since commit `0ab5ac1`.
-- The number 141 was a manual transcription error mixing the 85 broad relevant candidates with the 53 strict relevant candidates ($85 + 53 = 138 \approx 141$).
-- The true verified count directly computed from `labels.jsonl` is:
-  - Total labels: 416
-  - Grade 0: 147
-  - Grade 1: 184
-  - Grade 2: 32
-  - Grade 3: 53
-  - Broad relevant (Grades 2 + 3): 85 across 58 scenarios.
+### Resolution of the Historical 141-Label Count Discrepancy
+Earlier draft summaries cited "141 gold labels across 61 scenarios". Comprehensive inspection of Git history back to commit `0ab5ac1` establishes that this was an erroneous count in early reporting drafts rather than an actual property of the data:
+- The corpus files `tests/retrieval_benchmark/labels.jsonl` and `candidates.jsonl` have been completely frozen and bit-for-bit identical across all commits.
+- All **416 candidates** across all **104 scenarios** have always been individually labeled with explicit grades (0–3) and rationales. There was never an unlabelled candidate pool or a partial 141-label subset.
+- The verified, authoritative grade distribution across the entire 416-candidate corpus is:
+  - **Grade 3 (Strict Relevant):** `53` candidates
+  - **Grade 2 (Contextual Relevant):** `32` candidates
+  - **Grade 1 (Boundary Distractor / Passive Mention):** `184` candidates
+  - **Grade 0 (Hard Negative / Adversarial Homograph / Noise):** `147` candidates
+  - **Total Candidates / Labels:** `53 + 32 + 184 + 147 = 416`
+- **Relevance Counts:**
+  - Broad relevant ($\text{Grade} \ge 2$): exactly `85` candidates ($53 + 32$) distributed across `58` scenarios.
+  - Purely negative scenarios ($\text{Grade} < 2$ for all candidates): exactly `46` scenarios.
+- **Mathematical Correction:** The old "141" figure was simply an erroneous narrative count in early draft reports. It cannot be mathematically derived from the true dataset distribution (any attempt to add the 85 broad positives and the 53 strict positives is invalid because the 53 strict positives are already a subset of the 85 broad positives). The immutable ground truth has always been exactly 85 relevant candidates (53 Grade 3, 32 Grade 2) and 331 non-relevant candidates (184 Grade 1, 147 Grade 0), summing to 416 total candidates.
+
 
 ---
 

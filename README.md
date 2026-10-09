@@ -9,12 +9,12 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-180%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
+[![Tests](https://img.shields.io/badge/Tests-528%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
 [![Evaluation](https://img.shields.io/badge/Evaluation-Audited%20ML%20Baseline-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
 
 **Aegis Protocol is an evidence-first claim verification system and research framework. It combines cross-platform evidence retrieval, learned candidate reranking, source-independence clustering, contradiction analysis, and multi-perspective LLM reasoning with abstention-aware classification.**
 
-[System Architecture](docs/ARCHITECTURE.md) · [Feature Status & Truth Matrix](docs/FEATURE_STATUS.md) · [Scientific Evaluation](docs/EVALUATION.md) · [Testing Suite](docs/TESTING.md) · [Security Model](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
+[📚 Documentation Portal](docs/index.md) · [🏛️ Target Architecture](docs/architecture/TARGET_ARCHITECTURE.md) · [🗺️ Migration Plan](docs/architecture/MIGRATION_PLAN.md) · [System Architecture](docs/ARCHITECTURE.md) · [Feature Status & Truth Matrix](docs/FEATURE_STATUS.md) · [Scientific Evaluation](docs/EVALUATION.md) · [Testing Suite](docs/TESTING.md) · [Security Model](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
 
 </div>
 
@@ -163,8 +163,8 @@ python scripts/evaluate_dataset.py --mode reranker --seed 42
 # 4. Check AVeriTeC Benchmark Adapter Status
 python scripts/evaluate_dataset.py --mode averitec_status
 
-# 5. Execute full test suite (180 tests)
-pytest tests/unit/ tests/evaluation/ -v
+# 5. Execute full test suite (528 regression tests)
+pytest
 ```
 
 ---

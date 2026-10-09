@@ -1,0 +1,51 @@
+# Git & GitHub
+.git/
+.github/
+.gitignore
+
+# Python virtual environments & bytecode
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment files & secrets
+.env
+.env.*
+!.env.example
+
+# Large local databases & storage
+*.db
+*.sqlite
+*.sqlite3
+aegis_local.db
+*.log
+logs/
+research/
+artifacts/
+docs/visual-audit/
+
+# IDE, agent & workspace caches
+.idea/
+.vscode/
+.gemini/
+.agent/
+.agents/
+
+# Node & Frontend build caches
+node_modules/
+dist/
+build/
+.cache/
+
+# OS specific
+.DS_Store
+Thumbs.db
+

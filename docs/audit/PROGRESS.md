@@ -1,4 +1,11 @@
 # Aegis Protocol — Master Transformation Progress & Audit State
+
+> [!WARNING]
+> **[SUPERSEDED ARCHITECTURAL SNAPSHOT]**  
+> This progress tracker records early sprint work on legacy branch `aegis/full-project-improvement`. The canonical engineering roadmap is tracked in:
+> - [`docs/architecture/MIGRATION_PLAN.md`](../architecture/MIGRATION_PLAN.md)
+> - [`docs/archive/README.md`](../archive/README.md)
+
 **Document Version**: 3.5.1  
 **Audit Target**: `https://github.com/Shaunakrane914/Misinformation`  
 **Execution Branch**: `aegis/full-project-improvement`  

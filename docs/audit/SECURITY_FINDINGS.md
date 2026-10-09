@@ -1,4 +1,11 @@
 # Aegis Protocol — Security & Privacy Audit Findings
+
+> [!WARNING]
+> **[SUPERSEDED ARCHITECTURAL SNAPSHOT]**  
+> This document records initial vulnerabilities identified in September 2026 prior to security hardening. The canonical production security architecture, SSRF defense policy, and cryptographic verification model are documented in:
+> - [`docs/SECURITY.md`](../SECURITY.md)
+> - [`docs/archive/README.md`](../archive/README.md)
+
 **Audit Date**: September 21, 2026
 
 ---

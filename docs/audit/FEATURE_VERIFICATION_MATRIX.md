@@ -1,4 +1,11 @@
 # Aegis Protocol — Feature Verification Matrix
+
+> [!WARNING]
+> **[SUPERSEDED ARCHITECTURAL SNAPSHOT]**  
+> This matrix reflects a September 21, 2026 preliminary audit. For the active, canonical implementation truth matrix verified against the 530-test suite and Cranfield retrieval benchmarks, refer to:
+> - [`docs/FEATURE_STATUS.md`](../FEATURE_STATUS.md)
+> - [`docs/archive/README.md`](../archive/README.md)
+
 **Audit Date**: September 21, 2026  
 **Status Taxonomy**:
 - `Implemented & Tested`: Fully functional code backed by automated test coverage.

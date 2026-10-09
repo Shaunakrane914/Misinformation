@@ -1,7 +1,7 @@
 # Aegis Protocol — Feature Status & Implementation Matrix
 
-**Document Version**: 4.0.0 (Research & Evaluation Hardening)  
-**Verification Baseline**: Automated Test Suite (`pytest -v` [180 passed: 168 unit + 12 evaluation]) + Supervised ML Benchmark Execution  
+**Document Version**: 4.1.0 (Phase 1 Canonical Architecture Baseline)  
+**Verification Baseline**: Automated Test Suite (`pytest -v` [530 passed: unit, contract, integration, chaos, security, and Cranfield benchmarks]) + Supervised ML Benchmark Execution  
 **Audit Status**: Ground-truth leakage eliminated; prior 93.33% synthetic metric formally retired.
 
 ---
@@ -41,4 +41,5 @@
 | **Zipf-Mandelbrot Detector** | **Simulated / Demo** | `backend/services/threat_instruments.py`, `tests/unit/test_threat_instruments.py` | Power-law token-rank regression ($R^2$), Shannon entropy, and TTR for synthetic text distributions. |
 | **Byzantine Swarm Consensus** | **Simulated / Demo** | `backend/services/threat_instruments.py`, `tests/unit/test_threat_instruments.py` | Multi-agent adversarial evaluation with Weighted Mean Subsequence Reduction (W-MSR) outlier pruning. |
 | **AVeriTeC Adapter** | **Research / Ready** | `backend/evaluation/datasets/averitec.py` | Open-domain web claim verification loader. Correctly reports `NOT RUN` when local ~1.2 GB corpus is absent. |
-| **Dense Neural Bi-Encoder Reranking** | **Planned** | Roadmap Item | Dense semantic vector reranking; pending evaluation of memory/latency tradeoffs. |
+| **Dense Neural CrossEncoder Reranking** | **Evaluated / Disabled** | ADR-0003, `artifacts/retrieval_benchmark/retrieval_quality_report.md` | Neural CrossEncoder evaluated across 832 query-candidate pairs; degraded entity precision (94.23% → 86.54%) and increased latency ~100x. Retained 7-feature learned linear ranker + BM25 lexical ranker in production. |
+| **Dense Neural Bi-Encoder Retrieval** | **Planned** | Roadmap Item | Dense semantic vector indexing; pending architectural review in Phase 6. |

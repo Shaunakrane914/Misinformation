@@ -1,4 +1,11 @@
 # Aegis Protocol — Testing Baseline & Quality Report
+
+> [!WARNING]
+> **[SUPERSEDED ARCHITECTURAL SNAPSHOT]**  
+> This document records the initial October 2, 2026 test audit when the test suite was 180 tests. Aegis Protocol now maintains **530 passing automated tests** across unit, contract, integration, chaos, security, and Cranfield benchmark suites. For canonical testing instructions, see:
+> - [`docs/TESTING.md`](../TESTING.md)
+> - [`docs/archive/README.md`](../archive/README.md)
+
 **Audit Date**: October 2, 2026 *(updated — v3.7.0)*
 
 ---

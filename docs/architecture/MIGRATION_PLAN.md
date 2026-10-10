@@ -251,7 +251,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 - **Architecture Reference:** ADR 0004 (`docs/architecture/adr/0004-llm-provider-configuration-boundaries.md` — ACCEPTED)
 - **Delivered Capabilities:**
   1. **Validated Core Settings (`backend/core/settings.py`):**
-     - Consolidated all application configuration into Pydantic `Settings` model with `.env` loading and graceful fallback between `pydantic-settings` and `pydantic.BaseModel`.
+     - Consolidated all application configuration into a required `pydantic-settings` `Settings` model with validated `.env` loading.
      - Automated multi-key discovery (`_discover_gemini_api_keys()`) scanning for `GEMINI_API_KEY*` variants, filtering exclusively for valid Google AI Studio `AIzaSy` prefixes.
      - Convenience introspection properties: `has_supabase`, `has_gemini`, `has_apify`, `is_test_environment`, and `is_mock_llm`.
      - 100% backward-compatible wrapper in `backend/config.py` delegating `AppConfig` and `settings` directly to `backend.core.settings.settings`.
@@ -276,8 +276,8 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
      - 47 agent golden-master and backward compatibility tests passed in 0.44s with 0 regressions.
      - Frozen retrieval benchmarks preserved bit-for-bit with 0 modifications.
 
-#### Phase 6.5 Correctness Closeout (Implemented October 10, 2026)
-- **Status:** **IMPLEMENTED; REMOTE CI ACCEPTANCE PENDING**
+#### Phase 6.5 Correctness Closeout (Accepted October 10, 2026)
+- **Status:** **FULLY ACCEPTED & AUDITED**
 - **Model selection and fallback:** Calls without an explicit model now try the validated preferred model followed by configured fallbacks. Explicit model requests remain strict and never silently switch model identity. The default list was reconciled with the Google Gemini model/deprecation documentation and retired Gemini 1.5/2.0 identifiers were removed.
 - **Scientific fail-closed policy:** `allow_mock_fallback=False` bypasses gateway mock mode and calls the live provider only. Missing credentials or provider exhaustion raise an unavailable-provider error; scientific execution cannot return a synthetic verdict.
 - **Synthetic provenance:** Mock responses are marked `synthetic=true` and `evidence_eligible=false` in both response metadata and structured output. Plain-text mock output carries an explicit `SYNTHETIC MOCK OUTPUT — NOT EVIDENCE` label. Research returns `NO_GROUNDED_EVIDENCE` without invoking an LLM when retrieval is empty.
@@ -285,6 +285,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 - **Structured validation:** Pydantic outputs retain model validation; built-in and parameterized container schemas use `TypeAdapter` and reject incompatible JSON types. Invalid JSON, missing required fields, and malformed provider payloads are covered.
 - **Security and observability:** Provider errors omit API keys, prompts, and raw response bodies. Provider-reported token counts are distinguished from heuristic estimates with `LLMUsage.is_estimated`.
 - **Local verification:** Focused gateway/service/settings/research and golden tests: 79 passed. CI-equivalent unit/chaos/security slice: 504 passed. Exact final complete suite: **701 passed in 379.44s, exit code 0**.
+- **Remote verification:** Implementation commit `bbba6ecffe61c94ad05d1fd302263643e107f42d` passed GitHub Actions run `38032622957`: schema/lint, Python 3.11/3.12/3.13 unit and chaos jobs, and research provenance/lineage/performance benchmarks all succeeded.
 - **Artifact integrity:** Frozen scenario, candidate, and label files plus tracked retrieval benchmark summaries retained their exact Git blob hashes after the full suite.
 
 ---

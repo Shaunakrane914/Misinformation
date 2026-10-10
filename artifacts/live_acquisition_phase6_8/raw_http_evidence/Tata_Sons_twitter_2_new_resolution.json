@@ -1,0 +1,122 @@
+{
+  "query": "Tata Sons",
+  "channel": "twitter",
+  "condition": "2_new_resolution",
+  "latency_sec": 1.616,
+  "resolved_info": {
+    "entity_id": "Q331715",
+    "entity_label": "Tata Group",
+    "handle": "TataCompanies",
+    "relationship": "PARENT_COMPANY",
+    "confidence": 0.92
+  },
+  "telemetry": {
+    "resolved_entity": "Tata Sons",
+    "entity_sector": "indian_markets",
+    "x_candidate_count": 2,
+    "status": "SUCCESS",
+    "backend": "fxtwitter",
+    "retrieval_mode": "zero_auth_public_mirror",
+    "authenticated": false,
+    "discovered_from": "entity_resolution",
+    "mirror_result": "SUCCESS"
+  },
+  "metrics": {
+    "total_items": 2,
+    "total_chars": 173,
+    "total_bytes": 175,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 0,
+      "PROFILE_METADATA": 2,
+      "INDEX_SNIPPET": 0,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 2,
+    "non_direct_urls": 0,
+    "relevant_items": 2,
+    "false_matches": 0
+  },
+  "fragments": [
+    {
+      "platform": "twitter",
+      "title": "Profile: Tata Group (@TataCompanies)",
+      "url": "https://x.com/TataCompanies",
+      "author": "@TataCompanies",
+      "content_depth": "PROFILE_METADATA",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "fxtwitter",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "fxtwitter",
+        "screen_name": "TataCompanies",
+        "followers": 1190478,
+        "tweets_count": 19778,
+        "source_tier": "SPECIALIST_MIRROR",
+        "mirror_backend": "fxtwitter",
+        "resolved_entity": "Tata Sons",
+        "relationship": "PARENT_COMPANY",
+        "confidence": 0.92,
+        "verification_evidence": "Wikidata Q331715 P2002; primary holding company brand handle",
+        "entity_id": "Q331715",
+        "official_website": "https://www.tata.com",
+        "discovered_from": "entity_resolution",
+        "content_completeness": "profile_metadata",
+        "external_id": "TataCompanies",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "twitter",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "fxtwitter",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:18:53.474579"
+          }
+        ]
+      },
+      "content_preview": "Official handle of the Tata Group",
+      "char_length": 33
+    },
+    {
+      "platform": "twitter",
+      "title": "Profile: Tata Motors (@TataMotors)",
+      "url": "https://x.com/TataMotors",
+      "author": "@TataMotors",
+      "content_depth": "PROFILE_METADATA",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "fxtwitter",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "fxtwitter",
+        "screen_name": "TataMotors",
+        "followers": 415637,
+        "tweets_count": 75141,
+        "source_tier": "SPECIALIST_MIRROR",
+        "mirror_backend": "fxtwitter",
+        "resolved_entity": "Tata Sons",
+        "relationship": "SUBSIDIARY",
+        "confidence": 0.85,
+        "verification_evidence": "Wikidata Q219555 P2002; core automotive operating subsidiary",
+        "entity_id": "Q219555",
+        "official_website": "https://www.tatamotors.com",
+        "discovered_from": "entity_resolution",
+        "content_completeness": "profile_metadata",
+        "external_id": "TataMotors",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "twitter",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "fxtwitter",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:18:54.429715"
+          }
+        ]
+      },
+      "content_preview": "Smart tech. Safer mobility. Greener journeys \u2014 shaping a better future",
+      "char_length": 70
+    }
+  ]
+}

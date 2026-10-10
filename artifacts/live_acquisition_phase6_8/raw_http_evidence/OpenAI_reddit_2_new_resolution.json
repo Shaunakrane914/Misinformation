@@ -1,0 +1,342 @@
+{
+  "query": "OpenAI",
+  "channel": "reddit",
+  "condition": "2_new_resolution",
+  "latency_sec": 8.672,
+  "resolved_info": {
+    "entity": "OpenAI",
+    "subreddits": [
+      "OpenAI",
+      "technology",
+      "artificial"
+    ],
+    "sector": "ai_tech",
+    "region": "global"
+  },
+  "telemetry": {
+    "resolved_entity": "OpenAI",
+    "entity_sector": "ai_tech",
+    "subreddit_candidate_count": 3,
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    },
+    "resolution_rss_result": "NO_RELEVANT_FEED_POSTS",
+    "discovery_attempted": true,
+    "discovery_engine": "bing_search",
+    "queries_attempted": 6,
+    "candidate_urls_count": 121,
+    "social_candidate_count": 0,
+    "reddit_url_count": 0,
+    "mirror_attempted": false,
+    "mirror_result": "NO_VALID_URLS",
+    "status": "SUCCESS",
+    "fallback_used": true,
+    "fallback_backend": "Bing Search Index",
+    "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+    "retrieval_mode": "web_search_index",
+    "valid_social_urls_retained": 0
+  },
+  "metrics": {
+    "total_items": 10,
+    "total_chars": 2927,
+    "total_bytes": 3209,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 0,
+      "PROFILE_METADATA": 0,
+      "INDEX_SNIPPET": 10,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 0,
+    "non_direct_urls": 10,
+    "relevant_items": 0,
+    "false_matches": 10
+  },
+  "fragments": [
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "How to get help in Windows - Microsoft Support",
+      "url": "https://support.microsoft.com/en-us/windows/how-to-get-help-in-windows-711b6492-0435-0038-8706-7c6b0feb200a",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.750986"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: How to get help in Windows - Microsoft Support\nURL: https://support.microsoft.com/en-us/windows/how-to-get-help-in-windows-711b6492-0435-0038-8706-7c6b0feb200a\n\nSnippet: Here are a few differen",
+      "char_length": 305
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "About Get Help | Microsoft Support",
+      "url": "https://support.microsoft.com/en-us/support/get-help/about-get-help",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.751186"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: About Get Help | Microsoft Support\nURL: https://support.microsoft.com/en-us/support/get-help/about-get-help\n\nSnippet: The Windows Get Help app is a centralized hub for accessing a wide range of",
+      "char_length": 250
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Windows 11 Forum",
+      "url": "https://www.elevenforum.com/",
+      "author": "www.elevenforum.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.751324"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Windows 11 Forum\nURL: https://www.elevenforum.com/\n\nSnippet: Windows 11 Forum: Get expert help, tutorials, tips & troubleshooting for Windows 11. Active community support, guides & discussions.",
+      "char_length": 200
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Enable or Disable Tips and Suggestions Notifications in Windows 11",
+      "url": "https://www.elevenforum.com/t/enable-or-disable-tips-and-suggestions-notifications-in-windows-11.5206/",
+      "author": "www.elevenforum.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.751470"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Enable or Disable Tips and Suggestions Notifications in Windows 11\nURL: https://www.elevenforum.com/t/enable-or-disable-tips-and-suggestions-notifications-in-windows-11.5206/\n\nSnippet: Mar 14, ",
+      "char_length": 324
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "\u30d8\u30eb\u30d7\u306b\u3064\u3044\u3066 | Microsoft Support",
+      "url": "https://support.microsoft.com/ja-jp/support/get-help/about-get-help",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.751610"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: \u30d8\u30eb\u30d7\u306b\u3064\u3044\u3066 | Microsoft Support\nURL: https://support.microsoft.com/ja-jp/support/get-help/about-get-help\n\nSnippet: Get Help\u3067\u554f\u984c\u3092\u691c\u7d22\u3059\u308b\u65b9\u6cd5 Windows \u554f\u3044\u5408\u308f\u305b\u30a2\u30d7\u30ea\u306f\u3001\u30c1\u30e5\u30fc\u30c8\u30ea\u30a2\u30eb\u3001FAQ\u3001\u30b3\u30df\u30e5\u30cb\u30c6\u30a3 \u30d5\u30a9\u30fc\u30e9\u30e0\u3001Microsoft \u30b5 \u2026",
+      "char_length": 193
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Informationen zu Hilfe | Microsoft Support",
+      "url": "https://support.microsoft.com/de-de/support/get-help/about-get-help",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.751740"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Informationen zu Hilfe | Microsoft Support\nURL: https://support.microsoft.com/de-de/support/get-help/about-get-help\n\nSnippet: Wie sehe ich die Ergebnisse des Copilot-Problembehandlers? Wie such",
+      "char_length": 258
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Como obter ajuda no Windows - Suporte da Microsoft",
+      "url": "https://support.microsoft.com/pt-br/windows/como-obter-ajuda-no-windows-711b6492-0435-0038-8706-7c6b0feb200a",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.751869"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Como obter ajuda no Windows - Suporte da Microsoft\nURL: https://support.microsoft.com/pt-br/windows/como-obter-ajuda-no-windows-711b6492-0435-0038-8706-7c6b0feb200a\n\nSnippet: Aqui est\u00e3o algumas",
+      "char_length": 310
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Aide et apprentissage Windows | Microsoft Support",
+      "url": "https://support.microsoft.com/fr-fr/windows/",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.751999"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Aide et apprentissage Windows | Microsoft Support\nURL: https://support.microsoft.com/fr-fr/windows/\n\nSnippet: Trouvez de l\u2019aide et des articles pratiques pour les syst\u00e8mes d\u2019exploitation Window",
+      "char_length": 247
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "\u95dc\u65bc [\u53d6\u5f97\u8aaa\u660e] | Microsoft Support",
+      "url": "https://support.microsoft.com/zh-tw/support/get-help/about-get-help",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.752128"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: \u95dc\u65bc [\u53d6\u5f97\u8aaa\u660e] | Microsoft Support\nURL: https://support.microsoft.com/zh-tw/support/get-help/about-get-help\n\nSnippet: \u7121\u8ad6\u4f7f\u7528\u8005\u9047\u5230\u6280\u8853\u554f\u984c\u3001\u5c0d Windows \u529f\u80fd\u6709\u7591\u554f\uff0c\u9084\u662f\u5c0b\u6c42\u6709\u95dc\u5982\u4f55\u57f7\u884c\u7279\u5b9a\u5de5\u4f5c\u7684\u6307\u5c0e\uff0c [\u53d6\u5f97\u5354\u52a9] \u90fd\u65e8\u5728\u7c21\u5316\u5c0b\u627e\u89e3\u6c7a\u65b9\u6848\u7684 \u2026",
+      "char_length": 188
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Ausf\u00fchren von Problembehandlungen in \u201eHilfe abrufen\u201c",
+      "url": "https://support.microsoft.com/de-de/support/get-help/running-troubleshooters-in-get-help",
+      "author": "support.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:45.752267"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Ausf\u00fchren von Problembehandlungen in \u201eHilfe abrufen\u201c\nURL: https://support.microsoft.com/de-de/support/get-help/running-troubleshooters-in-get-help\n\nSnippet: Ausf\u00fchren der verschiedenen Problemb",
+      "char_length": 241
+    }
+  ]
+}

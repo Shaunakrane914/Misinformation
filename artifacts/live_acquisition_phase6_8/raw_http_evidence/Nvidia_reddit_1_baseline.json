@@ -1,0 +1,335 @@
+{
+  "query": "Nvidia",
+  "channel": "reddit",
+  "condition": "1_baseline",
+  "latency_sec": 8.096,
+  "resolved_info": {
+    "entity": "Nvidia",
+    "subreddits": [
+      "nvidia",
+      "stocks",
+      "hardware"
+    ],
+    "sector": "semiconductor_hardware",
+    "region": "global"
+  },
+  "telemetry": {
+    "resolved_entity": "Nvidia",
+    "entity_sector": "general",
+    "subreddit_candidate_count": 0,
+    "rss_deprecation_info": {},
+    "resolution_rss_result": "RSS_DEPRECATED_OR_DISABLED",
+    "discovery_attempted": true,
+    "discovery_engine": "bing_search",
+    "queries_attempted": 6,
+    "candidate_urls_count": 20,
+    "social_candidate_count": 0,
+    "reddit_url_count": 0,
+    "mirror_attempted": false,
+    "mirror_result": "NO_VALID_URLS",
+    "status": "SUCCESS",
+    "fallback_used": true,
+    "fallback_backend": "Bing Search Index",
+    "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+    "retrieval_mode": "web_search_index",
+    "valid_social_urls_retained": 0
+  },
+  "metrics": {
+    "total_items": 10,
+    "total_chars": 2645,
+    "total_bytes": 2662,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 0,
+      "PROFILE_METADATA": 0,
+      "INDEX_SNIPPET": 10,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 0,
+    "non_direct_urls": 10,
+    "relevant_items": 9,
+    "false_matches": 1
+  },
+  "fragments": [
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "World Leader in Artificial Intelligence Computing |NVIDIA",
+      "url": "https://www.nvidia.com/en-in/",
+      "author": "www.nvidia.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.255835"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: World Leader in Artificial Intelligence Computing |NVIDIA\nURL: https://www.nvidia.com/en-in/\n\nSnippet: NVIDIA invents the GPU and drives advances in AI, HPC, gaming, creative design, autonomous",
+      "char_length": 224
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Nvidia-Wikipedia",
+      "url": "https://en.m.wikipedia.org/wiki/Nvidia",
+      "author": "en.m.wikipedia.org",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256010"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Nvidia-Wikipedia\nURL: https://en.m.wikipedia.org/wiki/Nvidia\n\nSnippet: Nvidia Corporation[a] (/ \u025bn\u02c8v\u026adi\u0259 / en-VID-ee-\u0259) is an American multinational technology company headquartered in Santa Cl",
+      "char_length": 206
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Download -NVIDIA",
+      "url": "https://www.nvidia.in/content/DriverDownloads/confirmation.php?url=/Windows/512.59/512.59-desktop-win10-win11-64bit-international-nsd-dch-whql.exe&lang=in&type=GeForce",
+      "author": "www.nvidia.in",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256148"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Download -NVIDIA\nURL: https://www.nvidia.in/content/DriverDownloads/confirmation.php?url=/Windows/512.59/512.59-desktop-win10-win11-64bit-international-nsd-dch-whql.exe&lang=in&type=GeForce\n\nSn",
+      "char_length": 328
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Drivers- DownloadNVIDIA Drivers",
+      "url": "https://www.nvidia.in/Download/indexsg.aspx?lang=en-in",
+      "author": "www.nvidia.in",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256282"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Drivers- DownloadNVIDIA Drivers\nURL: https://www.nvidia.in/Download/indexsg.aspx?lang=en-in\n\nSnippet: Download drivers for NVIDIA products including GeForce graphics cards, nForce motherboards,",
+      "char_length": 233
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "GeForce NOW",
+      "url": "https://play.geforcenow.com/",
+      "author": "play.geforcenow.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256407"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: GeForce NOW\nURL: https://play.geforcenow.com/\n\nSnippet: Instantly play the most demanding PC games and seamlessly play across your devices.",
+      "char_length": 146
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Download The OfficialNVIDIADrivers |NVIDIA",
+      "url": "https://www.nvidia.com/en-us/drivers/",
+      "author": "www.nvidia.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256537"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Download The OfficialNVIDIADrivers |NVIDIA\nURL: https://www.nvidia.com/en-us/drivers/\n\nSnippet: Download the latest official NVIDIA drivers to enhance your PC gaming experience and run apps fas",
+      "char_length": 204
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Official Drivers |NVIDIA",
+      "url": "https://www.nvidia.com/Download/index.aspx/",
+      "author": "www.nvidia.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256663"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Official Drivers |NVIDIA\nURL: https://www.nvidia.com/Download/index.aspx/\n\nSnippet: All NVIDIA drivers provide full features and application support for top games and creative applications. If ",
+      "char_length": 221
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Drivers - DownloadNVIDIADrivers",
+      "url": "https://www.nvidia.in/Download/indexsg.aspx",
+      "author": "www.nvidia.in",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256789"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Drivers - DownloadNVIDIADrivers\nURL: https://www.nvidia.in/Download/indexsg.aspx\n\nSnippet: Download drivers for NVIDIA products including GeForce graphics cards, nForce motherboards, Quadro wor",
+      "char_length": 222
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "GeForce Official Site: Graphics Cards, Gaming Laptops & More -NVIDIA",
+      "url": "https://www.nvidia.com/en-in/geforce/",
+      "author": "www.nvidia.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.256915"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: GeForce Official Site: Graphics Cards, Gaming Laptops & More -NVIDIA\nURL: https://www.nvidia.com/en-in/geforce/\n\nSnippet: Explore the world's most advanced graphics cards, gaming solutions, AI ",
+      "char_length": 241
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "NVIDIAApp - Download and install on Windows | Microsoft Store",
+      "url": "https://apps.microsoft.com/detail/xp8clzl93f5z4p",
+      "author": "apps.microsoft.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:11.257055"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: NVIDIAApp - Download and install on Windows | Microsoft Store\nURL: https://apps.microsoft.com/detail/xp8clzl93f5z4p\n\nSnippet: The NVIDIA App is the essential companion for PC gamers and creator",
+      "char_length": 263
+    }
+  ]
+}

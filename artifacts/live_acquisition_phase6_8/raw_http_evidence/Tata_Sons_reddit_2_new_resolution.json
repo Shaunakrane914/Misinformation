@@ -1,0 +1,92 @@
+{
+  "query": "Tata Sons",
+  "channel": "reddit",
+  "condition": "2_new_resolution",
+  "latency_sec": 1.72,
+  "resolved_info": {
+    "entity": "Tata Sons",
+    "subreddits": [
+      "IndianStockMarket",
+      "IndiaInvestments",
+      "india"
+    ],
+    "sector": "indian_markets",
+    "region": "india"
+  },
+  "telemetry": {
+    "resolved_entity": "Tata Sons",
+    "entity_sector": "indian_markets",
+    "subreddit_candidate_count": 3,
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    },
+    "status": "SUCCESS",
+    "backend": "reddit-rss",
+    "retrieval_mode": "zero_auth_public_mirror",
+    "authenticated": false,
+    "discovered_from": "entity_subreddit_resolution",
+    "mirror_result": "SUCCESS"
+  },
+  "metrics": {
+    "total_items": 1,
+    "total_chars": 2176,
+    "total_bytes": 2176,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 1,
+      "PROFILE_METADATA": 0,
+      "INDEX_SNIPPET": 0,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 1,
+    "non_direct_urls": 0,
+    "relevant_items": 1,
+    "false_matches": 0
+  },
+  "fragments": [
+    {
+      "platform": "reddit",
+      "title": "[r/IndianStockMarket] Here are my 5 lessons , I learnt from my 4 years of Trading.",
+      "url": "https://www.reddit.com/r/IndianStockMarket/comments/1x284t2/here_are_my_5_lessons_i_learnt_from_my_4_years_of/",
+      "author": "/u/StrawberryFew1311",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "IndianStockMarket",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Tata Sons",
+        "candidate_subreddit": "IndianStockMarket",
+        "community_category": "regional_market",
+        "relevance_weight": 0.95,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "IndianStockMarket",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:18:35.504492"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/IndianStockMarket\nTitle: Here are my 5 lessons , I learnt from my 4 years of Trading.\nAuthor: /u/StrawberryFew1311\nLink: https://www.reddit.com/r/IndianStockMarket/comments/1x284t2/here_a",
+      "char_length": 2094
+    }
+  ]
+}

@@ -1,0 +1,335 @@
+{
+  "query": "Tesla",
+  "channel": "reddit",
+  "condition": "1_baseline",
+  "latency_sec": 7.884,
+  "resolved_info": {
+    "entity": "Tesla",
+    "subreddits": [
+      "teslamotors",
+      "stocks",
+      "electricvehicles"
+    ],
+    "sector": "automotive_ev",
+    "region": "global"
+  },
+  "telemetry": {
+    "resolved_entity": "Tesla",
+    "entity_sector": "general",
+    "subreddit_candidate_count": 0,
+    "rss_deprecation_info": {},
+    "resolution_rss_result": "RSS_DEPRECATED_OR_DISABLED",
+    "discovery_attempted": true,
+    "discovery_engine": "bing_search",
+    "queries_attempted": 6,
+    "candidate_urls_count": 20,
+    "social_candidate_count": 0,
+    "reddit_url_count": 0,
+    "mirror_attempted": false,
+    "mirror_result": "NO_VALID_URLS",
+    "status": "SUCCESS",
+    "fallback_used": true,
+    "fallback_backend": "Bing Search Index",
+    "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+    "retrieval_mode": "web_search_index",
+    "valid_social_urls_retained": 0
+  },
+  "metrics": {
+    "total_items": 10,
+    "total_chars": 2595,
+    "total_bytes": 2630,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 0,
+      "PROFILE_METADATA": 0,
+      "INDEX_SNIPPET": 10,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 0,
+    "non_direct_urls": 10,
+    "relevant_items": 10,
+    "false_matches": 0
+  },
+  "fragments": [
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Electric Cars, Solar & Clean Energy |Tesla",
+      "url": "https://www.tesla.com/",
+      "author": "www.tesla.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.622385"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Electric Cars, Solar & Clean Energy |Tesla\nURL: https://www.tesla.com/\n\nSnippet: Tesla is building a world of amazing abundance with AI, electric cars, solar, home batteries and integrated rene",
+      "char_length": 214
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Tesla, Inc. -Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Tesla,_Inc.",
+      "author": "en.wikipedia.org",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.622582"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Tesla, Inc. -Wikipedia\nURL: https://en.wikipedia.org/wiki/Tesla,_Inc.\n\nSnippet: Tesla, Inc. (/ \u02c8t\u025bzl\u0259 / TEZ-l\u0259 or / \u02c8t\u025bsl\u0259 / \u24d8 TESS-l\u0259[a]) is an American multinational automotive and clean ener",
+      "char_length": 211
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Model 3\u2013 Sports Electric Sedan |Tesla",
+      "url": "https://www.tesla.com/model3",
+      "author": "www.tesla.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.622718"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Model 3\u2013 Sports Electric Sedan |Tesla\nURL: https://www.tesla.com/model3\n\nSnippet: Monitor, access and control your vehicle from anywhere remotely on your phone with the Tesla app. Adjust your c",
+      "char_length": 220
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Tesla CarsPrice in India -TeslaElectric Models 2026 - CarWale",
+      "url": "https://www.carwale.com/tesla-cars/",
+      "author": "www.carwale.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.622849"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Tesla CarsPrice in India -TeslaElectric Models 2026 - CarWale\nURL: https://www.carwale.com/tesla-cars/\n\nSnippet: Apr 22, 2026\u00b7 Know everything you want to know about Tesla car models. CarWale o",
+      "char_length": 247
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "The Official Tesla Shop|Tesla",
+      "url": "https://shop.tesla.com/",
+      "author": "shop.tesla.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.622978"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: The Official Tesla Shop|Tesla\nURL: https://shop.tesla.com/\n\nSnippet: The official Tesla Shop. Purchase Wall Connectors, chargers, adapters, vehicle accessories and Tesla branded merchandise, \u2026",
+      "char_length": 199
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Compare Models |Tesla",
+      "url": "https://www.tesla.com/compare",
+      "author": "www.tesla.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.623105"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Compare Models |Tesla\nURL: https://www.tesla.com/compare\n\nSnippet: Compare Tesla Model 3, Model Y and Cybertruck side-by-side. Explore price, range, specs and features to find the right Tesla f",
+      "char_length": 207
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "New & Pre-Owned Electric Cars |Tesla",
+      "url": "https://www.tesla.com/inventory/new",
+      "author": "www.tesla.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.623228"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: New & Pre-Owned Electric Cars |Tesla\nURL: https://www.tesla.com/inventory/new\n\nSnippet: Find new and pre-owned Tesla cars. Every new Tesla has a variety of configuration options and all pre-own",
+      "char_length": 224
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "New & Used Electric Cars |Tesla",
+      "url": "https://www.tesla.com/en_IN/inventory/new",
+      "author": "www.tesla.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.623352"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: New & Used Electric Cars |Tesla\nURL: https://www.tesla.com/en_IN/inventory/new\n\nSnippet: Find new and used Tesla cars. Every new Tesla has a variety of configuration options and all pre-owned T",
+      "char_length": 227
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Nikola Tesla-Wikipedia",
+      "url": "https://en.wikipedia.org/wiki/Nikola_Tesla",
+      "author": "en.wikipedia.org",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.623478"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Nikola Tesla-Wikipedia\nURL: https://en.wikipedia.org/wiki/Nikola_Tesla\n\nSnippet: Born and raised in the Austro-Hungarian Empire, Tesla first studied engineering and physics in the 1870s without",
+      "char_length": 222
+    },
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "TeslaCars (2026) \u2013 Models, Prices & Expert Reviews | Autocar India",
+      "url": "https://www.autocarindia.com/cars/tesla",
+      "author": "www.autocarindia.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:12.623605"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: TeslaCars (2026) \u2013 Models, Prices & Expert Reviews | Autocar India\nURL: https://www.autocarindia.com/cars/tesla\n\nSnippet: Explore all Tesla cars in India. Compare prices, mileage, features, saf",
+      "char_length": 257
+    }
+  ]
+}

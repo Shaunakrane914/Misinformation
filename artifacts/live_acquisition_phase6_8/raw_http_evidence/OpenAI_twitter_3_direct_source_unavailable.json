@@ -1,0 +1,330 @@
+{
+  "query": "OpenAI",
+  "channel": "twitter",
+  "condition": "3_direct_source_unavailable",
+  "latency_sec": 7.798,
+  "resolved_info": {
+    "entity_id": "Q21708200",
+    "entity_label": "OpenAI",
+    "handle": "OpenAI",
+    "relationship": "OFFICIAL",
+    "confidence": 0.98
+  },
+  "telemetry": {
+    "resolved_entity": "OpenAI",
+    "entity_sector": "ai_tech",
+    "x_candidate_count": 1,
+    "discovery_attempted": true,
+    "discovery_engine": "bing_search",
+    "queries_attempted": 6,
+    "candidate_urls_count": 189,
+    "social_candidate_count": 0,
+    "x_status_url_count": 0,
+    "mirror_attempted": false,
+    "mirror_result": "NO_VALID_URLS",
+    "status": "SUCCESS",
+    "fallback_used": true,
+    "fallback_backend": "Bing Search Index",
+    "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+    "retrieval_mode": "web_search_index",
+    "valid_social_urls_retained": 0
+  },
+  "metrics": {
+    "total_items": 10,
+    "total_chars": 2700,
+    "total_bytes": 2713,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 0,
+      "PROFILE_METADATA": 0,
+      "INDEX_SNIPPET": 10,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 0,
+    "non_direct_urls": 10,
+    "relevant_items": 0,
+    "false_matches": 10
+  },
+  "fragments": [
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "Sixteen | Numberblocks Wiki | Fandom",
+      "url": "https://numberblocks.fandom.com/wiki/Sixteen_(character)",
+      "author": "numberblocks.fandom.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.702385"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Sixteen | Numberblocks Wiki | Fandom\nURL: https://numberblocks.fandom.com/wiki/Sixteen_(character)\n\nSnippet: Oct 2, 2026\u00b7 Sixteen, or 16, is a Numberblock made of 16 blocks. She is voiced by Be",
+      "char_length": 212
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "List of Numberblock Clubs| Numberblocks Wiki | Fandom",
+      "url": "https://numberblocks.fandom.com/wiki/List_of_Numberblock_Clubs",
+      "author": "numberblocks.fandom.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.702547"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: List of Numberblock Clubs| Numberblocks Wiki | Fandom\nURL: https://numberblocks.fandom.com/wiki/List_of_Numberblock_Clubs\n\nSnippet: 1 day ago\u00b7 Clubs are groups of Numberblocks that meet an exac",
+      "char_length": 268
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "NumberBlocks16on Scratch",
+      "url": "https://scratch.mit.edu/users/NumberBlocks16/",
+      "author": "scratch.mit.edu",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.702697"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: NumberBlocks16on Scratch\nURL: https://scratch.mit.edu/users/NumberBlocks16/\n\nSnippet: I'm Not Cube. Call Me To Female Square. No Banning/Blocking. No Reporting. And Bad More.",
+      "char_length": 181
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "Sixteen (Numberblocks) | GoAnimate V21 Wiki | Fandom",
+      "url": "https://goanimate-v21.fandom.com/wiki/Sixteen_(Numberblocks)",
+      "author": "goanimate-v21.fandom.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.702828"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Sixteen (Numberblocks) | GoAnimate V21 Wiki | Fandom\nURL: https://goanimate-v21.fandom.com/wiki/Sixteen_(Numberblocks)\n\nSnippet: Sixteen, or 16, is a Numberblock made of 16 blocks. She is voice",
+      "char_length": 219
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "Sixteen | Numberblox Wiki | Fandom",
+      "url": "https://numberblox.fandom.com/wiki/Sixteen",
+      "author": "numberblox.fandom.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.702956"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Sixteen | Numberblox Wiki | Fandom\nURL: https://numberblox.fandom.com/wiki/Sixteen\n\nSnippet: Sixteen or 16 is a Numberblox character made out of 16 blocks.",
+      "char_length": 162
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "Sixteen| Classic Numberblocks Wiki | Fandom",
+      "url": "https://classic-numberblocks.fandom.com/wiki/Sixteen",
+      "author": "classic-numberblocks.fandom.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.703089"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Sixteen| Classic Numberblocks Wiki | Fandom\nURL: https://classic-numberblocks.fandom.com/wiki/Sixteen\n\nSnippet: I'm Sixteen And I'm A Two Octoblocks! Estelle Harris (2014 - 2022, fanmade versio",
+      "char_length": 247
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "16- Numberblocks Wiki",
+      "url": "https://numberblocks.miraheze.org/wiki/16",
+      "author": "numberblocks.miraheze.org",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.703221"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: 16- Numberblocks Wiki\nURL: https://numberblocks.miraheze.org/wiki/16\n\nSnippet: 16 is a red, white and purple numberblock. She is shaped like a square (most of the time) and she really hates cir",
+      "char_length": 220
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "Sixteen (character) | Numberblocks Fanon Wiki | Fandom",
+      "url": "https://numberblocks-fanon.fandom.com/wiki/Sixteen_(character)",
+      "author": "numberblocks-fanon.fandom.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.703349"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Sixteen (character) | Numberblocks Fanon Wiki | Fandom\nURL: https://numberblocks-fanon.fandom.com/wiki/Sixteen_(character)\n\nSnippet: It is known that any Numberblock with 5 factors are not clas",
+      "char_length": 272
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "Sixteen | Jay's Media Wiki | Fandom",
+      "url": "https://jays-media.fandom.com/wiki/Sixteen",
+      "author": "jays-media.fandom.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.703477"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: Sixteen | Jay's Media Wiki | Fandom\nURL: https://jays-media.fandom.com/wiki/Sixteen\n\nSnippet: Her blocks consist of ten white blocks with red sides, and six extra indigo blocks as a way to simp",
+      "char_length": 234
+    },
+    {
+      "platform": "Twitter (Web Index Fallback)",
+      "title": "The Rise of Infinaughty - PART 1: The Day the Blocks Turned Pink ...",
+      "url": "https://www.youtube.com/watch?v=ErCIgERRC28",
+      "author": "www.youtube.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:04.703606"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": false
+      },
+      "content_preview": "Title: The Rise of Infinaughty - PART 1: The Day the Blocks Turned Pink ...\nURL: https://www.youtube.com/watch?v=ErCIgERRC28\n\nSnippet: Sep 21, 2026\u00b7 One doesn't recognise their voice and says that the",
+      "char_length": 265
+    }
+  ]
+}

@@ -1,0 +1,443 @@
+{
+  "query": "Nvidia",
+  "channel": "reddit",
+  "condition": "2_new_resolution",
+  "latency_sec": 1.503,
+  "resolved_info": {
+    "entity": "Nvidia",
+    "subreddits": [
+      "nvidia",
+      "stocks",
+      "hardware"
+    ],
+    "sector": "semiconductor_hardware",
+    "region": "global"
+  },
+  "telemetry": {
+    "resolved_entity": "Nvidia",
+    "entity_sector": "semiconductor_hardware",
+    "subreddit_candidate_count": 3,
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    },
+    "status": "SUCCESS",
+    "backend": "reddit-rss",
+    "retrieval_mode": "zero_auth_public_mirror",
+    "authenticated": false,
+    "discovered_from": "entity_subreddit_resolution",
+    "mirror_result": "SUCCESS"
+  },
+  "metrics": {
+    "total_items": 10,
+    "total_chars": 12125,
+    "total_bytes": 12169,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 10,
+      "PROFILE_METADATA": 0,
+      "INDEX_SNIPPET": 0,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 10,
+    "non_direct_urls": 0,
+    "relevant_items": 10,
+    "false_matches": 0
+  },
+  "fragments": [
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] GeForce Day 2026 - Win Steam Cash or GeForce Trading Cards!",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x1qs17/geforce_day_2026_win_steam_cash_or_geforce/",
+      "author": "/u/Nestledrink",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338401"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: GeForce Day 2026 - Win Steam Cash or GeForce Trading Cards!\nAuthor: /u/Nestledrink\nLink: https://www.reddit.com/r/nvidia/comments/1x1qs17/geforce_day_2026_win_steam_cash_or_",
+      "char_length": 1543
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] Game Ready & Studio Driver 617.42 FAQ/Discussion",
+      "url": "https://www.reddit.com/r/nvidia/comments/1wz575x/game_ready_studio_driver_61742_faqdiscussion/",
+      "author": "/u/Nestledrink",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338522"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: Game Ready & Studio Driver 617.42 FAQ/Discussion\nAuthor: /u/Nestledrink\nLink: https://www.reddit.com/r/nvidia/comments/1wz575x/game_ready_studio_driver_61742_faqdiscussion/\n",
+      "char_length": 6829
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] NVIDIA reportedly discontinuing RTX 5090, GB202 GPUs to be reserved for RTX PRO series",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x2anpt/nvidia_reportedly_discontinuing_rtx_5090_gb202/",
+      "author": "/u/anestling",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338554"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: NVIDIA reportedly discontinuing RTX 5090, GB202 GPUs to be reserved for RTX PRO series\nAuthor: /u/anestling\nLink: https://www.reddit.com/r/nvidia/comments/1x2anpt/nvidia_rep",
+      "char_length": 321
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] Astral 5090 Build",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x20zd0/astral_5090_build/",
+      "author": "/u/mloera003",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338570"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: Astral 5090 Build\nAuthor: /u/mloera003\nLink: https://www.reddit.com/r/nvidia/comments/1x20zd0/astral_5090_build/\n\nContent:\nMoving my Astral 5090 from a Hyte Y70 case, into t",
+      "char_length": 326
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] Boro: NVIDIA's open-source effort for AI-assisted Linux kernel development",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x29864/boro_nvidias_opensource_effort_for_aiassisted/",
+      "author": "/u/Fcking_Chuck",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338658"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: Boro: NVIDIA's open-source effort for AI-assisted Linux kernel development\nAuthor: /u/Fcking_Chuck\nLink: https://www.reddit.com/r/nvidia/comments/1x29864/boro_nvidias_openso",
+      "char_length": 314
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] rtx 5070 OCCT stability test",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x2dgq9/rtx_5070_occt_stability_test/",
+      "author": "/u/kruultibijski4321",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338681"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: rtx 5070 OCCT stability test\nAuthor: /u/kruultibijski4321\nLink: https://www.reddit.com/r/nvidia/comments/1x2dgq9/rtx_5070_occt_stability_test/\n\nContent:\n&#32; submitted by &",
+      "char_length": 261
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] GeForce 7950GT agp",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x1kl9x/geforce_7950gt_agp/",
+      "author": "/u/Playful_Baseball_273",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338702"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: GeForce 7950GT agp\nAuthor: /u/Playful_Baseball_273\nLink: https://www.reddit.com/r/nvidia/comments/1x1kl9x/geforce_7950gt_agp/\n\nContent:\nGeForce 7950GT agp   512mb     &#32; ",
+      "char_length": 278
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] Gears of War : E Day performance and optimisation",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x1geiq/gears_of_war_e_day_performance_and_optimisation/",
+      "author": "/u/sky011003",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338719"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: Gears of War : E Day performance and optimisation\nAuthor: /u/sky011003\nLink: https://www.reddit.com/r/nvidia/comments/1x1geiq/gears_of_war_e_day_performance_and_optimisation",
+      "char_length": 371
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] 4090 Strix OC/ Heatkiller Ultra V market",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x1mmr1/4090_strix_oc_heatkiller_ultra_v_market/",
+      "author": "/u/Specialist_Class_698",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338742"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: 4090 Strix OC/ Heatkiller Ultra V market\nAuthor: /u/Specialist_Class_698\nLink: https://www.reddit.com/r/nvidia/comments/1x1mmr1/4090_strix_oc_heatkiller_ultra_v_market/\n\nCon",
+      "char_length": 1087
+    },
+    {
+      "platform": "reddit",
+      "title": "[r/nvidia] My free-ish Astral upgrade!",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x1tk6e/my_freeish_astral_upgrade/",
+      "author": "/u/cvcjebus",
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "reddit-rss",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "reddit-rss",
+        "subreddit": "nvidia",
+        "source_tier": "SPECIALIST_API",
+        "content_type": "rss_feed_entry",
+        "rss_sunset_announced": "2026-11-13",
+        "deprecation_status": "OPERATIONAL",
+        "resolved_entity": "Nvidia",
+        "candidate_subreddit": "nvidia",
+        "community_category": "brand_community",
+        "relevance_weight": 0.98,
+        "rss_sunset_warning": "2026-11-13",
+        "discovered_from": "entity_subreddit_resolution",
+        "content_completeness": "feed_summary",
+        "external_id": "nvidia",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "reddit",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "reddit-rss",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:13.338759"
+          }
+        ]
+      },
+      "content_preview": "Subreddit: r/nvidia\nTitle: My free-ish Astral upgrade!\nAuthor: /u/cvcjebus\nLink: https://www.reddit.com/r/nvidia/comments/1x1tk6e/my_freeish_astral_upgrade/\n\nContent:\n&#32; submitted by &#32;   /u/cvc",
+      "char_length": 239
+    }
+  ]
+}

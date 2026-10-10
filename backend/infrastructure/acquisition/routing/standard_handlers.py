@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import os
 import urllib.parse
-from typing import Any, Dict, List, TYPE_CHECKING
+from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from backend.services.agent_reach.channels import EvidenceFragment, RetrievalMode
 from backend.services.agent_reach.native.errors import AuthRequiredError, NativeReachError

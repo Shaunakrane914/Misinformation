@@ -233,7 +233,14 @@ def fetch_reddit_subreddit_rss(
     """
     Acquire live Reddit submissions directly from public Subreddit RSS/Atom feed.
     Zero-auth, bypasses Cloudflare/DataDome challenge via open Atom syndication.
+    Governed by AEGIS_REDDIT_RSS_ENABLED feature flag and records sunset deprecation.
     """
+    # 1. Feature Flag & Shutdown Governance Check
+    is_rss_enabled = os.getenv("AEGIS_REDDIT_RSS_ENABLED", "true").strip().lower() in ("true", "1", "yes")
+    if not is_rss_enabled:
+        logger.info(f"[RedditAdapter] Subreddit RSS disabled via feature flag AEGIS_REDDIT_RSS_ENABLED=false")
+        return []
+
     clean_sub = re.sub(r"^/?r/", "", subreddit.strip().rstrip("/"))
     if not clean_sub:
         return []
@@ -284,7 +291,7 @@ def fetch_reddit_subreddit_rss(
                     retrieval_mode=RetrievalMode.DIRECT_API.value,
                     native_backend_id="reddit-rss",
                     channel_name="reddit",
-                    content_depth="FULL_ARTICLE" if len(clean_text) > 100 else "SNIPPET",
+                    content_depth="FEED_ENTRY_SUMMARY",
                     query_id=query_id,
                     query_class=query_class,
                     query_text=query_text or f"r/{clean_sub}",
@@ -295,12 +302,20 @@ def fetch_reddit_subreddit_rss(
                         "backend": "reddit-rss",
                         "subreddit": clean_sub,
                         "source_tier": "SPECIALIST_API",
+                        "content_type": "rss_feed_entry",
+                        "rss_sunset_announced": "2026-11-13",
+                        "deprecation_status": "OPERATIONAL",
                     }
                 )
                 fragments.append(frag)
             if fragments:
                 set_c(cache_key, fragments)
                 return fragments
+    except urllib.error.HTTPError as e:
+        if e.code == 429:
+            logger.warning(f"[RedditAdapter] Subreddit RSS rate limited (429) for r/{clean_sub}")
+        else:
+            logger.debug(f"[RedditAdapter] Subreddit RSS HTTP {e.code} for r/{clean_sub}: {e}")
     except Exception as e:
         logger.debug(f"[RedditAdapter] Subreddit RSS fetch failed for r/{clean_sub}: {e}")
     return fragments

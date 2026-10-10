@@ -112,6 +112,8 @@ research/scraper_bakeoff/artifacts/
 !/artifacts/live_acquisition_audit_reconciled/**
 !/artifacts/live_acquisition_audit_phase6_7/
 !/artifacts/live_acquisition_audit_phase6_7/**
+!/artifacts/live_acquisition_phase6_8/
+!/artifacts/live_acquisition_phase6_8/**
 research/scraper_bakeoff/repos/
 
 # Large video binaries

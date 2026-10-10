@@ -1,0 +1,1129 @@
+{
+  "benchmark_name": "Phase 6.8 Entity-to-Social-Source Resolution Benchmark",
+  "executed_at": "2026-10-10T12:21:15.863108+00:00",
+  "reddit_rss_sunset_date": "2026-11-13",
+  "conditions_tested": [
+    "1_baseline",
+    "2_new_resolution",
+    "3_direct_source_unavailable"
+  ],
+  "entities_tested": [
+    "Tata Sons",
+    "Nvidia",
+    "OpenAI",
+    "Tesla",
+    "Reliance Industries"
+  ],
+  "explicit_urls_tested": [
+    "https://x.com/OpenAI",
+    "https://reddit.com/r/technology"
+  ],
+  "total_runs": 34,
+  "results": [
+    {
+      "query": "Tata Sons",
+      "channel": "reddit",
+      "condition": "1_baseline",
+      "latency_sec": 8.849,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Tata Sons",
+        "subreddits": [
+          "IndianStockMarket",
+          "IndiaInvestments",
+          "india"
+        ],
+        "sector": "indian_markets",
+        "region": "india"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2981,
+        "total_bytes": 3011,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Tata Sons",
+      "channel": "reddit",
+      "condition": "2_new_resolution",
+      "latency_sec": 1.72,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Tata Sons",
+        "subreddits": [
+          "IndianStockMarket",
+          "IndiaInvestments",
+          "india"
+        ],
+        "sector": "indian_markets",
+        "region": "india"
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 2176,
+        "total_bytes": 2176,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 1,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 1,
+        "false_matches": 0
+      },
+      "telemetry_backend": "reddit-rss"
+    },
+    {
+      "query": "Tata Sons",
+      "channel": "reddit",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 8.049,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Tata Sons",
+        "subreddits": [
+          "IndianStockMarket",
+          "IndiaInvestments",
+          "india"
+        ],
+        "sector": "indian_markets",
+        "region": "india"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2981,
+        "total_bytes": 3011,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Tata Sons",
+      "channel": "twitter",
+      "condition": "1_baseline",
+      "latency_sec": 9.031,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q331715",
+        "entity_label": "Tata Group",
+        "handle": "TataCompanies",
+        "relationship": "PARENT_COMPANY",
+        "confidence": 0.92
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2959,
+        "total_bytes": 2989,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Tata Sons",
+      "channel": "twitter",
+      "condition": "2_new_resolution",
+      "latency_sec": 1.616,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q331715",
+        "entity_label": "Tata Group",
+        "handle": "TataCompanies",
+        "relationship": "PARENT_COMPANY",
+        "confidence": 0.92
+      },
+      "metrics": {
+        "total_items": 2,
+        "total_chars": 173,
+        "total_bytes": 175,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 2,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 2,
+        "non_direct_urls": 0,
+        "relevant_items": 2,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "Tata Sons",
+      "channel": "twitter",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 9.014,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q331715",
+        "entity_label": "Tata Group",
+        "handle": "TataCompanies",
+        "relationship": "PARENT_COMPANY",
+        "confidence": 0.92
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2990,
+        "total_bytes": 3020,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Nvidia",
+      "channel": "reddit",
+      "condition": "1_baseline",
+      "latency_sec": 8.096,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Nvidia",
+        "subreddits": [
+          "nvidia",
+          "stocks",
+          "hardware"
+        ],
+        "sector": "semiconductor_hardware",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2645,
+        "total_bytes": 2662,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 9,
+        "false_matches": 1
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Nvidia",
+      "channel": "reddit",
+      "condition": "2_new_resolution",
+      "latency_sec": 1.503,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Nvidia",
+        "subreddits": [
+          "nvidia",
+          "stocks",
+          "hardware"
+        ],
+        "sector": "semiconductor_hardware",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 12125,
+        "total_bytes": 12169,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 10,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 10,
+        "non_direct_urls": 0,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "reddit-rss"
+    },
+    {
+      "query": "Nvidia",
+      "channel": "reddit",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 7.972,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Nvidia",
+        "subreddits": [
+          "nvidia",
+          "stocks",
+          "hardware"
+        ],
+        "sector": "semiconductor_hardware",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2645,
+        "total_bytes": 2662,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 9,
+        "false_matches": 1
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Nvidia",
+      "channel": "twitter",
+      "condition": "1_baseline",
+      "latency_sec": 0.352,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q182477",
+        "entity_label": "Nvidia",
+        "handle": "nvidia",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 164,
+        "total_bytes": 164,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 1,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "Nvidia",
+      "channel": "twitter",
+      "condition": "2_new_resolution",
+      "latency_sec": 0.0,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q182477",
+        "entity_label": "Nvidia",
+        "handle": "nvidia",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 164,
+        "total_bytes": 164,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 1,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "Nvidia",
+      "channel": "twitter",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 8.189,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q182477",
+        "entity_label": "Nvidia",
+        "handle": "nvidia",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2645,
+        "total_bytes": 2662,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 9,
+        "false_matches": 1
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "OpenAI",
+      "channel": "reddit",
+      "condition": "1_baseline",
+      "latency_sec": 7.757,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "OpenAI",
+        "subreddits": [
+          "OpenAI",
+          "technology",
+          "artificial"
+        ],
+        "sector": "ai_tech",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 388,
+        "total_bytes": 388,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 1,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 0,
+        "false_matches": 1
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "OpenAI",
+      "channel": "reddit",
+      "condition": "2_new_resolution",
+      "latency_sec": 8.672,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "OpenAI",
+        "subreddits": [
+          "OpenAI",
+          "technology",
+          "artificial"
+        ],
+        "sector": "ai_tech",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2927,
+        "total_bytes": 3209,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 0,
+        "false_matches": 10
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "OpenAI",
+      "channel": "reddit",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 10.757,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "OpenAI",
+        "subreddits": [
+          "OpenAI",
+          "technology",
+          "artificial"
+        ],
+        "sector": "ai_tech",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 1984,
+        "total_bytes": 2062,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 0,
+        "false_matches": 10
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "OpenAI",
+      "channel": "twitter",
+      "condition": "1_baseline",
+      "latency_sec": 0.452,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q21708200",
+        "entity_label": "OpenAI",
+        "handle": "OpenAI",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 154,
+        "total_bytes": 158,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 1,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "OpenAI",
+      "channel": "twitter",
+      "condition": "2_new_resolution",
+      "latency_sec": 0.0,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q21708200",
+        "entity_label": "OpenAI",
+        "handle": "OpenAI",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 154,
+        "total_bytes": 158,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 1,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "OpenAI",
+      "channel": "twitter",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 7.798,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q21708200",
+        "entity_label": "OpenAI",
+        "handle": "OpenAI",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2700,
+        "total_bytes": 2713,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 0,
+        "false_matches": 10
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Tesla",
+      "channel": "reddit",
+      "condition": "1_baseline",
+      "latency_sec": 7.884,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Tesla",
+        "subreddits": [
+          "teslamotors",
+          "stocks",
+          "electricvehicles"
+        ],
+        "sector": "automotive_ev",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2595,
+        "total_bytes": 2630,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Tesla",
+      "channel": "reddit",
+      "condition": "2_new_resolution",
+      "latency_sec": 1.179,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Tesla",
+        "subreddits": [
+          "teslamotors",
+          "stocks",
+          "electricvehicles"
+        ],
+        "sector": "automotive_ev",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 5210,
+        "total_bytes": 5216,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 10,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 10,
+        "non_direct_urls": 0,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "reddit-rss"
+    },
+    {
+      "query": "Tesla",
+      "channel": "reddit",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 7.855,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Tesla",
+        "subreddits": [
+          "teslamotors",
+          "stocks",
+          "electricvehicles"
+        ],
+        "sector": "automotive_ev",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2595,
+        "total_bytes": 2630,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Tesla",
+      "channel": "twitter",
+      "condition": "1_baseline",
+      "latency_sec": 0.393,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q478214",
+        "entity_label": "Tesla, Inc.",
+        "handle": "Tesla",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 80,
+        "total_bytes": 80,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 1,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "Tesla",
+      "channel": "twitter",
+      "condition": "2_new_resolution",
+      "latency_sec": 0.0,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q478214",
+        "entity_label": "Tesla, Inc.",
+        "handle": "Tesla",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 80,
+        "total_bytes": 80,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 1,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "Tesla",
+      "channel": "twitter",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 8.36,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q478214",
+        "entity_label": "Tesla, Inc.",
+        "handle": "Tesla",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 2595,
+        "total_bytes": 2630,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Reliance Industries",
+      "channel": "reddit",
+      "condition": "1_baseline",
+      "latency_sec": 7.89,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Reliance Industries",
+        "subreddits": [
+          "IndianStockMarket",
+          "IndiaInvestments",
+          "india"
+        ],
+        "sector": "indian_markets",
+        "region": "india"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 3080,
+        "total_bytes": 3113,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Reliance Industries",
+      "channel": "reddit",
+      "condition": "2_new_resolution",
+      "latency_sec": 8.509,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Reliance Industries",
+        "subreddits": [
+          "IndianStockMarket",
+          "IndiaInvestments",
+          "india"
+        ],
+        "sector": "indian_markets",
+        "region": "india"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 3080,
+        "total_bytes": 3113,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Reliance Industries",
+      "channel": "reddit",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 7.896,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "Reliance Industries",
+        "subreddits": [
+          "IndianStockMarket",
+          "IndiaInvestments",
+          "india"
+        ],
+        "sector": "indian_markets",
+        "region": "india"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 3089,
+        "total_bytes": 3122,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Reliance Industries",
+      "channel": "twitter",
+      "condition": "1_baseline",
+      "latency_sec": 8.082,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q908931",
+        "entity_label": "Reliance Industries Limited",
+        "handle": "RIL_Updates",
+        "relationship": "OFFICIAL",
+        "confidence": 0.95
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 3006,
+        "total_bytes": 3043,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "Reliance Industries",
+      "channel": "twitter",
+      "condition": "2_new_resolution",
+      "latency_sec": 1.345,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q908931",
+        "entity_label": "Reliance Industries Limited",
+        "handle": "RIL_Updates",
+        "relationship": "OFFICIAL",
+        "confidence": 0.95
+      },
+      "metrics": {
+        "total_items": 2,
+        "total_chars": 318,
+        "total_bytes": 318,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 2,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 2,
+        "non_direct_urls": 0,
+        "relevant_items": 2,
+        "false_matches": 0
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "Reliance Industries",
+      "channel": "twitter",
+      "condition": "3_direct_source_unavailable",
+      "latency_sec": 9.147,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q908931",
+        "entity_label": "Reliance Industries Limited",
+        "handle": "RIL_Updates",
+        "relationship": "OFFICIAL",
+        "confidence": 0.95
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 3080,
+        "total_bytes": 3113,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 10,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 0,
+        "non_direct_urls": 10,
+        "relevant_items": 10,
+        "false_matches": 0
+      },
+      "telemetry_backend": "unknown"
+    },
+    {
+      "query": "https://x.com/OpenAI",
+      "channel": "twitter",
+      "condition": "1_baseline",
+      "latency_sec": 0.0,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q21708200",
+        "entity_label": "OpenAI",
+        "handle": "OpenAI",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 154,
+        "total_bytes": 158,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 0,
+        "false_matches": 1
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "https://x.com/OpenAI",
+      "channel": "twitter",
+      "condition": "2_new_resolution",
+      "latency_sec": 0.0,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity_id": "Q21708200",
+        "entity_label": "OpenAI",
+        "handle": "OpenAI",
+        "relationship": "OFFICIAL",
+        "confidence": 0.98
+      },
+      "metrics": {
+        "total_items": 1,
+        "total_chars": 154,
+        "total_bytes": 158,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 0,
+          "PROFILE_METADATA": 1,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 1,
+        "non_direct_urls": 0,
+        "relevant_items": 0,
+        "false_matches": 1
+      },
+      "telemetry_backend": "fxtwitter"
+    },
+    {
+      "query": "https://reddit.com/r/technology",
+      "channel": "reddit",
+      "condition": "1_baseline",
+      "latency_sec": 0.949,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "https://reddit.com/r/technology",
+        "subreddits": [
+          "stocks",
+          "wallstreetbets",
+          "investing"
+        ],
+        "sector": "global_equities",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 4517,
+        "total_bytes": 4537,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 10,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 10,
+        "non_direct_urls": 0,
+        "relevant_items": 0,
+        "false_matches": 10
+      },
+      "telemetry_backend": "reddit-rss"
+    },
+    {
+      "query": "https://reddit.com/r/technology",
+      "channel": "reddit",
+      "condition": "2_new_resolution",
+      "latency_sec": 0.0,
+      "status": "SUCCESS",
+      "resolved_info": {
+        "entity": "https://reddit.com/r/technology",
+        "subreddits": [
+          "stocks",
+          "wallstreetbets",
+          "investing"
+        ],
+        "sector": "global_equities",
+        "region": "global"
+      },
+      "metrics": {
+        "total_items": 10,
+        "total_chars": 4517,
+        "total_bytes": 4537,
+        "depth_breakdown": {
+          "FULL_POST": 0,
+          "FEED_ENTRY_SUMMARY": 10,
+          "PROFILE_METADATA": 0,
+          "INDEX_SNIPPET": 0,
+          "OTHER": 0
+        },
+        "direct_platform_urls": 10,
+        "non_direct_urls": 0,
+        "relevant_items": 0,
+        "false_matches": 10
+      },
+      "telemetry_backend": "reddit-rss"
+    }
+  ]
+}

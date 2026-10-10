@@ -1,0 +1,71 @@
+{
+  "query": "Tesla",
+  "channel": "twitter",
+  "condition": "2_new_resolution",
+  "latency_sec": 0.0,
+  "resolved_info": {
+    "entity_id": "Q478214",
+    "entity_label": "Tesla, Inc.",
+    "handle": "Tesla",
+    "relationship": "OFFICIAL",
+    "confidence": 0.98
+  },
+  "telemetry": {
+    "status": "SUCCESS",
+    "backend": "fxtwitter",
+    "retrieval_mode": "zero_auth_public_mirror",
+    "authenticated": false
+  },
+  "metrics": {
+    "total_items": 1,
+    "total_chars": 80,
+    "total_bytes": 80,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 0,
+      "PROFILE_METADATA": 1,
+      "INDEX_SNIPPET": 0,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 1,
+    "non_direct_urls": 0,
+    "relevant_items": 1,
+    "false_matches": 0
+  },
+  "fragments": [
+    {
+      "platform": "twitter",
+      "title": "Profile: Tesla (@Tesla)",
+      "url": "https://x.com/Tesla",
+      "author": "@Tesla",
+      "content_depth": "PROFILE_METADATA",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "native_backend_id": "fxtwitter",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "backend": "fxtwitter",
+        "screen_name": "Tesla",
+        "followers": 24765130,
+        "tweets_count": 10633,
+        "source_tier": "SPECIALIST_MIRROR",
+        "mirror_backend": "fxtwitter",
+        "discovered_from": "direct_input",
+        "content_completeness": "profile",
+        "external_id": "Tesla",
+        "retrieval_lineage": [
+          {
+            "requested_channel": "twitter",
+            "actual_channel": "twitter",
+            "retrieval_mode": "zero_auth_public_mirror",
+            "backend_id": "fxtwitter",
+            "fallback_reason": null,
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:20:22.614308"
+          }
+        ]
+      },
+      "content_preview": "Electric vehicles, giant batteries & solar, SI & robotics",
+      "char_length": 57
+    }
+  ]
+}

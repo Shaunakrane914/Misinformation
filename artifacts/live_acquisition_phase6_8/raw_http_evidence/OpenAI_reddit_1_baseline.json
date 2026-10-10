@@ -1,0 +1,83 @@
+{
+  "query": "OpenAI",
+  "channel": "reddit",
+  "condition": "1_baseline",
+  "latency_sec": 7.757,
+  "resolved_info": {
+    "entity": "OpenAI",
+    "subreddits": [
+      "OpenAI",
+      "technology",
+      "artificial"
+    ],
+    "sector": "ai_tech",
+    "region": "global"
+  },
+  "telemetry": {
+    "resolved_entity": "OpenAI",
+    "entity_sector": "general",
+    "subreddit_candidate_count": 0,
+    "rss_deprecation_info": {},
+    "resolution_rss_result": "RSS_DEPRECATED_OR_DISABLED",
+    "discovery_attempted": true,
+    "discovery_engine": "bing_search",
+    "queries_attempted": 6,
+    "candidate_urls_count": 102,
+    "social_candidate_count": 0,
+    "reddit_url_count": 0,
+    "mirror_attempted": false,
+    "mirror_result": "NO_VALID_URLS",
+    "status": "SUCCESS",
+    "fallback_used": true,
+    "fallback_backend": "Bing Search Index",
+    "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+    "retrieval_mode": "web_search_index",
+    "valid_social_urls_retained": 1
+  },
+  "metrics": {
+    "total_items": 1,
+    "total_chars": 388,
+    "total_bytes": 388,
+    "depth_breakdown": {
+      "FULL_POST": 0,
+      "FEED_ENTRY_SUMMARY": 0,
+      "PROFILE_METADATA": 0,
+      "INDEX_SNIPPET": 1,
+      "OTHER": 0
+    },
+    "direct_platform_urls": 1,
+    "non_direct_urls": 0,
+    "relevant_items": 0,
+    "false_matches": 1
+  },
+  "fragments": [
+    {
+      "platform": "Reddit (Web Index Fallback)",
+      "title": "Can a text created by ChatGPT be detected IF you type each ... - Reddit",
+      "url": "https://www.reddit.com/r/ChatGPT/comments/194cuvy/can_a_text_created_by_chatgpt_be_detected_if_you/",
+      "author": "www.reddit.com",
+      "content_depth": "INDEX_SNIPPET",
+      "retrieval_mode": "web_search_index",
+      "native_backend_id": "bing-search-index",
+      "is_authenticated": false,
+      "raw_metadata": {
+        "retrieval_lineage": [
+          {
+            "requested_channel": "reddit",
+            "actual_channel": "web_search",
+            "retrieval_mode": "web_search_index",
+            "backend_id": "bing-search-index",
+            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+            "is_authenticated": false,
+            "retrieved_at": "2026-10-10T12:19:37.614876"
+          }
+        ],
+        "source_tier": "TIER_3_AGGREGATE",
+        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
+        "is_direct_platform_url": true
+      },
+      "content_preview": "Title: Can a text created by ChatGPT be detected IF you type each ... - Reddit\nURL: https://www.reddit.com/r/ChatGPT/comments/194cuvy/can_a_text_created_by_chatgpt_be_detected_if_you/\n\nSnippet: Can a ",
+      "char_length": 317
+    }
+  ]
+}

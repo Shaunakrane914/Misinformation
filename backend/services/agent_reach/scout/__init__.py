@@ -1,34 +1,41 @@
 """
-Aegis Protocol — Scout Source Engine Package
-============================================
-Proprietary source acquisition, structured extraction, financial entity parsing,
-and corroboration engine powering Agent 1: Scout.
+Aegis Protocol — Scout Source Engine Package (Shim)
+====================================================
+Backward-compatibility shim. Canonical implementation relocated to
+`backend.agents.scout.sources`.
 """
 
-from .models import (
-    ScoutSourceRequest,
-    ScoutResult,
-    ScoutEvidence,
+from backend.agents.scout.sources import (
     CandidateSource,
-    RawSource,
-    FinancialFact,
-    CorporateEvent,
-    StoryCluster,
     ContradictionRecord,
-    SourceTier,
-    EpistemicStatus,
-    ScoutFailureCode,
-    FactDirection,
+    CorporateEvent,
     CorporateEventType,
+    EpistemicStatus,
+    FactDirection,
+    FinancialFact,
+    RawSource,
+    ScoutCache,
+    ScoutCorroborationEngine,
+    ScoutDeduplicator,
+    ScoutDiscoveryEngine,
+    ScoutEvidence,
+    ScoutFailureCode,
+    ScoutRankingEngine,
+    ScoutResult,
+    ScoutSourceEngine,
+    ScoutSourceRequest,
+    ScoutTelemetry,
+    ScoutTransport,
+    SourceTier,
+    StoryCluster,
+    scout_cache,
+    scout_corroboration_engine,
+    scout_deduplicator,
+    scout_discovery,
+    scout_ranking_engine,
+    scout_source_engine,
+    scout_transport,
 )
-from .engine import scout_source_engine, ScoutSourceEngine
-from .transport import scout_transport, ScoutTransport
-from .discovery import scout_discovery, ScoutDiscoveryEngine
-from .ranking import scout_ranking_engine, ScoutRankingEngine
-from .deduplication import scout_deduplicator, ScoutDeduplicator
-from .corroboration import scout_corroboration_engine, ScoutCorroborationEngine
-from .cache import scout_cache, ScoutCache
-from .telemetry import ScoutTelemetry
 
 __all__ = [
     "scout_source_engine",

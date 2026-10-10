@@ -10,6 +10,7 @@ import asyncio
 import pytest
 
 from backend.core.settings import Settings
+from backend.infrastructure.llm.gateway import DefaultLLMGateway, get_llm_gateway
 from backend.services.gemini_service import (
     DEFAULT_MODELS,
     GeminiService,
@@ -80,6 +81,28 @@ def test_gemini_service_scientific_mode_enforces_live_keys():
             service.generate_text("Scientific test", allow_mock_fallback=False)
 
 
+def test_gemini_service_scientific_mode_blocks_shared_mock_gateway():
+    mock_settings = Settings(environment="test", aegis_mock_llm=True, gemini_api_keys=[])
+    gateway = DefaultLLMGateway(settings_instance=mock_settings)
+    service = GeminiService(gateway=gateway)
+
+    with pytest.raises(RuntimeError, match="mock fallback disabled"):
+        service.generate_text("Scientific verdict", allow_mock_fallback=False)
+
+    assert gateway.last_response is None
+
+
+def test_temporary_service_does_not_mutate_global_gateway():
+    global_gateway = get_llm_gateway()
+    original_override = global_gateway._mock_mode_override
+    try:
+        temporary = GeminiService(use_mock=not global_gateway.mock_mode)
+        assert temporary.gateway is not global_gateway
+        assert global_gateway._mock_mode_override == original_override
+    finally:
+        global_gateway._mock_mode_override = original_override
+
+
 def test_gemini_service_generate_content_alias():
     """Verify generate_content alias matching Google GenAI SDK method signature."""
     service = GeminiService(use_mock=True)
@@ -94,6 +117,14 @@ def test_gemini_service_generate_text_async():
     resp = asyncio.run(service.generate_text_async("async query", system_instruction="test system"))
     assert isinstance(resp, str)
     assert len(resp) > 0
+
+
+def test_gemini_service_async_scientific_mode_is_fail_closed():
+    service = GeminiService(api_keys=[], use_mock=True)
+    with pytest.raises(RuntimeError, match="mock fallback disabled"):
+        asyncio.run(service.generate_text_async(
+            "scientific async query", allow_mock_fallback=False
+        ))
 
 
 def test_mock_gemini_provider_backward_compatibility():

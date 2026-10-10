@@ -303,9 +303,13 @@ Return a STRICT JSON object:
 
     try:
         try:
-            from backend.services.intelligence import call_gemini_text, clean_json_string
+            from backend.services.intelligence import (
+                call_gemini_text, clean_json_string, get_last_llm_provenance,
+            )
         except (ImportError, ModuleNotFoundError):
-            from services.intelligence import call_gemini_text, clean_json_string
+            from services.intelligence import (
+                call_gemini_text, clean_json_string, get_last_llm_provenance,
+            )
 
         raw_resp = call_gemini_text(prompt)
         parsed = json.loads(clean_json_string(raw_resp))
@@ -330,7 +334,12 @@ Return a STRICT JSON object:
 
         parsed["threats"] = threats
         parsed["claims"] = claims
-        parsed["ai_enrichment_active"] = True
+        provenance = parsed.get("_aegis_provenance", {})
+        parsed["ai_enrichment_active"] = not provenance.get("synthetic", False)
+        parsed["ai_enrichment"] = (
+            "SYNTHETIC_MOCK" if provenance.get("synthetic") else "ONLINE_GEMINI"
+        )
+        parsed["llm_provenance"] = get_last_llm_provenance()
         return parsed
 
     except Exception as e:

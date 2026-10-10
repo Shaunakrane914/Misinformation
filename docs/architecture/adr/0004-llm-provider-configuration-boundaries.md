@@ -59,6 +59,15 @@ Chosen option: **Alternative 3 — Centralized In-House `LLMGateway`**.
    - Implementations: `GeminiProvider` (production) and `MockLLMProvider` (offline/test).
 3. **Strict Offline Test Invariant**:
    - When `settings.AEGIS_MOCK_LLM is True` or `ENVIRONMENT == "test"`, the `MockLLMProvider` is injected automatically. Network calls to generative AI endpoints are prohibited.
+4. **Scientific Fail-Closed Invariant**:
+   - A call with mock fallback disabled bypasses any ambient mock preference and selects the live provider directly.
+   - Missing credentials, request exhaustion, or malformed live responses produce an explicit failure and can never become a synthetic success.
+5. **Model Identity and Fallback Invariant**:
+   - Omitting a model uses the validated preferred-model-first fallback list.
+   - Supplying a model is a strict identity request and does not silently switch to another model.
+6. **Synthetic Provenance Invariant**:
+   - Mock output is marked synthetic and ineligible as evidence in response metadata and serialized controlled-test output.
+   - An empty retrieval corpus must abstain without asking any LLM to generate evidence.
 
 ---
 

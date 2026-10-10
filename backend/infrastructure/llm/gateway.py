@@ -10,9 +10,10 @@ from __future__ import annotations
 import json
 import logging
 import re
-from typing import Any, Dict, Optional, Type, TypeVar
+from contextvars import ContextVar
+from typing import Any, Optional, Type, TypeVar
 
-from pydantic import BaseModel
+from pydantic import BaseModel, TypeAdapter, ValidationError
 
 from backend.core.settings import Settings, get_settings
 from backend.infrastructure.llm.protocol import LLMGateway, LLMProvider, LLMResponse
@@ -45,13 +46,21 @@ class DefaultLLMGateway(LLMGateway):
         self.gemini_provider = gemini_provider or GeminiProvider(self.settings)
         self.mock_provider = mock_provider or MockLLMProvider()
         self._mock_mode_override: Optional[bool] = None
+        self._last_response: ContextVar[Optional[LLMResponse]] = ContextVar(
+            f"aegis_llm_last_response_{id(self)}", default=None
+        )
+
+    @property
+    def last_response(self) -> Optional[LLMResponse]:
+        """Most recent response in the current execution context."""
+        return self._last_response.get()
 
     @property
     def mock_mode(self) -> bool:
-        """True if mock provider is actively forced or required."""
+        """True only if mock execution is explicitly configured."""
         if self._mock_mode_override is not None:
             return self._mock_mode_override
-        return self.settings.is_mock_llm or not self.gemini_provider.is_available()
+        return self.settings.is_mock_llm
 
     @mock_mode.setter
     def mock_mode(self, value: bool) -> None:
@@ -71,9 +80,44 @@ class DefaultLLMGateway(LLMGateway):
         model: Optional[str] = None,
         **kwargs: Any
     ) -> str:
-        """Generate unstructured text from active provider."""
-        resp: LLMResponse = self.active_provider.generate(prompt, model=model or self.settings.default_model, **kwargs)
-        return resp.content
+        """Generate text with explicit mock authorization and model semantics.
+
+        Omitting ``model`` activates the configured provider fallback chain.
+        Supplying a model requests strict identity and therefore does not fall
+        through to a different model. ``allow_mock=False`` is fail-closed even
+        if the gateway itself was configured in mock mode.
+        """
+        allow_mock = kwargs.pop("allow_mock", None)
+        mock_authorized = self.mock_mode if allow_mock is None else bool(allow_mock)
+
+        if not mock_authorized:
+            # Scientific mode bypasses a process/test-level mock preference and
+            # selects the live provider directly. It still fails closed when
+            # live credentials are unavailable.
+            provider = self.gemini_provider
+            if not provider.is_available():
+                raise RuntimeError("Live Gemini provider unavailable: no valid API key configured")
+        elif self.mock_mode:
+            provider = self.mock_provider
+        else:
+            provider = self.gemini_provider
+            if not provider.is_available():
+                provider = self.mock_provider
+
+        try:
+            response = provider.generate(prompt, model=model, **kwargs)
+        except Exception:
+            if provider is self.mock_provider or not mock_authorized:
+                raise
+            logger.warning(
+                "[LLMGateway] Live provider failed; using explicitly authorized synthetic mock output"
+            )
+            response = self.mock_provider.generate(prompt, model=None, **kwargs)
+
+        if response.synthetic and not mock_authorized:
+            raise RuntimeError("Synthetic LLM output blocked by fail-closed policy")
+        self._last_response.set(response)
+        return response.content
 
     def generate_structured(
         self,
@@ -89,20 +133,27 @@ class DefaultLLMGateway(LLMGateway):
         try:
             parsed_data = json.loads(cleaned)
         except json.JSONDecodeError as exc:
-            logger.error(f"[LLMGateway] Failed to parse JSON response: {exc}. Raw: {cleaned[:300]}")
+            logger.error(
+                "[LLMGateway] Failed to parse provider JSON response at character %s",
+                exc.pos,
+            )
             raise ValueError(f"LLM returned invalid JSON: {exc}") from exc
 
-        # If schema is a Pydantic model
+        # Pydantic models preserve their native validation/error behavior.
         if isinstance(schema, type) and issubclass(schema, BaseModel):
             if hasattr(schema, "model_validate"):
                 return schema.model_validate(parsed_data)  # Pydantic v2
             return schema.parse_obj(parsed_data)  # Pydantic v1 fallback
 
-        # If schema is dict, list, or primitive type
-        if schema in (dict, list, Any) or getattr(schema, "__origin__", None) in (dict, list):
-            return parsed_data  # type: ignore
+        if schema is Any:
+            return parsed_data  # type: ignore[return-value]
 
-        return parsed_data  # type: ignore
+        try:
+            return TypeAdapter(schema).validate_python(parsed_data)  # type: ignore[return-value]
+        except (ValidationError, TypeError) as exc:
+            raise ValueError(
+                f"LLM output does not match requested schema {schema!r}"
+            ) from exc
 
 
 # Global singleton gateway

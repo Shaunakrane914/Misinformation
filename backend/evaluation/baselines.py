@@ -209,19 +209,12 @@ class SinglePromptLLMBaseline:
 
         t0 = time.perf_counter()
         try:
-            # Force mock_mode setting based on allow_mock
-            original_mock = gemini_service.mock_mode
-            if not self.allow_mock:
-                gemini_service.mock_mode = False
-
             raw_response = gemini_service.generate_text(
                 prompt=f"{self.SYSTEM_PROMPT}\n\n{user_content}",
                 allow_mock_fallback=self.allow_mock,
+                model=self.model_name,
             )
             latency_ms = (time.perf_counter() - t0) * 1000.0
-
-            # Restore original mock mode
-            gemini_service.mock_mode = original_mock
 
             # Clean JSON markdown fences if present
             cleaned = raw_response.strip()

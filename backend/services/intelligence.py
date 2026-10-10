@@ -12,7 +12,7 @@ import logging
 import re
 from typing import Any, Dict, List, Optional
 
-from backend.infrastructure.llm.gateway import clean_json_markdown, get_llm_gateway, llm_gateway
+from backend.infrastructure.llm.gateway import clean_json_markdown, get_llm_gateway
 
 logger = logging.getLogger(__name__)
 
@@ -26,6 +26,20 @@ def call_gemini_text(prompt: str) -> str:
     """Call LLM via the centralized LLMGateway."""
     gateway = get_llm_gateway()
     return gateway.generate_text(prompt)
+
+
+def get_last_llm_provenance() -> Dict[str, Any]:
+    """Return non-secret provider metadata for the most recent gateway call."""
+    response = get_llm_gateway().last_response
+    if response is None:
+        return {"provider": "unavailable", "synthetic": False, "evidence_eligible": False}
+    return {
+        "provider": response.provider,
+        "model": response.model,
+        "synthetic": response.synthetic,
+        "evidence_eligible": not response.synthetic,
+        "usage_is_estimated": response.usage.is_estimated,
+    }
 
 
 def analyze_sentiment(text_items: List[str]) -> List[Dict[str, Any]]:

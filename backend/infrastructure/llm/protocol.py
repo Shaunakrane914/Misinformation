@@ -17,11 +17,16 @@ T = TypeVar("T")
 
 @dataclass
 class LLMUsage:
-    """Inference usage metrics for billing and observability."""
+    """Inference usage metrics for observability.
+
+    ``is_estimated`` distinguishes local heuristics from provider-reported
+    billing usage. Callers must not treat estimated counts as invoice data.
+    """
     prompt_tokens: int = 0
     completion_tokens: int = 0
     total_tokens: int = 0
     estimated_cost_usd: float = 0.0
+    is_estimated: bool = True
 
 
 @dataclass
@@ -33,6 +38,8 @@ class LLMResponse:
     latency_ms: float = 0.0
     usage: LLMUsage = field(default_factory=LLMUsage)
     raw_response: Optional[Dict[str, Any]] = None
+    synthetic: bool = False
+    metadata: Dict[str, Any] = field(default_factory=dict)
     created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
@@ -40,7 +47,7 @@ class LLMResponse:
 class LLMProvider(Protocol):
     """Protocol for underlying model providers (Gemini, Mock, Local, etc.)."""
 
-    def generate(self, prompt: str, model: str, **kwargs: Any) -> LLMResponse:
+    def generate(self, prompt: str, model: Optional[str] = None, **kwargs: Any) -> LLMResponse:
         """Synchronously generate text response from LLM model."""
         ...
 

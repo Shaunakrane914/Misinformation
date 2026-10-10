@@ -75,6 +75,42 @@ class ResearchAgent:
         if context_snippets:
             grounding_block = "\nRETRIEVED UNTRUSTED INTELLIGENCE SOURCES:\n" + "\n".join(context_snippets) + "\n"
 
+        if not context_snippets:
+            # Zero-hallucination boundary: an LLM is not an acquisition source.
+            # When retrieval yields nothing, return an auditable abstention and
+            # never ask either a live or mock provider to invent evidence.
+            abstention = {
+                "status": "NO_GROUNDED_EVIDENCE",
+                "what_we_know": [],
+                "what_sources_say": [],
+                "primary_evidence": [],
+                "what_disagrees": [],
+                "what_is_unknown": ["No accepted evidence was retrieved"],
+                "supporting_evidence": [],
+                "refuting_evidence": [],
+                "overall_evidence_confidence": 0.0,
+                "sources_analyzed": [],
+                "llm_provenance": {
+                    "provider": "not_called",
+                    "synthetic": False,
+                    "evidence_eligible": False,
+                },
+                "evidence": [],
+                "investigated_sources": [],
+                "primary_sources": [],
+                "contradictions": [],
+                "findings": [],
+                "total_signals": 0,
+                "fragments_count": 0,
+            }
+            if res:
+                abstention["source_graph"] = res.source_graph
+                abstention["research_telemetry"] = res.telemetry
+                abstention["retrieval_trace"] = res.retrieval_trace
+                abstention["channel_health"] = res.channel_status
+                abstention["research_corpus"] = res.research_corpus
+            return abstention
+
         prompt = f"""You are a neutral, rigorous forensic misinformation researcher.
 Evaluate this claim:
 "{claim_text}"
@@ -112,6 +148,14 @@ Where overall_evidence_confidence represents:
 
         raw_llm = gemini_service.generate_text(prompt)
         parsed = self.extract_json(raw_llm)
+        response = gemini_service.gateway.last_response
+        if response is not None:
+            parsed["llm_provenance"] = {
+                "provider": response.provider,
+                "model": response.model,
+                "synthetic": response.synthetic,
+                "evidence_eligible": not response.synthetic,
+            }
 
         # Attach rich research payload if available
         if res:

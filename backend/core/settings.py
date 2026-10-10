@@ -10,21 +10,14 @@ from __future__ import annotations
 
 import os
 from functools import lru_cache
-from typing import Any, Dict, List, Optional
+from typing import List, Optional
 from dotenv import load_dotenv
 
 # Ensure base .env is loaded into process
 load_dotenv()
 
-try:
-    from pydantic_settings import BaseSettings, SettingsConfigDict
-    _HAS_PYDANTIC_SETTINGS = True
-except ImportError:
-    from pydantic import BaseModel as BaseSettings  # type: ignore
-    SettingsConfigDict = None
-    _HAS_PYDANTIC_SETTINGS = False
-
-from pydantic import Field
+from pydantic import Field, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 def _discover_gemini_api_keys() -> List[str]:
@@ -54,22 +47,21 @@ class Settings(BaseSettings):
     gemini_api_key_3: Optional[str] = Field(default_factory=lambda: os.getenv("GEMINI_API_KEY_3"))
     gemini_api_keys: List[str] = Field(default_factory=_discover_gemini_api_keys)
     gemini_models: List[str] = Field(default_factory=lambda: [
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
         "gemini-2.5-flash",
-        "gemini-2.0-flash",
-        "gemini-1.5-flash",
-        "gemini-1.5-pro",
+        "gemini-2.5-flash-lite",
     ])
-    default_model: str = Field(default="gemini-2.5-flash")
+    default_model: str = Field(default="gemini-3.8-flash")
     aegis_mock_llm: bool = Field(
         default_factory=lambda: (
             os.getenv("AEGIS_MOCK_LLM", "").lower() in ("true", "1", "yes")
             or os.getenv("ENVIRONMENT", "").lower() == "test"
             or os.getenv("AEGIS_ENV", "").lower() == "test"
-            or not any(k.startswith("AIzaSy") for k in _discover_gemini_api_keys())
         )
     )
-    llm_request_timeout: float = Field(default=25.0)
-    llm_max_retries: int = Field(default=3)
+    llm_request_timeout: float = Field(default=25.0, gt=0)
+    llm_max_retries: int = Field(default=3, ge=1)
 
     # 3. Persistence & Database (Supabase / Local SQLite)
     supabase_url: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_URL"))
@@ -99,13 +91,26 @@ class Settings(BaseSettings):
     twilio_auth_token: Optional[str] = Field(default_factory=lambda: os.getenv("TWILIO_AUTH_TOKEN"))
     twilio_phone_number: Optional[str] = Field(default_factory=lambda: os.getenv("TWILIO_PHONE_NUMBER"))
 
-    if _HAS_PYDANTIC_SETTINGS and SettingsConfigDict is not None:
-        model_config = SettingsConfigDict(
-            env_file=".env",
-            env_file_encoding="utf-8",
-            extra="ignore",
-            case_sensitive=False,
-        )
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+        case_sensitive=False,
+    )
+
+    @model_validator(mode="after")
+    def validate_llm_model_order(self) -> "Settings":
+        """Keep the preferred model first and remove duplicate/blank IDs."""
+        ordered: List[str] = []
+        for model_name in [self.default_model, *self.gemini_models]:
+            clean_name = model_name.strip() if model_name else ""
+            if clean_name and clean_name not in ordered:
+                ordered.append(clean_name)
+        if not ordered:
+            raise ValueError("At least one Gemini model identifier must be configured")
+        self.default_model = ordered[0]
+        self.gemini_models = ordered
+        return self
 
     # ── Convenience Introspection Properties ─────────────────────────────────
 
@@ -126,13 +131,13 @@ class Settings(BaseSettings):
 
     @property
     def is_test_environment(self) -> bool:
-        """True if running inside an automated test session."""
-        return self.environment in ("test", "testing") or bool(os.getenv("PYTEST_CURRENT_TEST"))
+        """True when the validated application environment explicitly selects tests."""
+        return self.environment in ("test", "testing")
 
     @property
     def is_mock_llm(self) -> bool:
-        """True if live LLM network calls are intercepted with deterministic mock responses."""
-        return self.aegis_mock_llm or self.is_test_environment or not self.has_gemini
+        """True only when deterministic mock execution is explicitly authorized."""
+        return self.aegis_mock_llm or self.is_test_environment
 
 
 @lru_cache(maxsize=1)

@@ -171,7 +171,7 @@ Respond in STRICT JSON matching this schema:
             if conf_level not in [c.value for c in ConfidenceLevel]:
                 conf_level = "HIGH" if confidence_val >= 0.80 else ("MEDIUM" if confidence_val >= 0.50 else "LOW")
 
-            return {
+            result = {
                 "verdict": canonical_v,
                 "confidence": confidence_val,
                 "confidence_score": confidence_val,
@@ -182,6 +182,9 @@ Respond in STRICT JSON matching this schema:
                 "evidence_limitations": data.get("evidence_limitations", []),
                 "evidence_chain": data.get("evidence_chain", fallback["evidence_chain"])
             }
+            if "_aegis_provenance" in data:
+                result["llm_provenance"] = data["_aegis_provenance"]
+            return result
         except Exception as e:
             logger.warning(f"[InvestigatorAgent] Verdict extraction failed: {e}")
             return fallback
@@ -189,7 +192,16 @@ Respond in STRICT JSON matching this schema:
     def process(self, claim_text: str, evidence_json: Dict[str, Any]) -> Dict[str, Any]:
         """Full pipeline execution for investigator agent."""
         raw_text = self.determine_verdict(claim_text, evidence_json)
-        return self.extract_verdict(raw_text)
+        result = self.extract_verdict(raw_text)
+        response = gemini_service.gateway.last_response
+        if response is not None:
+            result["llm_provenance"] = {
+                "provider": response.provider,
+                "model": response.model,
+                "synthetic": response.synthetic,
+                "evidence_eligible": not response.synthetic,
+            }
+        return result
 
     def investigate(self, claim_text: str, evidence_list: Optional[List[Any]] = None) -> Dict[str, Any]:
         """Convenience evaluation method for batch/eval benchmarks."""

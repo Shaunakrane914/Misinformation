@@ -270,16 +270,24 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
 
     try:
         try:
-            from backend.services.intelligence import call_gemini_text, clean_json_string
+            from backend.services.intelligence import (
+                call_gemini_text, clean_json_string, get_last_llm_provenance,
+            )
         except (ImportError, ModuleNotFoundError):
-            from services.intelligence import call_gemini_text, clean_json_string
+            from services.intelligence import (
+                call_gemini_text, clean_json_string, get_last_llm_provenance,
+            )
 
         raw_resp = call_gemini_text(prompt)
         cleaned = clean_json_string(raw_resp)
         parsed = json.loads(cleaned)
 
         if isinstance(parsed, dict) and "threats" in parsed:
-            parsed["ai_enrichment"] = "ONLINE_GEMINI"
+            provenance = parsed.get("_aegis_provenance", {})
+            parsed["ai_enrichment"] = (
+                "SYNTHETIC_MOCK" if provenance.get("synthetic") else "ONLINE_GEMINI"
+            )
+            parsed["llm_provenance"] = get_last_llm_provenance()
             parsed["dossiers"] = build_investigation_dossiers(
                 brand_info, parsed.get("threats", []), parsed.get("claims", []), evidence_list
             )

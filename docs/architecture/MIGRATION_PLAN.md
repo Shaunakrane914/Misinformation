@@ -30,7 +30,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 | **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | **DELIVERED + PHASE 3.5 CLOSEOUT** (Canonical infrastructure service, decomposed query dispatcher, compatibility shims, isolated test outputs, and 16-channel contracts) |
 | **4** | **Research Pipeline Decomposition** | **P1** | Break 581-line `investigate()` into 10 composable pipeline stages. | **DELIVERED** (10 decoupled stages in `backend/application/research/`, `ResearchPipeline` coordinator, 12 golden characterization scenarios with bit-for-bit serialization equality, 628 passing tests) |
 | **5** | **Domain Agent Modularization & Acceptance Closeout** | **P1** | Relocate agent-specific extraction and domain subsystems into owning agent packages. | **DELIVERED + PHASE 5.5 CLOSEOUT ACCEPTED** (20/20 per-agent golden master parity against `81702f0`; 12/12 backward-compatibility tests; acquisition path audit & SSRF hardening; Phase 4 provenance verified; 628/628 test pass; GitHub CI run 38025876052 confirmed) |
-| **6** | **Centralized LLM Gateway & Validated Settings** | **P2** | Unify Gemini/mock LLM calls behind `LLMGateway`; adopt Pydantic `BaseSettings`. | Zero ad-hoc `os.getenv` in business logic; 100% deterministic offline mock tests. |
+| **6** | **Centralized LLM Gateway & Validated Settings** | **P2** | Unify Gemini/mock LLM calls behind `LLMGateway`; adopt Pydantic `BaseSettings`. | **DELIVERED + PHASE 6.5 CORRECTNESS CLOSEOUT IMPLEMENTED** (701 local tests pass; final acceptance awaits GitHub Actions for the closeout commit) |
 | **7** | **Legacy Deprecation & Final Cleanup** | **P2** | Retire compatibility shims, archive dead code, verify final clean directory tree. | Zero unused shims; clean build context; 100% regression pass. |
 
 ---
@@ -258,7 +258,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
      - Added `pydantic-settings>=2.2.0` to `requirements.txt` and `pyproject.toml`.
   2. **Centralized LLM Gateway (`backend/infrastructure/llm/`):**
      - Protocol definitions in `protocol.py`: `LLMUsage`, `LLMResponse`, `LLMProvider`, and `LLMGateway`.
-     - Production provider `GeminiProvider` (`providers/gemini.py`): Key rotation, model fallback hierarchy (`gemini-2.5-flash`, `gemini-2.0-flash`, `gemini-1.5-flash`, `gemini-1.5-pro`), and exponential backoff with jitter on HTTP 429 rate limits.
+     - Production provider `GeminiProvider` (`providers/gemini.py`): Key rotation, validated preferred/fallback model hierarchy, and exponential backoff with jitter on HTTP 429 rate limits. Phase 6.5 reconciled the concrete defaults with current provider documentation.
      - Deterministic mock provider `MockLLMProvider` (`providers/mock.py`): Zero-egress, 100% offline-safe deterministic responses for evidence extraction, verdict synthesis, crisis sentiment analysis, corporate defense statements, and threat detection.
      - Authoritative gateway `DefaultLLMGateway` (`gateway.py`): Structured validation with Pydantic model and dict parsing (`generate_structured`), text completion (`generate_text`), robust markdown code fence stripping (`clean_json_markdown`), and runtime `mock_mode` property for test harnesses.
      - Global singleton `llm_gateway = get_llm_gateway()`.
@@ -275,6 +275,17 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
   5. **Regressions & Parity:**
      - 47 agent golden-master and backward compatibility tests passed in 0.44s with 0 regressions.
      - Frozen retrieval benchmarks preserved bit-for-bit with 0 modifications.
+
+#### Phase 6.5 Correctness Closeout (Implemented October 10, 2026)
+- **Status:** **IMPLEMENTED; REMOTE CI ACCEPTANCE PENDING**
+- **Model selection and fallback:** Calls without an explicit model now try the validated preferred model followed by configured fallbacks. Explicit model requests remain strict and never silently switch model identity. The default list was reconciled with the Google Gemini model/deprecation documentation and retired Gemini 1.5/2.0 identifiers were removed.
+- **Scientific fail-closed policy:** `allow_mock_fallback=False` bypasses gateway mock mode and calls the live provider only. Missing credentials or provider exhaustion raise an unavailable-provider error; scientific execution cannot return a synthetic verdict.
+- **Synthetic provenance:** Mock responses are marked `synthetic=true` and `evidence_eligible=false` in both response metadata and structured output. Plain-text mock output carries an explicit `SYNTHETIC MOCK OUTPUT — NOT EVIDENCE` label. Research returns `NO_GROUNDED_EVIDENCE` without invoking an LLM when retrieval is empty.
+- **Configuration isolation:** Temporary `GeminiService` instances own isolated gateways and cannot mutate the global singleton. The scientific evaluation baseline no longer toggles shared gateway state.
+- **Structured validation:** Pydantic outputs retain model validation; built-in and parameterized container schemas use `TypeAdapter` and reject incompatible JSON types. Invalid JSON, missing required fields, and malformed provider payloads are covered.
+- **Security and observability:** Provider errors omit API keys, prompts, and raw response bodies. Provider-reported token counts are distinguished from heuristic estimates with `LLMUsage.is_estimated`.
+- **Local verification:** Focused gateway/service/settings/research and golden tests: 79 passed. CI-equivalent unit/chaos/security slice: 504 passed. Exact final complete suite: **701 passed in 379.44s, exit code 0**.
+- **Artifact integrity:** Frozen scenario, candidate, and label files plus tracked retrieval benchmark summaries retained their exact Git blob hashes after the full suite.
 
 ---
 

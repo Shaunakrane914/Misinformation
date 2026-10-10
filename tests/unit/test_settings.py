@@ -8,6 +8,7 @@ backward compatibility with AppConfig, and offline test invariants.
 import os
 from unittest.mock import patch
 import pytest
+from pydantic import ValidationError
 
 from backend.core.settings import Settings, get_settings, settings as core_settings
 from backend.config import AppConfig, settings as legacy_settings
@@ -39,19 +40,41 @@ def test_settings_gemini_key_discovery():
 
 
 def test_settings_offline_mock_detection():
-    """Verify aegis_mock_llm is automatically true when test environment or empty keys."""
+    """Verify tests are offline while missing production credentials fail closed."""
     # Test environment explicitly active
     with patch.dict(os.environ, {"ENVIRONMENT": "test"}, clear=False):
         cfg = Settings()
         assert cfg.is_test_environment is True
         assert cfg.is_mock_llm is True
 
-    # Empty keys force mock mode
+    # Missing production credentials do not silently authorize synthetic output.
     with patch.dict(os.environ, {"ENVIRONMENT": "production", "AEGIS_MOCK_LLM": "false"}, clear=False):
         with patch("backend.core.settings._discover_gemini_api_keys", return_value=[]):
             cfg = Settings()
             assert cfg.has_gemini is False
-            assert cfg.is_mock_llm is True
+            assert cfg.is_mock_llm is False
+
+
+def test_settings_model_order_is_validated_and_deduplicated():
+    cfg = Settings(
+        default_model="gemini-primary",
+        gemini_models=["gemini-fallback", "gemini-primary", "gemini-fallback"],
+    )
+    assert cfg.gemini_models == ["gemini-primary", "gemini-fallback"]
+
+
+def test_default_models_exclude_retired_gemini_generations():
+    cfg = Settings()
+    assert cfg.default_model == "gemini-3.8-flash"
+    assert "gemini-2.0-flash" not in cfg.gemini_models
+    assert all(not model.startswith("gemini-1.5") for model in cfg.gemini_models)
+
+
+def test_invalid_llm_limits_fail_during_settings_validation():
+    with pytest.raises(ValidationError):
+        Settings(llm_request_timeout=0)
+    with pytest.raises(ValidationError):
+        Settings(llm_max_retries=0)
 
 
 def test_settings_supabase_introspection():

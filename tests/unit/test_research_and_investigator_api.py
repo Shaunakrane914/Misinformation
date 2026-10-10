@@ -6,6 +6,8 @@ insufficient evidence fallbacks, and singleton resolution.
 """
 
 import json
+from types import SimpleNamespace
+from unittest.mock import patch
 import pytest
 from backend.agents.research_agent import ResearchAgent
 from backend.agents.investigator_agent import InvestigatorAgent, get_investigator_agent
@@ -42,6 +44,29 @@ def test_research_agent_extract_json_fallback_on_malformed():
 
 
 @pytest.mark.unit
+def test_research_agent_never_uses_llm_as_evidence_when_retrieval_is_empty():
+    agent = ResearchAgent()
+    empty_result = SimpleNamespace(
+        investigated_sources=[], evidence=[], primary_sources=[],
+        contradictions=[], findings=[], source_graph={}, telemetry={},
+        retrieval_trace={}, channel_status={}, research_corpus={},
+    )
+
+    with patch(
+        "backend.agents.research_agent.research_engine.investigate",
+        return_value=empty_result,
+    ), patch(
+        "backend.agents.research_agent.gemini_service.generate_text",
+        side_effect=AssertionError("LLM must not run"),
+    ):
+        result = agent.gather_evidence_structured("unsupported claim")
+
+    assert result["status"] == "NO_GROUNDED_EVIDENCE"
+    assert result["supporting_evidence"] == []
+    assert result["llm_provenance"]["provider"] == "not_called"
+
+
+@pytest.mark.unit
 def test_investigator_agent_extract_verdict_canonical_mapping():
     """Test investigator agent maps lowercase and raw strings to canonical VerdictType."""
     agent = InvestigatorAgent()
@@ -57,6 +82,24 @@ def test_investigator_agent_extract_verdict_canonical_mapping():
     assert res["verdict"] == VerdictType.FALSE.value
     assert res["severity"] == SeverityLevel.HIGH.value
     assert res["confidence"] == 0.92
+
+
+@pytest.mark.unit
+def test_investigator_preserves_synthetic_provider_provenance():
+    agent = InvestigatorAgent()
+    raw = json.dumps({
+        "verdict": "Unverified",
+        "confidence": 0.5,
+        "severity": "Medium",
+        "_aegis_provenance": {
+            "provider": "mock", "synthetic": True, "evidence_eligible": False
+        },
+    })
+
+    result = agent.extract_verdict(raw)
+
+    assert result["llm_provenance"]["synthetic"] is True
+    assert result["llm_provenance"]["evidence_eligible"] is False
 
 
 @pytest.mark.unit

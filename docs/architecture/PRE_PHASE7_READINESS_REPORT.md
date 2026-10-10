@@ -150,7 +150,7 @@ unsafe URLs, unverified subreddits, and auth-only channels are rejected.
 | X status acquisition | PASS | One explicit status body observed; search/timeline coverage remains unverified |
 | Four-agent deterministic execution | PASS | Real agent methods, acquisition-boundary fixture |
 | Full local CI-equivalent suite | PASS | 598 unit, chaos, security, integration, and benchmark tests passed on Python 3.13.5 in 400.26s |
-| GitHub Actions matrix | PENDING | Record exact run after push |
+| GitHub Actions matrix | PASS | [Run 38060120013](https://github.com/Shaunakrane914/Misinformation/actions/runs/38060120013) passed lint, Python 3.11/3.12/3.13 unit-security-chaos jobs, and provenance/performance benchmarks for commit `3d4bce72eaef82f60b814259b288b3168b7d472f` |
 
 ## Final answers
 

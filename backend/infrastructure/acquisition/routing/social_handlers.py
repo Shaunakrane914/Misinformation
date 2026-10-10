@@ -85,6 +85,8 @@ class SocialChannelHandlers:
             )
 
             is_rss_active = dep_info.get("rss_active", True)
+            telemetry["rss_active"] = is_rss_active
+            telemetry["rss_status"] = dep_info.get("rss_status", "OPERATIONAL" if is_rss_active else "DISABLED_VIA_FEATURE_FLAG")
             if is_rss_active and resolution.subreddit_candidates:
                 target_fetch = max(limit or 15, 20)
                 for sub_cand in resolution.subreddit_candidates:
@@ -94,6 +96,9 @@ class SocialChannelHandlers:
                             query_id=query_id, query_class=query_class, query_text=query_text
                         )
                         if raw_entries:
+                            for entry in raw_entries:
+                                entry.raw_metadata["relevance_weight"] = sub_cand.relevance_weight
+                                entry.raw_metadata["community_category"] = sub_cand.category
                             ranked_entries = entity_social_resolver.subreddit_resolver.filter_and_rank_posts(
                                 raw_entries, query, entity_name=resolution.normalized_entity
                             )
@@ -246,6 +251,7 @@ class SocialChannelHandlers:
                         relationship=cand.relationship,
                         confidence=cand.confidence,
                         verification_evidence=cand.verification_evidence,
+                        verification_method=cand.verification_method,
                         entity_id=cand.entity_id,
                         official_website=cand.official_website,
                     )
@@ -348,54 +354,65 @@ class SocialChannelHandlers:
     def _indexed_fallback(self, platform, query, limit, query_id, query_class, query_text, telemetry):
         """
         Execute search index fallback with strict platform-domain validation.
-        Rejects non-platform URLs (e.g. corporate websites) from masquerading as social.
+        Fails closed: if no valid platform-domain URLs exist, returns zero fragments
+        and records DEGRADED/NO_VALID_PLATFORM_RESULTS. Never mislabels external sites as social.
         """
         if platform == "reddit":
             search_query, reason, label, method = f"site:reddit.com {query}", "ARCTIC_SHIFT_UNAVAILABLE", "Reddit", "reddit_web_index"
-            allowed_domains = ("reddit.com", "old.reddit.com", "redd.it")
+            allowed_domains = {"reddit.com", "old.reddit.com", "redd.it", "www.reddit.com"}
         else:
             search_query, reason, label, method = f"site:twitter.com OR site:x.com {query}", "FXTWITTER_SEARCH_INDEX_FALLBACK", "Twitter", "twitter_web_index"
-            allowed_domains = ("twitter.com", "x.com", "mobile.twitter.com")
+            allowed_domains = {"twitter.com", "x.com", "mobile.twitter.com", "www.twitter.com", "www.x.com"}
 
         effective_limit = max(limit, 25) if limit else 25
         raw_fragments = self.router._execute_web_search(search_query, effective_limit, query_id, query_class, query_text)
 
-        # STRICT URL VALIDATION: Prioritize genuine platform URLs if present
-        platform_fragments = [
-            f for f in raw_fragments
-            if any(
-                urllib.parse.urlparse(f.url).netloc.lower() == d
-                or urllib.parse.urlparse(f.url).netloc.lower().endswith(f".{d}")
-                for d in allowed_domains
-            )
-        ]
-        fragments = platform_fragments if platform_fragments else raw_fragments
+        # STRICT CANONICAL HOSTNAME VALIDATION (URL parsing, not substring matching)
+        platform_fragments = []
+        for f in raw_fragments:
+            try:
+                parsed = urllib.parse.urlparse(f.url or "")
+                host = parsed.netloc.lower().split(":")[0].strip()
+                if not host:
+                    continue
+                if any(host == d or host.endswith(f".{d}") for d in allowed_domains):
+                    platform_fragments.append(f)
+            except Exception:
+                continue
 
-        if fragments:
-            self.router._tag_fragments(fragments, platform, "web_search", RetrievalMode.WEB_SEARCH_INDEX.value, "bing-search-index", reason, False)
-            for fragment in fragments:
-                fragment.platform = f"{label} (Web Index Fallback)"
-                fragment.retrieval_method = method
-                fragment.content_depth = "INDEX_SNIPPET"
-                fragment.raw_metadata.update(
-                    source_tier="TIER_3_AGGREGATE",
-                    honest_disclosure="Public mirror returned no usable item; retrieved through a public search index",
-                    is_direct_platform_url=bool(platform_fragments),
-                )
+        # FAIL CLOSED: If no valid platform URLs exist, return 0 fragments
+        if not platform_fragments:
             telemetry.update(
-                status="SUCCESS", fallback_used=True,
-                fallback_backend="Bing Search Index", fallback_reason=reason,
-                retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
-                valid_social_urls_retained=len(platform_fragments),
-            )
-        else:
-            telemetry.update(
-                status="DEGRADED", fallback_used=True,
+                status="DEGRADED",
+                fallback_used=True,
                 fallback_backend="Bing Search Index",
-                fallback_reason=f"{reason}: ZERO_INDEX_RESULTS",
+                fallback_reason="DEGRADED/NO_VALID_PLATFORM_RESULTS",
                 retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
                 valid_social_urls_retained=0,
+                off_platform_results_discarded=len(raw_fragments),
             )
+            return []
+
+        # Tag and return genuine platform fragments only
+        fragments = platform_fragments
+        self.router._tag_fragments(fragments, platform, "web_search", RetrievalMode.WEB_SEARCH_INDEX.value, "bing-search-index", reason, False)
+        for fragment in fragments:
+            fragment.platform = f"{label} (Web Index Fallback)"
+            fragment.retrieval_method = method
+            fragment.content_depth = "INDEX_SNIPPET"
+            fragment.raw_metadata.update(
+                source_tier="TIER_3_AGGREGATE",
+                honest_disclosure="Public mirror returned no usable item; retrieved through a public search index",
+                is_direct_platform_url=True,
+            )
+        telemetry.update(
+            status="SUCCESS",
+            fallback_used=True,
+            fallback_backend="Bing Search Index",
+            fallback_reason=reason,
+            retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+            valid_social_urls_retained=len(fragments),
+        )
 
         return fragments[:limit] if limit else fragments
 

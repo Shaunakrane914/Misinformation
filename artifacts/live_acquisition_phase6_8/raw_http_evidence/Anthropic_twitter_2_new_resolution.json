@@ -1,16 +1,16 @@
 {
-  "query": "Nvidia",
+  "query": "Anthropic",
   "channel": "twitter",
-  "condition": "1_baseline",
-  "latency_sec": 0.348,
+  "condition": "2_new_resolution",
+  "latency_sec": 0.397,
   "resolved_info": {
-    "entity_id": "Q182477",
-    "entity_label": "Nvidia",
-    "handle": "nvidia",
+    "entity_id": "Q116758847",
+    "entity_label": "Anthropic",
+    "handle": "AnthropicAI",
     "relationship": "OFFICIAL",
-    "confidence": 0.98,
-    "verification_method": "CURATED_ENTERPRISE_MAP",
-    "official_website": "https://www.nvidia.com"
+    "confidence": 0.95,
+    "verification_method": "LIVE_WIKIDATA_P2002_REST",
+    "official_website": "https://www.anthropic.com/"
   },
   "telemetry": {
     "status": "SUCCESS",
@@ -20,12 +20,12 @@
   },
   "metrics": {
     "total_items": 1,
-    "total_chars": 139,
-    "total_bytes": 139,
+    "total_chars": 159,
+    "total_bytes": 170,
     "body_text_chars": 0,
-    "metadata_text_chars": 139,
+    "metadata_text_chars": 159,
     "body_utf8_bytes": 0,
-    "metadata_utf8_bytes": 139,
+    "metadata_utf8_bytes": 170,
     "entity_matching_reddit_submissions": 0,
     "claim_relevant_reddit_submissions": 0,
     "feed_summaries": 0,
@@ -42,19 +42,19 @@
   },
   "http_audit_records": [
     {
-      "source_endpoint": "https://x.com/nvidia",
+      "source_endpoint": "https://x.com/Anthropic",
       "http_status": 200,
       "content_type": "application/json; charset=utf-8",
-      "payload_size_bytes": 139,
+      "payload_size_bytes": 170,
       "body_text_chars": 0,
-      "metadata_text_chars": 139,
+      "metadata_text_chars": 159,
       "body_utf8_bytes": 0,
-      "metadata_utf8_bytes": 139,
+      "metadata_utf8_bytes": 170,
       "content_depth": "PROFILE_METADATA",
       "retrieval_mode": "zero_auth_public_mirror",
       "cache_status": "FRESH_NETWORK",
       "clean_body_sample": "",
-      "metadata_sample": "The official handle for NVIDIA. Blog: https://blogs.nvidia.com Support: http://nvda.ws/2ei5pio All our social media: http://nvda.ws/2wmlfGB"
+      "metadata_sample": "Emphatically not an AI company. Ohioan, Liberal, book-worm, news-hound, CLE sports s\u0336u\u0336f\u0336f\u0336e\u0336r\u0336e\u0336r\u0336 enjoyer, Anglophile, many RTs. He/him. anthropic42 @ bsky/\ud83e\uddf5"
     }
   ]
 }

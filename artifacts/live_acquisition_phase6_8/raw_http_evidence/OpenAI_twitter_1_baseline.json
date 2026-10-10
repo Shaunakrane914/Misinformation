@@ -2,13 +2,15 @@
   "query": "OpenAI",
   "channel": "twitter",
   "condition": "1_baseline",
-  "latency_sec": 0.452,
+  "latency_sec": 0.365,
   "resolved_info": {
     "entity_id": "Q21708200",
     "entity_label": "OpenAI",
     "handle": "OpenAI",
     "relationship": "OFFICIAL",
-    "confidence": 0.98
+    "confidence": 0.98,
+    "verification_method": "CURATED_ENTERPRISE_MAP",
+    "official_website": "https://openai.com"
   },
   "telemetry": {
     "status": "SUCCESS",
@@ -18,54 +20,41 @@
   },
   "metrics": {
     "total_items": 1,
-    "total_chars": 154,
-    "total_bytes": 158,
-    "depth_breakdown": {
-      "FULL_POST": 0,
-      "FEED_ENTRY_SUMMARY": 0,
-      "PROFILE_METADATA": 1,
-      "INDEX_SNIPPET": 0,
-      "OTHER": 0
-    },
-    "direct_platform_urls": 1,
-    "non_direct_urls": 0,
-    "relevant_items": 1,
-    "false_matches": 0
+    "total_chars": 129,
+    "total_bytes": 133,
+    "body_text_chars": 0,
+    "metadata_text_chars": 129,
+    "body_utf8_bytes": 0,
+    "metadata_utf8_bytes": 133,
+    "entity_matching_reddit_submissions": 0,
+    "claim_relevant_reddit_submissions": 0,
+    "feed_summaries": 0,
+    "full_post_bodies": 0,
+    "direct_comment_bodies": 0,
+    "x_profile_metadata": 1,
+    "actual_x_statuses": 0,
+    "indexed_snippets": 0,
+    "off_platform_general_web_results": 0,
+    "cached_results": 0,
+    "fresh_network_results": 1,
+    "discussion_posts_acquired": 0,
+    "profile_metadata_acquired": 1
   },
-  "fragments": [
+  "http_audit_records": [
     {
-      "platform": "twitter",
-      "title": "Profile: OpenAI (@OpenAI)",
-      "url": "https://x.com/OpenAI",
-      "author": "@OpenAI",
+      "source_endpoint": "https://x.com/OpenAI",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "payload_size_bytes": 133,
+      "body_text_chars": 0,
+      "metadata_text_chars": 129,
+      "body_utf8_bytes": 0,
+      "metadata_utf8_bytes": 133,
       "content_depth": "PROFILE_METADATA",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "fxtwitter",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "fxtwitter",
-        "screen_name": "OpenAI",
-        "followers": 5423531,
-        "tweets_count": 2179,
-        "source_tier": "SPECIALIST_MIRROR",
-        "mirror_backend": "fxtwitter",
-        "discovered_from": "direct_input",
-        "content_completeness": "profile",
-        "external_id": "OpenAI",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "twitter",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "fxtwitter",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:57.500112"
-          }
-        ]
-      },
-      "content_preview": "OpenAI\u2019s mission is to ensure that artificial general intelligence benefits all of humanity. We\u2019re hiring: http://openai.com/jobs",
-      "char_length": 129
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "",
+      "metadata_sample": "OpenAI\u2019s mission is to ensure that artificial general intelligence benefits all of humanity. We\u2019re hiring: http://openai.com/jobs"
     }
   ]
 }

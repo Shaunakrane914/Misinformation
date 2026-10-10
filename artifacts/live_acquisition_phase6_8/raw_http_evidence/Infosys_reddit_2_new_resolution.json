@@ -1,17 +1,17 @@
 {
-  "query": "Tata Sons",
+  "query": "Infosys",
   "channel": "reddit",
-  "condition": "1_baseline",
-  "latency_sec": 9.539,
+  "condition": "2_new_resolution",
+  "latency_sec": 12.978,
   "resolved_info": {
-    "entity": "Tata Sons",
+    "entity": "Infosys",
     "subreddits": [
-      "IndianStockMarket",
-      "IndiaInvestments",
-      "india"
+      "stocks",
+      "wallstreetbets",
+      "investing"
     ],
-    "sector": "indian_markets",
-    "region": "india",
+    "sector": "global_equities",
+    "region": "global",
     "rss_deprecation_info": {
       "rss_sunset_announced": "2026-11-13",
       "legacy_api_deadline": "2026-10-31",
@@ -23,17 +23,25 @@
     }
   },
   "telemetry": {
-    "resolved_entity": "Tata Sons",
-    "entity_sector": "general",
-    "subreddit_candidate_count": 0,
-    "rss_deprecation_info": {},
+    "resolved_entity": "Infosys",
+    "entity_sector": "global_equities",
+    "subreddit_candidate_count": 3,
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "rss_status": "OPERATIONAL",
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    },
     "rss_active": true,
     "rss_status": "OPERATIONAL",
-    "resolution_rss_result": "RSS_DEPRECATED_OR_DISABLED",
+    "resolution_rss_result": "NO_RELEVANT_FEED_POSTS",
     "discovery_attempted": true,
     "discovery_engine": "bing_search",
     "queries_attempted": 6,
-    "candidate_urls_count": 30,
+    "candidate_urls_count": 20,
     "social_candidate_count": 0,
     "reddit_url_count": 0,
     "mirror_attempted": false,

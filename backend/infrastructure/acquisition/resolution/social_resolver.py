@@ -65,6 +65,7 @@ class ResolvedXCandidate:
     description: str = ""
     aliases: List[str] = field(default_factory=list)
     official_website: Optional[str] = None
+    verification_method: str = "CURATED_ENTERPRISE_MAP"  # "CURATED_ENTERPRISE_MAP" | "LIVE_WIKIDATA_P2002_REST"
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -74,6 +75,7 @@ class ResolvedXCandidate:
             "relationship": self.relationship,
             "confidence": round(self.confidence, 3),
             "verification_evidence": self.verification_evidence,
+            "verification_method": self.verification_method,
             "description": self.description,
             "aliases": self.aliases,
             "official_website": self.official_website,
@@ -228,46 +230,51 @@ class WikidataXResolver:
     UNRELATED_TOKENS = {
         "asteroid", "film", "album", "song", "musical group", "band", "village",
         "cricketer", "footballer", "actor", "fictional character", "river",
-        "unit of magnetic", "physical unit", "ship", "battleship"
+        "unit of magnetic", "physical unit", "ship", "battleship", "fruit",
+        "plant", "tree", "animal", "species", "mammal", "genus", "mountain", "lake"
     }
 
     # Positive tokens indicating enterprise / corporate identity
     CORPORATE_TOKENS = {
         "company", "corporation", "business", "enterprise", "conglomerate",
         "holding", "manufacturer", "organization", "technology", "multinational",
-        "subsidiary", "automaker", "semiconductor", "research"
+        "subsidiary", "automaker", "semiconductor", "research", "corp", "inc",
+        "ltd", "software", "hardware", "cloud", "retail", "financial", "firm"
     }
 
     def __init__(self, timeout: float = 6.0):
         self.timeout = timeout
 
-    def resolve(self, entity_query: str) -> List[ResolvedXCandidate]:
+    def resolve(self, entity_query: str, force_live: bool = False) -> List[ResolvedXCandidate]:
         """
         Disambiguate entity and return prioritized ResolvedXCandidate list.
         Never blindly picks the first result.
+        Curated benchmark entries are clearly marked with verification_method='CURATED_ENTERPRISE_MAP'.
         """
         clean_q = entity_query.strip().lower()
         if not clean_q:
             return []
 
-        # 1. Exact Curated Match Check (Instant & 100% Deterministic)
-        for name, candidates in self.CURATED_ENTERPRISE_MAP.items():
-            if clean_q == name or clean_q in name or name in clean_q:
-                # Return deep copy so callers cannot mutate registry
-                return [
-                    ResolvedXCandidate(
-                        handle=c.handle,
-                        entity_id=c.entity_id,
-                        entity_label=c.entity_label,
-                        relationship=c.relationship,
-                        confidence=c.confidence,
-                        verification_evidence=c.verification_evidence,
-                        description=c.description,
-                        aliases=list(c.aliases),
-                        official_website=c.official_website,
-                    )
-                    for c in candidates
-                ]
+        # 1. Exact Curated Match Check (if not forcing live lookup)
+        if not force_live:
+            for name, candidates in self.CURATED_ENTERPRISE_MAP.items():
+                if clean_q == name or clean_q in name or name in clean_q:
+                    # Return deep copy with explicit curated verification method
+                    return [
+                        ResolvedXCandidate(
+                            handle=c.handle,
+                            entity_id=c.entity_id,
+                            entity_label=c.entity_label,
+                            relationship=c.relationship,
+                            confidence=c.confidence,
+                            verification_evidence=c.verification_evidence,
+                            description=c.description,
+                            aliases=list(c.aliases),
+                            official_website=c.official_website,
+                            verification_method="CURATED_ENTERPRISE_MAP",
+                        )
+                        for c in candidates
+                    ]
 
         # 2. Live Wikidata API Discovery & Disambiguation
         candidates = self._query_wikidata_live(entity_query)
@@ -275,6 +282,10 @@ class WikidataXResolver:
             return candidates
 
         return []
+
+    def resolve_live(self, entity_query: str) -> List[ResolvedXCandidate]:
+        """Explicitly execute live dynamic Wikidata resolution, bypassing curated mappings."""
+        return self._query_wikidata_live(entity_query)
 
     def _query_wikidata_live(self, entity_query: str) -> List[ResolvedXCandidate]:
         """Query Wikidata entity search, filter out irrelevant types, and extract P2002."""
@@ -378,6 +389,7 @@ class WikidataXResolver:
                         description=desc,
                         aliases=aliases,
                         official_website=website,
+                        verification_method="LIVE_WIKIDATA_P2002_REST",
                     ))
 
         return resolved
@@ -449,16 +461,26 @@ class EntitySubredditResolver:
     }
 
     def __init__(self):
-        # Feature flag check: defaults to True, can be disabled via AEGIS_REDDIT_RSS_ENABLED=false
-        self.rss_enabled = os.getenv("AEGIS_REDDIT_RSS_ENABLED", "true").strip().lower() in ("true", "1", "yes")
+        pass
+
+    @property
+    def is_rss_enabled(self) -> bool:
+        """Dynamic runtime feature flag check - evaluates environment per call."""
+        return os.getenv("AEGIS_REDDIT_RSS_ENABLED", "true").strip().lower() in ("true", "1", "yes")
+
+    @property
+    def rss_enabled(self) -> bool:
+        return self.is_rss_enabled
 
     def get_deprecation_info(self) -> Dict[str, Any]:
         """Return authoritative compliance metadata regarding Reddit RSS sunset."""
+        active = self.is_rss_enabled
         return {
             "rss_sunset_announced": REDDIT_RSS_SUNSET_DATE,
             "legacy_api_deadline": REDDIT_LEGACY_API_DEADLINE,
             "data_api_sunset": REDDIT_DATA_API_SUNSET_DATE,
-            "rss_active": self.rss_enabled,
+            "rss_active": active,
+            "rss_status": "OPERATIONAL" if active else "DISABLED_VIA_FEATURE_FLAG",
             "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
             "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation.",
         }
@@ -490,6 +512,41 @@ class EntitySubredditResolver:
         # 3. Default to broad market communities
         return "global_equities", list(self.SECTOR_SUBREDDIT_MAP["global_equities"])
 
+    @staticmethod
+    def _extract_clean_content(post: EvidenceFragment) -> Tuple[str, str]:
+        """
+        Extract clean post title and post body, strictly stripped of:
+        - Subreddit prefixes (e.g. '[r/teslamotors]')
+        - Boilerplate headers ('Subreddit:', 'Title:', 'Author:', 'Link:', 'Content:')
+        - Web URLs and syndicated metadata
+        """
+        # Clean title
+        clean_title = re.sub(r"^\[r/[^\]]+\]\s*", "", post.title or "").strip()
+        if not clean_title:
+            clean_title = post.title or ""
+
+        # Clean body
+        raw_content = post.content or ""
+        if "\n\nContent:\n" in raw_content:
+            extracted_body = raw_content.split("\n\nContent:\n", 1)[1].strip()
+        else:
+            body_lines = [
+                line for line in raw_content.splitlines()
+                if not re.match(r"^(Subreddit|Title|Author|Link):\s*", line.strip(), re.IGNORECASE)
+            ]
+            extracted_body = "\n".join(body_lines).strip()
+
+        # Remove explicit URLs from body
+        clean_body = re.sub(r"https?://\S+", "", extracted_body).strip()
+        return clean_title, clean_body
+
+    @staticmethod
+    def _word_boundary_match(pattern: str, text: str) -> bool:
+        """Word/token-boundary aware match to prevent substring collisions (e.g. 'sons' in 'lessons')."""
+        if not pattern or not text:
+            return False
+        return bool(re.search(rf"\b{re.escape(pattern)}\b", text, re.IGNORECASE))
+
     def filter_and_rank_posts(
         self,
         posts: List[EvidenceFragment],
@@ -498,41 +555,96 @@ class EntitySubredditResolver:
         min_relevance_score: float = 1.0,
     ) -> List[EvidenceFragment]:
         """
-        Rank and filter genuine feed entries against the user query and entity.
-        Does NOT assume every post is relevant.
+        Rank and filter feed entries against user query and entity with token-boundary integrity.
+        Separates:
+        - entity_relevance: matching entity name strictly within clean post title and body
+        - claim_relevance: matching claim/query tokens strictly within clean post title and body
+        - community_relevance: weight from candidate community, NEVER counted as entity proof
         """
         if not posts:
             return []
 
-        q_clean = query.strip().lower()
-        q_words = [w for w in re.sub(r"[^\w\s]", " ", q_clean).split() if len(w) > 2]
         ent_clean = entity_name.strip().lower() if entity_name else ""
         ent_words = [w for w in re.sub(r"[^\w\s]", " ", ent_clean).split() if len(w) > 2]
 
+        stop_words = {
+            "the", "and", "for", "with", "from", "that", "this", "about", "what", "when",
+            "where", "how", "are", "were", "was", "has", "have", "had", "will", "would",
+            "could", "should", "into", "over", "after", "here", "there", "their", "they",
+        }
+        q_clean = query.strip().lower()
+        q_words = [
+            w for w in re.sub(r"[^\w\s]", " ", q_clean).split()
+            if len(w) > 2 and w not in stop_words and w not in ent_words
+        ]
+
         scored_posts: List[Tuple[float, EvidenceFragment]] = []
         for post in posts:
-            text = f"{post.title} {post.snippet} {post.content}".lower()
-            score = 0.0
+            clean_title, clean_body = self._extract_clean_content(post)
 
-            # Direct entity mentions receive heavy weight
-            if ent_clean and ent_clean in text:
-                score += 5.0
-            elif ent_words and all(w in text for w in ent_words):
-                score += 3.5
-            elif ent_words and any(w in text for w in ent_words):
-                score += 1.5
+            # 1. Entity Relevance (strictly clean title and body; no subreddit/boilerplate text)
+            entity_relevance = 0.0
+            if ent_clean:
+                title_has_full = self._word_boundary_match(ent_clean, clean_title)
+                body_has_full = self._word_boundary_match(ent_clean, clean_body)
 
-            # Query term overlaps
-            q_matches = sum(1 for w in q_words if w in text)
-            score += q_matches * 1.0
+                if title_has_full:
+                    entity_relevance += 5.0
+                if body_has_full:
+                    entity_relevance += 3.5
 
-            # Recency bonus if available
-            if "hour" in (post.published or "").lower() or "minute" in (post.published or "").lower():
-                score += 0.5
+                if not (title_has_full or body_has_full) and len(ent_words) > 1:
+                    title_all_words = all(self._word_boundary_match(w, clean_title) for w in ent_words)
+                    body_all_words = all(self._word_boundary_match(w, clean_body) for w in ent_words)
+                    if title_all_words:
+                        entity_relevance += 3.5
+                    elif body_all_words:
+                        entity_relevance += 2.5
+                    else:
+                        comb_text = f"{clean_title} {clean_body}"
+                        if all(self._word_boundary_match(w, comb_text) for w in ent_words):
+                            entity_relevance += 2.0
+                        else:
+                            matched_words = sum(1 for w in ent_words if self._word_boundary_match(w, comb_text))
+                            if matched_words > 0:
+                                entity_relevance += (matched_words / len(ent_words)) * 1.5
+                elif not (title_has_full or body_has_full) and len(ent_words) == 1:
+                    if self._word_boundary_match(ent_words[0], clean_title):
+                        entity_relevance += 5.0
+                    elif self._word_boundary_match(ent_words[0], clean_body):
+                        entity_relevance += 3.5
 
-            if score >= min_relevance_score:
-                post.score = round(score, 2)
-                scored_posts.append((score, post))
+            # 2. Claim Relevance (query/claim terms strictly within clean title & body)
+            claim_relevance = 0.0
+            for qw in q_words:
+                if self._word_boundary_match(qw, clean_title):
+                    claim_relevance += 1.5
+                elif self._word_boundary_match(qw, clean_body):
+                    claim_relevance += 1.0
+
+            # 3. Community Relevance (metadata weight; cannot prove entity/claim match)
+            comm_weight = float(post.raw_metadata.get("relevance_weight", 0.8))
+            community_relevance = round(comm_weight * 0.5, 2)
+
+            # Strict negative exclusion:
+            # If an entity is specified and entity_relevance is 0.0, community membership is NOT proof.
+            if ent_clean and entity_relevance == 0.0:
+                continue
+
+            # If no entity is specified, require at least claim relevance
+            if not ent_clean and claim_relevance == 0.0:
+                continue
+
+            total_score = entity_relevance + claim_relevance + community_relevance
+            if total_score >= min_relevance_score:
+                post.score = round(total_score, 2)
+                post.raw_metadata.update(
+                    entity_relevance=round(entity_relevance, 2),
+                    claim_relevance=round(claim_relevance, 2),
+                    community_relevance=round(community_relevance, 2),
+                    clean_title=clean_title,
+                )
+                scored_posts.append((total_score, post))
 
         # Sort descending by relevance score
         scored_posts.sort(key=lambda x: x[0], reverse=True)

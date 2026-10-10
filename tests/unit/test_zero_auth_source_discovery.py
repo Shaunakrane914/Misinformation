@@ -378,7 +378,7 @@ def test_mirror_failure_falls_back_to_search_with_honest_disclosure(router):
         platform="Web",
         title="News Article referencing Twitter statement",
         snippet="A news site quoting a tweet.",
-        url="https://news.example.com/article/1",
+        url="https://x.com/news_outlet/status/12345",
         retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value
     )
     with patch.object(router, "_execute_web_search") as mock_search:

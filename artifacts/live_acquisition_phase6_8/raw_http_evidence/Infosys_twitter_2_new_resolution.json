@@ -1,16 +1,16 @@
 {
-  "query": "Nvidia",
+  "query": "Infosys",
   "channel": "twitter",
-  "condition": "1_baseline",
-  "latency_sec": 0.348,
+  "condition": "2_new_resolution",
+  "latency_sec": 0.391,
   "resolved_info": {
-    "entity_id": "Q182477",
-    "entity_label": "Nvidia",
-    "handle": "nvidia",
+    "entity_id": "Q26989",
+    "entity_label": "Infosys limited",
+    "handle": "infosys",
     "relationship": "OFFICIAL",
-    "confidence": 0.98,
-    "verification_method": "CURATED_ENTERPRISE_MAP",
-    "official_website": "https://www.nvidia.com"
+    "confidence": 0.85,
+    "verification_method": "LIVE_WIKIDATA_P2002_REST",
+    "official_website": "https://www.infosys.com/"
   },
   "telemetry": {
     "status": "SUCCESS",
@@ -20,12 +20,12 @@
   },
   "metrics": {
     "total_items": 1,
-    "total_chars": 139,
-    "total_bytes": 139,
+    "total_chars": 158,
+    "total_bytes": 158,
     "body_text_chars": 0,
-    "metadata_text_chars": 139,
+    "metadata_text_chars": 158,
     "body_utf8_bytes": 0,
-    "metadata_utf8_bytes": 139,
+    "metadata_utf8_bytes": 158,
     "entity_matching_reddit_submissions": 0,
     "claim_relevant_reddit_submissions": 0,
     "feed_summaries": 0,
@@ -42,19 +42,19 @@
   },
   "http_audit_records": [
     {
-      "source_endpoint": "https://x.com/nvidia",
+      "source_endpoint": "https://x.com/Infosys",
       "http_status": 200,
       "content_type": "application/json; charset=utf-8",
-      "payload_size_bytes": 139,
+      "payload_size_bytes": 158,
       "body_text_chars": 0,
-      "metadata_text_chars": 139,
+      "metadata_text_chars": 158,
       "body_utf8_bytes": 0,
-      "metadata_utf8_bytes": 139,
+      "metadata_utf8_bytes": 158,
       "content_depth": "PROFILE_METADATA",
       "retrieval_mode": "zero_auth_public_mirror",
       "cache_status": "FRESH_NETWORK",
       "clean_body_sample": "",
-      "metadata_sample": "The official handle for NVIDIA. Blog: https://blogs.nvidia.com Support: http://nvda.ws/2ei5pio All our social media: http://nvda.ws/2wmlfGB"
+      "metadata_sample": "Follow us to join conversations on how to #NavigateYourNext! We help clients navigate transformation with #AI powered core, #AgileDigital & lifelong #Learning"
     }
   ]
 }

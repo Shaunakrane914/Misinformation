@@ -2,7 +2,7 @@
   "query": "Reliance Industries",
   "channel": "reddit",
   "condition": "2_new_resolution",
-  "latency_sec": 8.509,
+  "latency_sec": 10.32,
   "resolved_info": {
     "entity": "Reliance Industries",
     "subreddits": [
@@ -11,7 +11,16 @@
       "india"
     ],
     "sector": "indian_markets",
-    "region": "india"
+    "region": "india",
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "rss_status": "OPERATIONAL",
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    }
   },
   "telemetry": {
     "resolved_entity": "Reliance Industries",
@@ -22,321 +31,50 @@
       "legacy_api_deadline": "2026-10-31",
       "data_api_sunset": "2027-03-31",
       "rss_active": true,
+      "rss_status": "OPERATIONAL",
       "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
       "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
     },
+    "rss_active": true,
+    "rss_status": "OPERATIONAL",
     "resolution_rss_result": "NO_RELEVANT_FEED_POSTS",
     "discovery_attempted": true,
     "discovery_engine": "bing_search",
     "queries_attempted": 6,
-    "candidate_urls_count": 25,
+    "candidate_urls_count": 27,
     "social_candidate_count": 0,
     "reddit_url_count": 0,
     "mirror_attempted": false,
     "mirror_result": "NO_VALID_URLS",
-    "status": "SUCCESS",
+    "status": "DEGRADED",
     "fallback_used": true,
     "fallback_backend": "Bing Search Index",
-    "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
+    "fallback_reason": "DEGRADED/NO_VALID_PLATFORM_RESULTS",
     "retrieval_mode": "web_search_index",
-    "valid_social_urls_retained": 0
+    "valid_social_urls_retained": 0,
+    "off_platform_results_discarded": 10
   },
   "metrics": {
-    "total_items": 10,
-    "total_chars": 3080,
-    "total_bytes": 3113,
-    "depth_breakdown": {
-      "FULL_POST": 0,
-      "FEED_ENTRY_SUMMARY": 0,
-      "PROFILE_METADATA": 0,
-      "INDEX_SNIPPET": 10,
-      "OTHER": 0
-    },
-    "direct_platform_urls": 0,
-    "non_direct_urls": 10,
-    "relevant_items": 10,
-    "false_matches": 0
+    "total_items": 0,
+    "total_chars": 0,
+    "total_bytes": 0,
+    "body_text_chars": 0,
+    "metadata_text_chars": 0,
+    "body_utf8_bytes": 0,
+    "metadata_utf8_bytes": 0,
+    "entity_matching_reddit_submissions": 0,
+    "claim_relevant_reddit_submissions": 0,
+    "feed_summaries": 0,
+    "full_post_bodies": 0,
+    "direct_comment_bodies": 0,
+    "x_profile_metadata": 0,
+    "actual_x_statuses": 0,
+    "indexed_snippets": 0,
+    "off_platform_general_web_results": 0,
+    "cached_results": 0,
+    "fresh_network_results": 0,
+    "discussion_posts_acquired": 0,
+    "profile_metadata_acquired": 0
   },
-  "fragments": [
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Reliance IndustriesLimited \u2013 Petroleum Refining & Marketing | Retail ...",
-      "url": "https://www.ril.com/",
-      "author": "www.ril.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.805377"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Reliance IndustriesLimited \u2013 Petroleum Refining & Marketing | Retail ...\nURL: https://www.ril.com/\n\nSnippet: Reliance Industries Limited is a Fortune 500 company and the largest private sector ",
-      "char_length": 243
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Reliance Industries-Wikipedia",
-      "url": "https://en.wikipedia.org/wiki/Reliance_Industries",
-      "author": "en.wikipedia.org",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.805538"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Reliance Industries-Wikipedia\nURL: https://en.wikipedia.org/wiki/Reliance_Industries\n\nSnippet: Reliance Industries Limited is an Indian multinational conglomerate headquartered in Mumbai. Its b",
-      "char_length": 227
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Reliance IndustriesLimited \u2013 Retail Markets | Telecom | Petroleum ...",
-      "url": "https://www.ril.com/businesses",
-      "author": "www.ril.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.805679"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Reliance IndustriesLimited \u2013 Retail Markets | Telecom | Petroleum ...\nURL: https://www.ril.com/businesses\n\nSnippet: Our Businesses span hydrocarbon exploration and production, petroleum refinin",
-      "char_length": 253
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Our Product and Brand -Reliance Industries",
-      "url": "https://www.ril.com/about/products-brands",
-      "author": "www.ril.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.805827"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Our Product and Brand -Reliance Industries\nURL: https://www.ril.com/about/products-brands\n\nSnippet: Our expertise lies in developing products and markets from 'concept to fruition' and beyond. ",
-      "char_length": 238
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Careers Home |Reliance IndustriesLimited",
-      "url": "https://careers.ril.com/rilcareers/index.aspx",
-      "author": "careers.ril.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.805956"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Careers Home |Reliance IndustriesLimited\nURL: https://careers.ril.com/rilcareers/index.aspx\n\nSnippet: Reliance invites you to dream big and be a part of extraordinary teams. The Ultimate Pitch.",
-      "char_length": 241
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Online Annual Report -Reliance IndustriesLimited",
-      "url": "https://www.ril.com/investors/financial-reporting/online-annual-report",
-      "author": "www.ril.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.806082"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Online Annual Report -Reliance IndustriesLimited\nURL: https://www.ril.com/investors/financial-reporting/online-annual-report\n\nSnippet: Download and access customized Online Annual Reports of Re",
-      "char_length": 272
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Career Opportunities atReliance IndustriesLimited",
-      "url": "https://www.ril.com/careers",
-      "author": "www.ril.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.806207"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Career Opportunities atReliance IndustriesLimited\nURL: https://www.ril.com/careers\n\nSnippet: Today, Reliance is India\u2019s largest private, multi-sector enterprise across energy and new materials,",
-      "char_length": 238
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "AboutReliance IndustriesLimited - A Fortune 500\u00ae Company & The ...",
-      "url": "https://www.ril.com/about",
-      "author": "www.ril.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.806331"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: AboutReliance IndustriesLimited - A Fortune 500\u00ae Company & The ...\nURL: https://www.ril.com/about\n\nSnippet: Reliance Industries Limited is a Fortune 500 \u00ae company and the largest private sector",
-      "char_length": 221
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "RelianceShare Price,RelianceStock Price,Reliance Industries Ltd...",
-      "url": "https://www.moneycontrol.com/india/stockpricequote/refineries/relianceindustries/RI",
-      "author": "www.moneycontrol.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.806462"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: RelianceShare Price,RelianceStock Price,Reliance Industries Ltd...\nURL: https://www.moneycontrol.com/india/stockpricequote/refineries/relianceindustries/RI\n\nSnippet: 1 day ago\u00b7 Reliance Share P",
-      "char_length": 309
-    },
-    {
-      "platform": "Reddit (Web Index Fallback)",
-      "title": "Reliance Industries| Latest & Breaking News onReliance Industries...",
-      "url": "https://www.moneycontrol.com/news/tags/reliance-industries.html",
-      "author": "www.moneycontrol.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "ARCTIC_SHIFT_UNAVAILABLE",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:20:46.806590"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Reliance Industries| Latest & Breaking News onReliance Industries...\nURL: https://www.moneycontrol.com/news/tags/reliance-industries.html\n\nSnippet: 12 hours ago\u00b7 Reliance Industries (RIL) is a ",
-      "char_length": 289
-    }
-  ]
+  "http_audit_records": []
 }

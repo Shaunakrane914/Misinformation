@@ -2,7 +2,7 @@
   "query": "https://reddit.com/r/technology",
   "channel": "reddit",
   "condition": "1_baseline",
-  "latency_sec": 0.949,
+  "latency_sec": 1.041,
   "resolved_info": {
     "entity": "https://reddit.com/r/technology",
     "subreddits": [
@@ -11,7 +11,16 @@
       "investing"
     ],
     "sector": "global_equities",
-    "region": "global"
+    "region": "global",
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "rss_status": "OPERATIONAL",
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    }
   },
   "telemetry": {
     "status": "SUCCESS",
@@ -21,360 +30,176 @@
   },
   "metrics": {
     "total_items": 10,
-    "total_chars": 4517,
-    "total_bytes": 4537,
-    "depth_breakdown": {
-      "FULL_POST": 0,
-      "FEED_ENTRY_SUMMARY": 10,
-      "PROFILE_METADATA": 0,
-      "INDEX_SNIPPET": 0,
-      "OTHER": 0
-    },
-    "direct_platform_urls": 10,
-    "non_direct_urls": 0,
-    "relevant_items": 0,
-    "false_matches": 10
+    "total_chars": 3378,
+    "total_bytes": 3384,
+    "body_text_chars": 766,
+    "metadata_text_chars": 2612,
+    "body_utf8_bytes": 766,
+    "metadata_utf8_bytes": 2618,
+    "entity_matching_reddit_submissions": 0,
+    "claim_relevant_reddit_submissions": 0,
+    "feed_summaries": 10,
+    "full_post_bodies": 0,
+    "direct_comment_bodies": 0,
+    "x_profile_metadata": 0,
+    "actual_x_statuses": 0,
+    "indexed_snippets": 0,
+    "off_platform_general_web_results": 0,
+    "cached_results": 0,
+    "fresh_network_results": 10,
+    "discussion_posts_acquired": 10,
+    "profile_metadata_acquired": 0
   },
-  "fragments": [
+  "http_audit_records": [
     {
-      "platform": "reddit",
-      "title": "[r/technology] ICE is reportedly using a Palantir database to compile dossiers on protestors",
-      "url": "https://www.reddit.com/r/technology/comments/1x2891v/ice_is_reportedly_using_a_palantir_database_to/",
-      "author": "/u/Vucea",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x2c1gn/ukrainian_drones_strike_russias_largest_data/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 377,
+      "body_text_chars": 82,
+      "metadata_text_chars": 139,
+      "body_utf8_bytes": 82,
+      "metadata_utf8_bytes": 139,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.805929"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: ICE is reportedly using a Palantir database to compile dossiers on protestors\nAuthor: /u/Vucea\nLink: https://www.reddit.com/r/technology/comments/1x2891v/ice_is_reported",
-      "char_length": 312
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/MarvelsGrantMan136       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: Ukrainian drones strike Russia's largest data center, multiple parts of 1.4 million square foot campus knocked offline | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] Virginia Data Center Ran Diesel Generators for 24 Hours. Residents Fled Their Homes",
-      "url": "https://www.reddit.com/r/technology/comments/1x1vtem/virginia_data_center_ran_diesel_generators_for_24/",
-      "author": "/u/stenspect",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x2891v/ice_is_reportedly_using_a_palantir_database_to/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 312,
+      "body_text_chars": 69,
+      "metadata_text_chars": 98,
+      "body_utf8_bytes": 69,
+      "metadata_utf8_bytes": 98,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.805968"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: Virginia Data Center Ran Diesel Generators for 24 Hours. Residents Fled Their Homes\nAuthor: /u/stenspect\nLink: https://www.reddit.com/r/technology/comments/1x1vtem/virgi",
-      "char_length": 329
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/Vucea       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: ICE is reportedly using a Palantir database to compile dossiers on protestors | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] Using AI for just 10 minutes erodes your ability to persist at hard things",
-      "url": "https://www.reddit.com/r/technology/comments/1x1zsei/using_ai_for_just_10_minutes_erodes_your_ability/",
-      "author": "/u/slackmaster",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x1vtem/virginia_data_center_ran_diesel_generators_for_24/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 329,
+      "body_text_chars": 73,
+      "metadata_text_chars": 104,
+      "body_utf8_bytes": 73,
+      "metadata_utf8_bytes": 104,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.805985"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: Using AI for just 10 minutes erodes your ability to persist at hard things\nAuthor: /u/slackmaster\nLink: https://www.reddit.com/r/technology/comments/1x1zsei/using_ai_for",
-      "char_length": 323
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/stenspect       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: Virginia Data Center Ran Diesel Generators for 24 Hours. Residents Fled Their Homes | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] Trump purchased up to $5 million of SpaceX bonds days before major space order",
-      "url": "https://www.reddit.com/r/technology/comments/1x1svmz/trump_purchased_up_to_5_million_of_spacex_bonds/",
-      "author": "/u/esporx",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x1zsei/using_ai_for_just_10_minutes_erodes_your_ability/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 323,
+      "body_text_chars": 75,
+      "metadata_text_chars": 95,
+      "body_utf8_bytes": 75,
+      "metadata_utf8_bytes": 95,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.805999"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: Trump purchased up to $5 million of SpaceX bonds days before major space order\nAuthor: /u/esporx\nLink: https://www.reddit.com/r/technology/comments/1x1svmz/trump_purchas",
-      "char_length": 316
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/slackmaster       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: Using AI for just 10 minutes erodes your ability to persist at hard things | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] Ukrainian drones strike Russia's largest data center, multiple parts of 1.4 million square foot campus knocked offline",
-      "url": "https://www.reddit.com/r/technology/comments/1x2c1gn/ukrainian_drones_strike_russias_largest_data/",
-      "author": "/u/MarvelsGrantMan136",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x1svmz/trump_purchased_up_to_5_million_of_spacex_bonds/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 316,
+      "body_text_chars": 70,
+      "metadata_text_chars": 99,
+      "body_utf8_bytes": 70,
+      "metadata_utf8_bytes": 99,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.806012"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: Ukrainian drones strike Russia's largest data center, multiple parts of 1.4 million square foot campus knocked offline\nAuthor: /u/MarvelsGrantMan136\nLink: https://www.re",
-      "char_length": 377
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/esporx       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: Trump purchased up to $5 million of SpaceX bonds days before major space order | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] My personal AI agent posted my bank details on company Slack. It's made me rethink how I use it.",
-      "url": "https://www.reddit.com/r/technology/comments/1x1ysae/my_personal_ai_agent_posted_my_bank_details_on/",
-      "author": "/u/stenspect",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x1ysae/my_personal_ai_agent_posted_my_bank_details_on/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 339,
+      "body_text_chars": 73,
+      "metadata_text_chars": 117,
+      "body_utf8_bytes": 73,
+      "metadata_utf8_bytes": 117,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.806025"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: My personal AI agent posted my bank details on company Slack. It's made me rethink how I use it.\nAuthor: /u/stenspect\nLink: https://www.reddit.com/r/technology/comments/",
-      "char_length": 339
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/stenspect       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: My personal AI agent posted my bank details on company Slack. It's made me rethink how I use it. | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] School district makes dramatic U-turn on AI, banning it across all grades weeks after Google Gemini rollout",
-      "url": "https://www.reddit.com/r/technology/comments/1x1jt0p/school_district_makes_dramatic_uturn_on_ai/",
-      "author": "/u/Miserable_Phase_2519",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x2e3ar/nvidia_reportedly_halts_geforce_rtx_5090/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 462,
+      "body_text_chars": 84,
+      "metadata_text_chars": 222,
+      "body_utf8_bytes": 84,
+      "metadata_utf8_bytes": 224,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.806038"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: School district makes dramatic U-turn on AI, banning it across all grades weeks after Google Gemini rollout\nAuthor: /u/Miserable_Phase_2519\nLink: https://www.reddit.com/",
-      "char_length": 368
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/Miserable_Phase_2519       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: Nvidia reportedly halts GeForce RTX 5090 production in favor of AI data center and professional GPUs \u2014 impending supply drought expected to drive up prices, RTX 5080 24GB rumored as new gaming flagship | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] Top executives at Anthropic, OpenAI and other AI companies are privately gaming out scenarios for a public and political revolt after a catastrophic AI event.",
-      "url": "https://www.reddit.com/r/technology/comments/1x1i81q/top_executives_at_anthropic_openai_and_other_ai/",
-      "author": "/u/socoolandawesome",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x1jt0p/school_district_makes_dramatic_uturn_on_ai/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 368,
+      "body_text_chars": 84,
+      "metadata_text_chars": 128,
+      "body_utf8_bytes": 84,
+      "metadata_utf8_bytes": 128,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.806052"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: Top executives at Anthropic, OpenAI and other AI companies are privately gaming out scenarios for a public and political revolt after a catastrophic AI event.\nAuthor: /u",
-      "char_length": 416
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/Miserable_Phase_2519       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: School district makes dramatic U-turn on AI, banning it across all grades weeks after Google Gemini rollout | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] PC shipments fall 20.1 percent in \u201csharpest decline\u201d since Q1 2023",
-      "url": "https://www.reddit.com/r/technology/comments/1x1u8hg/pc_shipments_fall_201_percent_in_sharpest_decline/",
-      "author": "/u/Stiltonrocks",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x1i81q/top_executives_at_anthropic_openai_and_other_ai/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 416,
+      "body_text_chars": 80,
+      "metadata_text_chars": 179,
+      "body_utf8_bytes": 80,
+      "metadata_utf8_bytes": 179,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.806067"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: PC shipments fall 20.1 percent in \u201csharpest decline\u201d since Q1 2023\nAuthor: /u/Stiltonrocks\nLink: https://www.reddit.com/r/technology/comments/1x1u8hg/pc_shipments_fall_2",
-      "char_length": 318
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/socoolandawesome       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: Top executives at Anthropic, OpenAI and other AI companies are privately gaming out scenarios for a public and political revolt after a catastrophic AI event. | Subreddit: "
     },
     {
-      "platform": "reddit",
-      "title": "[r/technology] \u2018Pure insanity\u2019: Mathematicians will need years to make sense of OpenAI\u2019s latest drop",
-      "url": "https://www.reddit.com/r/technology/comments/1x1w3az/pure_insanity_mathematicians_will_need_years_to/",
-      "author": "/u/Slow_cpu",
+      "source_endpoint": "https://www.reddit.com/r/technology/comments/1x1u8hg/pc_shipments_fall_201_percent_in_sharpest_decline/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 322,
+      "body_text_chars": 76,
+      "metadata_text_chars": 87,
+      "body_utf8_bytes": 76,
+      "metadata_utf8_bytes": 91,
       "content_depth": "FEED_ENTRY_SUMMARY",
       "retrieval_mode": "zero_auth_public_mirror",
-      "native_backend_id": "reddit-rss",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "backend": "reddit-rss",
-        "subreddit": "technology",
-        "source_tier": "SPECIALIST_API",
-        "content_type": "rss_feed_entry",
-        "rss_sunset_announced": "2026-11-13",
-        "deprecation_status": "OPERATIONAL",
-        "discovered_from": "direct_input",
-        "content_completeness": "subreddit_feed",
-        "external_id": "technology",
-        "retrieval_lineage": [
-          {
-            "requested_channel": "reddit",
-            "actual_channel": "reddit",
-            "retrieval_mode": "zero_auth_public_mirror",
-            "backend_id": "reddit-rss",
-            "fallback_reason": null,
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:21:14.806082"
-          }
-        ]
-      },
-      "content_preview": "Subreddit: r/technology\nTitle: \u2018Pure insanity\u2019: Mathematicians will need years to make sense of OpenAI\u2019s latest drop\nAuthor: /u/Slow_cpu\nLink: https://www.reddit.com/r/technology/comments/1x1w3az/pure",
-      "char_length": 327
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/Stiltonrocks       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: PC shipments fall 20.1 percent in \u201csharpest decline\u201d since Q1 2023 | Subreddit: "
     }
   ]
 }

@@ -2,13 +2,15 @@
   "query": "Tata Sons",
   "channel": "twitter",
   "condition": "3_direct_source_unavailable",
-  "latency_sec": 9.014,
+  "latency_sec": 9.101,
   "resolved_info": {
     "entity_id": "Q331715",
     "entity_label": "Tata Group",
     "handle": "TataCompanies",
     "relationship": "PARENT_COMPANY",
-    "confidence": 0.92
+    "confidence": 0.92,
+    "verification_method": "CURATED_ENTERPRISE_MAP",
+    "official_website": "https://www.tata.com"
   },
   "telemetry": {
     "resolved_entity": "Tata Sons",
@@ -17,314 +19,40 @@
     "discovery_attempted": true,
     "discovery_engine": "bing_search",
     "queries_attempted": 6,
-    "candidate_urls_count": 43,
+    "candidate_urls_count": 20,
     "social_candidate_count": 0,
     "x_status_url_count": 0,
     "mirror_attempted": false,
     "mirror_result": "NO_VALID_URLS",
-    "status": "SUCCESS",
+    "status": "DEGRADED",
     "fallback_used": true,
     "fallback_backend": "Bing Search Index",
-    "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
+    "fallback_reason": "DEGRADED/NO_VALID_PLATFORM_RESULTS",
     "retrieval_mode": "web_search_index",
-    "valid_social_urls_retained": 0
+    "valid_social_urls_retained": 0,
+    "off_platform_results_discarded": 10
   },
   "metrics": {
-    "total_items": 10,
-    "total_chars": 2990,
-    "total_bytes": 3020,
-    "depth_breakdown": {
-      "FULL_POST": 0,
-      "FEED_ENTRY_SUMMARY": 0,
-      "PROFILE_METADATA": 0,
-      "INDEX_SNIPPET": 10,
-      "OTHER": 0
-    },
-    "direct_platform_urls": 0,
-    "non_direct_urls": 10,
-    "relevant_items": 10,
-    "false_matches": 0
+    "total_items": 0,
+    "total_chars": 0,
+    "total_bytes": 0,
+    "body_text_chars": 0,
+    "metadata_text_chars": 0,
+    "body_utf8_bytes": 0,
+    "metadata_utf8_bytes": 0,
+    "entity_matching_reddit_submissions": 0,
+    "claim_relevant_reddit_submissions": 0,
+    "feed_summaries": 0,
+    "full_post_bodies": 0,
+    "direct_comment_bodies": 0,
+    "x_profile_metadata": 0,
+    "actual_x_statuses": 0,
+    "indexed_snippets": 0,
+    "off_platform_general_web_results": 0,
+    "cached_results": 0,
+    "fresh_network_results": 0,
+    "discussion_posts_acquired": 0,
+    "profile_metadata_acquired": 0
   },
-  "fragments": [
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Tata Sons|Tatagroup",
-      "url": "https://www.tata.com/business/tata-sons",
-      "author": "www.tata.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.015521"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Tata Sons|Tatagroup\nURL: https://www.tata.com/business/tata-sons\n\nSnippet: Tata Sons is the principal investment holding company and promoter of Tata companies. 66% of the equity share capital ",
-      "char_length": 218
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Tata Sons-Wikipedia",
-      "url": "https://en.m.wikipedia.org/wiki/Tata_Sons",
-      "author": "en.m.wikipedia.org",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.015681"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Tata Sons-Wikipedia\nURL: https://en.m.wikipedia.org/wiki/Tata_Sons\n\nSnippet: Tata Capital Limited is an Indian financial and investment services company, based in Mumbai. It is a subsidiary of ",
-      "char_length": 215
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Tata SonsPrivate Limited",
-      "url": "https://www.tata.com/content/dam/tata/pdf/fy25/Tata-Sons-Annual-Report-FY25.pdf",
-      "author": "www.tata.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.015812"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Tata SonsPrivate Limited\nURL: https://www.tata.com/content/dam/tata/pdf/fy25/Tata-Sons-Annual-Report-FY25.pdf\n\nSnippet: Tata Sons Private Limited (\u201cTata Sons\u201d) is the principal investment holdi",
-      "char_length": 256
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Tata sonsNews:Tata sonsLatest News,Tata sonsToday news,Tata sons...",
-      "url": "https://www.financialexpress.com/about/tata-sons/",
-      "author": "www.financialexpress.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.015952"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Tata sonsNews:Tata sonsLatest News,Tata sonsToday news,Tata sons...\nURL: https://www.financialexpress.com/about/tata-sons/\n\nSnippet: 4 days ago\u00b7 Tata sons News: Check here latest news and updat",
-      "char_length": 267
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "TheTata Sonsboardroom battle and what happens next",
-      "url": "https://bfsi.economictimes.indiatimes.com/articles/the-tata-sons-boardroom-battle-and-what-happens-next/134324075",
-      "author": "bfsi.economictimes.indiatimes.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.016089"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: TheTata Sonsboardroom battle and what happens next\nURL: https://bfsi.economictimes.indiatimes.com/articles/the-tata-sons-boardroom-battle-and-what-happens-next/134324075\n\nSnippet: Sep 18, 2026\u00b7",
-      "char_length": 313
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Tata Sons: Latest News Headlines, Videos and Photo Galleries onTata...",
-      "url": "https://www.business-standard.com/topic/tata-sons",
-      "author": "www.business-standard.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.016297"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Tata Sons: Latest News Headlines, Videos and Photo Galleries onTata...\nURL: https://www.business-standard.com/topic/tata-sons\n\nSnippet: 4 days ago\u00b7 Tata Sons - Read all the latest news headline",
-      "char_length": 269
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Tata family-Wikipedia",
-      "url": "https://en.m.wikipedia.org/wiki/Tata_family",
-      "author": "en.m.wikipedia.org",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.016438"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Tata family-Wikipedia\nURL: https://en.m.wikipedia.org/wiki/Tata_family\n\nSnippet: The Tata family is an Indian business family, based in Mumbai, India. The family company is Tata Sons, which is ",
-      "char_length": 218
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Latest & Breaking News on Tata Sons-Moneycontrol",
-      "url": "https://www.moneycontrol.com/news/tags/tata-sons.html",
-      "author": "www.moneycontrol.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.016570"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Latest & Breaking News on Tata Sons-Moneycontrol\nURL: https://www.moneycontrol.com/news/tags/tata-sons.html\n\nSnippet: 12 hours ago\u00b7 Get all latest & breaking news on Tata Sons. Watch videos, to",
-      "char_length": 256
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "LatestTATA Sonsshareholdings and portfolio - Trendlyne",
-      "url": "https://trendlyne.com/portfolio/superstar-shareholders/2214735/latest/tata-sons/",
-      "author": "trendlyne.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.016695"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: LatestTATA Sonsshareholdings and portfolio - Trendlyne\nURL: https://trendlyne.com/portfolio/superstar-shareholders/2214735/latest/tata-sons/\n\nSnippet: As per the latest corporate shareholdings ",
-      "char_length": 288
-    },
-    {
-      "platform": "Twitter (Web Index Fallback)",
-      "title": "Latest News onTata Sons: GetTata SonsNews Updates along with \u2026",
-      "url": "https://indianexpress.com/about/tata-sons/",
-      "author": "indianexpress.com",
-      "content_depth": "INDEX_SNIPPET",
-      "retrieval_mode": "web_search_index",
-      "native_backend_id": "bing-search-index",
-      "is_authenticated": false,
-      "raw_metadata": {
-        "retrieval_lineage": [
-          {
-            "requested_channel": "twitter",
-            "actual_channel": "web_search",
-            "retrieval_mode": "web_search_index",
-            "backend_id": "bing-search-index",
-            "fallback_reason": "FXTWITTER_SEARCH_INDEX_FALLBACK",
-            "is_authenticated": false,
-            "retrieved_at": "2026-10-10T12:19:03.016826"
-          }
-        ],
-        "source_tier": "TIER_3_AGGREGATE",
-        "honest_disclosure": "Public mirror returned no usable item; retrieved through a public search index",
-        "is_direct_platform_url": false
-      },
-      "content_preview": "Title: Latest News onTata Sons: GetTata SonsNews Updates along with \u2026\nURL: https://indianexpress.com/about/tata-sons/\n\nSnippet: Tata Sons Latest breaking news, pictures, photos and Video News. Find Ta",
-      "char_length": 256
-    }
-  ]
+  "http_audit_records": []
 }

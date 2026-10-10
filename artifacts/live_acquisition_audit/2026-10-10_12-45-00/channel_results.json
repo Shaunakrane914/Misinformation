@@ -1,0 +1,323 @@
+{
+  "run_id": "2026-10-10_12-45-00",
+  "environment": {
+    "git": {
+      "commit": "1c0d4f80f8b6dec949be2ea4493f04a8b297981b",
+      "branch": "feat/retrieval-quality-benchmark",
+      "status": "dirty"
+    },
+    "dependencies": {
+      "python": "3.13.5",
+      "os": "Windows 11 (AMD64)",
+      "requests": "2.32.4",
+      "feedparser": "6.0.12",
+      "scrapling": "0.4.15",
+      "playwright": "installed",
+      "curl_cffi": "0.16.3",
+      "bs4": "4.13.4",
+      "yt_dlp": "installed",
+      "pydantic": "2.11.7",
+      "bin_gh": "gh version 2.97.0 (2026-07-31)",
+      "bin_yt-dlp": "2026.08.19",
+      "bin_curl": "curl 8.21.0 (Windows) libcurl/8.21.0 Schannel zlib/1.3.2 WinIDN WinLDAP",
+      "bin_git": "git version 2.51.0.windows.2"
+    }
+  },
+  "channels": {
+    "web": {
+      "channel": "web",
+      "attempts": 2,
+      "direct_content_successes": 2,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 2,
+      "average_latency_ms": 2611.0,
+      "backends_observed": [
+        "scrapling_http"
+      ]
+    },
+    "web_search": {
+      "channel": "web_search",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 1,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 5,
+      "average_latency_ms": 353.0,
+      "backends_observed": [
+        "Bing Search Scraper (with Base64 URL resolution)"
+      ]
+    },
+    "github": {
+      "channel": "github",
+      "attempts": 4,
+      "direct_content_successes": 1,
+      "direct_metadata_successes": 1,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 2,
+      "not_tested_results": 0,
+      "total_useful_evidence": 6,
+      "average_latency_ms": 277.0,
+      "backends_observed": [
+        "GitHub REST API",
+        "gh CLI"
+      ]
+    },
+    "youtube": {
+      "channel": "youtube",
+      "attempts": 4,
+      "direct_content_successes": 1,
+      "direct_metadata_successes": 2,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 1,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 5,
+      "average_latency_ms": 1886.5,
+      "backends_observed": [
+        "None",
+        "yt-dlp extract_flat",
+        "yt-dlp in-process",
+        "yt-dlp subtitles extractor"
+      ]
+    },
+    "bilibili": {
+      "channel": "bilibili",
+      "attempts": 4,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 1,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 3,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 3,
+      "average_latency_ms": 191.2,
+      "backends_observed": [
+        "Bilibili Search Public Web API",
+        "None"
+      ]
+    },
+    "v2ex": {
+      "channel": "v2ex",
+      "attempts": 3,
+      "direct_content_successes": 3,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 133,
+      "average_latency_ms": 336.7,
+      "backends_observed": [
+        "V2EX Public REST API"
+      ]
+    },
+    "rss": {
+      "channel": "rss",
+      "attempts": 1,
+      "direct_content_successes": 1,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 5,
+      "average_latency_ms": 288.0,
+      "backends_observed": [
+        "feedparser"
+      ]
+    },
+    "reddit": {
+      "channel": "reddit",
+      "attempts": 3,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 1,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 2,
+      "not_tested_results": 0,
+      "total_useful_evidence": 3,
+      "average_latency_ms": 6065.0,
+      "backends_observed": [
+        "Arctic Shift REST API",
+        "Bing Search Index"
+      ]
+    },
+    "twitter": {
+      "channel": "twitter",
+      "attempts": 3,
+      "direct_content_successes": 1,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 1,
+      "indexed_fallback_results": 1,
+      "auth_required_results": 0,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 5,
+      "average_latency_ms": 1218.0,
+      "backends_observed": [
+        "Bing Search Index",
+        "FxTwitter Public API"
+      ]
+    },
+    "xueqiu": {
+      "channel": "xueqiu",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 1,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 0,
+      "average_latency_ms": 85.0,
+      "backends_observed": [
+        "OpenCLI"
+      ]
+    },
+    "linkedin": {
+      "channel": "linkedin",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 1,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 0,
+      "average_latency_ms": 0.0,
+      "backends_observed": [
+        "mcp-server-linkedin"
+      ]
+    },
+    "xiaohongshu": {
+      "channel": "xiaohongshu",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 1,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 0,
+      "average_latency_ms": 0.0,
+      "backends_observed": [
+        "OpenCLI"
+      ]
+    },
+    "facebook": {
+      "channel": "facebook",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 1,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 0,
+      "average_latency_ms": 0.0,
+      "backends_observed": [
+        "OpenCLI"
+      ]
+    },
+    "instagram": {
+      "channel": "instagram",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 1,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 0,
+      "average_latency_ms": 0.0,
+      "backends_observed": [
+        "OpenCLI"
+      ]
+    },
+    "boss": {
+      "channel": "boss",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 1,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 0,
+      "average_latency_ms": 0.0,
+      "backends_observed": [
+        "boss-agent-cli (CDP)"
+      ]
+    },
+    "xiaoyuzhou": {
+      "channel": "xiaoyuzhou",
+      "attempts": 1,
+      "direct_content_successes": 0,
+      "direct_metadata_successes": 0,
+      "partial_content_successes": 0,
+      "indexed_fallback_results": 0,
+      "auth_required_results": 1,
+      "blocked_results": 0,
+      "not_implemented_results": 0,
+      "failed_results": 0,
+      "not_tested_results": 0,
+      "total_useful_evidence": 0,
+      "average_latency_ms": 0.0,
+      "backends_observed": [
+        "groq-whisper"
+      ]
+    }
+  }
+}

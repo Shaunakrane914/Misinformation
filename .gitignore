@@ -106,6 +106,12 @@ research/scraper_bakeoff/artifacts/
 !/artifacts/retrieval_benchmark/**
 !/artifacts/live_retrieval_evaluation/
 !/artifacts/live_retrieval_evaluation/**
+!/artifacts/live_acquisition_audit/
+!/artifacts/live_acquisition_audit/**
+!/artifacts/live_acquisition_audit_reconciled/
+!/artifacts/live_acquisition_audit_reconciled/**
+!/artifacts/live_acquisition_audit_phase6_7/
+!/artifacts/live_acquisition_audit_phase6_7/**
 research/scraper_bakeoff/repos/
 
 # Large video binaries

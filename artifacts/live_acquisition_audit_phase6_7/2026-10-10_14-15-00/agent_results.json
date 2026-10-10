@@ -1,0 +1,255 @@
+{
+  "run_id": "2026-10-10_14-15-00",
+  "agents": {
+    "BrandShield": {
+      "agent_name": "BrandShield",
+      "target": "Nike",
+      "task_description": "Investigate counterfeit products, brand abuse, and online threats for Nike",
+      "query_pipeline_trace": {
+        "entity_resolution": {
+          "input": "Nike",
+          "resolved_entity": "Nike",
+          "brand": "Nike",
+          "product": null,
+          "entity_type": "brand",
+          "aliases": [
+            "Nike"
+          ],
+          "confidence": 0.95
+        },
+        "planned_queries": {
+          "general_reputation": [
+            "Nike latest news",
+            "Nike controversy reputation complaints"
+          ],
+          "counterfeit": [
+            "Nike counterfeit fake products",
+            "Nike unauthorized seller fake store clone listing"
+          ],
+          "phishing_scam": [
+            "Nike phishing scam",
+            "Nike security threat phishing"
+          ],
+          "impersonation": [
+            "Nike fake support impersonation",
+            "Nike spoofed fake account"
+          ],
+          "reviews": [
+            "Nike fake reviews review manipulation",
+            "Nike review bombing customer complaints"
+          ],
+          "regulatory_legal": [
+            "Nike lawsuit investigation regulator",
+            "Nike product recall safety warning"
+          ]
+        },
+        "channels_dispatched": [
+          "web",
+          "news"
+        ],
+        "raw_retrieved_evidence_count": 40,
+        "direct_evidence_count": 4,
+        "fallback_evidence_count": 0,
+        "rejected_evidence_count": 35,
+        "accepted_evidence_count": 5,
+        "source_independence_clusters": 0,
+        "accepted_sources_sample": [
+          {
+            "title": "Nike. Just Do It.NikeIN",
+            "url": "https://www.nike.in/",
+            "platform": "web",
+            "chars": 4000
+          },
+          {
+            "title": "Nike. Just Do It.Nike.com",
+            "url": "https://www.nike.com/?msockid=0885c07e25e2655e355bd79024c66485",
+            "platform": "web",
+            "chars": 4000
+          },
+          {
+            "title": "Nike\u2013 Official Online Store for Athletic Shoes, Clothing & Gear",
+            "url": "https://www.nike.in/nike-all-products/c/95029",
+            "platform": "web",
+            "chars": 4000
+          }
+        ]
+      },
+      "total_execution_time_ms": 15110,
+      "provenance_intact": true,
+      "empty_evidence_handled": true,
+      "unavailable_channel_behavior": "Gracefully bypasses offline channels without stalling"
+    },
+    "Trending": {
+      "agent_name": "Trending",
+      "target": "Nvidia",
+      "task_description": "Discover emerging viral narratives and trend intelligence for Nvidia",
+      "query_pipeline_trace": {
+        "planned_queries": [
+          "Nvidia trends",
+          "Nvidia viral news",
+          "Nvidia discussions"
+        ],
+        "channels_dispatched": [
+          "news",
+          "web",
+          "youtube"
+        ],
+        "raw_retrieved_evidence_count": 0,
+        "direct_evidence_count": 0,
+        "fallback_evidence_count": 0,
+        "rejected_evidence_count": 0,
+        "accepted_evidence_count": 0,
+        "source_independence_clusters": 1,
+        "accepted_sources_sample": []
+      },
+      "total_execution_time_ms": 9931,
+      "provenance_intact": true,
+      "empty_evidence_handled": true,
+      "unavailable_channel_behavior": "Skips missing Instagram paparazzi when APIFY_TOKEN absent"
+    },
+    "Scout": {
+      "agent_name": "Scout",
+      "target": "NVDA",
+      "task_description": "Detect short attacks and correlate stock market volatility with omni-channel chatter",
+      "query_pipeline_trace": {
+        "ticker": "NVDA",
+        "channels_dispatched": [
+          "news",
+          "web",
+          "rss",
+          "twitter",
+          "reddit",
+          "youtube"
+        ],
+        "raw_retrieved_evidence_count": 19,
+        "direct_evidence_count": 19,
+        "fallback_evidence_count": 0,
+        "rejected_evidence_count": 0,
+        "accepted_evidence_count": 19,
+        "channel_breakdown": {
+          "reddit": 0,
+          "twitter": 0,
+          "youtube": 8,
+          "news": 11
+        },
+        "accepted_sources_sample": [
+          {
+            "title": "NVIDIA, Microsoft Kick Off a New Beginning for Windows PCs With RTX Spark and AI Agents - NVIDIA Blog",
+            "source": "Wire",
+            "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE42emZsS3FlLU1vaVE4WW40aGFZa09nS1VLaV9td0JZS2t3Z2pwTDhkTG5ITkJVajYzQWVtWURTTkJTenR6N0paeE14bzg3OTVZYXkzNmRMWUFqSVQ4ZlhNZnpFdWdWUXlHcGdOTUVwSWlQcTd1SE1XZ25OWEdjZw?oc=5"
+          },
+          {
+            "title": "Nvidia Stock Faces Critical Warning Sign. Is the AI Trade Breaking? - Yahoo Finance",
+            "source": "Wire",
+            "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxPNE9vRG1WR1hhNk04UHVKZDlWeWl6Z2E1elNMOC0yUkd5eGl1UHNqbU9XRlRNZGM1QUpoMzY4eGs0clc0MnlHZzI3ZlE3X3lfMC1nZ3AxSHFmTUlqQ1NaeW5KVk5nNHJmOEFXdGNQQ3dlLWJ2Vmx0VHo2SXFuenk5eVlQOWVOZkFDV3FFVW5PQnl4RFNscWhnSzVMcFZCajE1dWc?oc=5"
+          },
+          {
+            "title": "Lee Munson explains why investors should bail on Nvidia, Expedia and CVS Health",
+            "url": "https://www.youtube.com/watch?v=dFDGZE8cstA"
+          }
+        ]
+      },
+      "total_execution_time_ms": 5117,
+      "provenance_intact": true,
+      "empty_evidence_handled": true,
+      "unavailable_channel_behavior": "Reddit signals degraded to 0 due to Arctic Shift timeout; news and YouTube successfully carried analysis"
+    },
+    "Personal Watch": {
+      "agent_name": "Personal Watch",
+      "target": "Satya Nadella",
+      "task_description": "Monitor executive profile for impersonation, defamatory claims, and viral threats",
+      "query_pipeline_trace": {
+        "entity_resolution": {
+          "name": "Satya Nadella",
+          "canonical_name": "Satya Nadella",
+          "aliases": [
+            "Nadella"
+          ],
+          "official_handles": {
+            "twitter": "@satyanadella"
+          },
+          "official_domains": [
+            "microsoft.com"
+          ],
+          "affiliations": [
+            "Microsoft"
+          ],
+          "category": "executive",
+          "monitoring_terms": [],
+          "alert_preferences": {
+            "level": "HIGH_ONLY"
+          },
+          "confidence": 0.95,
+          "resolution_notes": "Resolved via verified public figure catalog: Satya Nadella"
+        },
+        "planned_queries": {
+          "general": [
+            "\"Satya Nadella\" latest news",
+            "\"Satya Nadella\" announcement public statement"
+          ],
+          "impersonation": [
+            "\"Satya Nadella\" fake account impersonation",
+            "\"Satya Nadella\" fake profile verified",
+            "fake Satya Nadella account support"
+          ],
+          "phishing_scam": [
+            "\"Satya Nadella\" scam fake giveaway",
+            "\"Satya Nadella\" phishing fraudulent investment crypto",
+            "\"Satya Nadella\" fake offer money transaction"
+          ],
+          "deepfake_synthetic": [
+            "\"Satya Nadella\" deepfake AI voice clone",
+            "\"Satya Nadella\" fake video manipulated audio synthetic"
+          ],
+          "reputation_claims": [
+            "\"Satya Nadella\" controversy allegations",
+            "\"Satya Nadella\" false claim rumor smear campaign"
+          ],
+          "doxxing_privacy": [
+            "\"Satya Nadella\" leaked data breach document",
+            "\"Satya Nadella\" personal information leak public paste"
+          ]
+        },
+        "channels_dispatched": [
+          "news",
+          "web",
+          "reddit",
+          "twitter",
+          "youtube",
+          "rss",
+          "instagram"
+        ],
+        "raw_retrieved_evidence_count": 27,
+        "direct_evidence_count": 3,
+        "partial_evidence_count": 1,
+        "fallback_evidence_count": 0,
+        "accepted_evidence_count": 4,
+        "source_independence_clusters": 0,
+        "accepted_sources_sample": [
+          {
+            "title": "From H-1B to CEO: How Satya Nadella traveled the path the U.S. just cut off for Microsoft workers - GeekWire",
+            "url": "https://news.google.com/rss/articles/CBMixAFBVV95cUxPWDZHU2VVY1lXT21sSTJBTVpHMldhRTlORi1ZWTBxelNrZXc2SVBjY3lsRzludldONVlpWUtIQ1hZd2pPUDRRaWFlVjU0dXVpLXRNbU5aRjl5NTFLbFVUTHdMZXNHTVIwVWdjbkZqZHg5bVZsakJReWdidmUtQ0lLOW5fbnpvMjBORDVXT29JLTlCVGVNeEVlaWZmRDJ1aGtUVWxtV2NIeEIycExPYkdqQjVSMjdiWkxBRHl3cXI2Vi02UW41?oc=5",
+            "platform": "news",
+            "chars": 3999
+          },
+          {
+            "title": "Profile: Satya Nadella (@satyanadella)",
+            "url": "https://x.com/satyanadella",
+            "platform": "twitter",
+            "chars": 73
+          },
+          {
+            "title": "Trump honours Microsoft's CEO Satya Nadella after Vance drops H-1B visa hammer on company - The Economic Times",
+            "url": "https://news.google.com/rss/articles/CBMi0wFBVV95cUxQVEx0NmZBcld2VG40YzUxU1c2WC1EZ0hjWl94YjdBeUdRa0NvUHYxOFhSZlFEcS1Qa1UxMUN1aWZHNFY3VTNFQWxUWjNwc2ZTN1cwMFlLZWh6eUo1bGotRVJVeFRhYXRRY2pDVG00dVJvOHdMel9LMmdoTlk2U05uNm1zZmd0MmVOVE8zcS1qd0xWaFV1QlVydjlHM21YZ1R1eEU2c2REVGlDRDlRNUI0RnBLb0hQOFplLV85eXBPVWxtTlNrXzFaZHZKOG1rVXo4ekRz0gHYAUFVX3lxTFA4UnZBN2RQVzQ1b0xyR2l5V1VIZlIyM3FjSjlGRUJQN29YTW9EaktqZDR0VVVTVWd0ZExEYUJ5S09lRzZla0xmTDN2Q0NxaFNjQmJSWHZoMnoxa3VmWGtXWkpYa0pmQS1YNzFvT3dNX3prSDhBNGpTcEhwamVFWFRxSndsbW42aHNJaFJZdk5UcjJDNnF4SGRvSlZmSlk4NzJzcG13cHFGOWN4UVp0WGJpdkFoaHdHWXVhYmxZNU5JaVhvREZSWm1xYUZRRkJpVmhqa2ROWDBKcg?oc=5",
+            "platform": "news",
+            "chars": 4000
+          }
+        ]
+      },
+      "total_execution_time_ms": 6984,
+      "provenance_intact": true,
+      "empty_evidence_handled": true,
+      "unavailable_channel_behavior": "Recognized official handle @satyanadella via FxTwitter; bypassed unavailable channels"
+    }
+  }
+}

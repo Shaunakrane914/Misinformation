@@ -11,15 +11,20 @@ from backend.agents.personal_watch import (
     PersonalAgent,
     personal_watch_agent,
     process_personal_watch,
+    PersonalWatchExtractionResult,
     THREAT_TAXONOMY,
     KNOWN_PUBLIC_PROFILES,
 )
+
+personal_agent = personal_watch_agent
 
 __all__ = [
     "PersonalWatchAgent",
     "PersonalAgent",
     "personal_watch_agent",
+    "personal_agent",
     "process_personal_watch",
+    "PersonalWatchExtractionResult",
     "THREAT_TAXONOMY",
     "KNOWN_PUBLIC_PROFILES",
     "agent_reach_service",

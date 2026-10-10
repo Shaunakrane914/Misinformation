@@ -18,6 +18,10 @@ from backend.agents.trending import (
     NarrativeCluster,
     TrendRecord,
     TrendingExtractionResult,
+    fetch_news,
+    fetch_targeted_news,
+    fetch_paparazzi,
+    fetch_box_office,
 )
 
 __all__ = [
@@ -32,5 +36,9 @@ __all__ = [
     "NarrativeCluster",
     "TrendRecord",
     "TrendingExtractionResult",
+    "fetch_news",
+    "fetch_targeted_news",
+    "fetch_paparazzi",
+    "fetch_box_office",
     "agent_reach_service",
 ]

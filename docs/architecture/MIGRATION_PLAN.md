@@ -29,7 +29,7 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 | **2** | **Build, Packaging & CI Test Suite Hygiene** | **P1** | Add `pyproject.toml`, lock dependency strategies, expand CI to 7 parallel jobs. | **PARTIALLY DELIVERED** (Packaging & CI template created; CI activation & lockfile pending) |
 | **3** | **Shared Acquisition Runtime Refactor** | **P0** | Fix duplicate `retrieve()`, decompose 1,706-line `router.py` into modular adapters. | **DELIVERED + PHASE 3.5 CLOSEOUT** (Canonical infrastructure service, decomposed query dispatcher, compatibility shims, isolated test outputs, and 16-channel contracts) |
 | **4** | **Research Pipeline Decomposition** | **P1** | Break 581-line `investigate()` into 10 composable pipeline stages. | **DELIVERED** (10 decoupled stages in `backend/application/research/`, `ResearchPipeline` coordinator, 12 golden characterization scenarios with bit-for-bit serialization equality, 628 passing tests) |
-| **5** | **Domain Agent Modularization** | **P1** | Relocate agent-specific extraction from `agent_reach/` into owning agent packages. | **DELIVERED** (All 4 domain agents modularized: `brandshield`, `trending`, `personal_watch`, `scout`; 100% backward compatibility shims verified; 0 failures) |
+| **5** | **Domain Agent Modularization & Acceptance Closeout** | **P1** | Relocate agent-specific extraction and domain subsystems into owning agent packages. | **DELIVERED + PHASE 5.5 CLOSEOUT ACCEPTED** (20/20 per-agent golden master parity against `81702f0`; 12/12 backward-compatibility tests; acquisition path audit & SSRF hardening; Phase 4 provenance verified; 628/628 test pass; GitHub CI run 38025876052 confirmed) |
 | **6** | **Centralized LLM Gateway & Validated Settings** | **P2** | Unify Gemini/mock LLM calls behind `LLMGateway`; adopt Pydantic `BaseSettings`. | Zero ad-hoc `os.getenv` in business logic; 100% deterministic offline mock tests. |
 | **7** | **Legacy Deprecation & Final Cleanup** | **P2** | Retire compatibility shims, archive dead code, verify final clean directory tree. | Zero unused shims; clean build context; 100% regression pass. |
 
@@ -208,6 +208,40 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 - **Tests Required:** `tests/unit/test_shared_acquisition_fabric.py`, `tests/unit/test_architecture_invariants.py`, `tests/integration/test_functional_agents_matrix.py`, `tests/unit/test_agent_prompts_contracts.py`, `tests/unit/test_scout_research_terminal.py`, `tests/unit/test_scout_source_engine.py`, `tests/integration/test_scout_2_workflow.py`, `tests/integration/test_brandshield_2_workflow.py`, `tests/integration/test_personal_watch_2_workflow.py`, `tests/integration/test_trending_2_workflow.py`, full regression suite.
 - **Acceptance Criteria:** All domain agents independently testable; class identities preserved; backward compatibility 100% functional; 0 test regressions.
 - **Phase 5 Validation (October 10, 2026):** All 477 unit/integration tests and 105 root suite tests passed with 0 failures, 0 errors. All agent contract and fabric tests passed. Benchmark datasets and frozen labels preserved bit-for-bit without modification.
+
+#### Phase 5.5 Acceptance Closeout (Verified October 10, 2026)
+- **Status:** **FULLY ACCEPTED & AUDITED**
+- **GitHub Actions Run 38025876052:** Confirmed SUCCESS across all 5 jobs:
+  - `Code Quality Checks`: PASSED (11s)
+  - `Unit, Chaos & Offline Matrix (Python 3.11)`: PASSED (2m 1s)
+  - `Unit, Chaos & Offline Matrix (Python 3.12)`: PASSED (1m 57s)
+  - `Unit, Chaos & Offline Matrix (Python 3.13)`: PASSED (1m 53s)
+  - `Research Provenance & Offline Benchmarks`: PASSED (1m 19s)
+- **Full Repository Test Suite:** `python -m pytest` executed cleanly with **628 passed, 0 failed, 0 errors, 0 skipped, 0 warnings (exit code 0)** in 463.99s. Worktree remained strictly clean; benchmark fixtures untouched.
+- **Dedicated 4-Agent Golden-Master Parity:** Executed across 20 deterministic scenarios against baseline captured directly from parent commit `81702f0` in isolated git worktree:
+  - `BrandShieldAgent`: 5 scenarios (`nike_normal`, `apple_threats`, `brand_empty`, `sony_syndicated`, `tesla_scam`) $\to$ **100% equivalence (5/5 PASS)**.
+  - `TrendingAgent`: 5 scenarios (`openai_entity`, `discovery_mode`, `empty`, `spacex_syndicated`, `avatar_criticism`) $\to$ **100% equivalence (5/5 PASS)**.
+  - `ScoutAgent`: 5 scenarios (`nvda_normal`, `contradictory_deals`, `empty`, `syndicated_earnings`, `rumor_vs_official`) $\to$ **100% equivalence (5/5 PASS)**.
+  - `PersonalWatchAgent`: 5 scenarios (`satya_normal`, `jensen_impersonation`, `empty`, `delta_scan_1`, `delta_scan_2`) $\to$ **100% equivalence (5/5 PASS)**.
+  - Suite: `tests/unit/test_phase5_agent_golden_master.py` (20 passed in 0.11s).
+- **Alternate Network Acquisition Path Audit:**
+  - `ScoutTransport` (`backend/agents/scout/sources/transport.py`): Unreachable in production. `ScoutSourceEngine.execute()` delegates strictly to `AgentReachService` via capability router; direct transport calls were verified non-occurring via runtime exception hook.
+  - `Scout Discovery Strategies & Adapters` (`BingDiscovery`, `SECEDGARAdapter`, etc.): Unreachable in production; kept as isolated modular strategies under `backend/agents/scout/sources/`.
+  - `Trending RSS Fallback` (`backend/agents/trending/discovery.py`): Primary path routing via `allowed_channels=["news", "web", "rss"]` through Shared Acquisition Fabric. Emergency fallback hardened with SSRF `validate_url_safe` IP guard.
+  - `Trending Apify Paparazzi` (`backend/agents/trending/discovery.py`): Isolated secondary social connector; safely bypassed if `APIFY_TOKEN` is unset.
+  - `Scout Yahoo Finance API` (`backend/agents/scout/financial.py`): Intentional, documented financial quantitative market data exception (numeric pricing/volatility telemetry, not general web evidence scraping).
+- **Backward Compatibility & Legacy Shims:**
+  - `tests/unit/test_phase5_backward_compatibility.py` created and passed (12/12 PASS):
+    - Verified exact class identity (`is`) and singleton identity across all 4 agents and 4 extraction engines.
+    - Verified `ScoutSourceEngine` identity across legacy and canonical paths.
+    - Verified public method signatures across all 4 agents.
+    - Verified legacy monkeypatch interception target: `patch('backend.services.agent_reach.scout.engine.agent_reach_service.execute')`.
+    - Verified invariant that `ScoutSourceEngine` never invokes `ScoutTransport.get()`.
+- **Phase 4 Characterization Provenance Discrepancy Reconciled:**
+  - Evaluated pre-refactor commit `1795ee4` directly against `tests/unit/test_research_pipeline_golden.py`.
+  - Confirmed 12/12 scenarios match committed golden fixture `tests/unit/fixtures/research_phase4_golden.json` bit-for-bit (e.g. `d4bce3f9...`, `710ece7b...`, `c40c022d...`).
+  - Proved original report prefixes in drafting text were caused by non-frozen datetime execution during reporting notes; committed artifact at `81702f0` is 100% historically authentic.
+  - Clarified contract definition: `contracts.py` defines mutable typed dataclasses for stage pipelines.
 
 ---
 

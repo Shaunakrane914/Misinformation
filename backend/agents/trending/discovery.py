@@ -101,7 +101,7 @@ def fetch_news(keyword: str, limit: int = 8) -> List[Dict[str, Any]]:
             agent="trending",
             entity=keyword,
             intent=f"{keyword} news headlines",
-            allowed_channels=["news", "web"],
+            allowed_channels=["news", "web", "rss"],
             candidate_budget=limit,
             profile=TRENDING_PROFILE,
         )
@@ -126,6 +126,11 @@ def fetch_news(keyword: str, limit: int = 8) -> List[Dict[str, Any]]:
         f"q={urllib.parse.quote_plus(keyword)}&hl=en-IN&gl=IN&ceid=IN:en"
     )
     try:
+        from backend.services.url_validator import validate_url_safe
+        is_safe, reason = validate_url_safe(feed_url)
+        if not is_safe:
+            logger.warning(f"[TrendingAgent] Blocked unsafe feed URL: {reason}")
+            return []
         parsed = feedparser.parse(feed_url)
         entries = parsed.get("entries", [])[:limit]
         headlines = []

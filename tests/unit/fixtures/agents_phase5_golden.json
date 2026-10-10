@@ -1,0 +1,371 @@
+{
+  "brandshield": {
+    "apple_threats": {
+      "brand": "Apple",
+      "claims_count": 0,
+      "counterfeits_count": 2,
+      "dossiers_count": 4,
+      "has_limitations": true,
+      "impersonations_count": 0,
+      "narratives_count": 1,
+      "safe_count": 0,
+      "threat_count": 4,
+      "threat_severities": [
+        "HIGH",
+        "HIGH",
+        "high",
+        "medium"
+      ],
+      "threat_types": [
+        "COUNTERFEIT",
+        "REGULATORY_LEGAL",
+        null,
+        null
+      ],
+      "total_findings": 4
+    },
+    "brand_empty": {
+      "brand": "Sony",
+      "claims_count": 0,
+      "counterfeits_count": 0,
+      "dossiers_count": 0,
+      "has_limitations": true,
+      "impersonations_count": 0,
+      "narratives_count": 0,
+      "safe_count": 0,
+      "threat_count": 0,
+      "threat_severities": [],
+      "threat_types": [],
+      "total_findings": 0
+    },
+    "nike_normal": {
+      "brand": "Nike",
+      "claims_count": 0,
+      "counterfeits_count": 0,
+      "dossiers_count": 0,
+      "has_limitations": true,
+      "impersonations_count": 0,
+      "narratives_count": 1,
+      "safe_count": 2,
+      "threat_count": 0,
+      "threat_severities": [],
+      "threat_types": [],
+      "total_findings": 2
+    },
+    "sony_syndicated": {
+      "brand": "Sony",
+      "claims_count": 0,
+      "counterfeits_count": 0,
+      "dossiers_count": 1,
+      "has_limitations": true,
+      "impersonations_count": 0,
+      "narratives_count": 1,
+      "safe_count": 0,
+      "threat_count": 1,
+      "threat_severities": [
+        "medium"
+      ],
+      "threat_types": [
+        null
+      ],
+      "total_findings": 1
+    },
+    "tesla_scam": {
+      "brand": "Tesla",
+      "claims_count": 0,
+      "counterfeits_count": 0,
+      "dossiers_count": 1,
+      "has_limitations": true,
+      "impersonations_count": 0,
+      "narratives_count": 1,
+      "safe_count": 0,
+      "threat_count": 1,
+      "threat_severities": [
+        "high"
+      ],
+      "threat_types": [
+        null
+      ],
+      "total_findings": 1
+    }
+  },
+  "metadata": {
+    "baseline_commit": "81702f0",
+    "captured_at": "2026-10-10T00:00:00Z",
+    "version": "1.0"
+  },
+  "personal_watch": {
+    "delta_scan_1": {
+      "alerts_sent": 0,
+      "has_privacy_guard": true,
+      "high_risk_count": 0,
+      "low_risk_count": 0,
+      "medium_risk_count": 0,
+      "threat_types": [],
+      "threats_count": 0,
+      "total_mentions": 1,
+      "vip_name": "Target VIP"
+    },
+    "delta_scan_2": {
+      "alerts_sent": 0,
+      "has_privacy_guard": true,
+      "high_risk_count": 2,
+      "low_risk_count": 0,
+      "medium_risk_count": 0,
+      "threat_types": [
+        "IMPERSONATION",
+        "IMPERSONATION"
+      ],
+      "threats_count": 2,
+      "total_mentions": 2,
+      "vip_name": "Target VIP"
+    },
+    "empty": {
+      "alerts_sent": 0,
+      "has_privacy_guard": true,
+      "high_risk_count": 0,
+      "low_risk_count": 0,
+      "medium_risk_count": 0,
+      "threat_types": [],
+      "threats_count": 0,
+      "total_mentions": 0,
+      "vip_name": "Target VIP"
+    },
+    "jensen_impersonation": {
+      "alerts_sent": 0,
+      "has_privacy_guard": true,
+      "high_risk_count": 2,
+      "low_risk_count": 0,
+      "medium_risk_count": 0,
+      "threat_types": [
+        "IMPERSONATION",
+        "IMPERSONATION"
+      ],
+      "threats_count": 2,
+      "total_mentions": 1,
+      "vip_name": "Jensen Huang"
+    },
+    "satya_normal": {
+      "alerts_sent": 0,
+      "has_privacy_guard": true,
+      "high_risk_count": 0,
+      "low_risk_count": 0,
+      "medium_risk_count": 0,
+      "threat_types": [],
+      "threats_count": 0,
+      "total_mentions": 2,
+      "vip_name": "Satya Nadella"
+    }
+  },
+  "scout": {
+    "contradictory_deals": {
+      "cluster_epistemic_statuses": [
+        "CONTRADICTED"
+      ],
+      "contradictions_count": 1,
+      "entity": "Acme",
+      "epistemic_status": "CONTRADICTED",
+      "evidence_count": 2,
+      "fact_metrics": [
+        "deal_value",
+        "general_financial",
+        "deal_value",
+        "general_financial"
+      ],
+      "fact_values": [
+        "$2.0b",
+        "$2.0b",
+        "$3.5b",
+        "$3.5b"
+      ],
+      "financial_facts_count": 4,
+      "has_contradictions": true,
+      "story_clusters_count": 1
+    },
+    "empty": {
+      "cluster_epistemic_statuses": [],
+      "contradictions_count": 0,
+      "entity": "Acme",
+      "epistemic_status": "UNCONFIRMED_RUMOR",
+      "evidence_count": 0,
+      "fact_metrics": [],
+      "fact_values": [],
+      "financial_facts_count": 0,
+      "has_contradictions": false,
+      "story_clusters_count": 0
+    },
+    "nvda_normal": {
+      "cluster_epistemic_statuses": [
+        "CONTRADICTED"
+      ],
+      "contradictions_count": 1,
+      "entity": "NVIDIA",
+      "epistemic_status": "CONTRADICTED",
+      "evidence_count": 2,
+      "fact_metrics": [
+        "revenue",
+        "revenue",
+        "revenue",
+        "capex",
+        "capex"
+      ],
+      "fact_values": [
+        "$35.1b",
+        "94%",
+        "$120b",
+        "$120b",
+        "$120b"
+      ],
+      "financial_facts_count": 5,
+      "has_contradictions": true,
+      "story_clusters_count": 1
+    },
+    "rumor_vs_official": {
+      "cluster_epistemic_statuses": [
+        "REPORTED"
+      ],
+      "contradictions_count": 0,
+      "entity": "Acme",
+      "epistemic_status": "CONFIRMED",
+      "evidence_count": 2,
+      "fact_metrics": [],
+      "fact_values": [],
+      "financial_facts_count": 0,
+      "has_contradictions": false,
+      "story_clusters_count": 1
+    },
+    "syndicated_earnings": {
+      "cluster_epistemic_statuses": [
+        "CONTRADICTED"
+      ],
+      "contradictions_count": 1,
+      "entity": "Acme",
+      "epistemic_status": "CONTRADICTED",
+      "evidence_count": 2,
+      "fact_metrics": [
+        "revenue",
+        "revenue",
+        "revenue",
+        "capex",
+        "capex"
+      ],
+      "fact_values": [
+        "$35.1b",
+        "94%",
+        "$120b",
+        "$120b",
+        "$120b"
+      ],
+      "financial_facts_count": 5,
+      "has_contradictions": true,
+      "story_clusters_count": 1
+    }
+  },
+  "trending": {
+    "avatar_criticism": {
+      "debunk_statuses": [
+        "NO_CONTRADICTION"
+      ],
+      "evidence_counts": [
+        1
+      ],
+      "misinfo_risks": [
+        "LOW"
+      ],
+      "sentiments": [
+        "NEUTRAL"
+      ],
+      "signal_counts": [
+        1
+      ],
+      "topics": [
+        "TrendTarget: Avatar 3 early reviews call runtime bloated and dialogue weak"
+      ],
+      "trends_count": 1
+    },
+    "discovery_mode": {
+      "debunk_statuses": [
+        "NO_CONTRADICTION",
+        "NO_CONTRADICTION"
+      ],
+      "evidence_counts": [
+        1,
+        1
+      ],
+      "misinfo_risks": [
+        "LOW",
+        "LOW"
+      ],
+      "sentiments": [
+        "NEUTRAL",
+        "NEUTRAL"
+      ],
+      "signal_counts": [
+        1,
+        1
+      ],
+      "topics": [
+        "TrendTarget: AI Datacenters demand unprecedented nuclear energy capacity",
+        "TrendTarget: Physicists achieve fault-tolerant logical qubit error suppression"
+      ],
+      "trends_count": 2
+    },
+    "empty": {
+      "debunk_statuses": [],
+      "evidence_counts": [],
+      "misinfo_risks": [],
+      "sentiments": [],
+      "signal_counts": [],
+      "topics": [],
+      "trends_count": 0
+    },
+    "openai_entity": {
+      "debunk_statuses": [
+        "NO_CONTRADICTION",
+        "NO_CONTRADICTION"
+      ],
+      "evidence_counts": [
+        1,
+        1
+      ],
+      "misinfo_risks": [
+        "LOW",
+        "LOW"
+      ],
+      "sentiments": [
+        "NEUTRAL",
+        "NEUTRAL"
+      ],
+      "signal_counts": [
+        1,
+        1
+      ],
+      "topics": [
+        "TrendTarget: OpenAI announces GPT-5 Developer Preview and reasoning benchmarks",
+        "TrendTarget: TechCrunch reviews OpenAI GPT-5 Developer Preview"
+      ],
+      "trends_count": 2
+    },
+    "spacex_syndicated": {
+      "debunk_statuses": [
+        "NO_CONTRADICTION"
+      ],
+      "evidence_counts": [
+        2
+      ],
+      "misinfo_risks": [
+        "LOW"
+      ],
+      "sentiments": [
+        "POSITIVE"
+      ],
+      "signal_counts": [
+        2
+      ],
+      "topics": [
+        "TrendTarget: SpaceX launches Starship orbital test flight successfully"
+      ],
+      "trends_count": 1
+    }
+  }
+}

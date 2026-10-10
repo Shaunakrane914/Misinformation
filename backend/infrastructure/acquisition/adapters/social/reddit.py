@@ -86,7 +86,7 @@ def fetch_arctic_shift_posts_batch(
         data = None
         for attempt in range(2):
             try:
-                with urllib.request.urlopen(req, timeout=8.0) as resp:
+                with urllib.request.urlopen(req, timeout=3.0) as resp:
                     data = json.loads(resp.read().decode("utf-8"))
                     break
             except urllib.error.HTTPError as e:
@@ -161,7 +161,7 @@ def fetch_arctic_shift_search(
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=7.0) as resp:
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             posts = data.get("data", [])
             frags = native_normalizer.normalize_arctic_shift_posts(
@@ -204,7 +204,7 @@ def fetch_arctic_shift_comments(
         },
     )
     try:
-        with urllib.request.urlopen(req, timeout=7.0) as resp:
+        with urllib.request.urlopen(req, timeout=3.0) as resp:
             data = json.loads(resp.read().decode("utf-8"))
             comments = data.get("data", [])
             frags = native_normalizer.normalize_arctic_shift_comments(

@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import os
 import urllib.parse
 from typing import Any, Dict, List, TYPE_CHECKING
 
@@ -39,11 +40,20 @@ class StandardChannelHandlers:
         telemetry: Dict[str, Any],
         **kwargs: Any,
     ) -> List[EvidenceFragment]:
+        if platform in self.AUTH_ENVIRONMENT:
+            if (
+                kwargs.get("public_mode")
+                or kwargs.get("allow_unauthenticated")
+                or kwargs.get("prefer_public")
+                or os.getenv("AEGIS_PUBLIC_ACQUISITION", "false").lower() in ("true", "1", "yes")
+            ):
+                handler = getattr(self, f"_execute_{platform}", None)
+                if handler is not None:
+                    return handler(query, limit, query_id, query_class, query_text, telemetry, **kwargs)
+            return self._execute_authenticated(platform, telemetry)
         handler = getattr(self, f"_execute_{platform}", None)
         if handler is not None:
             return handler(query, limit, query_id, query_class, query_text, telemetry, **kwargs)
-        if platform in self.AUTH_ENVIRONMENT:
-            return self._execute_authenticated(platform, telemetry)
         return self._execute_generic(platform, query, limit, query_id, query_class, query_text, telemetry)
 
     def _execute_github(self, query, limit, query_id, query_class, query_text, telemetry, **_):
@@ -165,11 +175,146 @@ class StandardChannelHandlers:
         telemetry["status"] = "SUCCESS"
         return [fragment]
 
+    def _execute_xueqiu(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        try:
+            result = self.router.executor.execute_xueqiu(query, limit=limit)
+            items = result.get("items", [])
+            fragments = self.router.normalizer.normalize_xueqiu_items(
+                items, query_id=query_id, query_class=query_class, query_text=query_text
+            )
+            if not fragments:
+                raise NativeReachError("Xueqiu visitor API returned no items")
+            self.router._tag_fragments(fragments, "xueqiu", "xueqiu", RetrievalMode.DIRECT_API.value, "xueqiu-visitor-api", None, False)
+            telemetry["status"] = "SUCCESS"
+            telemetry["backend"] = "xueqiu-visitor-api"
+            return fragments
+        except Exception:
+            return self._indexed_fallback("xueqiu", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:xueqiu.com")
+
+    def _execute_xiaoyuzhou(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        try:
+            result = self.router.executor.execute_xiaoyuzhou_podcast(query, limit=limit)
+            items = result.get("items", [])
+            fragments = self.router.normalizer.normalize_xiaoyuzhou_episodes(
+                items, query_id=query_id, query_class=query_class, query_text=query_text
+            )
+            if not fragments:
+                raise NativeReachError("Xiaoyuzhou podcast syndication returned no items")
+            self.router._tag_fragments(fragments, "xiaoyuzhou", "xiaoyuzhou", RetrievalMode.DIRECT_API.value, "podcast-rss-syndication", None, False)
+            telemetry["status"] = "SUCCESS"
+            telemetry["backend"] = "podcast-rss-syndication"
+            return fragments
+        except Exception:
+            return self._indexed_fallback("xiaoyuzhou", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:xiaoyuzhoufm.com")
+
+    def _execute_linkedin(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        try:
+            result = self.router.executor.execute_linkedin_jobs(query, limit=limit)
+            items = result.get("items", [])
+            fragments = self.router.normalizer.normalize_linkedin_jobs(
+                items, query_id=query_id, query_class=query_class, query_text=query_text
+            )
+            if fragments:
+                self.router._tag_fragments(fragments, "linkedin", "linkedin", RetrievalMode.DIRECT_API.value, "linkedin-guest-jobs-api", None, False)
+                telemetry["status"] = "SUCCESS"
+                telemetry["backend"] = "linkedin-guest-jobs-api"
+                return fragments
+        except Exception:
+            pass
+        return self._indexed_fallback("linkedin", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:linkedin.com/in/ OR site:linkedin.com/company/")
+
+    def _execute_instagram(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        clean_q = query.strip()
+        if "instagram.com/p/" in clean_q or "instagram.com/reel/" in clean_q:
+            frag = self._fetch_meta_oembed("instagram", clean_q)
+            if frag:
+                frag.query_id = query_id
+                frag.query_class = query_class
+                frag.query_text = query_text
+                self.router._tag_fragments([frag], "instagram", "instagram", RetrievalMode.DIRECT_API.value, "instagram-oembed", None, False)
+                telemetry["status"] = "SUCCESS"
+                telemetry["backend"] = "instagram-oembed"
+                return [frag]
+        return self._indexed_fallback("instagram", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:instagram.com")
+
+    def _execute_facebook(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        clean_q = query.strip()
+        if "facebook.com/" in clean_q and ("/posts/" in clean_q or "/videos/" in clean_q):
+            frag = self._fetch_meta_oembed("facebook", clean_q)
+            if frag:
+                frag.query_id = query_id
+                frag.query_class = query_class
+                frag.query_text = query_text
+                self.router._tag_fragments([frag], "facebook", "facebook", RetrievalMode.DIRECT_API.value, "facebook-oembed", None, False)
+                telemetry["status"] = "SUCCESS"
+                telemetry["backend"] = "facebook-oembed"
+                return [frag]
+        return self._indexed_fallback("facebook", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:facebook.com")
+
+    def _execute_xiaohongshu(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        return self._indexed_fallback("xiaohongshu", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:xiaohongshu.com")
+
+    def _execute_boss(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        return self._indexed_fallback("boss", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:zhipin.com")
+
+    def _fetch_meta_oembed(self, platform: str, url: str) -> Optional[EvidenceFragment]:
+        endpoint = "instagram_oembed" if platform == "instagram" else "oembed_post"
+        req_url = f"https://graph.facebook.com/v20.0/{endpoint}?url={urllib.parse.quote(url.strip())}"
+        try:
+            import httpx
+            with httpx.Client(timeout=5.0) as client:
+                r = client.get(req_url)
+                if r.status_code == 200:
+                    data = r.json()
+                    author = data.get("author_name") or platform.capitalize()
+                    html_snippet = data.get("html") or ""
+                    title = data.get("title") or f"{platform.capitalize()} post by {author}"
+                    return EvidenceFragment(
+                        platform=platform.capitalize(),
+                        title=title,
+                        content=html_snippet,
+                        url=url,
+                        author=author,
+                        published="Recent",
+                        snippet=html_snippet[:300],
+                        score=60.0,
+                        retrieval_method=f"{platform}_oembed",
+                        retrieval_mode=RetrievalMode.DIRECT_API.value,
+                        native_backend_id=f"{platform}-oembed",
+                        channel_name=platform,
+                        content_depth="SNIPPET",
+                        raw_metadata={"backend": f"{platform}-oembed", "tokenless": True}
+                    )
+        except Exception:
+            pass
+        return None
+
+    def _indexed_fallback(self, platform: str, query: str, limit: int, query_id: str, query_class: str, query_text: str, telemetry: Dict[str, Any], site_filter: str) -> List[EvidenceFragment]:
+        search_query = f"{site_filter} {query}"
+        reason = f"{platform.upper()}_DIRECT_UNAVAILABLE_FALLBACK"
+        fragments = self.router._execute_web_search(search_query, limit, query_id, query_class, query_text)
+        self.router._tag_fragments(fragments, platform, "web_search", RetrievalMode.WEB_SEARCH_INDEX.value, "bing-search-index", reason, False)
+        for fragment in fragments:
+            fragment.platform = f"{platform.capitalize()} (Web Index Fallback)"
+            fragment.retrieval_method = f"{platform}_web_index"
+            fragment.raw_metadata.update(
+                source_tier="TIER_3_AGGREGATE",
+                honest_disclosure=f"Direct {platform} API requires session authentication; retrieved through public search index."
+            )
+        telemetry.update(
+            status="SUCCESS" if fragments else "DEGRADED",
+            fallback_used=True,
+            fallback_backend="Bing Search Index",
+            fallback_reason=reason,
+            retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+        )
+        return fragments
+
     def _execute_authenticated(self, platform: str, telemetry: Dict[str, Any]) -> List[EvidenceFragment]:
         env_var = self.AUTH_ENVIRONMENT[platform]
         try:
             self.router.executor.guard_authenticated_channel(platform=platform, backend=telemetry["backend"], env_var=env_var)
-            telemetry["status"] = "SUCCESS"
+            telemetry.update(status="NO_DATA", error="Credential verified but no execution adapter configured")
         except AuthRequiredError as error:
             telemetry.update(status="AUTH_REQUIRED", error=str(error))
         return []
@@ -189,3 +334,4 @@ class StandardChannelHandlers:
             retrieval_mode=mode,
             status="SUCCESS" if fragments else "DEGRADED",
         )
+

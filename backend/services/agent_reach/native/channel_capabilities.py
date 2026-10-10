@@ -134,9 +134,9 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
         auth_mode="cookie_required",
         tier=1,
         cloud_safe=False,
-        backends=["OpenCLI", "Xueqiu API"],
+        backends=["xueqiu-visitor-api", "OpenCLI", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/finance.md",
-        fallback_chain=["Xueqiu API"]
+        fallback_chain=["Bing Search Index"]
     ),
     "linkedin": PlatformCapability(
         platform="linkedin",
@@ -145,9 +145,9 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
         auth_mode="session_required",
         tier=2,
         cloud_safe=False,
-        backends=["mcp-server-linkedin", "Jina Reader"],
+        backends=["linkedin-guest-jobs-api", "mcp-server-linkedin", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/career.md",
-        fallback_chain=["Jina Reader"]
+        fallback_chain=["Bing Search Index"]
     ),
     "xiaohongshu": PlatformCapability(
         platform="xiaohongshu",
@@ -156,31 +156,31 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
         auth_mode="session_required",
         tier=1,
         cloud_safe=False,
-        backends=["OpenCLI", "xiaohongshu-mcp", "xhs-cli"],
+        backends=["OpenCLI", "xiaohongshu-mcp", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/social.md",
-        fallback_chain=["xiaohongshu-mcp", "xhs-cli"]
+        fallback_chain=["Bing Search Index"]
     ),
     "facebook": PlatformCapability(
         platform="facebook",
         display_name="Facebook Posts, Profiles & Groups",
-        operations={"search", "profile", "feed", "groups"},
+        operations={"search", "profile", "feed", "groups", "oembed"},
         auth_mode="session_required",
         tier=1,
         cloud_safe=False,
-        backends=["OpenCLI"],
+        backends=["Meta oEmbed", "OpenCLI", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/social.md",
-        fallback_chain=[]
+        fallback_chain=["Bing Search Index"]
     ),
     "instagram": PlatformCapability(
         platform="instagram",
         display_name="Instagram Profiles, Posts & Explore",
-        operations={"search", "profile", "posts", "explore"},
+        operations={"search", "profile", "posts", "explore", "oembed"},
         auth_mode="session_required",
         tier=1,
         cloud_safe=False,
-        backends=["OpenCLI"],
+        backends=["Meta oEmbed", "OpenCLI", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/social.md",
-        fallback_chain=[]
+        fallback_chain=["Bing Search Index"]
     ),
     "boss": PlatformCapability(
         platform="boss",
@@ -189,20 +189,20 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
         auth_mode="browser_cdp",
         tier=2,
         cloud_safe=False,
-        backends=["boss-agent-cli (CDP)"],
+        backends=["boss-agent-cli (CDP)", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/career.md",
-        fallback_chain=[]
+        fallback_chain=["Bing Search Index"]
     ),
     "xiaoyuzhou": PlatformCapability(
         platform="xiaoyuzhou",
-        display_name="Xiaoyuzhou Podcast Transcripts",
-        operations={"transcribe"},
+        display_name="Xiaoyuzhou Podcast Feeds & Audio",
+        operations={"search", "episodes", "podcast", "transcribe"},
         auth_mode="api_key",
         tier=1,
-        cloud_safe=True,
-        backends=["groq-whisper", "ffmpeg"],
+        cloud_safe=False,
+        backends=["podcast-rss-syndication", "groq-whisper", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/video.md",
-        fallback_chain=[]
+        fallback_chain=["Bing Search Index"]
     ),
 }
 

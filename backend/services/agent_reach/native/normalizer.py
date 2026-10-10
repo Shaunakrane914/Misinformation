@@ -478,6 +478,214 @@ class NativeNormalizer:
             }
         )
 
+    @staticmethod
+    def normalize_xueqiu_items(
+        raw_items: List[Dict[str, Any]],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Normalize Xueqiu quotes, searches, and discussions from visitor session API."""
+        fragments: List[EvidenceFragment] = []
+        for item in raw_items:
+            item_type = item.get("type", "quote")
+            if item_type == "quote":
+                symbol = item.get("symbol", "")
+                name = item.get("name", "")
+                curr = item.get("current", 0)
+                pct = item.get("percent", 0)
+                title = f"雪球行情: {name} ({symbol}) - {curr} ({pct}%)"
+                content = (
+                    f"股票代码: {symbol}\n名称: {name}\n当前价格: {curr}\n"
+                    f"今日涨跌幅: {pct}%\n最高: {item.get('high')}\n最低: {item.get('low')}\n"
+                    f"成交量: {item.get('volume')}"
+                )
+                depth = "FULL_ARTICLE"
+            elif item_type == "stock_search":
+                symbol = item.get("symbol", "")
+                name = item.get("name", "")
+                title = f"雪球标的匹配: {name} ({symbol})"
+                content = f"搜索匹配股票: {name} (代码: {symbol})"
+                depth = "SNIPPET"
+            else:
+                title = item.get("title") or "雪球社区讨论"
+                content = item.get("text") or title
+                depth = "FULL_ARTICLE" if len(content) > 200 else "SNIPPET"
+
+            frag = EvidenceFragment(
+                platform="Xueqiu",
+                title=title,
+                content=content,
+                url=item.get("url") or "https://xueqiu.com",
+                author=item.get("author") or "雪球行情",
+                published="Live / Recent",
+                snippet=content[:300],
+                score=75.0,
+                retrieval_method="xueqiu_visitor_api",
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="xueqiu-visitor-api",
+                channel_name="xueqiu",
+                content_depth=depth,
+                query_id=query_id,
+                query_class=query_class,
+                query_text=query_text,
+                requested_channel="xueqiu",
+                actual_retrieval_channel="xueqiu",
+                is_authenticated=False,
+                raw_metadata={
+                    "backend": "xueqiu-visitor-api",
+                    "item_type": item_type,
+                    "symbol": item.get("symbol"),
+                    "source_tier": "SPECIALIST_API",
+                }
+            )
+            fragments.append(frag)
+        return fragments
+
+    @staticmethod
+    def normalize_xiaoyuzhou_episodes(
+        raw_items: List[Dict[str, Any]],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Normalize Xiaoyuzhou / Open podcast RSS syndication episodes."""
+        fragments: List[EvidenceFragment] = []
+        for ep in raw_items:
+            podcast = ep.get("podcast", "播客")
+            title = ep.get("title", "单集")
+            published = ep.get("published", "")
+            audio_url = ep.get("audio_url", "")
+            summary = ep.get("summary", "")
+
+            content = (
+                f"播客频道: {podcast}\n单集标题: {title}\n发布时间: {published}\n"
+                f"音频直链: {audio_url}\n\n单集介绍:\n{summary}"
+            )
+            frag = EvidenceFragment(
+                platform="Xiaoyuzhou",
+                title=f"[{podcast}] {title}",
+                content=content,
+                url=ep.get("link") or audio_url or "https://www.xiaoyuzhoufm.com",
+                author=podcast,
+                published=published or "Recent",
+                snippet=summary[:300] if summary else title,
+                score=70.0,
+                retrieval_method="podcast_rss_syndication",
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="podcast-rss-syndication",
+                channel_name="xiaoyuzhou",
+                content_depth="AUDIO_METADATA_AND_SHOWNOTES",
+                query_id=query_id,
+                query_class=query_class,
+                query_text=query_text,
+                requested_channel="xiaoyuzhou",
+                actual_retrieval_channel="xiaoyuzhou",
+                is_authenticated=False,
+                raw_metadata={
+                    "backend": "podcast-rss-syndication",
+                    "podcast": podcast,
+                    "audio_url": audio_url,
+                    "has_audio": bool(audio_url),
+                    "transcript_available": False,
+                    "source_tier": "SPECIALIST_API",
+                }
+            )
+            fragments.append(frag)
+        return fragments
+
+    @staticmethod
+    def normalize_linkedin_jobs(
+        raw_items: List[Dict[str, Any]],
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Normalize LinkedIn public guest job postings."""
+        fragments: List[EvidenceFragment] = []
+        for j in raw_items:
+            title = j.get("title", "Job Posting")
+            company = j.get("company", "Company")
+            location = j.get("location", "Location")
+            url = j.get("url", "https://www.linkedin.com/jobs")
+
+            content = f"Job Title: {title}\nCompany: {company}\nLocation: {location}\nListing URL: {url}"
+            frag = EvidenceFragment(
+                platform="LinkedIn",
+                title=f"{title} at {company} ({location})",
+                content=content,
+                url=url,
+                author=company,
+                published="Recent",
+                snippet=f"{title} - {company} ({location})",
+                score=65.0,
+                retrieval_method="linkedin_guest_jobs_api",
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="linkedin-guest-jobs-api",
+                channel_name="linkedin",
+                content_depth="SNIPPET",
+                query_id=query_id,
+                query_class=query_class,
+                query_text=query_text,
+                requested_channel="linkedin",
+                actual_retrieval_channel="linkedin",
+                is_authenticated=False,
+                raw_metadata={
+                    "backend": "linkedin-guest-jobs-api",
+                    "company": company,
+                    "location": location,
+                    "source_tier": "SPECIALIST_API",
+                }
+            )
+            fragments.append(frag)
+        return fragments
+
+    @staticmethod
+    def normalize_youtube_comments(
+        raw_items: List[Dict[str, Any]],
+        video_url: str = "",
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = ""
+    ) -> List[EvidenceFragment]:
+        """Normalize YouTube video comments extracted via yt-dlp."""
+        fragments: List[EvidenceFragment] = []
+        for c in raw_items:
+            author = c.get("author") or "Commenter"
+            text = c.get("text") or ""
+            likes = c.get("like_count") or 0
+            cid = c.get("id") or ""
+
+            content = f"YouTube Comment by {author} (Likes: {likes}):\n{text}"
+            frag = EvidenceFragment(
+                platform="YouTube",
+                title=f"YouTube Comment by {author}",
+                content=content,
+                url=video_url or f"https://www.youtube.com/watch?v={cid}",
+                author=author,
+                published="Recent",
+                snippet=text[:300],
+                score=40.0 + min(likes, 50),
+                retrieval_method="yt_dlp_comments",
+                retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="yt-dlp",
+                channel_name="youtube",
+                content_depth="COMMENT",
+                query_id=query_id,
+                query_class=query_class,
+                query_text=query_text,
+                requested_channel="youtube",
+                actual_retrieval_channel="youtube",
+                is_authenticated=False,
+                raw_metadata={
+                    "backend": "yt-dlp",
+                    "comment_id": cid,
+                    "likes": likes,
+                }
+            )
+            fragments.append(frag)
+        return fragments
+
 
 # Global singleton instance
 native_normalizer = NativeNormalizer()

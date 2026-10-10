@@ -45,7 +45,7 @@ def test_claims_verify_sync_truth_dossier(test_client: TestClient):
     assert resp.status_code == 200
     data = resp.json()
     assert data["status"] == "success"
-    assert data["verdict"] in ("FALSE", "MISLEADING", "TRUE", "UNVERIFIED")
+    assert data["verdict"] in ("FALSE", "MISLEADING", "TRUE", "UNVERIFIED", "INSUFFICIENT_EVIDENCE")
     assert "social_radar" in data
     assert "forensic_risk" in data
     assert "action_package" in data

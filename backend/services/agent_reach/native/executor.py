@@ -124,8 +124,17 @@ class NativeExecutor:
             except Exception as e_http:
                 logger.debug(f"[NativeExecutor] Fast HTTP fallback notice for {clean_url}: {e_http}")
 
-        # Secondary: Playwright Rescue (only if lightweight HTTP returned empty/blocked)
-        if len(markdown_text) < 100 or status_code in (403, 503):
+        CHALLENGE_INDICATORS = (
+            "cloudflare", "turnstile", "human security", "just a moment",
+            "verify you are human", "attention required", "security check",
+            "access denied", "403 forbidden"
+        )
+        is_challenge = any(ind in markdown_text.lower() for ind in CHALLENGE_INDICATORS)
+        if is_challenge:
+            markdown_text = ""
+
+        # Secondary: Playwright Rescue (only if lightweight HTTP returned empty/blocked/challenge)
+        if len(markdown_text) < 100 or status_code in (403, 503) or is_challenge:
             try:
                 from playwright.sync_api import sync_playwright
                 with sync_playwright() as p:
@@ -140,7 +149,7 @@ class NativeExecutor:
                     c_clean = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", c_clean, flags=re.IGNORECASE)
                     c_clean = re.sub(r"<[^>]+>", " ", c_clean)
                     p_text = re.sub(r"\s+", " ", c_clean).strip()
-                    if len(p_text) > len(markdown_text):
+                    if not any(ind in p_text.lower() for ind in CHALLENGE_INDICATORS) and len(p_text) > 100:
                         markdown_text = p_text
                         active_backend = "playwright_rescue"
             except Exception as e_pw:
@@ -189,7 +198,7 @@ class NativeExecutor:
         cmd = [
             gh_bin, "search", "repos", query.strip(),
             "--limit", str(min(limit, 15)),
-            "--json", "fullName,description,url,stargazerCount,updatedAt"
+            "--json", "fullName,description,url,stargazersCount,updatedAt"
         ]
         t0 = time.perf_counter()
         try:
@@ -224,14 +233,14 @@ class NativeExecutor:
         if not gh_bin:
             raise BackendExecutionError("github", "gh CLI", "gh repo view", 127, "gh CLI not found")
 
-        cmd = [
+        cmd_meta = [
             gh_bin, "repo", "view", repo.strip(),
-            "--json", "name,description,readme,url,stargazerCount,latestRelease"
+            "--json", "name,description,url,stargazerCount,latestRelease"
         ]
         t0 = time.perf_counter()
         try:
-            res = subprocess.run(
-                cmd,
+            res_meta = subprocess.run(
+                cmd_meta,
                 capture_output=True,
                 text=True,
                 encoding="utf-8",
@@ -239,10 +248,25 @@ class NativeExecutor:
                 timeout=timeout
             )
             latency_ms = int((time.perf_counter() - t0) * 1000)
-            if res.returncode != 0:
-                raise BackendExecutionError("github", "gh CLI", " ".join(cmd), res.returncode, res.stderr)
+            if res_meta.returncode != 0:
+                raise BackendExecutionError("github", "gh CLI", " ".join(cmd_meta), res_meta.returncode, res_meta.stderr)
 
-            data = json.loads(res.stdout) if res.stdout.strip() else {}
+            data = json.loads(res_meta.stdout) if res_meta.stdout.strip() else {}
+            try:
+                cmd_body = [gh_bin, "repo", "view", repo.strip()]
+                res_body = subprocess.run(
+                    cmd_body,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    timeout=min(timeout, 5.0)
+                )
+                if res_body.returncode == 0 and res_body.stdout.strip():
+                    data["readme"] = res_body.stdout
+            except Exception:
+                pass
+
             return {
                 "platform": "github",
                 "backend": "gh CLI",
@@ -252,7 +276,7 @@ class NativeExecutor:
                 "latency_ms": latency_ms,
             }
         except Exception as e:
-            raise BackendExecutionError("github", "gh CLI", " ".join(cmd), 1, str(e))
+            raise BackendExecutionError("github", "gh CLI", " ".join(cmd_meta), 1, str(e))
 
     # ── 3. YouTube (In-Process yt-dlp Import Primary) ──────────────────────
 
@@ -512,7 +536,270 @@ class NativeExecutor:
         except Exception as e:
             raise BackendExecutionError("rss", "feedparser", clean_url, 1, str(e))
 
-    # ── 7. Authenticated Social Channels Guard ─────────────────────────────
+    # ── 7. YouTube Comments ────────────────────────────────────────────────
+
+    def execute_youtube_comments(self, url: str, limit: int = 5, timeout: float = 15.0) -> Dict[str, Any]:
+        """Extract top video comments using yt-dlp."""
+        ytdlp_bin = shutil.which("yt-dlp")
+        if not ytdlp_bin:
+            raise BackendExecutionError("youtube", "yt-dlp", "yt-dlp comments", 127, "yt-dlp not found")
+
+        t0 = time.perf_counter()
+        bounded_limit = min(max(limit, 1), 10)
+        cmd = [
+            ytdlp_bin,
+            "--write-comments",
+            "--extractor-args", f"youtube:max_comments={bounded_limit},{bounded_limit},0,0",
+            "--dump-json",
+            "--skip-download",
+            "--no-warnings",
+            url.strip()
+        ]
+        try:
+            res = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=timeout
+            )
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            comments = []
+            if res.returncode == 0 and res.stdout.strip():
+                try:
+                    data = json.loads(res.stdout)
+                    comments = data.get("comments", [])[:bounded_limit]
+                except Exception:
+                    for line in res.stdout.splitlines():
+                        line = line.strip()
+                        if line.startswith("{"):
+                            try:
+                                d = json.loads(line)
+                                if "comments" in d:
+                                    comments = d.get("comments", [])[:bounded_limit]
+                                    break
+                            except Exception:
+                                pass
+
+            return {
+                "platform": "youtube",
+                "backend": "yt-dlp",
+                "operation": "youtube.comments",
+                "status": "SUCCESS" if comments else "EMPTY",
+                "items": comments,
+                "count": len(comments),
+                "latency_ms": latency_ms,
+            }
+        except Exception as e:
+            raise BackendExecutionError("youtube", "yt-dlp", " ".join(cmd), 1, str(e))
+
+    # ── 8. Xueqiu Visitor API (Panniantong issue #664 anonymous /hq session) ──
+
+    def init_xueqiu_client(self, timeout: float = 10.0):
+        """Establish an anonymous visitor session with cookies initialized via /hq."""
+        import httpx
+        headers = {
+            "User-Agent": _USER_AGENT,
+            "Accept": "application/json, text/plain, */*",
+            "Referer": "https://xueqiu.com/",
+        }
+        client = httpx.Client(headers=headers, follow_redirects=True, timeout=timeout)
+        client.get("https://xueqiu.com/hq")
+        return client
+
+    def execute_xueqiu(self, query: str, limit: int = 5, timeout: float = 10.0) -> Dict[str, Any]:
+        """
+        Acquire stock quotes, search results, or public discussions from Xueqiu
+        using anonymous visitor session initialization via /hq (Panniantong issue #664).
+        """
+        import httpx
+        import re
+        t0 = time.perf_counter()
+        clean_q = query.strip()
+        items = []
+        try:
+            client = self.init_xueqiu_client(timeout=timeout)
+
+            is_symbol = bool(re.match(r"^(?:[A-Za-z]{1,5}|[A-Za-z]{2}\d{6})$", clean_q))
+            if is_symbol:
+                r_q = client.get(f"https://stock.xueqiu.com/v5/stock/quote.json?symbol={clean_q.upper()}")
+                if r_q.status_code == 200:
+                    data = r_q.json().get("data", {})
+                    quote = data.get("quote")
+                    if quote:
+                        items.append({
+                            "type": "quote",
+                            "symbol": quote.get("symbol"),
+                            "name": quote.get("name"),
+                            "current": quote.get("current"),
+                            "percent": quote.get("percent"),
+                            "high": quote.get("high"),
+                            "low": quote.get("low"),
+                            "volume": quote.get("volume"),
+                            "url": f"https://xueqiu.com/S/{quote.get('symbol')}",
+                        })
+
+            if not items:
+                r_s = client.get(f"https://xueqiu.com/stock/search.json?code={urllib.parse.quote(clean_q)}")
+                if r_s.status_code == 200:
+                    stocks = r_s.json().get("stocks", [])
+                    for s in stocks[:limit]:
+                        items.append({
+                            "type": "stock_search",
+                            "symbol": s.get("code"),
+                            "name": s.get("name"),
+                            "url": f"https://xueqiu.com/S/{s.get('code')}",
+                        })
+
+            if not items:
+                r_d = client.get("https://xueqiu.com/v4/statuses/public_timeline_by_category.json?since_id=-1&max_id=-1&count=5&category=-1")
+                if r_d.status_code == 200:
+                    raw_posts = r_d.json().get("list", [])
+                    for p in raw_posts[:limit]:
+                        try:
+                            p_data = json.loads(p.get("data", "{}"))
+                            items.append({
+                                "type": "discussion",
+                                "title": p_data.get("title") or (p_data.get("text", "")[:60]),
+                                "text": p_data.get("text", ""),
+                                "author": p_data.get("user", {}).get("screen_name", "雪球用户"),
+                                "url": f"https://xueqiu.com/{p_data.get('user', {}).get('id')}/{p_data.get('id')}",
+                            })
+                        except Exception:
+                            pass
+
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            return {
+                "platform": "xueqiu",
+                "backend": "xueqiu-visitor-api",
+                "operation": "xueqiu.read",
+                "status": "SUCCESS" if items else "EMPTY",
+                "items": items,
+                "count": len(items),
+                "latency_ms": latency_ms,
+            }
+        except Exception as e:
+            raise BackendExecutionError("xueqiu", "xueqiu-visitor-api", "xueqiu /hq handshake", 1, str(e))
+
+    # ── 9. Xiaoyuzhou / Open Podcast RSS Syndication ───────────────────────
+
+    def execute_xiaoyuzhou_podcast(self, query: str, limit: int = 5, timeout: float = 10.0) -> Dict[str, Any]:
+        """
+        Discover public podcast metadata, episodes, and direct audio enclosure URLs
+        via iTunes API and RSS syndication (no login / no credential required).
+        """
+        import httpx
+        import feedparser
+        import re
+        t0 = time.perf_counter()
+        clean_q = query.strip()
+        client = httpx.Client(headers={"User-Agent": _USER_AGENT}, follow_redirects=True, timeout=timeout)
+        items = []
+        itunes_url = f"https://itunes.apple.com/search?term={urllib.parse.quote(clean_q)}&entity=podcast&limit=3"
+        try:
+            r_itunes = client.get(itunes_url)
+            feed_urls = []
+            if r_itunes.status_code == 200:
+                results = r_itunes.json().get("results", [])
+                for res in results:
+                    f_url = res.get("feedUrl")
+                    p_name = res.get("collectionName")
+                    if f_url:
+                        feed_urls.append((p_name, f_url))
+
+            for pod_name, f_url in feed_urls:
+                try:
+                    r_rss = client.get(f_url)
+                    if r_rss.status_code == 200:
+                        feed = feedparser.parse(r_rss.content)
+                        for entry in feed.entries[:limit]:
+                            enclosures = entry.get("enclosures", [])
+                            audio_url = enclosures[0].get("href") if enclosures else None
+                            raw_summary = entry.get("summary", "")
+                            clean_summary = re.sub(r"<[^>]+>", " ", raw_summary).strip()
+                            items.append({
+                                "podcast": pod_name,
+                                "title": entry.get("title", ""),
+                                "published": entry.get("published", ""),
+                                "summary": clean_summary[:500],
+                                "link": entry.get("link", f_url),
+                                "audio_url": audio_url,
+                                "has_audio": bool(audio_url),
+                            })
+                            if len(items) >= limit:
+                                break
+                except Exception:
+                    pass
+                if len(items) >= limit:
+                    break
+
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            return {
+                "platform": "xiaoyuzhou",
+                "backend": "podcast-rss-syndication",
+                "operation": "xiaoyuzhou.podcast",
+                "status": "SUCCESS" if items else "EMPTY",
+                "items": items,
+                "count": len(items),
+                "latency_ms": latency_ms,
+            }
+        except Exception as e:
+            raise BackendExecutionError("xiaoyuzhou", "podcast-rss-syndication", itunes_url, 1, str(e))
+
+    # ── 10. LinkedIn Guest Job Listings ────────────────────────────────────
+
+    def execute_linkedin_jobs(self, query: str, limit: int = 5, timeout: float = 10.0) -> Dict[str, Any]:
+        """
+        Fetch public job postings from LinkedIn's guest job-listing API (no login required).
+        """
+        import httpx
+        import bs4
+        t0 = time.perf_counter()
+        clean_q = query.strip()
+        headers = {
+            "User-Agent": _USER_AGENT,
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+            "Accept-Language": "en-US,en;q=0.9",
+        }
+        url = f"https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords={urllib.parse.quote(clean_q)}&start=0"
+        try:
+            client = httpx.Client(headers=headers, follow_redirects=True, timeout=timeout)
+            r = client.get(url)
+            items = []
+            if r.status_code == 200:
+                soup = bs4.BeautifulSoup(r.text, "html.parser")
+                jobs = soup.find_all("li")
+                for j in jobs[:limit]:
+                    title_elem = j.find("h3", class_="base-search-card__title")
+                    company_elem = j.find("h4", class_="base-search-card__subtitle")
+                    location_elem = j.find("span", class_="job-search-card__location")
+                    link_elem = j.find("a", class_="base-card__full-link")
+                    title = title_elem.text.strip() if title_elem else "Job Posting"
+                    company = company_elem.text.strip() if company_elem else "Unknown Company"
+                    location = location_elem.text.strip() if location_elem else "Unknown Location"
+                    job_url = link_elem.get("href") if link_elem else "https://www.linkedin.com/jobs"
+                    items.append({
+                        "title": title,
+                        "company": company,
+                        "location": location,
+                        "url": job_url,
+                    })
+
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            return {
+                "platform": "linkedin",
+                "backend": "linkedin-guest-jobs-api",
+                "operation": "linkedin.jobs",
+                "status": "SUCCESS" if items else "EMPTY",
+                "items": items,
+                "count": len(items),
+                "latency_ms": latency_ms,
+            }
+        except Exception as e:
+            raise BackendExecutionError("linkedin", "linkedin-guest-jobs-api", url, 1, str(e))
+
+    # ── 11. Authenticated Social Channels Guard ────────────────────────────
 
     def guard_authenticated_channel(self, platform: str, backend: str, env_var: str = "") -> None:
         """

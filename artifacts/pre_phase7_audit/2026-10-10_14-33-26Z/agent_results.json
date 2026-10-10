@@ -1,0 +1,5 @@
+{
+  "scope": "live network agent runs were not performed",
+  "deterministic_test": "tests/integration/test_source_planner_agent_execution.py",
+  "status": "VERIFY_WITH_PYTEST_OUTPUT"
+}

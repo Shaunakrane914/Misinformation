@@ -11,8 +11,9 @@ strategy if Reddit direct discussion is a product requirement.
 
 This audit was performed from baseline commit
 `3e0302e14b910d5169d599dc9238476793abcc21` on branch
-`feat/retrieval-quality-benchmark`. The bounded live record is under
-`artifacts/pre_phase7_audit/2026-10-10_14-12-31Z/`. It contains 62
+`feat/retrieval-quality-benchmark`. The final bounded live record was captured
+from implementation commit `4d102b2ea11cedb824b8ffa092047ff59b6675ba` under
+`artifacts/pre_phase7_audit/2026-10-10_14-33-26Z/`. It contains 62
 per-operation records: 20 representative probes and 42 inventory-only records.
 
 ## Architecture map

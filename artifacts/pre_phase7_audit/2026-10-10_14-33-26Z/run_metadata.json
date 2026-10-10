@@ -1,0 +1,16 @@
+{
+  "commit": "4d102b2ea11cedb824b8ffa092047ff59b6675ba",
+  "generated_at": "2026-10-10T14:33:35.524151+00:00",
+  "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "reddit_direct_probe_policy": "skipped_without_approved_access",
+  "credentials_present": {
+    "LINKEDIN_COOKIE": false,
+    "XUEQIU_COOKIE": false,
+    "XIAOHONGSHU_COOKIE": false,
+    "INSTAGRAM_COOKIE": false,
+    "FACEBOOK_COOKIE": false,
+    "BOSS_CDP_PORT": false,
+    "GROQ_API_KEY": false,
+    "GITHUB_TOKEN": false
+  }
+}

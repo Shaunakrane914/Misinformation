@@ -89,11 +89,11 @@ def test_native_doctor_canonical_status():
     doc = NativeDoctor(cache_ttl_seconds=60)
     # Platforms requiring browser session report AUTH_REQUIRED
     twitter_st = doc.get_canonical_status_code("twitter")
-    assert twitter_st in ("AVAILABLE", "AUTH_REQUIRED", "DEGRADED", "UNAVAILABLE")
+    assert twitter_st in ("NOT_PROBED", "AVAILABLE", "AUTH_REQUIRED", "DEGRADED", "UNAVAILABLE")
     
     # Public zero-config platforms should be AVAILABLE, DEGRADED, or UNKNOWN (unprobed baseline)
     v2ex_st = doc.get_canonical_status_code("v2ex")
-    assert v2ex_st in ("AVAILABLE", "DEGRADED", "UNKNOWN")
+    assert v2ex_st in ("NOT_PROBED", "AVAILABLE", "DEGRADED", "UNKNOWN")
 
 
 # ── 4. Native Executor & Security Tests ───────────────────────────────────────
@@ -109,6 +109,9 @@ def test_native_executor_ssrf_protection():
 
     with pytest.raises(SecurityPolicyViolation):
         executor.execute_web_read("http://localhost:5000/admin")
+
+    with pytest.raises(SecurityPolicyViolation):
+        executor.execute_rss_read("http://169.254.169.254/latest/meta-data/")
 
 
 def test_native_executor_auth_guard():

@@ -30,6 +30,7 @@ import json
 import logging
 import os
 import re
+import html
 import time
 import urllib.error
 import urllib.parse
@@ -537,7 +538,14 @@ class EntitySubredditResolver:
             extracted_body = "\n".join(body_lines).strip()
 
         # Remove explicit URLs from body
-        clean_body = re.sub(r"https?://\S+", "", extracted_body).strip()
+        clean_body = html.unescape(extracted_body)
+        clean_body = re.sub(r"https?://\S+", "", clean_body)
+        clean_body = re.sub(
+            r"\bsubmitted\s+by\s+\S+(?:\s+to\s+\S+)?\s*",
+            " ", clean_body, flags=re.IGNORECASE,
+        )
+        clean_body = re.sub(r"\[(?:link|comments)\]", " ", clean_body, flags=re.IGNORECASE)
+        clean_body = re.sub(r"\s+", " ", clean_body).strip(" -|\n\t")
         return clean_title, clean_body
 
     @staticmethod

@@ -13,6 +13,7 @@ import logging
 import urllib.error
 import urllib.parse
 import urllib.request
+import time
 from typing import Any, Dict, Optional
 
 from backend.services.url_validator import is_safe_url
@@ -39,8 +40,11 @@ def read_article_via_jina(url: str, timeout: float = 8.0) -> Optional[Dict[str, 
         },
     )
     try:
+        t0 = time.perf_counter()
         with urllib.request.urlopen(req, timeout=timeout) as resp:
-            content = resp.read().decode("utf-8", errors="replace")
+            raw_body = resp.read()
+            content = raw_body.decode("utf-8", errors="replace")
+            latency_ms = int((time.perf_counter() - t0) * 1000)
             if content and len(content.strip()) > 30:
                 netloc = urllib.parse.urlparse(url).netloc
                 return {
@@ -53,6 +57,15 @@ def read_article_via_jina(url: str, timeout: float = 8.0) -> Optional[Dict[str, 
                     "backend": "jina-reader",
                     "fallback_used": True,
                     "fallback_backend": "jina-reader",
+                    "transport": {
+                        "endpoint": getattr(resp, "url", jina_target),
+                        "network_observed_this_attempt": True,
+                        "http_status": getattr(resp, "status", None),
+                        "content_type": resp.headers.get("Content-Type"),
+                        "raw_body_bytes": len(raw_body),
+                        "network_latency_ms": latency_ms,
+                        "cache_status": "UNKNOWN",
+                    },
                 }
     except Exception as e:
         logger.debug(f"[JinaWebReader] Jina reader HTTP fetch failed for {url}: {e}")
@@ -101,6 +114,7 @@ def execute_web_read(
                     "char_count": len(content),
                     "backend": res.get("backend", "scrapling_http"),
                     "fallback_used": False,
+                    "transport": res.get("transport"),
                 }
         except Exception as e_web:
             logger.debug(f"[JinaWebReader] Native web read notice: {e_web}. Trying fallback.")
@@ -140,6 +154,7 @@ def execute_web_read(
             "backend": "jina-reader",
             "fallback_used": True,
             "fallback_backend": "jina-reader",
+            "transport": jina_res.get("transport"),
         }
 
     return {"status": "error", "error": "Failed to read content", "url": url}

@@ -7,7 +7,7 @@
       "ev_sec"
     ],
     "corpus_sha256": "034c5b7030ce9a9253e37bb9febfd153678360807553492ea6fe50344a853db3",
-    "dossier_sha256": "50fdc37b9681fb288358497aedae7cd74c4b3528ccfa6f79f271d38e6035c968",
+    "dossier_sha256": "aea169e0c430ab0f163bbe91cb6028f1b30ddbd54553ae44f78d261b85677f78",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -37,7 +37,7 @@
       "ev_sec"
     ],
     "rejected_ids": [],
-    "result_sha256": "d4bce3f993202e9dc49216b44fcc00bd639afd3351175ffdbcfe9fd791d38e6c"
+    "result_sha256": "cfa3c88093e77b0c691d6d0829fa1aa73e6f1d6fab264632c6aa3ca55d40449c"
   },
   "adversarial": {
     "candidate_hashes": {
@@ -48,7 +48,7 @@
       "ev_sec"
     ],
     "corpus_sha256": "5635c8d5853346e9654a16d534d579c86b35bc57b21c4a02a624acda7d7963b9",
-    "dossier_sha256": "77c6ec0e2c38d6ecd8c2c6a86e4d0172a7e6cded62b369c0fef3da08585983d5",
+    "dossier_sha256": "84fe916cf66e8587c14570b6e67b7b15ecfdd386cbb538d74ffe4290b737c570",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -72,7 +72,7 @@
     "rejected_ids": [
       "ev_wrong"
     ],
-    "result_sha256": "710ece7b4ccdadfc6a97d67bf2e0799c6163f838ffcade47407b14a949b80c56"
+    "result_sha256": "a66a8d25f2f7bcfaf322ffcce2f707b5f6902150586c420d969c876e041c0c75"
   },
   "conflicting": {
     "candidate_hashes": {
@@ -84,7 +84,7 @@
       "ev_adverse"
     ],
     "corpus_sha256": "a1b8213ee1ccc07a0733946ed81b60076e2c0d0d4046e98d89ff5b6f6ed6648b",
-    "dossier_sha256": "95ef20168313a2efb80978091aa33b08aff3465b352005e7136b3fd415fa978e",
+    "dossier_sha256": "ef6674ca096f12197f5f12158a1e10d647360e7dca79d0e28f22a6b017b52d1e",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -107,13 +107,13 @@
       "ev_adverse"
     ],
     "rejected_ids": [],
-    "result_sha256": "c40c022dde8d75ec12d994b30b90f348c2fef53f1cb7ec12b1708bf27dfa41bb"
+    "result_sha256": "56cffd9df7e6d51102e335062368e6200795be1164068fc35e10e9dd7bd60778"
   },
   "credential_failure": {
     "candidate_hashes": {},
     "candidate_ids": [],
     "corpus_sha256": "2b892edab67731cb3e9fdd0dcc7209d5934939ae5f4d27820524bb9e67853543",
-    "dossier_sha256": "f51b1384bf8880cef314306a86d9291089d8b7a6984d73aaeacb28bf3a908c2e",
+    "dossier_sha256": "182d259cd0c983dddb932457afe62195c004d3d68efc9a40536ae298d3b9dd74",
     "finding_ids": [],
     "lineage_metrics": {
       "echo_count": 0,
@@ -131,7 +131,7 @@
     ],
     "ranked_ids": [],
     "rejected_ids": [],
-    "result_sha256": "fc7bb77ceec49cde3cee96a19519e2a47fbaf99c19691c1483504da3aef7763a"
+    "result_sha256": "c6804d585cdd362340954594ff7527397a9415589ee6b68d7c369fc35199130f"
   },
   "discovery_timeout": {
     "candidate_hashes": {
@@ -141,7 +141,7 @@
       "ev_sec"
     ],
     "corpus_sha256": "5562a208234f05420028db45bca5aec0df2147b24b1667987961bb5415bd6c58",
-    "dossier_sha256": "1fe4ed6219cf0502be11626db22b21864c88cf4ceea7893cb69ca7b3b6f34718",
+    "dossier_sha256": "25b692182c7a821d4900698bd58327d025a4d2557b5cdc8f538bb8a0e3516e36",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -163,13 +163,13 @@
       "ev_sec"
     ],
     "rejected_ids": [],
-    "result_sha256": "f84b2d16cddd494389c0c1a5241617fe2224814df48923fa1a6aa1b7f1497863"
+    "result_sha256": "c22f58668dccc992d97969407db1c1cb4968ab10009da1cf71abd6e214a1234e"
   },
   "empty": {
     "candidate_hashes": {},
     "candidate_ids": [],
     "corpus_sha256": "a59b06274ec66173dc33929017e86a23b4da049327f3bfc3d0a6d37211d46433",
-    "dossier_sha256": "c64dd16c838e2c99020568b477de243cabb6a5edacd3e430f63ade66afc94f28",
+    "dossier_sha256": "14e29e20e4dd3701e2bcab92ee6238a448814e33098f5354be9c2b97ee6e35a9",
     "finding_ids": [],
     "lineage_metrics": {
       "echo_count": 0,
@@ -187,7 +187,7 @@
     ],
     "ranked_ids": [],
     "rejected_ids": [],
-    "result_sha256": "3c65db2a3e8751e4d944c77f4fa45ad348a61969cf57746a10dcb8decb9332b5"
+    "result_sha256": "c9c4d15824f0d35a866d60424e3939927e5e4384c5b6c8a097439be38fabdabd"
   },
   "insufficient": {
     "candidate_hashes": {},
@@ -195,7 +195,7 @@
       "ev_wrong"
     ],
     "corpus_sha256": "e7b8b7514feb47338bcdbf57b30a32b71c04784fcdaf84a4d221216268826865",
-    "dossier_sha256": "81ff19399c020d16f276619da0911f71b04e06a3803022b32ed6e573d9ad9ad2",
+    "dossier_sha256": "262e44de9d93d71ce575aa2f8a8f908bbb602048ee3a915491ce3c4feb66ad10",
     "finding_ids": [],
     "lineage_metrics": {
       "echo_count": 0,
@@ -215,7 +215,7 @@
     "rejected_ids": [
       "ev_wrong"
     ],
-    "result_sha256": "28a66f27e4335c579dfb354a816227c30162dc5874bbe87de169140d6b6ad39c"
+    "result_sha256": "0cdae783d5d8b3e5f85f029cc354b2859379b9d47a3fa75b5009a6349ff47ce4"
   },
   "malformed_metadata": {
     "candidate_hashes": {
@@ -227,7 +227,7 @@
       "ev_sec"
     ],
     "corpus_sha256": "1e75db9fa4c2239fbe3b40d1e3c95e6ef3b66efff103a9c8cc408cdabd763c64",
-    "dossier_sha256": "0eaa49502ca3322c858c3f969f28dcc81b7a90463bc71a8a8e06eb790587830b",
+    "dossier_sha256": "759d50ac6443fe4bed608ce47a8083943a80ac870db6b19f7bd3e08e127559c7",
     "finding_ids": [
       "fnd_fi_001",
       "fnd_fi_002"
@@ -251,7 +251,7 @@
       "ev_malformed"
     ],
     "rejected_ids": [],
-    "result_sha256": "238c9ea458eb97e3bdc3be442f16c7b1ffa80ee488a9a6341e84f7ffc5b0e86a"
+    "result_sha256": "ad1f96cdb3fed7c8aaab0ced34f5b6cf15e05665facc99d328d0a6ac70a43c10"
   },
   "missing_primary": {
     "candidate_hashes": {
@@ -261,7 +261,7 @@
       "ev_reuters"
     ],
     "corpus_sha256": "ad5e81f1237ef2114d8336d45928b6e915a05b9b51b852520e2077d07e1a437b",
-    "dossier_sha256": "31db896f1cf0b3bfa59ca10a0504cbf18d37d33e63a663ee021f1700b2da579c",
+    "dossier_sha256": "6ede472827ca6cb9aa9dd81c7efc8b1598406142d3e3f00f08c6488c23e02091",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -283,7 +283,7 @@
       "ev_reuters"
     ],
     "rejected_ids": [],
-    "result_sha256": "c50e2195db0dee7b7803bb86fb698e3cb049ad039cf109fcf0cf8d21d918e72c"
+    "result_sha256": "59d667c4f30a5a0c8c9bfc10d3f93e6129b470e1165550d592d248b5bf43442f"
   },
   "primary_escalation": {
     "candidate_hashes": {
@@ -294,7 +294,7 @@
       "ev_secondary"
     ],
     "corpus_sha256": "14ad082e948b4d1d27a0a98034b2fc50aa75aab208a4c450fe89fadc6c101dc0",
-    "dossier_sha256": "4fa689a3b473df716bba83e74228feb98ad94121126518c547e3a15ee8f45ed6",
+    "dossier_sha256": "841a58636b1b1d6245878a803bac725766169c0d940683e230bd792f703bd1e9",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -321,7 +321,7 @@
       "ev_secondary"
     ],
     "rejected_ids": [],
-    "result_sha256": "d3a5e56ea32184bed6b47aa191ef5920b67173d1caeb8b94194632932d34de68"
+    "result_sha256": "0e0efafc4d0f985ea8b3165f7ef72fe3c0a20415510893525cddb658452255ee"
   },
   "relevant": {
     "candidate_hashes": {
@@ -333,7 +333,7 @@
       "ev_reuters"
     ],
     "corpus_sha256": "987d999b7b3b4c79ce0b5d1c142da03faba74dc958a6eea87e0b1d3efb91c982",
-    "dossier_sha256": "ef5e5b47122d1e318a3b8eefba1e7842a9bbaf76fac5741827a2ce0a18bd818f",
+    "dossier_sha256": "e76150e60442cb21c4c8c7a52d1763eb98436ac13a72936cbc64348ecac6c297",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -356,7 +356,7 @@
       "ev_reuters"
     ],
     "rejected_ids": [],
-    "result_sha256": "1c2db81b30a2442904b8234e366df6d6638add72c4488309372135a925e7ffad"
+    "result_sha256": "e5893541c3eb9cdf5728bc218db677a9ac83d1b71ba89b1cf7457814baa4719c"
   },
   "syndicated": {
     "candidate_hashes": {
@@ -370,7 +370,7 @@
       "ev_sec"
     ],
     "corpus_sha256": "469dbf97ea5d45fbcd63794a6815d1aadf0bc43f9fcdd7ec838917242dabd322",
-    "dossier_sha256": "e447f95c5f467facb8498c595b7b26460e4abe01f74253f5c1e25dade22683ea",
+    "dossier_sha256": "556bacc68a2fb257d27a648233feb2f9ba6491d87a3ce66fa65de35538eab315",
     "finding_ids": [
       "fnd_fi_001"
     ],
@@ -394,6 +394,6 @@
       "ev_echo"
     ],
     "rejected_ids": [],
-    "result_sha256": "f0107405f9c71b0c623970c4fbef0757e857f1cc738b5b468edf99a48fd92beb"
+    "result_sha256": "45de97d2075f79a4578b49598170c6ed45a292f53fc77654aca7b8b810aee2d2"
   }
 }

@@ -25,6 +25,7 @@ class DoctorBridge:
         self.cache_ttl = cache_ttl_seconds
         self._cached_results: Optional[Dict[str, Any]] = None
         self._last_check_ts: float = 0.0
+        self._observed_results: Dict[str, Dict[str, Any]] = {}
 
     def check_all(self, force_refresh: bool = False) -> Dict[str, Dict[str, Any]]:
         """
@@ -79,26 +80,18 @@ class DoctorBridge:
     def get_channel_status(self, platform: str) -> Dict[str, Any]:
         """Get live health and active backend for a specific platform."""
         plat_lower = platform.lower()
-        if plat_lower == "reddit":
+        observation = self._observed_results.get("twitter" if plat_lower == "x" else plat_lower)
+        if observation:
+            return dict(observation)
+        if plat_lower in ("reddit", "twitter", "x"):
             return {
-                "status": "ok",
-                "name": "reddit",
-                "message": "Zero-auth public retrieval available via Arctic Shift (Authentication NOT REQUIRED for public retrieval)",
+                "status": "not_probed",
+                "name": "twitter" if plat_lower in ("twitter", "x") else "reddit",
+                "message": "No measured runtime acquisition observation is available",
                 "tier": 0,
-                "backends": ["Arctic Shift", "Bing Search Index"],
-                "active_backend": "Arctic Shift",
-                "zero_auth": "AVAILABLE",
-                "auth_required": False,
-            }
-        if plat_lower in ("twitter", "x"):
-            return {
-                "status": "ok",
-                "name": "twitter",
-                "message": "Zero-auth public retrieval available via FxTwitter (Authentication NOT REQUIRED for supported public retrieval)",
-                "tier": 0,
-                "backends": ["FxTwitter", "Bing Search Index"],
-                "active_backend": "FxTwitter",
-                "zero_auth": "AVAILABLE",
+                "backends": [],
+                "active_backend": None,
+                "zero_auth": "UNVERIFIED",
                 "auth_required": False,
             }
 
@@ -111,6 +104,36 @@ class DoctorBridge:
             "backends": [],
             "active_backend": None,
         })
+
+    def record_observation(
+        self, platform: str, telemetry: Dict[str, Any], fragments: List[Any]
+    ) -> None:
+        """Record execution-derived health without extrapolating to other operations."""
+        canonical = "twitter" if platform.lower() == "x" else platform.lower()
+        outcome = str(telemetry.get("outcome", "UNKNOWN"))
+        if outcome == "DIRECT_CONTENT":
+            status, health = "ok", "HEALTHY"
+        elif outcome in {"DIRECT_METADATA", "SYNDICATED_SUMMARY", "PARTIAL_OR_UNCLASSIFIED"}:
+            status, health = "warn", "LIMITED"
+        elif outcome == "AUTH_REQUIRED":
+            status, health = "auth_required", "BLOCKED"
+        elif outcome in {"SEARCH_INDEX_DISCOVERY", "EMPTY"}:
+            status, health = "degraded", "DEGRADED"
+        else:
+            status, health = "error", "UNAVAILABLE"
+        self._observed_results[canonical] = {
+            "status": status,
+            "health_class": health,
+            "name": canonical,
+            "message": f"Last measured operation outcome: {outcome}",
+            "active_backend": telemetry.get("backend") if fragments else None,
+            "operation": telemetry.get("operation"),
+            "outcome": outcome,
+            "content_class": telemetry.get("content_class"),
+            "network_observed": telemetry.get("network_observed", False),
+            "http_statuses": list(telemetry.get("http_statuses", [])),
+            "last_verified_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+        }
 
     def get_active_backend(self, platform: str) -> Optional[str]:
         """Return the active backend serving this channel, or None if inactive."""
@@ -136,14 +159,14 @@ class DoctorBridge:
         active = st.get("active_backend")
 
         if status in ("unknown", "not_probed"):
-            return "UNKNOWN"
+            return "NOT_PROBED"
         if status in ("error", "exception", "failed"):
             return "ERROR"
         if any(auth_kw in msg for auth_kw in ("cookie", "login", "session", "认证", "token", "auth", "credential")) or status == "auth_required":
             return "AUTH_REQUIRED"
         if status == "ok" and active:
             return "AVAILABLE"
-        if status in ("warn", "degraded") or (status == "ok" and not active):
+        if status in ("warn", "degraded", "limited") or (status == "ok" and not active):
             return "DEGRADED"
         if status in ("off", "unavailable", "disabled"):
             return "UNAVAILABLE"

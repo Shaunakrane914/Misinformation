@@ -9,6 +9,7 @@ enrichment here.
 """
 
 import json
+import copy
 import logging
 import os
 import time
@@ -50,7 +51,10 @@ def fetch_fxtwitter_status(
 
     cached = get_c(cache_key)
     if cached:
-        return cached
+        cached_copy = copy.deepcopy(cached)
+        cached_copy.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
+        cached_copy.raw_metadata["transport"]["cache_status"] = "CACHE_HIT"
+        return cached_copy
 
     handle = user if (user and user not in ("i", "status")) else "status"
     if handle == "status":
@@ -67,11 +71,23 @@ def fetch_fxtwitter_status(
     )
     for attempt in range(2):
         try:
+            started = time.perf_counter()
             with urllib.request.urlopen(req, timeout=DEFAULT_HTTP_TIMEOUT) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
+                raw_body = resp.read()
+                data = json.loads(raw_body.decode("utf-8"))
                 if data.get("code") == 200 and data.get("tweet"):
                     frag = native_normalizer.normalize_fxtwitter_tweet(data["tweet"])
                     if frag:
+                        frag.raw_metadata["transport"] = {
+                            "network_observed_this_attempt": True,
+                            "endpoint": url,
+                            "http_status": getattr(resp, "status", None),
+                            "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
+                            "raw_body_bytes": len(raw_body),
+                            "network_latency_ms": int((time.perf_counter() - started) * 1000),
+                            "cache_status": "CACHE_MISS",
+                            "rate_limit_remaining": resp.headers.get("X-RateLimit-Remaining") if getattr(resp, "headers", None) else None,
+                        }
                         set_c(cache_key, frag)
                         return frag
             break
@@ -100,7 +116,10 @@ def fetch_fxtwitter_profile(
 
     cached = get_c(cache_key)
     if cached:
-        return cached
+        cached_copy = copy.deepcopy(cached)
+        cached_copy.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
+        cached_copy.raw_metadata["transport"]["cache_status"] = "CACHE_HIT"
+        return cached_copy
 
     url = f"{FXTWITTER_BASE}/{clean_user}"
     req = urllib.request.Request(
@@ -112,11 +131,23 @@ def fetch_fxtwitter_profile(
     )
     for attempt in range(2):
         try:
+            started = time.perf_counter()
             with urllib.request.urlopen(req, timeout=DEFAULT_HTTP_TIMEOUT) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
+                raw_body = resp.read()
+                data = json.loads(raw_body.decode("utf-8"))
                 if data.get("code") == 200 and data.get("user"):
                     frag = native_normalizer.normalize_fxtwitter_profile(data["user"])
                     if frag:
+                        frag.raw_metadata["transport"] = {
+                            "network_observed_this_attempt": True,
+                            "endpoint": url,
+                            "http_status": getattr(resp, "status", None),
+                            "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
+                            "raw_body_bytes": len(raw_body),
+                            "network_latency_ms": int((time.perf_counter() - started) * 1000),
+                            "cache_status": "CACHE_MISS",
+                            "rate_limit_remaining": resp.headers.get("X-RateLimit-Remaining") if getattr(resp, "headers", None) else None,
+                        }
                         set_c(cache_key, frag)
                         return frag
             break

@@ -63,7 +63,7 @@ def test_registry_registration_and_lifecycle():
     registry.register(ch)
     assert len(registry) == 1
     assert "dummy_healthy" in registry.channel_names
-    assert registry.get_status("dummy_healthy") == ChannelStatus.AVAILABLE
+    assert registry.get_status("dummy_healthy") == ChannelStatus.NOT_PROBED
 
     registry.unregister("dummy_healthy")
     assert len(registry) == 0
@@ -76,7 +76,7 @@ def test_registry_status_transitions():
     registry.register(ch)
 
     # Initial state
-    assert registry.get_status("dummy_healthy") == ChannelStatus.AVAILABLE
+    assert registry.get_status("dummy_healthy") == ChannelStatus.NOT_PROBED
 
     # Degrade
     registry.mark_degraded("dummy_healthy")

@@ -428,7 +428,17 @@ class NativeRouter:
                 break
             try:
                 url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}&first={page_first}"
+                request_started = time.perf_counter()
                 resp = requests.get(url, headers=headers, timeout=timeout)
+                transport = {
+                    "endpoint": resp.url,
+                    "network_observed_this_attempt": True,
+                    "http_status": resp.status_code,
+                    "content_type": resp.headers.get("Content-Type"),
+                    "raw_body_bytes": len(resp.content),
+                    "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
+                    "cache_status": "UNKNOWN",
+                }
                 if resp.status_code == 200:
                     soup = BeautifulSoup(resp.text, "html.parser")
                     results = soup.select("li.b_algo")
@@ -456,6 +466,7 @@ class NativeRouter:
                                         query_id=query_id,
                                         query_class=query_class,
                                         query_text=query_text or clean_q,
+                                        raw_metadata={"transport": dict(transport)},
                                     ))
                                     if len(fragments) >= limit:
                                         break
@@ -482,7 +493,17 @@ class NativeRouter:
         }
         try:
             url = f"https://search.yahoo.com/search?p={urllib.parse.quote_plus(clean_q)}"
+            request_started = time.perf_counter()
             resp = requests.get(url, headers=headers, timeout=6.0)
+            transport = {
+                "endpoint": resp.url,
+                "network_observed_this_attempt": True,
+                "http_status": resp.status_code,
+                "content_type": resp.headers.get("Content-Type"),
+                "raw_body_bytes": len(resp.content),
+                "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
+                "cache_status": "UNKNOWN",
+            }
             if resp.status_code == 200:
                 soup = BeautifulSoup(resp.text, "html.parser")
                 results = soup.select("div.algo")
@@ -514,6 +535,7 @@ class NativeRouter:
                                 query_id=query_id,
                                 query_class=query_class,
                                 query_text=query_text or clean_q,
+                                raw_metadata={"transport": dict(transport)},
                             ))
                             if len(fragments) >= limit:
                                 break
@@ -533,12 +555,26 @@ class NativeRouter:
             }
         )
         try:
+            request_started = time.perf_counter()
             with urllib.request.urlopen(req, timeout=5.0) as resp:
-                data = json.loads(resp.read().decode("utf-8"))
+                raw_body = resp.read()
+                data = json.loads(raw_body.decode("utf-8"))
                 raw_items = data.get("items", [])
-                return self.normalizer.normalize_github_repos(
+                fragments = self.normalizer.normalize_github_repos(
                     raw_items, query_id=query_id, query_class=query_class, query_text=query_text or query
                 )
+                transport = {
+                    "endpoint": getattr(resp, "url", url),
+                    "network_observed_this_attempt": True,
+                    "http_status": getattr(resp, "status", None),
+                    "content_type": resp.headers.get("Content-Type"),
+                    "raw_body_bytes": len(raw_body),
+                    "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
+                    "cache_status": "UNKNOWN",
+                }
+                for fragment in fragments:
+                    fragment.raw_metadata["transport"] = dict(transport)
+                return fragments
         except Exception as e:
             logger.debug(f"[NativeRouter] GitHub REST fallback failed: {e}")
             return []

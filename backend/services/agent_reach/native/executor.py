@@ -70,7 +70,10 @@ class NativeExecutor:
         t0 = time.perf_counter()
         active_backend = "scrapling_http"
         markdown_text = ""
-        status_code = 200
+        status_code = None
+        content_type = None
+        raw_body_bytes = None
+        observed_endpoint = clean_url
 
         # Primary: Scrapling HTTP
         try:
@@ -80,13 +83,19 @@ class NativeExecutor:
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             }
             resp = Fetcher.get(clean_url, headers=headers, timeout=timeout)
-            status_code = getattr(resp, "status", 200)
+            status_code = getattr(resp, "status", None)
             if hasattr(resp, "body") and isinstance(resp.body, bytes):
+                raw_body_bytes = len(resp.body)
                 raw_text = resp.body.decode("utf-8", errors="replace")
             elif hasattr(resp, "html_content"):
                 raw_text = str(resp.html_content)
+                raw_body_bytes = len(raw_text.encode("utf-8", errors="replace"))
             else:
                 raw_text = resp.text if hasattr(resp, "text") else str(resp)
+                raw_body_bytes = len(raw_text.encode("utf-8", errors="replace"))
+            response_headers = getattr(resp, "headers", None)
+            if response_headers:
+                content_type = response_headers.get("content-type") or response_headers.get("Content-Type")
 
             # Clean HTML to readable text/markdown
             import re
@@ -97,7 +106,6 @@ class NativeExecutor:
 
         except Exception as e_scrapling:
             logger.debug(f"[NativeExecutor] Scrapling read error for {clean_url}: {e_scrapling}")
-            status_code = 500
 
         # Fast HTTP fallback if scrapling returned insufficient text
         if len(markdown_text) < 100:
@@ -121,6 +129,10 @@ class NativeExecutor:
                     if len(u_text) > len(markdown_text):
                         markdown_text = u_text
                         active_backend = "native_http_reader"
+                        status_code = getattr(resp, "status", None)
+                        content_type = resp.headers.get("Content-Type")
+                        raw_body_bytes = len(raw_bytes)
+                        observed_endpoint = getattr(resp, "url", clean_url)
             except Exception as e_http:
                 logger.debug(f"[NativeExecutor] Fast HTTP fallback notice for {clean_url}: {e_http}")
 
@@ -169,6 +181,10 @@ class NativeExecutor:
                     if len(j_text) > len(markdown_text):
                         markdown_text = j_text
                         active_backend = "jina_reader_fallback"
+                        status_code = getattr(resp, "status", None)
+                        content_type = resp.headers.get("Content-Type")
+                        raw_body_bytes = len(raw_bytes)
+                        observed_endpoint = getattr(resp, "url", jina_url)
             except Exception as e_jina:
                 logger.debug(f"[NativeExecutor] Emergency Jina fallback error: {e_jina}")
 
@@ -185,6 +201,15 @@ class NativeExecutor:
             "content": markdown_text,
             "char_count": len(markdown_text),
             "latency_ms": latency_ms,
+            "transport": {
+                "endpoint": observed_endpoint,
+                "network_observed_this_attempt": True,
+                "http_status": status_code,
+                "content_type": content_type,
+                "raw_body_bytes": raw_body_bytes,
+                "network_latency_ms": latency_ms,
+                "cache_status": "UNKNOWN",
+            },
         }
 
     # ── 2. GitHub CLI (gh) ────────────────────────────────────────────────
@@ -223,6 +248,16 @@ class NativeExecutor:
                 "items": repos,
                 "count": len(repos),
                 "latency_ms": latency_ms,
+                "transport": {
+                    "endpoint": "gh search repos",
+                    "network_observed_this_attempt": True,
+                    "http_status": None,
+                    "content_type": "application/json",
+                    "raw_body_bytes": len(res.stdout.encode("utf-8", errors="replace")),
+                    "network_latency_ms": latency_ms,
+                    "cache_status": "UNKNOWN",
+                    "protocol": "external_tool",
+                },
             }
         except subprocess.TimeoutExpired:
             raise BackendExecutionError("github", "gh CLI", " ".join(cmd), 124, "Timeout expired")
@@ -274,6 +309,16 @@ class NativeExecutor:
                 "status": "SUCCESS",
                 "data": data,
                 "latency_ms": latency_ms,
+                "transport": {
+                    "endpoint": "gh repo view",
+                    "network_observed_this_attempt": True,
+                    "http_status": None,
+                    "content_type": "application/json",
+                    "raw_body_bytes": len(res_meta.stdout.encode("utf-8", errors="replace")),
+                    "network_latency_ms": latency_ms,
+                    "cache_status": "UNKNOWN",
+                    "protocol": "external_tool",
+                },
             }
         except Exception as e:
             raise BackendExecutionError("github", "gh CLI", " ".join(cmd_meta), 1, str(e))
@@ -314,6 +359,16 @@ class NativeExecutor:
                 "items": items,
                 "count": len(items),
                 "latency_ms": latency_ms,
+                "transport": {
+                    "endpoint": search_expr,
+                    "network_observed_this_attempt": True,
+                    "http_status": None,
+                    "content_type": None,
+                    "raw_body_bytes": None,
+                    "network_latency_ms": latency_ms,
+                    "cache_status": "UNKNOWN",
+                    "protocol": "external_tool",
+                },
             }
         except Exception as e_inprocess:
             logger.debug(f"[NativeExecutor] In-process yt_dlp search notice: {e_inprocess}. Trying subprocess fallback.")
@@ -358,6 +413,16 @@ class NativeExecutor:
                 "items": items,
                 "count": len(items),
                 "latency_ms": latency_ms,
+                "transport": {
+                    "endpoint": search_expr,
+                    "network_observed_this_attempt": True,
+                    "http_status": None,
+                    "content_type": "application/x-ndjson",
+                    "raw_body_bytes": len(res.stdout.encode("utf-8", errors="replace")),
+                    "network_latency_ms": latency_ms,
+                    "cache_status": "UNKNOWN",
+                    "protocol": "external_tool",
+                },
             }
         except Exception as e:
             raise BackendExecutionError("youtube", "yt-dlp", " ".join(cmd), 1, str(e))
@@ -432,7 +497,8 @@ class NativeExecutor:
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                data = json.loads(resp.read(MAX_OUTPUT_BYTES).decode("utf-8"))
+                raw_body = resp.read(MAX_OUTPUT_BYTES)
+                data = json.loads(raw_body.decode("utf-8"))
                 latency_ms = int((time.perf_counter() - t0) * 1000)
                 return {
                     "platform": "v2ex",
@@ -442,6 +508,7 @@ class NativeExecutor:
                     "items": data,
                     "count": len(data),
                     "latency_ms": latency_ms,
+                    "transport": self._http_transport(resp, url, raw_body, latency_ms),
                 }
         except Exception as e:
             raise BackendExecutionError("v2ex", "V2EX API (public)", url, 1, str(e))
@@ -453,7 +520,8 @@ class NativeExecutor:
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                data = json.loads(resp.read(MAX_OUTPUT_BYTES).decode("utf-8"))
+                raw_body = resp.read(MAX_OUTPUT_BYTES)
+                data = json.loads(raw_body.decode("utf-8"))
                 latency_ms = int((time.perf_counter() - t0) * 1000)
                 return {
                     "platform": "v2ex",
@@ -463,6 +531,7 @@ class NativeExecutor:
                     "items": data,
                     "count": len(data),
                     "latency_ms": latency_ms,
+                    "transport": self._http_transport(resp, url, raw_body, latency_ms),
                 }
         except Exception as e:
             raise BackendExecutionError("v2ex", "V2EX API (public)", url, 1, str(e))
@@ -483,7 +552,8 @@ class NativeExecutor:
         )
         try:
             with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw = json.loads(resp.read(MAX_OUTPUT_BYTES).decode("utf-8"))
+                raw_body = resp.read(MAX_OUTPUT_BYTES)
+                raw = json.loads(raw_body.decode("utf-8"))
                 latency_ms = int((time.perf_counter() - t0) * 1000)
                 items = []
                 data_obj = raw.get("data", {})
@@ -499,6 +569,7 @@ class NativeExecutor:
                     "items": items,
                     "count": len(items),
                     "latency_ms": latency_ms,
+                    "transport": self._http_transport(resp, url, raw_body, latency_ms),
                 }
         except Exception as e:
             raise BackendExecutionError("bilibili", "B站搜索 API", url, 1, str(e))
@@ -509,13 +580,19 @@ class NativeExecutor:
         """Parse RSS/Atom feed using feedparser."""
         import feedparser
         clean_url = url.strip()
-        if not is_safe_url(clean_url):
-            raise SecurityPolicyViolation(f"RSS feed URL failed SSRF check: {clean_url}")
+        safe, reason = is_safe_url(clean_url)
+        if not safe:
+            raise SecurityPolicyViolation(f"RSS feed URL failed SSRF check: {clean_url} ({reason})")
 
         t0 = time.perf_counter()
         try:
-            feed = feedparser.parse(clean_url)
+            req = urllib.request.Request(clean_url, headers={"User-Agent": _USER_AGENT})
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
+                raw_body = resp.read(MAX_OUTPUT_BYTES)
+                transport = self._http_transport(resp, clean_url, raw_body, 0)
+            feed = feedparser.parse(raw_body)
             latency_ms = int((time.perf_counter() - t0) * 1000)
+            transport["network_latency_ms"] = latency_ms
             entries = []
             for e in feed.entries[:limit]:
                 entries.append({
@@ -532,9 +609,24 @@ class NativeExecutor:
                 "items": entries,
                 "count": len(entries),
                 "latency_ms": latency_ms,
+                "transport": transport,
             }
         except Exception as e:
             raise BackendExecutionError("rss", "feedparser", clean_url, 1, str(e))
+
+    @staticmethod
+    def _http_transport(response: Any, endpoint: str, body: bytes, latency_ms: int) -> Dict[str, Any]:
+        """Return only transport facts observed at the HTTP boundary."""
+        return {
+            "endpoint": getattr(response, "url", endpoint),
+            "network_observed_this_attempt": True,
+            "http_status": getattr(response, "status", None),
+            "content_type": response.headers.get("Content-Type") if getattr(response, "headers", None) else None,
+            "raw_body_bytes": len(body),
+            "network_latency_ms": latency_ms,
+            "cache_status": "UNKNOWN",
+            "protocol": "http",
+        }
 
     # ── 7. YouTube Comments ────────────────────────────────────────────────
 

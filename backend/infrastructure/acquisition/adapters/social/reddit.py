@@ -8,6 +8,8 @@ Enforces caching via SocialCache and exponential backoff on retryable 422/429/50
 """
 
 import json
+import copy
+import html
 import logging
 import os
 import re
@@ -68,7 +70,10 @@ def fetch_arctic_shift_posts_batch(
     for pid in clean_ids:
         cached = get_c(f"reddit:post:{pid}")
         if cached:
-            results.append(cached)
+            cached_copy = copy.deepcopy(cached)
+            cached_copy.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
+            cached_copy.raw_metadata["transport"]["cache_status"] = "CACHE_HIT"
+            results.append(cached_copy)
         else:
             to_fetch.append(pid)
 
@@ -87,10 +92,23 @@ def fetch_arctic_shift_posts_batch(
             },
         )
         data = None
+        transport = None
         for attempt in range(2):
             try:
+                request_started = time.perf_counter()
                 with urllib.request.urlopen(req, timeout=3.0) as resp:
-                    data = json.loads(resp.read().decode("utf-8"))
+                    raw_body = resp.read()
+                    data = json.loads(raw_body.decode("utf-8"))
+                    transport = {
+                        "network_observed_this_attempt": True,
+                        "endpoint": url,
+                        "http_status": getattr(resp, "status", None),
+                        "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
+                        "raw_body_bytes": len(raw_body),
+                        "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
+                        "cache_status": "CACHE_MISS",
+                        "rate_limit_remaining": resp.headers.get("X-Ratelimit-Remaining") if getattr(resp, "headers", None) else None,
+                    }
                     break
             except urllib.error.HTTPError as e:
                 if e.code in (422, 429, 503) and attempt == 0:
@@ -109,6 +127,8 @@ def fetch_arctic_shift_posts_batch(
                     posts, query_id=query_id, query_class=query_class, query_text=query_text
                 )
                 for f in frags:
+                    if transport:
+                        f.raw_metadata["transport"] = dict(transport)
                     pid = f.raw_metadata.get("post_id") or ""
                     if pid:
                         set_c(f"reddit:post:{pid}", f)
@@ -145,7 +165,11 @@ def fetch_arctic_shift_search(
 
     cached = get_c(cache_key)
     if cached:
-        return cached
+        cached_copy = copy.deepcopy(cached)
+        for fragment in cached_copy:
+            fragment.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
+            fragment.raw_metadata["transport"]["cache_status"] = "CACHE_HIT"
+        return cached_copy
 
     params = {"limit": str(min(limit, 25)), "sort": "desc"}
     if subreddit:
@@ -164,13 +188,27 @@ def fetch_arctic_shift_search(
         },
     )
     try:
+        request_started = time.perf_counter()
         with urllib.request.urlopen(req, timeout=3.0) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
+            raw_body = resp.read()
+            data = json.loads(raw_body.decode("utf-8"))
             posts = data.get("data", [])
             frags = native_normalizer.normalize_arctic_shift_posts(
                 posts, query_id=query_id, query_class=query_class, query_text=query_text or query
             )
             if frags:
+                transport = {
+                    "network_observed_this_attempt": True,
+                    "endpoint": url,
+                    "http_status": getattr(resp, "status", None),
+                    "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
+                    "raw_body_bytes": len(raw_body),
+                    "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
+                    "cache_status": "CACHE_MISS",
+                    "rate_limit_remaining": resp.headers.get("X-Ratelimit-Remaining") if getattr(resp, "headers", None) else None,
+                }
+                for fragment in frags:
+                    fragment.raw_metadata["transport"] = dict(transport)
                 set_c(cache_key, frags)
                 return frags
     except Exception as e:
@@ -196,7 +234,11 @@ def fetch_arctic_shift_comments(
 
     cached = get_c(cache_key)
     if cached:
-        return cached
+        cached_copy = copy.deepcopy(cached)
+        for fragment in cached_copy:
+            fragment.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
+            fragment.raw_metadata["transport"]["cache_status"] = "CACHE_HIT"
+        return cached_copy
 
     url = f"{ARCTIC_SHIFT_BASE}/comments/search?link_id={link_id}&limit={min(limit, 50)}&sort=desc"
     req = urllib.request.Request(
@@ -207,13 +249,27 @@ def fetch_arctic_shift_comments(
         },
     )
     try:
+        request_started = time.perf_counter()
         with urllib.request.urlopen(req, timeout=3.0) as resp:
-            data = json.loads(resp.read().decode("utf-8"))
+            raw_body = resp.read()
+            data = json.loads(raw_body.decode("utf-8"))
             comments = data.get("data", [])
             frags = native_normalizer.normalize_arctic_shift_comments(
                 comments, query_id=query_id, query_class=query_class, query_text=query_text
             )
             if frags:
+                transport = {
+                    "network_observed_this_attempt": True,
+                    "endpoint": url,
+                    "http_status": getattr(resp, "status", None),
+                    "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
+                    "raw_body_bytes": len(raw_body),
+                    "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
+                    "cache_status": "CACHE_MISS",
+                    "rate_limit_remaining": resp.headers.get("X-Ratelimit-Remaining") if getattr(resp, "headers", None) else None,
+                }
+                for fragment in frags:
+                    fragment.raw_metadata["transport"] = dict(transport)
                 set_c(cache_key, frags)
                 return frags
     except Exception as e:
@@ -251,7 +307,11 @@ def fetch_reddit_subreddit_rss(
 
     cached = get_c(cache_key)
     if cached:
-        return cached
+        cached_copy = copy.deepcopy(cached)
+        for fragment in cached_copy:
+            fragment.raw_metadata.setdefault("transport", {})["network_observed_this_attempt"] = False
+            fragment.raw_metadata["transport"]["cache_status"] = "CACHE_HIT"
+        return cached_copy
 
     url = f"https://www.reddit.com/r/{clean_sub}/.rss"
     timeout = DEFAULT_HTTP_TIMEOUT
@@ -265,8 +325,19 @@ def fetch_reddit_subreddit_rss(
     fragments: List[EvidenceFragment] = []
     try:
         import feedparser
+        request_started = time.perf_counter()
         with urllib.request.urlopen(req, timeout=timeout) as resp:
             raw_xml = resp.read()
+            transport = {
+                "network_observed_this_attempt": True,
+                "endpoint": url,
+                "http_status": getattr(resp, "status", None),
+                "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
+                "raw_body_bytes": len(raw_xml),
+                "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
+                "cache_status": "CACHE_MISS",
+                "rate_limit_remaining": resp.headers.get("X-Ratelimit-Remaining") if getattr(resp, "headers", None) else None,
+            }
             feed = feedparser.parse(raw_xml)
             for entry in feed.entries[:limit]:
                 title = entry.get("title", "")
@@ -275,7 +346,13 @@ def fetch_reddit_subreddit_rss(
                 published = entry.get("published", "")
                 summary = entry.get("summary", "") or title
 
-                clean_text = re.sub(r"<[^>]+>", " ", summary).strip()
+                clean_text = html.unescape(re.sub(r"<[^>]+>", " ", summary))
+                clean_text = re.sub(
+                    r"\bsubmitted\s+by\s+\S+(?:\s+to\s+\S+)?\s*",
+                    " ", clean_text, flags=re.IGNORECASE,
+                )
+                clean_text = re.sub(r"\[(?:link|comments)\]", " ", clean_text, flags=re.IGNORECASE)
+                clean_text = re.sub(r"\s+", " ", clean_text).strip(" -|")
                 content = f"Subreddit: r/{clean_sub}\nTitle: {title}\nAuthor: {author}\nLink: {link}\n\nContent:\n{clean_text}"
 
                 frag = EvidenceFragment(
@@ -305,6 +382,8 @@ def fetch_reddit_subreddit_rss(
                         "content_type": "rss_feed_entry",
                         "rss_sunset_announced": "2026-11-13",
                         "deprecation_status": "OPERATIONAL",
+                        "transport": dict(transport),
+                        "usable_body_chars": len(clean_text),
                     }
                 )
                 fragments.append(frag)

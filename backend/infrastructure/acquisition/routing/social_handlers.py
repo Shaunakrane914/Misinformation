@@ -223,9 +223,10 @@ class SocialChannelHandlers:
                 fragments = [fragment]
                 self._mark_mirror_success(fragments, "twitter", "fxtwitter", telemetry)
 
-        # 2. Plain handle query (e.g. "@OpenAI" or "OpenAI" if clean handle)
+        # 2. Explicit handle query only (e.g. "@OpenAI").  A plain entity
+        # name is not a handle assertion and must pass entity resolution first.
         if not fragments and self.router.use_fxtwitter:
-            handle = re.fullmatch(r"@?([A-Za-z0-9_]{1,15})", query.strip())
+            handle = re.fullmatch(r"@([A-Za-z0-9_]{1,15})", query.strip())
             if handle and handle.group(1).lower() not in TWITTER_RESERVED_PATHS:
                 fragment = self.router._fetch_fxtwitter_profile(handle.group(1))
                 if fragment:
@@ -245,6 +246,15 @@ class SocialChannelHandlers:
             for cand in resolution.x_candidates:
                 prof_frag = self.router._fetch_fxtwitter_profile(cand.handle)
                 if prof_frag and prof_frag.content:
+                    actual_handle = (prof_frag.author or "").strip().lstrip("@")
+                    if actual_handle and actual_handle.lower() != cand.handle.lower():
+                        telemetry.setdefault("identity_rejections", []).append({
+                            "requested_entity": resolution.normalized_entity,
+                            "candidate_handle": cand.handle,
+                            "actual_handle": actual_handle,
+                            "reason": "ACQUIRED_ACCOUNT_MISMATCH",
+                        })
+                        continue
                     prof_frag.content_depth = "PROFILE_METADATA"
                     prof_frag.raw_metadata.update(
                         resolved_entity=resolution.normalized_entity,

@@ -467,6 +467,50 @@ class TestSocialChannelHandlersIntegration:
         assert results[0].content_depth == "PROFILE_METADATA"
         assert results[0].raw_metadata.get("content_completeness") in ("profile", "profile_metadata")
 
+    def test_plain_entity_resolves_before_literal_handle_but_explicit_handle_does_not(self):
+        router_mock = MagicMock()
+        router_mock.use_fxtwitter = True
+        router_mock.use_social_url_discovery = False
+        router_mock._fetch_fxtwitter_profile.side_effect = lambda handle: EvidenceFragment(
+            platform="twitter",
+            title=f"Profile @{handle}",
+            content="profile metadata",
+            url=f"https://x.com/{handle}",
+            author=f"@{handle}",
+        )
+        handlers = SocialChannelHandlers(router_mock)
+        resolved = MagicMock()
+        resolved.normalized_entity = "Anthropic"
+        resolved.sector = "ai_tech"
+        resolved.x_candidates = [MagicMock(
+            handle="AnthropicAI", relationship="OFFICIAL", confidence=0.95,
+            verification_evidence="Wikidata P2002", verification_method="LIVE_WIKIDATA_P2002_REST",
+            entity_id="Q107147712", official_website="https://anthropic.com",
+        )]
+
+        with patch(
+            "backend.infrastructure.acquisition.routing.social_handlers.entity_social_resolver.resolve",
+            return_value=resolved,
+        ):
+            plain = handlers._execute_twitter("Anthropic", 5, "q1", "identity", "Anthropic", {}, {})
+        explicit = handlers._execute_twitter("@Anthropic", 5, "q2", "identity", "@Anthropic", {}, {})
+
+        assert plain[0].author == "@AnthropicAI"
+        assert explicit[0].author == "@Anthropic"
+
+    def test_reddit_rss_boilerplate_is_not_counted_as_body(self):
+        post = EvidenceFragment(
+            platform="reddit",
+            title="[r/hardware] RTX discussion",
+            content=(
+                "Subreddit: r/hardware\nTitle: RTX discussion\n\nContent:\n"
+                "submitted by /u/example to r/hardware [link] [comments]"
+            ),
+        )
+        title, body = EntitySubredditResolver._extract_clean_content(post)
+        assert title == "RTX discussion"
+        assert body == ""
+
 
 class TestFourAgentsIntegrationTrace:
     """End-to-end integration trace verifying all 4 agents ingest social evidence with accurate provenance."""

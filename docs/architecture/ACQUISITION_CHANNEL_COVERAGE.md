@@ -1,9 +1,12 @@
 # Acquisition channel coverage matrix
 
-This matrix is derived from `CAPABILITY_MATRIX` in
-`backend/services/agent_reach/native/channel_capabilities.py`. A registered
-capability is not evidence of a live credentialed integration; tests validate
-the advertised contract using controlled fixtures only.
+This file describes the upstream declaration catalogue. It is not an executable
+support claim. The authoritative current audit is
+`docs/architecture/PRE_PHASE7_READINESS_REPORT.md`, and the machine-readable
+per-operation evidence is in the latest timestamped
+`artifacts/pre_phase7_audit/` run. Runtime capability responses now expose
+`declared_operations` separately from executable `operations`; registration,
+credentials, and a provider declaration do not prove meaningful acquisition.
 
 | Channel | Operations | Auth mode | Primary / fallback | Offline expectation | Runtime status |
 |---|---|---|---|---|---|
@@ -24,12 +27,12 @@ the advertised contract using controlled fixtures only.
 | boss | search jobs, read JD | browser_cdp | boss CLI | AUTH_REQUIRED without CDP | credential-gated |
 | xiaoyuzhou | transcribe | api_key | Groq Whisper / ffmpeg | explicit unavailable state without key | credential-gated |
 
-The executable contract test is `tests/unit/test_acquisition_channel_contracts.py`.
-It validates matrix completeness, metadata integrity, concrete handler selection,
-deterministic provenance and telemetry, explicit credential failures, fallback
-behavior, and fail-closed backend errors without making network calls. Channel-
-specific suites additionally cover deterministic normalizer fixtures, Reddit/X
-public mirrors and search-index fallbacks, SSRF enforcement, and API compatibility.
+The declaration contract test is `tests/unit/test_acquisition_channel_contracts.py`.
+It validates catalogue integrity and deterministic routing with controlled
+fixtures. It does not prove live availability. The pre-Phase-7 audit found 37
+declared operations with no production execution path and five routable operations
+not exercised in its bounded live run; these remain unsupported or unverified,
+not green.
 
 ## Runtime responsibility map
 

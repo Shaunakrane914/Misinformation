@@ -41,6 +41,7 @@ def search_brand_evidence(
         research_req = ResearchRequest(
             target=target_name,
             domain="brand",
+            agent_name="brandshield",
             intent=f"investigate brand reputation, counterfeits, impersonations, phishing, and online threats for {target_name}",
             query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
             deep_read_budget=15,

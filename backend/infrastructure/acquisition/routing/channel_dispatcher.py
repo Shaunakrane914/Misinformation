@@ -37,6 +37,7 @@ class ChannelQueryDispatcher:
     ) -> Tuple[List[EvidenceFragment], Dict[str, Any]]:
         started = time.perf_counter()
         telemetry = self._new_telemetry(platform)
+        telemetry["operation"] = f"{platform}.{kwargs.get('operation', 'search')}"
         fragments: List[EvidenceFragment] = []
         try:
             handler = self.social if platform in self.SOCIAL_CHANNELS else self.standard
@@ -51,6 +52,8 @@ class ChannelQueryDispatcher:
 
         telemetry["latency_ms"] = int((time.perf_counter() - started) * 1000)
         self._apply_provenance_defaults(fragments, platform)
+        self._finalize_outcome(telemetry, fragments)
+        self.router.doctor.record_observation(platform, telemetry, fragments)
         return fragments, telemetry
 
     def _new_telemetry(self, platform: str) -> Dict[str, Any]:
@@ -67,7 +70,70 @@ class ChannelQueryDispatcher:
             "attempts": 1,
             "latency_ms": 0,
             "error": None,
+            "outcome": "INITIATED",
+            "content_class": "UNKNOWN",
+            "network_observed": False,
+            "http_statuses": [],
+            "source_endpoints": [],
+            "cache_statuses": [],
+            "usable_text_chars": 0,
+            "evidence_item_count": 0,
         }
+
+    @staticmethod
+    def _finalize_outcome(telemetry: Dict[str, Any], fragments: List[EvidenceFragment]) -> None:
+        """Classify evidence depth independently from transport success."""
+        if telemetry.get("status") == "AUTH_REQUIRED":
+            telemetry.update(outcome="AUTH_REQUIRED", content_class="NONE")
+            return
+        if telemetry.get("status") == "FAILED":
+            telemetry.update(outcome="FAILED", content_class="NONE")
+            return
+
+        depths = {str(getattr(f, "content_depth", "") or "").upper() for f in fragments}
+        modes = {str(getattr(f, "retrieval_mode", "") or "").lower() for f in fragments}
+        transport = [
+            (getattr(f, "raw_metadata", {}) or {}).get("transport", {})
+            for f in fragments
+        ]
+        observed = [item for item in transport if item.get("network_observed_this_attempt") is True]
+        http_statuses = sorted({item.get("http_status") for item in observed if item.get("http_status") is not None})
+        endpoints = list(dict.fromkeys(item.get("endpoint") for item in observed if item.get("endpoint")))
+        cache_statuses = sorted({item.get("cache_status", "UNKNOWN") for item in transport if item})
+        usable_chars = sum(
+            int((getattr(f, "raw_metadata", {}) or {}).get("usable_body_chars", len((getattr(f, "content", "") or "").strip())))
+            for f in fragments
+        )
+
+        direct_depths = {
+            "FULL_ARTICLE", "PARTIAL_CONTENT", "PRIMARY_DOCUMENT", "REGULATORY_FILING",
+            "OFFICIAL_STATEMENT", "SOCIAL_POST", "TWEET_STATUS", "COMMENT",
+            "COMMENTS", "VIDEO_TRANSCRIPT", "FULL_CONTENT",
+        }
+        metadata_depths = {"PROFILE_METADATA", "VIDEO_METADATA", "HEADLINE_ONLY", "METADATA"}
+        if not fragments:
+            outcome, content_class = "EMPTY", "NONE"
+        elif "web_search_index" in modes or "INDEX_SNIPPET" in depths:
+            outcome, content_class = "SEARCH_INDEX_DISCOVERY", "SEARCH_INDEX"
+        elif "FEED_ENTRY_SUMMARY" in depths or "rss_feed" in modes:
+            outcome, content_class = "SYNDICATED_SUMMARY", "SYNDICATED"
+        elif depths & direct_depths:
+            outcome, content_class = "DIRECT_CONTENT", "DIRECT"
+        elif depths and depths <= metadata_depths:
+            outcome, content_class = "DIRECT_METADATA", "METADATA"
+        else:
+            outcome, content_class = "PARTIAL_OR_UNCLASSIFIED", "PARTIAL"
+
+        telemetry.update(
+            outcome=outcome,
+            content_class=content_class,
+            network_observed=bool(observed),
+            http_statuses=http_statuses,
+            source_endpoints=endpoints,
+            cache_statuses=cache_statuses or ["UNKNOWN"],
+            usable_text_chars=usable_chars,
+            evidence_item_count=len(fragments),
+        )
 
     @staticmethod
     def _apply_provenance_defaults(fragments: List[EvidenceFragment], platform: str) -> None:

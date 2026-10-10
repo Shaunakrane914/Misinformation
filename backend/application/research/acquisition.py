@@ -14,14 +14,39 @@ from backend.services.research.source_quality import source_quality_engine
 class QueryPlanningStage:
     def run(self, request: ResearchRequest) -> QueryPlan:
         from backend.services.agent_reach.planner import RetrievalPlanner
+        from backend.services.agent_reach.source_planner import source_planning_engine
 
         planner = RetrievalPlanner()
-        multi_queries, query_classes = planner.build_multi_channel_queries(
+        legacy_queries, query_classes = planner.build_multi_channel_queries(
             request.target, domain=request.domain
         )
+        source_plan = source_planning_engine.plan(
+            f"{request.target}. {request.intent}",
+            entity=request.target,
+            domain=request.domain,
+            agent=request.agent_name,
+        )
+        planned_queries = source_plan.to_channel_queries()
+
+        # Preserve useful domain query diversity, but only for channels selected
+        # by the capability-aware plan. Planner actions take precedence and the
+        # per-channel bound prevents indiscriminate fan-out.
+        multi_queries: dict[str, list[dict[str, Any]]] = {}
+        for channel in source_plan.channels:
+            combined = list(planned_queries.get(channel, []))
+            seen = {item.get("query_text", "").strip().lower() for item in combined}
+            for item in legacy_queries.get(channel, []):
+                query_text = item.get("query_text", "").strip()
+                if query_text and query_text.lower() not in seen:
+                    combined.append(item)
+                    seen.add(query_text.lower())
+                if len(combined) >= source_plan.budget.max_queries_per_channel:
+                    break
+            if combined:
+                multi_queries[channel] = combined[:source_plan.budget.max_queries_per_channel]
         # The legacy planner also combined request.query_classes into a local
         # value, but never consumed it; retaining that no-op is unnecessary.
-        return QueryPlan(planner, multi_queries, query_classes)
+        return QueryPlan(planner, multi_queries, query_classes, source_plan)
 
 
 class BroadDiscoveryStage:

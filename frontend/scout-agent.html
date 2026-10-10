@@ -470,8 +470,8 @@
           if (k === 'rss') label = 'RSS / Wires';
           if (k === 'twitter') label = 'X / Twitter';
 
-          if (st === 'AVAILABLE') cls = 'active';
-          else if (st === 'AUTH_REQUIRED' || st === 'DEGRADED') cls = 'warn';
+          if (st === 'AVAILABLE' && item.health_class === 'HEALTHY') cls = 'active';
+          else if (st === 'AUTH_REQUIRED' || st === 'DEGRADED' || item.health_class === 'LIMITED') cls = 'warn';
 
           rendered.push(`
             <span class="channel-pill ${cls}" title="Backend: ${esc(item.backend || 'none')} · Status: ${st}">

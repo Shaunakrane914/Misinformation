@@ -44,6 +44,13 @@ def test_canonical_and_legacy_service_exports_have_object_identity():
     assert legacy_singleton is agent_reach_service
 
 
+def test_linkedin_credential_contract_is_consistent_at_registration():
+    from backend.infrastructure.acquisition.service import agent_reach_service
+
+    channel = agent_reach_service.registry.get("linkedin")
+    assert channel.auth_env_var == "LINKEDIN_COOKIE"
+
+
 def test_capability_matrix_has_the_complete_advertised_channel_set():
     assert set(CAPABILITY_MATRIX) == EXPECTED_CHANNELS
 

@@ -348,19 +348,15 @@ def test_facebook_channel_remains_unchanged(router):
     assert "authentication" in str(telem.get("error", "")).lower() or "FACEBOOK_COOKIE" in str(telem.get("error", ""))
 
 
-def test_doctor_reports_zero_auth_availability():
-    """NativeDoctor reports Arctic Shift and FxTwitter as available without authentication."""
-    reddit_st = native_doctor.get_channel_status("reddit")
-    assert reddit_st["status"] == "ok"
-    assert reddit_st["active_backend"] == "Arctic Shift"
-    assert reddit_st["zero_auth"] == "AVAILABLE"
-    assert reddit_st["auth_required"] is False
-
-    twitter_st = native_doctor.get_channel_status("twitter")
-    assert twitter_st["status"] == "ok"
-    assert twitter_st["active_backend"] == "FxTwitter"
-    assert twitter_st["zero_auth"] == "AVAILABLE"
-    assert twitter_st["auth_required"] is False
+def test_doctor_does_not_claim_zero_auth_availability_before_observation():
+    """Configured mirrors remain unverified until a meaningful operation is observed."""
+    doctor = type(native_doctor)()
+    for channel in ("reddit", "twitter"):
+        status = doctor.get_channel_status(channel)
+        assert status["status"] == "not_probed"
+        assert status["active_backend"] is None
+        assert status["zero_auth"] == "UNVERIFIED"
+        assert status["auth_required"] is False
 
 
 def test_ssrf_allowlist_preserves_public_mirrors():

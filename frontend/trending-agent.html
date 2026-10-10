@@ -302,12 +302,12 @@
       <!-- CHANNEL HEALTH STRIP -->
       <div class="channel-strip ae-reveal" id="channelStrip">
         <span class="channel-label">// Channels:</span>
-        <div class="ch-badge" id="ch_news"><span>News</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_reddit"><span>Reddit</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_twitter"><span>Twitter / X</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_youtube"><span>YouTube</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_web"><span>Web</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_instagram"><span>Instagram</span><span class="dot-val">Optional</span></div>
+        <div class="ch-badge" id="ch_news"><span>News</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_reddit"><span>Reddit</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_twitter"><span>Twitter / X</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_youtube"><span>YouTube</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_web"><span>Web</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_instagram"><span>Instagram</span><span class="dot-val">Auth gated</span></div>
       </div>
 
       <!-- MAIN CONTENT GRID -->
@@ -591,15 +591,16 @@
       for (const [ch, info] of Object.entries(channels)) {
         const badge = document.getElementById(`ch_${ch}`);
         if (badge) {
-          if (info.status === 'ok') {
+          const status = String(info.status || 'NOT_PROBED').toUpperCase();
+          if (status === 'AVAILABLE' || status === 'HEALTHY') {
             badge.className = 'ch-badge ok';
             badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">✓ ${info.retrieved_count}</span>`;
-          } else if (info.status === 'unavailable') {
+          } else if (['DEGRADED', 'LIMITED', 'AUTH_REQUIRED', 'BLOCKED', 'UNAVAILABLE'].includes(status)) {
             badge.className = 'ch-badge warn';
             badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">⚠ offline</span>`;
           } else {
             badge.className = 'ch-badge';
-            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">0</span>`;
+            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">not verified</span>`;
           }
         }
       }

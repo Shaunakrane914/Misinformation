@@ -179,6 +179,7 @@ def search_personal_evidence(
         research_req = ResearchRequest(
             target=target_name,
             domain="personal",
+            agent_name="personal_watch",
             intent=f"monitor personal identity threat surface, impersonation profiles, synthetic deepfakes, scams, and false claims for {target_name}",
             query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
             deep_read_budget=15,

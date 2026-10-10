@@ -498,8 +498,9 @@
       let healthHtml = `<div class="health-strip">
         <span style="color:var(--text-dim);font-weight:700;">CHANNEL STATUS:</span>`;
       for (const [ch, st] of Object.entries(health)) {
-        const isHealthy = st.startsWith('active');
-        const isDegraded = st === 'standby' || st === 'querying';
+        const normalizedStatus = String(st || 'NOT_PROBED').toUpperCase();
+        const isHealthy = normalizedStatus === 'AVAILABLE' || normalizedStatus === 'HEALTHY';
+        const isDegraded = ['DEGRADED', 'LIMITED', 'STANDBY', 'QUERYING', 'AUTH_REQUIRED'].includes(normalizedStatus);
         const pillClass = isHealthy ? 'healthy' : isDegraded ? 'degraded' : 'unavailable';
         const icon = isHealthy ? '✓' : isDegraded ? '⏳' : '✕';
         healthHtml += `<span class="health-pill ${pillClass}">${escapeHtml(ch.toUpperCase())} ${icon} ${escapeHtml(st)}</span>`;

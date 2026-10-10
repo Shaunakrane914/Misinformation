@@ -191,6 +191,11 @@ class CorpusAssemblyStage:
             "saturation": sat_summary,
             "source_lineage": lineage_graph.get("metrics", {}),
             "total_latency_ms": total_latency_ms,
+            "source_plan": (
+                plan.source_plan.to_dict()
+                if getattr(plan.source_plan, "to_dict", None)
+                else plan.source_plan
+            ),
         }
 
         # Build human-readable executive summary

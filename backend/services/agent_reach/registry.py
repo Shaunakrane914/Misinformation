@@ -41,7 +41,7 @@ class CapabilityRegistry:
         """Register a channel implementation."""
         name = channel.name
         self._channels[name] = channel
-        self._status[name] = ChannelStatus.AVAILABLE  # Assume healthy until probed
+        self._status[name] = ChannelStatus.NOT_PROBED
         logger.info(f"[CapabilityRegistry] Registered channel: {name}")
 
     def unregister(self, name: str) -> None:
@@ -143,7 +143,11 @@ class CapabilityRegistry:
             platform_filter: Optional set of channel names to include.
                              If None, returns all healthy channels.
         """
-        healthy_statuses = {ChannelStatus.AVAILABLE, ChannelStatus.DEGRADED}
+        # NOT_PROBED is routable but never rendered as healthy. Execution itself
+        # supplies the first empirical observation.
+        healthy_statuses = {
+            ChannelStatus.AVAILABLE, ChannelStatus.DEGRADED, ChannelStatus.NOT_PROBED,
+        }
         channels = []
 
         for name, channel in self._channels.items():

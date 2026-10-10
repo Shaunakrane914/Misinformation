@@ -17,6 +17,7 @@ class QueryPlan:
     planner: Any
     channel_queries: dict[str, list[dict[str, Any]]]
     query_classes: Any
+    source_plan: Any = None
 
 
 @dataclass

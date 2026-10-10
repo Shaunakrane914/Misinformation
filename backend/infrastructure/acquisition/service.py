@@ -47,6 +47,10 @@ from backend.services.agent_reach.native import (
     native_router,
 )
 from backend.services.agent_reach.planner import RetrievalPlan, RetrievalPlanner
+from backend.services.agent_reach.source_planner import (
+    EXECUTABLE_CAPABILITIES,
+    SourcePlanningEngine,
+)
 from backend.services.agent_reach.registry import CapabilityRegistry
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
 
@@ -71,6 +75,7 @@ class AgentReachService:
     def __init__(self):
         self.registry = CapabilityRegistry()
         self.planner = RetrievalPlanner()
+        self.source_planner = SourcePlanningEngine()
         self._register_default_channels()
         logger.info("[AgentReachService] Initialized with Native Agent Reach 3.0 capability backbone")
 
@@ -89,12 +94,13 @@ class AgentReachService:
         self.registry.register(TwitterChannel())
 
         # Optional / authenticated channels (gracefully report status)
-        self.registry.register(AuthenticatedOptionalChannel("linkedin", "LinkedIn", "LINKEDIN_SESSION_COOKIE"))
+        self.registry.register(AuthenticatedOptionalChannel("linkedin", "LinkedIn", "LINKEDIN_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("xueqiu", "Xueqiu", "XUEQIU_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("xiaohongshu", "Xiaohongshu", "XIAOHONGSHU_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("instagram", "Instagram", "INSTAGRAM_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("facebook", "Facebook", "FACEBOOK_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("boss", "Boss直聘", "BOSS_CDP_PORT"))
+        self.registry.register(AuthenticatedOptionalChannel("xiaoyuzhou", "Xiaoyuzhou", "GROQ_API_KEY"))
 
     # ── Diagnostics & Capabilities ──────────────────────────────────────────
 
@@ -107,15 +113,40 @@ class AgentReachService:
 
         native_channels = {}
         for plat, cap in CAPABILITY_MATRIX.items():
-            doc_entry = doctor_status.get(plat, {})
-            status_code = native_doctor.get_canonical_status_code(plat)
-            active_b = doc_entry.get("active_backend") or (cap.backends[0] if cap.backends else "default")
+            doc_entry = native_doctor.get_channel_status(plat)
+            registered = plat in self.registry.channel_names
+            status_code = native_doctor.get_canonical_status_code(plat) if registered else "UNAVAILABLE"
+            active_b = doc_entry.get("active_backend")
             native_channels[plat] = {
                 "status": status_code,
                 "backend": active_b,
-                "operations": sorted(list(cap.operations)),
+                "operations": sorted(EXECUTABLE_CAPABILITIES.get(plat, set())) if registered else [],
+                "declared_operations": sorted(list(cap.operations)),
+                "registered": registered,
+                "implementation_status": "IMPLEMENTED" if registered else "NOT_IMPLEMENTED",
                 "tier": cap.tier,
                 "cloud_safe": cap.cloud_safe,
+                "health_class": doc_entry.get("health_class", "UNVERIFIED"),
+                "last_operation_outcome": doc_entry.get("outcome"),
+                "last_verified_at": doc_entry.get("last_verified_at"),
+            }
+
+        # Runtime aliases are part of the actual service even though they are
+        # absent from the upstream 16-platform declaration.
+        for plat in ("news", "jina_reader"):
+            doc_entry = native_doctor.get_channel_status(plat)
+            native_channels[plat] = {
+                "status": native_doctor.get_canonical_status_code(plat),
+                "backend": doc_entry.get("active_backend"),
+                "operations": sorted(EXECUTABLE_CAPABILITIES.get(plat, set())),
+                "declared_operations": [],
+                "registered": True,
+                "implementation_status": "IMPLEMENTED_RUNTIME_ALIAS",
+                "tier": 0,
+                "cloud_safe": True,
+                "health_class": doc_entry.get("health_class", "UNVERIFIED"),
+                "last_operation_outcome": doc_entry.get("outcome"),
+                "last_verified_at": doc_entry.get("last_verified_at"),
             }
 
         return {
@@ -185,6 +216,23 @@ class AgentReachService:
         Canonical acquisition entrypoint for domain agents.
         Acquires evidence through the unified acquisition fabric.
         """
+        claim = " ".join(
+            part for part in (request.query, request.intent) if part
+        )
+        source_plan = self.source_planner.plan(
+            claim,
+            entity=request.entity,
+            domain=request.metadata.get("domain", request.agent or "general"),
+            agent=request.agent,
+            allowed_channels=request.allowed_channels or None,
+        )
+        request.metadata["source_plan"] = source_plan.to_dict()
+        if source_plan.channels:
+            if request.allowed_channels:
+                planned = [ch for ch in source_plan.channels if ch in request.allowed_channels]
+                request.allowed_channels = planned or request.allowed_channels
+            else:
+                request.allowed_channels = source_plan.channels
         return native_router.execute_retrieval_request(request)
 
     def retrieve(
@@ -304,13 +352,20 @@ class AgentReachService:
                     q_id = q_item.get("query_id", f"{ch_name[:2]}_{idx+1:02d}")
                     q_class = q_item.get("query_class", "general")
                     q_text = q_item.get("query_text", "")
+                    operation = q_item.get("operation", "search")
                 else:
                     q_id = f"{ch_name[:2]}_{idx+1:02d}"
                     q_class = "general"
                     q_text = str(q_item)
+                    operation = "search"
 
                 if q_text.strip():
-                    norm_list.append({"query_id": q_id, "query_class": q_class, "query_text": q_text.strip()})
+                    norm_list.append({
+                        "query_id": q_id,
+                        "query_class": q_class,
+                        "query_text": q_text.strip(),
+                        "operation": operation,
+                    })
                     all_query_classes.add(q_class)
                     total_planned_queries += 1
 
@@ -388,7 +443,8 @@ class AgentReachService:
                     query_id=q_sp["query_id"],
                     query_class=q_sp["query_class"],
                     query_text=q_sp["query_text"],
-                    domain=domain
+                    domain=domain,
+                    operation=q_sp.get("operation", "search"),
                 )
                 completed_at = datetime.utcnow().isoformat()
                 lat = int((time.time() - t0) * 1000)
@@ -537,7 +593,21 @@ class AgentReachService:
                 tel.status = ChannelStatus.UNAVAILABLE.value
                 self.registry.mark_degraded(ch_n)
             elif tel.raw_results > 0:
-                tel.status = ChannelStatus.AVAILABLE.value
+                depths = {str(getattr(f, "content_depth", "")).upper() for f in ch_raw}
+                modes = {str(getattr(f, "retrieval_mode", "")).lower() for f in ch_raw}
+                if "INDEX_SNIPPET" in depths or "web_search_index" in modes:
+                    tel.status = ChannelStatus.DEGRADED.value
+                    tel.content_class = "SEARCH_INDEX"
+                elif "FEED_ENTRY_SUMMARY" in depths:
+                    tel.status = ChannelStatus.DEGRADED.value
+                    tel.content_class = "SYNDICATED"
+                elif depths and depths <= {"PROFILE_METADATA", "VIDEO_METADATA", "HEADLINE_ONLY", "METADATA"}:
+                    tel.status = ChannelStatus.DEGRADED.value
+                    tel.content_class = "METADATA"
+                else:
+                    tel.status = ChannelStatus.AVAILABLE.value
+                    tel.content_class = "DIRECT_OR_PARTIAL_CONTENT"
+                tel.usable_results = sum(1 for f in ch_raw if (getattr(f, "content", "") or getattr(f, "snippet", "")).strip())
             elif tel.requests_attempted > 0:
                 tel.status = "EMPTY"
 

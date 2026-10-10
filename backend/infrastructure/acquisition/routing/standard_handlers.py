@@ -64,6 +64,7 @@ class StandardChannelHandlers:
             )
             if not fragments:
                 raise NativeReachError("Native gh CLI returned no items")
+            self._attach_transport(fragments, result.get("transport"))
             self.router._tag_fragments(fragments, "github", "github", RetrievalMode.DIRECT_API.value, "gh-cli", None, True)
             telemetry["status"] = "SUCCESS"
             return fragments
@@ -81,7 +82,10 @@ class StandardChannelHandlers:
             )
             if not fragments:
                 raise NativeReachError("Native yt-dlp returned no items")
+            self._attach_transport(fragments, result.get("transport"))
             self.router._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.DIRECT_API.value, "yt-dlp", None, False)
+            for fragment in fragments:
+                fragment.content_depth = "VIDEO_METADATA"
             telemetry["status"] = "SUCCESS"
             return fragments
         except Exception:
@@ -91,12 +95,14 @@ class StandardChannelHandlers:
             return fragments
 
     def _execute_v2ex(self, query, limit, query_id, query_class, query_text, telemetry, **_):
-        items = self.router.executor.execute_v2ex_hot().get("items", [])
+        result = self.router.executor.execute_v2ex_hot()
+        items = result.get("items", [])
         if query.strip():
             needle = query.lower()
             matches = [item for item in items if needle in item.get("title", "").lower() or needle in (item.get("content") or "").lower()]
             items = matches or items[:limit]
         fragments = self.router.normalizer.normalize_v2ex_topics(items[:limit], query_id=query_id, query_class=query_class, query_text=query_text)
+        self._attach_transport(fragments, result.get("transport"))
         self.router._tag_fragments(fragments, "v2ex", "v2ex", RetrievalMode.DIRECT_API.value, "v2ex-public-api", None, False)
         telemetry["status"] = "SUCCESS"
         return fragments
@@ -104,7 +110,10 @@ class StandardChannelHandlers:
     def _execute_bilibili(self, query, limit, query_id, query_class, query_text, telemetry, **_):
         result = self.router.executor.execute_bilibili_search(query, limit=limit)
         fragments = self.router.normalizer.normalize_bilibili_videos(result.get("items", []), query_id=query_id, query_class=query_class, query_text=query_text)
+        self._attach_transport(fragments, result.get("transport"))
         self.router._tag_fragments(fragments, "bilibili", "bilibili", RetrievalMode.DIRECT_API.value, "bilibili-public-api", None, False)
+        for fragment in fragments:
+            fragment.content_depth = "VIDEO_METADATA"
         telemetry["status"] = "SUCCESS"
         return fragments
 
@@ -126,8 +135,11 @@ class StandardChannelHandlers:
             )
             if not fragments:
                 raise NativeReachError(f"{channel} returned no entries")
+            self._attach_transport(fragments, result.get("transport"))
             backend = "feedparser-google-rss" if channel == "rss" else "feedparser-google-news"
-            self.router._tag_fragments(fragments, channel, channel, RetrievalMode.DIRECT_API.value, backend, None, False)
+            self.router._tag_fragments(fragments, channel, channel, RetrievalMode.RSS_FEED.value, backend, None, False)
+            for fragment in fragments:
+                fragment.content_depth = "FEED_ENTRY_SUMMARY"
             telemetry["status"] = "SUCCESS"
             return fragments
         except Exception:
@@ -141,7 +153,9 @@ class StandardChannelHandlers:
         try:
             fragments = self.router._execute_web_search(query, limit, query_id, query_class, query_text)
             if fragments:
-                self.router._tag_fragments(fragments, "web", "web", RetrievalMode.DIRECT_API.value, "bing-search-rss", None, False)
+                self.router._tag_fragments(fragments, "web", "web_search", RetrievalMode.WEB_SEARCH_INDEX.value, "bing-search-rss", None, False)
+                for fragment in fragments:
+                    fragment.content_depth = "INDEX_SNIPPET"
                 telemetry["status"] = "SUCCESS"
                 return fragments
         except Exception:
@@ -166,7 +180,11 @@ class StandardChannelHandlers:
             channel_name="jina_reader", requested_channel="jina_reader", actual_retrieval_channel="jina_reader",
             content_depth="FULL_ARTICLE" if len(content) > 500 else "SNIPPET", query_id=query_id,
             query_class=query_class, query_text=query_text,
-            raw_metadata={"backend": result.get("backend", "Jina Reader"), "char_count": len(content)},
+            raw_metadata={
+                "backend": result.get("backend", "Jina Reader"),
+                "char_count": len(content),
+                "transport": result.get("transport"),
+            },
         )
         self.router._tag_fragments(
             [fragment], "jina_reader", "jina_reader", RetrievalMode.WEB_READER.value,
@@ -293,10 +311,25 @@ class StandardChannelHandlers:
         search_query = f"{site_filter} {query}"
         reason = f"{platform.upper()}_DIRECT_UNAVAILABLE_FALLBACK"
         fragments = self.router._execute_web_search(search_query, limit, query_id, query_class, query_text)
+        allowed_domains = {
+            "xueqiu": {"xueqiu.com", "www.xueqiu.com"},
+            "linkedin": {"linkedin.com", "www.linkedin.com"},
+            "instagram": {"instagram.com", "www.instagram.com"},
+            "facebook": {"facebook.com", "www.facebook.com", "m.facebook.com"},
+            "xiaohongshu": {"xiaohongshu.com", "www.xiaohongshu.com"},
+            "boss": {"zhipin.com", "www.zhipin.com"},
+            "xiaoyuzhou": {"xiaoyuzhoufm.com", "www.xiaoyuzhoufm.com"},
+        }.get(platform, set())
+        if allowed_domains:
+            fragments = [
+                fragment for fragment in fragments
+                if (urllib.parse.urlparse(fragment.url or "").hostname or "").lower() in allowed_domains
+            ]
         self.router._tag_fragments(fragments, platform, "web_search", RetrievalMode.WEB_SEARCH_INDEX.value, "bing-search-index", reason, False)
         for fragment in fragments:
             fragment.platform = f"{platform.capitalize()} (Web Index Fallback)"
             fragment.retrieval_method = f"{platform}_web_index"
+            fragment.content_depth = "INDEX_SNIPPET"
             fragment.raw_metadata.update(
                 source_tier="TIER_3_AGGREGATE",
                 honest_disclosure=f"Direct {platform} API requires session authentication; retrieved through public search index."
@@ -320,10 +353,19 @@ class StandardChannelHandlers:
         return []
 
     def _execute_generic(self, platform, query, limit, query_id, query_class, query_text, telemetry):
-        fragments = self.router._execute_web_search(query, limit, query_id, query_class, query_text)
-        self.router._tag_fragments(fragments, platform, platform, RetrievalMode.DIRECT_API.value, telemetry["backend"] or "generic-search", None, False)
-        telemetry["status"] = "SUCCESS" if fragments else "DEGRADED"
-        return fragments
+        telemetry.update(
+            status="UNSUPPORTED",
+            outcome="UNAVAILABLE_NOT_IMPLEMENTED",
+            error=f"No executable handler is registered for channel '{platform}'",
+        )
+        return []
+
+    @staticmethod
+    def _attach_transport(fragments: List[EvidenceFragment], transport: Optional[Dict[str, Any]]) -> None:
+        if not transport:
+            return
+        for fragment in fragments:
+            fragment.raw_metadata["transport"] = dict(transport)
 
     @staticmethod
     def _fallback(telemetry, backend, reason, mode, fragments):

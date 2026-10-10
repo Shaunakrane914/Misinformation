@@ -634,11 +634,13 @@ class ChannelTelemetry:
     duplicates_removed: int = 0
     final_results: int = 0
     latency_ms: int = 0
-    status: str = "AVAILABLE"
+    status: str = "NOT_PROBED"
     active_backend: str = ""
     fallback_used: bool = False
     fallback_backend: Optional[str] = None
     failure_reason: Optional[str] = None
+    content_class: str = "UNKNOWN"
+    usable_results: int = 0
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -656,6 +658,8 @@ class ChannelTelemetry:
             "fallback_used": self.fallback_used,
             "fallback_backend": self.fallback_backend,
             "failure_reason": self.failure_reason,
+            "content_class": self.content_class,
+            "usable_results": self.usable_results,
         }
 
 

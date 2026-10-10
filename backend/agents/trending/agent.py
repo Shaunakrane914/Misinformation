@@ -293,6 +293,7 @@ class TrendingAgent:
             research_req = ResearchRequest(
                 target=target_query,
                 domain="trending",
+                agent_name="trending",
                 intent=f"discover emerging viral trends, public narratives, and cross-channel discourse for {target_query}",
                 query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
                 deep_read_budget=15,
@@ -361,9 +362,11 @@ class TrendingAgent:
                 news_norm = self._normalize_evidence(news_raw, "news", retrieval_method="news")
                 all_raw_evidence.extend(news_norm)
                 channel_health["news"] = {
-                    "status": "ok",
+                    "status": "LIMITED",
                     "retrieved_count": len(news_raw),
-                    "latency_ms": 120
+                    "latency_ms": None,
+                    "content_class": "SYNDICATED_OR_INDEXED",
+                    "limitation": "Fallback result count does not prove direct article acquisition",
                 }
 
         accepted_ev, _ = relevance_gate.filter_candidates(

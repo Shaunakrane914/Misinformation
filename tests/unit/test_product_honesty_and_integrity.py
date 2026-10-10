@@ -225,15 +225,15 @@ class TestProductHonestyAndIntegrity:
         assert len(fake_threats) >= 1
         assert "ev_1" in fake_threats[0]["evidence_ids"]
 
-    def test_h_doctor_status_marks_unprobed_baseline_as_unknown_not_available(self):
-        """DoctorBridge fallback baseline must mark capabilities as not_probed / UNKNOWN, not available."""
+    def test_h_doctor_status_marks_unprobed_baseline_explicitly_not_available(self):
+        """DoctorBridge fallback baseline must remain explicitly NOT_PROBED, not available."""
         doc = DoctorBridge()
         baseline = doc._generate_fallback_baseline()
         for cap, details in baseline.items():
             assert details["status"] == "not_probed"
             assert details["active_backend"] is None
             code = doc.get_canonical_status_code(details)
-            assert code == "UNKNOWN"
+            assert code == "NOT_PROBED"
 
     def test_i_query_execution_record_preserves_genuine_telemetry(self):
         """QueryExecutionRecord must record real latency and channel without inventing SUCCESS."""

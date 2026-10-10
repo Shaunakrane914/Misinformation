@@ -301,24 +301,27 @@ class Phase68BenchmarkRunner:
                 clean_title, clean_body = EntitySubredditResolver._extract_clean_content(f)
                 b_text = clean_body
                 m_text = f"Title: {clean_title} | Subreddit: {f.raw_metadata.get('candidate_subreddit', '')}"
-                content_type = "application/atom+xml; charset=UTF-8" if f.content_depth == "FEED_ENTRY_SUMMARY" else "application/json"
+                transport = f.raw_metadata.get("transport", {})
             else:
                 b_text = f.content or "" if f.content_depth != "PROFILE_METADATA" else ""
                 m_text = f.content or "" if f.content_depth == "PROFILE_METADATA" else f.title or ""
-                content_type = "application/json; charset=utf-8" if f.content_depth in ("PROFILE_METADATA", "TWEET_STATUS") else "text/html"
+                transport = f.raw_metadata.get("transport", {})
 
             http_audit_records.append({
-                "source_endpoint": f.url,
-                "http_status": 200,
-                "content_type": content_type,
-                "payload_size_bytes": len((f.content or "").encode("utf-8")),
+                "canonical_source_url": f.url,
+                "source_endpoint": transport.get("endpoint"),
+                "network_observed_this_attempt": transport.get("network_observed_this_attempt"),
+                "http_status": transport.get("http_status"),
+                "content_type": transport.get("content_type"),
+                "raw_response_body_bytes": transport.get("raw_body_bytes"),
+                "network_latency_ms": transport.get("latency_ms"),
                 "body_text_chars": len(b_text),
                 "metadata_text_chars": len(m_text),
                 "body_utf8_bytes": len(b_text.encode("utf-8")),
                 "metadata_utf8_bytes": len(m_text.encode("utf-8")),
                 "content_depth": f.content_depth,
                 "retrieval_mode": f.retrieval_mode,
-                "cache_status": "CACHE_HIT" if (f.raw_metadata.get("cached") or f.raw_metadata.get("is_cached")) else "FRESH_NETWORK",
+                "cache_status": transport.get("cache_status", "UNKNOWN"),
                 "clean_body_sample": b_text[:500] if b_text else "",
                 "metadata_sample": m_text[:300] if m_text else "",
             })

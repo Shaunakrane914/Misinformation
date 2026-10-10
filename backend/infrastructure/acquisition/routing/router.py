@@ -24,6 +24,7 @@ from backend.infrastructure.acquisition.adapters.social.reddit import (
     fetch_arctic_shift_post,
     fetch_arctic_shift_posts_batch,
     fetch_arctic_shift_search,
+    fetch_reddit_subreddit_rss,
 )
 from backend.infrastructure.acquisition.adapters.social.twitter import (
     fetch_fxtwitter_profile,
@@ -181,6 +182,24 @@ class NativeRouter:
     ) -> List[EvidenceFragment]:
         return fetch_arctic_shift_comments(
             post_id=post_id,
+            limit=limit,
+            query_id=query_id,
+            query_class=query_class,
+            query_text=query_text,
+            cache_get=self._get_social_cache,
+            cache_set=self._set_social_cache,
+        )
+
+    def _fetch_reddit_subreddit_rss(
+        self,
+        subreddit: str,
+        limit: int = 25,
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = "",
+    ) -> List[EvidenceFragment]:
+        return fetch_reddit_subreddit_rss(
+            subreddit=subreddit,
             limit=limit,
             query_id=query_id,
             query_class=query_class,
@@ -389,50 +408,61 @@ class NativeRouter:
         )
 
     def _execute_web_search(self, query: str, limit: int = 6, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
-        """Execute open-web search using Bing with redirect resolution."""
+        """Execute open-web search using Bing with redirect resolution and multi-page pagination."""
         import requests
         from bs4 import BeautifulSoup
 
         clean_q = query.strip()
         fragments: List[EvidenceFragment] = []
+        timeout = float(os.getenv("AEGIS_HTTP_TIMEOUT", "25.0"))
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.9",
         }
 
-        try:
-            url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}"
-            resp = requests.get(url, headers=headers, timeout=6.0)
-            if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
-                results = soup.select("li.b_algo")
-                for r in results:
-                    title_elem = r.select_one("h2 a")
-                    snippet_elem = r.select_one(".b_caption p, .b_snippet")
-                    if title_elem:
-                        raw_href = title_elem.get("href", "")
-                        resolved_url = resolve_bing_redirect(raw_href)
-                        title = title_elem.get_text(strip=True)
-                        snippet = snippet_elem.get_text(strip=True) if snippet_elem else ""
-                        if resolved_url and "bing.com" not in urllib.parse.urlparse(resolved_url).netloc:
-                            fragments.append(EvidenceFragment(
-                                platform="Web",
-                                title=title,
-                                snippet=snippet,
-                                content=f"Title: {title}\nURL: {resolved_url}\n\nSnippet: {snippet}",
-                                url=resolved_url,
-                                author=urllib.parse.urlparse(resolved_url).netloc,
-                                published="Recent",
-                                channel_name="web",
-                                query_id=query_id,
-                                query_class=query_class,
-                                query_text=query_text or clean_q,
-                            ))
-                            if len(fragments) >= limit:
-                                break
-        except Exception as e:
-            logger.debug(f"[NativeRouter] Bing search attempt notice: {e}. Trying Yahoo fallback.")
+        page_first = 1
+        max_pages = min((limit + 9) // 10, 5) if limit > 10 else 1
+        for page in range(max_pages):
+            if len(fragments) >= limit:
+                break
+            try:
+                url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}&first={page_first}"
+                resp = requests.get(url, headers=headers, timeout=timeout)
+                if resp.status_code == 200:
+                    soup = BeautifulSoup(resp.text, "html.parser")
+                    results = soup.select("li.b_algo")
+                    if not results:
+                        break
+                    for r in results:
+                        title_elem = r.select_one("h2 a")
+                        snippet_elem = r.select_one(".b_caption p, .b_snippet")
+                        if title_elem:
+                            raw_href = title_elem.get("href", "")
+                            resolved_url = resolve_bing_redirect(raw_href)
+                            title = title_elem.get_text(strip=True)
+                            snippet = snippet_elem.get_text(strip=True) if snippet_elem else ""
+                            if resolved_url and "bing.com" not in urllib.parse.urlparse(resolved_url).netloc:
+                                if not any(f.url == resolved_url for f in fragments):
+                                    fragments.append(EvidenceFragment(
+                                        platform="Web",
+                                        title=title,
+                                        snippet=snippet,
+                                        content=f"Title: {title}\nURL: {resolved_url}\n\nSnippet: {snippet}",
+                                        url=resolved_url,
+                                        author=urllib.parse.urlparse(resolved_url).netloc,
+                                        published="Recent",
+                                        channel_name="web",
+                                        query_id=query_id,
+                                        query_class=query_class,
+                                        query_text=query_text or clean_q,
+                                    ))
+                                    if len(fragments) >= limit:
+                                        break
+                page_first += 10
+            except Exception as e:
+                logger.debug(f"[NativeRouter] Bing search attempt notice (page {page+1}): {e}")
+                break
 
         if not fragments:
             fragments = self._execute_yahoo_search(clean_q, limit=limit, query_id=query_id, query_class=query_class, query_text=query_text)

@@ -13,6 +13,7 @@ from backend.infrastructure.acquisition.adapters.social.reddit import (
     fetch_arctic_shift_post,
     fetch_arctic_shift_posts_batch,
     fetch_arctic_shift_search,
+    fetch_reddit_subreddit_rss,
 )
 
 __all__ = [
@@ -22,4 +23,5 @@ __all__ = [
     "fetch_arctic_shift_post",
     "fetch_arctic_shift_posts_batch",
     "fetch_arctic_shift_search",
+    "fetch_reddit_subreddit_rss",
 ]

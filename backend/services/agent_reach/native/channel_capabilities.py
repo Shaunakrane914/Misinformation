@@ -123,9 +123,9 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
         auth_mode="none",  # Zero-auth public retrieval via Arctic Shift; auth not required for public retrieval
         tier=0,
         cloud_safe=True,
-        backends=["Arctic Shift", "Bing Search Index", "Google RSS"],
+        backends=["Arctic Shift", "Reddit RSS", "Bing Search Index", "Google RSS"],
         doc_ref="agent_reach/skill/references/social.md",
-        fallback_chain=["Bing Search Index", "Google RSS"]
+        fallback_chain=["Reddit RSS", "Bing Search Index", "Google RSS"]
     ),
     "xueqiu": PlatformCapability(
         platform="xueqiu",

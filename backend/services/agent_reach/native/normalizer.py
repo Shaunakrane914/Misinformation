@@ -386,6 +386,25 @@ class NativeNormalizer:
         name = author_obj.get("name", "") or screen_name
         author = f"@{screen_name}"
         text = tw.get("text", "") or ""
+        content_parts = [text]
+
+        # Extract Quoted Tweet if present
+        quote = tw.get("quote") or {}
+        if quote and isinstance(quote, dict):
+            q_author_obj = quote.get("author", {})
+            q_handle = q_author_obj.get("screen_name", "") or "user"
+            q_text = quote.get("text", "")
+            if q_text:
+                content_parts.append(f"\n\n[Quoted Tweet from @{q_handle}]:\n{q_text}")
+
+        # Extract Community Note / Fact-Check context if present
+        comm_note = tw.get("community_note") or {}
+        if comm_note and isinstance(comm_note, dict):
+            cn_text = comm_note.get("text") or comm_note.get("raw_text", {}).get("text", "")
+            if cn_text:
+                content_parts.append(f"\n\n[Community Note / Fact Check]:\n{cn_text}")
+
+        full_content = "".join(content_parts)
         tid = tw.get("id", "")
         url = tw.get("url") or f"https://x.com/{screen_name}/status/{tid}"
         created = str(tw.get("created_at") or tw.get("created_timestamp") or "")
@@ -396,37 +415,45 @@ class NativeNormalizer:
         views = tw.get("views")
         media_list = [m.get("url") for m in tw.get("media", {}).get("all", []) if m.get("url")]
 
+        raw_meta = {
+            "backend": "fxtwitter",
+            "tweet_id": tid,
+            "likes": likes,
+            "retweets": retweets,
+            "replies": replies,
+            "views": views,
+            "media_urls": media_list,
+            "source_tier": "SPECIALIST_MIRROR",
+            "mirror_backend": "fxtwitter",
+        }
+        if quote and isinstance(quote, dict):
+            raw_meta["has_quote"] = True
+            raw_meta["quote_text"] = quote.get("text")
+        if comm_note and isinstance(comm_note, dict):
+            raw_meta["has_community_note"] = True
+            raw_meta["community_note"] = comm_note.get("text") or comm_note.get("raw_text", {}).get("text")
+
         return EvidenceFragment(
             platform="twitter",
             title=f"Post by {name} ({author})",
-            content=text,
+            content=full_content,
             url=url,
             author=author,
             published=created,
-            snippet=text[:300],
+            snippet=full_content[:300],
             score=float(likes),
             retrieval_method="fxtwitter",
             retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
             native_backend_id="fxtwitter",
             channel_name="twitter",
-            content_depth="FULL_ARTICLE" if len(text) > 0 else "SNIPPET",
+            content_depth="FULL_ARTICLE" if len(full_content) > 0 else "SNIPPET",
             query_id=query_id,
             query_class=query_class,
             query_text=query_text,
             requested_channel="twitter",
             actual_retrieval_channel="twitter",
             is_authenticated=False,
-            raw_metadata={
-                "backend": "fxtwitter",
-                "tweet_id": tid,
-                "likes": likes,
-                "retweets": retweets,
-                "replies": replies,
-                "views": views,
-                "media_urls": media_list,
-                "source_tier": "SPECIALIST_MIRROR",
-                "mirror_backend": "fxtwitter",
-            }
+            raw_metadata=raw_meta,
         )
 
     @staticmethod

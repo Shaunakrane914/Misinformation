@@ -10,6 +10,7 @@ enrichment here.
 
 import json
 import logging
+import os
 import time
 import urllib.error
 import urllib.request
@@ -31,6 +32,7 @@ from backend.services.url_validator import validate_url_safe
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_HTTP_TIMEOUT = float(os.getenv("AEGIS_HTTP_TIMEOUT", "25.0"))
 FXTWITTER_BASE = "https://api.fxtwitter.com"
 
 
@@ -65,7 +67,7 @@ def fetch_fxtwitter_status(
     )
     for attempt in range(2):
         try:
-            with urllib.request.urlopen(req, timeout=6.0) as resp:
+            with urllib.request.urlopen(req, timeout=DEFAULT_HTTP_TIMEOUT) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 if data.get("code") == 200 and data.get("tweet"):
                     frag = native_normalizer.normalize_fxtwitter_tweet(data["tweet"])
@@ -110,7 +112,7 @@ def fetch_fxtwitter_profile(
     )
     for attempt in range(2):
         try:
-            with urllib.request.urlopen(req, timeout=6.0) as resp:
+            with urllib.request.urlopen(req, timeout=DEFAULT_HTTP_TIMEOUT) as resp:
                 data = json.loads(resp.read().decode("utf-8"))
                 if data.get("code") == 200 and data.get("user"):
                     frag = native_normalizer.normalize_fxtwitter_profile(data["user"])

@@ -9,6 +9,8 @@ Enforces caching via SocialCache and exponential backoff on retryable 422/429/50
 
 import json
 import logging
+import os
+import re
 import time
 import urllib.error
 import urllib.parse
@@ -31,6 +33,7 @@ from backend.services.url_validator import validate_url_safe
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_HTTP_TIMEOUT = float(os.getenv("AEGIS_HTTP_TIMEOUT", "25.0"))
 ARCTIC_SHIFT_BASE = "https://arctic-shift.photon-reddit.com/api"
 
 
@@ -216,6 +219,91 @@ def fetch_arctic_shift_comments(
     except Exception as e:
         logger.debug(f"[RedditAdapter] Arctic Shift comments fetch failed for {clean_pid}: {e}")
     return []
+
+
+def fetch_reddit_subreddit_rss(
+    subreddit: str,
+    limit: int = 25,
+    query_id: str = "",
+    query_class: str = "",
+    query_text: str = "",
+    cache_get: Optional[Any] = None,
+    cache_set: Optional[Any] = None,
+) -> List[EvidenceFragment]:
+    """
+    Acquire live Reddit submissions directly from public Subreddit RSS/Atom feed.
+    Zero-auth, bypasses Cloudflare/DataDome challenge via open Atom syndication.
+    """
+    clean_sub = re.sub(r"^/?r/", "", subreddit.strip().rstrip("/"))
+    if not clean_sub:
+        return []
+
+    cache_key = f"reddit:rss:{clean_sub.lower()}:{limit}"
+    get_c = cache_get or social_cache.get
+    set_c = cache_set or social_cache.set
+
+    cached = get_c(cache_key)
+    if cached:
+        return cached
+
+    url = f"https://www.reddit.com/r/{clean_sub}/.rss"
+    timeout = DEFAULT_HTTP_TIMEOUT
+    req = urllib.request.Request(
+        url,
+        headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36",
+            "Accept": "application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8",
+        },
+    )
+    fragments: List[EvidenceFragment] = []
+    try:
+        import feedparser
+        with urllib.request.urlopen(req, timeout=timeout) as resp:
+            raw_xml = resp.read()
+            feed = feedparser.parse(raw_xml)
+            for entry in feed.entries[:limit]:
+                title = entry.get("title", "")
+                link = entry.get("link", f"https://www.reddit.com/r/{clean_sub}")
+                author = entry.get("author", f"/r/{clean_sub}")
+                published = entry.get("published", "")
+                summary = entry.get("summary", "") or title
+
+                clean_text = re.sub(r"<[^>]+>", " ", summary).strip()
+                content = f"Subreddit: r/{clean_sub}\nTitle: {title}\nAuthor: {author}\nLink: {link}\n\nContent:\n{clean_text}"
+
+                frag = EvidenceFragment(
+                    platform="reddit",
+                    title=f"[r/{clean_sub}] {title}",
+                    content=content,
+                    url=link,
+                    author=author,
+                    published=published or "Recent",
+                    snippet=clean_text[:300] if clean_text else title,
+                    score=65.0,
+                    retrieval_method="reddit_subreddit_rss",
+                    retrieval_mode=RetrievalMode.DIRECT_API.value,
+                    native_backend_id="reddit-rss",
+                    channel_name="reddit",
+                    content_depth="FULL_ARTICLE" if len(clean_text) > 100 else "SNIPPET",
+                    query_id=query_id,
+                    query_class=query_class,
+                    query_text=query_text or f"r/{clean_sub}",
+                    requested_channel="reddit",
+                    actual_retrieval_channel="reddit",
+                    is_authenticated=False,
+                    raw_metadata={
+                        "backend": "reddit-rss",
+                        "subreddit": clean_sub,
+                        "source_tier": "SPECIALIST_API",
+                    }
+                )
+                fragments.append(frag)
+            if fragments:
+                set_c(cache_key, fragments)
+                return fragments
+    except Exception as e:
+        logger.debug(f"[RedditAdapter] Subreddit RSS fetch failed for r/{clean_sub}: {e}")
+    return fragments
 
 
 class RedditAdapter(PlatformAdapter):

@@ -310,6 +310,10 @@ Return a STRICT JSON object:
         raw_resp = call_gemini_text(prompt)
         parsed = json.loads(clean_json_string(raw_resp))
 
+        if not isinstance(parsed, dict) or not parsed.get("threats"):
+            logger.info("[PersonalWatch 2.0] LLM output contains no threat extractions; using grounded heuristics.")
+            return heuristic_threat_synthesis(subject_name, evidence_list)
+
         valid_ev_ids = {e["evidence_id"] for e in evidence_list}
 
         threats = parsed.get("threats", [])

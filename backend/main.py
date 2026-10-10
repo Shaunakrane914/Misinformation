@@ -98,10 +98,12 @@ Aegis Protocol orchestrates a deterministic evidence pipeline with 7 specialized
     openapi_tags=tags_metadata
 )
 
+from backend.core.settings import settings
+
 # ── Middleware ───────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("ALLOWED_ORIGIN", "*")],
+    allow_origins=settings.allowed_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -142,7 +144,7 @@ except (ImportError, ModuleNotFoundError):
 async def startup_event():
     logger.info("=" * 80)
     logger.info("[FastAPI] Aegis Protocol API v3.7.0 — STARTING (Modular Architecture)")
-    logger.info(f"[FastAPI] Supabase URL: {os.getenv('SUPABASE_URL', 'NOT SET (Using Local SQLite)')}")
+    logger.info(f"[FastAPI] Supabase URL: {settings.supabase_url or 'NOT SET (Using Local SQLite)'}")
     logger.info("[FastAPI] Agents: ClaimIngestion | Research | Investigator | Trending | Scout | BrandShield | PersonalWatch")
     logger.info("=" * 80)
 

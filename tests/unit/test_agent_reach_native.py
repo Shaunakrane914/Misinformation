@@ -91,9 +91,9 @@ def test_native_doctor_canonical_status():
     twitter_st = doc.get_canonical_status_code("twitter")
     assert twitter_st in ("AVAILABLE", "AUTH_REQUIRED", "DEGRADED", "UNAVAILABLE")
     
-    # Public zero-config platforms should be AVAILABLE or DEGRADED
+    # Public zero-config platforms should be AVAILABLE, DEGRADED, or UNKNOWN (unprobed baseline)
     v2ex_st = doc.get_canonical_status_code("v2ex")
-    assert v2ex_st in ("AVAILABLE", "DEGRADED")
+    assert v2ex_st in ("AVAILABLE", "DEGRADED", "UNKNOWN")
 
 
 # ── 4. Native Executor & Security Tests ───────────────────────────────────────

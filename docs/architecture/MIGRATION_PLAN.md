@@ -247,15 +247,34 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 
 ### Phase 6: Centralized LLM Gateway & Validated Settings
 - **Priority:** P2
-- **Current State:** Dispersed `os.getenv` reads for LLM keys and configuration; direct `requests.post` to Gemini in agents.
-- **Target State:**
-  - Centralize settings in `backend/core/settings.py` via Pydantic `BaseSettings`.
-  - Implement `LLMGateway` protocol in `backend/infrastructure/llm/gateway.py` with `GeminiProvider` and `MockLLMProvider`.
-  - Domain agents call `llm_gateway.generate_structured(...)`.
-- **Files Affected:**
-  - `backend/config.py`, `backend/services/gemini_service.py`, `backend/services/intelligence.py`, all domain agents.
-- **Tests Required:** `tests/unit/test_gemini_service.py`, full suite with `AEGIS_MOCK_LLM=true`.
-- **Acceptance Criteria:** Zero direct `os.getenv("GEMINI_*")` calls in agents; deterministic offline test execution.
+- **Status:** **DELIVERED & AUDITED (October 10, 2026)**
+- **Architecture Reference:** ADR 0004 (`docs/architecture/adr/0004-llm-provider-configuration-boundaries.md` — ACCEPTED)
+- **Delivered Capabilities:**
+  1. **Validated Core Settings (`backend/core/settings.py`):**
+     - Consolidated all application configuration into Pydantic `Settings` model with `.env` loading and graceful fallback between `pydantic-settings` and `pydantic.BaseModel`.
+     - Automated multi-key discovery (`_discover_gemini_api_keys()`) scanning for `GEMINI_API_KEY*` variants, filtering exclusively for valid Google AI Studio `AIzaSy` prefixes.
+     - Convenience introspection properties: `has_supabase`, `has_gemini`, `has_apify`, `is_test_environment`, and `is_mock_llm`.
+     - 100% backward-compatible wrapper in `backend/config.py` delegating `AppConfig` and `settings` directly to `backend.core.settings.settings`.
+     - Added `pydantic-settings>=2.2.0` to `requirements.txt` and `pyproject.toml`.
+  2. **Centralized LLM Gateway (`backend/infrastructure/llm/`):**
+     - Protocol definitions in `protocol.py`: `LLMUsage`, `LLMResponse`, `LLMProvider`, and `LLMGateway`.
+     - Production provider `GeminiProvider` (`providers/gemini.py`): Key rotation, model fallback hierarchy (`gemini-2.5-flash`, `gemini-2.0-flash`, `gemini-1.5-flash`, `gemini-1.5-pro`), and exponential backoff with jitter on HTTP 429 rate limits.
+     - Deterministic mock provider `MockLLMProvider` (`providers/mock.py`): Zero-egress, 100% offline-safe deterministic responses for evidence extraction, verdict synthesis, crisis sentiment analysis, corporate defense statements, and threat detection.
+     - Authoritative gateway `DefaultLLMGateway` (`gateway.py`): Structured validation with Pydantic model and dict parsing (`generate_structured`), text completion (`generate_text`), robust markdown code fence stripping (`clean_json_markdown`), and runtime `mock_mode` property for test harnesses.
+     - Global singleton `llm_gateway = get_llm_gateway()`.
+  3. **Service & Agent Migration:**
+     - Refactored `backend/services/gemini_service.py`: Preserved `GeminiService`, `MockGeminiProvider`, and singleton `gemini_service`, directly delegating execution to `llm_gateway`.
+     - Refactored `backend/services/intelligence.py`: Preserved `call_gemini_text`, `clean_json_string`, `analyze_sentiment`, `generate_defense`, and `analyze_security_risk`, delegating all LLM calls to `llm_gateway`.
+     - Refactored `backend/agents/coordinator_agent.py`: Removed raw `requests.post` and ad-hoc `os.environ` parsing; routes through `self.gateway.generate_text`.
+     - Refactored `backend/main.py`: CORS and database configuration reads from validated `settings`.
+     - Zero direct `requests.post` calls to Google Gemini remaining anywhere outside `backend/infrastructure/llm/providers/gemini.py`.
+  4. **Dedicated Verification Suites (23 New Unit Tests):**
+     - `tests/unit/test_settings.py`: 5 passed in 0.06s (instantiation, key discovery, mock detection, Supabase introspection, legacy AppConfig parity).
+     - `tests/unit/test_llm_gateway.py`: 10 passed in 0.06s (markdown cleaning, mock_mode toggle, singleton identity, text/structured generation, mock scenarios, key rotation, rate-limit backoff).
+     - `tests/unit/test_gemini_service.py`: 8 passed in 0.05s (service singleton, mock_mode sync, scientific mode error handling, async generation, intelligence helpers).
+  5. **Regressions & Parity:**
+     - 47 agent golden-master and backward compatibility tests passed in 0.44s with 0 regressions.
+     - Frozen retrieval benchmarks preserved bit-for-bit with 0 modifications.
 
 ---
 

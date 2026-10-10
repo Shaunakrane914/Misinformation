@@ -1,87 +1,35 @@
 """
-Intelligence Service using Google Gemini via HTTP API.
-Handles sentiment analysis, threat detection, and defense statements.
+Aegis Protocol — Intelligence Service (Delegating to Centralized LLM Gateway)
+=============================================================================
+ADR 0004 Implementation: Delegates inference execution to `backend.infrastructure.llm.llm_gateway`
+and configuration to `backend.core.settings.settings`.
+Preserves legacy public functions: `call_gemini_text`, `clean_json_string`,
+`analyze_sentiment`, `generate_defense`, and `analyze_security_risk`.
 """
-import os
+
 import json
 import logging
-import time
 import re
-import requests
-from itertools import cycle
-from typing import List, Dict, Any
+from typing import Any, Dict, List, Optional
+
+from backend.infrastructure.llm.gateway import clean_json_markdown, get_llm_gateway, llm_gateway
 
 logger = logging.getLogger(__name__)
 
-# Load all available Gemini API keys
-GEMINI_KEYS = []
-for k, v in sorted(os.environ.items()):
-    if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_") or k.startswith("GEMINI_KEY_"):
-        clean_v = v.strip().strip('"').strip("'")
-        if clean_v and clean_v.startswith("AIzaSy") and clean_v not in GEMINI_KEYS:
-            GEMINI_KEYS.append(clean_v)
 
-if not GEMINI_KEYS:
-    logger.info("[Intelligence] No valid AIzaSy Gemini API key found; offline heuristic reasoning active.")
-else:
-    logger.info(f"[Intelligence] Loaded {len(GEMINI_KEYS)} Gemini API key(s) for load balancing")
-
-_key_cycle = cycle(GEMINI_KEYS) if GEMINI_KEYS else None
-
-AVAILABLE_MODELS = [
-    "gemini-3-flash-preview",
-    "gemini-3.1-flash-lite-preview",
-    "gemini-3.6-flash",
-    "gemini-flash-latest",
-    "gemini-2.0-flash-lite-preview-02-05",
-    "gemini-2.5-flash",
-    "gemini-2.0-flash",
-    "gemini-1.5-flash",
-    "gemini-1.5-pro"
-]
+def clean_json_string(text: str) -> str:
+    """Clean markdown code fences from JSON text."""
+    return clean_json_markdown(text)
 
 
 def call_gemini_text(prompt: str) -> str:
-    """Call Gemini via direct HTTP REST API, rotating keys and models."""
-    if not GEMINI_KEYS or not _key_cycle:
-        raise RuntimeError("No Gemini API keys available")
-
-    headers = {"Content-Type": "application/json"}
-    payload = {"contents": [{"parts": [{"text": prompt}]}]}
-
-    last_error = None
-    for model in AVAILABLE_MODELS:
-        url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-        for _ in range(len(GEMINI_KEYS)):
-            api_key = next(_key_cycle)
-            try:
-                resp = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=25)
-                if resp.status_code == 200:
-                    data = resp.json()
-                    return data["candidates"][0]["content"]["parts"][0]["text"]
-                elif resp.status_code == 429:
-                    time.sleep(0.3)
-                    continue
-                else:
-                    last_error = Exception(f"Status {resp.status_code} on {model}")
-                    break
-            except Exception as e:
-                last_error = e
-                time.sleep(0.2)
-
-    raise last_error or RuntimeError("All Gemini models/keys exhausted")
-
-
-def clean_json_string(text: str) -> str:
-    cleaned = text.strip()
-    cleaned = re.sub(r'^```json\s*', '', cleaned, flags=re.IGNORECASE)
-    cleaned = re.sub(r'^```\s*', '', cleaned)
-    cleaned = re.sub(r'\s*```$', '', cleaned)
-    return cleaned.strip()
+    """Call LLM via the centralized LLMGateway."""
+    gateway = get_llm_gateway()
+    return gateway.generate_text(prompt)
 
 
 def analyze_sentiment(text_items: List[str]) -> List[Dict[str, Any]]:
-    """Analyze text items for sentiment and crisis risk."""
+    """Analyze text items for sentiment and crisis risk using centralized LLM gateway."""
     if not text_items:
         return []
 
@@ -113,7 +61,7 @@ Return STRICT JSON array:
 
 
 def generate_defense(rumor_text: str) -> str:
-    """Generate a formal refutation statement for a rumor."""
+    """Generate a formal refutation statement for a rumor using centralized LLM gateway."""
     try:
         prompt = f"""You are a Strategic Communications Director.
 A malicious unverified rumor is spreading: "{rumor_text}".
@@ -126,7 +74,7 @@ Draft a dignified, firm, and authoritative clarification statement (max 280 char
 
 
 def analyze_security_risk(mentions: List[Dict[str, Any]], vip_name: str) -> List[Dict[str, Any]]:
-    """Analyze mentions for personal security and reputation risks."""
+    """Analyze mentions for personal security and reputation risks using centralized LLM gateway."""
     if not mentions:
         return []
 

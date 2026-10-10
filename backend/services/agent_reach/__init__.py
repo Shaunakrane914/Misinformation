@@ -5,6 +5,8 @@ Unified internet evidence-acquisition layer with channel health tracking,
 retrieval planning, and provenance-annotated evidence fragments.
 """
 
+__version__ = "1.5.0"
+
 from backend.services.agent_reach.channels import (
     AgentAcquisitionBase,
     Channel,

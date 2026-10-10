@@ -46,26 +46,13 @@ class CoordinatorAgent:
         self.scout = ScoutAgent()
         self.trending = TrendingAgent()
         
-        all_keys = []
-        for k, v in sorted(os.environ.items()):
-            if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_"):
-                cleaned = v.strip().strip('"').strip("'") if v else ""
-                if cleaned and cleaned not in all_keys:
-                    all_keys.append(cleaned)
-        self.api_keys = all_keys
-        self._key_cycle = itertools.cycle(self.api_keys if self.api_keys else [""])
-        self.available_models = [
-            "gemini-3-flash-preview",
-            "gemini-3.1-flash-lite-preview",
-            "gemini-3.6-flash",
-            "gemini-flash-latest",
-            "gemini-2.0-flash-lite-preview-02-05",
-            "gemini-2.5-flash",
-            "gemini-2.0-flash",
-            "gemini-1.5-flash",
-            "gemini-1.5-pro"
-        ]
-        self.model_name = self.available_models[0]
+        # Centralized LLM Gateway
+        from backend.core.settings import settings
+        from backend.infrastructure.llm.gateway import get_llm_gateway
+        self.gateway = get_llm_gateway()
+        self.api_keys = list(settings.gemini_api_keys)
+        self.available_models = list(settings.gemini_models)
+        self.model_name = settings.default_model
         
         # Surveillance state
         self.surveillance_active = False
@@ -81,29 +68,7 @@ class CoordinatorAgent:
         logger.info("   Trending: Ready")
 
     def _call_gemini(self, prompt: str) -> str:
-        headers = {"Content-Type": "application/json"}
-        payload = {"contents": [{"parts": [{"text": prompt}]}]}
-        last_error = None
-        for model in self.available_models:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-            for attempt in range(len(self.api_keys)):
-                api_key = next(self._key_cycle)
-                try:
-                    resp = requests.post(url, headers=headers, params={"key": api_key}, json=payload, timeout=25)
-                    if resp.status_code == 200:
-                        data = resp.json()
-                        return data["candidates"][0]["content"]["parts"][0]["text"]
-                    elif resp.status_code == 429:
-                        time.sleep(0.4)
-                        continue
-                    else:
-                        break
-                except Exception as e:
-                    last_error = e
-                    time.sleep(0.3)
-        if last_error:
-            raise last_error
-        raise RuntimeError("All Gemini models exhausted")
+        return self.gateway.generate_text(prompt, model=self.model_name)
 
     def monitor_effectiveness(self):
         logger.info("[Coordinator] Running Impact Analysis...")

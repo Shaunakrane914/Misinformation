@@ -372,6 +372,8 @@ class NativeExecutor:
                 latency_ms = int((time.perf_counter() - started) * 1000)
                 transport = self._http_transport(response, url, raw_body, latency_ms)
             items = data if isinstance(data, list) else [data]
+            if op == "issues":
+                items = [item for item in items if not item.get("pull_request")]
             if op == "read":
                 readme_url = f"https://api.github.com/repos/{clean_repo}/readme"
                 try:
@@ -648,7 +650,8 @@ class NativeExecutor:
                 raise NativeReachError(f"v2ex.{operation} requires a numeric topic id or URL")
             topic_id = match.group(1)
             endpoint = "topics/show" if operation == "topic" else "replies/show"
-            url = f"https://www.v2ex.com/api/{endpoint}.json?topic_id={topic_id}"
+            parameter = "id" if operation == "topic" else "topic_id"
+            url = f"https://www.v2ex.com/api/{endpoint}.json?{parameter}={topic_id}"
         started = time.perf_counter()
         req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
@@ -934,8 +937,13 @@ class NativeExecutor:
         client = httpx.Client(headers={"User-Agent": _USER_AGENT}, follow_redirects=True, timeout=timeout)
         items = []
         itunes_url = f"https://itunes.apple.com/search?term={urllib.parse.quote(clean_q)}&entity=podcast&limit=3"
+        observed_response = None
+        observed_body = b""
+        observed_endpoint = itunes_url
         try:
             r_itunes = client.get(itunes_url)
+            observed_response = r_itunes
+            observed_body = r_itunes.content
             feed_urls = []
             if r_itunes.status_code == 200:
                 results = r_itunes.json().get("results", [])
@@ -948,6 +956,9 @@ class NativeExecutor:
             for pod_name, f_url in feed_urls:
                 try:
                     r_rss = client.get(f_url)
+                    observed_response = r_rss
+                    observed_body = r_rss.content
+                    observed_endpoint = f_url
                     if r_rss.status_code == 200:
                         feed = feedparser.parse(r_rss.content)
                         for entry in feed.entries[:limit]:
@@ -972,6 +983,15 @@ class NativeExecutor:
                     break
 
             latency_ms = int((time.perf_counter() - t0) * 1000)
+            transport = {
+                "endpoint": observed_endpoint,
+                "network_observed_this_attempt": observed_response is not None,
+                "http_status": observed_response.status_code if observed_response is not None else None,
+                "content_type": observed_response.headers.get("content-type") if observed_response is not None else None,
+                "raw_body_bytes": len(observed_body) if observed_response is not None else None,
+                "network_latency_ms": latency_ms,
+                "cache_status": "UNKNOWN",
+            }
             return {
                 "platform": "xiaoyuzhou",
                 "backend": "podcast-rss-syndication",
@@ -980,6 +1000,7 @@ class NativeExecutor:
                 "items": items,
                 "count": len(items),
                 "latency_ms": latency_ms,
+                "transport": transport,
             }
         except Exception as e:
             raise BackendExecutionError("xiaoyuzhou", "podcast-rss-syndication", itunes_url, 1, str(e))
@@ -1032,6 +1053,15 @@ class NativeExecutor:
                 "items": items,
                 "count": len(items),
                 "latency_ms": latency_ms,
+                "transport": {
+                    "endpoint": url,
+                    "network_observed_this_attempt": True,
+                    "http_status": r.status_code,
+                    "content_type": r.headers.get("content-type"),
+                    "raw_body_bytes": len(r.content),
+                    "network_latency_ms": latency_ms,
+                    "cache_status": "UNKNOWN",
+                },
             }
         except Exception as e:
             raise BackendExecutionError("linkedin", "linkedin-guest-jobs-api", url, 1, str(e))

@@ -37,7 +37,7 @@ EXECUTABLE_CAPABILITIES: Dict[str, Set[str]] = {
     "instagram": {"search", "oembed"},
     "facebook": {"search", "oembed"},
     "boss": {"search_jobs"},
-    "xiaoyuzhou": {"podcast", "episodes"},
+    "xiaoyuzhou": {"search", "podcast", "episodes"},
 }
 
 
@@ -75,6 +75,7 @@ OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
     ("linkedin", "jobs"): {"DIRECT_METADATA"},
     ("xiaoyuzhou", "podcast"): {"DIRECT_METADATA", "SYNDICATED_SUMMARY"},
     ("xiaoyuzhou", "episodes"): {"DIRECT_METADATA", "SYNDICATED_SUMMARY"},
+    ("xiaoyuzhou", "search"): {"DIRECT_METADATA", "SYNDICATED_SUMMARY"},
 }
 
 

@@ -48,6 +48,7 @@ class StandardChannelHandlers:
                 ("linkedin", "jobs"),
                 ("xiaoyuzhou", "podcast"),
                 ("xiaoyuzhou", "episodes"),
+                ("xiaoyuzhou", "search"),
             }
             if (
                 (platform, operation) in public_operations
@@ -353,7 +354,7 @@ class StandardChannelHandlers:
 
     def _execute_xiaoyuzhou(self, query, limit, query_id, query_class, query_text, telemetry, **_):
         operation = str(_.get("operation", "podcast")).lower()
-        if operation not in {"podcast", "episodes"}:
+        if operation not in {"search", "podcast", "episodes"}:
             raise NativeReachError(f"Unsupported Xiaoyuzhou operation: {operation}")
         try:
             result = self.router.executor.execute_xiaoyuzhou_podcast(query, limit=limit)
@@ -363,6 +364,7 @@ class StandardChannelHandlers:
             )
             if not fragments:
                 raise NativeReachError("Xiaoyuzhou podcast syndication returned no items")
+            self._attach_transport(fragments, result.get("transport"))
             self.router._tag_fragments(fragments, "xiaoyuzhou", "xiaoyuzhou", RetrievalMode.DIRECT_API.value, "podcast-rss-syndication", None, False)
             telemetry["status"] = "SUCCESS"
             telemetry["backend"] = "podcast-rss-syndication"
@@ -378,6 +380,7 @@ class StandardChannelHandlers:
                 items, query_id=query_id, query_class=query_class, query_text=query_text
             )
             if fragments:
+                self._attach_transport(fragments, result.get("transport"))
                 self.router._tag_fragments(fragments, "linkedin", "linkedin", RetrievalMode.DIRECT_API.value, "linkedin-guest-jobs-api", None, False)
                 telemetry["status"] = "SUCCESS"
                 telemetry["backend"] = "linkedin-guest-jobs-api"

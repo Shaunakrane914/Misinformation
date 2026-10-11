@@ -142,4 +142,4 @@ def test_declared_recovered_contract_matches_runtime_dispatch_surface():
     assert {"read", "issues", "prs", "releases", "commits"} <= EXECUTABLE_CAPABILITIES["github"]
     assert {"read", "transcript", "comments"} <= EXECUTABLE_CAPABILITIES["youtube"]
     assert {"latest", "search", "topic", "replies"} <= EXECUTABLE_CAPABILITIES["v2ex"]
-    assert {"podcast", "episodes"} <= EXECUTABLE_CAPABILITIES["xiaoyuzhou"]
+    assert {"search", "podcast", "episodes"} <= EXECUTABLE_CAPABILITIES["xiaoyuzhou"]

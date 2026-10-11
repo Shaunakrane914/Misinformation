@@ -34,7 +34,7 @@ if sys.platform.startswith("win"):
         pass
 
 # Ensure repo root is in python path
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 from backend.services.research.research_models import ResearchRequest, ResearchResult, EvidenceItem
 from backend.services.research.research_engine import research_engine

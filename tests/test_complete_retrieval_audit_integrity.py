@@ -395,7 +395,7 @@ class TestMarkdownReportIntegrity:
         - No hardcoded 'full 6-channel investigations'
         - No '100% of discovered candidates' for X when concrete < discovered
         """
-        from scripts.run_final_retrieval_audit import generate_final_audit_markdown
+        from scripts.audits.run_final_retrieval_audit import generate_final_audit_markdown
 
         sample_audit_data = {
             "execution_timestamp": "2026-10-08T15:00:00Z",
@@ -544,7 +544,7 @@ class TestMarkdownReportIntegrity:
         Verify that having 0 false positives in a heuristic audit does NOT mark
         'General Relevance' as FIXED. It must be PARTIALLY FIXED or NOT ENOUGH EVIDENCE.
         """
-        from scripts.run_final_retrieval_audit import generate_final_audit_markdown
+        from scripts.audits.run_final_retrieval_audit import generate_final_audit_markdown
 
         sample_data = {
             "execution_timestamp": "2026-10-08T15:00:00Z",

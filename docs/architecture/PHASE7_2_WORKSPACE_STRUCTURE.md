@@ -35,13 +35,10 @@ Rather than conducting risky, cosmetic mass moves that invalidate Python imports
 
 ```text
 Misinformation/
-├── AGENTS.md                          # [NEW] Canonical orientation for AI coding agents & engineers
-├── LICENSE                            # [FIX] MIT License (resolves broken README link)
-├── README.md                          # [UPDATED] Production entrypoint, 787 tests, quickstart
-├── CHANGELOG.md                       # [UPDATED] Authoritative milestone changelog (v3.5 -> v4.1/Phase 7.2)
-├── ARCHITECTURE.md                    # Root architecture entrypoint
-├── ENDPOINTS_MAP.md                   # Canonical REST API and frontend route manifest
-├── ENV_SETUP.md                       # API keys and environment configuration guide
+├── AGENTS.md                          # Canonical orientation for AI coding agents & engineers
+├── LICENSE                            # MIT License
+├── README.md                          # Production entrypoint, 790 tests, quickstart
+├── CHANGELOG.md                       # Authoritative milestone changelog
 ├── Dockerfile                         # Production container definition
 ├── docker-compose.yml                 # Local container orchestration
 ├── pyproject.toml                     # Python package metadata (v4.1.0)
@@ -58,7 +55,7 @@ Misinformation/
 │   ├── core/                          # Settings, security guards, error handling, structured logging
 │   ├── data/                          # Runtime data stores & protected dossier archive
 │   │   ├── WELFake_Dataset.xlsx       # Benchmark dataset
-│   │   └── dossiers/                  # 2,312 immutable forensic investigation dossiers (PROTECTED)
+│   │   └── dossiers/                  # 2,359 immutable forensic investigation dossiers (PROTECTED)
 │   ├── db/                            # SQLite / Supabase database client and schema
 │   ├── evaluation/                    # ML and Cranfield retrieval evaluation metrics
 │   ├── infrastructure/                # Acquisition router (NativeRouter), LLM Gateway, cache
@@ -75,27 +72,28 @@ Misinformation/
 │   ├── operation-health.js            # TTL-bounded health polling with stale badge support
 │   └── aegis-theme.css                # Aegis design system tokens
 │
-├── tests/                             # 787-TEST AUTOMATED REGRESSION SUITE (PRESERVED)
-│   ├── unit/                          # 591 deterministic unit tests (0 network, 0 external I/O)
-│   ├── integration/                   # Full FastAPI TestClient integration tests
-│   ├── contract/                      # 16 recovered operations & public API contracts
-│   ├── security/                      # SSRF, XSS, static path traversal security tests
-│   ├── chaos/                         # Network timeout, retry bound, and error recovery tests
-│   ├── benchmarks/                    # Learned reranker and performance regression tests
-│   ├── evaluation/                    # Supervised baseline and Cranfield evaluation tests
-│   ├── frontend/                      # Pure Node.js unit tests for operation-health.js
+├── tests/                             # 790-TEST AUTOMATED REGRESSION SUITE (PRESERVED)
+│   ├── unit/                          # 545 deterministic unit tests (0 network, 0 external I/O)
+│   ├── integration/                   # Full FastAPI TestClient integration tests (52 tests)
+│   ├── contract/                      # 16 recovered operations & public API contracts (5 tests)
+│   ├── security/                      # SSRF, XSS, static path traversal security tests (21 tests)
+│   ├── chaos/                         # Network timeout, retry bound, and error recovery tests (4 tests)
+│   ├── benchmarks/                    # Learned reranker and performance regression tests (2 tests)
+│   ├── evaluation/                    # Supervised baseline and Cranfield evaluation tests (15 tests)
+│   ├── frontend/                      # Pure Node.js unit tests for operation-health.js (8 tests)
 │   ├── retrieval_benchmark/           # Frozen Cranfield benchmark datasets (JSONL) (PROTECTED)
 │   └── conftest.py                    # Pytest shared fixtures
 │
-├── scripts/                           # VALIDATION, EVALUATION & AUDIT RUNNERS (INDEXED)
-│   ├── README.md                      # [NEW] Script taxonomy, usage guide, and categorization
-│   ├── validate_release_candidate_smoke.py  # Phase 7.1 automated smoke validation (11 gates)
-│   ├── validate_rollback_compatibility.py   # Database & dossier rollback verification
-│   ├── evaluate_dataset.py            # Scientific benchmark CLI (WELFake & Reranker)
-│   ├── evaluate_all_agents.py         # 4-Agent adversarial evaluation harness
-│   ├── live_agent_smoke_test.py       # Live agent smoke harness (imported by tests)
-│   ├── run_retrieval_quality_benchmark.py   # Retrieval benchmark runner (imported by tests)
-│   └── ... (34 additional audit and diagnostic scripts)
+├── scripts/                           # CATEGORIZED PYTHON PACKAGES WITH __INIT__.PY
+│   ├── README.md                      # Script taxonomy, usage guide, and categorization
+│   ├── __init__.py                    # Scripts root package
+│   ├── validation/                    # Release validation & smoke testing (5 scripts)
+│   ├── audits/                        # Empirical acquisition audits & case studies (13 scripts)
+│   ├── benchmarks/                    # Cranfield retrieval benchmarks & load tests (5 scripts)
+│   ├── evaluation/                    # WELFake ML baseline & agent evaluation (6 scripts)
+│   ├── diagnostics/                   # API key probes & endpoint tests (9 scripts)
+│   ├── development/                   # Tooling and mandate extraction (2 scripts)
+│   └── (5 root compatibility wrappers: evaluate_dataset.py, validate_release_candidate_smoke.py, etc.)
 │
 ├── docs/                              # DOCUMENTATION PORTAL & SYSTEM BLUEPRINTS (ORGANIZED)
 │   ├── index.md                       # [UPDATED] Canonical documentation index
@@ -149,7 +147,9 @@ Misinformation/
 ### 3.3. What Remains for Backward Compatibility
 - **`main.py` at root**: Serves as a convenient development launcher with dynamic port binding.
 - **`scraper.py` at root**: CLI interface for the `scrapers/` laboratory framework.
-- **`ARCHITECTURE.md`, `ENDPOINTS_MAP.md`, `ENV_SETUP.md` at root**: Preserved as quick-reference files at the repository root while being cross-linked from `docs/`.
+- **Root Compatibility Wrappers in `scripts/`**: 5 thin forwarding wrappers preserved (`evaluate_dataset.py`, `validate_release_candidate_smoke.py`, `validate_rollback_compatibility.py`, `live_agent_smoke_test.py`, `run_retrieval_quality_benchmark.py`).
+- **Relocated Root Documents**: `ARCHITECTURE.md` moved to `docs/architecture/OVERVIEW.md`, `ENDPOINTS_MAP.md` moved to `docs/api/ENDPOINTS_MAP.md`, and `ENV_SETUP.md` moved to `docs/development/ENV_SETUP.md`.
+
 
 ### 3.4. What Is Classified for Future Owner Cleanup
 - **`Gemini_rubrics.md` & `Rubrics.docx`**: Identified as career/market analysis rubrics rather than project code. Cataloged in `CLEANUP_CANDIDATE_REGISTER.md` for owner archiving.

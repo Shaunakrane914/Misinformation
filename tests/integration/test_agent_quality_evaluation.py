@@ -10,7 +10,7 @@ grounding, and adversarial resilience across all four domain engines:
 """
 
 import pytest
-from scripts.evaluate_all_agents import AgentEvaluationRunner
+from scripts.evaluation.evaluate_all_agents import AgentEvaluationRunner
 
 
 @pytest.fixture(scope="module")

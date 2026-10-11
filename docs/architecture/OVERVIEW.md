@@ -2,11 +2,11 @@
 
 **Status:** Canonical System Architecture Entrypoint  
 **Authoritative Specifications:**
-- [🏛️ Target Modular Monolith Blueprint](docs/architecture/TARGET_ARCHITECTURE.md)
-- [📦 Codebase Inventory & Defect Register](docs/architecture/CODEBASE_INVENTORY.md)
-- [🗺️ Phased Migration Plan](docs/architecture/MIGRATION_PLAN.md)
-- [📋 Architecture Decision Records (ADRs)](docs/architecture/adr/README.md)
-- [🔬 Detailed Multi-Agent Fabric & Schemas](docs/ARCHITECTURE.md)
+- [🏛️ Target Modular Monolith Blueprint](TARGET_ARCHITECTURE.md)
+- [📦 Codebase Inventory & Defect Register](CODEBASE_INVENTORY.md)
+- [🗺️ Phased Migration Plan](MIGRATION_PLAN.md)
+- [📋 Architecture Decision Records (ADRs)](adr/README.md)
+- [🔬 Detailed Multi-Agent Fabric & Schemas](../ARCHITECTURE.md)
 
 ---
 

@@ -8,7 +8,7 @@ and fail-closed invariants for the frozen golden benchmark dataset.
 import json
 import pytest
 from pathlib import Path
-from scripts.validate_retrieval_benchmark import (
+from scripts.validation.validate_retrieval_benchmark import (
     validate_benchmark,
     VALID_AGENTS,
     VALID_CLASSIFICATIONS,

@@ -19,7 +19,7 @@ from typing import List, Dict, Any, Optional
 import httpx
 from httpx import ASGITransport
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 
 
 async def run_worker(

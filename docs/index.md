@@ -6,6 +6,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 ## 🏛️ System Architecture & Engineering Blueprints
 
+- **[System Architecture Overview](architecture/OVERVIEW.md)**: High-level architectural topology, layers, and domain boundaries.
 - **[Target Architecture Specification](architecture/TARGET_ARCHITECTURE.md)**: Modular monolith architecture, layering topology, and boundary rules.
 - **[Codebase Inventory & Audit](architecture/CODEBASE_INVENTORY.md)**: Catalog of modules, lines of code, entrypoints, and dependencies.
 - **[Dependency Map & Import Graph](architecture/DEPENDENCY_MAP.md)**: Import relationships, singleton state, and transitional compatibility shims.
@@ -24,6 +25,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 - **[Script Index & Catalog](development/SCRIPT_INDEX.md)**: Authoritative index of all 40 development, benchmark, evaluation, and validation scripts.
 - **[Workspace Inventory Report](development/WORKSPACE_INVENTORY.md)**: Directory-by-directory audit and classification of all tracked repository assets.
 - **[Cleanup-Candidate Register](development/CLEANUP_CANDIDATE_REGISTER.md)**: Register of redundant, superseded, or owner-approval files.
+- **[Environment Setup Guide](development/ENV_SETUP.md)**: Setup guide for API keys, provider credentials, and environment variables.
 - **[Local Development & Runtime Guide](development/README.md)**: Virtual environments, runtime commands, coding standards, and branch workflow.
 
 ---
@@ -58,6 +60,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 ## 🤖 Autonomous Sentinel Fleet & API Contracts
 
 - **[REST API Reference](api/README.md)**: 7 modular FastAPI routers (`/api/claims`, `/api/scout`, `/api/trending`, `/api/brandshield`, `/api/personal-watch`, `/api/replay`, `/api/healthz`).
+- **[API & Endpoint Route Map](api/ENDPOINTS_MAP.md)**: Complete route map for all FastAPI endpoints and frontend consoles.
 - **[Autonomous Sentinel Fleet](agents/README.md)**: Specifications for Scout, Trending, BrandShield, Personal Watch, and Truth Tribunal.
 
 ---

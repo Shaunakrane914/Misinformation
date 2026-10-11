@@ -15,7 +15,7 @@ critical adversarial cases:
 import json
 import pytest
 from pathlib import Path
-from scripts.run_retrieval_quality_benchmark import BenchmarkRunner
+from scripts.benchmarks.run_retrieval_quality_benchmark import BenchmarkRunner
 from backend.services.research.semantic_reranker import SemanticReranker
 
 FIXTURES_DIR = Path("tests/retrieval_benchmark")

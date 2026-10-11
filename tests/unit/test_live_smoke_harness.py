@@ -17,7 +17,7 @@ import json
 import pytest
 from unittest.mock import patch, MagicMock
 
-from scripts.live_agent_smoke_test import (
+from scripts.validation.live_agent_smoke_test import (
     run_live_smoke_suite,
     sanitize_artifact_data,
     verify_brandshield_live,
@@ -31,7 +31,7 @@ from scripts.live_agent_smoke_test import (
 def isolate_smoke_artifacts(tmp_path, monkeypatch):
     """Ensure test runs never overwrite real production/audit artifacts."""
     isolated_path = str(tmp_path / "live_agent_smoke_result.json")
-    monkeypatch.setattr("scripts.live_agent_smoke_test.DEFAULT_ARTIFACT_PATH", isolated_path)
+    monkeypatch.setattr("scripts.validation.live_agent_smoke_test.DEFAULT_ARTIFACT_PATH", isolated_path)
 
 
 def test_sanitize_artifact_data():
@@ -59,10 +59,10 @@ def test_smoke_harness_all_pass(capsys, tmp_path):
     mock_sc = {"ticker": "NVDA", "price": 236.0}
     mock_pw = {"canonical_name": "Satya Nadella", "category": "executive"}
 
-    with patch("scripts.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
-         patch("scripts.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
-         patch("scripts.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
-         patch("scripts.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
+    with patch("scripts.validation.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
+         patch("scripts.validation.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
+         patch("scripts.validation.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
+         patch("scripts.validation.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
 
         success, report, exit_code = run_live_smoke_suite()
 
@@ -81,10 +81,10 @@ def test_smoke_harness_single_failure_fails_entire_run(capsys):
     mock_sc = {"ticker": "NVDA", "price": 236.0}
     mock_pw = {"canonical_name": "Satya Nadella"}
 
-    with patch("scripts.live_agent_smoke_test.verify_brandshield_live", side_effect=ValueError("Target brand mismatch")), \
-         patch("scripts.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
-         patch("scripts.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
-         patch("scripts.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
+    with patch("scripts.validation.live_agent_smoke_test.verify_brandshield_live", side_effect=ValueError("Target brand mismatch")), \
+         patch("scripts.validation.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
+         patch("scripts.validation.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
+         patch("scripts.validation.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
 
         success, report, exit_code = run_live_smoke_suite()
 
@@ -107,10 +107,10 @@ def test_smoke_harness_simulated_fault_injection(capsys):
     mock_sc = {"ticker": "NVDA"}
     mock_pw = {"canonical_name": "Satya Nadella"}
 
-    with patch("scripts.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
-         patch("scripts.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
-         patch("scripts.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
-         patch("scripts.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
+    with patch("scripts.validation.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
+         patch("scripts.validation.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
+         patch("scripts.validation.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
+         patch("scripts.validation.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
 
         success, report, exit_code = run_live_smoke_suite(simulate_failure_agent="scout")
 
@@ -139,10 +139,10 @@ def test_smoke_harness_retrieval_failure_vs_agent_error(capsys):
     mock_sc = {"ticker": "NVDA", "price": 236.0}
     mock_pw = {"canonical_name": "Satya Nadella"}
 
-    with patch("scripts.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs_zero_ev), \
-         patch("scripts.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
-         patch("scripts.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
-         patch("scripts.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
+    with patch("scripts.validation.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs_zero_ev), \
+         patch("scripts.validation.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
+         patch("scripts.validation.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
+         patch("scripts.validation.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
 
         success, report, exit_code = run_live_smoke_suite()
 
@@ -151,10 +151,10 @@ def test_smoke_harness_retrieval_failure_vs_agent_error(capsys):
     assert report["agents"]["brandshield"]["status"] == "PASS"
 
     # Case B: Unhandled agent crash (must FAIL overall)
-    with patch("scripts.live_agent_smoke_test.verify_brandshield_live", side_effect=ConnectionError("Backend connection reset")), \
-         patch("scripts.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
-         patch("scripts.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
-         patch("scripts.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
+    with patch("scripts.validation.live_agent_smoke_test.verify_brandshield_live", side_effect=ConnectionError("Backend connection reset")), \
+         patch("scripts.validation.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
+         patch("scripts.validation.live_agent_smoke_test.verify_scout_live", return_value=mock_sc), \
+         patch("scripts.validation.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
 
         success, report, exit_code = run_live_smoke_suite()
 
@@ -170,10 +170,10 @@ def test_smoke_harness_timeout_bounded_failure():
     mock_tr = {"discovery_mode": "discovery"}
     mock_pw = {"canonical_name": "Satya Nadella"}
 
-    with patch("scripts.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
-         patch("scripts.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
-         patch("scripts.live_agent_smoke_test.verify_scout_live", side_effect=TimeoutError("Network deadline exceeded (15s)")), \
-         patch("scripts.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
+    with patch("scripts.validation.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
+         patch("scripts.validation.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
+         patch("scripts.validation.live_agent_smoke_test.verify_scout_live", side_effect=TimeoutError("Network deadline exceeded (15s)")), \
+         patch("scripts.validation.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
 
         success, report, exit_code = run_live_smoke_suite()
 
@@ -190,10 +190,10 @@ def test_smoke_harness_malformed_external_data():
     mock_pw = {"canonical_name": "Satya Nadella"}
 
     # Scout returns malformed price (string instead of numeric)
-    with patch("scripts.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
-         patch("scripts.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
-         patch("scripts.live_agent_smoke_test.verify_scout_live", side_effect=AssertionError("Expected numeric current_price, got <class 'str'>")), \
-         patch("scripts.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
+    with patch("scripts.validation.live_agent_smoke_test.verify_brandshield_live", return_value=mock_bs), \
+         patch("scripts.validation.live_agent_smoke_test.verify_trending_live", return_value=mock_tr), \
+         patch("scripts.validation.live_agent_smoke_test.verify_scout_live", side_effect=AssertionError("Expected numeric current_price, got <class 'str'>")), \
+         patch("scripts.validation.live_agent_smoke_test.verify_personal_watch_live", return_value=mock_pw):
 
         success, report, exit_code = run_live_smoke_suite()
 

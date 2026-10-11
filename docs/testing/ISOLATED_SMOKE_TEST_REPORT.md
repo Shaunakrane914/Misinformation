@@ -9,8 +9,8 @@
 - **Environment**: Isolated local runtime process (FastAPI ASGI TestClient simulating production container runtime)
 - **Host**: Windows 11 / Python 3.13.5 (win32)
 - **Container Equivalent**: `docker-compose up aegis-api` using `Dockerfile` (Python 3.13-slim-bookworm)
-- **Execution Script**: [`scripts/validate_release_candidate_smoke.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/scripts/validate_release_candidate_smoke.py)
-- **Generated Artifact**: [`artifacts/phase7_1_smoke_validation_results.json`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/artifacts/phase7_1_smoke_validation_results.json)
+- **Execution Script**: [`scripts/validate_release_candidate_smoke.py`](../../scripts/validate_release_candidate_smoke.py)
+- **Generated Artifact**: [`artifacts/phase7_1_smoke_validation_results.json`](../../artifacts/phase7_1_smoke_validation_results.json)
 - **Result Status**: **ALL 11 GATES PASSED (100% SUCCESS)**
 
 ---

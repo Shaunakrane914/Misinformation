@@ -4,36 +4,61 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 ---
 
-## 🏛️ Architecture & Engineering Blueprint
+## 🏛️ System Architecture & Engineering Blueprints
 
-- **[Codebase Inventory & Audit](architecture/CODEBASE_INVENTORY.md)**: Authoritative catalog of all modules, lines of code, entrypoints, dependencies, and identified defects.
-- **[Target Architecture Specification](architecture/TARGET_ARCHITECTURE.md)**: Target modular monolith architecture, layering topology, and boundary rules.
-- **[Dependency Map & Import Graph](architecture/DEPENDENCY_MAP.md)**: Concrete import relationships, singleton state, and transitional compatibility shims.
-- **[Phased Migration Plan](architecture/MIGRATION_PLAN.md)**: Phased engineering roadmap (Phases 0 through 7) with explicit acceptance gates.
-- **[Architecture Decision Records (ADRs)](architecture/adr/README.md)**: Proposed architectural records (ADRs 0001–0005 pending review) governing modularity, acquisition, evidence contracts, and data retention.
-
----
-
-## 📚 Canonical Topic Directories
-
-- **[Development & Runtime Guide](development/README.md)**: Local developer setup, virtual environments, runtime commands, coding standards, and branch workflow.
-- **[REST API Reference](api/README.md)**: 7 modular FastAPI routers (`/api/claims`, `/api/scout`, `/api/trending`, `/api/brandshield`, `/api/personal`, `/api/replay`, `/api/healthz`), request/response schemas, error handling.
-- **[Autonomous Sentinel Fleet](agents/README.md)**: Sentinel specifications for Scout 2.0, Trending 2.0, BrandShield 2.0, Personal Watch 2.0, and Investigator/Research engines.
-- **[Operations & Deployment](operations/README.md)**: Deployment topology, containerization, `.dockerignore` containment policy, health probes, environment variable matrix.
-- **[Security Architecture](security/README.md)**: SSRF defense firewall, prompt injection encapsulation, cryptographic Replay Ledger, XSS protection.
-- **[Testing & Quality Assurance](testing/README.md)**: Test hierarchy, 530 passing automated tests, chaos fault injection, and zero-regression standards.
-- **[Evaluation & Scientific Baselines](evaluation/README.md)**: 104-scenario Cranfield retrieval benchmark, WELFake classical ML baseline (88.50%), and learned reranker evaluation.
+- **[Target Architecture Specification](architecture/TARGET_ARCHITECTURE.md)**: Modular monolith architecture, layering topology, and boundary rules.
+- **[Codebase Inventory & Audit](architecture/CODEBASE_INVENTORY.md)**: Catalog of modules, lines of code, entrypoints, and dependencies.
+- **[Dependency Map & Import Graph](architecture/DEPENDENCY_MAP.md)**: Import relationships, singleton state, and transitional compatibility shims.
+- **[Phase 7 Architecture Consolidation Report](architecture/PHASE7_ARCHITECTURE_CONSOLIDATION_REPORT.md)**: Production architecture consolidation, route restoration, and hardening.
+- **[Phase 7 Protected Integration Matrix](architecture/PHASE7_PROTECTED_INTEGRATION_MATRIX.md)**: Matrix preserving all 4 agents and 16 recovered operations.
+- **[Phase 7.1 Release Candidate Report](architecture/PHASE7_1_RELEASE_CANDIDATE_REPORT.md)**: Release candidate validation, deployment readiness, and verification evidence.
+- **[Phase 7.2 Workspace Structure Guide](architecture/PHASE7_2_WORKSPACE_STRUCTURE.md)**: Workspace organization, folder responsibilities, and structural consolidation policy.
+- **[Architecture Decision Records (ADRs)](architecture/adr/README.md)**: Formal architecture decision records (ADRs 0001–0005) governing modularity, acquisition, and evidence retention.
 
 ---
 
-## 🔬 Core System Guides & Specifications
+## 💻 Developer Experience & Workspace Navigation
 
-- **[System Architecture Overview](ARCHITECTURE.md)**: System topology, multi-agent fabric, and 3-tier progressive disclosure UI.
-- **[Feature Status & Truth Matrix](FEATURE_STATUS.md)**: Current operational status across intelligence sentinels and acquisition channels (verified against 530 tests).
-- **[Testing Runbook](TESTING.md)**: Pytest execution runbook and directory breakdown.
-- **[Scientific Evaluation Report](EVALUATION.md)**: Mathematical formulations, calibration diagrams, ablation results, and leakage elimination.
-- **[Operational Runbook](OPERATIONS.md)**: Step-by-step local setup, Docker build guide, and health telemetry.
-- **[Security Hardening Guide](SECURITY.md)**: SSRF IP blocking ranges, URL sanitization rules, and threat models.
+- **[Coding Agent Orientation (`AGENTS.md`)](../AGENTS.md)**: Canonical orientation guide for AI coding assistants and developers.
+- **[Developer Workspace Map](development/WORKSPACE_MAP.md)**: Quick-reference map for finding agent logic, routes, tests, and running common commands.
+- **[Script Index & Catalog](development/SCRIPT_INDEX.md)**: Authoritative index of all 40 development, benchmark, evaluation, and validation scripts.
+- **[Workspace Inventory Report](development/WORKSPACE_INVENTORY.md)**: Directory-by-directory audit and classification of all tracked repository assets.
+- **[Cleanup-Candidate Register](development/CLEANUP_CANDIDATE_REGISTER.md)**: Register of redundant, superseded, or owner-approval files.
+- **[Local Development & Runtime Guide](development/README.md)**: Virtual environments, runtime commands, coding standards, and branch workflow.
+
+---
+
+## 🚀 Operations, Configuration & Rollback
+
+- **[Production Configuration Matrix](operations/PRODUCTION_CONFIGURATION_MATRIX.md)**: Required, feature-dependent, optional, and forbidden environment variables.
+- **[V1 Operations Runbook](operations/V1_OPERATIONS_RUNBOOK.md)**: Comprehensive guide for startup, monitoring, maintenance, and failure recovery.
+- **[Rollback Verification](operations/ROLLBACK_VERIFICATION.md)**: Automated validation of schema backward compatibility and preservation of 2,312 dossiers.
+- **[Operations & Deployment Topology](operations/README.md)**: Containerization, `.dockerignore` containment policy, and health probes.
+
+---
+
+## 🛡️ Security Architecture & Reliability
+
+- **[V1 Security & Operations Report](security/V1_SECURITY_AND_OPERATIONS_REPORT.md)**: Security review, SSRF defenses, static path traversal hardening, and telemetry redaction.
+- **[Security Architecture Guide](security/README.md)**: Threat modeling, SSRF IP blocking ranges, URL sanitization rules, and prompt injection guards.
+- **[Frontend Health Refresh Report](architecture/FRONTEND_HEALTH_REFRESH_REPORT.md)**: TTL-bounded (45s) capability caching, in-flight deduplication, and visibility revalidation.
+
+---
+
+## 🧪 Testing, CI Coverage & Benchmarks
+
+- **[CI Coverage Matrix](testing/CI_COVERAGE_MATRIX.md)**: Comprehensive mapping of all 787 tests to CI jobs, plus full offline matrix specification.
+- **[Isolated Smoke Test Report](testing/ISOLATED_SMOKE_TEST_REPORT.md)**: Isolated staging-like smoke validation across all 4 agents and 11 verification gates.
+- **[Full CI Workflow Specification](ci/FULL_CI_WORKFLOW.yml)**: Complete, reproducible multi-Python CI workflow definition.
+- **[Testing Runbook](TESTING.md)**: Pytest execution runbook and directory breakdown (787 tests).
+- **[Scientific Evaluation Report](EVALUATION.md)**: WELFake classical ML baseline (88.50%), learned evidence reranker (MRR: 0.20 → 1.00), and Cranfield retrieval metrics.
+
+---
+
+## 🤖 Autonomous Sentinel Fleet & API Contracts
+
+- **[REST API Reference](api/README.md)**: 7 modular FastAPI routers (`/api/claims`, `/api/scout`, `/api/trending`, `/api/brandshield`, `/api/personal-watch`, `/api/replay`, `/api/healthz`).
+- **[Autonomous Sentinel Fleet](agents/README.md)**: Specifications for Scout, Trending, BrandShield, Personal Watch, and Truth Tribunal.
 
 ---
 

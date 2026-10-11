@@ -1,7 +1,7 @@
 # AGENT 5: COORDINATOR AGENT SPECIFICATION
 
 **Agent:** Agent 5 — COORDINATOR  
-**Implementation:** [`backend/agents/coordinator_agent.py`](file:///backend/agents/coordinator_agent.py)  
+**Implementation:** [`backend/agents/coordinator_agent.py`](../../../backend/agents/coordinator_agent.py)  
 **System:** Aegis Protocol
 
 ---

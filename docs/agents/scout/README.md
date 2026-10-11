@@ -2,8 +2,8 @@
 
 **Agent:** Agent 1 — SCOUT  
 **System:** Aegis Protocol  
-**Implementation Package:** [`backend/services/agent_reach/scout/`](file:///backend/services/agent_reach/scout/)  
-**Agent Class:** [`ScoutAgent`](file:///backend/agents/scout_agent.py)
+**Implementation Package:** [`backend/services/agent_reach/scout/`](../../../backend/services/agent_reach/scout/)  
+**Agent Class:** [`ScoutAgent`](../../../backend/agents/scout_agent.py)
 
 ---
 
@@ -40,18 +40,18 @@ This directory contains the complete specifications, data contracts, failure mod
 
 | Document | Description |
 |---|---|
-| [**SCOUT_SOURCE_ENGINE_DESIGN.md**](file:///docs/agents/scout/SCOUT_SOURCE_ENGINE_DESIGN.md) | Complete 7-stage architectural design specification of `ScoutSourceEngine`. |
-| [**SCOUT_SOURCE_ENGINE_AUDIT.md**](file:///docs/agents/scout/SCOUT_SOURCE_ENGINE_AUDIT.md) | Initial Phase 1 audit of the codebase, duplicate scraper cleanup, and architecture inventory. |
-| [**SCOUT_ARCHITECTURE_AUDIT.md**](file:///docs/agents/scout/SCOUT_ARCHITECTURE_AUDIT.md) | Deep structural analysis of Scout within the Aegis multi-agent pipeline. |
-| [**SCOUT_SOURCE_CAPABILITY_MATRIX.md**](file:///docs/agents/scout/SCOUT_SOURCE_CAPABILITY_MATRIX.md) | Empirical zero-auth capability matrix covering 15+ platforms and fallback rules. |
-| [**SCOUT_DATA_CONTRACT.md**](file:///docs/agents/scout/SCOUT_DATA_CONTRACT.md) | Integration contract between Scout and downstream Aegis agent consumers. |
-| [**SCOUT_DATA_MODEL.md**](file:///docs/agents/scout/SCOUT_DATA_MODEL.md) | Comprehensive data model definitions (`ScoutResult`, `FinancialFact`, `CorporateEvent`, `StoryCluster`). |
-| [**SCOUT_EXTRACTION_SPEC.md**](file:///docs/agents/scout/SCOUT_EXTRACTION_SPEC.md) | Technical specification for JSON-LD, microdata, multicurrency numbers, and temporal tags. |
-| [**SCOUT_EVENT_MODEL.md**](file:///docs/agents/scout/SCOUT_EVENT_MODEL.md) | 13-category corporate event taxonomy, rumor-vs-fact states, and contradiction rules. |
-| [**SCOUT_FAILURE_MODEL.md**](file:///docs/agents/scout/SCOUT_FAILURE_MODEL.md) | Taxonomy of error codes (`ScoutFailureCode`) and transparent fallback disclosures. |
-| [**SCOUT_SOURCE_POLICY.md**](file:///docs/agents/scout/SCOUT_SOURCE_POLICY.md) | Operational guidelines for zero-auth scraping, token-bucket pacing, and caching. |
-| [**SCOUT_BEFORE_AFTER_BENCHMARK.md**](file:///docs/agents/scout/SCOUT_BEFORE_AFTER_BENCHMARK.md) | Comparative evaluation of naive Top-1 vs. the audited Top-5 semantic ranking engine. |
-| [**SCOUT_TEST_REPORT.md**](file:///docs/agents/scout/SCOUT_TEST_REPORT.md) | Formal test execution log proving 100% test pass rate across 23 unit & trap tests. |
+| [**SCOUT_SOURCE_ENGINE_DESIGN.md**](../../../docs/agents/scout/SCOUT_SOURCE_ENGINE_DESIGN.md) | Complete 7-stage architectural design specification of `ScoutSourceEngine`. |
+| [**SCOUT_SOURCE_ENGINE_AUDIT.md**](../../../docs/agents/scout/SCOUT_SOURCE_ENGINE_AUDIT.md) | Initial Phase 1 audit of the codebase, duplicate scraper cleanup, and architecture inventory. |
+| [**SCOUT_ARCHITECTURE_AUDIT.md**](../../../docs/agents/scout/SCOUT_ARCHITECTURE_AUDIT.md) | Deep structural analysis of Scout within the Aegis multi-agent pipeline. |
+| [**SCOUT_SOURCE_CAPABILITY_MATRIX.md**](../../../docs/agents/scout/SCOUT_SOURCE_CAPABILITY_MATRIX.md) | Empirical zero-auth capability matrix covering 15+ platforms and fallback rules. |
+| [**SCOUT_DATA_CONTRACT.md**](../../../docs/agents/scout/SCOUT_DATA_CONTRACT.md) | Integration contract between Scout and downstream Aegis agent consumers. |
+| [**SCOUT_DATA_MODEL.md**](../../../docs/agents/scout/SCOUT_DATA_MODEL.md) | Comprehensive data model definitions (`ScoutResult`, `FinancialFact`, `CorporateEvent`, `StoryCluster`). |
+| [**SCOUT_EXTRACTION_SPEC.md**](../../../docs/agents/scout/SCOUT_EXTRACTION_SPEC.md) | Technical specification for JSON-LD, microdata, multicurrency numbers, and temporal tags. |
+| [**SCOUT_EVENT_MODEL.md**](../../../docs/agents/scout/SCOUT_EVENT_MODEL.md) | 13-category corporate event taxonomy, rumor-vs-fact states, and contradiction rules. |
+| [**SCOUT_FAILURE_MODEL.md**](../../../docs/agents/scout/SCOUT_FAILURE_MODEL.md) | Taxonomy of error codes (`ScoutFailureCode`) and transparent fallback disclosures. |
+| [**SCOUT_SOURCE_POLICY.md**](../../../docs/agents/scout/SCOUT_SOURCE_POLICY.md) | Operational guidelines for zero-auth scraping, token-bucket pacing, and caching. |
+| [**SCOUT_BEFORE_AFTER_BENCHMARK.md**](../../../docs/agents/scout/SCOUT_BEFORE_AFTER_BENCHMARK.md) | Comparative evaluation of naive Top-1 vs. the audited Top-5 semantic ranking engine. |
+| [**SCOUT_TEST_REPORT.md**](../../../docs/agents/scout/SCOUT_TEST_REPORT.md) | Formal test execution log proving 100% test pass rate across 23 unit & trap tests. |
 
 ---
 

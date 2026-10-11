@@ -52,7 +52,7 @@
   - Concurrent request deduplication (`inFlightPromise`).
   - Stale observation taxonomy (`stale` state, label: `"Stale observation"`, visual class: `degraded`).
   - Controlled revalidation upon `document.visibilityState === 'visible'`.
-- **Delivered Report**: [`docs/architecture/FRONTEND_HEALTH_REFRESH_REPORT.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/architecture/FRONTEND_HEALTH_REFRESH_REPORT.md).
+- **Delivered Report**: [`docs/architecture/FRONTEND_HEALTH_REFRESH_REPORT.md`](../../docs/architecture/FRONTEND_HEALTH_REFRESH_REPORT.md).
 
 ### 3.2 Task Two — Complete CI Regression Matrix
 - **Identified Defect**: Remote GitHub Actions CI executed only 594 of 787 tests, omitting 61 integration, 15 evaluation, and 105 root test files.
@@ -61,7 +61,7 @@
   - All suites executed locally and verified green (100% pass rate).
   - Multi-suite CI workflow defined in `docs/ci/FULL_CI_WORKFLOW.yml`.
   - Node.js health tests embedded in `tests/unit/test_frontend_operation_health_contract.py` for automated multi-python CI execution.
-- **Delivered Report**: [`docs/testing/CI_COVERAGE_MATRIX.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/testing/CI_COVERAGE_MATRIX.md).
+- **Delivered Report**: [`docs/testing/CI_COVERAGE_MATRIX.md`](../../docs/testing/CI_COVERAGE_MATRIX.md).
 
 ### 3.3 Task Three — Production Configuration Audit
 - **Identified Defect**: Lack of startup enforcement preventing mock mode when `ENVIRONMENT=production`.
@@ -69,10 +69,10 @@
   - Added `validate_production_mock_guard` in `backend/core/settings.py`.
   - Added wildcard CORS origin startup warning in `backend/main.py`.
   - Comprehensive environment variables matrix documented with zero real secrets.
-- **Delivered Report**: [`docs/operations/PRODUCTION_CONFIGURATION_MATRIX.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/operations/PRODUCTION_CONFIGURATION_MATRIX.md).
+- **Delivered Report**: [`docs/operations/PRODUCTION_CONFIGURATION_MATRIX.md`](../../docs/operations/PRODUCTION_CONFIGURATION_MATRIX.md).
 
 ### 3.4 Task Four — Isolated Staging-Like Smoke Validation
-- **Executed Suite**: [`scripts/validate_release_candidate_smoke.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/scripts/validate_release_candidate_smoke.py).
+- **Executed Suite**: [`scripts/validate_release_candidate_smoke.py`](../../scripts/validate_release_candidate_smoke.py).
 - **Probes Tested**:
   - `/api/healthz` (`ok`, 7 modules, 7 agents)
   - `/api/readyz` (`ready`, `READY_UNVERIFIED`, 62 operations)
@@ -84,20 +84,20 @@
   - Tata Sons financial news (BrandShield: grounded rule-based consensus)
   - Anthropic official identity (Personal Watch: 4 normalized evidence items)
   - Zero-evidence guard (Verdict: `INSUFFICIENT_EVIDENCE`)
-- **Delivered Report**: [`docs/testing/ISOLATED_SMOKE_TEST_REPORT.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/testing/ISOLATED_SMOKE_TEST_REPORT.md).
+- **Delivered Report**: [`docs/testing/ISOLATED_SMOKE_TEST_REPORT.md`](../../docs/testing/ISOLATED_SMOKE_TEST_REPORT.md).
 
 ### 3.5 Task Five — Operational Observability
 - Request-level tracing via `X-Request-ID` and structured latency logging.
 - Lineage-preserving cryptographic research dossiers (`R-YYYY-XXXXXX`).
 - Minimal production monitoring alerts specified (5xx error rate, readiness unverified duration, dossier disk capacity).
-- **Delivered Report**: [`docs/security/V1_SECURITY_AND_OPERATIONS_REPORT.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/security/V1_SECURITY_AND_OPERATIONS_REPORT.md).
+- **Delivered Report**: [`docs/security/V1_SECURITY_AND_OPERATIONS_REPORT.md`](../../docs/security/V1_SECURITY_AND_OPERATIONS_REPORT.md).
 
 ### 3.6 Task Six — Deployment Packaging & Rollback Validation
 - Multi-stage Dockerfile (`builder` -> `runtime` based on `python:3.13-slim-bookworm`).
 - Non-root user `aegis` (UID 1000).
 - Robust `.dockerignore` excluding `.env`, `.git`, `.vscode`, and local databases.
-- Rollback compatibility tested via [`scripts/validate_rollback_compatibility.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/scripts/validate_rollback_compatibility.py).
-- **Delivered Report**: [`docs/operations/ROLLBACK_VERIFICATION.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/operations/ROLLBACK_VERIFICATION.md).
+- Rollback compatibility tested via [`scripts/validate_rollback_compatibility.py`](../../scripts/validate_rollback_compatibility.py).
+- **Delivered Report**: [`docs/operations/ROLLBACK_VERIFICATION.md`](../../docs/operations/ROLLBACK_VERIFICATION.md).
 
 ### 3.7 Task Seven — Release Security Review
 - Static file handler hardened with `os.path.commonpath` against directory traversal attacks.

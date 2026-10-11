@@ -1,7 +1,7 @@
 # SPECIALIST AGENT: PERSONAL AGENT SPECIFICATION
 
 **Agent:** Specialist Agent — PERSONAL  
-**Implementation:** [`backend/agents/personal_agent.py`](file:///backend/agents/personal_agent.py)  
+**Implementation:** [`backend/agents/personal_agent.py`](../../../backend/agents/personal_agent.py)  
 **System:** Aegis Protocol
 
 ---

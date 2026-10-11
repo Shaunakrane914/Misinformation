@@ -9,12 +9,13 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-530%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
+[![Tests](https://img.shields.io/badge/Tests-787%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/testing/CI_COVERAGE_MATRIX.md)
 [![Evaluation](https://img.shields.io/badge/Evaluation-Audited%20ML%20Baseline-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
+[![Status](https://img.shields.io/badge/Status-Release%20Candidate%20Ready-success?style=for-the-badge)](docs/architecture/PHASE7_1_RELEASE_CANDIDATE_REPORT.md)
 
-**Aegis Protocol is an evidence-first claim verification system and research framework. It combines cross-platform evidence retrieval, learned candidate reranking, source-independence clustering, contradiction analysis, and multi-perspective LLM reasoning with abstention-aware classification.**
+**Aegis Protocol is an evidence-first claim verification system and research framework. It combines cross-platform evidence retrieval across 16 operations, claim-aware source planning, learned candidate reranking, source-independence clustering, contradiction analysis, and multi-perspective LLM reasoning with abstention-aware classification.**
 
-[📚 Documentation Portal](docs/index.md) · [🏛️ Target Architecture](docs/architecture/TARGET_ARCHITECTURE.md) · [🗺️ Migration Plan](docs/architecture/MIGRATION_PLAN.md) · [System Architecture](docs/ARCHITECTURE.md) · [Feature Status & Truth Matrix](docs/FEATURE_STATUS.md) · [Scientific Evaluation](docs/EVALUATION.md) · [Testing Suite](docs/TESTING.md) · [Security Model](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
+[📚 Documentation Portal](docs/index.md) · [🤖 Coding Agents Guide](AGENTS.md) · [🗺️ Workspace Map](docs/development/WORKSPACE_MAP.md) · [📜 Script Index](docs/development/SCRIPT_INDEX.md) · [🏛️ Target Architecture](docs/architecture/TARGET_ARCHITECTURE.md) · [🚀 Release Candidate](docs/architecture/PHASE7_1_RELEASE_CANDIDATE_REPORT.md) · [Testing Suite](docs/testing/CI_COVERAGE_MATRIX.md)
 
 </div>
 
@@ -146,25 +147,25 @@ Open [http://localhost:8000](http://localhost:8000) for the UI and [http://local
 
 ---
 
-## 🧪 Scientific Benchmark CLI
+## 🧪 Benchmarks & Release Validation CLI
 
-Run reproducible, leak-free evaluations directly from the command line:
+Run reproducible evaluations and release validation directly from the command line:
 
 ```bash
-# 1. Run all offline ML benchmarks (WELFake Classical ML + Learned Reranker)
+# 1. Run full offline regression test gate (787 tests)
+pytest tests/ -q
+
+# 2. Run isolated release-candidate smoke validation (11 gates, all 4 agents)
+python scripts/validate_release_candidate_smoke.py
+
+# 3. Validate database and dossier rollback compatibility
+python scripts/validate_rollback_compatibility.py
+
+# 4. Run all offline ML benchmarks (WELFake Classical ML + Learned Reranker)
 python scripts/evaluate_dataset.py --mode all_offline --seed 42
 
-# 2. Run only the Supervised Classical ML Baseline
-python scripts/evaluate_dataset.py --mode classical_ml --seed 42
-
-# 3. Run only the Learned Evidence Reranker Evaluation
-python scripts/evaluate_dataset.py --mode reranker --seed 42
-
-# 4. Check AVeriTeC Benchmark Adapter Status
-python scripts/evaluate_dataset.py --mode averitec_status
-
-# 5. Execute full test suite (530 regression tests)
-pytest
+# 5. Run Cranfield retrieval quality benchmark on frozen fixtures
+python scripts/benchmarks/run_retrieval_benchmark.py
 ```
 
 ---

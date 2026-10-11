@@ -28,7 +28,7 @@ Every finding in this inventory is classified under the strict verification taxo
 ## 2. Priority 0 Architectural Defect Audits
 
 ### 2.1 Duplicate Method Definition in `AgentReachService` `[VERIFIED]`
-In [`backend/services/agent_reach/adapter.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/adapter.py):
+In [`backend/services/agent_reach/adapter.py`](../../backend/services/agent_reach/adapter.py):
 - **Line 190**: Defines `def retrieve(self, request_or_query: Any, **kwargs) -> RetrievalResult:`
   ```python
   if isinstance(request_or_query, RetrievalRequest):
@@ -68,16 +68,16 @@ graph TD
 ---
 
 ### 2.2 Docker Build Context Secret & Artifact Leakage `[VERIFIED]`
-In [`Dockerfile`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/Dockerfile):
+In [`Dockerfile`](../../Dockerfile):
 - Line 39 contains `COPY --chown=aegis:aegis . /app`.
 - In commit `b441250`, there was **no `.dockerignore` file**.
 - **Impact**: Any local `.env` file containing production Supabase service roles, Gemini keys, or Apify tokens would be copied into the container image layers. Furthermore, `research/` (338 MB), `docs/visual-audit/` (31 MB), `aegis_local.db` (17.6 MB), and `venv/` (309 MB) bloated the container build context to >700 MB.
-- **Remediation Implemented**: Created authoritative root [`.dockerignore`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.dockerignore) excluding secrets, caches, and test/research bulk assets.
+- **Remediation Implemented**: Created authoritative root [`.dockerignore`](../../.dockerignore) excluding secrets, caches, and test/research bulk assets.
 
 ---
 
 ### 2.3 Monolithic Acquisition Router (`router.py`) `[VERIFIED]`
-[`backend/services/agent_reach/native/router.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/native/router.py) is **1,706 lines long**.
+[`backend/services/agent_reach/native/router.py`](../../backend/services/agent_reach/native/router.py) is **1,706 lines long**.
 It combines:
 1. In-memory social caching (`_get_social_cache`, `_set_social_cache`).
 2. Arctic Shift Reddit API client (`_fetch_arctic_shift_posts_batch`, `_fetch_arctic_shift_search`, lines 125–290).
@@ -88,7 +88,7 @@ It combines:
 7. Legacy scraper fallback invocation (`_fallback_*`, lines 1346–1446).
 8. Candidate search discovery and concurrent execution (`execute_retrieval_request`, lines 1447–1707).
 
-*Architectural Problem*: Despite the existence of [`backend/services/agent_reach/native/adapters/`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/native/adapters/), `router.py` reimplements platform logic directly, bypassing the adapter abstraction.
+*Architectural Problem*: Despite the existence of [`backend/services/agent_reach/native/adapters/`](../../backend/services/agent_reach/native/adapters/), `router.py` reimplements platform logic directly, bypassing the adapter abstraction.
 
 ---
 
@@ -98,12 +98,12 @@ It combines:
 
 | Module | Lines | Role | Primary Classes & Entrypoints | Dependencies & Side Effects | Test Coverage |
 | :--- | :---: | :--- | :--- | :--- | :--- |
-| [`brandshield_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/agents/brandshield_agent.py) | 1,120 | **Production** | `BrandShieldAgent`, `scan_brand()` | `agent_reach_service`, `entity_resolver`, Gemini, Supabase | [`tests/unit/test_brandshield_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_brandshield_agent.py) |
-| [`trending_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/agents/trending_agent.py) | 1,283 | **Production** | `TrendingAgent`, `scan_trends()`, `verify_velocity()` | `agent_reach_service`, `temporal_guard`, Hawkes process, Supabase | [`tests/unit/test_trending_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_trending_agent.py), [`tests/test_trending_temporal_guard.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/test_trending_temporal_guard.py) |
-| [`scout_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/agents/scout_agent.py) | 1,202 | **Production** | `ScoutAgent`, `scan_financial_threats()` | `scout_source_engine`, `agent_reach_service`, YFinance API, Supabase | [`tests/unit/test_scout_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_scout_agent.py), [`tests/unit/test_scout_source_engine.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_scout_source_engine.py) |
-| [`personal_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/agents/personal_agent.py) | 1,353 | **Production** | `PersonalWatchAgent`, `scan_vip()` | `agent_reach_service`, `entity_resolver`, Gemini, Supabase | [`tests/unit/test_personal_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_personal_agent.py) |
-| [`claim_ingestion_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/agents/claim_ingestion_agent.py) | 175 | **Production** | `ClaimIngestionAgent`, `ingest_claim()` | `database.py`, Unicode normalization | [`tests/unit/test_claim_ingestion.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_claim_ingestion.py) |
-| [`coordinator_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/agents/coordinator_agent.py) | 646 | **Production** | `CoordinatorAgent`, `coordinate_response()` | All domain agents, Threat Lab consensus | [`tests/unit/test_coordinator_agent.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_coordinator_agent.py) |
+| [`brandshield_agent.py`](../../backend/agents/brandshield_agent.py) | 1,120 | **Production** | `BrandShieldAgent`, `scan_brand()` | `agent_reach_service`, `entity_resolver`, Gemini, Supabase | [`tests/unit/test_brandshield_agent.py`](../../tests/unit/test_brandshield_agent.py) |
+| [`trending_agent.py`](../../backend/agents/trending_agent.py) | 1,283 | **Production** | `TrendingAgent`, `scan_trends()`, `verify_velocity()` | `agent_reach_service`, `temporal_guard`, Hawkes process, Supabase | [`tests/unit/test_trending_agent.py`](../../tests/unit/test_trending_agent.py), [`tests/test_trending_temporal_guard.py`](../../tests/test_trending_temporal_guard.py) |
+| [`scout_agent.py`](../../backend/agents/scout_agent.py) | 1,202 | **Production** | `ScoutAgent`, `scan_financial_threats()` | `scout_source_engine`, `agent_reach_service`, YFinance API, Supabase | [`tests/unit/test_scout_agent.py`](../../tests/unit/test_scout_agent.py), [`tests/unit/test_scout_source_engine.py`](../../tests/unit/test_scout_source_engine.py) |
+| [`personal_agent.py`](../../backend/agents/personal_agent.py) | 1,353 | **Production** | `PersonalWatchAgent`, `scan_vip()` | `agent_reach_service`, `entity_resolver`, Gemini, Supabase | [`tests/unit/test_personal_agent.py`](../../tests/unit/test_personal_agent.py) |
+| [`claim_ingestion_agent.py`](../../backend/agents/claim_ingestion_agent.py) | 175 | **Production** | `ClaimIngestionAgent`, `ingest_claim()` | `database.py`, Unicode normalization | [`tests/unit/test_claim_ingestion.py`](../../tests/unit/test_claim_ingestion.py) |
+| [`coordinator_agent.py`](../../backend/agents/coordinator_agent.py) | 646 | **Production** | `CoordinatorAgent`, `coordinate_response()` | All domain agents, Threat Lab consensus | [`tests/unit/test_coordinator_agent.py`](../../tests/unit/test_coordinator_agent.py) |
 
 ---
 
@@ -111,16 +111,16 @@ It combines:
 
 | Module | Lines | Role | Primary Classes & Entrypoints | Dependencies & Issues | Test Coverage |
 | :--- | :---: | :--- | :--- | :--- | :--- |
-| [`native/router.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/native/router.py) | 1,706 | **Production** | `NativeRouter`, `execute_retrieval_request()` | Monolithic router; direct HTTP requests to Arctic Shift & FxTwitter | [`tests/chaos/test_agent_reach_chaos.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/chaos/test_agent_reach_chaos.py) |
-| [`adapter.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/adapter.py) | 926 | **Production** | `AgentReachService`, `execute()`, `retrieve()`, `retrieve_many()` | Duplicate `retrieve` method definition (lines 190 and 631) | [`tests/unit/test_agent_reach_service.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_agent_reach_service.py) |
-| [`channels.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/channels.py) | 849 | **Production** | `EvidenceFragment`, `RetrievalRequest`, `CandidateSource` | Core acquisition data contracts; typed Pydantic models | [`tests/unit/test_shared_acquisition_fabric.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_shared_acquisition_fabric.py) |
-| [`channels_impl.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/channels_impl.py) | 322 | **Production** | `Channel`, `SearchChannel`, `WebSearchChannel` | Platform wrappers around native router calls | [`tests/unit/test_shared_acquisition_fabric.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_shared_acquisition_fabric.py) |
-| [`planner.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/planner.py) | 789 | **Production** | `RetrievalPlanner`, `build_multi_channel_queries()` | Query expansion rules, domain query classes | [`tests/unit/test_agent_reach_planner.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_agent_reach_planner.py) |
-| [`profile.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/profile.py) | 605 | **Production** | `AgentReachProfile`, `ChannelCapability` | Static channel configuration matrix and rate limits | [`tests/unit/test_agent_reach_profile.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_agent_reach_profile.py) |
-| [`registry.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/registry.py) | 204 | **Production** | `CapabilityRegistry` | Channel availability state and health tracking | [`tests/unit/test_agent_reach_service.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_agent_reach_service.py) |
-| [`extraction/*`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/extraction/) | 1,093 | **Misplaced** | `BrandShieldExtractor`, `TrendingExtractor`, `ScoutExtractor`, `PersonalExtractor` | **Architectural Leak**: Domain agent extraction logic embedded in shared acquisition fabric | Covered by agent tests |
-| [`scout/*`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach/scout/) | 2,106 | **Misplaced** | `ScoutSourceEngine`, `ScoutDiscovery`, `ScoutRanking` | **Architectural Leak**: Full financial sub-agent framework embedded in shared acquisition service | [`tests/unit/test_scout_source_engine.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_scout_source_engine.py) |
-| [`agent_reach_scraper.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/agent_reach_scraper.py) | 686 | **Compatibility**| `AgentReachScraper`, `reach_scraper` | Legacy scraping fallback using BeautifulSoup & raw requests | [`tests/unit/test_scraper_fallback.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_scraper_fallback.py) |
+| [`native/router.py`](../../backend/services/agent_reach/native/router.py) | 1,706 | **Production** | `NativeRouter`, `execute_retrieval_request()` | Monolithic router; direct HTTP requests to Arctic Shift & FxTwitter | [`tests/chaos/test_agent_reach_chaos.py`](../../tests/chaos/test_agent_reach_chaos.py) |
+| [`adapter.py`](../../backend/services/agent_reach/adapter.py) | 926 | **Production** | `AgentReachService`, `execute()`, `retrieve()`, `retrieve_many()` | Duplicate `retrieve` method definition (lines 190 and 631) | [`tests/unit/test_agent_reach_service.py`](../../tests/unit/test_agent_reach_service.py) |
+| [`channels.py`](../../backend/services/agent_reach/channels.py) | 849 | **Production** | `EvidenceFragment`, `RetrievalRequest`, `CandidateSource` | Core acquisition data contracts; typed Pydantic models | [`tests/unit/test_shared_acquisition_fabric.py`](../../tests/unit/test_shared_acquisition_fabric.py) |
+| [`channels_impl.py`](../../backend/services/agent_reach/channels_impl.py) | 322 | **Production** | `Channel`, `SearchChannel`, `WebSearchChannel` | Platform wrappers around native router calls | [`tests/unit/test_shared_acquisition_fabric.py`](../../tests/unit/test_shared_acquisition_fabric.py) |
+| [`planner.py`](../../backend/services/agent_reach/planner.py) | 789 | **Production** | `RetrievalPlanner`, `build_multi_channel_queries()` | Query expansion rules, domain query classes | [`tests/unit/test_agent_reach_planner.py`](../../tests/unit/test_agent_reach_planner.py) |
+| [`profile.py`](../../backend/services/agent_reach/profile.py) | 605 | **Production** | `AgentReachProfile`, `ChannelCapability` | Static channel configuration matrix and rate limits | [`tests/unit/test_agent_reach_profile.py`](../../tests/unit/test_agent_reach_profile.py) |
+| [`registry.py`](../../backend/services/agent_reach/registry.py) | 204 | **Production** | `CapabilityRegistry` | Channel availability state and health tracking | [`tests/unit/test_agent_reach_service.py`](../../tests/unit/test_agent_reach_service.py) |
+| [`extraction/*`](../../backend/services/agent_reach/extraction/) | 1,093 | **Misplaced** | `BrandShieldExtractor`, `TrendingExtractor`, `ScoutExtractor`, `PersonalExtractor` | **Architectural Leak**: Domain agent extraction logic embedded in shared acquisition fabric | Covered by agent tests |
+| [`scout/*`](../../backend/services/agent_reach/scout/) | 2,106 | **Misplaced** | `ScoutSourceEngine`, `ScoutDiscovery`, `ScoutRanking` | **Architectural Leak**: Full financial sub-agent framework embedded in shared acquisition service | [`tests/unit/test_scout_source_engine.py`](../../tests/unit/test_scout_source_engine.py) |
+| [`agent_reach_scraper.py`](../../backend/services/agent_reach_scraper.py) | 686 | **Compatibility**| `AgentReachScraper`, `reach_scraper` | Legacy scraping fallback using BeautifulSoup & raw requests | [`tests/unit/test_scraper_fallback.py`](../../tests/unit/test_scraper_fallback.py) |
 
 ---
 
@@ -128,15 +128,15 @@ It combines:
 
 | Module | Lines | Role | Primary Classes & Entrypoints | Dependencies & Invariants | Test Coverage |
 | :--- | :---: | :--- | :--- | :--- | :--- |
-| [`research_engine.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/research_engine.py) | 755 | **Production** | `ResearchEngine`, `investigate()` | Single 581-line `investigate()` method; coordinates 10 funnel stages | [`tests/integration/test_claim_pipeline.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/integration/test_claim_pipeline.py) |
-| [`research_models.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/research_models.py) | 623 | **Production** | `EvidenceItem`, `Finding`, `TruthDossier`, `QualityTensor` | Core 6-verdict epistemic taxonomy and quality tensors | Contract tests |
-| [`temporal_guard.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/temporal_guard.py) | 510 | **Production** | `TemporalGuard`, `evaluate()` | 48-hour freshness window; decouples $T_{pub}$ from $T_{disc}$ | [`tests/test_trending_temporal_guard.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/test_trending_temporal_guard.py) (10/10 passing) |
-| [`entity_resolver.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/entity_resolver.py) | 473 | **Production** | `EntityResolver`, `evaluate_entity_match()` | Disambiguates named entities; rejects homographs & action verbs | [`tests/test_retrieval_quality_hardening.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/test_retrieval_quality_hardening.py) |
-| [`relevance_gate.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/relevance_gate.py) | 348 | **Production** | `RelevanceGate`, `evaluate_item()` | Deterministic hard gates; orthogonal entity, intent, quality scoring | [`tests/test_retrieval_benchmark.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/test_retrieval_benchmark.py) |
-| [`retrieval_metrics.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/retrieval_metrics.py) | 417 | **Evaluation** | `evaluate_ranking_run()`, `aggregate_metrics()` | Cranfield retrieval metrics: Success@k, P@k, Recall@k, MRR, nDCG | [`tests/test_retrieval_metrics.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/test_retrieval_metrics.py) (10/10 passing) |
-| [`semantic_reranker.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/semantic_reranker.py) | 268 | **Experimental**| `SemanticReranker`, `rerank()` | Second-stage CrossEncoder; **disabled in production (`AEGIS_SEMANTIC_RERANKER=0`)** | [`tests/test_semantic_reranker.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/test_semantic_reranker.py) |
-| [`replay_ledger.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/replay_ledger.py) | 434 | **Production** | `ReplayLedger`, `record_event()` | Cryptographic SHA-256 hash chains for forensic research replay | [`tests/unit/test_replay_ledger.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/unit/test_replay_ledger.py) |
-| [`audit_lineage_validator.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/research/audit_lineage_validator.py) | 322 | **Production** | `AuditLineageValidator` | Invariants A–H enforcement; DAG acyclicity checks | [`tests/test_complete_retrieval_audit_integrity.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/tests/test_complete_retrieval_audit_integrity.py) |
+| [`research_engine.py`](../../backend/services/research/research_engine.py) | 755 | **Production** | `ResearchEngine`, `investigate()` | Single 581-line `investigate()` method; coordinates 10 funnel stages | [`tests/integration/test_claim_pipeline.py`](../../tests/integration/test_claim_pipeline.py) |
+| [`research_models.py`](../../backend/services/research/research_models.py) | 623 | **Production** | `EvidenceItem`, `Finding`, `TruthDossier`, `QualityTensor` | Core 6-verdict epistemic taxonomy and quality tensors | Contract tests |
+| [`temporal_guard.py`](../../backend/services/research/temporal_guard.py) | 510 | **Production** | `TemporalGuard`, `evaluate()` | 48-hour freshness window; decouples $T_{pub}$ from $T_{disc}$ | [`tests/test_trending_temporal_guard.py`](../../tests/test_trending_temporal_guard.py) (10/10 passing) |
+| [`entity_resolver.py`](../../backend/services/research/entity_resolver.py) | 473 | **Production** | `EntityResolver`, `evaluate_entity_match()` | Disambiguates named entities; rejects homographs & action verbs | [`tests/test_retrieval_quality_hardening.py`](../../tests/test_retrieval_quality_hardening.py) |
+| [`relevance_gate.py`](../../backend/services/research/relevance_gate.py) | 348 | **Production** | `RelevanceGate`, `evaluate_item()` | Deterministic hard gates; orthogonal entity, intent, quality scoring | [`tests/test_retrieval_benchmark.py`](../../tests/test_retrieval_benchmark.py) |
+| [`retrieval_metrics.py`](../../backend/services/research/retrieval_metrics.py) | 417 | **Evaluation** | `evaluate_ranking_run()`, `aggregate_metrics()` | Cranfield retrieval metrics: Success@k, P@k, Recall@k, MRR, nDCG | [`tests/test_retrieval_metrics.py`](../../tests/test_retrieval_metrics.py) (10/10 passing) |
+| [`semantic_reranker.py`](../../backend/services/research/semantic_reranker.py) | 268 | **Experimental**| `SemanticReranker`, `rerank()` | Second-stage CrossEncoder; **disabled in production (`AEGIS_SEMANTIC_RERANKER=0`)** | [`tests/test_semantic_reranker.py`](../../tests/test_semantic_reranker.py) |
+| [`replay_ledger.py`](../../backend/services/research/replay_ledger.py) | 434 | **Production** | `ReplayLedger`, `record_event()` | Cryptographic SHA-256 hash chains for forensic research replay | [`tests/unit/test_replay_ledger.py`](../../tests/unit/test_replay_ledger.py) |
+| [`audit_lineage_validator.py`](../../backend/services/research/audit_lineage_validator.py) | 322 | **Production** | `AuditLineageValidator` | Invariants A–H enforcement; DAG acyclicity checks | [`tests/test_complete_retrieval_audit_integrity.py`](../../tests/test_complete_retrieval_audit_integrity.py) |
 
 ---
 
@@ -144,13 +144,13 @@ It combines:
 
 | Module | Lines | Role | Primary Routes & Endpoints | Status / Observations |
 | :--- | :---: | :--- | :--- | :--- |
-| [`backend/main.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/main.py) | 308 | **Production** | App factory, CORS, static mounting, health check | **Refactored**: Down from >2,100 lines to 308 lines; delegates to routers |
-| [`api/claims.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/claims.py) | 696 | **Production** | `POST /api/claims`, `GET /api/claims/{id}` | Claim ingestion, research triggering, dossier serialization |
-| [`api/agents.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/agents.py) | 446 | **Production** | `/api/agents/{agent_name}/scan` | Domain sentinel scan triggers (BrandShield, Trending, Scout, Personal) |
-| [`api/system.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/system.py) | 381 | **Production** | `/api/healthz`, `/api/system/capabilities`, Doctor | System telemetry, channel health checks, readiness probes |
-| [`api/agent_reach.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/agent_reach.py) | 308 | **Production** | `POST /api/agent-reach/retrieve`, `POST /api/agent-reach/read` | Public acquisition REST API |
-| [`api/threat_lab.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/threat_lab.py) | 215 | **Production** | `/api/threat-lab/simulate`, Hawkes, Mandelbrot | Mathematical physics simulations for narrative volatility |
-| [`api/replay.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/replay.py) | 68 | **Production** | `/api/replay/{claim_id}` | Forensic dossier replay and ledger verification |
+| [`backend/main.py`](../../backend/main.py) | 308 | **Production** | App factory, CORS, static mounting, health check | **Refactored**: Down from >2,100 lines to 308 lines; delegates to routers |
+| [`api/claims.py`](../../backend/api/claims.py) | 696 | **Production** | `POST /api/claims`, `GET /api/claims/{id}` | Claim ingestion, research triggering, dossier serialization |
+| [`api/agents.py`](../../backend/api/agents.py) | 446 | **Production** | `/api/agents/{agent_name}/scan` | Domain sentinel scan triggers (BrandShield, Trending, Scout, Personal) |
+| [`api/system.py`](../../backend/api/system.py) | 381 | **Production** | `/api/healthz`, `/api/system/capabilities`, Doctor | System telemetry, channel health checks, readiness probes |
+| [`api/agent_reach.py`](../../backend/api/agent_reach.py) | 308 | **Production** | `POST /api/agent-reach/retrieve`, `POST /api/agent-reach/read` | Public acquisition REST API |
+| [`api/threat_lab.py`](../../backend/api/threat_lab.py) | 215 | **Production** | `/api/threat-lab/simulate`, Hawkes, Mandelbrot | Mathematical physics simulations for narrative volatility |
+| [`api/replay.py`](../../backend/api/replay.py) | 68 | **Production** | `/api/replay/{claim_id}` | Forensic dossier replay and ledger verification |
 
 ---
 
@@ -158,10 +158,10 @@ It combines:
 
 | Module | Lines | Role | Responsibility | Issues & Observations |
 | :--- | :---: | :--- | :--- | :--- |
-| [`backend/config.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/config.py) | 76 | **Production** | `Config` class | Reads `os.getenv` without Pydantic validation schema |
-| [`backend/services/gemini_service.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/gemini_service.py) | 379 | **Production** | `GeminiService` | Key rotation, exponential backoff, mock mode when key is absent |
-| [`backend/services/intelligence.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/services/intelligence.py) | 189 | **Production** | Synthesis helpers | Prompts for narrative decomposition and stance classification |
-| [`backend/db/database.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/db/database.py) | 527 | **Production** | `DatabaseClient`, SQLite / Supabase | Dual-database persistence: Supabase cloud with automatic SQLite fallback (`aegis_local.db`) |
+| [`backend/config.py`](../../backend/config.py) | 76 | **Production** | `Config` class | Reads `os.getenv` without Pydantic validation schema |
+| [`backend/services/gemini_service.py`](../../backend/services/gemini_service.py) | 379 | **Production** | `GeminiService` | Key rotation, exponential backoff, mock mode when key is absent |
+| [`backend/services/intelligence.py`](../../backend/services/intelligence.py) | 189 | **Production** | Synthesis helpers | Prompts for narrative decomposition and stance classification |
+| [`backend/db/database.py`](../../backend/db/database.py) | 527 | **Production** | `DatabaseClient`, SQLite / Supabase | Dual-database persistence: Supabase cloud with automatic SQLite fallback (`aegis_local.db`) |
 
 ---
 

@@ -6,7 +6,7 @@
 
 ## 1. Configuration Philosophy & Guardrails
 
-Aegis Protocol enforces a fail-safe configuration contract managed centrally via [`backend/core/settings.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/core/settings.py) and ADR 0004.
+Aegis Protocol enforces a fail-safe configuration contract managed centrally via [`backend/core/settings.py`](../../backend/core/settings.py) and ADR 0004.
 All configuration is validated at process startup using Pydantic Settings.
 
 ### Core Guardrail Invariants

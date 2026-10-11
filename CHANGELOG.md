@@ -7,6 +7,58 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [4.2.0] - 2026-10-11
+
+### Added
+- **Phase 7.2 Workspace Organization**: Complete repository inventory and structure specification (`docs/development/WORKSPACE_INVENTORY.md`, `docs/architecture/PHASE7_2_WORKSPACE_STRUCTURE.md`).
+- **AI Coding Agent Orientation Guide**: Created root `AGENTS.md` providing architectural orientation, immutable data rules, protected operations, and critical commands.
+- **Developer Workspace Map**: Created `docs/development/WORKSPACE_MAP.md` mapping all subsystems to exact files and verified commands.
+- **Authoritative Script Index**: Created `docs/development/SCRIPT_INDEX.md` and `scripts/README.md` cataloging all 40 scripts into 6 functional categories.
+- **Cleanup-Candidate Register**: Established `docs/development/CLEANUP_CANDIDATE_REGISTER.md` cataloging non-essential files for owner review.
+- **MIT License**: Added canonical `LICENSE` file matching `pyproject.toml`.
+
+### Changed
+- Converted hardcoded Windows-specific paths (`file:///c:/Users/...`) across `docs/` to portable cross-platform relative paths.
+- Updated `README.md` and `docs/index.md` to reflect 787 passing tests and the Release Candidate status.
+
+---
+
+## [4.1.0] - 2026-10-11
+
+### Added
+- **Phase 7.1 Release Candidate Validation**: Isolated staging-like smoke validation runner (`scripts/validate_release_candidate_smoke.py`) verifying 11 automated gates.
+- **Database & Dossier Rollback Validator**: Created `scripts/validate_rollback_compatibility.py` proving backward compatibility and preservation of 2,312 dossiers.
+- **Complete 787-Test Offline Regression Gate**: Expanded remote CI specification (`docs/ci/FULL_CI_WORKFLOW.yml`) and coverage matrix (`docs/testing/CI_COVERAGE_MATRIX.md`).
+- **Frontend Operation Health Freshness**: Implemented 45s TTL, 90s stale threshold, in-flight deduplication, and visibility revalidation in `frontend/operation-health.js` with pure Node.js test suite.
+- **Production Configuration Mock Guard**: Added validator in `backend/core/settings.py` rejecting `AEGIS_MOCK_LLM=true` in production mode.
+- **Security Hardening**: Patched directory traversal vulnerability in `backend/main.py` static root server using canonical path containment checks.
+
+---
+
+## [4.0.0] - 2026-10-11
+
+### Added
+- **Phase 7.0 Production Hardening**: Restored and verified all 16 acquisition operations (`github.read`, `github.issues`, `github.prs`, `github.commits`, `github.releases`, `youtube.read`, `youtube.transcript`, `youtube.comments`, `v2ex.latest`, `v2ex.search`, `v2ex.topic`, `v2ex.replies`, `web.read`, `rss.read`, `xiaoyuzhou.podcast`, `xiaoyuzhou.episodes`).
+- **Centralized LLM Gateway**: Failover router with circuit-breaker protection and model routing.
+- **SSRF & Network Hardening**: Request timeout enforcement (5.0s), response size bounding (1 MB), private IP blocking.
+
+---
+
+## [3.9.0] - 2026-10-10
+
+### Added
+- **Phase 6.9 Claim-Aware Source Planning**: Heuristic and hybrid planner selecting optimal channels based on claim domain and entity taxonomy.
+- **Runtime Operation Capabilities**: Dynamic status, latency tracking, and cooldown management per operation.
+
+---
+
+## [3.8.0] - 2026-10-09
+
+### Added
+- **Phase 6.8 Entity & Social Identity Resolution**: Wikibase, Wikidata, and token-boundary disambiguation separating entity relevance from post text.
+
+---
+
 ## [3.7.0] - 2026-10-02
 
 ### Added

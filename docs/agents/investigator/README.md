@@ -1,7 +1,7 @@
 # AGENT 4: INVESTIGATOR AGENT SPECIFICATION
 
 **Agent:** Agent 4 — INVESTIGATOR  
-**Implementation:** [`backend/agents/investigator_agent.py`](file:///backend/agents/investigator_agent.py)  
+**Implementation:** [`backend/agents/investigator_agent.py`](../../../backend/agents/investigator_agent.py)  
 **System:** Aegis Protocol
 
 ---

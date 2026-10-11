@@ -8,7 +8,7 @@
         "status": "ok",
         "system": "Aegis Protocol",
         "version": "3.7.0",
-        "response_generated_at": "2026-10-11T09:12:34.915309Z",
+        "response_generated_at": "2026-10-11T13:38:31.478752Z",
         "registered_modules": 7,
         "active_agents": 7
       }
@@ -28,7 +28,7 @@
           "not_implemented": 21
         },
         "note": "Readiness does not imply that unprobed third-party providers are healthy.",
-        "response_generated_at": "2026-10-11T09:12:34.918178Z"
+        "response_generated_at": "2026-10-11T13:38:31.486982Z"
       }
     },
     "capabilities": {

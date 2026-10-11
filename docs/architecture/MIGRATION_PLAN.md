@@ -41,14 +41,14 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 - **Status:** **IN PROGRESS (DELIVERED)**
 - **Priority:** P0 (Critical Security & Architecture Hygiene)
 - **Files Affected:**
-  - Added: [`.dockerignore`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.dockerignore)
-  - Added: [`docs/architecture/CODEBASE_INVENTORY.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/architecture/CODEBASE_INVENTORY.md)
-  - Added: [`docs/architecture/TARGET_ARCHITECTURE.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/architecture/TARGET_ARCHITECTURE.md)
-  - Added: [`docs/architecture/DEPENDENCY_MAP.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/architecture/DEPENDENCY_MAP.md)
-  - Added: [`docs/architecture/MIGRATION_PLAN.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/architecture/MIGRATION_PLAN.md)
-  - Added: [`docs/architecture/adr/`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/architecture/adr/) (ADRs 0000 through 0005)
-  - Added: [`scripts/run_live_retrieval_quality_evaluation.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/scripts/run_live_retrieval_quality_evaluation.py)
-  - Updated: [`artifacts/retrieval_benchmark/retrieval_quality_report.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/artifacts/retrieval_benchmark/retrieval_quality_report.md)
+  - Added: [`.dockerignore`](../../.dockerignore)
+  - Added: [`docs/architecture/CODEBASE_INVENTORY.md`](../../docs/architecture/CODEBASE_INVENTORY.md)
+  - Added: [`docs/architecture/TARGET_ARCHITECTURE.md`](../../docs/architecture/TARGET_ARCHITECTURE.md)
+  - Added: [`docs/architecture/DEPENDENCY_MAP.md`](../../docs/architecture/DEPENDENCY_MAP.md)
+  - Added: [`docs/architecture/MIGRATION_PLAN.md`](../../docs/architecture/MIGRATION_PLAN.md)
+  - Added: [`docs/architecture/adr/`](../../docs/architecture/adr/) (ADRs 0000 through 0005)
+  - Added: [`scripts/run_live_retrieval_quality_evaluation.py`](../../scripts/run_live_retrieval_quality_evaluation.py)
+  - Updated: [`artifacts/retrieval_benchmark/retrieval_quality_report.md`](../../artifacts/retrieval_benchmark/retrieval_quality_report.md)
 - **Acceptance Criteria:**
   1. Docker build context ignores `.env`, `research/` (338 MB), `docs/visual-audit/` (31 MB), and `aegis_local.db` (17.6 MB).
   2. Full test suite independently verified at 528 passed tests.

@@ -116,7 +116,7 @@ The codebase relies heavily on global singleton instances:
 
 ### 2.4 Import-Time Side Effects & Broad Fallback Masks `[VERIFIED]`
 1. **Database Client Initialization at Import Time**:
-   - In [`backend/db/database.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/db/database.py), creating `DatabaseClient` runs SQLite schema initialization (`CREATE TABLE IF NOT EXISTS`) and connects to Supabase at module import time.
+   - In [`backend/db/database.py`](../../backend/db/database.py), creating `DatabaseClient` runs SQLite schema initialization (`CREATE TABLE IF NOT EXISTS`) and connects to Supabase at module import time.
    - *Impact*: Importing `backend.db.database` in unit tests triggers local file system I/O (`aegis_local.db`).
    - *Fix*: Defer connection and table creation to application lifespan or explicit initialization hooks.
 2. **Broad Exception Masks**:

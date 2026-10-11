@@ -6,7 +6,7 @@
 
 ## 1. Rollback Protocol Verification
 
-The rollback procedure documented in [`docs/operations/V1_OPERATIONS_RUNBOOK.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/operations/V1_OPERATIONS_RUNBOOK.md) was empirically tested using [`scripts/validate_rollback_compatibility.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/scripts/validate_rollback_compatibility.py).
+The rollback procedure documented in [`docs/operations/V1_OPERATIONS_RUNBOOK.md`](../../docs/operations/V1_OPERATIONS_RUNBOOK.md) was empirically tested using [`scripts/validate_rollback_compatibility.py`](../../scripts/validate_rollback_compatibility.py).
 
 ```bash
 # Automated verification execution:

@@ -69,6 +69,6 @@ Local Wall Time:       ~4 min 20 sec (Python 3.13.5 win32)
 - **Empirical Finding**: The local git credentials authenticate via an OAuth App token with `repo` scope, but without GitHub `workflow` scope.
 - **Consequence**: Git push rejections occur when updating `.github/workflows/ci.yml` directly from this local terminal.
 - **Resolution**:
-  - The authoritative, complete CI specification is provided in [`docs/ci/FULL_CI_WORKFLOW.yml`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/docs/ci/FULL_CI_WORKFLOW.yml) and verified locally.
+  - The authoritative, complete CI specification is provided in [`docs/ci/FULL_CI_WORKFLOW.yml`](../../docs/ci/FULL_CI_WORKFLOW.yml) and verified locally.
   - The existing active workflow `.github/workflows/ci.yml` continues to trigger the 3 multi-python matrix jobs on pushes and pull requests.
   - All new tests (including frontend Node.js health tests and settings validators) are integrated directly into `tests/unit/`, ensuring they run in the existing remote CI pipeline without requiring workflow-level credential modifications.

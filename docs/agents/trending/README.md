@@ -1,7 +1,7 @@
 # SPECIALIST AGENT: TRENDING AGENT SPECIFICATION
 
 **Agent:** Specialist Agent — TRENDING  
-**Implementation:** [`backend/agents/trending_agent.py`](file:///backend/agents/trending_agent.py)  
+**Implementation:** [`backend/agents/trending_agent.py`](../../../backend/agents/trending_agent.py)  
 **System:** Aegis Protocol
 
 ---

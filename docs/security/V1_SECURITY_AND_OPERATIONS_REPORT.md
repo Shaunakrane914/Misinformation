@@ -9,7 +9,7 @@
 A comprehensive, zero-trust security review was performed on the release candidate across network boundaries, input validation, authentication, and secret management.
 
 ### 1.1 Strict Server-Side Request Forgery (SSRF) Defense
-- **Implementation**: [`backend/infrastructure/acquisition/security/url_validator.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/infrastructure/acquisition/security/url_validator.py)
+- **Implementation**: [`backend/infrastructure/acquisition/security/url_validator.py`](../../backend/infrastructure/acquisition/security/url_validator.py)
 - **Controls**:
   - Validates scheme (strictly `http` or `https`; blocks `file://`, `ftp://`, `gopher://`).
   - Resolves domain to IP addresses and rejects all private IPv4/IPv6 ranges:

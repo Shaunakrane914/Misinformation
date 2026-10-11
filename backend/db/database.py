@@ -45,7 +45,7 @@ _mem_research: Dict[str, Dict] = {}
 
 import sqlite3
 
-SQLITE_DB_PATH = os.getenv("AEGIS_SQLITE_PATH", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "aegis_local.db")))
+SQLITE_DB_PATH = os.getenv("AEGIS_SQLITE_PATH", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "aegis_local.db")))
 
 def _init_sqlite_db():
     """Initialize local SQLite database for offline and resilient persistence."""

@@ -74,7 +74,7 @@ class Settings(BaseSettings):
     )
     supabase_service_role_key: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_SERVICE_ROLE_KEY"))
     supabase_anon_key: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_ANON_KEY"))
-    sqlite_db_path: str = Field(default_factory=lambda: os.getenv("SQLITE_DB_PATH", "aegis_local.db"))
+    sqlite_db_path: str = Field(default_factory=lambda: os.getenv("SQLITE_DB_PATH", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "aegis_local.db"))))
 
     # 4. Intelligence & External Telemetry APIs
     apify_token: Optional[str] = Field(default_factory=lambda: os.getenv("APIFY_TOKEN"))

@@ -115,7 +115,9 @@ Misinformation/
 │   ├── operations/                    # Deployment matrix, rollback guide, production runbook
 │   ├── security/                      # Security reports and SSRF defense specifications
 │   ├── testing/                       # CI coverage matrix, smoke test reports
+│   ├── showcase/                      # [NEW] Project showcase, launch film composition & copy
 │   └── archive/                       # Historical and superseded audit snapshots
+
 │
 ├── research/                          # RESEARCH EXPERIMENTS & DATASETS (PROTECTED)
 │   └── (250 files: historical benchmark logs, scraper bakeoffs, test datasets)

@@ -29,13 +29,15 @@ This guide provides immediate file and directory locations for common developer 
 | **Frontend Consoles & UI** | [`frontend/`](../../frontend/) | `index.html`, `scout-agent.html`, `trending-agent.html`, `brandshield-agent.html`, `personal-watch-agent.html` |
 | **Frontend Health Client** | [`frontend/operation-health.js`](../../frontend/operation-health.js) | TTL-bounded (45s) capability caching & visibility revalidation |
 | **Design Tokens & Styles** | [`frontend/aegis-theme.css`](../../frontend/aegis-theme.css) | Color palette, typography, responsive layouts, badges |
-| **Automated Tests (787 tests)** | [`tests/`](../../tests/) | `unit/`, `integration/`, `contract/`, `security/`, `chaos/`, `benchmarks/`, `evaluation/`, `frontend/` |
+| **Automated Tests (790 tests)** | [`tests/`](../../tests/) | `unit/`, `integration/`, `contract/`, `security/`, `chaos/`, `benchmarks/`, `evaluation/`, `frontend/` |
 | **Frozen Benchmark Datasets** | [`tests/retrieval_benchmark/`](../../tests/retrieval_benchmark/) | `scenarios.jsonl`, `candidates.jsonl`, `labels.jsonl` (IMMUTABLE) |
-| **Forensic Dossier Archive** | [`backend/data/dossiers/`](../../backend/data/dossiers/) | 2,312 historical investigation dossiers (PROTECTED) |
+| **Forensic Dossier Archive** | [`backend/data/dossiers/`](../../backend/data/dossiers/) | 2,359 historical investigation dossiers (PROTECTED) |
 | **Empirical Audit Evidence** | [`artifacts/`](../../artifacts/) | Historical audit records, benchmark metrics, JSON summaries |
 | **Development & Audit Scripts** | [`scripts/`](../../scripts/) | Release validation, benchmark harnesses, evaluation CLIs |
+| **Project Showcase & Film** | [`docs/showcase/`](../showcase/) | Launch film composition, storyboard brief, social copy |
 | **Standalone Scraper Lab** | [`scrapers/`](../../scrapers/) & [`scraper.py`](../../scraper.py) | Laboratory canary checks & schema drift monitoring |
 | **Documentation Portal** | [`docs/`](../) | `index.md`, `architecture/`, `operations/`, `testing/`, `security/` |
+
 
 ---
 

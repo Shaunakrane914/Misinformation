@@ -49,11 +49,21 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 ## 🧪 Testing, CI Coverage & Benchmarks
 
-- **[CI Coverage Matrix](testing/CI_COVERAGE_MATRIX.md)**: Comprehensive mapping of all 787 tests to CI jobs, plus full offline matrix specification.
+- **[Research & Evaluation Artifacts Catalog](../artifacts/README.md)**: Authoritative index of all 17 milestone audit suites and benchmark evidence files.
+- **[CI Coverage Matrix](testing/CI_COVERAGE_MATRIX.md)**: Comprehensive mapping of all 790 tests to CI jobs, plus full offline matrix specification.
 - **[Isolated Smoke Test Report](testing/ISOLATED_SMOKE_TEST_REPORT.md)**: Isolated staging-like smoke validation across all 4 agents and 11 verification gates.
 - **[Full CI Workflow Specification](ci/FULL_CI_WORKFLOW.yml)**: Complete, reproducible multi-Python CI workflow definition.
-- **[Testing Runbook](TESTING.md)**: Pytest execution runbook and directory breakdown (787 tests).
+- **[Testing Runbook](TESTING.md)**: Pytest execution runbook and directory breakdown (790 tests).
 - **[Scientific Evaluation Report](EVALUATION.md)**: WELFake classical ML baseline (88.50%), learned evidence reranker (MRR: 0.20 → 1.00), and Cranfield retrieval metrics.
+
+---
+
+## 🎬 Project Showcase & Launch Teaser
+
+- **[Showcase Brief & Storyboard](showcase/composition-brief.md)**: Storyboard scenes, soundtrack attribution, and composition design.
+- **[Launch Copy Studio](showcase/share-copy.md)**: Omnichannel launch copy for 𝕏/Twitter, LinkedIn, Discord, and Reddit.
+- **[Production Teaser Plan](showcase/brag-plan.md)**: 20-second cinematic film specification and render parameters.
+
 
 ---
 

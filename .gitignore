@@ -89,9 +89,12 @@ backend/data/dossiers/*.json
 !backend/data/dossiers/.gitkeep
 research/scraper_bakeoff/artifacts/
 /artifacts/*
+!/artifacts/README.md
 !/artifacts/all_agents_evaluation.json
 !/artifacts/all_agents_evaluation.md
 !/artifacts/live_agent_smoke_result.json
+!/artifacts/phase7_1_smoke_validation_results.json
+
 !/artifacts/single_case_4_agent_fetch_audit.json
 !/artifacts/single_case_4_agent_fetch_audit.md
 !/artifacts/single_case_study_retrieval_audit.json
@@ -118,7 +121,9 @@ research/scraper_bakeoff/repos/
 
 # Large video binaries
 brag-output/*.mp4
+docs/showcase/*.mp4
 *.mp4
+
 
 # Scratch research notes
 temp_user_prompts.txt

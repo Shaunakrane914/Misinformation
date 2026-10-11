@@ -31,6 +31,9 @@ logs/
 research/
 artifacts/
 docs/visual-audit/
+docs/showcase/
+brag-output/
+
 
 # IDE, agent & workspace caches
 .idea/

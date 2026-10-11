@@ -6,6 +6,7 @@
   <title>BrandShield Agent — Brand Protection &amp; Review Pattern Analysis · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
+  <script src="operation-health.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -223,7 +224,7 @@
         <div class="tel-cell"><span class="tel-val" id="telChannels" style="color:var(--accent)">Available</span><span class="tel-key">Channel Feeds</span></div>
         <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:#fbbf24">0 Flagged</span><span class="tel-key">Observed Signals</span></div>
         <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">Audited</span><span class="tel-key">Syndication Audit</span></div>
-        <div class="tel-cell"><span class="tel-val" id="telStatus" style="color:#10b981">READY</span><span class="tel-key">System Status</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telStatus" style="color:var(--text-muted)">IDLE</span><span class="tel-key">System Status</span></div>
       </div>
     </div>
 
@@ -307,6 +308,21 @@
 
   <script>
     let activeScanData = null;
+
+    function loadBrandOperationHealth(latencyMs) {
+      return AegisOperationHealth.renderPills(
+        document.getElementById('brandOperationHealth'),
+        {
+          news: { label: 'News', operations: ['search'] },
+          web: { label: 'Web', operations: ['search', 'read'] },
+          reddit: { label: 'Reddit', operations: ['search', 'comments'] },
+          twitter: { label: 'X / Twitter', operations: ['search', 'profile'] },
+          youtube: { label: 'YouTube', operations: ['search', 'comments'] },
+          rss: { label: 'RSS / Wires', operations: ['search', 'read'] }
+        },
+        { lead: 'CHANNEL OPERATIONS:', tail: `${latencyMs || 0}ms scan latency` }
+      );
+    }
 
     async function scanBrand() {
       const inputVal = document.getElementById('brandInput').value.trim();
@@ -428,15 +444,9 @@
           </div>
         </div>
 
-        <div class="health-strip ae-reveal">
+        <div class="health-strip ae-reveal" id="brandOperationHealth">
           <span style="color:var(--text-dim);font-weight:700;">CHANNELS MONITORED:</span>
-          <span class="health-pill healthy"><span>News</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>Web</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>Reddit</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>Twitter</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>YouTube</span> <span>✓</span></span>
-          <span class="health-pill ${channels.rss === 'degraded' ? 'degraded' : 'healthy'}"><span>RSS Wires</span> <span>✓</span></span>
-          <span style="margin-left:auto;color:var(--text-dim);">${retrieval.latency_ms || 0}ms scan latency</span>
+          <span class="health-pill degraded">Loading operation status…</span>
         </div>
       `;
 
@@ -692,6 +702,7 @@
       `;
 
       container.innerHTML = html;
+      loadBrandOperationHealth(retrieval.latency_ms);
 
       // Mount Unified Investigation Report (schema v3.8.0)
       if (data.unified_report && window.renderUnifiedReport) {

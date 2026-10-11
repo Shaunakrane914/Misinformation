@@ -6,6 +6,7 @@
   <title>Personal Watch Agent — Public Profile &amp; Impersonation Verification · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
+  <script src="operation-health.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -340,6 +341,20 @@
     let currentData = null;
     let pwTimerInterval = null;
 
+    function loadPersonalOperationHealth() {
+      return AegisOperationHealth.renderPills(
+        document.getElementById('personalOperationHealth'),
+        {
+          news: { label: 'News', operations: ['search'] },
+          web: { label: 'Web', operations: ['search', 'read'] },
+          twitter: { label: 'X / Twitter', operations: ['profile', 'search', 'status'] },
+          linkedin: { label: 'LinkedIn', operations: ['jobs'] },
+          youtube: { label: 'YouTube', operations: ['search', 'transcript'] }
+        },
+        { lead: 'CHANNEL OPERATIONS:' }
+      );
+    }
+
     function toggleAdv() {
       const box = document.getElementById('advBox');
       const icon = document.getElementById('advIcon');
@@ -468,7 +483,6 @@
       const dossiers = data.dossiers || [];
       const timeline = data.timeline || [];
       const changes = data.changes || [];
-      const health = data.channel_health || {};
       const impersonations = data.suspected_impersonations || [];
       const scams = data.suspected_scams || [];
       const deepfakes = data.deepfake_claims || [];
@@ -495,18 +509,11 @@
       `);
 
       // 1. Channel Health Strip
-      let healthHtml = `<div class="health-strip">
-        <span style="color:var(--text-dim);font-weight:700;">CHANNEL STATUS:</span>`;
-      for (const [ch, st] of Object.entries(health)) {
-        const normalizedStatus = String(st || 'NOT_PROBED').toUpperCase();
-        const isHealthy = normalizedStatus === 'AVAILABLE' || normalizedStatus === 'HEALTHY';
-        const isDegraded = ['DEGRADED', 'LIMITED', 'STANDBY', 'QUERYING', 'AUTH_REQUIRED'].includes(normalizedStatus);
-        const pillClass = isHealthy ? 'healthy' : isDegraded ? 'degraded' : 'unavailable';
-        const icon = isHealthy ? '✓' : isDegraded ? '⏳' : '✕';
-        healthHtml += `<span class="health-pill ${pillClass}">${escapeHtml(ch.toUpperCase())} ${icon} ${escapeHtml(st)}</span>`;
-      }
-      healthHtml += `</div>`;
+      const healthHtml = `<div class="health-strip" id="personalOperationHealth">
+        <span style="color:var(--text-dim);font-weight:700;">CHANNEL OPERATIONS:</span>
+        <span class="health-pill degraded">Loading operation status…</span></div>`;
       mount.insertAdjacentHTML('beforeend', healthHtml);
+      loadPersonalOperationHealth();
 
       // 2. Change-First Diff (Section 25-26)
       const newCount = changes.filter(c => c.change_type === 'NEW_THREAT' || c.change_type === 'NEW_PLATFORM').length || (threats.length > 0 ? 1 : 0);

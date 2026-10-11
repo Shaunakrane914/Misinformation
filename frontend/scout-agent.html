@@ -9,6 +9,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="forensic-explorer.js"></script>
   <script src="unified-report-renderer.js"></script>
+  <script src="operation-health.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -280,7 +281,7 @@
         <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">Activity Volume</span><span class="tel-key">Observed Signal</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">Multi-Channel</span><span class="tel-key">Source Coverage</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">Audit Trail</span><span class="tel-key">Source Ledger</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">READY</span><span class="tel-key">Module Status</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--text-muted)">IDLE</span><span class="tel-key">Module Status</span></div>
       </div>
     </div>
 
@@ -450,9 +451,7 @@
     // ── Live Channel Adapters Capability Status ──
     async function loadLiveDoctorStatus() {
       try {
-        const resp = await fetch('/api/agent-reach/capabilities', { signal: AbortSignal.timeout(3000) });
-        if (!resp.ok) return;
-        const data = await resp.json();
+        const data = await AegisOperationHealth.fetchCapabilities();
         const ch = data.channels || {};
         const strip = document.getElementById('agentReachLiveStrip');
         if (!strip) return;
@@ -463,18 +462,23 @@
         const displayKeys = ['web', 'rss', 'reddit', 'twitter', 'youtube', 'bilibili', 'v2ex', 'github'];
         displayKeys.forEach(k => {
           const item = ch[k] || {};
-          const st = item.status || 'UNAVAILABLE';
+          const required = {
+            web: ['search', 'read'], rss: ['search', 'read'], reddit: ['search', 'comments'],
+            twitter: ['search', 'profile', 'status'], youtube: ['search', 'transcript', 'comments'],
+            bilibili: ['search'], v2ex: ['latest', 'topic', 'replies'], github: ['read', 'issues', 'prs']
+          }[k] || [];
+          const summary = AegisOperationHealth.summarizeChannel(item, required);
           let cls = 'off';
           let label = k.toUpperCase();
           if (k === 'web') label = 'Web (Jina)';
           if (k === 'rss') label = 'RSS / Wires';
           if (k === 'twitter') label = 'X / Twitter';
 
-          if (st === 'AVAILABLE' && item.health_class === 'HEALTHY') cls = 'active';
-          else if (st === 'AUTH_REQUIRED' || st === 'DEGRADED' || item.health_class === 'LIMITED') cls = 'warn';
+          if (summary.state === 'healthy') cls = 'active';
+          else if (['limited', 'degraded', 'auth_required'].includes(summary.state)) cls = 'warn';
 
           rendered.push(`
-            <span class="channel-pill ${cls}" title="Backend: ${esc(item.backend || 'none')} · Status: ${st}">
+            <span class="channel-pill ${cls}" title="${esc(summary.label)} · ${esc(summary.details.map(d => `${d.name}: ${d.state}`).join(', '))}">
               <span class="cp-dot"></span>${label}
             </span>
           `);

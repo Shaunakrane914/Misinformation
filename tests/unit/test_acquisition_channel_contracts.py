@@ -91,7 +91,7 @@ def test_xiaoyuzhou_transcription_remains_credential_gated(monkeypatch):
 
     assert fragments == []
     assert telemetry["status"] == "AUTH_REQUIRED"
-    assert "GROQ_API_KEY" in telemetry["error"]
+    assert "requires authentication/session" in telemetry["error"]
 
 
 @pytest.mark.parametrize("channel", sorted(EXPECTED_CHANNELS))

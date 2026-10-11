@@ -291,7 +291,8 @@ class StandardChannelHandlers:
     def _execute_web(self, query, limit, query_id, query_class, query_text, telemetry, **_):
         if str(_.get("operation", "search")).lower() == "read":
             return self._execute_jina_reader(
-                query, limit, query_id, query_class, query_text, telemetry, url=query
+                query, limit, query_id, query_class, query_text, telemetry,
+                url=query, requested_channel="web",
             )
         try:
             fragments = self.router._execute_web_search(query, limit, query_id, query_class, query_text)
@@ -310,6 +311,8 @@ class StandardChannelHandlers:
 
     def _execute_jina_reader(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
         target_url = kwargs.get("url") or query
+        requested_channel = kwargs.get("requested_channel", "jina_reader")
+        actual_channel = "jina_reader"
         result = self.router.execute_channel_read(target_url, max_chars=kwargs.get("max_chars", 4000))
         if result.get("status") != "success":
             telemetry.update(status="FAILED", error=result.get("error", "Failed to read content"))
@@ -320,7 +323,8 @@ class StandardChannelHandlers:
             content=content, url=target_url, author=urllib.parse.urlparse(target_url).netloc or "Web",
             published="Recent", snippet=content[:300], score=85.0, retrieval_method="jina_reader",
             retrieval_mode=RetrievalMode.WEB_READER.value, native_backend_id="jina-reader",
-            channel_name="jina_reader", requested_channel="jina_reader", actual_retrieval_channel="jina_reader",
+            channel_name=actual_channel, requested_channel=requested_channel,
+            actual_retrieval_channel=actual_channel,
             content_depth="FULL_ARTICLE" if len(content) > 500 else "SNIPPET", query_id=query_id,
             query_class=query_class, query_text=query_text,
             raw_metadata={
@@ -330,7 +334,7 @@ class StandardChannelHandlers:
             },
         )
         self.router._tag_fragments(
-            [fragment], "jina_reader", "jina_reader", RetrievalMode.WEB_READER.value,
+            [fragment], requested_channel, actual_channel, RetrievalMode.WEB_READER.value,
             "jina-reader", None, False,
         )
         telemetry["status"] = "SUCCESS"

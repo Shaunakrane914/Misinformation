@@ -9,6 +9,16 @@ from backend.services.agent_reach.native.operation_capabilities import (
 from backend.services.agent_reach.native.router import NativeRouter
 
 
+RESTORED_OPERATIONS = {
+    "github": {"read", "issues", "prs", "commits", "releases"},
+    "youtube": {"read", "transcript", "comments"},
+    "v2ex": {"latest", "search", "topic", "replies"},
+    "web": {"read"},
+    "rss": {"read"},
+    "xiaoyuzhou": {"podcast", "episodes"},
+}
+
+
 @pytest.fixture(autouse=True)
 def _clear_runtime_observations():
     runtime_operation_capabilities.reset_observations()
@@ -53,6 +63,11 @@ def test_recovered_github_operations_reach_rest_executor(monkeypatch, operation)
     assert len(fragments) == 1
     assert telemetry["operation"] == f"github.{operation}"
     assert telemetry["network_observed"] is True
+    assert fragments[0].requested_channel == "github"
+    assert fragments[0].actual_retrieval_channel == "github"
+    assert fragments[0].native_backend_id == "GitHub REST API"
+    assert fragments[0].raw_metadata["operation"] == operation
+    assert fragments[0].raw_metadata["transport"]["endpoint"]
 
 
 @pytest.mark.parametrize("operation", ["read", "transcript", "comments"])
@@ -79,6 +94,9 @@ def test_recovered_youtube_operations_preserve_depth(monkeypatch, operation):
     assert fragments
     expected = {"read": "DIRECT_METADATA", "transcript": "DIRECT_CONTENT", "comments": "DIRECT_CONTENT"}
     assert telemetry["outcome"] == expected[operation]
+    assert fragments[0].requested_channel == "youtube"
+    assert fragments[0].actual_retrieval_channel == "youtube"
+    assert fragments[0].raw_metadata["transport"]["endpoint"] == url
 
 
 @pytest.mark.parametrize("operation", ["hot", "latest", "search", "topic", "replies"])
@@ -97,6 +115,10 @@ def test_all_advertised_v2ex_operations_are_dispatched(monkeypatch, operation):
     )
     assert fragments
     assert telemetry["operation"] == f"v2ex.{operation}"
+    assert fragments[0].requested_channel == "v2ex"
+    assert fragments[0].actual_retrieval_channel == "v2ex"
+    assert fragments[0].native_backend_id == "v2ex-public-api"
+    assert fragments[0].raw_metadata["transport"]["endpoint"]
 
 
 def test_web_search_is_a_real_alias_and_direct_web_read_is_recovered(monkeypatch):
@@ -114,9 +136,12 @@ def test_web_search_is_a_real_alias_and_direct_web_read_is_recovered(monkeypatch
     )
     assert fragments[0].content_depth == "FULL_ARTICLE"
     assert read_telemetry["outcome"] == "DIRECT_CONTENT"
+    assert fragments[0].requested_channel == "web"
+    assert fragments[0].actual_retrieval_channel == "jina_reader"
+    assert fragments[0].raw_metadata["transport"]["endpoint"] == "https://example.com/article"
 
 
-def test_rss_read_and_public_podcast_are_not_lost_behind_auth_guard(monkeypatch):
+def test_rss_read_preserves_syndicated_depth_and_provenance(monkeypatch):
     router = NativeRouter()
     monkeypatch.setattr(router.executor, "execute_rss_read", lambda *_args, **_kwargs: {
         "items": [{"title": "Release", "link": "https://example.com/release", "summary": "Official summary", "published": "today"}],
@@ -126,15 +151,29 @@ def test_rss_read_and_public_podcast_are_not_lost_behind_auth_guard(monkeypatch)
         "rss", "https://example.com/feed.xml", operation="read", limit=1
     )
     assert rss and rss[0].content_depth == "FEED_ENTRY_SUMMARY"
+    assert rss[0].requested_channel == "rss"
+    assert rss[0].actual_retrieval_channel == "rss"
+    assert rss[0].raw_metadata["transport"]["endpoint"] == "https://example.com/feed.xml"
+
+
+@pytest.mark.parametrize("operation", ["podcast", "episodes"])
+def test_public_podcast_operations_are_not_lost_behind_auth_guard(monkeypatch, operation):
+    router = NativeRouter()
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
     monkeypatch.setattr(router.executor, "execute_xiaoyuzhou_podcast", lambda *_args, **_kwargs: {
         "items": [{"podcast": "Fixture", "title": "Episode", "summary": "Show notes", "link": "https://www.xiaoyuzhoufm.com/episode/1", "audio_url": "https://example.com/audio.mp3"}],
+        "transport": _transport("https://itunes.apple.com/search"),
     })
     podcast, telemetry = router.execute_channel_query(
-        "xiaoyuzhou", "Fixture", operation="podcast", limit=1
+        "xiaoyuzhou", "Fixture", operation=operation, limit=1
     )
     assert podcast
     assert telemetry["status"] == "SUCCESS"
+    assert telemetry["operation"] == f"xiaoyuzhou.{operation}"
+    assert podcast[0].requested_channel == "xiaoyuzhou"
+    assert podcast[0].actual_retrieval_channel == "xiaoyuzhou"
+    assert podcast[0].native_backend_id == "podcast-rss-syndication"
+    assert podcast[0].raw_metadata["transport"]["endpoint"] == "https://itunes.apple.com/search"
 
 
 def test_declared_recovered_contract_matches_runtime_dispatch_surface():
@@ -143,3 +182,6 @@ def test_declared_recovered_contract_matches_runtime_dispatch_surface():
     assert {"read", "transcript", "comments"} <= EXECUTABLE_CAPABILITIES["youtube"]
     assert {"latest", "search", "topic", "replies"} <= EXECUTABLE_CAPABILITIES["v2ex"]
     assert {"search", "podcast", "episodes"} <= EXECUTABLE_CAPABILITIES["xiaoyuzhou"]
+    assert sum(len(operations) for operations in RESTORED_OPERATIONS.values()) == 16
+    for channel, operations in RESTORED_OPERATIONS.items():
+        assert operations <= EXECUTABLE_CAPABILITIES[channel]

@@ -27,6 +27,15 @@ credentials, and a provider declaration do not prove meaningful acquisition.
 | boss | search jobs, read JD | browser_cdp | boss CLI | AUTH_REQUIRED without CDP | credential-gated |
 | xiaoyuzhou | transcribe | api_key | Groq Whisper / ffmpeg | explicit unavailable state without key | credential-gated |
 
+Phase 6.9.1 adds an operation-level runtime view in
+`backend/services/agent_reach/native/operation_capabilities.py`. Current recovered
+production operations include GitHub read/issues/PRs/releases/commits, YouTube
+read/transcript/comments, V2EX latest/search/topic/replies, direct RSS and web
+reads, and public podcast discovery. `web_search.search` is an alias of the web
+search path rather than a second client. See
+`docs/architecture/PHASE6_9_1_ACCEPTANCE_REPORT.md` for the 37-operation
+reconciliation and approved-scope proposal.
+
 The declaration contract test is `tests/unit/test_acquisition_channel_contracts.py`.
 It validates catalogue integrity and deterministic routing with controlled
 fixtures. It does not prove live availability. The pre-Phase-7 audit found 37

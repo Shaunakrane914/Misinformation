@@ -184,3 +184,6 @@ unsafe URLs, unverified subreddits, and auth-only channels are rejected.
     gap and decides whether Reddit direct discussion is required. The architecture
     is ready for that decision; the unsupported capabilities are not ready to be
     advertised as implemented.
+
+> Superseded for current operational scope by
+> `docs/architecture/PHASE6_9_1_ACCEPTANCE_REPORT.md`. Phase 7 remains gated.

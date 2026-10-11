@@ -15,11 +15,10 @@ EXPECTED_CHANNELS = {
 
 AUTHENTICATED_CHANNELS = {
     "linkedin", "xueqiu", "xiaohongshu", "facebook", "instagram", "boss",
-    "xiaoyuzhou",
 }
 
 EXPLICIT_STANDARD_CHANNELS = {
-    "web", "github", "youtube", "bilibili", "v2ex", "rss",
+    "web", "github", "youtube", "bilibili", "v2ex", "rss", "xiaoyuzhou",
 }
 
 
@@ -80,6 +79,19 @@ def test_session_gated_channels_fail_explicitly_without_credentials(monkeypatch,
     assert fragments == []
     assert telemetry["status"] == "AUTH_REQUIRED"
     assert telemetry["error"]
+
+
+def test_xiaoyuzhou_transcription_remains_credential_gated(monkeypatch):
+    router = NativeRouter()
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+
+    fragments, telemetry = router.execute_channel_query(
+        "xiaoyuzhou", "https://example.com/episode.mp3", operation="transcribe", limit=1
+    )
+
+    assert fragments == []
+    assert telemetry["status"] == "AUTH_REQUIRED"
+    assert "GROQ_API_KEY" in telemetry["error"]
 
 
 @pytest.mark.parametrize("channel", sorted(EXPECTED_CHANNELS))

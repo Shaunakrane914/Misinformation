@@ -204,16 +204,19 @@ async def api_info():
 @router.get("/api/media/launch-info", tags=["Media & Teaser"])
 async def launch_video_info():
     """Get metadata and resource paths for the official Aegis Protocol launch video."""
+    video_path = "docs/showcase/brag.mp4" if os.path.exists("docs/showcase/brag.mp4") else "brag-output/brag.mp4"
+    poster_path = "docs/showcase/brag.png" if os.path.exists("docs/showcase/brag.png") else "brag-output/brag.png"
     return {
         "title": "Aegis Protocol — Official Launch Film",
         "duration_seconds": 20,
         "format": "1080p landscape (1920x1080)",
         "interactive_player": "/launch-video",
-        "video_path": "brag-output/brag.mp4",
-        "poster_path": "brag-output/brag.png",
+        "video_path": video_path,
+        "poster_path": poster_path,
         "scenes": 4,
         "status": "ready"
     }
+
 
 
 @router.get("/api/system/agents", summary="Telemetry & Capability Matrix for All 7 Agents")

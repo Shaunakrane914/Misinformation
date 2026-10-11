@@ -4,8 +4,9 @@
 Create a short, cinematic launch teaser video for Aegis Protocol highlighting the 7-agent intelligence swarm, real-time social radar, and Truth Dossier verification.
 
 ## Output
-- Composition directory: `brag-output/composition/`
-- Rendered video: `brag-output/brag.mp4`
+- Composition directory: `docs/showcase/composition/`
+- Rendered video: `docs/showcase/brag.mp4`
+
 - Format: landscape — 1920x1080
 - Duration: 20 seconds (FPS: 30)
 

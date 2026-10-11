@@ -222,10 +222,13 @@ async def root():
 @app.get("/launch-video", tags=["Media & Teaser"])
 @app.get("/teaser", tags=["Media & Teaser"])
 async def serve_launch_video():
-    video_page = "brag-output/composition/index.html"
+    video_page = "docs/showcase/composition/index.html"
+    if not os.path.exists(video_page):
+        video_page = "brag-output/composition/index.html"
     if os.path.exists(video_page):
         return FileResponse(video_page)
     return FileResponse("frontend/index.html")
+
 
 
 @app.get("/dashboard")

@@ -19,12 +19,13 @@ from backend.main import app
 client = TestClient(app)
 
 def test_launch_documents_exist():
+    base_dir = "docs/showcase" if os.path.exists("docs/showcase") else "brag-output"
     required_files = [
-        "brag-output/brag-plan.md",
-        "brag-output/composition-brief.md",
-        "brag-output/share-copy.md",
-        "brag-output/brag.png",
-        "brag-output/composition/index.html"
+        f"{base_dir}/brag-plan.md",
+        f"{base_dir}/composition-brief.md",
+        f"{base_dir}/share-copy.md",
+        f"{base_dir}/brag.png",
+        f"{base_dir}/composition/index.html"
     ]
     for rel_path in required_files:
         assert os.path.exists(rel_path), f"Missing required file: {rel_path}"
@@ -32,13 +33,16 @@ def test_launch_documents_exist():
         print(f" [PASS] File verified: {rel_path} ({os.path.getsize(rel_path)} bytes)")
 
 def test_composition_html_structure():
-    with open("brag-output/composition/index.html", "r", encoding="utf-8") as f:
+    base_dir = "docs/showcase" if os.path.exists("docs/showcase") else "brag-output"
+    html_path = f"{base_dir}/composition/index.html"
+    with open(html_path, "r", encoding="utf-8") as f:
         content = f.read()
     assert "data-composition-id=\"main\"" in content
     assert "gsap.timeline" in content
     assert "assets/music/music.mp3" in content
     assert "AEGIS PROTOCOL" in content
     print(" [PASS] Composition HTML markup and timeline verified")
+
 
 def test_launch_api_endpoints():
     # Test metadata endpoint

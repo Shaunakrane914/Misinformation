@@ -7,6 +7,7 @@ from typing import Any, Dict, List, Tuple, TYPE_CHECKING
 
 from backend.infrastructure.acquisition.routing.social_handlers import SocialChannelHandlers
 from backend.infrastructure.acquisition.routing.standard_handlers import StandardChannelHandlers
+from backend.infrastructure.acquisition.network.http import ProviderHTTPError
 from backend.services.agent_reach.channels import EvidenceFragment
 from backend.services.agent_reach.native.channel_capabilities import get_capability
 from backend.services.agent_reach.native.errors import AuthRequiredError
@@ -47,6 +48,16 @@ class ChannelQueryDispatcher:
             )
         except AuthRequiredError as error:
             telemetry.update(status="AUTH_REQUIRED", error=str(error))
+        except ProviderHTTPError as error:
+            telemetry.update(
+                status="FAILED",
+                error=str(error),
+                attempts=error.attempts,
+                network_observed=error.network_observed,
+                http_statuses=[] if error.status_code is None else [error.status_code],
+                source_endpoints=[error.endpoint] if error.endpoint else [],
+                retry_after_seconds=error.retry_after_seconds,
+            )
         except Exception as error:
             telemetry.update(status="FAILED", error=str(error))
 
@@ -76,6 +87,7 @@ class ChannelQueryDispatcher:
             "http_statuses": [],
             "source_endpoints": [],
             "cache_statuses": [],
+            "retry_after_seconds": None,
             "usable_text_chars": 0,
             "evidence_item_count": 0,
         }

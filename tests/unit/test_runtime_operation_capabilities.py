@@ -6,7 +6,9 @@ from backend.services.agent_reach.native.operation_capabilities import (
 from backend.services.agent_reach.source_planner import SourcePlanningEngine
 
 
-def _telemetry(outcome, *, status=200, error=None, network=True, cache="MISS"):
+def _telemetry(
+    outcome, *, status=200, error=None, network=True, cache="MISS", retry_after=None
+):
     return {
         "outcome": outcome,
         "content_class": "DIRECT" if outcome == "DIRECT_CONTENT" else "METADATA",
@@ -14,6 +16,7 @@ def _telemetry(outcome, *, status=200, error=None, network=True, cache="MISS"):
         "http_statuses": [] if status is None else [status],
         "cache_statuses": [cache],
         "error": error,
+        "retry_after_seconds": retry_after,
     }
 
 
@@ -40,6 +43,30 @@ def test_rate_limit_is_temporary_and_expires_into_recovery_probe():
     recovered_probe = runtime.assess("web", "read", required_depth="DIRECT_CONTENT")
     assert recovered_probe["decision"] == "ELIGIBLE_UNVERIFIED"
     assert recovered_probe["runtime_health"] == "STALE"
+
+
+def test_provider_retry_after_overrides_default_cooldown_with_a_bound():
+    now = [10.0]
+    runtime = RuntimeOperationCapabilities(
+        clock=lambda: now[0], rate_limit_ttl_seconds=30.0,
+        max_rate_limit_ttl_seconds=300.0,
+    )
+    runtime.record_observation(
+        "web", "read",
+        _telemetry("FAILED", status=429, error="rate limited", retry_after=120),
+    )
+    state = runtime.assess("web", "read")
+    assert state["retry_after_seconds"] == 120.0
+    now[0] = 119.0
+    assert runtime.assess("web", "read")["decision"] == "DEFER_TEMPORARY"
+    now[0] = 131.0
+    assert runtime.assess("web", "read")["runtime_health"] == "STALE"
+
+    runtime.record_observation(
+        "web", "read",
+        _telemetry("FAILED", status=429, error="rate limited", retry_after=9999),
+    )
+    assert runtime.assess("web", "read")["retry_after_seconds"] == 300.0
 
 
 def test_new_success_immediately_recovers_from_temporary_failure():

@@ -116,11 +116,13 @@ class RuntimeOperationCapabilities:
         healthy_ttl_seconds: float = 900.0,
         failure_ttl_seconds: float = 90.0,
         rate_limit_ttl_seconds: float = 180.0,
+        max_rate_limit_ttl_seconds: float = 3600.0,
     ) -> None:
         self._clock = clock
         self.healthy_ttl_seconds = healthy_ttl_seconds
         self.failure_ttl_seconds = failure_ttl_seconds
         self.rate_limit_ttl_seconds = rate_limit_ttl_seconds
+        self.max_rate_limit_ttl_seconds = max_rate_limit_ttl_seconds
         self._observations: Dict[Tuple[str, str], OperationObservation] = {}
 
     @staticmethod
@@ -146,7 +148,16 @@ class RuntimeOperationCapabilities:
         cache_states = {str(value).upper() for value in telemetry.get("cache_statuses", [])}
         network_observed = bool(telemetry.get("network_observed", False))
         cache_only = bool(cache_states & {"HIT", "CACHE_HIT"}) and not network_observed
-        retry_after = self.rate_limit_ttl_seconds if rate_limited else None
+        retry_after = None
+        if rate_limited:
+            observed_retry_after = telemetry.get("retry_after_seconds")
+            try:
+                retry_after = float(observed_retry_after)
+            except (TypeError, ValueError):
+                retry_after = self.rate_limit_ttl_seconds
+            retry_after = min(
+                max(0.0, retry_after), self.max_rate_limit_ttl_seconds
+            )
         outcome = "RATE_LIMITED" if rate_limited else str(telemetry.get("outcome", "UNKNOWN"))
 
         # A cache hit proves reusable evidence, but must not overwrite a newer
@@ -210,7 +221,8 @@ class RuntimeOperationCapabilities:
         elif observation:
             age = max(0.0, self._clock() - observation.observed_at_monotonic)
             ttl = (
-                self.rate_limit_ttl_seconds if observation.outcome == "RATE_LIMITED"
+                (observation.retry_after_seconds or self.rate_limit_ttl_seconds)
+                if observation.outcome == "RATE_LIMITED"
                 else self.healthy_ttl_seconds if observation.outcome in self.SUCCESS_OUTCOMES
                 else self.failure_ttl_seconds
             )

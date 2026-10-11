@@ -19,6 +19,11 @@ import urllib.parse
 import urllib.request
 from typing import Any, Dict, List, Optional, Tuple
 
+from backend.infrastructure.acquisition.network.http import (
+    BoundedHTTPResponse,
+    ProviderHTTPError,
+    fetch_public_http,
+)
 from backend.services.agent_reach.native.errors import (
     AuthRequiredError,
     BackendExecutionError,
@@ -45,12 +50,12 @@ class NativeExecutor:
     def __init__(self):
         self.profile = get_runtime_profile()
 
-    # ── 1. Web Page Reading (Scrapling HTTP Primary -> Playwright Rescue) ──
+    # ── 1. Web Page Reading (Bounded HTTP Primary -> Playwright Rescue) ──
 
     def execute_web_read(self, url: str, timeout: float = DEFAULT_TIMEOUT_SECONDS) -> Dict[str, Any]:
         """
         Read any public web page following Policy D:
-        Primary: Scrapling HTTP / curl_cffi lightweight extraction
+        Primary: redirect-safe, bounded lightweight HTTP extraction
         Secondary: Playwright rescue strictly when JS rendering or challenge encountered
         """
         clean_url = url.strip()
@@ -69,34 +74,29 @@ class NativeExecutor:
             raise SecurityPolicyViolation(f"URL failed SSRF validation: {clean_url} ({reason})")
 
         t0 = time.perf_counter()
-        active_backend = "scrapling_http"
+        active_backend = "native_http_reader"
         markdown_text = ""
         status_code = None
         content_type = None
         raw_body_bytes = None
         observed_endpoint = clean_url
+        primary_http_error: Optional[ProviderHTTPError] = None
 
-        # Primary: Scrapling HTTP
+        # Primary: shared bounded HTTP.  Redirect targets are validated before
+        # they are followed and the body cannot exceed MAX_OUTPUT_BYTES.
         try:
-            from scrapling import Fetcher
             headers = {
                 "User-Agent": _USER_AGENT,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             }
-            resp = Fetcher.get(clean_url, headers=headers, timeout=timeout)
-            status_code = getattr(resp, "status", None)
-            if hasattr(resp, "body") and isinstance(resp.body, bytes):
-                raw_body_bytes = len(resp.body)
-                raw_text = resp.body.decode("utf-8", errors="replace")
-            elif hasattr(resp, "html_content"):
-                raw_text = str(resp.html_content)
-                raw_body_bytes = len(raw_text.encode("utf-8", errors="replace"))
-            else:
-                raw_text = resp.text if hasattr(resp, "text") else str(resp)
-                raw_body_bytes = len(raw_text.encode("utf-8", errors="replace"))
-            response_headers = getattr(resp, "headers", None)
-            if response_headers:
-                content_type = response_headers.get("content-type") or response_headers.get("Content-Type")
+            response = fetch_public_http(
+                clean_url, headers=headers, timeout=timeout, max_bytes=MAX_OUTPUT_BYTES
+            )
+            status_code = response.status_code
+            raw_body_bytes = len(response.body)
+            raw_text = response.body.decode("utf-8", errors="replace")
+            content_type = response.content_type
+            observed_endpoint = response.endpoint
 
             # Clean HTML to readable text/markdown
             import re
@@ -105,37 +105,13 @@ class NativeExecutor:
             cleaned = re.sub(r"<[^>]+>", " ", cleaned)
             markdown_text = re.sub(r"\s+", " ", cleaned).strip()
 
-        except Exception as e_scrapling:
-            logger.debug(f"[NativeExecutor] Scrapling read error for {clean_url}: {e_scrapling}")
-
-        # Fast HTTP fallback if scrapling returned insufficient text
-        if len(markdown_text) < 100:
-            try:
-                import urllib.request
-                import re
-                req = urllib.request.Request(
-                    clean_url,
-                    headers={
-                        "User-Agent": _USER_AGENT,
-                        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-                    }
-                )
-                with urllib.request.urlopen(req, timeout=timeout) as resp:
-                    raw_bytes = resp.read(MAX_OUTPUT_BYTES)
-                    raw_text = raw_bytes.decode("utf-8", errors="replace")
-                    cleaned = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", raw_text, flags=re.IGNORECASE)
-                    cleaned = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", cleaned, flags=re.IGNORECASE)
-                    cleaned = re.sub(r"<[^>]+>", " ", cleaned)
-                    u_text = re.sub(r"\s+", " ", cleaned).strip()
-                    if len(u_text) > len(markdown_text):
-                        markdown_text = u_text
-                        active_backend = "native_http_reader"
-                        status_code = getattr(resp, "status", None)
-                        content_type = resp.headers.get("Content-Type")
-                        raw_body_bytes = len(raw_bytes)
-                        observed_endpoint = getattr(resp, "url", clean_url)
-            except Exception as e_http:
-                logger.debug(f"[NativeExecutor] Fast HTTP fallback notice for {clean_url}: {e_http}")
+        except ProviderHTTPError as error:
+            primary_http_error = error
+            logger.debug("[NativeExecutor] Bounded HTTP read failed for %s: %s", clean_url, error)
+            if error.status_code in {401, 429}:
+                raise
+        except Exception as error:
+            logger.debug("[NativeExecutor] HTTP parsing failed for %s: %s", clean_url, error)
 
         CHALLENGE_INDICATORS = (
             "cloudflare", "turnstile", "human security", "just a moment",
@@ -154,8 +130,26 @@ class NativeExecutor:
                     browser = p.chromium.launch(headless=True)
                     page = browser.new_page()
                     page.set_default_timeout(int(timeout * 1000))
+                    def guard_request(route):  # noqa: ANN001
+                        request_url = route.request.url
+                        scheme = urllib.parse.urlsplit(request_url).scheme.lower()
+                        if scheme in {"http", "https"}:
+                            request_safe, _ = is_safe_url(request_url)
+                            if not request_safe:
+                                route.abort()
+                                return
+                        route.continue_()
+
+                    page.route("**/*", guard_request)
                     page.goto(clean_url, wait_until="domcontentloaded")
+                    final_safe, final_reason = is_safe_url(page.url)
+                    if not final_safe:
+                        raise SecurityPolicyViolation(
+                            f"Browser redirect failed SSRF validation: {page.url} ({final_reason})"
+                        )
                     html_content = page.content()
+                    if len(html_content.encode("utf-8", errors="replace")) > MAX_OUTPUT_BYTES:
+                        raise NativeReachError("Rendered page exceeded the response-size limit")
                     browser.close()
                     import re
                     c_clean = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", html_content, flags=re.IGNORECASE)
@@ -172,26 +166,28 @@ class NativeExecutor:
         if len(markdown_text) < 100:
             try:
                 jina_url = f"https://r.jina.ai/{clean_url}"
-                req = urllib.request.Request(
+                response = fetch_public_http(
                     jina_url,
-                    headers={"User-Agent": _USER_AGENT, "Accept": "text/plain", "X-No-Cache": "true"}
+                    headers={"User-Agent": _USER_AGENT, "Accept": "text/plain", "X-No-Cache": "true"},
+                    timeout=timeout,
+                    max_bytes=MAX_OUTPUT_BYTES,
                 )
-                with urllib.request.urlopen(req, timeout=timeout) as resp:
-                    raw_bytes = resp.read(MAX_OUTPUT_BYTES)
-                    j_text = raw_bytes.decode("utf-8", errors="replace").strip()
-                    if len(j_text) > len(markdown_text):
-                        markdown_text = j_text
-                        active_backend = "jina_reader_fallback"
-                        status_code = getattr(resp, "status", None)
-                        content_type = resp.headers.get("Content-Type")
-                        raw_body_bytes = len(raw_bytes)
-                        observed_endpoint = getattr(resp, "url", jina_url)
+                j_text = response.body.decode("utf-8", errors="replace").strip()
+                if len(j_text) > len(markdown_text):
+                    markdown_text = j_text
+                    active_backend = "jina_reader_fallback"
+                    status_code = response.status_code
+                    content_type = response.content_type
+                    raw_body_bytes = len(response.body)
+                    observed_endpoint = response.endpoint
             except Exception as e_jina:
                 logger.debug(f"[NativeExecutor] Emergency Jina fallback error: {e_jina}")
 
         latency_ms = int((time.perf_counter() - t0) * 1000)
         if not markdown_text:
-            raise BackendExecutionError("web", active_backend, clean_url, 1, "Failed to retrieve content via Scrapling/Playwright")
+            if primary_http_error is not None:
+                raise primary_http_error
+            raise BackendExecutionError("web", active_backend, clean_url, 1, "Failed to retrieve content via bounded HTTP/Playwright")
 
         return {
             "platform": "web",
@@ -363,31 +359,35 @@ class NativeExecutor:
         token = os.getenv("GITHUB_TOKEN")
         if token:
             headers["Authorization"] = f"Bearer {token}"
-        req = urllib.request.Request(url, headers=headers)
         started = time.perf_counter()
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as response:
-                raw_body = response.read(MAX_OUTPUT_BYTES)
-                data = json.loads(raw_body.decode("utf-8"))
-                latency_ms = int((time.perf_counter() - started) * 1000)
-                transport = self._http_transport(response, url, raw_body, latency_ms)
+            response = fetch_public_http(
+                url, headers=headers, timeout=timeout, max_bytes=MAX_OUTPUT_BYTES
+            )
+            raw_body = response.body
+            data = json.loads(raw_body.decode("utf-8"))
+            latency_ms = int((time.perf_counter() - started) * 1000)
+            transport = self._bounded_http_transport(response)
             items = data if isinstance(data, list) else [data]
             if op == "issues":
                 items = [item for item in items if not item.get("pull_request")]
             if op == "read":
                 readme_url = f"https://api.github.com/repos/{clean_repo}/readme"
                 try:
-                    readme_req = urllib.request.Request(readme_url, headers=headers)
-                    with urllib.request.urlopen(readme_req, timeout=min(timeout, 6.0)) as response:
-                        readme_body = response.read(MAX_OUTPUT_BYTES)
-                        readme_meta = json.loads(readme_body.decode("utf-8"))
+                    readme_response = fetch_public_http(
+                        readme_url, headers=headers, timeout=min(timeout, 6.0),
+                        max_bytes=MAX_OUTPUT_BYTES,
+                    )
+                    readme_meta = json.loads(readme_response.body.decode("utf-8"))
                     download_url = readme_meta.get("download_url")
                     if download_url:
-                        safe, _ = is_safe_url(download_url)
-                        if safe:
-                            raw_req = urllib.request.Request(download_url, headers={"User-Agent": _USER_AGENT})
-                            with urllib.request.urlopen(raw_req, timeout=min(timeout, 6.0)) as response:
-                                items[0]["readme"] = response.read(MAX_OUTPUT_BYTES).decode("utf-8", errors="replace")
+                        raw_response = fetch_public_http(
+                            download_url, headers={"User-Agent": _USER_AGENT},
+                            timeout=min(timeout, 6.0), max_bytes=MAX_OUTPUT_BYTES,
+                        )
+                        items[0]["readme"] = raw_response.body.decode(
+                            "utf-8", errors="replace"
+                        )
                 except Exception:
                     pass
             return {
@@ -401,6 +401,8 @@ class NativeExecutor:
                 "latency_ms": latency_ms,
                 "transport": transport,
             }
+        except ProviderHTTPError:
+            raise
         except Exception as error:
             raise BackendExecutionError("github", "GitHub REST API", url, 1, str(error))
 
@@ -595,22 +597,26 @@ class NativeExecutor:
         """Fetch hot topics from V2EX public JSON API."""
         url = "https://www.v2ex.com/api/topics/hot.json"
         t0 = time.perf_counter()
-        req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw_body = resp.read(MAX_OUTPUT_BYTES)
-                data = json.loads(raw_body.decode("utf-8"))
-                latency_ms = int((time.perf_counter() - t0) * 1000)
-                return {
-                    "platform": "v2ex",
-                    "backend": "V2EX API (public)",
-                    "operation": "v2ex.hot",
-                    "status": "SUCCESS",
-                    "items": data,
-                    "count": len(data),
-                    "latency_ms": latency_ms,
-                    "transport": self._http_transport(resp, url, raw_body, latency_ms),
-                }
+            response = fetch_public_http(
+                url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
+                max_bytes=MAX_OUTPUT_BYTES,
+            )
+            raw_body = response.body
+            data = json.loads(raw_body.decode("utf-8"))
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            return {
+                "platform": "v2ex",
+                "backend": "V2EX API (public)",
+                "operation": "v2ex.hot",
+                "status": "SUCCESS",
+                "items": data,
+                "count": len(data),
+                "latency_ms": latency_ms,
+                "transport": self._bounded_http_transport(response),
+            }
+        except ProviderHTTPError:
+            raise
         except Exception as e:
             raise BackendExecutionError("v2ex", "V2EX API (public)", url, 1, str(e))
 
@@ -618,22 +624,26 @@ class NativeExecutor:
         """Fetch topics for a specific node from V2EX public API."""
         url = f"https://www.v2ex.com/api/topics/show.json?node_name={urllib.parse.quote(node)}"
         t0 = time.perf_counter()
-        req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw_body = resp.read(MAX_OUTPUT_BYTES)
-                data = json.loads(raw_body.decode("utf-8"))
-                latency_ms = int((time.perf_counter() - t0) * 1000)
-                return {
-                    "platform": "v2ex",
-                    "backend": "V2EX API (public)",
-                    "operation": "v2ex.search",
-                    "status": "SUCCESS",
-                    "items": data,
-                    "count": len(data),
-                    "latency_ms": latency_ms,
-                    "transport": self._http_transport(resp, url, raw_body, latency_ms),
-                }
+            response = fetch_public_http(
+                url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
+                max_bytes=MAX_OUTPUT_BYTES,
+            )
+            raw_body = response.body
+            data = json.loads(raw_body.decode("utf-8"))
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            return {
+                "platform": "v2ex",
+                "backend": "V2EX API (public)",
+                "operation": "v2ex.search",
+                "status": "SUCCESS",
+                "items": data,
+                "count": len(data),
+                "latency_ms": latency_ms,
+                "transport": self._bounded_http_transport(response),
+            }
+        except ProviderHTTPError:
+            raise
         except Exception as e:
             raise BackendExecutionError("v2ex", "V2EX API (public)", url, 1, str(e))
 
@@ -645,21 +655,28 @@ class NativeExecutor:
         if operation == "latest":
             url = "https://www.v2ex.com/api/topics/latest.json"
         else:
-            match = re.search(r"(?:/t/)?(\d+)", value or "")
-            if not match:
+            clean_value = (value or "").strip()
+            if re.fullmatch(r"\d+", clean_value):
+                topic_id = clean_value
+            else:
+                parsed_path = urllib.parse.urlparse(clean_value).path
+                match = re.search(r"/t/(\d+)(?:/|$)", parsed_path)
+                topic_id = match.group(1) if match else ""
+            if not topic_id:
                 raise NativeReachError(f"v2ex.{operation} requires a numeric topic id or URL")
-            topic_id = match.group(1)
             endpoint = "topics/show" if operation == "topic" else "replies/show"
             parameter = "id" if operation == "topic" else "topic_id"
             url = f"https://www.v2ex.com/api/{endpoint}.json?{parameter}={topic_id}"
         started = time.perf_counter()
-        req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as response:
-                raw_body = response.read(MAX_OUTPUT_BYTES)
-                data = json.loads(raw_body.decode("utf-8"))
-                latency_ms = int((time.perf_counter() - started) * 1000)
-                transport = self._http_transport(response, url, raw_body, latency_ms)
+            response = fetch_public_http(
+                url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
+                max_bytes=MAX_OUTPUT_BYTES,
+            )
+            raw_body = response.body
+            data = json.loads(raw_body.decode("utf-8"))
+            latency_ms = int((time.perf_counter() - started) * 1000)
+            transport = self._bounded_http_transport(response)
             items = data if isinstance(data, list) else [data]
             return {
                 "platform": "v2ex",
@@ -671,6 +688,8 @@ class NativeExecutor:
                 "latency_ms": latency_ms,
                 "transport": transport,
             }
+        except ProviderHTTPError:
+            raise
         except Exception as error:
             raise BackendExecutionError("v2ex", "V2EX API (public)", url, 1, str(error))
 
@@ -724,10 +743,12 @@ class NativeExecutor:
 
         t0 = time.perf_counter()
         try:
-            req = urllib.request.Request(clean_url, headers={"User-Agent": _USER_AGENT})
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw_body = resp.read(MAX_OUTPUT_BYTES)
-                transport = self._http_transport(resp, clean_url, raw_body, 0)
+            response = fetch_public_http(
+                clean_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
+                max_bytes=MAX_OUTPUT_BYTES,
+            )
+            raw_body = response.body
+            transport = self._bounded_http_transport(response)
             feed = feedparser.parse(raw_body)
             latency_ms = int((time.perf_counter() - t0) * 1000)
             transport["network_latency_ms"] = latency_ms
@@ -749,6 +770,8 @@ class NativeExecutor:
                 "latency_ms": latency_ms,
                 "transport": transport,
             }
+        except ProviderHTTPError:
+            raise
         except Exception as e:
             raise BackendExecutionError("rss", "feedparser", clean_url, 1, str(e))
 
@@ -764,6 +787,21 @@ class NativeExecutor:
             "network_latency_ms": latency_ms,
             "cache_status": "UNKNOWN",
             "protocol": "http",
+        }
+
+    @staticmethod
+    def _bounded_http_transport(response: BoundedHTTPResponse) -> Dict[str, Any]:
+        """Translate shared HTTP observations into the existing evidence contract."""
+        return {
+            "endpoint": response.endpoint,
+            "network_observed_this_attempt": True,
+            "http_status": response.status_code,
+            "content_type": response.content_type,
+            "raw_body_bytes": len(response.body),
+            "network_latency_ms": response.latency_ms,
+            "cache_status": "UNKNOWN",
+            "protocol": "http",
+            "attempts": response.attempts,
         }
 
     # ── 7. YouTube Comments ────────────────────────────────────────────────
@@ -929,24 +967,22 @@ class NativeExecutor:
         Discover public podcast metadata, episodes, and direct audio enclosure URLs
         via iTunes API and RSS syndication (no login / no credential required).
         """
-        import httpx
         import feedparser
         import re
         t0 = time.perf_counter()
         clean_q = query.strip()
-        client = httpx.Client(headers={"User-Agent": _USER_AGENT}, follow_redirects=True, timeout=timeout)
         items = []
         itunes_url = f"https://itunes.apple.com/search?term={urllib.parse.quote(clean_q)}&entity=podcast&limit=3"
-        observed_response = None
-        observed_body = b""
-        observed_endpoint = itunes_url
+        observed_response: Optional[BoundedHTTPResponse] = None
         try:
-            r_itunes = client.get(itunes_url)
+            r_itunes = fetch_public_http(
+                itunes_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
+                max_bytes=MAX_OUTPUT_BYTES,
+            )
             observed_response = r_itunes
-            observed_body = r_itunes.content
             feed_urls = []
             if r_itunes.status_code == 200:
-                results = r_itunes.json().get("results", [])
+                results = json.loads(r_itunes.body.decode("utf-8")).get("results", [])
                 for res in results:
                     f_url = res.get("feedUrl")
                     p_name = res.get("collectionName")
@@ -955,12 +991,13 @@ class NativeExecutor:
 
             for pod_name, f_url in feed_urls:
                 try:
-                    r_rss = client.get(f_url)
+                    r_rss = fetch_public_http(
+                        f_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
+                        max_bytes=MAX_OUTPUT_BYTES,
+                    )
                     observed_response = r_rss
-                    observed_body = r_rss.content
-                    observed_endpoint = f_url
                     if r_rss.status_code == 200:
-                        feed = feedparser.parse(r_rss.content)
+                        feed = feedparser.parse(r_rss.body)
                         for entry in feed.entries[:limit]:
                             enclosures = entry.get("enclosures", [])
                             audio_url = enclosures[0].get("href") if enclosures else None
@@ -983,15 +1020,8 @@ class NativeExecutor:
                     break
 
             latency_ms = int((time.perf_counter() - t0) * 1000)
-            transport = {
-                "endpoint": observed_endpoint,
-                "network_observed_this_attempt": observed_response is not None,
-                "http_status": observed_response.status_code if observed_response is not None else None,
-                "content_type": observed_response.headers.get("content-type") if observed_response is not None else None,
-                "raw_body_bytes": len(observed_body) if observed_response is not None else None,
-                "network_latency_ms": latency_ms,
-                "cache_status": "UNKNOWN",
-            }
+            transport = self._bounded_http_transport(observed_response)
+            transport["network_latency_ms"] = latency_ms
             return {
                 "platform": "xiaoyuzhou",
                 "backend": "podcast-rss-syndication",
@@ -1002,6 +1032,8 @@ class NativeExecutor:
                 "latency_ms": latency_ms,
                 "transport": transport,
             }
+        except ProviderHTTPError:
+            raise
         except Exception as e:
             raise BackendExecutionError("xiaoyuzhou", "podcast-rss-syndication", itunes_url, 1, str(e))
 

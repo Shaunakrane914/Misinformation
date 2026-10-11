@@ -20,8 +20,13 @@ class ScraperLabRunner:
     Test execution runner and metric aggregator for the scraper laboratory.
     """
 
-    def __init__(self, history_file: str = ".scraper_health_history.json"):
-        self.history_file = history_file
+    def __init__(self, history_file: Optional[str] = None):
+        if history_file is None:
+            scratch_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".scratch"))
+            os.makedirs(scratch_dir, exist_ok=True)
+            self.history_file = os.path.join(scratch_dir, ".scraper_health_history.json")
+        else:
+            self.history_file = history_file
 
     def run_platform_test(self, platform: str, live_network: bool = True) -> Optional[ScraperLabResult]:
         """Execute canary test for a single platform."""

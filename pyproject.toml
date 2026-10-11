@@ -82,6 +82,10 @@ filterwarnings = [
     "ignore::DeprecationWarning",
     "ignore::UserWarning",
 ]
+log_cli = false
+log_cli_level = "INFO"
+log_cli_format = "%(asctime)s [%(levelname)s] %(name)s: %(message)s"
+log_cli_date_format = "%H:%M:%S"
 markers = [
     "unit: Fast deterministic unit tests (no network, no DB)",
     "integration: Multi-component integration tests (FastAPI TestClient, in-memory DB)",

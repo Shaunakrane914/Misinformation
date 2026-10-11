@@ -42,6 +42,9 @@ wheels/
 *.sqlite3
 aegis.db
 
+# Agent skills lock (managed by Antigravity IDE, kept in .gemini/)
+.gemini/skills-lock.json
+
 # Test files (root scratch files only)
 /test_*.py
 /check_*.py
@@ -82,6 +85,7 @@ frontend/.netlify/
 port.txt
 .pytest_cache/
 *.pyc
+pytest.ini
 
 # Test output artifacts
 scripts/*_report.json

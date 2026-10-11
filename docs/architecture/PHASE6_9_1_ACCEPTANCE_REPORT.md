@@ -193,5 +193,9 @@ provider reliability.
 - Compile and changed-file fatal lint checks passed.
 - Frozen retrieval benchmark inputs and tracked benchmark summaries were not
   modified.
-- GitHub Actions result: pending final documentation/evidence push.
+- GitHub Actions: **PASS** for head
+  `dd8deb28402e18f32d98f454ef527f6f9e791025` in run
+  [38100690873](https://github.com/Shaunakrane914/Misinformation/actions/runs/38100690873):
+  lint, Python 3.11/3.12/3.13 unit and chaos jobs, and provenance/performance
+  benchmarks all passed.
 

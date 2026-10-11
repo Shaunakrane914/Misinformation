@@ -1,4 +1,4 @@
-"""Run a bounded, truth-preserving pre-Phase-7 acquisition audit.
+"""Run a bounded, truth-preserving acquisition audit.
 
 This runner writes only to a new timestamped directory.  It never rewrites the
 frozen benchmark datasets and never infers HTTP facts from normalized evidence.
@@ -130,7 +130,7 @@ def _probe(channel: str, operation: str, query: str, permitted: bool, skip_reaso
         query,
         limit=3,
         query_id=f"audit_{channel}_{operation}",
-        query_class="pre_phase7_audit",
+        query_class="bounded_live_audit",
         query_text=query,
         operation=operation,
         public_mode=False,
@@ -178,7 +178,7 @@ def _write_json(path: Path, value: Any) -> None:
 
 def _write_markdown(path: Path, records: List[Dict[str, Any]], sha: str) -> None:
     lines = [
-        "# Pre-Phase 7 verified capability matrix",
+        "# Bounded live verified capability matrix",
         "",
         f"- Commit: `{sha}`",
         f"- Generated: `{datetime.now(timezone.utc).isoformat()}`",

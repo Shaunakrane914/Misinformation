@@ -290,14 +290,12 @@ This document details the multi-phase engineering plan to transform Aegis Protoc
 
 ---
 
-### Phase 7: Legacy Deprecation & Final Cleanup
+### Phase 7: Production Consolidation & V1 Hardening
 - **Priority:** P2
-- **Current State:** Re-exporting import shims and legacy fallback scrapers remain from earlier migration phases.
-- **Target State:**
-  - Audit all internal callers; eliminate transitional shims in `backend/services/`.
-  - Archive `backend/services/agent_reach_scraper.py` if native adapters achieve 100% reliability.
-  - Final tree audit and verification.
-- **Acceptance Criteria:** Zero deprecated shims; clean build context; 100% full regression suite passes.
+- **Status:** IMPLEMENTED LOCALLY; CI VERIFICATION PENDING (October 11, 2026)
+- **Delivered:** protected-operation contracts, bounded redirect-safe transport, operation-aware auth and adaptive decisions, duplicate-request elimination, truthful four-agent status presentation, readiness/operations controls, bounded live audit, and owner-review documentation.
+- **Compatibility:** Historical shims and unique legacy fallbacks are retained. Their removal requires explicit owner approval and downstream-caller evidence; see `PHASE7_REMOVAL_CANDIDATES.md`.
+- **Acceptance:** See `PHASE7_V1_READINESS_REPORT.md`. Production deployment is not authorized by completion of this phase.
 
 ---
 

@@ -60,6 +60,7 @@ personal_api.txt
 append_function.py
 FORCE_CRASH_TEST
 scratch/
+.scratch/
 
 # OS
 .DS_Store

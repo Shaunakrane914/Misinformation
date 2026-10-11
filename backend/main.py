@@ -152,6 +152,11 @@ async def startup_event():
     logger.info("[FastAPI] Aegis Protocol API v%s — STARTING (Modular Architecture)", __version__)
     logger.info(f"[FastAPI] Supabase URL: {settings.supabase_url or 'NOT SET (Using Local SQLite)'}")
     logger.info("[FastAPI] Agents: ClaimIngestion | Research | Investigator | Trending | Scout | BrandShield | PersonalWatch")
+    if settings.environment == "production" and "*" in settings.allowed_origins:
+        logger.warning(
+            "[Security] Production environment running with wildcard CORS ('*'). "
+            "Configure ALLOWED_ORIGIN in production deployment."
+        )
     logger.info("=" * 80)
 
     # Warm dashboard cache
@@ -309,11 +314,14 @@ async def dashboard_js():
 @app.get("/{filename:path}")
 async def serve_static_root(filename: str):
     """Serve any static asset located in frontend directory at root URL."""
-    if ".." in filename:
+    if ".." in filename or "\\" in filename:
         raise HTTPException(status_code=400, detail="Invalid path")
-    file_path = os.path.join("frontend", filename)
-    if os.path.isfile(file_path):
-        return FileResponse(file_path)
+    safe_root = os.path.abspath("frontend")
+    target_path = os.path.abspath(os.path.join(safe_root, filename))
+    if os.path.commonpath([safe_root, target_path]) != safe_root:
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if os.path.isfile(target_path):
+        return FileResponse(target_path)
     raise HTTPException(status_code=404, detail=f"File not found: {filename}")
 
 

@@ -112,6 +112,16 @@ class Settings(BaseSettings):
         self.gemini_models = ordered
         return self
 
+    @model_validator(mode="after")
+    def validate_production_mock_guard(self) -> "Settings":
+        """Production environment strictly forbids synthetic mock evidence generation."""
+        if self.environment == "production" and self.aegis_mock_llm:
+            raise ValueError(
+                "Production environment (ENVIRONMENT=production) forbids AEGIS_MOCK_LLM=true "
+                "to prevent synthetic mock evidence"
+            )
+        return self
+
     # ── Convenience Introspection Properties ─────────────────────────────────
 
     @property

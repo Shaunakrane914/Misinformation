@@ -54,6 +54,12 @@ def test_settings_offline_mock_detection():
             assert cfg.has_gemini is False
             assert cfg.is_mock_llm is False
 
+    # Production mode strictly forbids AEGIS_MOCK_LLM=true
+    with patch.dict(os.environ, {"ENVIRONMENT": "production", "AEGIS_MOCK_LLM": "true"}, clear=False):
+        with pytest.raises(ValidationError) as excinfo:
+            Settings()
+        assert "forbids AEGIS_MOCK_LLM=true" in str(excinfo.value)
+
 
 def test_settings_model_order_is_validated_and_deduplicated():
     cfg = Settings(

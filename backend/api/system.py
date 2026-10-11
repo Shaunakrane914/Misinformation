@@ -42,6 +42,47 @@ async def healthz():
     }
 
 
+@router.get("/readyz")
+@router.get("/api/readyz")
+async def readyz():
+    """Process readiness plus honest, non-probing acquisition state."""
+    from backend.services.agent_reach.native.operation_capabilities import (
+        runtime_operation_capabilities,
+    )
+
+    inventory = runtime_operation_capabilities.inventory()
+    operations = [operation for channel in inventory.values() for operation in channel.values()]
+    eligible = sum(1 for operation in operations if operation["decision"] != "EXCLUDE")
+    verified = sum(
+        1 for operation in operations
+        if operation["runtime_health"] in {"HEALTHY", "LIMITED"}
+    )
+    return {
+        "status": "ready" if eligible else "not_ready",
+        "mode": "READY_WITH_VERIFIED_OPERATIONS" if verified else "READY_UNVERIFIED",
+        "version": __version__,
+        "operation_summary": {
+            "total": len(operations),
+            "eligible": eligible,
+            "verified": verified,
+            "auth_required": sum(
+                1 for operation in operations
+                if operation["runtime_health"] == "AUTH_REQUIRED"
+            ),
+            "policy_blocked": sum(
+                1 for operation in operations
+                if operation["runtime_health"] == "BLOCKED"
+            ),
+            "not_implemented": sum(
+                1 for operation in operations
+                if operation["runtime_health"] == "UNAVAILABLE_NOT_IMPLEMENTED"
+            ),
+        },
+        "note": "Readiness does not imply that unprobed third-party providers are healthy.",
+        "response_generated_at": datetime.utcnow().isoformat() + "Z",
+    }
+
+
 @router.get("/api/system/deployment-status", summary="Honest deployment status and empirical capabilities")
 @router.get("/api/deployment-status")
 async def get_deployment_status():

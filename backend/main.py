@@ -104,7 +104,10 @@ from backend.core.settings import settings
 app.add_middleware(
     CORSMiddleware,
     allow_origins=settings.allowed_origins,
-    allow_credentials=True,
+    # Browsers reject credentialed CORS with a wildcard origin.  Public local
+    # development may use "*", but credentials are enabled only for an
+    # explicit origin allowlist.
+    allow_credentials="*" not in settings.allowed_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -140,10 +143,13 @@ except (ImportError, ModuleNotFoundError):
 
 
 # ── Startup & Shutdown Lifecycle ─────────────────────────────────────────────
+_background_tasks: set[asyncio.Task] = set()
+
+
 @app.on_event("startup")
 async def startup_event():
     logger.info("=" * 80)
-    logger.info("[FastAPI] Aegis Protocol API v3.7.0 — STARTING (Modular Architecture)")
+    logger.info("[FastAPI] Aegis Protocol API v%s — STARTING (Modular Architecture)", __version__)
     logger.info(f"[FastAPI] Supabase URL: {settings.supabase_url or 'NOT SET (Using Local SQLite)'}")
     logger.info("[FastAPI] Agents: ClaimIngestion | Research | Investigator | Trending | Scout | BrandShield | PersonalWatch")
     logger.info("=" * 80)
@@ -165,12 +171,19 @@ async def startup_event():
     # Start RSS ingestion background loop
     if os.getenv("RSS_INGESTION_ENABLED", "true").lower() != "false":
         from backend.services.rss_ingestion import rss_ingestion_loop
-        asyncio.create_task(rss_ingestion_loop())
+        task = asyncio.create_task(rss_ingestion_loop(), name="rss-ingestion")
+        _background_tasks.add(task)
+        task.add_done_callback(_background_tasks.discard)
         logger.info("[FastAPI] RSS ingestion loop scheduled (15 min interval)")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
+    for task in tuple(_background_tasks):
+        task.cancel()
+    if _background_tasks:
+        await asyncio.gather(*tuple(_background_tasks), return_exceptions=True)
+        _background_tasks.clear()
     logger.info("=" * 80)
     logger.info("[FastAPI] Aegis Protocol API — SHUTTING DOWN")
     logger.info("=" * 80)
@@ -188,7 +201,7 @@ async def health_check():
     """
     return {
         "status": "ok",
-        "version": "3.7.0",
+        "version": __version__,
         "uptime_seconds": round(time.time() - _START_TIME, 1),
         "timestamp": datetime.utcnow().isoformat() + "Z",
     }

@@ -49,6 +49,16 @@ def test_api_agent_reach_health_and_doctor():
     assert "channels" in data_doc
 
 
+def test_readiness_is_explicit_about_unverified_provider_health():
+    response = client.get("/api/readyz")
+    assert response.status_code == 200
+    data = response.json()
+    assert data["status"] == "ready"
+    assert data["mode"] in {"READY_WITH_VERIFIED_OPERATIONS", "READY_UNVERIFIED"}
+    assert data["operation_summary"]["eligible"] > 0
+    assert "does not imply" in data["note"]
+
+
 def test_api_agent_reach_omni_scan():
     with patch("backend.services.agent_reach.adapter.AgentReachService.retrieve") as mock_retrieve:
         mock_retrieve.return_value = RetrievalResult(

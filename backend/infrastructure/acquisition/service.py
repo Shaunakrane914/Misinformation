@@ -362,6 +362,7 @@ class AgentReachService:
 
         for ch_name, q_list in channel_queries.items():
             norm_list = []
+            seen_query_keys: Set[Tuple[str, str]] = set()
             for idx, q_item in enumerate(q_list):
                 if isinstance(q_item, dict):
                     q_id = q_item.get("query_id", f"{ch_name[:2]}_{idx+1:02d}")
@@ -374,12 +375,16 @@ class AgentReachService:
                     q_text = str(q_item)
                     operation = "search"
 
-                if q_text.strip():
+                clean_query = q_text.strip()
+                clean_operation = str(operation or "search").strip().lower()
+                query_key = (clean_operation, clean_query.lower())
+                if clean_query and query_key not in seen_query_keys:
+                    seen_query_keys.add(query_key)
                     norm_list.append({
                         "query_id": q_id,
                         "query_class": q_class,
-                        "query_text": q_text.strip(),
-                        "operation": operation,
+                        "query_text": clean_query,
+                        "operation": clean_operation,
                     })
                     all_query_classes.add(q_class)
                     total_planned_queries += 1

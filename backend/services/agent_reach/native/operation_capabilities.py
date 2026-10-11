@@ -79,12 +79,48 @@ OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
 }
 
 
+CHANNEL_AUTH_ENVIRONMENT: Dict[str, str] = {
+    "linkedin": "LINKEDIN_COOKIE",
+    "xueqiu": "XUEQIU_COOKIE",
+    "xiaohongshu": "XIAOHONGSHU_COOKIE",
+    "instagram": "INSTAGRAM_COOKIE",
+    "facebook": "FACEBOOK_COOKIE",
+    "boss": "BOSS_CDP_PORT",
+    "xiaoyuzhou": "GROQ_API_KEY",
+}
+
+PUBLIC_UNAUTHENTICATED_OPERATIONS: Set[Tuple[str, str]] = {
+    ("linkedin", "jobs"),
+    ("instagram", "oembed"),
+    ("facebook", "oembed"),
+    ("xiaoyuzhou", "search"),
+    ("xiaoyuzhou", "podcast"),
+    ("xiaoyuzhou", "episodes"),
+}
+
+
+def required_auth_environment(channel: str, operation: str) -> Optional[str]:
+    """Return the single canonical credential requirement for an operation."""
+    canonical = "twitter" if (channel or "").lower() == "x" else (channel or "").lower()
+    op = (operation or "search").lower()
+    if "." in op:
+        prefix, op_name = op.split(".", 1)
+        if prefix in {canonical, "x" if canonical == "twitter" else canonical}:
+            op = op_name
+    if (canonical, op) in PUBLIC_UNAUTHENTICATED_OPERATIONS:
+        return None
+    return CHANNEL_AUTH_ENVIRONMENT.get(canonical)
+
+
+# Backwards-compatible materialized view for callers that imported this map.
 AUTH_ENVIRONMENT: Dict[Tuple[str, str], str] = {
-    ("xueqiu", "search"): "XUEQIU_COOKIE",
-    ("xiaohongshu", "search"): "XIAOHONGSHU_COOKIE",
-    ("instagram", "search"): "INSTAGRAM_COOKIE",
-    ("facebook", "search"): "FACEBOOK_COOKIE",
-    ("boss", "search_jobs"): "BOSS_CDP_PORT",
+    (channel, operation): env_name
+    for channel, env_name in CHANNEL_AUTH_ENVIRONMENT.items()
+    for operation in (
+        set(CAPABILITY_MATRIX[channel].operations) if channel in CAPABILITY_MATRIX else set()
+    )
+    | EXECUTABLE_CAPABILITIES.get(channel, set())
+    if (channel, operation) not in PUBLIC_UNAUTHENTICATED_OPERATIONS
 }
 
 
@@ -189,7 +225,7 @@ class RuntimeOperationCapabilities:
         key = (channel, operation)
         declared = operation in CAPABILITY_MATRIX.get(channel, _EMPTY_CAPABILITY).operations
         implemented = operation in EXECUTABLE_CAPABILITIES.get(channel, set())
-        env_name = AUTH_ENVIRONMENT.get(key)
+        env_name = required_auth_environment(channel, operation)
         credential_present = bool(os.getenv(env_name)) if env_name else True
         policy_blocked = (
             channel == "reddit"
@@ -304,9 +340,12 @@ runtime_operation_capabilities = RuntimeOperationCapabilities()
 
 __all__ = [
     "AUTH_ENVIRONMENT",
+    "CHANNEL_AUTH_ENVIRONMENT",
     "EXECUTABLE_CAPABILITIES",
     "OPERATION_DEPTHS",
     "OperationObservation",
+    "PUBLIC_UNAUTHENTICATED_OPERATIONS",
     "RuntimeOperationCapabilities",
+    "required_auth_environment",
     "runtime_operation_capabilities",
 ]

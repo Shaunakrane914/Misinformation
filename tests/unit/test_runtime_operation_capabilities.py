@@ -2,6 +2,7 @@
 
 from backend.services.agent_reach.native.operation_capabilities import (
     RuntimeOperationCapabilities,
+    required_auth_environment,
 )
 from backend.services.agent_reach.source_planner import SourcePlanningEngine
 
@@ -90,6 +91,21 @@ def test_credentials_are_evaluated_on_every_decision(monkeypatch):
     runtime = RuntimeOperationCapabilities()
     monkeypatch.delenv("INSTAGRAM_COOKIE", raising=False)
     assert runtime.assess("instagram", "search")["runtime_health"] == "AUTH_REQUIRED"
+
+
+def test_auth_contract_has_one_operation_aware_authority(monkeypatch):
+    assert required_auth_environment("instagram", "search") == "INSTAGRAM_COOKIE"
+    assert required_auth_environment("instagram", "oembed") is None
+    assert required_auth_environment("linkedin", "jobs") is None
+    assert required_auth_environment("xiaoyuzhou", "podcast") is None
+    assert required_auth_environment("xiaoyuzhou", "transcribe") == "GROQ_API_KEY"
+
+    runtime = RuntimeOperationCapabilities()
+    monkeypatch.delenv("LINKEDIN_COOKIE", raising=False)
+    monkeypatch.delenv("GROQ_API_KEY", raising=False)
+    assert runtime.assess("linkedin", "jobs")["decision"] == "ELIGIBLE_UNVERIFIED"
+    assert runtime.assess("xiaoyuzhou", "podcast")["decision"] == "ELIGIBLE_UNVERIFIED"
+    assert runtime.assess("xiaoyuzhou", "transcribe")["auth_environment"] == "GROQ_API_KEY"
     monkeypatch.setenv("INSTAGRAM_COOKIE", "fixture-session")
     restored = runtime.assess("instagram", "search")
     assert restored["decision"] == "ELIGIBLE_UNVERIFIED"

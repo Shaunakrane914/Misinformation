@@ -213,6 +213,84 @@ def test_shared_source_replan_is_triggered_by_real_evidence_gaps():
     )
 
 
+def test_adaptive_followups_skip_recently_rate_limited_operation():
+    from backend.application.research.contracts import RankedEvidence
+    from backend.services.agent_reach.native.operation_capabilities import (
+        runtime_operation_capabilities,
+    )
+
+    runtime_operation_capabilities.reset_observations()
+    runtime_operation_capabilities.record_observation(
+        "web", "search", {
+            "outcome": "FAILED", "content_class": "NONE",
+            "network_observed": True, "http_statuses": [429],
+            "cache_statuses": ["MISS"], "error": "rate limited",
+        },
+    )
+    request = ResearchRequest(target="Acme", domain="general")
+    planner = MagicMock()
+    planner.plan_adaptive_follow_ups.return_value = [{
+        "query_id": "q_followup_1",
+        "query_text": "Acme primary source",
+        "query_class": "adaptive_expansion",
+        "suggested_channels": ["web"],
+    }]
+    plan = QueryPlan(
+        planner=planner, channel_queries={}, query_classes=["general"], source_plan=None
+    )
+    item = _make_item("ev_001", "Acme report", "Acme secondary evidence")
+    ranked = RankedEvidence(
+        accepted=[item], ranked=[item], clusters={"grp1": ["ev_001"]}, rejected=[]
+    )
+    discovery = Discovery(
+        retrieval=RetrievalResult(query="Acme", domain="general"),
+        raw_candidates=[item], accepted=[item], rejected=[],
+    )
+    with patch("backend.services.agent_reach.agent_reach_service.search_channel") as search:
+        result = AdaptiveDiscoveryCoordinator().run(
+            request, ResearchBudget(follow_up_budget=1, timeout_seconds=20),
+            plan, discovery, ranked, start_ts=time.time(), effective_timeout=20.0,
+        )
+
+    search.assert_not_called()
+    assert result.telemetry["runtime_skips"][0]["reason"] == "RATE_LIMITED"
+    assert result.query_records[0].status == "FAILED"
+    runtime_operation_capabilities.reset_observations()
+
+
+def test_adaptive_followups_do_not_repeat_initial_query():
+    request = ResearchRequest(target="Acme", domain="general")
+    planner = MagicMock()
+    planner.plan_adaptive_follow_ups.return_value = [{
+        "query_id": "q_followup_duplicate",
+        "query_text": "Acme evidence",
+        "query_class": "adaptive_expansion",
+        "suggested_channels": ["web"],
+    }]
+    plan = QueryPlan(
+        planner=planner,
+        channel_queries={"web": [{"query_text": " Acme Evidence "}]},
+        query_classes=["general"],
+        source_plan=None,
+    )
+    item = _make_item("ev_001", "Acme report", "Acme secondary evidence")
+    from backend.application.research.contracts import RankedEvidence
+    ranked = RankedEvidence(
+        accepted=[item], ranked=[item], clusters={"grp1": ["ev_001"]}, rejected=[]
+    )
+    discovery = Discovery(
+        retrieval=RetrievalResult(query="Acme", domain="general"),
+        raw_candidates=[item], accepted=[item], rejected=[],
+    )
+    with patch("backend.services.agent_reach.agent_reach_service.search_channel") as search:
+        result = AdaptiveDiscoveryCoordinator().run(
+            request, ResearchBudget(follow_up_budget=1, timeout_seconds=20),
+            plan, discovery, ranked, start_ts=time.time(), effective_timeout=20.0,
+        )
+    search.assert_not_called()
+    assert result.telemetry["rounds_executed"] == 0
+
+
 def test_stage_6_deep_reading_stage():
     stage = DeepReadingStage()
     request = ResearchRequest(target="Tesla Inc", domain="financial", deep_read_budget=2)

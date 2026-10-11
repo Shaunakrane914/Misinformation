@@ -8,6 +8,9 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from backend.services.agent_reach.channels import EvidenceFragment, RetrievalMode
 from backend.services.agent_reach.native.errors import AuthRequiredError, NativeReachError
+from backend.services.agent_reach.native.operation_capabilities import (
+    required_auth_environment,
+)
 
 if TYPE_CHECKING:
     from backend.infrastructure.acquisition.routing.router import NativeRouter
@@ -15,16 +18,6 @@ if TYPE_CHECKING:
 
 class StandardChannelHandlers:
     """Own native, feed, web-search, reader, and credential-gated execution."""
-
-    AUTH_ENVIRONMENT = {
-        "linkedin": "LINKEDIN_COOKIE",
-        "xueqiu": "XUEQIU_COOKIE",
-        "xiaohongshu": "XIAOHONGSHU_COOKIE",
-        "instagram": "INSTAGRAM_COOKIE",
-        "facebook": "FACEBOOK_COOKIE",
-        "boss": "BOSS_CDP_PORT",
-        "xiaoyuzhou": "GROQ_API_KEY",
-    }
 
     def __init__(self, router: "NativeRouter") -> None:
         self.router = router
@@ -41,18 +34,11 @@ class StandardChannelHandlers:
         **kwargs: Any,
     ) -> List[EvidenceFragment]:
         operation = str(kwargs.get("operation", "search")).lower()
+        auth_environment = required_auth_environment(platform, operation)
         if platform == "web_search":
             return self._execute_web(query, limit, query_id, query_class, query_text, telemetry, **kwargs)
-        if platform in self.AUTH_ENVIRONMENT:
-            public_operations = {
-                ("linkedin", "jobs"),
-                ("xiaoyuzhou", "podcast"),
-                ("xiaoyuzhou", "episodes"),
-                ("xiaoyuzhou", "search"),
-            }
+        if auth_environment:
             if (
-                (platform, operation) in public_operations
-                or
                 kwargs.get("public_mode")
                 or kwargs.get("allow_unauthenticated")
                 or kwargs.get("prefer_public")
@@ -495,8 +481,13 @@ class StandardChannelHandlers:
         )
         return fragments
 
-    def _execute_authenticated(self, platform: str, telemetry: Dict[str, Any]) -> List[EvidenceFragment]:
-        env_var = self.AUTH_ENVIRONMENT[platform]
+    def _execute_authenticated(
+        self, platform: str, telemetry: Dict[str, Any]
+    ) -> List[EvidenceFragment]:
+        operation = str(telemetry.get("operation", "search")).split(".", 1)[-1]
+        env_var = required_auth_environment(platform, operation)
+        if not env_var:
+            raise NativeReachError(f"No authentication contract registered for {platform}")
         try:
             self.router.executor.guard_authenticated_channel(platform=platform, backend=telemetry["backend"], env_var=env_var)
             telemetry.update(status="NO_DATA", error="Credential verified but no execution adapter configured")

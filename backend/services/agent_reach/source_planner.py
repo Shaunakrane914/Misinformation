@@ -19,15 +19,14 @@ from pydantic import BaseModel, Field
 
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
 from backend.services.agent_reach.native.operation_capabilities import (
+    CHANNEL_AUTH_ENVIRONMENT,
     EXECUTABLE_CAPABILITIES,
     RuntimeOperationCapabilities,
     runtime_operation_capabilities,
 )
 
 
-AUTH_GATED_CHANNELS = {
-    "linkedin", "xueqiu", "xiaohongshu", "instagram", "facebook", "boss",
-}
+AUTH_GATED_CHANNELS = set(CHANNEL_AUTH_ENVIRONMENT)
 
 DIRECT_URL_HOSTS = {
     "reddit.com": "reddit",
@@ -528,17 +527,6 @@ class SourcePlanningEngine:
     @staticmethod
     def _is_executable(channel: str, operation: str) -> bool:
         return operation in EXECUTABLE_CAPABILITIES.get(channel, set())
-
-    @staticmethod
-    def _auth_environment_name(channel: str) -> Optional[str]:
-        return {
-            "linkedin": "LINKEDIN_COOKIE",
-            "xueqiu": "XUEQIU_COOKIE",
-            "xiaohongshu": "XIAOHONGSHU_COOKIE",
-            "instagram": "INSTAGRAM_COOKIE",
-            "facebook": "FACEBOOK_COOKIE",
-            "boss": "BOSS_CDP_PORT",
-        }.get(channel)
 
     @staticmethod
     def _valid_subreddit_candidates(entity: str) -> Set[str]:

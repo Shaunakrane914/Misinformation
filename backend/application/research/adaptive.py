@@ -50,6 +50,7 @@ class AdaptiveExpansionStage:
             "queries": [],
             "halted_early": False,
             "halt_reason": None,
+            "runtime_skips": [],
             "source_replan": {
                 "triggered": False,
                 "gaps": [],
@@ -58,7 +59,14 @@ class AdaptiveExpansionStage:
             },
         }
         max_adaptive_rounds = min(budget.follow_up_budget, 3)
-        seen_adaptive_queries: Set[str] = set()
+        # A follow-up identical to an initial query is not novel and must not
+        # consume another provider request.
+        seen_adaptive_queries: Set[str] = {
+            item.get("query_text", "").strip().lower()
+            for queries in plan.channel_queries.values()
+            for item in queries
+            if item.get("query_text", "").strip()
+        }
         adaptive_query_records: List[QueryExecutionRecord] = []
 
         # Bound discovery and adaptive search by discovery timeout to prevent deep read starvation
@@ -241,6 +249,20 @@ class AdaptiveExpansionStage:
 
                     fu_candidates: List[EvidenceItem] = []
                     for ch in suggested_ch[:2]:
+                        from backend.services.agent_reach.native.operation_capabilities import (
+                            runtime_operation_capabilities,
+                        )
+                        assessment = runtime_operation_capabilities.assess(ch, "search")
+                        if assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+                            skip_reason = f"{ch}.search: {assessment['reason']}"
+                            follow_up_telemetry["runtime_skips"].append({
+                                "query_id": fu["query_id"],
+                                "channel": ch,
+                                "operation": "search",
+                                "reason": assessment["reason"],
+                            })
+                            fu_error = skip_reason if fu_error is None else f"{fu_error}; {skip_reason}"
+                            continue
                         try:
                             frags = agent_reach_service.search_channel(ch, fu["query_text"], limit=2)
                             if frags:

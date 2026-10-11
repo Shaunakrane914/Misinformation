@@ -1,9 +1,11 @@
 import json
 from pathlib import Path
 
-audit_dir = Path("docs/visual-audit")
+REPO_ROOT = Path(__file__).resolve().parents[2]
+audit_dir = REPO_ROOT / "docs" / "visual-audit"
 with open(audit_dir / "capture_results.json", "r", encoding="utf-8") as f:
     records = json.load(f)
+
 
 # Group by page
 pages = {}

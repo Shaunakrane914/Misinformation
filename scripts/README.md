@@ -80,8 +80,10 @@ All scripts are physically organized into Python packages with `__init__.py`:
 6. **Development (`scripts/development/`)**:
    - `extract_mandate.py`: Helper script for extracting specification blocks.
    - `find_questions.py`: Helper script for evaluation question discovery.
+   - `make_audit_readme.py`: Visual audit report generator from Playwright capture records.
 
 ### Backward-Compatibility Root Wrappers
+
 
 To guarantee zero breakage of existing runbooks, documentation, and external CLI invocations, thin compatibility wrappers are preserved at `scripts/` root for the most frequently executed commands:
 - `scripts/validate_release_candidate_smoke.py` -> forwards to `scripts/validation/validate_release_candidate_smoke.py`

@@ -115,6 +115,6 @@ Developer utility scripts.
 | Script File | Primary Purpose | Verified Execution Command | Key Dependencies & Consumers |
 | :--- | :--- | :--- | :--- |
 | [`scripts/development/extract_mandate.py`](../../scripts/development/extract_mandate.py) | **Mandate Extractor**: Helper utility for extracting specification blocks. | `python scripts/development/extract_mandate.py` | Developer utility. |
-| [`scripts/development/find_questions.py`](../../scripts/development/find_questions.py) | **Question Finder**: Helper utility for finding evaluation test questions. | `python scripts/development/find_questions.py` | Developer utility. |
-| [`tools/make_audit_readme.py`](../../tools/make_audit_readme.py) | **Visual Audit Generator**: Compiles `docs/visual-audit/README.md` from screenshot records. | `python tools/make_audit_readme.py` | Generates visual audit index. |
+| [`scripts/development/make_audit_readme.py`](../../scripts/development/make_audit_readme.py) | **Visual Audit Generator**: Compiles `docs/visual-audit/README.md` from screenshot records. | `python scripts/development/make_audit_readme.py` | Generates visual audit index. |
+
 

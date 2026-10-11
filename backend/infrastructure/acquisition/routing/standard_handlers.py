@@ -40,8 +40,18 @@ class StandardChannelHandlers:
         telemetry: Dict[str, Any],
         **kwargs: Any,
     ) -> List[EvidenceFragment]:
+        operation = str(kwargs.get("operation", "search")).lower()
+        if platform == "web_search":
+            return self._execute_web(query, limit, query_id, query_class, query_text, telemetry, **kwargs)
         if platform in self.AUTH_ENVIRONMENT:
+            public_operations = {
+                ("linkedin", "jobs"),
+                ("xiaoyuzhou", "podcast"),
+                ("xiaoyuzhou", "episodes"),
+            }
             if (
+                (platform, operation) in public_operations
+                or
                 kwargs.get("public_mode")
                 or kwargs.get("allow_unauthenticated")
                 or kwargs.get("prefer_public")
@@ -57,6 +67,11 @@ class StandardChannelHandlers:
         return self._execute_generic(platform, query, limit, query_id, query_class, query_text, telemetry)
 
     def _execute_github(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        operation = str(_.get("operation", "search")).lower()
+        if operation != "search":
+            return self._execute_github_operation(
+                operation, query, limit, query_id, query_class, query_text, telemetry
+            )
         try:
             result = self.router.executor.execute_github_search(query, limit=limit)
             fragments = self.router.normalizer.normalize_github_repos(
@@ -74,7 +89,107 @@ class StandardChannelHandlers:
             self._fallback(telemetry, "GitHub REST API", "GH_CLI_UNAVAILABLE", RetrievalMode.DIRECT_API.value, fragments)
             return fragments
 
+    def _execute_github_operation(
+        self, operation, query, limit, query_id, query_class, query_text, telemetry
+    ):
+        result = self.router.executor.execute_github_rest_operation(
+            query, operation, limit=limit
+        )
+        fragments: List[EvidenceFragment] = []
+        repo = result.get("repo", query)
+        for item in result.get("items", []):
+            if operation == "read":
+                title = item.get("full_name") or repo
+                body = item.get("readme") or item.get("description") or ""
+                url = item.get("html_url") or f"https://github.com/{repo}"
+                author = (item.get("owner") or {}).get("login") or repo.split("/")[0]
+                published = item.get("updated_at") or ""
+                depth = "FULL_ARTICLE" if item.get("readme") else "METADATA"
+            elif operation in {"issues", "prs"}:
+                title = item.get("title") or f"GitHub {operation[:-1]}"
+                body = item.get("body") or title
+                url = item.get("html_url") or ""
+                author = (item.get("user") or {}).get("login") or "GitHub"
+                published = item.get("created_at") or ""
+                depth = "FULL_ARTICLE" if item.get("body") else "METADATA"
+            elif operation == "releases":
+                title = item.get("name") or item.get("tag_name") or "GitHub release"
+                body = item.get("body") or title
+                url = item.get("html_url") or ""
+                author = ((item.get("author") or {}).get("login") or repo.split("/")[0])
+                published = item.get("published_at") or item.get("created_at") or ""
+                depth = "FULL_ARTICLE" if item.get("body") else "METADATA"
+            else:
+                commit = item.get("commit") or {}
+                title = (commit.get("message") or "GitHub commit").splitlines()[0]
+                body = commit.get("message") or title
+                url = item.get("html_url") or ""
+                author = ((item.get("author") or {}).get("login") or
+                          (commit.get("author") or {}).get("name") or "GitHub")
+                published = (commit.get("author") or {}).get("date") or ""
+                depth = "FULL_ARTICLE"
+            fragments.append(EvidenceFragment(
+                platform="GitHub", title=title, content=body, url=url,
+                author=author, published=published, snippet=body[:300], score=70.0,
+                retrieval_method="github_rest", retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="github-rest", channel_name="github",
+                content_depth=depth, query_id=query_id, query_class=query_class,
+                query_text=query_text,
+                raw_metadata={"backend": "GitHub REST API", "operation": operation},
+            ))
+        self._attach_transport(fragments, result.get("transport"))
+        self.router._tag_fragments(
+            fragments, "github", "github", RetrievalMode.DIRECT_API.value,
+            "GitHub REST API", None, bool(os.getenv("GITHUB_TOKEN")),
+        )
+        telemetry.update(status="SUCCESS", backend="GitHub REST API")
+        return fragments
+
     def _execute_youtube(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        operation = str(_.get("operation", "search")).lower()
+        if operation == "read":
+            result = self.router.execute_channel_read(query)
+            if result.get("status") != "success":
+                raise NativeReachError(result.get("error", "YouTube read failed"))
+            content = result.get("content", "")
+            fragments = [EvidenceFragment(
+                platform="YouTube", title=result.get("title", "YouTube video"),
+                content=content, url=query, author="YouTube", snippet=content[:300],
+                score=55.0, retrieval_method="yt_dlp", channel_name="youtube",
+                retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
+                native_backend_id="yt-dlp", content_depth="VIDEO_METADATA",
+                query_id=query_id, query_class=query_class, query_text=query_text,
+                raw_metadata={"backend": result.get("backend", "yt-dlp"),
+                              "transport": result.get("transport", {})},
+            )]
+            self.router._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.NATIVE_TOOL_CLI.value, "yt-dlp", None, False)
+            telemetry.update(status="SUCCESS", backend="yt-dlp")
+            return fragments
+        if operation == "transcript":
+            result = self.router.executor.execute_youtube_transcript(query)
+            content = result.get("content", "")
+            fragments = [] if not content else [EvidenceFragment(
+                platform="YouTube", title="YouTube transcript", content=content,
+                url=query, author="YouTube", snippet=content[:300], score=75.0,
+                retrieval_method="yt_dlp_transcript", channel_name="youtube",
+                retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
+                native_backend_id="yt-dlp", content_depth="VIDEO_TRANSCRIPT",
+                query_id=query_id, query_class=query_class, query_text=query_text,
+                raw_metadata={"backend": "yt-dlp", "transport": result.get("transport", {})},
+            )]
+            self.router._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.NATIVE_TOOL_CLI.value, "yt-dlp", None, False)
+            telemetry.update(status="SUCCESS", backend="yt-dlp")
+            return fragments
+        if operation == "comments":
+            result = self.router.executor.execute_youtube_comments(query, limit=limit)
+            fragments = self.router.normalizer.normalize_youtube_comments(
+                result.get("items", []), video_url=query, query_id=query_id,
+                query_class=query_class, query_text=query_text,
+            )
+            self._attach_transport(fragments, result.get("transport"))
+            self.router._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.DIRECT_API.value, "yt-dlp", None, False)
+            telemetry.update(status="SUCCESS", backend="yt-dlp")
+            return fragments
         try:
             result = self.router.executor.execute_youtube_search(query, limit=limit)
             fragments = self.router.normalizer.normalize_youtube_search(
@@ -95,15 +210,24 @@ class StandardChannelHandlers:
             return fragments
 
     def _execute_v2ex(self, query, limit, query_id, query_class, query_text, telemetry, **_):
-        result = self.router.executor.execute_v2ex_hot()
+        operation = str(_.get("operation", "hot")).lower()
+        if operation == "hot":
+            result = self.router.executor.execute_v2ex_hot()
+        elif operation == "search":
+            result = self.router.executor.execute_v2ex_search(query)
+        else:
+            result = self.router.executor.execute_v2ex_operation(operation, query)
         items = result.get("items", [])
-        if query.strip():
+        if operation == "hot" and query.strip():
             needle = query.lower()
             matches = [item for item in items if needle in item.get("title", "").lower() or needle in (item.get("content") or "").lower()]
             items = matches or items[:limit]
         fragments = self.router.normalizer.normalize_v2ex_topics(items[:limit], query_id=query_id, query_class=query_class, query_text=query_text)
         self._attach_transport(fragments, result.get("transport"))
         self.router._tag_fragments(fragments, "v2ex", "v2ex", RetrievalMode.DIRECT_API.value, "v2ex-public-api", None, False)
+        if operation == "replies":
+            for fragment in fragments:
+                fragment.content_depth = "COMMENT"
         telemetry["status"] = "SUCCESS"
         return fragments
 
@@ -118,6 +242,20 @@ class StandardChannelHandlers:
         return fragments
 
     def _execute_rss(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        if str(_.get("operation", "search")).lower() == "read":
+            if not query.strip().lower().startswith(("http://", "https://")):
+                raise NativeReachError("rss.read requires an explicit feed URL")
+            result = self.router.executor.execute_rss_read(query, limit=limit)
+            fragments = self.router.normalizer.normalize_rss_entries(
+                result.get("items", []), channel_name="rss", query_id=query_id,
+                query_class=query_class, query_text=query_text,
+            )
+            self._attach_transport(fragments, result.get("transport"))
+            self.router._tag_fragments(fragments, "rss", "rss", RetrievalMode.RSS_FEED.value, "feedparser", None, False)
+            for fragment in fragments:
+                fragment.content_depth = "FEED_ENTRY_SUMMARY"
+            telemetry.update(status="SUCCESS", backend="feedparser")
+            return fragments
         wire_terms = ("press release", "filing", "statement", "announcement", "regulatory", "wire")
         wire_query = query if any(term in query.lower() for term in wire_terms) else f"{query} (press release OR official statement OR filing OR wire)"
         return self._execute_feed("rss", wire_query, limit, query_id, query_class, wire_query, telemetry)
@@ -150,6 +288,10 @@ class StandardChannelHandlers:
             return fragments
 
     def _execute_web(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        if str(_.get("operation", "search")).lower() == "read":
+            return self._execute_jina_reader(
+                query, limit, query_id, query_class, query_text, telemetry, url=query
+            )
         try:
             fragments = self.router._execute_web_search(query, limit, query_id, query_class, query_text)
             if fragments:
@@ -210,6 +352,9 @@ class StandardChannelHandlers:
             return self._indexed_fallback("xueqiu", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:xueqiu.com")
 
     def _execute_xiaoyuzhou(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        operation = str(_.get("operation", "podcast")).lower()
+        if operation not in {"podcast", "episodes"}:
+            raise NativeReachError(f"Unsupported Xiaoyuzhou operation: {operation}")
         try:
             result = self.router.executor.execute_xiaoyuzhou_podcast(query, limit=limit)
             items = result.get("items", [])

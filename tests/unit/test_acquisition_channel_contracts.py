@@ -132,15 +132,15 @@ def test_every_channel_selects_its_concrete_handler(monkeypatch, channel):
             f"_execute_{channel}",
             lambda *args, **kwargs: [marker],
         )
-    else:
-        # web_search is intentionally the generic discovery route. No fake
-        # native integration is advertised for it.
+    elif channel == "web_search":
         assert channel == "web_search"
         monkeypatch.setattr(
             standard,
-            "_execute_generic",
+            "_execute_web",
             lambda *args, **kwargs: [marker],
         )
+    else:
+        raise AssertionError(f"No dispatcher contract fixture for {channel}")
 
     fragments, telemetry = router.execute_channel_query(channel, "controlled fixture", limit=1)
     assert fragments == [marker]

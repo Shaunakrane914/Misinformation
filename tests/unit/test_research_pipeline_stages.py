@@ -1,6 +1,7 @@
 """Unit test suite verifying all 10 decomposed research pipeline stages independently."""
 
 from unittest.mock import MagicMock, patch
+import time
 import pytest
 
 from backend.application.research import (
@@ -167,6 +168,49 @@ def test_adaptive_discovery_coordinator_empty():
     assert isinstance(adaptive, AdaptiveEvidence)
     assert adaptive.telemetry["rounds_executed"] == 0
     assert len(adaptive.query_records) == 0
+
+
+def test_shared_source_replan_is_triggered_by_real_evidence_gaps():
+    from backend.application.research.contracts import RankedEvidence
+    from backend.services.agent_reach.native.operation_capabilities import (
+        runtime_operation_capabilities,
+    )
+    from backend.services.agent_reach.source_planner import source_planning_engine
+
+    runtime_operation_capabilities.reset_observations()
+    request = ResearchRequest(target="Acme", domain="general")
+    budget = ResearchBudget(follow_up_budget=1, timeout_seconds=20)
+    legacy_planner = MagicMock()
+    legacy_planner.plan_adaptive_follow_ups.return_value = []
+    source_plan = source_planning_engine.plan(
+        "Acme made an unverified claim", entity="Acme", domain="general"
+    )
+    plan = QueryPlan(
+        planner=legacy_planner, channel_queries={}, query_classes=["general"],
+        source_plan=source_plan,
+    )
+    ranked = RankedEvidence(accepted=[], ranked=[], clusters={}, rejected=[])
+    discovery = Discovery(
+        retrieval=RetrievalResult(query="Acme", domain="general"),
+        raw_candidates=[], accepted=[], rejected=[],
+    )
+    empty_replan = RetrievalResult(query="Acme", domain="general", query_records=[])
+    with patch(
+        "backend.services.agent_reach.agent_reach_service.retrieve_many",
+        return_value=empty_replan,
+    ) as retrieve_many:
+        adaptive = AdaptiveDiscoveryCoordinator().run(
+            request, budget, plan, discovery, ranked,
+            start_ts=time.time(), effective_timeout=20.0,
+        )
+    assert adaptive.telemetry["source_replan"]["triggered"] is True
+    assert "missing primary evidence" in adaptive.telemetry["source_replan"]["gaps"]
+    submitted = retrieve_many.call_args.kwargs["channel_queries"]
+    assert submitted
+    assert all(
+        item["operation"] == "search"
+        for queries in submitted.values() for item in queries
+    )
 
 
 def test_stage_6_deep_reading_stage():

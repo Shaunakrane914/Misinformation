@@ -49,7 +49,13 @@ class AdaptiveExpansionStage:
             "attempted": 0,
             "queries": [],
             "halted_early": False,
-            "halt_reason": None
+            "halt_reason": None,
+            "source_replan": {
+                "triggered": False,
+                "gaps": [],
+                "new_actions": [],
+                "accepted_evidence": 0,
+            },
         }
         max_adaptive_rounds = min(budget.follow_up_budget, 3)
         seen_adaptive_queries: Set[str] = set()
@@ -57,6 +63,101 @@ class AdaptiveExpansionStage:
 
         # Bound discovery and adaptive search by discovery timeout to prevent deep read starvation
         discovery_ceiling = min(effective_timeout * 0.45, budget.discovery_timeout_seconds)
+
+        # Connect the shared SourcePlanningEngine's single bounded replan to
+        # real evidence gaps.  The legacy RetrievalPlanner continues to own
+        # query wording for later novelty rounds during compatibility migration.
+        source_plan = getattr(plan, "source_plan", None)
+        if budget.follow_up_budget > 0 and source_plan is not None:
+            gaps: List[str] = []
+            if not ranked.accepted:
+                gaps.append("no relevant results")
+            if not any(getattr(item, "primary_source", False) for item in ranked.accepted):
+                gaps.append("missing primary evidence")
+            independent_groups = {
+                getattr(item, "independence_group", "")
+                for item in ranked.accepted if getattr(item, "independence_group", "")
+            }
+            if len(independent_groups) < 2:
+                gaps.append("insufficient independent corroboration")
+            full_depths = {
+                "FULL_ARTICLE", "PRIMARY_DOCUMENT", "REGULATORY_FILING",
+                "OFFICIAL_STATEMENT", "SOCIAL_POST", "VIDEO_TRANSCRIPT",
+            }
+            if ranked.accepted and not any(
+                str(getattr(item, "content_depth", "")).upper() in full_depths
+                for item in ranked.accepted
+            ):
+                gaps.append("metadata-only results when full evidence is required")
+
+            if gaps:
+                before_ids = {action.action_id for action in source_plan.actions}
+                replanned = source_plan
+                try:
+                    from backend.services.agent_reach.source_planner import source_planning_engine
+                    replanned = source_planning_engine.replan(source_plan, gaps)
+                except Exception as error:
+                    logger.debug("[ResearchEngine] Source replan failed closed: %s", error)
+                new_actions = [
+                    action for action in replanned.actions if action.action_id not in before_ids
+                ]
+                follow_up_telemetry["source_replan"].update(
+                    triggered=bool(new_actions),
+                    gaps=gaps,
+                    new_actions=[action.to_dict() for action in new_actions],
+                )
+                if new_actions and (time.time() - start_ts) < discovery_ceiling:
+                    replan_queries: Dict[str, List[Dict[str, str]]] = {}
+                    for action in new_actions:
+                        replan_queries.setdefault(action.channel, []).append({
+                            "query_id": action.action_id,
+                            "query_class": action.source_category,
+                            "query_text": action.query,
+                            "operation": action.operation,
+                        })
+                    replan_result = agent_reach_service.retrieve_many(
+                        channel_queries=replan_queries,
+                        domain=request.domain,
+                        agent_name=request.agent_name,
+                        target_name=request.target,
+                        budget={
+                            "max_queries_per_channel": 1,
+                            "max_results_per_query": 3,
+                            "max_total_evidence": 6,
+                            "max_deep_reads": 0,
+                        },
+                        perform_reads=False,
+                        timeout=min(6.0, max(2.0, discovery_ceiling - (time.time() - start_ts))),
+                    )
+                    replan_candidates: List[EvidenceItem] = []
+                    for idx, fragment in enumerate(replan_result.fragments):
+                        item_id = getattr(fragment, "evidence_id", None) or f"ev_replan_{idx + 1:03d}"
+                        item = EvidenceItem.from_evidence_fragment(
+                            fragment, item_id=item_id, target_name=request.target
+                        )
+                        source_quality_engine.classify_and_score(item, target_name=request.target)
+                        replan_candidates.append(item)
+                    accepted_replan, rejected_replan = relevance_gate.filter_candidates(
+                        replan_candidates,
+                        target_entity=request.target,
+                        domain=request.domain,
+                        intent=request.intent,
+                    )
+                    existing_urls = {item.canonical_url for item in ranked.accepted}
+                    for item in accepted_replan:
+                        if item.canonical_url not in existing_urls:
+                            ranked.accepted.append(item)
+                            existing_urls.add(item.canonical_url)
+                    ranked.rejected.extend(rejected_replan)
+                    adaptive_query_records.extend(replan_result.query_records)
+                    follow_up_telemetry["source_replan"]["accepted_evidence"] = len(accepted_replan)
+                    ranked.accepted, ranked.clusters = source_independence_engine.cluster_independence(ranked.accepted)
+                    ranked.ranked = candidate_ranker.rank_candidates(
+                        ranked.accepted,
+                        target_name=request.target,
+                        intent=request.intent,
+                        query_classes=plan.query_classes,
+                    )
 
         if budget.follow_up_budget > 0:
             for round_idx in range(1, max_adaptive_rounds + 1):

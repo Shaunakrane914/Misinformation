@@ -23,16 +23,30 @@ from backend.infrastructure.acquisition.routing.router import native_router
 from backend.infrastructure.acquisition.service import agent_reach_service
 from backend.services.agent_reach.native.channel_capabilities import CAPABILITY_MATRIX
 from backend.services.agent_reach.source_planner import EXECUTABLE_CAPABILITIES
+from backend.services.agent_reach.native.operation_capabilities import (
+    runtime_operation_capabilities,
+)
 
 
 PROBES = [
     ("web", "search", "Nvidia RTX 5090 discontinuation rumor", True, None),
+    ("web_search", "search", "Nvidia RTX 5090 discontinuation rumor", True, None),
+    ("web", "read", "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/", True, None),
     ("news", "search", "Nvidia RTX 5090 discontinuation rumor", True, None),
     ("rss", "search", "Nvidia official product announcement RTX 5090", True, None),
     ("jina_reader", "read", "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/", True, None),
     ("github", "search", "misinformation research retrieval", True, None),
+    ("github", "read", "pallets/flask", True, None),
+    ("github", "issues", "pallets/flask", True, None),
+    ("github", "releases", "pallets/flask", True, None),
     ("youtube", "search", "Nvidia RTX 5090 technical analysis", True, None),
+    ("youtube", "read", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", True, None),
+    ("youtube", "transcript", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", True, None),
+    ("youtube", "comments", "https://www.youtube.com/watch?v=dQw4w9WgXcQ", True, None),
     ("v2ex", "hot", "AI", True, None),
+    ("v2ex", "latest", "", True, None),
+    ("v2ex", "topic", "1", True, None),
+    ("v2ex", "replies", "1", True, None),
     ("bilibili", "search", "Nvidia RTX 5090", True, None),
     ("twitter", "profile", "@OpenAI", True, None),
     ("twitter", "status", "https://x.com/Safety/status/1775942160509989256", True, None),
@@ -50,8 +64,7 @@ PROBES = [
     ("instagram", "search", "Nvidia", True, None),
     ("facebook", "search", "Nvidia", True, None),
     ("boss", "search_jobs", "AI engineer", True, None),
-    ("xiaoyuzhou", "search", "artificial intelligence", True, None),
-    ("web_search", "search", "Nvidia", True, None),
+    ("xiaoyuzhou", "podcast", "artificial intelligence", True, None),
 ]
 
 
@@ -216,16 +229,26 @@ def main() -> int:
         for operation in sorted(declared | executable):
             if (channel, operation) in probed_keys:
                 continue
+            assessment = runtime_operation_capabilities.assess(channel, operation)
+            if operation not in executable:
+                outcome, health = "UNAVAILABLE_NOT_IMPLEMENTED", "UNSUPPORTED"
+                reason = "Declared upstream but no production execution path"
+            elif assessment["runtime_health"] in {"AUTH_REQUIRED", "BLOCKED"}:
+                outcome, health = assessment["runtime_health"], "BLOCKED"
+                reason = assessment["reason"]
+            else:
+                outcome, health = "UNVERIFIED", "UNVERIFIED"
+                reason = "Not exercised in bounded live audit"
             operation_records.append({
                 "channel": channel,
                 "operation": operation,
-                "outcome": "UNVERIFIED" if operation in executable else "UNAVAILABLE_NOT_IMPLEMENTED",
-                "health": "UNVERIFIED" if operation in executable else "UNSUPPORTED",
+                "outcome": outcome,
+                "health": health,
                 "network_io_observed": False,
                 "http_statuses_observed": [],
                 "evidence_item_count": 0,
                 "transport": [],
-                "error_category": "Not exercised in bounded live audit" if operation in executable else "Declared upstream but no production execution path",
+                "error_category": reason,
             })
 
     grouped: Dict[str, List[Dict[str, Any]]] = defaultdict(list)

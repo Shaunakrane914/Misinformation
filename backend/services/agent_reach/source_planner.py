@@ -18,28 +18,12 @@ from typing import Any, Dict, Iterable, List, Optional, Set
 from pydantic import BaseModel, Field
 
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
+from backend.services.agent_reach.native.operation_capabilities import (
+    EXECUTABLE_CAPABILITIES,
+    RuntimeOperationCapabilities,
+    runtime_operation_capabilities,
+)
 
-
-# Operations that are actually routed by the current production implementation.
-# This deliberately does not repeat aspirational operations from provider docs.
-EXECUTABLE_CAPABILITIES: Dict[str, Set[str]] = {
-    "news": {"search"},
-    "web": {"search"},
-    "jina_reader": {"read"},
-    "rss": {"search"},
-    "github": {"search"},
-    "youtube": {"search"},
-    "v2ex": {"hot"},
-    "bilibili": {"search"},
-    "reddit": {"search", "read", "comments"},
-    "twitter": {"search", "profile", "status", "read"},
-    "linkedin": {"jobs"},
-    "xueqiu": {"search"},
-    "xiaohongshu": {"search"},
-    "instagram": {"search", "oembed"},
-    "facebook": {"search", "oembed"},
-    "boss": {"search_jobs"},
-}
 
 AUTH_GATED_CHANNELS = {
     "linkedin", "xueqiu", "xiaohongshu", "instagram", "facebook", "boss",
@@ -141,6 +125,7 @@ class SourcePlan:
     llm_status: str = "NOT_REQUESTED"
     replan_count: int = 0
     warnings: List[str] = field(default_factory=list)
+    runtime_decisions: List[Dict[str, Any]] = field(default_factory=list)
 
     @property
     def channels(self) -> List[str]:
@@ -176,6 +161,7 @@ class SourcePlan:
             "llm_status": self.llm_status,
             "replan_count": self.replan_count,
             "warnings": list(self.warnings),
+            "runtime_decisions": list(self.runtime_decisions),
         }
 
 
@@ -192,9 +178,15 @@ class SourcePlanningEngine:
     }
     IDENTITY_TERMS = {"impersonation", "fake account", "profile", "handle", "identity"}
 
-    def __init__(self, llm_gateway: Any = None, budget: Optional[PlanningBudget] = None):
+    def __init__(
+        self,
+        llm_gateway: Any = None,
+        budget: Optional[PlanningBudget] = None,
+        runtime_capabilities: Optional[RuntimeOperationCapabilities] = None,
+    ):
         self._gateway = llm_gateway
         self.budget = budget or PlanningBudget()
+        self.runtime_capabilities = runtime_capabilities or runtime_operation_capabilities
 
     def plan(
         self,
@@ -219,16 +211,16 @@ class SourcePlanningEngine:
         )
         excluded: List[Dict[str, str]] = []
         warnings: List[str] = []
-
-        # Gated providers remain useful research ideas, but are never scheduled
-        # without runtime credentials and an executable implementation.
-        for channel in sorted(AUTH_GATED_CHANNELS & allowed):
-            env_name = self._auth_environment_name(channel)
-            if not env_name or not os.getenv(env_name):
-                excluded.append({
-                    "channel": channel,
-                    "reason": "AUTH_REQUIRED: no configured credential/session",
-                })
+        action_channels = {action.channel for action in actions}
+        for channel in sorted(allowed - action_channels):
+            for operation in sorted(EXECUTABLE_CAPABILITIES.get(channel, set())):
+                assessment = self.runtime_capabilities.assess(channel, operation)
+                if assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+                    excluded.append({
+                        "channel": channel,
+                        "operation": operation,
+                        "reason": assessment["reason"],
+                    })
 
         llm_requested = (
             os.getenv("AEGIS_SOURCE_PLANNER_LLM_ENABLED", "false").lower()
@@ -252,6 +244,8 @@ class SourcePlanningEngine:
                 llm_status = "FALLBACK"
                 warnings.append(f"LLM suggestions unavailable or invalid: {type(exc).__name__}")
 
+        actions, runtime_decisions, runtime_excluded = self._apply_runtime_capabilities(actions)
+        excluded.extend(runtime_excluded)
         actions = self._deduplicate_and_bound(actions)
         if not actions:
             warnings.append("No executable source action passed capability validation")
@@ -268,6 +262,7 @@ class SourcePlanningEngine:
             planner_mode=planner_mode,
             llm_status=llm_status,
             warnings=warnings,
+            runtime_decisions=runtime_decisions,
         )
 
     def replan(self, plan: SourcePlan, evidence_gaps: Iterable[str]) -> SourcePlan:
@@ -300,6 +295,9 @@ class SourcePlanningEngine:
                 "Targeted corroboration after the initial evidence set was insufficient.",
             ))
 
+        candidates, decisions, excluded = self._apply_runtime_capabilities(candidates)
+        plan.runtime_decisions.extend(decisions)
+        plan.excluded.extend(excluded)
         for candidate in candidates:
             key = (candidate.channel, candidate.operation, candidate.query.lower())
             if key not in existing and self._is_executable(candidate.channel, candidate.operation):
@@ -357,9 +355,38 @@ class SourcePlanningEngine:
         return [
             action for action in actions
             if action.channel in allowed
-            and action.channel not in AUTH_GATED_CHANNELS
             and self._is_executable(action.channel, action.operation)
         ]
+
+    def _apply_runtime_capabilities(
+        self, actions: Iterable[SourceAction]
+    ) -> tuple[List[SourceAction], List[Dict[str, Any]], List[Dict[str, str]]]:
+        accepted: List[SourceAction] = []
+        decisions: List[Dict[str, Any]] = []
+        excluded: List[Dict[str, str]] = []
+        for action in actions:
+            assessment = self.runtime_capabilities.assess(
+                action.channel, action.operation, required_depth=action.expected_depth
+            )
+            assessment["action_id"] = action.action_id
+            decisions.append(assessment)
+            if assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+                action.validation_status = assessment["decision"]
+                excluded.append({
+                    "channel": action.channel,
+                    "operation": action.operation,
+                    "reason": assessment["reason"],
+                })
+                continue
+            if assessment["decision"] == "DEPRIORITIZE_CACHE":
+                action.priority += 20
+                action.limitations.append("Only cached evidence was observed recently.")
+            elif assessment["decision"] == "ELIGIBLE_UNVERIFIED":
+                action.priority += 5
+                action.limitations.append("Runtime health is unknown or stale; bounded probe only.")
+            accepted.append(action)
+        accepted.sort(key=lambda item: (item.stage, item.priority))
+        return accepted, decisions, excluded
 
     def _get_llm_suggestions(
         self, claim: str, entity: str, intent_class: str, agent: str
@@ -394,8 +421,6 @@ class SourcePlanningEngine:
             reason = ""
             if channel not in allowed or not self._is_executable(channel, operation):
                 reason = "UNSUPPORTED_CHANNEL_OR_OPERATION"
-            elif channel in AUTH_GATED_CHANNELS:
-                reason = "AUTH_GATED_NOT_SCHEDULED"
             elif item.source_hint and item.source_hint.startswith(("http://", "https://")):
                 safe, _ = is_safe_url(item.source_hint)
                 if not safe:
@@ -404,6 +429,10 @@ class SourcePlanningEngine:
                 sub = item.source_hint.strip().removeprefix("r/").lower()
                 if sub and sub not in valid_subreddits:
                     reason = "UNVERIFIED_SUBREDDIT"
+            elif self.runtime_capabilities.assess(
+                channel, operation, required_depth="CAPABILITY_DEPENDENT"
+            )["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+                reason = self.runtime_capabilities.assess(channel, operation)["reason"]
             if reason:
                 rejected.append({"channel": channel or "unknown", "reason": reason})
                 continue

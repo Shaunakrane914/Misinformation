@@ -9,6 +9,7 @@ command allowlists. Arbitrary shell text execution is strictly prohibited.
 import json
 import logging
 import os
+import re
 import shutil
 import subprocess
 import sys
@@ -323,6 +324,84 @@ class NativeExecutor:
         except Exception as e:
             raise BackendExecutionError("github", "gh CLI", " ".join(cmd_meta), 1, str(e))
 
+    def execute_github_rest_operation(
+        self,
+        repo: str,
+        operation: str,
+        limit: int = 5,
+        timeout: float = DEFAULT_TIMEOUT_SECONDS,
+    ) -> Dict[str, Any]:
+        """Read a public repository or collection through the documented REST API."""
+        clean_repo = repo.strip().rstrip("/")
+        if "github.com/" in clean_repo:
+            parsed = urllib.parse.urlparse(clean_repo if "://" in clean_repo else f"https://{clean_repo}")
+            clean_repo = parsed.path.strip("/")
+        clean_repo = clean_repo.removesuffix(".git")
+        parts = clean_repo.split("/")
+        if len(parts) < 2 or not all(re.fullmatch(r"[A-Za-z0-9_.-]+", part) for part in parts[:2]):
+            raise NativeReachError("GitHub operations require an owner/repository name or URL")
+        clean_repo = "/".join(parts[:2])
+        op = operation.lower()
+        suffix = {
+            "read": "",
+            "issues": "/issues",
+            "prs": "/pulls",
+            "releases": "/releases",
+            "commits": "/commits",
+        }.get(op)
+        if suffix is None:
+            raise NativeReachError(f"Unsupported GitHub REST operation: {operation}")
+
+        url = f"https://api.github.com/repos/{clean_repo}{suffix}"
+        if suffix:
+            url += f"?per_page={min(max(limit, 1), 20)}"
+        headers = {
+            "User-Agent": _USER_AGENT,
+            "Accept": "application/vnd.github+json",
+            "X-GitHub-Api-Version": "2022-11-28",
+        }
+        token = os.getenv("GITHUB_TOKEN")
+        if token:
+            headers["Authorization"] = f"Bearer {token}"
+        req = urllib.request.Request(url, headers=headers)
+        started = time.perf_counter()
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                raw_body = response.read(MAX_OUTPUT_BYTES)
+                data = json.loads(raw_body.decode("utf-8"))
+                latency_ms = int((time.perf_counter() - started) * 1000)
+                transport = self._http_transport(response, url, raw_body, latency_ms)
+            items = data if isinstance(data, list) else [data]
+            if op == "read":
+                readme_url = f"https://api.github.com/repos/{clean_repo}/readme"
+                try:
+                    readme_req = urllib.request.Request(readme_url, headers=headers)
+                    with urllib.request.urlopen(readme_req, timeout=min(timeout, 6.0)) as response:
+                        readme_body = response.read(MAX_OUTPUT_BYTES)
+                        readme_meta = json.loads(readme_body.decode("utf-8"))
+                    download_url = readme_meta.get("download_url")
+                    if download_url:
+                        safe, _ = is_safe_url(download_url)
+                        if safe:
+                            raw_req = urllib.request.Request(download_url, headers={"User-Agent": _USER_AGENT})
+                            with urllib.request.urlopen(raw_req, timeout=min(timeout, 6.0)) as response:
+                                items[0]["readme"] = response.read(MAX_OUTPUT_BYTES).decode("utf-8", errors="replace")
+                except Exception:
+                    pass
+            return {
+                "platform": "github",
+                "backend": "GitHub REST API",
+                "operation": f"github.{op}",
+                "status": "SUCCESS" if items else "EMPTY",
+                "items": items[:limit],
+                "count": len(items[:limit]),
+                "repo": clean_repo,
+                "latency_ms": latency_ms,
+                "transport": transport,
+            }
+        except Exception as error:
+            raise BackendExecutionError("github", "GitHub REST API", url, 1, str(error))
+
     # ── 3. YouTube (In-Process yt-dlp Import Primary) ──────────────────────
 
     def execute_youtube_search(self, query: str, limit: int = 5, timeout: float = DEFAULT_TIMEOUT_SECONDS) -> Dict[str, Any]:
@@ -474,6 +553,16 @@ class NativeExecutor:
                         "status": "EMPTY",
                         "content": "",
                         "latency_ms": latency_ms,
+                        "transport": {
+                            "endpoint": url.strip(),
+                            "network_observed_this_attempt": True,
+                            "http_status": None,
+                            "content_type": None,
+                            "raw_body_bytes": None,
+                            "network_latency_ms": latency_ms,
+                            "cache_status": "UNKNOWN",
+                            "protocol": "external_tool",
+                        },
                     }
 
                 return {
@@ -484,6 +573,16 @@ class NativeExecutor:
                     "content": transcript_text,
                     "char_count": len(transcript_text),
                     "latency_ms": latency_ms,
+                    "transport": {
+                        "endpoint": url.strip(),
+                        "network_observed_this_attempt": True,
+                        "http_status": None,
+                        "content_type": "text/vtt",
+                        "raw_body_bytes": len(transcript_text.encode("utf-8", errors="replace")),
+                        "network_latency_ms": latency_ms,
+                        "cache_status": "UNKNOWN",
+                        "protocol": "external_tool",
+                    },
                 }
             except Exception as e:
                 raise BackendExecutionError("youtube", "yt-dlp", " ".join(cmd), 1, str(e))
@@ -535,6 +634,42 @@ class NativeExecutor:
                 }
         except Exception as e:
             raise BackendExecutionError("v2ex", "V2EX API (public)", url, 1, str(e))
+
+    def execute_v2ex_operation(
+        self, operation: str, value: str = "", timeout: float = DEFAULT_TIMEOUT_SECONDS
+    ) -> Dict[str, Any]:
+        """Execute public latest/topic/replies operations with a bounded response."""
+        operation = operation.lower()
+        if operation == "latest":
+            url = "https://www.v2ex.com/api/topics/latest.json"
+        else:
+            match = re.search(r"(?:/t/)?(\d+)", value or "")
+            if not match:
+                raise NativeReachError(f"v2ex.{operation} requires a numeric topic id or URL")
+            topic_id = match.group(1)
+            endpoint = "topics/show" if operation == "topic" else "replies/show"
+            url = f"https://www.v2ex.com/api/{endpoint}.json?topic_id={topic_id}"
+        started = time.perf_counter()
+        req = urllib.request.Request(url, headers={"User-Agent": _USER_AGENT})
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                raw_body = response.read(MAX_OUTPUT_BYTES)
+                data = json.loads(raw_body.decode("utf-8"))
+                latency_ms = int((time.perf_counter() - started) * 1000)
+                transport = self._http_transport(response, url, raw_body, latency_ms)
+            items = data if isinstance(data, list) else [data]
+            return {
+                "platform": "v2ex",
+                "backend": "V2EX API (public)",
+                "operation": f"v2ex.{operation}",
+                "status": "SUCCESS" if items else "EMPTY",
+                "items": items,
+                "count": len(items),
+                "latency_ms": latency_ms,
+                "transport": transport,
+            }
+        except Exception as error:
+            raise BackendExecutionError("v2ex", "V2EX API (public)", url, 1, str(error))
 
     # ── 5. Bilibili (Public Search API) ───────────────────────────────────
 
@@ -682,6 +817,16 @@ class NativeExecutor:
                 "items": comments,
                 "count": len(comments),
                 "latency_ms": latency_ms,
+                "transport": {
+                    "endpoint": url.strip(),
+                    "network_observed_this_attempt": True,
+                    "http_status": None,
+                    "content_type": "application/json",
+                    "raw_body_bytes": len(res.stdout.encode("utf-8", errors="replace")),
+                    "network_latency_ms": latency_ms,
+                    "cache_status": "UNKNOWN",
+                    "protocol": "external_tool",
+                },
             }
         except Exception as e:
             raise BackendExecutionError("youtube", "yt-dlp", " ".join(cmd), 1, str(e))

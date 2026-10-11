@@ -134,6 +134,12 @@ class DoctorBridge:
             "http_statuses": list(telemetry.get("http_statuses", [])),
             "last_verified_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         }
+        from backend.services.agent_reach.native.operation_capabilities import (
+            runtime_operation_capabilities,
+        )
+        runtime_operation_capabilities.record_observation(
+            canonical, str(telemetry.get("operation", f"{canonical}.search")), telemetry
+        )
 
     def get_active_backend(self, platform: str) -> Optional[str]:
         """Return the active backend serving this channel, or None if inactive."""

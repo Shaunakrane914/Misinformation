@@ -387,6 +387,16 @@ class NativeRouter:
                             "char_count": len(content),
                             "backend": "yt-dlp",
                             "fallback_used": False,
+                            "transport": {
+                                "endpoint": url,
+                                "network_observed_this_attempt": True,
+                                "http_status": None,
+                                "content_type": None,
+                                "raw_body_bytes": None,
+                                "network_latency_ms": None,
+                                "cache_status": "UNKNOWN",
+                                "protocol": "external_tool",
+                            },
                         }
             except Exception as e_yt:
                 logger.debug(f"[NativeRouter] yt-dlp read notice for {url}: {e_yt}")

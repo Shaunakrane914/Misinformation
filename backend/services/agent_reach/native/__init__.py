@@ -25,6 +25,11 @@ from backend.services.agent_reach.native.errors import (
 )
 from backend.services.agent_reach.native.executor import NativeExecutor, native_executor
 from backend.services.agent_reach.native.normalizer import NativeNormalizer, native_normalizer
+from backend.services.agent_reach.native.operation_capabilities import (
+    EXECUTABLE_CAPABILITIES,
+    RuntimeOperationCapabilities,
+    runtime_operation_capabilities,
+)
 from backend.services.agent_reach.native.runtime import (
     NativeRuntime,
     RuntimeProfile,
@@ -62,6 +67,9 @@ __all__ = [
     "PlatformCapability",
     "CAPABILITY_MATRIX",
     "get_capability",
+    "EXECUTABLE_CAPABILITIES",
+    "RuntimeOperationCapabilities",
+    "runtime_operation_capabilities",
     "NativeReachError",
     "AuthRequiredError",
     "BackendExecutionError",

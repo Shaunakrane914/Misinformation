@@ -8,6 +8,13 @@ from backend.services.agent_reach.source_planner import (
     PlanningBudget,
     SourcePlanningEngine,
 )
+from backend.services.agent_reach.native.operation_capabilities import (
+    runtime_operation_capabilities,
+)
+
+
+def setup_function():
+    runtime_operation_capabilities.reset_observations()
 
 
 def test_same_entity_produces_claim_specific_hardware_and_financial_plans():
@@ -28,7 +35,11 @@ def test_same_entity_produces_claim_specific_hardware_and_financial_plans():
 
     assert hardware.intent_class == "technical_product"
     assert financial.intent_class == "financial_integrity"
-    assert "hardware_discussion" in {a.source_category for a in hardware.actions}
+    assert "hardware_discussion" not in {a.source_category for a in hardware.actions}
+    assert any(
+        item.get("channel") == "reddit" and "POLICY_BLOCKED" in item.get("reason", "")
+        for item in hardware.excluded
+    )
     assert "regulatory_filing" in {a.source_category for a in financial.actions}
     assert hardware.to_channel_queries() != financial.to_channel_queries()
 
@@ -59,7 +70,12 @@ def test_explicit_social_urls_bypass_llm_and_route_to_concrete_operation(_safe):
         use_llm=False,
     )
     assert [(a.channel, a.operation) for a in x_plan.actions] == [("twitter", "status")]
-    assert [(a.channel, a.operation) for a in reddit_plan.actions] == [("reddit", "comments")]
+    assert reddit_plan.actions == []
+    reddit_exclusion = next(
+        item for item in reddit_plan.excluded
+        if item.get("channel") == "reddit" and item.get("operation") == "comments"
+    )
+    assert "POLICY_BLOCKED" in reddit_exclusion["reason"]
 
 
 def test_invalid_or_timed_out_llm_falls_back_without_losing_deterministic_plan():
@@ -105,7 +121,7 @@ def test_auth_only_scope_returns_no_false_executable_plan(monkeypatch):
     )
     assert plan.actions == []
     assert {item["reason"] for item in plan.excluded} == {
-        "AUTH_REQUIRED: no configured credential/session"
+        "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured"
     }
     assert "No executable source action" in plan.warnings[0]
 

@@ -37,6 +37,7 @@ from backend.services.agent_reach.channels_impl import (
     TwitterChannel,
     V2EXChannel,
     WebChannel,
+    WebSearchChannel,
     YouTubeChannel,
 )
 from backend.services.agent_reach.native import (
@@ -50,6 +51,9 @@ from backend.services.agent_reach.planner import RetrievalPlan, RetrievalPlanner
 from backend.services.agent_reach.source_planner import (
     EXECUTABLE_CAPABILITIES,
     SourcePlanningEngine,
+)
+from backend.services.agent_reach.native.operation_capabilities import (
+    runtime_operation_capabilities,
 )
 from backend.services.agent_reach.registry import CapabilityRegistry
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
@@ -84,6 +88,7 @@ class AgentReachService:
         # Core zero-config channels (cloud-ready & native tools)
         self.registry.register(NewsChannel())
         self.registry.register(WebChannel())
+        self.registry.register(WebSearchChannel())
         self.registry.register(RssChannel())
         self.registry.register(V2EXChannel())
         self.registry.register(BilibiliChannel())
@@ -112,23 +117,32 @@ class AgentReachService:
         available_count = sum(1 for c in cap_map.values() if c["status"] == ChannelStatus.AVAILABLE.value)
 
         native_channels = {}
+        operation_inventory = runtime_operation_capabilities.inventory()
         for plat, cap in CAPABILITY_MATRIX.items():
             doc_entry = native_doctor.get_channel_status(plat)
             registered = plat in self.registry.channel_names
             status_code = native_doctor.get_canonical_status_code(plat) if registered else "UNAVAILABLE"
             active_b = doc_entry.get("active_backend")
+            executable_operations = set(EXECUTABLE_CAPABILITIES.get(plat, set())) if registered else set()
+            if not registered or not executable_operations:
+                implementation_status = "NOT_IMPLEMENTED"
+            elif set(cap.operations) <= executable_operations:
+                implementation_status = "IMPLEMENTED"
+            else:
+                implementation_status = "PARTIALLY_IMPLEMENTED"
             native_channels[plat] = {
                 "status": status_code,
                 "backend": active_b,
-                "operations": sorted(EXECUTABLE_CAPABILITIES.get(plat, set())) if registered else [],
+                "operations": sorted(executable_operations),
                 "declared_operations": sorted(list(cap.operations)),
                 "registered": registered,
-                "implementation_status": "IMPLEMENTED" if registered else "NOT_IMPLEMENTED",
+                "implementation_status": implementation_status,
                 "tier": cap.tier,
                 "cloud_safe": cap.cloud_safe,
                 "health_class": doc_entry.get("health_class", "UNVERIFIED"),
                 "last_operation_outcome": doc_entry.get("outcome"),
                 "last_verified_at": doc_entry.get("last_verified_at"),
+                "operation_capabilities": operation_inventory.get(plat, {}),
             }
 
         # Runtime aliases are part of the actual service even though they are
@@ -147,6 +161,7 @@ class AgentReachService:
                 "health_class": doc_entry.get("health_class", "UNVERIFIED"),
                 "last_operation_outcome": doc_entry.get("outcome"),
                 "last_verified_at": doc_entry.get("last_verified_at"),
+                "operation_capabilities": operation_inventory.get(plat, {}),
             }
 
         return {

@@ -73,9 +73,9 @@ OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
     ("twitter", "status"): {"DIRECT_CONTENT"},
     ("twitter", "read"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
     ("linkedin", "jobs"): {"DIRECT_METADATA"},
-    ("xiaoyuzhou", "podcast"): {"DIRECT_METADATA", "SYNDICATED_SUMMARY"},
-    ("xiaoyuzhou", "episodes"): {"DIRECT_METADATA", "SYNDICATED_SUMMARY"},
-    ("xiaoyuzhou", "search"): {"DIRECT_METADATA", "SYNDICATED_SUMMARY"},
+    ("xiaoyuzhou", "podcast"): {"DIRECT_METADATA"},
+    ("xiaoyuzhou", "episodes"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
+    ("xiaoyuzhou", "search"): {"SEARCH_INDEX_DISCOVERY"},
 }
 
 
@@ -180,7 +180,11 @@ class RuntimeOperationCapabilities:
         channel, operation = self.normalize(channel, operation)
         statuses = [int(value) for value in telemetry.get("http_statuses", []) if value is not None]
         error = str(telemetry.get("error") or "") or None
-        rate_limited = 429 in statuses or "rate limit" in (error or "").lower()
+        rate_limited = (
+            429 in statuses
+            or telemetry.get("rate_limit_remaining") == 0
+            or "rate limit" in (error or "").lower()
+        )
         cache_states = {str(value).upper() for value in telemetry.get("cache_statuses", [])}
         network_observed = bool(telemetry.get("network_observed", False))
         cache_only = bool(cache_states & {"HIT", "CACHE_HIT"}) and not network_observed

@@ -71,6 +71,8 @@ class ChannelQueryDispatcher:
                 http_statuses=[] if error.status_code is None else [error.status_code],
                 source_endpoints=[error.endpoint] if error.endpoint else [],
                 retry_after_seconds=error.retry_after_seconds,
+                rate_limit_remaining=error.rate_limit_remaining,
+                rate_limit_reset_at=error.rate_limit_reset_at,
             )
         except Exception as error:
             telemetry.update(status="FAILED", error=str(error))
@@ -102,6 +104,8 @@ class ChannelQueryDispatcher:
             "source_endpoints": [],
             "cache_statuses": [],
             "retry_after_seconds": None,
+            "rate_limit_remaining": None,
+            "rate_limit_reset_at": None,
             "usable_text_chars": 0,
             "evidence_item_count": 0,
         }
@@ -109,6 +113,30 @@ class ChannelQueryDispatcher:
     @staticmethod
     def _finalize_outcome(telemetry: Dict[str, Any], fragments: List[EvidenceFragment]) -> None:
         """Classify evidence depth independently from transport success."""
+        transport = list(telemetry.get("transport_observations", []))
+        transport.extend(
+            (getattr(f, "raw_metadata", {}) or {}).get("transport", {})
+            for f in fragments
+        )
+        transport = [item for item in transport if item]
+        observed = [item for item in transport if item.get("network_observed_this_attempt") is True]
+        http_statuses = sorted(
+            {int(item) for item in telemetry.get("http_statuses", []) if item is not None}
+            | {int(item["http_status"]) for item in observed if item.get("http_status") is not None}
+        )
+        endpoints = list(dict.fromkeys([
+            *telemetry.get("source_endpoints", []),
+            *(item.get("endpoint") for item in observed if item.get("endpoint")),
+        ]))
+        cache_statuses = sorted({
+            item.get("cache_status", "UNKNOWN") for item in transport
+        })
+        telemetry.update(
+            network_observed=bool(telemetry.get("network_observed")) or bool(observed),
+            http_statuses=http_statuses,
+            source_endpoints=endpoints,
+            cache_statuses=cache_statuses or telemetry.get("cache_statuses") or ["UNKNOWN"],
+        )
         if telemetry.get("status") == "AUTH_REQUIRED":
             telemetry.update(outcome="AUTH_REQUIRED", content_class="NONE")
             return
@@ -118,14 +146,6 @@ class ChannelQueryDispatcher:
 
         depths = {str(getattr(f, "content_depth", "") or "").upper() for f in fragments}
         modes = {str(getattr(f, "retrieval_mode", "") or "").lower() for f in fragments}
-        transport = [
-            (getattr(f, "raw_metadata", {}) or {}).get("transport", {})
-            for f in fragments
-        ]
-        observed = [item for item in transport if item.get("network_observed_this_attempt") is True]
-        http_statuses = sorted({item.get("http_status") for item in observed if item.get("http_status") is not None})
-        endpoints = list(dict.fromkeys(item.get("endpoint") for item in observed if item.get("endpoint")))
-        cache_statuses = sorted({item.get("cache_status", "UNKNOWN") for item in transport if item})
         usable_chars = sum(
             int((getattr(f, "raw_metadata", {}) or {}).get("usable_body_chars", len((getattr(f, "content", "") or "").strip())))
             for f in fragments
@@ -153,10 +173,6 @@ class ChannelQueryDispatcher:
         telemetry.update(
             outcome=outcome,
             content_class=content_class,
-            network_observed=bool(observed),
-            http_statuses=http_statuses,
-            source_endpoints=endpoints,
-            cache_statuses=cache_statuses or ["UNKNOWN"],
             usable_text_chars=usable_chars,
             evidence_item_count=len(fragments),
         )

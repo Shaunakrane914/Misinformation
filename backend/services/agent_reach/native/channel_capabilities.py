@@ -200,7 +200,7 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
         auth_mode="api_key",
         tier=1,
         cloud_safe=False,
-        backends=["podcast-rss-syndication", "groq-whisper", "Bing Search Index"],
+        backends=["xiaoyuzhou-public-web", "groq-whisper", "Bing Search Index"],
         doc_ref="agent_reach/skill/references/video.md",
         fallback_chain=["Bing Search Index"]
     ),

@@ -6,6 +6,7 @@ Bilibili API, feedparser, OpenCLI, twitter-cli) through strict, parameter-checke
 command allowlists. Arbitrary shell text execution is strictly prohibited.
 """
 
+import hashlib
 import json
 import logging
 import os
@@ -153,10 +154,17 @@ class NativeExecutor:
             "latency_ms": latency_ms,
             "transport": {
                 "endpoint": observed_endpoint,
+                "requested_endpoint": clean_url,
+                "redirect_chain": list(response.redirect_chain) if 'response' in locals() else [clean_url],
                 "network_observed_this_attempt": True,
                 "http_status": status_code,
                 "content_type": content_type,
                 "raw_body_bytes": raw_body_bytes,
+                "raw_body_sha256": (
+                    hashlib.sha256(response.body).hexdigest()
+                    if 'response' in locals() and getattr(response, "body", None) is not None
+                    else None
+                ),
                 "network_latency_ms": latency_ms,
                 "cache_status": "UNKNOWN",
             },
@@ -720,10 +728,14 @@ class NativeExecutor:
         """Return only transport facts observed at the HTTP boundary."""
         return {
             "endpoint": getattr(response, "url", endpoint),
+            "requested_endpoint": endpoint,
+            "redirect_chain": [endpoint, getattr(response, "url", endpoint)]
+            if getattr(response, "url", endpoint) != endpoint else [endpoint],
             "network_observed_this_attempt": True,
             "http_status": getattr(response, "status", None),
             "content_type": response.headers.get("Content-Type") if getattr(response, "headers", None) else None,
             "raw_body_bytes": len(body),
+            "raw_body_sha256": hashlib.sha256(body).hexdigest(),
             "network_latency_ms": latency_ms,
             "cache_status": "UNKNOWN",
             "protocol": "http",
@@ -734,10 +746,13 @@ class NativeExecutor:
         """Translate shared HTTP observations into the existing evidence contract."""
         return {
             "endpoint": response.endpoint,
+            "requested_endpoint": response.redirect_chain[0] if response.redirect_chain else response.endpoint,
+            "redirect_chain": list(response.redirect_chain),
             "network_observed_this_attempt": True,
             "http_status": response.status_code,
             "content_type": response.content_type,
             "raw_body_bytes": len(response.body),
+            "raw_body_sha256": hashlib.sha256(response.body).hexdigest(),
             "network_latency_ms": response.latency_ms,
             "cache_status": "UNKNOWN",
             "protocol": "http",
@@ -902,70 +917,94 @@ class NativeExecutor:
 
     # ── 9. Xiaoyuzhou / Open Podcast RSS Syndication ───────────────────────
 
-    def execute_xiaoyuzhou_podcast(self, query: str, limit: int = 5, timeout: float = 10.0) -> Dict[str, Any]:
+    def execute_xiaoyuzhou_podcast(
+        self,
+        query: str,
+        limit: int = 5,
+        timeout: float = 10.0,
+        operation: str = "podcast",
+    ) -> Dict[str, Any]:
+        """Read a public Xiaoyuzhou podcast page and its embedded public data.
+
+        Text search is deliberately not implemented here: Apple/iTunes podcast
+        results do not prove that content came from Xiaoyuzhou.  Callers may use
+        the separately disclosed web-index discovery fallback, then pass an
+        explicit ``xiaoyuzhoufm.com/podcast/<pid>`` URL to this direct reader.
         """
-        Discover public podcast metadata, episodes, and direct audio enclosure URLs
-        via iTunes API and RSS syndication (no login / no credential required).
-        """
-        import feedparser
-        import re
-        t0 = time.perf_counter()
-        clean_q = query.strip()
-        items = []
-        itunes_url = f"https://itunes.apple.com/search?term={urllib.parse.quote(clean_q)}&entity=podcast&limit=3"
-        observed_response: Optional[BoundedHTTPResponse] = None
+        from bs4 import BeautifulSoup
+
+        started = time.perf_counter()
+        clean_query = query.strip()
+        parsed = urllib.parse.urlparse(clean_query if "://" in clean_query else "")
+        match = re.search(r"/podcast/([a-f0-9]{24})(?:/|$)", parsed.path, re.IGNORECASE)
+        if not match and re.fullmatch(r"[a-f0-9]{24}", clean_query, re.IGNORECASE):
+            podcast_id = clean_query.lower()
+        elif match and (parsed.hostname or "").lower().rstrip(".") in {
+            "xiaoyuzhoufm.com", "www.xiaoyuzhoufm.com",
+        }:
+            podcast_id = match.group(1).lower()
+        else:
+            raise NativeReachError(
+                "Xiaoyuzhou direct operations require an official public podcast URL or 24-character podcast id"
+            )
+
+        page_url = f"https://www.xiaoyuzhoufm.com/podcast/{podcast_id}"
         try:
-            r_itunes = fetch_public_http(
-                itunes_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
+            response = fetch_public_http(
+                page_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
                 max_bytes=MAX_OUTPUT_BYTES,
             )
-            observed_response = r_itunes
-            feed_urls = []
-            if r_itunes.status_code == 200:
-                results = json.loads(r_itunes.body.decode("utf-8")).get("results", [])
-                for res in results:
-                    f_url = res.get("feedUrl")
-                    p_name = res.get("collectionName")
-                    if f_url:
-                        feed_urls.append((p_name, f_url))
+            soup = BeautifulSoup(response.body, "html.parser")
+            next_data = soup.find("script", id="__NEXT_DATA__")
+            if next_data is None or not next_data.string:
+                raise ValueError("public page did not expose structured podcast data")
+            document = json.loads(next_data.string)
+            podcast = document.get("props", {}).get("pageProps", {}).get("podcast") or {}
+            if str(podcast.get("pid", "")).lower() != podcast_id:
+                raise ValueError("public page podcast identity did not match requested id")
 
-            for pod_name, f_url in feed_urls:
-                try:
-                    r_rss = fetch_public_http(
-                        f_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
-                        max_bytes=MAX_OUTPUT_BYTES,
-                    )
-                    observed_response = r_rss
-                    if r_rss.status_code == 200:
-                        feed = feedparser.parse(r_rss.body)
-                        for entry in feed.entries[:limit]:
-                            enclosures = entry.get("enclosures", [])
-                            audio_url = enclosures[0].get("href") if enclosures else None
-                            raw_summary = entry.get("summary", "")
-                            clean_summary = re.sub(r"<[^>]+>", " ", raw_summary).strip()
-                            items.append({
-                                "podcast": pod_name,
-                                "title": entry.get("title", ""),
-                                "published": entry.get("published", ""),
-                                "summary": clean_summary[:500],
-                                "link": entry.get("link", f_url),
-                                "audio_url": audio_url,
-                                "has_audio": bool(audio_url),
-                            })
-                            if len(items) >= limit:
-                                break
-                except Exception:
-                    pass
-                if len(items) >= limit:
-                    break
+            title = str(podcast.get("title") or "Xiaoyuzhou podcast")
+            if operation == "podcast":
+                items = [{
+                    "item_type": "podcast",
+                    "podcast": title,
+                    "title": title,
+                    "summary": str(podcast.get("description") or "")[:4000],
+                    "published": str(podcast.get("latestEpisodePubDate") or ""),
+                    "link": page_url,
+                    "audio_url": None,
+                    "author": str(podcast.get("author") or ""),
+                    "episode_count": podcast.get("episodeCount"),
+                    "subscription_count": podcast.get("subscriptionCount"),
+                    "source_contract": "xiaoyuzhou_public_next_data",
+                }]
+            else:
+                items = []
+                for episode in (podcast.get("episodes") or [])[: min(max(limit, 1), 20)]:
+                    episode_id = str(episode.get("eid") or "")
+                    enclosure = episode.get("enclosure") or {}
+                    items.append({
+                        "item_type": "episode",
+                        "podcast": title,
+                        "title": str(episode.get("title") or "Xiaoyuzhou episode"),
+                        "summary": str(episode.get("description") or "")[:4000],
+                        "published": str(episode.get("pubDate") or ""),
+                        "link": f"https://www.xiaoyuzhoufm.com/episode/{episode_id}" if episode_id else page_url,
+                        "audio_url": enclosure.get("url") if isinstance(enclosure, dict) else None,
+                        "duration": episode.get("duration"),
+                        "play_count": episode.get("playCount"),
+                        "comment_count": episode.get("commentCount"),
+                        "transcript_available": bool(episode.get("transcript")),
+                        "source_contract": "xiaoyuzhou_public_next_data",
+                    })
 
-            latency_ms = int((time.perf_counter() - t0) * 1000)
-            transport = self._bounded_http_transport(observed_response)
+            latency_ms = int((time.perf_counter() - started) * 1000)
+            transport = self._bounded_http_transport(response)
             transport["network_latency_ms"] = latency_ms
             return {
                 "platform": "xiaoyuzhou",
-                "backend": "podcast-rss-syndication",
-                "operation": "xiaoyuzhou.podcast",
+                "backend": "xiaoyuzhou-public-web",
+                "operation": f"xiaoyuzhou.{operation}",
                 "status": "SUCCESS" if items else "EMPTY",
                 "items": items,
                 "count": len(items),
@@ -974,8 +1013,10 @@ class NativeExecutor:
             }
         except ProviderHTTPError:
             raise
-        except Exception as e:
-            raise BackendExecutionError("xiaoyuzhou", "podcast-rss-syndication", itunes_url, 1, str(e))
+        except Exception as error:
+            raise BackendExecutionError(
+                "xiaoyuzhou", "xiaoyuzhou-public-web", page_url, 1, str(error)
+            )
 
     # ── 10. LinkedIn Guest Job Listings ────────────────────────────────────
 

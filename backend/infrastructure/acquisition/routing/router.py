@@ -416,6 +416,27 @@ class NativeRouter:
                         }
             except Exception as e_yt:
                 logger.debug(f"[NativeRouter] yt-dlp read notice for {url}: {e_yt}")
+                # A recognized YouTube URL must not be reinterpreted as a
+                # generic HTML article.  Error/challenge pages are not video
+                # metadata and previously produced a false-positive read.
+                return {
+                    "status": "failed",
+                    "error": f"YouTube metadata unavailable: {type(e_yt).__name__}",
+                    "url": url,
+                    "backend": "yt-dlp",
+                    "transport": {
+                        "endpoint": url,
+                        "requested_endpoint": url,
+                        "redirect_chain": [url],
+                        "network_observed_this_attempt": True,
+                        "http_status": None,
+                        "content_type": None,
+                        "raw_body_bytes": None,
+                        "network_latency_ms": None,
+                        "cache_status": "UNKNOWN",
+                        "protocol": "external_tool",
+                    },
+                }
 
         # 4. Standard Web Document: Delegated to modular web reader
         legacy_scraper = None

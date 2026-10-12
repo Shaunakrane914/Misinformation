@@ -59,6 +59,26 @@ def test_github_request_is_allowlisted_and_uses_shared_transport(monkeypatch, ex
     assert calls[0][1]["max_bytes"] > 0
     assert result["operation"] == "github.issues"
     assert result["transport"]["endpoint"] == calls[0][0]
+    assert result["transport"]["raw_body_sha256"]
+
+
+def test_transport_proof_preserves_observed_redirect_chain(executor):
+    response = BoundedHTTPResponse(
+        body=b"evidence",
+        endpoint="https://example.com/final",
+        status_code=200,
+        content_type="text/plain",
+        headers={"Content-Type": "text/plain"},
+        latency_ms=4,
+        attempts=1,
+        redirect_chain=("https://example.com/start", "https://example.com/final"),
+    )
+    transport = executor._bounded_http_transport(response)
+    assert transport["requested_endpoint"] == "https://example.com/start"
+    assert transport["redirect_chain"] == [
+        "https://example.com/start", "https://example.com/final",
+    ]
+    assert len(transport["raw_body_sha256"]) == 64
 
 
 @pytest.mark.parametrize(
@@ -94,33 +114,55 @@ def test_v2ex_node_query_is_url_encoded(monkeypatch, executor):
     ]
 
 
-def test_rss_and_podcast_feeds_use_bounded_transport(monkeypatch, executor, public_dns):
+def test_rss_and_xiaoyuzhou_public_pages_use_bounded_transport(monkeypatch, executor, public_dns):
     calls = []
     rss = """<?xml version="1.0"?><rss version="2.0"><channel><title>Fixture</title>
     <item><title>Episode</title><link>https://example.com/episode</link>
     <description>Evidence notes</description></item></channel></rss>"""
 
+    xiaoyuzhou_document = json.dumps({
+        "props": {"pageProps": {"podcast": {
+            "pid": "64e6b4dc80c9ec4c5f1e0782",
+            "title": "Fixture podcast",
+            "description": "Official public description",
+            "latestEpisodePubDate": "2026-01-01T00:00:00Z",
+            "episodes": [{
+                "eid": "6790c1c7181b314a5c314312",
+                "title": "Episode",
+                "description": "Evidence notes",
+                "pubDate": "2026-01-01T00:00:00Z",
+                "duration": 120,
+            }],
+        }}},
+    })
+    xiaoyuzhou_html = f'<script id="__NEXT_DATA__" type="application/json">{xiaoyuzhou_document}</script>'
+
     def fake_fetch(url, **_kwargs):
         calls.append(url)
-        if "itunes.apple.com" in url:
-            return _response(
-                json.dumps({"results": [{"collectionName": "Fixture", "feedUrl": "https://example.com/show.xml"}]}),
-                url,
-            )
+        if "xiaoyuzhoufm.com" in url:
+            return _response(xiaoyuzhou_html, url, "text/html")
         return _response(rss, url, "application/rss+xml")
 
     monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
     rss_result = executor.execute_rss_read("https://example.com/show.xml")
-    podcast_result = executor.execute_xiaoyuzhou_podcast("Fixture")
+    podcast_url = "https://www.xiaoyuzhoufm.com/podcast/64e6b4dc80c9ec4c5f1e0782"
+    podcast_result = executor.execute_xiaoyuzhou_podcast(podcast_url, operation="podcast")
+    episodes_result = executor.execute_xiaoyuzhou_podcast(podcast_url, operation="episodes")
 
     assert rss_result["count"] == 1
     assert podcast_result["count"] == 1
+    assert episodes_result["count"] == 1
     assert calls == [
         "https://example.com/show.xml",
-        "https://itunes.apple.com/search?term=Fixture&entity=podcast&limit=3",
-        "https://example.com/show.xml",
+        podcast_url,
+        podcast_url,
     ]
-    assert podcast_result["transport"]["endpoint"] == "https://example.com/show.xml"
+    assert podcast_result["transport"]["endpoint"] == podcast_url
+
+
+def test_xiaoyuzhou_text_query_is_not_mislabeled_as_direct_platform_data(executor):
+    with pytest.raises(Exception, match="official public podcast URL"):
+        executor.execute_xiaoyuzhou_podcast("generic podcast search")
 
 
 def test_web_reader_uses_bounded_transport_and_rejects_empty_success(monkeypatch, executor, public_dns):
@@ -188,6 +230,8 @@ def test_provider_retry_after_reaches_dispatch_telemetry():
             endpoint="https://api.example.com/data",
             status_code=429,
             retry_after_seconds=120,
+            rate_limit_remaining=0,
+            rate_limit_reset_at="2030-01-01T00:00:00+00:00",
             network_observed=True,
             attempts=2,
         )
@@ -198,4 +242,6 @@ def test_provider_retry_after_reaches_dispatch_telemetry():
     assert telemetry["status"] == "FAILED"
     assert telemetry["http_statuses"] == [429]
     assert telemetry["retry_after_seconds"] == 120
+    assert telemetry["rate_limit_remaining"] == 0
+    assert telemetry["rate_limit_reset_at"] == "2030-01-01T00:00:00+00:00"
     assert observations[0][1]["operation"] == "github.issues"

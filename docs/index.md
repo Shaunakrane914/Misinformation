@@ -6,7 +6,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 Read the [agent handoff index](handoffs/README.md) before continuing the uncommitted architecture-remediation work. It links the implementation map, decision rationale, recorded execution work log, exact test commands and known blockers. Historical phase reports below remain snapshots; they do not override newer code or validation evidence.
 
-Current verification milestone: [Phase 7.4 remediation verification and recovery assessment](architecture/PHASE7_4_REMEDIATION_VERIFICATION.md).
+Current verification milestone: [Phase 8A real acquisition verification](architecture/PHASE8A_REAL_ACQUISITION_VERIFICATION.md).
 
 ---
 
@@ -19,6 +19,8 @@ Current verification milestone: [Phase 7.4 remediation verification and recovery
 - **[Phase 7 Architecture Consolidation Report](architecture/PHASE7_ARCHITECTURE_CONSOLIDATION_REPORT.md)**: Production architecture consolidation, route restoration, and hardening.
 - **[2026-10-12 Architecture Review Remediation](architecture/ARCHITECTURE_REVIEW_REMEDIATION_2026-10-12.md)**: Current local fixes, verification evidence, compatibility changes and remaining limitations.
 - **[Phase 7.4 Remediation Verification](architecture/PHASE7_4_REMEDIATION_VERIFICATION.md)**: Security closeout, protected dossier inventory and hosted-CI evidence boundary.
+- **[Phase 8 Investigation Path Trace](architecture/PHASE8_INVESTIGATION_PATH_TRACE.md)**: Executed claim-to-frontend path, ownership boundaries and remaining risks.
+- **[Phase 8A Real Acquisition Verification](architecture/PHASE8A_REAL_ACQUISITION_VERIFICATION.md)**: Live proof and honest depth classifications for all 16 protected operations.
 - **[Phase 7 Protected Integration Matrix](architecture/PHASE7_PROTECTED_INTEGRATION_MATRIX.md)**: Matrix preserving all 4 agents and 16 recovered operations.
 - **[Phase 7.1 Release Candidate Report](architecture/PHASE7_1_RELEASE_CANDIDATE_REPORT.md)**: Release candidate validation, deployment readiness, and verification evidence.
 - **[Phase 7.2 Workspace Structure Guide](architecture/PHASE7_2_WORKSPACE_STRUCTURE.md)**: Workspace organization, folder responsibilities, and structural consolidation policy.

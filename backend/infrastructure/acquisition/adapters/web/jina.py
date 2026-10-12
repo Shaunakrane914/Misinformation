@@ -7,6 +7,7 @@ Provides safe web document extraction into clean markdown via:
 Enforces strict SSRF defense before network transmission.
 """
 
+import hashlib
 import logging
 import urllib.parse
 from typing import Any, Dict, Optional
@@ -60,10 +61,13 @@ def read_article_via_jina(url: str, timeout: float = 5.0) -> Optional[Dict[str, 
                 "fallback_backend": "jina-reader",
                 "transport": {
                     "endpoint": response.endpoint,
+                    "requested_endpoint": response.redirect_chain[0] if response.redirect_chain else jina_target,
+                    "redirect_chain": list(response.redirect_chain),
                     "network_observed_this_attempt": True,
                     "http_status": response.status_code,
                     "content_type": response.content_type,
                     "raw_body_bytes": len(raw_body),
+                    "raw_body_sha256": hashlib.sha256(raw_body).hexdigest(),
                     "network_latency_ms": response.latency_ms,
                     "cache_status": "UNKNOWN",
                     "attempts": response.attempts,

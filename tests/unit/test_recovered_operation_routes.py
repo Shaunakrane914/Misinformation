@@ -1,5 +1,8 @@
 """Controlled acquisition-boundary tests for recovered production operations."""
 
+import sys
+from types import SimpleNamespace
+
 import pytest
 
 from backend.services.agent_reach.native.operation_capabilities import (
@@ -99,6 +102,52 @@ def test_recovered_youtube_operations_preserve_depth(monkeypatch, operation):
     assert fragments[0].raw_metadata["transport"]["endpoint"] == url
 
 
+def test_youtube_read_failure_cannot_fall_through_to_generic_html(monkeypatch):
+    router = NativeRouter()
+    monkeypatch.setattr(
+        "backend.infrastructure.acquisition.routing.router.is_safe_url",
+        lambda _url: (True, "public fixture"),
+    )
+
+    class FailingYoutubeDL:
+        def __init__(self, _options):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def extract_info(self, *_args, **_kwargs):
+            raise RuntimeError("video unavailable")
+
+    monkeypatch.setitem(sys.modules, "yt_dlp", SimpleNamespace(YoutubeDL=FailingYoutubeDL))
+    monkeypatch.setattr(
+        "backend.infrastructure.acquisition.routing.router.execute_web_read",
+        lambda *_args, **_kwargs: pytest.fail("generic reader must not receive a YouTube URL"),
+    )
+    result = router.execute_channel_read("https://www.youtube.com/watch?v=missing123")
+    assert result["status"] == "failed"
+    assert result["backend"] == "yt-dlp"
+    assert result["transport"]["network_observed_this_attempt"] is True
+
+
+def test_empty_provider_result_retains_transport_observation(monkeypatch):
+    router = NativeRouter()
+    url = "https://www.youtube.com/watch?v=fixture123"
+    monkeypatch.setattr(router.executor, "execute_youtube_comments", lambda *_args, **_kwargs: {
+        "status": "EMPTY", "items": [], "transport": _transport(url),
+    })
+    fragments, telemetry = router.execute_channel_query(
+        "youtube", url, operation="comments", limit=1,
+    )
+    assert fragments == []
+    assert telemetry["outcome"] == "EMPTY"
+    assert telemetry["network_observed"] is True
+    assert telemetry["http_statuses"] == [200]
+
+
 @pytest.mark.parametrize("operation", ["hot", "latest", "search", "topic", "replies"])
 def test_all_advertised_v2ex_operations_are_dispatched(monkeypatch, operation):
     router = NativeRouter()
@@ -172,7 +221,7 @@ def test_public_podcast_operations_are_not_lost_behind_auth_guard(monkeypatch, o
     assert telemetry["operation"] == f"xiaoyuzhou.{operation}"
     assert podcast[0].requested_channel == "xiaoyuzhou"
     assert podcast[0].actual_retrieval_channel == "xiaoyuzhou"
-    assert podcast[0].native_backend_id == "podcast-rss-syndication"
+    assert podcast[0].native_backend_id == "xiaoyuzhou-public-web"
     assert podcast[0].raw_metadata["transport"]["endpoint"] == "https://itunes.apple.com/search"
 
 

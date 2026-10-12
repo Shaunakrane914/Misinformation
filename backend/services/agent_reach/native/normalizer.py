@@ -576,7 +576,7 @@ class NativeNormalizer:
         query_class: str = "",
         query_text: str = ""
     ) -> List[EvidenceFragment]:
-        """Normalize Xiaoyuzhou / Open podcast RSS syndication episodes."""
+        """Normalize official public Xiaoyuzhou podcast and episode metadata."""
         fragments: List[EvidenceFragment] = []
         for ep in raw_items:
             podcast = ep.get("podcast", "播客")
@@ -584,6 +584,7 @@ class NativeNormalizer:
             published = ep.get("published", "")
             audio_url = ep.get("audio_url", "")
             summary = ep.get("summary", "")
+            item_type = ep.get("item_type", "episode")
 
             content = (
                 f"播客频道: {podcast}\n单集标题: {title}\n发布时间: {published}\n"
@@ -598,11 +599,11 @@ class NativeNormalizer:
                 published=published or "Recent",
                 snippet=summary[:300] if summary else title,
                 score=70.0,
-                retrieval_method="podcast_rss_syndication",
-                retrieval_mode=RetrievalMode.DIRECT_API.value,
-                native_backend_id="podcast-rss-syndication",
+                retrieval_method="xiaoyuzhou_public_web",
+                retrieval_mode=RetrievalMode.WEB_READER.value,
+                native_backend_id="xiaoyuzhou-public-web",
                 channel_name="xiaoyuzhou",
-                content_depth="AUDIO_METADATA_AND_SHOWNOTES",
+                content_depth="METADATA" if item_type == "podcast" else "PARTIAL_CONTENT",
                 query_id=query_id,
                 query_class=query_class,
                 query_text=query_text,
@@ -610,12 +611,19 @@ class NativeNormalizer:
                 actual_retrieval_channel="xiaoyuzhou",
                 is_authenticated=False,
                 raw_metadata={
-                    "backend": "podcast-rss-syndication",
+                    "backend": "xiaoyuzhou-public-web",
+                    "item_type": item_type,
                     "podcast": podcast,
                     "audio_url": audio_url,
                     "has_audio": bool(audio_url),
-                    "transcript_available": False,
-                    "source_tier": "SPECIALIST_API",
+                    "transcript_available": bool(ep.get("transcript_available")),
+                    "duration": ep.get("duration"),
+                    "play_count": ep.get("play_count"),
+                    "comment_count": ep.get("comment_count"),
+                    "episode_count": ep.get("episode_count"),
+                    "subscription_count": ep.get("subscription_count"),
+                    "source_contract": ep.get("source_contract"),
+                    "source_tier": "SPECIALIST_PUBLIC_WEB",
                 }
             )
             fragments.append(frag)

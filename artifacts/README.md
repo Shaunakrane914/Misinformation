@@ -1,7 +1,7 @@
 # Aegis Protocol — Research & Evaluation Artifacts Catalog
 
 **Status:** Authoritative Artifact Index & Research Evidence Directory  
-**Total Tracked Milestone Suites:** 17 directories  
+**Total Tracked Milestone Suites:** 18 directories
 **Total Root Contract Files:** 14 files  
 
 ---
@@ -49,6 +49,7 @@ Empirical zero-auth scraper reality checks, provider availability matrices, and 
 | [`artifacts/live_acquisition_phase6_8/`](live_acquisition_phase6_8/) | **Historical Audit** | `scripts/audits/run_phase6_8_resolution_benchmark.py` | Phase 6.8 entity resolution benchmark and raw HTTP evidence for corporate/VIP handles. |
 | [`artifacts/pre_phase7_audit/`](pre_phase7_audit/) | **Historical Audit** | `scripts/audits/run_pre_phase7_acquisition_audit.py` | Bounded acquisition readiness audit prior to architecture consolidation. |
 | [`artifacts/phase7_live_audit/`](phase7_live_audit/) | **Historical Audit** | `scripts/audits/run_fresh_4agent_audit.py` | Phase 7 live multi-agent capability and telemetry audit. |
+| [`artifacts/phase8_live_acquisition/`](phase8_live_acquisition/) | **Current Live Acceptance Evidence** | `scripts/audits/run_phase8_live_acquisition_audit.py` | Phase 8A bounded production-router probes, negative evidence and consolidated 16-operation acceptance. No full response bodies or credentials are retained. |
 
 ---
 

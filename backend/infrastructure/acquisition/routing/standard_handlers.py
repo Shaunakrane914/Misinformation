@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import re
 import urllib.parse
 from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
@@ -61,6 +62,7 @@ class StandardChannelHandlers:
             )
         try:
             result = self.router.executor.execute_github_search(query, limit=limit)
+            self._record_transport(telemetry, result)
             fragments = self.router.normalizer.normalize_github_repos(
                 result.get("items", []), query_id=query_id, query_class=query_class, query_text=query_text
             )
@@ -69,6 +71,8 @@ class StandardChannelHandlers:
             self._attach_transport(fragments, result.get("transport"))
             self.router._tag_fragments(fragments, "github", "github", RetrievalMode.DIRECT_API.value, "gh-cli", None, True)
             telemetry["status"] = "SUCCESS"
+            for fragment in fragments:
+                fragment.content_depth = "METADATA"
             return fragments
         except Exception:
             fragments = self.router._fallback_github_rest(query, limit, query_id, query_class, query_text)
@@ -82,6 +86,7 @@ class StandardChannelHandlers:
         result = self.router.executor.execute_github_rest_operation(
             query, operation, limit=limit
         )
+        self._record_transport(telemetry, result)
         fragments: List[EvidenceFragment] = []
         repo = result.get("repo", query)
         for item in result.get("items", []):
@@ -114,7 +119,7 @@ class StandardChannelHandlers:
                 author = ((item.get("author") or {}).get("login") or
                           (commit.get("author") or {}).get("name") or "GitHub")
                 published = (commit.get("author") or {}).get("date") or ""
-                depth = "FULL_ARTICLE"
+                depth = "METADATA"
             fragments.append(EvidenceFragment(
                 platform="GitHub", title=title, content=body, url=url,
                 author=author, published=published, snippet=body[:300], score=70.0,
@@ -136,6 +141,7 @@ class StandardChannelHandlers:
         operation = str(_.get("operation", "search")).lower()
         if operation == "read":
             result = self.router.execute_channel_read(query)
+            self._record_transport(telemetry, result)
             if result.get("status") != "success":
                 raise NativeReachError(result.get("error", "YouTube read failed"))
             content = result.get("content", "")
@@ -154,6 +160,7 @@ class StandardChannelHandlers:
             return fragments
         if operation == "transcript":
             result = self.router.executor.execute_youtube_transcript(query)
+            self._record_transport(telemetry, result)
             content = result.get("content", "")
             fragments = [] if not content else [EvidenceFragment(
                 platform="YouTube", title="YouTube transcript", content=content,
@@ -169,6 +176,7 @@ class StandardChannelHandlers:
             return fragments
         if operation == "comments":
             result = self.router.executor.execute_youtube_comments(query, limit=limit)
+            self._record_transport(telemetry, result)
             fragments = self.router.normalizer.normalize_youtube_comments(
                 result.get("items", []), video_url=query, query_id=query_id,
                 query_class=query_class, query_text=query_text,
@@ -179,6 +187,7 @@ class StandardChannelHandlers:
             return fragments
         try:
             result = self.router.executor.execute_youtube_search(query, limit=limit)
+            self._record_transport(telemetry, result)
             fragments = self.router.normalizer.normalize_youtube_search(
                 result.get("items", []), query_id=query_id, query_class=query_class, query_text=query_text
             )
@@ -204,6 +213,7 @@ class StandardChannelHandlers:
             result = self.router.executor.execute_v2ex_search(query)
         else:
             result = self.router.executor.execute_v2ex_operation(operation, query)
+        self._record_transport(telemetry, result)
         items = result.get("items", [])
         if operation == "hot" and query.strip():
             needle = query.lower()
@@ -233,6 +243,7 @@ class StandardChannelHandlers:
             if not query.strip().lower().startswith(("http://", "https://")):
                 raise NativeReachError("rss.read requires an explicit feed URL")
             result = self.router.executor.execute_rss_read(query, limit=limit)
+            self._record_transport(telemetry, result)
             fragments = self.router.normalizer.normalize_rss_entries(
                 result.get("items", []), channel_name="rss", query_id=query_id,
                 query_class=query_class, query_text=query_text,
@@ -255,6 +266,7 @@ class StandardChannelHandlers:
             encoded = urllib.parse.quote_plus(query.strip())
             url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
             result = self.router.executor.execute_rss_read(url, limit=limit)
+            self._record_transport(telemetry, result)
             fragments = self.router.normalizer.normalize_rss_entries(
                 result.get("items", []), channel_name=channel, query_id=query_id, query_class=query_class, query_text=query_text
             )
@@ -300,6 +312,7 @@ class StandardChannelHandlers:
         requested_channel = kwargs.get("requested_channel", "jina_reader")
         actual_channel = "jina_reader"
         result = self.router.execute_channel_read(target_url, max_chars=kwargs.get("max_chars", 4000))
+        self._record_transport(telemetry, result)
         if result.get("status") != "success":
             telemetry.update(status="FAILED", error=result.get("error", "Failed to read content"))
             return []
@@ -311,7 +324,10 @@ class StandardChannelHandlers:
             retrieval_mode=RetrievalMode.WEB_READER.value, native_backend_id="jina-reader",
             channel_name=actual_channel, requested_channel=requested_channel,
             actual_retrieval_channel=actual_channel,
-            content_depth="FULL_ARTICLE" if len(content) > 500 else "SNIPPET", query_id=query_id,
+            content_depth=(
+                "PARTIAL_CONTENT" if int(result.get("char_count") or len(content)) > len(content)
+                else "FULL_ARTICLE" if len(content) > 500 else "SNIPPET"
+            ), query_id=query_id,
             query_class=query_class, query_text=query_text,
             raw_metadata={
                 "backend": result.get("backend", "Jina Reader"),
@@ -346,8 +362,21 @@ class StandardChannelHandlers:
         operation = str(_.get("operation", "podcast")).lower()
         if operation not in {"search", "podcast", "episodes"}:
             raise NativeReachError(f"Unsupported Xiaoyuzhou operation: {operation}")
+        if operation == "search":
+            return self._indexed_fallback(
+                "xiaoyuzhou", query, limit, query_id, query_class, query_text,
+                telemetry, site_filter="site:xiaoyuzhoufm.com/podcast/",
+            )
+        clean_query = query.strip().lower()
+        is_explicit_public_target = (
+            "xiaoyuzhoufm.com/podcast/" in clean_query
+            or bool(re.fullmatch(r"[a-f0-9]{24}", clean_query))
+        )
         try:
-            result = self.router.executor.execute_xiaoyuzhou_podcast(query, limit=limit)
+            result = self.router.executor.execute_xiaoyuzhou_podcast(
+                query, limit=limit, operation=operation,
+            )
+            self._record_transport(telemetry, result)
             items = result.get("items", [])
             fragments = self.router.normalizer.normalize_xiaoyuzhou_episodes(
                 items, query_id=query_id, query_class=query_class, query_text=query_text
@@ -355,11 +384,16 @@ class StandardChannelHandlers:
             if not fragments:
                 raise NativeReachError("Xiaoyuzhou podcast syndication returned no items")
             self._attach_transport(fragments, result.get("transport"))
-            self.router._tag_fragments(fragments, "xiaoyuzhou", "xiaoyuzhou", RetrievalMode.DIRECT_API.value, "podcast-rss-syndication", None, False)
+            self.router._tag_fragments(
+                fragments, "xiaoyuzhou", "xiaoyuzhou", RetrievalMode.WEB_READER.value,
+                "xiaoyuzhou-public-web", None, False,
+            )
             telemetry["status"] = "SUCCESS"
-            telemetry["backend"] = "podcast-rss-syndication"
+            telemetry["backend"] = "xiaoyuzhou-public-web"
             return fragments
         except Exception:
+            if is_explicit_public_target:
+                raise
             return self._indexed_fallback("xiaoyuzhou", query, limit, query_id, query_class, query_text, telemetry, site_filter="site:xiaoyuzhoufm.com")
 
     def _execute_linkedin(self, query, limit, query_id, query_class, query_text, telemetry, **_):
@@ -509,6 +543,15 @@ class StandardChannelHandlers:
             return
         for fragment in fragments:
             fragment.raw_metadata["transport"] = dict(transport)
+
+    @staticmethod
+    def _record_transport(telemetry: Dict[str, Any], result: Dict[str, Any]) -> None:
+        """Keep provider observations even when normalization yields no fragments."""
+        transport = result.get("transport") if isinstance(result, dict) else None
+        if isinstance(result, dict) and result.get("status"):
+            telemetry["provider_status"] = str(result["status"]).upper()
+        if transport:
+            telemetry.setdefault("transport_observations", []).append(dict(transport))
 
     @staticmethod
     def _fallback(telemetry, backend, reason, mode, fragments):

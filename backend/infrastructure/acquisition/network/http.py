@@ -41,6 +41,8 @@ class ProviderHTTPError(RuntimeError):
         retry_after_seconds: Optional[float] = None,
         network_observed: bool = False,
         attempts: int = 1,
+        rate_limit_remaining: Optional[int] = None,
+        rate_limit_reset_at: Optional[str] = None,
     ) -> None:
         super().__init__(message)
         self.endpoint = endpoint
@@ -48,6 +50,8 @@ class ProviderHTTPError(RuntimeError):
         self.retry_after_seconds = retry_after_seconds
         self.network_observed = network_observed
         self.attempts = attempts
+        self.rate_limit_remaining = rate_limit_remaining
+        self.rate_limit_reset_at = rate_limit_reset_at
 
 
 class ResponseTooLargeError(ProviderHTTPError):
@@ -63,6 +67,10 @@ class BoundedHTTPResponse:
     headers: Mapping[str, str]
     latency_ms: int
     attempts: int
+    # The first entry is the requested URL and subsequent entries are redirect
+    # targets observed by the validating redirect handler.  This remains empty
+    # for constructed fixture responses and older callers.
+    redirect_chain: tuple[str, ...] = ()
 
 
 def parse_retry_after(value: Optional[str], *, now: Optional[datetime] = None) -> Optional[float]:
@@ -198,6 +206,7 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
         super().__init__()
         self.max_redirects = max_redirects
         self.redirect_count = 0
+        self.redirect_targets: list[str] = []
 
     def redirect_request(self, req, fp, code, msg, headers, newurl):  # noqa: ANN001
         target = urllib.parse.urljoin(req.full_url, newurl)
@@ -210,6 +219,7 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
                 network_observed=True,
             )
         self.redirect_count += 1
+        self.redirect_targets.append(target)
         if self.redirect_count > self.max_redirects:
             raise ProviderHTTPError(
                 f"Redirect limit exceeded ({self.max_redirects})",
@@ -306,10 +316,25 @@ def fetch_public_http(
                     headers=dict(response.headers.items()),
                     latency_ms=latency_ms,
                     attempts=attempt,
+                    redirect_chain=tuple([url, *redirect_handler.redirect_targets]),
                 )
         except urllib.error.HTTPError as error:
             status = int(error.code)
             retry_after = parse_retry_after(error.headers.get("Retry-After"))
+            remaining_header = error.headers.get("X-RateLimit-Remaining")
+            try:
+                rate_limit_remaining = int(remaining_header) if remaining_header is not None else None
+            except ValueError:
+                rate_limit_remaining = None
+            reset_header = error.headers.get("X-RateLimit-Reset")
+            rate_limit_reset_at = None
+            if reset_header:
+                try:
+                    rate_limit_reset_at = datetime.fromtimestamp(
+                        float(reset_header), tz=timezone.utc,
+                    ).isoformat()
+                except (ValueError, TypeError, OverflowError):
+                    rate_limit_reset_at = str(reset_header)[:100]
             error.close()
             last_error = ProviderHTTPError(
                 f"Provider HTTP {status}",
@@ -318,6 +343,8 @@ def fetch_public_http(
                 retry_after_seconds=retry_after,
                 network_observed=True,
                 attempts=attempt,
+                rate_limit_remaining=rate_limit_remaining,
+                rate_limit_reset_at=rate_limit_reset_at,
             )
             if status in NON_RETRYABLE_STATUS_CODES:
                 raise last_error from error

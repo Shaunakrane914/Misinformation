@@ -2,6 +2,14 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
+## Latest: Phase 8A real acquisition proof - 2026-10-12
+
+- [Phase 8A handoff](2026-10-12_PHASE8A_REAL_ACQUISITION_HANDOFF.md): production-path trace, live acquisition repairs, evidence, validation and safe Stage 8B continuation.
+- [Phase 8A real acquisition report](../architecture/PHASE8A_REAL_ACQUISITION_VERIFICATION.md): honest live depth for all 16 protected operations and negative evidence.
+- [Phase 8 production path trace](../architecture/PHASE8_INVESTIGATION_PATH_TRACE.md): claim-to-frontend ownership and remaining architecture risks.
+
+The Phase 7.4 section below remains the preceding security and data-integrity checkpoint.
+
 ## Latest: Phase 7.4 verification — 2026-10-12
 
 - [Phase 7.4 closeout handoff](2026-10-12_PHASE7_4_CLOSEOUT.md): pushed commits, hosted CI evidence, local archive limitation and safe continuation.

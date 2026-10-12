@@ -106,7 +106,7 @@ class NativeNormalizer:
                 content=f"{title}\n\nUploader: {uploader}\nViews: {view_count:,}\n\n{desc[:1000]}",
                 url=url,
                 author=uploader,
-                published=v.get("upload_date") or "Recent",
+                published=v.get("upload_date") or "",
                 snippet=snippet,
                 score=50.0,
                 retrieval_method="yt_dlp",
@@ -607,7 +607,7 @@ class NativeNormalizer:
                 content=content,
                 url=ep.get("link") or audio_url or "https://www.xiaoyuzhoufm.com",
                 author=podcast,
-                published=published or "Recent",
+                published=published,
                 snippet=summary[:300] if summary else title,
                 score=70.0,
                 retrieval_method="xiaoyuzhou_public_web",
@@ -701,6 +701,13 @@ class NativeNormalizer:
             text = c.get("text") or ""
             likes = c.get("like_count") or 0
             cid = c.get("id") or ""
+            timestamp = c.get("timestamp")
+            try:
+                published = datetime.fromtimestamp(
+                    float(timestamp), tz=timezone.utc
+                ).isoformat() if timestamp is not None else ""
+            except (TypeError, ValueError, OverflowError, OSError):
+                published = ""
 
             content = f"YouTube Comment by {author} (Likes: {likes}):\n{text}"
             frag = EvidenceFragment(
@@ -709,7 +716,7 @@ class NativeNormalizer:
                 content=content,
                 url=video_url or f"https://www.youtube.com/watch?v={cid}",
                 author=author,
-                published="Recent",
+                published=published,
                 snippet=text[:300],
                 score=40.0 + min(likes, 50),
                 retrieval_method="yt_dlp_comments",
@@ -727,6 +734,7 @@ class NativeNormalizer:
                     "backend": "yt-dlp",
                     "comment_id": cid,
                     "likes": likes,
+                    "source_timestamp": timestamp,
                 }
             )
             fragments.append(frag)

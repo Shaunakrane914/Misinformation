@@ -151,6 +151,23 @@ def test_youtube_read_preserves_observed_metadata_without_inventing_dates(monkey
     assert fragments[0].content_depth == "VIDEO_METADATA"
 
 
+def test_comment_and_podcast_normalization_do_not_invent_publication_dates():
+    from backend.services.agent_reach.native.normalizer import NativeNormalizer
+
+    comment = NativeNormalizer.normalize_youtube_comments(
+        [{"id": "c1", "author": "viewer", "text": "Observed comment", "timestamp": None}]
+    )[0]
+    podcast = NativeNormalizer.normalize_xiaoyuzhou_episodes(
+        [{"podcast": "Show", "title": "Episode", "published": "", "summary": "Notes"}]
+    )[0]
+    assert comment.published == ""
+    assert podcast.published == ""
+    dated = NativeNormalizer.normalize_youtube_comments(
+        [{"id": "c2", "text": "Dated comment", "timestamp": 1_600_000_000}]
+    )[0]
+    assert dated.published.startswith("2020-09-13T")
+
+
 def test_empty_provider_result_retains_transport_observation(monkeypatch):
     router = NativeRouter()
     url = "https://www.youtube.com/watch?v=fixture123"

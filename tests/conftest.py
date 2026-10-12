@@ -33,7 +33,7 @@ def deterministic_semantic_predictor():
 
     return predict
 from fastapi.testclient import TestClient
-from dotenv import dotenv_values
+from dotenv import dotenv_values, find_dotenv
 
 # Isolate storage and credentials BEFORE importing any application singleton.
 # Empty values (rather than deletion) prevent load_dotenv from restoring secrets.
@@ -54,7 +54,10 @@ _credential_prefixes = (
     "GROQ_API_KEY", "LINKEDIN_COOKIE", "XUEQIU_COOKIE", "INSTAGRAM_COOKIE",
     "FACEBOOK_COOKIE", "XIAOHONGSHU_COOKIE",
 )
-_configured_names = set(os.environ) | set(dotenv_values(Path(__file__).resolve().parents[1] / ".env"))
+# python-dotenv's load_dotenv() searches parent directories. A nested Git
+# worktree can therefore inherit the outer checkout's .env unless the same
+# discovered file is sanitized before importing application singletons.
+_configured_names = set(os.environ) | set(dotenv_values(find_dotenv()))
 for _name in _configured_names | set(_credential_prefixes):
     if _name.startswith(_credential_prefixes):
         os.environ[_name] = ""

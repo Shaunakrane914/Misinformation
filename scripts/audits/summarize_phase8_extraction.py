@@ -48,7 +48,7 @@ def summarize(paths: list[Path]) -> dict:
             sample for probe in successful
             for sample in probe.get("provenance", {}).get("normalized_evidence_samples", [])
         ]
-        field_names = ("title", "canonical_url", "published", "backend_id", "content_depth")
+        field_names = ("title", "canonical_url", "author", "published", "backend_id", "content_depth")
         populated = {
             field: sum(bool(sample.get(field)) for sample in samples)
             for field in field_names
@@ -69,6 +69,14 @@ def summarize(paths: list[Path]) -> dict:
                 field: round(count / len(samples), 3) if samples else None
                 for field, count in populated.items()
             },
+            "observed_populated_metadata_field_names": sorted({
+                field for sample in samples
+                for field in sample.get("populated_metadata_field_names", [])
+            }),
+            "observed_populated_video_metadata_field_names": sorted({
+                field for sample in samples
+                for field in sample.get("populated_video_metadata_field_names", [])
+            }),
             "mean_relevant_chars_per_successful_item": round(
                 sum(probe.get("relevant_text_chars") or 0 for probe in successful) / total_items
             ) if total_items else None,

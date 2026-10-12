@@ -267,9 +267,11 @@ def _probe(spec: ProbeSpec, sequence: int) -> dict[str, Any]:
     samples = []
     for fragment in fragments[:3]:
         content = str(getattr(fragment, "content", "") or "")
+        metadata = getattr(fragment, "raw_metadata", {}) or {}
         samples.append({
             "title": _redact(getattr(fragment, "title", "")),
             "canonical_url": _redact(getattr(fragment, "url", "")),
+            "author": _redact(getattr(fragment, "author", "")),
             "content_chars": len(content),
             "content_sha256": hashlib.sha256(content.encode("utf-8", errors="replace")).hexdigest(),
             "bounded_excerpt": content[:400],
@@ -279,6 +281,15 @@ def _probe(spec: ProbeSpec, sequence: int) -> dict[str, Any]:
             "backend_id": getattr(fragment, "native_backend_id", None),
             "content_depth": getattr(fragment, "content_depth", None),
             "retrieval_mode": getattr(fragment, "retrieval_mode", None),
+            "populated_metadata_field_names": sorted(
+                key for key, value in metadata.items()
+                if key != "transport" and value is not None and value != ""
+                and value != [] and value != {}
+            ),
+            "populated_video_metadata_field_names": sorted(
+                key for key, value in (metadata.get("video_metadata") or {}).items()
+                if value is not None and value != "" and value != [] and value != {}
+            ),
         })
     backends = sorted({
         str(getattr(fragment, "native_backend_id", "") or "") for fragment in fragments

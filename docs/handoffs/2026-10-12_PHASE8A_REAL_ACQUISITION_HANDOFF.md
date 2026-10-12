@@ -60,6 +60,11 @@ no authentication or rate limit was bypassed.
   operation and measure important-field completeness.
 - The synchronous claims verification work still sits inside an async route;
   address that worker-boundary risk in the API/intelligence phase.
-- Push and hosted CI evidence must be appended after remote verification.
+- Phase 8A was pushed as `0731171cd10045239a30115179436c45a92a31b7`.
+  [Hosted run 38240609031](https://github.com/Shaunakrane914/Misinformation/actions/runs/38240609031)
+  completed successfully for that exact SHA. The job list reported success
+  for fatal Python lint/frontend contracts, three Python-version unit/chaos/
+  security jobs, and the entire offline/persistence/release validation job.
+  This is hosted CI for **Phase 8A**, not for subsequent Phase 8B changes.
   Nothing in this handoff authorizes merge to `main` or deployment.
 - The 55 historical malformed dossier files remain byte-for-byte untouched.

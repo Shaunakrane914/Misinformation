@@ -2,7 +2,18 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8A real acquisition proof - 2026-10-12
+## Latest: Phase 8B extraction checkpoint — 2026-10-12
+
+- [Phase 8B handoff](2026-10-12_PHASE8B_EXTRACTION_CHECKPOINT.md): isolated
+  worktree, concurrent-branch warning, bounded live extraction proof, local
+  tests, and the explicitly partial gate.
+- [Maximum extraction schema matrix](../architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md):
+  16-operation field status and measured normalized-sample richness, with
+  missing raw-field and pagination coverage called out.
+
+The Phase 8A gate below is complete but does not imply Phase 8B completion.
+
+## Previous: Phase 8A real acquisition proof - 2026-10-12
 
 - [Phase 8A handoff](2026-10-12_PHASE8A_REAL_ACQUISITION_HANDOFF.md): production-path trace, live acquisition repairs, evidence, validation and safe Stage 8B continuation.
 - [Phase 8A real acquisition report](../architecture/PHASE8A_REAL_ACQUISITION_VERIFICATION.md): honest live depth for all 16 protected operations and negative evidence.

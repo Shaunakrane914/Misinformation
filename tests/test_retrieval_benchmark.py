@@ -22,13 +22,17 @@ FIXTURES_DIR = Path("tests/retrieval_benchmark")
 
 
 @pytest.fixture(scope="module")
-def benchmark_results(tmp_path_factory):
+def benchmark_results(tmp_path_factory, deterministic_semantic_predictor):
     """Run against frozen inputs while isolating generated outputs per test run."""
     output_dir = tmp_path_factory.mktemp("retrieval_benchmark")
+    reranker = SemanticReranker(
+        enabled=True, device="cpu", predictor=deterministic_semantic_predictor
+    )
     runner = BenchmarkRunner(
         fixtures_dir=FIXTURES_DIR,
         output_dir=output_dir,
         top_k=4,
+        reranker=reranker,
     )
     summary = runner.run_benchmark(agent_filter="all", system_filter="all")
     return summary, runner

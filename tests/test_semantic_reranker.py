@@ -26,8 +26,10 @@ def test_disabled_reranker_graceful():
     assert res[0]["semantic_score"] is None
     assert res[0]["raw_cross_encoder_score"] is None
 
-def test_enabled_reranker_inference():
-    reranker = SemanticReranker(enabled=True, device="cpu")
+def test_enabled_reranker_inference(deterministic_semantic_predictor):
+    reranker = SemanticReranker(
+        enabled=True, device="cpu", predictor=deterministic_semantic_predictor
+    )
     assert reranker.is_available
 
     candidates = [
@@ -54,12 +56,14 @@ def test_enabled_reranker_inference():
     assert 0.0 <= res[0]["semantic_score"] <= 1.0
     assert res[0]["semantic_score"] > res[1]["semantic_score"]
 
-def test_adversarial_homograph_entity_defense():
+def test_adversarial_homograph_entity_defense(deterministic_semantic_predictor):
     """
     Critical requirement: Even if a cross-encoder scores 'Satya' high on a text matching
     the word 'Satya', a low entity_score (e.g. Sanskrit philosophy) must be suppressed!
     """
-    reranker = SemanticReranker(enabled=True, device="cpu")
+    reranker = SemanticReranker(
+        enabled=True, device="cpu", predictor=deterministic_semantic_predictor
+    )
 
     candidates = [
         {

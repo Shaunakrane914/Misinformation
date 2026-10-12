@@ -49,6 +49,7 @@ class BenchmarkRunner:
         output_dir: Path = Path("artifacts/retrieval_benchmark"),
         top_k: int = 4,
         reranker_enabled: bool = True,
+        reranker: Optional[SemanticReranker] = None,
     ):
         self.fixtures_dir = fixtures_dir
         self.output_dir = output_dir
@@ -60,7 +61,7 @@ class BenchmarkRunner:
         self.candidates_by_scenario: Dict[str, List[Dict[str, Any]]] = {}
         self.labels_by_cand_id: Dict[str, Dict[str, Any]] = {}
 
-        self.reranker = SemanticReranker(enabled=reranker_enabled, device="cpu")
+        self.reranker = reranker or SemanticReranker(enabled=reranker_enabled, device="cpu")
 
     def load_fixtures(self):
         scenarios_file = self.fixtures_dir / "scenarios.jsonl"

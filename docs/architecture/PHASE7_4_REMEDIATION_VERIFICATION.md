@@ -77,6 +77,27 @@ The rollback result is intentionally not converted into a pass: the historical
 archive failure remains a release blocker, while the successful new-record
 subchecks prove that freshly written dossiers persist and verify correctly.
 
+## First hosted run and portability correction
+
+Checkpoint `62cc5e046f2d65c426a9ecbc082575d188c8294d` triggered GitHub Actions
+[run 38236168290](https://github.com/Shaunakrane914/Misinformation/actions/runs/38236168290).
+The hosted code-quality/frontend/frozen-data job and Python 3.11, 3.12 and
+3.13 unit/chaos/security jobs all passed. The full-suite job collected all 977
+tests but failed four semantic-ranking cases before smoke or rollback ran.
+
+This exposed a real hermeticity defect: the tests relied on locally installed
+PyTorch, Sentence Transformers and cached CrossEncoder weights even though
+those packages are optional and absent from the declared CI environment. The
+fix adds an explicit scorer-injection seam to `SemanticReranker` and uses a
+deterministic offline scorer in tests and the frozen benchmark. Production
+continues to use the real CrossEncoder path when installed and otherwise
+reports the existing `UNAVAILABLE` fallback; CI does not download model weights.
+
+After the correction, the four previously failing cases passed, then the fresh
+local full suite passed 977 tests in 54.24s and the fast suite passed 781 tests
+in 26.79s. A follow-up hosted run is required before the branch can claim that
+the portability failure is remotely resolved.
+
 ## Release decision
 
 Keep deployment blocked. A controlled release may be reconsidered only after:

@@ -276,7 +276,9 @@ def test_8_irrelevant_recent_competitor_story_rejected():
     assert rel_assess.entity_score < 0.35
 
 
-def test_9_neural_reranker_cannot_restore_temporally_rejected_candidate():
+def test_9_neural_reranker_cannot_restore_temporally_rejected_candidate(
+    deterministic_semantic_predictor,
+):
     """9. The neural reranker cannot restore a candidate rejected by the temporal gate."""
     stale_cand = {
         "candidate_id": "cand_stale_high_semantic",
@@ -301,7 +303,7 @@ def test_9_neural_reranker_cannot_restore_temporally_rejected_candidate():
         "entity_score": 0.90,
     }
 
-    reranker = SemanticReranker(enabled=True)
+    reranker = SemanticReranker(enabled=True, predictor=deterministic_semantic_predictor)
     query = "Microsoft viral trending discussion"
 
     reranked = reranker.rerank(query, [stale_cand, fresh_cand], top_k=2)

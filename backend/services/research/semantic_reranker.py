@@ -30,7 +30,7 @@ import os
 import math
 import time
 import logging
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 logger = logging.getLogger(__name__)
 
@@ -59,6 +59,7 @@ class SemanticReranker:
         top_k_output: int = 5,
         device: Optional[str] = None,
         batch_size: int = 16,
+        predictor: Optional[Callable[[List[Tuple[str, str]]], List[float]]] = None,
     ):
         self.model_name = model_name
         if enabled is not None:
@@ -71,11 +72,14 @@ class SemanticReranker:
         self.batch_size = batch_size
         self.device = device
         self.device_used = "none"
+        self._predictor = predictor
 
         self._model = None
-        self._available = False
-        self._load_attempted = False
+        self._available = predictor is not None
+        self._load_attempted = predictor is not None
         self._load_error: Optional[str] = None
+        if predictor is not None:
+            self.device_used = "injected"
 
         # Observable telemetry
         self.pairs_scored_count = 0
@@ -142,7 +146,9 @@ class SemanticReranker:
         Compute CrossEncoder predictions for a list of (query, document) text pairs.
         Returns list of dicts with 'raw_score' (logit) and 'semantic_score' (sigmoid [0, 1]).
         """
-        if not self.enabled or not self.is_available or not self._model:
+        if not self.enabled or not self.is_available or (
+            self._model is None and self._predictor is None
+        ):
             self.fallback_count += len(pairs)
             return [{"raw_score": 0.0, "semantic_score": 0.0} for _ in pairs]
 
@@ -151,13 +157,16 @@ class SemanticReranker:
 
         start_t = time.time()
         try:
-            import torch
-            with torch.no_grad():
-                logits = self._model.predict(
-                    pairs,
-                    batch_size=self.batch_size,
-                    show_progress_bar=False,
-                )
+            if self._predictor is not None:
+                logits = self._predictor(pairs)
+            else:
+                import torch
+                with torch.no_grad():
+                    logits = self._model.predict(
+                        pairs,
+                        batch_size=self.batch_size,
+                        show_progress_bar=False,
+                    )
 
             elapsed = time.time() - start_t
             self.total_inference_time_sec += elapsed

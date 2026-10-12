@@ -9,6 +9,29 @@ import sqlite3
 import tempfile
 from pathlib import Path
 import pytest
+
+
+@pytest.fixture(scope="session")
+def deterministic_semantic_predictor():
+    """Offline semantic-score double; tests ranking policy, never model quality."""
+    import hashlib
+    import math
+    import re
+
+    def predict(pairs):
+        logits = []
+        for query, document in pairs:
+            query_tokens = set(re.findall(r"[a-z0-9]+", query.lower()))
+            document_tokens = set(re.findall(r"[a-z0-9]+", document.lower()))
+            overlap = len(query_tokens & document_tokens)
+            coverage = overlap / max(1, len(query_tokens))
+            density = overlap / max(1, math.sqrt(len(document_tokens)))
+            digest = hashlib.sha256(f"{query}\0{document}".encode("utf-8")).digest()
+            stable_variation = ((int.from_bytes(digest[:4], "big") / (2**32 - 1)) * 2.0) - 1.0
+            logits.append((5.0 * coverage) + density + (2.5 * stable_variation) - 2.0)
+        return logits
+
+    return predict
 from fastapi.testclient import TestClient
 from dotenv import dotenv_values
 

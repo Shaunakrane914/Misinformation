@@ -1,5 +1,23 @@
 # Changelog
 
+## [Phase 7.2C] — 2026-10-12 — Root Directory Final Cleanup
+
+### Changed
+- Removed `pytest.ini` — all configuration consolidated into `pyproject.toml`
+- Relocated `skills-lock.json` → `.gemini/skills-lock.json`
+- Relocated `Gemini_rubrics.md`, `Rubrics.docx` → `docs/archive/rubrics/`
+- Moved prompt scratchpads to `.scratch/` (gitignored)
+- Redirected `aegis_local.db` default path → `backend/data/aegis_local.db`
+- Removed `brag-output/` (all tracked assets moved to `docs/showcase/`)
+- Consolidated `tools/make_audit_readme.py` → `scripts/development/`
+
+### Added
+- `artifacts/README.md` — taxonomy of all milestone evidence artifacts
+- `CONTRIBUTING.md`, `SECURITY.md`, `.python-version`
+- `docs/api/README.md`, `docs/operations/RUNBOOK.md`
+- `tests/README.md`, `frontend/README.md`, `backend/README.md`
+
+
 All notable changes to the Aegis Protocol multi-agent intelligence platform will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),

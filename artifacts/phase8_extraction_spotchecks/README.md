@@ -14,12 +14,14 @@ post-commit or hosted-CI result.
 | [17:20:41Z](2026-10-12_17-20-41Z/) | First web probes after code edit | Same checkout-contamination limitation; its `DIRECT_FULL_CONTENT` claim must **not** be cited for the isolated branch. |
 | [17:21:39Z](2026-10-12_17-21-39Z/) | Guarded web probes | `router_source` proves this checkout; both targets returned bounded partial page text with no invented dates. |
 | [17:21:49Z](2026-10-12_17-21-49Z/) | Guarded GitHub/RSS/YouTube probes | `router_source` proves this checkout. Two live scenarios each; README partial content, mixed feed summary/content, video metadata. Contains corrected all-16 summary. |
+| [17:37:38Z](2026-10-12_17-37-38Z/) | Guarded 16-operation common-case field-shape pass | All 16 yielded live, classified output on the sampled common target. Parsed adapter-item field names are retained without values. This does **not** prove raw-provider schema completeness or edge-case success. The run was dirty and predates the commit. |
 
-The latest [`richness_summary_v2.json`](2026-10-12_17-21-49Z/richness_summary_v2.json)
+The latest [`richness_summary_v3.json`](2026-10-12_17-37-38Z/richness_summary_v3.json)
 selects the latest matching operation/scenario across the Phase 8A artifact
-and **only the guarded** 17:21 runs. It scores only observed normalized sample
-fields, not raw-provider schema completeness. Older samples that did not
-record a field are marked *unobserved*, not treated as empty. See the
+and **only guarded** 17:37 run. It scores observed normalized sample fields
+and bounded parsed adapter-item field names, not raw-provider schema
+completeness. Older samples that did not record a field are marked
+*unobserved*, not treated as empty. See the
 [Phase 8B schema matrix](../../docs/architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md)
 for current gaps and gate status.
 

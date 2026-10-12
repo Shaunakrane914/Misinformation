@@ -135,10 +135,10 @@ AUXILIARY_PROBES = (
 )
 
 PAGINATION = {
-    "github.issues": "FIRST_PAGE_BOUNDED_NO_FOLLOWUP",
-    "github.prs": "FIRST_PAGE_BOUNDED_NO_FOLLOWUP",
-    "github.commits": "FIRST_PAGE_BOUNDED_NO_FOLLOWUP",
-    "github.releases": "FIRST_PAGE_BOUNDED_NO_FOLLOWUP",
+    "github.issues": "BOUNDED_EXPLICIT_PAGE_1_TO_5",
+    "github.prs": "BOUNDED_EXPLICIT_PAGE_1_TO_5",
+    "github.commits": "BOUNDED_EXPLICIT_PAGE_1_TO_5",
+    "github.releases": "BOUNDED_EXPLICIT_PAGE_1_TO_5",
     "rss.read": "FIRST_FEED_PAGE_BOUNDED",
     "xiaoyuzhou.podcast": "FIRST_SEARCH_PAGE_AND_FIRST_FEED_PAGE_BOUNDED",
     "xiaoyuzhou.episodes": "FIRST_SEARCH_PAGE_AND_FIRST_FEED_PAGE_BOUNDED",
@@ -319,6 +319,9 @@ def _probe(spec: ProbeSpec, sequence: int) -> dict[str, Any]:
         }),
         "response_bytes": sum(int(item.get("raw_body_bytes") or 0) for item in transport),
         "item_count": len(fragments),
+        "adapter_result_field_names": telemetry.get("adapter_result_field_names", []),
+        "adapter_item_field_names": telemetry.get("adapter_item_field_names", []),
+        "field_name_scope": "Parsed adapter result items; not a raw provider schema guarantee",
         "relevant_text_chars": sum(len(str(getattr(item, "content", "") or "")) for item in fragments),
         "content_depths": sorted({str(getattr(item, "content_depth", "") or "UNKNOWN") for item in fragments}),
         "retrieval_modes": sorted({str(getattr(item, "retrieval_mode", "") or "UNKNOWN") for item in fragments}),

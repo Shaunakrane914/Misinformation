@@ -73,6 +73,81 @@ def test_recovered_github_operations_reach_rest_executor(monkeypatch, operation)
     assert fragments[0].raw_metadata["transport"]["endpoint"]
 
 
+@pytest.mark.parametrize("operation,item,expected_key,expected_value", [
+    ("issues", {"title": "Correction", "body": "Full issue body", "number": 17,
+                "state": "closed", "labels": [{"name": "correction"}],
+                "comments": 3, "updated_at": "2026-10-11T12:00:00Z"},
+     "labels", ["correction"]),
+    ("prs", {"title": "Fix", "body": "Full PR body", "number": 8,
+             "merged_at": "2026-10-11T12:00:00Z", "draft": False,
+             "base": {"ref": "main"}, "head": {"ref": "fix"}},
+     "merged_at", "2026-10-11T12:00:00Z"),
+    ("commits", {"sha": "abc123", "commit": {"message": "Fix", "author": {"name": "A"},
+                 "verification": {"verified": True, "reason": "valid"}},
+                 "parents": [{"sha": "parent123"}]},
+     "sha", "abc123"),
+    ("releases", {"name": "v1", "body": "Release notes", "tag_name": "v1",
+                  "prerelease": False, "assets": [{"name": "release.zip", "size": 4}]},
+     "assets", [{"name": "release.zip", "url": None, "size": 4, "content_type": None}]),
+])
+def test_github_operation_preserves_observed_fields_and_pagination(
+    monkeypatch, operation, item, expected_key, expected_value,
+):
+    router = NativeRouter()
+    observed = []
+
+    def fake_execute(repo, op, **kwargs):
+        observed.append((repo, op, kwargs))
+        return {
+            "repo": "owner/repo", "items": [item], "transport": _transport(),
+            "pagination": {"page": 2, "has_next_page": True},
+        }
+
+    monkeypatch.setattr(router.executor, "execute_github_rest_operation", fake_execute)
+    fragments, _telemetry = router.execute_channel_query(
+        "github", "owner/repo", operation=operation, limit=1, page=2,
+    )
+    assert observed == [("owner/repo", operation, {"limit": 1, "page": 2})]
+    assert fragments[0].raw_metadata["provider_fields"][expected_key] == expected_value
+    assert fragments[0].raw_metadata["pagination"]["has_next_page"] is True
+    assert "number" in _telemetry["adapter_item_field_names"] or operation in {"commits", "releases"}
+
+
+def test_v2ex_replies_do_not_confuse_reply_id_with_topic_id(monkeypatch):
+    router = NativeRouter()
+    monkeypatch.setattr(router.executor, "execute_v2ex_operation", lambda *_args: {
+        "items": [
+            {"id": 9002, "content": "Later correction", "created": 200,
+             "member": {"username": "second"}, "thanks": 2},
+            {"id": 9001, "content": "Earlier claim", "created": 100,
+             "member": {"username": "first"}, "thanks": 1},
+        ],
+        "transport": _transport("https://www.v2ex.com/api/replies/show.json?topic_id=42"),
+    })
+    fragments, _telemetry = router.execute_channel_query(
+        "v2ex", "https://www.v2ex.com/t/42", operation="replies", limit=2,
+    )
+    assert [fragment.content for fragment in fragments] == ["Earlier claim", "Later correction"]
+    assert all(fragment.url == "https://www.v2ex.com/t/42" for fragment in fragments)
+    assert [fragment.raw_metadata["reply_id"] for fragment in fragments] == [9001, 9002]
+    assert all(fragment.raw_metadata["topic_id"] == "42" for fragment in fragments)
+    assert all(fragment.content_depth == "COMMENT" for fragment in fragments)
+
+
+def test_v2ex_topic_retains_observed_edit_metadata_without_fake_author_or_count():
+    from backend.services.agent_reach.native.normalizer import NativeNormalizer
+
+    fragment = NativeNormalizer.normalize_v2ex_topics([{
+        "id": 42, "title": "Correction", "content": "Observed body",
+        "node": None, "member": None, "last_modified": 200,
+    }])[0]
+    assert fragment.author == ""
+    assert "Author: @" not in fragment.content
+    assert "Replies: Unknown" in fragment.content
+    assert fragment.raw_metadata["replies"] is None
+    assert fragment.raw_metadata["last_modified"] == 200
+
+
 @pytest.mark.parametrize("operation", ["read", "transcript", "comments"])
 def test_recovered_youtube_operations_preserve_depth(monkeypatch, operation):
     router = NativeRouter()

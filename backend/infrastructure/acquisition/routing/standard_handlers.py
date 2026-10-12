@@ -58,7 +58,8 @@ class StandardChannelHandlers:
         operation = str(_.get("operation", "search")).lower()
         if operation != "search":
             return self._execute_github_operation(
-                operation, query, limit, query_id, query_class, query_text, telemetry
+                operation, query, limit, query_id, query_class, query_text, telemetry,
+                page=_.get("page", 1),
             )
         try:
             result = self.router.executor.execute_github_search(query, limit=limit)
@@ -81,15 +82,19 @@ class StandardChannelHandlers:
             return fragments
 
     def _execute_github_operation(
-        self, operation, query, limit, query_id, query_class, query_text, telemetry
+        self, operation, query, limit, query_id, query_class, query_text, telemetry,
+        page=1,
     ):
+        # Keep the default call shape compatible with existing executor shims.
+        pagination_kwargs = {"page": page} if page != 1 else {}
         result = self.router.executor.execute_github_rest_operation(
-            query, operation, limit=limit
+            query, operation, limit=limit, **pagination_kwargs
         )
         self._record_transport(telemetry, result)
         fragments: List[EvidenceFragment] = []
         repo = result.get("repo", query)
         for item in result.get("items", []):
+            detail: Dict[str, Any] = {}
             if operation == "read":
                 title = item.get("full_name") or repo
                 body = item.get("readme") or item.get("description") or ""
@@ -98,6 +103,14 @@ class StandardChannelHandlers:
                 published = item.get("updated_at") or ""
                 # A README is content from one document, not the entire repository.
                 depth = "PARTIAL_CONTENT" if item.get("readme") else "METADATA"
+                detail = {
+                    "created_at": item.get("created_at"),
+                    "updated_at": item.get("updated_at"),
+                    "pushed_at": item.get("pushed_at"),
+                    "default_branch": item.get("default_branch"),
+                    "license_spdx_id": (item.get("license") or {}).get("spdx_id"),
+                    "open_issues_count": item.get("open_issues_count"),
+                }
             elif operation in {"issues", "prs"}:
                 title = item.get("title") or f"GitHub {operation[:-1]}"
                 body = item.get("body") or title
@@ -105,6 +118,25 @@ class StandardChannelHandlers:
                 author = (item.get("user") or {}).get("login") or "GitHub"
                 published = item.get("created_at") or ""
                 depth = "FULL_ARTICLE" if item.get("body") else "METADATA"
+                detail = {
+                    "number": item.get("number"),
+                    "state": item.get("state"),
+                    "state_reason": item.get("state_reason"),
+                    "labels": [label.get("name") for label in item.get("labels", [])
+                               if isinstance(label, dict) and label.get("name")],
+                    "assignees": [user.get("login") for user in item.get("assignees", [])
+                                  if isinstance(user, dict) and user.get("login")],
+                    "comment_count": item.get("comments"),
+                    "updated_at": item.get("updated_at"),
+                    "closed_at": item.get("closed_at"),
+                    "author_association": item.get("author_association"),
+                }
+                if operation == "prs":
+                    detail.update(
+                        merged_at=item.get("merged_at"), draft=item.get("draft"),
+                        base_ref=(item.get("base") or {}).get("ref"),
+                        head_ref=(item.get("head") or {}).get("ref"),
+                    )
             elif operation == "releases":
                 title = item.get("name") or item.get("tag_name") or "GitHub release"
                 body = item.get("body") or title
@@ -112,6 +144,19 @@ class StandardChannelHandlers:
                 author = ((item.get("author") or {}).get("login") or repo.split("/")[0])
                 published = item.get("published_at") or item.get("created_at") or ""
                 depth = "FULL_ARTICLE" if item.get("body") else "METADATA"
+                detail = {
+                    "tag_name": item.get("tag_name"),
+                    "target_commitish": item.get("target_commitish"),
+                    "draft": item.get("draft"),
+                    "prerelease": item.get("prerelease"),
+                    "created_at": item.get("created_at"),
+                    "published_at": item.get("published_at"),
+                    "assets": [
+                        {"name": asset.get("name"), "url": asset.get("browser_download_url"),
+                         "size": asset.get("size"), "content_type": asset.get("content_type")}
+                        for asset in item.get("assets", [])[:20] if isinstance(asset, dict)
+                    ],
+                }
             else:
                 commit = item.get("commit") or {}
                 title = (commit.get("message") or "GitHub commit").splitlines()[0]
@@ -121,6 +166,18 @@ class StandardChannelHandlers:
                           (commit.get("author") or {}).get("name") or "GitHub")
                 published = (commit.get("author") or {}).get("date") or ""
                 depth = "METADATA"
+                detail = {
+                    "sha": item.get("sha"),
+                    "parents": [parent.get("sha") for parent in item.get("parents", [])[:20]
+                                if isinstance(parent, dict) and parent.get("sha")],
+                    "commit_author_date": (commit.get("author") or {}).get("date"),
+                    "commit_committer_date": (commit.get("committer") or {}).get("date"),
+                    "commit_committer_name": (commit.get("committer") or {}).get("name"),
+                    "verification": {
+                        "verified": (commit.get("verification") or {}).get("verified"),
+                        "reason": (commit.get("verification") or {}).get("reason"),
+                    },
+                }
             fragments.append(EvidenceFragment(
                 platform="GitHub", title=title, content=body, url=url,
                 author=author, published=published, snippet=body[:300], score=70.0,
@@ -141,6 +198,8 @@ class StandardChannelHandlers:
                     "readme_sha": item.get("readme_sha") if operation == "read" else None,
                     "readme_source_url": item.get("readme_source_url") if operation == "read" else None,
                     "readme_transport": item.get("readme_transport") if operation == "read" else None,
+                    "provider_fields": detail,
+                    "pagination": result.get("pagination", {}),
                 },
             ))
         self._attach_transport(fragments, result.get("transport"))
@@ -186,7 +245,13 @@ class StandardChannelHandlers:
                 retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
                 native_backend_id="yt-dlp", content_depth="VIDEO_TRANSCRIPT",
                 query_id=query_id, query_class=query_class, query_text=query_text,
-                raw_metadata={"backend": "yt-dlp", "transport": result.get("transport", {})},
+                raw_metadata={
+                    "backend": "yt-dlp", "transport": result.get("transport", {}),
+                    "segments": result.get("segments", []),
+                    "segments_truncated": result.get("segments_truncated", False),
+                    "caption_language": result.get("caption_language"),
+                    "caption_origin": result.get("caption_origin", "UNVERIFIED"),
+                },
             )]
             self.router._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.NATIVE_TOOL_CLI.value, "yt-dlp", None, False)
             telemetry.update(status="SUCCESS", backend="yt-dlp")
@@ -236,12 +301,22 @@ class StandardChannelHandlers:
             needle = query.lower()
             matches = [item for item in items if needle in item.get("title", "").lower() or needle in (item.get("content") or "").lower()]
             items = matches or items[:limit]
-        fragments = self.router.normalizer.normalize_v2ex_topics(items[:limit], query_id=query_id, query_class=query_class, query_text=query_text)
+        if operation == "replies":
+            topic_id = query.strip() if query.strip().isdigit() else ""
+            if not topic_id:
+                match = re.search(r"/t/(\d+)(?:/|$)", urllib.parse.urlsplit(query).path)
+                topic_id = match.group(1) if match else ""
+            fragments = self.router.normalizer.normalize_v2ex_replies(
+                items[:limit], topic_id=topic_id, query_id=query_id,
+                query_class=query_class, query_text=query_text,
+            )
+        else:
+            fragments = self.router.normalizer.normalize_v2ex_topics(
+                items[:limit], query_id=query_id, query_class=query_class,
+                query_text=query_text,
+            )
         self._attach_transport(fragments, result.get("transport"))
         self.router._tag_fragments(fragments, "v2ex", "v2ex", RetrievalMode.DIRECT_API.value, "v2ex-public-api", None, False)
-        if operation == "replies":
-            for fragment in fragments:
-                fragment.content_depth = "COMMENT"
         telemetry["status"] = "SUCCESS"
         return fragments
 
@@ -568,6 +643,29 @@ class StandardChannelHandlers:
         transport = result.get("transport") if isinstance(result, dict) else None
         if isinstance(result, dict) and result.get("status"):
             telemetry["provider_status"] = str(result["status"]).upper()
+        if isinstance(result, dict):
+            telemetry["adapter_result_field_names"] = sorted(
+                str(key) for key in result
+                if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", str(key))
+            )[:100]
+            # Names only: preserve observed adapter-item shape for extraction
+            # audits without persisting copyrighted bodies or credentials.
+            items = result.get("items")
+            if isinstance(items, list):
+                names = set()
+                for item in items[:3]:
+                    if not isinstance(item, dict):
+                        continue
+                    for key, value in item.items():
+                        if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", str(key)):
+                            continue
+                        names.add(str(key))
+                        if isinstance(value, dict):
+                            names.update(
+                                f"{key}.{child}" for child in value
+                                if re.fullmatch(r"[A-Za-z][A-Za-z0-9_]{0,63}", str(child))
+                            )
+                telemetry["adapter_item_field_names"] = sorted(names)[:150]
         if transport:
             telemetry.setdefault("transport_observations", []).append(dict(transport))
 

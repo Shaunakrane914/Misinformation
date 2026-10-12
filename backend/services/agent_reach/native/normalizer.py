@@ -140,19 +140,20 @@ class NativeNormalizer:
             tid = t.get("id")
             title = t.get("title", "")
             content = t.get("content") or ""
-            member = t.get("member", {}).get("username", "V2EX User")
+            member = (t.get("member") or {}).get("username") or ""
             url = t.get("url") or f"https://www.v2ex.com/t/{tid}"
-            replies = t.get("replies", 0)
+            replies = t.get("replies")
+            attribution = f"Author: @{member} | " if member else ""
 
             frag = EvidenceFragment(
                 platform="V2EX",
                 title=title,
-                content=f"{title}\n\nAuthor: @{member} | Replies: {replies}\n\n{content}",
+                content=f"{title}\n\n{attribution}Replies: {replies if replies is not None else 'Unknown'}\n\n{content}",
                 url=url,
                 author=member,
                 published=str(t.get("created", "")),
                 snippet=content[:300] if content else title,
-                score=40.0 + min(replies, 40),
+                score=40.0 + min(replies, 40) if isinstance(replies, int) and replies >= 0 else 40.0,
                 retrieval_method="v2ex_public_api",
                 retrieval_mode=RetrievalMode.DIRECT_API.value,
                 native_backend_id="v2ex-public-api",
@@ -165,10 +166,51 @@ class NativeNormalizer:
                     "backend": "V2EX API (public)",
                     "topic_id": tid,
                     "replies": replies,
-                    "node": t.get("node", {}).get("title"),
+                    "node": (t.get("node") or {}).get("title"),
+                    "node_name": (t.get("node") or {}).get("name"),
+                    "created": t.get("created"),
+                    "last_modified": t.get("last_modified"),
+                    "last_touched": t.get("last_touched"),
+                    "last_reply_by": t.get("last_reply_by"),
+                    "deleted": t.get("deleted"),
                 }
             )
             fragments.append(frag)
+        return fragments
+
+    @staticmethod
+    def normalize_v2ex_replies(
+        raw_items: List[Dict[str, Any]],
+        topic_id: str,
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = "",
+    ) -> List[EvidenceFragment]:
+        """Keep reply IDs distinct from topic IDs and preserve observed chronology."""
+        fragments: List[EvidenceFragment] = []
+        indexed = list(enumerate(raw_items))
+        indexed.sort(key=lambda pair: (
+            pair[1].get("created") is None,
+            pair[1].get("created") if isinstance(pair[1].get("created"), (int, float)) else float("inf"),
+            pair[0],
+        ))
+        for _index, reply in indexed:
+            body = reply.get("content") or ""
+            author = (reply.get("member") or {}).get("username") or ""
+            fragments.append(EvidenceFragment(
+                platform="V2EX", title=f"Reply in topic {topic_id}", content=body,
+                url=f"https://www.v2ex.com/t/{topic_id}", author=author,
+                published=str(reply.get("created")) if reply.get("created") is not None else "",
+                snippet=body[:300], score=40.0,
+                retrieval_method="v2ex_public_api", retrieval_mode=RetrievalMode.DIRECT_API.value,
+                native_backend_id="v2ex-public-api", channel_name="v2ex", content_depth="COMMENT",
+                query_id=query_id, query_class=query_class, query_text=query_text,
+                raw_metadata={
+                    "backend": "V2EX API (public)", "topic_id": topic_id,
+                    "reply_id": reply.get("id"), "last_modified": reply.get("last_modified"),
+                    "thanks": reply.get("thanks"),
+                },
+            ))
         return fragments
 
     @staticmethod

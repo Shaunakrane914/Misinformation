@@ -44,6 +44,37 @@ MAX_OUTPUT_BYTES = 1_000_000  # Shared public acquisition response cap
 _USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 AegisAgentReach/3.0"
 
 
+def _caption_segments(text: str) -> List[Dict[str, str]]:
+    """Extract bounded VTT/SRT cues without pretending that captions are audio analysis."""
+    timing = re.compile(
+        r"(?:(\d{1,2}):)?(\d{2}):(\d{2})[.,](\d{3})\s+-->\s+"
+        r"(?:(\d{1,2}):)?(\d{2}):(\d{2})[.,](\d{3})"
+    )
+    segments: List[Dict[str, str]] = []
+    for block in re.split(r"\r?\n\s*\r?\n", text):
+        lines = block.splitlines()
+        cue = next((index for index, line in enumerate(lines) if timing.search(line)), None)
+        if cue is None:
+            continue
+        match = timing.search(lines[cue])
+        if match is None:
+            continue
+        words = " ".join(line.strip() for line in lines[cue + 1:] if line.strip())
+        if not words:
+            continue
+        def clock(groups: Tuple[Optional[str], ...]) -> str:
+            return f"{int(groups[0] or 0):02}:{int(groups[1]):02}:{int(groups[2]):02}.{groups[3]}"
+        segments.append({
+            "start": clock(match.groups()[:4]),
+            "end": clock(match.groups()[4:]),
+            "text": words[:1000],
+        })
+        # One look-ahead cue distinguishes exactly 500 from truncation.
+        if len(segments) >= 501:
+            break
+    return segments
+
+
 class NativeExecutor:
     """
     Allowlisted command dispatcher executing tools according to upstream Agent Reach
@@ -331,6 +362,7 @@ class NativeExecutor:
         operation: str,
         limit: int = 5,
         timeout: float = DEFAULT_TIMEOUT_SECONDS,
+        page: int = 1,
     ) -> Dict[str, Any]:
         """Read a public repository or collection through the documented REST API."""
         clean_repo = repo.strip().rstrip("/")
@@ -352,10 +384,14 @@ class NativeExecutor:
         }.get(op)
         if suffix is None:
             raise NativeReachError(f"Unsupported GitHub REST operation: {operation}")
+        if not isinstance(page, int) or isinstance(page, bool) or not 1 <= page <= 5:
+            raise NativeReachError("GitHub page must be an integer from 1 to 5")
 
         url = f"https://api.github.com/repos/{clean_repo}{suffix}"
         if suffix:
             url += f"?per_page={min(max(limit, 1), 20)}"
+            if page > 1:
+                url += f"&page={page}"
         headers = {
             "User-Agent": _USER_AGENT,
             "Accept": "application/vnd.github+json",
@@ -374,6 +410,7 @@ class NativeExecutor:
             latency_ms = int((time.perf_counter() - started) * 1000)
             transport = self._bounded_http_transport(response)
             items = data if isinstance(data, list) else [data]
+            provider_count = len(items)
             if op == "issues":
                 items = [item for item in items if not item.get("pull_request")]
             if op == "read":
@@ -403,6 +440,13 @@ class NativeExecutor:
                 "status": "SUCCESS" if items else "EMPTY",
                 "items": items[:limit],
                 "count": len(items[:limit]),
+                "pagination": {
+                    "page": page,
+                    "per_page": min(max(limit, 1), 20) if suffix else None,
+                    "provider_items_on_page": provider_count,
+                    "has_next_page": 'rel="next"' in response.headers.get("Link", ""),
+                    "next_page_supported": bool(suffix),
+                },
                 "repo": clean_repo,
                 "latency_ms": latency_ms,
                 "transport": transport,
@@ -548,11 +592,15 @@ class NativeExecutor:
 
                 # Look for downloaded .vtt or .srt file
                 transcript_text = ""
-                for fname in os.listdir(tmp_dir):
+                selected_file = ""
+                for fname in sorted(os.listdir(tmp_dir)):
                     if fname.endswith((".vtt", ".srt")):
                         fpath = os.path.join(tmp_dir, fname)
+                        if os.path.getsize(fpath) > MAX_OUTPUT_BYTES:
+                            continue
                         with open(fpath, "r", encoding="utf-8", errors="replace") as f:
                             transcript_text = f.read()
+                        selected_file = fname
                         break
 
                 if not transcript_text:
@@ -575,12 +623,19 @@ class NativeExecutor:
                         },
                     }
 
+                observed_cues = _caption_segments(transcript_text)
+                segments = observed_cues[:500]
+                language_match = re.search(r"\.([A-Za-z]{2,3}(?:-[A-Za-z0-9]+)?)\.(?:vtt|srt)$", selected_file)
                 return {
                     "platform": "youtube",
                     "backend": "yt-dlp",
                     "operation": "youtube.transcript",
                     "status": "SUCCESS",
                     "content": transcript_text,
+                    "segments": segments,
+                    "segments_truncated": len(observed_cues) > 500,
+                    "caption_language": language_match.group(1) if language_match else None,
+                    "caption_origin": "UNVERIFIED",
                     "char_count": len(transcript_text),
                     "latency_ms": latency_ms,
                     "transport": {

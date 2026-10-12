@@ -2,7 +2,7 @@
  * Aegis Protocol — Unified Report Renderer (v3.8.0)
  * ==================================================
  * Renders a ``UnifiedReport`` JSON object (from any agent endpoint)
- * into the standard 8-section investigative layout:
+ * into the shared investigative layout (including source coverage):
  *
  *   WHAT'S HAPPENING?  →  report.summary
  *   KEY FINDINGS       →  report.findings[]
@@ -62,27 +62,41 @@ function esc(s) {
     .replace(/'/g, '&#039;');
 }
 
+/** HTML escaping does not neutralize javascript: links in href attributes. */
+function safeEvidenceUrl(value) {
+  if (typeof value !== 'string' || !/^https?:\/\//i.test(value.trim())) return null;
+  try {
+    const parsed = new URL(value.trim());
+    return ['http:', 'https:'].includes(parsed.protocol) && parsed.hostname &&
+      !parsed.username && !parsed.password ? parsed.href : null;
+  } catch (_error) {
+    return null;
+  }
+}
+
 /** Format a value as a percentage string, or return placeholder. */
 function pct(val) {
-  if (val === null || val === undefined || val === '') return PH_NUM;
-  const n = parseFloat(val);
-  if (isNaN(n)) return PH_NUM;
+  if (typeof val !== 'number' || !Number.isFinite(val) || val < 0 || val > 1) return PH_NUM;
+  const n = val;
   return `${Math.round(n * 100)}%`;
 }
 
 /** Render a section heading <h2> with standardized class. */
-function sectionHeading(text) {
-  return `<h2 class="ur-heading">${esc(text)}</h2>`;
+function sectionHeading(text, id) {
+  return `<h2 class="ur-heading"><button type="button" class="ur-heading-button" aria-controls="${id}-body" aria-expanded="true">${esc(text)}</button></h2>`;
 }
 
 /** Render a section wrapper with ID. */
 function section(id, heading, content) {
-  return `<section id="${id}" class="ur-section">${sectionHeading(heading)}${content}</section>`;
+  return `<section id="${id}" class="ur-section">${sectionHeading(heading, id)}<div id="${id}-body" class="ur-section-body">${content}</div></section>`;
 }
+
+function array(value) { return Array.isArray(value) ? value : []; }
 
 /** Render a <ul> list from an array of strings. Empty → placeholder bullet. */
 function bulletList(items, emptyText) {
-  if (!items || items.length === 0) {
+  items = array(items).filter(item => typeof item === 'string' && item.trim());
+  if (items.length === 0) {
     return `<ul class="ur-list"><li class="ur-list-empty">${esc(emptyText)}</li></ul>`;
   }
   const lis = items
@@ -96,8 +110,11 @@ function bulletList(items, emptyText) {
 
 /** SECTION 1 — WHAT'S HAPPENING? */
 function renderSummary(report) {
-  const text = report.summary || '<em>No summary available.</em>';
-  const content = `<p class="ur-summary">${esc(report.summary) || '<em>No summary available.</em>'}</p>`;
+  const target = report._meta && report._meta.query;
+  const label = report._meta && report._meta.agent === 'claim_verifier'
+    ? 'Claim under review' : 'Investigation target';
+  const content = `${target ? `<p class="ur-target"><span>${label}</span>${esc(target)}</p>` : ''}
+    <p class="ur-summary">${esc(report.summary) || '<em>No summary available.</em>'}</p>`;
   return section('ur-summary', "WHAT'S HAPPENING?", content);
 }
 
@@ -110,9 +127,9 @@ function renderFindings(report) {
 /** SECTION 3 — EVIDENCE (Primary / Independent / Community) */
 function renderEvidence(report) {
   const ev = report.evidence || {};
-  const primary     = ev.primary     || [];
-  const independent = ev.independent || [];
-  const community   = ev.community   || [];
+  const primary     = array(ev.primary).filter(item => item && typeof item === 'object');
+  const independent = array(ev.independent).filter(item => item && typeof item === 'object');
+  const community   = array(ev.community).filter(item => item && typeof item === 'object');
 
   const renderColumn = (items, label, emptyMsg) => {
     if (items.length === 0) {
@@ -131,9 +148,10 @@ function renderEvidence(report) {
   };
 
   const content = `
+    <p class="ur-ev-note">Source grouping is not proof of independent corroboration. Inspect each citation and retrieval path.</p>
     <div class="ur-ev-grid">
       ${renderColumn(primary,     'Primary',     'No primary evidence found.')}
-      ${renderColumn(independent, 'Independent', 'No independent evidence found.')}
+      ${renderColumn(independent, 'Other reporting', 'No other reporting found.')}
       ${renderColumn(community,   'Community',   'No community evidence found.')}
     </div>`;
 
@@ -144,7 +162,7 @@ function renderEvidence(report) {
 function renderEvidenceCard(item) {
   const title   = esc(item.title   || PH_STR);
   const snippet = esc(item.snippet || '');
-  const url     = item.url || null;
+  const url     = safeEvidenceUrl(item.url);
   const ts      = esc(item.timestamp || PH_STR);
   const srcName = esc((item.source && item.source.name) || PH_AUTH);
   const isPrim  = item.source && item.source.is_primary;
@@ -155,6 +173,16 @@ function renderEvidenceCard(item) {
     : `<span class="ur-ev-title">${title}</span>`;
 
   const noUrl = url ? '' : `<span class="ur-ev-no-url">${PH_URL}</span>`;
+  const lineage = Array.isArray(item.retrieval_lineage) ? item.retrieval_lineage.slice(0, 5) : [];
+  const trace = lineage.length ? `<details class="ur-ev-trace">
+      <summary>Acquisition trace</summary>
+      <ul>${lineage.map(entry => `<li>
+        <span>${esc(entry.channel || 'Channel unknown')}</span>
+        <span>${esc(entry.backend_id || 'Backend unknown')}</span>
+        <span>${esc(entry.retrieval_mode || 'Mode unknown')}</span>
+        <span>${esc(entry.retrieved_at || 'Retrieval time unknown')}</span>
+      </li>`).join('')}</ul>
+    </details>` : '';
 
   return `
     <article class="ur-ev-card">
@@ -166,12 +194,14 @@ function renderEvidenceCard(item) {
         <span class="ur-ev-source">${srcName}</span>
         <span class="ur-ev-ts">${ts}</span>
       </footer>
+      ${trace}
     </article>`;
 }
 
 /** SECTION 4 — WHAT DISAGREES? */
 function renderDisagreements(report) {
-  const items = (report.disagreements || []).map(d => `Contradictory evidence: ${d}`);
+  const items = array(report.disagreements).filter(d => typeof d === 'string')
+    .map(d => `Contradictory evidence: ${d}`);
   const content = bulletList(items, 'No contradictory evidence detected.');
   return section('ur-disagreements', 'WHAT DISAGREES?', content);
 }
@@ -184,7 +214,7 @@ function renderChanges(report) {
 
 /** SECTION 6 — TIMELINE */
 function renderTimeline(report) {
-  const events = report.timeline || [];
+  const events = array(report.timeline).filter(ev => ev && typeof ev === 'object');
   if (events.length === 0) {
     return section('ur-timeline', 'TIMELINE', '<p class="ur-empty">Timeline unavailable.</p>');
   }
@@ -209,8 +239,8 @@ function renderTrust(report) {
   const axisRows = TENSOR_AXES.map(({ key, label }) => {
     const val = qt[key];
     const pctVal = pct(val);
-    const barWidth = (val !== null && val !== undefined && !isNaN(parseFloat(val)))
-      ? `${Math.round(parseFloat(val) * 100)}%`
+    const barWidth = (typeof val === 'number' && Number.isFinite(val) && val >= 0 && val <= 1)
+      ? `${Math.round(val * 100)}%`
       : '0%';
     return `
       <div class="ur-qt-axis quality-axis" data-axis="${esc(key)}">
@@ -237,7 +267,7 @@ function renderTrust(report) {
   const failed    = tel.queries_failed || 0;
 
   const telRow = authReq > 0
-    ? `<p class="ur-trust-note">(*) ${authReq} unauthenticated lookup(s) used due to missing API credentials.</p>`
+    ? `<p class="ur-trust-note">(*) ${esc(String(authReq))} lookup(s) required authorization; no evidence was returned by those lookups.</p>`
     : '';
   const failRow = failed > 0
     ? `<p class="ur-trust-note">⚠ ${failed} quer${failed !== 1 ? 'ies' : 'y'} failed during retrieval.</p>`
@@ -263,6 +293,43 @@ function renderTrust(report) {
     </div>`;
 
   return section('ur-trust', 'WHY TRUST THIS?', content);
+}
+
+/** Show attempted operations separately from successful evidence retrieval. */
+function renderCoverage(report) {
+  const log = report.trust && report.trust.query_telemetry &&
+    report.trust.query_telemetry.execution_log;
+  if (!Array.isArray(log) || log.length === 0) {
+    return section('ur-coverage', 'SOURCE COVERAGE',
+      '<p class="ur-empty">No query execution log is available; source coverage cannot be verified here.</p>');
+  }
+  const groups = new Map();
+  for (const entry of log.slice(0, 100)) {
+    if (!entry || !entry.channel) continue;
+    const channel = String(entry.channel);
+    const status = String(entry.status || 'UNKNOWN').toUpperCase();
+    if (!groups.has(channel)) groups.set(channel, { success: 0, failed: 0, auth: 0, other: 0 });
+    const counts = groups.get(channel);
+    if (status === 'SUCCESS') counts.success++;
+    else if (status === 'FAILED' || status === 'TIMEOUT') counts.failed++;
+    else if (status === 'AUTH_REQUIRED') counts.auth++;
+    else counts.other++;
+  }
+  if (groups.size === 0) {
+    return section('ur-coverage', 'SOURCE COVERAGE',
+      '<p class="ur-empty">The execution log has no channel observations.</p>');
+  }
+  const rows = [...groups.entries()].sort((a, b) => a[0].localeCompare(b[0]))
+    .map(([channel, counts]) => `<tr><th scope="row">${esc(channel)}</th>
+      <td>${counts.success}</td><td>${counts.failed}</td>
+      <td>${counts.auth}</td><td>${counts.other}</td></tr>`).join('');
+  const content = `<div class="ur-coverage-scroll"><table class="ur-coverage-table">
+    <caption>Observed query outcomes; a successful query is not necessarily direct evidence.</caption>
+    <thead><tr><th scope="col">Channel</th><th scope="col">Succeeded</th>
+      <th scope="col">Failed / timed out</th><th scope="col">Auth required</th>
+      <th scope="col">Other / planned</th></tr></thead><tbody>${rows}</tbody></table></div>
+    ${log.length > 100 ? '<p class="ur-ev-note">Only the first 100 execution records are shown.</p>' : ''}`;
+  return section('ur-coverage', 'SOURCE COVERAGE', content);
 }
 
 /** SECTION 8 — NEXT STEPS */
@@ -297,24 +364,19 @@ function renderUnifiedReport(container, report) {
     renderChanges(report),
     renderTimeline(report),
     renderTrust(report),
+    renderCoverage(report),
     renderNextSteps(report),
   ].join('\n');
 
   container.innerHTML = `<div class="unified-report">${html}</div>`;
 
   // Expand/collapse on mobile — toggle .ur-section.collapsed on heading click
-  container.querySelectorAll('.ur-heading').forEach(h2 => {
-    h2.setAttribute('tabindex', '0');
-    h2.setAttribute('role', 'button');
-    h2.setAttribute('aria-expanded', 'true');
-    h2.addEventListener('click', () => {
-      const sec = h2.closest('.ur-section');
+  container.querySelectorAll('.ur-heading-button').forEach(button => {
+    button.addEventListener('click', () => {
+      const sec = button.closest('.ur-section');
       if (!sec) return;
       const isCollapsed = sec.classList.toggle('ur-collapsed');
-      h2.setAttribute('aria-expanded', String(!isCollapsed));
-    });
-    h2.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); h2.click(); }
+      button.setAttribute('aria-expanded', String(!isCollapsed));
     });
   });
 }
@@ -336,7 +398,8 @@ async function fetchAndRenderReport(container, url, spinner) {
       return;
     }
     const data = await res.json();
-    renderUnifiedReport(container, data);
+    // Agent endpoints wrap the canonical report; direct reports also remain supported.
+    renderUnifiedReport(container, Object.hasOwn(data, 'unified_report') ? data.unified_report : data);
   } catch (e) {
     container.innerHTML = `<p class="ur-error">Failed to load report: ${esc(String(e))}</p>`;
   } finally {

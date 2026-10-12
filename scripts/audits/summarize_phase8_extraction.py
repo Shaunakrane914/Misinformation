@@ -1,8 +1,8 @@
 """Summarize observed Phase 8 acquisition richness without re-fetching sources.
 
 Inputs are immutable Phase 8A/8B probe JSONL files. This measures normalized
-evidence fields only; it cannot establish which raw provider fields were present
-or whether an omitted field was available upstream. Output must be a new path.
+evidence fields and, where retained, parsed adapter-item field names. Neither
+is a complete raw provider schema. Output must be a new path.
 """
 
 from __future__ import annotations
@@ -83,6 +83,10 @@ def summarize(paths: list[Path]) -> dict:
                 field for sample in samples
                 for field in sample.get("populated_video_metadata_field_names", [])
             }),
+            "observed_adapter_item_field_names": sorted({
+                field for probe in successful
+                for field in probe.get("adapter_item_field_names", [])
+            }),
             "mean_relevant_chars_per_successful_item": round(
                 sum(probe.get("relevant_text_chars") or 0 for probe in successful) / total_items
             ) if total_items else None,
@@ -95,8 +99,8 @@ def summarize(paths: list[Path]) -> dict:
                 probe.get("pagination_coverage") or "UNVERIFIED" for probe in probes
             }),
             "limits": (
-                "Normalized samples only; source-response field availability and "
-                "whole-page completeness are not measurable from these artifacts."
+                "Parsed adapter-item keys are a bounded observed subset, not a raw "
+                "provider schema. Whole-page completeness is not measurable here."
             ),
         }
 
@@ -105,7 +109,7 @@ def summarize(paths: list[Path]) -> dict:
         "source_probe_files": [path.as_posix() for path in paths],
         "method": "Observed live probe records; latest matching operation/scenario wins.",
         "limitations": [
-            "Only normalized sample fields are scored; raw provider field completeness is unverified.",
+            "Normalized samples and bounded parsed adapter-item key names are scored; raw provider field completeness is unverified.",
             "Sample size is small and source-dependent, not a continuous health guarantee.",
             "No request is made by this summarizer and no inferred data fills missing fields.",
         ],

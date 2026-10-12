@@ -14,7 +14,7 @@ from backend.infrastructure.acquisition.network.http import (
 from backend.infrastructure.acquisition.routing.channel_dispatcher import (
     ChannelQueryDispatcher,
 )
-from backend.services.agent_reach.native.executor import NativeExecutor
+from backend.services.agent_reach.native.executor import NativeExecutor, _caption_segments
 
 
 def _response(body, endpoint="https://example.com/final", content_type="application/json"):
@@ -89,6 +89,65 @@ def test_github_read_uses_bounded_contents_api_readme_without_raw_host(monkeypat
     assert result["items"][0]["readme"] == "# Verified README\nActual content"
     assert result["items"][0]["readme_sha"] == "abc123"
     assert result["items"][0]["readme_transport"]["raw_body_sha256"]
+
+
+def test_github_collection_pagination_is_bounded_and_observed(monkeypatch, executor):
+    calls = []
+
+    def fake_fetch(url, **_kwargs):
+        calls.append(url)
+        response = _response(json.dumps([{"number": 1, "title": "Issue"}]), url)
+        response.headers["Link"] = '<https://api.github.com/repos/owner/repo/issues?page=3>; rel="next"'
+        return response
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
+    result = executor.execute_github_rest_operation("owner/repo", "issues", limit=4, page=2)
+    assert calls == ["https://api.github.com/repos/owner/repo/issues?per_page=4&page=2"]
+    assert result["pagination"] == {
+        "page": 2, "per_page": 4, "provider_items_on_page": 1,
+        "has_next_page": True, "next_page_supported": True,
+    }
+    from backend.services.agent_reach.native.errors import NativeReachError
+    with pytest.raises(NativeReachError):
+        executor.execute_github_rest_operation("owner/repo", "issues", page=6)
+    assert len(calls) == 1
+
+
+def test_caption_segments_preserve_observed_timing_and_do_not_infer_audio():
+    cues = """WEBVTT
+
+00:01.000 --> 00:03.500
+First factual claim
+
+2
+00:00:04,000 --> 00:00:06,200
+Correction follows
+"""
+    assert _caption_segments(cues) == [
+        {"start": "00:00:01.000", "end": "00:00:03.500", "text": "First factual claim"},
+        {"start": "00:00:04.000", "end": "00:00:06.200", "text": "Correction follows"},
+    ]
+
+
+def test_transcript_file_carries_language_and_bounded_cues(monkeypatch, executor):
+    from pathlib import Path
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.shutil.which", lambda _name: "yt-dlp")
+
+    def fake_run(command, **_kwargs):
+        output = Path(command[command.index("-o") + 1].replace("%(id)s", "fixture.en"))
+        output.with_suffix(".en.vtt").write_text(
+            "WEBVTT\n\n00:00:01.000 --> 00:00:02.000\nObserved words\n",
+            encoding="utf-8",
+        )
+        return SimpleNamespace(returncode=0, stdout="", stderr="")
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.subprocess.run", fake_run)
+    result = executor.execute_youtube_transcript("https://www.youtube.com/watch?v=fixture")
+    assert result["status"] == "SUCCESS"
+    assert result["caption_language"] == "en"
+    assert result["caption_origin"] == "UNVERIFIED"
+    assert result["segments"][0]["text"] == "Observed words"
 
 
 def test_rss_preserves_feed_fields_without_claiming_linked_article(monkeypatch, executor, public_dns):

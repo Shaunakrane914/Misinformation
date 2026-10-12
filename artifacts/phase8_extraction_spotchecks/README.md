@@ -8,14 +8,19 @@ post-commit or hosted-CI result.
 
 | Run | Purpose | Result |
 |---|---|---|
-| [17:09:44Z](2026-10-12_17-09-44Z/) | GitHub README and RSS field extraction, two scenarios each | GitHub 2/2 partial README content; RSS 2/2 syndicated feed results. Includes first all-16 normalized richness summary. |
-| [17:14:16Z](2026-10-12_17-14-16Z/) | Field-presence instrumentation for GitHub, YouTube, RSS common targets | 3/3 independently live usable, with normalized metadata field names; not a complete 16-operation gate. |
-| [17:14:36Z](2026-10-12_17-14-36Z/) | Nested YouTube metadata presence after instrumentation | Video ID, channel ID, date, duration, engagement counters, tags/categories and availability field names observed on one target. Contains latest all-16 summary. |
+| [17:09:44Z](2026-10-12_17-09-44Z/) | Early GitHub/RSS probes | **Invalid as isolated-worktree proof:** file-path invocation loaded the editable-installed outer checkout's backend. Retained as negative verification evidence. |
+| [17:14:16Z](2026-10-12_17-14-16Z/) | Early field-presence probes | Same checkout-contamination limitation. |
+| [17:14:36Z](2026-10-12_17-14-36Z/) | Early YouTube metadata probe | Same checkout-contamination limitation; its summary is superseded. |
+| [17:20:41Z](2026-10-12_17-20-41Z/) | First web probes after code edit | Same checkout-contamination limitation; its `DIRECT_FULL_CONTENT` claim must **not** be cited for the isolated branch. |
+| [17:21:39Z](2026-10-12_17-21-39Z/) | Guarded web probes | `router_source` proves this checkout; both targets returned bounded partial page text with no invented dates. |
+| [17:21:49Z](2026-10-12_17-21-49Z/) | Guarded GitHub/RSS/YouTube probes | `router_source` proves this checkout. Two live scenarios each; README partial content, mixed feed summary/content, video metadata. Contains corrected all-16 summary. |
 
-The latest [`richness_summary.json`](2026-10-12_17-14-36Z/richness_summary.json)
+The latest [`richness_summary_v2.json`](2026-10-12_17-21-49Z/richness_summary_v2.json)
 selects the latest matching operation/scenario across the Phase 8A artifact
-and these runs. It scores only normalized sample fields, not raw-provider
-schema completeness. See the [Phase 8B schema matrix](../../docs/architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md)
+and **only the guarded** 17:21 runs. It scores only observed normalized sample
+fields, not raw-provider schema completeness. Older samples that did not
+record a field are marked *unobserved*, not treated as empty. See the
+[Phase 8B schema matrix](../../docs/architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md)
 for current gaps and gate status.
 
 No credentials were used to bypass access, and no protected historical

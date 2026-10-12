@@ -1,0 +1,76 @@
+{
+  "gate": "PARTIAL",
+  "protected_operation_count": 16,
+  "live_verified_operation_count": 3,
+  "missing_operations": [
+    "github.commits",
+    "github.issues",
+    "github.prs",
+    "github.releases",
+    "v2ex.latest",
+    "v2ex.replies",
+    "v2ex.search",
+    "v2ex.topic",
+    "web.read",
+    "xiaoyuzhou.episodes",
+    "xiaoyuzhou.podcast",
+    "youtube.comments",
+    "youtube.transcript"
+  ],
+  "not_live_verified_operations": [
+    "github.commits",
+    "github.issues",
+    "github.prs",
+    "github.releases",
+    "v2ex.latest",
+    "v2ex.replies",
+    "v2ex.search",
+    "v2ex.topic",
+    "web.read",
+    "xiaoyuzhou.episodes",
+    "xiaoyuzhou.podcast",
+    "youtube.comments",
+    "youtube.transcript"
+  ],
+  "operations": {
+    "github.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 2,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_PARTIAL_CONTENT": 2
+      },
+      "limitations": []
+    },
+    "rss.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "SYNDICATED_SUMMARY"
+      ],
+      "probe_count": 2,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "SYNDICATED_SUMMARY": 2
+      },
+      "limitations": []
+    },
+    "youtube.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_METADATA"
+      ],
+      "probe_count": 2,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_METADATA": 2
+      },
+      "limitations": []
+    }
+  }
+}

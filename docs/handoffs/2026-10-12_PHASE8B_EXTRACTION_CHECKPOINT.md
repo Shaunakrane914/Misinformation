@@ -42,11 +42,24 @@ before resuming.
 - The probe runner now records bounded normalized field-presence names and
   author without retaining new response bodies. The
   [spot-check artifact index](../../artifacts/phase8_extraction_spotchecks/README.md)
-  documents each run. The
+  documents each run. An important verification mistake was discovered after
+  the first checkpoint: invoking the script by file path loaded the
+  editable-installed **outer** checkout's backend in the nested worktree.
+  Those early live records are retained as invalid isolated-branch proof. The
+  runner now forces and checks its own repository import path; only the
+  17:21Z guarded runs validate this branch. The
   [summarizer](../../scripts/audits/summarize_phase8_extraction.py)
   creates a new JSON path and refuses to overwrite historical evidence.
-  Its 16-operation results are normalized-sample metrics, **not** raw-provider
-  theoretical field coverage.
+  Its latest 16-operation result distinguishes unobserved fields from empty
+  fields. It is normalized-sample measurement, **not** raw-provider theoretical
+  field coverage.
+- Web read now extracts observed HTML title, explicitly declared author/date,
+  headings and the publisher's unverified canonical claim. Missing dates stay
+  blank; the actual native HTTP backend is no longer labeled `jina-reader`.
+  Challenge-page metadata is discarded if the bounded fallback reader supplies
+  content. Generic web reads always remain `PARTIAL_CONTENT` because length
+  cannot prove complete article extraction. Two guarded live pages returned
+  bounded partial content with no observed author or publication date.
 - A nested-worktree test-isolation bug was found: dotenv discovered the outer
   checkout's `.env`, leading to a Supabase client during offline tests. The
   test setup now sanitizes keys from the same discoverable file before app
@@ -59,11 +72,15 @@ before resuming.
 | Focused acquisition tests after extraction edits | 35 passed |
 | Focused acquisition/audit tests after date fix | 41 passed |
 | Extraction summarizer overwrite contract | 1 passed |
+| Focused web/acquisition tests after page metadata fix | 38 passed |
+| Guarded live Stage 8B spot-check | GitHub/RSS/YouTube 6/6 usable across two scenarios each; web 2/2 partial content, source path asserted in run metadata |
+| Initial hosted CI at `ca57e70` | [run 38283341137](https://github.com/Shaunakrane914/Misinformation/actions/runs/38283341137) **failed**: all Python jobs hit `ModuleNotFoundError: backend` in the new subprocess summary test; lint/frontend passed. The runner's own-checkout import bootstrap was added afterward and requires a new hosted run. |
 | First full suite, before nested-worktree isolation fix | 990 passed, 1 failed (`database.supabase is None` assertion) |
 | First fast suite, same environment issue | 794 passed, 1 failed |
 | Failing isolation test after fix | 1 passed |
-| Final `pytest tests/ -q -o addopts='--tb=short -ra'` | **991 passed**, exit 0, 28.97s |
-| Final `pytest tests/unit tests/chaos tests/security -q -o addopts='--tb=short -ra'` | **795 passed**, exit 0, 13.13s |
+| Intermediate full/fast suites before web correction | 991 / 795 passed, exit 0 |
+| Final `pytest tests/ -q -o addopts='--tb=short -ra'` | **994 passed**, exit 0, 50.81s |
+| Final `pytest tests/unit tests/chaos tests/security -q -o addopts='--tb=short -ra'` | **798 passed**, exit 0, 24.49s |
 | Fatal flake8 command from `AGENTS.md` | exit 0, 0 findings |
 | `python scripts/validate_release_candidate_smoke.py` | exit 0, `OFFLINE_SMOKE_PASS` |
 | `python scripts/validation/verify_frozen_benchmarks.py` | exit 0, content hashes verified |
@@ -73,8 +90,8 @@ before resuming.
 The original checkout's protected historical archive remains known to have
 55 malformed JSON files and legacy-unsealed records. The isolated worktree's
 rollback result does **not** supersede that limitation. No dossier or frozen
-benchmark was changed. No Phase 8B hosted CI run or deployment was observed
-as of this handoff draft; update this paragraph after any push/check.
+benchmark was changed. Phase 8B hosted CI is **not yet green** as of this
+handoff draft; update this paragraph after the fix is pushed and checked.
 
 ## Decision and next engineering work
 

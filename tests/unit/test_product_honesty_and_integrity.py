@@ -23,6 +23,7 @@ from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 
 from backend.main import app
+from backend import __version__
 from backend.services.agent_reach.channels import ChannelStatus, QueryExecutionRecord
 from backend.services.agent_reach.native.doctor import DoctorBridge
 from backend.agents.brandshield_agent import BrandShieldAgent
@@ -259,7 +260,7 @@ class TestProductHonestyAndIntegrity:
         resp = client.get("/api/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["version"] == "3.7.0"
+        assert data["version"] == __version__
         assert "Modular Multi-Agent Swarm with Zero-Cost Omni-Scraper Fabric" not in data.get("architecture", "")
         assert data["architecture"] == "Deterministic Evidence Pipeline with Selective Semantic AI"
         assert "registered_modules" in data
@@ -271,9 +272,10 @@ class TestProductHonestyAndIntegrity:
         redirects = Path("frontend/_redirects").read_text(encoding="utf-8")
         assert "/* /index.html 200" not in redirects, "Catch-all 200 mask must be removed"
 
-        # 2. Version 3.7.0 across shared nav
+        # 2. Shared nav must match the canonical backend version.
+        from backend import __version__
         nav = Path("frontend/aegis-nav.js").read_text(encoding="utf-8")
-        assert "window.AEGIS_VERSION = '3.7.0'" in nav, "Nav missing authoritative version 3.7.0"
+        assert f"window.AEGIS_VERSION = '{__version__}'" in nav, "Nav version differs from the canonical backend version"
 
         # 3. submit.html: distinct AI_SYNTHESIS vs BACKEND_INVESTIGATION
         sub = Path("frontend/submit.html").read_text(encoding="utf-8")

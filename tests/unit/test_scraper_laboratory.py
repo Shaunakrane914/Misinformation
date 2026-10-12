@@ -304,11 +304,11 @@ def test_four_agent_strategies_runtime_execution():
     assert len(tr_frags) > 0
     assert tr_frags[0].metadata.get("is_wire_syndication") is True
 
-    # 3. Scout forces FULL_ARTICLE
+    # 3. Scout preserves measured depth while adding primary-source metadata.
     sc_doc = FetchedDocument(url="https://sec.gov/edgar/filing", status="SUCCESS", raw_content="Corporate revenue was $5.4B with EBITDA expansion")
     sc_frags = sc_strat.normalize(sc_doc, cand, req)
     assert len(sc_frags) > 0
-    assert sc_frags[0].content_depth == "FULL_ARTICLE"
+    assert sc_frags[0].content_depth == "SNIPPET"
     assert sc_frags[0].metadata.get("is_primary_source") is True
 
     # 4. Personal Watch redacts phone numbers, SSNs, and street addresses

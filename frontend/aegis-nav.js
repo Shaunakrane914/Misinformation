@@ -15,7 +15,7 @@
   window.sanitizeText = window.escapeHtml;
 
   // ── Version Identity ──
-  window.AEGIS_VERSION = '3.7.0';
+  window.AEGIS_VERSION = '4.1.0';
   window.AEGIS_RELEASE_DATE = '2026-10-02';
 
   // ── Standardized Production Backend Base Resolution ──

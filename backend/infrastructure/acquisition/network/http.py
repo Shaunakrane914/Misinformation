@@ -8,7 +8,11 @@ useful evidence.
 from __future__ import annotations
 
 import email.utils
+import http.client
+import io
+import math
 import random
+import socket
 import time
 import urllib.error
 import urllib.parse
@@ -17,12 +21,12 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Callable, Mapping, Optional
 
-from backend.infrastructure.acquisition.security.url_validator import is_safe_url
+from backend.infrastructure.acquisition.security.url_validator import is_safe_url, resolve_public_addresses
 
 
 RETRYABLE_STATUS_CODES = frozenset({429, 500, 502, 503, 504})
 NON_RETRYABLE_STATUS_CODES = frozenset({400, 401, 403, 404, 405, 410, 422})
-DEFAULT_MAX_RESPONSE_BYTES = 5 * 1024 * 1024
+DEFAULT_MAX_RESPONSE_BYTES = 1_000_000
 
 
 class ProviderHTTPError(RuntimeError):
@@ -67,7 +71,8 @@ def parse_retry_after(value: Optional[str], *, now: Optional[datetime] = None) -
         return None
     clean = str(value).strip()
     try:
-        return max(0.0, float(clean))
+        delay = float(clean)
+        return max(0.0, delay) if math.isfinite(delay) else None
     except ValueError:
         pass
     try:
@@ -78,6 +83,112 @@ def parse_retry_after(value: Optional[str], *, now: Optional[datetime] = None) -
         return max(0.0, (parsed - reference).total_seconds())
     except (TypeError, ValueError, OverflowError):
         return None
+
+
+def _connect_public_socket(address, timeout=5.0, source_address=None):
+    """Connect only to fresh validated numeric IPs; retain HTTP Host/TLS SNI."""
+    host, port = address
+    timeout = 5.0 if timeout is socket._GLOBAL_DEFAULT_TIMEOUT or timeout is None else float(timeout)
+    deadline = time.monotonic() + timeout
+    try:
+        addresses = resolve_public_addresses(host, port, timeout=min(2.5, timeout))
+    except ValueError as error:
+        raise ProviderHTTPError("Connection blocked by SSRF policy", endpoint=f"{host}:{port}") from error
+    last_error = None
+    for family, socktype, protocol, _, sockaddr in addresses:
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Public HTTP connection deadline expired")
+        connection = socket.socket(family, socktype, protocol)
+        try:
+            connection.settimeout(remaining)
+            if source_address:
+                connection.bind(source_address)
+            # Numeric sockaddr came from the validated DNS answer. No re-lookup.
+            connection.connect(sockaddr)
+            return connection
+        except OSError as error:
+            last_error = error
+            connection.close()
+    raise last_error or OSError("No public address could be connected")
+
+
+class _DeadlineStream(io.RawIOBase):
+    """Keep header/body trickles within the connection's wall-clock budget."""
+
+    def __init__(self, raw, connection, deadline):
+        super().__init__()
+        self.raw = raw
+        self.connection = connection
+        self.deadline = deadline
+
+    def readable(self):
+        return True
+
+    def readinto(self, buffer):
+        remaining = self.deadline - time.monotonic()
+        if remaining <= 0:
+            raise TimeoutError("Public HTTP response deadline expired")
+        self.connection.settimeout(remaining)
+        return self.raw.readinto(buffer)
+
+    def close(self):
+        try:
+            self.raw.close()
+        finally:
+            super().close()
+
+
+class _ResponseSocket:
+    def __init__(self, connection, deadline):
+        self.connection = connection
+        self.deadline = deadline
+
+    def makefile(self, mode):
+        raw = self.connection.makefile(mode, buffering=0)
+        return io.BufferedReader(_DeadlineStream(raw, self.connection, self.deadline))
+
+
+def _install_response_deadline(connection):
+    timeout = connection.timeout
+    if timeout is None or timeout is socket._GLOBAL_DEFAULT_TIMEOUT:
+        timeout = 5.0
+    deadline = time.monotonic() + float(timeout)
+
+    def response(sock, *args, **kwargs):
+        return http.client.HTTPResponse(_ResponseSocket(sock, deadline), *args, **kwargs)
+
+    connection.response_class = response
+
+
+class _PublicHTTPConnection(http.client.HTTPConnection):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._create_connection = _connect_public_socket
+        _install_response_deadline(self)
+
+
+class _PublicHTTPSConnection(http.client.HTTPSConnection):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._create_connection = _connect_public_socket
+        _install_response_deadline(self)
+
+
+class _PublicHTTPHandler(urllib.request.HTTPHandler):
+    def http_open(self, request):
+        return self.do_open(_PublicHTTPConnection, request)
+
+
+class _PublicHTTPSHandler(urllib.request.HTTPSHandler):
+    def https_open(self, request):
+        return self.do_open(_PublicHTTPSConnection, request, context=self._context)
+
+
+def _origin(url):
+    parsed = urllib.parse.urlsplit(url)
+    return (parsed.scheme.lower(), (parsed.hostname or "").lower(),
+            parsed.port or (443 if parsed.scheme.lower() == "https" else 80))
 
 
 class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -108,10 +219,9 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
             )
         redirected = super().redirect_request(req, fp, code, msg, headers, target)
         if redirected is not None:
-            source_host = (urllib.parse.urlsplit(req.full_url).hostname or "").lower()
-            target_host = (urllib.parse.urlsplit(target).hostname or "").lower()
-            if source_host != target_host:
-                redirected.remove_header("Authorization")
+            if _origin(req.full_url) != _origin(target):
+                for name in ("Authorization", "Cookie", "Proxy-Authorization"):
+                    redirected.remove_header(name)
         return redirected
 
 
@@ -119,7 +229,7 @@ def fetch_public_http(
     url: str,
     *,
     headers: Optional[Mapping[str, str]] = None,
-    timeout: float = 10.0,
+    timeout: float = 5.0,
     max_bytes: int = DEFAULT_MAX_RESPONSE_BYTES,
     max_redirects: int = 4,
     max_attempts: int = 2,
@@ -137,7 +247,7 @@ def fetch_public_http(
     safe, reason = is_safe_url(url)
     if not safe:
         raise ProviderHTTPError(f"URL blocked by SSRF policy: {reason}", endpoint=url)
-    if max_bytes <= 0 or max_attempts <= 0 or max_redirects < 0:
+    if max_bytes <= 0 or max_attempts <= 0 or max_redirects < 0 or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("HTTP bounds must be positive")
 
     request_headers = dict(headers or {})
@@ -147,7 +257,11 @@ def fetch_public_http(
 
     for attempt in range(1, max_attempts + 1):
         redirect_handler = _ValidatingRedirectHandler(max_redirects=max_redirects)
-        opener = urllib.request.build_opener(redirect_handler)
+        # Environment proxies must not bypass the destination-address boundary.
+        opener = urllib.request.build_opener(
+            urllib.request.ProxyHandler({}), redirect_handler,
+            _PublicHTTPHandler(), _PublicHTTPSHandler(),
+        )
         request = urllib.request.Request(url, headers=request_headers, method="GET")
         try:
             with opener.open(request, timeout=timeout) as response:
@@ -196,6 +310,7 @@ def fetch_public_http(
         except urllib.error.HTTPError as error:
             status = int(error.code)
             retry_after = parse_retry_after(error.headers.get("Retry-After"))
+            error.close()
             last_error = ProviderHTTPError(
                 f"Provider HTTP {status}",
                 endpoint=str(getattr(error, "url", url) or url),

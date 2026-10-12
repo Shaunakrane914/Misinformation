@@ -449,9 +449,15 @@
     }
 
     // ── Live Channel Adapters Capability Status ──
-    async function loadLiveDoctorStatus() {
+    let stopScoutHealthObservation = null;
+    function loadLiveDoctorStatus() {
+      if (!stopScoutHealthObservation) stopScoutHealthObservation = AegisOperationHealth.subscribeCapabilities(renderScoutOperationHealth);
+      return AegisOperationHealth.fetchCapabilities({ force: true }).catch(() => {});
+    }
+
+    function renderScoutOperationHealth(data, cacheState) {
       try {
-        const data = await AegisOperationHealth.fetchCapabilities();
+        if (!data) throw new Error('Operation status unavailable');
         const ch = data.channels || {};
         const strip = document.getElementById('agentReachLiveStrip');
         if (!strip) return;
@@ -467,7 +473,7 @@
             twitter: ['search', 'profile', 'status'], youtube: ['search', 'transcript', 'comments'],
             bilibili: ['search'], v2ex: ['latest', 'topic', 'replies'], github: ['read', 'issues', 'prs']
           }[k] || [];
-          const summary = AegisOperationHealth.summarizeChannel(item, required);
+          const summary = AegisOperationHealth.summarizeChannel(item, required, { isStale: cacheState.isStale });
           let cls = 'off';
           let label = k.toUpperCase();
           if (k === 'web') label = 'Web (Jina)';
@@ -475,7 +481,7 @@
           if (k === 'twitter') label = 'X / Twitter';
 
           if (summary.state === 'healthy') cls = 'active';
-          else if (['limited', 'degraded', 'auth_required'].includes(summary.state)) cls = 'warn';
+          else if (['limited', 'degraded', 'auth_required', 'stale'].includes(summary.state)) cls = 'warn';
 
           rendered.push(`
             <span class="channel-pill ${cls}" title="${esc(summary.label)} · ${esc(summary.details.map(d => `${d.name}: ${d.state}`).join(', '))}">
@@ -487,7 +493,8 @@
         rendered.push(`<span class="channel-pill" style="margin-left:auto;color:var(--text-dim);">Source Adapters &bull; ${data.agent_reach?.version || 'Active'}</span>`);
         strip.innerHTML = rendered.join('');
       } catch (e) {
-        // keep baseline
+        const strip = document.getElementById('agentReachLiveStrip');
+        if (strip) strip.textContent = 'Operation status unavailable';
       }
     }
 

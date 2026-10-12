@@ -112,7 +112,7 @@ def test_brandshield_acquisition_behavioral_customization():
     frags = acq.normalize(doc, cand, req)
     assert len(frags) > 0
     f = frags[0]
-    assert f.content_depth == "PARTIAL_CONTENT"
+    assert f.content_depth == "SNIPPET"
     assert f.metadata.get("marketplace_listing") is True
     assert "counterfeit_indicators" in f.metadata
     assert "price" in f.metadata
@@ -135,7 +135,7 @@ def test_trending_acquisition_behavioral_customization():
 
 
 def test_scout_acquisition_behavioral_customization():
-    """Verify ScoutAcquisition primary filing classification and full article depth."""
+    """Verify Scout metadata never upgrades a short source to full article depth."""
     from backend.services.agent_reach.channels import FetchedDocument, CandidateSource
     acq = ScoutAcquisition()
     cand = CandidateSource(url="https://sec.gov/edgar/data/0001/10-k.htm", platform="web", title="10-K Annual Report")
@@ -145,7 +145,7 @@ def test_scout_acquisition_behavioral_customization():
     frags = acq.normalize(doc, cand, req)
     assert len(frags) > 0
     f = frags[0]
-    assert f.content_depth == "FULL_ARTICLE"
+    assert f.content_depth == "SNIPPET"
     assert f.metadata.get("is_primary_source") is True
     assert f.metadata.get("financial_domain") is True
 

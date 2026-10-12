@@ -2,8 +2,9 @@
 
 **Target Audience:** Autonomous coding assistants (Google Antigravity, OpenAI Codex, Anthropic Claude) and software engineers  
 **Repository:** `Shaunakrane914/Misinformation`  
-**Current Milestone:** Phase 7.2 (Workspace Organization & Hygiene)  
-**Verified Offline Test Gate:** 787 / 787 tests passing  
+**Current Milestone:** Phase 7.4 (Remediation Verification, Historical Data Recovery Assessment & CI Closeout)
+**Historical Phase 7.2 Offline Baseline:** 787 / 787 tests passing
+**Current Agent Handoff:** [Start here](docs/handoffs/README.md). Test totals and local validation evidence are dated snapshots, not permanent acceptance counts.
 
 ---
 
@@ -31,7 +32,7 @@ Aegis Protocol is an evidence-first misinformation research platform featuring:
    - `tests/retrieval_benchmark/labels.jsonl`
    - `tests/retrieval_benchmark/scenarios.jsonl`
 2. **Never delete or overwrite historical investigation dossiers**:
-   - `backend/data/dossiers/*.json` (contains 2,312 protected dossiers).
+   - `backend/data/dossiers/*.json` (all historical files are protected, regardless of changing inventory counts).
 3. **Never delete the research or artifact trees**:
    - `research/` (contains historical scraper bakeoffs and datasets).
    - `artifacts/` (contains empirical validation proof and benchmark metrics).
@@ -58,7 +59,7 @@ The following 16 operations must remain registered, routable, and verified acros
 3.  github.prs           7. youtube.transcript   11. v2ex.topic          15. xiaoyuzhou.podcast
 4.  github.commits       8. youtube.comments     12. v2ex.replies        16. xiaoyuzhou.episodes
 ```
-Contract test: [`tests/contract/test_recovered_operations_contract.py`](tests/contract/test_recovered_operations_contract.py).
+Contract test: [`tests/unit/test_recovered_operation_routes.py`](tests/unit/test_recovered_operation_routes.py).
 
 ---
 
@@ -67,10 +68,10 @@ Contract test: [`tests/contract/test_recovered_operations_contract.py`](tests/co
 Always run these commands to verify changes before concluding work:
 
 ```bash
-# 1. Run full offline regression test suite (787 tests)
+# 1. Run full offline regression test suite (discover the current inventory)
 pytest tests/ -q
 
-# 2. Run fast unit, chaos, and security suites (591 tests, ~90s)
+# 2. Run fast unit, chaos, and security suites (counts/timings vary)
 pytest tests/unit tests/chaos tests/security -q
 
 # 3. Check for fatal syntax or compilation errors
@@ -83,11 +84,13 @@ python scripts/validate_release_candidate_smoke.py
 python scripts/validate_rollback_compatibility.py
 ```
 
+See the [handoff testing runbook](docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_TESTING.md) for compact output, frontend checks, frozen-data validation, temporary logs, and failure interpretation. The historical archive currently has 55 invalid JSON files: rollback validation must report that failure honestly, not silently skip or repair protected dossiers. A passing offline suite does not establish live-provider health, remote CI, or deployed rollback.
+
 ---
 
 ## 5. Coding & Testing Conventions
 
-1. **Async / Sync Boundaries**: FastAPI endpoints use `async def`, while CPU-bound scoring and deterministic regex routines are synchronous. Do not block the event loop with synchronous network I/O.
+1. **Async / Sync Boundaries**: Never block the event loop with synchronous network I/O. Use `async def` with awaited worker offloading for blocking agent calls, or FastAPI synchronous handlers that execute in its worker pool. CPU-bound scoring and deterministic regex routines remain synchronous. Preserve per-agent admission guards while singleton scan state is shared.
 2. **Deterministic Fallbacks**: External network requests must have bounded timeouts (`timeout=5.0s`), maximum response size caps (`max_bytes=1_000_000`), and SSRF validation via `is_safe_url()`.
 3. **No Secret Leaking**: Never log API keys, auth cookies, or authorization tokens. Strip credentials before generating report artifacts.
 4. **Truthful Telemetry**: If evidence cannot be retrieved, return `INSUFFICIENT_EVIDENCE` or `status: "failed"`. Never fabricate fake positive search results.
@@ -105,3 +108,19 @@ python scripts/validate_rollback_compatibility.py
 - [Production Configuration Matrix](docs/operations/PRODUCTION_CONFIGURATION_MATRIX.md)
 - [Rollback Verification](docs/operations/ROLLBACK_VERIFICATION.md)
 - [CI Coverage Matrix](docs/testing/CI_COVERAGE_MATRIX.md)
+- [Latest Coding-Agent Handoff](docs/handoffs/README.md)
+- [Remediation Decisions and Code Map](docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_DECISIONS.md)
+- [Execution Work Log](docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_WORK_LOG.md)
+
+## 7. Required Handoff for Subsequent Coding Agents
+
+Before changing code, read the latest handoff, inspect `git status --short` and the relevant diff, and preserve the existing uncommitted implementation. Do not assume the branch name or old test count proves acceptance.
+
+Before leaving an implementation task:
+
+1. Leave a dated Markdown handoff under `docs/handoffs/` and link it from the handoff index.
+2. Record the user-request scope, observed branch/base commit, changed code and regression-test pointers, decision rationale and tradeoffs, and outstanding risks or owner actions.
+3. Record commands actually run, exit codes, results, and limitations. Label excerpts or reconstructed work logs accurately; do not invent a raw transcript, passing tests, CI runs, or live evidence.
+4. State whether changes were committed/pushed. Keep secrets, credentials, private personal data and private reasoning traces out of documentation; preserve useful engineering conclusions instead.
+5. Use relative links and portable commands. Save fresh diagnostic outputs only in temporary or explicitly new locations, never over tracked evaluation proof or historical dossiers.
+6. Keep historical records intact, append new evidence, and make it easy to distinguish completed work from planned or unverified work.

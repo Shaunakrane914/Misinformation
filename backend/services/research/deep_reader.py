@@ -207,6 +207,7 @@ class DeepReader:
         """
         from backend.services.agent_reach import agent_reach_service
 
+        max_reads = max(0, int(max_reads)) if timeout_per_read > 0 else 0
         candidates_to_read, audit = self._select_read_candidates(ranked_candidates, max_reads=max_reads)
         now = time.time()
         telemetry = {
@@ -250,13 +251,14 @@ class DeepReader:
         # Execute bounded concurrent reading
         max_workers = min(len(candidate_attempts) or 1, 6)
         completed_futures = set()
-        with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=max_workers)
+        try:
             future_to_info = {
                 executor.submit(_fetch_url, item, att_id): (item, att_id)
                 for item, att_id in candidate_attempts
             }
             try:
-                for fut in concurrent.futures.as_completed(future_to_info, timeout=max(5.0, timeout_per_read * 2.0)):
+                for fut in concurrent.futures.as_completed(future_to_info, timeout=max(0.0, timeout_per_read)):
                     completed_futures.add(fut)
                     orig_item, att_id = future_to_info[fut]
                     try:
@@ -353,6 +355,11 @@ class DeepReader:
                             "char_count": 0,
                             "error_message": "ThreadPoolExecutor timeout",
                         })
+        finally:
+            # Context-manager shutdown waits for running calls and defeats the
+            # deadline. Late workers only return/cache responses; they cannot
+            # mutate dossier items after this method has returned.
+            executor.shutdown(wait=False, cancel_futures=True)
 
         # Non-read items retain their status
         for c in ranked_candidates:

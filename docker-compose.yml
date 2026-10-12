@@ -21,6 +21,10 @@ services:
       - GEMINI_API_KEY_3=${GEMINI_API_KEY_3:-}
       - SUPABASE_URL=${SUPABASE_URL:-}
       - SUPABASE_KEY=${SUPABASE_KEY:-}
+      - SUPABASE_SERVICE_ROLE_KEY=${SUPABASE_SERVICE_ROLE_KEY:-}
+      - ADMIN_API_TOKEN=${ADMIN_API_TOKEN:-}
+      - SQLITE_DB_PATH=/app/backend/data/aegis_local.db
+      - AEGIS_DOSSIER_DIR=/app/backend/data/dossiers
     volumes:
       - ./backend/data:/app/backend/data
     healthcheck:

@@ -68,13 +68,13 @@ class DeepReadingStage:
     def run(self, request: ResearchRequest, budget: ResearchBudget, ranked: RankedEvidence,
             start_ts: float, effective_timeout: float) -> ReadEvidence:
         # Stage 8: Diversity-Aware Deep Reading (Requirement 13 & 14)
-        deep_read_budget = max(request.deep_read_budget, budget.max_deep_reads)
-        time_left = max(3.0, effective_timeout - (time.time() - start_ts))
-        if deep_read_budget > 0 and ranked.ranked:
+        deep_read_budget = max(0, min(request.deep_read_budget, budget.max_deep_reads))
+        time_left = max(0.0, effective_timeout - (time.time() - start_ts))
+        if deep_read_budget > 0 and ranked.ranked and time_left > 0:
             investigated_items, read_telemetry = deep_reader.deep_read(
                 ranked.ranked,
                 max_reads=deep_read_budget,
-                timeout_per_read=min(budget.channel_timeout_seconds, max(4.0, time_left))
+                timeout_per_read=min(budget.channel_timeout_seconds, time_left)
             )
         else:
             investigated_items, read_telemetry = [], {

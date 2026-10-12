@@ -10,8 +10,10 @@ import logging
 from typing import Dict, Optional, List, Any
 import json
 import uuid
+from pathlib import Path
 from datetime import datetime
 from supabase import create_client, Client
+from backend.core.settings import settings
 
 # Configure logging
 logging.basicConfig(
@@ -22,17 +24,16 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 # Initialize Supabase client
-SUPABASE_URL = os.getenv("SUPABASE_URL")
-SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+SUPABASE_URL = settings.supabase_url
+SUPABASE_KEY = settings.supabase_write_key
 
 supabase: Optional[Client] = None
 if not SUPABASE_URL or not SUPABASE_KEY:
-    logger.warning("[Database] Supabase credentials not found in environment variables. Using in-memory store.")
+    logger.warning("[Database] Supabase server credentials unavailable. Using local SQLite persistence.")
 else:
     try:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
         logger.info("[Database] Supabase client initialized successfully")
-        logger.info(f"[Database] Connected to: {SUPABASE_URL}")
     except Exception as e:
         logger.error(f"[Database] Failed to initialize Supabase client: {str(e)}")
         supabase = None
@@ -45,11 +46,13 @@ _mem_research: Dict[str, Dict] = {}
 
 import sqlite3
 
-SQLITE_DB_PATH = os.getenv("AEGIS_SQLITE_PATH", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "aegis_local.db")))
+SQLITE_DB_PATH = settings.sqlite_db_path
 
 def _init_sqlite_db():
     """Initialize local SQLite database for offline and resilient persistence."""
     try:
+        if SQLITE_DB_PATH != ":memory:":
+            Path(SQLITE_DB_PATH).expanduser().resolve().parent.mkdir(parents=True, exist_ok=True)
         conn = sqlite3.connect(SQLITE_DB_PATH)
         cur = conn.cursor()
         cur.execute("""

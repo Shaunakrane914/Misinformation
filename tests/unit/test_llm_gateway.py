@@ -81,6 +81,17 @@ def test_gateway_singleton_identity():
     assert isinstance(llm_gateway, LLMGateway)
 
 
+def test_production_runtime_mock_override_and_fallback_are_forbidden():
+    production = Settings(environment="production", aegis_mock_llm=False, gemini_api_keys=[])
+    gateway = DefaultLLMGateway(settings_instance=production)
+    with pytest.raises(ValueError, match="forbidden in production"):
+        gateway.mock_mode = True
+    with pytest.raises(ValueError, match="forbidden in production"):
+        gateway.generate_text("production request", allow_mock=True)
+    with pytest.raises(RuntimeError, match="unavailable"):
+        gateway.generate_text("production request")
+
+
 def test_gateway_generate_text_with_mock_provider():
     """Verify text generation through mock provider."""
     gateway = DefaultLLMGateway()

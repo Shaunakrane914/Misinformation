@@ -160,7 +160,8 @@ def test_overlapping_agent_plans_have_stable_action_identity():
     assert common, "Equivalent source actions should be deduplicable across agents"
 
 
-def test_plan_preserves_concrete_operation_at_acquisition_boundary():
+@patch("backend.services.agent_reach.source_planner.is_safe_url", return_value=(True, ""))
+def test_plan_preserves_concrete_operation_at_acquisition_boundary(_safe):
     plan = SourcePlanningEngine().plan(
         "https://x.com/OpenAI/status/1234567890123456789", entity="OpenAI"
     )

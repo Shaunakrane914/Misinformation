@@ -1,6 +1,7 @@
 """Adapter contracts for the shared bounded HTTP transport."""
 
 import json
+import socket
 from types import SimpleNamespace
 
 import pytest
@@ -35,6 +36,13 @@ def executor():
     # None of these adapter methods uses the runtime profile.  Avoid probing the
     # host environment so the request-construction tests remain deterministic.
     return object.__new__(NativeExecutor)
+
+
+@pytest.fixture
+def public_dns(monkeypatch):
+    monkeypatch.setattr(socket, "getaddrinfo", lambda *args, **kwargs: [
+        (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))
+    ])
 
 
 def test_github_request_is_allowlisted_and_uses_shared_transport(monkeypatch, executor):
@@ -86,7 +94,7 @@ def test_v2ex_node_query_is_url_encoded(monkeypatch, executor):
     ]
 
 
-def test_rss_and_podcast_feeds_use_bounded_transport(monkeypatch, executor):
+def test_rss_and_podcast_feeds_use_bounded_transport(monkeypatch, executor, public_dns):
     calls = []
     rss = """<?xml version="1.0"?><rss version="2.0"><channel><title>Fixture</title>
     <item><title>Episode</title><link>https://example.com/episode</link>
@@ -115,7 +123,7 @@ def test_rss_and_podcast_feeds_use_bounded_transport(monkeypatch, executor):
     assert podcast_result["transport"]["endpoint"] == "https://example.com/show.xml"
 
 
-def test_web_reader_uses_bounded_transport_and_rejects_empty_success(monkeypatch, executor):
+def test_web_reader_uses_bounded_transport_and_rejects_empty_success(monkeypatch, executor, public_dns):
     content = "<html><body>" + ("evidence " * 30) + "</body></html>"
     calls = []
     monkeypatch.setattr(
@@ -132,7 +140,7 @@ def test_web_reader_uses_bounded_transport_and_rejects_empty_success(monkeypatch
     assert jina.execute_web_read("https://example.com/empty", executor=empty_executor)["status"] == "error"
 
 
-def test_web_reader_does_not_bypass_provider_rate_limit(monkeypatch, executor):
+def test_web_reader_does_not_bypass_provider_rate_limit(monkeypatch, executor, public_dns):
     def rate_limited(*_args, **_kwargs):
         raise ProviderHTTPError(
             "Provider HTTP 429",
@@ -150,7 +158,7 @@ def test_web_reader_does_not_bypass_provider_rate_limit(monkeypatch, executor):
     assert exc_info.value.retry_after_seconds == 45
 
 
-def test_jina_adapter_uses_shared_bounded_transport(monkeypatch):
+def test_jina_adapter_uses_shared_bounded_transport(monkeypatch, public_dns):
     calls = []
     monkeypatch.setattr(
         jina,

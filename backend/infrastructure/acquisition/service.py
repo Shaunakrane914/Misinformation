@@ -242,12 +242,14 @@ class AgentReachService:
             allowed_channels=request.allowed_channels or None,
         )
         request.metadata["source_plan"] = source_plan.to_dict()
-        if source_plan.channels:
-            if request.allowed_channels:
-                planned = [ch for ch in source_plan.channels if ch in request.allowed_channels]
-                request.allowed_channels = planned or request.allowed_channels
-            else:
-                request.allowed_channels = source_plan.channels
+        # An empty validated plan is a denial, not permission to reuse the
+        # caller's original channels or the router's default discovery paths.
+        request.allowed_channels = [
+            channel for channel in source_plan.channels
+            if not request.allowed_channels or channel in request.allowed_channels
+        ]
+        if not source_plan.actions or not request.allowed_channels:
+            return []
         return native_router.execute_retrieval_request(request)
 
     def retrieve(
@@ -276,13 +278,15 @@ class AgentReachService:
             )
 
         clean_q = str(target or "").strip()
+        if channels is not None and not channels:
+            return RetrievalResult(query=clean_q, domain=domain, fragments=[], total_signals=0)
         plan = self.planner.plan(clean_q, domain=domain, include_channels=channels)
         logger.info(f"[AgentReachService] Executing retrieve for '{clean_q[:40]}...' (domain={domain}): channels={plan.channels_to_query}")
 
         # If multi_channel_queries are available from plan, use retrieve_many
         if plan.multi_channel_queries:
             active_queries = plan.multi_channel_queries
-            if channels:
+            if channels is not None:
                 active_queries = {ch: q_list for ch, q_list in active_queries.items() if ch in channels}
 
             return self.retrieve_many(
@@ -348,12 +352,26 @@ class AgentReachService:
         """
         import time
         start_ts = time.time()
+        deadline = time.monotonic() + max(0.0, timeout)
         budget = budget or {}
-        max_q_per_ch = budget.get("max_queries_per_channel", 3)
-        max_res_per_q = budget.get("max_results_per_query", 5)
-        max_total_ev = budget.get("max_total_evidence", 40)
-        max_deep_reads = budget.get("max_deep_reads", 4)
-        task_timeout = budget.get("channel_timeout", min(timeout, 8.0))
+        max_q_per_ch = max(0, int(budget.get("max_queries_per_channel", 3)))
+        max_res_per_q = max(0, int(budget.get("max_results_per_query", 5)))
+        max_total_ev = max(0, int(budget.get("max_total_evidence", 40)))
+        max_deep_reads = max(0, int(budget.get("max_deep_reads", 4)))
+        task_timeout = max(0.0, budget.get("channel_timeout", min(timeout, 8.0)))
+
+        def _read_with_deadline(url: str, max_chars: int = 4000) -> Dict[str, Any]:
+            remaining = deadline - time.monotonic()
+            if remaining <= 0:
+                return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
+            read_executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            try:
+                future = read_executor.submit(self.read, url, max_chars=max_chars)
+                return future.result(timeout=remaining)
+            except concurrent.futures.TimeoutError:
+                return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
+            finally:
+                read_executor.shutdown(wait=False, cancel_futures=True)
 
         # 1. Normalize query specs
         normalized_channel_queries: Dict[str, List[Dict[str, str]]] = {}
@@ -395,7 +413,7 @@ class AgentReachService:
         # 2. Source Article Reading (if provided)
         source_doc = None
         if source_url:
-            source_doc = self.read(source_url)
+            source_doc = _read_with_deadline(source_url)
 
         # 3. Channel Telemetry Setup
         channel_telemetry_map: Dict[str, ChannelTelemetry] = {}
@@ -409,7 +427,6 @@ class AgentReachService:
 
         # Prepare execution tasks and query execution records
         tasks = []  # (ch_name, channel_obj, query_spec)
-        available_channels = {c.name: c for c in self.registry.get_available()}
         query_records_map: Dict[str, QueryExecutionRecord] = {}
 
         for ch_name, queries in normalized_channel_queries.items():
@@ -420,9 +437,16 @@ class AgentReachService:
             st_info = native_doctor.get_channel_status(ch_name)
             backend_id = st_info.get("active_backend") or ch_name
 
-            if ch_name not in available_channels:
-                telemetry.failure_reason = f"Channel {ch_name} status is {telemetry.status}"
-                for q_spec in queries:
+            channel_obj = self.registry.get_channel(ch_name)
+            for q_spec in queries:
+                assessment = runtime_operation_capabilities.assess(
+                    ch_name, q_spec.get("operation", "search")
+                )
+                # Channel-level legacy probes are diagnostics only. Runtime
+                # operation policy, credentials and cooldowns authorize work.
+                if channel_obj is None or assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+                    reason = assessment["reason"] if channel_obj else "Channel is not registered"
+                    telemetry.failure_reason = reason
                     rec = QueryExecutionRecord(
                         query_id=q_spec["query_id"],
                         channel=ch_name,
@@ -435,15 +459,12 @@ class AgentReachService:
                         latency_ms=0,
                         result_count_raw=0,
                         result_count_normalized=0,
-                        error=f"Channel {ch_name} status is {telemetry.status}",
+                        error=reason,
                         retrieval_mode="skipped",
                         backend_id=backend_id,
                     )
                     query_records_map[q_spec["query_id"]] = rec
-                continue
-
-            channel_obj = available_channels[ch_name]
-            for q_spec in queries:
+                    continue
                 tasks.append((ch_name, channel_obj, q_spec))
 
         # 4. Concurrent execution with bounded concurrency
@@ -457,6 +478,8 @@ class AgentReachService:
             st_info = native_doctor.get_channel_status(ch_n)
             backend_id = st_info.get("active_backend") or ch_n
             try:
+                if time.monotonic() >= deadline or max_res_per_q <= 0:
+                    raise TimeoutError("Retrieval deadline or result budget exhausted")
                 frags = ch_obj.search(
                     q_sp["query_text"],
                     limit=max_res_per_q,
@@ -512,7 +535,7 @@ class AgentReachService:
                 lat = int((time.time() - t0) * 1000)
                 err_str = str(e)
                 err_lower = err_str.lower()
-                if "timeout" in err_lower:
+                if isinstance(e, TimeoutError) or "timeout" in err_lower:
                     q_status = "TIMEOUT"
                 elif any(auth_kw in err_lower for auth_kw in ("auth", "login", "401", "403", "credential")):
                     q_status = "AUTH_REQUIRED"
@@ -543,7 +566,7 @@ class AgentReachService:
         try:
             future_to_task = {executor.submit(_run_single_query, t): t for t in tasks}
             try:
-                for fut in concurrent.futures.as_completed(future_to_task, timeout=timeout + 2.0):
+                for fut in concurrent.futures.as_completed(future_to_task, timeout=max(0.0, deadline - time.monotonic())):
                     ch_n, ch_obj, q_sp = future_to_task[fut]
                     executed_queries_count += 1
                     try:
@@ -578,9 +601,9 @@ class AgentReachService:
                             backend_id=native_doctor.get_channel_status(ch_n).get("active_backend") or ch_n,
                         )
             except concurrent.futures.TimeoutError:
-                logger.warning(f"[AgentReachService] Retrieval timeout reached after {timeout + 2.0}s; collecting partial results")
+                logger.warning(f"[AgentReachService] Retrieval timeout reached after {timeout}s; collecting partial results")
                 for fut, (ch_n, _, q_sp) in future_to_task.items():
-                    if not fut.done():
+                    if q_sp["query_id"] not in query_records_map:
                         channel_telemetry_map[ch_n].failure_reason = "Retrieval budget timeout"
                         if q_sp["query_id"] not in query_records_map:
                             query_records_map[q_sp["query_id"]] = QueryExecutionRecord(
@@ -668,8 +691,10 @@ class AgentReachService:
                     read_candidates.append(f)
 
             for cand in read_candidates[:max_deep_reads]:
+                if time.monotonic() >= deadline:
+                    break
                 try:
-                    read_res = self.read(cand.url, max_chars=2500)
+                    read_res = _read_with_deadline(cand.url, max_chars=2500)
                     if read_res.get("status") in ("success", "fallback_soup") and read_res.get("markdown"):
                         md = read_res["markdown"].strip()
                         if len(md) > 200:

@@ -10,7 +10,6 @@ PATH dependency failures in containerized cloud environments.
 import json
 import logging
 import time
-from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from backend.services.agent_reach.channels import (
@@ -69,6 +68,8 @@ class YouTubeAdapter(PlatformAdapter):
                 "no_warnings": True,
                 "skip_download": True,
                 "extract_flat": True,
+                "socket_timeout": 5.0,
+                "retries": 0,
             }
             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                 info = ydl.extract_info(target_url, download=False)
@@ -106,7 +107,7 @@ class YouTubeAdapter(PlatformAdapter):
         title = info.get("title") or candidate.title or "YouTube Video"
         uploader = info.get("uploader") or info.get("channel") or "Unknown Channel"
         description = info.get("description") or ""
-        upload_date = info.get("upload_date") or datetime.now(timezone.utc).isoformat()
+        upload_date = info.get("upload_date") or ""
         content = f"Title: {title}\nChannel: {uploader}\n\nDescription:\n{description}"
         snippet = description[:280] or title
 
@@ -121,7 +122,7 @@ class YouTubeAdapter(PlatformAdapter):
             score=candidate.semantic_score or 1.0,
             retrieval_method="agent_reach",
             channel_name="youtube",
-            content_depth="FULL_ARTICLE" if len(description) > 300 else "SNIPPET",
+            content_depth="VIDEO_METADATA",
             query_id=request.request_id,
             query_class=request.task_type,
             query_text=request.query,

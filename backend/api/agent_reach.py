@@ -27,6 +27,7 @@ class OmniScanRequest(BaseModel):
     query: str = Field(
         ...,
         description="Target query, company, person, product, or narrative to extract.",
+        min_length=1, max_length=2000,
         json_schema_extra={"example": "Nvidia Blackwell AI chip delay packaging defect"}
     )
     domain: Optional[str] = Field(
@@ -44,43 +45,45 @@ class OmniScanRequest(BaseModel):
         description="Optional handle for personal impersonation verification.",
         json_schema_extra={"example": "@sama"}
     )
-    limit: Optional[int] = Field(4, description="Max items per channel.")
+    limit: int = Field(4, ge=1, le=20, description="Max items per channel.")
 
 
 class AgentReachScanRequest(BaseModel):
     query: str = Field(
         ...,
         description="Keyword or topic to scan across multi-platform feeds.",
+        min_length=1, max_length=2000,
         json_schema_extra={"example": "OpenAI Orion reasoning model leak"}
     )
     include_reddit: Optional[bool] = Field(True, description="Search Reddit public discussion streams.")
     include_twitter: Optional[bool] = Field(True, description="Search Twitter/X syndication & search streams.")
     include_youtube: Optional[bool] = Field(True, description="Search YouTube video metadata and discussions.")
     include_news: Optional[bool] = Field(True, description="Search Google News RSS wire feeds.")
-    limit: Optional[int] = Field(4, description="Max results per channel.")
+    limit: int = Field(4, ge=1, le=20, description="Max results per channel.")
 
 
 class AgentReachReadRequest(BaseModel):
     url: str = Field(
         ...,
         description="URL of article or webpage to convert into clean Markdown via Jina Reader.",
+        min_length=1, max_length=4096,
         json_schema_extra={"example": "https://www.reuters.com/technology"}
     )
-    max_chars: Optional[int] = Field(3500, description="Max characters to return.")
+    max_chars: int = Field(3500, ge=1, le=50000, description="Max characters to return.")
 
 
 class AgentReachDebugRequest(BaseModel):
-    query: str = Field(..., description="Entity or claim to debug retrieval on", json_schema_extra={"example": "Nike"})
+    query: str = Field(..., min_length=1, max_length=2000, description="Entity or claim to debug retrieval on", json_schema_extra={"example": "Nike"})
     domain: Optional[str] = Field("brand", description="Domain context: brand | financial | trending | personal | fact_check | general")
-    max_queries_per_channel: Optional[int] = Field(3, description="Max queries per channel")
-    limit_per_query: Optional[int] = Field(4, description="Max results per query")
+    max_queries_per_channel: int = Field(3, ge=1, le=5, description="Max queries per channel")
+    limit_per_query: int = Field(4, ge=1, le=20, description="Max results per query")
     perform_reads: Optional[bool] = Field(True, description="Attempt deep reading on top URLs")
 
 
 # ── Endpoints ────────────────────────────────────────────────────────────────
 
 @router.get("/capabilities", summary="Capability Inventory & Status")
-async def agent_reach_capabilities():
+def agent_reach_capabilities():
     """Return channel capability inventory, supported domains, and server compatibility."""
     logger.info("[API] GET /api/agent-reach/capabilities")
     try:
@@ -92,7 +95,7 @@ async def agent_reach_capabilities():
 
 @router.get("/health", summary="Channel Health & Probe Discovery")
 @router.get("/doctor", summary="Run Zero-Cost Scraper Diagnostics")
-async def agent_reach_doctor():
+def agent_reach_doctor():
     """Run diagnostics across all internet evidence channels (Reddit, Twitter, YouTube, News, Jina, GitHub, RSS, Web)."""
     logger.info("[API] GET /api/agent-reach/health")
     try:
@@ -103,13 +106,15 @@ async def agent_reach_doctor():
 
 
 @router.post("/scan", summary="Unified Cross-Platform Scan")
-async def agent_reach_scan(request: AgentReachScanRequest):
+def agent_reach_scan(request: AgentReachScanRequest):
     """Execute unified multi-platform scan across social media, forums, and news."""
     logger.info(f"[API] POST /api/agent-reach/scan - query={request.query}")
     try:
         return agent_reach_service.unified_scan(
             query=request.query,
-            max_results_per_platform=request.limit or 5
+            platforms=[name for name in ("reddit", "twitter", "youtube", "news")
+                       if getattr(request, f"include_{name}")],
+            max_results_per_platform=request.limit
         )
     except Exception as e:
         logger.error(f"[API] AgentReach scan failed: {e}")
@@ -117,7 +122,7 @@ async def agent_reach_scan(request: AgentReachScanRequest):
 
 
 @router.post("/omni-scan", summary="Domain-Directed Omni-Channel Scraper Pass")
-async def agent_reach_omni_scan(request: OmniScanRequest):
+def agent_reach_omni_scan(request: OmniScanRequest):
     """
     Execute domain-specialized multi-platform extraction:
     - 'financial': cashtags, volatility, panic, short-seller discourse (Scout)
@@ -133,7 +138,7 @@ async def agent_reach_omni_scan(request: OmniScanRequest):
             query=request.query,
             domain=request.domain or "general",
             source_url=request.source_url,
-            limit_per_channel=request.limit or 4
+            limit_per_channel=request.limit
         )
     except Exception as e:
         logger.error(f"[API] Omni-scan failed: {e}")
@@ -141,9 +146,9 @@ async def agent_reach_omni_scan(request: OmniScanRequest):
 
 
 @router.post("/read", summary="Convert URL to Clean Markdown with SSRF Protection")
-async def agent_reach_read(request: AgentReachReadRequest):
+def agent_reach_read(request: AgentReachReadRequest):
     """Cleanly parse any article or dynamic web page to markdown with SSRF defense."""
-    logger.info(f"[API] POST /api/agent-reach/read - url={request.url}")
+    logger.info("[API] POST /api/agent-reach/read")
     try:
         res = agent_reach_service.read(request.url, max_chars=request.max_chars)
         if res.get("status") == "blocked_ssrf":
@@ -152,12 +157,12 @@ async def agent_reach_read(request: AgentReachReadRequest):
     except HTTPException:
         raise
     except Exception as e:
-        logger.error(f"[API] AgentReach read failed: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        logger.error("[API] AgentReach read failed: %s", type(e).__name__)
+        raise HTTPException(status_code=500, detail="Article reading failed")
 
 
 @router.post("/debug", summary="Retrieval Reality Telemetry & Multi-Query Debugger")
-async def agent_reach_debug(request: AgentReachDebugRequest):
+def agent_reach_debug(request: AgentReachDebugRequest):
     """
     Developer diagnostics endpoint providing complete retrieval execution telemetry (Requirement 26).
     Uses the exact same execution path as production research.

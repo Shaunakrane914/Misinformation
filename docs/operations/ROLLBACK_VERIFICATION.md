@@ -1,62 +1,29 @@
-# Aegis Protocol — Rollback & Recovery Verification
-**Phase 7.1 Release Candidate Deliverable G**  
-*Lead Production Reliability Engineer Audit*
+# Rollback and recovery verification
 
----
-
-## 1. Rollback Protocol Verification
-
-The rollback procedure documented in [`docs/operations/V1_OPERATIONS_RUNBOOK.md`](../../docs/operations/V1_OPERATIONS_RUNBOOK.md) was empirically tested using [`scripts/validate_rollback_compatibility.py`](../../scripts/validate_rollback_compatibility.py).
+Run the non-destructive validator:
 
 ```bash
-# Automated verification execution:
 python scripts/validate_rollback_compatibility.py
 ```
 
-### Verification Findings
-1. **SQLite Database Schema Stability**:
-   - Database file: `aegis_local.db` (loaded 644 claims)
-   - Core tables verified: `claims`, `evidence`, `claim_research`.
-   - All Phase 7 and 7.1 changes to data models are strictly additive. No tables, constraints, or columns were dropped or altered destructively.
-2. **Replay Dossier Persistence**:
-   - Location: `backend/data/dossiers/`
-   - Active Dossier Count: **2,312 JSON dossiers**
-   - Format: Universal JSON Replay Dossier v3 (cryptographic hash indexed).
-   - In a rollback to earlier Phase 7 commits (e.g. `258cb4f` or `c34b154`), all historical dossiers remain completely readable and reproducible.
-3. **Health Endpoint Liveness**:
-   - Process restarted with in-memory state cleared.
-   - `/api/healthz` returned `status="ok"` immediately.
-   - `/api/readyz` returned `status="ready"` with `mode="READY_UNVERIFIED"`.
+It writes validation claims and dossiers only to a temporary directory. A producer and consumer run as different OS processes, proving that claim verdicts, evidence and a new sealed dossier reload from disk. It checks required SQLite tables, dossier JSON shape, checksum tamper detection, and honest `LEGACY_UNSEALED` reporting.
 
----
+The actual SQLite and JSON reader implementations from baseline commit `258cb4f1fc71c379d0e882d8804c2a9770fc7f60` then read the new persisted data in a third process. Only the historical ledger's default storage location is redirected to the temporary directory. The script checks that these readers did not change dossier bytes. Supply another locally available commit using `--baseline-ref <sha>`; no checkout, fetch or history rewrite occurs. An unavailable baseline is `NOT_VERIFIED`.
 
-## 2. Step-by-Step Rollback Execution Procedure
+The default historical archive `backend/data/dossiers/` is inspected read-only. Invalid JSON, missing required fields or failed checksums are reported and cause a nonzero exit code. Empty/unavailable archives are `NOT_VERIFIED`. Legacy dossiers are readable but are not claimed to have cryptographically verified integrity; new checksums are not independently signed authenticity proofs.
 
-If an owner chooses to roll back a release candidate deployment to the previous verified Phase 7 baseline (`258cb4f1fc71c379d0e882d8804c2a9770fc7f60`):
+## Historical archive finding
 
-### Step 1: Drain Traffic
-Direct upstream ingress / reverse proxy (Nginx, Netlify, Cloudflare) to pause routing new research requests to the deploying instance.
+The corrected read-only validator on 2026-10-12 identified 55 malformed existing JSON files among 2,500 dossiers; 2,445 readable records were `LEGACY_UNSEALED`. For example, `R-2026-02617B.json` fails JSON parsing at line 42, column 24. These protected historical files were not modified, deleted, re-sealed or silently skipped. The validator reports `HISTORICAL_ARCHIVE_FAIL`, while separately retaining evidence for successful temporary-state reload and historical reader compatibility. Owner-directed recovery from trustworthy backups is required; never fabricate the missing dossier contents.
 
-### Step 2: Checkout Baseline Commit
-```bash
-git checkout 258cb4f1fc71c379d0e882d8804c2a9770fc7f60
-```
+The Phase 7.4 [read-only recovery inventory](../handoffs/2026-10-12_HISTORICAL_DOSSIER_RECOVERY_INVENTORY.json) records portable paths, hashes and parser locations for all 55 files. It found 51 property-name syntax errors and 4 missing-delimiter errors, with no valid candidates in the repository filesystem or available Git history. This does not exclude owner-controlled external backups. Reproduce the assessment with `python scripts/validation/inventory_historical_dossiers.py --candidate-root . --include-git-history`; the tool compares before/after archive hashes and never emits dossier contents.
 
-### Step 3: Verify State & Health
-```bash
-# Re-run smoke validation on the restored codebase
-pytest -q tests/unit/test_frontend_operation_health_contract.py tests/unit/test_recovered_operation_routes.py
-python scripts/validate_rollback_compatibility.py
-```
+Historical `quality_tensor: null` entries represent an unknown metric, not malformed JSON or a failed content checksum. Nullable legacy metrics remain readable and unverified; accepting their documented absence does not manufacture measurements or weaken checksum validation. The 55 failed records above are JSON parsing failures, not these nullable legacy records.
 
-### Step 4: Resume Traffic
-Confirm `/api/healthz` and `/api/readyz` respond with HTTP 200 before routing live user traffic back to the instance.
+This corrects the earlier filename-count-only acceptance claim. A historical count, `/readyz` response or current in-process client did not establish restart, integrity or prior-version compatibility.
 
----
+## Deployed rollback remains an owner action
 
-## 3. Forward-Recovery Strategy
+The automated reader test does not boot the entire earlier application version or reproduce deployed infrastructure. A staging rollback remains `NOT_VERIFIED` until the owner drains traffic, backs up storage, deploys the chosen earlier release without destructive migrations, verifies contracts and data readability, and then resumes traffic. See the [operations runbook](V1_OPERATIONS_RUNBOOK.md).
 
-In the event of an infrastructure-level failure (e.g. cloud PostgreSQL connectivity loss):
-- Aegis automatically degrades to local SQLite storage without crashing.
-- Claims submitted during the outage are written to local SQLite and JSON dossiers.
-- Once cloud connectivity is restored, dossiers can be replayed to cloud PostgreSQL using the Replay Ledger CLI (`scripts/replay_dossier.py`).
+Cloud outages can fall back to local SQLite, but automatic SQLite-to-Supabase reconciliation is not implemented. No `scripts/replay_dossier.py` recovery command exists. Reconciliation requires a separately reviewed migration tool with backup, identity mapping and conflict handling; do not claim dossier trace playback performs database replication.

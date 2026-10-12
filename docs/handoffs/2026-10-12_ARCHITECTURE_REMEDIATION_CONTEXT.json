@@ -1,0 +1,125 @@
+{
+  "schema_version": 1,
+  "context_id": "aegis-architecture-remediation-2026-10-12",
+  "captured_date": "2026-10-12",
+  "user_timezone": "Asia/Calcutta",
+  "project": "Aegis Protocol",
+  "scope": "Priority architecture-review defect remediation, followed by durable coding-agent handoff documentation",
+  "snapshot_semantics": "Historical local evidence; inspect the live worktree and rerun gates before relying on it",
+  "git": {
+    "observed_branch": "feat/phase7-2c-root-cleanup",
+    "observed_head": "b3f3fc8248a92d0d15026327b5e9b14f273a0064",
+    "implementation_committed": false,
+    "pushed": false,
+    "dirty_worktree_must_be_preserved": true
+  },
+  "version": {
+    "value": "4.1.0",
+    "new_release_created": false
+  },
+  "documents": {
+    "start_here": "docs/handoffs/README.md",
+    "state": "docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_HANDOFF.md",
+    "decisions": "docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_DECISIONS.md",
+    "testing": "docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_TESTING.md",
+    "work_log": "docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_WORK_LOG.md",
+    "implementation_report": "docs/architecture/ARCHITECTURE_REVIEW_REMEDIATION_2026-10-12.md",
+    "rollback_evidence": "docs/operations/ROLLBACK_VERIFICATION.md"
+  },
+  "transcript_type": "Edited reconstruction of observable checkpoints and command results, not a raw chat export or private reasoning trace",
+  "implementation_references": {
+    "authorization": "backend/api/security.py",
+    "agent_admission": "backend/api/agents.py",
+    "public_http": "backend/infrastructure/acquisition/network/http.py",
+    "url_security": "backend/infrastructure/acquisition/security/url_validator.py",
+    "acquisition": "backend/infrastructure/acquisition/service.py",
+    "router": "backend/infrastructure/acquisition/routing/router.py",
+    "dispatcher": "backend/infrastructure/acquisition/routing/channel_dispatcher.py",
+    "runtime_policy": "backend/services/agent_reach/native/operation_capabilities.py",
+    "source_authority": "backend/services/research/source_quality.py",
+    "synthesis": "backend/application/research/synthesis.py",
+    "replay": "backend/services/research/replay_ledger.py",
+    "settings": "backend/core/settings.py",
+    "isolation": "scripts/validation/isolated_runtime.py",
+    "test_bootstrap": "tests/conftest.py",
+    "frontend_health": "frontend/operation-health.js",
+    "active_ci": ".github/workflows/ci.yml"
+  },
+  "regression_references": [
+    "tests/security/test_review_security_regressions.py",
+    "tests/security/test_safe_http_transport.py",
+    "tests/unit/test_acquisition_policy_integrity.py",
+    "tests/unit/test_recovered_operation_routes.py",
+    "tests/unit/test_api_hardening_regressions.py",
+    "tests/unit/test_replay_structure_regressions.py",
+    "tests/unit/test_process_hardening.py",
+    "tests/unit/test_research_pipeline_golden.py",
+    "tests/frontend/test_operation_health.js",
+    "tests/frontend/test_security_and_health_regressions.js"
+  ],
+  "protected_paths": [
+    "tests/retrieval_benchmark/candidates.jsonl",
+    "tests/retrieval_benchmark/labels.jsonl",
+    "tests/retrieval_benchmark/scenarios.jsonl",
+    "backend/data/dossiers/",
+    "research/",
+    "artifacts/",
+    "scrapers/",
+    "backend/services/agent_reach_scraper.py"
+  ],
+  "prior_implementation_evidence": {
+    "full_suite": {"status": "PASS", "passed": 971, "elapsed_seconds": 310.68, "excluded_four_late_cli_cases": true},
+    "fast_suite": {"status": "PASS", "passed": 779, "elapsed_seconds": 26.45, "includes_four_late_cli_cases": true},
+    "fatal_lint_errors": 0,
+    "frontend_suites": "PASS",
+    "smoke_retry": "OFFLINE_SMOKE_PASS",
+    "smoke_timeout_reproduced": false,
+    "smoke_timeout_root_cause": "NOT_ESTABLISHED"
+  },
+  "documentation_handoff_evidence": {
+    "full_suite": {"status": "PASS", "passed": 975, "elapsed_seconds": 307.08, "includes_four_late_cli_cases": true},
+    "fast_suite": {"status": "PASS", "passed": 779, "elapsed_seconds": 30.26},
+    "fatal_lint_errors": 0,
+    "frontend_suites": "PASS",
+    "relative_documentation_links_checked": 291,
+    "machine_readable_references_checked": 41,
+    "protected_tracked_diff": "UNCHANGED",
+    "frozen_benchmark_hashes": "PASS",
+    "smoke": {"status": "PASS", "verdict": "OFFLINE_SMOKE_PASS", "observed_timestamp_utc": "2026-10-12T05:15:39Z"},
+    "rollback": {
+      "exit_code": 1,
+      "verdict": "HISTORICAL_ARCHIVE_FAIL",
+      "fresh_process_reload": "PASS",
+      "actual_baseline_readers": "PASS",
+      "baseline_commit": "258cb4f1fc71c379d0e882d8804c2a9770fc7f60",
+      "tamper_detection": "PASS",
+      "temporary_dossier_bytes_preserved": "PASS",
+      "historical_archive": {"verified": 0, "legacy_unsealed": 2445, "json_parse_failures": 55},
+      "deployed_previous_version": "NOT_VERIFIED"
+    }
+  },
+  "continuation": [
+    {"priority": "P1", "task": "Owner-directed investigation/recovery of 55 malformed historical JSON dossiers", "requires_trustworthy_backups_and_user_direction": true, "protected_originals_must_not_be_modified": true},
+    {"priority": "P1_BEFORE_PRIVILEGED_USE", "task": "Configure server-side ADMIN_API_TOKEN in an authorized environment", "never_embed_in_frontend_or_reports": true},
+    {"priority": "P2", "task": "Scope remaining legacy transport and composition/cancellation debt without weakening tested boundaries"},
+    {"priority": "DIAGNOSTIC_IF_REPEATED", "task": "Capture bounded smoke stage/shutdown diagnostics if timeout recurs; do not increase limits merely to obtain a pass"}
+  ],
+  "not_verified": [
+    "Remote GitHub Actions execution",
+    "Live scraping or provider credentials",
+    "Production deployment",
+    "Full deployed earlier-version rollback",
+    "Staging load",
+    "Universal network pinning across legacy provider clients/tools",
+    "Browser visual/accessibility acceptance"
+  ],
+  "safety": {
+    "historical_dossiers_were_not_rewritten": true,
+    "frozen_dataset_labels_were_not_changed": true,
+    "golden_manifest_was_not_rebaselined": true,
+    "checksums_are_not_authenticity_or_truth_proofs": true,
+    "browser_rescue_must_not_be_automatically_reenabled": true,
+    "empty_plans_and_platform_optouts_must_fail_closed": true,
+    "no_commit_push_live_probe_or_deploy_authority_is_implied": true
+  }
+}

@@ -269,10 +269,11 @@ def test_candidate_ranking_prefers_specific_matches():
 # End-to-End Routing & Provenance Verification Tests
 # ==============================================================================
 
-def test_reddit_discovery_to_mirror_provenance(router):
+def test_reddit_discovery_to_mirror_provenance(router, monkeypatch):
     """
     Search discovery -> Arctic Shift batch post lookup -> verified zero-auth public mirror provenance.
     """
+    monkeypatch.setenv("REDDIT_APPROVED_ACCESS", "true")
     mock_search_results = [
         EvidenceFragment(
             platform="Web",

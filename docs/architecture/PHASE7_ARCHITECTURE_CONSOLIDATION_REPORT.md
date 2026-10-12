@@ -1,5 +1,7 @@
 # Phase 7 architecture consolidation report
 
+> Historical Phase 7 snapshot. Subsequent corrections, compatibility changes, execution evidence and remaining blockers are documented in the [2026-10-12 remediation report](ARCHITECTURE_REVIEW_REMEDIATION_2026-10-12.md) and [coding-agent handoff](../handoffs/README.md). Do not treat the older verification section as the current acceptance gate.
+
 ## Result
 
 Phase 7 consolidated confirmed ownership overlaps without moving or deleting working integrations. The four agents and public compatibility imports remain intact.

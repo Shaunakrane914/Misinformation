@@ -455,28 +455,40 @@
     let activeEvidenceFilter = 'all';
     let chartInstance = null;
 
-    async function loadTrendingOperationHealth() {
+    let stopTrendingHealthObservation = null;
+    function loadTrendingOperationHealth() {
+      if (!stopTrendingHealthObservation) stopTrendingHealthObservation = AegisOperationHealth.subscribeCapabilities(renderTrendingOperationHealth);
+      return AegisOperationHealth.fetchCapabilities({ force: true }).catch(() => {});
+    }
+
+    function renderTrendingOperationHealth(data, cacheState) {
       const requirements = {
         news: ['search'], reddit: ['search', 'comments'],
         twitter: ['search', 'profile', 'status'], youtube: ['search', 'transcript'],
         web: ['search', 'read'], instagram: ['search', 'oembed']
       };
       try {
-        const data = await AegisOperationHealth.fetchCapabilities();
+        if (!data) throw new Error('Operation status unavailable');
         Object.entries(requirements).forEach(([channel, operations]) => {
           const badge = document.getElementById(`ch_${channel}`);
           if (!badge) return;
           const summary = AegisOperationHealth.summarizeChannel(
-            (data.channels || {})[channel] || {}, operations
+            (data.channels || {})[channel] || {}, operations, { isStale: cacheState.isStale }
           );
           badge.className = summary.state === 'healthy' ? 'ch-badge ok'
-            : ['limited', 'degraded', 'auth_required'].includes(summary.state) ? 'ch-badge warn'
+            : ['limited', 'degraded', 'auth_required', 'stale'].includes(summary.state) ? 'ch-badge warn'
               : 'ch-badge';
           badge.querySelector('.dot-val').textContent = summary.label;
           badge.title = summary.details.map(item => `${item.name}: ${item.state}`).join(', ');
         });
       } catch (_error) {
-        // Existing "Not tested" labels remain truthful if diagnostics are unavailable.
+        Object.keys(requirements).forEach(channel => {
+          const badge = document.getElementById(`ch_${channel}`);
+          if (badge) {
+            badge.className = 'ch-badge';
+            badge.querySelector('.dot-val').textContent = 'Status unavailable';
+          }
+        });
       }
     }
 
@@ -613,23 +625,7 @@
       document.getElementById('telDuration').textContent = `${tel.scan_duration_s || 0.0}s`;
 
       // 2. Update Channel Strip
-      const channels = (data.retrieval && data.retrieval.channels) || {};
-      for (const [ch, info] of Object.entries(channels)) {
-        const badge = document.getElementById(`ch_${ch}`);
-        if (badge) {
-          const status = String(info.status || 'NOT_PROBED').toUpperCase();
-          if (status === 'AVAILABLE' || status === 'HEALTHY') {
-            badge.className = 'ch-badge ok';
-            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">✓ ${info.retrieved_count}</span>`;
-          } else if (['DEGRADED', 'LIMITED', 'AUTH_REQUIRED', 'BLOCKED', 'UNAVAILABLE'].includes(status)) {
-            badge.className = 'ch-badge warn';
-            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">⚠ offline</span>`;
-          } else {
-            badge.className = 'ch-badge';
-            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">not verified</span>`;
-          }
-        }
-      }
+      // Result counts are not provider health. Only the operation presenter paints badges.
       loadTrendingOperationHealth();
 
       // 3. Render Trend Clusters

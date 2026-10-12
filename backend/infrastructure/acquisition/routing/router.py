@@ -64,6 +64,8 @@ from backend.services.agent_reach.native.telemetry import (
     AcquisitionTelemetryRecord,
     acquisition_telemetry,
 )
+from backend.services.agent_reach.native.operation_capabilities import runtime_operation_capabilities
+from backend.infrastructure.acquisition.network.http import fetch_public_http
 from backend.services.url_validator import is_safe_url
 
 logger = logging.getLogger(__name__)
@@ -301,10 +303,22 @@ class NativeRouter:
             }
 
         parsed = urllib.parse.urlparse(url)
-        netloc = parsed.netloc.lower()
+        netloc = (parsed.hostname or "").lower().rstrip(".")
+        channel = "web"
+        for domain, specialist in (("twitter.com", "twitter"), ("x.com", "twitter"),
+                                   ("reddit.com", "reddit"), ("redd.it", "reddit"),
+                                   ("youtube.com", "youtube"), ("youtu.be", "youtube"),
+                                   ("github.com", "github")):
+            if netloc == domain or netloc.endswith("." + domain):
+                channel = specialist
+                break
+        assessment = runtime_operation_capabilities.assess(channel, "read")
+        if max_chars <= 0 or assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+            return {"status": "failed", "error": assessment["reason"] if max_chars > 0 else "Read budget is zero",
+                    "url": url, "runtime_decision": assessment, "network_observed": False}
 
         # 1. Specialized Zero-Auth Social: Twitter / X
-        if "twitter.com" in netloc or "x.com" in netloc:
+        if channel == "twitter":
             x_src = extract_x_source(url)
             if x_src and self.use_fxtwitter:
                 if x_src.source_type == "status" and x_src.external_id:
@@ -335,7 +349,7 @@ class NativeRouter:
                         }
 
         # 2. Specialized Zero-Auth Social: Reddit
-        if "reddit.com" in netloc or "redd.it" in netloc:
+        if channel == "reddit":
             red_src = extract_reddit_source(url)
             if red_src and self.use_arctic_shift:
                 target_pid = red_src.parent_id if red_src.source_type == "comment" else red_src.external_id
@@ -361,7 +375,7 @@ class NativeRouter:
                         }
 
         # 3. Specialized Video: YouTube via yt-dlp
-        if "youtube.com" in netloc or "youtu.be" in netloc:
+        if channel == "youtube":
             try:
                 import yt_dlp
                 ydl_opts = {
@@ -369,6 +383,8 @@ class NativeRouter:
                     "no_warnings": True,
                     "skip_download": True,
                     "extract_flat": True,
+                    "socket_timeout": 5.0,
+                    "retries": 0,
                 }
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     info = ydl.extract_info(url, download=False)
@@ -419,12 +435,11 @@ class NativeRouter:
 
     def _execute_web_search(self, query: str, limit: int = 6, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
         """Execute open-web search using Bing with redirect resolution and multi-page pagination."""
-        import requests
         from bs4 import BeautifulSoup
 
         clean_q = query.strip()
         fragments: List[EvidenceFragment] = []
-        timeout = float(os.getenv("AEGIS_HTTP_TIMEOUT", "25.0"))
+        timeout = min(5.0, float(os.getenv("AEGIS_HTTP_TIMEOUT", "5.0")))
         headers = {
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
@@ -439,18 +454,18 @@ class NativeRouter:
             try:
                 url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}&first={page_first}"
                 request_started = time.perf_counter()
-                resp = requests.get(url, headers=headers, timeout=timeout)
+                resp = fetch_public_http(url, headers=headers, timeout=timeout, max_bytes=1_000_000)
                 transport = {
-                    "endpoint": resp.url,
+                    "endpoint": resp.endpoint,
                     "network_observed_this_attempt": True,
                     "http_status": resp.status_code,
                     "content_type": resp.headers.get("Content-Type"),
-                    "raw_body_bytes": len(resp.content),
+                    "raw_body_bytes": len(resp.body),
                     "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
                     "cache_status": "UNKNOWN",
                 }
                 if resp.status_code == 200:
-                    soup = BeautifulSoup(resp.text, "html.parser")
+                    soup = BeautifulSoup(resp.body, "html.parser")
                     results = soup.select("li.b_algo")
                     if not results:
                         break
@@ -471,7 +486,7 @@ class NativeRouter:
                                         content=f"Title: {title}\nURL: {resolved_url}\n\nSnippet: {snippet}",
                                         url=resolved_url,
                                         author=urllib.parse.urlparse(resolved_url).netloc,
-                                        published="Recent",
+                                        published="",
                                         channel_name="web",
                                         query_id=query_id,
                                         query_class=query_class,
@@ -492,7 +507,6 @@ class NativeRouter:
 
     def _execute_yahoo_search(self, query: str, limit: int = 6, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
         """Secondary public web search via Yahoo Search."""
-        import requests
         from bs4 import BeautifulSoup
 
         clean_q = query.strip()
@@ -504,18 +518,18 @@ class NativeRouter:
         try:
             url = f"https://search.yahoo.com/search?p={urllib.parse.quote_plus(clean_q)}"
             request_started = time.perf_counter()
-            resp = requests.get(url, headers=headers, timeout=6.0)
+            resp = fetch_public_http(url, headers=headers, timeout=5.0, max_bytes=1_000_000)
             transport = {
-                "endpoint": resp.url,
+                "endpoint": resp.endpoint,
                 "network_observed_this_attempt": True,
                 "http_status": resp.status_code,
                 "content_type": resp.headers.get("Content-Type"),
-                "raw_body_bytes": len(resp.content),
+                "raw_body_bytes": len(resp.body),
                 "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
                 "cache_status": "UNKNOWN",
             }
             if resp.status_code == 200:
-                soup = BeautifulSoup(resp.text, "html.parser")
+                soup = BeautifulSoup(resp.body, "html.parser")
                 results = soup.select("div.algo")
                 for r in results:
                     title_elem = r.select_one("h3 a")
@@ -540,7 +554,7 @@ class NativeRouter:
                                 content=f"Title: {title}\nURL: {actual_url}\n\nSnippet: {snippet}",
                                 url=actual_url,
                                 author=urllib.parse.urlparse(actual_url).netloc,
-                                published="Recent",
+                                published="",
                                 channel_name="web",
                                 query_id=query_id,
                                 query_class=query_class,
@@ -557,34 +571,24 @@ class NativeRouter:
     def _fallback_github_rest(self, query: str, limit: int = 5, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
         """Zero-auth GitHub public search API fallback."""
         url = f"https://api.github.com/search/repositories?q={urllib.parse.quote_plus(query)}&per_page={limit}"
-        req = urllib.request.Request(
-            url,
-            headers={
-                "User-Agent": "AegisAgentReach/3.0",
-                "Accept": "application/vnd.github.v3+json",
-            }
-        )
         try:
             request_started = time.perf_counter()
-            with urllib.request.urlopen(req, timeout=5.0) as resp:
-                raw_body = resp.read()
-                data = json.loads(raw_body.decode("utf-8"))
-                raw_items = data.get("items", [])
-                fragments = self.normalizer.normalize_github_repos(
-                    raw_items, query_id=query_id, query_class=query_class, query_text=query_text or query
-                )
-                transport = {
-                    "endpoint": getattr(resp, "url", url),
-                    "network_observed_this_attempt": True,
-                    "http_status": getattr(resp, "status", None),
-                    "content_type": resp.headers.get("Content-Type"),
-                    "raw_body_bytes": len(raw_body),
-                    "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
-                    "cache_status": "UNKNOWN",
-                }
-                for fragment in fragments:
-                    fragment.raw_metadata["transport"] = dict(transport)
-                return fragments
+            response = fetch_public_http(url, headers={"User-Agent": "AegisAgentReach/3.0",
+                                                       "Accept": "application/vnd.github.v3+json"},
+                                         timeout=5.0, max_bytes=1_000_000)
+            raw_body = response.body
+            data = json.loads(raw_body.decode("utf-8"))
+            raw_items = data.get("items", [])
+            fragments = self.normalizer.normalize_github_repos(
+                raw_items, query_id=query_id, query_class=query_class, query_text=query_text or query
+            )
+            transport = {"endpoint": response.endpoint, "network_observed_this_attempt": True,
+                         "http_status": response.status_code, "content_type": response.content_type,
+                         "raw_body_bytes": len(raw_body), "network_latency_ms": response.latency_ms,
+                         "cache_status": "UNKNOWN"}
+            for fragment in fragments:
+                fragment.raw_metadata["transport"] = dict(transport)
+            return fragments
         except Exception as e:
             logger.debug(f"[NativeRouter] GitHub REST fallback failed: {e}")
             return []
@@ -654,6 +658,48 @@ class NativeRouter:
         query_text = request.query or request.entity or request.intent
         if not query_text:
             return []
+        if request.candidate_budget <= 0:
+            return []
+
+        source_plan = request.metadata.get("source_plan")
+        if source_plan is not None:
+            # Execute only validated actions, through the canonical operation
+            # dispatcher. Channel names alone cannot preserve read/profile/
+            # transcript semantics, and an empty plan must fail closed.
+            allowed = set(request.allowed_channels)
+            fragments: List[EvidenceFragment] = []
+            actions = source_plan.get("actions", []) if isinstance(source_plan, dict) else []
+            for action in actions:
+                channel, operation = runtime_operation_capabilities.normalize(
+                    action.get("channel", ""), action.get("operation", "search")
+                )
+                if channel not in allowed:
+                    continue
+                assessment = runtime_operation_capabilities.assess(channel, operation)
+                if assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+                    continue
+                remaining = request.candidate_budget - len(fragments)
+                if remaining <= 0:
+                    break
+                acquired, _ = self.execute_channel_query(
+                    channel, action.get("query", query_text), limit=remaining,
+                    operation=operation, query_id=action.get("action_id", request.request_id),
+                    query_class=action.get("source_category", request.task_type),
+                    query_text=action.get("query", query_text), domain=request.metadata.get("domain", "general"),
+                )
+                fragments.extend(acquired[:remaining])
+            seen = set()
+            deduplicated = []
+            for fragment in fragments:
+                if fragment.url and fragment.url in seen:
+                    continue
+                seen.add(fragment.url)
+                deduplicated.append(fragment)
+            from backend.services.agent_reach.profile import get_agent_acquisition_strategy
+            strategy = get_agent_acquisition_strategy(request.agent)
+            if strategy:
+                deduplicated = strategy.enrich_fragments(deduplicated)
+            return deduplicated
 
         # 1. Determine target channels with profile preferences
         channels = list(request.allowed_channels) if request.allowed_channels else ["web", "news"]
@@ -663,6 +709,11 @@ class NativeRouter:
                     channels.append(pref)
             pref_set = set(request.profile.preferred_platforms)
             channels.sort(key=lambda c: 0 if c in pref_set else 1)
+        channels = [channel for channel in channels if runtime_operation_capabilities.assess(
+            channel, "search"
+        )["decision"] not in {"EXCLUDE", "DEFER_TEMPORARY"}]
+        if not channels:
+            return []
 
         all_candidates: List[CandidateSource] = []
 
@@ -682,7 +733,7 @@ class NativeRouter:
         # 2b. Agent-Specific Strategy Candidate Discovery
         from backend.services.agent_reach.profile import get_agent_acquisition_strategy
         strat = get_agent_acquisition_strategy(request.agent)
-        if strat:
+        if strat and not request.allowed_channels:
             try:
                 strat_cands = strat.discover(query=query_text, limit=min(request.candidate_budget, 5))
                 all_candidates.extend(strat_cands)
@@ -690,7 +741,7 @@ class NativeRouter:
                 logger.debug(f"[NativeRouter] Strategy discovery error for {request.agent}: {e_sdisc}")
 
         # If no candidates from search discovery, create fallback candidate from direct query/URL
-        if not all_candidates:
+        if not all_candidates and "web" in channels:
             if "http://" in query_text or "https://" in query_text:
                 all_candidates.append(
                     CandidateSource(
@@ -704,7 +755,18 @@ class NativeRouter:
         # 3. Hard Source Gates & Semantic Scoring
         passed_candidates: List[CandidateSource] = []
         for cand in all_candidates:
-            if not is_valid_content_source(
+            candidate_channel = "twitter" if cand.platform == "x" else cand.platform.lower()
+            if request.allowed_channels and candidate_channel not in channels:
+                cand.passed_hard_gates = False
+                cand.gate_failure_reason = "Candidate channel is outside the authorized request"
+                continue
+            operation = "read" if candidate_channel not in {"news", "web_search"} else "search"
+            assessment = runtime_operation_capabilities.assess(candidate_channel, operation)
+            if assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+                cand.passed_hard_gates = False
+                cand.gate_failure_reason = assessment["reason"]
+                continue
+            if candidate_channel in {"reddit", "twitter"} and not is_valid_content_source(
                 SourceDiscoveryResult(
                     platform=cand.platform,
                     canonical_url=cand.canonical_url,
@@ -751,9 +813,10 @@ class NativeRouter:
                     continue
 
             if request.profile:
+                host = (urllib.parse.urlsplit(cand.canonical_url).hostname or "").lower().rstrip(".")
                 if request.profile.need_primary_source and any(
-                    p in cand.canonical_url.lower()
-                    for p in ("sec.gov", "investor.", "ir.", "edgar.", "prnewswire.com", "businesswire.com")
+                    host == domain or host.endswith("." + domain)
+                    for domain in ("sec.gov", "prnewswire.com", "businesswire.com")
                 ):
                     cand.semantic_score = min(100.0, cand.semantic_score + 20.0)
                 if request.profile.need_engagement and cand.platform in ("twitter", "x", "reddit", "youtube"):
@@ -803,9 +866,6 @@ class NativeRouter:
                     strat = get_agent_acquisition_strategy(request.agent)
                     if strat:
                         frags = strat.normalize(doc, cand, request)
-                    elif request.profile:
-                        for f in frags:
-                            f.content_depth = request.profile.content_depth
                     return frags
                 else:
                     fallback_attempts += 1

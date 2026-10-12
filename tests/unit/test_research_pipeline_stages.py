@@ -301,7 +301,7 @@ def test_stage_6_deep_reading_stage():
     ranked = RankedEvidence(accepted=[ev1], ranked=[ev1], clusters={"grp1": ["ev_001"]}, rejected=[])
 
     with patch("backend.services.research.deep_reader.deep_reader.deep_read", return_value=([ev1], {"attempted": 1, "successful": 1, "read_urls": [ev1.canonical_url]})):
-        read_res = stage.run(request, budget, ranked, start_ts=0.0, effective_timeout=20.0)
+        read_res = stage.run(request, budget, ranked, start_ts=time.time(), effective_timeout=20.0)
         assert len(read_res.investigated) == 1
         assert read_res.telemetry["successful"] == 1
 

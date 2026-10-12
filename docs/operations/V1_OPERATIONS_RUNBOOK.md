@@ -15,6 +15,18 @@ Use `.env.example` as the inventory. Set `ENVIRONMENT=production`, an explicit `
 
 Set `RSS_INGESTION_ENABLED=false` for API-only workers or when a single designated worker owns polling. With multiple workers, in-memory runtime health is worker-local and background RSS must not be duplicated accidentally.
 
+Use `SQLITE_DB_PATH` for local persistence (legacy `AEGIS_SQLITE_PATH` remains an alias), `SUPABASE_SERVICE_ROLE_KEY` for explicit cloud server writes, and `AEGIS_DOSSIER_DIR` when configuring dossier storage. Defaults retain existing historical storage without moving or overwriting it. Set server-only `ADMIN_API_TOKEN` before using privileged response-deployment writes; absent configuration returns 503 and invalid bearer authorization returns 401. Never put this token in frontend JavaScript.
+
+Public agent scans execute blocking work in worker threads rather than on the event loop. Each agent permits one synchronous scan at a time; simultaneous requests for the same agent fail fast with HTTP 429 and `Retry-After: 3`, without building an unbounded queue. Worker-local state and scan admission do not converge across multiple processes.
+
+Dashboard records marked `record_origin=historical_dataset` are historical top-ups, not newly acquired/live findings. Investigation records use `record_origin=investigation`. Registered module counts and `NOT_PROBED` initialization status are not successful health measurements.
+
+## Offline acceptance checks
+
+`pytest tests/ -q` uses temporary storage, blank provider credentials and blocked real sockets/DNS before application imports. `python scripts/validate_release_candidate_smoke.py` is an isolated offline regression check, not a live scraping/deployment approval. It never overwrites historical artifacts; optional `--output <new-path>` creates a report exclusively.
+
+`python scripts/validate_rollback_compatibility.py` validates fresh-process persistence, actual baseline readers and read-only dossier JSON integrity. It currently reports a historical archive failure for malformed pre-existing JSON; see [rollback verification](ROLLBACK_VERIFICATION.md). Protect these files and recover only with explicit owner direction and trustworthy backups.
+
 ## Expected partial failures
 
 - 429: operation becomes temporarily deferred for the bounded provider cooldown.

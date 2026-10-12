@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## Unreleased security and integrity corrections
+
+Runtime, settings and package metadata now share the existing `4.1.0` compatibility version. The `4.2.0` section below records Phase 7.2 workspace work; it is not evidence that a 4.2.0 package was released. Release tagging/version promotion remains an owner decision.
+
+- Replaced proposed CI coverage with active all-branch gates, complete offline tests, executable frontend contracts and frozen dataset checks.
+- Isolated ordinary pytest and release validation from provider secrets, live sockets and historical persistence before app imports.
+- Replaced filename-count rollback acceptance with fresh-process persistence, actual baseline readers and checksum/JSON validation. The read-only historical archive audit found 55 malformed records; protected files remain untouched, and this is a failing archive gate rather than claimed preservation success.
+- Release smoke reports `OFFLINE_REGRESSION`; optional report outputs refuse to overwrite existing artifacts.
+- Unified SQLite configuration aliases, explicit server-write credentials and privileged API bearer configuration.
+
 ## [4.2.0] - 2026-10-11
 
 ### Added

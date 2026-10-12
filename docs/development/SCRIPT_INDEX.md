@@ -2,7 +2,9 @@
 
 **Phase:** 7.2 (Workspace Organization, Repository Hygiene & Safe Structural Consolidation)  
 **Status:** Authoritative Script Catalog & Usage Guide  
-**Total Tracked Scripts:** 40  
+**Historical Phase 7.2 Tracked Scripts:** 40
+
+This count is the historical Phase 7.2 snapshot. For current validation behavior and safe continuation, use the [coding-agent handoff](../handoffs/README.md). The validators below do not establish live-provider health or deployed rollback, and their default execution never overwrites historical audit reports.
 
 ---
 
@@ -26,12 +28,15 @@ scripts/
 
 ### Category 1: Release Validation & Smoke Testing (`validation/`)
 
-Scripts that prove deployment readiness, rollback safety, and runtime operational health.
+Scripts that exercise explicit offline release/persistence gates or separately authorized live probes. Interpret each script's scope and exit status before making a readiness claim.
 
 | Script File | Primary Purpose | Verified Execution Command | Key Dependencies & Consumers |
 | :--- | :--- | :--- | :--- |
-| [`scripts/validation/validate_release_candidate_smoke.py`](../../scripts/validation/validate_release_candidate_smoke.py) | **Phase 7.1 Isolated Smoke Validation**: Executes 11 automated verification gates across all 4 agents, healthz, readyz, capabilities, and zero-evidence guard. *(Root wrapper preserved at `scripts/validate_release_candidate_smoke.py`)* | `python scripts/validation/validate_release_candidate_smoke.py` | FastAPI TestClient; outputs `artifacts/phase7_1_smoke_validation_results.json`. Referenced in Phase 7.1 RC report. |
-| [`scripts/validation/validate_rollback_compatibility.py`](../../scripts/validation/validate_rollback_compatibility.py) | **Phase 7.1 Rollback Compatibility**: Validates database schema backward compatibility and preservation of all 2,312 investigation dossiers. *(Root wrapper preserved at `scripts/validate_rollback_compatibility.py`)* | `python scripts/validation/validate_rollback_compatibility.py` | SQLite DB, `backend/data/dossiers/`. Referenced in `ROLLBACK_VERIFICATION.md`. |
+| [`scripts/validation/validate_release_candidate_smoke.py`](../../scripts/validation/validate_release_candidate_smoke.py) | **Isolated Offline Smoke**: Exercises health/capabilities, four agent entrypoints and uncertain zero-evidence behavior in a fresh subprocess. *(Root wrapper preserved at `scripts/validate_release_candidate_smoke.py`)* | `python scripts/validation/validate_release_candidate_smoke.py` | Temporary SQLite/dossiers; reports to stdout. Optional `--output` creates a new report exclusively; it never overwrites an existing report. |
+| [`scripts/validation/validate_rollback_compatibility.py`](../../scripts/validation/validate_rollback_compatibility.py) | **Offline Persistence and Historical Reader Compatibility**: Fresh producer/consumer and actual baseline readers; read-only archive inspection. *(Root wrapper preserved at `scripts/validate_rollback_compatibility.py`)* | `python scripts/validation/validate_rollback_compatibility.py` | Temporary persistence plus protected archive reads. Exit 1 currently reports 55 malformed historical JSON files; deployed rollback remains unverified. |
+| [`scripts/validation/verify_frozen_benchmarks.py`](../../scripts/validation/verify_frozen_benchmarks.py) | **Frozen Dataset Integrity**: Checks pinned hashes, normalizing only CRLF/LF. | `python scripts/validation/verify_frozen_benchmarks.py` | Read-only scenarios/candidates/labels verification; fails on changed frozen content. |
+| [`scripts/validation/inventory_historical_dossiers.py`](../../scripts/validation/inventory_historical_dossiers.py) | **Historical Dossier Recovery Inventory**: Read-only SHA-256 and parser-error inventory with optional repository/Git-history candidate discovery. | `python scripts/validation/inventory_historical_dossiers.py --candidate-root . --include-git-history` | Never copies dossier contents or repairs originals. Optional `--output` creates a new report exclusively. |
+| [`scripts/validation/isolated_runtime.py`](../../scripts/validation/isolated_runtime.py) | **Isolation Support Module**: Temporary storage, blank credentials, network/DNS/provider-CLI guards and exclusive report creation. | Imported by validators and test setup; not a standalone acceptance gate | Keep Windows internal socketpair compatibility; never loosen guards to satisfy a live-I/O-dependent test. |
 | [`scripts/validation/live_agent_smoke_test.py`](../../scripts/validation/live_agent_smoke_test.py) | **Live Agent Smoke Verification Suite**: Multi-agent live test with secret sanitization and artifact output. *(Root wrapper preserved at `scripts/live_agent_smoke_test.py`)* | `python scripts/validation/live_agent_smoke_test.py` | **Directly imported** by `tests/unit/test_live_smoke_harness.py`. Outputs `artifacts/live_agent_smoke_result.json`. |
 | [`scripts/validation/test_launch_video_integrity.py`](../../scripts/validation/test_launch_video_integrity.py) | **Launch Video Integrity**: Automated verification of launch video asset resolution, aspect ratio, and codec. | `python scripts/validation/test_launch_video_integrity.py` | Validates `brag-output/brag.mp4`. Referenced in `docs/audit/TESTING_BASELINE.md`. |
 

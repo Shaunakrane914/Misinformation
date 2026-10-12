@@ -3,9 +3,8 @@ Unit Tests for Dual-Mode Replay Verification (Trace Playback & Refetch Verificat
 ====================================================================================
 Verifies:
 1. ReplayLedger trace_playback mode:
-   - Evaluates structurally sealed audit trace without network calls.
-   - Returns integrity_status = 'TRACE_VERIFIED'.
-   - Returns deterministic_reproducibility = 'SEALED_AUDIT_TRACE_PLAYBACK'.
+   - Distinguishes historical unsealed records from checksum-verified snapshots.
+   - Never counts legacy records as cryptographically verified.
 2. ReplayLedger refetch_verification mode:
    - Calls agent_reach_service.read for stored URLs.
    - Compares content hashes:
@@ -80,10 +79,10 @@ class TestReplayLedgerModes:
 
             assert result["status"] == "success"
             assert result["replay_mode"] == "trace_playback"
-            assert result["integrity_status"] == "TRACE_VERIFIED"
-            assert result["deterministic_reproducibility"] == "SEALED_AUDIT_TRACE_PLAYBACK"
+            assert result["integrity_status"] == "LEGACY_UNSEALED"
+            assert result["deterministic_reproducibility"] == "UNVERIFIED_TRACE_PLAYBACK"
             assert result["total_queries_replayed"] == 1
-            assert result["candidates_integrity_verified"] == 1
+            assert result["candidates_integrity_verified"] == 0
             assert len(result["playback_steps"]) >= 2
 
     def test_refetch_verification_match(self, sample_dossier):

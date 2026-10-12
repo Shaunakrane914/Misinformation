@@ -195,7 +195,7 @@ class BrandShieldAgent:
             "scan_metadata": {
                 "timestamp": datetime.utcnow().isoformat() + "Z",
                 "duration_ms": duration_ms,
-                "ai_enrichment": synthesis.get("ai_enrichment", "ONLINE_GEMINI"),
+                "ai_enrichment": synthesis.get("ai_enrichment", "UNKNOWN"),
             },
             "findings_structured": [f.to_dict() if hasattr(f, "to_dict") else f for f in self._last_research_res.findings] if getattr(self, "_last_research_res", None) else [],
             "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in self._last_research_res.contradictions] if getattr(self, "_last_research_res", None) else [],
@@ -216,7 +216,9 @@ class BrandShieldAgent:
                 "claims_count": len(claims),
                 "counterfeit_count": len(counterfeits),
                 "impersonation_count": len(impersonations),
-                "independent_groups_count": max(1, len(set(e.get("independence_group") for e in evidence_items))),
+                "independent_groups_count": len({
+                    e.get("independence_group") for e in evidence_items if e.get("independence_group")
+                }),
                 "high_priority_count": sum(1 for t in threats if t.get("severity") in ("high", "critical")),
             },
             "threats": threats,

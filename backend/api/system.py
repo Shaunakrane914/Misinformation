@@ -25,7 +25,18 @@ router = APIRouter(tags=["System & Telemetry"])
 
 
 class GeminiProxyRequest(BaseModel):
-    prompt: str = Field(..., description="Prompt string to execute with model rotation.")
+    prompt: str = Field(..., min_length=1, max_length=20000, description="Prompt string to execute with model rotation.")
+
+
+def normalize_dashboard_verdict(value: Any) -> str:
+    """Preserve uncertainty instead of treating every unfamiliar label as false."""
+    normalized = str(value or "").strip().lower().replace("_", " ")
+    return {
+        "true": "True", "1": "True", "real": "True",
+        "false": "False", "0": "False", "fake": "False",
+        "misleading": "Misleading", "partially true": "Misleading", "mixed": "Misleading",
+        "unverified": "Unverified", "insufficient evidence": "Insufficient Evidence",
+    }.get(normalized, "Unverified")
 
 
 @router.get("/healthz")
@@ -38,7 +49,8 @@ async def healthz():
         "version": __version__,
         "response_generated_at": datetime.utcnow().isoformat() + "Z",
         "registered_modules": 7,
-        "active_agents": 7
+        "active_agents": None,
+        "active_agent_count_status": "NOT_APPLICABLE_ON_DEMAND_EXECUTION"
     }
 
 
@@ -85,7 +97,7 @@ async def readyz():
 
 @router.get("/api/system/deployment-status", summary="Honest deployment status and empirical capabilities")
 @router.get("/api/deployment-status")
-async def get_deployment_status():
+def get_deployment_status():
     """
     Returns empirical facts about this deployment:
     - Number of investigations completed in database
@@ -128,7 +140,7 @@ async def get_deployment_status():
         "PersonalWatchAgent"
     ]
     registered_count = len(registered_modules)
-    healthy_count = registered_count  # In-process modules initialized without fault
+    healthy_count = 0  # No agent-level execution health probes exist yet.
 
     return {
         "status": "online",
@@ -148,6 +160,7 @@ async def get_deployment_status():
         "supported_channels": channel_names,
         "registered_agent_count": registered_count,
         "healthy_agent_count": healthy_count,
+        "healthy_agent_count_status": "NOT_PROBED",
         "active_agent_count": None,  # On-demand execution architecture; no static background workers running continuously
         "active_agent_count_status": "NOT_APPLICABLE_ON_DEMAND_EXECUTION",
         "specialized_agents_count": registered_count,
@@ -225,10 +238,10 @@ async def get_system_agents():
     Returns real-time status, capabilities, models, and diagnostic telemetry
     for all 7 agents in the Aegis Protocol multi-agent architecture.
     """
-    return {
+    payload = {
         "timestamp": datetime.now().isoformat(),
         "total_agents": 7,
-        "swarm_status": "ONLINE",
+        "swarm_status": "ON_DEMAND_NOT_PROBED",
         "agents": {
             "claim_ingestion": {
                 "name": "ClaimIngestionAgent",
@@ -269,28 +282,33 @@ async def get_system_agents():
                 "name": "BrandShieldAgent",
                 "role": "E-Commerce Counterfeit & Fake Review Defense",
                 "status": "active",
-                "engine": "Multi-Platform Review Scraper (Amazon, Flipkart, Trustpilot, Reddit, Google Reviews)",
-                "capabilities": ["counterfeit_detection", "fake_review_syndicate_clustering", "reputational_smear_alerting", "automated_cease_desist"]
+                "engine": "Shared Public Evidence Acquisition + Brand Signal Analysis",
+                "capabilities": ["counterfeit_signal_analysis", "review_pattern_analysis", "reputational_smear_alerting", "response_recommendations"]
             },
             "personal_watch": {
                 "name": "PersonalWatchAgent",
                 "role": "VIP Reputation, Deepfake & Impersonation Shield",
                 "status": "active",
-                "engine": "Synthetic Media Audio/Video Marker Analysis + Social Impersonation Scanner",
-                "capabilities": ["voice_video_deepfake_markers", "social_handle_impersonation", "doxxing_darkweb_leaks", "reputation_threat_scoring"]
+                "engine": "Public Search Evidence + Identity Signal Analysis",
+                "capabilities": ["public_deepfake_claim_analysis", "social_handle_impersonation_signals", "public_exposure_signals", "reputation_threat_scoring"]
             }
         },
         "scraper_fabric": {
             "engine": "AgentReach Zero-Cost Scraper (Panniantong Compatible)",
-            "status": "ready",
+            "status": "REGISTERED_NOT_PROBED",
             "channels": ["Reddit Discussion Streams", "Twitter/X Targeted Search", "YouTube Video Transcripts", "Google News RSS", "Jina Reader Clean Markdown"]
         }
     }
+    for agent in payload["agents"].values():
+        agent["status"] = "REGISTERED_ON_DEMAND"
+        agent["health_status"] = "NOT_PROBED"
+    payload["note"] = "Inventory lists registered functionality, not verified agent or provider health."
+    return payload
 
 
 @router.post("/api/gemini")
 @router.post("/.netlify/functions/gemini")
-async def gemini_proxy(request: GeminiProxyRequest):
+def gemini_proxy(request: GeminiProxyRequest):
     """Secure backend proxy for Gemini AI calls with dynamic model rotation."""
     try:
         from backend.services.intelligence import call_gemini_text
@@ -303,7 +321,7 @@ async def gemini_proxy(request: GeminiProxyRequest):
 
 @router.get("/api/dashboard/claims")
 @router.get("/dashboard/claims")
-async def get_dashboard_claims(fresh: bool = False):
+def get_dashboard_claims(fresh: bool = False):
     """
     Get 15 claims for the live dashboard.
     Priority: real verified claims first, topped up with WELFake dataset.
@@ -323,19 +341,13 @@ async def get_dashboard_claims(fresh: bool = False):
                     .execute()
                 if resp.data:
                     for row in resp.data:
-                        verdict_raw = row.get("verdict", "False") or "False"
-                        vl = verdict_raw.lower()
-                        if vl in ("true", "1", "real"):
-                            verdict = "True"
-                        elif vl in ("misleading", "partially true", "mixed"):
-                            verdict = "Misleading"
-                        else:
-                            verdict = "False"
+                        verdict = normalize_dashboard_verdict(row.get("verdict"))
                         results.append({
                             "claim":        row.get("claim_text", ""),
                             "verdict":      verdict,
-                            "explanation":  row.get("reasoning") or "AI-verified claim from live news feed.",
-                            "evidence_url": row.get("source_url") or ""
+                            "explanation":  row.get("reasoning") or "No investigation reasoning was recorded.",
+                            "evidence_url": row.get("source_url") or "",
+                            "record_origin": "investigation"
                         })
                     logger.info(f"[API] Loaded {len(results)} real claims from Supabase")
         except Exception as db_err:
@@ -355,9 +367,10 @@ async def get_dashboard_claims(fresh: bool = False):
             for item in fallback:
                 results.append({
                     "claim":        item.get("claim", ""),
-                    "verdict":      item.get("label", "False"),
-                    "explanation":  "Click 'Show Evidence' for AI-generated explanation.",
-                    "evidence_url": ""
+                    "verdict":      normalize_dashboard_verdict(item.get("label")),
+                    "explanation":  "Historical dataset example; not a live investigation.",
+                    "evidence_url": "",
+                    "record_origin": "historical_dataset"
                 })
 
         sample_id = str(uuid.uuid4())
@@ -383,7 +396,7 @@ async def get_dashboard_claims(fresh: bool = False):
 
 @router.get("/api/dashboard/debug")
 @router.get("/dashboard/debug")
-async def dashboard_debug():
+def dashboard_debug():
     """Debug endpoint showing dashboard cache state."""
     try:
         from backend.services.dashboard_loader import get_dashboard_claims_rotating

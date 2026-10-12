@@ -8,9 +8,8 @@ or gh CLI.
 import json
 import logging
 import time
-import urllib.error
-import urllib.request
-from datetime import datetime, timezone
+import re
+import urllib.parse
 from typing import Any, Dict, List, Optional
 
 from backend.services.agent_reach.channels import (
@@ -22,6 +21,7 @@ from backend.services.agent_reach.channels import (
 )
 from backend.services.agent_reach.native.adapters.base import PlatformAdapter
 from backend.services.url_validator import validate_url_safe
+from backend.infrastructure.acquisition.network.http import fetch_public_http
 
 logger = logging.getLogger(__name__)
 
@@ -40,8 +40,8 @@ class GitHubAdapter(PlatformAdapter):
         return "github_api"
 
     def can_handle(self, candidate: CandidateSource) -> bool:
-        url = (candidate.canonical_url or candidate.url).lower()
-        return candidate.platform.lower() == "github" or "github.com" in url
+        host = (urllib.parse.urlsplit(candidate.canonical_url or candidate.url).hostname or "").lower().rstrip(".")
+        return host in {"github.com", "www.github.com"}
 
     def acquire(self, candidate: CandidateSource, request: RetrievalRequest) -> FetchedDocument:
         target_url = candidate.canonical_url or candidate.url
@@ -61,46 +61,31 @@ class GitHubAdapter(PlatformAdapter):
         raw_json_str = ""
         status = "FAILED"
         err_msg = None
+        transport = None
 
         # Check if URL points to a specific repo (github.com/owner/repo)
-        import re
-        m = re.search(r"github\.com/([^/]+)/([^/]+)", target_url)
-        if m:
-            owner, repo = m.group(1), m.group(2).rstrip(".git")
-            api_url = f"https://api.github.com/repos/{owner}/{repo}"
-            req = urllib.request.Request(
-                api_url,
-                headers={
-                    "User-Agent": "AegisAgentReach/3.0",
-                    "Accept": "application/vnd.github.v3+json",
-                },
-            )
-            try:
-                with urllib.request.urlopen(req, timeout=7.0) as resp:
-                    data = json.loads(resp.read().decode("utf-8"))
-                    raw_json_str = json.dumps(data)
-                    status = "SUCCESS"
-            except Exception as e:
-                err_msg = str(e)
-        else:
-            # Search repositories
-            q = request.query or candidate.title or "repository"
-            api_url = f"https://api.github.com/search/repositories?q={urllib.parse.quote_plus(q)}&per_page=5"
-            req = urllib.request.Request(
-                api_url,
-                headers={
-                    "User-Agent": "AegisAgentReach/3.0",
-                    "Accept": "application/vnd.github.v3+json",
-                },
-            )
-            try:
-                with urllib.request.urlopen(req, timeout=7.0) as resp:
-                    data = json.loads(resp.read().decode("utf-8"))
-                    items = data.get("items", [])
-                    raw_json_str = json.dumps(items)
-                    status = "SUCCESS"
-            except Exception as e:
-                err_msg = str(e)
+        parsed = urllib.parse.urlsplit(target_url)
+        parts = parsed.path.strip("/").split("/")
+        if (parsed.hostname or "").lower().rstrip(".") not in {"github.com", "www.github.com"} or len(parts) < 2:
+            return FetchedDocument(url=target_url, status="BLOCKED", backend_id=self.backend_id,
+                                   failure_reason="Candidate is not a GitHub repository URL")
+        owner, repo = parts[0], parts[1].removesuffix(".git")
+        if any(part in {".", ".."} or not re.fullmatch(r"[A-Za-z0-9_.-]+", part) for part in (owner, repo)):
+            return FetchedDocument(url=target_url, status="BLOCKED", backend_id=self.backend_id,
+                                   failure_reason="Invalid GitHub owner or repository")
+        api_url = f"https://api.github.com/repos/{owner}/{repo}"
+        try:
+            response = fetch_public_http(api_url, headers={"User-Agent": "AegisAgentReach/3.0",
+                                                          "Accept": "application/vnd.github.v3+json"},
+                                         timeout=5.0, max_bytes=1_000_000)
+            raw_json_str = json.dumps(json.loads(response.body.decode("utf-8")))
+            status = "SUCCESS"
+            transport = {"endpoint": response.endpoint, "network_observed_this_attempt": True,
+                         "http_status": response.status_code, "content_type": response.content_type,
+                         "raw_body_bytes": len(response.body), "network_latency_ms": response.latency_ms,
+                         "cache_status": "UNKNOWN"}
+        except Exception as e:
+            err_msg = str(e)
 
         lat = int((time.perf_counter() - t0) * 1000)
         return FetchedDocument(
@@ -109,6 +94,7 @@ class GitHubAdapter(PlatformAdapter):
             backend_id=self.backend_id,
             retrieval_mode=RetrievalMode.DIRECT_API.value,
             raw_content=raw_json_str,
+            raw_metadata={"transport": transport},
             latency_ms=lat,
             failure_reason=err_msg,
         )
@@ -149,19 +135,19 @@ class GitHubAdapter(PlatformAdapter):
                 content=content,
                 url=url,
                 author=owner,
-                published=item.get("pushed_at") or datetime.now(timezone.utc).isoformat(),
+                published=item.get("pushed_at") or item.get("created_at") or "",
                 snippet=snippet,
                 score=candidate.semantic_score or 1.0,
                 retrieval_method="agent_reach",
                 channel_name="github",
-                content_depth="PARTIAL_CONTENT",
+                content_depth="STRUCTURED_METADATA",
                 query_id=request.request_id,
                 query_class=request.task_type,
                 query_text=request.query,
                 retrieval_mode=RetrievalMode.DIRECT_API.value,
                 native_backend_id=self.backend_id,
                 is_authenticated=False,
-                raw_metadata={"stars": stars, "language": lang},
+                raw_metadata={"stars": stars, "language": lang, "transport": document.raw_metadata.get("transport")},
             )
             frags.append(frag)
 

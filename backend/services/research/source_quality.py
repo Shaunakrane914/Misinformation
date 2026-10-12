@@ -52,12 +52,35 @@ SOCIAL_DOMAINS: Set[str] = {
     "twitter.com", "x.com", "youtube.com", "youtu.be", "instagram.com", "tiktok.com"
 }
 
+# Explicit identity knowledge, not a heuristic derived from a queried name.
+# Deployments can inject additional verified mappings into SourceQualityEngine.
+VERIFIED_CORPORATE_DOMAINS = {
+    "tesla": {"tesla.com"},
+    "nvidia": {"nvidia.com"},
+    "apple": {"apple.com"},
+    "microsoft": {"microsoft.com"},
+    "anthropic": {"anthropic.com"},
+}
+
+
+def hostname_matches(host: str, trusted: str) -> bool:
+    host, trusted = host.rstrip(".").lower(), trusted.rstrip(".").lower()
+    return bool(trusted) and (host == trusted or host.endswith("." + trusted))
+
+
+def _matches_registry(host: str, registry) -> bool:
+    return any(hostname_matches(host, trusted) for trusted in registry)
+
 
 class SourceQualityEngine:
     """Classifies source roles, forensic tiers, and calculates source quality scores."""
 
-    def __init__(self):
-        pass
+    def __init__(self, official_domains=None):
+        self.official_domains = {
+            re.sub(r"[^a-z0-9]", "", name.lower()): set(domains)
+            for name, domains in (official_domains if official_domains is not None
+                                  else VERIFIED_CORPORATE_DOMAINS).items()
+        }
 
     def classify_and_score(self, item: EvidenceItem, target_name: str = "") -> EvidenceItem:
         """
@@ -65,10 +88,19 @@ class SourceQualityEngine:
         and computes source_quality_score (0.0 to 1.0).
         """
         url = (item.canonical_url or "").lower()
-        domain = item.source_domain.lower() if item.source_domain else ""
-        if not domain and url:
-            domain = urllib.parse.urlparse(url).netloc.lower()
-            item.source_domain = domain
+        try:
+            parsed = urllib.parse.urlsplit(url)
+            # Trigger urllib's numeric/range validation for explicitly supplied ports.
+            _ = parsed.port
+            domain = (parsed.hostname or "").lower().rstrip(".")
+            if parsed.scheme not in ("http", "https") or parsed.username or parsed.password:
+                domain = ""
+        except ValueError:
+            domain = ""
+        # A supplied source_domain cannot override the actual source URL.
+        item.source_domain = domain
+        item.primary_source = False
+        item.official_source = False
 
         title_lower = (item.title or "").lower()
         snippet_lower = (item.snippet or "").lower()
@@ -79,15 +111,10 @@ class SourceQualityEngine:
         clean_target = re.sub(r'[^a-z0-9]', '', target_name.lower()) if target_name else ""
         
         # 1. Detect Official Corporate Domain
-        is_official = False
-        if clean_target and len(clean_target) >= 3:
-            if clean_target in domain or domain.endswith(f".{clean_target}.com") or domain == f"{clean_target}.com":
-                is_official = True
-            elif f"investor.{clean_target}" in domain or f"ir.{clean_target}" in domain:
-                is_official = True
+        is_official = _matches_registry(domain, self.official_domains.get(clean_target, set()))
 
         # 2. Regulatory & Government Filings
-        is_regulatory = any(rd in domain for rd in REGULATORY_GOVERNMENT_DOMAINS)
+        is_regulatory = _matches_registry(domain, REGULATORY_GOVERNMENT_DOMAINS)
         filing_markers = [
             "form 10-k", "form 10-q", "form 8-k", "regulatory filing", "exchange filing",
             "annual report", "press release", "bse filing", "nse filing", "sec filing",
@@ -110,29 +137,29 @@ class SourceQualityEngine:
             item.official_source = True
             base_score = 0.92
 
-        elif "github.com" in domain:
+        elif hostname_matches(domain, "github.com"):
             item.source_role = SourceRole.PRIMARY.value
             item.source_tier = SourceTier.TIER_1_ORIGINAL_DOCUMENT.value
             item.primary_source = True
             base_score = 0.88
 
-        elif any(t1 in domain for t1 in TIER1_PRESS_DOMAINS):
+        elif _matches_registry(domain, TIER1_PRESS_DOMAINS):
             item.source_role = SourceRole.SECONDARY.value
             item.source_tier = SourceTier.TIER_2_FINANCIAL_PRESS.value
             base_score = 0.82
 
-        elif any(sp in domain for sp in SPECIALIZED_TECH_INDUSTRY_DOMAINS):
+        elif _matches_registry(domain, SPECIALIZED_TECH_INDUSTRY_DOMAINS):
             item.source_role = SourceRole.SECONDARY.value
             item.source_tier = SourceTier.TIER_2_INVESTIGATIVE.value
             base_score = 0.75
 
-        elif any(cd in domain for cd in COMMUNITY_DOMAINS) or item.channel in ("reddit", "hackernews"):
+        elif _matches_registry(domain, COMMUNITY_DOMAINS) or item.channel in ("reddit", "hackernews"):
             item.source_role = SourceRole.COMMUNITY.value
             item.source_tier = SourceTier.TIER_3_INVESTOR_COMMUNITY.value
             base_score = 0.50
 
-        elif any(sd in domain for sd in SOCIAL_DOMAINS) or item.channel in ("twitter", "youtube", "tiktok", "instagram"):
-            if "youtube" in domain or item.channel == "youtube":
+        elif _matches_registry(domain, SOCIAL_DOMAINS) or item.channel in ("twitter", "youtube", "tiktok", "instagram"):
+            if hostname_matches(domain, "youtube.com") or item.channel == "youtube":
                 item.source_role = SourceRole.SECONDARY.value
                 item.source_tier = SourceTier.TIER_2_VIDEO_ANALYSIS.value
                 base_score = 0.58
@@ -141,7 +168,7 @@ class SourceQualityEngine:
                 item.source_tier = SourceTier.TIER_3_SOCIAL_SIGNALS.value
                 base_score = 0.45
 
-        elif any(ad in domain for ad in AGGREGATOR_CONTENT_DOMAINS):
+        elif _matches_registry(domain, AGGREGATOR_CONTENT_DOMAINS):
             item.source_role = SourceRole.AGGREGATOR.value
             item.source_tier = SourceTier.TIER_3_AGGREGATE.value
             base_score = 0.60

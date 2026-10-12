@@ -16,11 +16,47 @@
   let lastFetchedAt = 0;
   let inFlightPromise = null;
   let lastFetchError = null;
-  let activeListeners = [];
+  const activeListeners = new Set();
+  const renderedElements = new WeakMap();
+  let refreshTimer = null;
+  let cacheGeneration = 0;
+
+  function notifyListeners() {
+    const state = getCacheState();
+    activeListeners.forEach(fn => { try { fn(cachedData, state); } catch (_) {} });
+  }
+
+  function scheduleRefresh(delayOverride) {
+    if (refreshTimer) clearTimeout(refreshTimer);
+    if (!activeListeners.size) return;
+    const age = lastFetchedAt ? Date.now() - lastFetchedAt : 0;
+    const delay = delayOverride || (lastFetchError ? config.ttlMs : Math.max(10, config.ttlMs - age + 1));
+    refreshTimer = setTimeout(() => {
+      notifyListeners(); // Expired observations lose their green badge before refresh.
+      if (typeof document === 'undefined' || document.visibilityState !== 'hidden') {
+        fetchCapabilities({ force: true }).catch(() => {});
+      } else {
+        scheduleRefresh(config.ttlMs);
+      }
+    }, delay);
+    if (refreshTimer && typeof refreshTimer.unref === 'function') refreshTimer.unref();
+  }
+
+  function subscribeCapabilities(listener) {
+    activeListeners.add(listener);
+    listener(cachedData, getCacheState());
+    fetchCapabilities().catch(() => {});
+    scheduleRefresh();
+    return () => {
+      activeListeners.delete(listener);
+      scheduleRefresh();
+    };
+  }
 
   function configure(newConfig) {
     if (newConfig && typeof newConfig === 'object') {
       config = Object.assign({}, config, newConfig);
+      scheduleRefresh();
     }
     return Object.assign({}, config);
   }
@@ -28,8 +64,8 @@
   function getCacheState() {
     const now = Date.now();
     const age = lastFetchedAt > 0 ? now - lastFetchedAt : null;
-    const isExpired = age !== null && age > config.ttlMs;
-    const isStale = age !== null && age > config.staleThresholdMs;
+    const isExpired = age !== null && age >= config.ttlMs;
+    const isStale = Boolean(cachedData) && (isExpired || Boolean(lastFetchError));
     return {
       hasData: Boolean(cachedData),
       lastFetchedAt,
@@ -42,10 +78,13 @@
   }
 
   function invalidateCapabilities() {
+    cacheGeneration++;
     cachedData = null;
     lastFetchedAt = 0;
     lastFetchError = null;
     inFlightPromise = null;
+    notifyListeners();
+    scheduleRefresh();
   }
 
   function classifyOperation(operation, options) {
@@ -63,9 +102,8 @@
 
     // If cache is stale beyond threshold or caller flagged stale observation,
     // a previously healthy operation must NEVER remain indefinitely green.
-    if (opts.isStale || health === 'STALE') {
-      if (['HEALTHY', 'LIMITED'].includes(health)) return 'stale';
-    }
+    if (health === 'STALE') return 'stale';
+    if (opts.isStale && ['HEALTHY', 'LIMITED'].includes(health)) return 'stale';
 
     if (decision === 'DEFER_TEMPORARY' || ['RATE_LIMITED', 'DEGRADED'].includes(health)) return 'degraded';
     if (['DIRECT_METADATA', 'SYNDICATED_SUMMARY', 'SEARCH_INDEX_DISCOVERY', 'PARTIAL_OR_UNCLASSIFIED'].includes(outcome)) return 'limited';
@@ -114,6 +152,7 @@
     }
 
     const abortController = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const generation = cacheGeneration;
     let timeoutId = null;
 
     if (abortController) {
@@ -122,7 +161,7 @@
       }, config.timeoutMs);
     }
 
-    const fetchPromise = (async () => {
+    const fetchPromise = Promise.resolve().then(async () => {
       try {
         const fetchFn = (typeof root !== 'undefined' && root.fetch) || (typeof fetch !== 'undefined' ? fetch : null);
         if (!fetchFn) throw new Error('fetch is not available in environment');
@@ -132,7 +171,8 @@
           fetchOpts.signal = abortController.signal;
         }
 
-        const response = await fetchFn('/api/agent-reach/capabilities', fetchOpts);
+        const url = typeof root.getAegisApiUrl === 'function' ? root.getAegisApiUrl('/api/agent-reach/capabilities') : '/api/agent-reach/capabilities';
+        const response = await fetchFn(url, fetchOpts);
         if (timeoutId) clearTimeout(timeoutId);
 
         if (!response.ok) {
@@ -140,12 +180,14 @@
         }
 
         const data = await response.json();
+        if (generation !== cacheGeneration) return data;
         cachedData = data;
         lastFetchedAt = Date.now();
         lastFetchError = null;
         return cachedData;
       } catch (err) {
         if (timeoutId) clearTimeout(timeoutId);
+        if (generation !== cacheGeneration) throw err;
         lastFetchError = err;
 
         // If we have previous data, keep it but mark it so callers can identify degraded/stale state
@@ -154,9 +196,13 @@
         }
         throw err;
       } finally {
-        inFlightPromise = null;
+        if (generation === cacheGeneration) {
+          inFlightPromise = null;
+          notifyListeners();
+          scheduleRefresh();
+        }
       }
-    })();
+    });
 
     inFlightPromise = fetchPromise;
     return inFlightPromise;
@@ -167,11 +213,16 @@
     const settings = options || {};
     const elementRef = element;
 
-    async function update() {
+    function update(data, stateInfo) {
       try {
-        const data = await fetchCapabilities(settings.fetchOptions);
+        if (elementRef.isConnected === false) {
+          const unsubscribe = renderedElements.get(elementRef);
+          if (unsubscribe) unsubscribe();
+          renderedElements.delete(elementRef);
+          return;
+        }
+        if (!data) throw new Error('Operation status unavailable');
         const channels = (data && data.channels) || {};
-        const stateInfo = getCacheState();
         const evalOpts = { isStale: stateInfo.isStale || (settings.fetchOptions && settings.fetchOptions.isStale) };
 
         elementRef.replaceChildren();
@@ -214,11 +265,10 @@
     }
 
     // Register re-render listener for automatic visibility or refresh triggers
-    if (!activeListeners.includes(update)) {
-      activeListeners.push(update);
-    }
-
-    return update();
+    const previous = renderedElements.get(elementRef);
+    if (previous) previous();
+    renderedElements.set(elementRef, subscribeCapabilities(update));
+    return fetchCapabilities(settings.fetchOptions).catch(() => null);
   }
 
   // Controlled visibility listener: when tab becomes visible after inactivity,
@@ -227,12 +277,9 @@
     document.addEventListener('visibilitychange', () => {
       if (document.visibilityState === 'visible') {
         const state = getCacheState();
-        if (state.isExpired) {
-          fetchCapabilities({ force: true }).then(() => {
-            activeListeners.forEach(fn => {
-              try { fn(); } catch (_) {}
-            });
-          }).catch(() => {});
+        if (state.isExpired || !state.hasData || state.lastFetchError) {
+          notifyListeners();
+          fetchCapabilities({ force: true }).catch(() => {});
         }
       }
     });
@@ -246,6 +293,7 @@
     classifyOperation,
     summarizeChannel,
     fetchCapabilities,
+    subscribeCapabilities,
     renderPills
   };
 })(typeof window !== 'undefined' ? window : (typeof globalThis !== 'undefined' ? globalThis : this));

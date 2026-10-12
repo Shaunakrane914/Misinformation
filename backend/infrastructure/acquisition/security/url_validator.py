@@ -8,7 +8,9 @@ or evidence retrieval agents.
 
 import ipaddress
 import logging
+import queue
 import socket
+import threading
 import time
 import urllib.parse
 from typing import Set, Tuple
@@ -92,6 +94,42 @@ def is_ip_blocked(ip_str: str) -> bool:
 # Thread-safe in-memory DNS resolution cache: host -> (is_valid, error_msg, expiry_timestamp)
 _DNS_CACHE: dict = {}
 _DNS_CACHE_TTL = 300.0  # 5 minutes
+_DNS_SLOTS = threading.BoundedSemaphore(8)
+
+
+def resolve_public_addresses(host: str, port: int, timeout: float = 2.5,
+                             *, allow_custom_ports: bool = False) -> list:
+    """Resolve fresh addresses for a connection, rejecting mixed/private answers.
+
+    A validation-cache hit is deliberately not sufficient for establishing a
+    connection. Callers must connect to one of these exact numeric addresses,
+    without performing a second hostname lookup.
+    """
+    if not host or not (0 < port < 65536) or (port not in ALLOWED_PORTS and not allow_custom_ports):
+        raise ValueError("Invalid public HTTP destination")
+    if not _DNS_SLOTS.acquire(blocking=False):
+        raise TimeoutError("DNS validation capacity exhausted")
+    results = queue.Queue(maxsize=1)
+
+    def resolve():
+        try:
+            results.put((socket.getaddrinfo(host, port, type=socket.SOCK_STREAM), None))
+        except Exception as error:
+            results.put((None, error))
+        finally:
+            _DNS_SLOTS.release()
+
+    # A stalled OS resolver must neither block the caller nor prevent shutdown.
+    threading.Thread(target=resolve, name="public-dns-validation", daemon=True).start()
+    try:
+        addresses, error = results.get(timeout=max(0.001, timeout))
+    except queue.Empty as error:
+        raise TimeoutError("DNS validation timed out") from error
+    if error is not None:
+        raise error
+    if not addresses or any(not item[4] or is_ip_blocked(item[4][0]) for item in addresses):
+        raise ValueError("DNS resolved to a private, reserved, or empty address set")
+    return addresses
 
 
 def clear_dns_cache() -> None:
@@ -142,7 +180,10 @@ def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool,
         return False, f"Hostname '{host}' is a forbidden internal metadata address."
 
     # 5. Check port
-    port = parsed.port
+    try:
+        port = parsed.port
+    except ValueError:
+        return False, "Invalid URL port"
     if port is not None and not allow_custom_ports:
         if port not in ALLOWED_PORTS:
             return False, f"Port {port} is not permitted. Only standard web ports (80, 443) are allowed."
@@ -161,11 +202,12 @@ def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool,
             _DNS_CACHE[host_lower] = (False, f"Direct access to private or reserved IP '{host}' is blocked (SSRF protection).", now + _DNS_CACHE_TTL)
             return False, f"Direct access to private or reserved IP '{host}' is blocked (SSRF protection)."
     except ValueError:
-        # Hostname is a domain name, resolve via DNS with bounded timeout
-        old_timeout = socket.getdefaulttimeout()
+        # Do not mutate the process-wide socket timeout from concurrent workers.
         try:
-            socket.setdefaulttimeout(2.5)
-            addr_info = socket.getaddrinfo(host_lower, None)
+            addr_info = resolve_public_addresses(
+                host_lower, port or (443 if parsed.scheme.lower() == "https" else 80),
+                allow_custom_ports=allow_custom_ports,
+            )
             resolved_ips = {item[4][0] for item in addr_info if item[4]}
             for ip in resolved_ips:
                 if is_ip_blocked(ip):
@@ -181,8 +223,6 @@ def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool,
             err = f"Error validating host '{host}': {e}"
             _DNS_CACHE[host_lower] = (False, err, now + 60.0)
             return False, err
-        finally:
-            socket.setdefaulttimeout(old_timeout)
 
     return True, ""
 

@@ -15,7 +15,8 @@ def test_system_and_telemetry_router(test_client: TestClient):
     r1 = test_client.get("/api/healthz")
     assert r1.status_code == 200
     assert r1.json()["status"] == "ok"
-    assert r1.json()["active_agents"] == 7
+    assert r1.json()["registered_modules"] == 7
+    assert r1.json()["active_agents"] is None
 
     # 2. System API Index
     r2 = test_client.get("/api/")

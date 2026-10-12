@@ -1,5 +1,5 @@
 # Aegis Protocol — Netlify Deployment Config
-# Version: 3.7.0 | Updated: 2026-10-02
+# Runtime asset policy: unhashed JS/CSS must revalidate after deployment.
 
 [build]
   base      = "frontend"
@@ -9,12 +9,12 @@
 [[headers]]
   for = "/*.css"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, no-cache, max-age=0, must-revalidate"
 
 [[headers]]
   for = "/*.js"
   [headers.values]
-    Cache-Control = "public, max-age=31536000, immutable"
+    Cache-Control = "public, no-cache, max-age=0, must-revalidate"
 
 # 1. Netlify functions endpoints
 [[redirects]]
@@ -39,8 +39,8 @@
   status = 200
   force  = true
 
-# 3. SPA Fallback (only for non-file routes)
+# 3. Static site: unknown non-file routes remain genuine 404s.
 [[redirects]]
   from   = "/*"
-  to     = "/index.html"
-  status = 200
+  to     = "/404.html"
+  status = 404

@@ -5,6 +5,7 @@ import pytest
 from backend.services.agent_reach.channels import EvidenceFragment
 from backend.services.agent_reach.native.channel_capabilities import CAPABILITY_MATRIX
 from backend.services.agent_reach.native.router import NativeRouter
+from backend.services.agent_reach.native.operation_capabilities import EXECUTABLE_CAPABILITIES, required_auth_environment
 
 
 EXPECTED_CHANNELS = {
@@ -20,6 +21,18 @@ AUTHENTICATED_CHANNELS = {
 EXPLICIT_STANDARD_CHANNELS = {
     "web", "github", "youtube", "bilibili", "v2ex", "rss", "xiaoyuzhou",
 }
+
+
+def _authorize_fixture(monkeypatch, channel):
+    """Authorize only the implemented operation this controlled test exercises."""
+    operations = EXECUTABLE_CAPABILITIES[channel]
+    operation = "search" if "search" in operations else sorted(operations)[0]
+    if channel == "reddit":
+        monkeypatch.setenv("REDDIT_APPROVED_ACCESS", "true")
+    auth_environment = required_auth_environment(channel, operation)
+    if auth_environment:
+        monkeypatch.setenv(auth_environment, "controlled-fixture-credential")
+    return operation
 
 
 def test_canonical_and_legacy_service_exports_have_object_identity():
@@ -75,13 +88,14 @@ def test_session_gated_channels_fail_explicitly_without_credentials(monkeypatch,
     monkeypatch.delenv("BOSS_CDP_PORT", raising=False)
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
 
-    fragments, telemetry = router.execute_channel_query(channel, "contract fixture", limit=1)
+    operation = "search_jobs" if channel == "boss" else "search"
+    fragments, telemetry = router.execute_channel_query(channel, "contract fixture", limit=1, operation=operation)
     assert fragments == []
-    assert telemetry["status"] == "AUTH_REQUIRED"
+    assert telemetry["status"] == ("SKIPPED" if channel == "linkedin" else "AUTH_REQUIRED")
     assert telemetry["error"]
 
 
-def test_xiaoyuzhou_transcription_remains_credential_gated(monkeypatch):
+def test_xiaoyuzhou_transcription_is_honestly_unimplemented(monkeypatch):
     router = NativeRouter()
     monkeypatch.delenv("GROQ_API_KEY", raising=False)
 
@@ -90,13 +104,14 @@ def test_xiaoyuzhou_transcription_remains_credential_gated(monkeypatch):
     )
 
     assert fragments == []
-    assert telemetry["status"] == "AUTH_REQUIRED"
-    assert "requires authentication/session" in telemetry["error"]
+    assert telemetry["status"] == "SKIPPED"
+    assert telemetry["error"] == "NO_PRODUCTION_HANDLER"
 
 
 @pytest.mark.parametrize("channel", sorted(EXPECTED_CHANNELS))
 def test_every_channel_uses_the_declared_dispatch_family(monkeypatch, channel):
     router = NativeRouter()
+    operation = _authorize_fixture(monkeypatch, channel)
     social_result = [EvidenceFragment(platform="Fixture", title="social")]
     standard_result = [EvidenceFragment(platform="Fixture", title="standard")]
 
@@ -111,18 +126,19 @@ def test_every_channel_uses_the_declared_dispatch_family(monkeypatch, channel):
     monkeypatch.setattr(router.channel_dispatcher.social, "execute", social_execute)
     monkeypatch.setattr(router.channel_dispatcher.standard, "execute", standard_execute)
 
-    fragments, telemetry = router.execute_channel_query(channel, "controlled fixture", limit=1)
+    fragments, telemetry = router.execute_channel_query(channel, "controlled fixture", limit=1, operation=operation)
     expected = social_result if channel in {"reddit", "twitter"} else standard_result
     assert fragments is expected
     assert telemetry["status"] == "SUCCESS"
     assert telemetry["platform"] == channel
-    assert telemetry["operation"] == f"{channel}.search"
+    assert telemetry["operation"] == f"{channel}.{operation}"
 
 
 @pytest.mark.parametrize("channel", sorted(EXPECTED_CHANNELS))
 def test_every_channel_selects_its_concrete_handler(monkeypatch, channel):
     """Exercise the second-level route, not only social-versus-standard dispatch."""
     router = NativeRouter()
+    operation = _authorize_fixture(monkeypatch, channel)
     marker = EvidenceFragment(platform="Fixture", title=channel, channel_name=channel)
     standard = router.channel_dispatcher.standard
 
@@ -132,6 +148,8 @@ def test_every_channel_selects_its_concrete_handler(monkeypatch, channel):
             "execute",
             lambda *args, **kwargs: [marker],
         )
+    elif channel == "linkedin":
+        monkeypatch.setattr(standard, "_execute_linkedin", lambda *args, **kwargs: [marker])
     elif channel in AUTHENTICATED_CHANNELS:
         monkeypatch.setattr(
             standard,
@@ -154,7 +172,7 @@ def test_every_channel_selects_its_concrete_handler(monkeypatch, channel):
     else:
         raise AssertionError(f"No dispatcher contract fixture for {channel}")
 
-    fragments, telemetry = router.execute_channel_query(channel, "controlled fixture", limit=1)
+    fragments, telemetry = router.execute_channel_query(channel, "controlled fixture", limit=1, operation=operation)
     assert fragments == [marker]
     assert fragments[0].requested_channel == channel
     assert fragments[0].actual_retrieval_channel == channel
@@ -165,6 +183,7 @@ def test_every_channel_selects_its_concrete_handler(monkeypatch, channel):
 def test_every_channel_fails_closed_on_unexpected_handler_error(monkeypatch, channel):
     """A backend exception must become explicit telemetry, never fabricated evidence."""
     router = NativeRouter()
+    operation = _authorize_fixture(monkeypatch, channel)
 
     def fail(*args, **kwargs):
         raise RuntimeError(f"{channel} fixture failure")
@@ -176,7 +195,7 @@ def test_every_channel_fails_closed_on_unexpected_handler_error(monkeypatch, cha
     )
     monkeypatch.setattr(handler, "execute", fail)
 
-    fragments, telemetry = router.execute_channel_query(channel, "controlled fixture", limit=1)
+    fragments, telemetry = router.execute_channel_query(channel, "controlled fixture", limit=1, operation=operation)
     assert fragments == []
     assert telemetry["status"] == "FAILED"
     assert telemetry["fallback_used"] is False

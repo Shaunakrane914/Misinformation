@@ -401,13 +401,19 @@
       }
     }
 
+    function setPersonalScanBusy(button, name) {
+      const pulse = document.createElement('span');
+      pulse.className = 'pulse-dot';
+      button.replaceChildren(pulse, document.createTextNode(` Auditing ${name}...`));
+    }
+
     async function triggerScan() {
       const name = document.getElementById('personInput').value.trim();
       if (!name) return;
 
       const btn = document.getElementById('scanBtn');
       btn.disabled = true;
-      btn.innerHTML = `<span class="pulse-dot"></span> Auditing ${name}...`;
+      setPersonalScanBusy(btn, name);
 
       showLoadingAnimation(name);
       document.getElementById('resultsMount').innerHTML = '';
@@ -493,7 +499,7 @@
       document.getElementById('telGroups').textContent = summary.independent_groups ?? '—';
       document.getElementById('telChannels').textContent = summary.platforms_active ?? '—';
       document.getElementById('telThreats').textContent = threats.length;
-      document.getElementById('telLatency').textContent = summary.scan_duration_s ? `${summary.scan_duration_s}s` : '<12s';
+      document.getElementById('telLatency').textContent = Number.isFinite(summary.scan_duration_s) ? `${summary.scan_duration_s}s` : 'Unavailable';
 
       // 0. Primary Investigative Question
       mount.insertAdjacentHTML('beforeend', `
@@ -899,7 +905,7 @@
               </div>
               <div>
                 <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);display:block;">INDEPENDENT GROUPS</span>
-                <span style="font-family:var(--font-mono);font-size:0.85rem;color:#fff;">${d.independent_source_groups_count || 1} Group(s)</span>
+                <span style="font-family:var(--font-mono);font-size:0.85rem;color:#fff;">${d.independent_source_groups_count ?? 0} Group(s)</span>
               </div>
             </div>
 

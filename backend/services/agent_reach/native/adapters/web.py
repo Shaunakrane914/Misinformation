@@ -1,19 +1,15 @@
 """
-Aegis Protocol — Scrapling & Playwright Web Adapter
+Aegis Protocol — Bounded Public Web Adapter
 ===================================================
-Authoritative web acquisition adapter implementing Policy D:
-  - Primary: Scrapling HTTP (curl_cffi / lightweight HTTP)
-  - Secondary: Playwright rescue strictly when client-side JS rendering
-    or an anti-bot challenge prevents lightweight acquisition.
-  - SSRF-safe URL validation enforced before any outbound connection.
-  - Public Jina Reader deprecated as primary path.
+Authoritative typed web acquisition uses the connection-validated public HTTP
+transport. Compatibility helper names are retained, but browser rescue is not
+automatically authorized because its subrequests cannot use that transport.
 """
 
 import logging
 import re
 import time
 from typing import Any, Dict, List, Optional, Tuple
-from datetime import datetime, timezone
 
 from backend.services.agent_reach.channels import (
     CandidateSource,
@@ -23,8 +19,8 @@ from backend.services.agent_reach.channels import (
     RetrievalRequest,
 )
 from backend.services.agent_reach.native.adapters.base import PlatformAdapter
-from backend.services.agent_reach.native.route_policy import RoutePolicyEngine
 from backend.services.url_validator import validate_url_safe
+from backend.infrastructure.acquisition.network.http import fetch_public_http
 
 logger = logging.getLogger(__name__)
 
@@ -49,7 +45,7 @@ class WebAdapter(PlatformAdapter):
 
     @property
     def backend_id(self) -> str:
-        return "scrapling_http"
+        return "bounded_urllib"
 
     def can_handle(self, candidate: CandidateSource) -> bool:
         p = candidate.platform.lower()
@@ -58,16 +54,13 @@ class WebAdapter(PlatformAdapter):
         specialists = ("reddit.com", "redd.it", "x.com", "twitter.com", "youtube.com", "youtu.be", "github.com")
         return p in ("web", "news", "article") or not any(s in url for s in specialists)
 
-    def _fetch_scrapling(self, target_url: str, timeout: float = 8.0) -> Tuple[int, str, Dict[str, str], int, Optional[str]]:
+    def _fetch_scrapling(self, target_url: str, timeout: float = 5.0) -> Tuple[int, str, Dict[str, str], int, Optional[str]]:
+        """Compatibility method name for the connection-validated HTTP reader."""
         t0 = time.perf_counter()
         try:
-            from scrapling import Fetcher
-            response = Fetcher.get(target_url, headers=DEFAULT_HEADERS, timeout=timeout)
-            lat = int((time.perf_counter() - t0) * 1000)
-            text = response.text if hasattr(response, "text") else str(response)
-            status = getattr(response, "status", 200)
-            headers = dict(getattr(response, "headers", {}))
-            return status, text, headers, lat, None
+            response = fetch_public_http(target_url, headers=DEFAULT_HEADERS,
+                                         timeout=min(timeout, 5.0), max_bytes=1_000_000)
+            return response.status_code or 200, response.body.decode("utf-8", errors="replace"), dict(response.headers), response.latency_ms, None
         except Exception as e:
             lat = int((time.perf_counter() - t0) * 1000)
             logger.debug(f"[WebAdapter] Scrapling fetch error for {target_url}: {e}")
@@ -108,17 +101,12 @@ class WebAdapter(PlatformAdapter):
                 failure_reason=f"SSRF validation failed: {reason}",
             )
 
-        # 2. Primary: Scrapling HTTP
+        # 2. Primary: bounded, connection-validated public HTTP
         status, text, headers, lat, err = self._fetch_scrapling(target_url)
         active_backend = self.backend_id
 
-        # 3. Secondary: Playwright Rescue (only if justified)
-        if RoutePolicyEngine.should_attempt_playwright_rescue(status, len(text), err):
-            logger.debug(f"[WebAdapter] Engaging Playwright rescue for {target_url} (HTTP {status}, len={len(text)})")
-            p_status, p_text, p_headers, p_lat, p_err = self._fetch_playwright_rescue(target_url)
-            if p_status == 200 and len(p_text) > len(text):
-                status, text, headers, lat, err = p_status, p_text, p_headers, p_lat, p_err
-                active_backend = "playwright_rescue"
+        # Browser rescue is not automatic: browser subrequests cannot use the
+        # connection-pinned public transport and must not bypass SSRF failures.
 
         doc_status = "SUCCESS" if (status == 200 and len(text) > 0) else "FAILED"
         return FetchedDocument(
@@ -163,7 +151,7 @@ class WebAdapter(PlatformAdapter):
             content=body,
             url=document.url,
             author="Web Publisher",
-            published=datetime.now(timezone.utc).isoformat(),
+            published=document.raw_metadata.get("published_at") or candidate.metadata.get("published_at") or "",
             snippet=body[:280],
             score=candidate.semantic_score or 1.0,
             retrieval_method="agent_reach",

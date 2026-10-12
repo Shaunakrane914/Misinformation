@@ -427,8 +427,12 @@
       // Update Telemetry Ribbon
       document.getElementById('telSources').textContent = `${sources.length} Items`;
       document.getElementById('telThreats').textContent = `${threats.length} Flagged`;
-      document.getElementById('telGroups').textContent = `${summary.independent_groups_count || 1} Independent`;
-      document.getElementById('telStatus').textContent = data.scan_metadata?.ai_enrichment === 'OFFLINE_HEURISTIC' ? 'HEURISTIC' : 'LIVE AI';
+      document.getElementById('telGroups').textContent = `${summary.independent_groups_count ?? 0} Independent`;
+      const enrichment = data.scan_metadata?.ai_enrichment;
+      document.getElementById('telStatus').textContent = sources.length === 0 ? 'NO EVIDENCE'
+        : enrichment === 'OFFLINE_HEURISTIC' ? 'HEURISTIC'
+          : enrichment === 'SYNTHETIC_MOCK' ? 'SYNTHETIC MOCK'
+            : enrichment === 'ONLINE_GEMINI' ? 'LIVE AI' : 'AI UNVERIFIED';
 
       let html = '';
 
@@ -685,7 +689,7 @@
 
       // 7. Interactive Source Explorer
       html += `
-        <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${summary.independent_groups_count || 1} INDEPENDENT GROUPS)</div>
+        <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${summary.independent_groups_count ?? 0} INDEPENDENT GROUPS)</div>
         <div class="explorer-wrap ae-reveal">
           <div class="filter-tabs" id="sourceFilters">
             <span class="filter-tab active" onclick="filterSources('ALL')">ALL (${sources.length})</span>

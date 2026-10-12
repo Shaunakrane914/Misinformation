@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 # Execution security boundaries
 DEFAULT_TIMEOUT_SECONDS = 12.0
-MAX_OUTPUT_BYTES = 5 * 1024 * 1024  # 5 MB max buffer
+MAX_OUTPUT_BYTES = 1_000_000  # Shared public acquisition response cap
 _USER_AGENT = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 AegisAgentReach/3.0"
 
 
@@ -50,25 +50,17 @@ class NativeExecutor:
     def __init__(self):
         self.profile = get_runtime_profile()
 
-    # ── 1. Web Page Reading (Bounded HTTP Primary -> Playwright Rescue) ──
+    # ── 1. Web Page Reading (Bounded HTTP Primary -> Bounded Jina) ──
 
-    def execute_web_read(self, url: str, timeout: float = DEFAULT_TIMEOUT_SECONDS) -> Dict[str, Any]:
+    def execute_web_read(self, url: str, timeout: float = 5.0) -> Dict[str, Any]:
         """
         Read any public web page following Policy D:
         Primary: redirect-safe, bounded lightweight HTTP extraction
-        Secondary: Playwright rescue strictly when JS rendering or challenge encountered
+        Secondary: bounded Jina extraction for empty or challenged documents.
+        Browser and external URL-decoder requests cannot honor the pinned-IP
+        boundary and therefore are not automatic production fallbacks.
         """
         clean_url = url.strip()
-        # Resolve Google News redirect URLs to original publisher URLs if needed
-        if "news.google.com" in clean_url and ("/articles/" in clean_url or "/read/" in clean_url):
-            try:
-                from googlenewsdecoder import gnewsdecoder
-                dec_res = gnewsdecoder(clean_url)
-                if dec_res.get("success") and dec_res.get("decoded_url"):
-                    clean_url = dec_res["decoded_url"]
-            except Exception as e_dec:
-                logger.debug(f"[NativeExecutor] Google News URL decode notice for {clean_url}: {e_dec}")
-
         safe, reason = is_safe_url(clean_url)
         if not safe:
             raise SecurityPolicyViolation(f"URL failed SSRF validation: {clean_url} ({reason})")
@@ -108,8 +100,7 @@ class NativeExecutor:
         except ProviderHTTPError as error:
             primary_http_error = error
             logger.debug("[NativeExecutor] Bounded HTTP read failed for %s: %s", clean_url, error)
-            if error.status_code in {401, 429}:
-                raise
+            raise
         except Exception as error:
             logger.debug("[NativeExecutor] HTTP parsing failed for %s: %s", clean_url, error)
 
@@ -122,47 +113,9 @@ class NativeExecutor:
         if is_challenge:
             markdown_text = ""
 
-        # Secondary: Playwright Rescue (only if lightweight HTTP returned empty/blocked/challenge)
-        if len(markdown_text) < 100 or status_code in (403, 503) or is_challenge:
-            try:
-                from playwright.sync_api import sync_playwright
-                with sync_playwright() as p:
-                    browser = p.chromium.launch(headless=True)
-                    page = browser.new_page()
-                    page.set_default_timeout(int(timeout * 1000))
-                    def guard_request(route):  # noqa: ANN001
-                        request_url = route.request.url
-                        scheme = urllib.parse.urlsplit(request_url).scheme.lower()
-                        if scheme in {"http", "https"}:
-                            request_safe, _ = is_safe_url(request_url)
-                            if not request_safe:
-                                route.abort()
-                                return
-                        route.continue_()
-
-                    page.route("**/*", guard_request)
-                    page.goto(clean_url, wait_until="domcontentloaded")
-                    final_safe, final_reason = is_safe_url(page.url)
-                    if not final_safe:
-                        raise SecurityPolicyViolation(
-                            f"Browser redirect failed SSRF validation: {page.url} ({final_reason})"
-                        )
-                    html_content = page.content()
-                    if len(html_content.encode("utf-8", errors="replace")) > MAX_OUTPUT_BYTES:
-                        raise NativeReachError("Rendered page exceeded the response-size limit")
-                    browser.close()
-                    import re
-                    c_clean = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", html_content, flags=re.IGNORECASE)
-                    c_clean = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", c_clean, flags=re.IGNORECASE)
-                    c_clean = re.sub(r"<[^>]+>", " ", c_clean)
-                    p_text = re.sub(r"\s+", " ", c_clean).strip()
-                    if not any(ind in p_text.lower() for ind in CHALLENGE_INDICATORS) and len(p_text) > 100:
-                        markdown_text = p_text
-                        active_backend = "playwright_rescue"
-            except Exception as e_pw:
-                logger.debug(f"[NativeExecutor] Playwright rescue notice for {clean_url}: {e_pw}")
-
-        # If both failed, try Jina Reader as emergency fallback
+        # Browser rescue is intentionally disabled: hostname interception alone
+        # cannot pin Chromium's destination DNS or bound all subresource I/O.
+        # For empty/challenge responses, only the bounded Jina transport remains.
         if len(markdown_text) < 100:
             try:
                 jina_url = f"https://r.jina.ai/{clean_url}"
@@ -187,7 +140,7 @@ class NativeExecutor:
         if not markdown_text:
             if primary_http_error is not None:
                 raise primary_http_error
-            raise BackendExecutionError("web", active_backend, clean_url, 1, "Failed to retrieve content via bounded HTTP/Playwright")
+            raise BackendExecutionError("web", active_backend, clean_url, 1, "Failed to retrieve content via bounded HTTP/Jina")
 
         return {
             "platform": "web",
@@ -700,34 +653,21 @@ class NativeExecutor:
         encoded_q = urllib.parse.quote(query.strip())
         url = f"https://api.bilibili.com/x/web-interface/search/all/v2?keyword={encoded_q}"
         t0 = time.perf_counter()
-        req = urllib.request.Request(
-            url,
-            headers={
-                "User-Agent": _USER_AGENT,
-                "Referer": "https://www.bilibili.com/",
-            }
-        )
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as resp:
-                raw_body = resp.read(MAX_OUTPUT_BYTES)
-                raw = json.loads(raw_body.decode("utf-8"))
-                latency_ms = int((time.perf_counter() - t0) * 1000)
-                items = []
-                data_obj = raw.get("data", {})
-                for result_group in data_obj.get("result", []):
-                    if result_group.get("result_type") == "video":
-                        items.extend(result_group.get("data", [])[:limit])
-
-                return {
-                    "platform": "bilibili",
-                    "backend": "B站搜索 API",
-                    "operation": "bilibili.search",
-                    "status": "SUCCESS",
-                    "items": items,
-                    "count": len(items),
-                    "latency_ms": latency_ms,
-                    "transport": self._http_transport(resp, url, raw_body, latency_ms),
-                }
+            response = fetch_public_http(url, headers={"User-Agent": _USER_AGENT, "Referer": "https://www.bilibili.com/"},
+                                         timeout=min(timeout, 5.0), max_bytes=1_000_000)
+            raw = json.loads(response.body.decode("utf-8"))
+            latency_ms = int((time.perf_counter() - t0) * 1000)
+            items = []
+            data_obj = raw.get("data", {})
+            for result_group in data_obj.get("result", []):
+                if result_group.get("result_type") == "video":
+                    items.extend(result_group.get("data", [])[:limit])
+            return {"platform": "bilibili", "backend": "B站搜索 API", "operation": "bilibili.search",
+                    "status": "SUCCESS", "items": items, "count": len(items), "latency_ms": latency_ms,
+                    "transport": self._bounded_http_transport(response)}
+        except ProviderHTTPError:
+            raise
         except Exception as e:
             raise BackendExecutionError("bilibili", "B站搜索 API", url, 1, str(e))
 

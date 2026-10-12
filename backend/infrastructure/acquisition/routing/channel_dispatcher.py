@@ -11,6 +11,7 @@ from backend.infrastructure.acquisition.network.http import ProviderHTTPError
 from backend.services.agent_reach.channels import EvidenceFragment
 from backend.services.agent_reach.native.channel_capabilities import get_capability
 from backend.services.agent_reach.native.errors import AuthRequiredError
+from backend.services.agent_reach.native.operation_capabilities import runtime_operation_capabilities
 
 if TYPE_CHECKING:
     from backend.infrastructure.acquisition.routing.router import NativeRouter
@@ -37,8 +38,21 @@ class ChannelQueryDispatcher:
         **kwargs: Any,
     ) -> Tuple[List[EvidenceFragment], Dict[str, Any]]:
         started = time.perf_counter()
+        platform, operation = runtime_operation_capabilities.normalize(platform, kwargs.get("operation", "search"))
+        kwargs["operation"] = operation
         telemetry = self._new_telemetry(platform)
-        telemetry["operation"] = f"{platform}.{kwargs.get('operation', 'search')}"
+        telemetry["operation"] = f"{platform}.{operation}"
+        assessment = runtime_operation_capabilities.assess(platform, operation)
+        if limit <= 0 or assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
+            # A denied action is not a new provider failure: do not overwrite
+            # the observation/cooldown that caused this decision.
+            telemetry.update(
+                status="AUTH_REQUIRED" if assessment["runtime_health"] == "AUTH_REQUIRED" else "SKIPPED",
+                outcome="DEFERRED" if assessment["decision"] == "DEFER_TEMPORARY" else "EXCLUDED",
+                content_class="NONE", error=assessment["reason"] if limit > 0 else "Result budget is zero",
+                attempts=0, runtime_decision=assessment,
+            )
+            return [], telemetry
         fragments: List[EvidenceFragment] = []
         try:
             handler = self.social if platform in self.SOCIAL_CHANNELS else self.standard

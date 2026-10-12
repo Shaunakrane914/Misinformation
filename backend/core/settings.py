@@ -10,13 +10,15 @@ from __future__ import annotations
 
 import os
 from functools import lru_cache
+from pathlib import Path
 from typing import List, Optional
 from dotenv import load_dotenv
+from backend import __version__
 
 # Ensure base .env is loaded into process
 load_dotenv()
 
-from pydantic import Field, model_validator
+from pydantic import AliasChoices, Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -36,7 +38,7 @@ class Settings(BaseSettings):
 
     # 1. Application & Core Environment
     app_name: str = Field(default="Aegis Protocol", description="Application service name")
-    version: str = Field(default="4.1.0", description="Semantic service version")
+    version: str = Field(default=__version__, description="Semantic service version")
     environment: str = Field(default_factory=lambda: os.getenv("ENVIRONMENT", os.getenv("AEGIS_ENV", "development")).lower())
     port: int = Field(default_factory=lambda: int(os.getenv("PORT", "8000")))
     allowed_origins: List[str] = Field(default_factory=lambda: [os.getenv("ALLOWED_ORIGIN", "*")])
@@ -74,7 +76,17 @@ class Settings(BaseSettings):
     )
     supabase_service_role_key: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_SERVICE_ROLE_KEY"))
     supabase_anon_key: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_ANON_KEY"))
-    sqlite_db_path: str = Field(default_factory=lambda: os.getenv("SQLITE_DB_PATH", os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "data", "aegis_local.db"))))
+    supabase_legacy_key: Optional[str] = Field(default=None, validation_alias="SUPABASE_KEY", repr=False)
+    sqlite_db_path: str = Field(
+        default=str(Path(__file__).resolve().parents[1] / "data" / "aegis_local.db"),
+        validation_alias=AliasChoices("SQLITE_DB_PATH", "AEGIS_SQLITE_PATH"),
+        description="Canonical local persistence path; AEGIS_SQLITE_PATH is a legacy alias",
+    )
+    admin_api_token: Optional[SecretStr] = Field(
+        default=None,
+        repr=False,
+        description="Bearer token required for privileged API writes",
+    )
 
     # 4. Intelligence & External Telemetry APIs
     apify_token: Optional[str] = Field(default_factory=lambda: os.getenv("APIFY_TOKEN"))
@@ -96,7 +108,26 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore",
         case_sensitive=False,
+        populate_by_name=True,
     )
+
+    @field_validator("environment", mode="before")
+    @classmethod
+    def normalize_environment(cls, value) -> str:
+        environment = str(value).strip().lower()
+        if environment not in {"production", "staging", "development", "test", "testing"}:
+            raise ValueError("ENVIRONMENT must be production, staging, development, test or testing")
+        return environment
+
+    @field_validator("sqlite_db_path", mode="before")
+    @classmethod
+    def validate_sqlite_path(cls, value) -> str:
+        if not isinstance(value, (str, os.PathLike)):
+            raise ValueError("SQLITE_DB_PATH must name a persistent file")
+        path = str(value).strip()
+        if not path or path == ":memory:":
+            raise ValueError("SQLITE_DB_PATH must name a persistent file, not an empty or per-connection memory database")
+        return path
 
     @model_validator(mode="after")
     def validate_llm_model_order(self) -> "Settings":
@@ -128,6 +159,15 @@ class Settings(BaseSettings):
     def has_supabase(self) -> bool:
         """True if Supabase URL and at least one credentials key are present."""
         return bool(self.supabase_url and (self.supabase_key or self.supabase_service_role_key or self.supabase_anon_key))
+
+    @property
+    def supabase_write_key(self) -> Optional[str]:
+        """Use explicit server credentials; retain SUPABASE_KEY as a legacy alias.
+
+        An explicitly configured anonymous key is not a server write credential.
+        Deployments should prefer SUPABASE_SERVICE_ROLE_KEY over the legacy alias.
+        """
+        return self.supabase_service_role_key or self.supabase_legacy_key or None
 
     @property
     def has_gemini(self) -> bool:

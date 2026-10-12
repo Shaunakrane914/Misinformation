@@ -17,29 +17,32 @@ Executes isolated staging-like smoke validation across:
 import sys
 import json
 import logging
+import argparse
+import tempfile
+from datetime import datetime, timezone
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
-from starlette.testclient import TestClient
-from backend.main import app
-from backend.core.settings import settings
+from scripts.validation.isolated_runtime import (
+    RESULT_PREFIX, block_live_network, run_worker, write_report_exclusively,
+)
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 logger = logging.getLogger("v1_rc_smoke")
 
 
-def run_isolated_smoke_validation() -> dict:
+def _run_smoke_checks(client) -> dict:
     results = {
         "suite": "Phase 7.1 Isolated Release-Candidate Smoke Validation",
-        "timestamp": None,
+        "timestamp": datetime.now(timezone.utc).isoformat(),
+        "execution_mode": "OFFLINE_REGRESSION",
         "gates": {},
         "scenarios": {},
         "errors": []
     }
-    client = TestClient(app)
 
     # ── 1. Probes & Health ───────────────────────────────────────────────────
     logger.info("Verifying liveness and readiness endpoints...")
@@ -151,22 +154,45 @@ def run_isolated_smoke_validation() -> dict:
     })
     assert empty_resp.status_code == 200, f"Empty claim failed: {empty_resp.text}"
     empty_data = empty_resp.json()
-    assert empty_data.get("verdict") in ("UNVERIFIED", "INSUFFICIENT_EVIDENCE", "CONTESTED", "NOT_FOUND", "REFUTED")
+    assert empty_data.get("verdict") in (
+        "UNVERIFIED", "INSUFFICIENT_EVIDENCE", "CONTESTED", "NOT_FOUND",
+        "Unverified", "Insufficient Evidence", "Contested",
+    ), "Zero-evidence investigation must not produce a definitive verdict"
     results["scenarios"]["zero_evidence_guard"] = {
         "status": "PASS",
         "verdict": empty_data.get("verdict")
     }
 
-    results["verdict"] = "READY FOR OWNER DEPLOYMENT APPROVAL (SMOKE PASS)"
+    results["verdict"] = "OFFLINE_SMOKE_PASS"
+    results["limitations"] = [
+        "Uses temporary storage, disabled acquisition and explicit test LLM mocks.",
+        "Does not verify live scraping, deployed credentials, or production readiness.",
+    ]
     return results
 
 
-def main():
+def run_isolated_smoke_validation() -> dict:
+    with tempfile.TemporaryDirectory(prefix="aegis-smoke-") as directory:
+        return run_worker(Path(__file__), "smoke", Path(directory))
+
+
+def main(argv=None):
+    parser = argparse.ArgumentParser(description="Offline smoke validation with temporary storage")
+    parser.add_argument("--output", type=Path, help="Create a new report; existing files are never overwritten")
+    parser.add_argument("--worker", choices=["smoke"], help=argparse.SUPPRESS)
+    args = parser.parse_args(argv)
+    if args.worker:
+        block_live_network()
+        from starlette.testclient import TestClient
+        from backend.main import app
+        with TestClient(app) as client:
+            res = _run_smoke_checks(client)
+        print(RESULT_PREFIX + json.dumps(res))
+        return 0
     res = run_isolated_smoke_validation()
-    out_file = REPO_ROOT / "artifacts" / "phase7_1_smoke_validation_results.json"
-    out_file.parent.mkdir(parents=True, exist_ok=True)
-    out_file.write_text(json.dumps(res, indent=2), encoding="utf-8")
-    print(f"\nSmoke validation completed successfully. Results written to {out_file}")
+    if args.output:
+        write_report_exclusively(args.output, res)
+    print("Offline smoke validation passed; no historical artifacts were written.")
     print(json.dumps(res, indent=2))
     return 0
 

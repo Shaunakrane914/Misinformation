@@ -12,7 +12,6 @@ import logging
 import re
 import time
 import urllib.parse
-from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
 from backend.services.agent_reach.channels import (
@@ -59,8 +58,39 @@ class SearchDiscoveryAdapter(PlatformAdapter):
         """
         Execute multi-query search discovery and return ranked candidate sources.
         """
-        queries = generate_discovery_queries(platform=platform, query=query, entity=entity)
-        disc_results = discover_sources_from_search(queries=queries, platform=platform, limit=limit)
+        # Discovery consumes real search fragments; the social URL extractor is
+        # not itself a search client. The old keyword mismatch silently made
+        # every typed discovery request empty.
+        from backend.services.agent_reach.native.router import native_router
+        queries = generate_discovery_queries(platform=platform, query=query, entity=entity) if platform in {"reddit", "twitter", "x"} else [query]
+        fragments = []
+        for discovery_query in queries:
+            fragments.extend(native_router._execute_web_search(discovery_query, limit=limit))
+        disc_results = discover_sources_from_search(
+            fragments, platform, query=query, target_entity=entity, max_candidates=limit
+        ) if platform in {"reddit", "twitter", "x"} else []
+        if platform not in {"reddit", "twitter", "x"}:
+            candidates = []
+            seen = set()
+            for fragment in fragments:
+                url = resolve_bing_redirect(fragment.url)
+                if not url or url in seen:
+                    continue
+                seen.add(url)
+                host = (urllib.parse.urlsplit(url).hostname or "").lower().rstrip(".")
+                actual_platform = platform
+                for domains, specialist in ((["reddit.com", "redd.it"], "reddit"), (["x.com", "twitter.com"], "twitter"),
+                                            (["youtube.com", "youtu.be"], "youtube"), (["github.com"], "github")):
+                    if any(host == domain or host.endswith("." + domain) for domain in domains):
+                        actual_platform = specialist
+                        break
+                candidates.append(CandidateSource(
+                    url=url, platform=actual_platform, title=fragment.title,
+                    snippet=fragment.snippet, discovery_query=query,
+                    search_rank=len(candidates) + 1,
+                    metadata={"published_at": fragment.published},
+                ))
+            return candidates[:limit]
 
         candidates: List[CandidateSource] = []
         for idx, res in enumerate(disc_results, start=1):
@@ -115,7 +145,6 @@ class SearchDiscoveryAdapter(PlatformAdapter):
             backend_id=self.backend_id,
             retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
             raw_content=json.dumps(payload),
-            latency_ms=80,
         )
 
     def normalize(
@@ -143,7 +172,7 @@ class SearchDiscoveryAdapter(PlatformAdapter):
             content=f"Title: {title}\nPlatform: {plat}\n\nSearch Index Snippet:\n{snippet}",
             url=url,
             author=f"{plat}_index",
-            published=datetime.now(timezone.utc).isoformat(),
+            published=data.get("published_at") or candidate.metadata.get("published_at") or "",
             snippet=snippet,
             score=candidate.semantic_score or 1.0,
             retrieval_method="agent_reach",

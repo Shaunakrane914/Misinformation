@@ -101,10 +101,22 @@ def synthesize_grounded_findings(
             scoring_model="aegis_heuristic_6d"
         )
 
+        # An original document (e.g. an arbitrary GitHub repository) is not an
+        # authenticated authority. Neither a primary-role label nor unrelated
+        # results sharing a query class are sufficient to declare a known fact.
+        official_assertion = top_item.official_source and top_item.primary_source
+        normalized_statement = " ".join(statement.lower().split())
+        agreeing_credible_groups = {
+            it.independence_group for it in items_in_class
+            if it.independence_group and it.source_quality_score >= 0.8
+            and (it.official_source or it.source_role == SourceRole.SECONDARY.value)
+            and " ".join((it.relevant_excerpt or it.snippet or it.title).lower().split()) == normalized_statement
+        }
+
         # Evaluate 6-State Epistemic Status
         if matched_cont_ids:
             ep_state = EpistemicState.CONTESTED.value
-        elif prim_sources or corrob["independent_group_count"] >= 2:
+        elif official_assertion or len(agreeing_credible_groups) >= 2:
             ep_state = EpistemicState.KNOWN_FACT.value
         elif len(items_in_class) >= 1:
             ep_state = EpistemicState.SUPPORTED.value

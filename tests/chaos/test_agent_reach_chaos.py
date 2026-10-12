@@ -9,12 +9,14 @@ and missing backends to verify that Aegis:
 """
 
 import unittest
+import socket
 from unittest.mock import MagicMock, patch
 
 from backend.services.agent_reach.adapter import AgentReachService
 from backend.services.agent_reach.channels import ChannelStatus, EvidenceFragment
 from backend.services.research.research_models import ResearchRequest
 from backend.services.research.research_engine import ResearchEngine
+from backend.infrastructure.acquisition.network.http import ProviderHTTPError
 
 
 class TestAgentReachChaos(unittest.TestCase):
@@ -58,8 +60,8 @@ class TestAgentReachChaos(unittest.TestCase):
                 twitter_frags = [f for f in res.fragments if f.platform.lower() == "twitter"]
                 self.assertEqual(len(twitter_frags), 0)
 
-    def test_jina_rate_limit_429_fallback(self):
-        """Simulate Jina Reader 429 Too Many Requests; assert fallback to secondary parser."""
+    def test_reader_generic_failure_uses_bounded_jina_fallback(self):
+        """Generic parsing failure may use the shared-transport Jina reader."""
         from backend.services.agent_reach.native import native_router
         mock_fallback = {
             "status": "success",
@@ -68,9 +70,11 @@ class TestAgentReachChaos(unittest.TestCase):
             "markdown": "This is content retrieved via fallback scraper.",
             "url": "https://example.com/breaking-financial-news",
             "fallback_used": True,
-            "backend": "Legacy Reach Scraper"
+            "backend": "jina-reader"
         }
-        with patch.object(native_router.executor, "execute_web_read", side_effect=Exception("HTTP 429 Too Many Requests: Rate limit exceeded")):
+        with patch("socket.getaddrinfo", return_value=[(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))]), \
+             patch("backend.infrastructure.acquisition.adapters.web.jina.read_article_via_jina", return_value=mock_fallback), \
+             patch.object(native_router.executor, "execute_web_read", side_effect=ValueError("Malformed document")):
             with patch("backend.services.agent_reach.native.router._get_legacy_scraper") as mock_get_scraper:
                 mock_scraper = MagicMock()
                 mock_scraper.read_article_markdown.return_value = mock_fallback
@@ -83,6 +87,21 @@ class TestAgentReachChaos(unittest.TestCase):
                 self.assertEqual(read_result.get("status"), "success")
                 self.assertTrue(read_result.get("fallback_used", False))
                 self.assertIn("fallback", read_result.get("content", "").lower())
+                mock_scraper.read_article_markdown.assert_not_called()
+
+    def test_structured_rate_limit_cannot_use_legacy_fallback(self):
+        from backend.services.agent_reach.native import native_router
+        error = ProviderHTTPError("Provider HTTP 429", endpoint="https://example.com/article", status_code=429,
+                                  retry_after_seconds=60, network_observed=True)
+        with patch("socket.getaddrinfo", return_value=[(socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))]), \
+             patch.object(native_router.executor, "execute_web_read", side_effect=error), \
+             patch("backend.infrastructure.acquisition.adapters.web.jina.read_article_via_jina") as jina, \
+             patch("backend.services.agent_reach.native.router._get_legacy_scraper") as legacy:
+            result = self.service.read("https://example.com/article")
+        self.assertNotEqual(result["status"], "success")
+        self.assertIn("429", result["error"])
+        jina.assert_not_called()
+        legacy.return_value.read_article_markdown.assert_not_called()
 
     def test_rss_malformed_xml_recovery(self):
         """Feed corrupted XML/binary payloads to native feedparser; assert zero unhandled exceptions."""

@@ -65,6 +65,8 @@ class DefaultLLMGateway(LLMGateway):
     @mock_mode.setter
     def mock_mode(self, value: bool) -> None:
         """Allow runtime override for test harnesses."""
+        if value and self.settings.environment == "production":
+            raise ValueError("Synthetic LLM execution is forbidden in production")
         self._mock_mode_override = value
 
     @property
@@ -89,6 +91,10 @@ class DefaultLLMGateway(LLMGateway):
         """
         allow_mock = kwargs.pop("allow_mock", None)
         mock_authorized = self.mock_mode if allow_mock is None else bool(allow_mock)
+        if self.settings.environment == "production":
+            if mock_authorized:
+                raise ValueError("Synthetic LLM fallback is forbidden in production")
+            mock_authorized = False
 
         if not mock_authorized:
             # Scientific mode bypasses a process/test-level mock preference and

@@ -20,14 +20,14 @@ All configuration is validated at process startup using Pydantic Settings.
 ## 2. Configuration Inventory
 
 ### Category A: Required to Start Aegis (Mandatory)
-These variables must be set for the container/process to initialize safely.
+These variables have startup defaults; production operators must review them explicitly. Startup does not prove provider health or deployment readiness.
 
 | Variable Name | Permitted Values | Default | Description |
 |---|---|---|---|
-| `ENVIRONMENT` | `production`, `staging`, `development`, `test` | `development` | Operating tier. In `production`, enforces strict origin validation and blocks mock modes. |
+| `ENVIRONMENT` | `production`, `staging`, `development`, `test`, `testing` | `development` | Whitespace/case are normalized before validating the operating tier and production mock guard. Unknown tiers fail startup. Production wildcard origins produce a warning and disable CORS credentials; they are not silently described as a strict origin rejection. |
 | `PORT` | `1024` – `65535` | `8000` | HTTP bind port for Uvicorn ASGI server. |
 | `ALLOWED_ORIGIN` | Comma-separated URLs (e.g. `https://aegis.domain.com`) | `*` | In production, must be set to the explicit frontend origin. Wildcard `*` in production triggers an alert. |
-| `LOG_LEVEL` | `DEBUG`, `INFO`, `WARNING`, `ERROR` | `INFO` | Structured JSON log level. |
+| `LOG_LEVEL` | `DEBUG`, `INFO`, `WARNING`, `ERROR` | `INFO` | Application logging level; the existing format is not a guaranteed structured JSON log contract. |
 
 ---
 
@@ -40,6 +40,10 @@ Without these, specific advanced reasoning or storage tiers degrade gracefully t
 | `GEMINI_API_KEY_2`, `_3` | High-throughput round-robin model rotation. | Single primary key used without failover rotation. |
 | `SUPABASE_URL` | Cloud PostgreSQL persistence for claims and evidence. | Automatically and safely falls back to local SQLite database (`aegis_local.db`). |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service-level access for mutations. | Local SQLite persistence used. |
+| `SUPABASE_KEY` | Legacy server-key alias when no service-role key is configured. | Local SQLite persistence used. Prefer the explicit service-role name; `SUPABASE_ANON_KEY` is never promoted to a server mutation credential. |
+| `SQLITE_DB_PATH` | Canonical SQLite persistence path used by settings and database. | Reuses `backend/data/aegis_local.db`; the legacy `AEGIS_SQLITE_PATH` alias remains supported, with the canonical name taking precedence. No automatic move, overwrite or deletion of existing databases occurs. |
+| `AEGIS_DOSSIER_DIR` | Explicit dossier directory for isolated tests or deployment storage. | Preserves the historical `backend/data/dossiers/` default. |
+| `ADMIN_API_TOKEN` | Scoped bearer authorization for privileged response deployments and record mutations. | Privileged writes fail closed; public read/research endpoints do not inherit write authority. Never embed the token in browser code. |
 | `APIFY_TOKEN` | Paparazzi direct actor scraping for Trending. | Direct Apify calls skipped; public Google News and RSS wire discovery utilized. |
 | `YF_API_KEY` | Enhanced Yahoo Finance financial quotes for Scout. | Standard zero-cost Yahoo Finance endpoints utilized. |
 | `GITHUB_TOKEN` | Authenticated GitHub REST queries (increases rate limits). | Public unauthenticated rate limits apply (60 req/hr). |

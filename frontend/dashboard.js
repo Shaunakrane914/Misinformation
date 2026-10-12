@@ -181,7 +181,8 @@ function buildCard(item) {
   const verdict = String(item.verdict);
   const isTrue = verdict.toLowerCase() === "true";
   const isMisleading = verdict.toLowerCase() === "misleading";
-  const badgeColor = isTrue ? "#10b981" : isMisleading ? "#fbbf24" : "#ef4444";
+  const isFalse = verdict.toLowerCase() === "false";
+  const badgeColor = isTrue ? "#10b981" : isMisleading ? "#fbbf24" : isFalse ? "#ef4444" : "#8b5cf6";
 
   const title = document.createElement("h3");
   title.style.cssText = "font-size:1rem;font-weight:700;margin:0 0 10px;line-height:1.5;color:var(--text-primary);";
@@ -190,6 +191,11 @@ function buildCard(item) {
   const badge = document.createElement("span");
   badge.style.cssText = `display:inline-block;padding:3px 12px;border-radius:20px;font-size:0.72rem;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:10px;background:${badgeColor}22;color:${badgeColor};border:1px solid ${badgeColor}55;`;
   badge.textContent = verdict.toUpperCase();
+
+  const originNote = document.createElement("div");
+  originNote.style.cssText = "font-size:0.72rem;color:var(--text-muted);margin-bottom:8px;";
+  originNote.textContent = item.record_origin === 'investigation' ? 'Stored investigation result'
+    : 'Historical reference example — not a live investigation';
 
   const summary = document.createElement("p");
   summary.style.cssText = "font-size:0.88rem;color:var(--text-secondary);margin:0 0 14px;line-height:1.65;";
@@ -241,10 +247,18 @@ function buildCard(item) {
           const data = await response.json();
           if (data.explanation) {
             summary.textContent = data.explanation;
-            const src = data.evidence_url
-              ? `<a href="${data.evidence_url}" target="_blank" rel="noopener noreferrer" style="color:var(--accent);font-size:0.82rem;font-weight:600;text-decoration:none;">View Source Document →</a>`
-              : `<span style="color:#94a3b8;font-size:0.82rem;">No external source link provided</span>`;
-            sourceLink.innerHTML = src;
+            sourceLink.replaceChildren();
+            let sourceUrl = null;
+            try {
+              const candidate = new URL(data.evidence_url);
+              if (['https:', 'http:'].includes(candidate.protocol)) sourceUrl = candidate.href;
+            } catch (_) {}
+            const source = document.createElement(sourceUrl ? 'a' : 'span');
+            if (sourceUrl) {
+              source.href = sourceUrl; source.target = '_blank'; source.rel = 'noopener noreferrer';
+              source.textContent = 'View Source Document →';
+            } else source.textContent = 'No external source link provided';
+            sourceLink.appendChild(source);
             aiNote.style.display = "none";
             card.dataset.aiLoaded = "1";
           }
@@ -260,6 +274,7 @@ function buildCard(item) {
 
   card.appendChild(title);
   card.appendChild(badge);
+  card.appendChild(originNote);
   card.appendChild(summary);
   card.appendChild(btn);
   card.appendChild(evidence);
@@ -320,14 +335,15 @@ async function pollBackend() {
         if (claimsRes.ok) {
           const data = await claimsRes.json();
           if (data && data.length > 0) {
-            data.forEach(c => c._origin = 'LIVE_VERIFIED');
+            data.forEach(c => c._origin = c.record_origin === 'investigation' ? 'INVESTIGATION' : 'HISTORICAL_REFERENCE');
             renderClaims(data);
             const dot = document.getElementById('dbStatusDot');
             const txt = document.getElementById('dbStatusText');
             const sub = document.getElementById('dbStatusSub');
             if (dot) { dot.style.background = 'var(--emerald)'; dot.style.boxShadow = '0 0 10px var(--emerald)'; }
-            if (txt) { txt.style.color = 'var(--emerald)'; txt.textContent = 'LIVE FEED'; }
-            if (sub) { sub.textContent = `Updated ${new Date().toLocaleTimeString()} · Connected to backend`; }
+            if (txt) { txt.style.color = 'var(--emerald)'; txt.textContent = 'BACKEND CONNECTED'; }
+            const investigations = data.filter(c => c.record_origin === 'investigation').length;
+            if (sub) { sub.textContent = `Updated ${new Date().toLocaleTimeString()} · ${investigations} stored investigations · ${data.length - investigations} historical examples`; }
             setStatusBanner("live");
             applyFilters(); // Re-apply any active filters
             return;
@@ -358,8 +374,9 @@ function applyFilters() {
     const matchesSearch = !searchTerm ||
       (claim.claim || '').toLowerCase().includes(searchTerm) ||
       (claim.explanation || '').toLowerCase().includes(searchTerm);
-    const matchesFilter = activeFilter === 'all' ||
-      String(claim.verdict).toLowerCase() === activeFilter.toLowerCase();
+    const label = String(claim.verdict).toLowerCase();
+    const matchesFilter = activeFilter === 'all' || label === activeFilter.toLowerCase()
+      || (activeFilter.toLowerCase() === 'unverified' && !['true', 'false', 'misleading'].includes(label));
     return matchesSearch && matchesFilter;
   });
 

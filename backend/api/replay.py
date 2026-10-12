@@ -19,13 +19,14 @@ alias_router = APIRouter(prefix="/api/replay", tags=["Research Provenance & Repl
 
 
 @router.get("/dossiers", summary="List Recent Research Dossiers")
-async def list_recent_dossiers(limit: int = Query(15, ge=1, le=50)):
+def list_recent_dossiers(limit: int = Query(15, ge=1, le=50)):
     """List recently completed investigations with immutable session IDs."""
     try:
+        dossiers = replay_ledger.list_recent_dossiers(limit=limit)
         return {
             "status": "success",
-            "count": len(replay_ledger.list_recent_dossiers(limit=limit)),
-            "dossiers": replay_ledger.list_recent_dossiers(limit=limit),
+            "count": len(dossiers),
+            "dossiers": dossiers,
         }
     except Exception as e:
         logger.error(f"[API] Failed listing dossiers: {e}")
@@ -33,7 +34,7 @@ async def list_recent_dossiers(limit: int = Query(15, ge=1, le=50)):
 
 
 @router.get("/dossiers/{session_id}", summary="Get Full Research Dossier")
-async def get_research_dossier(session_id: str):
+def get_research_dossier(session_id: str):
     """Retrieve complete evidence hashes, decision ledger, and lineage DAG for a research ID."""
     clean_id = session_id.strip()
     dossier = replay_ledger.get_dossier(clean_id)
@@ -47,7 +48,7 @@ async def get_research_dossier(session_id: str):
 
 @router.post("/reexecute/{session_id}", summary="Replay Investigation Trace")
 @router.get("/reexecute/{session_id}", summary="Replay Investigation Trace (GET)", include_in_schema=False)
-async def replay_investigation(
+def replay_investigation(
     session_id: str,
     mode: str = Query("trace_playback", description="Replay mode: 'trace_playback' or 'refetch_verification'")
 ):

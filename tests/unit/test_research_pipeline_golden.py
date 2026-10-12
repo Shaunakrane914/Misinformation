@@ -19,7 +19,7 @@ from unittest.mock import patch
 import pytest
 
 from backend.services.agent_reach.channels import EvidenceFragment, QueryExecutionRecord, RetrievalResult
-from backend.services.research.replay_ledger import ReplayLedger
+from backend.services.research.replay_ledger import ReplayLedger, verify_dossier_integrity
 from backend.services.research.research_budget import ResearchBudget
 from backend.services.research.research_engine import ResearchEngine
 from backend.services.research.research_models import ResearchRequest
@@ -216,6 +216,11 @@ def capture_scenario(name, include_payload=False):
             result = ResearchEngine(budget=budget).investigate(request)
             dossier = ledger.get_dossier(result.telemetry["dossier_id"])
             assert dossier is not None
+            # The historical manifest is never rewritten. Verify the additive
+            # integrity schema independently, then compare legacy serialization.
+            assert verify_dossier_integrity(dossier)["valid"]
+            dossier.pop("integrity")
+            dossier.pop("candidate_snapshots")
             serialized = result.to_dict()
             if include_payload:
                 return {"result": serialized, "corpus": result.research_corpus, "dossier": dossier}
@@ -236,6 +241,14 @@ def capture_scenario(name, include_payload=False):
 @pytest.mark.parametrize("name", sorted(SCENARIOS))
 def test_research_result_and_replay_match_pre_refactor(name):
     expected = json.loads(MANIFEST.read_text(encoding="utf-8"))[name]
+    if name == "discovery_timeout":
+        # Explicit correctness exception: the historical implementation read
+        # documents AFTER its deadline. Keep that baseline, but require no reads.
+        payload = capture_scenario(name, include_payload=True)
+        assert payload["corpus"]["deep_read_sources"] == []
+        assert payload["result"]["telemetry"]["deep_read_attempted"] == 0
+        assert payload["dossier"]["candidate_hashes"] == expected["candidate_hashes"]
+        return
     assert capture_scenario(name) == expected
 
 

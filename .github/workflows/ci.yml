@@ -1,100 +1,80 @@
 name: Aegis Protocol CI & Verification Matrix
 
 on:
-  push:
-    branches: [ "main", "feat/retrieval-quality-benchmark", "feat/phase7-production-hardening" ]
-  pull_request:
-    branches: [ "main", "feat/retrieval-quality-benchmark", "feat/phase7-production-hardening" ]
+  push: {}
+  pull_request: {}
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aegis-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   code-quality:
-    name: Code Quality & Schema Linting
+    name: Fatal Python lint and frontend contracts
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: 'pip'
-
-      - name: Install Linting Tooling
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: pip install flake8
+      - run: flake8 backend tests scripts --count --select=E9,F63,F7,F82 --show-source --statistics
+      - name: JavaScript regression contracts
         run: |
-          python -m pip install --upgrade pip
-          pip install flake8
-
-      - name: Lint Python Codebase
-        run: |
-          # Stop build if there are Python syntax errors or undefined names
-          flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics --exclude=venv,.venv,build,dist
+          for test in tests/frontend/test_*.js; do node "$test"; done
+      - run: python scripts/validation/verify_frozen_benchmarks.py
 
   unit-and-chaos-matrix:
-    name: Unit & Chaos Fault Injection (Python ${{ matrix.python-version }})
-    needs: [code-quality]
+    name: Unit, chaos and security (Python ${{ matrix.python-version }})
+    needs: code-quality
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         python-version: ["3.11", "3.12", "3.13"]
-
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: ${{ matrix.python-version }}
-          cache: 'pip'
-
-      - name: Install Runtime Dependencies
+          cache: pip
+      - run: pip install -r requirements.txt pytest pytest-rerunfailures
+      - name: Run isolated offline suites
+        run: pytest tests/unit tests/chaos tests/security -q
+      - name: Verify no tracked research outputs were mutated
+        if: always()
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-rerunfailures
+          python scripts/validation/verify_frozen_benchmarks.py
+          git diff --exit-code -- tests/retrieval_benchmark artifacts research
 
-      - name: Run Core Unit & Agent Reach Chaos Suite
-        env:
-          ENVIRONMENT: test
-          AEGIS_MOCK_LLM: "true"
-          AGENT_REACH_ENABLED: "true"
-        run: |
-          pytest -v tests/unit/ tests/chaos/ tests/security/ --maxfail=2
-
-  provenance-and-benchmarks:
-    name: Research Provenance, Lineage & Performance Benchmarks
-    needs: [unit-and-chaos-matrix]
+  full-offline-regression:
+    name: Entire offline suite, persistence and release validators
+    needs: code-quality
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Set up Python 3.12
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: 'pip'
-
-      - name: Install Full Dependencies
+          cache: pip
+      - run: pip install -r requirements.txt pytest pytest-rerunfailures
+      - name: Run all discovered offline tests
+        run: pytest tests/ -q
+      - name: Isolated offline release smoke
+        run: python scripts/validate_release_candidate_smoke.py
+      - name: Fresh-process persistence and historical reader compatibility
+        run: python scripts/validate_rollback_compatibility.py
+      - name: Verify frozen datasets and tracked output integrity
+        if: always()
         run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest pytest-rerunfailures
-
-      - name: Execute Truth Dossier & Replay Ledger Integration Tests
-        env:
-          ENVIRONMENT: test
-          AEGIS_MOCK_LLM: "true"
-          AGENT_REACH_ENABLED: "true"
-        run: |
-          pytest -v tests/integration/test_claim_pipeline.py -k test_verify_claim_produces_lineage_and_replay_dossier
-          pytest -v tests/benchmarks/test_research_performance.py
-
-      - name: Run Empirical Evaluation Runner Verification
-        env:
-          ENVIRONMENT: test
-          AEGIS_MOCK_LLM: "true"
-        run: |
-          python scripts/evaluate_dataset.py --target "Vaccines undergo double-blind clinical trials before regulatory distribution"
+          python scripts/validation/verify_frozen_benchmarks.py
+          git diff --exit-code -- tests/retrieval_benchmark artifacts research

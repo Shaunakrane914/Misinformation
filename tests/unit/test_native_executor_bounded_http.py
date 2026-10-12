@@ -62,6 +62,63 @@ def test_github_request_is_allowlisted_and_uses_shared_transport(monkeypatch, ex
     assert result["transport"]["raw_body_sha256"]
 
 
+def test_github_read_uses_bounded_contents_api_readme_without_raw_host(monkeypatch, executor):
+    import base64
+
+    calls = []
+    repository = {
+        "full_name": "owner/repo", "description": "Repository",
+        "html_url": "https://github.com/owner/repo", "stargazers_count": 7,
+    }
+    readme = {
+        "encoding": "base64", "content": base64.b64encode(b"# Verified README\nActual content").decode(),
+        "path": "README.md", "sha": "abc123",
+        "html_url": "https://github.com/owner/repo/blob/main/README.md",
+    }
+
+    def fake_fetch(url, **_kwargs):
+        calls.append(url)
+        return _response(json.dumps(readme if url.endswith("/readme") else repository), url)
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
+    result = executor.execute_github_rest_operation("owner/repo", "read")
+    assert calls == [
+        "https://api.github.com/repos/owner/repo",
+        "https://api.github.com/repos/owner/repo/readme",
+    ]
+    assert result["items"][0]["readme"] == "# Verified README\nActual content"
+    assert result["items"][0]["readme_sha"] == "abc123"
+    assert result["items"][0]["readme_transport"]["raw_body_sha256"]
+
+
+def test_rss_preserves_feed_fields_without_claiming_linked_article(monkeypatch, executor, public_dns):
+    from backend.services.agent_reach.native.normalizer import NativeNormalizer
+
+    feed_xml = """<?xml version="1.0"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel><title>Official updates</title><item><title>Statement</title>
+    <link>https://example.com/statement</link><guid>statement-1</guid>
+    <author>Editorial team</author><category>Corrections</category>
+    <pubDate>Sun, 11 Oct 2026 10:00:00 GMT</pubDate>
+    <description>Short abstract</description><content:encoded><![CDATA[<p>Full syndicated statement text</p>]]></content:encoded>
+    <enclosure url="https://example.com/audio.mp3" type="audio/mpeg" length="10"/>
+    </item></channel></rss>"""
+    monkeypatch.setattr(
+        "backend.services.agent_reach.native.executor.fetch_public_http",
+        lambda url, **_kwargs: _response(feed_xml, url, "application/rss+xml"),
+    )
+    result = executor.execute_rss_read("https://example.com/feed.xml")
+    entry = result["items"][0]
+    assert entry["guid"] == "statement-1"
+    assert entry["author"] == "Editorial team"
+    assert entry["categories"] == ["Corrections"]
+    assert entry["enclosures"][0]["type"] == "audio/mpeg"
+    assert entry["feed_content"]
+    fragment = NativeNormalizer.normalize_rss_entries([entry])[0]
+    assert fragment.content_depth == "FEED_ENTRY_CONTENT"
+    assert "Full syndicated statement text" in fragment.content
+    assert fragment.raw_metadata["linked_article_retrieved"] is False
+
+
 def test_transport_proof_preserves_observed_redirect_chain(executor):
     response = BoundedHTTPResponse(
         body=b"evidence",

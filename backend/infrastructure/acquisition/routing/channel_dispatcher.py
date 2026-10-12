@@ -161,7 +161,7 @@ class ChannelQueryDispatcher:
             outcome, content_class = "EMPTY", "NONE"
         elif "web_search_index" in modes or "INDEX_SNIPPET" in depths:
             outcome, content_class = "SEARCH_INDEX_DISCOVERY", "SEARCH_INDEX"
-        elif "FEED_ENTRY_SUMMARY" in depths or "rss_feed" in modes:
+        elif depths & {"FEED_ENTRY_SUMMARY", "FEED_ENTRY_CONTENT"} or "rss_feed" in modes:
             outcome, content_class = "SYNDICATED_SUMMARY", "SYNDICATED"
         elif depths & direct_depths:
             outcome, content_class = "DIRECT_CONTENT", "DIRECT"

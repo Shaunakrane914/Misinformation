@@ -229,26 +229,37 @@ class NativeNormalizer:
             link = e.get("link", "")
             published = e.get("published", "")
             summary = _clean_html_text(e.get("summary", ""))
+            feed_content = _clean_html_text(e.get("feed_content", ""))
+            excerpt = feed_content or summary
 
             frag = EvidenceFragment(
                 platform="PR Wire / RSS",
                 title=title,
-                content=f"{title}\n\n{summary}",
+                content=f"{title}\n\n{excerpt}",
                 url=link,
-                author="RSS Wire",
+                author=e.get("author") or e.get("feed_publisher") or "",
                 published=published,
-                snippet=summary[:300],
+                snippet=excerpt[:300],
                 score=60.0,
                 retrieval_method="feedparser",
                 retrieval_mode=RetrievalMode.RSS_FEED.value,
                 native_backend_id="feedparser",
                 channel_name=channel_name,
-                content_depth="SNIPPET",
+                content_depth="FEED_ENTRY_CONTENT" if feed_content else "FEED_ENTRY_SUMMARY",
                 query_id=query_id,
                 query_class=query_class,
                 query_text=query_text,
                 raw_metadata={
                     "backend": "feedparser",
+                    "feed_title": e.get("feed_title"),
+                    "feed_publisher": e.get("feed_publisher"),
+                    "guid": e.get("guid"),
+                    "updated": e.get("updated"),
+                    "categories": e.get("categories", []),
+                    "enclosures": e.get("enclosures", []),
+                    "summary": summary,
+                    "feed_content_present": bool(feed_content),
+                    "linked_article_retrieved": False,
                 }
             )
             fragments.append(frag)

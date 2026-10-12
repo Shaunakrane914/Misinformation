@@ -6,6 +6,8 @@ Bilibili API, feedparser, OpenCLI, twitter-cli) through strict, parameter-checke
 command allowlists. Arbitrary shell text execution is strictly prohibited.
 """
 
+import base64
+import binascii
 import hashlib
 import json
 import logging
@@ -340,16 +342,17 @@ class NativeExecutor:
                         max_bytes=MAX_OUTPUT_BYTES,
                     )
                     readme_meta = json.loads(readme_response.body.decode("utf-8"))
-                    download_url = readme_meta.get("download_url")
-                    if download_url:
-                        raw_response = fetch_public_http(
-                            download_url, headers={"User-Agent": _USER_AGENT},
-                            timeout=min(timeout, 6.0), max_bytes=MAX_OUTPUT_BYTES,
-                        )
-                        items[0]["readme"] = raw_response.body.decode(
-                            "utf-8", errors="replace"
-                        )
-                except Exception:
+                    encoded = readme_meta.get("content")
+                    if readme_meta.get("encoding") == "base64" and isinstance(encoded, str):
+                        decoded = base64.b64decode(encoded, validate=False)
+                        if len(decoded) <= MAX_OUTPUT_BYTES:
+                            items[0]["readme"] = decoded.decode("utf-8", errors="replace")
+                            items[0]["readme_path"] = readme_meta.get("path")
+                            items[0]["readme_sha"] = readme_meta.get("sha")
+                            items[0]["readme_source_url"] = readme_meta.get("html_url")
+                            items[0]["readme_transport"] = self._bounded_http_transport(readme_response)
+                except (ProviderHTTPError, ValueError, KeyError, binascii.Error, UnicodeError):
+                    # Repository metadata remains valid if README retrieval fails.
                     pass
             return {
                 "platform": "github",
@@ -702,11 +705,26 @@ class NativeExecutor:
             transport["network_latency_ms"] = latency_ms
             entries = []
             for e in feed.entries[:limit]:
+                feed_content = next(
+                    (part.get("value", "") for part in e.get("content", [])
+                     if part.get("value")), "",
+                )
                 entries.append({
-                    "title": getattr(e, "title", ""),
-                    "link": getattr(e, "link", ""),
-                    "published": getattr(e, "published", ""),
-                    "summary": getattr(e, "summary", "")[:500],
+                    "title": e.get("title", ""),
+                    "link": e.get("link", ""),
+                    "published": e.get("published", ""),
+                    "updated": e.get("updated", ""),
+                    "author": e.get("author", ""),
+                    "guid": e.get("id", ""),
+                    "categories": [tag.get("term", "") for tag in e.get("tags", [])][:20],
+                    "enclosures": [
+                        {"href": enclosure.get("href", ""), "type": enclosure.get("type", "")}
+                        for enclosure in e.get("enclosures", [])[:10]
+                    ],
+                    "summary": e.get("summary", "")[:4000],
+                    "feed_content": feed_content[:8000],
+                    "feed_title": feed.feed.get("title", ""),
+                    "feed_publisher": feed.feed.get("publisher", "") or feed.feed.get("author", ""),
                 })
             return {
                 "platform": "rss",

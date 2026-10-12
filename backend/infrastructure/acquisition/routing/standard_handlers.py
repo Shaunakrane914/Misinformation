@@ -96,7 +96,8 @@ class StandardChannelHandlers:
                 url = item.get("html_url") or f"https://github.com/{repo}"
                 author = (item.get("owner") or {}).get("login") or repo.split("/")[0]
                 published = item.get("updated_at") or ""
-                depth = "FULL_ARTICLE" if item.get("readme") else "METADATA"
+                # A README is content from one document, not the entire repository.
+                depth = "PARTIAL_CONTENT" if item.get("readme") else "METADATA"
             elif operation in {"issues", "prs"}:
                 title = item.get("title") or f"GitHub {operation[:-1]}"
                 body = item.get("body") or title
@@ -127,7 +128,20 @@ class StandardChannelHandlers:
                 native_backend_id="github-rest", channel_name="github",
                 content_depth=depth, query_id=query_id, query_class=query_class,
                 query_text=query_text,
-                raw_metadata={"backend": "GitHub REST API", "operation": operation},
+                raw_metadata={
+                    "backend": "GitHub REST API", "operation": operation,
+                    "repository": repo,
+                    "repository_description": item.get("description") if operation == "read" else None,
+                    "stars": item.get("stargazers_count") if operation == "read" else None,
+                    "forks": item.get("forks_count") if operation == "read" else None,
+                    "watchers": item.get("subscribers_count") if operation == "read" else None,
+                    "language": item.get("language") if operation == "read" else None,
+                    "topics": item.get("topics") if operation == "read" else None,
+                    "readme_path": item.get("readme_path") if operation == "read" else None,
+                    "readme_sha": item.get("readme_sha") if operation == "read" else None,
+                    "readme_source_url": item.get("readme_source_url") if operation == "read" else None,
+                    "readme_transport": item.get("readme_transport") if operation == "read" else None,
+                },
             ))
         self._attach_transport(fragments, result.get("transport"))
         self.router._tag_fragments(
@@ -145,15 +159,18 @@ class StandardChannelHandlers:
             if result.get("status") != "success":
                 raise NativeReachError(result.get("error", "YouTube read failed"))
             content = result.get("content", "")
+            video_metadata = result.get("video_metadata") or {}
             fragments = [EvidenceFragment(
                 platform="YouTube", title=result.get("title", "YouTube video"),
-                content=content, url=query, author="YouTube", snippet=content[:300],
+                content=content, url=query, author=video_metadata.get("channel") or "YouTube",
+                published=video_metadata.get("upload_date") or "", snippet=content[:300],
                 score=55.0, retrieval_method="yt_dlp", channel_name="youtube",
                 retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
                 native_backend_id="yt-dlp", content_depth="VIDEO_METADATA",
                 query_id=query_id, query_class=query_class, query_text=query_text,
                 raw_metadata={"backend": result.get("backend", "yt-dlp"),
-                              "transport": result.get("transport", {})},
+                              "transport": result.get("transport", {}),
+                              "video_metadata": video_metadata},
             )]
             self.router._tag_fragments(fragments, "youtube", "youtube", RetrievalMode.NATIVE_TOOL_CLI.value, "yt-dlp", None, False)
             telemetry.update(status="SUCCESS", backend="yt-dlp")
@@ -250,8 +267,6 @@ class StandardChannelHandlers:
             )
             self._attach_transport(fragments, result.get("transport"))
             self.router._tag_fragments(fragments, "rss", "rss", RetrievalMode.RSS_FEED.value, "feedparser", None, False)
-            for fragment in fragments:
-                fragment.content_depth = "FEED_ENTRY_SUMMARY"
             telemetry.update(status="SUCCESS", backend="feedparser")
             return fragments
         wire_terms = ("press release", "filing", "statement", "announcement", "regulatory", "wire")

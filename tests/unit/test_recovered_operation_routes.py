@@ -133,6 +133,24 @@ def test_youtube_read_failure_cannot_fall_through_to_generic_html(monkeypatch):
     assert result["transport"]["network_observed_this_attempt"] is True
 
 
+def test_youtube_read_preserves_observed_metadata_without_inventing_dates(monkeypatch):
+    router = NativeRouter()
+    url = "https://www.youtube.com/watch?v=fixture123"
+    monkeypatch.setattr(router, "execute_channel_read", lambda *_args, **_kwargs: {
+        "status": "success", "title": "Fixture video", "content": "Observed description",
+        "backend": "yt-dlp", "transport": _transport(url),
+        "video_metadata": {
+            "video_id": "fixture123", "channel": "Fixture channel",
+            "duration_seconds": 125, "upload_date": None, "view_count": 123,
+        },
+    })
+    fragments, _ = router.execute_channel_query("youtube", url, operation="read")
+    assert fragments[0].author == "Fixture channel"
+    assert fragments[0].published == ""
+    assert fragments[0].raw_metadata["video_metadata"]["duration_seconds"] == 125
+    assert fragments[0].content_depth == "VIDEO_METADATA"
+
+
 def test_empty_provider_result_retains_transport_observation(monkeypatch):
     router = NativeRouter()
     url = "https://www.youtube.com/watch?v=fixture123"

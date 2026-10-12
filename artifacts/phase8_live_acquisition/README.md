@@ -17,7 +17,9 @@ Chronology:
   sets used by acceptance.
 - `2026-10-12_11-00-24Z`: corrected GitHub commit probe set used by acceptance.
 - `2026-10-12_11-00-14Z`: interim consolidation; superseded.
-- `2026-10-12_11-00-33Z`: authoritative consolidated Phase 8A acceptance.
+- `2026-10-12_11-00-33Z`: pre-checkpoint consolidation; superseded.
+- `2026-10-12_11-06-45Z`: authoritative consolidated Phase 8A acceptance at
+  checkpoint `b2715406af219ca336b546ed7d42f54fe795cac4`.
 
 Read `run_metadata.json`, `probe_records.jsonl` and `acceptance.json` together.
 A gate pass means every protected operation produced at least one live usable

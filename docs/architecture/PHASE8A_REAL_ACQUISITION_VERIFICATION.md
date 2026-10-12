@@ -8,7 +8,7 @@ It does **not** mean every target succeeds, every result is full content, or a
 provider is continuously available.
 
 The authoritative machine evidence is the consolidated run at
-[`artifacts/phase8_live_acquisition/2026-10-12_11-00-33Z`](../../artifacts/phase8_live_acquisition/2026-10-12_11-00-33Z/).
+[`artifacts/phase8_live_acquisition/2026-10-12_11-06-45Z`](../../artifacts/phase8_live_acquisition/2026-10-12_11-06-45Z/).
 It selects the latest complete probe set per operation from the post-fix runs
 listed in `run_metadata.json`.
 

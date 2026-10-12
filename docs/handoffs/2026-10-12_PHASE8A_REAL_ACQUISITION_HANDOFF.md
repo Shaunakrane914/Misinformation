@@ -31,7 +31,7 @@ See:
 
 - [production path trace](../architecture/PHASE8_INVESTIGATION_PATH_TRACE.md)
 - [Phase 8A verification report](../architecture/PHASE8A_REAL_ACQUISITION_VERIFICATION.md)
-- [authoritative machine evidence](../../artifacts/phase8_live_acquisition/2026-10-12_11-00-33Z/)
+- [authoritative machine evidence](../../artifacts/phase8_live_acquisition/2026-10-12_11-06-45Z/)
 - [artifact chronology](../../artifacts/phase8_live_acquisition/README.md)
 
 ## Observed validation
@@ -54,11 +54,12 @@ no authentication or rate limit was bypassed.
 
 - Phase 8A: `PASS`. This is a time-bound capability proof, not continuous
   provider health and not maximum extraction.
+- Implementation checkpoint: `b2715406af219ca336b546ed7d42f54fe795cac4`.
 - Phase 8B: not yet complete. It must inventory theoretically available,
   observed, populated, optional, restricted and paginated fields for every
   operation and measure important-field completeness.
 - The synchronous claims verification work still sits inside an async route;
   address that worker-boundary risk in the API/intelligence phase.
-- Hosted CI, commit and push evidence must be appended after the checkpoint is
-  created. Nothing in this handoff authorizes merge to `main` or deployment.
+- Push and hosted CI evidence must be appended after remote verification.
+  Nothing in this handoff authorizes merge to `main` or deployment.
 - The 55 historical malformed dossier files remain byte-for-byte untouched.

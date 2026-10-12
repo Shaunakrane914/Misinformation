@@ -12,7 +12,7 @@ the architecture remediation, not a production-deployment approval.
 | Historical archive | Release blocker remains | 55 of 2,500 protected JSON files are malformed; originals were not changed. |
 | Recovery candidates | None found locally | Repository filesystem and available Git history produced zero valid JSON candidates. This is not proof that owner-controlled external backups do not exist. |
 | Privileged deployment authorization | Contract verified; deployment secret owner-controlled | Missing configuration fails with 503, invalid/missing credentials fail with 401 before database access, and valid credentials reach the handler in isolated tests. No production token was created or stored. |
-| Hosted CI | Pending at initial capture | The workflow is configured for every push/PR, but a run URL and conclusion must be recorded after the checkpoint is pushed. The rollback gate is expected to remain red while the 55 protected files are malformed. |
+| Hosted CI | PASS for tracked code; historical archive `NOT_VERIFIED` | Follow-up run 38236691625 passed every configured job. Historical dossier JSON is intentionally untracked and absent on the runner, so the hosted rollback output cannot verify or clear the local 55-file failure. |
 | Production deployment | Blocked / not authorized | No deployment or live-provider probe is part of this phase. |
 
 ## Read-only historical dossier inventory
@@ -95,8 +95,21 @@ reports the existing `UNAVAILABLE` fallback; CI does not download model weights.
 
 After the correction, the four previously failing cases passed, then the fresh
 local full suite passed 977 tests in 54.24s and the fast suite passed 781 tests
-in 26.79s. A follow-up hosted run is required before the branch can claim that
-the portability failure is remotely resolved.
+in 26.79s.
+
+The correction commit `4768c0ba706e0d306cbe4bb971b7bb508ffd5728`
+triggered [run 38236691625](https://github.com/Shaunakrane914/Misinformation/actions/runs/38236691625),
+which passed every configured job. Hosted Python 3.12 collected and passed all
+977 tests in 22.33s; Python 3.11, 3.12 and 3.13 fast matrices, frontend/lint,
+frozen hashes, isolated smoke and tracked-output checks also passed.
+
+The hosted rollback command passed fresh-process persistence, tamper detection
+and actual baseline readers, but reported the historical archive as
+`NOT_VERIFIED` because protected dossier JSON is intentionally untracked and
+therefore absent from a GitHub checkout. Its green `OFFLINE_PERSISTENCE_PASS`
+does **not** supersede the local `HISTORICAL_ARCHIVE_FAIL` finding. Deployment
+remains blocked on the local 55-file limitation and owner-controlled recovery or
+explicit release-risk acceptance.
 
 ## Release decision
 

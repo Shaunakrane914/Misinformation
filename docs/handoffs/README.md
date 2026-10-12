@@ -4,6 +4,8 @@ Start here when resuming work. These are dated engineering records, not promises
 
 ## Latest: Phase 7.4 verification — 2026-10-12
 
+- [Phase 7.4 closeout handoff](2026-10-12_PHASE7_4_CLOSEOUT.md): pushed commits, hosted CI evidence, local archive limitation and safe continuation.
+- [Phase 7.4 machine context](2026-10-12_PHASE7_4_CONTEXT.json): commit SHAs, run ID, validation counts and unresolved boundaries.
 - [Phase 7.4 verification report](../architecture/PHASE7_4_REMEDIATION_VERIFICATION.md): local security closeout, Git/CI evidence boundary and release decision.
 - [Historical dossier recovery inventory](2026-10-12_HISTORICAL_DOSSIER_RECOVERY_INVENTORY.json): read-only paths, SHA-256 hashes, parser diagnostics and candidate results for all 55 malformed records; no dossier content.
 

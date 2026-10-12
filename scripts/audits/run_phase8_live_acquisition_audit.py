@@ -24,6 +24,11 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
+# A file-path invocation otherwise may import an editable-installed *other*
+# checkout of ``backend`` (notably when this script runs in a Git worktree).
+# Force this script's own repository to be the acquisition code under audit.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
 from backend.infrastructure.acquisition.routing.router import NativeRouter
 from backend.services.agent_reach.native.channel_capabilities import CAPABILITY_MATRIX
 from backend.services.agent_reach.native.operation_capabilities import (
@@ -462,6 +467,10 @@ def _write_markdown(path: Path, aggregate: dict[str, Any], sha: str) -> None:
 
 
 def main() -> int:
+    repository_root = Path(__file__).resolve().parents[2]
+    router_source = Path(sys.modules[NativeRouter.__module__].__file__).resolve()
+    if not router_source.is_relative_to(repository_root):
+        raise RuntimeError("Audit would execute acquisition code from a different checkout")
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", default="artifacts/phase8_live_acquisition")
     parser.add_argument("--max-scenarios", type=int, default=3, choices=(1, 2, 3))
@@ -515,6 +524,7 @@ def main() -> int:
         "commit": sha,
         "branch": _git_value("branch", "--show-current"),
         "worktree_dirty": bool(_git_value("status", "--porcelain")),
+        "router_source": router_source.relative_to(repository_root).as_posix(),
         "python": sys.version,
         "tools": {name: bool(shutil.which(name)) for name in ("gh", "yt-dlp")},
         "credential_presence": {

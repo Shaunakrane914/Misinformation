@@ -49,8 +49,12 @@ def summarize(paths: list[Path]) -> dict:
             for sample in probe.get("provenance", {}).get("normalized_evidence_samples", [])
         ]
         field_names = ("title", "canonical_url", "author", "published", "backend_id", "content_depth")
+        observed_fields = {
+            field: sum(field in sample for sample in samples)
+            for field in field_names
+        }
         populated = {
-            field: sum(bool(sample.get(field)) for sample in samples)
+            field: sum(field in sample and bool(sample[field]) for sample in samples)
             for field in field_names
         }
         latencies = [
@@ -64,9 +68,11 @@ def summarize(paths: list[Path]) -> dict:
             "live_success_rate": round(len(successful) / len(probes), 3) if probes else None,
             "sampled_item_count": total_items,
             "normalized_sample_count": len(samples),
+            "normalized_field_observation_count": observed_fields,
             "normalized_field_population": populated,
             "normalized_field_population_rate": {
-                field: round(count / len(samples), 3) if samples else None
+                field: round(count / observed_fields[field], 3)
+                if observed_fields[field] else None
                 for field, count in populated.items()
             },
             "observed_populated_metadata_field_names": sorted({

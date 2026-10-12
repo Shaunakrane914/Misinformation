@@ -37,6 +37,7 @@ def test_summary_prefers_newest_matching_probe_and_refuses_overwrite(tmp_path):
     assert row["scenario_count"] == 1
     assert row["mean_relevant_chars_per_successful_item"] == 100
     assert row["normalized_field_population_rate"]["published"] == 0.0
+    assert row["normalized_field_population_rate"]["author"] is None
     assert len(report["operations"]) == 16
     second = subprocess.run(command, cwd=root, text=True, capture_output=True, check=False)
     assert second.returncode != 0

@@ -332,27 +332,30 @@ class StandardChannelHandlers:
             telemetry.update(status="FAILED", error=result.get("error", "Failed to read content"))
             return []
         content = result.get("markdown", "") or result.get("content", "")
+        backend_id = result.get("backend") or "jina-reader"
         fragment = EvidenceFragment(
-            platform="Web", title=result.get("title") or f"Article from {urllib.parse.urlparse(target_url).netloc}",
-            content=content, url=target_url, author=urllib.parse.urlparse(target_url).netloc or "Web",
-            published="Recent", snippet=content[:300], score=85.0, retrieval_method="jina_reader",
-            retrieval_mode=RetrievalMode.WEB_READER.value, native_backend_id="jina-reader",
+            platform="Web", title=result.get("title") or f"Page from {urllib.parse.urlparse(target_url).netloc}",
+            content=content, url=target_url, author=result.get("author") or "",
+            published=result.get("published") or "", snippet=content[:300], score=85.0,
+            retrieval_method=backend_id,
+            retrieval_mode=RetrievalMode.WEB_READER.value, native_backend_id=backend_id,
             channel_name=actual_channel, requested_channel=requested_channel,
             actual_retrieval_channel=actual_channel,
-            content_depth=(
-                "PARTIAL_CONTENT" if int(result.get("char_count") or len(content)) > len(content)
-                else "FULL_ARTICLE" if len(content) > 500 else "SNIPPET"
-            ), query_id=query_id,
+            # Generic page text may contain navigation or omit dynamic sections;
+            # length alone cannot prove a complete underlying article.
+            content_depth="PARTIAL_CONTENT", query_id=query_id,
             query_class=query_class, query_text=query_text,
             raw_metadata={
                 "backend": result.get("backend", "Jina Reader"),
                 "char_count": len(content),
+                "page_metadata": result.get("page_metadata") or {},
+                "observed_final_endpoint": (result.get("transport") or {}).get("endpoint"),
                 "transport": result.get("transport"),
             },
         )
         self.router._tag_fragments(
             [fragment], requested_channel, actual_channel, RetrievalMode.WEB_READER.value,
-            "jina-reader", None, False,
+            backend_id, None, False,
         )
         telemetry["status"] = "SUCCESS"
         return [fragment]

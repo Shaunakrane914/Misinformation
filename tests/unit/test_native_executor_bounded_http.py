@@ -239,6 +239,46 @@ def test_web_reader_uses_bounded_transport_and_rejects_empty_success(monkeypatch
     assert jina.execute_web_read("https://example.com/empty", executor=empty_executor)["status"] == "error"
 
 
+def test_web_reader_preserves_declared_metadata_as_unverified(monkeypatch, executor, public_dns):
+    html = """<html><head><title>Observed title</title>
+    <meta name="author" content="Editorial desk">
+    <meta property="article:published_time" content="2026-10-10T12:00:00Z">
+    <link rel="canonical" href="https://example.com/canonical"></head>
+    <body><h1>Major correction</h1><article>Evidence body repeated many times.
+    Evidence body repeated many times. Evidence body repeated many times.</article></body></html>"""
+    monkeypatch.setattr(
+        "backend.services.agent_reach.native.executor.fetch_public_http",
+        lambda url, **_kwargs: _response(html, url, "text/html"),
+    )
+    raw = executor.execute_web_read("https://example.com/article")
+    assert raw["page_metadata"]["title"] == "Observed title"
+    assert raw["page_metadata"]["published"] == "2026-10-10T12:00:00Z"
+    assert raw["page_metadata"]["headings"] == ["Major correction"]
+    assert raw["page_metadata"]["declared_canonical_verified"] is False
+    view = jina.execute_web_read("https://example.com/article", executor=executor)
+    assert view["title"] == "Observed title"
+    assert view["author"] == "Editorial desk"
+    assert view["published"] == "2026-10-10T12:00:00Z"
+    assert view["backend"] == "native_http_reader"
+
+
+def test_web_reader_discards_challenge_page_metadata_on_reader_fallback(monkeypatch, executor, public_dns):
+    def fake_fetch(url, **_kwargs):
+        if url.startswith("https://r.jina.ai/"):
+            return _response("# Actual page\n" + ("Evidence text " * 20), url, "text/plain")
+        return _response(
+            "<html><head><title>Challenge title</title></head>"
+            "<body>Verify you are human</body></html>", url, "text/html",
+        )
+
+    monkeypatch.setattr(
+        "backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch,
+    )
+    result = executor.execute_web_read("https://example.com/article")
+    assert result["backend"] == "jina_reader_fallback"
+    assert result["page_metadata"] == {}
+
+
 def test_web_reader_does_not_bypass_provider_rate_limit(monkeypatch, executor, public_dns):
     def rate_limited(*_args, **_kwargs):
         raise ProviderHTTPError(

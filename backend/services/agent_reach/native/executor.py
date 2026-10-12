@@ -75,6 +75,7 @@ class NativeExecutor:
         content_type = None
         raw_body_bytes = None
         observed_endpoint = clean_url
+        page_metadata: Dict[str, Any] = {}
         primary_http_error: Optional[ProviderHTTPError] = None
 
         # Primary: shared bounded HTTP.  Redirect targets are validated before
@@ -93,12 +94,49 @@ class NativeExecutor:
             content_type = response.content_type
             observed_endpoint = response.endpoint
 
-            # Clean HTML to readable text/markdown
-            import re
-            cleaned = re.sub(r"<script[^>]*>[\s\S]*?</script>", "", raw_text, flags=re.IGNORECASE)
-            cleaned = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", cleaned, flags=re.IGNORECASE)
-            cleaned = re.sub(r"<[^>]+>", " ", cleaned)
-            markdown_text = re.sub(r"\s+", " ", cleaned).strip()
+            if (
+                "html" in (content_type or "").lower()
+                or raw_text.lstrip().lower().startswith(("<!doctype html", "<html"))
+            ):
+                from bs4 import BeautifulSoup
+
+                soup = BeautifulSoup(raw_text, "html.parser")
+
+                def meta_content(*, name: str = "", prop: str = "") -> str:
+                    tag = soup.find("meta", attrs={"name": name}) if name else soup.find(
+                        "meta", attrs={"property": prop}
+                    )
+                    return str(tag.get("content") or "").strip() if tag else ""
+
+                title_tag = soup.find("title")
+                title = meta_content(prop="og:title") or (
+                    title_tag.get_text(" ", strip=True) if title_tag else ""
+                )
+                canonical_tag = soup.find("link", rel="canonical")
+                page_metadata = {
+                    "title": title[:500],
+                    "author": meta_content(name="author")[:300],
+                    "published": (
+                        meta_content(prop="article:published_time")
+                        or meta_content(name="citation_publication_date")
+                        or meta_content(name="datePublished")
+                    )[:100],
+                    "modified": meta_content(prop="article:modified_time")[:100],
+                    "declared_canonical_url": (
+                        str(canonical_tag.get("href") or "")[:1000]
+                        if canonical_tag else ""
+                    ),
+                    "declared_canonical_verified": False,
+                    "headings": [
+                        heading.get_text(" ", strip=True)[:300]
+                        for heading in soup.find_all(("h1", "h2", "h3"), limit=20)
+                    ],
+                }
+                for tag in soup(("script", "style", "noscript")):
+                    tag.decompose()
+                markdown_text = " ".join(soup.stripped_strings)
+            else:
+                markdown_text = raw_text.strip()
 
         except ProviderHTTPError as error:
             primary_http_error = error
@@ -131,6 +169,9 @@ class NativeExecutor:
                 j_text = response.body.decode("utf-8", errors="replace").strip()
                 if len(j_text) > len(markdown_text):
                     markdown_text = j_text
+                    # Metadata from the challenged source page must not be
+                    # attached to content returned by a separate reader.
+                    page_metadata = {}
                     active_backend = "jina_reader_fallback"
                     status_code = response.status_code
                     content_type = response.content_type
@@ -153,6 +194,7 @@ class NativeExecutor:
             "url": clean_url,
             "content": markdown_text,
             "char_count": len(markdown_text),
+            "page_metadata": page_metadata,
             "latency_ms": latency_ms,
             "transport": {
                 "endpoint": observed_endpoint,

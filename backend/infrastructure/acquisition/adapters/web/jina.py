@@ -51,7 +51,7 @@ def read_article_via_jina(url: str, timeout: float = 5.0) -> Optional[Dict[str, 
             netloc = urllib.parse.urlparse(url).netloc
             return {
                 "status": "success",
-                "title": f"Article from {netloc}",
+                "title": f"Page from {netloc}",
                 "content": content,
                 "markdown": content,
                 "url": url,
@@ -113,15 +113,19 @@ def execute_web_read(
             content = res.get("content", "")
             if content and len(content.strip()) > 50:
                 netloc = urllib.parse.urlparse(url).netloc
+                page_metadata = res.get("page_metadata") or {}
                 return {
                     "status": "success",
-                    "title": f"Article from {netloc}",
+                    "title": page_metadata.get("title") or f"Page from {netloc}",
+                    "author": page_metadata.get("author") or "",
+                    "published": page_metadata.get("published") or "",
+                    "page_metadata": page_metadata,
                     "content": content[:max_chars],
                     "markdown": content[:max_chars],
                     "url": url,
                     "char_count": len(content),
                     "backend": res.get("backend", "scrapling_http"),
-                    "fallback_used": False,
+                    "fallback_used": res.get("backend") == "jina_reader_fallback",
                     "transport": res.get("transport"),
                 }
         except SecurityPolicyViolation as error:

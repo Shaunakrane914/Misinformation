@@ -218,11 +218,27 @@ def test_web_search_is_a_real_alias_and_direct_web_read_is_recovered(monkeypatch
     fragments, read_telemetry = router.execute_channel_query(
         "web", "https://example.com/article", operation="read"
     )
-    assert fragments[0].content_depth == "FULL_ARTICLE"
+    assert fragments[0].content_depth == "PARTIAL_CONTENT"
     assert read_telemetry["outcome"] == "DIRECT_CONTENT"
     assert fragments[0].requested_channel == "web"
     assert fragments[0].actual_retrieval_channel == "jina_reader"
     assert fragments[0].raw_metadata["transport"]["endpoint"] == "https://example.com/article"
+
+
+def test_web_read_does_not_fabricate_date_or_jina_backend(monkeypatch):
+    router = NativeRouter()
+    url = "https://example.com/article"
+    monkeypatch.setattr(router, "execute_channel_read", lambda *_args, **_kwargs: {
+        "status": "success", "title": "Observed page", "content": "Actual body " * 50,
+        "backend": "native_http_reader", "transport": _transport(url),
+        "page_metadata": {"declared_canonical_url": "https://example.com/claim",
+                          "declared_canonical_verified": False},
+    })
+    fragments, _ = router.execute_channel_query("web", url, operation="read")
+    assert fragments[0].published == ""
+    assert fragments[0].author == ""
+    assert fragments[0].native_backend_id == "native_http_reader"
+    assert fragments[0].raw_metadata["page_metadata"]["declared_canonical_verified"] is False
 
 
 def test_rss_read_preserves_syndicated_depth_and_provenance(monkeypatch):

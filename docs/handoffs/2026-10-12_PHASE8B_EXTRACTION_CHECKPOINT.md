@@ -75,6 +75,7 @@ before resuming.
 | Focused web/acquisition tests after page metadata fix | 38 passed |
 | Guarded live Stage 8B spot-check | GitHub/RSS/YouTube 6/6 usable across two scenarios each; web 2/2 partial content, source path asserted in run metadata |
 | Initial hosted CI at `ca57e70` | [run 38283341137](https://github.com/Shaunakrane914/Misinformation/actions/runs/38283341137) **failed**: all Python jobs hit `ModuleNotFoundError: backend` in the new subprocess summary test; lint/frontend passed. The runner's own-checkout import bootstrap was added afterward and requires a new hosted run. |
+| Corrected hosted CI at `7ad5932dd8a8c3e3c36e7b573287056e004ee6de` | [run 38284188252](https://github.com/Shaunakrane914/Misinformation/actions/runs/38284188252) **passed**: fatal Python lint/frontend contracts; fast unit/chaos/security on Python 3.11, 3.12 and 3.13; entire offline suite, persistence/release validators and tracked-output integrity. |
 | First full suite, before nested-worktree isolation fix | 990 passed, 1 failed (`database.supabase is None` assertion) |
 | First fast suite, same environment issue | 794 passed, 1 failed |
 | Failing isolation test after fix | 1 passed |
@@ -90,8 +91,10 @@ before resuming.
 The original checkout's protected historical archive remains known to have
 55 malformed JSON files and legacy-unsealed records. The isolated worktree's
 rollback result does **not** supersede that limitation. No dossier or frozen
-benchmark was changed. Phase 8B hosted CI is **not yet green** as of this
-handoff draft; update this paragraph after the fix is pushed and checked.
+benchmark was changed. The corrected Phase 8B code/evidence checkpoint was
+committed and pushed, and its exact hosted CI run passed. This handoff update
+is documentation-only; its own final CI status is reported in the final
+handoff response. No merge or deployment was performed.
 
 ## Decision and next engineering work
 

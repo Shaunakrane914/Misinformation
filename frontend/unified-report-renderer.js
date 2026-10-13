@@ -164,8 +164,11 @@ function renderEvidenceCard(item) {
   const snippet = esc(item.snippet || '');
   const url     = safeEvidenceUrl(item.url);
   const ts      = esc(item.timestamp || PH_STR);
-  const srcName = esc((item.source && item.source.name) || PH_AUTH);
-  const isPrim  = item.source && item.source.is_primary;
+  const source = item.source && typeof item.source === 'object' ? item.source : {};
+  const srcName = esc(source.name || PH_AUTH);
+  const srcType = source.type ? `<span>Reported type: ${esc(source.type)}</span>` : '';
+  const srcDomain = source.domain ? `<span>Reported domain: ${esc(source.domain)}</span>` : '';
+  const isPrim  = source.is_primary === true;
   const badge   = isPrim ? `<span class="ur-badge ur-badge--primary">Primary</span>` : '';
 
   const titleEl = url
@@ -173,7 +176,9 @@ function renderEvidenceCard(item) {
     : `<span class="ur-ev-title">${title}</span>`;
 
   const noUrl = url ? '' : `<span class="ur-ev-no-url">${PH_URL}</span>`;
-  const lineage = Array.isArray(item.retrieval_lineage) ? item.retrieval_lineage.slice(0, 5) : [];
+  const lineage = Array.isArray(item.retrieval_lineage)
+    ? item.retrieval_lineage.filter(entry => entry && typeof entry === 'object').slice(0, 5)
+    : [];
   const trace = lineage.length ? `<details class="ur-ev-trace">
       <summary>Acquisition trace</summary>
       <ul>${lineage.map(entry => `<li>
@@ -193,6 +198,7 @@ function renderEvidenceCard(item) {
       <footer class="ur-ev-card-foot">
         <span class="ur-ev-source">${srcName}</span>
         <span class="ur-ev-ts">${ts}</span>
+        ${srcType}${srcDomain}
       </footer>
       ${trace}
     </article>`;
@@ -202,13 +208,13 @@ function renderEvidenceCard(item) {
 function renderDisagreements(report) {
   const items = array(report.disagreements).filter(d => typeof d === 'string')
     .map(d => `Contradictory evidence: ${d}`);
-  const content = bulletList(items, 'No contradictory evidence detected.');
+  const content = bulletList(items, 'No contradiction assessment was returned.');
   return section('ur-disagreements', 'WHAT DISAGREES?', content);
 }
 
 /** SECTION 5 — WHAT CHANGED? */
 function renderChanges(report) {
-  const content = bulletList(report.changes, 'No new changes since last analysis.');
+  const content = bulletList(report.changes, 'No change history was returned.');
   return section('ur-changes', 'WHAT CHANGED?', content);
 }
 
@@ -253,18 +259,19 @@ function renderTrust(report) {
   }).join('');
 
   // Source count
-  const indText = indCount !== null && indCount !== undefined
-    ? `Evidence collected from <strong>${esc(String(indCount))}</strong> independent publisher${indCount !== 1 ? 's' : ''}.`
+  const indText = Number.isSafeInteger(indCount) && indCount >= 0
+    ? `<strong>${indCount}</strong> source group${indCount !== 1 ? 's' : ''} reported. Grouping is heuristic; independence is not established by this count.`
     : `<span class="ur-trust-ph">${PH_IND}</span>`;
 
   // Query telemetry
   const succeeded = tel.queries_succeeded ?? PH_NUM;
   const total     = tel.queries_submitted  ?? PH_NUM;
-  const channels  = new Set(
-    (tel.execution_log || []).map(q => q.channel).filter(Boolean)
-  ).size || PH_NUM;
-  const authReq   = tel.queries_auth_required || 0;
-  const failed    = tel.queries_failed || 0;
+  const log = array(tel.execution_log).filter(q => q && typeof q === 'object');
+  const channels  = new Set(log.map(q => q.channel).filter(Boolean)).size || PH_NUM;
+  const authReq   = Number.isSafeInteger(tel.queries_auth_required) && tel.queries_auth_required > 0
+    ? tel.queries_auth_required : 0;
+  const failed    = Number.isSafeInteger(tel.queries_failed) && tel.queries_failed > 0
+    ? tel.queries_failed : 0;
 
   const telRow = authReq > 0
     ? `<p class="ur-trust-note">(*) ${esc(String(authReq))} lookup(s) required authorization; no evidence was returned by those lookups.</p>`
@@ -277,6 +284,7 @@ function renderTrust(report) {
     <div class="ur-trust-inner">
       <div class="ur-qt-section">
         <h3 class="ur-trust-sub">Quality</h3>
+        <p class="ur-ev-note">These axes are model scores, not verdict confidence or proof of source independence.</p>
         <div class="ur-qt-axes">${axisRows}</div>
       </div>
       <div class="ur-sources-section">
@@ -305,7 +313,7 @@ function renderCoverage(report) {
   }
   const groups = new Map();
   for (const entry of log.slice(0, 100)) {
-    if (!entry || !entry.channel) continue;
+    if (!entry || typeof entry !== 'object' || !entry.channel) continue;
     const channel = String(entry.channel);
     const status = String(entry.status || 'UNKNOWN').toUpperCase();
     if (!groups.has(channel)) groups.set(channel, { success: 0, failed: 0, auth: 0, other: 0 });
@@ -399,7 +407,8 @@ async function fetchAndRenderReport(container, url, spinner) {
     }
     const data = await res.json();
     // Agent endpoints wrap the canonical report; direct reports also remain supported.
-    renderUnifiedReport(container, Object.hasOwn(data, 'unified_report') ? data.unified_report : data);
+    renderUnifiedReport(container, data && typeof data === 'object' && Object.hasOwn(data, 'unified_report')
+      ? data.unified_report : data);
   } catch (e) {
     container.innerHTML = `<p class="ur-error">Failed to load report: ${esc(String(e))}</p>`;
   } finally {

@@ -277,14 +277,20 @@ class TestProductHonestyAndIntegrity:
         nav = Path("frontend/aegis-nav.js").read_text(encoding="utf-8")
         assert f"window.AEGIS_VERSION = '{__version__}'" in nav, "Nav version differs from the canonical backend version"
 
-        # 3. submit.html: distinct AI_SYNTHESIS vs BACKEND_INVESTIGATION
+        # 3. Claim verification never substitutes a model-generated verdict
+        #    or evidence when the backend cannot provide an inspectable result.
         sub = Path("frontend/submit.html").read_text(encoding="utf-8")
-        assert "AI_SYNTHESIS" in sub
+        assert "INSUFFICIENT_EVIDENCE" in sub
+        assert "gemini-client.js" not in sub
+        assert "hasInspectableEvidence" in sub
         assert "reuters.com" not in sub
 
-        # 4. investigator-agent.html: honest initial state
+        # 4. The legacy investigator route is a safe gateway, not a
+        #    client-model or fabricated-dossier generator.
         inv = Path("frontend/investigator-agent.html").read_text(encoding="utf-8")
-        assert "NO CASE LOADED" in inv
+        assert "No sample dossier is generated here" in inv
+        assert "gemini-client.js" not in inv
+        assert "askGemini" not in inv
         assert "CASE-2026-A109" not in inv
 
         # 5. research-agent.html: honest initial state

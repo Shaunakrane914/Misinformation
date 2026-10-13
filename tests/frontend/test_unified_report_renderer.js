@@ -72,12 +72,20 @@ assert(container.innerHTML.includes('Long headline 119'));
 
 renderUnifiedReport(container, {
   summary: null, findings: { invalid: true },
-  evidence: { primary: [null, { title: 'Valid', url: 'data:text/html,attack' }] },
-  disagreements: null, timeline: [null], trust: { query_telemetry: {} },
+  evidence: { primary: [null, { title: 'Valid', url: 'data:text/html,attack',
+    source: { type: 'publisher', domain: 'example.org' }, retrieval_lineage: [null, { channel: 'web' }] }] },
+  disagreements: null, timeline: [null],
+  trust: { independent_source_count: 2,
+    query_telemetry: { execution_log: { malformed: true }, queries_failed: '<img src=x onerror=alert(1)>' } },
 });
 assert(container.innerHTML.includes('Valid'));
 assert(container.innerHTML.includes('No source URL'));
 assert(container.innerHTML.includes('source coverage cannot be verified'));
+assert(container.innerHTML.includes('Grouping is heuristic'));
+assert(container.innerHTML.includes('Reported domain: example.org'));
+assert(container.innerHTML.includes('No contradiction assessment was returned'));
+assert(container.innerHTML.includes('No change history was returned'));
+assert(!container.innerHTML.includes('<img src=x onerror=alert(1)>'));
 
 (async () => {
   const previousFetch = global.fetch;
@@ -88,6 +96,9 @@ assert(container.innerHTML.includes('source coverage cannot be verified'));
     await fetchAndRenderReport(container, '/api/claims/verify');
     assert(container.innerHTML.includes('Wrapped API report'));
     global.fetch = async () => ({ ok: true, json: async () => ({ unified_report: null }) });
+    await fetchAndRenderReport(container, '/api/claims/verify');
+    assert(container.innerHTML.includes('No report data available'));
+    global.fetch = async () => ({ ok: true, json: async () => null });
     await fetchAndRenderReport(container, '/api/claims/verify');
     assert(container.innerHTML.includes('No report data available'));
     console.log('UNIFIED REPORT RENDERER PASSED');

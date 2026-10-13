@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8B normalization truth — 2026-10-13
+## Latest: Phase 8 frontend truth checkpoint — 2026-10-13
+
+- [Frontend truth handoff](2026-10-13_PHASE8_FRONTEND_TRUTH_CHECKPOINT.md):
+  legacy fabricated-dossier path removed, claim fallback made abstaining,
+  shared report labels hardened, frontend contracts and remaining Stage 8E work.
+
+## Previous: Phase 8B normalization truth — 2026-10-13
 
 - [Normalization truth handoff](2026-10-13_PHASE8B_NORMALIZATION_TRUTH.md):
   missing-field and content-depth corrections, ten-operation guarded live

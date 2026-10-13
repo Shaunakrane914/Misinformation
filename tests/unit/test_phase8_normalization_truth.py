@@ -86,6 +86,33 @@ def test_search_discovery_adapter_does_not_invent_index_author_or_date():
     assert fragment.score == 0.0
 
 
+def test_search_index_handoff_rejects_empty_candidate_without_fabricating_evidence(monkeypatch):
+    monkeypatch.setattr("backend.services.agent_reach.native.adapters.search.validate_url_safe",
+                        lambda _url: (True, ""))
+    candidate = CandidateSource(url="https://example.org/story", platform="web")
+    adapter = SearchDiscoveryAdapter()
+    document = adapter.acquire(candidate, RetrievalRequest())
+    assert document.status == "FAILED"
+    assert document.raw_metadata["network_observed_this_attempt"] is False
+    assert adapter.normalize(document, candidate, RetrievalRequest()) == []
+
+
+def test_search_index_handoff_is_not_a_new_network_observation(monkeypatch):
+    monkeypatch.setattr("backend.services.agent_reach.native.adapters.search.validate_url_safe",
+                        lambda _url: (True, ""))
+    candidate = CandidateSource(url="https://example.org/story", platform="web",
+                                snippet="Previously observed index text")
+    adapter = SearchDiscoveryAdapter()
+    document = adapter.acquire(candidate, RetrievalRequest())
+    fragments = adapter.normalize(document, candidate, RetrievalRequest())
+    assert document.status == "SUCCESS"
+    assert document.raw_metadata["network_observed_this_attempt"] is False
+    assert len(fragments) == 1
+    assert fragments[0].title == ""
+    assert fragments[0].content_depth == "SNIPPET"
+    assert fragments[0].raw_metadata["network_observed_this_attempt"] is False
+
+
 def test_video_metadata_does_not_invent_channel_or_view_count():
     fragment = NativeNormalizer.normalize_youtube_search([{
         "id": "fixture123", "title": "Observed title", "description": "",

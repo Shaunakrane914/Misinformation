@@ -131,9 +131,21 @@ class SearchDiscoveryAdapter(PlatformAdapter):
                 failure_reason=f"SSRF validation failed: {reason}",
             )
 
-        # Snippet-based evidence from search index
+        # This stage only carries a previously observed index hit; it makes no
+        # network request of its own and cannot turn an empty candidate into evidence.
+        if not (candidate.title or candidate.snippet):
+            return FetchedDocument(
+                url=target_url,
+                status="FAILED",
+                backend_id=self.backend_id,
+                retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
+                raw_metadata={"network_observed_this_attempt": False},
+                failure_reason="No observed search-index title or snippet",
+            )
+
+        # Snippet-based evidence from a prior search-index observation.
         payload = {
-            "title": candidate.title or "Search Discovery Record",
+            "title": candidate.title or "",
             "snippet": candidate.snippet or "",
             "url": target_url,
             "platform": candidate.platform,
@@ -145,6 +157,8 @@ class SearchDiscoveryAdapter(PlatformAdapter):
             backend_id=self.backend_id,
             retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
             raw_content=json.dumps(payload),
+            raw_metadata={"network_observed_this_attempt": False,
+                          "discovered_at": candidate.discovered_at},
         )
 
     def normalize(
@@ -161,8 +175,8 @@ class SearchDiscoveryAdapter(PlatformAdapter):
         except Exception:
             return []
 
-        title = data.get("title") or candidate.title or ""
-        snippet = data.get("snippet") or candidate.snippet or ""
+        title = data.get("title") or ""
+        snippet = data.get("snippet") or ""
         if not title and not snippet:
             return []
         url = data.get("url") or candidate.canonical_url or document.url
@@ -190,6 +204,8 @@ class SearchDiscoveryAdapter(PlatformAdapter):
             is_authenticated=False,
             raw_metadata={"search_rank": candidate.search_rank,
                           "discovery_query": candidate.discovery_query,
-                          "discovery_published_at": data.get("published_at") or candidate.metadata.get("published_at")},
+                          "discovery_published_at": data.get("published_at") or candidate.metadata.get("published_at"),
+                          "network_observed_this_attempt": document.raw_metadata.get("network_observed_this_attempt", False),
+                          "discovered_at": document.raw_metadata.get("discovered_at")},
         )
         return [frag]

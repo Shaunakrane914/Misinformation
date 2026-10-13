@@ -34,25 +34,32 @@ class NativeNormalizer:
         fragments: List[EvidenceFragment] = []
         for repo in raw_items:
             full_name = repo.get("nameWithOwner") or repo.get("fullName") or repo.get("name", "")
-            desc = repo.get("description") or "No description provided."
+            desc = repo.get("description") or ""
             url = repo.get("url", "")
             stars_val = repo.get("stargazers")
             if isinstance(stars_val, dict):
-                stars = stars_val.get("totalCount", 0)
+                stars = stars_val.get("totalCount")
             else:
-                stars = repo.get("stargazerCount") or repo.get("stargazersCount") or 0
+                stars = repo.get("stargazerCount")
+                if stars is None:
+                    stars = repo.get("stargazersCount")
             updated = repo.get("updatedAt", "")
 
-            content = f"GitHub Repository: {full_name}\nDescription: {desc}\nStars: {stars} | Updated: {updated}"
+            content = "\n".join(part for part in (
+                f"GitHub Repository: {full_name}" if full_name else "",
+                f"Description: {desc}" if desc else "",
+                f"Stars: {stars}" if stars is not None else "",
+                f"Updated: {updated}" if updated else "",
+            ) if part)
             frag = EvidenceFragment(
                 platform="GitHub",
-                title=f"{full_name} ({stars} stars)" if stars else full_name,
+                title=full_name,
                 content=content,
                 url=url,
-                author=full_name.split("/")[0] if "/" in full_name else "GitHub",
-                published=updated,
+                author="",
+                published="",
                 snippet=desc[:300],
-                score=float(min(stars, 100)),
+                score=float(min(stars, 100)) if isinstance(stars, (int, float)) else 0.0,
                 retrieval_method="gh_cli",
                 retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
                 native_backend_id="gh-cli",
@@ -65,6 +72,8 @@ class NativeNormalizer:
                     "backend": "gh CLI",
                     "stars": stars,
                     "full_name": full_name,
+                    "updated_at": updated or None,
+                    "owner_login": full_name.split("/")[0] if "/" in full_name else None,
                 }
             )
             fragments.append(frag)
@@ -95,15 +104,21 @@ class NativeNormalizer:
             vid = v.get("id", "")
             title = v.get("title", "")
             desc = v.get("description") or ""
-            uploader = v.get("uploader") or v.get("channel") or "YouTube"
-            url = v.get("webpage_url") or f"https://www.youtube.com/watch?v={vid}"
-            view_count = v.get("view_count") or 0
+            uploader = v.get("uploader") or v.get("channel") or ""
+            url = v.get("webpage_url") or (f"https://www.youtube.com/watch?v={vid}" if vid else "")
+            view_count = v.get("view_count")
 
-            snippet = desc[:300] if desc else f"Video by {uploader} with {view_count:,} views"
+            snippet = desc[:300] if desc else title[:300]
+            content = "\n\n".join(part for part in (
+                title,
+                f"Uploader: {uploader}" if uploader else "",
+                f"Views: {view_count:,}" if isinstance(view_count, int) else "",
+                desc[:1000],
+            ) if part)
             frag = EvidenceFragment(
                 platform="YouTube",
                 title=title,
-                content=f"{title}\n\nUploader: {uploader}\nViews: {view_count:,}\n\n{desc[:1000]}",
+                content=content,
                 url=url,
                 author=uploader,
                 published=v.get("upload_date") or "",
@@ -141,24 +156,23 @@ class NativeNormalizer:
             title = t.get("title", "")
             content = t.get("content") or ""
             member = (t.get("member") or {}).get("username") or ""
-            url = t.get("url") or f"https://www.v2ex.com/t/{tid}"
+            url = t.get("url") or (f"https://www.v2ex.com/t/{tid}" if tid is not None else "")
             replies = t.get("replies")
-            attribution = f"Author: @{member} | " if member else ""
 
             frag = EvidenceFragment(
                 platform="V2EX",
                 title=title,
-                content=f"{title}\n\n{attribution}Replies: {replies if replies is not None else 'Unknown'}\n\n{content}",
+                content="\n\n".join(part for part in (title, content) if part),
                 url=url,
                 author=member,
-                published=str(t.get("created", "")),
+                published=str(t.get("created")) if t.get("created") is not None else "",
                 snippet=content[:300] if content else title,
                 score=40.0 + min(replies, 40) if isinstance(replies, int) and replies >= 0 else 40.0,
                 retrieval_method="v2ex_public_api",
                 retrieval_mode=RetrievalMode.DIRECT_API.value,
                 native_backend_id="v2ex-public-api",
                 channel_name="v2ex",
-                content_depth="FULL_ARTICLE" if len(content) > 300 else "SNIPPET",
+                content_depth="PARTIAL_CONTENT" if content else "METADATA",
                 query_id=query_id,
                 query_class=query_class,
                 query_text=query_text,
@@ -277,9 +291,9 @@ class NativeNormalizer:
             frag = EvidenceFragment(
                 platform="PR Wire / RSS",
                 title=title,
-                content=f"{title}\n\n{excerpt}",
+                content="\n\n".join(part for part in (title, excerpt) if part),
                 url=link,
-                author=e.get("author") or e.get("feed_publisher") or "",
+                author=e.get("author") or "",
                 published=published,
                 snippet=excerpt[:300],
                 score=60.0,
@@ -287,7 +301,8 @@ class NativeNormalizer:
                 retrieval_mode=RetrievalMode.RSS_FEED.value,
                 native_backend_id="feedparser",
                 channel_name=channel_name,
-                content_depth="FEED_ENTRY_CONTENT" if feed_content else "FEED_ENTRY_SUMMARY",
+                content_depth=("FEED_ENTRY_CONTENT" if feed_content else
+                               "FEED_ENTRY_SUMMARY" if summary else "METADATA"),
                 query_id=query_id,
                 query_class=query_class,
                 query_text=query_text,
@@ -632,22 +647,25 @@ class NativeNormalizer:
         """Normalize official public Xiaoyuzhou podcast and episode metadata."""
         fragments: List[EvidenceFragment] = []
         for ep in raw_items:
-            podcast = ep.get("podcast", "播客")
-            title = ep.get("title", "单集")
-            published = ep.get("published", "")
-            audio_url = ep.get("audio_url", "")
-            summary = ep.get("summary", "")
+            podcast = ep.get("podcast") or ""
+            title = ep.get("title") or ""
+            published = ep.get("published") or ""
+            audio_url = ep.get("audio_url") or ""
+            summary = ep.get("summary") or ""
             item_type = ep.get("item_type", "episode")
 
-            content = (
-                f"播客频道: {podcast}\n单集标题: {title}\n发布时间: {published}\n"
-                f"音频直链: {audio_url}\n\n单集介绍:\n{summary}"
-            )
+            content = "\n".join(part for part in (
+                f"Podcast: {podcast}" if podcast else "",
+                f"Episode: {title}" if title else "",
+                f"Published: {published}" if published else "",
+                f"Audio URL: {audio_url}" if audio_url else "",
+                f"Description: {summary}" if summary else "",
+            ) if part)
             frag = EvidenceFragment(
                 platform="Xiaoyuzhou",
-                title=f"[{podcast}] {title}",
+                title=f"[{podcast}] {title}" if podcast and title else title or podcast,
                 content=content,
-                url=ep.get("link") or audio_url or "https://www.xiaoyuzhoufm.com",
+                url=ep.get("link") or audio_url or "",
                 author=podcast,
                 published=published,
                 snippet=summary[:300] if summary else title,
@@ -656,7 +674,7 @@ class NativeNormalizer:
                 retrieval_mode=RetrievalMode.WEB_READER.value,
                 native_backend_id="xiaoyuzhou-public-web",
                 channel_name="xiaoyuzhou",
-                content_depth="METADATA" if item_type == "podcast" else "PARTIAL_CONTENT",
+                content_depth="PARTIAL_CONTENT" if item_type == "episode" and summary else "METADATA",
                 query_id=query_id,
                 query_class=query_class,
                 query_text=query_text,
@@ -739,9 +757,9 @@ class NativeNormalizer:
         """Normalize YouTube video comments extracted via yt-dlp."""
         fragments: List[EvidenceFragment] = []
         for c in raw_items:
-            author = c.get("author") or "Commenter"
+            author = c.get("author") or ""
             text = c.get("text") or ""
-            likes = c.get("like_count") or 0
+            likes = c.get("like_count")
             cid = c.get("id") or ""
             timestamp = c.get("timestamp")
             try:
@@ -751,16 +769,15 @@ class NativeNormalizer:
             except (TypeError, ValueError, OverflowError, OSError):
                 published = ""
 
-            content = f"YouTube Comment by {author} (Likes: {likes}):\n{text}"
             frag = EvidenceFragment(
                 platform="YouTube",
-                title=f"YouTube Comment by {author}",
-                content=content,
-                url=video_url or f"https://www.youtube.com/watch?v={cid}",
+                title=f"Comment by {author}" if author else "",
+                content=text,
+                url=video_url,
                 author=author,
                 published=published,
                 snippet=text[:300],
-                score=40.0 + min(likes, 50),
+                score=40.0 + min(likes, 50) if isinstance(likes, (int, float)) else 40.0,
                 retrieval_method="yt_dlp_comments",
                 retrieval_mode=RetrievalMode.DIRECT_API.value,
                 native_backend_id="yt-dlp",

@@ -388,47 +388,50 @@ class NativeRouter:
                 }
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     info = ydl.extract_info(url, download=False)
-                if info:
-                    title = info.get("title") or "YouTube Video"
+                if info and info.get("id") and (info.get("title") or info.get("description")):
+                    title = info.get("title") or ""
                     desc = info.get("description") or ""
-                    uploader = info.get("uploader") or info.get("channel") or "YouTube Channel"
-                    content = f"Title: {title}\nChannel: {uploader}\n\nDescription:\n{desc}"
-                    if len(content.strip()) > 30:
-                        return {
-                            "status": "success",
-                            "title": title,
-                            "content": content[:max_chars],
-                            "markdown": f"### {title}\n**Channel**: {uploader}\n\n{desc[:max_chars]}\n\n*Source: {url}*",
-                            "url": url,
-                            "char_count": len(content),
-                            "video_metadata": {
-                                "video_id": info.get("id"),
-                                "channel": uploader,
-                                "channel_id": info.get("channel_id"),
-                                "upload_date": info.get("upload_date"),
-                                "timestamp": info.get("timestamp"),
-                                "duration_seconds": info.get("duration"),
-                                "view_count": info.get("view_count"),
-                                "like_count": info.get("like_count"),
-                                "comment_count": info.get("comment_count"),
-                                "tags": (info.get("tags") or [])[:30],
-                                "categories": (info.get("categories") or [])[:10],
-                                "availability": info.get("availability"),
-                                "live_status": info.get("live_status"),
-                            },
-                            "backend": "yt-dlp",
-                            "fallback_used": False,
-                            "transport": {
-                                "endpoint": url,
-                                "network_observed_this_attempt": True,
-                                "http_status": None,
-                                "content_type": None,
-                                "raw_body_bytes": None,
-                                "network_latency_ms": None,
-                                "cache_status": "UNKNOWN",
-                                "protocol": "external_tool",
-                            },
+                    uploader = info.get("uploader") or info.get("channel") or ""
+                    content = "\n\n".join(part for part in (
+                        f"Title: {title}" if title else "",
+                        f"Channel: {uploader}" if uploader else "",
+                        f"Description:\n{desc}" if desc else "",
+                    ) if part)
+                    return {
+                        "status": "success",
+                        "title": title,
+                        "content": content[:max_chars],
+                        "markdown": content[:max_chars],
+                        "url": url,
+                        "char_count": len(content),
+                        "video_metadata": {
+                            "video_id": info.get("id"),
+                            "channel": uploader,
+                            "channel_id": info.get("channel_id"),
+                            "upload_date": info.get("upload_date"),
+                            "timestamp": info.get("timestamp"),
+                            "duration_seconds": info.get("duration"),
+                            "view_count": info.get("view_count"),
+                            "like_count": info.get("like_count"),
+                            "comment_count": info.get("comment_count"),
+                            "tags": (info.get("tags") or [])[:30],
+                            "categories": (info.get("categories") or [])[:10],
+                            "availability": info.get("availability"),
+                            "live_status": info.get("live_status"),
+                        },
+                        "backend": "yt-dlp",
+                        "fallback_used": False,
+                        "transport": {
+                            "endpoint": url,
+                            "network_observed_this_attempt": True,
+                            "http_status": None,
+                            "content_type": None,
+                            "raw_body_bytes": None,
+                            "network_latency_ms": None,
+                            "cache_status": "UNKNOWN",
+                            "protocol": "external_tool",
                         }
+                    }
             except Exception as e_yt:
                 logger.debug(f"[NativeRouter] yt-dlp read notice for {url}: {e_yt}")
                 # A recognized YouTube URL must not be reinterpreted as a
@@ -452,6 +455,18 @@ class NativeRouter:
                         "protocol": "external_tool",
                     },
                 }
+            return {
+                "status": "failed", "error": "YouTube identity or metadata not observed",
+                "url": url, "backend": "yt-dlp",
+                "transport": {
+                    "endpoint": url, "requested_endpoint": url,
+                    "redirect_chain": [url],
+                    "network_observed_this_attempt": True,
+                    "http_status": None, "content_type": None,
+                    "raw_body_bytes": None, "network_latency_ms": None,
+                    "cache_status": "UNKNOWN", "protocol": "external_tool",
+                },
+            }
 
         # 4. Standard Web Document: Delegated to modular web reader
         legacy_scraper = None

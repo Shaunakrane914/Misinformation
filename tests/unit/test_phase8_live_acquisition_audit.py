@@ -40,6 +40,11 @@ def test_phase8_classification_does_not_promote_discovery_or_feed_summaries():
     ) == "SYNDICATED_SUMMARY"
     assert classify_probe(
         telemetry=telemetry,
+        fragments=[_fragment("METADATA", "rss_feed")],
+        missing_is_not_found=False,
+    ) == "DIRECT_METADATA"
+    assert classify_probe(
+        telemetry=telemetry,
         fragments=[_fragment("VIDEO_METADATA")],
         missing_is_not_found=False,
     ) == "DIRECT_METADATA"

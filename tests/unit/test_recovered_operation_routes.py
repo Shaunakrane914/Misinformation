@@ -173,7 +173,8 @@ def test_v2ex_topic_retains_observed_edit_metadata_without_fake_author_or_count(
     }])[0]
     assert fragment.author == ""
     assert "Author: @" not in fragment.content
-    assert "Replies: Unknown" in fragment.content
+    assert "Replies: Unknown" not in fragment.content
+    assert fragment.content_depth == "PARTIAL_CONTENT"
     assert fragment.raw_metadata["replies"] is None
     assert fragment.raw_metadata["last_modified"] == 200
 
@@ -236,6 +237,36 @@ def test_youtube_read_failure_cannot_fall_through_to_generic_html(monkeypatch):
     assert result["status"] == "failed"
     assert result["backend"] == "yt-dlp"
     assert result["transport"]["network_observed_this_attempt"] is True
+
+
+def test_youtube_read_without_observed_identity_cannot_become_generic_html(monkeypatch):
+    router = NativeRouter()
+    monkeypatch.setattr(
+        "backend.infrastructure.acquisition.routing.router.is_safe_url",
+        lambda _url: (True, "public fixture"),
+    )
+
+    class EmptyYoutubeDL:
+        def __init__(self, _options):
+            pass
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *_args):
+            return False
+
+        def extract_info(self, *_args, **_kwargs):
+            return {"title": "Generic interstitial"}
+
+    monkeypatch.setitem(sys.modules, "yt_dlp", SimpleNamespace(YoutubeDL=EmptyYoutubeDL))
+    monkeypatch.setattr(
+        "backend.infrastructure.acquisition.routing.router.execute_web_read",
+        lambda *_args, **_kwargs: pytest.fail("generic reader must not receive a YouTube URL"),
+    )
+    result = router.execute_channel_read("https://www.youtube.com/watch?v=missing123")
+    assert result["status"] == "failed"
+    assert result["error"] == "YouTube identity or metadata not observed"
 
 
 def test_youtube_read_preserves_observed_metadata_without_inventing_dates(monkeypatch):

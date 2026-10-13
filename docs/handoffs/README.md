@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8B content decoding and field audit — 2026-10-13
+## Latest: Phase 8B normalization truth — 2026-10-13
+
+- [Normalization truth handoff](2026-10-13_PHASE8B_NORMALIZATION_TRUTH.md):
+  missing-field and content-depth corrections, ten-operation guarded live
+  re-probe, local gates, exact preceding CI checkpoint, and open Phase 8 gates.
+
+## Previous: Phase 8B content decoding and field audit — 2026-10-13
 
 - [HTTP decoding and field-audit handoff](2026-10-13_PHASE8B_CONTENT_DECODING_AND_FIELD_AUDIT.md):
   gzip false-success correction, bounded decoded content, live re-probes,

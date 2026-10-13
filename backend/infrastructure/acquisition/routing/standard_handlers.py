@@ -226,8 +226,8 @@ class StandardChannelHandlers:
             content = result.get("content", "")
             video_metadata = result.get("video_metadata") or {}
             fragments = [EvidenceFragment(
-                platform="YouTube", title=result.get("title", "YouTube video"),
-                content=content, url=query, author=video_metadata.get("channel") or "YouTube",
+                platform="YouTube", title=result.get("title") or "",
+                content=content, url=query, author=video_metadata.get("channel") or "",
                 published=video_metadata.get("upload_date") or "", snippet=content[:300],
                 score=55.0, retrieval_method="yt_dlp", channel_name="youtube",
                 retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
@@ -245,8 +245,8 @@ class StandardChannelHandlers:
             self._record_transport(telemetry, result)
             content = result.get("content", "")
             fragments = [] if not content else [EvidenceFragment(
-                platform="YouTube", title="YouTube transcript", content=content,
-                url=query, author="YouTube", snippet=content[:300], score=75.0,
+                platform="YouTube", title="", content=content,
+                url=query, author="", snippet=content[:300], score=75.0,
                 retrieval_method="yt_dlp_transcript", channel_name="youtube",
                 retrieval_mode=RetrievalMode.NATIVE_TOOL_CLI.value,
                 native_backend_id="yt-dlp", content_depth="VIDEO_TRANSCRIPT",

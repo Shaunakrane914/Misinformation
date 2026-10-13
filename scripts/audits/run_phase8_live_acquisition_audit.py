@@ -231,7 +231,7 @@ def classify_probe(
     modes = {str(getattr(item, "retrieval_mode", "") or "").lower() for item in fragments}
     if "INDEX_SNIPPET" in depths or "web_search_index" in modes:
         return "SEARCH_DISCOVERY_ONLY"
-    if "FEED_ENTRY_SUMMARY" in depths or "rss_feed" in modes:
+    if depths & {"FEED_ENTRY_SUMMARY", "FEED_ENTRY_CONTENT"}:
         return "SYNDICATED_SUMMARY"
     if depths and depths <= {"PROFILE_METADATA", "VIDEO_METADATA", "HEADLINE_ONLY", "METADATA"}:
         return "DIRECT_METADATA"

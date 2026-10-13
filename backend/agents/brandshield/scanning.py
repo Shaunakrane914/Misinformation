@@ -67,10 +67,11 @@ def search_brand_evidence(
 
     # Primary source domain markers
     brand_clean = re.sub(r'[^a-zA-Z0-9]', '', brand_name.lower())
-    primary_markers = [
-        f"{brand_clean}.com", f"investor.{brand_clean}", f"support.{brand_clean}",
-        "cpsc.gov", "ftc.gov", "fda.gov", "sec.gov", "bbb.org", "consumeraffairs.com"
-    ]
+    from backend.services.research.source_quality import is_utility_or_auth_url
+
+    regulatory_markers = ["cpsc.gov", "ftc.gov", "fda.gov", "sec.gov"]
+    corporate_markers = [f"{brand_clean}.com", f"investor.{brand_clean}", f"support.{brand_clean}"]
+    consumer_markers = ["bbb.org", "consumeraffairs.com"]
 
     for idx, f in enumerate(fragments):
         if hasattr(f, "canonical_url"):
@@ -125,10 +126,23 @@ def search_brand_evidence(
             sel_rea = None
 
         norm_url = url.lower()
-        if any(m in norm_url for m in primary_markers):
+        is_util, _ = is_utility_or_auth_url(norm_url)
+        if is_util:
+            is_primary = False
+            role = "UTILITY_PORTAL"
+            tier = "TIER_4_UTILITY"
+        elif any(m in norm_url for m in regulatory_markers):
             is_primary = True
             role = "PRIMARY"
             tier = "TIER_1_OFFICIAL_FILING"
+        elif any(m in norm_url for m in corporate_markers):
+            is_primary = True
+            role = "PRIMARY"
+            tier = "TIER_1_ORIGINAL_DOCUMENT"
+        elif any(m in norm_url for m in consumer_markers):
+            is_primary = False
+            role = "COMMUNITY"
+            tier = "TIER_3_INVESTOR_COMMUNITY"
 
         if group.startswith("syndicated_"):
             syndicated_count += 1

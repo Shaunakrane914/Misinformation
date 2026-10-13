@@ -283,10 +283,12 @@ class BrandShieldAgent:
         elif threats:
             inferred.append("Moderate brand threat vectors identified; manageable via routine monitoring and response.")
         else:
-            inferred.append("Brand security perimeter stable; no acute coordinated smear or counterfeit campaigns detected.")
+            inferred.append(f"No acute coordinated smear or counterfeit campaigns identified within sampled evidence ({len(evidence_items)} sources).")
 
         # 3. Uncertain / Unknown
         uncertain: List[str] = []
+        if not threats and evidence_items:
+            uncertain.append("Absence of counterfeit or impersonation reports in retrieved web sample does not establish non-existence across third-party marketplaces or unindexed channels.")
         unverified_rumors = [t for t in threats if t.get("threat_type") in ("UNVERIFIED_RUMOR", "RUMOR") or t.get("type") == "RUMOR"]
         for r in unverified_rumors:
             uncertain.append(f"Unsubstantiated public discourse: {r.get('description') or r.get('title', '')}")

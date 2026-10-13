@@ -82,7 +82,7 @@ def test_primary_source_tagging():
     service._assign_source_roles(fragments)
 
     assert fragments[0].raw_metadata.get("source_role") == "PRIMARY"
-    assert fragments[0].raw_metadata.get("source_tier") == "TIER_1_OFFICIAL_FILING"
+    assert fragments[0].raw_metadata.get("source_tier") == "TIER_1_ORIGINAL_DOCUMENT"
 
     assert fragments[1].raw_metadata.get("source_role") == "SECONDARY"
     assert fragments[1].raw_metadata.get("source_tier") == "TIER_2_FINANCIAL_PRESS"
@@ -92,6 +92,19 @@ def test_primary_source_tagging():
 
     assert fragments[3].raw_metadata.get("source_role") == "DIRECT_MEDIA"
     assert fragments[3].raw_metadata.get("source_tier") == "TIER_2_VIDEO_ANALYSIS"
+
+    # Verify official regulatory filings map to TIER_1_OFFICIAL_FILING
+    filing_frag = [
+        EvidenceFragment(
+            platform="web article",
+            title="Tata Motors SEC Form 6-K Submission",
+            url="https://www.sec.gov/edgar/data/123456/sample-6k.htm",
+            snippet="Official SEC regulatory submission."
+        )
+    ]
+    service._assign_source_roles(filing_frag)
+    assert filing_frag[0].raw_metadata.get("source_role") == "PRIMARY"
+    assert filing_frag[0].raw_metadata.get("source_tier") == "TIER_1_OFFICIAL_FILING"
 
 
 def test_syndication_clustering():

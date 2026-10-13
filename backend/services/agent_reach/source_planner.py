@@ -321,7 +321,7 @@ class SourcePlanningEngine:
             if "nist_cve" in allowed and (explicitly_allowed or agent.lower() in {"brandshield", "brandshield_agent"}) and any(k in claim.lower() for k in ("cve", "vulnerability", "flaw", "exploit", "zero-day", "0-day", "security")):
                 actions.append(self._action(1, "nist_cve", "search", target, "vulnerability_advisory", "DIRECT_METADATA", 1, "Verify official CVE security advisory in NIST NVD database.", True))
             if "arxiv" in allowed and (explicitly_allowed or agent.lower() in {"trending", "trending_agent"}) and any(k in claim.lower() for k in ("paper", "study", "research", "arxiv", "preprint", "algorithm", "model", "proof")):
-                actions.append(self._action(1, "arxiv", "search", target, "scientific_preprint", "DIRECT_METADATA", 1, "Verify scientific claims against arXiv preprint research.", True))
+                actions.append(self._action(1, "arxiv", "search", target, "scientific_preprint", "DIRECT_ABSTRACT", 1, "Verify scientific claims against arXiv preprint research.", True))
             actions.extend([
                 self._action(1, "web", "search", f"{target} official product announcement {claim}", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
                 self._action(1, "news", "search", f"{claim} hardware reporting", "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),

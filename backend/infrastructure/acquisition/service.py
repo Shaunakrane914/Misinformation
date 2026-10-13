@@ -919,12 +919,16 @@ class AgentReachService:
 
     def _assign_source_roles(self, fragments: List[EvidenceFragment]) -> None:
         """Tag fragments with their forensic source role (PRIMARY, SECONDARY, etc.)."""
-        primary_markers = [
-            "sec.gov", "bseindia.com", "nseindia.com", "investor", "ir.",
-            "tatamotors.com", "nvidia.com", "apple.com", "tesla.com",
-            "regulatory filing", "investor relations", "annual report",
-            "exchange filing", "press release", "official statement",
-            "form 10-k", "form 10-q", "sebi.gov"
+        from backend.services.research.source_quality import is_utility_or_auth_url
+
+        regulatory_markers = [
+            "sec.gov", "bseindia.com", "nseindia.com", "sebi.gov", "cpsc.gov",
+            "ftc.gov", "fda.gov", "form 10-k", "form 10-q", "form 8-k", "regulatory filing"
+        ]
+        corporate_markers = [
+            "investor.", "ir.", "tatamotors.com", "nvidia.com", "apple.com",
+            "tesla.com", "microsoft.com", "investor relations", "annual report",
+            "press release", "official statement"
         ]
         financial_press = [
             "reuters", "bloomberg", "moneycontrol", "economictimes",
@@ -939,9 +943,19 @@ class AgentReachService:
             title_lower = (f.title or "").lower()
             combined_text = f"{url_lower} {title_lower}"
 
-            if any(pm in combined_text for pm in primary_markers):
+            is_utility, _ = is_utility_or_auth_url(f.url or "")
+            if is_utility:
+                f.raw_metadata["source_role"] = "UTILITY_PORTAL"
+                f.raw_metadata["source_tier"] = "TIER_4_UTILITY"
+            elif any(rm in combined_text for rm in regulatory_markers):
                 f.raw_metadata["source_role"] = "PRIMARY"
                 f.raw_metadata["source_tier"] = "TIER_1_OFFICIAL_FILING"
+            elif any(cm in combined_text for cm in corporate_markers):
+                f.raw_metadata["source_role"] = "PRIMARY"
+                f.raw_metadata["source_tier"] = "TIER_1_ORIGINAL_DOCUMENT"
+            elif any(enc in url_lower for enc in ("wikipedia.org", "wikimedia.org", "britannica.com")):
+                f.raw_metadata["source_role"] = "AGGREGATOR"
+                f.raw_metadata["source_tier"] = "TIER_3_AGGREGATE"
             elif "github" in platform or "github" in method:
                 f.raw_metadata["source_role"] = "PRIMARY"
                 f.raw_metadata["source_tier"] = "TIER_1_CODE_METADATA"

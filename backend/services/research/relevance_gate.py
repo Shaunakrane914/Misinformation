@@ -100,6 +100,43 @@ class RelevanceGate:
         combined_lower = combined_text.lower()
         title_lower = title.lower()
 
+        # ── Stage 0: Hard Utility & Authentication Endpoint Rejection ──
+        from backend.services.research.source_quality import is_utility_or_auth_url, _matches_registry, ENCYCLOPEDIA_DOMAINS
+        is_utility, utility_type = is_utility_or_auth_url(url)
+        if is_utility:
+            return RelevanceAssessment(
+                evidence_id=e_id,
+                relevance_score=0.0,
+                relevance_class="REJECTED",
+                is_accepted=False,
+                entity_score=0.0,
+                intent_score=0.0,
+                source_quality_score=0.10,
+                matched_entities=[],
+                rejection_reason=f"Rejected utility/authentication endpoint ({utility_type}): contains zero substantive claim evidence",
+                rejection_stage="HARD_GATE_UTILITY_PORTAL",
+                title=title,
+                url=url
+            )
+
+        if domain == "trending" and url:
+            domain_name = urllib.parse.urlparse(url).netloc.lower()
+            if _matches_registry(domain_name, ENCYCLOPEDIA_DOMAINS):
+                return RelevanceAssessment(
+                    evidence_id=e_id,
+                    relevance_score=0.05,
+                    relevance_class="REJECTED",
+                    is_accepted=False,
+                    entity_score=0.50,
+                    intent_score=0.0,
+                    source_quality_score=0.40,
+                    matched_entities=[],
+                    rejection_reason="Static encyclopedia reference rejected: does not constitute real-time news or viral trend signal",
+                    rejection_stage="HARD_GATE_ERROR",
+                    title=title,
+                    url=url
+                )
+
         # ── Stage 1: Resolve Canonical Target Entity ──
         parsed_req = entity_resolver.parse_request(target_entity, domain=domain)
         target_profile = parsed_req.target_entity
@@ -342,6 +379,31 @@ class RelevanceGate:
                 rejected_audit.append(assessment.to_dict())
 
         return accepted, rejected_audit
+
+    def evaluate_source(
+        self,
+        url: str,
+        title: str = "",
+        content: str = "",
+        claim: str = "",
+        domain: str = "general",
+    ) -> Dict[str, Any]:
+        """Convenience method to evaluate a source directly by url, title, and content."""
+        item = {
+            "url": url,
+            "title": title,
+            "content": content,
+            "snippet": content[:200] if content else title,
+        }
+        res = self.evaluate_item(item, target_entity=claim, domain=domain, intent=claim)
+        return {
+            "relevance_score": res.relevance_score,
+            "relevance_class": res.relevance_class,
+            "is_accepted": res.is_accepted,
+            "rejection_stage": res.rejection_stage,
+            "rejection_reason": res.rejection_reason,
+            "assessment": res,
+        }
 
 
 # Global singleton

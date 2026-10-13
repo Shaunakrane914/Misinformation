@@ -2,7 +2,15 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8 Final Completion & Verification Handoff — 2026-10-14
+## Latest: Grounded Evidence Interpretation and Claim Relevance Hardening — 2026-10-14
+
+- [Evidence Grounding & Relevance Hardening](2026-10-14_EVIDENCE_GROUNDING_AND_RELEVANCE_HARDENING.md):
+  resolution of Microsoft audit evidence interpretation gaps; utility/auth portal
+  disambiguation eliminating fake legal and review threats; TIER_1_ORIGINAL_DOCUMENT
+  vs TIER_1_OFFICIAL_FILING calibration; multi-vector prompt injection defense;
+  1,118 / 1,118 tests passing; smoke and rollback compatibility verified.
+
+## Previous: Phase 8 Final Completion & Verification Handoff — 2026-10-14
 
 - [Phase 8 Final Completion](2026-10-14_PHASE8_FINAL_COMPLETION.md):
   comprehensive completion of Stages 8B-8F; 1,109/1,109 tests passing;

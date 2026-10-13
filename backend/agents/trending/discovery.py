@@ -106,16 +106,21 @@ def fetch_news(keyword: str, limit: int = 8) -> List[Dict[str, Any]]:
             profile=TRENDING_PROFILE,
         )
         frags = agent_reach_service.execute(req)
+        from backend.services.research.source_quality import is_utility_or_auth_url
         if frags:
             headlines: List[Dict[str, Any]] = []
-            for f in frags[:limit]:
+            for f in frags:
+                if is_utility_or_auth_url(f.url or "")[0]:
+                    continue
                 headlines.append({
                     "title": f.title or "News Headline",
                     "link": f.url or "Source URL unavailable",
-                    "published": f.published or datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT"),
+                    "published": f.published or "",
                     "source": f.author or f.platform.title(),
                     "summary": f.snippet or f.content[:240],
                 })
+                if len(headlines) >= limit:
+                    break
             return headlines
     except Exception as reach_err:
         logger.debug(f"[TrendingAgent] Shared fabric fetch_news notice: {reach_err}")
@@ -138,7 +143,7 @@ def fetch_news(keyword: str, limit: int = 8) -> List[Dict[str, Any]]:
             src_info = entry.get("source")
             source_title = src_info.get("title") if isinstance(src_info, dict) else "Google News"
             link = entry.get("link") or "Source URL unavailable"
-            pub = entry.get("published") or datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
+            pub = entry.get("published") or ""
             headlines.append({
                 "title": entry.get("title", "News Headline"),
                 "link": link,

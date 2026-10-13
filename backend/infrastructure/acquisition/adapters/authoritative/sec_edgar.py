@@ -23,7 +23,7 @@ from backend.services.agent_reach.channels import EvidenceFragment, RetrievalMod
 logger = logging.getLogger(__name__)
 
 # SEC requires specific User-Agent format: Sample Company Name AdminContact@domain.com
-SEC_USER_AGENT = "AegisProtocol MisinfoResearch/1.0 (compliance@aegisprotocol.internal)"
+SEC_USER_AGENT = "AegisProtocol MisinfoResearch compliance@aegisprotocol.org"
 
 # Known high-volume tickers to 10-digit zero-padded CIK
 TICKER_CIK_MAP: Dict[str, str] = {
@@ -192,7 +192,7 @@ def normalize_sec_items(
             channel_name="sec_edgar",
             requested_channel="sec_edgar",
             actual_retrieval_channel="sec_edgar",
-            content_depth="DIRECT_CONTENT",
+            content_depth="DIRECT_METADATA",
             query_id=query_id,
             query_class=query_class,
             query_text=query_text,
@@ -206,6 +206,7 @@ def normalize_sec_items(
                 "source_role": "PRIMARY",
                 "source_tier": "TIER_1_OFFICIAL_FILING",
                 "source_authority": "OFFICIAL_REGULATORY",
+                "content_depth_detail": "SUBMISSION_METADATA_NOT_XBRL_BODY",
                 "primary_source": True,
                 "reliability_score": 0.98,
                 "canonical_url": item["doc_url"],

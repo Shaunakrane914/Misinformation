@@ -117,14 +117,15 @@ class TrendingAgent:
     def _normalize_evidence(
         self,
         raw_items: List[Dict[str, Any]],
-        platform_name: str,
+        platform_name: str = "news",
         retrieval_method: str = "agent_reach"
     ) -> List[TrendEvidence]:
         """Convert raw channel results into normalized TrendEvidence objects."""
         normalized: List[TrendEvidence] = []
 
         for idx, item in enumerate(raw_items):
-            ev_id = f"EV-{platform_name.upper()[:2]}-{idx + 1:03d}"
+            resolved_platform = item.get("platform") or platform_name
+            ev_id = f"EV-{resolved_platform.upper()[:2]}-{idx + 1:03d}"
             title = item.get("title") or item.get("headline") or item.get("caption") or item.get("text") or "Trend signal"
             content = item.get("content") or item.get("snippet") or item.get("summary") or item.get("text") or title
             snippet = content[:200] + ("..." if len(content) > 200 else "")
@@ -137,36 +138,51 @@ class TrendingAgent:
                 url = raw_url
 
             # Determine source role and tier
-            source = str(item.get("source") or item.get("channel") or item.get("author") or platform_name.title())
+            source = str(item.get("source") or item.get("channel") or item.get("author") or resolved_platform.title())
             author = str(item.get("author") or item.get("channel") or source)
 
             source_role = "SECONDARY"
             source_tier = "TIER_2"
 
-            p_lower = platform_name.lower()
-            if p_lower in ["reddit", "twitter", "x"]:
-                source_role = "COMMUNITY"
-                source_tier = "TIER_4"
-            elif p_lower in ["youtube", "video"]:
-                source_role = "COMMENTARY"
-                source_tier = "TIER_3"
-            elif p_lower in ["instagram", "paparazzi"]:
-                source_role = "DIRECT_MEDIA"
-                source_tier = "TIER_3"
-            elif any(w in source.lower() for w in WIRE_SIGNATURES):
-                source_role = "PRIMARY"
-                source_tier = "TIER_1"
+            from backend.services.research.source_quality import is_utility_or_auth_url
+            url_lower = url.lower()
+            is_util = is_utility_or_auth_url(url_lower)
+
+            if is_util:
+                resolved_platform = "utility"
+                source_role = "UTILITY_PORTAL"
+                source_tier = "TIER_4_UTILITY"
+            elif any(enc in url_lower for enc in ("wikipedia.org", "wikimedia.org", "britannica.com")):
+                resolved_platform = "reference"
+                source_role = "AGGREGATOR"
+                source_tier = "TIER_3_AGGREGATE"
+            elif any(st in url_lower for st in ("apps.microsoft.com", "play.google.com", "/store", "/apps")):
+                resolved_platform = "store"
+                source_role = "UTILITY_PORTAL"
+                source_tier = "TIER_4_UTILITY"
+            else:
+                p_lower = resolved_platform.lower()
+                if p_lower in ["reddit", "twitter", "x"]:
+                    source_role = "COMMUNITY"
+                    source_tier = "TIER_4"
+                elif p_lower in ["youtube", "video"]:
+                    source_role = "COMMENTARY"
+                    source_tier = "TIER_3"
+                elif p_lower in ["instagram", "paparazzi"]:
+                    source_role = "DIRECT_MEDIA"
+                    source_tier = "TIER_3"
+                elif any(w in source.lower() for w in WIRE_SIGNATURES):
+                    source_role = "PRIMARY"
+                    source_tier = "TIER_1"
 
             # Check for wire syndication signature
             source_group_id = self._detect_syndication_group(title, source)
 
-            pub_time = item.get("published") or item.get("published_at") or item.get("taken_at")
-            if not pub_time:
-                pub_time = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+            pub_time = item.get("published") or item.get("published_at") or item.get("taken_at") or ""
 
             normalized.append(TrendEvidence(
                 evidence_id=ev_id,
-                platform=platform_name,
+                platform=resolved_platform,
                 source=source,
                 title=title[:220],
                 content=content[:1000],
@@ -304,13 +320,30 @@ class TrendingAgent:
             research_findings = research_res.findings
             research_contradictions = research_res.contradictions
 
+            from backend.services.research.source_quality import is_utility_or_auth_url
             for item in research_res.evidence:
+                url = item.canonical_url or "Source URL unavailable"
+                url_lower = url.lower()
                 ch = item.channel or "web"
-                ev_id = f"EV-{ch.upper()[:2]}-{len(all_raw_evidence) + 1:03d}"
                 role = item.source_role
                 tier = item.source_tier
+
+                is_util, _ = is_utility_or_auth_url(url_lower)
+                if is_util:
+                    ch = "utility"
+                    role = "UTILITY_PORTAL"
+                    tier = "TIER_4_UTILITY"
+                elif any(enc in url_lower for enc in ("wikipedia.org", "wikimedia.org", "britannica.com")):
+                    ch = "reference"
+                    role = "AGGREGATOR"
+                    tier = "TIER_3_AGGREGATE"
+                elif any(st in url_lower for st in ("apps.microsoft.com", "play.google.com", "/store", "/apps")):
+                    ch = "store"
+                    role = "UTILITY_PORTAL"
+                    tier = "TIER_4_UTILITY"
+
+                ev_id = f"EV-{ch.upper()[:2]}-{len(all_raw_evidence) + 1:03d}"
                 group = item.independence_group
-                url = item.canonical_url or "Source URL unavailable"
 
                 all_raw_evidence.append(TrendEvidence(
                     evidence_id=ev_id,

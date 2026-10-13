@@ -106,7 +106,7 @@ def test_sec_edgar_fetch_and_normalize():
     assert len(fragments) == 2
     frag10k = fragments[0]
     assert frag10k.platform == "sec_edgar"
-    assert frag10k.content_depth == "DIRECT_CONTENT"
+    assert frag10k.content_depth == "DIRECT_METADATA"
     assert frag10k.source_authority == "OFFICIAL_REGULATORY"
     assert "https://www.sec.gov/Archives/edgar/data/1045810/000104581024000029/nvda-20240128.htm" in frag10k.canonical_url
     assert frag10k.reliability_score == 0.98
@@ -239,7 +239,7 @@ def test_arxiv_fetch_and_normalize():
     assert len(fragments) == 1
     frag = fragments[0]
     assert frag.platform == "arxiv"
-    assert frag.content_depth == "DIRECT_CONTENT"
+    assert frag.content_depth == "DIRECT_ABSTRACT"
     assert frag.source_authority == "ACADEMIC_PREPRINT"
     assert frag.author == "Alice Turing, Bob Shannon"
     assert frag.reliability_score == 0.90

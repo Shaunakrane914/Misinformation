@@ -16,6 +16,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.agent_reach.planner import RetrievalPlanner
 from backend.services.research import ResearchRequest, research_engine
+from backend.services.research.source_quality import is_utility_or_auth_url, ENCYCLOPEDIA_DOMAINS
 
 logger = logging.getLogger(__name__)
 
@@ -48,14 +49,21 @@ def normalize_item(
     content = item.get("content", "").strip() or item.get("snippet", "").strip() or title
     snippet = item.get("snippet", "").strip() or content[:200]
     platform = item.get("platform") or default_platform
-    source = item.get("source") or extract_domain(url) or platform
+    domain = extract_domain(url).lower()
+    source = item.get("source") or domain or platform
     author = item.get("author") or item.get("channel") or "@user"
 
     raw_id_seed = f"{url}:{title}:{author}"
     evidence_id = f"ev_{hashlib.md5(raw_id_seed.encode()).hexdigest()[:10]}"
 
     source_lower = source.lower()
-    if any(d in source_lower for d in ["reuters", "bloomberg", "apnews", "bbc", "nytimes", "wsj", "thehindu", "indianexpress"]):
+    if is_utility_or_auth_url(url):
+        source_role = "UTILITY_PORTAL"
+        source_tier = "TIER_4_UTILITY"
+    elif any(ed in domain for ed in ENCYCLOPEDIA_DOMAINS):
+        source_role = "AGGREGATOR"
+        source_tier = "TIER_3_AGGREGATE"
+    elif any(d in source_lower for d in ["reuters", "bloomberg", "apnews", "bbc", "nytimes", "wsj", "thehindu", "indianexpress"]):
         source_tier = "TIER_1_MAINSTREAM_NEWS"
     elif platform in ("Twitter/X", "Reddit"):
         source_tier = "TIER_3_SOCIAL_FORUM"
@@ -64,7 +72,7 @@ def normalize_item(
     else:
         source_tier = "TIER_2_COMMUNITY_WEB"
 
-    published_at = item.get("published_at") or item.get("published") or item.get("date") or "Recent"
+    published_at = item.get("published_at") or item.get("published") or item.get("date") or ""
 
     return {
         "evidence_id": evidence_id,

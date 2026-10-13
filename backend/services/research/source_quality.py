@@ -7,7 +7,7 @@ and forensic tier, establishing deterministic quality scoring.
 
 import re
 import urllib.parse
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import (
     ContentDepth,
@@ -52,6 +52,10 @@ SOCIAL_DOMAINS: Set[str] = {
     "twitter.com", "x.com", "youtube.com", "youtu.be", "instagram.com", "tiktok.com"
 }
 
+ENCYCLOPEDIA_DOMAINS: Set[str] = {
+    "wikipedia.org", "wikimedia.org", "wiktionary.org", "britannica.com"
+}
+
 # Explicit identity knowledge, not a heuristic derived from a queried name.
 # Deployments can inject additional verified mappings into SourceQualityEngine.
 VERIFIED_CORPORATE_DOMAINS = {
@@ -70,6 +74,46 @@ def hostname_matches(host: str, trusted: str) -> bool:
 
 def _matches_registry(host: str, registry) -> bool:
     return any(hostname_matches(host, trusted) for trusted in registry)
+
+
+class UtilityUrlCheck(tuple):
+    """Dual-mode return type: supports both tuple unpacking (bool, str) and boolean evaluation."""
+    def __new__(cls, is_utility: bool, utility_type: str = ""):
+        return super().__new__(cls, (is_utility, utility_type))
+
+    def __bool__(self) -> bool:
+        return bool(self[0])
+
+
+def is_utility_or_auth_url(url: str) -> UtilityUrlCheck:
+    """
+    Check if URL represents an authentication portal, login screen, account manager,
+    or app storefront utility page.
+    """
+    if not url:
+        return UtilityUrlCheck(False, "")
+    try:
+        parsed = urllib.parse.urlsplit(url.lower())
+        host = (parsed.hostname or "").lower()
+        path = (parsed.path or "").lower()
+    except Exception:
+        return UtilityUrlCheck(False, "")
+
+    # Login / Auth hostnames
+    if any(host == p or host.startswith(p + ".") or f".{p}." in host for p in ("account", "myaccount", "login", "signin", "auth", "sso", "oauth", "identity", "accounts")):
+        return UtilityUrlCheck(True, "AUTH_PORTAL")
+
+    # Login / Auth paths
+    if any(seg in path for seg in ("/login", "/signin", "/sign-in", "/myaccount", "/auth", "/sso", "/oauth")):
+        return UtilityUrlCheck(True, "AUTH_PORTAL")
+
+    # Store / App Catalog hostnames & paths
+    if any(host == p or host.startswith(p + ".") for p in ("apps", "store", "play.google.com")):
+        return UtilityUrlCheck(True, "APP_CATALOG")
+    if path.startswith("/store") or path.startswith("/apps") or (path.startswith("/home") and any(h in host for h in ("microsoft.com", "apple.com", "google.com"))):
+        return UtilityUrlCheck(True, "APP_CATALOG")
+
+    return UtilityUrlCheck(False, "")
 
 
 class SourceQualityEngine:
@@ -110,20 +154,30 @@ class SourceQualityEngine:
         # Clean target name for matching official domains
         clean_target = re.sub(r'[^a-z0-9]', '', target_name.lower()) if target_name else ""
         
-        # 1. Detect Official Corporate Domain
+        # 1. Detect Utility / Auth / Store / Encyclopedia
+        is_utility = is_utility_or_auth_url(url)
+        is_encyclopedia = _matches_registry(domain, ENCYCLOPEDIA_DOMAINS)
+
+        # 2. Detect Official Corporate Domain
         is_official = _matches_registry(domain, self.official_domains.get(clean_target, set()))
 
-        # 2. Regulatory & Government Filings
+        # 3. Regulatory & Government Filings
         is_regulatory = _matches_registry(domain, REGULATORY_GOVERNMENT_DOMAINS)
         filing_markers = [
             "form 10-k", "form 10-q", "form 8-k", "regulatory filing", "exchange filing",
-            "annual report", "press release", "bse filing", "nse filing", "sec filing",
-            "court order", "consent decree", "official announcement"
+            "bse filing", "nse filing", "sec filing", "court order", "consent decree"
         ]
         has_filing_marker = any(fm in full_text for fm in filing_markers)
 
-        # 3. Assign Role, Tier, and Base Quality Score
-        if is_regulatory or (is_official and has_filing_marker):
+        # 4. Assign Role, Tier, and Base Quality Score
+        if is_utility:
+            item.source_role = SourceRole.UTILITY_PORTAL.value
+            item.source_tier = SourceTier.TIER_4_UTILITY.value
+            item.primary_source = False
+            item.official_source = False
+            base_score = 0.15
+
+        elif is_regulatory or (has_filing_marker and "sec.gov" in domain):
             item.source_role = SourceRole.PRIMARY.value
             item.source_tier = SourceTier.TIER_1_OFFICIAL_FILING.value
             item.primary_source = True
@@ -131,11 +185,19 @@ class SourceQualityEngine:
             base_score = 0.98
 
         elif is_official:
+            # Corporate domain without utility path: official corporate document, NOT a regulatory filing
             item.source_role = SourceRole.PRIMARY.value
             item.source_tier = SourceTier.TIER_1_ORIGINAL_DOCUMENT.value
             item.primary_source = True
             item.official_source = True
             base_score = 0.92
+
+        elif is_encyclopedia:
+            item.source_role = SourceRole.AGGREGATOR.value
+            item.source_tier = SourceTier.TIER_3_AGGREGATE.value
+            item.primary_source = False
+            item.official_source = False
+            base_score = 0.60
 
         elif hostname_matches(domain, "github.com"):
             item.source_role = SourceRole.PRIMARY.value
@@ -192,3 +254,24 @@ class SourceQualityEngine:
 
 
 source_quality_engine = SourceQualityEngine()
+
+
+def classify_and_score(url: str, target_name: str = "", title: str = "", content: str = "") -> Dict[str, Any]:
+    """Helper function to classify and score a URL/snippet directly."""
+    item = EvidenceItem(
+        id="probe",
+        title=title,
+        content=content,
+        snippet=content[:200] if content else title,
+        canonical_url=url,
+        channel="web",
+    )
+    res = source_quality_engine.classify_and_score(item, target_name=target_name)
+    return {
+        "source_role": SourceRole(res.source_role) if res.source_role in [e.value for e in SourceRole] else res.source_role,
+        "source_tier": SourceTier(res.source_tier) if res.source_tier in [e.value for e in SourceTier] else res.source_tier,
+        "primary_source": res.primary_source,
+        "official_source": res.official_source,
+        "quality_score": res.source_quality_score,
+        "item": res,
+    }

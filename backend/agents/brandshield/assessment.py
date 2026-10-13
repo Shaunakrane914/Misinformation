@@ -11,6 +11,7 @@ import re
 from typing import Any, Dict, List
 
 from backend.agents.brandshield.dossier import build_investigation_dossiers
+from backend.services.research.source_quality import is_utility_or_auth_url
 
 logger = logging.getLogger(__name__)
 
@@ -34,25 +35,41 @@ def screen_review_patterns(evidence_list: List[Dict[str, Any]]) -> Dict[str, Any
             "cluster_notes": "No reviews were retrieved by active search channels."
         }
 
-    # Filter signals that contain consumer review, feedback, rating, complaint, or seller discourse
-    review_keywords = ("review", "rating", "seller", "customer", "star", "feedback", "complaint", "order", "buyer", "refund", "delivered")
+    # Filter signals that contain genuine consumer review, feedback, rating, complaint, or seller discourse
+    from backend.services.research.source_quality import is_utility_or_auth_url
+
+    review_keywords = (
+        "customer review", "product review", "seller review", "review", "rating",
+        "star rating", "feedback", "complaint", "order", "buyer", "refund", "delivered",
+        "seller", "star", "purchase", "recommend"
+    )
+    boilerplate_terms = {"skip", "main", "content", "cookie", "cookies", "terms", "privacy", "sign", "account", "rights", "reserved", "help", "manage"}
+
     review_candidates = []
     for ev in evidence_list:
+        is_util, _ = is_utility_or_auth_url(ev.get("url", ""))
+        if is_util:
+            continue
+        # Skip official corporate root pages from consumer review detection
+        if ev.get("source_role") == "PRIMARY" and any(corp in (ev.get("url", "")).lower() for corp in ("microsoft.com", "apple.com", "tesla.com", "nvidia.com")):
+            continue
+
         text = f"{ev.get('title', '')} {ev.get('snippet', '')} {ev.get('content', '')}".strip()
         text_lower = text.lower()
+        if not any(k in text_lower for k in review_keywords):
+            continue
+
         text_clean = re.sub(r'[^a-z0-9\s]', ' ', text_lower)
         text_clean = " ".join(text_clean.split())
-        if any(k in text_lower for k in review_keywords) or len(text.split()) >= 15:
-            # Tokenize into normalized words (length >= 3)
-            words = set(re.findall(r'[a-z]{3,}', text_lower))
-            if len(words) >= 4:
-                review_candidates.append({
-                    "evidence_id": ev.get("evidence_id", ""),
-                    "platform": ev.get("platform", "Web"),
-                    "text": text,
-                    "text_clean": text_clean,
-                    "words": words
-                })
+        words = set(re.findall(r'[a-z]{3,}', text_lower)) - boilerplate_terms
+        if len(words) >= 4:
+            review_candidates.append({
+                "evidence_id": ev.get("evidence_id", ""),
+                "platform": ev.get("platform", "Web"),
+                "text": text,
+                "text_clean": text_clean,
+                "words": words
+            })
 
     signals_analyzed = len(review_candidates)
     if signals_analyzed < 2:
@@ -357,14 +374,22 @@ def heuristic_threat_synthesis(
     counterfeit_kw = ["counterfeit", "fake", "replica", "clone", "knockoff", "first copy", "unauthorized seller"]
     scam_kw = ["scam", "phishing", "fraud", "stolen", "hack", "giveaway", "free gift"]
     impersonation_kw = ["impersonat", "fake account", "fake handle", "spoofed", "fake support"]
-    safety_kw = ["safety", "recall", "defect", "fire", "exploded", "hazard", "battery", "toxic"]
-    legal_kw = ["lawsuit", "investigation", "probe", "regulator", "court", "fined", "sec", "ftc"]
+    safety_kw = ["safety hazard", "product recall", "battery fire", "explosion hazard", "toxic defect", "burn injury"]
+    legal_patterns = [
+        r"\blawsuit\b", r"\bsubpoena\b", r"\bantitrust\b", r"\bpatent infringement\b",
+        r"\bregulatory\s+(?:probe|inquiry|investigation|action|fine|penalty)\b",
+        r"\b(?:sec|ftc|doj)\s+(?:investigation|probe|lawsuit|inquiry|subpoena|enforcement|fine)\b",
+        r"\bclass action\b", r"\bcourt\s+order\b", r"\bfined\s+by\s+regulator\b"
+    ]
     complaint_kw = ["delay", "complaint", "broken", "worst", "bad service", "refund", "poor", "issue"]
 
     for idx, ev in enumerate(evidence_list):
-        full_text = f"{ev['title']} {ev['snippet']}".lower()
+        is_util, _ = is_utility_or_auth_url(ev.get("url", ""))
+        is_official = any(corp in (ev.get("url", "")).lower() for corp in ("microsoft.com", "apple.com", "tesla.com", "nvidia.com", "tatamotors.com", "nike.com"))
 
-        if any(k in full_text for k in counterfeit_kw):
+        full_text = f"{ev['title']} {ev.get('snippet', '')} {ev.get('content', '')}".lower()
+
+        if not is_official and any(k in full_text for k in counterfeit_kw):
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
                 "type": "COUNTERFEIT",
@@ -385,7 +410,7 @@ def heuristic_threat_synthesis(
                 "evidence_ids": [ev["evidence_id"]]
             })
 
-        elif any(k in full_text for k in scam_kw):
+        elif not is_official and any(k in full_text for k in scam_kw):
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
                 "type": "PHISHING_SCAM",
@@ -399,7 +424,7 @@ def heuristic_threat_synthesis(
                 "origin_evidence_id": ev["evidence_id"]
             })
 
-        elif any(k in full_text for k in impersonation_kw):
+        elif not is_official and any(k in full_text for k in impersonation_kw):
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
                 "type": "BRAND_IMPERSONATION",
@@ -419,7 +444,7 @@ def heuristic_threat_synthesis(
                 "evidence_ids": [ev["evidence_id"]]
             })
 
-        elif any(k in full_text for k in safety_kw):
+        elif not is_util and any(k in full_text for k in safety_kw):
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
                 "type": "PRODUCT_SAFETY",
@@ -440,15 +465,19 @@ def heuristic_threat_synthesis(
                 "evidence_ids": [ev["evidence_id"]]
             })
 
-        elif any(k in full_text for k in legal_kw):
+        elif any(re.search(pat, full_text) for pat in legal_patterns):
+            is_reg_authority = (
+                ev.get("source_tier") == "TIER_1_OFFICIAL_FILING" or
+                any(reg in (ev.get("url", "")).lower() for reg in ("sec.gov", "ftc.gov", "justice.gov", "cpsc.gov", "docket"))
+            )
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
                 "type": "REGULATORY_LEGAL",
                 "title": f"Regulatory or legal inquiry: {ev['title'][:55]}",
                 "summary": f"Legal proceedings or regulatory inquiries reported by {ev['platform']}.",
                 "severity": "medium",
-                "confidence": 0.90,
-                "status": "confirmed" if ev.get("source_role") == "PRIMARY" else "unverified",
+                "confidence": 0.90 if is_reg_authority else 0.70,
+                "status": "confirmed" if is_reg_authority else "unverified",
                 "platforms": [ev["platform"]],
                 "evidence_ids": [ev["evidence_id"]],
                 "origin_evidence_id": ev["evidence_id"]

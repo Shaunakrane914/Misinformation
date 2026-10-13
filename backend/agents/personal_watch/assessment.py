@@ -503,12 +503,17 @@ def assess_synthetic_media_allegations(
     debunk_claims = 0
     primary_authentic = 0
 
+    media_indicators = {"video", "audio", "recording", "broadcast", "speech", "interview", "podcast", "footage", "clip", "stream", "livestream", "youtube", "vimeo", "mp4", "mp3", "wav"}
+    media_count = 0
+
     for ev in evidence_list:
-        text = f"{ev.get('title', '')} {ev.get('snippet', '')} {ev.get('content', '')}".lower()
+        text = f"{ev.get('title', '')} {ev.get('snippet', '')} {ev.get('content', '')} {ev.get('url', '')}".lower()
         if any(w in text for w in deepfake_keywords):
             synthetic_claims += 1
         if any(w in text for w in debunk_keywords):
             debunk_claims += 1
+        if any(w in text for w in media_indicators):
+            media_count += 1
         if ev.get("source_role") in ("PRIMARY", "PRIMARY_OFFICIAL"):
             primary_authentic += 1
 
@@ -520,10 +525,14 @@ def assess_synthetic_media_allegations(
         epistemic = "SUSPICIOUS_UNVERIFIED_SYNTHETIC_CLAIM"
         conf = 0.70
         expl = "Multiple sources report viral synthetic media circulating without formal forensic verification or primary corroboration."
-    elif synthetic_claims == 0 and primary_authentic >= 1:
+    elif synthetic_claims == 0 and primary_authentic >= 1 and media_count >= 1:
         epistemic = "AUTHENTIC_VERIFIED_RECORDING"
         conf = 0.90
-        expl = "Media items corroborated by primary broadcast channels with no indicators of AI manipulation."
+        expl = "Sample media items corroborated by primary broadcast channels with no indicators of AI manipulation."
+    elif media_count == 0 and synthetic_claims == 0:
+        epistemic = "UNVERIFIED_IN_SAMPLE"
+        conf = 0.0
+        expl = "Evaluated sample contains no audio or video recording assets; cannot establish recording authenticity or absence of threats across the internet."
     else:
         epistemic = "UNVERIFIED"
         conf = 0.45
@@ -535,6 +544,7 @@ def assess_synthetic_media_allegations(
         "confidence": conf,
         "synthetic_mentions": synthetic_claims,
         "debunk_mentions": debunk_claims,
+        "media_assets_analyzed": media_count,
         "summary": expl
     }
 

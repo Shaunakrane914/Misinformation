@@ -84,11 +84,11 @@ OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
     ("xiaoyuzhou", "episodes"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
     ("xiaoyuzhou", "search"): {"SEARCH_INDEX_DISCOVERY"},
     ("sec_edgar", "search"): {"DIRECT_METADATA"},
-    ("sec_edgar", "read"): {"DIRECT_CONTENT"},
+    ("sec_edgar", "read"): {"DIRECT_METADATA"},
     ("nist_cve", "search"): {"DIRECT_METADATA"},
     ("nist_cve", "read"): {"DIRECT_CONTENT"},
-    ("arxiv", "search"): {"DIRECT_METADATA", "DIRECT_CONTENT"},
-    ("arxiv", "read"): {"DIRECT_CONTENT"},
+    ("arxiv", "search"): {"DIRECT_ABSTRACT", "DIRECT_METADATA"},
+    ("arxiv", "read"): {"DIRECT_ABSTRACT"},
     ("fact_check", "search"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
 }
 

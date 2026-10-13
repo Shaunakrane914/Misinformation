@@ -47,18 +47,28 @@ class BrandShieldExtractionEngine:
         impersonations: List[Dict[str, Any]] = []
         claims: List[Dict[str, Any]] = []
 
+        from backend.services.research.source_quality import is_utility_or_auth_url
+
         counterfeit_keywords = {"counterfeit", "replica", "fake", "knockoff", "1:1", "clone", "unauthorized seller", "first copy"}
         impersonation_keywords = {"fake account", "impersonat", "spoof", "phishing", "scam handle", "support scam"}
         safety_keywords = {"hazard", "explosion", "toxic", "poison", "recall", "catch fire", "burns", "injury"}
-        legal_keywords = {"lawsuit", "investigation", "subpoena", "sec", "doj", "ftc", "antitrust", "patent infringement"}
+        legal_patterns = [
+            r"\blawsuit\b", r"\bsubpoena\b", r"\bantitrust\b", r"\bpatent infringement\b",
+            r"\bregulatory\s+(?:probe|inquiry|investigation|action|fine|penalty)\b",
+            r"\b(?:sec|ftc|doj)\s+(?:investigation|probe|lawsuit|inquiry|subpoena|enforcement|fine)\b",
+            r"\bclass action\b", r"\bcourt\s+order\b", r"\bfined\s+by\s+regulator\b"
+        ]
         rumor_keywords = {"rumor", "allegedly", "claims that", "unconfirmed", "leak", "insider says"}
 
         for idx, frag in enumerate(fragments, start=1):
+            is_util, _ = is_utility_or_auth_url(frag.url or "")
+            is_official = any(corp in (frag.url or "").lower() for corp in ("microsoft.com", "apple.com", "tesla.com", "nvidia.com", "tatamotors.com", "nike.com"))
+
             text_lower = f"{frag.title} {frag.snippet} {frag.content}".lower()
             ev_id = frag.evidence_id or f"ev_{idx}"
 
             # 1. Counterfeit Detection
-            if any(kw in text_lower for kw in counterfeit_keywords):
+            if not is_official and any(kw in text_lower for kw in counterfeit_keywords):
                 c_id = f"CF-{idx:03d}"
                 counterfeits.append({
                     "id": c_id,
@@ -83,7 +93,7 @@ class BrandShieldExtractionEngine:
                 )
 
             # 2. Impersonation & Phishing Detection
-            if any(kw in text_lower for kw in impersonation_keywords):
+            if not is_official and any(kw in text_lower for kw in impersonation_keywords):
                 imp_id = f"IMP-{idx:03d}"
                 impersonations.append({
                     "id": imp_id,
@@ -108,7 +118,7 @@ class BrandShieldExtractionEngine:
                 )
 
             # 3. Product Safety Allegations
-            if any(kw in text_lower for kw in safety_keywords):
+            if not is_util and any(kw in text_lower for kw in safety_keywords):
                 threats.append(
                     BrandThreatRecord(
                         threat_id=f"TH-SAF-{idx:03d}",
@@ -124,7 +134,7 @@ class BrandShieldExtractionEngine:
                 )
 
             # 4. Regulatory / Legal Signals
-            if any(kw in text_lower for kw in legal_keywords):
+            if not is_util and any(re.search(pat, text_lower) for pat in legal_patterns):
                 threats.append(
                     BrandThreatRecord(
                         threat_id=f"TH-LEG-{idx:03d}",
@@ -140,7 +150,7 @@ class BrandShieldExtractionEngine:
                 )
 
             # 5. Extract unverified public claims
-            if any(kw in text_lower for kw in rumor_keywords):
+            if not is_util and any(kw in text_lower for kw in rumor_keywords):
                 claims.append({
                     "claim_id": f"CLM-{idx:03d}",
                     "statement": frag.title,
@@ -164,13 +174,36 @@ class BrandShieldExtractionEngine:
         )
 
     def _screen_review_patterns(self, fragments: List[EvidenceFragment]) -> Dict[str, Any]:
-        """Pairwise Jaccard and n-gram overlap check across fragment texts."""
+        """Pairwise Jaccard and n-gram overlap check across genuine review signals."""
+        from backend.services.research.source_quality import is_utility_or_auth_url
+
+        review_kw = ("review", "rating", "seller", "customer", "star", "feedback", "complaint", "order", "buyer", "refund", "delivered")
+        boilerplate_terms = {"skip", "main", "content", "cookie", "cookies", "terms", "privacy", "sign", "account", "rights", "reserved", "help"}
+
         candidates = []
         for f in fragments:
+            is_util, _ = is_utility_or_auth_url(f.url or "")
+            if is_util:
+                continue
+
             text = f"{f.title} {f.snippet}".strip()
-            if len(text) > 20:
-                words = set(re.findall(r"\b[a-z]{3,}\b", text.lower()))
+            text_lower = text.lower()
+            if not any(k in text_lower for k in review_kw):
+                continue
+
+            words = set(re.findall(r"\b[a-z]{3,}\b", text_lower)) - boilerplate_terms
+            if len(words) >= 4:
                 candidates.append({"evidence_id": f.evidence_id, "text": text, "words": words})
+
+        if len(candidates) < 2:
+            return {
+                "status": "INSUFFICIENT_EVIDENCE",
+                "review_manipulation_detected": False,
+                "assessment": f"Insufficient review signals retrieved ({len(candidates)} signals). At least 2 candidate texts required for pairwise screening.",
+                "near_duplicate_clusters": 0,
+                "signals_analyzed": len(candidates),
+                "duplicate_pairs": [],
+            }
 
         dup_pairs: List[Tuple[str, str, float]] = []
         n = len(candidates)
@@ -191,15 +224,17 @@ class BrandShieldExtractionEngine:
             return {
                 "status": "SUSPICIOUS_PATTERNS_DETECTED",
                 "review_manipulation_detected": True,
+                "assessment": f"Review-pattern screening completed: {len(dup_pairs)} near-duplicate text pairs identified across {len(candidates)} review signals.",
                 "near_duplicate_clusters": len(dup_pairs),
-                "signals_analyzed": len(fragments),
+                "signals_analyzed": len(candidates),
                 "duplicate_pairs": [{"ev1": p[0], "ev2": p[1], "similarity": p[2]} for p in dup_pairs[:5]],
             }
         return {
             "status": "SCREENED_NO_REPETITION_FOUND",
             "review_manipulation_detected": False,
+            "assessment": f"Screened {len(candidates)} review signals: no duplicate phrasing patterns detected.",
             "near_duplicate_clusters": 0,
-            "signals_analyzed": len(fragments),
+            "signals_analyzed": len(candidates),
             "duplicate_pairs": [],
         }
 

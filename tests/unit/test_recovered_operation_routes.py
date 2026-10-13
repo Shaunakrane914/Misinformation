@@ -316,6 +316,17 @@ def test_web_read_does_not_fabricate_date_or_jina_backend(monkeypatch):
     assert fragments[0].raw_metadata["page_metadata"]["declared_canonical_verified"] is False
 
 
+def test_web_read_does_not_fabricate_missing_title(monkeypatch):
+    router = NativeRouter()
+    url = "https://example.com/untitled"
+    monkeypatch.setattr(router, "execute_channel_read", lambda *_args, **_kwargs: {
+        "status": "success", "title": "", "content": "Observed body text " * 20,
+        "backend": "native_http_reader", "transport": _transport(url),
+    })
+    fragments, _ = router.execute_channel_query("web", url, operation="read")
+    assert fragments[0].title == ""
+
+
 def test_rss_read_preserves_syndicated_depth_and_provenance(monkeypatch):
     router = NativeRouter()
     monkeypatch.setattr(router.executor, "execute_rss_read", lambda *_args, **_kwargs: {

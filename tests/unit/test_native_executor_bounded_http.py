@@ -351,11 +351,26 @@ def test_web_reader_preserves_declared_metadata_as_unverified(monkeypatch, execu
     assert raw["page_metadata"]["published"] == "2026-10-10T12:00:00Z"
     assert raw["page_metadata"]["headings"] == ["Major correction"]
     assert raw["page_metadata"]["declared_canonical_verified"] is False
+    assert raw["page_metadata"]["content_scope"] == "article"
+    assert raw["page_metadata"]["observed_links"] == []
     view = jina.execute_web_read("https://example.com/article", executor=executor)
     assert view["title"] == "Observed title"
     assert view["author"] == "Editorial desk"
     assert view["published"] == "2026-10-10T12:00:00Z"
     assert view["backend"] == "native_http_reader"
+
+
+def test_web_reader_does_not_invent_title_or_declared_canonical(monkeypatch, executor, public_dns):
+    html = "<html><body><main>" + ("Observed body text. " * 12) + "</main></body></html>"
+    monkeypatch.setattr(
+        "backend.services.agent_reach.native.executor.fetch_public_http",
+        lambda url, **_kwargs: _response(html, url, "text/html"),
+    )
+    raw = executor.execute_web_read("https://example.com/article")
+    assert raw["page_metadata"]["title"] == ""
+    assert "declared_canonical_verified" not in raw["page_metadata"]
+    view = jina.execute_web_read("https://example.com/article", executor=executor)
+    assert view["title"] == ""
 
 
 def test_web_reader_discards_challenge_page_metadata_on_reader_fallback(monkeypatch, executor, public_dns):

@@ -9,7 +9,6 @@ Enforces strict SSRF defense before network transmission.
 
 import hashlib
 import logging
-import urllib.parse
 from typing import Any, Dict, Optional
 
 from backend.infrastructure.acquisition.network.http import (
@@ -51,10 +50,9 @@ def read_article_via_jina(url: str, timeout: float = 5.0) -> Optional[Dict[str, 
         if any(ord(character) < 32 and character not in "\t\r\n" for character in content):
             raise ValueError("Reader response contains binary control characters")
         if content and len(content.strip()) > 30:
-            netloc = urllib.parse.urlparse(url).netloc
             return {
                 "status": "success",
-                "title": f"Page from {netloc}",
+                "title": "",
                 "content": content,
                 "markdown": content,
                 "url": url,
@@ -115,11 +113,10 @@ def execute_web_read(
             res = executor.execute_web_read(url)
             content = res.get("content", "")
             if content and len(content.strip()) > 50:
-                netloc = urllib.parse.urlparse(url).netloc
                 page_metadata = res.get("page_metadata") or {}
                 return {
                     "status": "success",
-                    "title": page_metadata.get("title") or f"Page from {netloc}",
+                    "title": page_metadata.get("title") or "",
                     "author": page_metadata.get("author") or "",
                     "published": page_metadata.get("published") or "",
                     "page_metadata": page_metadata,

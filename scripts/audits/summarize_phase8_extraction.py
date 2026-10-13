@@ -34,7 +34,12 @@ IMPORTANT_FIELDS = {
     "v2ex.search": ("title", "canonical_url", "author", "metadata.topic_id", "metadata.node"),
     "v2ex.topic": ("title", "canonical_url", "author", "metadata.topic_id", "content"),
     "v2ex.replies": ("canonical_url", "author", "content", "metadata.reply_id", "metadata.topic_id"),
-    "web.read": ("title", "canonical_url", "content", "page.title", "page.headings"),
+    "web.read": (
+        "title", "canonical_url", "content", "page.title", "page.headings",
+        "page.observed_links", "page.tables", "page.quotations",
+        "page.media_captions", "page.potential_corrections",
+        "page.declared_structured_data",
+    ),
     "rss.read": ("title", "canonical_url", "published", "metadata.guid", "metadata.feed_title"),
     "xiaoyuzhou.podcast": ("title", "canonical_url", "metadata.item_type", "metadata.episode_count"),
     "xiaoyuzhou.episodes": ("title", "canonical_url", "published", "content", "metadata.duration"),

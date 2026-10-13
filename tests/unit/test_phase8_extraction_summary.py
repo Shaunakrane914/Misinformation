@@ -46,6 +46,9 @@ def test_summary_prefers_newest_matching_probe_and_refuses_overwrite(tmp_path):
         "populated": 1, "measured_samples": 1, "population_rate": 1.0,
     }
     assert row["important_field_population"]["author"]["population_rate"] == 0.0
+    assert report["operations"]["web.read"]["important_field_population"]["page.tables"] == {
+        "populated": 0, "measured_samples": 0, "population_rate": None,
+    }
     assert len(report["operations"]) == 16
     second = subprocess.run(command, cwd=root, text=True, capture_output=True, check=False)
     assert second.returncode != 0

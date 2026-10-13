@@ -28,6 +28,7 @@ from backend.infrastructure.acquisition.network.http import (
     decode_bounded_http_body,
     fetch_public_http,
 )
+from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_observed_page_details
 from backend.services.agent_reach.native.errors import (
     AuthRequiredError,
     BackendExecutionError,
@@ -170,12 +171,14 @@ class NativeExecutor:
                         str(canonical_tag.get("href") or "")[:1000]
                         if canonical_tag else ""
                     ),
-                    "declared_canonical_verified": False,
                     "headings": [
                         heading.get_text(" ", strip=True)[:300]
                         for heading in soup.find_all(("h1", "h2", "h3"), limit=20)
                     ],
                 }
+                if page_metadata["declared_canonical_url"]:
+                    page_metadata["declared_canonical_verified"] = False
+                page_metadata.update(extract_observed_page_details(soup, response.endpoint))
                 for tag in soup(("script", "style", "noscript")):
                     tag.decompose()
                 markdown_text = " ".join(soup.stripped_strings)

@@ -8,7 +8,7 @@ prove connection and content depth. The
 prove the changed paths with live traffic from the isolated checkout. Earlier
 spot-checks loaded the editable-installed outer checkout and are retained but
 **not** used as isolated-branch proof. The
-[`richness_summary_v6.json`](../../artifacts/phase8_extraction_spotchecks/2026-10-13_02-55-36Z/richness_summary_v6.json)
+[`richness_summary_v9.json`](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-32-27Z/richness_summary_v9.json)
 measures normalized samples and bounded parsed adapter-item key names across
 all 16 operations; it cannot infer a complete raw provider schema. The 17:37Z
 guarded live pass sampled one common target per operation, with 16/16 returning
@@ -41,7 +41,7 @@ An empty value must remain empty; no fabricated dates, counts, authors or text.
 | `v2ex.search` | Public node lookup topic fields as above. | This is **node lookup**, not arbitrary full-text search; no general text-search claim or pagination. |
 | `v2ex.topic` | Explicit topic ID, title, body when present, author, node, created epoch, replies, URL. | Replies require `v2ex.replies`; edits and related links not normalized. |
 | `v2ex.replies` | Explicit topic reply text, author, reply ID, topic ID, created epoch, observed last-modified and thanks fields. Sampled replies are sorted by observed creation epoch; fixture verifies reply IDs are never mistaken for topic URLs. | Complete discussion pagination and deleted history unverified; missing timestamps retain original sample order. |
-| `web.read` | Observed final endpoint, page title, explicitly declared author/publication/modification metadata and headings when present; bounded decoded text (4,000 normalized characters in route). A publisher-declared canonical link is retained as **unverified**, not accepted as source identity. | Tables/citations, corrections, schema.org data and full article extent are missing or unverified. The tested pages did not expose an observed author or publication date; both stayed empty. Pre-fix common-page text was invalid compressed-byte gibberish and is superseded. |
+| `web.read` | Observed final endpoint, page title, explicitly declared author/publication/modification metadata, headings, bounded article/main links, table cells, quotations, media captions, potential correction notices and selected JSON-LD declaration fields when present. Page text is capped at 4,000 normalized characters in the route. Publisher-declared canonical/JSON-LD fields and linked URLs are **unverified**; links are not followed automatically. | The two new live pages populated observed links (2/2) and selected declared structured data (1/2); tables, quotations, captions and correction notices were absent (0/2), though fixtures exercise extraction. Full article extent, source-link credibility and correction authenticity remain unverified. The tested pages did not expose an observed author/publication date. Pre-fix common-page text was invalid compressed-byte gibberish and is superseded. |
 | `rss.read` | Feed/entry title, link, GUID, observed published/updated dates, author/publisher, categories, summary, content block if provided, enclosure references. | Linked article body is **not** fetched. Feed continuation and completeness vary. Full feed content is `FEED_ENTRY_CONTENT`, still syndicated rather than a direct linked article. |
 | `xiaoyuzhou.podcast` | Official public podcast identity, description, author, episode/subscription counts, latest episode date and URL when embedded page data supplies them. | Private analytics, restricted metadata and full episode archive unverified; text search is disclosed external discovery, not direct platform data. |
 | `xiaoyuzhou.episodes` | Official public episode title, show notes, date, duration, play/comment counts, audio URL, transcript-availability flag when exposed. | Audio semantics, transcript text, complete pagination, referenced-source extraction and comment discussion not implemented. |
@@ -50,7 +50,7 @@ An empty value must remain empty; no fabricated dates, counts, authors or text.
 
 The summarizer selects the latest record for each operation/scenario pair from
 the Phase 8A consolidated probe, the corrected 16-operation spot-check and the
-web follow-up. There are three
+newest web follow-up. There are three
 scenarios per operation; edge-case failures are intentionally in the
 denominator. Character counts are **normalized relevant text per successful
 item**, not raw body size or a completeness percentage.
@@ -69,7 +69,7 @@ item**, not raw body size or a completeness percentage.
 | `v2ex.search` | 2/3 | 494 | 492 | Node topic body/snippet |
 | `v2ex.topic` | 2/3 | 896 | 223 | Mixed topic body/snippet |
 | `v2ex.replies` | 2/3 | 66 | 675 | Reply body |
-| `web.read` | 2/3 | 4,000 | 586 | Capped page text |
+| `web.read` | 2/3 | 4,000 | 929 | Capped page text |
 | `rss.read` | 2/3 | 250 | 290 | Summary or full **feed entry** |
 | `xiaoyuzhou.podcast` | 2/3 | 150 | 1,597 | Podcast metadata |
 | `xiaoyuzhou.episodes` | 1/3 | 953 | 2,057 | Bounded episode notes |
@@ -92,8 +92,10 @@ post-change metrics are required before claiming date-completeness gains.
 2. GitHub permits bounded explicit page 1–5, but continuation completeness
    and marginal request cost are not measured. Other collection routes remain
    first-page or bounded-sample only.
-3. Web article tables/citations/corrections/structured data, multi-track
-   caption context and discussion completeness remain unextracted or unverified.
+3. Web article links/tables/quotations/captions/possible corrections/selected
+   JSON-LD are now bounded observations, but two live pages do not prove field
+   coverage or the truth of publisher declarations. Multi-track caption
+   context and discussion completeness remain unextracted or unverified.
 4. The v6 summary now measures a declared minimum important-field set for all
    16 operations, including populated vs empty vs not observed. This is a
    small live sample and **not** a provider completeness score. Expand fixture

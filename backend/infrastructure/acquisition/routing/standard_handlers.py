@@ -409,7 +409,7 @@ class StandardChannelHandlers:
         content = result.get("markdown", "") or result.get("content", "")
         backend_id = result.get("backend") or "jina-reader"
         fragment = EvidenceFragment(
-            platform="Web", title=result.get("title") or f"Page from {urllib.parse.urlparse(target_url).netloc}",
+            platform="Web", title=result.get("title") or "",
             content=content, url=target_url, author=result.get("author") or "",
             published=result.get("published") or "", snippet=content[:300], score=85.0,
             retrieval_method=backend_id,

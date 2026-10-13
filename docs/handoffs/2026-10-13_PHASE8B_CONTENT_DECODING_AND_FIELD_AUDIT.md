@@ -98,3 +98,39 @@ transcript or private reasoning trace.
 
 Commit/push state: **pending at document creation**. Check `git log`, branch
 and hosted CI for the actual final state; do not infer it from this line.
+
+## Checkpoint outcome and later web-detail work
+
+The decoding/field-audit checkpoint was committed and pushed as
+`a9a59585c6764d6e97c0f243639ce50eed44d6c4`. Hosted
+[run 38340023007](https://github.com/Shaunakrane914/Misinformation/actions/runs/38340023007)
+completed successfully for that exact SHA: fatal lint/frontend contracts,
+fast unit/chaos/security on Python 3.11/3.12/3.13, and the full offline
+suite with release/persistence validators. This validates **that checkpoint**,
+not later uncommitted edits.
+
+Subsequently, bounded HTML article/main observations were added in
+[page_extraction.py](../../backend/infrastructure/acquisition/adapters/web/page_extraction.py):
+links (unverified, not followed), table cells, blockquotes, figcaptions,
+possible correction notices and selected publisher-declared JSON-LD fields.
+Two focused web live probes at
+[03:08Z](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-08-05Z/)
+observed links on both pages and a JSON-LD declaration on one; absent optional
+fields remain empty. The [v8 summary](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-08-05Z/richness_summary_v8.json)
+records important-field population for these fields. One initial focused
+test run failed because a fixture's `<article>` was incorrectly expected to
+be a body fallback; after correcting the assertion, the focused 24-test run
+passed. The final guarded re-probe at
+[03:32Z](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-32-27Z/)
+and [v9 summary](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-32-27Z/richness_summary_v9.json)
+supersede the 03:08Z field-count view after eliminating synthetic fallback
+titles and absent-canonical flags. Both sampled pages still had readable text
+and observed links; only one had selected JSON-LD fields.
+
+For these **later web-detail edits**, a subsequent full offline run reported
+1,016 passed in 76.35s and the fast unit/chaos/security run reported 820
+passed in 34.80s, both exit 0. Fatal flake8 found 0, all three Node frontend
+scripts passed, frozen hashes verified, offline release smoke passed and
+isolated rollback exited 0 with historical archive `NOT_VERIFIED`. Hosted CI
+for these later edits is **not yet verified** at this handoff update. Do not
+treat the earlier `a9a5958` hosted run as covering them.

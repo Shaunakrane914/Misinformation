@@ -18,10 +18,12 @@ post-commit or hosted-CI result.
 | [02:49:51Z](2026-10-13_02-49-51Z/) | Important-field audit before HTTP decoding fix | The web common page was **falsely classified as usable**: its bounded excerpt contained compressed bytes decoded as text. Keep this ignored local run as negative evidence; do not cite it for content quality. |
 | [02:53:55Z](2026-10-13_02-53-55Z/) | Guarded 16-operation common-case re-probe after decoding fix | All 16 classified usable; web common page title/headings were observed and its excerpt contained no replacement/control characters. The run was on a dirty worktree, not a post-commit or hosted-CI proof. |
 | [02:55:36Z](2026-10-13_02-55-36Z/) | Guarded web common/high-content re-probe | Both web pages yielded readable bounded content, observed titles/headings and no replacement/control characters in the retained excerpts. This filtered run is **not** a 16-operation gate pass. |
+| [03:08:05Z](2026-10-13_03-08-05Z/) | Guarded bounded page-detail re-probe | Both pages yielded readable titles/headings and observed page links; one exposed publisher-declared JSON-LD. No table, quotation, media caption or correction notice was observed on these two targets. All such fields are page observations, not verified source claims. |
+| [03:32:27Z](2026-10-13_03-32-27Z/) | Final guarded page-detail re-probe after title/canonical correction | Both pages yielded readable title/headings and observed links; the common page no longer records a nonexistent canonical-verification field. The final important-field summary is v9. This remains a dirty-worktree, filtered pre-commit run. |
 
-The current [`richness_summary_v6.json`](2026-10-13_02-55-36Z/richness_summary_v6.json)
+The current [`richness_summary_v9.json`](2026-10-13_03-32-27Z/richness_summary_v9.json)
 selects the latest matching operation/scenario from the Phase 8A artifact,
-guarded 16-operation re-probe and corrected web follow-up. It scores observed
+guarded 16-operation re-probe and newest web follow-up. It scores observed
 normalized sample and bounded parsed adapter-item field names, **not** raw-provider
 schema completeness. Older samples that did not record a field are marked
 *unobserved*, not treated as empty. The old v3 summary remains historically

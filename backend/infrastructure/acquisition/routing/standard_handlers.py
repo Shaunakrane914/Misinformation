@@ -784,3 +784,70 @@ class StandardChannelHandlers:
             status="SUCCESS" if fragments else "DEGRADED",
         )
 
+    def _execute_sec_edgar(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
+        from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import (
+            fetch_sec_submissions, normalize_sec_items,
+        )
+        form_filter = kwargs.get("form") or kwargs.get("form_filter")
+        result = fetch_sec_submissions(query, limit=limit, form_filter=form_filter)
+        self._record_transport(telemetry, result)
+        items = result.get("items", [])
+        if not items:
+            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else "FAILED")
+            return []
+        fragments = normalize_sec_items(items, query_id=query_id, query_class=query_class, query_text=query_text)
+        self._attach_transport(fragments, result.get("transport"))
+        self.router._tag_fragments(fragments, "sec_edgar", "sec_edgar", RetrievalMode.DIRECT_API.value, "sec-edgar-data-api", None, False)
+        telemetry.update(status="SUCCESS", backend="sec-edgar-data-api")
+        return fragments
+
+    def _execute_nist_cve(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
+        from backend.infrastructure.acquisition.adapters.authoritative.nist_nvd import (
+            fetch_nist_cve, normalize_nist_items,
+        )
+        result = fetch_nist_cve(query, limit=limit)
+        self._record_transport(telemetry, result)
+        items = result.get("items", [])
+        if not items:
+            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else "FAILED")
+            return []
+        fragments = normalize_nist_items(items, query_id=query_id, query_class=query_class, query_text=query_text)
+        self._attach_transport(fragments, result.get("transport"))
+        self.router._tag_fragments(fragments, "nist_cve", "nist_cve", RetrievalMode.DIRECT_API.value, "nist-nvd-cve-api", None, False)
+        telemetry.update(status="SUCCESS", backend="nist-nvd-cve-api")
+        return fragments
+
+    def _execute_arxiv(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
+        from backend.infrastructure.acquisition.adapters.authoritative.arxiv_preprints import (
+            fetch_arxiv_preprints, normalize_arxiv_items,
+        )
+        result = fetch_arxiv_preprints(query, limit=limit)
+        self._record_transport(telemetry, result)
+        items = result.get("items", [])
+        if not items:
+            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else "FAILED")
+            return []
+        fragments = normalize_arxiv_items(items, query_id=query_id, query_class=query_class, query_text=query_text)
+        self._attach_transport(fragments, result.get("transport"))
+        self.router._tag_fragments(fragments, "arxiv", "arxiv", RetrievalMode.DIRECT_API.value, "arxiv-export-api", None, False)
+        telemetry.update(status="SUCCESS", backend="arxiv-export-api")
+        return fragments
+
+    def _execute_fact_check(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
+        from backend.infrastructure.acquisition.adapters.authoritative.fact_check import (
+            fetch_fact_check_claims, normalize_fact_check_items,
+        )
+        api_key = kwargs.get("api_key")
+        result = fetch_fact_check_claims(query, limit=limit, api_key=api_key)
+        self._record_transport(telemetry, result)
+        items = result.get("items", [])
+        if not items:
+            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else "FAILED")
+            return []
+        fragments = normalize_fact_check_items(items, query_id=query_id, query_class=query_class, query_text=query_text)
+        self._attach_transport(fragments, result.get("transport"))
+        self.router._tag_fragments(fragments, "fact_check", "fact_check", RetrievalMode.DIRECT_API.value, "factcheck-tools-api", None, False)
+        telemetry.update(status="SUCCESS", backend="factcheck-tools-api")
+        return fragments
+
+

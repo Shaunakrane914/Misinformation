@@ -14,7 +14,10 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Callable, Dict, Iterable, Optional, Set, Tuple
 
-from backend.services.agent_reach.native.channel_capabilities import CAPABILITY_MATRIX
+from backend.services.agent_reach.native.channel_capabilities import (
+    AUTHORITATIVE_CAPABILITY_MATRIX,
+    CAPABILITY_MATRIX,
+)
 
 
 # The canonical production dispatch contract.  Keep this narrower than the
@@ -38,6 +41,10 @@ EXECUTABLE_CAPABILITIES: Dict[str, Set[str]] = {
     "facebook": {"search", "oembed"},
     "boss": {"search_jobs"},
     "xiaoyuzhou": {"search", "podcast", "episodes"},
+    "sec_edgar": {"search", "read"},
+    "nist_cve": {"search", "read"},
+    "arxiv": {"search", "read"},
+    "fact_check": {"search"},
 }
 
 
@@ -76,6 +83,13 @@ OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
     ("xiaoyuzhou", "podcast"): {"DIRECT_METADATA"},
     ("xiaoyuzhou", "episodes"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
     ("xiaoyuzhou", "search"): {"SEARCH_INDEX_DISCOVERY"},
+    ("sec_edgar", "search"): {"DIRECT_METADATA"},
+    ("sec_edgar", "read"): {"DIRECT_CONTENT"},
+    ("nist_cve", "search"): {"DIRECT_METADATA"},
+    ("nist_cve", "read"): {"DIRECT_CONTENT"},
+    ("arxiv", "search"): {"DIRECT_METADATA", "DIRECT_CONTENT"},
+    ("arxiv", "read"): {"DIRECT_CONTENT"},
+    ("fact_check", "search"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
 }
 
 
@@ -96,6 +110,13 @@ PUBLIC_UNAUTHENTICATED_OPERATIONS: Set[Tuple[str, str]] = {
     ("xiaoyuzhou", "search"),
     ("xiaoyuzhou", "podcast"),
     ("xiaoyuzhou", "episodes"),
+    ("sec_edgar", "search"),
+    ("sec_edgar", "read"),
+    ("nist_cve", "search"),
+    ("nist_cve", "read"),
+    ("arxiv", "search"),
+    ("arxiv", "read"),
+    ("fact_check", "search"),
 }
 
 
@@ -227,7 +248,8 @@ class RuntimeOperationCapabilities:
     ) -> Dict[str, Any]:
         channel, operation = self.normalize(channel, operation)
         key = (channel, operation)
-        declared = operation in CAPABILITY_MATRIX.get(channel, _EMPTY_CAPABILITY).operations
+        all_capabilities = {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX}
+        declared = operation in all_capabilities.get(channel, _EMPTY_CAPABILITY).operations
         implemented = operation in EXECUTABLE_CAPABILITIES.get(channel, set())
         env_name = required_auth_environment(channel, operation)
         credential_present = bool(os.getenv(env_name)) if env_name else True
@@ -305,10 +327,11 @@ class RuntimeOperationCapabilities:
         }
 
     def inventory(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
-        channels = set(CAPABILITY_MATRIX) | set(EXECUTABLE_CAPABILITIES)
+        all_capabilities = {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX}
+        channels = set(all_capabilities) | set(EXECUTABLE_CAPABILITIES)
         result: Dict[str, Dict[str, Dict[str, Any]]] = {}
         for channel in sorted(channels):
-            declared = set(CAPABILITY_MATRIX.get(channel, _EMPTY_CAPABILITY).operations)
+            declared = set(all_capabilities.get(channel, _EMPTY_CAPABILITY).operations)
             operations = declared | EXECUTABLE_CAPABILITIES.get(channel, set())
             result[channel] = {
                 operation: self.assess(channel, operation)

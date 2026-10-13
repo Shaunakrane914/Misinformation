@@ -207,20 +207,70 @@ CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
 }
 
 
+# ── Authoritative Primary Source Platforms (Phase 8D Source Expansion) ────
+AUTHORITATIVE_CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
+    "sec_edgar": PlatformCapability(
+        platform="sec_edgar",
+        display_name="SEC EDGAR Corporate Disclosures",
+        operations={"search", "read"},
+        auth_mode="none",
+        tier=0,
+        cloud_safe=True,
+        backends=["sec-edgar-data-api"],
+        doc_ref="https://www.sec.gov/edgar/searchedgar/companysearch",
+        fallback_chain=[],
+    ),
+    "nist_cve": PlatformCapability(
+        platform="nist_cve",
+        display_name="NIST NVD Vulnerability Database",
+        operations={"search", "read"},
+        auth_mode="none",
+        tier=0,
+        cloud_safe=True,
+        backends=["nist-nvd-cve-api"],
+        doc_ref="https://nvd.nist.gov/developers/vulnerabilities",
+        fallback_chain=[],
+    ),
+    "arxiv": PlatformCapability(
+        platform="arxiv",
+        display_name="arXiv Scientific Preprints",
+        operations={"search", "read"},
+        auth_mode="none",
+        tier=0,
+        cloud_safe=True,
+        backends=["arxiv-export-api"],
+        doc_ref="https://arxiv.org/help/api",
+        fallback_chain=[],
+    ),
+    "fact_check": PlatformCapability(
+        platform="fact_check",
+        display_name="Google Fact Check Tools ClaimReview",
+        operations={"search"},
+        auth_mode="none",
+        tier=0,
+        cloud_safe=True,
+        backends=["factcheck-tools-api"],
+        doc_ref="https://toolbox.google.com/factcheck/apis",
+        fallback_chain=[],
+    ),
+}
+
+
 def get_capability(platform: str) -> PlatformCapability:
     """Retrieve capability descriptor or a generic web fallback descriptor."""
-    return CAPABILITY_MATRIX.get(
-        platform,
-        PlatformCapability(
-            platform=platform,
-            display_name=f"Generic Platform ({platform})",
-            operations={"read"},
-            auth_mode="none",
-            tier=0,
-            cloud_safe=True,
-            backends=["Jina Reader"],
-            fallback_chain=[]
-        )
+    if platform in CAPABILITY_MATRIX:
+        return CAPABILITY_MATRIX[platform]
+    if platform in AUTHORITATIVE_CAPABILITY_MATRIX:
+        return AUTHORITATIVE_CAPABILITY_MATRIX[platform]
+    return PlatformCapability(
+        platform=platform,
+        display_name=f"Generic Platform ({platform})",
+        operations={"read"},
+        auth_mode="none",
+        tier=0,
+        cloud_safe=True,
+        backends=["Jina Reader"],
+        fallback_chain=[]
     )
 
 

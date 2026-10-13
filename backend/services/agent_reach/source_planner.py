@@ -205,8 +205,9 @@ class SourcePlanningEngine:
         intent_class = self._classify_intent(clean_claim, domain)
         allowed = set(allowed_channels or EXECUTABLE_CAPABILITIES)
         allowed &= set(EXECUTABLE_CAPABILITIES)
+        explicitly_allowed = allowed_channels is not None
         actions = self._deterministic_actions(
-            clean_claim, clean_entity, intent_class, agent, allowed
+            clean_claim, clean_entity, intent_class, agent, allowed, explicitly_allowed=explicitly_allowed
         )
         excluded: List[Dict[str, str]] = []
         warnings: List[str] = []
@@ -307,7 +308,8 @@ class SourcePlanningEngine:
         return plan
 
     def _deterministic_actions(
-        self, claim: str, entity: str, intent_class: str, agent: str, allowed: Set[str]
+        self, claim: str, entity: str, intent_class: str, agent: str, allowed: Set[str],
+        explicitly_allowed: bool = False,
     ) -> List[SourceAction]:
         direct = self._direct_url_action(claim)
         if direct:
@@ -316,6 +318,10 @@ class SourcePlanningEngine:
         target = entity or claim
         actions: List[SourceAction] = []
         if intent_class == "technical_product":
+            if "nist_cve" in allowed and (explicitly_allowed or agent.lower() in {"brandshield", "brandshield_agent"}) and any(k in claim.lower() for k in ("cve", "vulnerability", "flaw", "exploit", "zero-day", "0-day", "security")):
+                actions.append(self._action(1, "nist_cve", "search", target, "vulnerability_advisory", "DIRECT_METADATA", 1, "Verify official CVE security advisory in NIST NVD database.", True))
+            if "arxiv" in allowed and (explicitly_allowed or agent.lower() in {"trending", "trending_agent"}) and any(k in claim.lower() for k in ("paper", "study", "research", "arxiv", "preprint", "algorithm", "model", "proof")):
+                actions.append(self._action(1, "arxiv", "search", target, "scientific_preprint", "DIRECT_METADATA", 1, "Verify scientific claims against arXiv preprint research.", True))
             actions.extend([
                 self._action(1, "web", "search", f"{target} official product announcement {claim}", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
                 self._action(1, "news", "search", f"{claim} hardware reporting", "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),
@@ -324,6 +330,8 @@ class SourcePlanningEngine:
             ])
         elif intent_class == "financial_integrity":
             regulator = "SEC" if not self._looks_indian(target) else "SEBI"
+            if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and not self._looks_indian(target):
+                actions.append(self._action(1, "sec_edgar", "search", target, "regulatory_filing", "DIRECT_METADATA", 1, "Retrieve official SEC EDGAR corporate filings directly.", True))
             actions.extend([
                 self._action(1, "web", "search", f"{target} investor relations quarterly filing {regulator} {claim}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
                 self._action(1, "rss", "search", f"{target} official results filing press release {claim}", "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),
@@ -342,6 +350,10 @@ class SourcePlanningEngine:
                 self._action(1, "news", "search", f"{claim} latest independent reporting", "independent_reporting", "SYNDICATED_SUMMARY", 2, "Find current independent reporting."),
                 self._action(2, "reddit", "search", f"{target} {claim}", "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."]),
             ])
+
+        # Cross-reference claim against fact-checking databases if allowed
+        if "fact_check" in allowed and explicitly_allowed:
+            actions.append(self._action(1, "fact_check", "search", claim, "fact_check_database", "DIRECT_CONTENT", 2, "Cross-reference claim against public ClaimReview fact checks.", True))
 
         # Agent objectives adjust priority, not the capability truth contract.
         if agent.lower() in {"trending", "trending_agent"}:
@@ -504,7 +516,7 @@ class SourcePlanningEngine:
             return "identity_attribution"
         hardware = sum(1 for term in cls.HARDWARE_TERMS if term in lower)
         financial = sum(1 for term in cls.FINANCIAL_TERMS if term in lower)
-        if hardware > financial:
+        if hardware > financial or domain in ("security", "hardware", "technical", "scientific", "science"):
             return "technical_product"
         if financial or domain == "financial":
             return "financial_integrity"

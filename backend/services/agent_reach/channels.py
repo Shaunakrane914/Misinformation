@@ -517,6 +517,20 @@ class EvidenceFragment:
     def metadata(self, val: Dict[str, Any]) -> None:
         self.raw_metadata = val
 
+    @property
+    def canonical_url(self) -> str:
+        return str(self.raw_metadata.get("canonical_url") or self.url or "")
+
+    @property
+    def source_authority(self) -> str:
+        return str(self.raw_metadata.get("source_authority") or "UNKNOWN")
+
+    @property
+    def reliability_score(self) -> float:
+        if "reliability_score" in self.raw_metadata:
+            return float(self.raw_metadata["reliability_score"])
+        return round(float(self.score) / 100.0, 2) if self.score > 1.0 else round(float(self.score), 2)
+
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to dictionary for API responses and JSON storage."""
         return {

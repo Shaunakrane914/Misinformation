@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8B auxiliary search-index and live adapter checkpoint — 2026-10-13
+## Latest: Phase 8B clean full re-probe and richness summary — 2026-10-13
+
+- [Full re-probe and summary-runner handoff](2026-10-13_PHASE8B_FULL_REPROBE_AND_SUMMARY_RUNNER.md):
+  clean 16-operation/48-scenario evidence, measured important-field rates,
+  module-safe richness runner and explicit Stage 8B/frontend limits.
+
+## Previous: Phase 8B auxiliary search-index and live adapter checkpoint — 2026-10-13
 
 - [Search-index and direct-adapter checkpoint](2026-10-13_PHASE8B_AUXILIARY_SEARCH_AND_LIVE_PROBE.md):
   empty-index evidence guard, explicit no-new-network provenance, clean-commit

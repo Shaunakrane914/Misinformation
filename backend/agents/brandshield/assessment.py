@@ -507,3 +507,248 @@ def heuristic_threat_synthesis(
         ],
         "ai_enrichment": "OFFLINE_HEURISTIC"
     }
+
+
+def detect_executive_impersonation(
+    brand_name: str,
+    executive_name: str,
+    candidate_profiles: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Stage 8C BrandShield Specialization:
+    Scans and classifies candidate social profiles claiming association with brand executives.
+    Detects lookalike handles, unauthorized giveaways/solicitations, and unverified impostors.
+    """
+    if not candidate_profiles:
+        return {
+            "status": "NO_PROFILES_EXAMINED",
+            "impersonation_threats": [],
+            "max_risk_level": "NOMINAL",
+            "summary": "Zero candidate profiles provided for impersonation analysis."
+        }
+
+    threats = []
+    max_risk = "NOMINAL"
+    import re
+
+    clean_exec = re.sub(r'[^a-z0-9]', '', executive_name.lower())
+    clean_brand = re.sub(r'[^a-z0-9]', '', brand_name.lower())
+
+    for idx, prof in enumerate(candidate_profiles):
+        handle = prof.get("handle", prof.get("username", "")).lstrip("@").strip()
+        display_name = prof.get("name", prof.get("display_name", "")).strip()
+        bio = prof.get("bio", prof.get("description", "")).lower()
+        verified = prof.get("verified", False)
+        platform = prof.get("platform", "Social")
+        profile_url = prof.get("url", f"https://{platform.lower()}.com/{handle}")
+
+        clean_handle = re.sub(r'[^a-z0-9]', '', handle.lower())
+
+        is_exec_name_claimed = (
+            executive_name.lower() in display_name.lower() or
+            clean_exec in clean_handle
+        )
+
+        indicators = []
+        risk_level = "NOMINAL"
+        classification = "UNRELATED"
+
+        if is_exec_name_claimed and not verified:
+            # Check for lookalike handle anomalies (e.g. trailing digits, 'official', 'real', 'ceo')
+            has_lookalike_affix = any(aff in handle.lower() for aff in ["official", "real", "ceo", "direct", "_", "1", "2"])
+            has_solicitation = any(w in bio for w in ["dm for", "giveaway", "crypto", "invest", "telegram", "whatsapp", "funds", "airdrop"])
+
+            if has_solicitation:
+                risk_level = "CRITICAL_FRAUDULENT_IMPERSONATION"
+                classification = "CONFIRMED_IMPERSONATION"
+                indicators.append("Unverified lookalike profile soliciting funds, DMs, or cryptocurrency.")
+            elif has_lookalike_affix:
+                risk_level = "HIGH_SUSPICIOUS_LOOKALIKE"
+                classification = "SUSPICIOUS_LOOKALIKE"
+                indicators.append("Unverified handle mimicking executive name with synthetic affixes/underscores.")
+            else:
+                risk_level = "MEDIUM_UNVERIFIED_MATCH"
+                classification = "UNVERIFIED_IDENTITY"
+                indicators.append("Display name matches executive but lacks platform verification badge.")
+
+        elif verified and is_exec_name_claimed:
+            risk_level = "NOMINAL"
+            classification = "OFFICIAL_VERIFIED"
+            indicators.append("Platform verification badge present; consistent with authentic persona.")
+
+        if risk_level != "NOMINAL":
+            if max_risk in ("NOMINAL", "MEDIUM_UNVERIFIED_MATCH") and risk_level.startswith("HIGH"):
+                max_risk = "HIGH"
+            elif risk_level.startswith("CRITICAL"):
+                max_risk = "CRITICAL"
+
+            threats.append({
+                "impersonation_id": f"imp_{idx+1:02d}",
+                "platform": platform,
+                "handle": f"@{handle}",
+                "display_name": display_name,
+                "claimed_executive": executive_name,
+                "brand": brand_name,
+                "classification": classification,
+                "risk_level": risk_level,
+                "profile_url": profile_url,
+                "indicators": indicators,
+                "recommended_action": (
+                    "Submit immediate expedited impersonation takedown notice to platform Trust & Safety."
+                    if risk_level.startswith("CRITICAL")
+                    else "Monitor handle and issue public brand verification advisory."
+                )
+            })
+
+    return {
+        "status": "ANALYSIS_COMPLETE",
+        "brand": brand_name,
+        "executive": executive_name,
+        "profiles_analyzed": len(candidate_profiles),
+        "impersonation_threats": threats,
+        "max_risk_level": max_risk,
+        "summary": f"Analyzed {len(candidate_profiles)} profiles for {executive_name}. Detected {len(threats)} potential impersonation threats."
+    }
+
+
+def classify_smear_vs_organic_criticism(
+    reviews_or_posts: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Stage 8C BrandShield Specialization:
+    Differentiates authentic consumer criticism/bad reviews from coordinated brand smear campaigns.
+    Strictly enforces: negative reviews are NOT automatically misinformation.
+    """
+    if len(reviews_or_posts) < 2:
+        return {
+            "classification": "INSUFFICIENT_SIGNALS",
+            "confidence": 0.0,
+            "smear_campaign_detected": False,
+            "evidence_quality": "INSUFFICIENT",
+            "reasons": ["At least 2 reviews or posts required for comparative pattern classification."]
+        }
+
+    import re
+    from backend.agents.trending.temporal import parse_timestamp_epoch
+
+    texts = []
+    for r in reviews_or_posts:
+        content = f"{r.get('title', '')} {r.get('snippet', '')} {r.get('content', '')}".strip()
+        words = set(re.findall(r'[a-z]{3,}', content.lower()))
+        texts.append({
+            "record": r,
+            "content": content,
+            "words": words,
+            "published": r.get("published_at", r.get("published", ""))
+        })
+
+    # 1. Pairwise lexical Jaccard overlap
+    duplicate_pairs = 0
+    n = len(texts)
+    for i in range(n):
+        for j in range(i + 1, n):
+            w1 = texts[i]["words"]
+            w2 = texts[j]["words"]
+            if w1 and w2:
+                jaccard = len(w1 & w2) / len(w1 | w2)
+                if jaccard >= 0.65:
+                    duplicate_pairs += 1
+
+    # 2. Time burst check (<1 hour between multiple negative posts)
+    epochs = [parse_timestamp_epoch(t["published"]) for t in texts]
+    valid_epochs = sorted([ep for ep in epochs if ep > 0])
+    burst_detected = False
+    if len(valid_epochs) >= 2:
+        span_sec = valid_epochs[-1] - valid_epochs[0]
+        if span_sec < 3600:  # <1 hour
+            burst_detected = True
+
+    # 3. Check for specific product detail words vs purely generic attacks
+    product_detail_terms = {"delivered", "size", "fit", "broke", "customer", "support", "refund", "receipt", "shipping", "quality", "material", "smell", "taste"}
+    has_specific_product_feedback = any(len(t["words"] & product_detail_terms) >= 2 for t in texts)
+
+    is_smear = duplicate_pairs >= 2 or (duplicate_pairs >= 1 and not has_specific_product_feedback)
+
+    if is_smear:
+        classification = "COORDINATED_SMEAR_CAMPAIGN"
+        confidence = 0.88
+        smear_flag = True
+        reason = (
+            f"Detected coordinated phrasing across {duplicate_pairs} review pairs with tightly clustered temporal distribution. "
+            "Characteristics indicate orchestrated copy-paste campaign rather than independent customer experiences."
+        )
+    elif has_specific_product_feedback:
+        classification = "ORGANIC_CONSUMER_CRITICISM"
+        confidence = 0.92
+        smear_flag = False
+        reason = (
+            "Reviews exhibit natural lexical variance and contain specific personal transaction/product experience details. "
+            "Properly classified as organic consumer feedback, NOT malicious misinformation."
+        )
+    else:
+        classification = "MIXED_DISCOURSE"
+        confidence = 0.60
+        smear_flag = False
+        reason = "Discourse contains negative sentiment without conclusive markers of either coordinated automation or verified consumer transactions."
+
+    return {
+        "classification": classification,
+        "confidence": confidence,
+        "smear_campaign_detected": smear_flag,
+        "duplicate_phrasing_pairs": duplicate_pairs,
+        "temporal_burst_detected": burst_detected,
+        "organic_detail_present": has_specific_product_feedback,
+        "reasoning": reason,
+        "signals_analyzed": len(reviews_or_posts)
+    }
+
+
+def detect_counterfeit_domains(
+    brand_domain: str,
+    candidate_domains: List[str]
+) -> List[Dict[str, Any]]:
+    """
+    Stage 8C BrandShield Specialization:
+    Detects typosquatting, lookalike domains, brand name hijacking, and phishing endpoints.
+    """
+    import difflib
+    findings = []
+    suspicious_tlds = {".top", ".xyz", ".shop", ".cfd", ".vip", ".cc", ".icu", ".work", ".click"}
+    brand_core = brand_domain.split(".")[0].lower()
+
+    for cand in candidate_domains:
+        cand_clean = cand.lower().replace("https://", "").replace("http://", "").split("/")[0].strip()
+        if not cand_clean or cand_clean == brand_domain.lower():
+            continue
+
+        indicators = []
+        cand_core = cand_clean.split(".")[0]
+        cand_tld = "." + cand_clean.split(".")[-1] if "." in cand_clean else ""
+
+        is_typo = False
+        parts = [cand_core] + [p for p in cand_core.split("-") if p] + [p for p in cand_core.split("_") if p]
+        for part in parts:
+            ratio = difflib.SequenceMatcher(None, brand_core, part).ratio()
+            if 0.70 <= ratio < 1.0 and abs(len(part) - len(brand_core)) <= 2:
+                is_typo = True
+                indicators.append(f"Typosquatting permutation: {part} vs {brand_core} (similarity {int(ratio*100)}%).")
+                break
+
+        if brand_core in cand_clean and cand_clean != brand_domain.lower():
+            indicators.append(f"Brand name injection into third-party host: '{brand_core}' in '{cand_clean}'.")
+
+        if cand_tld in suspicious_tlds:
+            indicators.append(f"High-abuse top-level domain: {cand_tld}.")
+
+        if indicators:
+            findings.append({
+                "candidate_domain": cand_clean,
+                "brand_domain": brand_domain,
+                "threat_type": "TYPOSQUAT_PHISHING" if is_typo else "BRAND_HIJACKING",
+                "risk_score": 0.90 if (is_typo and cand_tld in suspicious_tlds) else 0.75,
+                "indicators": indicators,
+                "recommended_action": "Submit UDRP domain dispute or registrar abuse takedown."
+            })
+
+    return findings
+

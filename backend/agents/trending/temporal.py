@@ -124,3 +124,77 @@ def calculate_velocity(
         "message": f"Momentum measured across {len(history)} verified scan intervals.",
         "history": history
     }
+
+
+def track_narrative_acceleration(snapshots: List[Dict[str, Any]]) -> Dict[str, Any]:
+    """
+    Stage 8C Trending Specialization:
+    Computes 1st derivative (velocity, dV/dt) and 2nd derivative (acceleration, d^2V/dt^2)
+    across a temporal series of narrative observation snapshots.
+    Detects explosive viral breakouts and parabolic spread alerts.
+    """
+    if len(snapshots) < 2:
+        return {
+            "status": "INSUFFICIENT_SNAPSHOTS",
+            "current_velocity": 0.0,
+            "acceleration": 0.0,
+            "trend_dynamics": "INSUFFICIENT_HISTORY",
+            "explosive_breakout_alert": False,
+            "summary": "At least 2 observation snapshots required to compute velocity; 3 for acceleration."
+        }
+
+    # Sort by timestamp
+    valid = []
+    for s in snapshots:
+        ep = parse_timestamp_epoch(s.get("timestamp"))
+        cnt = s.get("signal_count", s.get("count", 0))
+        if ep > 0:
+            valid.append((ep, cnt))
+    valid.sort(key=lambda x: x[0])
+
+    if len(valid) < 2:
+        return {
+            "status": "INSUFFICIENT_VALID_TIMESTAMPS",
+            "current_velocity": 0.0,
+            "acceleration": 0.0,
+            "trend_dynamics": "INSUFFICIENT_HISTORY",
+            "explosive_breakout_alert": False,
+            "summary": "Valid timestamps required across snapshot series."
+        }
+
+    # Velocities (signals per hour) between consecutive steps
+    velocities = []
+    for i in range(1, len(valid)):
+        dt_hours = max((valid[i][0] - valid[i-1][0]) / 3600.0, 0.01)
+        dv = (valid[i][1] - valid[i-1][1]) / dt_hours
+        velocities.append((valid[i][0], dv))
+
+    current_vel = round(velocities[-1][1], 2)
+    accel = 0.0
+    if len(velocities) >= 2:
+        dt_hours_2 = max((velocities[-1][0] - velocities[-2][0]) / 3600.0, 0.01)
+        accel = round((velocities[-1][1] - velocities[-2][1]) / dt_hours_2, 2)
+
+    explosive = (current_vel > 20.0 and accel > 5.0) or (accel > 15.0)
+
+    if explosive:
+        dynamics = "PARABOLIC_EXPLOSIVE_GROWTH"
+    elif accel > 0.0:
+        dynamics = "ACCELERATING_SPREAD"
+    elif accel < 0.0 and current_vel > 0:
+        dynamics = "DECELERATING_SPREAD"
+    elif current_vel <= 0:
+        dynamics = "STAGNANT_OR_DYING"
+    else:
+        dynamics = "CONSTANT_VELOCITY"
+
+    return {
+        "status": "ANALYSIS_COMPLETE",
+        "current_velocity": current_vel,
+        "acceleration": accel,
+        "trend_dynamics": dynamics,
+        "explosive_breakout_alert": explosive,
+        "velocity_series": [round(v[1], 2) for v in velocities],
+        "summary": f"Current velocity: {current_vel} signals/hr. Acceleration: {accel} signals/hr^2. Dynamics: {dynamics}."
+    }
+

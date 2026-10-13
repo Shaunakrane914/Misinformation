@@ -241,7 +241,167 @@ Respond in STRICT JSON with this schema:
     }
 
 
+def compare_sec_filing_numbers(
+    filing_facts: Dict[str, Any],
+    circulating_claims: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Stage 8C Scout Specialization:
+    Direct numerical comparison between official regulatory filings (e.g. SEC 10-K, 10-Q, 8-K)
+    and circulating financial social media claims or whisper numbers.
+    Computes exact percentage deviations, contradiction thresholds (>20%), and citation anchors.
+    """
+    if not filing_facts or not circulating_claims:
+        return {
+            "status": "INSUFFICIENT_DATA",
+            "comparisons": [],
+            "anomalies_detected": 0,
+            "summary": "Insufficient filing facts or circulating claims provided for comparative audit."
+        }
+
+    comparisons: List[Dict[str, Any]] = []
+    anomalies = 0
+
+    filing_url = filing_facts.get("source_url") or filing_facts.get("filing_url", "https://www.sec.gov/edgar")
+    period = filing_facts.get("period", "Official Period")
+
+    for claim in circulating_claims:
+        metric = claim.get("metric", "").lower().strip()
+        claimed_val = claim.get("claimed_value")
+        if claimed_val is None:
+            continue
+
+        # Look up metric in official filing facts
+        official_val = None
+        for k, v in filing_facts.items():
+            if k.lower() == metric or metric in k.lower():
+                if isinstance(v, (int, float)):
+                    official_val = float(v)
+                    break
+
+        if official_val is None or official_val == 0:
+            comparisons.append({
+                "metric": metric,
+                "circulating_claim": claim.get("raw_text", str(claimed_val)),
+                "claimed_value": claimed_val,
+                "official_filing_value": None,
+                "status": "UNVERIFIED_IN_FILING",
+                "discrepancy_pct": None,
+                "citation": filing_url,
+                "verdict": "UNVERIFIED"
+            })
+            continue
+
+        # Compute percentage deviation
+        delta_pct = round(((claimed_val - official_val) / official_val) * 100.0, 2)
+        ratio = max(claimed_val, official_val) / min(claimed_val, official_val) if min(claimed_val, official_val) > 0 else 999.0
+
+        if ratio > 1.20:  # >20% discrepancy
+            status = "CONTRADICTED_BY_OFFICIAL_FILING"
+            verdict = "REFUTED"
+            anomalies += 1
+            expl = (
+                f"Significant numerical divergence on {metric}: Circulating rumor asserts {claim.get('raw_text', claimed_val)} "
+                f"({claimed_val}), but official SEC filing records {official_val} ({delta_pct:+}% deviation)."
+            )
+        elif abs(delta_pct) <= 5.0:
+            status = "CORROBORATED_BY_FILING"
+            verdict = "SUPPORTED"
+            expl = f"Circulating value on {metric} matches official SEC filing within 5% tolerance."
+        else:
+            status = "MINOR_VARIANCE"
+            verdict = "MIXED"
+            expl = f"Reported value deviates from filing by {delta_pct:+}%, potentially reflecting non-GAAP adjustments or different reporting periods."
+
+        comparisons.append({
+            "metric": metric,
+            "period": period,
+            "circulating_claim": claim.get("raw_text", str(claimed_val)),
+            "claimed_value": claimed_val,
+            "official_filing_value": official_val,
+            "status": status,
+            "discrepancy_pct": delta_pct,
+            "discrepancy_ratio": round(ratio, 2),
+            "citation": filing_url,
+            "explanation": expl,
+            "verdict": verdict,
+            "source_claim_url": claim.get("url", "")
+        })
+
+    return {
+        "status": "ANOMALIES_DETECTED" if anomalies > 0 else "CONSISTENT",
+        "comparisons": comparisons,
+        "anomalies_detected": anomalies,
+        "filing_citation": filing_url,
+        "summary": (
+            f"Evaluated {len(comparisons)} quantitative financial claims against official filing. "
+            f"Identified {anomalies} significant discrepancies (>20% threshold)."
+        )
+    }
+
+
+def evaluate_corporate_rumor(
+    ticker: str,
+    rumor_text: str,
+    evidence: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Stage 8C Scout Specialization:
+    Cross-checks a specific corporate rumor (e.g. undisclosed acquisition, executive exit, regulatory probe)
+    against primary financial filings, regulatory notices, and wire reporting.
+    Returns calibrated non-binary verdict, confidence score, and exact citations.
+    """
+    if not evidence:
+        return {
+            "ticker": ticker,
+            "rumor": rumor_text,
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "confidence": 0.0,
+            "explanation": "Zero evidence items retrieved. Truthful refusal to speculate.",
+            "citations": []
+        }
+
+    from backend.services.research.claim_intelligence import claim_intelligence_engine
+    from backend.services.research.research_models import EvidenceItem
+
+    # Convert evidence dicts to typed EvidenceItems
+    typed_evidence = []
+    for idx, e in enumerate(evidence):
+        typed_evidence.append(EvidenceItem(
+            id=e.get("evidence_id", f"ev_scout_{idx+1}"),
+            canonical_url=e.get("url", ""),
+            title=e.get("title", ""),
+            source_name=e.get("source", e.get("platform", "Source")),
+            source_role=e.get("source_role", "DISCOVERY"),
+            source_tier=e.get("source_tier", "TIER_3_AGGREGATE"),
+            primary_source=e.get("source_role") in ("PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY") or e.get("primary_source", False),
+            snippet=e.get("snippet", ""),
+            relevant_excerpt=e.get("content", e.get("snippet", "")),
+            published_at=e.get("published_at", "Recent")
+        ))
+
+    synthesis = claim_intelligence_engine.synthesize_intelligence(
+        text_or_claims=rumor_text,
+        evidence_items=typed_evidence,
+        target_name=ticker
+    )
+
+    return {
+        "ticker": ticker,
+        "rumor": rumor_text,
+        "verdict": synthesis["overall_verdict"],
+        "confidence": synthesis["overall_confidence"],
+        "claims_evaluated": synthesis["claims"],
+        "contradictions": synthesis["contradictions"],
+        "citations": synthesis["citations"],
+        "epistemic_breakdown": synthesis["epistemic_breakdown"]
+    }
+
+
 __all__ = [
+    "compare_sec_filing_numbers",
     "correlate_social_rumors",
+    "evaluate_corporate_rumor",
     "synthesize_financial_intelligence",
 ]
+

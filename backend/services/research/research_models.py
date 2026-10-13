@@ -70,6 +70,21 @@ class ContradictionType(str, Enum):
     TIMELINE_DISAGREEMENT = "TIMELINE_DISAGREEMENT"
     INTERPRETATION_DIFFERENCE = "INTERPRETATION_DIFFERENCE"
     NO_CONTRADICTION = "NO_CONTRADICTION"
+    TEMPORAL_DIVERGENCE = "TEMPORAL_DIVERGENCE"
+    NUMERICAL_DISCREPANCY = "NUMERICAL_DISCREPANCY"
+    SCOPE_CONTEXT_MISMATCH = "SCOPE_CONTEXT_MISMATCH"
+    CREDIBILITY_ASYMMETRY = "CREDIBILITY_ASYMMETRY"
+
+
+class ClaimVerdict(str, Enum):
+    SUPPORTED = "SUPPORTED"
+    REFUTED = "REFUTED"
+    MISLEADING = "MISLEADING"
+    OUTDATED = "OUTDATED"
+    MIXED = "MIXED"
+    UNVERIFIED = "UNVERIFIED"
+    INSUFFICIENT_EVIDENCE = "INSUFFICIENT_EVIDENCE"
+
 
 
 class TemporalStatus(str, Enum):
@@ -455,6 +470,7 @@ class AtomicClaim:
     verdict: str = "Unverified"
     confidence: float = 0.50
     rationale: str = ""
+    evidence_citations: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -472,6 +488,7 @@ class AtomicClaim:
             "verdict": self.verdict,
             "confidence": round(self.confidence, 3),
             "rationale": self.rationale,
+            "evidence_citations": self.evidence_citations,
         }
 
 

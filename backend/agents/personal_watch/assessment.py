@@ -345,3 +345,266 @@ Return a STRICT JSON object:
     except Exception as e:
         logger.warning(f"[PersonalWatch 2.0] LLM reasoning fallback triggered: {e}")
         return heuristic_threat_synthesis(subject_name, evidence_list)
+
+
+def verify_identity_match(
+    catalog_profile: Dict[str, Any],
+    candidate_record: Dict[str, Any]
+) -> Dict[str, Any]:
+    """
+    Stage 8C Personal Watch Specialization:
+    Distinguishes the monitored VIP reference persona from ambiguous namesake candidates.
+    Matches entity name, corporate affiliation, executive title, and known handles.
+    """
+    import re
+    canonical_name = catalog_profile.get("canonical_name") or catalog_profile.get("name", "")
+    known_orgs = [o.lower() for o in catalog_profile.get("affiliations", catalog_profile.get("organizations", []))]
+    known_titles = [t.lower() for t in catalog_profile.get("titles", catalog_profile.get("roles", []))]
+    known_handles = [h.lower().lstrip("@") for h in catalog_profile.get("known_handles", [])]
+
+    cand_text = f"{candidate_record.get('title', '')} {candidate_record.get('snippet', '')} {candidate_record.get('content', '')}".lower()
+    cand_author = candidate_record.get("author", "").lower().lstrip("@")
+
+    # Name check
+    name_clean = canonical_name.lower().strip()
+    if not name_clean or name_clean not in cand_text:
+        return {
+            "match_status": "MATCH_REJECTED_NAMESAKE",
+            "match_confidence": 0.05,
+            "canonical_name": canonical_name,
+            "rationale": "Candidate record does not mention the subject's canonical name."
+        }
+
+    org_matches = [org for org in known_orgs if org in cand_text]
+    title_matches = [t for t in known_titles if t in cand_text]
+    handle_match = any(h in cand_author or h in cand_text for h in known_handles) if known_handles else False
+
+    score = 0.50  # Name is present
+    if org_matches:
+        score += 0.25
+    if title_matches:
+        score += 0.15
+    if handle_match:
+        score += 0.15
+
+    score = min(0.99, score)
+
+    # Check for strong conflicting professional domains (e.g. subject is Tech CEO, but candidate is local dentist)
+    conflicting_roles = {"dentist", "plumber", "high school student", "realtor", "mechanic", "athlete"}
+    has_conflict = any(re.search(rf'\b{r}\b', cand_text) for r in conflicting_roles) and not any(r in "".join(known_titles) for r in conflicting_roles)
+
+    if has_conflict and not org_matches:
+        return {
+            "match_status": "MATCH_REJECTED_NAMESAKE",
+            "match_confidence": 0.20,
+            "canonical_name": canonical_name,
+            "matched_affiliations": [],
+            "rationale": f"Candidate mentions '{canonical_name}' but describes an incompatible profession/domain without organizational affiliation."
+        }
+
+    if score >= 0.75:
+        status = "CONFIRMED_MATCH"
+        rationale = f"Candidate confirmed as subject '{canonical_name}' with matching affiliation ({', '.join(org_matches) or 'title/handle'})."
+    elif score >= 0.50 and (known_orgs or known_titles):
+        status = "AMBIGUOUS_NAMESAKE"
+        rationale = f"Candidate mentions '{canonical_name}' but lacks confirming corporate affiliation or title context."
+    else:
+        status = "CONFIRMED_MATCH"
+        rationale = f"Candidate matches '{canonical_name}'."
+
+    return {
+        "match_status": status,
+        "match_confidence": round(score, 2),
+        "canonical_name": canonical_name,
+        "matched_affiliations": org_matches,
+        "matched_titles": title_matches,
+        "rationale": rationale
+    }
+
+
+def detect_doxxing_exposure(
+    subject_name: str,
+    text: str
+) -> Dict[str, Any]:
+    """
+    Stage 8C Personal Watch Specialization:
+    Scans candidate text for unauthorized exposure of Personally Identifiable Information (PII):
+    residential street addresses, personal phone numbers, Social Security Numbers, and personal emails.
+    """
+    import re
+    findings = []
+    severity = "NOMINAL"
+
+    # 1. Phone number pattern: US/intl formats
+    phone_regex = re.compile(r'(?:\+?1[-.\s]?)?\(?[2-9]\d{2}\)?[-.\s]?\d{3}[-.\s]?\d{4}\b')
+    phones = phone_regex.findall(text)
+    for p in phones:
+        findings.append({"type": "PHONE_NUMBER", "redacted_value": p[:3] + "XXX-XXXX", "severity": "HIGH"})
+        if severity in ("NOMINAL", "MEDIUM"):
+            severity = "HIGH"
+
+    # 2. SSN / National ID pattern: \d{3}-\d{2}-\d{4}
+    ssn_regex = re.compile(r'\b\d{3}-\d{2}-\d{4}\b')
+    ssns = ssn_regex.findall(text)
+    for s in ssns:
+        findings.append({"type": "GOVERNMENT_ID_SSN", "redacted_value": "XXX-XX-" + s[-4:], "severity": "CRITICAL"})
+        severity = "CRITICAL"
+
+    # 3. Personal email pattern (free webmail domains)
+    email_regex = re.compile(r'\b[A-Za-z0-9._%+-]+@(?:gmail|yahoo|hotmail|outlook|icloud|protonmail)\.com\b', re.I)
+    emails = email_regex.findall(text)
+    for em in emails:
+        parts = em.split("@")
+        findings.append({"type": "PERSONAL_EMAIL", "redacted_value": parts[0][:2] + "***@" + parts[1], "severity": "HIGH"})
+        if severity != "CRITICAL":
+            severity = "HIGH"
+
+    # 4. Physical address pattern: street number + suffix (Street, St, Ave, Road, Rd, Drive, Dr, Blvd, Terrace) + Zip
+    addr_regex = re.compile(r'\b\d{1,5}\s+[A-Za-z0-9\s.,]{3,30}\s+(?:street|st|avenue|ave|road|rd|drive|dr|court|ct|boulevard|blvd|lane|ln|terrace|ter|way|place|pl)\b', re.I)
+    addrs = addr_regex.findall(text)
+    for a in addrs:
+        findings.append({"type": "RESIDENTIAL_ADDRESS", "redacted_value": a[:6] + " [REDACTED STREET ADDRESS]", "severity": "CRITICAL"})
+        severity = "CRITICAL"
+
+    return {
+        "status": "DOXXING_DETECTED" if findings else "NO_PII_EXPOSED",
+        "subject_name": subject_name,
+        "exposure_severity": severity,
+        "pii_findings_count": len(findings),
+        "findings": findings,
+        "defensive_recommendation": (
+            "Initiate immediate emergency PII removal requests and law enforcement alert."
+            if severity == "CRITICAL"
+            else ("Submit web privacy removal request to hosting provider." if severity == "HIGH" else "No action required.")
+        )
+    }
+
+
+def assess_synthetic_media_allegations(
+    evidence_list: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Stage 8C Personal Watch Specialization:
+    Differentiates confirmed deepfake/voice clone operations from authentic verified footage or debunked claims.
+    """
+    import re
+    if not evidence_list:
+        return {
+            "status": "INSUFFICIENT_EVIDENCE",
+            "epistemic_state": "UNVERIFIED",
+            "confidence": 0.0,
+            "summary": "No media evidence items provided for synthetic media assessment."
+        }
+
+    deepfake_keywords = {"deepfake", "ai voice", "voice clone", "synthetic audio", "elevenlabs", "face swap"}
+    debunk_keywords = {"debunked", "false claim", "authentic video", "original footage", "verified by reuters", "fact-check"}
+
+    synthetic_claims = 0
+    debunk_claims = 0
+    primary_authentic = 0
+
+    for ev in evidence_list:
+        text = f"{ev.get('title', '')} {ev.get('snippet', '')} {ev.get('content', '')}".lower()
+        if any(w in text for w in deepfake_keywords):
+            synthetic_claims += 1
+        if any(w in text for w in debunk_keywords):
+            debunk_claims += 1
+        if ev.get("source_role") in ("PRIMARY", "PRIMARY_OFFICIAL"):
+            primary_authentic += 1
+
+    if debunk_claims >= 1:
+        epistemic = "DEBUNKED_DEEPFAKE_HOAX"
+        conf = 0.92
+        expl = "Circulating allegations of synthetic manipulation have been definitively debunked by primary records or official fact-checks."
+    elif synthetic_claims >= 2 and debunk_claims == 0:
+        epistemic = "SUSPICIOUS_UNVERIFIED_SYNTHETIC_CLAIM"
+        conf = 0.70
+        expl = "Multiple sources report viral synthetic media circulating without formal forensic verification or primary corroboration."
+    elif synthetic_claims == 0 and primary_authentic >= 1:
+        epistemic = "AUTHENTIC_VERIFIED_RECORDING"
+        conf = 0.90
+        expl = "Media items corroborated by primary broadcast channels with no indicators of AI manipulation."
+    else:
+        epistemic = "UNVERIFIED"
+        conf = 0.45
+        expl = "Insufficient signals to establish authenticity or synthetic status."
+
+    return {
+        "status": "ANALYSIS_COMPLETE",
+        "epistemic_state": epistemic,
+        "confidence": conf,
+        "synthetic_mentions": synthetic_claims,
+        "debunk_mentions": debunk_claims,
+        "summary": expl
+    }
+
+
+def verify_quote_attribution(
+    subject_name: str,
+    quote: str,
+    evidence_list: List[Dict[str, Any]]
+) -> Dict[str, Any]:
+    """
+    Stage 8C Personal Watch Specialization:
+    Cross-checks a controversial quote attributed to the subject against official speeches,
+    press transcripts, and debunking reports to verify authenticity or expose fabrication.
+    """
+    if not quote or not evidence_list:
+        return {
+            "subject": subject_name,
+            "quote": quote,
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "confidence": 0.0,
+            "summary": "Zero evidence or empty quote provided for attribution analysis."
+        }
+
+    import re
+    quote_clean = quote.lower().strip("\"' ")
+    quote_words = set(re.findall(r'[a-z]{3,}', quote_clean))
+
+    primary_matches = []
+    debunk_matches = []
+    social_only_matches = []
+
+    for ev in evidence_list:
+        text = f"{ev.get('title', '')} {ev.get('snippet', '')} {ev.get('content', '')}".lower()
+        shared = quote_words & set(re.findall(r'[a-z]{3,}', text))
+        overlap_ratio = len(shared) / max(1, len(quote_words))
+
+        is_debunk = any(w in text for w in ["never said", "fabricated quote", "misattributed", "false quote", "fake quote", "debunked"])
+        is_primary = ev.get("source_role") in ("PRIMARY", "PRIMARY_OFFICIAL")
+
+        if is_debunk and overlap_ratio >= 0.40:
+            debunk_matches.append(ev)
+        elif is_primary and overlap_ratio >= 0.70:
+            primary_matches.append(ev)
+        elif overlap_ratio >= 0.40:
+            social_only_matches.append(ev)
+
+    if debunk_matches:
+        verdict = "FABRICATED_OR_MISATTRIBUTED_QUOTE"
+        conf = 0.94
+        summary = f"Quote attributed to {subject_name} is explicitly disproven by reporting noting the statement was fabricated or never uttered."
+    elif primary_matches:
+        verdict = "VERIFIED_PRIMARY_ATTRIBUTION"
+        conf = 0.92
+        summary = f"Quote verified by official speech transcript or primary press release."
+    elif social_only_matches and not primary_matches:
+        verdict = "UNVERIFIED_VIRAL_ATTRIBUTION"
+        conf = 0.35
+        summary = f"Quote circulates exclusively on secondary social platforms without primary transcript corroboration."
+    else:
+        verdict = "INSUFFICIENT_EVIDENCE"
+        conf = 0.0
+        summary = "No evidence items directly matched the wording of this statement."
+
+    return {
+        "subject": subject_name,
+        "quote": quote,
+        "verdict": verdict,
+        "confidence": conf,
+        "primary_matches_count": len(primary_matches),
+        "debunk_matches_count": len(debunk_matches),
+        "summary": summary
+    }
+

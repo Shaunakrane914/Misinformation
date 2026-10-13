@@ -116,6 +116,42 @@ def test_github_operation_preserves_observed_fields_and_pagination(
     assert "number" in _telemetry["adapter_item_field_names"] or operation in {"commits", "releases"}
 
 
+def test_github_issue_comment_sample_is_partial_and_source_linked(monkeypatch):
+    router = NativeRouter()
+    observed = []
+
+    def fake_execute(repo, op, **kwargs):
+        observed.append((repo, op, kwargs))
+        return {
+            "repo": "owner/repo", "transport": _transport(), "follow_up_requests": 1,
+            "items": [{
+                "number": 4, "title": "Observed issue", "body": "Issue body", "comments": 1,
+                "html_url": "https://github.com/owner/repo/issues/4",
+                "sampled_comments": [{
+                    "id": 9, "body": "Observed reply", "author": "reply-author",
+                    "created_at": "2026-10-13T00:00:00Z",
+                    "url": "https://github.com/owner/repo/issues/4#issuecomment-9",
+                }],
+                "comment_lookup_status": "SUCCESS", "comment_has_next_page": True,
+            }],
+        }
+
+    monkeypatch.setattr(router.executor, "execute_github_rest_operation", fake_execute)
+    fragments, telemetry = router.execute_channel_query(
+        "github", "owner/repo", operation="issues", limit=1,
+        include_comments=True, comment_limit=1,
+    )
+    assert observed == [("owner/repo", "issues", {
+        "limit": 1, "include_comments": True, "comment_limit": 1,
+    })]
+    assert telemetry["follow_up_requests"] == 1
+    assert fragments[0].content_depth == "PARTIAL_CONTENT"
+    assert "Observed reply" in fragments[0].content
+    assert "https://github.com/owner/repo/issues/4#issuecomment-9" in fragments[0].content
+    assert fragments[0].raw_metadata["provider_fields"]["comment_has_next_page"] is True
+    assert fragments[0].raw_metadata["provider_fields"]["comment_samples"][0]["id"] == 9
+
+
 @pytest.mark.parametrize("operation,item,expected_depth", [
     ("read", {"full_name": "owner/repo", "owner": {"login": "owner"},
               "updated_at": "2026-10-10", "readme": "# README"}, "PARTIAL_CONTENT"),

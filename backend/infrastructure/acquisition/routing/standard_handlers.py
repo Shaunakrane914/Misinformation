@@ -60,6 +60,8 @@ class StandardChannelHandlers:
             return self._execute_github_operation(
                 operation, query, limit, query_id, query_class, query_text, telemetry,
                 page=_.get("page", 1),
+                include_comments=_.get("include_comments", False),
+                comment_limit=_.get("comment_limit", 3),
             )
         try:
             result = self.router.executor.execute_github_search(query, limit=limit)
@@ -83,14 +85,18 @@ class StandardChannelHandlers:
 
     def _execute_github_operation(
         self, operation, query, limit, query_id, query_class, query_text, telemetry,
-        page=1,
+        page=1, include_comments=False, comment_limit=3,
     ):
         # Keep the default call shape compatible with existing executor shims.
         pagination_kwargs = {"page": page} if page != 1 else {}
+        if include_comments:
+            pagination_kwargs.update(include_comments=True, comment_limit=comment_limit)
         result = self.router.executor.execute_github_rest_operation(
             query, operation, limit=limit, **pagination_kwargs
         )
         self._record_transport(telemetry, result)
+        if include_comments:
+            telemetry["follow_up_requests"] = result.get("follow_up_requests", 0)
         fragments: List[EvidenceFragment] = []
         repo = result.get("repo", query)
         for item in result.get("items", []):
@@ -140,6 +146,31 @@ class StandardChannelHandlers:
                         merged_at=item.get("merged_at"), draft=item.get("draft"),
                         base_ref=(item.get("base") or {}).get("ref"),
                         head_ref=(item.get("head") or {}).get("ref"),
+                    )
+                else:
+                    samples = item.get("sampled_comments") or []
+                    observed_bodies = []
+                    for sample in samples:
+                        if not sample.get("body"):
+                            continue
+                        attribution = "Comment"
+                        if sample.get("author"):
+                            attribution += f" by {sample['author']}"
+                        if sample.get("created_at"):
+                            attribution += f" at {sample['created_at']}"
+                        if sample.get("url"):
+                            attribution += f" ({sample['url']})"
+                        observed_bodies.append(f"{attribution}:\n{sample['body']}")
+                    if observed_bodies:
+                        body = body + "\n\nObserved issue comments (bounded sample):\n" + "\n\n".join(observed_bodies)
+                        depth = "PARTIAL_CONTENT"
+                    detail.update(
+                        comment_samples=samples,
+                        comment_lookup_status=item.get("comment_lookup_status", "NOT_REQUESTED"),
+                        comment_has_next_page=item.get("comment_has_next_page"),
+                        comment_transport=item.get("comment_transport"),
+                        comment_failure_class=item.get("comment_failure_class"),
+                        comment_http_status=item.get("comment_http_status"),
                     )
             elif operation == "releases":
                 title = item.get("name") or item.get("tag_name") or "GitHub release"

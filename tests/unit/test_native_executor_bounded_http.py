@@ -132,6 +132,95 @@ def test_github_issue_page_of_only_prs_is_empty_not_a_missing_repository(monkeyp
     assert result["pagination"]["has_next_page"] is True
 
 
+def test_github_issue_comment_followup_is_explicit_bounded_and_attributed(monkeypatch, executor):
+    calls = []
+    issues = [
+        {"number": 4, "title": "Observed issue", "comments": 2},
+        {"number": 5, "title": "Another discussed issue", "comments": 3},
+        {"number": 6, "title": "Quiet issue", "comments": 0},
+        {"number": 7, "title": "Outside lookup budget", "comments": 3},
+    ]
+    comments = [{
+        "id": 9, "body": "Observed reply", "html_url": "https://github.com/owner/repo/issues/4#issuecomment-9",
+        "user": {"login": "reply-author"}, "created_at": "2026-10-13T00:00:00Z",
+    }]
+
+    def fake_fetch(url, **kwargs):
+        calls.append((url, kwargs))
+        response = _response(json.dumps(comments if "/comments?" in url else issues), url)
+        if "/comments?" in url:
+            response.headers["Link"] = '<https://api.github.com/next>; rel="next"'
+        return response
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
+    result = executor.execute_github_rest_operation(
+        "owner/repo", "issues", limit=4, include_comments=True, comment_limit=1,
+    )
+    assert [url for url, _kwargs in calls] == [
+        "https://api.github.com/repos/owner/repo/issues?per_page=10",
+        "https://api.github.com/repos/owner/repo/issues/4/comments?per_page=1",
+        "https://api.github.com/repos/owner/repo/issues/5/comments?per_page=1",
+    ]
+    assert all(kwargs["timeout"] <= 5.0 and kwargs["max_bytes"] == 1_000_000
+               for _url, kwargs in calls)
+    assert result["follow_up_requests"] == 2
+    assert result["items"][0]["comment_lookup_status"] == "SUCCESS"
+    assert result["items"][0]["sampled_comments"][0]["author"] == "reply-author"
+    assert result["items"][0]["comment_has_next_page"] is True
+    assert result["items"][1]["comment_lookup_status"] == "SUCCESS"
+    assert result["items"][2]["comment_lookup_status"] == "NOT_APPLICABLE_ZERO_COUNT"
+    assert result["items"][3]["comment_lookup_status"] == "NOT_REQUESTED_BUDGET"
+
+
+def test_github_zero_comment_issues_do_not_consume_followup_budget(monkeypatch, executor):
+    calls = []
+
+    def fake_fetch(url, **_kwargs):
+        calls.append(url)
+        if "/comments?" in url:
+            return _response(json.dumps([{"id": 8, "body": "Observed reply"}]), url)
+        return _response(json.dumps([
+            {"number": 1, "comments": 0}, {"number": 2, "comments": 0},
+            {"number": 3, "comments": 1},
+        ]), url)
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
+    result = executor.execute_github_rest_operation("owner/repo", "issues", limit=3,
+                                                     include_comments=True)
+    assert result["follow_up_requests"] == 1
+    assert calls[-1] == "https://api.github.com/repos/owner/repo/issues/3/comments?per_page=3"
+    assert result["items"][2]["comment_lookup_status"] == "SUCCESS"
+
+
+def test_github_comment_followup_rejects_unbounded_or_ambiguous_options(executor):
+    from backend.services.agent_reach.native.errors import NativeReachError
+
+    with pytest.raises(NativeReachError):
+        executor.execute_github_rest_operation("owner/repo", "issues", include_comments="false")
+    with pytest.raises(NativeReachError):
+        executor.execute_github_rest_operation("owner/repo", "issues", include_comments=True,
+                                               comment_limit=6)
+    with pytest.raises(NativeReachError):
+        executor.execute_github_rest_operation("owner/repo", "prs", include_comments=True)
+
+
+def test_github_issue_comment_failure_preserves_issue_body(monkeypatch, executor):
+    issue = {"number": 4, "title": "Observed issue", "body": "Issue evidence", "comments": 1}
+
+    def fake_fetch(url, **_kwargs):
+        if "/comments?" in url:
+            raise ProviderHTTPError("not available", endpoint=url, status_code=403)
+        return _response(json.dumps([issue]), url)
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
+    result = executor.execute_github_rest_operation("owner/repo", "issues", include_comments=True)
+    assert result["status"] == "SUCCESS"
+    assert result["items"][0]["body"] == "Issue evidence"
+    assert result["items"][0]["comment_lookup_status"] == "FAILED"
+    assert result["items"][0]["comment_http_status"] == 403
+    assert "sampled_comments" not in result["items"][0]
+
+
 def test_caption_segments_preserve_observed_timing_and_do_not_infer_audio():
     cues = """WEBVTT
 

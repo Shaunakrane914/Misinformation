@@ -1,0 +1,59 @@
+{
+  "observed_at_utc": "2026-10-13T14:18:15.787422+00:00",
+  "git_head": "f4640f2e03174e00dd4c813db05faace4e505c9a",
+  "dirty_worktree": true,
+  "target": "openai/openai-python",
+  "scope": "One bounded public repository list; at most two follow-up calls and two comments per issue",
+  "router_status": "SUCCESS",
+  "follow_up_requests": 1,
+  "fragment_count": 3,
+  "records": [
+    {
+      "issue_number": 4064,
+      "issue_url": "https://github.com/openai/openai-python/issues/4064",
+      "content_depth": "PARTIAL_CONTENT",
+      "comment_lookup_status": "NOT_APPLICABLE_ZERO_COUNT",
+      "sampled_comment_count": 0,
+      "comment_has_next_page": null,
+      "sampled_comment_body_chars": [],
+      "comment_source_url_present": [],
+      "comment_author_present": [],
+      "comment_date_present": [],
+      "comment_transport_observed": false
+    },
+    {
+      "issue_number": 4063,
+      "issue_url": "https://github.com/openai/openai-python/issues/4063",
+      "content_depth": "PARTIAL_CONTENT",
+      "comment_lookup_status": "NOT_APPLICABLE_ZERO_COUNT",
+      "sampled_comment_count": 0,
+      "comment_has_next_page": null,
+      "sampled_comment_body_chars": [],
+      "comment_source_url_present": [],
+      "comment_author_present": [],
+      "comment_date_present": [],
+      "comment_transport_observed": false
+    },
+    {
+      "issue_number": 4042,
+      "issue_url": "https://github.com/openai/openai-python/issues/4042",
+      "content_depth": "PARTIAL_CONTENT",
+      "comment_lookup_status": "SUCCESS",
+      "sampled_comment_count": 1,
+      "comment_has_next_page": false,
+      "sampled_comment_body_chars": [
+        47
+      ],
+      "comment_source_url_present": [
+        true
+      ],
+      "comment_author_present": [
+        true
+      ],
+      "comment_date_present": [
+        true
+      ],
+      "comment_transport_observed": true
+    }
+  ]
+}

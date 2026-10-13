@@ -56,7 +56,7 @@ def test_github_request_is_allowlisted_and_uses_shared_transport(monkeypatch, ex
     monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
     result = executor.execute_github_rest_operation("octocat/Hello-World", "issues", limit=7)
 
-    assert calls[0][0] == "https://api.github.com/repos/octocat/Hello-World/issues?per_page=7"
+    assert calls[0][0] == "https://api.github.com/repos/octocat/Hello-World/issues?per_page=10"
     assert calls[0][1]["max_bytes"] > 0
     assert result["operation"] == "github.issues"
     assert result["transport"]["endpoint"] == calls[0][0]
@@ -103,15 +103,33 @@ def test_github_collection_pagination_is_bounded_and_observed(monkeypatch, execu
 
     monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
     result = executor.execute_github_rest_operation("owner/repo", "issues", limit=4, page=2)
-    assert calls == ["https://api.github.com/repos/owner/repo/issues?per_page=4&page=2"]
+    assert calls == ["https://api.github.com/repos/owner/repo/issues?per_page=10&page=2"]
     assert result["pagination"] == {
-        "page": 2, "per_page": 4, "provider_items_on_page": 1,
+        "page": 2, "per_page": 10, "provider_items_on_page": 1,
+        "filtered_pull_requests": 0,
         "has_next_page": True, "next_page_supported": True,
     }
     from backend.services.agent_reach.native.errors import NativeReachError
     with pytest.raises(NativeReachError):
         executor.execute_github_rest_operation("owner/repo", "issues", page=6)
     assert len(calls) == 1
+
+
+def test_github_issue_page_of_only_prs_is_empty_not_a_missing_repository(monkeypatch, executor):
+    def fake_fetch(url, **_kwargs):
+        response = _response(json.dumps([
+            {"number": 1, "pull_request": {"url": "https://api.github.com/prs/1"}},
+            {"number": 2, "pull_request": {"url": "https://api.github.com/prs/2"}},
+        ]), url)
+        response.headers["Link"] = '<https://api.github.com/repos/owner/repo/issues?page=2>; rel="next"'
+        return response
+
+    monkeypatch.setattr("backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch)
+    result = executor.execute_github_rest_operation("owner/repo", "issues", limit=3)
+    assert result["status"] == "EMPTY"
+    assert result["items"] == []
+    assert result["pagination"]["filtered_pull_requests"] == 2
+    assert result["pagination"]["has_next_page"] is True
 
 
 def test_caption_segments_preserve_observed_timing_and_do_not_infer_audio():

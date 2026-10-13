@@ -134,3 +134,44 @@ scripts passed, frozen hashes verified, offline release smoke passed and
 isolated rollback exited 0 with historical archive `NOT_VERIFIED`. Hosted CI
 for these later edits is **not yet verified** at this handoff update. Do not
 treat the earlier `a9a5958` hosted run as covering them.
+
+## Web-detail CI and subsequent GitHub integrity work
+
+The web-detail checkpoint was committed and pushed as
+`620beecff25c7561769db926d8f7ac12447d3bfa`; hosted
+[run 38342294739](https://github.com/Shaunakrane914/Misinformation/actions/runs/38342294739)
+completed successfully for that exact SHA, all five jobs. It does not cover
+the subsequent GitHub edits below.
+
+The [GitHub route](../../backend/infrastructure/acquisition/routing/standard_handlers.py)
+now distinguishes observed repository owner/last update from README
+author/publication, does not invent missing issue/PR/commit/release attribution,
+and labels issue/PR bodies and release notes `PARTIAL_CONTENT`, not
+`FULL_ARTICLE`. Release asset metadata retains a provider-supplied digest when
+available, but no asset bytes are independently verified. The
+[executor](../../backend/services/agent_reach/native/executor.py) requests a
+bounded ten-entry issue page for small limits because GitHub's issues API can
+include PRs. It still returns at most the requested number of actual issues,
+and exposes the count filtered as PRs and whether a next page exists.
+
+The [03:53Z live probe](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-53-35Z/)
+observed HTTP 200 with three provider entries, all filtered PRs, yielding zero
+issues. The old audit classifier labeled that `NOT_FOUND` incorrectly. The
+[audit runner](../../scripts/audits/run_phase8_live_acquisition_audit.py)
+now distinguishes `EMPTY_RESULT` from a missing target; a
+[03:55Z re-probe](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-55-58Z/)
+retrieved three actual issue bodies after bounded overfetch. The
+[v10 summary](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-55-58Z/richness_summary_v10.json)
+selects the latest matching scenario across retained runs. The 03:53Z/03:55Z
+pair observed 61,088/112,197 response bytes and 2,072/2,745 ms; timing
+variation prevents treating that pair as a controlled cost estimate.
+
+Focused GitHub/route/audit tests: 64 passed, exit 0. After the final GitHub
+edits, the full offline suite passed **1,022** tests in 72.70s and the fast
+unit/chaos/security suite passed **826** in 32.35s, both exit 0. Fatal flake8
+found 0; all three Node frontend scripts, frozen-hash verification and offline
+smoke passed. The isolated rollback validator exited 0 while reporting the
+historical archive `NOT_VERIFIED`. Hosted CI for these latest GitHub changes
+is **not yet verified** at this record update. The provider field boundary
+and official documentation links are in the
+[schema matrix](../architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md).

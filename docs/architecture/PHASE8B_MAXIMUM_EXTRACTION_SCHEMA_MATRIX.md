@@ -8,16 +8,19 @@ prove connection and content depth. The
 prove the changed paths with live traffic from the isolated checkout. Earlier
 spot-checks loaded the editable-installed outer checkout and are retained but
 **not** used as isolated-branch proof. The
-[`richness_summary_v9.json`](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-32-27Z/richness_summary_v9.json)
+[`richness_summary_v10.json`](../../artifacts/phase8_extraction_spotchecks/2026-10-13_03-55-58Z/richness_summary_v10.json)
 measures normalized samples and bounded parsed adapter-item key names across
 all 16 operations; it cannot infer a complete raw provider schema. The 17:37Z
 guarded live pass sampled one common target per operation, with 16/16 returning
 classified output. Its `web.read` text was later found to be compressed bytes
 misread as UTF-8 and is **not valid content proof**. The corrected
 [2026-10-13 common-case run](../../artifacts/phase8_extraction_spotchecks/2026-10-13_02-53-55Z/)
-sampled all 16 again; a separate
+sampled all 16 again; separate
 [web follow-up](../../artifacts/phase8_extraction_spotchecks/2026-10-13_02-55-36Z/)
-confirmed readable common/high-content excerpts with title and headings. Neither
+confirmed readable common/high-content excerpts with title and headings. Later
+[GitHub probes](../../artifacts/phase8_extraction_spotchecks/README.md)
+exposed a filtered-page false `NOT_FOUND` label and tested bounded overfetch.
+None of these
 is proof of difficult-case or pagination completeness. Candidate fields below are an
 extraction contract backlog, **not** a verified promise from providers.
 
@@ -29,11 +32,11 @@ An empty value must remain empty; no fabricated dates, counts, authors or text.
 
 | Operation | Captured or conditional normalized fields | Missing / additional request / restriction |
 |---|---|---|
-| `github.read` | Repository name, URL, owner, description, updated time, stars/forks/watchers, language, topics; README text/path/SHA/source URL when Contents API includes inline base64. | Branch/tree/source files, contributors and full repository history require separate requests. README alone is `PARTIAL_CONTENT`, never a whole-repo reading. Contents API absence/oversize leaves metadata only. |
-| `github.issues` | Title/body, author, created time, URL; observed number, state/reason, labels, assignees, comment count, update/close times and author association are retained as provider fields. Explicit page 1–5 is bounded; `Link: rel=next` is observed. | Comment bodies/events require follow-up; a filtered page may contain fewer issues than `per_page` because GitHub's issues endpoint also lists PRs. No automatic complete-history claim. |
+| `github.read` | Repository name, URL, observed owner identity, description, updated time, stars/forks/watchers, language, topics; README text/path/SHA/source URL when Contents API includes inline base64. Owner and last-update timestamp are **not** presented as README author/publication date. | Branch/tree/source files, contributors and full repository history require separate requests. README alone is `PARTIAL_CONTENT`, never a whole-repo reading. Contents API absence/oversize leaves metadata only. |
+| `github.issues` | Title/body, observed author and creation time, URL; number, state/reason, labels, assignees, comment count, update/close times and author association retained. Explicit page 1–5 is bounded; `Link: rel=next` observed. A bounded ten-entry provider page is requested for small limits to compensate for PR filtering; returned issues remain capped at the requested limit. | Comment bodies/events require follow-up; a filtered page can still be empty with later pages available. The 03:53Z HTTP-200/zero-issue result was incorrectly labeled `NOT_FOUND`; the classifier now uses `EMPTY_RESULT` for such non-missing targets. No complete-history claim. |
 | `github.prs` | Title/body, author, created time, URL; number, state, merged time, draft flag, base/head refs, comments and update/close times retained. Explicit page 1–5 is bounded. | Review/commit/file diffs and discussion need separate requests; list response alone cannot prove merge integrity. |
 | `github.commits` | Message, author/date, URL; SHA, parent SHAs, committer name/date and API verification status retained. Explicit page 1–5 is bounded. | File patches and complete topology need follow-up; verification field is provider-reported, not an independent signature audit. Message is metadata, not code evidence. |
-| `github.releases` | Tag/name, release body, author, publication time, URL; draft/prerelease status and bounded asset name/URL/size/content type retained. Explicit page 1–5 is bounded. | Asset checksums/binary contents are not acquired; release notes do not prove installed software behavior. |
+| `github.releases` | Tag/name, release body, observed author/publication time, URL; draft/prerelease status and bounded asset name/URL/size/content type, provider-supplied digest when present, download count and asset dates retained. Explicit page 1–5 is bounded. | Provider-supplied digest is **not** an independent binary verification; asset bytes are not acquired. Release notes are `PARTIAL_CONTENT` and do not prove installed software behavior. A record creation time is not substituted for missing publication time. |
 | `youtube.read` | Video title, channel, description; ID, channel ID, observed upload date, duration, available view/like/comment counts, tags, categories, availability/live status in metadata. | Captions, audio and semantic video content are separate operations; some counters or dates may be missing; metadata field population after this change needs a new live spot-check. |
 | `youtube.transcript` | Caption file text, up to 500 observed timed cues and filename language where yt-dlp can retrieve them; cue fixtures and a live English-caption sample exercised this path. | Auto/manual caption origin remains `UNVERIFIED`; only one bounded selected file is retained, not multiple tracks. Availability varies. No audio inference. |
 | `youtube.comments` | Bounded top-comment text, author, ID, likes and observed timestamp where present. | Replies, continuation/pagination, moderation context and total-discussion coverage are missing. Relative time is not converted into a fabricated date. |
@@ -46,6 +49,29 @@ An empty value must remain empty; no fabricated dates, counts, authors or text.
 | `xiaoyuzhou.podcast` | Official public podcast identity, description, author, episode/subscription counts, latest episode date and URL when embedded page data supplies them. | Private analytics, restricted metadata and full episode archive unverified; text search is disclosed external discovery, not direct platform data. |
 | `xiaoyuzhou.episodes` | Official public episode title, show notes, date, duration, play/comment counts, audio URL, transcript-availability flag when exposed. | Audio semantics, transcript text, complete pagination, referenced-source extraction and comment discussion not implemented. |
 
+## Provider-documentation boundaries
+
+- [GitHub's issue-list documentation](https://docs.github.com/en/rest/issues/issues)
+  says the list can include PRs; a zero result **after Aegis filters PRs** is
+  an empty sampled page, not proof of absence. GitHub's
+  [pagination documentation](https://docs.github.com/en/rest/using-the-rest-api/using-pagination-in-the-rest-api)
+  explains the `Link` continuation header. These sources support explicit
+  bounded page access, not a claim that Aegis has fetched all pages.
+- [GitHub release documentation](https://docs.github.com/en/rest/releases/releases)
+  includes asset metadata and an optional provider-supplied digest in example
+  responses. Aegis retains that string when observed; it has not downloaded
+  the asset or independently checked its bytes. PR files/reviews and commit
+  file patches are separate documented API reads, not implied by list bodies.
+- [YouTube's video API documentation](https://developers.google.com/youtube/v3/docs/videos/list)
+  describes metadata parts accessible via its authenticated/API-key interface;
+  it is not evidence that Aegis's current public `yt-dlp` path returns every
+  such field. Official
+  [caption-list/download guidance](https://developers.google.com/youtube/v3/guides/implementation/captions)
+  requires OAuth for those methods. Aegis does not bypass that requirement.
+  [YouTube comment-thread documentation](https://developers.google.com/youtube/v3/docs/commentThreads)
+  states that embedded replies may be incomplete, so current top-comment
+  samples cannot represent a complete discussion.
+
 ## Measured baseline from retained live records
 
 The summarizer selects the latest record for each operation/scenario pair from
@@ -57,11 +83,11 @@ item**, not raw body size or a completeness percentage.
 
 | Operation | Live success / probes | Mean chars / successful item | Median probe latency, ms | Observed depth |
 |---|---:|---:|---:|---|
-| `github.read` | 2/3 | 21,038 | 1,283 | Partial README content |
-| `github.issues` | 2/3 | 2,834 | 621 | Issue body |
-| `github.prs` | 2/3 | 1,339 | 1,649 | PR body |
-| `github.commits` | 2/3 | 304 | 706 | Metadata |
-| `github.releases` | 1/3 | 1,129 | 701 | Release notes |
+| `github.read` | 2/3 | 21,038 | 3,364 | Partial README content |
+| `github.issues` | 2/3 | 2,429 | 2,242 | Partial issue body; no comments |
+| `github.prs` | 2/3 | 8,862 | 1,649 | Partial PR body; no reviews/files |
+| `github.commits` | 2/3 | 304 | 731 | Metadata |
+| `github.releases` | 1/3 | 1,129 | 820 | Partial release notes |
 | `youtube.read` | 2/3 | 1,400 | 2,357 | Video metadata |
 | `youtube.transcript` | 2/3 | 2,228 | 4,520 | Caption file |
 | `youtube.comments` | 2/3 | 95 | 5,438 | Bounded comment sample |

@@ -410,9 +410,12 @@ class NativeExecutor:
         if not isinstance(page, int) or isinstance(page, bool) or not 1 <= page <= 5:
             raise NativeReachError("GitHub page must be an integer from 1 to 5")
 
+        # GitHub's issues collection also includes PRs. Request a modest
+        # overfetch so filtering does not routinely return zero real issues.
+        per_page = min(max(limit, 10 if op == "issues" else 1), 20)
         url = f"https://api.github.com/repos/{clean_repo}{suffix}"
         if suffix:
-            url += f"?per_page={min(max(limit, 1), 20)}"
+            url += f"?per_page={per_page}"
             if page > 1:
                 url += f"&page={page}"
         headers = {
@@ -435,6 +438,7 @@ class NativeExecutor:
             provider_count = len(items)
             if op == "issues":
                 items = [item for item in items if not item.get("pull_request")]
+            filtered_pull_requests = provider_count - len(items) if op == "issues" else 0
             if op == "read":
                 readme_url = f"https://api.github.com/repos/{clean_repo}/readme"
                 try:
@@ -464,8 +468,9 @@ class NativeExecutor:
                 "count": len(items[:limit]),
                 "pagination": {
                     "page": page,
-                    "per_page": min(max(limit, 1), 20) if suffix else None,
+                    "per_page": per_page if suffix else None,
                     "provider_items_on_page": provider_count,
+                    "filtered_pull_requests": filtered_pull_requests,
                     "has_next_page": 'rel="next"' in response.headers.get("Link", ""),
                     "next_page_supported": bool(suffix),
                 },

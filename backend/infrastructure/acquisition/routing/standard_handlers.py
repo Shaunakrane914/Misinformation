@@ -99,8 +99,10 @@ class StandardChannelHandlers:
                 title = item.get("full_name") or repo
                 body = item.get("readme") or item.get("description") or ""
                 url = item.get("html_url") or f"https://github.com/{repo}"
-                author = (item.get("owner") or {}).get("login") or repo.split("/")[0]
-                published = item.get("updated_at") or ""
+                # The repository owner and last update are not the author and
+                # publication date of the README or repository contents.
+                author = ""
+                published = ""
                 # A README is content from one document, not the entire repository.
                 depth = "PARTIAL_CONTENT" if item.get("readme") else "METADATA"
                 detail = {
@@ -110,14 +112,16 @@ class StandardChannelHandlers:
                     "default_branch": item.get("default_branch"),
                     "license_spdx_id": (item.get("license") or {}).get("spdx_id"),
                     "open_issues_count": item.get("open_issues_count"),
+                    "owner_login": (item.get("owner") or {}).get("login"),
                 }
             elif operation in {"issues", "prs"}:
-                title = item.get("title") or f"GitHub {operation[:-1]}"
+                title = item.get("title") or ""
                 body = item.get("body") or title
                 url = item.get("html_url") or ""
-                author = (item.get("user") or {}).get("login") or "GitHub"
+                author = (item.get("user") or {}).get("login") or ""
                 published = item.get("created_at") or ""
-                depth = "FULL_ARTICLE" if item.get("body") else "METADATA"
+                # The list body does not include comments, events or PR review.
+                depth = "PARTIAL_CONTENT" if item.get("body") else "METADATA"
                 detail = {
                     "number": item.get("number"),
                     "state": item.get("state"),
@@ -141,9 +145,9 @@ class StandardChannelHandlers:
                 title = item.get("name") or item.get("tag_name") or "GitHub release"
                 body = item.get("body") or title
                 url = item.get("html_url") or ""
-                author = ((item.get("author") or {}).get("login") or repo.split("/")[0])
-                published = item.get("published_at") or item.get("created_at") or ""
-                depth = "FULL_ARTICLE" if item.get("body") else "METADATA"
+                author = (item.get("author") or {}).get("login") or ""
+                published = item.get("published_at") or ""
+                depth = "PARTIAL_CONTENT" if item.get("body") else "METADATA"
                 detail = {
                     "tag_name": item.get("tag_name"),
                     "target_commitish": item.get("target_commitish"),
@@ -153,17 +157,19 @@ class StandardChannelHandlers:
                     "published_at": item.get("published_at"),
                     "assets": [
                         {"name": asset.get("name"), "url": asset.get("browser_download_url"),
-                         "size": asset.get("size"), "content_type": asset.get("content_type")}
+                         "size": asset.get("size"), "content_type": asset.get("content_type"),
+                         "digest": asset.get("digest"), "download_count": asset.get("download_count"),
+                         "created_at": asset.get("created_at"), "updated_at": asset.get("updated_at")}
                         for asset in item.get("assets", [])[:20] if isinstance(asset, dict)
                     ],
                 }
             else:
                 commit = item.get("commit") or {}
-                title = (commit.get("message") or "GitHub commit").splitlines()[0]
+                title = (commit.get("message") or "").splitlines()[0] if commit.get("message") else ""
                 body = commit.get("message") or title
                 url = item.get("html_url") or ""
                 author = ((item.get("author") or {}).get("login") or
-                          (commit.get("author") or {}).get("name") or "GitHub")
+                          (commit.get("author") or {}).get("name") or "")
                 published = (commit.get("author") or {}).get("date") or ""
                 depth = "METADATA"
                 detail = {

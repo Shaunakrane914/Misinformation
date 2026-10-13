@@ -222,7 +222,7 @@ def classify_probe(
         return "NETWORK_FAILURE"
     if not fragments:
         if str(telemetry.get("provider_status") or "").upper() == "EMPTY":
-            return "NOT_FOUND"
+            return "NOT_FOUND" if missing_is_not_found else "EMPTY_RESULT"
         if missing_is_not_found:
             return "NOT_FOUND"
         return "PARSER_FAILURE" if telemetry.get("network_observed") else "UNVERIFIED"

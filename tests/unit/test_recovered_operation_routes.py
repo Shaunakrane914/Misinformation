@@ -87,8 +87,11 @@ def test_recovered_github_operations_reach_rest_executor(monkeypatch, operation)
                  "parents": [{"sha": "parent123"}]},
      "sha", "abc123"),
     ("releases", {"name": "v1", "body": "Release notes", "tag_name": "v1",
-                  "prerelease": False, "assets": [{"name": "release.zip", "size": 4}]},
-     "assets", [{"name": "release.zip", "url": None, "size": 4, "content_type": None}]),
+                  "prerelease": False, "assets": [{"name": "release.zip", "size": 4,
+                                                    "digest": "sha256:abc", "download_count": 8}]},
+     "assets", [{"name": "release.zip", "url": None, "size": 4, "content_type": None,
+                 "digest": "sha256:abc", "download_count": 8,
+                 "created_at": None, "updated_at": None}]),
 ])
 def test_github_operation_preserves_observed_fields_and_pagination(
     monkeypatch, operation, item, expected_key, expected_value,
@@ -111,6 +114,33 @@ def test_github_operation_preserves_observed_fields_and_pagination(
     assert fragments[0].raw_metadata["provider_fields"][expected_key] == expected_value
     assert fragments[0].raw_metadata["pagination"]["has_next_page"] is True
     assert "number" in _telemetry["adapter_item_field_names"] or operation in {"commits", "releases"}
+
+
+@pytest.mark.parametrize("operation,item,expected_depth", [
+    ("read", {"full_name": "owner/repo", "owner": {"login": "owner"},
+              "updated_at": "2026-10-10", "readme": "# README"}, "PARTIAL_CONTENT"),
+    ("issues", {"title": "Issue", "body": "Issue body"}, "PARTIAL_CONTENT"),
+    ("prs", {"title": "PR", "body": "PR body"}, "PARTIAL_CONTENT"),
+    ("releases", {"name": "Release", "body": "Release notes",
+                  "created_at": "2026-10-10"}, "PARTIAL_CONTENT"),
+    ("commits", {"sha": "abc", "commit": {"message": "Change"}}, "METADATA"),
+])
+def test_github_list_does_not_invent_attribution_or_full_article(
+    monkeypatch, operation, item, expected_depth,
+):
+    router = NativeRouter()
+    monkeypatch.setattr(router.executor, "execute_github_rest_operation", lambda *_args, **_kwargs: {
+        "repo": "owner/repo", "items": [item], "transport": _transport(),
+    })
+    fragments, _telemetry = router.execute_channel_query(
+        "github", "owner/repo", operation=operation, limit=1,
+    )
+    assert len(fragments) == 1
+    assert fragments[0].author == ""
+    assert fragments[0].published == ""
+    assert fragments[0].content_depth == expected_depth
+    if operation == "read":
+        assert fragments[0].raw_metadata["provider_fields"]["owner_login"] == "owner"
 
 
 def test_v2ex_replies_do_not_confuse_reply_id_with_topic_id(monkeypatch):

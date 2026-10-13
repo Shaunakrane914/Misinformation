@@ -73,6 +73,10 @@ def test_phase8_classification_preserves_failure_semantics():
     assert classify_probe(
         telemetry={"status": "SUCCESS", "http_statuses": [200], "provider_status": "EMPTY"},
         fragments=[], missing_is_not_found=False,
+    ) == "EMPTY_RESULT"
+    assert classify_probe(
+        telemetry={"status": "SUCCESS", "http_statuses": [200], "provider_status": "EMPTY"},
+        fragments=[], missing_is_not_found=True,
     ) == "NOT_FOUND"
 
 

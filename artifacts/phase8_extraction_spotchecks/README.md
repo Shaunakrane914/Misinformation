@@ -20,10 +20,12 @@ post-commit or hosted-CI result.
 | [02:55:36Z](2026-10-13_02-55-36Z/) | Guarded web common/high-content re-probe | Both web pages yielded readable bounded content, observed titles/headings and no replacement/control characters in the retained excerpts. This filtered run is **not** a 16-operation gate pass. |
 | [03:08:05Z](2026-10-13_03-08-05Z/) | Guarded bounded page-detail re-probe | Both pages yielded readable titles/headings and observed page links; one exposed publisher-declared JSON-LD. No table, quotation, media caption or correction notice was observed on these two targets. All such fields are page observations, not verified source claims. |
 | [03:32:27Z](2026-10-13_03-32-27Z/) | Final guarded page-detail re-probe after title/canonical correction | Both pages yielded readable title/headings and observed links; the common page no longer records a nonexistent canonical-verification field. The final important-field summary is v9. This remains a dirty-worktree, filtered pre-commit run. |
+| [03:53:35Z](2026-10-13_03-53-35Z/) | Five GitHub operations after attribution/depth correction | Four common operations returned content or metadata; `github.issues` page 1 returned HTTP 200 but all three provider entries were PRs, filtered to zero issues. Its historical `NOT_FOUND` classification is **wrong** for a filtered page, not proof that the repository or issues are absent. |
+| [03:55:58Z](2026-10-13_03-55-58Z/) | Guarded GitHub issue overfetch re-probe | One bounded request for ten provider entries yielded three actual issues. The probe returned `DIRECT_PARTIAL_CONTENT`. This did not fetch issue comments or prove all pages. The 03:53Z/03:55Z pair observed 61,088/112,197 raw bytes and 2,072/2,745 ms respectively; those two timings are not a controlled marginal-cost estimate. |
 
-The current [`richness_summary_v9.json`](2026-10-13_03-32-27Z/richness_summary_v9.json)
+The current [`richness_summary_v10.json`](2026-10-13_03-55-58Z/richness_summary_v10.json)
 selects the latest matching operation/scenario from the Phase 8A artifact,
-guarded 16-operation re-probe and newest web follow-up. It scores observed
+guarded 16-operation re-probe, web follow-up and GitHub probes. It scores observed
 normalized sample and bounded parsed adapter-item field names, **not** raw-provider
 schema completeness. Older samples that did not record a field are marked
 *unobserved*, not treated as empty. The old v3 summary remains historically

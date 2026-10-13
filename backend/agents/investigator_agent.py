@@ -52,19 +52,19 @@ class InvestigatorAgent:
         if not sup and not ref and not primary_ev:
             return json.dumps({
                 "verdict": "Insufficient Evidence",
-                "confidence": 0.20,
+                "confidence": None,
                 "confidence_level": ConfidenceLevel.INSUFFICIENT.value,
                 "severity": "Low",
-                "reasoning": "No verifiable supporting or refuting empirical evidence was discovered across monitored channels.",
-                "explanation": "Monitored news wires, corporate registries, and primary archives did not contain verifiable records to substantiate or refute this claim.",
-                "evidence_limitations": ["No primary documentation available", "Indexed sources yielded zero corroborating records"],
+                "reasoning": "No verifiable supporting or refuting evidence was supplied for a verdict.",
+                "explanation": "This run did not supply inspectable records; it cannot establish whether relevant records exist elsewhere.",
+                "evidence_limitations": ["No inspectable source documentation supplied"],
                 "evidence_chain": {
-                    "what_happened": "Unsubstantiated assertion",
+                    "what_happened": "Not established by this run",
                     "who_says": [],
                     "primary_evidence": [],
                     "independent_corroboration": [],
                     "contradicting_evidence": [],
-                    "what_remains_unresolved": ["Entire claim lacks empirical documentation"]
+                    "what_remains_unresolved": ["Whether the claim is supported or refuted by external records"]
                 }
             })
 
@@ -127,19 +127,19 @@ Respond in STRICT JSON matching this schema:
     def extract_verdict(self, raw_text: str) -> Dict[str, Any]:
         """Parse raw model output into validated verdict dictionary."""
         fallback = {
-            "verdict": "Unverified",
-            "confidence": 0.50,
-            "confidence_level": ConfidenceLevel.LOW.value,
-            "severity": "Medium",
-            "reasoning": "Unable to definitively verify claim due to conflicting or ambiguous evidence.",
-            "explanation": "The available intelligence streams do not provide unambiguous corroboration.",
+            "verdict": "Insufficient Evidence",
+            "confidence": None,
+            "confidence_level": ConfidenceLevel.INSUFFICIENT.value,
+            "severity": "Low",
+            "reasoning": "Verdict synthesis did not return a valid response; no conclusion can be drawn.",
+            "explanation": "The model response could not be parsed; retrieved-source conclusions are unavailable.",
             "evidence_limitations": ["Automated verdict synthesis fallback engaged"],
             "evidence_chain": {
-                "what_happened": "Ambiguous signal",
+                "what_happened": "Not established",
                 "primary_evidence": [],
                 "independent_corroboration": [],
                 "contradicting_evidence": [],
-                "what_remains_unresolved": ["Verification inconclusive"]
+                "what_remains_unresolved": ["Verification could not be completed"]
             }
         }
 
@@ -160,16 +160,16 @@ Respond in STRICT JSON matching this schema:
             valid_verdicts = {v.value.lower(): v.value for v in VerdictType}
             canonical_v = valid_verdicts.get(verdict_str.lower(), "Unverified")
 
-            confidence_val = float(data.get("confidence", 0.50))
-            confidence_val = max(0.0, min(1.0, confidence_val))
+            raw_confidence = data.get("confidence")
+            confidence_val = None if raw_confidence is None else max(0.0, min(1.0, float(raw_confidence)))
 
             severity_str = str(data.get("severity", "Medium")).capitalize()
             if severity_str not in [s.value for s in SeverityLevel]:
                 severity_str = "Medium"
 
-            conf_level = str(data.get("confidence_level", "MEDIUM")).upper()
+            conf_level = str(data.get("confidence_level", "INSUFFICIENT" if confidence_val is None else "MEDIUM")).upper()
             if conf_level not in [c.value for c in ConfidenceLevel]:
-                conf_level = "HIGH" if confidence_val >= 0.80 else ("MEDIUM" if confidence_val >= 0.50 else "LOW")
+                conf_level = "INSUFFICIENT" if confidence_val is None else ("HIGH" if confidence_val >= 0.80 else ("MEDIUM" if confidence_val >= 0.50 else "LOW"))
 
             result = {
                 "verdict": canonical_v,
@@ -194,7 +194,7 @@ Respond in STRICT JSON matching this schema:
         raw_text = self.determine_verdict(claim_text, evidence_json)
         result = self.extract_verdict(raw_text)
         response = gemini_service.gateway.last_response
-        if response is not None:
+        if response is not None and result.get("confidence") is not None:
             result["llm_provenance"] = {
                 "provider": response.provider,
                 "model": response.model,

@@ -40,7 +40,7 @@ def test_research_agent_extract_json_fallback_on_malformed():
     fallback = agent.extract_json("Not a JSON document at all")
     assert fallback["supporting_evidence"] == []
     assert fallback["refuting_evidence"] == []
-    assert fallback["overall_evidence_confidence"] == 0.5
+    assert fallback["overall_evidence_confidence"] == 0.0
 
 
 @pytest.mark.unit
@@ -126,6 +126,17 @@ def test_investigator_agent_insufficient_evidence_heuristic():
     res = json.loads(raw)
     assert res["verdict"] == VerdictType.INSUFFICIENT_EVIDENCE.value
     assert res["severity"] == "Low"
+    assert res["confidence"] is None
+    assert "monitored" not in res["reasoning"].lower()
+
+
+@pytest.mark.unit
+def test_investigator_malformed_response_abstains_without_stale_provenance():
+    agent = InvestigatorAgent()
+    result = agent.extract_verdict("invalid model output")
+    assert result["verdict"] == VerdictType.INSUFFICIENT_EVIDENCE.value
+    assert result["confidence"] is None
+    assert "conflicting" not in result["reasoning"].lower()
 
 
 @pytest.mark.unit

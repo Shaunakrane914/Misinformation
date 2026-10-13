@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8 frontend truth checkpoint — 2026-10-13
+## Latest: Phase 8 claim API source-truth checkpoint — 2026-10-13
+
+- [Claim API source-truth handoff](2026-10-13_PHASE8_CLAIM_API_SOURCE_TRUTH.md):
+  abstaining server contract, source-link and lineage controls, blocking-call
+  worker-pool correction, full offline validation, and remaining Phase 8 gates.
+
+## Previous: Phase 8 frontend truth checkpoint — 2026-10-13
 
 - [Frontend truth handoff](2026-10-13_PHASE8_FRONTEND_TRUTH_CHECKPOINT.md):
   legacy fabricated-dossier path removed, claim fallback made abstaining,

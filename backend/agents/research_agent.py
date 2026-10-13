@@ -196,7 +196,7 @@ Where overall_evidence_confidence represents:
             "what_is_unknown": [],
             "supporting_evidence": [],
             "refuting_evidence": [],
-            "overall_evidence_confidence": 0.5,
+            "overall_evidence_confidence": 0.0,
             "sources_analyzed": []
         }
 
@@ -215,7 +215,7 @@ Where overall_evidence_confidence represents:
                 if not isinstance(data.get(k), list):
                     data[k] = []
             if "overall_evidence_confidence" not in data:
-                data["overall_evidence_confidence"] = 0.5
+                data["overall_evidence_confidence"] = 0.0
 
             return data
         except Exception as e:

@@ -147,7 +147,7 @@ class ClaimSubmitResponse(BaseModel):
     "/api/claims/verify",
     summary="Direct Synchronous Multi-Agent Fact-Check (Truth Dossier)"
 )
-async def verify_claim_sync(request: ClaimVerifyRequest):
+def verify_claim_sync(request: ClaimVerifyRequest):
     """
     Execute an immediate, end-to-end multi-agent verification pass on a claim.
     Returns the complete 5-section Truth Dossier synchronously.
@@ -187,7 +187,9 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                     evidence_json = evidence_str
             except Exception as e_ev2:
                 logger.warning(f"[VerifySync] Fallback evidence note: {e_ev2}")
-                evidence_json = {"supporting_evidence": [], "refuting_evidence": [], "overall_evidence_confidence": "Medium"}
+                evidence_json = {"supporting_evidence": [], "refuting_evidence": [], "overall_evidence_confidence": 0.0}
+        if not isinstance(evidence_json, dict):
+            evidence_json = {"supporting_evidence": [], "refuting_evidence": [], "overall_evidence_confidence": 0.0}
 
         # 3. Investigate & Stance Reason via InvestigatorAgent
         investigator_agent = get_investigator_agent()
@@ -253,17 +255,12 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 else:
                     mandel_r2 = None
 
-        verdict_str = str(investigation_res.get("verdict", "Unverified")).strip().upper()
-        if "TRUE" in verdict_str and "PARTIALLY" not in verdict_str and "NOT TRUE" not in verdict_str:
-            clean_verdict = "TRUE"
-        elif "FALSE" in verdict_str:
-            clean_verdict = "FALSE"
-        elif "MISLEADING" in verdict_str:
-            clean_verdict = "MISLEADING"
-        elif "INSUFFICIENT" in verdict_str:
-            clean_verdict = "INSUFFICIENT_EVIDENCE"
-        else:
-            clean_verdict = "UNVERIFIED"
+        verdict_str = str(investigation_res.get("verdict", "Unverified")).strip().upper().replace(" ", "_")
+        clean_verdict = {
+            "TRUE": "TRUE", "SUPPORTED": "TRUE", "FALSE": "FALSE",
+            "MISLEADING": "MISLEADING", "PARTIALLY_TRUE": "PARTIALLY_TRUE",
+            "INSUFFICIENT_EVIDENCE": "INSUFFICIENT_EVIDENCE",
+        }.get(verdict_str, "UNVERIFIED")
 
         raw_conf = investigation_res.get("confidence")
         conf_int = int(raw_conf * 100) if (raw_conf is not None and raw_conf <= 1.0) else (int(raw_conf) if raw_conf is not None else None)
@@ -286,10 +283,19 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
         from backend.services.research.relevance_gate import relevance_gate
         rejected_claim_evidence = []
 
+        def inspectable(item):
+            try:
+                parsed = urllib.parse.urlsplit(str(item.get("url") or ""))
+                return (parsed.scheme in ("http", "https") and bool(parsed.hostname)
+                        and not parsed.username and not parsed.password
+                        and bool(str(item.get("text") or "").strip()))
+            except ValueError:
+                return False
+
         supporting_list = []
         for s in evidence_json.get("supporting_evidence", []):
-            text_val = s.get("text") or s.get("summary") or str(s) if isinstance(s, dict) else str(s)
-            title_val = s.get("title") or s.get("source") or text_val[:60] if isinstance(s, dict) else text_val[:60]
+            text_val = (s.get("text") or s.get("quote") or s.get("summary") or "") if isinstance(s, dict) else str(s)
+            title_val = (s.get("title") or s.get("source") or text_val[:60]) if isinstance(s, dict) else text_val[:60]
             url_val = s.get("url") if isinstance(s, dict) else None
             
             assess = relevance_gate.evaluate_item(
@@ -302,25 +308,24 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 logger.info(f"[VerifySync] Rejecting off-topic supporting item: {assess.rejection_reason}")
                 continue
 
+            # A model-generated sentence is not an independently inspectable
+            # source. Keep it out of the evidence and replay lineage.
+            if not (isinstance(s, dict) and inspectable({"url": url_val, "text": text_val})):
+                rejected_claim_evidence.append({"reason": "MISSING_SOURCE_LINK", "stance": "supporting"})
+                continue
+
             if isinstance(s, dict):
                 supporting_list.append({
-                    "source": s.get("source") or s.get("source_name") or "Primary Source",
-                    "platform": s.get("platform") or "Wire",
+                    "source": s.get("source") or s.get("source_name"),
+                    "platform": s.get("platform"),
                     "text": text_val,
                     "url": url_val
-                })
-            elif isinstance(s, str):
-                supporting_list.append({
-                    "source": "Corroborating Document",
-                    "platform": "Wire",
-                    "text": s,
-                    "url": None
                 })
 
         refuting_list = []
         for r in evidence_json.get("refuting_evidence", []):
-            text_val = r.get("text") or r.get("summary") or str(r) if isinstance(r, dict) else str(r)
-            title_val = r.get("title") or r.get("source") or text_val[:60] if isinstance(r, dict) else text_val[:60]
+            text_val = (r.get("text") or r.get("quote") or r.get("summary") or "") if isinstance(r, dict) else str(r)
+            title_val = (r.get("title") or r.get("source") or text_val[:60]) if isinstance(r, dict) else text_val[:60]
             url_val = r.get("url") if isinstance(r, dict) else None
 
             assess = relevance_gate.evaluate_item(
@@ -333,24 +338,28 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 logger.info(f"[VerifySync] Rejecting off-topic refuting item: {assess.rejection_reason}")
                 continue
 
+            if not (isinstance(r, dict) and inspectable({"url": url_val, "text": text_val})):
+                rejected_claim_evidence.append({"reason": "MISSING_SOURCE_LINK", "stance": "refuting"})
+                continue
+
             if isinstance(r, dict):
                 refuting_list.append({
-                    "source": r.get("source") or r.get("source_name") or "Fact-Check Report",
-                    "platform": r.get("platform") or "Fact-Check",
+                    "source": r.get("source") or r.get("source_name"),
+                    "platform": r.get("platform"),
                     "text": text_val,
                     "url": url_val
                 })
-            elif isinstance(r, str):
-                refuting_list.append({
-                    "source": "Fact-Checking Document",
-                    "platform": "Fact-Check",
-                    "text": r,
-                    "url": None
-                })
 
-        explanation = investigation_res.get("reasoning") or "Multi-source evidence review completed."
+        evidence_backed = any(inspectable(item) for item in supporting_list + refuting_list)
+        if not evidence_backed:
+            clean_verdict = "INSUFFICIENT_EVIDENCE"
+            conf_int = None
+            explanation = "The research response supplied no source-linked passage to substantiate a verdict."
+        else:
+            explanation = investigation_res.get("reasoning") or "No conclusive explanation was supplied."
 
-        debunk_stmt = f"Aegis Fact-Check: Empirical verification concluded the claim '{norm_text[:60]}...' is {clean_verdict}. {explanation[:120]}"
+        debunk_stmt = (f"Aegis Fact-Check: Evidence-linked assessment of '{norm_text[:60]}...' is {clean_verdict}. {explanation[:120]}"
+                       if clean_verdict in ("TRUE", "FALSE", "MISLEADING", "PARTIALLY_TRUE") else None)
         duration = round(time.perf_counter() - start_time, 2)
 
         # Database cache insertion
@@ -372,9 +381,9 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
         social_radar = {
             "reddit": {
                 "mentions": len(reddit_items),
-                "sentiment": "Skeptical / Disproven" if clean_verdict == "FALSE" else ("Active Discussion" if reddit_items else "No Signals"),
-                "top_sub": reddit_items[0].get("subreddit") or reddit_items[0].get("author") or "r/all" if reddit_items else "None",
-                "summary": reddit_items[0].get("title", "Community discussions analyzed.")[:80] if reddit_items else "No public community threads discovered."
+                "sentiment": None,
+                "top_sub": reddit_items[0].get("subreddit") if reddit_items else None,
+                "summary": reddit_items[0].get("title") if reddit_items else None
             },
             "twitter": {
                 "virality": "Unmeasured (no time-series stream)",
@@ -384,10 +393,10 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             },
             "youtube": {
                 "video_count": len(youtube_items),
-                "finding": youtube_items[0].get("title", "Video discussions indexed.")[:60] if youtube_items else "Zero video analyses returned."
+                "finding": youtube_items[0].get("title") if youtube_items else None
             },
             "news": {
-                "registry_status": "Wire Match" if news_items else "No Wire Records",
+                "registry_status": "RESULTS_RETURNED" if news_items else "NOT_VERIFIED",
                 "top_wire": news_items[0].get("source") if news_items else None,
                 "articles_count": len(news_items)
             },
@@ -403,23 +412,28 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
         lineage_candidates: List[EvidenceItem] = []
         for idx, s in enumerate(supporting_list + refuting_list):
             cand_url = s.get("url") or s.get("canonical_url") or ""
-            cand_source = s.get("source") or s.get("source_name") or "News Wire"
+            cand_source = s.get("source") or s.get("source_name") or "Unknown Source"
             cand_text = s.get("text") or s.get("snippet") or ""
-            is_primary = any(w in cand_source.lower() for w in ["reuters", "ap", "bloomberg", "registry", "official", "sec"])
             lineage_candidates.append(EvidenceItem(
                 id=f"ev_claim_{idx+1}",
                 canonical_url=cand_url,
                 title=cand_source,
                 source_name=cand_source,
                 snippet=cand_text,
-                source_tier=SourceTier.TIER_1_ORIGINAL_DOCUMENT.value if is_primary else SourceTier.TIER_2_FINANCIAL_PRESS.value,
-                source_role=SourceRole.PRIMARY.value if is_primary else SourceRole.SECONDARY.value,
-                primary_source=is_primary,
-                relevance_score=s.get("relevance_score") or (0.85 if is_primary else 0.70)
+                source_tier=SourceTier.TIER_3_AGGREGATE.value,
+                source_role=SourceRole.DISCOVERY.value,
+                primary_source=False,
+                relevance_score=s.get("relevance_score") or 0.50
             ))
 
         lineage_engine = SourceLineageEngine()
         lineage_graph = lineage_engine.build_lineage_graph(lineage_candidates)
+        # The shared legacy metric is a count of nodes without detected echo
+        # edges, not demonstrated independence. Scope the honest disclosure
+        # to claim responses without rewriting historical Phase 4 goldens.
+        lineage_graph["metrics"]["candidate_non_echo_count"] = lineage_graph["metrics"]["true_independent_count"] if lineage_candidates else 0
+        lineage_graph["metrics"]["true_independent_count"] = None if lineage_candidates else 0
+        lineage_graph["metrics"]["independence_status"] = "UNVERIFIED_HEURISTIC" if lineage_candidates else "NO_EVIDENCE"
 
         genuine_corpus = evidence_json.get("research_corpus")
         rc_dict = genuine_corpus if isinstance(genuine_corpus, dict) else {}
@@ -443,14 +457,14 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             findings=[{
                 "finding_id": "FND-01",
                 "title": norm_text[:100],
-                "epistemic_state": "KNOWN_FACT" if clean_verdict == "TRUE" else ("REFUTED" if clean_verdict == "FALSE" else "CONTESTED"),
+                "epistemic_state": "KNOWN_FACT" if clean_verdict == "TRUE" else ("REFUTED" if clean_verdict == "FALSE" else "UNVERIFIED"),
                 "quality_tensor": genuine_tensor,
                 "quality_status": quality_status,
-                "supporting_evidence_ids": [c.id for c in lineage_candidates[:2]],
-                "contradicting_evidence_ids": [c.id for c in lineage_candidates[2:4]],
+                "supporting_evidence_ids": [f"ev_claim_{i+1}" for i in range(len(supporting_list))],
+                "contradicting_evidence_ids": [f"ev_claim_{len(supporting_list)+i+1}" for i in range(len(refuting_list))],
                 "primary_sources": [c.canonical_url for c in lineage_candidates if c.primary_source],
             }],
-            queries=[{"channel": "news", "query_text": norm_text, "weight": 1.0}],
+            queries=rc_dict.get("query_log") or [],
             telemetry={"total_latency_ms": int(duration * 1000), "execution_graph": []},
             lineage_graph=lineage_graph
         )
@@ -490,22 +504,18 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "polarization_reason": "No sentiment-polarized discourse corpus available"
             },
             "debunk_statement": debunk_stmt,
-            "action_package": {
-                "copy_debunk": debunk_stmt,
-                "tweet_rebuttal": f"Empirical fact-check for '{norm_text[:50]}...': {clean_verdict}. Details: https://agenticai914.netlify.app/submit.html?claim={urllib.parse.quote_plus(norm_text[:40])}",
-                "press_notice": f"Correction Notice: Research regarding '{norm_text}' concluded {clean_verdict}."
-            },
+            "action_package": ({"copy_debunk": debunk_stmt} if debunk_stmt else None),
             "execution_time_seconds": duration,
             "agents_executed": ["ClaimIngestionAgent", "ResearchAgent", "InvestigatorAgent"],
             "claim_id": claim_hash,
             "funnel": rc_dict.get("funnel") or {
-                "queries_planned": len(lineage_candidates),
-                "queries_executed": len(lineage_candidates),
+                "queries_planned": 0,
+                "queries_executed": 0,
                 "candidates_found": len(lineage_candidates),
                 "unique_candidates": len(lineage_candidates),
                 "deep_reads_count": 0,
                 "primary_sources_count": sum(1 for c in lineage_candidates if c.primary_source),
-                "independent_groups_count": len(lineage_graph.get("nodes", [])),
+                "independent_groups_count": None,
                 "contradictions_count": len(evidence_json.get("contradictions", [])),
                 "findings_count": 1 if lineage_candidates else 0,
                 "saturation_score": None,
@@ -515,9 +525,9 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
                 "finding_id": "FND-01",
                 "title": norm_text[:80],
                 "statement": explanation,
-                "epistemic_state": "KNOWN_FACT" if clean_verdict == "TRUE" else ("REFUTED" if clean_verdict == "FALSE" else "CONTESTED"),
-                "supporting_evidence_ids": [c.id for c in lineage_candidates[:2]],
-                "contradicting_evidence_ids": [c.id for c in lineage_candidates[2:4]],
+                "epistemic_state": "KNOWN_FACT" if clean_verdict == "TRUE" else ("REFUTED" if clean_verdict == "FALSE" else "UNVERIFIED"),
+                "supporting_evidence_ids": [f"ev_claim_{i+1}" for i in range(len(supporting_list))],
+                "contradicting_evidence_ids": [f"ev_claim_{len(supporting_list)+i+1}" for i in range(len(refuting_list))],
                 "quality_tensor": None,
             }] if lineage_candidates else []),
             "sources": [c.to_dict() for c in lineage_candidates],
@@ -535,10 +545,10 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
         try:
             _unified = ReportBuilder.from_claim_result(
                 claim_text=norm_text,
-                verdict=investigation_res if isinstance(investigation_res, dict) else None,
+                verdict={**investigation_res, "verdict": clean_verdict, "confidence": conf_int, "reasoning": explanation, "explanation": explanation} if isinstance(investigation_res, dict) else None,
                 corpus=None,  # structured corpus not yet wired through evidence_json path
                 execution_log=rc_dict.get("query_log") or [],
-                queries_planned=len(lineage_candidates),
+                queries_planned=len(rc_dict.get("query_log") or []),
             )
             resp_payload["unified_report"] = _unified.to_dict()
         except Exception as _ur_err:
@@ -558,7 +568,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
 @router.post("/api/claims/", response_model=ClaimSubmitResponse)
 @router.post("/api/ingest", response_model=ClaimSubmitResponse)
 @router.post("/api/submit", response_model=ClaimSubmitResponse)
-async def submit_claim(request: ClaimSubmitRequest, background_tasks: BackgroundTasks):
+def submit_claim(request: ClaimSubmitRequest, background_tasks: BackgroundTasks):
     """
     Submit a claim for fact-checking via background task.
     """
@@ -593,7 +603,7 @@ async def submit_claim(request: ClaimSubmitRequest, background_tasks: Background
 
 
 @router.get("/api/claims/{claim_id}", summary="Get Claim Status & Results by ID")
-async def get_claim_status(claim_id: str):
+def get_claim_status(claim_id: str):
     """Get status and results of a claim by ID."""
     logger.info(f"[API] GET /claims/{claim_id}")
     try:
@@ -630,7 +640,7 @@ async def get_claim_status(claim_id: str):
 
 
 @router.get("/api/claims/{claim_id}/research", summary="Get Full Forensic Research Corpus by Claim ID")
-async def get_claim_research_corpus(claim_id: str):
+def get_claim_research_corpus(claim_id: str):
     """
     Dedicated endpoint returning the complete ResearchCorpus for a claim.
     Includes planned queries, candidate selection audit, deep read sources with
@@ -663,7 +673,7 @@ async def get_claim_research_corpus(claim_id: str):
 
 
 @router.get("/api/claims", summary="List All Claims with Pagination")
-async def list_all_claims(limit: int = 50, offset: int = 0):
+def list_all_claims(limit: int = 50, offset: int = 0):
     """List all claims in the system with pagination."""
     logger.info(f"[API] GET /claims - limit={limit}, offset={offset}")
     try:
@@ -684,7 +694,7 @@ async def list_all_claims(limit: int = 50, offset: int = 0):
 
 
 @router.get("/api/claims/{claim_id}/evidence", summary="Get Evidence for Claim")
-async def get_claim_evidence(claim_id: str):
+def get_claim_evidence(claim_id: str):
     """Get all supporting and refuting evidence records linked to a claim."""
     try:
         claim = db.get_claim_by_id(claim_id)

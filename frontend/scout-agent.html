@@ -440,7 +440,7 @@
     }
 
     function getEpistemicBadge(state) {
-      const s = (state || 'SUPPORTED').toUpperCase();
+      const s = (state || 'UNVERIFIED').toUpperCase();
       if (s === 'KNOWN_FACT') return `<span class="epistemic-badge ep-known">KNOWN FACT</span>`;
       if (s === 'SUPPORTED') return `<span class="epistemic-badge ep-supported">SUPPORTED</span>`;
       if (s === 'CONTESTED') return `<span class="epistemic-badge ep-contested">CONTESTED</span>`;

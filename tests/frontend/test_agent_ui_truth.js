@@ -66,6 +66,7 @@ function testSharedLinkGuard() {
 
 function testScout() {
   const { context, elements } = page('scout-agent.html');
+  assert(context.getEpistemicBadge(null).includes('UNVERIFIED'));
   context.renderWorkspace({ company_name: 'Acme', stock: {} });
   const html = rendered(elements.get('workspaceRoot'));
   assert(html.includes('NOT ASSESSED'));
@@ -91,6 +92,8 @@ function testTrending() {
   assert(rendered(elements.get('claimsList')).includes('href="https://example.org/report"'));
   context.renderTimeline([{ event: 'Event', url: 'javascript:alert(1)' }]);
   assert(!rendered(elements.get('timelineList')).includes('href="javascript:'));
+  context.renderEvidenceGrid([{ title: 'Source', platform: 'web', url: 'javascript:alert(1)' }]);
+  assert(!rendered(elements.get('evidenceGrid')).includes('href="javascript:'));
   context.renderTrends([{ topic: 'Sparse trend' }]);
   assert(rendered(elements.get('trendsFeed')).includes('UNMEASURED'));
 }
@@ -110,6 +113,17 @@ function testBrandShield() {
   context.renderBrandShieldWorkspace({ brand_name: 'Acme', sources: [{ title: 'A public item' }], threats: [], review_intel: {} }, container);
   assert(rendered(container).includes('INSUFFICIENT EVIDENCE FOR REVIEW SCREENING'));
   assert(!html.includes('No Suspicious Patterns Detected'));
+  context.renderBrandShieldWorkspace({ brand_name: 'Acme', sources: [{ title: 'Source' }],
+    claims: [{ status: '<img onerror=alert(1)>', claim_text: 'Claim', evidence_ids: ['<svg onload=alert(1)>'] }],
+    review_intel: {} }, container);
+  assert(!rendered(container).includes('<img'));
+  assert(!rendered(container).includes('<svg'));
+  vm.runInContext('activeScanData = { dossiers: [{ status: "<img>", evidence_chain: [{ evidence_id: "<svg>", url: "javascript:alert(1)" }] }] };', context);
+  context.openDossierModal(0);
+  const dossier = rendered(elements.get('dossierModalWrap'));
+  assert(!dossier.includes('<img>'));
+  assert(!dossier.includes('<svg>'));
+  assert(!dossier.includes('href="javascript:'));
 }
 
 function testPersonalWatch() {

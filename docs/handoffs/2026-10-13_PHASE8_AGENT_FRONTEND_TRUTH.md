@@ -75,3 +75,12 @@ production-ready merely because local and hosted regression gates are green.
 Commit/push and hosted CI for *this* checkpoint were pending when this record
 was authored; verify the actual SHA/run rather than inheriting the prior
 backend CI result. This is an engineering handoff, not a raw chat transcript.
+
+## Follow-up after first push
+
+The first frontend commit was `9882a827e42c368def22fe4dee5b50fb8777bf59`
+and [hosted CI run 38370934400](https://github.com/Shaunakrane914/Misinformation/actions/runs/38370934400)
+passed all five jobs. A subsequent template audit found additional unescaped
+BrandShield status/evidence IDs and a default-`SUPPORTED` Scout badge. The
+follow-up code and adversarial simulated-DOM assertions are separate from
+that passing CI run. Verify their final commit and hosted CI independently.

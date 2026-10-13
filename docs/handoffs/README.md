@@ -2,7 +2,14 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8B extraction checkpoint — 2026-10-12
+## Latest: Phase 8B field detail and UI checkpoint — 2026-10-12
+
+- [Field detail and UI handoff](2026-10-12_PHASE8B_FIELD_DETAIL_AND_UI_CHECKPOINT.md):
+  pushed isolated-branch extraction improvements, 16-operation guarded
+  common-case pass, local regressions, shared renderer hardening and explicit
+  remaining Phase 8B/8E gaps.
+
+## Previous: Phase 8B extraction checkpoint — 2026-10-12
 
 - [Phase 8B handoff](2026-10-12_PHASE8B_EXTRACTION_CHECKPOINT.md): isolated
   worktree, concurrent-branch warning, bounded live extraction proof, local

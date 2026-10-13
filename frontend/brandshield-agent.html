@@ -177,6 +177,9 @@
       display: flex; flex-direction: column; gap: 8px; transition: border-color 0.18s;
     }
     .source-table-card:hover { border-color: rgba(16, 185, 129, 0.35); }
+    .source-table-card > div { min-width: 0; overflow-wrap: anywhere; }
+    .source-table-card > div:first-child > div:first-child,
+    .source-table-card > div:last-child { flex-wrap: wrap; min-width: 0; }
 
     .source-link-btn {
       display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
@@ -207,6 +210,7 @@
     @media(max-width:760px){
       .agent-hero { padding: 88px 20px 48px; }
       .agent-body { padding: 28px 18px 60px; }
+      .source-table-card { padding: 14px; }
     }
   </style>
 </head>
@@ -215,6 +219,7 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <main id="main-content">
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>BrandShield Agent &bull; Observed Review &amp; Marketplace Signals</div>
       <h1>BrandShield <span>Agent</span></h1>
@@ -241,20 +246,31 @@
           </button>
         </div>
         <div class="preset-chips">
-          <span class="chip" onclick="runPreset('Nike')">Nike (Brand)</span>
-          <span class="chip" onclick="runPreset('Nike Air Max')">Nike Air Max (Product Line)</span>
-          <span class="chip" onclick="runPreset('Samsung Galaxy S24')">Samsung Galaxy S24</span>
-          <span class="chip" onclick="runPreset('Tata Motors')">Tata Motors</span>
-          <span class="chip" onclick="runPreset('Zomato')">Zomato</span>
-          <span class="chip" onclick="runPreset('Sony Electronics')">Sony Electronics</span>
+          <button type="button" class="chip" onclick="runPreset('Nike')">Nike (Brand)</button>
+          <button type="button" class="chip" onclick="runPreset('Nike Air Max')">Nike Air Max (Product Line)</button>
+          <button type="button" class="chip" onclick="runPreset('Samsung Galaxy S24')">Samsung Galaxy S24</button>
+          <button type="button" class="chip" onclick="runPreset('Tata Motors')">Tata Motors</button>
+          <button type="button" class="chip" onclick="runPreset('Zomato')">Zomato</button>
+          <button type="button" class="chip" onclick="runPreset('Sony Electronics')">Sony Electronics</button>
         </div>
       </div>
+
+      <section class="agent-guide ae-reveal" aria-label="How BrandShield evaluates a brand claim" style="--agent-accent:#36d5aa;">
+        <div class="agent-guide-heading"><h2>Investigate the claim, not just the mention</h2><p>Signals become findings only when source evidence supports them.</p></div>
+        <div class="agent-guide-grid">
+          <div class="agent-guide-card"><span class="step">01 / IDENTITY</span><h3>Check the real brand</h3><p>Compare the named product, seller, and account with verifiable official identity. Similar names are not proof of impersonation.</p></div>
+          <div class="agent-guide-card"><span class="step">02 / INDEPENDENCE</span><h3>Group repeated stories</h3><p>Reviews, marketplace listings, and news can repeat one origin. Inspect source links and sampling limits.</p></div>
+          <div class="agent-guide-card"><span class="step">03 / RESPONSE</span><h3>Prioritize with uncertainty</h3><p>Separate observed complaints from confirmed false claims and show what a brand should verify next.</p></div>
+        </div>
+      </section>
 
       <!-- Results Container -->
       <div id="resultsContainer"></div>
 
       <!-- PIPELINE SPEC TABLE (Audited & Truthful - Hidden on Live Search) -->
       <div id="brandInitialSpec">
+        <details class="agent-method-details">
+          <summary>Technical method and output contract</summary>
         <div class="ae-reveal" style="margin-top: 40px;">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;letter-spacing:0.08em;margin-bottom:10px;">// BRAND PROTECTION PIPELINE SPECIFICATION</div>
           <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
@@ -287,8 +303,10 @@
             </div>
           </div>
         </div>
+        </details>
       </div>
     </div>
+    </main>
 
     <!-- Dossier Modal Target -->
     <div id="dossierModalWrap"></div>
@@ -309,6 +327,7 @@
 
   <script>
     let activeScanData = null;
+    let brandDossierReturnFocus = null;
 
     function loadBrandOperationHealth(latencyMs) {
       return AegisOperationHealth.renderPills(
@@ -693,12 +712,12 @@
         <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${escapeHtml(summary.independent_groups_count ?? 'UNVERIFIED')} GROUPS; INDEPENDENCE UNVERIFIED)</div>
         <div class="explorer-wrap ae-reveal">
           <div class="filter-tabs" id="sourceFilters">
-            <span class="filter-tab active" onclick="filterSources('ALL')">ALL (${sources.length})</span>
-            <span class="filter-tab" onclick="filterSources('PRIMARY')">PRIMARY</span>
-            <span class="filter-tab" onclick="filterSources('NEWS')">NEWS</span>
-            <span class="filter-tab" onclick="filterSources('WEB')">WEB</span>
-            <span class="filter-tab" onclick="filterSources('SOCIAL')">SOCIAL</span>
-            <span class="filter-tab" onclick="filterSources('VIDEO')">VIDEO</span>
+            <button type="button" class="filter-tab active" aria-pressed="true" onclick="filterSources('ALL')">ALL (${sources.length})</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('PRIMARY')">PRIMARY</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('NEWS')">NEWS</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('WEB')">WEB</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('SOCIAL')">SOCIAL</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('VIDEO')">VIDEO</button>
           </div>
           <div id="sourcesListContainer">
             ${renderSourceCards(sources)}
@@ -761,9 +780,9 @@
 
       // Update active tab style
       const tabs = document.querySelectorAll('.filter-tab');
-      tabs.forEach(t => t.classList.remove('active'));
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-pressed', 'false'); });
       const activeTab = Array.from(tabs).find(t => t.textContent.startsWith(filterType));
-      if (activeTab) activeTab.classList.add('active');
+      if (activeTab) { activeTab.classList.add('active'); activeTab.setAttribute('aria-pressed', 'true'); }
 
       let filtered = allSources;
       if (filterType === 'PRIMARY') {
@@ -788,13 +807,14 @@
       if (!d) return;
 
       const modalWrap = document.getElementById('dossierModalWrap');
+      brandDossierReturnFocus = document.activeElement;
       const sevColor = d.severity === 'critical' || d.severity === 'high' ? 'var(--rose)' : d.severity === 'medium' ? '#fbbf24' : 'var(--text-dim)';
       const evidenceChain = Array.isArray(d.evidence_chain) ? d.evidence_chain : [];
 
       modalWrap.innerHTML = `
         <div class="modal-backdrop" onclick="closeDossierModal(event)">
-          <div class="modal-content ae-reveal" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeDossierModal()">&times;</button>
+          <div class="modal-content ae-reveal" role="dialog" aria-modal="true" aria-label="Brand investigation dossier" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" aria-label="Close brand dossier" onclick="closeDossierModal()">&times;</button>
             
             <div style="font-family:var(--font-mono);font-size:0.75rem;color:${sevColor};letter-spacing:0.08em;margin-bottom:8px;">
               // INVESTIGATION DOSSIER · ${escapeHtml(d.dossier_id || 'ID not supplied')}
@@ -841,12 +861,20 @@
           </div>
         </div>
       `;
+      const closeButton = modalWrap.querySelector('.modal-close');
+      if (closeButton && typeof closeButton.focus === 'function') closeButton.focus();
     }
 
     function closeDossierModal() {
       const modalWrap = document.getElementById('dossierModalWrap');
       if (modalWrap) modalWrap.innerHTML = '';
+      if (brandDossierReturnFocus && typeof brandDossierReturnFocus.focus === 'function') brandDossierReturnFocus.focus();
+      brandDossierReturnFocus = null;
     }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('dossierModalWrap').innerHTML) closeDossierModal();
+    });
 
     function runPreset(name) {
       document.getElementById('brandInput').value = name;

@@ -30,8 +30,13 @@ def resolve_personal_entity(profile_or_name: Any) -> Dict[str, Any]:
         "name": raw_name,
         "canonical_name": raw_name,
         "aliases": profile.get("aliases", []),
-        "official_handles": profile.get("official_handles", {}),
-        "official_domains": profile.get("official_domains", []),
+        # Legacy request keys remain accepted, but caller-provided identity
+        # hints are not authenticated by submitting them. Keep them separate
+        # from catalog-listed identities and never let them override catalog.
+        "candidate_handles": dict(profile.get("official_handles") or {}),
+        "candidate_domains": list(profile.get("official_domains") or []),
+        "official_handles": {},
+        "official_domains": [],
         "affiliations": profile.get("affiliations", []),
         "category": profile.get("category", "public_figure"),
         "monitoring_terms": profile.get("monitoring_terms", []),
@@ -50,13 +55,8 @@ def resolve_personal_entity(profile_or_name: Any) -> Dict[str, Any]:
                     existing_aliases.add(a)
             resolved["aliases"] = list(existing_aliases)
 
-            merged_handles = dict(info.get("handles", {}))
-            merged_handles.update(resolved["official_handles"])
-            resolved["official_handles"] = merged_handles
-
-            merged_domains = set(info.get("domains", []))
-            merged_domains.update(resolved["official_domains"])
-            resolved["official_domains"] = list(merged_domains)
+            resolved["official_handles"] = dict(info.get("handles", {}))
+            resolved["official_domains"] = list(info.get("domains", []))
 
             resolved["affiliations"] = list(set(info.get("affiliations", []) + resolved["affiliations"]))
             resolved["category"] = info.get("category", resolved["category"])

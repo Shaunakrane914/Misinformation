@@ -136,6 +136,14 @@ function testPersonalWatch() {
   assert(!html.includes('Verified OSINT footprint'));
   assert(!html.includes('href="javascript:'));
   assert(html.includes('>0</div>'), 'no change event should be inferred from a threat');
+  context.renderDashboard({ vip_name: 'Public person', subject: {
+    canonical_name: 'Public person', official_handles: { twitter: '@catalog' },
+    candidate_handles: { twitter: '<img onerror=alert(1)>' },
+  }, threats: [], evidence: [], changes: [] });
+  const identityHtml = rendered(elements.get('resultsMount'));
+  assert(identityHtml.includes('Catalog-listed handle (not live authenticated)'));
+  assert(identityHtml.includes('User-entered candidate (unverified)'));
+  assert(!identityHtml.includes('<img'));
 }
 
 testSharedLinkGuard();

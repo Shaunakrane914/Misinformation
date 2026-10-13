@@ -1,0 +1,1072 @@
+{
+  "observed_at_utc": "2026-10-13T15:10:19.123370+00:00",
+  "base_url": "http://127.0.0.1:8765",
+  "scope": "Automated axe-core checks on initial page state only",
+  "records": [
+    {
+      "page": "scout-agent.html",
+      "viewport": "desktop",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              ".ae-brand-sub"
+            ],
+            [
+              ".ae-nav-link[href=\"index.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"submit.html\"]"
+            ],
+            [
+              "a[href$=\"trending-agent.html\"]"
+            ],
+            [
+              "a[href$=\"scout-agent.html\"]"
+            ],
+            [
+              "a[href$=\"brandshield-agent.html\"]"
+            ],
+            [
+              "a[href$=\"personal-watch-agent.html\"]"
+            ],
+            [
+              "#aeCmdTrigger > span"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#analyzeBtn"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > p"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "desktop",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              ".ae-brand-sub"
+            ],
+            [
+              ".ae-nav-link[href=\"index.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"submit.html\"]"
+            ],
+            [
+              "a[href$=\"trending-agent.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"scout-agent.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"brandshield-agent.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"personal-watch-agent.html\"]"
+            ],
+            [
+              "#aeCmdTrigger > span"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSignals"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telPlatforms"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telTrends"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#telDuration"
+            ],
+            [
+              ".tel-cell:nth-child(6) > .tel-key"
+            ],
+            [
+              ".btn-scan"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > p"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "desktop",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              ".ae-brand-sub"
+            ],
+            [
+              ".ae-nav-link[href=\"index.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"submit.html\"]"
+            ],
+            [
+              "a[href$=\"trending-agent.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"scout-agent.html\"]"
+            ],
+            [
+              "a[href$=\"brandshield-agent.html\"]"
+            ],
+            [
+              "a[href$=\"personal-watch-agent.html\"]"
+            ],
+            [
+              "#aeCmdTrigger > span"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telChannels"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telThreats"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telStatus"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#scanBtn"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > p"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "desktop",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              ".ae-brand-sub"
+            ],
+            [
+              ".ae-nav-link[href=\"index.html\"]"
+            ],
+            [
+              ".ae-nav-link[href$=\"submit.html\"]"
+            ],
+            [
+              "a[href$=\"trending-agent.html\"]"
+            ],
+            [
+              "a[href$=\"scout-agent.html\"]"
+            ],
+            [
+              "a[href$=\"brandshield-agent.html\"]"
+            ],
+            [
+              "a[href$=\"personal-watch-agent.html\"]"
+            ],
+            [
+              "#aeCmdTrigger > span"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telOutlets"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telChannels"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telThreats"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#telLatency"
+            ],
+            [
+              ".tel-cell:nth-child(6) > .tel-key"
+            ],
+            [
+              "#scanBtn"
+            ],
+            [
+              "#advIcon"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > p"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "scout-agent.html",
+      "viewport": "mobile",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#analyzeBtn"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "mobile",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSignals"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telPlatforms"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telTrends"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#telDuration"
+            ],
+            [
+              ".tel-cell:nth-child(6) > .tel-key"
+            ],
+            [
+              ".btn-scan"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(1) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(2) > p"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > .step"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > h3"
+            ],
+            [
+              ".agent-guide-card:nth-child(3) > p"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "mobile",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telChannels"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telThreats"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telStatus"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#scanBtn"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "mobile",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telOutlets"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telChannels"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telThreats"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#telLatency"
+            ],
+            [
+              ".tel-cell:nth-child(6) > .tel-key"
+            ],
+            [
+              "#scanBtn"
+            ],
+            [
+              "#advIcon"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "scout-agent.html",
+      "viewport": "narrow",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-val"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#tickerInput"
+            ],
+            [
+              "#analyzeBtn"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "narrow",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSignals"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telPlatforms"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telTrends"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#telDuration"
+            ],
+            [
+              ".tel-cell:nth-child(6) > .tel-key"
+            ],
+            [
+              ".btn-scan"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "narrow",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telChannels"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telThreats"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telStatus"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#brandInput"
+            ],
+            [
+              "#scanBtn"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "narrow",
+      "violation_count": 0,
+      "incomplete_count": 1,
+      "incomplete_rules": [
+        {
+          "id": "color-contrast",
+          "affected_selectors": [
+            [
+              ".ae-brand-name"
+            ],
+            [
+              "#aeCmdTrigger > kbd"
+            ],
+            [
+              ".agent-tag"
+            ],
+            [
+              "h1"
+            ],
+            [
+              "h1 > span"
+            ],
+            [
+              ".agent-hero > p"
+            ],
+            [
+              "#telSources"
+            ],
+            [
+              ".tel-cell:nth-child(1) > .tel-key"
+            ],
+            [
+              "#telOutlets"
+            ],
+            [
+              ".tel-cell:nth-child(2) > .tel-key"
+            ],
+            [
+              "#telGroups"
+            ],
+            [
+              ".tel-cell:nth-child(3) > .tel-key"
+            ],
+            [
+              "#telChannels"
+            ],
+            [
+              ".tel-cell:nth-child(4) > .tel-key"
+            ],
+            [
+              "#telThreats"
+            ],
+            [
+              ".tel-cell:nth-child(5) > .tel-key"
+            ],
+            [
+              "#telLatency"
+            ],
+            [
+              ".tel-cell:nth-child(6) > .tel-key"
+            ],
+            [
+              "#personInput"
+            ],
+            [
+              "#scanBtn"
+            ],
+            [
+              "#advIcon"
+            ]
+          ]
+        }
+      ],
+      "violations": []
+    }
+  ]
+}

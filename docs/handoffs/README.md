@@ -2,6 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
+## Latest: Phase 8C/8E evidence-truth and rendered four-agent UI — 2026-10-13
+
+- [Truth and rendered-UI checkpoint](2026-10-13_PHASE8C_8E_TRUTH_AND_RENDERING.md):
+  contradiction and identity-provenance safeguards, four-agent frontend
+  improvements, terminal Chromium screenshots, automated accessibility
+  results, full offline validation and explicit remaining Phase 8 gates.
+
 ## Latest: Phase 8B bounded GitHub issue-discussion follow-up — 2026-10-13
 
 - [Issue-discussion follow-up handoff](2026-10-13_PHASE8B_GITHUB_ISSUE_COMMENTS.md):

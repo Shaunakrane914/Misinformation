@@ -45,7 +45,7 @@
   /* ── Typography & Neutrals ── */
   --text:             #f8fafc;
   --text-muted:       #94a3b8;
-  --text-dim:         #64748b;
+  --text-dim:         #879ab2;
   --font-main:        'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   --font-mono:        'JetBrains Mono', 'Fira Code', monospace;
 
@@ -1272,6 +1272,13 @@ select:focus-visible,
   font-size: 0.9rem;
   user-select: none;
 }
+@media (max-width: 600px) {
+  .fe-funnel-ribbon { flex-wrap: wrap; justify-content: center; padding: 10px; }
+  .fe-funnel-step { min-width: 0; padding: 4px; }
+  .fe-f-val, .fe-f-lbl { overflow-wrap: anywhere; text-align: center; }
+  .fe-f-arrow { display: none; }
+  .ae-footer > div:last-child { flex-wrap: wrap; }
+}
 
 /* 2. Tabs Header */
 .fe-tabs-header {
@@ -2441,4 +2448,59 @@ select:focus-visible,
   }
   .ur-qt-label { font-size: 0.7rem; }
   .ur-heading-button { font-size: 0.66rem; padding: 0.85rem 1rem; }
+}
+
+/* Shared four-agent investigation guide. This contains process guidance only,
+   never demo evidence or implied live-provider status. */
+.agent-guide { margin: 28px 0 30px; }
+.agent-guide-heading {
+  display: flex; align-items: baseline; justify-content: space-between;
+  flex-wrap: wrap; gap: 8px; margin-bottom: 14px;
+}
+.agent-guide-heading h2 {
+  margin: 0; color: #f5f7fb; font-size: clamp(1.05rem, 2vw, 1.3rem);
+  letter-spacing: -0.02em;
+}
+.agent-guide-heading p {
+  margin: 0; color: #aebcd0; font-size: 0.8rem; line-height: 1.5;
+}
+.agent-guide-grid {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px;
+}
+.agent-guide-card {
+  min-width: 0; padding: 20px; border-radius: 15px;
+  border: 1px solid rgba(190, 207, 232, 0.13);
+  background: linear-gradient(145deg, rgba(26, 34, 49, 0.9), rgba(10, 14, 23, 0.9));
+}
+.agent-guide-card .step {
+  display: inline-block; margin-bottom: 17px; color: var(--agent-accent, #64dce8);
+  font: 700 0.68rem var(--font-mono); letter-spacing: 0.1em;
+}
+.agent-guide-card h3 {
+  color: #f5f7fb; font-size: 0.98rem; line-height: 1.35;
+  margin: 0 0 8px; overflow-wrap: anywhere;
+}
+.agent-guide-card p {
+  margin: 0; color: #afbdd0; font-size: 0.83rem; line-height: 1.58;
+  overflow-wrap: anywhere;
+}
+.agent-method-details {
+  border: 1px solid rgba(190, 207, 232, 0.12); border-radius: 12px;
+  background: rgba(12, 17, 27, 0.72); margin: 16px 0;
+}
+.agent-method-details summary {
+  cursor: pointer; padding: 14px 18px; color: #b8c7d9;
+  font: 700 0.79rem var(--font-mono);
+}
+.agent-method-details[open] > div { padding: 0 14px 14px; overflow-x: auto; }
+.qchip, .quick-chip, .preset-chips .chip {
+  font: inherit; min-height: 32px;
+}
+.adv-toggle {
+  background: transparent; border: 0; padding: 4px 0; text-align: left;
+}
+@media (max-width: 760px) {
+  .agent-guide-grid { grid-template-columns: 1fr; }
+  .agent-guide-card { padding: 17px; }
+  .agent-guide-card .step { margin-bottom: 8px; }
 }

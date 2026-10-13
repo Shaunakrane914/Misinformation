@@ -164,6 +164,11 @@
 
     /* Catalysts and Risks */
     .catalyst-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .social-signal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .contradiction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+    @media(max-width:600px) {
+      .catalyst-grid, .social-signal-grid, .contradiction-grid { grid-template-columns: minmax(0, 1fr); }
+    }
     .cat-box { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 18px; border: 1px solid var(--border); }
     .cat-box.pos { border-left: 4px solid var(--emerald); }
     .cat-box.neg { border-left: 4px solid var(--rose); }
@@ -271,6 +276,7 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <main id="main-content">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>Scout Agent &bull; Emerging Information &amp; Financial Signals</div>
@@ -278,7 +284,7 @@
       <p>Emerging information and financial signal discovery. Correlates market quotes, statutory regulatory filings (SEC, NSE/BSE), and multi-channel public discussion to verify financial rumors.</p>
       
       <div class="tel-ribbon">
-        <div class="tel-cell"><span class="tel-val">Live Quotes</span><span class="tel-key">Market Data</span></div>
+        <div class="tel-cell"><span class="tel-val">Quotes if available</span><span class="tel-key">Market Data</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">Activity Volume</span><span class="tel-key">Observed Signal</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">Multi-Channel</span><span class="tel-key">Source Coverage</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">Audit Trail</span><span class="tel-key">Source Ledger</span></div>
@@ -313,42 +319,31 @@
         </div>
         <div class="quick-chips">
           <span>Quick Research:</span>
-          <span class="qchip" onclick="setTicker('TATAMOTORS.NS')">Tata Motors (TATAMOTORS.NS)</span>
-          <span class="qchip" onclick="setTicker('RELIANCE.NS')">Reliance (RELIANCE.NS)</span>
-          <span class="qchip" onclick="setTicker('NVDA')">Nvidia (NVDA)</span>
-          <span class="qchip" onclick="setTicker('TSLA')">Tesla (TSLA)</span>
-          <span class="qchip" onclick="setTicker('AAPL')">Apple (AAPL)</span>
+          <button type="button" class="qchip" onclick="setTicker('TATAMOTORS.NS')">Tata Motors (TATAMOTORS.NS)</button>
+          <button type="button" class="qchip" onclick="setTicker('RELIANCE.NS')">Reliance (RELIANCE.NS)</button>
+          <button type="button" class="qchip" onclick="setTicker('NVDA')">Nvidia (NVDA)</button>
+          <button type="button" class="qchip" onclick="setTicker('TSLA')">Tesla (TSLA)</button>
+          <button type="button" class="qchip" onclick="setTicker('AAPL')">Apple (AAPL)</button>
         </div>
       </div>
 
       <!-- WORKSPACE ROOT CONTAINER (Renders the 8 Hierarchy Levels) -->
       <div id="workspaceRoot"></div>
 
-      <!-- HONEST ANOMALY SIMULATION & HISTORICAL CASE STUDY (Hidden on Live Search) -->
+      <!-- Method guidance only; no fabricated quote, market or filing evidence. -->
       <div id="scoutInitialDemo">
-        <div class="case-study-card ae-reveal">
-          <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:var(--rose);letter-spacing:0.08em;margin-bottom:10px;">// REFERENCE CASE STUDY</div>
-          <div style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Unverified Short-Seller Rumor Scenario</div>
-          <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
-            This case study demonstrates how Scout compares trading volume anomalies against statutory filings (SEBI, NSE, SEC) to corroborate or refute market rumors.
-          </p>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
-            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-              <div style="color:var(--rose);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">-5.8% Δ</div>
-              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Simulated Sell-off</div>
-            </div>
-            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-              <div style="color:#fbbf24;font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">4.2σ</div>
-              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Dispersion Z-Score</div>
-            </div>
-            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-              <div style="color:var(--emerald);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">0 Filings</div>
-              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Regulatory Portal Cross-Check</div>
-            </div>
+        <section class="agent-guide ae-reveal" aria-label="How Scout evaluates a financial claim" style="--agent-accent:#b79aff;">
+          <div class="agent-guide-heading"><h2>Read the evidence, not the market noise</h2><p>These are review steps, not findings about the prefilled company.</p></div>
+          <div class="agent-guide-grid">
+            <div class="agent-guide-card"><span class="step">01 / IDENTITY</span><h3>Confirm the entity</h3><p>Separate a ticker and company from similarly named entities; check the reported event and its date.</p></div>
+            <div class="agent-guide-card"><span class="step">02 / ORIGINAL SOURCE</span><h3>Inspect filings and statements</h3><p>Follow source links to issuer, exchange, or regulator records. A price move alone does not establish causation.</p></div>
+            <div class="agent-guide-card"><span class="step">03 / VERDICT</span><h3>Show uncertainty</h3><p>Compare independent reporting with the primary record. Missing filings or inaccessible channels must remain explicit gaps.</p></div>
           </div>
-        </div>
+        </section>
 
         <!-- PIPELINE SPECIFICATION TABLE -->
+        <details class="agent-method-details">
+          <summary>Technical method and output contract</summary>
         <div class="ae-reveal">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:10px;">// INVESTIGATION PIPELINE SPECIFICATION</div>
           <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
@@ -381,15 +376,17 @@
             </div>
           </div>
         </div>
+        </details>
       </div>
     </div>
+    </main>
 
     <!-- PROVENANCE "WHY THIS FINDING?" DRAWER -->
-    <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeProvenanceDrawer()"></div>
-    <div class="provenance-drawer" id="provenanceDrawer">
+    <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true" onclick="closeProvenanceDrawer()"></div>
+    <div class="provenance-drawer" id="provenanceDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerFindingTitle" aria-hidden="true" inert>
       <div class="drawer-head">
         <h3 id="drawerFindingTitle">// SOURCE PROVENANCE &amp; QUALITY DIMENSIONS</h3>
-        <button class="drawer-close" onclick="closeProvenanceDrawer()">&times;</button>
+        <button type="button" class="drawer-close" aria-label="Close provenance details" onclick="closeProvenanceDrawer()">&times;</button>
       </div>
       <div class="drawer-body" id="drawerBody">
         <!-- Rendered by openProvenanceDrawer -->
@@ -413,6 +410,7 @@
   <script>
     let currentResearchData = null;
     let currentFilter = 'ALL';
+    let drawerReturnFocus = null;
 
     function setTicker(t) {
       document.getElementById('tickerInput').value = t;
@@ -754,7 +752,7 @@
             <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'UNAVAILABLE')}</span>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
+          <div class="contradiction-grid">
             <div class="cat-box pos">
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
                 Evidence For Bullish / Official Narrative
@@ -799,7 +797,7 @@
             <span>// 05 · MULTI-CHANNEL SOCIAL &amp; VIDEO SIGNALS</span>
             <span class="intel-count-badge">${reddit.length + twitter.length + youtube.length} Signals</span>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+          <div class="social-signal-grid">
             <div class="cat-box">
               <div style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;margin-bottom:12px;text-transform:uppercase;">
                 Reddit Investor Threads (${reddit.length})
@@ -931,6 +929,7 @@
       const backdrop = document.getElementById('drawerBackdrop');
       const titleEl = document.getElementById('drawerFindingTitle');
       const bodyEl = document.getElementById('drawerBody');
+      drawerReturnFocus = document.activeElement;
 
       let item = {};
       let itemTitle = 'Finding Inspection';
@@ -1063,15 +1062,24 @@
         </div>
       `;
 
+      drawer.inert = false;
+      drawer.removeAttribute('aria-hidden');
       drawer.classList.add('open');
       backdrop.classList.add('open');
+      drawer.querySelector('.drawer-close').focus();
     }
 
     function closeProvenanceDrawer() {
       const drawer = document.getElementById('provenanceDrawer');
       const backdrop = document.getElementById('drawerBackdrop');
-      if (drawer) drawer.classList.remove('open');
+      if (drawer) {
+        drawer.classList.remove('open');
+        drawer.inert = true;
+        drawer.setAttribute('aria-hidden', 'true');
+      }
       if (backdrop) backdrop.classList.remove('open');
+      if (drawerReturnFocus && typeof drawerReturnFocus.focus === 'function') drawerReturnFocus.focus();
+      drawerReturnFocus = null;
     }
 
     window.addEventListener('keydown', e => {

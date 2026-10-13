@@ -97,11 +97,11 @@ class BrandShieldScanRequest(BaseModel):
 
 class PersonalScanRequest(BaseModel):
     name: str = Field(..., min_length=1, max_length=200, description="Full name of VIP, executive, creator, or public figure.", json_schema_extra={"example": "Sam Altman"})
-    official_handles: Optional[Dict[str, str]] = Field(None, description="Official verified social media handles.", json_schema_extra={"example": {"twitter": "@sama"}})
+    official_handles: Optional[Dict[str, str]] = Field(None, description="Legacy field name: user-supplied candidate handles, not authenticated official identities.", json_schema_extra={"example": {"twitter": "@sama"}})
     phone_number: Optional[str] = Field(None, description="Optional phone number for Twilio security alerts.")
     aliases: Optional[List[str]] = Field(None, description="Known public aliases, nicknames, or common spellings.", json_schema_extra={"example": ["Sama"]})
     category: Optional[str] = Field(None, description="'executive' | 'creator' | 'public_figure' | 'researcher' | 'employee'", json_schema_extra={"example": "executive"})
-    official_domains: Optional[List[str]] = Field(None, description="Official websites or domains belonging to subject.")
+    official_domains: Optional[List[str]] = Field(None, description="Legacy field name: user-supplied candidate domains, not authenticated official domains.")
     monitoring_terms: Optional[List[str]] = Field(None, description="Specific terms, project names, or controversy keywords to monitor.")
     alert_preferences: Optional[Dict[str, Any]] = Field(None, description="Alert settings: level ('HIGH_ONLY', 'HIGH_AND_MEDIUM', 'ALL_NEW_THREATS').")
     query: Optional[str] = Field(None, description="Optional custom query override.")

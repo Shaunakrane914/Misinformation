@@ -204,6 +204,17 @@
     .exp-tab.active { background: rgba(244, 114, 182, 0.15); color: #f472b6; border-color: rgba(244, 114, 182, 0.35); }
     .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
     @media(max-width: 600px){ .evidence-grid { grid-template-columns: 1fr; } }
+    @media(max-width: 600px){
+      .agent-body { padding: 26px 14px 60px; }
+      .scan-card { padding: 20px 16px; }
+      .scan-input { min-width: 0; width: 100%; }
+      .scan-row > *, .main-grid > *, .panel, .explorer-panel { min-width: 0; max-width: 100%; }
+      .panel, .explorer-panel { padding: 18px 16px; }
+      .panel-header { flex-wrap: wrap; gap: 8px; }
+      .mode-toggle { display: flex; width: 100%; }
+      .mode-btn { flex: 1; min-width: 0; padding: 7px 6px; }
+      .ev-card, .trend-card { min-width: 0; overflow-wrap: anywhere; }
+    }
     .ev-card {
       background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
       padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.16s;
@@ -249,6 +260,7 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <main id="main-content">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>Trending Agent &bull; Trend Signals &amp; Public Discourse</div>
@@ -270,12 +282,12 @@
       <!-- SCAN CONFIGURATION -->
       <div class="scan-card ae-reveal">
         <div class="mode-toggle">
-          <button class="mode-btn active" id="btnModeEntity" onclick="setMode('entity')">Entity Investigation</button>
-          <button class="mode-btn" id="btnModeDiscovery" onclick="setMode('discovery')">Discovery Mode</button>
+          <button type="button" class="mode-btn active" id="btnModeEntity" aria-pressed="true" onclick="setMode('entity')">Entity Investigation</button>
+          <button type="button" class="mode-btn" id="btnModeDiscovery" aria-pressed="false" onclick="setMode('discovery')">Discovery Mode</button>
         </div>
         <div class="scan-row">
           <input type="text" id="scanQueryInput" aria-label="Topic or region to scan" class="scan-input" placeholder="Enter entity name (e.g. Deepika Padukone, Jawan, OpenAI, Tesla)..." value="Deepika Padukone">
-          <select id="catSelect" class="cat-select">
+          <select id="catSelect" class="cat-select" aria-label="Trend category">
             <option value="general">All Categories</option>
             <option value="entertainment" selected>Entertainment &amp; Cinema</option>
             <option value="technology">Technology &amp; AI</option>
@@ -289,14 +301,23 @@
 
         <div class="quick-chips-wrap">
           <span class="chip-label">// Quick Start Examples:</span>
-          <span class="quick-chip" onclick="applyQuickStart('Deepika Padukone', 'entity', 'entertainment')">Deepika Padukone</span>
-          <span class="quick-chip" onclick="applyQuickStart('Shah Rukh Khan', 'entity', 'entertainment')">Shah Rukh Khan</span>
-          <span class="quick-chip" onclick="applyQuickStart('Jawan (Film)', 'entity', 'cinema')">Jawan (Film)</span>
-          <span class="quick-chip" onclick="applyQuickStart('OpenAI', 'entity', 'technology')">OpenAI</span>
-          <span class="quick-chip" onclick="applyQuickStart('What\'s trending in India?', 'discovery', 'general')">What's trending in India?</span>
-          <span class="quick-chip" onclick="applyQuickStart('What\'s trending in AI?', 'discovery', 'technology')">What's trending in AI?</span>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('Deepika Padukone', 'entity', 'entertainment')">Deepika Padukone</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('Shah Rukh Khan', 'entity', 'entertainment')">Shah Rukh Khan</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('Jawan (Film)', 'entity', 'entertainment')">Jawan (Film)</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('OpenAI', 'entity', 'technology')">OpenAI</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('What\'s trending in India?', 'discovery', 'general')">What's trending in India?</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('What\'s trending in AI?', 'discovery', 'technology')">What's trending in AI?</button>
         </div>
       </div>
+
+      <section class="agent-guide ae-reveal" aria-label="How Trending evaluates a narrative" style="--agent-accent:#f48ac5;">
+        <div class="agent-guide-heading"><h2>Separate attention from truth</h2><p>Panels below stay empty until a real scan returns observations.</p></div>
+        <div class="agent-guide-grid">
+          <div class="agent-guide-card"><span class="step">01 / SAMPLE</span><h3>Scope the signal</h3><p>Source counts describe retrieved samples, not platform-wide reach or virality.</p></div>
+          <div class="agent-guide-card"><span class="step">02 / ORIGIN</span><h3>Trace the repetition</h3><p>Distinguish an earliest sampled source from the actual origin; syndication is not independent confirmation.</p></div>
+          <div class="agent-guide-card"><span class="step">03 / CLAIM</span><h3>Verify the assertion</h3><p>Compare circulating wording with dated original evidence. A trend can remain unverified or disputed.</p></div>
+        </div>
+      </section>
 
       <!-- REAL-TIME PROGRESS BAR MOUNT -->
       <div id="trendingProgressMount"></div>
@@ -377,7 +398,7 @@
               </div>
             </div>
             <div class="tl-wrap" id="timelineList">
-              <div style="padding:10px 0;color:var(--text-dim);font-size:0.84rem;">Timestamps will be sequenced from verified sources.</div>
+              <div style="padding:10px 0;color:var(--text-dim);font-size:0.84rem;">Dated source records will be sequenced here when supplied.</div>
             </div>
           </div>
 
@@ -418,7 +439,7 @@
 
         <div class="evidence-grid" id="evidenceGrid">
           <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-dim);font-size:0.86rem;">
-            Evidence records with verified clickable source URLs will be displayed here.
+            Retrieved evidence records and safe source links, when supplied, will be displayed here.
           </div>
         </div>
       </div>
@@ -426,11 +447,12 @@
       <!-- UNIFIED INVESTIGATION REPORT (Schema v3.8.0) -->
       <div id="trendingUnifiedReportContainer" style="margin-top:36px;display:none;"></div>
     </div>
+    </main>
 
     <!-- DOSSIER DETAIL MODAL -->
     <div class="dossier-modal" id="dossierModal" onclick="if(event.target===this)closeDossier()">
-      <div class="dossier-content" id="dossierModalBody">
-        <button class="modal-close" onclick="closeDossier()">&times;</button>
+      <div class="dossier-content" id="dossierModalBody" role="dialog" aria-modal="true" aria-label="Trend dossier">
+        <button type="button" class="modal-close" aria-label="Close trend dossier" onclick="closeDossier()">&times;</button>
         <div id="dossierModalInner"></div>
       </div>
     </div>
@@ -497,6 +519,8 @@
       currentMode = mode;
       document.getElementById('btnModeEntity').className = `mode-btn ${mode === 'entity' ? 'active' : ''}`;
       document.getElementById('btnModeDiscovery').className = `mode-btn ${mode === 'discovery' ? 'active' : ''}`;
+      document.getElementById('btnModeEntity').setAttribute('aria-pressed', String(mode === 'entity'));
+      document.getElementById('btnModeDiscovery').setAttribute('aria-pressed', String(mode === 'discovery'));
       const inp = document.getElementById('scanQueryInput');
       if (mode === 'discovery') {
         inp.placeholder = "Enter discovery question (e.g. What's trending in India?, trending in AI, viral entertainment today)...";
@@ -843,7 +867,7 @@
 
       ctx.style.display = 'block';
       if (emptyState) emptyState.style.display = 'none';
-      document.getElementById('chartStatusBadge').textContent = `${history.length} Verified Intervals`;
+      document.getElementById('chartStatusBadge').textContent = `${history.length} Recorded Intervals`;
 
       const labels = history.map((h, i) => `Scan ${i + 1}`);
       const data = history.map(h => h.signal_count || 0);
@@ -875,6 +899,8 @@
         }
       });
     }
+
+    let dossierReturnFocus = null;
 
     function openDossier(idx) {
       if (!currentScanData || !currentScanData.trends || !currentScanData.trends[idx]) return;
@@ -914,12 +940,20 @@
         <div>${claimsHtml}</div>
       `;
 
+      dossierReturnFocus = document.activeElement;
       document.getElementById('dossierModal').style.display = 'flex';
+      document.querySelector('#dossierModal .modal-close').focus();
     }
 
     function closeDossier() {
       document.getElementById('dossierModal').style.display = 'none';
+      if (dossierReturnFocus && typeof dossierReturnFocus.focus === 'function') dossierReturnFocus.focus();
+      dossierReturnFocus = null;
     }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('dossierModal').style.display === 'flex') closeDossier();
+    });
 
     function renderFailureState(query) {
       document.getElementById('telSignals').textContent = '0';

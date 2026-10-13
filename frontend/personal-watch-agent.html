@@ -246,6 +246,7 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <main id="main-content">
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>Personal Watch Agent &bull; Public Signal Verification</div>
       <h1>Personal Watch <span>Agent</span></h1>
@@ -275,21 +276,21 @@
         </div>
 
         <div class="preset-chips">
-          <span class="chip" onclick="runPreset('Sam Altman')">Sam Altman</span>
-          <span class="chip" onclick="runPreset('Elon Musk')">Elon Musk</span>
-          <span class="chip" onclick="runPreset('MrBeast')">MrBeast</span>
-          <span class="chip" onclick="runPreset('Virat Kohli')">Virat Kohli</span>
-          <span class="chip" onclick="runPreset('Taylor Swift')">Taylor Swift</span>
-          <span class="chip" onclick="runPreset('Narendra Modi')">Narendra Modi</span>
+          <button type="button" class="chip" onclick="runPreset('Sam Altman')">Sam Altman</button>
+          <button type="button" class="chip" onclick="runPreset('Elon Musk')">Elon Musk</button>
+          <button type="button" class="chip" onclick="runPreset('MrBeast')">MrBeast</button>
+          <button type="button" class="chip" onclick="runPreset('Virat Kohli')">Virat Kohli</button>
+          <button type="button" class="chip" onclick="runPreset('Taylor Swift')">Taylor Swift</button>
+          <button type="button" class="chip" onclick="runPreset('Narendra Modi')">Narendra Modi</button>
         </div>
 
-        <div class="adv-toggle" onclick="toggleAdv()">
+        <button type="button" class="adv-toggle" aria-expanded="false" aria-controls="advBox" onclick="toggleAdv()">
           <span id="advIcon">▸</span> Advanced Subject Profile (Handles, Aliases, Category)
-        </div>
+        </button>
 
         <div class="adv-box" id="advBox">
           <div>
-            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">CATEGORY</label>
+            <label for="profileCategory" style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">CATEGORY</label>
             <select id="profileCategory">
               <option value="public_figure">Public Figure</option>
               <option value="executive">Executive / CEO</option>
@@ -300,17 +301,26 @@
             </select>
           </div>
           <div>
-            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">OFFICIAL SOCIAL HANDLE</label>
+            <label for="officialTwitter" style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">CANDIDATE PUBLIC HANDLE (UNVERIFIED)</label>
             <input type="text" id="officialTwitter" placeholder="@handle">
           </div>
           <div>
-            <label style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">KNOWN ALIASES</label>
+            <label for="profileAliases" style="font-size:0.7rem;color:var(--text-dim);display:block;margin-bottom:4px;font-family:var(--font-mono);">CANDIDATE ALIASES (UNVERIFIED)</label>
             <input type="text" id="profileAliases" placeholder="Comma separated, e.g. Sama, Jimmy">
           </div>
         </div>
 
         <div id="loadingMount"></div>
       </div>
+
+      <section class="agent-guide ae-reveal" aria-label="How Personal Watch evaluates public claims" style="--agent-accent:#64dce8;">
+        <div class="agent-guide-heading"><h2>Protect identity without assuming it</h2><p>Only public evidence is in scope; a matching handle is not authentication.</p></div>
+        <div class="agent-guide-grid">
+          <div class="agent-guide-card"><span class="step">01 / ATTRIBUTION</span><h3>Find the original statement</h3><p>Compare a circulating quote or post with attributable public records and preserve its original context.</p></div>
+          <div class="agent-guide-card"><span class="step">02 / IMITATION</span><h3>Inspect identity signals</h3><p>Lookalike names and accounts require independent checks before calling them impersonation.</p></div>
+          <div class="agent-guide-card"><span class="step">03 / PRIVACY</span><h3>Disclose limits</h3><p>Unavailable platforms and unverified handles remain explicit; private accounts and sensitive details are out of scope.</p></div>
+        </div>
+      </section>
 
       <!-- Results Mount -->
       <div id="resultsMount">
@@ -320,6 +330,7 @@
         </div>
       </div>
     </div>
+    </main>
 
     <!-- Dossier Modal Mount -->
     <div id="modalMount"></div>
@@ -341,6 +352,7 @@
   <script>
     let currentData = null;
     let pwTimerInterval = null;
+    let personalModalReturnFocus = null;
 
     function loadPersonalOperationHealth() {
       return AegisOperationHealth.renderPills(
@@ -359,12 +371,15 @@
     function toggleAdv() {
       const box = document.getElementById('advBox');
       const icon = document.getElementById('advIcon');
+      const toggle = document.querySelector('.adv-toggle');
       if (box.classList.contains('open')) {
         box.classList.remove('open');
         icon.textContent = '▸';
+        toggle.setAttribute('aria-expanded', 'false');
       } else {
         box.classList.add('open');
         icon.textContent = '▾';
+        toggle.setAttribute('aria-expanded', 'true');
       }
     }
 
@@ -383,7 +398,7 @@
           { name: '01 · Source Retrieval', desc: 'Targeted multi-platform search dispatch' },
           { name: '02 · Signal Categorization', desc: 'Impersonation, claims & public statements' },
           { name: '03 · De-duplication', desc: 'Cross-platform syndication & source clustering' },
-          { name: '04 · Synthesis', desc: 'Evidence summary & verified findings' }
+          { name: '04 · Synthesis', desc: 'Evidence summary & qualified findings' }
         ]
       }) : null;
     }
@@ -578,6 +593,7 @@
 
       // 3. Subject Identity Resolution Card
       const handlesList = Object.entries(subject.official_handles || {}).map(([k,v]) => `${k}: ${v}`).join(' · ');
+      const candidateHandlesList = Object.entries(subject.candidate_handles || {}).map(([k,v]) => `${k}: ${v}`).join(' · ');
       const aliasesList = (subject.aliases || []).join(', ');
       mount.insertAdjacentHTML('beforeend', `
         <div style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:14px;padding:18px 24px;margin-bottom:24px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
@@ -590,7 +606,8 @@
               </span>
             </div>
             <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">
-              ${handlesList ? `<span>Official: <strong style="color:#fff;">${escapeHtml(handlesList)}</strong></span> · ` : ''}
+              ${handlesList ? `<span>Catalog-listed handle (not live authenticated): <strong style="color:#fff;">${escapeHtml(handlesList)}</strong></span> · ` : ''}
+              ${candidateHandlesList ? `<span>User-entered candidate (unverified): <strong style="color:#fff;">${escapeHtml(candidateHandlesList)}</strong></span> · ` : ''}
               ${aliasesList ? `<span>Aliases: ${escapeHtml(aliasesList)}</span> · ` : ''}
               <span style="color:#06b6d4;">${escapeHtml(subject.resolution_notes || 'No identity-resolution notes supplied')}</span>
             </div>
@@ -791,16 +808,16 @@
             <div style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:#06b6d4;">// SOURCE EXPLORER &amp; EVIDENCE PROVENANCE</div>
             <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Source links appear only when supplied; inspect attribution and content before relying on a finding.</div>
           </div>
-          <input type="text" id="sourceFilterInput" placeholder="Filter sources by keyword..." oninput="filterSources()" style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;color:#fff;font-size:0.82rem;padding:6px 12px;outline:none;width:220px;">
+          <input type="text" id="sourceFilterInput" aria-label="Filter sources by keyword" placeholder="Filter sources by keyword..." oninput="filterSources()" style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;color:#fff;font-size:0.82rem;padding:6px 12px;outline:none;width:220px;">
         </div>
 
         <div class="filter-tabs" id="sourceTabs">
-          <span class="filter-tab active" onclick="setSourceTab('ALL')">ALL (${evidence.length})</span>
-          <span class="filter-tab" onclick="setSourceTab('NEWS')">NEWS</span>
-          <span class="filter-tab" onclick="setSourceTab('REDDIT')">REDDIT</span>
-          <span class="filter-tab" onclick="setSourceTab('TWITTER')">TWITTER/X</span>
-          <span class="filter-tab" onclick="setSourceTab('YOUTUBE')">YOUTUBE</span>
-          <span class="filter-tab" onclick="setSourceTab('WEB')">WEB</span>
+          <button type="button" class="filter-tab active" aria-pressed="true" onclick="setSourceTab('ALL')">ALL (${evidence.length})</button>
+          <button type="button" class="filter-tab" aria-pressed="false" onclick="setSourceTab('NEWS')">NEWS</button>
+          <button type="button" class="filter-tab" aria-pressed="false" onclick="setSourceTab('REDDIT')">REDDIT</button>
+          <button type="button" class="filter-tab" aria-pressed="false" onclick="setSourceTab('TWITTER')">TWITTER/X</button>
+          <button type="button" class="filter-tab" aria-pressed="false" onclick="setSourceTab('YOUTUBE')">YOUTUBE</button>
+          <button type="button" class="filter-tab" aria-pressed="false" onclick="setSourceTab('WEB')">WEB</button>
         </div>
 
         <div id="sourcesMount"></div>
@@ -813,7 +830,11 @@
     function setSourceTab(tab) {
       activeSourceTab = tab;
       const tabs = document.querySelectorAll('#sourceTabs .filter-tab');
-      tabs.forEach(t => t.classList.toggle('active', t.textContent.startsWith(tab)));
+      tabs.forEach(t => {
+        const active = t.textContent.startsWith(tab);
+        t.classList.toggle('active', active);
+        t.setAttribute('aria-pressed', String(active));
+      });
       const kw = (document.getElementById('sourceFilterInput')?.value || '').toLowerCase();
       renderSourceCards(tab, kw);
     }
@@ -885,10 +906,11 @@
       const d = currentData.dossiers[idx];
 
       const modalMount = document.getElementById('modalMount');
+      personalModalReturnFocus = document.activeElement;
       modalMount.innerHTML = `
         <div class="modal-backdrop" onclick="closeModal(event)">
-          <div class="modal-content" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeModalDirect()">✕</button>
+          <div class="modal-content" role="dialog" aria-modal="true" aria-label="Personal Watch investigation dossier" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" aria-label="Close identity dossier" onclick="closeModalDirect()">✕</button>
             <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:#06b6d4;margin-bottom:6px;">// INVESTIGATION DOSSIER · ${escapeHtml(d.threat_id || 'THREAT')}</div>
             <div style="font-size:1.35rem;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.3;">${escapeHtml(d.title || 'Threat Investigation')}</div>
             
@@ -945,6 +967,8 @@
           </div>
         </div>
       `;
+      const closeButton = modalMount.querySelector('.modal-close');
+      if (closeButton && typeof closeButton.focus === 'function') closeButton.focus();
     }
 
     function closeModal(event) {
@@ -956,7 +980,13 @@
     function closeModalDirect() {
       const modalMount = document.getElementById('modalMount');
       if (modalMount) modalMount.innerHTML = '';
+      if (personalModalReturnFocus && typeof personalModalReturnFocus.focus === 'function') personalModalReturnFocus.focus();
+      personalModalReturnFocus = null;
     }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('modalMount').innerHTML) closeModalDirect();
+    });
 
     function escapeHtml(str) {
       if (str === null || str === undefined) return '';

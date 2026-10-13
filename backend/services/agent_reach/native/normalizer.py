@@ -20,6 +20,23 @@ def _clean_html_text(text: str) -> str:
     return " ".join(clean.split()).strip()
 
 
+def _extract_text_links(text: str, max_links: int = 5, tag: str = "UNVERIFIED_REFERENCED_LINK") -> List[Dict[str, str]]:
+    """Extract bounded external URLs observed within text bodies."""
+    if not text:
+        return []
+    found = re.findall(r'https?://[^\s)\]>"\'\\]+', text)
+    links: List[Dict[str, str]] = []
+    seen = set()
+    for link in found:
+        clean_link = link.rstrip(".,;:!?")
+        if clean_link not in seen and len(clean_link) <= 500:
+            seen.add(clean_link)
+            links.append({"url": clean_link, "verification": tag})
+            if len(links) >= max_links:
+                break
+    return links
+
+
 class NativeNormalizer:
     """Normalizes raw upstream platform outputs into canonical evidence representations."""
 
@@ -187,6 +204,7 @@ class NativeNormalizer:
                     "last_touched": t.get("last_touched"),
                     "last_reply_by": t.get("last_reply_by"),
                     "deleted": t.get("deleted"),
+                    "observed_links": _extract_text_links(content, max_links=5, tag="UNVERIFIED_TOPIC_LINK"),
                 }
             )
             fragments.append(frag)
@@ -223,6 +241,7 @@ class NativeNormalizer:
                     "backend": "V2EX API (public)", "topic_id": topic_id,
                     "reply_id": reply.get("id"), "last_modified": reply.get("last_modified"),
                     "thanks": reply.get("thanks"),
+                    "observed_links": _extract_text_links(body, max_links=5, tag="UNVERIFIED_REPLY_LINK"),
                 },
             ))
         return fragments
@@ -695,6 +714,7 @@ class NativeNormalizer:
                     "subscription_count": ep.get("subscription_count"),
                     "source_contract": ep.get("source_contract"),
                     "source_tier": "SPECIALIST_PUBLIC_WEB",
+                    "observed_links": _extract_text_links(summary, max_links=5, tag="UNVERIFIED_SHOW_NOTES_LINK"),
                 }
             )
             fragments.append(frag)

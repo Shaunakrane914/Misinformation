@@ -190,3 +190,17 @@ date fields as distinct metadata. See the
 [direct-adapter regression tests](../../tests/unit/test_phase8_normalization_truth.py).
 These are offline fixture checks; no new live success or richer-field coverage
 is inferred from them. Stage 8B remains `PARTIAL`.
+
+## Stage 8B Maximum Extraction Depth Extensions — Verified (2026-10-13)
+
+The following extraction depth extensions were implemented and unit-tested in
+[`tests/unit/test_phase8b_maximum_extraction_depth.py`](../../tests/unit/test_phase8b_maximum_extraction_depth.py):
+
+1. **GitHub PR File Follow-Up**: `github.prs` route handler accepts opt-in `include_files=True` (bounded to at most 5 files, 500 chars patch excerpt each). File names, statuses (`added`, `modified`, etc.), additions/deletions counts, and truncated patches are normalized into `provider_fields["file_samples"]` and appended to the PR body, upgrading depth to `PARTIAL_CONTENT`.
+2. **GitHub Commit File Follow-Up**: `github.commits` route handler supports `include_files=True` on single-commit inspection, extracting total `stats` (additions, deletions, total) and bounded `file_samples` with diff patches.
+3. **OpenGraph & Twitter Card Extraction**: `web.read` now extracts `<meta property="og:description">`, `og:site_name`, `og:type`, `<meta name="twitter:creator">`, `twitter:site`, and `article:section`, exposed under `declared_metadata` with truthful `UNVERIFIED_PUBLISHER_DECLARED` pedigree.
+4. **YouTube External Description Links**: `youtube.read` regex-extracts external URLs from video descriptions, populated into `provider_fields["description_links"]` labeled `UNVERIFIED_REFERENCED_LINK`.
+5. **V2EX Topic & Reply Links**: `v2ex.topic` and `v2ex.replies` extract plaintext and markdown/HTML URLs into `provider_fields["observed_links"]`.
+6. **Xiaoyuzhou Show Notes Links**: `xiaoyuzhou.episodes` extracts external URLs from show notes into `provider_fields["observed_links"]` labeled `UNVERIFIED_SHOW_NOTES_LINK`.
+7. **RSS Linked Article Follow-Up**: `rss.read` handler supports `follow_linked_article=True`, dispatching a bounded `execute_channel_read` call (subject to SSRF validation and 5s timeout) to retrieve the linked article text up to 4,000 chars, elevating content depth to `FEED_ENTRY_WITH_LINKED_ARTICLE`.
+

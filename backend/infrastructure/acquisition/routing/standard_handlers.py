@@ -62,6 +62,8 @@ class StandardChannelHandlers:
                 page=_.get("page", 1),
                 include_comments=_.get("include_comments", False),
                 comment_limit=_.get("comment_limit", 3),
+                include_files=_.get("include_files", False),
+                file_limit=_.get("file_limit", 5),
             )
         try:
             result = self.router.executor.execute_github_search(query, limit=limit)
@@ -86,16 +88,21 @@ class StandardChannelHandlers:
     def _execute_github_operation(
         self, operation, query, limit, query_id, query_class, query_text, telemetry,
         page=1, include_comments=False, comment_limit=3,
+        include_files=False, file_limit=5,
     ):
         # Keep the default call shape compatible with existing executor shims.
         pagination_kwargs = {"page": page} if page != 1 else {}
         if include_comments:
             pagination_kwargs.update(include_comments=True, comment_limit=comment_limit)
+        if include_files:
+            pagination_kwargs.update(include_files=True, file_limit=file_limit)
         result = self.router.executor.execute_github_rest_operation(
             query, operation, limit=limit, **pagination_kwargs
         )
         self._record_transport(telemetry, result)
         if include_comments:
+            telemetry["follow_up_requests"] = result.get("follow_up_requests", 0)
+        elif include_files:
             telemetry["follow_up_requests"] = result.get("follow_up_requests", 0)
         fragments: List[EvidenceFragment] = []
         repo = result.get("repo", query)
@@ -142,10 +149,27 @@ class StandardChannelHandlers:
                     "author_association": item.get("author_association"),
                 }
                 if operation == "prs":
+                    file_samples = item.get("sampled_files") or []
+                    observed_files = []
+                    for f in file_samples:
+                        fname = f.get("filename") or "unknown"
+                        fstatus = f.get("status") or "changed"
+                        adds = f.get("additions")
+                        dels = f.get("deletions")
+                        stat_str = f"+{adds}/-{dels}" if adds is not None and dels is not None else ""
+                        observed_files.append(f"- {fname} ({fstatus}{', ' + stat_str if stat_str else ''})")
+                    if observed_files:
+                        body = body + "\n\nObserved changed files (bounded sample):\n" + "\n".join(observed_files)
+                        depth = "PARTIAL_CONTENT"
                     detail.update(
                         merged_at=item.get("merged_at"), draft=item.get("draft"),
                         base_ref=(item.get("base") or {}).get("ref"),
                         head_ref=(item.get("head") or {}).get("ref"),
+                        file_samples=file_samples,
+                        file_lookup_status=item.get("file_lookup_status", "NOT_REQUESTED"),
+                        file_transport=item.get("file_transport"),
+                        file_failure_class=item.get("file_failure_class"),
+                        file_http_status=item.get("file_http_status"),
                     )
                 else:
                     samples = item.get("sampled_comments") or []
@@ -203,6 +227,21 @@ class StandardChannelHandlers:
                           (commit.get("author") or {}).get("name") or "")
                 published = (commit.get("author") or {}).get("date") or ""
                 depth = "METADATA"
+                file_samples = item.get("sampled_files") or []
+                stats = item.get("stats")
+                observed_files = []
+                if stats:
+                    observed_files.append(f"Stats: +{stats.get('additions', 0)}/-{stats.get('deletions', 0)}")
+                for f in file_samples:
+                    fname = f.get("filename") or "unknown"
+                    fstatus = f.get("status") or "changed"
+                    adds = f.get("additions")
+                    dels = f.get("deletions")
+                    stat_str = f"+{adds}/-{dels}" if adds is not None and dels is not None else ""
+                    observed_files.append(f"- {fname} ({fstatus}{', ' + stat_str if stat_str else ''})")
+                if observed_files:
+                    body = body + "\n\nObserved commit changes (bounded sample):\n" + "\n".join(observed_files)
+                    depth = "PARTIAL_CONTENT"
                 detail = {
                     "sha": item.get("sha"),
                     "parents": [parent.get("sha") for parent in item.get("parents", [])[:20]
@@ -214,6 +253,12 @@ class StandardChannelHandlers:
                         "verified": (commit.get("verification") or {}).get("verified"),
                         "reason": (commit.get("verification") or {}).get("reason"),
                     },
+                    "stats": stats,
+                    "file_samples": file_samples,
+                    "file_lookup_status": item.get("file_lookup_status", "NOT_REQUESTED"),
+                    "file_transport": item.get("file_transport"),
+                    "file_failure_class": item.get("file_failure_class"),
+                    "file_http_status": item.get("file_http_status"),
                 }
             fragments.append(EvidenceFragment(
                 platform="GitHub", title=title, content=body, url=url,
@@ -373,10 +418,33 @@ class StandardChannelHandlers:
                 raise NativeReachError("rss.read requires an explicit feed URL")
             result = self.router.executor.execute_rss_read(query, limit=limit)
             self._record_transport(telemetry, result)
+            follow_linked = bool(_.get("follow_linked_article", False))
+            items = result.get("items", [])
             fragments = self.router.normalizer.normalize_rss_entries(
-                result.get("items", []), channel_name="rss", query_id=query_id,
+                items, channel_name="rss", query_id=query_id,
                 query_class=query_class, query_text=query_text,
             )
+            if follow_linked and fragments and items:
+                # Follow up at most 1 linked article with safe SSRF check
+                first_link = (items[0].get("link") or "").strip()
+                if first_link and first_link.startswith(("http://", "https://")):
+                    try:
+                        read_res = self.router.execute_channel_read(first_link, max_chars=3000)
+                        if read_res.get("status") == "success":
+                            art_content = read_res.get("content") or ""
+                            if art_content:
+                                fragments[0].content += f"\n\nObserved linked article ({first_link}):\n{art_content[:2000]}"
+                                fragments[0].content_depth = "FEED_ENTRY_WITH_LINKED_ARTICLE"
+                                fragments[0].raw_metadata["linked_article"] = {
+                                    "url": first_link,
+                                    "title": read_res.get("title"),
+                                    "author": read_res.get("author"),
+                                    "char_count": len(art_content),
+                                    "status": "SUCCESS",
+                                }
+                                telemetry["follow_up_requests"] = 1
+                    except Exception:
+                        pass
             self._attach_transport(fragments, result.get("transport"))
             self.router._tag_fragments(fragments, "rss", "rss", RetrievalMode.RSS_FEED.value, "feedparser", None, False)
             telemetry.update(status="SUCCESS", backend="feedparser")

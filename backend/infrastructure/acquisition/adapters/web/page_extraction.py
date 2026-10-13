@@ -67,13 +67,38 @@ def _declared_json_ld(soup) -> list[dict[str, str]]:
     return declarations
 
 
+def _declared_open_graph(soup) -> dict:
+    og: dict[str, str] = {}
+    for tag in soup.find_all("meta", limit=50):
+        prop = str(tag.get("property") or "")
+        name = str(tag.get("name") or "")
+        content = tag.get("content")
+        if not isinstance(content, str) or not content.strip():
+            continue
+        val = content.strip()[:500]
+        if prop == "og:description" or name == "description":
+            og.setdefault("og_description", val)
+        elif prop == "og:site_name":
+            og["site_name"] = val
+        elif prop == "og:type":
+            og["og_type"] = val
+        elif name == "twitter:creator":
+            og["twitter_creator"] = val
+        elif name == "twitter:site":
+            og["twitter_site"] = val
+        elif prop == "article:section":
+            og["article_section"] = val
+    return og
+
+
 def extract_observed_page_details(soup, endpoint: str) -> dict:
     """Extract small source-context samples from article/main, or body fallback."""
     root = soup.find("article") or soup.find("main") or soup.body
     if root is None:
         return {"content_scope": "UNAVAILABLE", "observed_links": [], "tables": [],
                 "quotations": [], "media_captions": [], "potential_corrections": [],
-                "declared_structured_data": _declared_json_ld(soup)}
+                "declared_structured_data": _declared_json_ld(soup),
+                "declared_open_graph": _declared_open_graph(soup)}
     content_scope = "article" if root.name == "article" else "main" if root.name == "main" else "body_fallback"
     origin = (urlsplit(endpoint).hostname or "").lower()
     links: list[dict] = []
@@ -115,4 +140,5 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
         "media_captions": [_text(node, 300) for node in root.find_all("figcaption", limit=5)],
         "potential_corrections": corrections,
         "declared_structured_data": _declared_json_ld(soup),
+        "declared_open_graph": _declared_open_graph(soup),
     }

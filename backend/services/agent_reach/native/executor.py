@@ -388,6 +388,8 @@ class NativeExecutor:
         page: int = 1,
         include_comments: bool = False,
         comment_limit: int = 3,
+        include_files: bool = False,
+        file_limit: int = 5,
     ) -> Dict[str, Any]:
         """Read a public repository or collection through the documented REST API."""
         clean_repo = repo.strip().rstrip("/")
@@ -417,6 +419,12 @@ class NativeExecutor:
             raise NativeReachError("Comment follow-up is supported only for GitHub issues")
         if not isinstance(comment_limit, int) or isinstance(comment_limit, bool) or not 1 <= comment_limit <= 5:
             raise NativeReachError("GitHub comment limit must be an integer from 1 to 5")
+        if not isinstance(include_files, bool):
+            raise NativeReachError("GitHub include_files must be a boolean")
+        if include_files and op not in {"prs", "commits"}:
+            raise NativeReachError("File follow-up is supported only for GitHub prs and commits")
+        if not isinstance(file_limit, int) or isinstance(file_limit, bool) or not 1 <= file_limit <= 10:
+            raise NativeReachError("GitHub file limit must be an integer from 1 to 10")
 
         # GitHub's issues collection also includes PRs. Request a modest
         # overfetch so filtering does not routinely return zero real issues.
@@ -524,6 +532,101 @@ class NativeExecutor:
                             item["comment_failure_class"] = type(error).__name__
                             if isinstance(error, ProviderHTTPError):
                                 item["comment_http_status"] = error.status_code
+            if op == "prs" and include_files:
+                for item in items[:limit]:
+                    number = item.get("number") if isinstance(item, dict) else None
+                    if follow_up_requests >= 2:
+                        item["file_lookup_status"] = "NOT_REQUESTED_BUDGET"
+                    elif not isinstance(number, int) or isinstance(number, bool) or number < 1:
+                        item["file_lookup_status"] = "NOT_REQUESTED_INVALID_NUMBER"
+                    else:
+                        follow_up_requests += 1
+                        files_url = (
+                            f"https://api.github.com/repos/{clean_repo}/pulls/{number}"
+                            f"/files?per_page={file_limit}"
+                        )
+                        try:
+                            files_response = fetch_public_http(
+                                files_url, headers=headers,
+                                timeout=min(timeout, 5.0), max_bytes=MAX_OUTPUT_BYTES,
+                            )
+                            files_data = json.loads(
+                                decode_bounded_http_body(files_response).decode("utf-8")
+                            )
+                            if not isinstance(files_data, list):
+                                raise ValueError("GitHub PR files response is not a list")
+                            samples = []
+                            for f in files_data[:file_limit]:
+                                if not isinstance(f, dict):
+                                    continue
+                                patch = f.get("patch")
+                                patch = patch[:500] if isinstance(patch, str) else None
+                                samples.append({
+                                    "filename": f.get("filename"),
+                                    "status": f.get("status"),
+                                    "additions": f.get("additions"),
+                                    "deletions": f.get("deletions"),
+                                    "changes": f.get("changes"),
+                                    "patch_excerpt": patch,
+                                })
+                            item["sampled_files"] = samples
+                            item["file_lookup_status"] = "SUCCESS" if samples else "EMPTY"
+                            item["file_transport"] = self._bounded_http_transport(files_response)
+                        except Exception as error:
+                            item["file_lookup_status"] = "FAILED"
+                            item["file_failure_class"] = type(error).__name__
+                            if isinstance(error, ProviderHTTPError):
+                                item["file_http_status"] = error.status_code
+            if op == "commits" and include_files:
+                for item in items[:limit]:
+                    sha = item.get("sha") if isinstance(item, dict) else None
+                    if follow_up_requests >= 2:
+                        item["file_lookup_status"] = "NOT_REQUESTED_BUDGET"
+                    elif not isinstance(sha, str) or not re.fullmatch(r"[0-9a-fA-F]{7,40}", sha):
+                        item["file_lookup_status"] = "NOT_REQUESTED_INVALID_SHA"
+                    else:
+                        follow_up_requests += 1
+                        commit_url = f"https://api.github.com/repos/{clean_repo}/commits/{sha}"
+                        try:
+                            commit_response = fetch_public_http(
+                                commit_url, headers=headers,
+                                timeout=min(timeout, 5.0), max_bytes=MAX_OUTPUT_BYTES,
+                            )
+                            commit_data = json.loads(
+                                decode_bounded_http_body(commit_response).decode("utf-8")
+                            )
+                            if not isinstance(commit_data, dict):
+                                raise ValueError("GitHub commit detail response is not a dict")
+                            stats = commit_data.get("stats") if isinstance(commit_data.get("stats"), dict) else None
+                            if stats:
+                                item["stats"] = {
+                                    "total": stats.get("total"),
+                                    "additions": stats.get("additions"),
+                                    "deletions": stats.get("deletions"),
+                                }
+                            raw_files = commit_data.get("files")
+                            samples = []
+                            if isinstance(raw_files, list):
+                                for f in raw_files[:file_limit]:
+                                    if not isinstance(f, dict):
+                                        continue
+                                    patch = f.get("patch")
+                                    patch = patch[:500] if isinstance(patch, str) else None
+                                    samples.append({
+                                        "filename": f.get("filename"),
+                                        "status": f.get("status"),
+                                        "additions": f.get("additions"),
+                                        "deletions": f.get("deletions"),
+                                        "patch_excerpt": patch,
+                                    })
+                            item["sampled_files"] = samples
+                            item["file_lookup_status"] = "SUCCESS" if (samples or stats) else "EMPTY"
+                            item["file_transport"] = self._bounded_http_transport(commit_response)
+                        except Exception as error:
+                            item["file_lookup_status"] = "FAILED"
+                            item["file_failure_class"] = type(error).__name__
+                            if isinstance(error, ProviderHTTPError):
+                                item["file_http_status"] = error.status_code
             latency_ms = int((time.perf_counter() - started) * 1000)
             return {
                 "platform": "github",

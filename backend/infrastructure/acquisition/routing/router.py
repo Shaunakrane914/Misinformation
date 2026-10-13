@@ -418,6 +418,11 @@ class NativeRouter:
                             "categories": (info.get("categories") or [])[:10],
                             "availability": info.get("availability"),
                             "live_status": info.get("live_status"),
+                            "description_links": [
+                                {"url": link.rstrip(".,;:!?"), "verification": "UNVERIFIED_REFERENCED_LINK"}
+                                for link in re.findall(r'https?://[^\s)\]>"\'\\]+', desc)[:10]
+                                if len(link) <= 500
+                            ],
                         },
                         "backend": "yt-dlp",
                         "fallback_used": False,

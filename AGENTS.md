@@ -2,7 +2,7 @@
 
 **Target Audience:** Autonomous coding assistants (Google Antigravity, OpenAI Codex, Anthropic Claude) and software engineers  
 **Repository:** `Shaunakrane914/Misinformation`  
-**Current Milestone:** Phase 8A (Real Acquisition Proof)
+**Current Milestone:** Phase 8A bounded acquisition proof passed; Phase 8B/8C/8E partial; Phase 8D/8F not accepted. See [dated current state](docs/CURRENT_STATE.md).
 **Historical Phase 7.2 Offline Baseline:** 787 / 787 tests passing
 **Current Agent Handoff:** [Start here](docs/handoffs/README.md). Test totals and local validation evidence are dated snapshots, not permanent acceptance counts.
 
@@ -84,7 +84,18 @@ python scripts/validate_release_candidate_smoke.py
 python scripts/validate_rollback_compatibility.py
 ```
 
-See the [handoff testing runbook](docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_TESTING.md) for compact output, frontend checks, frozen-data validation, temporary logs, and failure interpretation. The historical archive currently has 55 invalid JSON files: rollback validation must report that failure honestly, not silently skip or repair protected dossiers. A passing offline suite does not establish live-provider health, remote CI, or deployed rollback.
+Run the six Node `tests/frontend/test_*.js` scripts and
+`python scripts/validation/verify_frozen_benchmarks.py` for frontend/data
+changes. Optional terminal-browser and axe commands are documented in the
+[script index](docs/development/SCRIPT_INDEX.md); they require a served
+frontend and explicit browser dependencies. See the [handoff testing
+runbook](docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIATION_TESTING.md) for
+output isolation and failure interpretation. The prior original-worktree
+inventory reported 55 invalid historical dossier JSON files; this isolated
+worktree may not contain that archive. Rollback validation must report the
+actual inspected scope, never silently skip or repair protected dossiers. A
+passing offline suite does not establish live-provider health, browser
+acceptance, remote CI for an unpushed commit, or deployed rollback.
 
 ---
 
@@ -102,6 +113,7 @@ See the [handoff testing runbook](docs/handoffs/2026-10-12_ARCHITECTURE_REMEDIAT
 ## 6. Authoritative Documentation Index
 
 - [Documentation Portal](docs/index.md)
+- [Dated Current State](docs/CURRENT_STATE.md)
 - [Developer Workspace Map](docs/development/WORKSPACE_MAP.md)
 - [Script Index](docs/development/SCRIPT_INDEX.md)
 - [Architecture Blueprint](docs/architecture/TARGET_ARCHITECTURE.md)

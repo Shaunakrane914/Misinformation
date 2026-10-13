@@ -5,6 +5,12 @@
 **Pattern:** Structured Modular Monolith with Inverted Dependency Boundaries  
 **Target Repository:** `ShaunakRane914/Misinformation`
 
+This is a **target** blueprint, not an assertion that every diagram node,
+dependency inversion, provider integration or cryptographic guarantee is
+implemented and verified. The [current-state matrix](../CURRENT_STATE.md),
+[executed-path trace](PHASE8_INVESTIGATION_PATH_TRACE.md) and tests describe
+the observed branch. Do not infer production readiness from this target.
+
 ---
 
 ## 1. Architectural Vision & Core Principles

@@ -1,6 +1,12 @@
 # 🛡️ Aegis Protocol — System Architecture
 
 **Status:** Canonical System Architecture Entrypoint  
+**Reading note:** The diagrams below are architectural models from an earlier
+phase, not a live-provider or release-status matrix. Use the
+[dated current state](../CURRENT_STATE.md) and
+[executed Phase 8 path](PHASE8_INVESTIGATION_PATH_TRACE.md) for implemented
+ownership, current gates and known deviations (including the 16 protected
+operations and infrastructure acquisition runtime).  
 **Authoritative Specifications:**
 - [🏛️ Target Modular Monolith Blueprint](TARGET_ARCHITECTURE.md)
 - [📦 Codebase Inventory & Defect Register](CODEBASE_INVENTORY.md)

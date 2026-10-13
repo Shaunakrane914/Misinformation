@@ -3,14 +3,17 @@
 **Document Version**: 4.1.0  
 **Framework**: Pytest 8.4.2  
 **Test Suite Path**: `tests/`  
-**Total Automated Tests**: **530 Passed, 0 Failed, 0 Warnings**
+**Historical total at original writing:** 530 passed. The
+[dated current-state record](../CURRENT_STATE.md) reports 1,051 local full-suite
+and 855 local fast-suite passes on `feat/phase8b-extraction` at `e74b984`.
+Discover counts from the checked-out tree; they are not permanent guarantees.
 
 ---
 
 ## 1. Testing Philosophy & Guarantees
 
 Aegis Protocol maintains an ironclad testing culture:
-1. **Zero Silent Regressions**: The entire 530-test suite must pass with 0 failures and 0 warnings before any commit or merge.
+1. **No silent regressions**: Run the current full suite and interpret failures; never reuse the historical 530-test count as a gate.
 2. **Offline Hermetic Execution**: The default test suite does not require external API keys, database servers, or live internet connectivity.
 3. **Bit-for-Bit Fixture Immutability**: Golden retrieval benchmarks in `tests/retrieval_benchmark/` are frozen and immutable.
 4. **Adversarial Resilience**: Chaos tests inject simulated network latency, packet loss, and rate limits to guarantee graceful degradation.

@@ -9,13 +9,13 @@ uvicorn backend.main:app --host 0.0.0.0 --port 8000 --reload
 ```bash
 curl http://localhost:8000/api/healthz
 curl http://localhost:8000/api/readyz
-curl http://localhost:8000/api/doctor
+curl http://localhost:8000/api/agent-reach/doctor
 ```
 
 ## Running Tests
 ```bash
 pytest tests/ -q                          # full suite
-pytest tests/unit tests/security -q       # fast subset
+pytest tests/unit tests/chaos tests/security -q  # fast subset
 ```
 
 ## Smoke Validation

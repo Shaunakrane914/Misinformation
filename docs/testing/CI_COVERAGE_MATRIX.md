@@ -12,7 +12,15 @@ Each test job subsequently checks frozen dataset hashes and `git diff --exit-cod
 
 The full suite includes integration, contracts, retrieval benchmarks, evaluation, performance benchmarks and root test modules. Counts change as regressions are added; use `pytest tests/ --collect-only -q` for the current inventory. Historical Phase 7.1 totals are not current acceptance evidence.
 
-Hosted run [38236691625](https://github.com/Shaunakrane914/Misinformation/actions/runs/38236691625) passed this matrix for commit `4768c0ba706e0d306cbe4bb971b7bb508ffd5728`, including 977 full-suite tests and every Python 3.11–3.13 fast job. The runner did not contain ignored historical dossier JSON, so its archive result was `NOT_VERIFIED`; see the [Phase 7.4 closeout](../handoffs/2026-10-12_PHASE7_4_CLOSEOUT.md).
+The latest exact-commit evidence for this branch is [run 38420523255](https://github.com/Shaunakrane914/Misinformation/actions/runs/38420523255)
+at `e74b9847ab107e2793f69e2155914028f02391b6`: all five configured
+jobs passed, including Python 3.11–3.13 fast suites and the full offline
+regression. The 1,051/855 counts in [Current State](../CURRENT_STATE.md) are
+local observations. The runner does not contain ignored historical dossier
+JSON, so archive integrity and deployed rollback remain `NOT_VERIFIED`.
+This workflow does not run live scraping, Playwright rendering, axe-core or
+manual screen-reader checks. Earlier [Phase 7.4 run 38236691625](https://github.com/Shaunakrane914/Misinformation/actions/runs/38236691625)
+is retained as a historical checkpoint, not current branch acceptance.
 
 ## Offline isolation
 
@@ -27,4 +35,8 @@ The release smoke and rollback validators use new subprocesses and temporary per
 - A historical rollback reader uses the locally available baseline commit; an unavailable baseline is `NOT_VERIFIED`, never an assumed pass.
 - A full deployed earlier-version rollback remains `NOT_VERIFIED` until exercised by the owner in staging.
 - Workflow editing alone is not GitHub Actions evidence. Preserve the exact commit, run URL and job conclusions; the hosted Phase 7.4 evidence is linked above.
-- The rollback command intentionally exits nonzero while the 55 protected malformed dossiers remain. A red hosted rollback gate is an honest release block, not a reason to skip the archive or weaken validation.
+- The original local archive inventory found 55 malformed protected dossiers.
+  Where those files are present, rollback validation must report their actual
+  state and may exit nonzero. In isolated worktrees and hosted CI the ignored
+  archive may be absent; a passing temporary-persistence check does not verify
+  or repair it.

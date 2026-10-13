@@ -2,6 +2,15 @@
 
 This document details the architectural topology, progressive disclosure information framework, and inter-agent coordination model of the Aegis Protocol.
 
+This is a design-oriented architecture description, not proof that every
+depicted source or screen is live. For executed ownership and Phase 8 gate
+status, start with [Current State](CURRENT_STATE.md), the
+[production-path trace](architecture/PHASE8_INVESTIGATION_PATH_TRACE.md), and
+the [8B field matrix](architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md).
+In particular, the diagram's older “14 adapters” wording is a historical
+capability-layer sketch: 16 protected operations are currently registered,
+with additional auxiliary channels whose live health varies.
+
 ---
 
 ## 1. High-Level Architecture Overview
@@ -38,11 +47,11 @@ Aegis Protocol is designed as an intelligence fabric composed of specialized aut
 
 | Sentinel Node | Primary Responsibility | Monitored Vectors | Console |
 | :--- | :--- | :--- | :--- |
-| **Scout Agent 2.0** | Financial volatility, price anomalies, leak correlation | Yahoo Finance, Reddit (r/stocks, r/wsb), SEC EDGAR, X Cashtags | [`scout-agent.html`](../frontend/scout-agent.html) |
-| **Trending Agent 2.0** | Viral velocity, topic discovery, narrative emergence | Multi-platform RSS, PullPush Reddit, News wires, TikTok | [`trending-agent.html`](../frontend/trending-agent.html) |
-| **BrandShield Agent 2.0** | Counterfeit listings, review brigading, smear PR | Amazon/Flipkart storefronts, Trustpilot, consumer forums | [`brandshield-agent.html`](../frontend/brandshield-agent.html) |
-| **Personal Watch 2.0** | Identity monitoring, deepfakes, smear campaigns | Public OSINT footprint, acoustic spectrograms, news wires | [`personal-watch-agent.html`](../frontend/personal-watch-agent.html) |
-| **Claim Fact-Check** | Dual-column empirical verification (FOR vs. AGAINST) | Wire registries (AP, Reuters), official government gazettes | [`submit.html`](../frontend/submit.html) |
+| **Scout Agent 2.0** | Financial and corporate evidence research | Available market, disclosure, web and discussion operations; source status is runtime-dependent | [`scout-agent.html`](../frontend/scout-agent.html) |
+| **Trending Agent 2.0** | Topic discovery and sampled narrative signals | Available feeds, public media and discussion operations; not platform-wide coverage | [`trending-agent.html`](../frontend/trending-agent.html) |
+| **BrandShield Agent 2.0** | Brand mention and impersonation screening | Returned public records only; unavailable marketplaces must remain explicit | [`brandshield-agent.html`](../frontend/brandshield-agent.html) |
+| **Personal Watch 2.0** | Public identity and impersonation research | Publicly retrievable records, with privacy and identity-authentication limits | [`personal-watch-agent.html`](../frontend/personal-watch-agent.html) |
+| **Claim Fact-Check** | Evidence-backed claim verification with abstention | Sources actually selected and retrieved in each investigation | [`submit.html`](../frontend/submit.html) |
 | **Research component** | Gathers evidence inside claim verification; no standalone open-ended query API | Actual retrieved operations vary by run | [`research-agent.html`](../frontend/research-agent.html) entry |
 | **Investigator component** | Verdict synthesis inside claim verification, with explicit abstention when evidence is absent | Provenance and source-linked passages where available | [`investigator-agent.html`](../frontend/investigator-agent.html) entry |
 
@@ -64,7 +73,7 @@ Every user-facing interface adheres to strict information stratification:
 3. **Level 3 — Raw Evidence & Provenance:**
    * Collapsed-by-default evidence rows (`.aegis-evidence-row`).
    * Clicking expands excerpt quotes, publisher roles (`PRIMARY`, `SECONDARY`, `FACT-CHECK`), and independent syndication group IDs (`G-01`, `G-02`).
-   * First-class, verified `Open source ↗` links opening in external tabs with zero `#` placeholders.
+   * Inspectable `Open source ↗` links only when the backend supplies a safe URL; a safe URL alone does not verify publisher identity or claim truth.
 
 ---
 

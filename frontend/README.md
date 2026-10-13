@@ -1,6 +1,9 @@
 # Aegis Protocol — Frontend
 
 Static HTML/JS/CSS dashboard served directly from the `frontend/` directory.
+For current Phase 8 acceptance and known browser/backend gaps, read the
+[dated project state](../docs/CURRENT_STATE.md). Static-page checks do not
+establish real acquisition or production deployment.
 
 ## Pages
 | File | Description |
@@ -48,4 +51,6 @@ replace manual screen-reader or real backend-result validation.
 and honest stale-observation badges. Documented in `tests/frontend/test_operation_health.js`.
 
 ## Deployment
-Deployed via Netlify. See `netlify.toml` and `frontend/netlify.toml`.
+Netlify configuration is present in `netlify.toml` and
+`frontend/netlify.toml`; this documentation does not verify an active public
+deployment or approve a release.

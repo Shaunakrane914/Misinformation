@@ -1,5 +1,11 @@
 # Aegis Protocol — API Specification & Routing Reference
 
+> **Historical reference:** The endpoint examples below include routes and
+> request fields that are not registered in the current application. Use the
+> [current decorator-backed route map](CURRENT_ENDPOINTS.md) and runtime
+> OpenAPI instead. This older description is retained for architectural
+> history, not client implementation.
+
 **Document Version**: 4.1.0  
 **Framework**: FastAPI 0.110+  
 **Interactive Documentation**:

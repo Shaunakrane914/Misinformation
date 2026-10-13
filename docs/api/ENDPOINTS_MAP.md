@@ -1,5 +1,10 @@
 # Aegis Enterprise - Complete API & Endpoint Map
 
+> **Superseded snapshot:** This map includes unregistered `/api/agents/*`
+> routes and historical behavior claims. Use the [current route map](CURRENT_ENDPOINTS.md)
+> and checked-out OpenAPI for active clients. Kept only as a record of the
+> earlier proposed interface.
+
 ## 🌐 Server Base URL: `http://127.0.0.1:8000` (Swagger UI: `http://127.0.0.1:8000/docs`)
 
 ---

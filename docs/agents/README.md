@@ -2,6 +2,13 @@
 
 This directory contains the formal architectural specifications, data contracts, and implementation guidelines for each agent within the **Aegis Protocol**.
 
+These per-agent specifications include historical and aspirational designs.
+For the currently executed claim path, four specialist scan contracts and
+Phase 8 acceptance boundaries, use [Current State](../CURRENT_STATE.md),
+the [production-path trace](../architecture/PHASE8_INVESTIGATION_PATH_TRACE.md)
+and the [current API map](../api/CURRENT_ENDPOINTS.md). A listed source or
+agent role below is not proof that it ran in a given investigation.
+
 ---
 
 ## 1. Agent Directory Map

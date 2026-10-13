@@ -4,9 +4,11 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 ## Next coding agent: start here
 
-Read the [agent handoff index](handoffs/README.md) before continuing the uncommitted architecture-remediation work. It links the implementation map, decision rationale, recorded execution work log, exact test commands and known blockers. Historical phase reports below remain snapshots; they do not override newer code or validation evidence.
-
-Current verification milestone: [Phase 8A real acquisition verification](architecture/PHASE8A_REAL_ACQUISITION_VERIFICATION.md).
+Start with the [dated current state](CURRENT_STATE.md) and [agent handoff
+index](handoffs/README.md), then inspect the checked-out branch and commit.
+Phase 8A has bounded live proof; 8B/8C/8E remain partial and 8D/8F are not
+accepted. Historical phase reports below remain snapshots rather than current
+release or deployment approval.
 
 ---
 
@@ -32,7 +34,7 @@ Current verification milestone: [Phase 8A real acquisition verification](archite
 
 - **[Coding Agent Orientation (`AGENTS.md`)](../AGENTS.md)**: Canonical orientation guide for AI coding assistants and developers.
 - **[Developer Workspace Map](development/WORKSPACE_MAP.md)**: Quick-reference map for finding agent logic, routes, tests, and running common commands.
-- **[Script Index & Catalog](development/SCRIPT_INDEX.md)**: Authoritative index of all 40 development, benchmark, evaluation, and validation scripts.
+- **[Script Index & Catalog](development/SCRIPT_INDEX.md)**: Maintained command index; its Phase 7.2 script count is explicitly historical.
 - **[Workspace Inventory Report](development/WORKSPACE_INVENTORY.md)**: Directory-by-directory audit and classification of all tracked repository assets.
 - **[Cleanup-Candidate Register](development/CLEANUP_CANDIDATE_REGISTER.md)**: Register of redundant, superseded, or owner-approval files.
 - **[Environment Setup Guide](development/ENV_SETUP.md)**: Setup guide for API keys, provider credentials, and environment variables.
@@ -72,15 +74,15 @@ Current verification milestone: [Phase 8A real acquisition verification](archite
 
 - **[Showcase Brief & Storyboard](showcase/composition-brief.md)**: Storyboard scenes, soundtrack attribution, and composition design.
 - **[Launch Copy Studio](showcase/share-copy.md)**: Omnichannel launch copy for 𝕏/Twitter, LinkedIn, Discord, and Reddit.
-- **[Production Teaser Plan](showcase/brag-plan.md)**: 20-second cinematic film specification and render parameters.
+- **[Production Teaser Plan](showcase/brag-plan.md)**: Historical film specification, not current product acceptance evidence.
 
 
 ---
 
 ## 🤖 Autonomous Sentinel Fleet & API Contracts
 
-- **[REST API Reference](api/README.md)**: 7 modular FastAPI routers (`/api/claims`, `/api/scout`, `/api/trending`, `/api/brandshield`, `/api/personal-watch`, `/api/replay`, `/api/healthz`).
-- **[API & Endpoint Route Map](api/ENDPOINTS_MAP.md)**: Complete route map for all FastAPI endpoints and frontend consoles.
+- **[Current API Route Map](api/CURRENT_ENDPOINTS.md)**: Decorator-backed routes and contract boundaries for this branch; runtime OpenAPI is exhaustive.
+- **[Historical API Reference](api/README.md)** and **[proposed endpoint map](api/ENDPOINTS_MAP.md)**: Retained snapshots that include unregistered routes; do not implement clients from them.
 - **[Autonomous Sentinel Fleet](agents/README.md)**: Specifications for Scout, Trending, BrandShield, Personal Watch, and Truth Tribunal.
 
 ---

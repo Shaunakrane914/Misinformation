@@ -3,6 +3,12 @@
 **Document Version**: 4.1.0  
 **Scope**: Full Stack (Network, Acquisition, Application, Persistence, Frontend)
 
+This describes security design and regression coverage, not a security
+certification or deployment approval. The [dated project state](../CURRENT_STATE.md)
+and [Phase 7.4 verification](../architecture/PHASE7_4_REMEDIATION_VERIFICATION.md)
+record actual checks and unresolved historical dossier/deployed-rollback
+boundaries. Frontend URL display guards do not replace backend SSRF controls.
+
 ---
 
 ## 1. Security Architecture Principles

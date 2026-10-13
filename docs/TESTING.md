@@ -2,11 +2,15 @@
 **Framework**: Pytest 8.4.2  
 **Test Suite Path**: `tests/`  
 **Execution Environment**: Python 3.11+ (Windows / Linux / macOS)  
-**Total Automated Tests**: **530 Passed, 0 Failed, 0 Warnings** (Unit, Contract, Integration, Chaos, Security, Cranfield Benchmark)
+**Historical baseline:** 530 passing tests at the original writing date. For
+`feat/phase8b-extraction` at `e74b984` on 2026-10-13, the full local suite
+reported 1,051 passing and the fast unit/chaos/security suite 855 passing;
+both are dated counts, not permanent assertions. See [Current State](CURRENT_STATE.md)
+and the [CI matrix](testing/CI_COVERAGE_MATRIX.md) for exact verification limits.
 
 ---
 
-## 1. Test Architecture
+## 1. Test architecture (illustrative historical inventory)
 
 The Aegis Protocol test framework is structured into specialized layers for unit correctness, structural contracts, fault tolerance, security hardening, and scientific evaluation:
 
@@ -61,9 +65,9 @@ tests/
 
 ## 2. Running Automated Tests
 
-### Run Full Test Suite (530 Tests)
+### Run full offline test suite (discover current count)
 ```bash
-pytest
+pytest tests/ -q
 ```
 
 ### Run Fast Unit Suite Only

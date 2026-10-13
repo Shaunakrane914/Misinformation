@@ -2,6 +2,10 @@
 
 Welcome to the development guide for **Aegis Protocol**. This guide covers local environment setup, runtime execution, coding standards, and developer workflow.
 
+Before treating historical counts or provider descriptions as current, read
+the [dated project state](../CURRENT_STATE.md) and
+[latest handoff](../handoffs/README.md), then inspect your branch and diff.
+
 ---
 
 ## 1. Prerequisites & Environment Setup

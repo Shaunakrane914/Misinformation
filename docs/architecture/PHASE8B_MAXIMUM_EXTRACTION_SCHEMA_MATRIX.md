@@ -1,7 +1,11 @@
 # Phase 8B maximum extraction schema matrix — working assessment
 
-**Gate: PARTIAL (2026-10-12).** This is a measured checkpoint, not a claim
+**Gate: PARTIAL (2026-10-13).** This is a measured checkpoint, not a claim
 that every possible public field or page has been extracted. The
+[clean-commit 48-scenario re-probe](../../artifacts/phase8_extraction_spotchecks/2026-10-13_09-13-13Z/)
+on 2026-10-13 yielded an 8A connectivity gate `PASS` for all 16 operations;
+its [v12 richness summary](../../artifacts/phase8_extraction_spotchecks/2026-10-13_09-13-13Z/richness_summary_v12.json)
+remains a bounded sample, not Stage 8B field completeness. The
 [Phase 8A live records](../../artifacts/phase8_live_acquisition/2026-10-12_11-06-45Z/)
 prove connection and content depth. The
 [guarded Stage 8B spot-checks](../../artifacts/phase8_extraction_spotchecks/README.md)
@@ -106,9 +110,48 @@ counts, tags/categories and availability fields on one public video. This is
 one target, not a platform-wide field guarantee. The machine summary is
 authoritative for numeric values. Sample source timestamps and attribution
 population in the old Phase 8A probe reflect pre-8B normalization; new
-post-change metrics are required before claiming date-completeness gains.
+post-change population is measured in v12 below, but two successful scenarios
+per operation at most cannot establish date-completeness gains across a provider.
 
 ## Current gate blockers
+
+### Clean-commit three-scenario measurement, 2026-10-13
+
+The full re-probe on commit `8dce5412ab7c3ab4de2d1d6239e4f658bb27e756`
+produced 30 live-verified results across 48 designed scenarios, including
+deliberately inaccessible targets. Every operation had at least one live
+result, so the **Stage 8A** gate passed; the fraction is not a production
+uptime estimate. The summary below counts an important field as “always
+populated” only when it was populated in every *measured successful normalized
+sample*. It does not measure unrequested raw provider fields or every possible
+target. Missing values stay missing.
+
+| Operation | Live probes / scenarios | Always populated important fields / measured important fields | Mean relevant characters / successful item |
+|---|---:|---:|---:|
+| `github.read` | 2/3 | 4/5 | 25,476 |
+| `github.issues` | 2/3 | 6/6 | 2,423 |
+| `github.prs` | 2/3 | 6/6 | 5,993 |
+| `github.commits` | 2/3 | 5/5 | 652 |
+| `github.releases` | 1/3 | 4/4 | 1,129 |
+| `youtube.read` | 2/3 | 5/5 | 1,401 |
+| `youtube.transcript` | 1/3 | 4/4 | 4,017 |
+| `youtube.comments` | 2/3 | 4/4 | 47 |
+| `v2ex.latest` | 3/3 | 5/5 | 182 |
+| `v2ex.search` | 2/3 | 5/5 | 278 |
+| `v2ex.topic` | 2/3 | 5/5 | 866 |
+| `v2ex.replies` | 2/3 | 5/5 | 48 |
+| `web.read` | 2/3 | 6/11 | 4,000 (route cap) |
+| `rss.read` | 2/3 | 5/5 | 1,075 |
+| `xiaoyuzhou.podcast` | 2/3 | 4/4 | 143 |
+| `xiaoyuzhou.episodes` | 1/3 | 5/5 | 975 |
+
+One public video lacked an accessible transcript, a selected repository had
+no release result, and a sparse podcast-episode target had a network failure.
+Those observed limitations are retained, not filled with synthetic content.
+The `github.read` author gap is appropriate: repository ownership is not
+proof of README authorship. The five sparse web fields are optional on the
+two sampled pages. Pagination remains bounded or absent as documented above;
+the table does not resolve that blocker.
 
 1. The new field-presence names cover parsed adapter result items, not complete
    provider response schemas. YouTube read/transcript and web have no `items`

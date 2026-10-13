@@ -50,6 +50,15 @@ def test_summary_prefers_newest_matching_probe_and_refuses_overwrite(tmp_path):
         "populated": 0, "measured_samples": 0, "population_rate": None,
     }
     assert len(report["operations"]) == 16
+    module_output = tmp_path / "module-summary.json"
+    module_command = [
+        sys.executable, "-m", "scripts.audits.summarize_phase8_extraction",
+        "--probe-records", str(new), "--output", str(module_output),
+    ]
+    module_run = subprocess.run(module_command, cwd=root, text=True,
+                                capture_output=True, check=False)
+    assert module_run.returncode == 0, module_run.stderr
+    assert json.loads(module_output.read_text(encoding="utf-8"))["operations"]["github.read"]["live_success_count"] == 1
     second = subprocess.run(command, cwd=root, text=True, capture_output=True, check=False)
     assert second.returncode != 0
     assert "already exists" in second.stderr

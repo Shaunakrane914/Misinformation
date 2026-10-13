@@ -12,8 +12,13 @@ import json
 from collections import Counter, defaultdict
 from pathlib import Path
 from statistics import mean, median
+import sys
 
-from run_phase8_live_acquisition_audit import (
+# Both file-path and ``python -m`` invocations must load this checkout, not an
+# editable-installed backend from another worktree.
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
+
+from scripts.audits.run_phase8_live_acquisition_audit import (
     PROTECTED_OPERATIONS,
     SUCCESS_CLASSIFICATIONS,
 )

@@ -23,8 +23,11 @@ post-commit or hosted-CI result.
 | [03:53:35Z](2026-10-13_03-53-35Z/) | Five GitHub operations after attribution/depth correction | Four common operations returned content or metadata; `github.issues` page 1 returned HTTP 200 but all three provider entries were PRs, filtered to zero issues. Its historical `NOT_FOUND` classification is **wrong** for a filtered page, not proof that the repository or issues are absent. |
 | [03:55:58Z](2026-10-13_03-55-58Z/) | Guarded GitHub issue overfetch re-probe | One bounded request for ten provider entries yielded three actual issues. The probe returned `DIRECT_PARTIAL_CONTENT`. This did not fetch issue comments or prove all pages. The 03:53Z/03:55Z pair observed 61,088/112,197 raw bytes and 2,072/2,745 ms respectively; those two timings are not a controlled marginal-cost estimate. |
 | [04:08:03Z](2026-10-13_04-08-03Z/) | Guarded post-normalization re-probe of YouTube, V2EX, RSS and Xiaoyuzhou | Ten selected common cases returned live classified output: 3 video, 4 V2EX, 1 RSS and 2 podcast operations. This is a dirty-worktree filtered run, so its `PHASE8A_GATE=PARTIAL` means six operations were intentionally not probed. It does not establish difficult-case, pagination or field completeness. |
+| [09:13:13Z](2026-10-13_09-13-13Z/) | Clean-worktree full 16-operation, three-scenario re-probe and [v12 richness summary](2026-10-13_09-13-13Z/richness_summary_v12.json) | `PHASE8A_GATE=PASS`: all 16 operations had at least one live classified result; 30/48 individual probes were live. Negative/edge cases included honest `NOT_FOUND`, `EMPTY_RESULT`, and one `NETWORK_FAILURE`. The measured important-field rates are per successful normalized sample, not theoretical completeness. Run is on clean commit `8dce5412ab7c3ab4de2d1d6239e4f658bb27e756`; the summary was generated later with a module-invocation fix. |
 
-The current [`richness_summary_v11.json`](2026-10-13_04-08-03Z/richness_summary_v11.json)
+The newest [v12 summary](2026-10-13_09-13-13Z/richness_summary_v12.json)
+measures the clean 48-scenario run alone. The earlier
+[`richness_summary_v11.json`](2026-10-13_04-08-03Z/richness_summary_v11.json)
 selects the latest matching operation/scenario from the Phase 8A artifact,
 guarded 16-operation re-probe, web follow-up, GitHub probes and normalization
 re-probe. It scores observed

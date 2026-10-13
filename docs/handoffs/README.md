@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8B clean full re-probe and richness summary — 2026-10-13
+## Latest: Phase 8B bounded GitHub issue-discussion follow-up — 2026-10-13
+
+- [Issue-discussion follow-up handoff](2026-10-13_PHASE8B_GITHUB_ISSUE_COMMENTS.md):
+  opt-in bounded comment acquisition, negative and clean-commit live samples,
+  tested request budget and remaining Stage 8B constraints.
+
+## Previous: Phase 8B clean full re-probe and richness summary — 2026-10-13
 
 - [Full re-probe and summary-runner handoff](2026-10-13_PHASE8B_FULL_REPROBE_AND_SUMMARY_RUNNER.md):
   clean 16-operation/48-scenario evidence, measured important-field rates,

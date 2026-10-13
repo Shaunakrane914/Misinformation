@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8B auxiliary direct-adapter truth — 2026-10-13
+## Latest: Phase 8B auxiliary search-index and live adapter checkpoint — 2026-10-13
+
+- [Search-index and direct-adapter checkpoint](2026-10-13_PHASE8B_AUXILIARY_SEARCH_AND_LIVE_PROBE.md):
+  empty-index evidence guard, explicit no-new-network provenance, clean-commit
+  live spot-check, full regression gates and remaining Phase 8 limitations.
+
+## Previous: Phase 8B auxiliary direct-adapter truth — 2026-10-13
 
 - [Direct-adapter truth handoff](2026-10-13_PHASE8B_DIRECT_ADAPTER_TRUTH.md):
   missing-field and date/source provenance corrections for the separate

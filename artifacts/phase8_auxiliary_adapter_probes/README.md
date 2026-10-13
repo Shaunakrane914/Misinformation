@@ -17,3 +17,4 @@ later commit or CI result.
 | Observation | Scope | Outcome |
 |---|---|---|
 | [2026-10-13 08:59:48Z](2026-10-13_08-59-48Z/summary.json) | One fixed public target each for GitHub, web and YouTube; code checkout was dirty at run time. | 3/3 returned `SUCCESS` with one normalized fragment each. GitHub author/publication remained absent; web was a snippet, not a full article. No provider-completeness conclusion. |
+| [2026-10-13 09:07:26Z](2026-10-13_09-07-26Z/summary.json) | Same three fixed targets, rerun on clean commit `21ce6aa2b75d2ab28663731123998494118bd0e3`. | 3/3 `SUCCESS`, one fragment each. This establishes a post-commit bounded sample only; YouTube metadata and web snippet do not establish video/article semantics or optional-field completeness. |

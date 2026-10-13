@@ -128,3 +128,17 @@ post-change metrics are required before claiming date-completeness gains.
    and difficult-case coverage before claiming Phase 8B `PASS`.
 
 Do not start Phase 8C on the assumption that these contracts are complete.
+
+## Auxiliary direct-adapter truth check — 2026-10-13
+
+The matrix above principally measures the recovered 16-operation dispatcher.
+An additional AgentReach direct-adapter path exists for GitHub repositories,
+YouTube video metadata, public web reading, and search-index discovery. A
+separate normalization audit removed invented zero-star/language/owner fields,
+generic YouTube channel/title values, index pseudo-authors, default high
+semantic scores, and search-discovery dates promoted into page publication.
+The adapters now retain observed owner, update/push, engagement and discovery
+date fields as distinct metadata. See the
+[direct-adapter regression tests](../../tests/unit/test_phase8_normalization_truth.py).
+These are offline fixture checks; no new live success or richer-field coverage
+is inferred from them. Stage 8B remains `PARTIAL`.

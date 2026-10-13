@@ -119,25 +119,36 @@ class GitHubAdapter(PlatformAdapter):
         for item in items:
             if not isinstance(item, dict):
                 continue
-            name = item.get("full_name") or item.get("name") or "GitHub Repo"
-            desc = item.get("description") or "No description provided."
+            name = item.get("full_name") or item.get("name") or ""
+            desc = item.get("description") or ""
+            if not name and not desc:
+                continue
             url = item.get("html_url") or document.url
-            stars = item.get("stargazers_count", 0)
-            lang = item.get("language") or "Code"
-            owner = (item.get("owner") or {}).get("login") or "github"
+            stars = item.get("stargazers_count")
+            lang = item.get("language")
+            owner = (item.get("owner") or {}).get("login")
 
-            content = f"Repository: {name}\nLanguage: {lang}\nStars: {stars}\n\nDescription:\n{desc}"
-            snippet = f"{name} ({stars} stars): {desc[:200]}"
+            content_lines = []
+            if name:
+                content_lines.append(f"Repository: {name}")
+            if lang:
+                content_lines.append(f"Language: {lang}")
+            if stars is not None:
+                content_lines.append(f"Stars: {stars}")
+            if desc:
+                content_lines.append(f"Description: {desc}")
+            content = "\n".join(content_lines)
+            snippet = (desc or name)[:200]
 
             frag = EvidenceFragment(
                 platform=self.platform,
-                title=f"GitHub: {name}",
+                title=f"GitHub: {name}" if name else "GitHub repository metadata",
                 content=content,
                 url=url,
-                author=owner,
-                published=item.get("pushed_at") or item.get("created_at") or "",
+                author="",  # repository owner is not the author of this record
+                published="",  # created/pushed timestamps are not article publication dates
                 snippet=snippet,
-                score=candidate.semantic_score or 1.0,
+                score=candidate.semantic_score or 0.0,
                 retrieval_method="agent_reach",
                 channel_name="github",
                 content_depth="STRUCTURED_METADATA",
@@ -147,7 +158,10 @@ class GitHubAdapter(PlatformAdapter):
                 retrieval_mode=RetrievalMode.DIRECT_API.value,
                 native_backend_id=self.backend_id,
                 is_authenticated=False,
-                raw_metadata={"stars": stars, "language": lang, "transport": document.raw_metadata.get("transport")},
+                raw_metadata={"stars": stars, "language": lang, "owner_login": owner,
+                              "created_at": item.get("created_at"), "updated_at": item.get("updated_at"),
+                              "pushed_at": item.get("pushed_at"),
+                              "transport": document.raw_metadata.get("transport")},
             )
             frags.append(frag)
 

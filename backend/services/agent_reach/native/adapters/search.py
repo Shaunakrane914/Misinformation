@@ -161,29 +161,35 @@ class SearchDiscoveryAdapter(PlatformAdapter):
         except Exception:
             return []
 
-        title = data.get("title") or candidate.title or "Search Result"
+        title = data.get("title") or candidate.title or ""
         snippet = data.get("snippet") or candidate.snippet or ""
+        if not title and not snippet:
+            return []
         url = data.get("url") or candidate.canonical_url or document.url
         plat = candidate.platform or "web"
+        content = "\n".join(part for part in (f"Title: {title}" if title else "",
+                                                 f"Search Index Snippet: {snippet}" if snippet else "") if part)
 
         frag = EvidenceFragment(
             platform=plat,
             title=title,
-            content=f"Title: {title}\nPlatform: {plat}\n\nSearch Index Snippet:\n{snippet}",
+            content=content,
             url=url,
-            author=f"{plat}_index",
-            published=data.get("published_at") or candidate.metadata.get("published_at") or "",
+            author="",
+            published="",
             snippet=snippet,
-            score=candidate.semantic_score or 1.0,
+            score=candidate.semantic_score or 0.0,
             retrieval_method="agent_reach",
             channel_name=plat,
-            content_depth="SNIPPET",
+            content_depth="SNIPPET" if snippet else "METADATA",
             query_id=request.request_id,
             query_class=request.task_type,
             query_text=request.query,
             retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value,
             native_backend_id=self.backend_id,
             is_authenticated=False,
-            raw_metadata={"search_rank": candidate.search_rank, "discovery_query": candidate.discovery_query},
+            raw_metadata={"search_rank": candidate.search_rank,
+                          "discovery_query": candidate.discovery_query,
+                          "discovery_published_at": data.get("published_at") or candidate.metadata.get("published_at")},
         )
         return [frag]

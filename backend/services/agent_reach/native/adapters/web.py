@@ -161,9 +161,9 @@ class WebAdapter(PlatformAdapter):
             content=body,
             url=document.url,
             author="",
-            published=document.raw_metadata.get("published_at") or candidate.metadata.get("published_at") or "",
+            published=document.raw_metadata.get("published_at") or "",
             snippet=body[:280],
-            score=candidate.semantic_score or 1.0,
+            score=candidate.semantic_score or 0.0,
             retrieval_method="agent_reach",
             channel_name="web",
             content_depth=depth,
@@ -173,6 +173,7 @@ class WebAdapter(PlatformAdapter):
             retrieval_mode=RetrievalMode.WEB_READER.value,
             native_backend_id=document.backend_id,
             is_authenticated=False,
-            raw_metadata={"source_rank": candidate.search_rank},
+            raw_metadata={"source_rank": candidate.search_rank,
+                          "discovery_published_at": candidate.metadata.get("published_at")},
         )
         return [frag]

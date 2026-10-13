@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8 agent frontend truth checkpoint — 2026-10-13
+## Latest: Phase 8B auxiliary direct-adapter truth — 2026-10-13
+
+- [Direct-adapter truth handoff](2026-10-13_PHASE8B_DIRECT_ADAPTER_TRUTH.md):
+  missing-field and date/source provenance corrections for the separate
+  GitHub, YouTube, web and search-index adapters; offline tests and gate limits.
+
+## Previous: Phase 8 agent frontend truth checkpoint — 2026-10-13
 
 - [Agent frontend truth handoff](2026-10-13_PHASE8_AGENT_FRONTEND_TRUTH.md):
   research-page gateway, four-agent sparse-response and source-link controls,

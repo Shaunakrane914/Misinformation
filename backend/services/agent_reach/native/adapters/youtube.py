@@ -104,11 +104,23 @@ class YouTubeAdapter(PlatformAdapter):
         except Exception:
             return []
 
-        title = info.get("title") or candidate.title or "YouTube Video"
-        uploader = info.get("uploader") or info.get("channel") or "Unknown Channel"
+        title = info.get("title") or candidate.title or ""
+        uploader = info.get("uploader") or info.get("channel") or ""
         description = info.get("description") or ""
         upload_date = info.get("upload_date") or ""
-        content = f"Title: {title}\nChannel: {uploader}\n\nDescription:\n{description}"
+        video_id = info.get("id") or ""
+        if not (title or description or video_id):
+            return []
+        content_lines = []
+        if title:
+            content_lines.append(f"Title: {title}")
+        if uploader:
+            content_lines.append(f"Channel: {uploader}")
+        if description:
+            content_lines.append(f"Description: {description}")
+        if video_id:
+            content_lines.append(f"Video ID: {video_id}")
+        content = "\n".join(content_lines)
         snippet = description[:280] or title
 
         frag = EvidenceFragment(
@@ -119,7 +131,7 @@ class YouTubeAdapter(PlatformAdapter):
             author=uploader,
             published=str(upload_date),
             snippet=snippet,
-            score=candidate.semantic_score or 1.0,
+            score=candidate.semantic_score or 0.0,
             retrieval_method="agent_reach",
             channel_name="youtube",
             content_depth="VIDEO_METADATA",
@@ -132,7 +144,11 @@ class YouTubeAdapter(PlatformAdapter):
             raw_metadata={
                 "duration": info.get("duration"),
                 "view_count": info.get("view_count"),
-                "tags": info.get("tags", []),
+                "like_count": info.get("like_count"),
+                "comment_count": info.get("comment_count"),
+                "channel_id": info.get("channel_id"),
+                "title_origin": "provider" if info.get("title") else ("discovery" if candidate.title else None),
+                "tags": info.get("tags"),
             },
         )
         return [frag]

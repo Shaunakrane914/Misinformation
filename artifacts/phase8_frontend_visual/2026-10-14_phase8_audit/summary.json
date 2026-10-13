@@ -1,0 +1,720 @@
+{
+  "observed_at_utc": "2026-10-13T18:07:39.139417+00:00",
+  "base_url": "http://127.0.0.1:8765",
+  "scope": "Initial rendered pages and optional labeled synthetic contract fixtures; no live backend or screen-reader audit",
+  "browser": "Playwright Chromium headless",
+  "records": [
+    {
+      "page": "scout-agent.html",
+      "viewport": "desktop",
+      "http_status": 200,
+      "screenshot": "scout-agent-desktop.png",
+      "horizontal_overflow": false,
+      "viewport_width": 1440,
+      "document_width": 1440,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [
+        {
+          "selector": "#provenanceDrawer",
+          "right": 2020,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "ae-page"
+        },
+        {
+          "selector": "div.drawer-head",
+          "right": 2020,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "provenance-drawer"
+        },
+        {
+          "selector": "#drawerFindingTitle",
+          "right": 1878,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "button.drawer-close",
+          "right": 1996,
+          "text": "\u00d7",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "#drawerBody",
+          "right": 2020,
+          "text": "",
+          "parent": "provenance-drawer"
+        }
+      ],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "desktop",
+      "http_status": 200,
+      "screenshot": "trending-agent-desktop.png",
+      "horizontal_overflow": false,
+      "viewport_width": 1440,
+      "document_width": 1440,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "desktop",
+      "http_status": 200,
+      "screenshot": "brandshield-agent-desktop.png",
+      "horizontal_overflow": false,
+      "viewport_width": 1440,
+      "document_width": 1440,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "desktop",
+      "http_status": 200,
+      "screenshot": "personal-watch-agent-desktop.png",
+      "horizontal_overflow": false,
+      "viewport_width": 1440,
+      "document_width": 1440,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": true,
+      "page_errors": []
+    },
+    {
+      "page": "scout-agent.html",
+      "viewport": "mobile",
+      "http_status": 200,
+      "screenshot": "scout-agent-mobile.png",
+      "horizontal_overflow": false,
+      "viewport_width": 390,
+      "document_width": 390,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [
+        {
+          "selector": "#provenanceDrawer",
+          "right": 780,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "ae-page"
+        },
+        {
+          "selector": "div.drawer-head",
+          "right": 780,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "provenance-drawer"
+        },
+        {
+          "selector": "#drawerFindingTitle",
+          "right": 742,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "button.drawer-close",
+          "right": 756,
+          "text": "\u00d7",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "#drawerBody",
+          "right": 780,
+          "text": "",
+          "parent": "provenance-drawer"
+        }
+      ],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "mobile",
+      "http_status": 200,
+      "screenshot": "trending-agent-mobile.png",
+      "horizontal_overflow": false,
+      "viewport_width": 390,
+      "document_width": 390,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "mobile",
+      "http_status": 200,
+      "screenshot": "brandshield-agent-mobile.png",
+      "horizontal_overflow": false,
+      "viewport_width": 390,
+      "document_width": 390,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "mobile",
+      "http_status": 200,
+      "screenshot": "personal-watch-agent-mobile.png",
+      "horizontal_overflow": false,
+      "viewport_width": 390,
+      "document_width": 390,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": true,
+      "page_errors": []
+    },
+    {
+      "page": "scout-agent.html",
+      "viewport": "narrow",
+      "http_status": 200,
+      "screenshot": "scout-agent-narrow.png",
+      "horizontal_overflow": false,
+      "viewport_width": 320,
+      "document_width": 320,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [
+        {
+          "selector": "span.",
+          "right": 386,
+          "text": "evidence_fragments[]",
+          "parent": ""
+        },
+        {
+          "selector": "#provenanceDrawer",
+          "right": 640,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "ae-page"
+        },
+        {
+          "selector": "div.drawer-head",
+          "right": 640,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "provenance-drawer"
+        },
+        {
+          "selector": "#drawerFindingTitle",
+          "right": 602,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "button.drawer-close",
+          "right": 616,
+          "text": "\u00d7",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "#drawerBody",
+          "right": 640,
+          "text": "",
+          "parent": "provenance-drawer"
+        }
+      ],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "narrow",
+      "http_status": 200,
+      "screenshot": "trending-agent-narrow.png",
+      "horizontal_overflow": false,
+      "viewport_width": 320,
+      "document_width": 320,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "narrow",
+      "http_status": 200,
+      "screenshot": "brandshield-agent-narrow.png",
+      "horizontal_overflow": false,
+      "viewport_width": 320,
+      "document_width": 320,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [
+        {
+          "selector": "span.",
+          "right": 363,
+          "text": "source_group",
+          "parent": ""
+        }
+      ],
+      "keyboard_disclosure": null,
+      "page_errors": []
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "narrow",
+      "http_status": 200,
+      "screenshot": "personal-watch-agent-narrow.png",
+      "horizontal_overflow": false,
+      "viewport_width": 320,
+      "document_width": 320,
+      "h1_count": 1,
+      "unnamed_buttons": 0,
+      "unnamed_links": 0,
+      "images_without_alt": 0,
+      "non_button_presets": 0,
+      "guide_visible": true,
+      "overflow_elements": [],
+      "keyboard_disclosure": true,
+      "page_errors": []
+    }
+  ],
+  "fixture_records": [
+    {
+      "page": "scout-agent.html",
+      "viewport": "desktop",
+      "fixture_only": true,
+      "screenshot": "scout-agent-desktop-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 1775,
+      "document_width": 1440,
+      "viewport_width": 1440,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [
+        {
+          "selector": "#provenanceDrawer",
+          "right": 2020,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "ae-page"
+        },
+        {
+          "selector": "div.drawer-head",
+          "right": 2020,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "provenance-drawer"
+        },
+        {
+          "selector": "#drawerFindingTitle",
+          "right": 1878,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "button.drawer-close",
+          "right": 1996,
+          "text": "\u00d7",
+          "parent": "drawer-head"
+        },
+        {
+          "selector": "#drawerBody",
+          "right": 2020,
+          "text": "",
+          "parent": "provenance-drawer"
+        }
+      ],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "desktop",
+      "fixture_only": true,
+      "screenshot": "trending-agent-desktop-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 288,
+      "document_width": 1440,
+      "viewport_width": 1440,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "desktop",
+      "fixture_only": true,
+      "screenshot": "brandshield-agent-desktop-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 1135,
+      "document_width": 1440,
+      "viewport_width": 1440,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "desktop",
+      "fixture_only": true,
+      "screenshot": "personal-watch-agent-desktop-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 976,
+      "document_width": 1440,
+      "viewport_width": 1440,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "scout-agent.html",
+      "viewport": "mobile",
+      "fixture_only": true,
+      "screenshot": "scout-agent-mobile-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 1765,
+      "document_width": 390,
+      "viewport_width": 390,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 439,
+          "text": "\ud83d\udcd6 Deep-Read Sources 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 424,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 619,
+          "text": "\ud83c\udfdb\ufe0f Primary Filings 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 604,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 873,
+          "text": "\u2442 Syndication & Independence 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 858,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 1054,
+          "text": "\ud83d\udccb Selection Audit 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 1039,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 1213,
+          "text": "\ud83d\udd78\ufe0f Evidence Graph",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "#provenanceDrawer",
+          "right": 780,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "ae-page"
+        },
+        {
+          "selector": "div.drawer-head",
+          "right": 780,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "provenance-drawer"
+        },
+        {
+          "selector": "#drawerFindingTitle",
+          "right": 742,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS",
+          "parent": "drawer-head"
+        }
+      ],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "mobile",
+      "fixture_only": true,
+      "screenshot": "trending-agent-mobile-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 288,
+      "document_width": 390,
+      "viewport_width": 390,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "mobile",
+      "fixture_only": true,
+      "screenshot": "brandshield-agent-mobile-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 1135,
+      "document_width": 390,
+      "viewport_width": 390,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "mobile",
+      "fixture_only": true,
+      "screenshot": "personal-watch-agent-mobile-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 976,
+      "document_width": 390,
+      "viewport_width": 390,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "scout-agent.html",
+      "viewport": "narrow",
+      "fixture_only": true,
+      "screenshot": "scout-agent-narrow-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 1765,
+      "document_width": 320,
+      "viewport_width": 320,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 439,
+          "text": "\ud83d\udcd6 Deep-Read Sources 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 424,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 619,
+          "text": "\ud83c\udfdb\ufe0f Primary Filings 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 604,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 873,
+          "text": "\u2442 Syndication & Independence 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 858,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 1054,
+          "text": "\ud83d\udccb Selection Audit 0",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.fe-tab-count",
+          "right": 1039,
+          "text": "0",
+          "parent": "fe-tab-btn "
+        },
+        {
+          "selector": "button.fe-tab-btn ",
+          "right": 1213,
+          "text": "\ud83d\udd78\ufe0f Evidence Graph",
+          "parent": "fe-tabs-header"
+        },
+        {
+          "selector": "span.",
+          "right": 386,
+          "text": "evidence_fragments[]",
+          "parent": ""
+        },
+        {
+          "selector": "#provenanceDrawer",
+          "right": 640,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "ae-page"
+        },
+        {
+          "selector": "div.drawer-head",
+          "right": 640,
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n        \u00d7",
+          "parent": "provenance-drawer"
+        }
+      ],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "trending-agent.html",
+      "viewport": "narrow",
+      "fixture_only": true,
+      "screenshot": "trending-agent-narrow-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 288,
+      "document_width": 320,
+      "viewport_width": 320,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "brandshield-agent.html",
+      "viewport": "narrow",
+      "fixture_only": true,
+      "screenshot": "brandshield-agent-narrow-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 1135,
+      "document_width": 320,
+      "viewport_width": 320,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [
+        {
+          "selector": "span.",
+          "right": 363,
+          "text": "source_group",
+          "parent": ""
+        }
+      ],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    },
+    {
+      "page": "personal-watch-agent.html",
+      "viewport": "narrow",
+      "fixture_only": true,
+      "screenshot": "personal-watch-agent-narrow-TEST-FIXTURE.png",
+      "error": null,
+      "visible_text_chars": 976,
+      "document_width": 320,
+      "viewport_width": 320,
+      "first_reveal_visible": true,
+      "injected_img": false,
+      "javascript_link": false,
+      "overflow_elements": [],
+      "modal_open": true,
+      "modal_close_focused": true,
+      "modal_escape_closed": true
+    }
+  ]
+}

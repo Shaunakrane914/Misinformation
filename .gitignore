@@ -124,6 +124,12 @@ research/scraper_bakeoff/artifacts/
 !/artifacts/live_acquisition_phase6_8/**
 !/artifacts/phase8_live_acquisition/
 !/artifacts/phase8_live_acquisition/**
+!/artifacts/phase8_live_probes/
+!/artifacts/phase8_live_probes/**
+!/artifacts/phase8_frontend_visual/
+artifacts/phase8_frontend_visual/*
+!/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/
+!/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/**
 research/scraper_bakeoff/repos/
 
 # Large video binaries

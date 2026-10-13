@@ -8,6 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -521,6 +522,11 @@
         .replace(/"/g, '&quot;');
     }
 
+    function claimStatus(value) {
+      const status = String(value || '').toUpperCase();
+      return ['VERIFIED', 'CONTRADICTED', 'MIXED', 'UNVERIFIED'].includes(status) ? status : 'UNVERIFIED';
+    }
+
     function showLoadingState(query) {
       document.getElementById('trendsFeed').innerHTML = `
         <div style="padding:20px;display:flex;flex-direction:column;gap:12px;">
@@ -619,7 +625,7 @@
       const tel = data.telemetry || {};
       document.getElementById('telSignals').textContent = tel.signals_retrieved || (data.evidence ? data.evidence.length : 0);
       document.getElementById('telSources').textContent = tel.unique_sources || 0;
-      document.getElementById('telGroups').textContent = tel.independent_groups || 0;
+      document.getElementById('telGroups').textContent = tel.independent_groups == null ? 'Unverified' : `${tel.independent_groups} grouped`;
       document.getElementById('telPlatforms').textContent = tel.platforms_active || (data.platform_breakdown ? Object.keys(data.platform_breakdown).length : 0);
       document.getElementById('telTrends').textContent = tel.discovered_trends || (data.trends ? data.trends.length : 0);
       document.getElementById('telDuration').textContent = `${tel.scan_duration_s || 0.0}s`;
@@ -681,7 +687,7 @@
 
       feed.innerHTML = '';
       trends.forEach((t, idx) => {
-        const velStatus = (t.velocity && t.velocity.status) || 'EMERGING';
+        const velStatus = (t.velocity && t.velocity.status) || 'UNMEASURED';
         const velClass = velStatus === 'ACCELERATING' ? 'acc' : 'active';
         const misClass = t.misinformation_risk === 'HIGH' ? 'misinfo-high' : t.misinformation_risk === 'MEDIUM' ? 'misinfo-med' : '';
 
@@ -693,19 +699,19 @@
             <span class="t-tag ${velClass}">Observed Velocity: ${esc(velStatus)}</span>
           </div>
           <div class="trend-badge-row">
-            <span class="t-tag">${esc(t.category.toUpperCase())}</span>
+            <span class="t-tag">${esc((t.category || 'UNCATEGORIZED').toUpperCase())}</span>
             <span class="t-tag">OBSERVED ACTIVITY</span>
-            <span class="t-tag ${misClass}">SIGNAL RISK: ${esc(t.misinformation_risk)}</span>
+            <span class="t-tag ${misClass}">SIGNAL RISK: ${esc(t.misinformation_risk || 'UNASSESSED')}</span>
           </div>
           <div class="trend-metrics-grid">
-            <div class="tm-cell"><span class="tm-val">${t.signal_count}</span><span class="tm-lbl">Observed Signals</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.unique_source_count}</span><span class="tm-lbl">Reporting Outlets</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.independent_source_count}</span><span class="tm-lbl">Independent Groups</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.platform_count}</span><span class="tm-lbl">Platforms</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.signal_count ?? '—')}</span><span class="tm-lbl">Sampled Signals</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.unique_source_count ?? '—')}</span><span class="tm-lbl">Reporting Outlets</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.independent_source_count ?? '—')}</span><span class="tm-lbl">Grouped Sources (unverified)</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.platform_count ?? '—')}</span><span class="tm-lbl">Sampled Platforms</span></div>
           </div>
           <div class="origin-note">
-            First observed on <strong>${esc(t.origin.first_observed_platform.toUpperCase())}</strong> via <em>${esc(t.origin.first_observed_source)}</em>
-            ${t.origin.amplification_platforms && t.origin.amplification_platforms.length > 0 ? ` · Amplified by ${t.origin.amplification_platforms.map(p => esc(p.toUpperCase())).join(', ')}` : ''}
+            Earliest sampled source: <strong>${esc((t.origin?.first_observed_platform || 'unavailable').toUpperCase())}</strong> via <em>${esc(t.origin?.first_observed_source || 'unavailable')}</em>
+            ${t.origin?.amplification_platforms?.length > 0 ? ` · Also observed on ${t.origin.amplification_platforms.map(p => esc(String(p).toUpperCase())).join(', ')}` : ''}
           </div>
           <button class="btn-dossier" onclick="openDossier(${idx})">Examine Topic Evidence ↗</button>
         `;
@@ -731,16 +737,18 @@
       allClaims.forEach(c => {
         const card = document.createElement('div');
         card.className = 'claim-card';
-        const urlLink = c.source_urls && c.source_urls.length > 0 ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Open Source ↗</a>` : '';
-        const claimStatusLabel = c.status === 'VERIFIED' ? 'Corroborated by independent sources' : c.status === 'CONTRADICTED' ? 'Contradicted by evidence' : 'Mixed / Unconfirmed';
+        const sourceUrl = aegisSafeSourceUrl((c.source_urls || [])[0]);
+        const urlLink = sourceUrl ? `<a href="${esc(sourceUrl)}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Open Source ↗</a>` : '';
+        const status = claimStatus(c.status);
+        const claimStatusLabel = status === 'VERIFIED' ? 'Marked verified; inspect cited evidence' : status === 'CONTRADICTED' ? 'Marked contradicted; inspect evidence' : 'Mixed / Unconfirmed';
         card.innerHTML = `
           <div class="claim-top">
-            <span class="c-status ${c.status}">${claimStatusLabel}</span>
+            <span class="c-status ${status}">${claimStatusLabel}</span>
             ${urlLink}
           </div>
           <div class="claim-text">"${esc(c.claim_text)}"</div>
           <div class="claim-meta">
-            <span>Evidence: ${c.supporting_sources || 0} supporting &bull; ${c.contradicting_sources || 0} contradicting</span>
+            <span>Evidence: ${esc(c.supporting_sources ?? 'unreported')} supporting &bull; ${esc(c.contradicting_sources ?? 'unreported')} contradicting</span>
           </div>
         `;
         container.appendChild(card);
@@ -758,11 +766,12 @@
       timeline.forEach(ev => {
         const item = document.createElement('div');
         item.className = 'tl-item';
-        const cleanTime = ev.timestamp ? ev.timestamp.replace('T', ' ').substring(0, 19) : 'Observed signal';
-        const link = ev.url && ev.url !== 'Source URL unavailable' ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;text-decoration:none;margin-left:6px;">↗</a>` : '';
+        const cleanTime = ev.timestamp ? String(ev.timestamp).replace('T', ' ').substring(0, 19) : 'Time unavailable';
+        const safeUrl = aegisSafeSourceUrl(ev.url);
+        const link = safeUrl ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;text-decoration:none;margin-left:6px;">↗</a>` : '';
         item.innerHTML = `
           <div class="tl-dot"></div>
-          <div class="tl-time">${esc(cleanTime)} · ${esc(ev.platform.toUpperCase())}</div>
+          <div class="tl-time">${esc(cleanTime)} · ${esc(String(ev.platform || 'unknown').toUpperCase())}</div>
           <div class="tl-event">${esc(ev.event)} ${link}</div>
           <div class="tl-src">${esc(ev.source)}</div>
         `;
@@ -776,7 +785,7 @@
 
       const filtered = activeEvidenceFilter === 'all' 
         ? evidence 
-        : evidence.filter(e => e.platform.toLowerCase() === activeEvidenceFilter.toLowerCase());
+        : evidence.filter(e => String(e.platform || '').toLowerCase() === activeEvidenceFilter.toLowerCase());
 
       if (!filtered.length) {
         grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-dim);font-size:0.85rem;">No evidence records for filter "${activeEvidenceFilter.toUpperCase()}".</div>`;
@@ -787,14 +796,14 @@
       filtered.forEach(ev => {
         const card = document.createElement('div');
         card.className = 'ev-card';
-        const hasUrl = ev.url && ev.url !== 'Source URL unavailable' && ev.url.startsWith('http');
-        const urlHtml = hasUrl 
-          ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" class="open-src-btn">OPEN SOURCE ↗</a>`
+        const safeUrl = aegisSafeSourceUrl(ev.url);
+        const urlHtml = safeUrl
+          ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" class="open-src-btn">OPEN SOURCE ↗</a>`
           : `<span class="open-src-disabled">Source URL unavailable</span>`;
 
         card.innerHTML = `
           <div class="ev-head">
-            <span class="ev-platform">${esc(ev.platform.toUpperCase())} · ${esc(ev.source)}</span>
+            <span class="ev-platform">${esc(String(ev.platform || 'unknown').toUpperCase())} · ${esc(ev.source)}</span>
             <span class="ev-role">${esc(ev.source_role)}</span>
           </div>
           <div class="ev-title">${esc(ev.title)}</div>
@@ -882,8 +891,8 @@
       let claimsHtml = (t.claims || []).map(c => `
         <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
           <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-            <span class="c-status ${c.status}">${c.status}</span>
-            ${c.source_urls && c.source_urls.length ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Source Link ↗</a>` : ''}
+            <span class="c-status ${claimStatus(c.status)}">${claimStatus(c.status)}</span>
+            ${aegisSafeSourceUrl((c.source_urls || [])[0]) ? `<a href="${esc(aegisSafeSourceUrl(c.source_urls[0]))}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Source Link ↗</a>` : ''}
           </div>
           <div style="font-size:0.84rem;color:#fff;">"${esc(c.claim_text)}"</div>
         </div>

@@ -10,6 +10,7 @@
   <script src="forensic-explorer.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -628,7 +629,7 @@
           <div class="snapshot-grid">
             <div class="snap-card">
               <div class="snap-val" style="color:${deltaColor}">${symPrefix}${price}</div>
-              <div class="snap-lbl">Last Price (${esc(stock.currency || 'USD')})</div>
+              <div class="snap-lbl">Last Price (${esc(stock.currency || 'currency unreported')})</div>
             </div>
             <div class="snap-card">
               <div class="snap-val" style="color:${deltaColor}">${deltaStr}</div>
@@ -643,14 +644,14 @@
               <div class="snap-lbl">${stock.z_score != null && Math.abs(stock.z_score) >= 2 ? `Activity is ${Math.abs(Number(stock.z_score)).toFixed(1)}σ above baseline` : 'Trading Volume Dispersion'}</div>
             </div>
             <div class="snap-card">
-              <div class="snap-val" style="color:${isCrashing ? 'var(--rose)' : 'var(--emerald)'}">
-                ${isCrashing ? 'UNUSUAL DISPERSION' : 'NOMINAL'}
+              <div class="snap-val" style="color:${isCrashing === true ? 'var(--rose)' : 'var(--text-dim)'}">
+                ${isCrashing === true ? 'UNUSUAL DISPERSION' : isCrashing === false ? 'NOT FLAGGED BY MODEL' : 'NOT ASSESSED'}
               </div>
               <div class="snap-lbl">Observed Condition</div>
             </div>
           </div>
           <div class="freshness-note">
-            <strong>Data Source:</strong> ${esc(stock.data_source || 'Daily Close series via Financial REST Provider')}.
+            <strong>Data Source:</strong> ${esc(stock.data_source || 'Not supplied')}.
           </div>
         </div>
 
@@ -693,9 +694,9 @@
             <div class="cat-box pos">
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
                 <span>POSITIVE CATALYSTS (${posCats.length})</span>
-                <span class="epistemic-badge ep-supported">SUPPORTED</span>
+                <span class="epistemic-badge ep-unverified">REPORTED SIGNALS</span>
               </div>
-              ${posCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No positive catalysts detected.</div>' : ''}
+              ${posCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No positive catalysts returned in this analysis.</div>' : ''}
               ${posCats.map((c, i) => `
                 <div class="cat-item">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -709,9 +710,9 @@
             <div class="cat-box neg">
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
                 <span>NEGATIVE HEADWINDS (${negCats.length})</span>
-                <span class="epistemic-badge ep-contested">CONTESTED</span>
+                <span class="epistemic-badge ep-unverified">REPORTED SIGNALS</span>
               </div>
-              ${negCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No significant headwinds detected.</div>' : ''}
+              ${negCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No headwinds returned in this analysis.</div>' : ''}
               ${negCats.map((c, i) => `
                 <div class="cat-item">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -727,7 +728,7 @@
                 <span>UNRESOLVED FACTORS (${unresCats.length})</span>
                 <span class="epistemic-badge ep-unverified">UNVERIFIED</span>
               </div>
-              ${unresCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No unresolved factors.</div>' : ''}
+              ${unresCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No unresolved factors returned.</div>' : ''}
               ${unresCats.map((c, i) => `
                 <div class="cat-item">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -750,7 +751,7 @@
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
             <span>// 04 · CONTRADICTION ANALYSIS &amp; DISINFORMATION RISK</span>
-            <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'NOMINAL')}</span>
+            <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'UNAVAILABLE')}</span>
           </div>
 
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
@@ -766,7 +767,7 @@
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
                 Evidence Against / Counter-Claims
               </div>
-              ${cAgainst.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No contradictory claims detected.</div>' : ''}
+              ${cAgainst.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No contradictory claims returned in this analysis.</div>' : ''}
               ${cAgainst.map(a => `<div class="cat-item">${esc(a)}</div>`).join('')}
             </div>
           </div>
@@ -774,7 +775,7 @@
           <!-- Misinformation & Rumors Summary -->
           <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-family:var(--font-mono);font-size:0.8rem;">
-              <span>Disinformation Vulnerability Status: <strong style="color:${misinfo.status === 'ELEVATED' ? 'var(--rose)' : 'var(--emerald)'}">${esc(misinfo.status || 'NOMINAL')}</strong></span>
+              <span>Disinformation Vulnerability Status: <strong style="color:${misinfo.status === 'ELEVATED' ? 'var(--rose)' : 'var(--text-dim)'}">${esc(misinfo.status || 'UNAVAILABLE')}</strong></span>
               <span>Evidence Quality Score: <strong>${misinfo.evidence_quality_score != null ? Math.round(misinfo.evidence_quality_score * 100) + '%' : '—'}</strong></span>
             </div>
             ${rumors.length > 0 ? `
@@ -782,7 +783,7 @@
               <ul style="margin:4px 0 0 18px;font-size:0.8rem;color:var(--text-muted);">
                 ${rumors.map(r => `<li>${esc(r)}</li>`).join('')}
               </ul>
-            ` : '<div style="font-size:0.8rem;color:var(--text-muted);">Zero coordinated smear campaigns or high-probability rumors observed in retrieved channels.</div>'}
+            ` : '<div style="font-size:0.8rem;color:var(--text-muted);">No rumor findings returned; coverage and absence of coordinated activity are not established.</div>'}
           </div>
         </div>
       `;
@@ -809,7 +810,7 @@
                   <div style="font-weight:600;margin-bottom:4px;">${esc(r.title)}</div>
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
                     <span>${esc(r.author || 'u/community')}</span>
-                    ${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Thread ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                    ${aegisSafeSourceUrl(r.url) ? `<a href="${esc(aegisSafeSourceUrl(r.url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Thread ↗</a>` : `<span class="ae-no-link">No safe link</span>`}
                   </div>
                 </div>
               `).join('')}
@@ -825,7 +826,7 @@
                   <div style="font-weight:600;margin-bottom:4px;">${esc(t.title || t.snippet)}</div>
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
                     <span>${esc(t.author || '@pulse')}</span>
-                    ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Post ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                    ${aegisSafeSourceUrl(t.url) ? `<a href="${esc(aegisSafeSourceUrl(t.url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Post ↗</a>` : `<span class="ae-no-link">No safe link</span>`}
                   </div>
                 </div>
               `).join('')}
@@ -841,7 +842,7 @@
                   <div style="font-weight:600;margin-bottom:4px;">${esc(y.title)}</div>
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
                     <span>${esc(y.author || 'YouTube Channel')}</span>
-                    ${y.url ? `<a href="${esc(y.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Video ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                    ${aegisSafeSourceUrl(y.url) ? `<a href="${esc(aegisSafeSourceUrl(y.url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Video ↗</a>` : `<span class="ae-no-link">No safe link</span>`}
                   </div>
                 </div>
               `).join('')}
@@ -933,9 +934,9 @@
 
       let item = {};
       let itemTitle = 'Finding Inspection';
-      let epistemic = 'SUPPORTED';
-      let snippet = 'Corroborated across independent reporting channels.';
-      let rationale = 'High convergence across wire reporting and official statements with 0 active rebuttals.';
+      let epistemic = 'UNVERIFIED';
+      let snippet = '';
+      let rationale = 'No source-specific corroboration rationale was supplied.';
       let url = '';
 
       if (type === 'news' && currentResearchData?.news) {
@@ -944,36 +945,34 @@
         itemTitle = item.title || 'Breaking Development';
         snippet = item.summary || item.snippet || '';
         url = item.source_url || item.url || '';
-        epistemic = idx === 0 ? 'KNOWN_FACT' : (item.epistemic_state || 'SUPPORTED');
-        rationale = item.rationale || 'Wire reporting corroborated across financial market press.';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
+        rationale = item.rationale || 'No source-specific corroboration rationale was supplied.';
       } else if (type === 'primary' && currentResearchData?.primary_sources) {
         item = currentResearchData.primary_sources[idx] || {};
-        itemTitle = item.title || 'Official Filing';
+        itemTitle = item.title || 'Source record';
         snippet = item.snippet || '';
         url = item.url || '';
-        epistemic = 'KNOWN_FACT';
-        rationale = item.rationale || 'Primary regulatory filing registered with exchange authority; definitive ground truth.';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
+        rationale = item.rationale || 'A primary-source label does not establish that this record confirms the claim.';
       } else if (type === 'source' && currentResearchData?.sources) {
         item = currentResearchData.sources[idx] || {};
         itemTitle = item.title || 'Indexed Evidence Record';
         snippet = item.snippet || '';
         url = item.url || '';
-        epistemic = item.source_role === 'PRIMARY' ? 'KNOWN_FACT' : (item.source_role === 'COMMUNITY' ? 'UNVERIFIED' : 'SUPPORTED');
-        rationale = item.source_role === 'COMMUNITY'
-          ? 'Social media discourse; speculative retail sentiment without authoritative filing.'
-          : (item.source_role === 'PRIMARY' ? 'Official regulatory portal disclosure.' : 'Financial news report.');
+        epistemic = item.epistemic_state || 'UNVERIFIED';
+        rationale = item.rationale || 'The source role alone does not establish claim truth or official status.';
       } else if (type === 'pos') {
         item = currentResearchData?.catalysts?.positive?.[idx] || {};
         itemTitle = item.catalyst || 'Positive Catalyst';
-        epistemic = 'SUPPORTED';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
         snippet = item.catalyst || '';
-        rationale = 'Extracted positive catalyst from confirmed announcements.';
+        rationale = item.rationale || 'Returned catalyst; inspect its cited records before drawing a conclusion.';
       } else if (type === 'neg') {
         item = currentResearchData?.catalysts?.negative?.[idx] || {};
         itemTitle = item.catalyst || 'Negative Headwind';
-        epistemic = 'CONTESTED';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
         snippet = item.catalyst || '';
-        rationale = 'Headwind signal detected in reporting; conflicting commentary observed.';
+        rationale = item.rationale || 'Returned headwind; no contradiction assessment was supplied.';
       } else if (type === 'unres') {
         item = currentResearchData?.catalysts?.unresolved?.[idx] || {};
         itemTitle = item.factor || item.catalyst || 'Unresolved Factor';
@@ -996,7 +995,7 @@
           <div style="font-size:0.83rem;color:var(--text-muted);background:rgba(0,0,0,0.3);padding:12px 14px;border-radius:8px;border-left:3px solid var(--accent);line-height:1.5;">
             "${esc(snippet)}"
           </div>
-          ${url ? `<div style="margin-top:8px;"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open Original Source Document ↗</a></div>` : ''}
+          ${aegisSafeSourceUrl(url) ? `<div style="margin-top:8px;"><a href="${esc(aegisSafeSourceUrl(url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open Source ↗</a></div>` : ''}
         </div>
 
         <div>

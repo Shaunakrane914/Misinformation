@@ -293,10 +293,12 @@ class TestProductHonestyAndIntegrity:
         assert "askGemini" not in inv
         assert "CASE-2026-A109" not in inv
 
-        # 5. research-agent.html: honest initial state
+        # 5. research-agent.html: safe entry, not client-model output
         res = Path("frontend/research-agent.html").read_text(encoding="utf-8")
-        assert "Awaiting Research Inquiry" in res
-        assert "No findings yet" in res
+        assert "No sample findings are generated here" in res
+        assert "gemini-client.js" not in res
+        assert "askGemini" not in res
+        assert "/api/research/query" not in Path("frontend/agents.html").read_text(encoding="utf-8")
 
         # 6. trending-agent.html: no synthetic fallback generator
         tr = Path("frontend/trending-agent.html").read_text(encoding="utf-8")

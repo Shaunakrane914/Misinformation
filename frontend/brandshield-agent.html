@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -427,7 +428,7 @@
       // Update Telemetry Ribbon
       document.getElementById('telSources').textContent = `${sources.length} Items`;
       document.getElementById('telThreats').textContent = `${threats.length} Flagged`;
-      document.getElementById('telGroups').textContent = `${summary.independent_groups_count ?? 0} Independent`;
+      document.getElementById('telGroups').textContent = summary.independent_groups_count == null ? 'Groups unverified' : `${summary.independent_groups_count} grouped (verify independence)`;
       const enrichment = data.scan_metadata?.ai_enrichment;
       document.getElementById('telStatus').textContent = sources.length === 0 ? 'NO EVIDENCE'
         : enrichment === 'OFFLINE_HEURISTIC' ? 'HEURISTIC'
@@ -479,7 +480,7 @@
             <span class="snap-lbl">Listing Signals</span>
           </div>
           <div class="snap-card">
-            <span class="snap-val" style="color:${impersonations > 0 ? 'var(--rose)' : 'var(--emerald)'};">${impersonations}</span>
+            <span class="snap-val" style="color:${impersonations > 0 ? 'var(--rose)' : 'var(--text-dim)'};">${impersonations}</span>
             <span class="snap-lbl">Potential Impersonation</span>
           </div>
         </div>
@@ -489,11 +490,10 @@
       if (sources.length === 0 && threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin:24px 0;">
-            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Verified Public Evidence Found</div>
-            <div>No matching adversarial or deceptive public signals were retrieved for "${escapeHtml(data.brand_name)}" across active search channels.</div>
+            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No source evidence returned</div>
+            <div>This run returned no inspectable records for "${escapeHtml(data.brand_name)}". It cannot establish that relevant public activity is absent.</div>
             <div style="font-size:0.8rem;color:var(--text-dim);margin-top:8px;">
-              Possible causes: obscure keyword, search provider rate limits, or genuine absence of indexed public complaints.
-              (Synthetic news &amp; fake reviews are strictly disabled in Aegis Protocol).
+              Inspect source coverage and provider availability before interpreting this result. No synthetic news or review records are substituted.
             </div>
           </div>
         `;
@@ -506,15 +506,15 @@
       if (threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin-bottom:20px;">
-            <div style="color:#10b981;font-weight:700;margin-bottom:4px;">No Suspicious Patterns Detected</div>
-            <div>Public discussions reflect standard consumer queries or positive brand mentions without observed duplicate clusters.</div>
+            <div style="color:var(--text-muted);font-weight:700;margin-bottom:4px;">No threat records returned</div>
+            <div>This response does not establish that no suspicious public activity exists. Inspect source coverage and channel availability.</div>
           </div>
         `;
       } else {
         html += `<div class="ae-reveal" style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">`;
         threats.forEach((t, idx) => {
-          const sevClass = (t.severity || 'medium').toLowerCase();
-          const sevColor = sevClass === 'critical' || sevClass === 'high' ? 'var(--rose)' : sevClass === 'medium' ? '#fbbf24' : '#10b981';
+          const sevClass = (t.severity || 'unassessed').toLowerCase();
+          const sevColor = sevClass === 'critical' || sevClass === 'high' ? 'var(--rose)' : sevClass === 'medium' ? '#fbbf24' : 'var(--text-dim)';
           const evCount = (t.evidence_ids || []).length;
           html += `
             <div class="threat-card ${sevClass}" style="padding:20px;">
@@ -536,20 +536,20 @@
               <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;margin-bottom:12px;font-size:0.85rem;line-height:1.5;">
                 <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
                   <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Observation &amp; Pattern</div>
-                  <div style="color:#cbd5e1;">${escapeHtml(t.summary || 'Unverified pattern detected.')}</div>
+                  <div style="color:#cbd5e1;">${escapeHtml(t.summary || 'No pattern summary supplied.')}</div>
                 </div>
                 <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
                   <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Assessment</div>
-                  <div style="color:${sevColor};font-weight:600;">${escapeHtml(t.severity || 'Medium').toUpperCase()} PRIORITY &bull; ${(t.status || 'Under Review').toUpperCase()}</div>
+                  <div style="color:${sevColor};font-weight:600;">${escapeHtml(t.severity || 'Unassessed').toUpperCase()} PRIORITY &bull; ${escapeHtml((t.status || 'Unverified').toUpperCase())}</div>
                   <div style="font-size:0.78rem;color:var(--text-dim);margin-top:3px;">Pattern observed; requires source corroboration before establishing coordination.</div>
                 </div>
               </div>
 
               <div class="threat-footer" style="padding-top:8px;">
                 <div class="threat-meta">
-                  <span>Evidence: <strong>${evCount} verified sources</strong></span>
-                  <span>First Observed: <strong>${escapeHtml(t.first_seen || 'Recent scan')}</strong></span>
-                  <span>Platforms: <strong>${(t.platforms || ['Web']).join(', ')}</strong></span>
+                  <span>Evidence: <strong>${evCount} linked item(s); verify each source</strong></span>
+                  <span>First Observed: <strong>${escapeHtml(t.first_seen || 'Not supplied')}</strong></span>
+                  <span>Platforms: <strong>${escapeHtml((t.platforms || []).join(', ') || 'Not supplied')}</strong></span>
                 </div>
               </div>
             </div>
@@ -577,9 +577,9 @@
               <tbody>
                 ${listingThreats.map((lt, lIdx) => `
                   <tr>
-                    <td><strong>${escapeHtml((lt.platforms || ['Marketplace'])[0])}</strong></td>
+                    <td><strong>${escapeHtml((lt.platforms || [])[0] || 'Not supplied')}</strong></td>
                     <td style="color:#fff;font-weight:600;">${escapeHtml(lt.title)}</td>
-                    <td style="font-family:var(--font-mono);color:var(--text-dim);">${escapeHtml(lt.seller || '@unverified')}</td>
+                    <td style="font-family:var(--font-mono);color:var(--text-dim);">${escapeHtml(lt.seller || 'Not supplied')}</td>
                     <td><span class="ae-badge ae-badge-red" style="font-size:0.7rem;">${escapeHtml(lt.type || 'Signal')}</span></td>
                     <td>
                       <button class="aegis-open-src-btn" style="padding:3px 8px;font-size:0.72rem;" onclick="openDossierModal(${lIdx})">
@@ -595,7 +595,7 @@
       }
 
       // 4. Review Pattern Screening & Duplication Audit
-      const isInsufficient = reviewIntel.status === 'INSUFFICIENT_EVIDENCE' || reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
+      const isInsufficient = !reviewIntel.status || !reviewIntel.signals_analyzed || reviewIntel.status === 'INSUFFICIENT_EVIDENCE' || reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
       const isSuspicious = reviewIntel.review_manipulation_detected || reviewIntel.status === 'SUSPICIOUS_PATTERNS_DETECTED';
       const statusTitle = isInsufficient
         ? '⚪ INSUFFICIENT EVIDENCE FOR REVIEW SCREENING'
@@ -615,13 +615,13 @@
             </span>
           </div>
           <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:8px;">
-            ${escapeHtml(reviewIntel.assessment || 'No anomalous review signals detected.')}
+            ${escapeHtml(reviewIntel.assessment || 'Review screening was not established for this run.')}
           </div>
           <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-top:6px;">
             SCREENING DATA: ${reviewIntel.signals_analyzed || 0} signals analyzed &bull; ${reviewIntel.near_duplicate_clusters || 0} near-duplicate clusters identified
           </div>
           <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-top:3px;">
-            FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'Natural lexical variance across retrieved signals.')}
+            FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'No cluster analysis returned.')}
           </div>
           <div style="font-size:0.75rem;color:var(--text-dim);margin-top:8px;font-style:italic;line-height:1.4;">
             Assessment: This pattern is consistent with copied content, but does not by itself establish coordinated manipulation.
@@ -659,7 +659,7 @@
             <div class="scan-card" style="padding:18px;margin-bottom:0;border-color:rgba(0,229,255,0.2);">
               <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
                 <span style="font-family:var(--font-mono);font-size:0.7rem;color:#00e5ff;text-transform:uppercase;">NARRATIVE THEME</span>
-                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">${(n.threat_level || 'LOW').toUpperCase()} RISK</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">${escapeHtml((n.threat_level || 'UNASSESSED').toUpperCase())} RISK</span>
               </div>
               <div style="font-size:0.88rem;font-weight:700;color:#fff;line-height:1.45;margin-bottom:6px;">${escapeHtml(n.theme)}</div>
               <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${escapeHtml(n.description)}</div>
@@ -680,7 +680,7 @@
               <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;min-width:110px;">${escapeHtml(t.time)}</span>
               <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);min-width:80px;text-transform:uppercase;">${escapeHtml(t.platform || 'Web')}</span>
               <span style="font-size:0.85rem;color:var(--text-muted);flex:1;">${escapeHtml(t.title)}</span>
-              ${t.has_url ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open ↗</a>` : ''}
+              ${aegisSafeSourceUrl(t.url) ? `<a href="${escapeHtml(aegisSafeSourceUrl(t.url))}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open ↗</a>` : ''}
             </div>
           `;
         });
@@ -689,7 +689,7 @@
 
       // 7. Interactive Source Explorer
       html += `
-        <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${summary.independent_groups_count ?? 0} INDEPENDENT GROUPS)</div>
+        <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${summary.independent_groups_count ?? 'UNVERIFIED'} GROUPS; INDEPENDENCE UNVERIFIED)</div>
         <div class="explorer-wrap ae-reveal">
           <div class="filter-tabs" id="sourceFilters">
             <span class="filter-tab active" onclick="filterSources('ALL')">ALL (${sources.length})</span>
@@ -725,8 +725,9 @@
 
       return items.map(s => {
         const roleColor = s.source_role === 'PRIMARY' ? '#10b981' : s.source_role === 'SECONDARY' ? '#00e5ff' : '#fbbf24';
-        const linkHtml = s.has_url
-          ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn">Open Source ↗</a>`
+        const safeUrl = aegisSafeSourceUrl(s.url);
+        const linkHtml = safeUrl
+          ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" class="source-link-btn">Open Source ↗</a>`
           : `<span class="source-link-disabled">Source URL unavailable</span>`;
 
         return `
@@ -737,7 +738,7 @@
                   ${escapeHtml(s.source_role || 'DISCOVERY')}
                 </span>
                 <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">${escapeHtml(s.platform || s.source || 'Web')}</span>
-                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">[${s.evidence_id || ''}]</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">[${escapeHtml(s.evidence_id || '')}]</span>
               </div>
               <div>${linkHtml}</div>
             </div>
@@ -745,8 +746,8 @@
             <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${escapeHtml(s.snippet || '')}</div>
             <div style="display:flex;gap:14px;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.04);padding-top:6px;">
               <span>Author/Publisher: <strong>${escapeHtml(s.author || 'Unknown')}</strong></span>
-              <span>Published: <strong>${escapeHtml(s.published_at || 'Recent')}</strong></span>
-              <span>Group: <strong>${escapeHtml(s.independence_group || 'independent')}</strong></span>
+              <span>Published: <strong>${escapeHtml(s.published_at || 'Not supplied')}</strong></span>
+              <span>Group: <strong>${escapeHtml(s.independence_group || 'Unverified')}</strong></span>
             </div>
           </div>
         `;
@@ -824,7 +825,7 @@
                 <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 16px;">
                   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
                     <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${escapeHtml(ev.platform)} · [${ev.evidence_id}]</span>
-                    ${ev.has_url ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open Source ↗</a>` : '<span style="font-size:0.7rem;color:var(--text-dim);">No URL</span>'}
+                    ${aegisSafeSourceUrl(ev.url) ? `<a href="${escapeHtml(aegisSafeSourceUrl(ev.url))}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open Source ↗</a>` : '<span style="font-size:0.7rem;color:var(--text-dim);">No safe URL</span>'}
                   </div>
                   <div style="font-size:0.86rem;font-weight:600;color:#fff;margin-bottom:4px;">${escapeHtml(ev.title)}</div>
                   <div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(ev.snippet)}</div>

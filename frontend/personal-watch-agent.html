@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -496,7 +497,7 @@
       // Update Telemetry Ribbon with real runtime values
       document.getElementById('telSources').textContent = summary.sources_scanned ?? evidence.length;
       document.getElementById('telOutlets').textContent = summary.unique_sources ?? '—';
-      document.getElementById('telGroups').textContent = summary.independent_groups ?? '—';
+      document.getElementById('telGroups').textContent = summary.independent_groups == null ? 'Unverified' : `${summary.independent_groups} grouped`;
       document.getElementById('telChannels').textContent = summary.platforms_active ?? '—';
       document.getElementById('telThreats').textContent = threats.length;
       document.getElementById('telLatency').textContent = Number.isFinite(summary.scan_duration_s) ? `${summary.scan_duration_s}s` : 'Unavailable';
@@ -522,9 +523,9 @@
       loadPersonalOperationHealth();
 
       // 2. Change-First Diff (Section 25-26)
-      const newCount = changes.filter(c => c.change_type === 'NEW_THREAT' || c.change_type === 'NEW_PLATFORM').length || (threats.length > 0 ? 1 : 0);
-      const escalatedCount = changes.filter(c => c.change_type === 'ESCALATED').length || (threats.some(t => t.risk_level === 'HIGH') ? 1 : 0);
-      const resolvedCount = changes.filter(c => c.change_type === 'RESOLVED_THREAT').length || 0;
+      const newCount = changes.filter(c => c.change_type === 'NEW_THREAT' || c.change_type === 'NEW_PLATFORM').length;
+      const escalatedCount = changes.filter(c => c.change_type === 'ESCALATED').length;
+      const resolvedCount = changes.filter(c => c.change_type === 'RESOLVED_THREAT').length;
 
       mount.insertAdjacentHTML('beforeend', `
         <div class="ae-card ae-reveal" style="padding:20px 24px;margin-bottom:20px;border-left:4px solid #06b6d4;">
@@ -561,7 +562,7 @@
               ${topAlerts.map((t, idx) => `
                 <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;background:rgba(255,255,255,0.02);border-radius:8px;font-size:0.84rem;">
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${escapeHtml(t.first_seen || 'Recent')}</span>
+                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${escapeHtml(t.first_seen || 'Time not supplied')}</span>
                     <span style="font-weight:600;color:#fff;">${escapeHtml(t.title)}</span>
                     <span class="ae-badge ${t.risk_level === 'HIGH' ? 'ae-badge-red' : 'ae-badge-blue'}" style="font-size:0.65rem;">${escapeHtml(t.type || 'SIGNAL')}</span>
                   </div>
@@ -591,13 +592,13 @@
             <div style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">
               ${handlesList ? `<span>Official: <strong style="color:#fff;">${escapeHtml(handlesList)}</strong></span> · ` : ''}
               ${aliasesList ? `<span>Aliases: ${escapeHtml(aliasesList)}</span> · ` : ''}
-              <span style="color:#06b6d4;">${escapeHtml(subject.resolution_notes || 'Verified OSINT footprint')}</span>
+              <span style="color:#06b6d4;">${escapeHtml(subject.resolution_notes || 'No identity-resolution notes supplied')}</span>
             </div>
           </div>
           <div style="text-align:right;">
             <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">PROFILE RESOLUTION</div>
             <div style="font-family:var(--font-mono);font-size:0.85rem;font-weight:700;color:${subject.confidence != null ? 'var(--emerald)' : 'var(--text-dim)'};">
-              ${subject.confidence != null ? 'OBSERVED FOOTPRINT' : 'UNVERIFIED PROFILE'}
+              ${subject.confidence != null ? 'CONFIDENCE REPORTED' : 'UNVERIFIED PROFILE'}
             </div>
           </div>
         </div>
@@ -615,12 +616,12 @@
             <span class="snap-lbl">Priority Signals</span>
           </div>
           <div class="snap-card">
-            <span class="snap-val" style="color:#fbbf24;">${summary.unverified_claims ?? claims.length}</span>
-            <span class="snap-lbl">Circulating Claims</span>
+            <span class="snap-val" style="color:#fbbf24;">${summary.unverified_claims ?? claims.filter(c => (c.status || '').toLowerCase() !== 'verified').length}</span>
+            <span class="snap-lbl">Unverified Claims</span>
           </div>
           <div class="snap-card">
             <span class="snap-val" style="color:#a5f3fc;">${summary.sources_scanned ?? evidence.length}</span>
-            <span class="snap-lbl">Verified Evidence</span>
+            <span class="snap-lbl">Returned Source Items</span>
           </div>
         </div>
       `);
@@ -638,9 +639,9 @@
       } else {
         const threatsContainer = document.createElement('div');
         threats.forEach((threat, idx) => {
-          const sev = (threat.risk_level || 'LOW').toLowerCase();
-          const badgeClass = sev === 'high' ? 'threat-card critical' : sev === 'medium' ? 'threat-card medium' : 'threat-card low';
-          const badgeColor = sev === 'high' ? 'var(--rose)' : sev === 'medium' ? '#fbbf24' : 'var(--emerald)';
+          const sev = (threat.risk_level || 'UNASSESSED').toLowerCase();
+          const badgeClass = sev === 'high' ? 'threat-card critical' : sev === 'medium' ? 'threat-card medium' : sev === 'low' ? 'threat-card low' : 'threat-card';
+          const badgeColor = sev === 'high' ? 'var(--rose)' : sev === 'medium' ? '#fbbf24' : 'var(--text-dim)';
 
           const card = document.createElement('div');
           card.className = badgeClass;
@@ -650,10 +651,10 @@
                 <span class="threat-type-badge" style="background:rgba(255,255,255,0.06);color:${badgeColor};border:1px solid rgba(255,255,255,0.1);">
                   ${escapeHtml(threat.threat_type || 'OBSERVED SIGNAL')}
                 </span>
-                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">Platform: <strong style="color:#fff;">${escapeHtml(threat.platform || 'Cross-Platform')}</strong></span>
+                <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">Platform: <strong style="color:#fff;">${escapeHtml(threat.platform || 'Not supplied')}</strong></span>
               </div>
               <span style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:4px;background:rgba(255,255,255,0.05);color:${badgeColor};">
-                ${escapeHtml(threat.risk_level || 'LOW')} PRIORITY
+                  ${escapeHtml(threat.risk_level || 'UNASSESSED')} PRIORITY
               </span>
             </div>
             <div class="threat-title">${escapeHtml(threat.title || 'Untitled Signal')}</div>
@@ -746,13 +747,14 @@
 
       // 8. Personal Threat Timeline
       if (timeline.length > 0) {
-        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Personal Threat Timeline (Verified Chronology)</div>`);
+        mount.insertAdjacentHTML('beforeend', `<div class="sec-hdr">Reported Personal Threat Timeline (verify dates and sources)</div>`);
         let timeHtml = `<div style="background:rgba(0,0,0,0.3);border:1px solid var(--border);border-radius:14px;padding:20px 24px;margin-bottom:28px;">`;
         timeline.forEach((t, i) => {
-          const urlLink = (t.url && t.url.startsWith('http')) ? `<a href="${escapeHtml(t.url)}" target="_blank" rel="noopener noreferrer" style="color:#06b6d4;font-family:var(--font-mono);font-size:0.72rem;margin-left:8px;text-decoration:none;">Open Source ↗</a>` : '';
+          const safeUrl = aegisSafeSourceUrl(t.url);
+          const urlLink = safeUrl ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" style="color:#06b6d4;font-family:var(--font-mono);font-size:0.72rem;margin-left:8px;text-decoration:none;">Open Source ↗</a>` : '';
           timeHtml += `
             <div style="display:flex;gap:14px;align-items:flex-start;${i < timeline.length - 1 ? 'border-bottom:1px solid rgba(255,255,255,0.04);padding-bottom:12px;margin-bottom:12px;' : ''}">
-              <div style="font-family:var(--font-mono);font-size:0.75rem;color:#06b6d4;min-width:90px;font-weight:700;">${escapeHtml(t.timestamp || 'Recent')}</div>
+              <div style="font-family:var(--font-mono);font-size:0.75rem;color:#06b6d4;min-width:90px;font-weight:700;">${escapeHtml(t.timestamp || 'Time not supplied')}</div>
               <div style="flex:1;">
                 <div style="font-size:0.86rem;color:#fff;line-height:1.45;">
                   <strong style="font-size:0.74rem;font-family:var(--font-mono);color:var(--text-dim);margin-right:6px;">[${escapeHtml(t.platform || 'Web')}]</strong>
@@ -787,7 +789,7 @@
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:10px;">
           <div>
             <div style="font-family:var(--font-mono);font-size:0.8rem;font-weight:700;color:#06b6d4;">// SOURCE EXPLORER &amp; EVIDENCE PROVENANCE</div>
-            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Every finding traces directly to verified public URLs. No invented links.</div>
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Source links appear only when supplied; inspect attribution and content before relying on a finding.</div>
           </div>
           <input type="text" id="sourceFilterInput" placeholder="Filter sources by keyword..." oninput="filterSources()" style="background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:8px;color:#fff;font-size:0.82rem;padding:6px 12px;outline:none;width:220px;">
         </div>
@@ -848,7 +850,7 @@
 
       let html = '';
       filtered.forEach(e => {
-        const hasUrl = e.url && e.url.startsWith('http') && e.url !== '#';
+        const safeUrl = aegisSafeSourceUrl(e.url);
         html += `
           <div class="source-table-card">
             <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap;">
@@ -858,12 +860,12 @@
                   <strong style="color:#06b6d4;">${escapeHtml(e.platform || 'Web')}</strong> · 
                   <span>Source: ${escapeHtml(e.source || 'Web')}</span> · 
                   <span>Author: ${escapeHtml(e.author || 'unknown')}</span> · 
-                  <span>Published: ${escapeHtml(e.published_at || 'Recent')}</span>
+                  <span>Published: ${escapeHtml(e.published_at || 'Not supplied')}</span>
                 </div>
               </div>
               <div>
-                ${hasUrl ? `
-                  <a class="source-link-btn" href="${escapeHtml(e.url)}" target="_blank" rel="noopener noreferrer">
+                ${safeUrl ? `
+                  <a class="source-link-btn" href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer">
                     Open Source ↗
                   </a>
                 ` : `
@@ -897,7 +899,7 @@
               </div>
               <div>
                 <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);display:block;">FIRST OBSERVED</span>
-                <span style="font-family:var(--font-mono);font-size:0.85rem;color:#fff;">${escapeHtml(d.first_observed_at || 'Recent')}</span>
+                <span style="font-family:var(--font-mono);font-size:0.85rem;color:#fff;">${escapeHtml(d.first_observed_at || 'Time not supplied')}</span>
               </div>
               <div>
                 <span style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);display:block;">ORIGIN SOURCE</span>
@@ -917,13 +919,13 @@
             <div style="margin-bottom:18px;">
               <div style="font-family:var(--font-mono);font-size:0.75rem;font-weight:700;color:var(--text-dim);margin-bottom:8px;">EVIDENCE CHAIN &amp; CLICKABLE SOURCES (${(d.evidence_chain || []).length})</div>
               ${(d.evidence_chain || []).map(ev => {
-                const hasUrl = ev.url && ev.url.startsWith('http') && ev.url !== '#';
+                const safeUrl = aegisSafeSourceUrl(ev.url);
                 return `
                   <div style="padding:12px 14px;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.06);border-radius:8px;margin-bottom:8px;">
                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;gap:8px;">
                       <span style="font-size:0.85rem;font-weight:700;color:#fff;">${escapeHtml(ev.title)}</span>
-                      ${hasUrl ? `
-                        <a href="${escapeHtml(ev.url)}" target="_blank" rel="noopener noreferrer" style="color:#06b6d4;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;font-weight:700;">Open Source ↗</a>
+                      ${safeUrl ? `
+                        <a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" style="color:#06b6d4;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;font-weight:700;">Open Source ↗</a>
                       ` : ''}
                     </div>
                     <div style="font-size:0.78rem;color:var(--text-muted);line-height:1.45;">${escapeHtml(ev.snippet)}</div>
@@ -933,9 +935,9 @@
               }).join('')}
             </div>
 
-            ${d.primary_source_url ? `
+            ${aegisSafeSourceUrl(d.primary_source_url) ? `
               <div style="text-align:right;margin-top:16px;">
-                <a class="source-link-btn" href="${escapeHtml(d.primary_source_url)}" target="_blank" rel="noopener noreferrer" style="padding:8px 16px;font-size:0.82rem;">
+                <a class="source-link-btn" href="${escapeHtml(aegisSafeSourceUrl(d.primary_source_url))}" target="_blank" rel="noopener noreferrer" style="padding:8px 16px;font-size:0.82rem;">
                   Open Primary Source URL ↗
                 </a>
               </div>

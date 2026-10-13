@@ -114,7 +114,40 @@ function checkInvestigatorGateway() {
   assert.equal(destination, 'submit.html');
 }
 
+function checkResearchGateway() {
+  const { html, code } = inlineScript('research-agent.html');
+  assert(!html.includes('gemini-client.js'));
+  assert(!code.includes('askGemini'));
+  assert(!html.includes('raw_excerpts'));
+
+  const nodes = new Map();
+  const storage = new Map();
+  let destination = '';
+  const document = {
+    getElementById(id) {
+      if (!nodes.has(id)) nodes.set(id, element());
+      return nodes.get(id);
+    },
+  };
+  document.getElementById('researchEntryForm').addEventListener = (event, callback) => {
+    assert.equal(event, 'submit');
+    document.getElementById('researchEntryForm').submit = callback;
+  };
+  const context = {
+    document,
+    sessionStorage: { setItem: (key, value) => storage.set(key, value) },
+    window: { location: { assign: value => { destination = value; } } },
+  };
+  vm.createContext(context);
+  vm.runInContext(code, context, { filename: 'research-agent.html' });
+  document.getElementById('researchClaim').value = ' Exact claim about a filing ';
+  document.getElementById('researchEntryForm').submit({ preventDefault() {} });
+  assert.equal(storage.get('aegis_pending_claim'), 'Exact claim about a filing');
+  assert.equal(destination, 'submit.html');
+}
+
 checkClaimWorkspace().then(() => {
   checkInvestigatorGateway();
+  checkResearchGateway();
   console.log('CLAIM UI TRUTH CONTRACTS PASSED');
 }).catch(error => { console.error(error); process.exitCode = 1; });

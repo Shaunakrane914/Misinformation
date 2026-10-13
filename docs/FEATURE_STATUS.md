@@ -4,6 +4,13 @@
 **Verification Baseline**: Automated Test Suite (`pytest -v` [530 passed: unit, contract, integration, chaos, security, and Cranfield benchmarks]) + Supervised ML Benchmark Execution  
 **Audit Status**: Ground-truth leakage eliminated; prior 93.33% synthetic metric formally retired.
 
+> This matrix originated in an earlier phase. The 530-test baseline and
+> production labels below are historical, not current live-provider or UI
+> acceptance evidence. Consult the [latest handoff](handoffs/README.md) and
+> [Phase 8 acquisition matrix](architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md)
+> for dated status. The research and investigator rows below were corrected
+> after removing their unsupported browser-side dossier paths.
+
 ---
 
 ## Standard Taxonomy
@@ -31,8 +38,8 @@
 | **XSS Sanitization** | **Production / Tested** | `frontend/aegis-nav.js` | Global `escapeHtml` utility applied to dynamic DOM elements across all dashboards. |
 | **Centralized Gemini Service** | **Production / Tested** | `backend/services/gemini_service.py` | Multi-key rotation, jittered exponential backoff. Scientific mode cleanly blocks rather than falling back to mock. |
 | **India Multilingual Track** | **Research / Prototype** | `backend/evaluation/datasets/india_track.py` | Curated gold prototype across English, Hindi, Marathi, and Hinglish (14 claims across 5 civic domains with accredited institutional provenance). |
-| **Investigator Agent** | **Production / Tested** | `backend/agents/investigator_agent.py`, `frontend/investigator-agent.html` | Forensic case dossiers, timeline reconstructor, contradiction matrix, and verdict synthesis. |
-| **Research Agent** | **Production / Tested** | `backend/agents/research_agent.py`, `frontend/research-agent.html` | Multi-source investigation, primary source escalation, corroboration scoring, and reading list. |
+| **Investigator component** | **Integrated / Partially Verified** | `backend/agents/investigator_agent.py`, `frontend/investigator-agent.html` | Runs within claim verification; browser page is an entry gateway, not an independently verified dossier generator. Verdict quality needs evidence-entailment evaluation. |
+| **Research component** | **Integrated / Partially Verified** | `backend/agents/research_agent.py`, `frontend/research-agent.html` | Runs within claim verification; browser page is an entry gateway. No standalone `/api/research/query` exists. Source-linked extraction and reading-list claims need evaluation. |
 | **Scout Financial Workbench** | **Production / Tested** | `backend/agents/scout_agent.py`, `frontend/scout-agent.html` | Yahoo Finance real-time price feeds, volume z-scores, event-clustered news correlation. |
 | **Trending Viral Workbench** | **Production / Tested** | `backend/agents/trending_agent.py`, `frontend/trending-agent.html` | Multi-channel RSS discovery, velocity estimation, narrative summary dossiers. |
 | **BrandShield Defense Workbench** | **Production / Tested** | `backend/agents/brandshield_agent.py`, `frontend/brandshield-agent.html` | Brand threat cards, suspicious listing audit, coordinated astroturfing heuristic. |

@@ -43,8 +43,8 @@ Aegis Protocol is designed as an intelligence fabric composed of specialized aut
 | **BrandShield Agent 2.0** | Counterfeit listings, review brigading, smear PR | Amazon/Flipkart storefronts, Trustpilot, consumer forums | [`brandshield-agent.html`](../frontend/brandshield-agent.html) |
 | **Personal Watch 2.0** | Identity monitoring, deepfakes, smear campaigns | Public OSINT footprint, acoustic spectrograms, news wires | [`personal-watch-agent.html`](../frontend/personal-watch-agent.html) |
 | **Claim Fact-Check** | Dual-column empirical verification (FOR vs. AGAINST) | Wire registries (AP, Reuters), official government gazettes | [`submit.html`](../frontend/submit.html) |
-| **Research Agent** | Intelligence workspace clustering findings with sources | SEC filings, Jina Reader, investigative archives | [`research-agent.html`](../frontend/research-agent.html) |
-| **Investigator Agent** | Forensic case dossiers, chain of custody, gap analysis | Provenance tracking, source dependency graphs | [`investigator-agent.html`](../frontend/investigator-agent.html) |
+| **Research component** | Gathers evidence inside claim verification; no standalone open-ended query API | Actual retrieved operations vary by run | [`research-agent.html`](../frontend/research-agent.html) entry |
+| **Investigator component** | Verdict synthesis inside claim verification, with explicit abstention when evidence is absent | Provenance and source-linked passages where available | [`investigator-agent.html`](../frontend/investigator-agent.html) entry |
 
 ---
 

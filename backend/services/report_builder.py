@@ -608,12 +608,25 @@ def _dict_to_evidence_item(d: Dict[str, Any]) -> UnifiedEvidenceItem:
 
     url = _str_val(d.get("url") or d.get("canonical_url") or d.get("source_url"))
 
-    source = UnifiedEvidenceSource(
-        name=_str_val(d.get("source") or d.get("publisher") or d.get("source_name")),
-        type=_str_val(d.get("type") or d.get("source_type")),
-        domain=_str_val(d.get("domain") or d.get("source_domain")),
-        is_primary=bool(d.get("is_primary") or d.get("primary_source", False)),
-    )
+    raw_source = d.get("source")
+    if isinstance(raw_source, dict):
+        source = UnifiedEvidenceSource(
+            name=_str_val(raw_source.get("name")),
+            type=_str_val(raw_source.get("type")),
+            domain=_str_val(raw_source.get("domain")),
+            is_primary=bool(raw_source.get("is_primary") or d.get("is_primary") or d.get("primary_source", False)),
+            authority=_str_val(raw_source.get("authority") or d.get("authority")),
+            reliability=float(raw_source["reliability"]) if raw_source.get("reliability") is not None else (float(d["reliability"]) if d.get("reliability") is not None else None),
+        )
+    else:
+        source = UnifiedEvidenceSource(
+            name=_str_val(d.get("source") or d.get("publisher") or d.get("source_name")),
+            type=_str_val(d.get("type") or d.get("source_type")),
+            domain=_str_val(d.get("domain") or d.get("source_domain")),
+            is_primary=bool(d.get("is_primary") or d.get("primary_source", False)),
+            authority=_str_val(d.get("authority")),
+            reliability=float(d["reliability"]) if d.get("reliability") is not None else None,
+        )
 
     raw_qt = d.get("quality_tensor")
     qt = _dict_to_quality_tensor(raw_qt) if isinstance(raw_qt, (dict, object)) else None

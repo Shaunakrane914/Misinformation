@@ -92,6 +92,24 @@ checkpoint. The 55 malformed historical dossiers in the original archive
 remain protected; this isolated worktree's rollback run did not inspect them.
 Deployment and production-launch readiness are **not authorized or claimed**.
 
+## Git and hosted verification closeout
+
+The implementation, selected browser captures, automated axe summary, tests
+and this handoff were committed and pushed as
+`199499c1fa895595b04bcfa8cbb9f51ad5524266` on
+`feat/phase8b-extraction`. Its [GitHub Actions run 38419914032](https://github.com/Shaunakrane914/Misinformation/actions/runs/38419914032)
+completed successfully: all five jobs passed, including frontend contracts,
+the full offline suite, release/persistence validators and Python 3.11/3.12/3.13
+unit/chaos/security matrices. That CI run does **not** include a hosted
+Playwright/axe browser job; those results above are local terminal-browser
+observations. A small follow-up removed pre-scan “snapshot recorded” copy and
+appended this CI evidence. Check that follow-up's exact commit/run separately;
+the preceding run only verifies `199499c`.
+After the copy edit, `node tests/frontend/test_agent_ui_truth.js` exited 0
+and a separate Playwright Chromium 320px pass over all four initial and
+fixture states exited 0. That narrower follow-up run is local-only; it does
+not replace the committed 1440/390/320px matrix above.
+
 Before continuing, inspect `git status --short`, this branch's current head,
 and any concurrent work. Run the two browser audits with a local frontend
 server and **new** output directories; never overwrite their prior runs.

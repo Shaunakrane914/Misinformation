@@ -78,6 +78,9 @@ function testScout() {
 
 function testTrending() {
   const { context, elements } = page('trending-agent.html');
+  const initialPage = fs.readFileSync(path.join(root, 'frontend/trending-agent.html'), 'utf8');
+  assert(!initialPage.includes('Initial scan snapshot recorded'));
+  assert(initialPage.includes('Run a scan to establish the first observation'));
   context.renderClaims([{ claims: [{
     status: 'VERIFIED', claim_text: 'A claim',
     source_urls: ['javascript:alert(1)'], supporting_sources: '<img onerror=alert(1)>',

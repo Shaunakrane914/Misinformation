@@ -295,6 +295,14 @@ def _probe(spec: ProbeSpec, sequence: int) -> dict[str, Any]:
                 key for key, value in (metadata.get("video_metadata") or {}).items()
                 if value is not None and value != "" and value != [] and value != {}
             ),
+            "populated_provider_field_names": sorted(
+                key for key, value in (metadata.get("provider_fields") or {}).items()
+                if value is not None and value != "" and value != [] and value != {}
+            ),
+            "populated_page_metadata_field_names": sorted(
+                key for key, value in (metadata.get("page_metadata") or {}).items()
+                if value is not None and value != "" and value != [] and value != {}
+            ),
         })
     backends = sorted({
         str(getattr(fragment, "native_backend_id", "") or "") for fragment in fragments

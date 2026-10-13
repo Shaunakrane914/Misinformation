@@ -65,7 +65,7 @@ from backend.services.agent_reach.native.telemetry import (
     acquisition_telemetry,
 )
 from backend.services.agent_reach.native.operation_capabilities import runtime_operation_capabilities
-from backend.infrastructure.acquisition.network.http import fetch_public_http
+from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http
 from backend.services.url_validator import is_safe_url
 
 logger = logging.getLogger(__name__)
@@ -501,7 +501,7 @@ class NativeRouter:
                     "cache_status": "UNKNOWN",
                 }
                 if resp.status_code == 200:
-                    soup = BeautifulSoup(resp.body, "html.parser")
+                    soup = BeautifulSoup(decode_bounded_http_body(resp), "html.parser")
                     results = soup.select("li.b_algo")
                     if not results:
                         break
@@ -565,7 +565,7 @@ class NativeRouter:
                 "cache_status": "UNKNOWN",
             }
             if resp.status_code == 200:
-                soup = BeautifulSoup(resp.body, "html.parser")
+                soup = BeautifulSoup(decode_bounded_http_body(resp), "html.parser")
                 results = soup.select("div.algo")
                 for r in results:
                     title_elem = r.select_one("h3 a")
@@ -613,7 +613,7 @@ class NativeRouter:
                                                        "Accept": "application/vnd.github.v3+json"},
                                          timeout=5.0, max_bytes=1_000_000)
             raw_body = response.body
-            data = json.loads(raw_body.decode("utf-8"))
+            data = json.loads(decode_bounded_http_body(response).decode("utf-8"))
             raw_items = data.get("items", [])
             fragments = self.normalizer.normalize_github_repos(
                 raw_items, query_id=query_id, query_class=query_class, query_text=query_text or query

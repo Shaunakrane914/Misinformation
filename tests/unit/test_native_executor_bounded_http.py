@@ -1,6 +1,7 @@
 """Adapter contracts for the shared bounded HTTP transport."""
 
 import json
+import gzip
 import socket
 from types import SimpleNamespace
 
@@ -298,6 +299,42 @@ def test_web_reader_uses_bounded_transport_and_rejects_empty_success(monkeypatch
     assert jina.execute_web_read("https://example.com/empty", executor=empty_executor)["status"] == "error"
 
 
+def test_web_reader_decodes_gzip_before_extracting_page_text(monkeypatch, executor, public_dns):
+    html = ("<html><head><title>Observed page</title></head>"
+            "<body><h1>Actual heading</h1><p>Evidence text repeated many times. "
+            "Evidence text repeated many times. Evidence text repeated many times.</p></body></html>")
+    compressed = gzip.compress(html.encode("utf-8"))
+    response = BoundedHTTPResponse(
+        body=compressed, endpoint="https://example.com/article", status_code=200,
+        content_type="text/html", headers={"Content-Encoding": "gzip"},
+        latency_ms=1, attempts=1,
+    )
+    monkeypatch.setattr(
+        "backend.services.agent_reach.native.executor.fetch_public_http",
+        lambda *_args, **_kwargs: response,
+    )
+    result = executor.execute_web_read("https://example.com/article")
+    assert result["page_metadata"]["title"] == "Observed page"
+    assert result["page_metadata"]["headings"] == ["Actual heading"]
+    assert "Evidence text" in result["content"]
+    assert result["transport"]["raw_body_bytes"] == len(compressed)
+    assert result["transport"]["decoded_body_bytes"] == len(html.encode("utf-8"))
+
+
+def test_web_reader_rejects_binary_primary_and_fallback(monkeypatch, executor, public_dns):
+    binary = BoundedHTTPResponse(
+        body=b"\x00" + b"A" * 150, endpoint="https://example.com/article",
+        status_code=200, content_type="application/octet-stream",
+        headers={"Content-Type": "application/octet-stream"}, latency_ms=1, attempts=1,
+    )
+    monkeypatch.setattr(
+        "backend.services.agent_reach.native.executor.fetch_public_http",
+        lambda *_args, **_kwargs: binary,
+    )
+    with pytest.raises(Exception, match="Failed to retrieve content"):
+        executor.execute_web_read("https://example.com/article")
+
+
 def test_web_reader_preserves_declared_metadata_as_unverified(monkeypatch, executor, public_dns):
     html = """<html><head><title>Observed title</title>
     <meta name="author" content="Editorial desk">
@@ -368,6 +405,20 @@ def test_jina_adapter_uses_shared_bounded_transport(monkeypatch, public_dns):
     assert result["status"] == "success"
     assert calls[0][0] == "https://r.jina.ai/https://example.com/article"
     assert calls[0][1]["max_bytes"] > 0
+
+
+def test_jina_adapter_does_not_promote_compressed_wire_bytes(monkeypatch, public_dns):
+    markdown = "# Actual page\n" + ("Relevant source text. " * 8)
+    response = BoundedHTTPResponse(
+        body=gzip.compress(markdown.encode("utf-8")),
+        endpoint="https://r.jina.ai/https://example.com/article", status_code=200,
+        content_type="text/plain", headers={"Content-Encoding": "gzip"},
+        latency_ms=1, attempts=1,
+    )
+    monkeypatch.setattr(jina, "fetch_public_http", lambda *_args, **_kwargs: response)
+    result = jina.read_article_via_jina("https://example.com/article")
+    assert result["content"] == markdown
+    assert result["transport"]["raw_body_bytes"] == len(response.body)
 
 
 def test_provider_retry_after_reaches_dispatch_telemetry():

@@ -21,7 +21,7 @@ from backend.services.agent_reach.channels import (
 )
 from backend.services.agent_reach.native.adapters.base import PlatformAdapter
 from backend.services.url_validator import validate_url_safe
-from backend.infrastructure.acquisition.network.http import fetch_public_http
+from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http
 
 logger = logging.getLogger(__name__)
 
@@ -78,7 +78,7 @@ class GitHubAdapter(PlatformAdapter):
             response = fetch_public_http(api_url, headers={"User-Agent": "AegisAgentReach/3.0",
                                                           "Accept": "application/vnd.github.v3+json"},
                                          timeout=5.0, max_bytes=1_000_000)
-            raw_json_str = json.dumps(json.loads(response.body.decode("utf-8")))
+            raw_json_str = json.dumps(json.loads(decode_bounded_http_body(response).decode("utf-8")))
             status = "SUCCESS"
             transport = {"endpoint": response.endpoint, "network_observed_this_attempt": True,
                          "http_status": response.status_code, "content_type": response.content_type,

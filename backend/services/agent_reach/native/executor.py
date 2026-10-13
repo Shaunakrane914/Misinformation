@@ -25,6 +25,7 @@ from typing import Any, Dict, List, Optional, Tuple
 from backend.infrastructure.acquisition.network.http import (
     BoundedHTTPResponse,
     ProviderHTTPError,
+    decode_bounded_http_body,
     fetch_public_http,
 )
 from backend.services.agent_reach.native.errors import (
@@ -105,7 +106,9 @@ class NativeExecutor:
         status_code = None
         content_type = None
         raw_body_bytes = None
+        decoded_body_bytes = None
         observed_endpoint = clean_url
+        selected_response: Optional[BoundedHTTPResponse] = None
         page_metadata: Dict[str, Any] = {}
         primary_http_error: Optional[ProviderHTTPError] = None
 
@@ -121,8 +124,18 @@ class NativeExecutor:
             )
             status_code = response.status_code
             raw_body_bytes = len(response.body)
-            raw_text = response.body.decode("utf-8", errors="replace")
+            decoded_body = decode_bounded_http_body(response, max_bytes=MAX_OUTPUT_BYTES)
+            decoded_body_bytes = len(decoded_body)
+            raw_text = decoded_body.decode("utf-8")
+            if any(ord(character) < 32 and character not in "\t\r\n" for character in raw_text):
+                raise ValueError("HTTP response contains binary control characters")
             content_type = response.content_type
+            media_type = (content_type or "").split(";", 1)[0].strip().lower()
+            if media_type and not (
+                media_type.startswith("text/")
+                or media_type in ("application/xhtml+xml", "application/xml", "application/json", "application/ld+json")
+            ):
+                raise ValueError("HTTP response is not a text document")
             observed_endpoint = response.endpoint
 
             if (
@@ -168,6 +181,7 @@ class NativeExecutor:
                 markdown_text = " ".join(soup.stripped_strings)
             else:
                 markdown_text = raw_text.strip()
+            selected_response = response
 
         except ProviderHTTPError as error:
             primary_http_error = error
@@ -197,7 +211,10 @@ class NativeExecutor:
                     timeout=timeout,
                     max_bytes=MAX_OUTPUT_BYTES,
                 )
-                j_text = response.body.decode("utf-8", errors="replace").strip()
+                decoded_body = decode_bounded_http_body(response, max_bytes=MAX_OUTPUT_BYTES)
+                j_text = decoded_body.decode("utf-8").strip()
+                if any(ord(character) < 32 and character not in "\t\r\n" for character in j_text):
+                    raise ValueError("Reader response contains binary control characters")
                 if len(j_text) > len(markdown_text):
                     markdown_text = j_text
                     # Metadata from the challenged source page must not be
@@ -207,7 +224,9 @@ class NativeExecutor:
                     status_code = response.status_code
                     content_type = response.content_type
                     raw_body_bytes = len(response.body)
+                    decoded_body_bytes = len(decoded_body)
                     observed_endpoint = response.endpoint
+                    selected_response = response
             except Exception as e_jina:
                 logger.debug(f"[NativeExecutor] Emergency Jina fallback error: {e_jina}")
 
@@ -230,14 +249,15 @@ class NativeExecutor:
             "transport": {
                 "endpoint": observed_endpoint,
                 "requested_endpoint": clean_url,
-                "redirect_chain": list(response.redirect_chain) if 'response' in locals() else [clean_url],
+                "redirect_chain": list(selected_response.redirect_chain) if selected_response else [clean_url],
                 "network_observed_this_attempt": True,
                 "http_status": status_code,
                 "content_type": content_type,
                 "raw_body_bytes": raw_body_bytes,
+                "decoded_body_bytes": decoded_body_bytes,
                 "raw_body_sha256": (
-                    hashlib.sha256(response.body).hexdigest()
-                    if 'response' in locals() and getattr(response, "body", None) is not None
+                    hashlib.sha256(selected_response.body).hexdigest()
+                    if selected_response is not None
                     else None
                 ),
                 "network_latency_ms": latency_ms,
@@ -405,8 +425,7 @@ class NativeExecutor:
             response = fetch_public_http(
                 url, headers=headers, timeout=timeout, max_bytes=MAX_OUTPUT_BYTES
             )
-            raw_body = response.body
-            data = json.loads(raw_body.decode("utf-8"))
+            data = json.loads(decode_bounded_http_body(response).decode("utf-8"))
             latency_ms = int((time.perf_counter() - started) * 1000)
             transport = self._bounded_http_transport(response)
             items = data if isinstance(data, list) else [data]
@@ -420,7 +439,7 @@ class NativeExecutor:
                         readme_url, headers=headers, timeout=min(timeout, 6.0),
                         max_bytes=MAX_OUTPUT_BYTES,
                     )
-                    readme_meta = json.loads(readme_response.body.decode("utf-8"))
+                    readme_meta = json.loads(decode_bounded_http_body(readme_response).decode("utf-8"))
                     encoded = readme_meta.get("content")
                     if readme_meta.get("encoding") == "base64" and isinstance(encoded, str):
                         decoded = base64.b64decode(encoded, validate=False)
@@ -663,8 +682,7 @@ class NativeExecutor:
                 url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
                 max_bytes=MAX_OUTPUT_BYTES,
             )
-            raw_body = response.body
-            data = json.loads(raw_body.decode("utf-8"))
+            data = json.loads(decode_bounded_http_body(response).decode("utf-8"))
             latency_ms = int((time.perf_counter() - t0) * 1000)
             return {
                 "platform": "v2ex",
@@ -690,8 +708,7 @@ class NativeExecutor:
                 url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
                 max_bytes=MAX_OUTPUT_BYTES,
             )
-            raw_body = response.body
-            data = json.loads(raw_body.decode("utf-8"))
+            data = json.loads(decode_bounded_http_body(response).decode("utf-8"))
             latency_ms = int((time.perf_counter() - t0) * 1000)
             return {
                 "platform": "v2ex",
@@ -734,8 +751,7 @@ class NativeExecutor:
                 url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
                 max_bytes=MAX_OUTPUT_BYTES,
             )
-            raw_body = response.body
-            data = json.loads(raw_body.decode("utf-8"))
+            data = json.loads(decode_bounded_http_body(response).decode("utf-8"))
             latency_ms = int((time.perf_counter() - started) * 1000)
             transport = self._bounded_http_transport(response)
             items = data if isinstance(data, list) else [data]
@@ -764,7 +780,7 @@ class NativeExecutor:
         try:
             response = fetch_public_http(url, headers={"User-Agent": _USER_AGENT, "Referer": "https://www.bilibili.com/"},
                                          timeout=min(timeout, 5.0), max_bytes=1_000_000)
-            raw = json.loads(response.body.decode("utf-8"))
+            raw = json.loads(decode_bounded_http_body(response).decode("utf-8"))
             latency_ms = int((time.perf_counter() - t0) * 1000)
             items = []
             data_obj = raw.get("data", {})
@@ -795,7 +811,7 @@ class NativeExecutor:
                 clean_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
                 max_bytes=MAX_OUTPUT_BYTES,
             )
-            raw_body = response.body
+            raw_body = decode_bounded_http_body(response)
             transport = self._bounded_http_transport(response)
             feed = feedparser.parse(raw_body)
             latency_ms = int((time.perf_counter() - t0) * 1000)
@@ -1069,7 +1085,7 @@ class NativeExecutor:
                 page_url, headers={"User-Agent": _USER_AGENT}, timeout=timeout,
                 max_bytes=MAX_OUTPUT_BYTES,
             )
-            soup = BeautifulSoup(response.body, "html.parser")
+            soup = BeautifulSoup(decode_bounded_http_body(response), "html.parser")
             next_data = soup.find("script", id="__NEXT_DATA__")
             if next_data is None or not next_data.string:
                 raise ValueError("public page did not expose structured podcast data")

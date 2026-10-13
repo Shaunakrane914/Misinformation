@@ -20,7 +20,7 @@ from backend.services.agent_reach.channels import (
 )
 from backend.services.agent_reach.native.adapters.base import PlatformAdapter
 from backend.services.url_validator import validate_url_safe
-from backend.infrastructure.acquisition.network.http import fetch_public_http
+from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +60,16 @@ class WebAdapter(PlatformAdapter):
         try:
             response = fetch_public_http(target_url, headers=DEFAULT_HEADERS,
                                          timeout=min(timeout, 5.0), max_bytes=1_000_000)
-            return response.status_code or 200, response.body.decode("utf-8", errors="replace"), dict(response.headers), response.latency_ms, None
+            media_type = (response.content_type or "").split(";", 1)[0].strip().lower()
+            if media_type and not (
+                media_type.startswith("text/")
+                or media_type in ("application/xhtml+xml", "application/xml", "application/json")
+            ):
+                raise ValueError("HTTP response is not a text document")
+            content = decode_bounded_http_body(response).decode("utf-8")
+            if any(ord(character) < 32 and character not in "\t\r\n" for character in content):
+                raise ValueError("HTTP response contains binary control characters")
+            return response.status_code or 200, content, dict(response.headers), response.latency_ms, None
         except Exception as e:
             lat = int((time.perf_counter() - t0) * 1000)
             logger.debug(f"[WebAdapter] Scrapling fetch error for {target_url}: {e}")
@@ -136,21 +145,22 @@ class WebAdapter(PlatformAdapter):
         text = re.sub(r"<style[^>]*>[\s\S]*?</style>", "", text, flags=re.IGNORECASE)
         # Extract title if present
         title_match = re.search(r"<title[^>]*>(.*?)</title>", text, re.IGNORECASE)
-        title = title_match.group(1).strip() if title_match else candidate.title or "Discovered Article"
+        title = title_match.group(1).strip() if title_match else candidate.title or ""
         
         # Clean tags
         clean_text = re.sub(r"<[^>]+>", " ", text)
         clean_text = re.sub(r"\s+", " ", clean_text).strip()
         body = clean_text[:4000]
 
-        depth = "FULL_ARTICLE" if len(body) > 1000 else ("PARTIAL_CONTENT" if len(body) > 250 else "SNIPPET")
+        # A 4,000-character cap cannot establish that the entire article was read.
+        depth = "PARTIAL_CONTENT" if len(body) > 250 else "SNIPPET"
 
         frag = EvidenceFragment(
             platform=self.platform,
             title=title,
             content=body,
             url=document.url,
-            author="Web Publisher",
+            author="",
             published=document.raw_metadata.get("published_at") or candidate.metadata.get("published_at") or "",
             snippet=body[:280],
             score=candidate.semantic_score or 1.0,

@@ -24,7 +24,11 @@ def test_summary_prefers_newest_matching_probe_and_refuses_overwrite(tmp_path):
         }]},
     }
     old.write_text(json.dumps(base) + "\n", encoding="utf-8")
-    improved = dict(base, classification="DIRECT_PARTIAL_CONTENT", relevant_text_chars=100)
+    improved_sample = dict(base["provenance"]["normalized_evidence_samples"][0],
+                           author="", content_chars=100,
+                           populated_metadata_field_names=["readme_sha"])
+    improved = dict(base, classification="DIRECT_PARTIAL_CONTENT", relevant_text_chars=100,
+                    provenance={"normalized_evidence_samples": [improved_sample]})
     new.write_text(json.dumps(improved) + "\n", encoding="utf-8")
     command = [
         sys.executable, str(script), "--probe-records", str(old),
@@ -37,7 +41,11 @@ def test_summary_prefers_newest_matching_probe_and_refuses_overwrite(tmp_path):
     assert row["scenario_count"] == 1
     assert row["mean_relevant_chars_per_successful_item"] == 100
     assert row["normalized_field_population_rate"]["published"] == 0.0
-    assert row["normalized_field_population_rate"]["author"] is None
+    assert row["normalized_field_population_rate"]["author"] == 0.0
+    assert row["important_field_population"]["metadata.readme_sha"] == {
+        "populated": 1, "measured_samples": 1, "population_rate": 1.0,
+    }
+    assert row["important_field_population"]["author"]["population_rate"] == 0.0
     assert len(report["operations"]) == 16
     second = subprocess.run(command, cwd=root, text=True, capture_output=True, check=False)
     assert second.returncode != 0

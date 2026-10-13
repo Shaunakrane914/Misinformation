@@ -252,6 +252,8 @@ def test_web_adapter_bounded_http_without_unsafe_browser_rescue(public_dns):
         frags = adapter.normalize(doc, cand, req)
         assert len(frags) == 1
         assert frags[0].retrieval_mode == RetrievalMode.WEB_READER.value
+        assert frags[0].author == ""
+        assert frags[0].content_depth != "FULL_ARTICLE"
 
     # A JS shell does not authorize an unpinned browser/network fallback.
     with patch.object(adapter, "_fetch_scrapling", return_value=(200, "<html><div id='root'></div></html>", {}, 80, None)):

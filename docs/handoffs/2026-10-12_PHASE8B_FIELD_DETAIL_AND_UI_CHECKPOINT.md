@@ -93,3 +93,13 @@ the shared-renderer improvements. The owner-requested “everything” is not do
 
 No private reasoning transcript, secret or unverified CI claim is recorded
 here. Decisions and reproducible test pointers are the handoff.
+
+## 2026-10-13 evidence-quality correction
+
+The old 17:37Z run's `web.read` common-page excerpt was **not usable text**:
+it contained 243 replacement/control characters in its first 400 characters
+because the server sent gzip despite an `Accept-Encoding: identity` request.
+The 16/16 result above is a historical *classifier output*, not proof that all
+16 returned valid content. The old v3 summary and this handoff remain intact
+for auditability; use the later corrected runs and v6 summary linked from the
+[spot-check index](../../artifacts/phase8_extraction_spotchecks/README.md).

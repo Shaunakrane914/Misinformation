@@ -2,7 +2,13 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 8B field detail and UI checkpoint — 2026-10-12
+## Latest: Phase 8B content decoding and field audit — 2026-10-13
+
+- [HTTP decoding and field-audit handoff](2026-10-13_PHASE8B_CONTENT_DECODING_AND_FIELD_AUDIT.md):
+  gzip false-success correction, bounded decoded content, live re-probes,
+  important-field population measurement and remaining Phase 8 gates.
+
+## Previous: Phase 8B field detail and UI checkpoint — 2026-10-12
 
 - [Field detail and UI handoff](2026-10-12_PHASE8B_FIELD_DETAIL_AND_UI_CHECKPOINT.md):
   pushed isolated-branch extraction improvements, 16-operation guarded

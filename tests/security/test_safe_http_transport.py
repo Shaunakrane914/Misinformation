@@ -1,17 +1,21 @@
 """Security and reliability contracts for the shared acquisition transport."""
 
 import io
+import gzip
 import urllib.error
 import urllib.request
+import zlib
 from datetime import datetime, timezone
 from email.message import Message
 
 import pytest
 
 from backend.infrastructure.acquisition.network.http import (
+    BoundedHTTPResponse,
     ProviderHTTPError,
     ResponseTooLargeError,
     _ValidatingRedirectHandler,
+    decode_bounded_http_body,
     fetch_public_http,
     parse_retry_after,
 )
@@ -101,6 +105,56 @@ def test_oversized_response_is_rejected(monkeypatch):
     )
     with pytest.raises(ResponseTooLargeError):
         fetch_public_http("https://example.com/data", max_bytes=10, max_attempts=1)
+
+
+def test_compressed_response_is_decoded_under_both_wire_and_expanded_bounds(monkeypatch):
+    document = b"<html><title>Real page</title><body>Observed text</body></html>"
+    opener = _Opener([_Response(gzip.compress(document), headers={
+        "Content-Type": "text/html", "Content-Encoding": "gzip",
+    })])
+    monkeypatch.setattr(urllib.request, "build_opener", lambda *_args: opener)
+    monkeypatch.setattr(
+        "backend.infrastructure.acquisition.network.http.is_safe_url", lambda _url: (True, "")
+    )
+    result = fetch_public_http("https://example.com/data", max_attempts=1)
+    assert result.body != document  # provenance still hashes the actual wire entity
+    assert decode_bounded_http_body(result) == document
+
+
+def test_compressed_expansion_bomb_is_rejected():
+    wire = gzip.compress(b"A" * 10000)
+    response = BoundedHTTPResponse(
+        body=wire, endpoint="https://example.com/data", status_code=200,
+        content_type="text/plain", headers={"Content-Encoding": "gzip"},
+        latency_ms=1, attempts=1,
+    )
+    with pytest.raises(ResponseTooLargeError, match="Decoded response"):
+        decode_bounded_http_body(response, max_bytes=1000)
+
+
+def test_deflate_response_is_decoded_with_wire_bytes_preserved():
+    document = b'{"observed": true}'
+    wire = zlib.compress(document)
+    response = BoundedHTTPResponse(
+        body=wire, endpoint="https://example.com/data", status_code=200,
+        content_type="application/json", headers={"Content-Encoding": "deflate"},
+        latency_ms=1, attempts=1,
+    )
+    assert decode_bounded_http_body(response) == document
+    assert response.body == wire
+
+
+@pytest.mark.parametrize("encoding,wire", [
+    ("gzip", b"not-gzip"), ("br", b"text"), ("identity", gzip.compress(b"text")),
+])
+def test_invalid_or_unsupported_encoding_is_not_promoted(encoding, wire):
+    response = BoundedHTTPResponse(
+        body=wire, endpoint="https://example.com/data", status_code=200,
+        content_type="text/html", headers={"Content-Encoding": encoding},
+        latency_ms=1, attempts=1,
+    )
+    with pytest.raises(ProviderHTTPError):
+        decode_bounded_http_body(response)
 
 
 def test_retryable_failure_retries_once_with_bounded_delay(monkeypatch):

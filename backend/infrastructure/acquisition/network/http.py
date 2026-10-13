@@ -17,6 +17,7 @@ import time
 import urllib.error
 import urllib.parse
 import urllib.request
+import zlib
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Callable, Mapping, Optional
@@ -55,7 +56,7 @@ class ProviderHTTPError(RuntimeError):
 
 
 class ResponseTooLargeError(ProviderHTTPError):
-    """Raised when a response exceeds the configured compressed-byte bound."""
+    """Raised when a response exceeds a wire or decoded byte bound."""
 
 
 @dataclass(frozen=True)
@@ -71,6 +72,72 @@ class BoundedHTTPResponse:
     # targets observed by the validating redirect handler.  This remains empty
     # for constructed fixture responses and older callers.
     redirect_chain: tuple[str, ...] = ()
+
+
+def decode_bounded_http_body(
+    response: BoundedHTTPResponse, *, max_bytes: int = DEFAULT_MAX_RESPONSE_BYTES,
+) -> bytes:
+    """Decode an HTTP entity only when both wire and expanded bytes are bounded.
+
+    ``response.body`` remains the original wire entity for provenance hashes.
+    A server can send compressed data despite ``Accept-Encoding: identity``;
+    callers must never interpret those bytes as page text or provider JSON.
+    """
+    if max_bytes <= 0:
+        raise ValueError("HTTP bounds must be positive")
+    wire = response.body
+    if len(wire) > max_bytes:
+        raise ResponseTooLargeError(
+            f"Response exceeds {max_bytes} byte limit", endpoint=response.endpoint,
+            status_code=response.status_code, network_observed=True,
+            attempts=response.attempts,
+        )
+    encoding = next(
+        (value for name, value in response.headers.items()
+         if name.lower() == "content-encoding"),
+        "identity",
+    ).strip().lower()
+    if encoding in ("", "identity"):
+        if wire.startswith(b"\x1f\x8b"):
+            raise ProviderHTTPError(
+                "Undeclared compressed HTTP response", endpoint=response.endpoint,
+                status_code=response.status_code, network_observed=True,
+                attempts=response.attempts,
+            )
+        return wire
+    if encoding not in ("gzip", "x-gzip", "deflate"):
+        raise ProviderHTTPError(
+            "Unsupported HTTP content encoding", endpoint=response.endpoint,
+            status_code=response.status_code, network_observed=True,
+            attempts=response.attempts,
+        )
+    try:
+        decoder = zlib.decompressobj(
+            16 + zlib.MAX_WBITS if encoding in ("gzip", "x-gzip") else zlib.MAX_WBITS
+        )
+        expanded = decoder.decompress(wire, max_bytes + 1)
+        if len(expanded) > max_bytes:
+            raise ResponseTooLargeError(
+                f"Decoded response exceeds {max_bytes} byte limit",
+                endpoint=response.endpoint, status_code=response.status_code,
+                network_observed=True, attempts=response.attempts,
+            )
+        expanded += decoder.flush(max_bytes + 1 - len(expanded))
+        if len(expanded) > max_bytes:
+            raise ResponseTooLargeError(
+                f"Decoded response exceeds {max_bytes} byte limit",
+                endpoint=response.endpoint, status_code=response.status_code,
+                network_observed=True, attempts=response.attempts,
+            )
+        if not decoder.eof or decoder.unused_data or decoder.unconsumed_tail:
+            raise ValueError("Incomplete or concatenated compressed response")
+        return expanded
+    except (zlib.error, ValueError) as error:
+        raise ProviderHTTPError(
+            "Invalid compressed HTTP response", endpoint=response.endpoint,
+            status_code=response.status_code, network_observed=True,
+            attempts=response.attempts,
+        ) from error
 
 
 def parse_retry_after(value: Optional[str], *, now: Optional[datetime] = None) -> Optional[float]:

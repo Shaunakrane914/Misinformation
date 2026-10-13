@@ -15,6 +15,7 @@ from typing import Any, Dict, Optional
 from backend.infrastructure.acquisition.network.http import (
     DEFAULT_MAX_RESPONSE_BYTES,
     ProviderHTTPError,
+    decode_bounded_http_body,
     fetch_public_http,
 )
 from backend.services.url_validator import is_safe_url
@@ -46,7 +47,9 @@ def read_article_via_jina(url: str, timeout: float = 5.0) -> Optional[Dict[str, 
             max_bytes=DEFAULT_MAX_RESPONSE_BYTES,
         )
         raw_body = response.body
-        content = raw_body.decode("utf-8", errors="replace")
+        content = decode_bounded_http_body(response).decode("utf-8")
+        if any(ord(character) < 32 and character not in "\t\r\n" for character in content):
+            raise ValueError("Reader response contains binary control characters")
         if content and len(content.strip()) > 30:
             netloc = urllib.parse.urlparse(url).netloc
             return {

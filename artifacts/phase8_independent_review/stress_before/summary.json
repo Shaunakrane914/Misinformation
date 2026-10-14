@@ -1,0 +1,375 @@
+{
+  "scope": "320px recorded live-API replay plus synthetic 200-record/long-title/hostile-link controls. No manual screen reader.",
+  "records": [
+    {
+      "agent": "scout",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 101.89,
+      "screenshot": "scout-API_REPLAY-320.png",
+      "axe": {
+        "violations": [
+          {
+            "id": "aria-required-children",
+            "targets": [
+              [
+                ".fe-tabs-header"
+              ]
+            ]
+          }
+        ],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 343,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udcd6 Deep-Read Sources\n1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83c\udfdb\ufe0f Primary Filings\n0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\u2442 Syndication & Independence\n3"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "3"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udccb Selection Audit\n11"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "11"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udd78\ufe0f Evidence Graph"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "SESSION ID: R-2026-D52ABBE4C8AB40A6B47FD430642F8DEF\nStopping status: discovery_timeout_rea"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "SESSION ID: R-2026-D52ABBE4C8AB40A6B47FD430642F8DEF"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "Stopping status: discovery_timeout_reached \u2022 Marginal Novelty: \u2014 \u2022 Cumulative Saturation: "
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "discovery_timeout_reached"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        },
+        {
+          "id": "",
+          "cls": "drawer-head",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n\u00d7"
+        },
+        {
+          "id": "drawerFindingTitle",
+          "cls": "",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS"
+        },
+        {
+          "id": "",
+          "cls": "drawer-close",
+          "text": "\u00d7"
+        },
+        {
+          "id": "drawerBody",
+          "cls": "drawer-body",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "scout",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 180.39,
+      "screenshot": "scout-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [
+          {
+            "id": "aria-required-children",
+            "targets": [
+              [
+                ".fe-tabs-header"
+              ]
+            ]
+          }
+        ],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 343,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udcd6 Deep-Read Sources\n1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83c\udfdb\ufe0f Primary Filings\n0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\u2442 Syndication & Independence\n3"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "3"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udccb Selection Audit\n11"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "11"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udd78\ufe0f Evidence Graph"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "SESSION ID: R-2026-D52ABBE4C8AB40A6B47FD430642F8DEF\nStopping status: discovery_timeout_rea"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "SESSION ID: R-2026-D52ABBE4C8AB40A6B47FD430642F8DEF"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "Stopping status: discovery_timeout_reached \u2022 Marginal Novelty: \u2014 \u2022 Cumulative Saturation: "
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "discovery_timeout_reached"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        },
+        {
+          "id": "",
+          "cls": "drawer-head",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n\u00d7"
+        },
+        {
+          "id": "drawerFindingTitle",
+          "cls": "",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS"
+        },
+        {
+          "id": "",
+          "cls": "drawer-close",
+          "text": "\u00d7"
+        },
+        {
+          "id": "drawerBody",
+          "cls": "drawer-body",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "trending",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 40.53,
+      "screenshot": "trending-API_REPLAY-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": []
+    },
+    {
+      "agent": "trending",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 74.31,
+      "screenshot": "trending-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": []
+    },
+    {
+      "agent": "brandshield",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 53.39,
+      "screenshot": "brandshield-API_REPLAY-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 94.52,
+      "screenshot": "brandshield-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 47.86,
+      "screenshot": "personal_watch-API_REPLAY-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "ur-tl-desc",
+          "text": "Unknown"
+        }
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 67.72,
+      "screenshot": "personal_watch-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": []
+    }
+  ]
+}

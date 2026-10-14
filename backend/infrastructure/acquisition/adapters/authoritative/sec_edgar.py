@@ -11,6 +11,7 @@ from __future__ import annotations
 import json
 import logging
 import re
+import os
 from typing import Any, Dict, List, Optional
 
 from backend.infrastructure.acquisition.network.http import (
@@ -23,7 +24,9 @@ from backend.services.agent_reach.channels import EvidenceFragment, RetrievalMod
 logger = logging.getLogger(__name__)
 
 # SEC requires specific User-Agent format: Sample Company Name AdminContact@domain.com
-SEC_USER_AGENT = "AegisProtocol MisinfoResearch compliance@aegisprotocol.org"
+SEC_USER_AGENT_ENV = "SEC_USER_AGENT"
+# Backwards-compatible export; never invent a real organization's contact.
+SEC_USER_AGENT = os.environ.get(SEC_USER_AGENT_ENV, "").strip()
 
 # Known high-volume tickers to 10-digit zero-padded CIK
 TICKER_CIK_MAP: Dict[str, str] = {
@@ -77,8 +80,11 @@ def fetch_sec_submissions(
         }
 
     url = f"https://data.sec.gov/submissions/CIK{cik}.json"
+    user_agent = os.environ.get(SEC_USER_AGENT_ENV, "").strip()
+    if not user_agent and http_fetcher is None:
+        return {"status": "CONFIG_REQUIRED", "error": "Configure SEC_USER_AGENT with an owner-approved organization and contact", "items": [], "transport": {"network_observed": False}}
     headers = {
-        "User-Agent": SEC_USER_AGENT,
+        "User-Agent": user_agent or "AegisOfflineFixture",
         "Accept": "application/json",
         "Accept-Encoding": "identity",
     }
@@ -203,11 +209,11 @@ def normalize_sec_items(
                 "accession_number": item["accession_number"],
                 "report_date": item["report_date"],
                 "filing_items": item.get("filing_items"),
-                "source_role": "PRIMARY",
-                "source_tier": "TIER_1_OFFICIAL_FILING",
+                "source_role": "DISCOVERY",
+                "source_tier": "TIER_5_AGGREGATE",
                 "source_authority": "OFFICIAL_REGULATORY",
                 "content_depth_detail": "SUBMISSION_METADATA_NOT_XBRL_BODY",
-                "primary_source": True,
+                "primary_source": False,
                 "reliability_score": 0.98,
                 "canonical_url": item["doc_url"],
             }

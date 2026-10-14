@@ -297,8 +297,10 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
         redirected = super().redirect_request(req, fp, code, msg, headers, target)
         if redirected is not None:
             if _origin(req.full_url) != _origin(target):
-                for name in ("Authorization", "Cookie", "Proxy-Authorization"):
-                    redirected.remove_header(name)
+                sensitive = {"authorization", "cookie", "proxy-authorization", "x-goog-api-key", "x-api-key", "apikey"}
+                for name, _value in list(redirected.header_items()):
+                    if name.lower() in sensitive:
+                        redirected.remove_header(name)
         return redirected
 
 

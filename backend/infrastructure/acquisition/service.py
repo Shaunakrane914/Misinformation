@@ -56,6 +56,7 @@ from backend.services.agent_reach.native.operation_capabilities import (
     runtime_operation_capabilities,
 )
 from backend.services.agent_reach.registry import CapabilityRegistry
+from backend.services.agent_reach.native.channel_capabilities import AUTHORITATIVE_CAPABILITY_MATRIX
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
 
 logger = logging.getLogger(__name__)
@@ -97,6 +98,9 @@ class AgentReachService:
         self.registry.register(JinaReaderChannel())
         self.registry.register(RedditChannel())
         self.registry.register(TwitterChannel())
+        from backend.infrastructure.acquisition.adapters.authoritative.channel import AuthoritativeChannel
+        for name in ("sec_edgar", "nist_cve", "arxiv", "fact_check"):
+            self.registry.register(AuthoritativeChannel(name))
 
         # Optional / authenticated channels (gracefully report status)
         self.registry.register(AuthenticatedOptionalChannel("linkedin", "LinkedIn", "LINKEDIN_COOKIE"))
@@ -118,7 +122,7 @@ class AgentReachService:
 
         native_channels = {}
         operation_inventory = runtime_operation_capabilities.inventory()
-        for plat, cap in CAPABILITY_MATRIX.items():
+        for plat, cap in {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX}.items():
             doc_entry = native_doctor.get_channel_status(plat)
             registered = plat in self.registry.channel_names
             status_code = native_doctor.get_canonical_status_code(plat) if registered else "UNAVAILABLE"
@@ -535,7 +539,10 @@ class AgentReachService:
                 lat = int((time.time() - t0) * 1000)
                 err_str = str(e)
                 err_lower = err_str.lower()
-                if isinstance(e, TimeoutError) or "timeout" in err_lower:
+                declared_status = getattr(e, "status", "")
+                if declared_status in {"AUTH_REQUIRED", "RATE_LIMITED", "CONFIG_REQUIRED", "FAILED", "TIMEOUT"}:
+                    q_status = declared_status
+                elif isinstance(e, TimeoutError) or "timeout" in err_lower:
                     q_status = "TIMEOUT"
                 elif any(auth_kw in err_lower for auth_kw in ("auth", "login", "401", "403", "credential")):
                     q_status = "AUTH_REQUIRED"
@@ -918,67 +925,33 @@ class AgentReachService:
         return groups
 
     def _assign_source_roles(self, fragments: List[EvidenceFragment]) -> None:
-        """Tag fragments with their forensic source role (PRIMARY, SECONDARY, etc.)."""
-        from backend.services.research.source_quality import is_utility_or_auth_url
+        """Use the shared hostname-aware authority policy for every fragment."""
+        from backend.services.research.source_quality import (
+            SourceQualityEngine, VERIFIED_CORPORATE_DOMAINS, canonical_hostname, hostname_matches,
+        )
+        from backend.services.research.research_models import EvidenceItem
 
-        regulatory_markers = [
-            "sec.gov", "bseindia.com", "nseindia.com", "sebi.gov", "cpsc.gov",
-            "ftc.gov", "fda.gov", "form 10-k", "form 10-q", "form 8-k", "regulatory filing"
-        ]
-        corporate_markers = [
-            "investor.", "ir.", "tatamotors.com", "nvidia.com", "apple.com",
-            "tesla.com", "microsoft.com", "investor relations", "annual report",
-            "press release", "official statement"
-        ]
-        financial_press = [
-            "reuters", "bloomberg", "moneycontrol", "economictimes",
-            "livemint", "business-standard", "financialexpress", "cnbc",
-            "wsj", "ft.com", "apnews"
-        ]
+        classifier = SourceQualityEngine()
+        for fragment in fragments:
+            host = canonical_hostname(fragment.url)
+            known_target = next((name for name, domains in VERIFIED_CORPORATE_DOMAINS.items()
+                                 if any(hostname_matches(host, domain) for domain in domains)), "")
+            item = EvidenceItem(
+                id=fragment.evidence_id or "classification",
+                canonical_url=fragment.url, title=fragment.title,
+                content=fragment.content, snippet=fragment.snippet,
+                channel=fragment.platform.lower(), content_depth=fragment.content_depth,
+                metadata=dict(fragment.raw_metadata),
+            )
+            classifier.classify_and_score(item, known_target)
+            fragment.raw_metadata.update({
+                "source_role": item.source_role, "source_tier": item.source_tier,
+                "primary_source": item.primary_source, "official_source": item.official_source,
+                "source_quality_score": item.source_quality_score,
+                "authority_scope": item.metadata.get("authority_scope", "publisher_identity_only"),
+                "source_quality_is_heuristic": True,
+            })
 
-        for f in fragments:
-            platform = f.platform.lower()
-            method = f.retrieval_method.lower()
-            url_lower = (f.url or "").lower()
-            title_lower = (f.title or "").lower()
-            combined_text = f"{url_lower} {title_lower}"
-
-            is_utility, _ = is_utility_or_auth_url(f.url or "")
-            if is_utility:
-                f.raw_metadata["source_role"] = "UTILITY_PORTAL"
-                f.raw_metadata["source_tier"] = "TIER_4_UTILITY"
-            elif any(rm in combined_text for rm in regulatory_markers):
-                f.raw_metadata["source_role"] = "PRIMARY"
-                f.raw_metadata["source_tier"] = "TIER_1_OFFICIAL_FILING"
-            elif any(cm in combined_text for cm in corporate_markers):
-                f.raw_metadata["source_role"] = "PRIMARY"
-                f.raw_metadata["source_tier"] = "TIER_1_ORIGINAL_DOCUMENT"
-            elif any(enc in url_lower for enc in ("wikipedia.org", "wikimedia.org", "britannica.com")):
-                f.raw_metadata["source_role"] = "AGGREGATOR"
-                f.raw_metadata["source_tier"] = "TIER_3_AGGREGATE"
-            elif "github" in platform or "github" in method:
-                f.raw_metadata["source_role"] = "PRIMARY"
-                f.raw_metadata["source_tier"] = "TIER_1_CODE_METADATA"
-            elif any(fp in combined_text for fp in financial_press) or "news" in platform or "wire" in platform:
-                f.raw_metadata["source_role"] = "SECONDARY"
-                f.raw_metadata["source_tier"] = "TIER_2_FINANCIAL_PRESS"
-            elif "reddit" in platform:
-                f.raw_metadata["source_role"] = "COMMUNITY"
-                f.raw_metadata["source_tier"] = "TIER_3_INVESTOR_COMMUNITY"
-            elif "twitter" in platform:
-                f.raw_metadata["source_role"] = "COMMENTARY"
-                f.raw_metadata["source_tier"] = "TIER_3_SOCIAL_SIGNALS"
-            elif "youtube" in platform:
-                f.raw_metadata["source_role"] = "DIRECT_MEDIA"
-                f.raw_metadata["source_tier"] = "TIER_2_VIDEO_ANALYSIS"
-            elif "web article" in platform or "jina" in method:
-                f.raw_metadata["source_role"] = "PRIMARY"
-                f.raw_metadata["source_tier"] = "TIER_1_ORIGINAL_DOCUMENT"
-            else:
-                f.raw_metadata["source_role"] = "DISCOVERY"
-                f.raw_metadata["source_tier"] = "TIER_3_AGGREGATE"
-
-    # ── Backward Compatibility with legacy AgentReachScraper ───────────────
 
     def omni_scan(
         self,

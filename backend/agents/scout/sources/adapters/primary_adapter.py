@@ -7,6 +7,7 @@ disclosures. Tier 1 authority.
 
 import hashlib
 import logging
+import os
 from datetime import datetime, timezone
 from typing import Optional
 from backend.agents.scout.sources.adapters.base import ScoutSourceAdapter
@@ -18,6 +19,8 @@ from backend.agents.scout.sources.models import (
     SourceTier,
 )
 from backend.agents.scout.sources.transport import scout_transport
+from backend.services.research.source_quality import registered_authority_url, canonical_hostname, hostname_matches, SourceQualityEngine, VERIFIED_CORPORATE_DOMAINS
+from backend.services.research.research_models import EvidenceItem
 from backend.agents.scout.sources.extraction import (
     structured_metadata_extractor,
     financial_number_extractor,
@@ -35,26 +38,21 @@ class PrimaryFilingAdapter(ScoutSourceAdapter):
     """
 
     def can_handle(self, candidate: CandidateSource) -> bool:
-        url = candidate.canonical_url.lower()
-        return (
-            candidate.platform == "primary_filing"
-            or "sec.gov" in url
-            or "investor." in url
-            or "ir." in url
-            or "/investors" in url
-            or "bseindia.com" in url
-            or "nseindia.com" in url
-            or candidate.metadata.get("is_primary_lead", False)
-        )
+        return registered_authority_url(candidate.canonical_url)
 
     def acquire(self, candidate: CandidateSource, request: ScoutSourceRequest) -> RawSource:
+        if not self.can_handle(candidate):
+            raise ValueError("Unregistered authority origin")
         target_url = candidate.canonical_url or candidate.url
         headers = {}
         # SEC EDGAR requires compliant User-Agent format: Sample Company AdminContact@domain.com
-        if "sec.gov" in target_url:
-            headers["User-Agent"] = "AegisProtocolResearch research@aegisprotocol.internal"
+        if hostname_matches(canonical_hostname(target_url), "sec.gov"):
+            user_agent = os.environ.get("SEC_USER_AGENT", "").strip()
+            if not user_agent:
+                raise ValueError("SEC_USER_AGENT owner-approved contact is required")
+            headers["User-Agent"] = user_agent
 
-        status, text, resp_headers, lat, err = scout_transport.get(target_url, headers=headers, timeout=10.0)
+        status, text, resp_headers, lat, err = scout_transport.get(target_url, headers=headers, timeout=5.0)
 
         return RawSource(
             candidate=candidate,
@@ -71,12 +69,21 @@ class PrimaryFilingAdapter(ScoutSourceAdapter):
         )
 
     def extract(self, raw: RawSource, request: ScoutSourceRequest) -> Optional[ScoutEvidence]:
-        if raw.status_code != 200 or not raw.content_raw:
+        if raw.status_code != 200 or not raw.content_raw or not self.can_handle(raw.candidate):
+            return None
+        observed_url = raw.headers.get("X-Aegis-Observed-Endpoint", raw.candidate.canonical_url)
+        if not registered_authority_url(observed_url):
             return None
 
         meta = structured_metadata_extractor.extract(raw.content_raw, base_url=raw.candidate.canonical_url)
         title = meta.get("title") or raw.candidate.title or "Official Disclosure / Filing"
         body = meta.get("body") or raw.content_raw[:3000]
+        host = canonical_hostname(observed_url)
+        target = next((name for name, domains in VERIFIED_CORPORATE_DOMAINS.items()
+                       if any(hostname_matches(host, domain) for domain in domains)), "")
+        classification = SourceQualityEngine().classify_and_score(EvidenceItem(
+            id="authority", canonical_url=observed_url, title=title, content=body,
+        ), target)
 
         pub_iso, event_iso = temporal_extractor.disambiguate(meta.get("published_at"), body)
         facts = financial_number_extractor.extract_facts(body)
@@ -88,13 +95,13 @@ class PrimaryFilingAdapter(ScoutSourceAdapter):
         return ScoutEvidence(
             evidence_id=evidence_id,
             url=raw.candidate.url,
-            canonical_url=raw.candidate.canonical_url,
+            canonical_url=observed_url,
             platform="primary_filing",
             source_type=raw.candidate.source_type or "filing",
-            source_tier=SourceTier.TIER_1_PRIMARY.value,
+            source_tier=SourceTier.TIER_1_PRIMARY.value if classification.primary_source else SourceTier.TIER_5_AGGREGATE.value,
             external_id=raw.candidate.canonical_url,
-            title=f"[OFFICIAL PRIMARY] {title}",
-            author=meta.get("author") or meta.get("publisher") or "Company Disclosures",
+            title=title,
+            author=meta.get("author") or meta.get("publisher") or "",
             body=body,
             snippet=body[:260],
             published_at=pub_iso,
@@ -109,9 +116,9 @@ class PrimaryFilingAdapter(ScoutSourceAdapter):
             adapter="PrimaryFilingAdapter",
             search_engine=raw.candidate.discovery_engine,
             is_authenticated=False,
-            is_primary=True,
+            is_primary=classification.primary_source,
             provenance={
-                "source_tier": "TIER_1_PRIMARY",
+                "source_tier": SourceTier.TIER_1_PRIMARY.value if classification.primary_source else SourceTier.TIER_5_AGGREGATE.value,
                 "acquisition_method": raw.acquisition_method,
                 "latency_ms": raw.latency_ms
             }

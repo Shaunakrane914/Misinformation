@@ -6,8 +6,8 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 Start with the [dated current state](CURRENT_STATE.md) and [agent handoff
 index](handoffs/README.md), then inspect the checked-out branch and commit.
-Phase 8A has bounded live proof; 8B/8C/8E remain partial and 8D/8F are not
-accepted. Historical phase reports below remain snapshots rather than current
+Phase 8A has bounded live proof; 8B–8F remain partial and release acceptance
+is not established. Read the [independent review](architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md). Historical phase reports below remain snapshots rather than current
 release or deployment approval.
 
 ---

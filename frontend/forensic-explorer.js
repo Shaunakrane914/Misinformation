@@ -150,7 +150,7 @@
           </div>
 
           <!-- 2. Source Explorer Tabs Header -->
-          <div class="fe-tabs-header" role="tablist">
+          <div class="fe-tabs-header" role="group" aria-label="Evidence views">
             <button class="fe-tab-btn ${this.activeTab === 'findings' ? 'active' : ''}" data-tab="findings">
               ★ Grounded Findings <span class="fe-tab-count">${findings.length}</span>
             </button>

@@ -136,20 +136,23 @@ def detect_bot_amplification(posts: List[Dict[str, Any]]) -> Dict[str, Any]:
     score = min(100, score)
 
     if score >= 65:
-        risk = "HIGH_COORDINATED_AMPLIFICATION"
+        risk = "HIGH_PATTERN_SIMILARITY"
     elif score >= 35:
         risk = "ELEVATED_SUSPICIOUS_ACTIVITY"
     else:
-        risk = "ORGANIC_PROPAGATION"
+        risk = "NO_PATTERN_ESTABLISHED_IN_SAMPLE"
 
     return {
         "status": "ANALYSIS_COMPLETE",
+        "automation_verified": False,
+        "assessment_is_heuristic": True,
+        "sampling_scope": "provided_public_records_only",
         "amplification_risk": risk,
         "coordination_score": score,
         "burst_detected": burst_detected,
         "copypasta_clusters": duplicate_pairs,
         "suspicious_handle_count": suspicious_handles,
-        "indicators": indicators if indicators else ["Discourse exhibits natural lexical diversity and organic temporal pacing."]
+        "indicators": indicators if indicators else ["The provided sample does not establish coordination or organic provenance."]
     }
 
 

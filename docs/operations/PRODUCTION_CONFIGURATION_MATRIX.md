@@ -47,6 +47,8 @@ Without these, specific advanced reasoning or storage tiers degrade gracefully t
 | `APIFY_TOKEN` | Paparazzi direct actor scraping for Trending. | Direct Apify calls skipped; public Google News and RSS wire discovery utilized. |
 | `YF_API_KEY` | Enhanced Yahoo Finance financial quotes for Scout. | Standard zero-cost Yahoo Finance endpoints utilized. |
 | `GITHUB_TOKEN` | Authenticated GitHub REST queries (increases rate limits). | Public unauthenticated rate limits apply (60 req/hr). |
+| `SEC_USER_AGENT` | Owner-approved organization and real contact, server-side only. | `CONFIG_REQUIRED` without traffic. No fabricated default contact; metadata is not full filing/XBRL content. |
+| `GOOGLE_FACTCHECK_API_KEY` | Authorized Google API key sent in a header, never browser code or URL. | `AUTH_REQUIRED` without traffic; publisher ClaimReview metadata is not an Aegis verdict. |
 
 ---
 

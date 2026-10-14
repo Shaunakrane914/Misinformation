@@ -1,0 +1,19 @@
+{
+  "date": "2026-10-14",
+  "final_code_checkpoint": "0f5a659",
+  "environment": "Windows PowerShell, Python 3.13.5, pytest 8.4.2",
+  "full": {"command": "pytest tests/ -q", "exit_code": 0, "passed": 1156, "seconds": 64.78},
+  "fast": {"command": "pytest tests/unit tests/chaos tests/security -q", "exit_code": 0, "passed": 948, "seconds": 30.49},
+  "fatal_lint": {"exit_code": 0, "findings": 0},
+  "node_frontend_scripts": {"script_count": 7, "all_exit_codes": 0},
+  "frozen_benchmark_hashes": "PASS",
+  "old_protected_path_diff": "EMPTY",
+  "offline_smoke": "PASS",
+  "offline_persistence": "PASS",
+  "historical_archive": "NOT_VERIFIED",
+  "deployed_rollback": "NOT_VERIFIED",
+  "manual_screen_reader": "NOT_VERIFIED",
+  "accuracy_population": "NOT_VERIFIED",
+  "production_launch": "NOT_AUTHORIZED",
+  "note": "Reconstructed compact command-result record; not a raw transcript. API/native observations separately identify the exact observed source commit and dirty state. No prior artifacts overwritten."
+}

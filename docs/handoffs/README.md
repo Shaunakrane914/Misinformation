@@ -2,7 +2,12 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Grounded Evidence Interpretation and Claim Relevance Hardening — 2026-10-14
+## Latest: Independent Phase 8 review — 2026-10-14
+
+- [Independent review handoff](2026-10-14_PHASE8_INDEPENDENT_REVIEW.md): reproduced source spoofing, unsupported conclusions, false citations, actual navigation false positives, disconnected integrations and browser/API defects; implemented corrections and retained real observations. Bounded acquisition passes; full research/release acceptance remains partial.
+- [Review report](../architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md) and [CI closeout](2026-10-14_PHASE8_INDEPENDENT_CI_CLOSEOUT.md).
+
+## Previous reported checkpoint: Grounded Evidence Interpretation and Claim Relevance Hardening — 2026-10-14
 
 - [Evidence Grounding & Relevance Hardening](2026-10-14_EVIDENCE_GROUNDING_AND_RELEVANCE_HARDENING.md):
   resolution of Microsoft audit evidence interpretation gaps; utility/auth portal

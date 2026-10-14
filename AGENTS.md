@@ -2,7 +2,7 @@
 
 **Target Audience:** Autonomous coding assistants (Google Antigravity, OpenAI Codex, Anthropic Claude) and software engineers  
 **Repository:** `Shaunakrane914/Misinformation`  
-**Current Milestone:** Phase 8A bounded acquisition proof passed; Phase 8B/8C/8E partial; Phase 8D/8F not accepted. See [dated current state](docs/CURRENT_STATE.md).
+**Current Milestone:** Independent review: 8A bounded sample passed; 8B–8F partial, release gate unmet. See [dated current state](docs/CURRENT_STATE.md) and [review](docs/architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md).
 **Historical Phase 7.2 Offline Baseline:** 787 / 787 tests passing
 **Current Agent Handoff:** [Start here](docs/handoffs/README.md). Test totals and local validation evidence are dated snapshots, not permanent acceptance counts.
 
@@ -84,7 +84,7 @@ python scripts/validate_release_candidate_smoke.py
 python scripts/validate_rollback_compatibility.py
 ```
 
-Run the six Node `tests/frontend/test_*.js` scripts and
+Run all Node `tests/frontend/test_*.js` scripts (seven at this checkpoint) and
 `python scripts/validation/verify_frozen_benchmarks.py` for frontend/data
 changes. Optional terminal-browser and axe commands are documented in the
 [script index](docs/development/SCRIPT_INDEX.md); they require a served

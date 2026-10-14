@@ -90,7 +90,7 @@ def test_primary_source_tagging():
     assert fragments[2].raw_metadata.get("source_role") == "COMMUNITY"
     assert fragments[2].raw_metadata.get("source_tier") == "TIER_3_INVESTOR_COMMUNITY"
 
-    assert fragments[3].raw_metadata.get("source_role") == "DIRECT_MEDIA"
+    assert fragments[3].raw_metadata.get("source_role") == "SECONDARY"
     assert fragments[3].raw_metadata.get("source_tier") == "TIER_2_VIDEO_ANALYSIS"
 
     # Verify official regulatory filings map to TIER_1_OFFICIAL_FILING

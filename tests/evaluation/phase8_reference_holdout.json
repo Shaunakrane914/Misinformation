@@ -1,0 +1,19 @@
+{
+  "scope": "Small analyst-adjudicated primary-reference holdout, not human ground truth or population accuracy. Created after development fixes; no subsequent tuning to these cases.",
+  "references": {
+    "sec": {"url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data", "observed": "2026-10-14", "passage": "Current max request rate: 10 requests/second.", "claim_context": "SEC EDGAR fair access", "primary_source": true},
+    "arxiv": {"url": "https://arxiv.org/abs/1706.03762", "observed": "2026-10-14", "passage": "Attention Is All You Need", "claim_context": "arXiv paper 1706.03762 title", "primary_source": true}
+  },
+  "cases": [
+    {"id": "SEC_TRUE", "entity": "SEC", "claim": "SEC EDGAR has a maximum request rate of 10 requests per second", "reference": "sec", "truth_label": "TRUE_AT_OBSERVATION", "expected": ["SUPPORTED", "UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Exact policy value; one reference permits conservative abstention."},
+    {"id": "SEC_FALSE", "entity": "SEC", "claim": "SEC EDGAR has a maximum request rate of 100 requests per second", "reference": "sec", "truth_label": "FALSE_AT_OBSERVATION", "expected": ["REFUTED", "UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Counterfactual value directly conflicts with the published policy."},
+    {"id": "ARXIV_TITLE", "entity": "arXiv", "claim": "The title of arXiv paper 1706.03762 is Attention Is All You Need", "reference": "arxiv", "truth_label": "TRUE", "expected": ["SUPPORTED", "UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Primary bibliographic title; passage-only engine may abstain."},
+    {"id": "ARXIV_FAKE_TITLE", "entity": "arXiv", "claim": "The title of arXiv paper 1706.03762 is Recurrence Is All You Need", "reference": "arxiv", "truth_label": "FALSE", "expected": ["REFUTED", "UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Counterfactual title disagrees with the indexed record."},
+    {"id": "IRRELEVANT", "entity": "SEC", "claim": "SEC announced a new cryptocurrency product", "reference": "sec", "truth_label": "NOT_ESTABLISHED", "expected": ["UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Fair-access policy does not support a product announcement."},
+    {"id": "QUOTE", "entity": "SEC", "claim": "The SEC chair said every cryptocurrency is safe", "reference": "sec", "truth_label": "NOT_ESTABLISHED", "expected": ["UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Retrieved policy contains no speaker or quote evidence."},
+    {"id": "RECENCY", "entity": "SEC", "claim": "SEC changed the EDGAR maximum request rate today", "reference": "sec", "truth_label": "NOT_ESTABLISHED", "expected": ["UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Observation time is not policy publication or change time."},
+    {"id": "SPOOF", "entity": "SEC", "claim": "SEC approved a cryptocurrency product", "reference": "sec", "replace_url": "https://sec.gov.attacker.example/filing", "truth_label": "NOT_ESTABLISHED", "expected": ["UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Counterfactual hostile origin must not gain regulator authority."},
+    {"id": "METADATA_ONLY", "entity": "arXiv", "claim": "The paper proves every language model is trustworthy", "reference": "arxiv", "depth": "DIRECT_METADATA", "truth_label": "NOT_ESTABLISHED", "expected": ["UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Paper title is not proof of research conclusions."},
+    {"id": "CONDITIONAL", "entity": "SEC", "claim": "If SEC allows 100 requests per second, the crawler will be faster", "reference": "sec", "truth_label": "NOT_ESTABLISHED", "expected": ["UNVERIFIED", "INSUFFICIENT_EVIDENCE"], "reason": "Conditional assertion must not turn into a verified policy change."}
+  ]
+}

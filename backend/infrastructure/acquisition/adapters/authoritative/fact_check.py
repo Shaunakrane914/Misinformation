@@ -40,10 +40,11 @@ def fetch_fact_check_claims(
     key = api_key or os.getenv("GOOGLE_FACTCHECK_API_KEY", "")
 
     url = f"https://factchecktools.googleapis.com/v1alpha1/claims:search?query={encoded}&pageSize={min(limit, 10)}"
-    if key:
-        url += f"&key={key}"
+    if not key:
+        return {"status": "AUTH_REQUIRED", "items": [], "error": "GOOGLE_FACTCHECK_API_KEY is not configured", "transport": {"endpoint": url, "network_observed": False}}
 
     headers = {
+        "X-Goog-Api-Key": key,
         "Accept": "application/json",
         "User-Agent": "AegisProtocol MisinfoResearch/1.0",
         "Accept-Encoding": "identity",
@@ -59,12 +60,14 @@ def fetch_fact_check_claims(
         raw_bytes = decode_bounded_http_body(response, max_bytes=1_000_000)
         data = json.loads(raw_bytes.decode("utf-8", errors="replace"))
     except Exception as e:
-        logger.warning(f"[FactCheck] Fetch failure for '{clean_q}': {e}")
+        status_code = getattr(e, "status_code", None)
+        outcome = "AUTH_REQUIRED" if status_code in {401, 403} else "RATE_LIMITED" if status_code == 429 else "FAILED"
+        logger.warning("[FactCheck] Fetch failure: %s", outcome)
         return {
-            "status": "FAILED",
-            "error": str(e),
+            "status": outcome,
+            "error": f"Provider request failed ({type(e).__name__})",
             "items": [],
-            "transport": {"endpoint": url}
+            "transport": {"endpoint": url, "status_code": status_code, "network_observed": getattr(e, "network_observed", False)}
         }
 
     raw_claims = data.get("claims", [])
@@ -72,7 +75,7 @@ def fetch_fact_check_claims(
 
     for c in raw_claims[:limit]:
         claim_text = c.get("text", "")
-        claimant = c.get("claimant", "Unknown Claimant")
+        claimant = c.get("claimant", "")
         claim_date = c.get("claimDate", "")
 
         reviews = c.get("claimReview", [])
@@ -136,7 +139,7 @@ def normalize_fact_check_items(
             snippet=snippet,
             url=item["review_url"],
             author=pub,
-            published=item["review_date"] or item["claim_date"],
+            published=item["review_date"],
             score=92.0,
             retrieval_method="claimreview_api",
             retrieval_mode=RetrievalMode.DIRECT_API.value,
@@ -144,7 +147,7 @@ def normalize_fact_check_items(
             channel_name="fact_check",
             requested_channel="fact_check",
             actual_retrieval_channel="fact_check",
-            content_depth="DIRECT_CONTENT",
+            content_depth="DIRECT_METADATA",
             query_id=query_id,
             query_class=query_class,
             query_text=query_text,
@@ -154,6 +157,9 @@ def normalize_fact_check_items(
                 "text_rating": rating,
                 "publisher_name": pub,
                 "review_date": item["review_date"],
+                "claim_date": item.get("claim_date", ""),
+                "rating_attribution": "publisher_reported_not_aegis_verdict",
+                "review_body_acquired": False,
                 "source_role": "SECONDARY",
                 "source_tier": "TIER_2_INVESTIGATIVE",
                 "source_authority": "INDEPENDENT_FACT_CHECKER",

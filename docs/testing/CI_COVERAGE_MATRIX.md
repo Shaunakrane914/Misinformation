@@ -12,11 +12,12 @@ Each test job subsequently checks frozen dataset hashes and `git diff --exit-cod
 
 The full suite includes integration, contracts, retrieval benchmarks, evaluation, performance benchmarks and root test modules. Counts change as regressions are added; use `pytest tests/ --collect-only -q` for the current inventory. Historical Phase 7.1 totals are not current acceptance evidence.
 
-The latest exact-commit evidence for this branch is [run 38420523255](https://github.com/Shaunakrane914/Misinformation/actions/runs/38420523255)
+Current independent-review evidence is recorded in the [2026-10-14 CI closeout](../handoffs/2026-10-14_PHASE8_INDEPENDENT_CI_CLOSEOUT.md). Its 1,156/948 local counts and new negative controls are separate from historical branch evidence. Browser/live probes are local append-only observations, not hosted workflow coverage.
+
+The historical exact-commit evidence for the earlier extraction branch is [run 38420523255](https://github.com/Shaunakrane914/Misinformation/actions/runs/38420523255)
 at `e74b9847ab107e2793f69e2155914028f02391b6`: all five configured
 jobs passed, including Python 3.11–3.13 fast suites and the full offline
-regression. The 1,051/855 counts in [Current State](../CURRENT_STATE.md) are
-local observations. The runner does not contain ignored historical dossier
+regression. The 1,051/855 counts were historical local observations, superseded by the [dated current state](../CURRENT_STATE.md). The runner does not contain ignored historical dossier
 JSON, so archive integrity and deployed rollback remain `NOT_VERIFIED`.
 This workflow does not run live scraping, Playwright rendering, axe-core or
 manual screen-reader checks. Earlier [Phase 7.4 run 38236691625](https://github.com/Shaunakrane914/Misinformation/actions/runs/38236691625)

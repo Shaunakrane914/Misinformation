@@ -10,6 +10,7 @@ import hashlib
 from typing import Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import EvidenceItem
+from backend.services.research.proposition_grounding import publisher_key
 
 # Markers denoting wire service copy or press release distributors
 WIRE_SERVICE_MARKERS: Dict[str, List[str]] = {
@@ -72,7 +73,7 @@ class SourceIndependenceEngine:
             else:
                 # Independent source
                 item.source_family_id = f"indep_{item.id}"
-                item.independence_group = f"domain_{item.source_domain or item.channel}"
+                item.independence_group = f"publisher_{publisher_key(item.canonical_url) or 'unknown'}"
                 item.independence_score = 1.0 if item.primary_source else 0.85
                 clusters_map.setdefault(item.independence_group, []).append(item.id)
 
@@ -100,7 +101,7 @@ class SourceIndependenceEngine:
             else:
                 it = group_items[0]
                 it.source_family_id = f"indep_{it.id}"
-                it.independence_group = f"domain_{it.source_domain or it.channel}"
+                it.independence_group = f"publisher_{publisher_key(it.canonical_url) or 'unknown'}"
                 it.independence_score = 1.0 if it.primary_source else 0.85
                 clusters_map.setdefault(it.independence_group, []).append(it.id)
 

@@ -9,6 +9,7 @@ for subsequent hard gating, full-content acquisition, and semantic ranking.
 import logging
 import re
 import urllib.parse
+from backend.services.research.source_quality import registered_authority_url, canonical_hostname, hostname_matches
 from abc import ABC, abstractmethod
 from typing import Any, Dict, List, Optional, Set
 from bs4 import BeautifulSoup
@@ -254,7 +255,7 @@ class PrimaryFilingDiscovery(DiscoveryStrategy):
                 url=norm_url,
                 canonical_url=norm_url,
                 platform="primary_filing",
-                source_type="filing" if "sec.gov" in norm_url else "press_release",
+                source_type="filing" if hostname_matches(canonical_hostname(norm_url), "sec.gov") else "candidate_document",
                 external_id=norm_url,
                 title=title,
                 snippet=snippet,
@@ -341,7 +342,7 @@ class ScoutDiscoveryEngine:
             if t.lower() in text or f"${t.lower()}" in text:
                 score += 0.15
 
-        if cand.platform == "primary_filing" or "sec.gov" in cand.canonical_url:
+        if registered_authority_url(cand.canonical_url):
             score += 0.20
 
         return max(0.05, min(0.99, score))

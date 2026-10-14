@@ -553,7 +553,7 @@
               </div>
 
               <!-- Observation -> Pattern -> Assessment -->
-              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;margin-bottom:12px;font-size:0.85rem;line-height:1.5;">
+              <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 280px), 1fr));gap:12px;margin-bottom:12px;font-size:0.85rem;line-height:1.5;">
                 <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
                   <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Observation &amp; Pattern</div>
                   <div style="color:#cbd5e1;">${escapeHtml(t.summary || 'No pattern summary supplied.')}</div>
@@ -658,7 +658,7 @@
       // 5. Tracked Claims & Narratives
       if (claims.length > 0 || narratives.length > 0) {
         html += `<div class="sec-hdr">CIRCULATING CLAIMS &amp; NARRATIVE THEMES</div>`;
-        html += `<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;" class="ae-reveal">`;
+        html += `<div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(min(100%, 320px), 1fr));gap:16px;" class="ae-reveal">`;
 
         claims.forEach(c => {
           const stColor = c.status === 'verified' ? '#10b981' : c.status === 'contradicted' ? 'var(--rose)' : '#fbbf24';
@@ -696,10 +696,10 @@
         html += `<div class="scan-card ae-reveal" style="padding:18px 24px;">`;
         timeline.forEach(t => {
           html += `
-            <div style="display:flex;gap:16px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;">
+            <div style="display:flex;flex-wrap:wrap;gap:16px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.05);align-items:center;">
               <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;min-width:110px;">${escapeHtml(t.time)}</span>
               <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);min-width:80px;text-transform:uppercase;">${escapeHtml(t.platform || 'Web')}</span>
-              <span style="font-size:0.85rem;color:var(--text-muted);flex:1;">${escapeHtml(t.title)}</span>
+              <span style="font-size:0.85rem;color:var(--text-muted);flex:1;min-width:0;overflow-wrap:anywhere;">${escapeHtml(t.title)}</span>
               ${aegisSafeSourceUrl(t.url) ? `<a href="${escapeHtml(aegisSafeSourceUrl(t.url))}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open ↗</a>` : ''}
             </div>
           `;

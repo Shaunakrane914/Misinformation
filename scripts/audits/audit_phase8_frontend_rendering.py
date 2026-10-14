@@ -90,6 +90,7 @@ MODAL_SELECTOR = {
 def audit(
     base_url: str, output_root: Path, test_fixtures: bool = False,
     viewport_filter: str | None = None,
+    api_results: Path | None = None,
 ) -> dict:
     try:
         from playwright.sync_api import sync_playwright
@@ -101,6 +102,8 @@ def audit(
     output_root.mkdir(parents=True)
     records = []
     fixture_records = []
+    replay = json.loads(api_results.read_text(encoding="utf-8")) if api_results else None
+    api_records = []
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=True)
         try:
@@ -251,6 +254,28 @@ def audit(
                             "error": fixture_error,
                             **fixture_data,
                         })
+                    if replay:
+                        agent_name = {"scout-agent.html": "scout", "trending-agent.html": "trending", "brandshield-agent.html": "brandshield", "personal-watch-agent.html": "personal_watch"}[name]
+                        payload = replay["agents"][agent_name]["response"]
+                        render_code = {
+                            "scout": "data => renderWorkspace(data)",
+                            "trending": "data => { currentScanData = data; renderTrends(data.trends || []); renderClaims(data.trends || []); }",
+                            "brandshield": "data => renderBrandShieldWorkspace(data, document.getElementById('resultsContainer'))",
+                            "personal_watch": "data => renderDashboard(data)",
+                        }[agent_name]
+                        replay_error = None
+                        try:
+                            page.evaluate(render_code, payload)
+                            page.locator(FIXTURE_MOUNTS[name]).scroll_into_view_if_needed()
+                            page.wait_for_timeout(800)
+                            replay_metrics = page.evaluate("() => ({document_width: document.documentElement.scrollWidth, viewport_width: innerWidth, visible_text_chars: document.body.innerText.length})")
+                            replay_screenshot = f"{agent_name}-{viewport_name}-API-REPLAY.png"
+                            page.screenshot(path=str(output_root / replay_screenshot), full_page=True)
+                        except Exception as exc:
+                            replay_error = f"{type(exc).__name__}: {exc}"
+                            replay_metrics = {}
+                            replay_screenshot = None
+                        api_records.append({"agent": agent_name, "viewport": viewport_name, "error": replay_error, "screenshot": replay_screenshot, "recorded_api_replay": True, "page_errors": list(errors), **replay_metrics})
                     errors.clear()
                 page.close()
         finally:
@@ -262,6 +287,8 @@ def audit(
         "browser": "Playwright Chromium headless",
         "records": records,
         "fixture_records": fixture_records,
+        "api_replay_records": api_records,
+        "api_replay_input": str(api_results) if api_results else None,
     }
     (output_root / "summary.json").write_text(
         json.dumps(result, indent=2) + "\n", encoding="utf-8"
@@ -275,8 +302,9 @@ def main() -> int:
     parser.add_argument("--output-root", type=Path, required=True)
     parser.add_argument("--test-fixtures", action="store_true")
     parser.add_argument("--viewport", choices=VIEWPORTS.keys())
+    parser.add_argument("--api-results", type=Path, help="Recorded sanitized API summary.json; replay, not a fresh browser request")
     args = parser.parse_args()
-    result = audit(args.base_url, args.output_root, args.test_fixtures, args.viewport)
+    result = audit(args.base_url, args.output_root, args.test_fixtures, args.viewport, args.api_results)
     for record in result["records"]:
         print(
             f"{record['page']} {record['viewport']}: HTTP {record['http_status']}, "
@@ -322,7 +350,8 @@ def main() -> int:
         and record["modal_escape_closed"]
         for record in result["fixture_records"]
     )
-    return 0 if initial_pass and fixture_pass else 1
+    api_pass = all(not r["error"] and not r["page_errors"] and r["document_width"] <= r["viewport_width"] + 1 for r in result["api_replay_records"])
+    return 0 if initial_pass and fixture_pass and api_pass else 1
 
 
 if __name__ == "__main__":

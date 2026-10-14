@@ -1,0 +1,4024 @@
+{
+  "observed_at_utc": "2026-10-14T04:59:14.940343+00:00",
+  "commit": "0f5a659f388e6758bb5418c7f6dde70bbc540c20",
+  "dirty": true,
+  "scope": "Live acquisition through actual in-process FastAPI requests; temporary persistence",
+  "llm_mock_mode": false,
+  "agents": {
+    "brandshield": {
+      "http_status": 200,
+      "latency_seconds": 15.233,
+      "execution": "PASS",
+      "network_acquisition": "NOT_VERIFIED",
+      "returned_record_count": 3,
+      "inspectable_url_count": 3,
+      "relevant_evidence": "NOT_INDEPENDENTLY_ADJUDICATED",
+      "evidence_sufficiency": "NOT_VERIFIED",
+      "conclusion_correctness": "NOT_VERIFIED",
+      "independent_precision": null,
+      "independent_recall": null,
+      "coverage": "REQUIRES_ADJUDICATION",
+      "response": {
+        "brand": "Apple",
+        "brand_name": "Apple",
+        "entity": {
+          "input": "Apple",
+          "resolved_entity": "Apple",
+          "brand": "Apple",
+          "product": null,
+          "entity_type": "brand",
+          "aliases": [
+            "Apple"
+          ],
+          "confidence": 0.95
+        },
+        "scanned_at": "2026-10-14T04:59:31.316234Z",
+        "total_findings": 3,
+        "threat_count": 0,
+        "safe_count": 3,
+        "findings": [
+          {
+            "platform": "web",
+            "title": "Apple",
+            "summary": "Apple Apple Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple HomeView D",
+            "threat_type": "Genuine Issue",
+            "is_threat": false,
+            "severity": "low",
+            "fake_review_score": null,
+            "stars": null,
+            "url": "https://www.apple.com/",
+            "has_url": true,
+            "evidence_id": "ev_001"
+          },
+          {
+            "platform": "web",
+            "title": "OfficialAppleSupport",
+            "summary": "Official Apple Support Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple",
+            "threat_type": "Genuine Issue",
+            "is_threat": false,
+            "severity": "low",
+            "fake_review_score": null,
+            "stars": null,
+            "url": "https://support.apple.com/",
+            "has_url": true,
+            "evidence_id": "ev_002"
+          },
+          {
+            "platform": "web",
+            "title": "Apple(India)",
+            "summary": "Apple (India) Apple Apple Store Mac iPad iPhone Watch AirPods Home Entertainment Accessories Support 0 + Get up to 12 mo",
+            "threat_type": "Genuine Issue",
+            "is_threat": false,
+            "severity": "low",
+            "fake_review_score": null,
+            "stars": null,
+            "url": "https://www.apple.com/in/",
+            "has_url": true,
+            "evidence_id": "ev_003"
+          }
+        ],
+        "platforms": [
+          "web"
+        ],
+        "scan_metadata": {
+          "timestamp": "2026-10-14T04:59:31.316240Z",
+          "duration_ms": 15223,
+          "ai_enrichment": "OFFLINE_HEURISTIC"
+        },
+        "findings_structured": [
+          {
+            "finding_id": "fnd_br_001",
+            "id": "fnd_br_001",
+            "title": "General Reputation: Apple",
+            "statement": "Apple Apple Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple HomeView Designed for life at home. Available starting 11.13 Learn more Pre-order iPhone 18 Pro Pro further. Learn more Buy iPhone Duo Hello, hello. Pre-order starting 5:00 a.m. PT on 10.16 Available starting 10.23 Learn more View pricing Apple TV 4K Stunning picture. Stunningly simple. Available starting 11.13 Learn more Pre-order HomePo...",
+            "type": "FACT",
+            "importance": "HIGH",
+            "confidence": "HIGH",
+            "epistemic_state": "KNOWN_FACT",
+            "quality_tensor": {
+              "relevance": 0.815,
+              "source_quality": 0.92,
+              "independence": 0.467,
+              "primary_weight": 1.0,
+              "freshness": 0.05,
+              "contradiction_level": 0.05,
+              "composite_score": 0.671,
+              "is_heuristic": true,
+              "scoring_model": "aegis_heuristic_6d"
+            },
+            "supporting_evidence_ids": [
+              "ev_c98ad183fab2",
+              "ev_0c75fcf130a4",
+              "ev_25f406cdba5c"
+            ],
+            "contradicting_evidence_ids": [],
+            "independence_groups": [
+              "publisher_apple.com"
+            ],
+            "primary_sources": [
+              "www.apple.com",
+              "support.apple.com",
+              "www.apple.com"
+            ],
+            "explanation": "Substantiated across 1 independent source group(s) with 3 citations.",
+            "temporal_status": "NEW_EVENT",
+            "catalyst_direction": null,
+            "invalidation_criteria": "Rebuttal or retraction issued by primary official channels (www.apple.com, support.apple.com, www.apple.com).",
+            "evidence_count": 3,
+            "contradiction_count": 0,
+            "metadata": {}
+          }
+        ],
+        "contradictions": [],
+        "deep_research_trace": {
+          "scan_id": "scan_1791953956_2094",
+          "agent": "brandshield",
+          "query": "Apple",
+          "domain": "brand",
+          "planning": {
+            "query_classes_created": 6,
+            "queries_generated": 9,
+            "queries_executed": 6
+          },
+          "channels": {
+            "news": {
+              "channel": "news",
+              "queries_attempted": [
+                "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                "Apple latest news",
+                "Apple controversy reputation complaints"
+              ],
+              "requests_attempted": 3,
+              "successful_requests": 3,
+              "raw_results": 10,
+              "normalized_results": 10,
+              "duplicates_removed": 0,
+              "final_results": 10,
+              "latency_ms": 4585,
+              "status": "DEGRADED",
+              "active_backend": "Jina Reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "failure_reason": null,
+              "content_class": "SYNDICATED",
+              "usable_results": 10
+            },
+            "web": {
+              "channel": "web",
+              "queries_attempted": [
+                "Apple official website verified social accounts",
+                "Apple impersonation scam counterfeit complaint",
+                "Apple latest news"
+              ],
+              "requests_attempted": 3,
+              "successful_requests": 3,
+              "raw_results": 15,
+              "normalized_results": 15,
+              "duplicates_removed": 10,
+              "final_results": 5,
+              "latency_ms": 3376,
+              "status": "DEGRADED",
+              "active_backend": "Jina Reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "failure_reason": null,
+              "content_class": "SEARCH_INDEX",
+              "usable_results": 15
+            },
+            "twitter": {
+              "channel": "twitter",
+              "queries_attempted": [
+                "Apple",
+                "Apple phishing scam",
+                "Apple security threat phishing"
+              ],
+              "requests_attempted": 3,
+              "successful_requests": 0,
+              "raw_results": 0,
+              "normalized_results": 0,
+              "duplicates_removed": 0,
+              "final_results": 0,
+              "latency_ms": 0,
+              "status": "UNAVAILABLE",
+              "active_backend": "twitter",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "failure_reason": "Retrieval budget timeout",
+              "content_class": "UNKNOWN",
+              "usable_results": 0
+            }
+          },
+          "execution_graph": [
+            {
+              "step_id": 1,
+              "platform": "news",
+              "backend": "Jina Reader",
+              "operation": "multi_channel_search",
+              "fallback_chain": [
+                "Jina Web",
+                "Meta API"
+              ],
+              "fallback_used": false,
+              "result_count": 10,
+              "read_depth": "SNIPPET",
+              "failure_reason": null,
+              "latency_ms": 4585,
+              "status": "SUCCESS"
+            },
+            {
+              "step_id": 2,
+              "platform": "web",
+              "backend": "Jina Reader",
+              "operation": "multi_channel_search",
+              "fallback_chain": [
+                "Playwright",
+                "RSS",
+                "Direct HTML"
+              ],
+              "fallback_used": false,
+              "result_count": 15,
+              "read_depth": "SNIPPET",
+              "failure_reason": null,
+              "latency_ms": 3376,
+              "status": "SUCCESS"
+            },
+            {
+              "step_id": 3,
+              "platform": "twitter",
+              "backend": "twitter",
+              "operation": "multi_channel_search",
+              "fallback_chain": [
+                "Jina Web",
+                "Meta API"
+              ],
+              "fallback_used": false,
+              "result_count": 0,
+              "read_depth": "SNIPPET",
+              "failure_reason": "Retrieval budget timeout",
+              "latency_ms": 0,
+              "status": "FAILED"
+            }
+          ],
+          "capability_summary": {
+            "total_queries": 9,
+            "platforms_queried": 22,
+            "native_backends_count": 2,
+            "fallbacks_invoked": 0,
+            "raw_candidates_found": 25,
+            "unique_candidates": 15,
+            "deeply_investigated": 0
+          },
+          "total": {
+            "raw_results": 25,
+            "normalized_results": 25,
+            "duplicates_removed": 10,
+            "final_evidence": 15,
+            "unique_domains": 4,
+            "independent_groups": 2,
+            "readable_sources": 0,
+            "latency_ms": 10008
+          },
+          "funnel": {
+            "queries_planned": 9,
+            "queries_submitted": 9,
+            "queries_started": 9,
+            "queries_succeeded": 6,
+            "queries_failed": 0,
+            "queries_timed_out": 3,
+            "queries_auth_required": 0,
+            "queries_skipped": 0,
+            "queries_executed": 9,
+            "candidates_found": 15,
+            "candidates_accepted": 10,
+            "candidates_rejected": 5,
+            "unique_candidates": 10,
+            "deep_reads_count": 3,
+            "primary_sources_count": 3,
+            "independent_groups_count": 3,
+            "contradictions_count": 0,
+            "findings_count": 1,
+            "saturation_score": 0.0,
+            "halt_reason": "discovery_timeout_reached",
+            "adaptive_rounds": 0
+          },
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 9,
+          "query_records": [
+            {
+              "query_id": "q_002",
+              "channel": "web",
+              "query_text": "Apple latest news",
+              "query_class": "general_reputation",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.242890",
+              "completed_at": "2026-10-14T04:59:19.136935",
+              "latency_ms": 2894,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "web"
+            },
+            {
+              "query_id": "spa_e7f3567d77",
+              "channel": "web",
+              "query_text": "Apple impersonation scam counterfeit complaint",
+              "query_class": "brand_risk",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.241362",
+              "completed_at": "2026-10-14T04:59:19.163836",
+              "latency_ms": 2922,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "web"
+            },
+            {
+              "query_id": "spa_b59ad73553",
+              "channel": "web",
+              "query_text": "Apple official website verified social accounts",
+              "query_class": "identity_primary",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.240671",
+              "completed_at": "2026-10-14T04:59:19.617400",
+              "latency_ms": 3376,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "web"
+            },
+            {
+              "query_id": "q_001",
+              "channel": "news",
+              "query_text": "Apple latest news",
+              "query_class": "general_reputation",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.244417",
+              "completed_at": "2026-10-14T04:59:20.108882",
+              "latency_ms": 3864,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "news"
+            },
+            {
+              "query_id": "spa_6809065b96",
+              "channel": "news",
+              "query_text": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+              "query_class": "identity_corroboration",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.244058",
+              "completed_at": "2026-10-14T04:59:20.829849",
+              "latency_ms": 4585,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "news"
+            },
+            {
+              "query_id": "q_003",
+              "channel": "news",
+              "query_text": "Apple controversy reputation complaints",
+              "query_class": "general_reputation",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:19.136982",
+              "completed_at": "2026-10-14T04:59:21.400064",
+              "latency_ms": 2263,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "news"
+            },
+            {
+              "query_id": "spa_133607f806",
+              "channel": "twitter",
+              "query_text": "Apple",
+              "query_class": "verified_profile",
+              "phase": "initial",
+              "status": "TIMEOUT",
+              "started_at": "2026-10-14T04:59:26.108665",
+              "completed_at": "2026-10-14T04:59:26.108692",
+              "latency_ms": 8000,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": "Retrieval budget timeout",
+              "retrieval_mode": "direct",
+              "backend_id": "twitter"
+            },
+            {
+              "query_id": "q_014",
+              "channel": "twitter",
+              "query_text": "Apple phishing scam",
+              "query_class": "phishing_scam",
+              "phase": "initial",
+              "status": "TIMEOUT",
+              "started_at": "2026-10-14T04:59:26.108730",
+              "completed_at": "2026-10-14T04:59:26.108766",
+              "latency_ms": 8000,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": "Retrieval budget timeout",
+              "retrieval_mode": "direct",
+              "backend_id": "twitter"
+            },
+            {
+              "query_id": "q_016",
+              "channel": "twitter",
+              "query_text": "Apple security threat phishing",
+              "query_class": "phishing_scam",
+              "phase": "initial",
+              "status": "TIMEOUT",
+              "started_at": "2026-10-14T04:59:26.108792",
+              "completed_at": "2026-10-14T04:59:26.108805",
+              "latency_ms": 8000,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": "Retrieval budget timeout",
+              "retrieval_mode": "direct",
+              "backend_id": "twitter"
+            }
+          ],
+          "query_classes_count": 6,
+          "follow_ups_executed": 0,
+          "candidates_found": 15,
+          "candidates_accepted": 10,
+          "candidates_rejected": 5,
+          "candidates_ranked": 10,
+          "deep_read_attempted": 5,
+          "deep_read_success": 3,
+          "candidate_selection_audit": [
+            {
+              "candidate_id": "ev_c98ad183fab2",
+              "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+              "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+              "rank": 1,
+              "score": 0.89,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "PRIMARY_DOCUMENT",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_0c75fcf130a4",
+              "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+              "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+              "rank": 2,
+              "score": 0.89,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "PRIMARY_DOCUMENT",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_25f406cdba5c",
+              "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+              "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+              "rank": 3,
+              "score": 0.77,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "PRIMARY_DOCUMENT",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_7f148cd0f47c",
+              "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+              "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+              "rank": 4,
+              "score": 0.618,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "DIVERSE_SOURCE",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_41ee2c6a810c",
+              "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+              "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+              "rank": 5,
+              "score": 0.517,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "DIVERSE_SOURCE",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_eb0c77bc1f10",
+              "ranked_candidate_id": "cand_rank_ev_eb0c77bc1f10",
+              "accepted_candidate_id": null,
+              "rank": 6,
+              "score": 0.511,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_02a0e76cf5d3",
+              "ranked_candidate_id": "cand_rank_ev_02a0e76cf5d3",
+              "accepted_candidate_id": null,
+              "rank": 7,
+              "score": 0.509,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_6e05813323c3",
+              "ranked_candidate_id": "cand_rank_ev_6e05813323c3",
+              "accepted_candidate_id": null,
+              "rank": 8,
+              "score": 0.498,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_856f3e9cb523",
+              "ranked_candidate_id": "cand_rank_ev_856f3e9cb523",
+              "accepted_candidate_id": null,
+              "rank": 9,
+              "score": 0.435,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_0c15536fcec3",
+              "ranked_candidate_id": "cand_rank_ev_0c15536fcec3",
+              "accepted_candidate_id": null,
+              "rank": 10,
+              "score": 0.435,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            }
+          ],
+          "acquisition_attempts": [
+            {
+              "attempt_id": "acq_att_0e392fe9bc",
+              "candidate_id": "ev_25f406cdba5c",
+              "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+              "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+              "url": "https://www.apple.com/in/",
+              "channel": "web",
+              "status": "SUCCESS",
+              "backend": "native_http_reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "duration_ms": 2988.96,
+              "transport_success": true,
+              "content_extraction_success": true,
+              "useful_content_extracted": true,
+              "char_count": 4000,
+              "error_message": null,
+              "acquired_candidate_id": "cand_acq_ev_25f406cdba5c"
+            },
+            {
+              "attempt_id": "acq_att_049c7b9152",
+              "candidate_id": "ev_0c75fcf130a4",
+              "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+              "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+              "url": "https://support.apple.com/",
+              "channel": "web",
+              "status": "SUCCESS",
+              "backend": "native_http_reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "duration_ms": 3800.27,
+              "transport_success": true,
+              "content_extraction_success": true,
+              "useful_content_extracted": true,
+              "char_count": 3196,
+              "error_message": null,
+              "acquired_candidate_id": "cand_acq_ev_0c75fcf130a4"
+            },
+            {
+              "attempt_id": "acq_att_5577d1658a",
+              "candidate_id": "ev_c98ad183fab2",
+              "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+              "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+              "url": "https://www.apple.com/",
+              "channel": "web",
+              "status": "SUCCESS",
+              "backend": "native_http_reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "duration_ms": 4300.85,
+              "transport_success": true,
+              "content_extraction_success": true,
+              "useful_content_extracted": true,
+              "char_count": 4000,
+              "error_message": null,
+              "acquired_candidate_id": "cand_acq_ev_c98ad183fab2"
+            },
+            {
+              "attempt_id": "acq_att_df5365519f",
+              "candidate_id": "ev_7f148cd0f47c",
+              "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+              "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+              "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE56MFZGTVRFRTNtZ2pzazQ5aEJ6eV9ZWTBfLWVUanFQUGlYWHZZOFhtZVlRdGFESE14eWMwWmMtWEMtbFRSVUh4S2xxbWkyM25oelRBSXU5QkZRUE0ta09SSDY5VVBnZ2hpd1ZjXzR4dXpJSW4tQjZMQXhRREFvUQ?oc=5",
+              "channel": "news",
+              "status": "FAILED",
+              "backend": "timeout",
+              "duration_ms": 4981,
+              "useful_content_extracted": false,
+              "char_count": 0,
+              "error_message": "ThreadPoolExecutor timeout"
+            },
+            {
+              "attempt_id": "acq_att_2ea4217b2e",
+              "candidate_id": "ev_41ee2c6a810c",
+              "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+              "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+              "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNNVpsSWNUUWZvOTRSMFEwZVRpLUhfbmZwdDkxbUI5b0RVeE5FZGpZTTd5QzNoWUdyLWY5YWRPY2ZVZ0F2RVVlUWhJUXRjOWJCLUFaQXJBOTFvQ3M2OE5tbzdlZXFPM0s1ZUhGaEVMZ0JvaWVIYW5GMFRYc0lPVVFvYWJSUGk2cGhTNG9uLVZNNC1yUzJiSVFEUXBRTjRBNjJ1RURVRVZtYVVWSExUei1MM1kxSE4wbG84d3oxbHdyZnZvQQ?oc=5",
+              "channel": "news",
+              "status": "FAILED",
+              "backend": "timeout",
+              "duration_ms": 4981,
+              "useful_content_extracted": false,
+              "char_count": 0,
+              "error_message": "ThreadPoolExecutor timeout"
+            }
+          ],
+          "total_chars_read": 11196,
+          "primary_sources_found": 3,
+          "escalations": {
+            "references_detected": 0,
+            "escalation_queries_executed": 0,
+            "primary_sources_found": 0,
+            "queries": []
+          },
+          "independent_source_groups": 3,
+          "contradictions_found": 0,
+          "findings_count": 1,
+          "integrity_report": {
+            "is_valid": true,
+            "total_findings_checked": 1,
+            "valid_findings_count": 1,
+            "invalid_findings_count": 0,
+            "total_evidence_checked": 10,
+            "missing_evidence_links": [],
+            "invalid_finding_links": [],
+            "orphan_evidence_ids": [
+              "ev_6e05813323c3",
+              "ev_41ee2c6a810c",
+              "ev_7f148cd0f47c",
+              "ev_eb0c77bc1f10",
+              "ev_02a0e76cf5d3",
+              "ev_0c15536fcec3",
+              "ev_856f3e9cb523"
+            ],
+            "evidence_reference_errors": 0
+          },
+          "saturation": {
+            "steps_executed": 1,
+            "final_marginal_novelty": 1.0,
+            "final_saturation_index": 0.13,
+            "is_saturated": false,
+            "stopping_criterion_met": false,
+            "stopping_policy": "aegis_heuristic_decay",
+            "is_heuristic": true,
+            "halt_reason": "Completed standard budget",
+            "saturation_curve": [
+              {
+                "step": 1,
+                "query_id": "q_initial_broad",
+                "query_text": "Apple",
+                "channel": "broad_discovery",
+                "candidates_count": 10,
+                "new_entities_count": 20,
+                "marginal_novelty": 1.0,
+                "cumulative_saturation": 0.13,
+                "halt_triggered": false,
+                "halt_reason": null
+              }
+            ],
+            "total_unique_entities": 20
+          },
+          "source_lineage": {
+            "total_nodes": 10,
+            "edges_count": 0,
+            "origin_count": 3,
+            "echo_count": 0,
+            "true_independent_count": 10,
+            "syndication_compression_ratio": 0.0
+          },
+          "total_latency_ms": 15202,
+          "source_plan": {
+            "plan_id": "sp_827fd3e3976b",
+            "agent": "brandshield",
+            "entity": "Apple",
+            "claim": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+            "intent_class": "identity_attribution",
+            "actions": [
+              {
+                "action_id": "spa_b59ad73553",
+                "stage": 1,
+                "channel": "web",
+                "operation": "search",
+                "query": "Apple official website verified social accounts",
+                "source_category": "identity_primary",
+                "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                "priority": 6,
+                "rationale": "Establish the entity's official web identity before resolving social handles.",
+                "authoritative": true,
+                "source_hint": null,
+                "limitations": [
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              },
+              {
+                "action_id": "spa_133607f806",
+                "stage": 2,
+                "channel": "twitter",
+                "operation": "profile",
+                "query": "Apple",
+                "source_category": "verified_profile",
+                "expected_depth": "PROFILE_METADATA",
+                "priority": 7,
+                "rationale": "Resolve the organization to a candidate X identity; profile metadata is not post evidence.",
+                "authoritative": false,
+                "source_hint": null,
+                "limitations": [
+                  "Plain entity names must not be interpreted as literal handles.",
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              },
+              {
+                "action_id": "spa_6809065b96",
+                "stage": 2,
+                "channel": "news",
+                "operation": "search",
+                "query": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                "source_category": "identity_corroboration",
+                "expected_depth": "SYNDICATED_SUMMARY",
+                "priority": 8,
+                "rationale": "Look for independent identity or impersonation reporting.",
+                "authoritative": false,
+                "source_hint": null,
+                "limitations": [
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              },
+              {
+                "action_id": "spa_e7f3567d77",
+                "stage": 2,
+                "channel": "web",
+                "operation": "search",
+                "query": "Apple impersonation scam counterfeit complaint",
+                "source_category": "brand_risk",
+                "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                "priority": 8,
+                "rationale": "Search for impersonation, counterfeit, and scam indicators.",
+                "authoritative": false,
+                "source_hint": null,
+                "limitations": [
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              }
+            ],
+            "excluded": [
+              {
+                "channel": "boss",
+                "operation": "search_jobs",
+                "reason": "AUTH_REQUIRED: BOSS_CDP_PORT is not configured"
+              },
+              {
+                "channel": "facebook",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: FACEBOOK_COOKIE is not configured"
+              },
+              {
+                "channel": "fact_check",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: GOOGLE_FACTCHECK_API_KEY is not configured"
+              },
+              {
+                "channel": "instagram",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured"
+              },
+              {
+                "channel": "reddit",
+                "operation": "comments",
+                "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+              },
+              {
+                "channel": "reddit",
+                "operation": "read",
+                "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+              },
+              {
+                "channel": "reddit",
+                "operation": "search",
+                "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+              },
+              {
+                "channel": "xiaohongshu",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: XIAOHONGSHU_COOKIE is not configured"
+              },
+              {
+                "channel": "xueqiu",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: XUEQIU_COOKIE is not configured"
+              },
+              {
+                "channel": "news",
+                "operation": "search",
+                "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY"
+              }
+            ],
+            "budget": {
+              "max_actions": 10,
+              "max_queries_per_channel": 3,
+              "max_replans": 1,
+              "max_llm_calls": 1,
+              "timeout_seconds": 2.5
+            },
+            "planner_mode": "DETERMINISTIC",
+            "llm_status": "NOT_REQUESTED",
+            "replan_count": 1,
+            "warnings": [],
+            "runtime_decisions": [
+              {
+                "channel": "web",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SEARCH_INDEX_DISCOVERY"
+                ],
+                "required_depth": "SEARCH_INDEX_DISCOVERY",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_b59ad73553"
+              },
+              {
+                "channel": "twitter",
+                "operation": "profile",
+                "declared": true,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "DIRECT_METADATA"
+                ],
+                "required_depth": "PROFILE_METADATA",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_133607f806"
+              },
+              {
+                "channel": "news",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SYNDICATED_SUMMARY"
+                ],
+                "required_depth": "SYNDICATED_SUMMARY",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_6809065b96"
+              },
+              {
+                "channel": "web",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SEARCH_INDEX_DISCOVERY"
+                ],
+                "required_depth": "SEARCH_INDEX_DISCOVERY",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_e7f3567d77"
+              },
+              {
+                "channel": "news",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SYNDICATED_SUMMARY"
+                ],
+                "required_depth": "SEARCH_INDEX_DISCOVERY",
+                "decision": "EXCLUDE",
+                "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY",
+                "runtime_health": "LIMITED",
+                "temporary": false,
+                "last_outcome": "SYNDICATED_SUMMARY",
+                "last_observed_at": "2026-10-14T04:59:21.400047+00:00",
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": true,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_48a8ef8717"
+              }
+            ]
+          },
+          "dossier_id": "R-2026-E946417D43B642B3AD46967D9DEF6CC2"
+        },
+        "retrieval": {
+          "plan": {
+            "query_classes": {
+              "general_reputation": [
+                "Apple latest news",
+                "Apple controversy reputation complaints"
+              ],
+              "counterfeit": [
+                "Apple counterfeit fake products",
+                "Apple unauthorized seller fake store clone listing"
+              ],
+              "phishing_scam": [
+                "Apple phishing scam",
+                "Apple security threat phishing"
+              ],
+              "impersonation": [
+                "Apple fake support impersonation",
+                "Apple spoofed fake account"
+              ],
+              "reviews": [
+                "Apple fake reviews review manipulation",
+                "Apple review bombing customer complaints"
+              ],
+              "regulatory_legal": [
+                "Apple lawsuit investigation regulator",
+                "Apple product recall safety warning"
+              ]
+            },
+            "trace": {
+              "scan_id": "scan_1791953956_2094",
+              "agent": "brandshield",
+              "query": "Apple",
+              "domain": "brand",
+              "planning": {
+                "query_classes_created": 6,
+                "queries_generated": 9,
+                "queries_executed": 6
+              },
+              "channels": {
+                "news": {
+                  "channel": "news",
+                  "queries_attempted": [
+                    "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                    "Apple latest news",
+                    "Apple controversy reputation complaints"
+                  ],
+                  "requests_attempted": 3,
+                  "successful_requests": 3,
+                  "raw_results": 10,
+                  "normalized_results": 10,
+                  "duplicates_removed": 0,
+                  "final_results": 10,
+                  "latency_ms": 4585,
+                  "status": "DEGRADED",
+                  "active_backend": "Jina Reader",
+                  "fallback_used": false,
+                  "fallback_backend": null,
+                  "failure_reason": null,
+                  "content_class": "SYNDICATED",
+                  "usable_results": 10
+                },
+                "web": {
+                  "channel": "web",
+                  "queries_attempted": [
+                    "Apple official website verified social accounts",
+                    "Apple impersonation scam counterfeit complaint",
+                    "Apple latest news"
+                  ],
+                  "requests_attempted": 3,
+                  "successful_requests": 3,
+                  "raw_results": 15,
+                  "normalized_results": 15,
+                  "duplicates_removed": 10,
+                  "final_results": 5,
+                  "latency_ms": 3376,
+                  "status": "DEGRADED",
+                  "active_backend": "Jina Reader",
+                  "fallback_used": false,
+                  "fallback_backend": null,
+                  "failure_reason": null,
+                  "content_class": "SEARCH_INDEX",
+                  "usable_results": 15
+                },
+                "twitter": {
+                  "channel": "twitter",
+                  "queries_attempted": [
+                    "Apple",
+                    "Apple phishing scam",
+                    "Apple security threat phishing"
+                  ],
+                  "requests_attempted": 3,
+                  "successful_requests": 0,
+                  "raw_results": 0,
+                  "normalized_results": 0,
+                  "duplicates_removed": 0,
+                  "final_results": 0,
+                  "latency_ms": 0,
+                  "status": "UNAVAILABLE",
+                  "active_backend": "twitter",
+                  "fallback_used": false,
+                  "fallback_backend": null,
+                  "failure_reason": "Retrieval budget timeout",
+                  "content_class": "UNKNOWN",
+                  "usable_results": 0
+                }
+              },
+              "execution_graph": [
+                {
+                  "step_id": 1,
+                  "platform": "news",
+                  "backend": "Jina Reader",
+                  "operation": "multi_channel_search",
+                  "fallback_chain": [
+                    "Jina Web",
+                    "Meta API"
+                  ],
+                  "fallback_used": false,
+                  "result_count": 10,
+                  "read_depth": "SNIPPET",
+                  "failure_reason": null,
+                  "latency_ms": 4585,
+                  "status": "SUCCESS"
+                },
+                {
+                  "step_id": 2,
+                  "platform": "web",
+                  "backend": "Jina Reader",
+                  "operation": "multi_channel_search",
+                  "fallback_chain": [
+                    "Playwright",
+                    "RSS",
+                    "Direct HTML"
+                  ],
+                  "fallback_used": false,
+                  "result_count": 15,
+                  "read_depth": "SNIPPET",
+                  "failure_reason": null,
+                  "latency_ms": 3376,
+                  "status": "SUCCESS"
+                },
+                {
+                  "step_id": 3,
+                  "platform": "twitter",
+                  "backend": "twitter",
+                  "operation": "multi_channel_search",
+                  "fallback_chain": [
+                    "Jina Web",
+                    "Meta API"
+                  ],
+                  "fallback_used": false,
+                  "result_count": 0,
+                  "read_depth": "SNIPPET",
+                  "failure_reason": "Retrieval budget timeout",
+                  "latency_ms": 0,
+                  "status": "FAILED"
+                }
+              ],
+              "capability_summary": {
+                "total_queries": 9,
+                "platforms_queried": 22,
+                "native_backends_count": 2,
+                "fallbacks_invoked": 0,
+                "raw_candidates_found": 25,
+                "unique_candidates": 15,
+                "deeply_investigated": 0
+              },
+              "total": {
+                "raw_results": 25,
+                "normalized_results": 25,
+                "duplicates_removed": 10,
+                "final_evidence": 15,
+                "unique_domains": 4,
+                "independent_groups": 2,
+                "readable_sources": 0,
+                "latency_ms": 10008
+              },
+              "funnel": {
+                "queries_planned": 9,
+                "queries_submitted": 9,
+                "queries_started": 9,
+                "queries_succeeded": 6,
+                "queries_failed": 0,
+                "queries_timed_out": 3,
+                "queries_auth_required": 0,
+                "queries_skipped": 0,
+                "queries_executed": 9,
+                "candidates_found": 15,
+                "candidates_accepted": 10,
+                "candidates_rejected": 5,
+                "unique_candidates": 10,
+                "deep_reads_count": 3,
+                "primary_sources_count": 3,
+                "independent_groups_count": 3,
+                "contradictions_count": 0,
+                "findings_count": 1,
+                "saturation_score": 0.0,
+                "halt_reason": "discovery_timeout_reached",
+                "adaptive_rounds": 0
+              },
+              "queries_planned": 9,
+              "queries_submitted": 9,
+              "queries_started": 9,
+              "queries_succeeded": 6,
+              "queries_failed": 0,
+              "queries_timed_out": 3,
+              "queries_auth_required": 0,
+              "queries_skipped": 0,
+              "queries_executed": 9,
+              "query_records": [
+                {
+                  "query_id": "q_002",
+                  "channel": "web",
+                  "query_text": "Apple latest news",
+                  "query_class": "general_reputation",
+                  "phase": "initial",
+                  "status": "SUCCESS",
+                  "started_at": "2026-10-14T04:59:16.242890",
+                  "completed_at": "2026-10-14T04:59:19.136935",
+                  "latency_ms": 2894,
+                  "result_count_raw": 5,
+                  "result_count_normalized": 5,
+                  "error": null,
+                  "retrieval_mode": "direct",
+                  "backend_id": "web"
+                },
+                {
+                  "query_id": "spa_e7f3567d77",
+                  "channel": "web",
+                  "query_text": "Apple impersonation scam counterfeit complaint",
+                  "query_class": "brand_risk",
+                  "phase": "initial",
+                  "status": "SUCCESS",
+                  "started_at": "2026-10-14T04:59:16.241362",
+                  "completed_at": "2026-10-14T04:59:19.163836",
+                  "latency_ms": 2922,
+                  "result_count_raw": 5,
+                  "result_count_normalized": 5,
+                  "error": null,
+                  "retrieval_mode": "direct",
+                  "backend_id": "web"
+                },
+                {
+                  "query_id": "spa_b59ad73553",
+                  "channel": "web",
+                  "query_text": "Apple official website verified social accounts",
+                  "query_class": "identity_primary",
+                  "phase": "initial",
+                  "status": "SUCCESS",
+                  "started_at": "2026-10-14T04:59:16.240671",
+                  "completed_at": "2026-10-14T04:59:19.617400",
+                  "latency_ms": 3376,
+                  "result_count_raw": 5,
+                  "result_count_normalized": 5,
+                  "error": null,
+                  "retrieval_mode": "direct",
+                  "backend_id": "web"
+                },
+                {
+                  "query_id": "q_001",
+                  "channel": "news",
+                  "query_text": "Apple latest news",
+                  "query_class": "general_reputation",
+                  "phase": "initial",
+                  "status": "SUCCESS",
+                  "started_at": "2026-10-14T04:59:16.244417",
+                  "completed_at": "2026-10-14T04:59:20.108882",
+                  "latency_ms": 3864,
+                  "result_count_raw": 5,
+                  "result_count_normalized": 5,
+                  "error": null,
+                  "retrieval_mode": "direct",
+                  "backend_id": "news"
+                },
+                {
+                  "query_id": "spa_6809065b96",
+                  "channel": "news",
+                  "query_text": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                  "query_class": "identity_corroboration",
+                  "phase": "initial",
+                  "status": "SUCCESS",
+                  "started_at": "2026-10-14T04:59:16.244058",
+                  "completed_at": "2026-10-14T04:59:20.829849",
+                  "latency_ms": 4585,
+                  "result_count_raw": 0,
+                  "result_count_normalized": 0,
+                  "error": null,
+                  "retrieval_mode": "direct",
+                  "backend_id": "news"
+                },
+                {
+                  "query_id": "q_003",
+                  "channel": "news",
+                  "query_text": "Apple controversy reputation complaints",
+                  "query_class": "general_reputation",
+                  "phase": "initial",
+                  "status": "SUCCESS",
+                  "started_at": "2026-10-14T04:59:19.136982",
+                  "completed_at": "2026-10-14T04:59:21.400064",
+                  "latency_ms": 2263,
+                  "result_count_raw": 5,
+                  "result_count_normalized": 5,
+                  "error": null,
+                  "retrieval_mode": "direct",
+                  "backend_id": "news"
+                },
+                {
+                  "query_id": "spa_133607f806",
+                  "channel": "twitter",
+                  "query_text": "Apple",
+                  "query_class": "verified_profile",
+                  "phase": "initial",
+                  "status": "TIMEOUT",
+                  "started_at": "2026-10-14T04:59:26.108665",
+                  "completed_at": "2026-10-14T04:59:26.108692",
+                  "latency_ms": 8000,
+                  "result_count_raw": 0,
+                  "result_count_normalized": 0,
+                  "error": "Retrieval budget timeout",
+                  "retrieval_mode": "direct",
+                  "backend_id": "twitter"
+                },
+                {
+                  "query_id": "q_014",
+                  "channel": "twitter",
+                  "query_text": "Apple phishing scam",
+                  "query_class": "phishing_scam",
+                  "phase": "initial",
+                  "status": "TIMEOUT",
+                  "started_at": "2026-10-14T04:59:26.108730",
+                  "completed_at": "2026-10-14T04:59:26.108766",
+                  "latency_ms": 8000,
+                  "result_count_raw": 0,
+                  "result_count_normalized": 0,
+                  "error": "Retrieval budget timeout",
+                  "retrieval_mode": "direct",
+                  "backend_id": "twitter"
+                },
+                {
+                  "query_id": "q_016",
+                  "channel": "twitter",
+                  "query_text": "Apple security threat phishing",
+                  "query_class": "phishing_scam",
+                  "phase": "initial",
+                  "status": "TIMEOUT",
+                  "started_at": "2026-10-14T04:59:26.108792",
+                  "completed_at": "2026-10-14T04:59:26.108805",
+                  "latency_ms": 8000,
+                  "result_count_raw": 0,
+                  "result_count_normalized": 0,
+                  "error": "Retrieval budget timeout",
+                  "retrieval_mode": "direct",
+                  "backend_id": "twitter"
+                }
+              ],
+              "query_classes_count": 6,
+              "follow_ups_executed": 0,
+              "candidates_found": 15,
+              "candidates_accepted": 10,
+              "candidates_rejected": 5,
+              "candidates_ranked": 10,
+              "deep_read_attempted": 5,
+              "deep_read_success": 3,
+              "candidate_selection_audit": [
+                {
+                  "candidate_id": "ev_c98ad183fab2",
+                  "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+                  "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+                  "rank": 1,
+                  "score": 0.89,
+                  "selection_decision": "ACCEPTED",
+                  "selection_reason": "PRIMARY_DOCUMENT",
+                  "eligible_for_read": true,
+                  "selected": true,
+                  "rejection_reason": null
+                },
+                {
+                  "candidate_id": "ev_0c75fcf130a4",
+                  "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+                  "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+                  "rank": 2,
+                  "score": 0.89,
+                  "selection_decision": "ACCEPTED",
+                  "selection_reason": "PRIMARY_DOCUMENT",
+                  "eligible_for_read": true,
+                  "selected": true,
+                  "rejection_reason": null
+                },
+                {
+                  "candidate_id": "ev_25f406cdba5c",
+                  "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+                  "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+                  "rank": 3,
+                  "score": 0.77,
+                  "selection_decision": "ACCEPTED",
+                  "selection_reason": "PRIMARY_DOCUMENT",
+                  "eligible_for_read": true,
+                  "selected": true,
+                  "rejection_reason": null
+                },
+                {
+                  "candidate_id": "ev_7f148cd0f47c",
+                  "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+                  "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+                  "rank": 4,
+                  "score": 0.618,
+                  "selection_decision": "ACCEPTED",
+                  "selection_reason": "DIVERSE_SOURCE",
+                  "eligible_for_read": true,
+                  "selected": true,
+                  "rejection_reason": null
+                },
+                {
+                  "candidate_id": "ev_41ee2c6a810c",
+                  "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+                  "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+                  "rank": 5,
+                  "score": 0.517,
+                  "selection_decision": "ACCEPTED",
+                  "selection_reason": "DIVERSE_SOURCE",
+                  "eligible_for_read": true,
+                  "selected": true,
+                  "rejection_reason": null
+                },
+                {
+                  "candidate_id": "ev_eb0c77bc1f10",
+                  "ranked_candidate_id": "cand_rank_ev_eb0c77bc1f10",
+                  "accepted_candidate_id": null,
+                  "rank": 6,
+                  "score": 0.511,
+                  "selection_decision": "REJECTED",
+                  "selection_reason": "same_domain_over_budget",
+                  "eligible_for_read": true,
+                  "selected": false,
+                  "rejection_reason": "same_domain_over_budget"
+                },
+                {
+                  "candidate_id": "ev_02a0e76cf5d3",
+                  "ranked_candidate_id": "cand_rank_ev_02a0e76cf5d3",
+                  "accepted_candidate_id": null,
+                  "rank": 7,
+                  "score": 0.509,
+                  "selection_decision": "REJECTED",
+                  "selection_reason": "same_domain_over_budget",
+                  "eligible_for_read": true,
+                  "selected": false,
+                  "rejection_reason": "same_domain_over_budget"
+                },
+                {
+                  "candidate_id": "ev_6e05813323c3",
+                  "ranked_candidate_id": "cand_rank_ev_6e05813323c3",
+                  "accepted_candidate_id": null,
+                  "rank": 8,
+                  "score": 0.498,
+                  "selection_decision": "REJECTED",
+                  "selection_reason": "same_domain_over_budget",
+                  "eligible_for_read": true,
+                  "selected": false,
+                  "rejection_reason": "same_domain_over_budget"
+                },
+                {
+                  "candidate_id": "ev_856f3e9cb523",
+                  "ranked_candidate_id": "cand_rank_ev_856f3e9cb523",
+                  "accepted_candidate_id": null,
+                  "rank": 9,
+                  "score": 0.435,
+                  "selection_decision": "REJECTED",
+                  "selection_reason": "same_domain_over_budget",
+                  "eligible_for_read": true,
+                  "selected": false,
+                  "rejection_reason": "same_domain_over_budget"
+                },
+                {
+                  "candidate_id": "ev_0c15536fcec3",
+                  "ranked_candidate_id": "cand_rank_ev_0c15536fcec3",
+                  "accepted_candidate_id": null,
+                  "rank": 10,
+                  "score": 0.435,
+                  "selection_decision": "REJECTED",
+                  "selection_reason": "same_domain_over_budget",
+                  "eligible_for_read": true,
+                  "selected": false,
+                  "rejection_reason": "same_domain_over_budget"
+                }
+              ],
+              "acquisition_attempts": [
+                {
+                  "attempt_id": "acq_att_0e392fe9bc",
+                  "candidate_id": "ev_25f406cdba5c",
+                  "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+                  "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+                  "url": "https://www.apple.com/in/",
+                  "channel": "web",
+                  "status": "SUCCESS",
+                  "backend": "native_http_reader",
+                  "fallback_used": false,
+                  "fallback_backend": null,
+                  "duration_ms": 2988.96,
+                  "transport_success": true,
+                  "content_extraction_success": true,
+                  "useful_content_extracted": true,
+                  "char_count": 4000,
+                  "error_message": null,
+                  "acquired_candidate_id": "cand_acq_ev_25f406cdba5c"
+                },
+                {
+                  "attempt_id": "acq_att_049c7b9152",
+                  "candidate_id": "ev_0c75fcf130a4",
+                  "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+                  "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+                  "url": "https://support.apple.com/",
+                  "channel": "web",
+                  "status": "SUCCESS",
+                  "backend": "native_http_reader",
+                  "fallback_used": false,
+                  "fallback_backend": null,
+                  "duration_ms": 3800.27,
+                  "transport_success": true,
+                  "content_extraction_success": true,
+                  "useful_content_extracted": true,
+                  "char_count": 3196,
+                  "error_message": null,
+                  "acquired_candidate_id": "cand_acq_ev_0c75fcf130a4"
+                },
+                {
+                  "attempt_id": "acq_att_5577d1658a",
+                  "candidate_id": "ev_c98ad183fab2",
+                  "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+                  "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+                  "url": "https://www.apple.com/",
+                  "channel": "web",
+                  "status": "SUCCESS",
+                  "backend": "native_http_reader",
+                  "fallback_used": false,
+                  "fallback_backend": null,
+                  "duration_ms": 4300.85,
+                  "transport_success": true,
+                  "content_extraction_success": true,
+                  "useful_content_extracted": true,
+                  "char_count": 4000,
+                  "error_message": null,
+                  "acquired_candidate_id": "cand_acq_ev_c98ad183fab2"
+                },
+                {
+                  "attempt_id": "acq_att_df5365519f",
+                  "candidate_id": "ev_7f148cd0f47c",
+                  "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+                  "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+                  "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE56MFZGTVRFRTNtZ2pzazQ5aEJ6eV9ZWTBfLWVUanFQUGlYWHZZOFhtZVlRdGFESE14eWMwWmMtWEMtbFRSVUh4S2xxbWkyM25oelRBSXU5QkZRUE0ta09SSDY5VVBnZ2hpd1ZjXzR4dXpJSW4tQjZMQXhRREFvUQ?oc=5",
+                  "channel": "news",
+                  "status": "FAILED",
+                  "backend": "timeout",
+                  "duration_ms": 4981,
+                  "useful_content_extracted": false,
+                  "char_count": 0,
+                  "error_message": "ThreadPoolExecutor timeout"
+                },
+                {
+                  "attempt_id": "acq_att_2ea4217b2e",
+                  "candidate_id": "ev_41ee2c6a810c",
+                  "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+                  "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+                  "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNNVpsSWNUUWZvOTRSMFEwZVRpLUhfbmZwdDkxbUI5b0RVeE5FZGpZTTd5QzNoWUdyLWY5YWRPY2ZVZ0F2RVVlUWhJUXRjOWJCLUFaQXJBOTFvQ3M2OE5tbzdlZXFPM0s1ZUhGaEVMZ0JvaWVIYW5GMFRYc0lPVVFvYWJSUGk2cGhTNG9uLVZNNC1yUzJiSVFEUXBRTjRBNjJ1RURVRVZtYVVWSExUei1MM1kxSE4wbG84d3oxbHdyZnZvQQ?oc=5",
+                  "channel": "news",
+                  "status": "FAILED",
+                  "backend": "timeout",
+                  "duration_ms": 4981,
+                  "useful_content_extracted": false,
+                  "char_count": 0,
+                  "error_message": "ThreadPoolExecutor timeout"
+                }
+              ],
+              "total_chars_read": 11196,
+              "primary_sources_found": 3,
+              "escalations": {
+                "references_detected": 0,
+                "escalation_queries_executed": 0,
+                "primary_sources_found": 0,
+                "queries": []
+              },
+              "independent_source_groups": 3,
+              "contradictions_found": 0,
+              "findings_count": 1,
+              "integrity_report": {
+                "is_valid": true,
+                "total_findings_checked": 1,
+                "valid_findings_count": 1,
+                "invalid_findings_count": 0,
+                "total_evidence_checked": 10,
+                "missing_evidence_links": [],
+                "invalid_finding_links": [],
+                "orphan_evidence_ids": [
+                  "ev_6e05813323c3",
+                  "ev_41ee2c6a810c",
+                  "ev_7f148cd0f47c",
+                  "ev_eb0c77bc1f10",
+                  "ev_02a0e76cf5d3",
+                  "ev_0c15536fcec3",
+                  "ev_856f3e9cb523"
+                ],
+                "evidence_reference_errors": 0
+              },
+              "saturation": {
+                "steps_executed": 1,
+                "final_marginal_novelty": 1.0,
+                "final_saturation_index": 0.13,
+                "is_saturated": false,
+                "stopping_criterion_met": false,
+                "stopping_policy": "aegis_heuristic_decay",
+                "is_heuristic": true,
+                "halt_reason": "Completed standard budget",
+                "saturation_curve": [
+                  {
+                    "step": 1,
+                    "query_id": "q_initial_broad",
+                    "query_text": "Apple",
+                    "channel": "broad_discovery",
+                    "candidates_count": 10,
+                    "new_entities_count": 20,
+                    "marginal_novelty": 1.0,
+                    "cumulative_saturation": 0.13,
+                    "halt_triggered": false,
+                    "halt_reason": null
+                  }
+                ],
+                "total_unique_entities": 20
+              },
+              "source_lineage": {
+                "total_nodes": 10,
+                "edges_count": 0,
+                "origin_count": 3,
+                "echo_count": 0,
+                "true_independent_count": 10,
+                "syndication_compression_ratio": 0.0
+              },
+              "total_latency_ms": 15202,
+              "source_plan": {
+                "plan_id": "sp_827fd3e3976b",
+                "agent": "brandshield",
+                "entity": "Apple",
+                "claim": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                "intent_class": "identity_attribution",
+                "actions": [
+                  {
+                    "action_id": "spa_b59ad73553",
+                    "stage": 1,
+                    "channel": "web",
+                    "operation": "search",
+                    "query": "Apple official website verified social accounts",
+                    "source_category": "identity_primary",
+                    "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                    "priority": 6,
+                    "rationale": "Establish the entity's official web identity before resolving social handles.",
+                    "authoritative": true,
+                    "source_hint": null,
+                    "limitations": [
+                      "Runtime health is unknown or stale; bounded probe only."
+                    ],
+                    "validation_status": "VALID"
+                  },
+                  {
+                    "action_id": "spa_133607f806",
+                    "stage": 2,
+                    "channel": "twitter",
+                    "operation": "profile",
+                    "query": "Apple",
+                    "source_category": "verified_profile",
+                    "expected_depth": "PROFILE_METADATA",
+                    "priority": 7,
+                    "rationale": "Resolve the organization to a candidate X identity; profile metadata is not post evidence.",
+                    "authoritative": false,
+                    "source_hint": null,
+                    "limitations": [
+                      "Plain entity names must not be interpreted as literal handles.",
+                      "Runtime health is unknown or stale; bounded probe only."
+                    ],
+                    "validation_status": "VALID"
+                  },
+                  {
+                    "action_id": "spa_6809065b96",
+                    "stage": 2,
+                    "channel": "news",
+                    "operation": "search",
+                    "query": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                    "source_category": "identity_corroboration",
+                    "expected_depth": "SYNDICATED_SUMMARY",
+                    "priority": 8,
+                    "rationale": "Look for independent identity or impersonation reporting.",
+                    "authoritative": false,
+                    "source_hint": null,
+                    "limitations": [
+                      "Runtime health is unknown or stale; bounded probe only."
+                    ],
+                    "validation_status": "VALID"
+                  },
+                  {
+                    "action_id": "spa_e7f3567d77",
+                    "stage": 2,
+                    "channel": "web",
+                    "operation": "search",
+                    "query": "Apple impersonation scam counterfeit complaint",
+                    "source_category": "brand_risk",
+                    "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                    "priority": 8,
+                    "rationale": "Search for impersonation, counterfeit, and scam indicators.",
+                    "authoritative": false,
+                    "source_hint": null,
+                    "limitations": [
+                      "Runtime health is unknown or stale; bounded probe only."
+                    ],
+                    "validation_status": "VALID"
+                  }
+                ],
+                "excluded": [
+                  {
+                    "channel": "boss",
+                    "operation": "search_jobs",
+                    "reason": "AUTH_REQUIRED: BOSS_CDP_PORT is not configured"
+                  },
+                  {
+                    "channel": "facebook",
+                    "operation": "search",
+                    "reason": "AUTH_REQUIRED: FACEBOOK_COOKIE is not configured"
+                  },
+                  {
+                    "channel": "fact_check",
+                    "operation": "search",
+                    "reason": "AUTH_REQUIRED: GOOGLE_FACTCHECK_API_KEY is not configured"
+                  },
+                  {
+                    "channel": "instagram",
+                    "operation": "search",
+                    "reason": "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured"
+                  },
+                  {
+                    "channel": "reddit",
+                    "operation": "comments",
+                    "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+                  },
+                  {
+                    "channel": "reddit",
+                    "operation": "read",
+                    "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+                  },
+                  {
+                    "channel": "reddit",
+                    "operation": "search",
+                    "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+                  },
+                  {
+                    "channel": "xiaohongshu",
+                    "operation": "search",
+                    "reason": "AUTH_REQUIRED: XIAOHONGSHU_COOKIE is not configured"
+                  },
+                  {
+                    "channel": "xueqiu",
+                    "operation": "search",
+                    "reason": "AUTH_REQUIRED: XUEQIU_COOKIE is not configured"
+                  },
+                  {
+                    "channel": "news",
+                    "operation": "search",
+                    "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY"
+                  }
+                ],
+                "budget": {
+                  "max_actions": 10,
+                  "max_queries_per_channel": 3,
+                  "max_replans": 1,
+                  "max_llm_calls": 1,
+                  "timeout_seconds": 2.5
+                },
+                "planner_mode": "DETERMINISTIC",
+                "llm_status": "NOT_REQUESTED",
+                "replan_count": 1,
+                "warnings": [],
+                "runtime_decisions": [
+                  {
+                    "channel": "web",
+                    "operation": "search",
+                    "declared": false,
+                    "handler_available": true,
+                    "auth_environment": null,
+                    "credential_present": true,
+                    "policy_eligible": true,
+                    "supported_depths": [
+                      "SEARCH_INDEX_DISCOVERY"
+                    ],
+                    "required_depth": "SEARCH_INDEX_DISCOVERY",
+                    "decision": "ELIGIBLE_UNVERIFIED",
+                    "reason": "No fresh runtime observation; bounded probing is allowed",
+                    "runtime_health": "UNKNOWN",
+                    "temporary": false,
+                    "last_outcome": null,
+                    "last_observed_at": null,
+                    "observation_age_seconds": null,
+                    "observation_fresh": false,
+                    "network_observed": false,
+                    "cache_only": false,
+                    "retry_after_seconds": null,
+                    "action_id": "spa_b59ad73553"
+                  },
+                  {
+                    "channel": "twitter",
+                    "operation": "profile",
+                    "declared": true,
+                    "handler_available": true,
+                    "auth_environment": null,
+                    "credential_present": true,
+                    "policy_eligible": true,
+                    "supported_depths": [
+                      "DIRECT_METADATA"
+                    ],
+                    "required_depth": "PROFILE_METADATA",
+                    "decision": "ELIGIBLE_UNVERIFIED",
+                    "reason": "No fresh runtime observation; bounded probing is allowed",
+                    "runtime_health": "UNKNOWN",
+                    "temporary": false,
+                    "last_outcome": null,
+                    "last_observed_at": null,
+                    "observation_age_seconds": null,
+                    "observation_fresh": false,
+                    "network_observed": false,
+                    "cache_only": false,
+                    "retry_after_seconds": null,
+                    "action_id": "spa_133607f806"
+                  },
+                  {
+                    "channel": "news",
+                    "operation": "search",
+                    "declared": false,
+                    "handler_available": true,
+                    "auth_environment": null,
+                    "credential_present": true,
+                    "policy_eligible": true,
+                    "supported_depths": [
+                      "SYNDICATED_SUMMARY"
+                    ],
+                    "required_depth": "SYNDICATED_SUMMARY",
+                    "decision": "ELIGIBLE_UNVERIFIED",
+                    "reason": "No fresh runtime observation; bounded probing is allowed",
+                    "runtime_health": "UNKNOWN",
+                    "temporary": false,
+                    "last_outcome": null,
+                    "last_observed_at": null,
+                    "observation_age_seconds": null,
+                    "observation_fresh": false,
+                    "network_observed": false,
+                    "cache_only": false,
+                    "retry_after_seconds": null,
+                    "action_id": "spa_6809065b96"
+                  },
+                  {
+                    "channel": "web",
+                    "operation": "search",
+                    "declared": false,
+                    "handler_available": true,
+                    "auth_environment": null,
+                    "credential_present": true,
+                    "policy_eligible": true,
+                    "supported_depths": [
+                      "SEARCH_INDEX_DISCOVERY"
+                    ],
+                    "required_depth": "SEARCH_INDEX_DISCOVERY",
+                    "decision": "ELIGIBLE_UNVERIFIED",
+                    "reason": "No fresh runtime observation; bounded probing is allowed",
+                    "runtime_health": "UNKNOWN",
+                    "temporary": false,
+                    "last_outcome": null,
+                    "last_observed_at": null,
+                    "observation_age_seconds": null,
+                    "observation_fresh": false,
+                    "network_observed": false,
+                    "cache_only": false,
+                    "retry_after_seconds": null,
+                    "action_id": "spa_e7f3567d77"
+                  },
+                  {
+                    "channel": "news",
+                    "operation": "search",
+                    "declared": false,
+                    "handler_available": true,
+                    "auth_environment": null,
+                    "credential_present": true,
+                    "policy_eligible": true,
+                    "supported_depths": [
+                      "SYNDICATED_SUMMARY"
+                    ],
+                    "required_depth": "SEARCH_INDEX_DISCOVERY",
+                    "decision": "EXCLUDE",
+                    "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY",
+                    "runtime_health": "LIMITED",
+                    "temporary": false,
+                    "last_outcome": "SYNDICATED_SUMMARY",
+                    "last_observed_at": "2026-10-14T04:59:21.400047+00:00",
+                    "observation_age_seconds": null,
+                    "observation_fresh": false,
+                    "network_observed": true,
+                    "cache_only": false,
+                    "retry_after_seconds": null,
+                    "action_id": "spa_48a8ef8717"
+                  }
+                ]
+              },
+              "dossier_id": "R-2026-E946417D43B642B3AD46967D9DEF6CC2"
+            }
+          },
+          "channels": {},
+          "latency_ms": 15223,
+          "total_sources": 3,
+          "unique_sources": 3,
+          "syndicated_sources": 0,
+          "deep_reads": 3,
+          "trace": {
+            "scan_id": "scan_1791953956_2094",
+            "agent": "brandshield",
+            "query": "Apple",
+            "domain": "brand",
+            "planning": {
+              "query_classes_created": 6,
+              "queries_generated": 9,
+              "queries_executed": 6
+            },
+            "channels": {
+              "news": {
+                "channel": "news",
+                "queries_attempted": [
+                  "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                  "Apple latest news",
+                  "Apple controversy reputation complaints"
+                ],
+                "requests_attempted": 3,
+                "successful_requests": 3,
+                "raw_results": 10,
+                "normalized_results": 10,
+                "duplicates_removed": 0,
+                "final_results": 10,
+                "latency_ms": 4585,
+                "status": "DEGRADED",
+                "active_backend": "Jina Reader",
+                "fallback_used": false,
+                "fallback_backend": null,
+                "failure_reason": null,
+                "content_class": "SYNDICATED",
+                "usable_results": 10
+              },
+              "web": {
+                "channel": "web",
+                "queries_attempted": [
+                  "Apple official website verified social accounts",
+                  "Apple impersonation scam counterfeit complaint",
+                  "Apple latest news"
+                ],
+                "requests_attempted": 3,
+                "successful_requests": 3,
+                "raw_results": 15,
+                "normalized_results": 15,
+                "duplicates_removed": 10,
+                "final_results": 5,
+                "latency_ms": 3376,
+                "status": "DEGRADED",
+                "active_backend": "Jina Reader",
+                "fallback_used": false,
+                "fallback_backend": null,
+                "failure_reason": null,
+                "content_class": "SEARCH_INDEX",
+                "usable_results": 15
+              },
+              "twitter": {
+                "channel": "twitter",
+                "queries_attempted": [
+                  "Apple",
+                  "Apple phishing scam",
+                  "Apple security threat phishing"
+                ],
+                "requests_attempted": 3,
+                "successful_requests": 0,
+                "raw_results": 0,
+                "normalized_results": 0,
+                "duplicates_removed": 0,
+                "final_results": 0,
+                "latency_ms": 0,
+                "status": "UNAVAILABLE",
+                "active_backend": "twitter",
+                "fallback_used": false,
+                "fallback_backend": null,
+                "failure_reason": "Retrieval budget timeout",
+                "content_class": "UNKNOWN",
+                "usable_results": 0
+              }
+            },
+            "execution_graph": [
+              {
+                "step_id": 1,
+                "platform": "news",
+                "backend": "Jina Reader",
+                "operation": "multi_channel_search",
+                "fallback_chain": [
+                  "Jina Web",
+                  "Meta API"
+                ],
+                "fallback_used": false,
+                "result_count": 10,
+                "read_depth": "SNIPPET",
+                "failure_reason": null,
+                "latency_ms": 4585,
+                "status": "SUCCESS"
+              },
+              {
+                "step_id": 2,
+                "platform": "web",
+                "backend": "Jina Reader",
+                "operation": "multi_channel_search",
+                "fallback_chain": [
+                  "Playwright",
+                  "RSS",
+                  "Direct HTML"
+                ],
+                "fallback_used": false,
+                "result_count": 15,
+                "read_depth": "SNIPPET",
+                "failure_reason": null,
+                "latency_ms": 3376,
+                "status": "SUCCESS"
+              },
+              {
+                "step_id": 3,
+                "platform": "twitter",
+                "backend": "twitter",
+                "operation": "multi_channel_search",
+                "fallback_chain": [
+                  "Jina Web",
+                  "Meta API"
+                ],
+                "fallback_used": false,
+                "result_count": 0,
+                "read_depth": "SNIPPET",
+                "failure_reason": "Retrieval budget timeout",
+                "latency_ms": 0,
+                "status": "FAILED"
+              }
+            ],
+            "capability_summary": {
+              "total_queries": 9,
+              "platforms_queried": 22,
+              "native_backends_count": 2,
+              "fallbacks_invoked": 0,
+              "raw_candidates_found": 25,
+              "unique_candidates": 15,
+              "deeply_investigated": 0
+            },
+            "total": {
+              "raw_results": 25,
+              "normalized_results": 25,
+              "duplicates_removed": 10,
+              "final_evidence": 15,
+              "unique_domains": 4,
+              "independent_groups": 2,
+              "readable_sources": 0,
+              "latency_ms": 10008
+            },
+            "funnel": {
+              "queries_planned": 9,
+              "queries_submitted": 9,
+              "queries_started": 9,
+              "queries_succeeded": 6,
+              "queries_failed": 0,
+              "queries_timed_out": 3,
+              "queries_auth_required": 0,
+              "queries_skipped": 0,
+              "queries_executed": 9,
+              "candidates_found": 15,
+              "candidates_accepted": 10,
+              "candidates_rejected": 5,
+              "unique_candidates": 10,
+              "deep_reads_count": 3,
+              "primary_sources_count": 3,
+              "independent_groups_count": 3,
+              "contradictions_count": 0,
+              "findings_count": 1,
+              "saturation_score": 0.0,
+              "halt_reason": "discovery_timeout_reached",
+              "adaptive_rounds": 0
+            },
+            "queries_planned": 9,
+            "queries_submitted": 9,
+            "queries_started": 9,
+            "queries_succeeded": 6,
+            "queries_failed": 0,
+            "queries_timed_out": 3,
+            "queries_auth_required": 0,
+            "queries_skipped": 0,
+            "queries_executed": 9,
+            "query_records": [
+              {
+                "query_id": "q_002",
+                "channel": "web",
+                "query_text": "Apple latest news",
+                "query_class": "general_reputation",
+                "phase": "initial",
+                "status": "SUCCESS",
+                "started_at": "2026-10-14T04:59:16.242890",
+                "completed_at": "2026-10-14T04:59:19.136935",
+                "latency_ms": 2894,
+                "result_count_raw": 5,
+                "result_count_normalized": 5,
+                "error": null,
+                "retrieval_mode": "direct",
+                "backend_id": "web"
+              },
+              {
+                "query_id": "spa_e7f3567d77",
+                "channel": "web",
+                "query_text": "Apple impersonation scam counterfeit complaint",
+                "query_class": "brand_risk",
+                "phase": "initial",
+                "status": "SUCCESS",
+                "started_at": "2026-10-14T04:59:16.241362",
+                "completed_at": "2026-10-14T04:59:19.163836",
+                "latency_ms": 2922,
+                "result_count_raw": 5,
+                "result_count_normalized": 5,
+                "error": null,
+                "retrieval_mode": "direct",
+                "backend_id": "web"
+              },
+              {
+                "query_id": "spa_b59ad73553",
+                "channel": "web",
+                "query_text": "Apple official website verified social accounts",
+                "query_class": "identity_primary",
+                "phase": "initial",
+                "status": "SUCCESS",
+                "started_at": "2026-10-14T04:59:16.240671",
+                "completed_at": "2026-10-14T04:59:19.617400",
+                "latency_ms": 3376,
+                "result_count_raw": 5,
+                "result_count_normalized": 5,
+                "error": null,
+                "retrieval_mode": "direct",
+                "backend_id": "web"
+              },
+              {
+                "query_id": "q_001",
+                "channel": "news",
+                "query_text": "Apple latest news",
+                "query_class": "general_reputation",
+                "phase": "initial",
+                "status": "SUCCESS",
+                "started_at": "2026-10-14T04:59:16.244417",
+                "completed_at": "2026-10-14T04:59:20.108882",
+                "latency_ms": 3864,
+                "result_count_raw": 5,
+                "result_count_normalized": 5,
+                "error": null,
+                "retrieval_mode": "direct",
+                "backend_id": "news"
+              },
+              {
+                "query_id": "spa_6809065b96",
+                "channel": "news",
+                "query_text": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                "query_class": "identity_corroboration",
+                "phase": "initial",
+                "status": "SUCCESS",
+                "started_at": "2026-10-14T04:59:16.244058",
+                "completed_at": "2026-10-14T04:59:20.829849",
+                "latency_ms": 4585,
+                "result_count_raw": 0,
+                "result_count_normalized": 0,
+                "error": null,
+                "retrieval_mode": "direct",
+                "backend_id": "news"
+              },
+              {
+                "query_id": "q_003",
+                "channel": "news",
+                "query_text": "Apple controversy reputation complaints",
+                "query_class": "general_reputation",
+                "phase": "initial",
+                "status": "SUCCESS",
+                "started_at": "2026-10-14T04:59:19.136982",
+                "completed_at": "2026-10-14T04:59:21.400064",
+                "latency_ms": 2263,
+                "result_count_raw": 5,
+                "result_count_normalized": 5,
+                "error": null,
+                "retrieval_mode": "direct",
+                "backend_id": "news"
+              },
+              {
+                "query_id": "spa_133607f806",
+                "channel": "twitter",
+                "query_text": "Apple",
+                "query_class": "verified_profile",
+                "phase": "initial",
+                "status": "TIMEOUT",
+                "started_at": "2026-10-14T04:59:26.108665",
+                "completed_at": "2026-10-14T04:59:26.108692",
+                "latency_ms": 8000,
+                "result_count_raw": 0,
+                "result_count_normalized": 0,
+                "error": "Retrieval budget timeout",
+                "retrieval_mode": "direct",
+                "backend_id": "twitter"
+              },
+              {
+                "query_id": "q_014",
+                "channel": "twitter",
+                "query_text": "Apple phishing scam",
+                "query_class": "phishing_scam",
+                "phase": "initial",
+                "status": "TIMEOUT",
+                "started_at": "2026-10-14T04:59:26.108730",
+                "completed_at": "2026-10-14T04:59:26.108766",
+                "latency_ms": 8000,
+                "result_count_raw": 0,
+                "result_count_normalized": 0,
+                "error": "Retrieval budget timeout",
+                "retrieval_mode": "direct",
+                "backend_id": "twitter"
+              },
+              {
+                "query_id": "q_016",
+                "channel": "twitter",
+                "query_text": "Apple security threat phishing",
+                "query_class": "phishing_scam",
+                "phase": "initial",
+                "status": "TIMEOUT",
+                "started_at": "2026-10-14T04:59:26.108792",
+                "completed_at": "2026-10-14T04:59:26.108805",
+                "latency_ms": 8000,
+                "result_count_raw": 0,
+                "result_count_normalized": 0,
+                "error": "Retrieval budget timeout",
+                "retrieval_mode": "direct",
+                "backend_id": "twitter"
+              }
+            ],
+            "query_classes_count": 6,
+            "follow_ups_executed": 0,
+            "candidates_found": 15,
+            "candidates_accepted": 10,
+            "candidates_rejected": 5,
+            "candidates_ranked": 10,
+            "deep_read_attempted": 5,
+            "deep_read_success": 3,
+            "candidate_selection_audit": [
+              {
+                "candidate_id": "ev_c98ad183fab2",
+                "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+                "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+                "rank": 1,
+                "score": 0.89,
+                "selection_decision": "ACCEPTED",
+                "selection_reason": "PRIMARY_DOCUMENT",
+                "eligible_for_read": true,
+                "selected": true,
+                "rejection_reason": null
+              },
+              {
+                "candidate_id": "ev_0c75fcf130a4",
+                "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+                "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+                "rank": 2,
+                "score": 0.89,
+                "selection_decision": "ACCEPTED",
+                "selection_reason": "PRIMARY_DOCUMENT",
+                "eligible_for_read": true,
+                "selected": true,
+                "rejection_reason": null
+              },
+              {
+                "candidate_id": "ev_25f406cdba5c",
+                "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+                "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+                "rank": 3,
+                "score": 0.77,
+                "selection_decision": "ACCEPTED",
+                "selection_reason": "PRIMARY_DOCUMENT",
+                "eligible_for_read": true,
+                "selected": true,
+                "rejection_reason": null
+              },
+              {
+                "candidate_id": "ev_7f148cd0f47c",
+                "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+                "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+                "rank": 4,
+                "score": 0.618,
+                "selection_decision": "ACCEPTED",
+                "selection_reason": "DIVERSE_SOURCE",
+                "eligible_for_read": true,
+                "selected": true,
+                "rejection_reason": null
+              },
+              {
+                "candidate_id": "ev_41ee2c6a810c",
+                "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+                "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+                "rank": 5,
+                "score": 0.517,
+                "selection_decision": "ACCEPTED",
+                "selection_reason": "DIVERSE_SOURCE",
+                "eligible_for_read": true,
+                "selected": true,
+                "rejection_reason": null
+              },
+              {
+                "candidate_id": "ev_eb0c77bc1f10",
+                "ranked_candidate_id": "cand_rank_ev_eb0c77bc1f10",
+                "accepted_candidate_id": null,
+                "rank": 6,
+                "score": 0.511,
+                "selection_decision": "REJECTED",
+                "selection_reason": "same_domain_over_budget",
+                "eligible_for_read": true,
+                "selected": false,
+                "rejection_reason": "same_domain_over_budget"
+              },
+              {
+                "candidate_id": "ev_02a0e76cf5d3",
+                "ranked_candidate_id": "cand_rank_ev_02a0e76cf5d3",
+                "accepted_candidate_id": null,
+                "rank": 7,
+                "score": 0.509,
+                "selection_decision": "REJECTED",
+                "selection_reason": "same_domain_over_budget",
+                "eligible_for_read": true,
+                "selected": false,
+                "rejection_reason": "same_domain_over_budget"
+              },
+              {
+                "candidate_id": "ev_6e05813323c3",
+                "ranked_candidate_id": "cand_rank_ev_6e05813323c3",
+                "accepted_candidate_id": null,
+                "rank": 8,
+                "score": 0.498,
+                "selection_decision": "REJECTED",
+                "selection_reason": "same_domain_over_budget",
+                "eligible_for_read": true,
+                "selected": false,
+                "rejection_reason": "same_domain_over_budget"
+              },
+              {
+                "candidate_id": "ev_856f3e9cb523",
+                "ranked_candidate_id": "cand_rank_ev_856f3e9cb523",
+                "accepted_candidate_id": null,
+                "rank": 9,
+                "score": 0.435,
+                "selection_decision": "REJECTED",
+                "selection_reason": "same_domain_over_budget",
+                "eligible_for_read": true,
+                "selected": false,
+                "rejection_reason": "same_domain_over_budget"
+              },
+              {
+                "candidate_id": "ev_0c15536fcec3",
+                "ranked_candidate_id": "cand_rank_ev_0c15536fcec3",
+                "accepted_candidate_id": null,
+                "rank": 10,
+                "score": 0.435,
+                "selection_decision": "REJECTED",
+                "selection_reason": "same_domain_over_budget",
+                "eligible_for_read": true,
+                "selected": false,
+                "rejection_reason": "same_domain_over_budget"
+              }
+            ],
+            "acquisition_attempts": [
+              {
+                "attempt_id": "acq_att_0e392fe9bc",
+                "candidate_id": "ev_25f406cdba5c",
+                "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+                "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+                "url": "https://www.apple.com/in/",
+                "channel": "web",
+                "status": "SUCCESS",
+                "backend": "native_http_reader",
+                "fallback_used": false,
+                "fallback_backend": null,
+                "duration_ms": 2988.96,
+                "transport_success": true,
+                "content_extraction_success": true,
+                "useful_content_extracted": true,
+                "char_count": 4000,
+                "error_message": null,
+                "acquired_candidate_id": "cand_acq_ev_25f406cdba5c"
+              },
+              {
+                "attempt_id": "acq_att_049c7b9152",
+                "candidate_id": "ev_0c75fcf130a4",
+                "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+                "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+                "url": "https://support.apple.com/",
+                "channel": "web",
+                "status": "SUCCESS",
+                "backend": "native_http_reader",
+                "fallback_used": false,
+                "fallback_backend": null,
+                "duration_ms": 3800.27,
+                "transport_success": true,
+                "content_extraction_success": true,
+                "useful_content_extracted": true,
+                "char_count": 3196,
+                "error_message": null,
+                "acquired_candidate_id": "cand_acq_ev_0c75fcf130a4"
+              },
+              {
+                "attempt_id": "acq_att_5577d1658a",
+                "candidate_id": "ev_c98ad183fab2",
+                "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+                "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+                "url": "https://www.apple.com/",
+                "channel": "web",
+                "status": "SUCCESS",
+                "backend": "native_http_reader",
+                "fallback_used": false,
+                "fallback_backend": null,
+                "duration_ms": 4300.85,
+                "transport_success": true,
+                "content_extraction_success": true,
+                "useful_content_extracted": true,
+                "char_count": 4000,
+                "error_message": null,
+                "acquired_candidate_id": "cand_acq_ev_c98ad183fab2"
+              },
+              {
+                "attempt_id": "acq_att_df5365519f",
+                "candidate_id": "ev_7f148cd0f47c",
+                "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+                "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+                "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE56MFZGTVRFRTNtZ2pzazQ5aEJ6eV9ZWTBfLWVUanFQUGlYWHZZOFhtZVlRdGFESE14eWMwWmMtWEMtbFRSVUh4S2xxbWkyM25oelRBSXU5QkZRUE0ta09SSDY5VVBnZ2hpd1ZjXzR4dXpJSW4tQjZMQXhRREFvUQ?oc=5",
+                "channel": "news",
+                "status": "FAILED",
+                "backend": "timeout",
+                "duration_ms": 4981,
+                "useful_content_extracted": false,
+                "char_count": 0,
+                "error_message": "ThreadPoolExecutor timeout"
+              },
+              {
+                "attempt_id": "acq_att_2ea4217b2e",
+                "candidate_id": "ev_41ee2c6a810c",
+                "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+                "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+                "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNNVpsSWNUUWZvOTRSMFEwZVRpLUhfbmZwdDkxbUI5b0RVeE5FZGpZTTd5QzNoWUdyLWY5YWRPY2ZVZ0F2RVVlUWhJUXRjOWJCLUFaQXJBOTFvQ3M2OE5tbzdlZXFPM0s1ZUhGaEVMZ0JvaWVIYW5GMFRYc0lPVVFvYWJSUGk2cGhTNG9uLVZNNC1yUzJiSVFEUXBRTjRBNjJ1RURVRVZtYVVWSExUei1MM1kxSE4wbG84d3oxbHdyZnZvQQ?oc=5",
+                "channel": "news",
+                "status": "FAILED",
+                "backend": "timeout",
+                "duration_ms": 4981,
+                "useful_content_extracted": false,
+                "char_count": 0,
+                "error_message": "ThreadPoolExecutor timeout"
+              }
+            ],
+            "total_chars_read": 11196,
+            "primary_sources_found": 3,
+            "escalations": {
+              "references_detected": 0,
+              "escalation_queries_executed": 0,
+              "primary_sources_found": 0,
+              "queries": []
+            },
+            "independent_source_groups": 3,
+            "contradictions_found": 0,
+            "findings_count": 1,
+            "integrity_report": {
+              "is_valid": true,
+              "total_findings_checked": 1,
+              "valid_findings_count": 1,
+              "invalid_findings_count": 0,
+              "total_evidence_checked": 10,
+              "missing_evidence_links": [],
+              "invalid_finding_links": [],
+              "orphan_evidence_ids": [
+                "ev_6e05813323c3",
+                "ev_41ee2c6a810c",
+                "ev_7f148cd0f47c",
+                "ev_eb0c77bc1f10",
+                "ev_02a0e76cf5d3",
+                "ev_0c15536fcec3",
+                "ev_856f3e9cb523"
+              ],
+              "evidence_reference_errors": 0
+            },
+            "saturation": {
+              "steps_executed": 1,
+              "final_marginal_novelty": 1.0,
+              "final_saturation_index": 0.13,
+              "is_saturated": false,
+              "stopping_criterion_met": false,
+              "stopping_policy": "aegis_heuristic_decay",
+              "is_heuristic": true,
+              "halt_reason": "Completed standard budget",
+              "saturation_curve": [
+                {
+                  "step": 1,
+                  "query_id": "q_initial_broad",
+                  "query_text": "Apple",
+                  "channel": "broad_discovery",
+                  "candidates_count": 10,
+                  "new_entities_count": 20,
+                  "marginal_novelty": 1.0,
+                  "cumulative_saturation": 0.13,
+                  "halt_triggered": false,
+                  "halt_reason": null
+                }
+              ],
+              "total_unique_entities": 20
+            },
+            "source_lineage": {
+              "total_nodes": 10,
+              "edges_count": 0,
+              "origin_count": 3,
+              "echo_count": 0,
+              "true_independent_count": 10,
+              "syndication_compression_ratio": 0.0
+            },
+            "total_latency_ms": 15202,
+            "source_plan": {
+              "plan_id": "sp_827fd3e3976b",
+              "agent": "brandshield",
+              "entity": "Apple",
+              "claim": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+              "intent_class": "identity_attribution",
+              "actions": [
+                {
+                  "action_id": "spa_b59ad73553",
+                  "stage": 1,
+                  "channel": "web",
+                  "operation": "search",
+                  "query": "Apple official website verified social accounts",
+                  "source_category": "identity_primary",
+                  "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                  "priority": 6,
+                  "rationale": "Establish the entity's official web identity before resolving social handles.",
+                  "authoritative": true,
+                  "source_hint": null,
+                  "limitations": [
+                    "Runtime health is unknown or stale; bounded probe only."
+                  ],
+                  "validation_status": "VALID"
+                },
+                {
+                  "action_id": "spa_133607f806",
+                  "stage": 2,
+                  "channel": "twitter",
+                  "operation": "profile",
+                  "query": "Apple",
+                  "source_category": "verified_profile",
+                  "expected_depth": "PROFILE_METADATA",
+                  "priority": 7,
+                  "rationale": "Resolve the organization to a candidate X identity; profile metadata is not post evidence.",
+                  "authoritative": false,
+                  "source_hint": null,
+                  "limitations": [
+                    "Plain entity names must not be interpreted as literal handles.",
+                    "Runtime health is unknown or stale; bounded probe only."
+                  ],
+                  "validation_status": "VALID"
+                },
+                {
+                  "action_id": "spa_6809065b96",
+                  "stage": 2,
+                  "channel": "news",
+                  "operation": "search",
+                  "query": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                  "source_category": "identity_corroboration",
+                  "expected_depth": "SYNDICATED_SUMMARY",
+                  "priority": 8,
+                  "rationale": "Look for independent identity or impersonation reporting.",
+                  "authoritative": false,
+                  "source_hint": null,
+                  "limitations": [
+                    "Runtime health is unknown or stale; bounded probe only."
+                  ],
+                  "validation_status": "VALID"
+                },
+                {
+                  "action_id": "spa_e7f3567d77",
+                  "stage": 2,
+                  "channel": "web",
+                  "operation": "search",
+                  "query": "Apple impersonation scam counterfeit complaint",
+                  "source_category": "brand_risk",
+                  "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                  "priority": 8,
+                  "rationale": "Search for impersonation, counterfeit, and scam indicators.",
+                  "authoritative": false,
+                  "source_hint": null,
+                  "limitations": [
+                    "Runtime health is unknown or stale; bounded probe only."
+                  ],
+                  "validation_status": "VALID"
+                }
+              ],
+              "excluded": [
+                {
+                  "channel": "boss",
+                  "operation": "search_jobs",
+                  "reason": "AUTH_REQUIRED: BOSS_CDP_PORT is not configured"
+                },
+                {
+                  "channel": "facebook",
+                  "operation": "search",
+                  "reason": "AUTH_REQUIRED: FACEBOOK_COOKIE is not configured"
+                },
+                {
+                  "channel": "fact_check",
+                  "operation": "search",
+                  "reason": "AUTH_REQUIRED: GOOGLE_FACTCHECK_API_KEY is not configured"
+                },
+                {
+                  "channel": "instagram",
+                  "operation": "search",
+                  "reason": "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured"
+                },
+                {
+                  "channel": "reddit",
+                  "operation": "comments",
+                  "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+                },
+                {
+                  "channel": "reddit",
+                  "operation": "read",
+                  "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+                },
+                {
+                  "channel": "reddit",
+                  "operation": "search",
+                  "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+                },
+                {
+                  "channel": "xiaohongshu",
+                  "operation": "search",
+                  "reason": "AUTH_REQUIRED: XIAOHONGSHU_COOKIE is not configured"
+                },
+                {
+                  "channel": "xueqiu",
+                  "operation": "search",
+                  "reason": "AUTH_REQUIRED: XUEQIU_COOKIE is not configured"
+                },
+                {
+                  "channel": "news",
+                  "operation": "search",
+                  "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY"
+                }
+              ],
+              "budget": {
+                "max_actions": 10,
+                "max_queries_per_channel": 3,
+                "max_replans": 1,
+                "max_llm_calls": 1,
+                "timeout_seconds": 2.5
+              },
+              "planner_mode": "DETERMINISTIC",
+              "llm_status": "NOT_REQUESTED",
+              "replan_count": 1,
+              "warnings": [],
+              "runtime_decisions": [
+                {
+                  "channel": "web",
+                  "operation": "search",
+                  "declared": false,
+                  "handler_available": true,
+                  "auth_environment": null,
+                  "credential_present": true,
+                  "policy_eligible": true,
+                  "supported_depths": [
+                    "SEARCH_INDEX_DISCOVERY"
+                  ],
+                  "required_depth": "SEARCH_INDEX_DISCOVERY",
+                  "decision": "ELIGIBLE_UNVERIFIED",
+                  "reason": "No fresh runtime observation; bounded probing is allowed",
+                  "runtime_health": "UNKNOWN",
+                  "temporary": false,
+                  "last_outcome": null,
+                  "last_observed_at": null,
+                  "observation_age_seconds": null,
+                  "observation_fresh": false,
+                  "network_observed": false,
+                  "cache_only": false,
+                  "retry_after_seconds": null,
+                  "action_id": "spa_b59ad73553"
+                },
+                {
+                  "channel": "twitter",
+                  "operation": "profile",
+                  "declared": true,
+                  "handler_available": true,
+                  "auth_environment": null,
+                  "credential_present": true,
+                  "policy_eligible": true,
+                  "supported_depths": [
+                    "DIRECT_METADATA"
+                  ],
+                  "required_depth": "PROFILE_METADATA",
+                  "decision": "ELIGIBLE_UNVERIFIED",
+                  "reason": "No fresh runtime observation; bounded probing is allowed",
+                  "runtime_health": "UNKNOWN",
+                  "temporary": false,
+                  "last_outcome": null,
+                  "last_observed_at": null,
+                  "observation_age_seconds": null,
+                  "observation_fresh": false,
+                  "network_observed": false,
+                  "cache_only": false,
+                  "retry_after_seconds": null,
+                  "action_id": "spa_133607f806"
+                },
+                {
+                  "channel": "news",
+                  "operation": "search",
+                  "declared": false,
+                  "handler_available": true,
+                  "auth_environment": null,
+                  "credential_present": true,
+                  "policy_eligible": true,
+                  "supported_depths": [
+                    "SYNDICATED_SUMMARY"
+                  ],
+                  "required_depth": "SYNDICATED_SUMMARY",
+                  "decision": "ELIGIBLE_UNVERIFIED",
+                  "reason": "No fresh runtime observation; bounded probing is allowed",
+                  "runtime_health": "UNKNOWN",
+                  "temporary": false,
+                  "last_outcome": null,
+                  "last_observed_at": null,
+                  "observation_age_seconds": null,
+                  "observation_fresh": false,
+                  "network_observed": false,
+                  "cache_only": false,
+                  "retry_after_seconds": null,
+                  "action_id": "spa_6809065b96"
+                },
+                {
+                  "channel": "web",
+                  "operation": "search",
+                  "declared": false,
+                  "handler_available": true,
+                  "auth_environment": null,
+                  "credential_present": true,
+                  "policy_eligible": true,
+                  "supported_depths": [
+                    "SEARCH_INDEX_DISCOVERY"
+                  ],
+                  "required_depth": "SEARCH_INDEX_DISCOVERY",
+                  "decision": "ELIGIBLE_UNVERIFIED",
+                  "reason": "No fresh runtime observation; bounded probing is allowed",
+                  "runtime_health": "UNKNOWN",
+                  "temporary": false,
+                  "last_outcome": null,
+                  "last_observed_at": null,
+                  "observation_age_seconds": null,
+                  "observation_fresh": false,
+                  "network_observed": false,
+                  "cache_only": false,
+                  "retry_after_seconds": null,
+                  "action_id": "spa_e7f3567d77"
+                },
+                {
+                  "channel": "news",
+                  "operation": "search",
+                  "declared": false,
+                  "handler_available": true,
+                  "auth_environment": null,
+                  "credential_present": true,
+                  "policy_eligible": true,
+                  "supported_depths": [
+                    "SYNDICATED_SUMMARY"
+                  ],
+                  "required_depth": "SEARCH_INDEX_DISCOVERY",
+                  "decision": "EXCLUDE",
+                  "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY",
+                  "runtime_health": "LIMITED",
+                  "temporary": false,
+                  "last_outcome": "SYNDICATED_SUMMARY",
+                  "last_observed_at": "2026-10-14T04:59:21.400047+00:00",
+                  "observation_age_seconds": null,
+                  "observation_fresh": false,
+                  "network_observed": true,
+                  "cache_only": false,
+                  "retry_after_seconds": null,
+                  "action_id": "spa_48a8ef8717"
+                }
+              ]
+            },
+            "dossier_id": "R-2026-E946417D43B642B3AD46967D9DEF6CC2"
+          }
+        },
+        "retrieval_trace": {
+          "scan_id": "scan_1791953956_2094",
+          "agent": "brandshield",
+          "query": "Apple",
+          "domain": "brand",
+          "planning": {
+            "query_classes_created": 6,
+            "queries_generated": 9,
+            "queries_executed": 6
+          },
+          "channels": {
+            "news": {
+              "channel": "news",
+              "queries_attempted": [
+                "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                "Apple latest news",
+                "Apple controversy reputation complaints"
+              ],
+              "requests_attempted": 3,
+              "successful_requests": 3,
+              "raw_results": 10,
+              "normalized_results": 10,
+              "duplicates_removed": 0,
+              "final_results": 10,
+              "latency_ms": 4585,
+              "status": "DEGRADED",
+              "active_backend": "Jina Reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "failure_reason": null,
+              "content_class": "SYNDICATED",
+              "usable_results": 10
+            },
+            "web": {
+              "channel": "web",
+              "queries_attempted": [
+                "Apple official website verified social accounts",
+                "Apple impersonation scam counterfeit complaint",
+                "Apple latest news"
+              ],
+              "requests_attempted": 3,
+              "successful_requests": 3,
+              "raw_results": 15,
+              "normalized_results": 15,
+              "duplicates_removed": 10,
+              "final_results": 5,
+              "latency_ms": 3376,
+              "status": "DEGRADED",
+              "active_backend": "Jina Reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "failure_reason": null,
+              "content_class": "SEARCH_INDEX",
+              "usable_results": 15
+            },
+            "twitter": {
+              "channel": "twitter",
+              "queries_attempted": [
+                "Apple",
+                "Apple phishing scam",
+                "Apple security threat phishing"
+              ],
+              "requests_attempted": 3,
+              "successful_requests": 0,
+              "raw_results": 0,
+              "normalized_results": 0,
+              "duplicates_removed": 0,
+              "final_results": 0,
+              "latency_ms": 0,
+              "status": "UNAVAILABLE",
+              "active_backend": "twitter",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "failure_reason": "Retrieval budget timeout",
+              "content_class": "UNKNOWN",
+              "usable_results": 0
+            }
+          },
+          "execution_graph": [
+            {
+              "step_id": 1,
+              "platform": "news",
+              "backend": "Jina Reader",
+              "operation": "multi_channel_search",
+              "fallback_chain": [
+                "Jina Web",
+                "Meta API"
+              ],
+              "fallback_used": false,
+              "result_count": 10,
+              "read_depth": "SNIPPET",
+              "failure_reason": null,
+              "latency_ms": 4585,
+              "status": "SUCCESS"
+            },
+            {
+              "step_id": 2,
+              "platform": "web",
+              "backend": "Jina Reader",
+              "operation": "multi_channel_search",
+              "fallback_chain": [
+                "Playwright",
+                "RSS",
+                "Direct HTML"
+              ],
+              "fallback_used": false,
+              "result_count": 15,
+              "read_depth": "SNIPPET",
+              "failure_reason": null,
+              "latency_ms": 3376,
+              "status": "SUCCESS"
+            },
+            {
+              "step_id": 3,
+              "platform": "twitter",
+              "backend": "twitter",
+              "operation": "multi_channel_search",
+              "fallback_chain": [
+                "Jina Web",
+                "Meta API"
+              ],
+              "fallback_used": false,
+              "result_count": 0,
+              "read_depth": "SNIPPET",
+              "failure_reason": "Retrieval budget timeout",
+              "latency_ms": 0,
+              "status": "FAILED"
+            }
+          ],
+          "capability_summary": {
+            "total_queries": 9,
+            "platforms_queried": 22,
+            "native_backends_count": 2,
+            "fallbacks_invoked": 0,
+            "raw_candidates_found": 25,
+            "unique_candidates": 15,
+            "deeply_investigated": 0
+          },
+          "total": {
+            "raw_results": 25,
+            "normalized_results": 25,
+            "duplicates_removed": 10,
+            "final_evidence": 15,
+            "unique_domains": 4,
+            "independent_groups": 2,
+            "readable_sources": 0,
+            "latency_ms": 10008
+          },
+          "funnel": {
+            "queries_planned": 9,
+            "queries_submitted": 9,
+            "queries_started": 9,
+            "queries_succeeded": 6,
+            "queries_failed": 0,
+            "queries_timed_out": 3,
+            "queries_auth_required": 0,
+            "queries_skipped": 0,
+            "queries_executed": 9,
+            "candidates_found": 15,
+            "candidates_accepted": 10,
+            "candidates_rejected": 5,
+            "unique_candidates": 10,
+            "deep_reads_count": 3,
+            "primary_sources_count": 3,
+            "independent_groups_count": 3,
+            "contradictions_count": 0,
+            "findings_count": 1,
+            "saturation_score": 0.0,
+            "halt_reason": "discovery_timeout_reached",
+            "adaptive_rounds": 0
+          },
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 9,
+          "query_records": [
+            {
+              "query_id": "q_002",
+              "channel": "web",
+              "query_text": "Apple latest news",
+              "query_class": "general_reputation",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.242890",
+              "completed_at": "2026-10-14T04:59:19.136935",
+              "latency_ms": 2894,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "web"
+            },
+            {
+              "query_id": "spa_e7f3567d77",
+              "channel": "web",
+              "query_text": "Apple impersonation scam counterfeit complaint",
+              "query_class": "brand_risk",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.241362",
+              "completed_at": "2026-10-14T04:59:19.163836",
+              "latency_ms": 2922,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "web"
+            },
+            {
+              "query_id": "spa_b59ad73553",
+              "channel": "web",
+              "query_text": "Apple official website verified social accounts",
+              "query_class": "identity_primary",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.240671",
+              "completed_at": "2026-10-14T04:59:19.617400",
+              "latency_ms": 3376,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "web"
+            },
+            {
+              "query_id": "q_001",
+              "channel": "news",
+              "query_text": "Apple latest news",
+              "query_class": "general_reputation",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.244417",
+              "completed_at": "2026-10-14T04:59:20.108882",
+              "latency_ms": 3864,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "news"
+            },
+            {
+              "query_id": "spa_6809065b96",
+              "channel": "news",
+              "query_text": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+              "query_class": "identity_corroboration",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:16.244058",
+              "completed_at": "2026-10-14T04:59:20.829849",
+              "latency_ms": 4585,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "news"
+            },
+            {
+              "query_id": "q_003",
+              "channel": "news",
+              "query_text": "Apple controversy reputation complaints",
+              "query_class": "general_reputation",
+              "phase": "initial",
+              "status": "SUCCESS",
+              "started_at": "2026-10-14T04:59:19.136982",
+              "completed_at": "2026-10-14T04:59:21.400064",
+              "latency_ms": 2263,
+              "result_count_raw": 5,
+              "result_count_normalized": 5,
+              "error": null,
+              "retrieval_mode": "direct",
+              "backend_id": "news"
+            },
+            {
+              "query_id": "spa_133607f806",
+              "channel": "twitter",
+              "query_text": "Apple",
+              "query_class": "verified_profile",
+              "phase": "initial",
+              "status": "TIMEOUT",
+              "started_at": "2026-10-14T04:59:26.108665",
+              "completed_at": "2026-10-14T04:59:26.108692",
+              "latency_ms": 8000,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": "Retrieval budget timeout",
+              "retrieval_mode": "direct",
+              "backend_id": "twitter"
+            },
+            {
+              "query_id": "q_014",
+              "channel": "twitter",
+              "query_text": "Apple phishing scam",
+              "query_class": "phishing_scam",
+              "phase": "initial",
+              "status": "TIMEOUT",
+              "started_at": "2026-10-14T04:59:26.108730",
+              "completed_at": "2026-10-14T04:59:26.108766",
+              "latency_ms": 8000,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": "Retrieval budget timeout",
+              "retrieval_mode": "direct",
+              "backend_id": "twitter"
+            },
+            {
+              "query_id": "q_016",
+              "channel": "twitter",
+              "query_text": "Apple security threat phishing",
+              "query_class": "phishing_scam",
+              "phase": "initial",
+              "status": "TIMEOUT",
+              "started_at": "2026-10-14T04:59:26.108792",
+              "completed_at": "2026-10-14T04:59:26.108805",
+              "latency_ms": 8000,
+              "result_count_raw": 0,
+              "result_count_normalized": 0,
+              "error": "Retrieval budget timeout",
+              "retrieval_mode": "direct",
+              "backend_id": "twitter"
+            }
+          ],
+          "query_classes_count": 6,
+          "follow_ups_executed": 0,
+          "candidates_found": 15,
+          "candidates_accepted": 10,
+          "candidates_rejected": 5,
+          "candidates_ranked": 10,
+          "deep_read_attempted": 5,
+          "deep_read_success": 3,
+          "candidate_selection_audit": [
+            {
+              "candidate_id": "ev_c98ad183fab2",
+              "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+              "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+              "rank": 1,
+              "score": 0.89,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "PRIMARY_DOCUMENT",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_0c75fcf130a4",
+              "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+              "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+              "rank": 2,
+              "score": 0.89,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "PRIMARY_DOCUMENT",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_25f406cdba5c",
+              "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+              "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+              "rank": 3,
+              "score": 0.77,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "PRIMARY_DOCUMENT",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_7f148cd0f47c",
+              "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+              "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+              "rank": 4,
+              "score": 0.618,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "DIVERSE_SOURCE",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_41ee2c6a810c",
+              "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+              "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+              "rank": 5,
+              "score": 0.517,
+              "selection_decision": "ACCEPTED",
+              "selection_reason": "DIVERSE_SOURCE",
+              "eligible_for_read": true,
+              "selected": true,
+              "rejection_reason": null
+            },
+            {
+              "candidate_id": "ev_eb0c77bc1f10",
+              "ranked_candidate_id": "cand_rank_ev_eb0c77bc1f10",
+              "accepted_candidate_id": null,
+              "rank": 6,
+              "score": 0.511,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_02a0e76cf5d3",
+              "ranked_candidate_id": "cand_rank_ev_02a0e76cf5d3",
+              "accepted_candidate_id": null,
+              "rank": 7,
+              "score": 0.509,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_6e05813323c3",
+              "ranked_candidate_id": "cand_rank_ev_6e05813323c3",
+              "accepted_candidate_id": null,
+              "rank": 8,
+              "score": 0.498,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_856f3e9cb523",
+              "ranked_candidate_id": "cand_rank_ev_856f3e9cb523",
+              "accepted_candidate_id": null,
+              "rank": 9,
+              "score": 0.435,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            },
+            {
+              "candidate_id": "ev_0c15536fcec3",
+              "ranked_candidate_id": "cand_rank_ev_0c15536fcec3",
+              "accepted_candidate_id": null,
+              "rank": 10,
+              "score": 0.435,
+              "selection_decision": "REJECTED",
+              "selection_reason": "same_domain_over_budget",
+              "eligible_for_read": true,
+              "selected": false,
+              "rejection_reason": "same_domain_over_budget"
+            }
+          ],
+          "acquisition_attempts": [
+            {
+              "attempt_id": "acq_att_0e392fe9bc",
+              "candidate_id": "ev_25f406cdba5c",
+              "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+              "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+              "url": "https://www.apple.com/in/",
+              "channel": "web",
+              "status": "SUCCESS",
+              "backend": "native_http_reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "duration_ms": 2988.96,
+              "transport_success": true,
+              "content_extraction_success": true,
+              "useful_content_extracted": true,
+              "char_count": 4000,
+              "error_message": null,
+              "acquired_candidate_id": "cand_acq_ev_25f406cdba5c"
+            },
+            {
+              "attempt_id": "acq_att_049c7b9152",
+              "candidate_id": "ev_0c75fcf130a4",
+              "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+              "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+              "url": "https://support.apple.com/",
+              "channel": "web",
+              "status": "SUCCESS",
+              "backend": "native_http_reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "duration_ms": 3800.27,
+              "transport_success": true,
+              "content_extraction_success": true,
+              "useful_content_extracted": true,
+              "char_count": 3196,
+              "error_message": null,
+              "acquired_candidate_id": "cand_acq_ev_0c75fcf130a4"
+            },
+            {
+              "attempt_id": "acq_att_5577d1658a",
+              "candidate_id": "ev_c98ad183fab2",
+              "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+              "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+              "url": "https://www.apple.com/",
+              "channel": "web",
+              "status": "SUCCESS",
+              "backend": "native_http_reader",
+              "fallback_used": false,
+              "fallback_backend": null,
+              "duration_ms": 4300.85,
+              "transport_success": true,
+              "content_extraction_success": true,
+              "useful_content_extracted": true,
+              "char_count": 4000,
+              "error_message": null,
+              "acquired_candidate_id": "cand_acq_ev_c98ad183fab2"
+            },
+            {
+              "attempt_id": "acq_att_df5365519f",
+              "candidate_id": "ev_7f148cd0f47c",
+              "ranked_candidate_id": "cand_rank_ev_7f148cd0f47c",
+              "accepted_candidate_id": "cand_acc_ev_7f148cd0f47c",
+              "url": "https://news.google.com/rss/articles/CBMifkFVX3lxTE56MFZGTVRFRTNtZ2pzazQ5aEJ6eV9ZWTBfLWVUanFQUGlYWHZZOFhtZVlRdGFESE14eWMwWmMtWEMtbFRSVUh4S2xxbWkyM25oelRBSXU5QkZRUE0ta09SSDY5VVBnZ2hpd1ZjXzR4dXpJSW4tQjZMQXhRREFvUQ?oc=5",
+              "channel": "news",
+              "status": "FAILED",
+              "backend": "timeout",
+              "duration_ms": 4981,
+              "useful_content_extracted": false,
+              "char_count": 0,
+              "error_message": "ThreadPoolExecutor timeout"
+            },
+            {
+              "attempt_id": "acq_att_2ea4217b2e",
+              "candidate_id": "ev_41ee2c6a810c",
+              "ranked_candidate_id": "cand_rank_ev_41ee2c6a810c",
+              "accepted_candidate_id": "cand_acc_ev_41ee2c6a810c",
+              "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxNNVpsSWNUUWZvOTRSMFEwZVRpLUhfbmZwdDkxbUI5b0RVeE5FZGpZTTd5QzNoWUdyLWY5YWRPY2ZVZ0F2RVVlUWhJUXRjOWJCLUFaQXJBOTFvQ3M2OE5tbzdlZXFPM0s1ZUhGaEVMZ0JvaWVIYW5GMFRYc0lPVVFvYWJSUGk2cGhTNG9uLVZNNC1yUzJiSVFEUXBRTjRBNjJ1RURVRVZtYVVWSExUei1MM1kxSE4wbG84d3oxbHdyZnZvQQ?oc=5",
+              "channel": "news",
+              "status": "FAILED",
+              "backend": "timeout",
+              "duration_ms": 4981,
+              "useful_content_extracted": false,
+              "char_count": 0,
+              "error_message": "ThreadPoolExecutor timeout"
+            }
+          ],
+          "total_chars_read": 11196,
+          "primary_sources_found": 3,
+          "escalations": {
+            "references_detected": 0,
+            "escalation_queries_executed": 0,
+            "primary_sources_found": 0,
+            "queries": []
+          },
+          "independent_source_groups": 3,
+          "contradictions_found": 0,
+          "findings_count": 1,
+          "integrity_report": {
+            "is_valid": true,
+            "total_findings_checked": 1,
+            "valid_findings_count": 1,
+            "invalid_findings_count": 0,
+            "total_evidence_checked": 10,
+            "missing_evidence_links": [],
+            "invalid_finding_links": [],
+            "orphan_evidence_ids": [
+              "ev_6e05813323c3",
+              "ev_41ee2c6a810c",
+              "ev_7f148cd0f47c",
+              "ev_eb0c77bc1f10",
+              "ev_02a0e76cf5d3",
+              "ev_0c15536fcec3",
+              "ev_856f3e9cb523"
+            ],
+            "evidence_reference_errors": 0
+          },
+          "saturation": {
+            "steps_executed": 1,
+            "final_marginal_novelty": 1.0,
+            "final_saturation_index": 0.13,
+            "is_saturated": false,
+            "stopping_criterion_met": false,
+            "stopping_policy": "aegis_heuristic_decay",
+            "is_heuristic": true,
+            "halt_reason": "Completed standard budget",
+            "saturation_curve": [
+              {
+                "step": 1,
+                "query_id": "q_initial_broad",
+                "query_text": "Apple",
+                "channel": "broad_discovery",
+                "candidates_count": 10,
+                "new_entities_count": 20,
+                "marginal_novelty": 1.0,
+                "cumulative_saturation": 0.13,
+                "halt_triggered": false,
+                "halt_reason": null
+              }
+            ],
+            "total_unique_entities": 20
+          },
+          "source_lineage": {
+            "total_nodes": 10,
+            "edges_count": 0,
+            "origin_count": 3,
+            "echo_count": 0,
+            "true_independent_count": 10,
+            "syndication_compression_ratio": 0.0
+          },
+          "total_latency_ms": 15202,
+          "source_plan": {
+            "plan_id": "sp_827fd3e3976b",
+            "agent": "brandshield",
+            "entity": "Apple",
+            "claim": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+            "intent_class": "identity_attribution",
+            "actions": [
+              {
+                "action_id": "spa_b59ad73553",
+                "stage": 1,
+                "channel": "web",
+                "operation": "search",
+                "query": "Apple official website verified social accounts",
+                "source_category": "identity_primary",
+                "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                "priority": 6,
+                "rationale": "Establish the entity's official web identity before resolving social handles.",
+                "authoritative": true,
+                "source_hint": null,
+                "limitations": [
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              },
+              {
+                "action_id": "spa_133607f806",
+                "stage": 2,
+                "channel": "twitter",
+                "operation": "profile",
+                "query": "Apple",
+                "source_category": "verified_profile",
+                "expected_depth": "PROFILE_METADATA",
+                "priority": 7,
+                "rationale": "Resolve the organization to a candidate X identity; profile metadata is not post evidence.",
+                "authoritative": false,
+                "source_hint": null,
+                "limitations": [
+                  "Plain entity names must not be interpreted as literal handles.",
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              },
+              {
+                "action_id": "spa_6809065b96",
+                "stage": 2,
+                "channel": "news",
+                "operation": "search",
+                "query": "Apple. investigate brand reputation, counterfeits, impersonations, phishing, and online threats for Apple",
+                "source_category": "identity_corroboration",
+                "expected_depth": "SYNDICATED_SUMMARY",
+                "priority": 8,
+                "rationale": "Look for independent identity or impersonation reporting.",
+                "authoritative": false,
+                "source_hint": null,
+                "limitations": [
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              },
+              {
+                "action_id": "spa_e7f3567d77",
+                "stage": 2,
+                "channel": "web",
+                "operation": "search",
+                "query": "Apple impersonation scam counterfeit complaint",
+                "source_category": "brand_risk",
+                "expected_depth": "SEARCH_INDEX_DISCOVERY",
+                "priority": 8,
+                "rationale": "Search for impersonation, counterfeit, and scam indicators.",
+                "authoritative": false,
+                "source_hint": null,
+                "limitations": [
+                  "Runtime health is unknown or stale; bounded probe only."
+                ],
+                "validation_status": "VALID"
+              }
+            ],
+            "excluded": [
+              {
+                "channel": "boss",
+                "operation": "search_jobs",
+                "reason": "AUTH_REQUIRED: BOSS_CDP_PORT is not configured"
+              },
+              {
+                "channel": "facebook",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: FACEBOOK_COOKIE is not configured"
+              },
+              {
+                "channel": "fact_check",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: GOOGLE_FACTCHECK_API_KEY is not configured"
+              },
+              {
+                "channel": "instagram",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured"
+              },
+              {
+                "channel": "reddit",
+                "operation": "comments",
+                "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+              },
+              {
+                "channel": "reddit",
+                "operation": "read",
+                "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+              },
+              {
+                "channel": "reddit",
+                "operation": "search",
+                "reason": "POLICY_BLOCKED: approved Reddit access is not configured"
+              },
+              {
+                "channel": "xiaohongshu",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: XIAOHONGSHU_COOKIE is not configured"
+              },
+              {
+                "channel": "xueqiu",
+                "operation": "search",
+                "reason": "AUTH_REQUIRED: XUEQIU_COOKIE is not configured"
+              },
+              {
+                "channel": "news",
+                "operation": "search",
+                "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY"
+              }
+            ],
+            "budget": {
+              "max_actions": 10,
+              "max_queries_per_channel": 3,
+              "max_replans": 1,
+              "max_llm_calls": 1,
+              "timeout_seconds": 2.5
+            },
+            "planner_mode": "DETERMINISTIC",
+            "llm_status": "NOT_REQUESTED",
+            "replan_count": 1,
+            "warnings": [],
+            "runtime_decisions": [
+              {
+                "channel": "web",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SEARCH_INDEX_DISCOVERY"
+                ],
+                "required_depth": "SEARCH_INDEX_DISCOVERY",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_b59ad73553"
+              },
+              {
+                "channel": "twitter",
+                "operation": "profile",
+                "declared": true,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "DIRECT_METADATA"
+                ],
+                "required_depth": "PROFILE_METADATA",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_133607f806"
+              },
+              {
+                "channel": "news",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SYNDICATED_SUMMARY"
+                ],
+                "required_depth": "SYNDICATED_SUMMARY",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_6809065b96"
+              },
+              {
+                "channel": "web",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SEARCH_INDEX_DISCOVERY"
+                ],
+                "required_depth": "SEARCH_INDEX_DISCOVERY",
+                "decision": "ELIGIBLE_UNVERIFIED",
+                "reason": "No fresh runtime observation; bounded probing is allowed",
+                "runtime_health": "UNKNOWN",
+                "temporary": false,
+                "last_outcome": null,
+                "last_observed_at": null,
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": false,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_e7f3567d77"
+              },
+              {
+                "channel": "news",
+                "operation": "search",
+                "declared": false,
+                "handler_available": true,
+                "auth_environment": null,
+                "credential_present": true,
+                "policy_eligible": true,
+                "supported_depths": [
+                  "SYNDICATED_SUMMARY"
+                ],
+                "required_depth": "SEARCH_INDEX_DISCOVERY",
+                "decision": "EXCLUDE",
+                "reason": "INSUFFICIENT_EVIDENCE_DEPTH: requires SEARCH_INDEX_DISCOVERY",
+                "runtime_health": "LIMITED",
+                "temporary": false,
+                "last_outcome": "SYNDICATED_SUMMARY",
+                "last_observed_at": "2026-10-14T04:59:21.400047+00:00",
+                "observation_age_seconds": null,
+                "observation_fresh": false,
+                "network_observed": true,
+                "cache_only": false,
+                "retry_after_seconds": null,
+                "action_id": "spa_48a8ef8717"
+              }
+            ]
+          },
+          "dossier_id": "R-2026-E946417D43B642B3AD46967D9DEF6CC2"
+        },
+        "summary": {
+          "threats_count": 0,
+          "claims_count": 0,
+          "counterfeit_count": 0,
+          "impersonation_count": 0,
+          "independent_groups_count": 1,
+          "high_priority_count": 0
+        },
+        "threats": [],
+        "claims": [],
+        "narratives": [
+          {
+            "theme": "Sampled references mentioning Apple",
+            "description": "These retrieved records do not by themselves establish consumer sentiment, a campaign or the brand's overall risk.",
+            "threat_level": "unassessed",
+            "evidence_ids": [
+              "ev_001",
+              "ev_002",
+              "ev_003"
+            ]
+          }
+        ],
+        "dossiers": [],
+        "counterfeits": [],
+        "impersonations": [],
+        "review_intel": {
+          "status": "INSUFFICIENT_EVIDENCE",
+          "review_manipulation_detected": false,
+          "assessment": "Insufficient review signals retrieved (0 signals identified). At least 2 candidate texts are required for pairwise pattern analysis.",
+          "confidence": null,
+          "signals_analyzed": 0,
+          "near_duplicate_clusters": 0,
+          "signals_found": [],
+          "cluster_notes": "Minimum candidate volume not met for empirical similarity clustering."
+        },
+        "evidence": [
+          {
+            "evidence_id": "ev_001",
+            "discovered_candidate_id": "ev_c98ad183fab2",
+            "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+            "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+            "acquisition_attempt_id": "acq_att_5577d1658a",
+            "acquired_candidate_id": "cand_acq_ev_c98ad183fab2",
+            "selection_decision": "ACCEPTED",
+            "selection_reason": "PRIMARY_DOCUMENT",
+            "title": "Apple",
+            "content": "Apple Apple Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple HomeView Designed for life at home. Available starting 11.13 Learn more Pre-order iPhone 18 Pro Pro further. Learn more Buy iPhone Duo Hello, hello. Pre-order starting 5:00 a.m. PT on 10.16 Available\u00a0starting\u00a010.23 Learn more View pricing Apple TV 4K Stunning picture. Stunningly simple. Available starting 11.13 Learn more Pre-order HomePod mini 2 Sound in living color. Available starting 10.30 Learn more Pre-order Apple Home Collection Created for a better smart home experience. Coming later Learn more Shop Apple Watch Series 12 The most accurate heart rate sensing in a wearable. 1 Learn more Buy Apple Upgrade Love it. Lease it. Upgrade it. 2 Learn more Apple Card Get up to 3% Daily\u00a0Cash back with every purchase. Learn more Apply now Endless entertainment. Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Stream now Action Save the world, bring your friends. Stream now Comedy Friends. And family? F1 on Apple TV Every Grand Prix\u2122, live and on demand\u2014all in one place, all year long. Stream now Comedy The hit comedy is back and Tedder than ever. MLS on Apple TV Watch every club, every match, live\u2014all season long. Stream now Thriller MI5\u2019s most unruly spies are back and under attack. Stream now Documentary Step into the kitchen as expert chefs work to earn\u2014and keep\u2014Michelin\u00a0Stars. Stream now Action A friendship with major red flags. Stream now Mystery 14 Emmy\u00ae Awards Including Best Comedy Play now Hello Kitty Island Adventure Miley: The Zane Lowe Interview Listen now Miley: The Zane Lowe Interview Watch now Join the Team with \u201cTed Lasso\u201d Play now PowerWash Simulator New Music Daily Listen now New Music Daily Watch now Meditation with Christian Play now Madden NFL 27 Arcade Edition Today\u2019s Hits Listen now Today\u2019s Hits Watch now Programs Apple Footer Based on data from an Apple-conducted study of heart rate accuracy, during July and August 2026, utilizing commercially available best-selling wearables available as of June 2026. For more information, visit apple.com/HRAccuracy . Apple\u00a0Upgrade is a device leasing program available in the U.S. (excluding U.S. territories). Leases are provided by Klarna: subject to eligibility and credit approval, including final approval at checkout. To be eligible, you must be a U.S. resident, at least 18 years old (or the legal age in your state), have an accepted credit or debit card, and have an Apple\u00a0Account. Additional eligibility criteria apply. Device must be in good condition upon return; damage fees may apply. For iPhone only: In order to lease an iPhone, you must select an eligible carrier (but you cannot use a prepaid carrier plan). Upgrades require entering into a new lease and are subject to eligibility and credit approval. Apple\u00a0Upgrade is not available on refurbished devices or online at the following special stores: Apple Employee Purchase Plan; participating corporate Employee Purchase Programs; Apple at Work for small businesses or enterprises; Government, Education, or Veterans and Military Purchase Programs. To access and use all Apple\u00a0Card features and products available only to Apple\u00a0Card users, you must add Apple\u00a0Card to Wallet on an iPhone or iPad that supports and has the latest version of iOS or iPadOS. Apple\u00a0Card is subject to credit approval, available only for qualifying applicants in the United States, and issued by Goldman Sachs Bank USA, Salt Lake City Branch. Apple\u00a0Payments\u00a0Services\u00a0LLC, a subsidiary of Apple\u00a0Inc., is a service provider of Goldman Sachs Bank USA for Apple\u00a0Card and Savings accounts. Neither Apple\u00a0Inc. nor Apple\u00a0Payments\u00a0Services\u00a0LLC is a bank. All communications from Apple and Goldman Sachs Bank USA about Apple\u00a0Card (including transactional and marketing communications) and customer service support are available in English. Certain communications about Apple\u00a0Card can be viewed in another language depending on your device language set",
+            "snippet": "Apple Apple Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple HomeView Designed for life at home. Available starting 11.13 Learn more Pre-order iPhone 18 Pro Pro further. Learn more Buy iPhone Duo Hello, hello. Pre-order starting 5:00 a.m. PT on 10.16 Available starting 10.23 Learn more View pricing Apple TV 4K Stunning picture. Stunningly simple. Available starting 11.13 Learn more Pre-order HomePo...",
+            "url": "https://www.apple.com/",
+            "has_url": true,
+            "source": "www.apple.com",
+            "platform": "web",
+            "author": "www.apple.com",
+            "published_at": "",
+            "retrieved_at": "2026-10-14T04:59:19.136014",
+            "source_role": "PRIMARY",
+            "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+            "independence_group": "publisher_apple.com",
+            "is_primary": true,
+            "content_depth": "PRIMARY_DOCUMENT",
+            "query_id": "q_002",
+            "query_class": "general_reputation",
+            "query_text": "Apple latest news"
+          },
+          {
+            "evidence_id": "ev_002",
+            "discovered_candidate_id": "ev_0c75fcf130a4",
+            "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+            "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+            "acquisition_attempt_id": "acq_att_049c7b9152",
+            "acquired_candidate_id": "cand_acq_ev_0c75fcf130a4",
+            "selection_decision": "ACCEPTED",
+            "selection_reason": "PRIMARY_DOCUMENT",
+            "title": "OfficialAppleSupport",
+            "content": "Official Apple Support Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple Support Need help? Start here. iPhone Mac iPad Watch Vision AirPods Reset Apple Account password Change a subscription Billing and payments Search for More Topics Search Support To reveal list of choices, type. Search Support Clear Search Handled with AppleCare Every AppleCare plan provides one-stop service for your Apple products, with quick and easy repairs for accidents like drops and spills. You\u2019re also covered if your iPhone, iPad, or Apple\u00a0Watch is lost or stolen. Learn more Apple Repair and Service We can help you find an Apple-certified repair, performed by trusted experts who use genuine Apple parts. Start a repair More to Explore Apple Support on YouTube Watch videos to get the most out of the latest features, devices, and services. Visit Apple Support on YouTube Today at Apple Learn, create, and be inspired in hands-on sessions at your Apple\u00a0Store. Sign up Designing for longevity At Apple, we are always working to create the best experience for our customers, which is why we design products that last. Designing for longevity is a company-wide effort, informing our earliest decisions long before the first prototype is built and guided by historical customer-use data and predictions on future usage. It requires striking a balance between durability and repairability while not compromising on safety, security, and privacy. Learn more about Apple's approach to designing for longevity, which includes access to safe and reliable repairs. View (PDF) Beware of counterfeit parts Some counterfeit and third party power adapters and batteries may not be designed properly and could result in safety issues. To ensure you receive a genuine Apple battery during a battery replacement, we recommend visiting an Apple\u00a0Store or Apple Authorized Service Provider . If you need a replacement adapter to charge your Apple device, we recommend getting an Apple power adapter. Also non-genuine replacement displays may have compromised visual quality and may fail to work correctly. Apple-certified screen repairs are performed by trusted experts who use genuine Apple parts. Be aware of gift card scams Be aware of scams involving Apple Gift Cards, App Store & iTunes Gift Cards, and Apple Store Gift Cards. Learn more Apple Service Programs Mac\u00a0mini Service Program for No Power Issue iPhone\u00a014\u00a0Plus Service Program for Rear Camera Issue 15-inch MacBook Pro Battery Recall Program See all programs Apple Footer Apple Support Product Support Open Menu Close Menu iPhone Support Mac Support iPad Support Watch Support Apple Vision Pro Support AirPods Support TV Support Support Site Map Service and Repair Open Menu Close Menu Apple Repair Options Service and Repair Information AppleCare Products Hardware Warranties Software License Agreements Complimentary Support Resources Open Menu Close Menu My Support Product Documentation Apple Support Videos Accessibility Connect Open Menu Close Menu Contact Us Support app Apple Communities United States Copyright \u00a9 2026 Apple Inc. All rights reserved. Privacy Policy Terms of Use Sales and Refunds Legal Site Map",
+            "snippet": "Official Apple Support Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple Support Need help? Start here. iPhone Mac iPad Watch Vision AirPods Reset Apple Account password Change a subscription Billing and payments Search for More Topics Search Support To reveal list of choices, type. Search Support Clear Search Handled with AppleCare Every AppleCare plan provides one-stop service for your Apple produ...",
+            "url": "https://support.apple.com/",
+            "has_url": true,
+            "source": "support.apple.com",
+            "platform": "web",
+            "author": "support.apple.com",
+            "published_at": "",
+            "retrieved_at": "2026-10-14T04:59:19.136727",
+            "source_role": "PRIMARY",
+            "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+            "independence_group": "publisher_apple.com",
+            "is_primary": true,
+            "content_depth": "PRIMARY_DOCUMENT",
+            "query_id": "q_002",
+            "query_class": "general_reputation",
+            "query_text": "Apple latest news"
+          },
+          {
+            "evidence_id": "ev_003",
+            "discovered_candidate_id": "ev_25f406cdba5c",
+            "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+            "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+            "acquisition_attempt_id": "acq_att_0e392fe9bc",
+            "acquired_candidate_id": "cand_acq_ev_25f406cdba5c",
+            "selection_decision": "ACCEPTED",
+            "selection_reason": "PRIMARY_DOCUMENT",
+            "title": "Apple(India)",
+            "content": "Apple (India) Apple Apple Store Mac iPad iPhone Watch AirPods Home Entertainment Accessories Support 0 + Get up to 12 months of No\u00a0Cost\u00a0EMI plus up to \u20b915000 instant cashback on selected products with eligible\u00a0cards. \u2021 Shop Apple HomeView Designed for life at home. Available from 13\u00a0November Learn more Pre-order Welcome Joy. Celebrate the season with our festive offers. Shop iPhone 18 Pro Pro further. Learn more Buy Apple TV 4K Stunning picture. Stunningly simple. Available from 13\u00a0November Learn more Pre-order HomePod mini 2 Sound in living colour. Available from 30\u00a0October Learn more Pre-order iPhone Duo Hello, hello. Pre-order starting at 5:30 PM IST on 16 October Available\u00a0from\u00a023\u00a0October Learn more View pricing Apple Watch Series 12 The most accurate heart rate sensing in a wearable. 1 Learn more Buy AirPods 5 Special Edition AirPods 5 with Wireless\u00a0Charging\u00a0Case featuring festive\u00a0engraving. 2 Buy Apple Pay Make way for Apple Pay. Learn more Item 1 - Monarch: Legacy of Monsters Item 2 - Slow Horses Item 3 - Hijack Item 4 - Pluribus Item 5 - Shrinking Item 6 - F1 The Movie Item 7 - Severance Item 8 - Your Friends & Neighbours Item 9 - The Studio Stream now Adventure A new threat will surface. Stream now Thriller Emmy\u00ae Award Winner Stream now Thriller Who can you trust when it's all on the line? Stream now Drama Happiness is a state of mind. Stream now Comedy Getting it together. Together. Stream now Action Let\u2019s ride. Stream now Thriller Winner of 8 Emmy\u00ae Awards Stream now Drama Is it a crime to want more? Stream now Comedy Winner of 13 Emmy\u00ae Awards Apple Footer \u2021Includes instant cashback and No Cost EMI. Instant cashback is available with the purchase of an eligible product with qualifying American Express, Axis Bank and ICICI Bank cards only. Minimum transaction value of \u20b910001 applies. Click here to see instant cashback amounts and eligible devices. Instant cashback is available for up to two orders per rolling 90-day period with an eligible card. Card eligibility is subject to terms and conditions between you and your card issuer. Total transaction value is calculated after any trade-in credit or eligible discount is applied. Any subsequent order adjustment(s) or cancellation(s) may result in instant cashback being recalculated, and any refund may be adjusted to account for instant cashback clawback; this may result in no refund being made to you. Offer may be revised or withdrawn at any time without any prior notice. Additional terms apply . Instant cashback is not available to business customers and cannot be combined with Apple Store for Education or Corporate Employee Purchase Plan pricing. Multiple separate orders cannot be combined for instant cashback. From 11 October 2026 through 11 November 2026, No Cost EMI is available with the purchase of an eligible product made using qualifying cards on 3-, 6-, 9- and 12-month tenures from most leading card issuers. Eligible iPhone Duo, Apple Watch, AirPods and Beats products are available with No Cost EMI on 3- and 6-month tenures only. Monthly pricing is rounded to the nearest rupee. Exact pricing will be provided by your card issuer, subject to your card issuer\u2019s terms and conditions. Minimum order spend applies as per your card issuer\u2019s threshold. No Cost EMI is not available to Business customers and cannot be combined with Apple Store for Education or Corporate Employee Purchase Plan pricing. Card eligibility is subject to terms and conditions between you and your card issuer. Offer may be revised or withdrawn at any time without any prior notice. Terms\u00a0apply . 1. Based on data from an Apple-conducted study of heart rate accuracy, during July and August 2026, utilising commercially available best-selling wearables available as of June\u00a02026. For more information, visit apple.com/HRAccuracy . 2. Special Edition AirPods 5 with Wireless Charging Case are available from 11 October 2026 through 11 November 2026 in India at Apple Store locations, the Apple Store Online and",
+            "snippet": "Apple (India) Apple Apple Store Mac iPad iPhone Watch AirPods Home Entertainment Accessories Support 0 + Get up to 12 months of No Cost EMI plus up to \u20b915000 instant cashback on selected products with eligible cards. \u2021 Shop Apple HomeView Designed for life at home. Available from 13 November Learn more Pre-order Welcome Joy. Celebrate the season with our festive offers. Shop iPhone 18 Pro Pro further. Learn more Buy Apple TV 4K Stunning picture. ...",
+            "url": "https://www.apple.com/in/",
+            "has_url": true,
+            "source": "www.apple.com",
+            "platform": "web",
+            "author": "www.apple.com",
+            "published_at": "",
+            "retrieved_at": "2026-10-14T04:59:19.136260",
+            "source_role": "PRIMARY",
+            "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+            "independence_group": "publisher_apple.com",
+            "is_primary": true,
+            "content_depth": "PRIMARY_DOCUMENT",
+            "query_id": "q_002",
+            "query_class": "general_reputation",
+            "query_text": "Apple latest news"
+          }
+        ],
+        "sources": [
+          {
+            "evidence_id": "ev_001",
+            "discovered_candidate_id": "ev_c98ad183fab2",
+            "ranked_candidate_id": "cand_rank_ev_c98ad183fab2",
+            "accepted_candidate_id": "cand_acc_ev_c98ad183fab2",
+            "acquisition_attempt_id": "acq_att_5577d1658a",
+            "acquired_candidate_id": "cand_acq_ev_c98ad183fab2",
+            "selection_decision": "ACCEPTED",
+            "selection_reason": "PRIMARY_DOCUMENT",
+            "title": "Apple",
+            "content": "Apple Apple Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple HomeView Designed for life at home. Available starting 11.13 Learn more Pre-order iPhone 18 Pro Pro further. Learn more Buy iPhone Duo Hello, hello. Pre-order starting 5:00 a.m. PT on 10.16 Available\u00a0starting\u00a010.23 Learn more View pricing Apple TV 4K Stunning picture. Stunningly simple. Available starting 11.13 Learn more Pre-order HomePod mini 2 Sound in living color. Available starting 10.30 Learn more Pre-order Apple Home Collection Created for a better smart home experience. Coming later Learn more Shop Apple Watch Series 12 The most accurate heart rate sensing in a wearable. 1 Learn more Buy Apple Upgrade Love it. Lease it. Upgrade it. 2 Learn more Apple Card Get up to 3% Daily\u00a0Cash back with every purchase. Learn more Apply now Endless entertainment. Item 1 Item 2 Item 3 Item 4 Item 5 Item 6 Item 7 Item 8 Item 9 Stream now Action Save the world, bring your friends. Stream now Comedy Friends. And family? F1 on Apple TV Every Grand Prix\u2122, live and on demand\u2014all in one place, all year long. Stream now Comedy The hit comedy is back and Tedder than ever. MLS on Apple TV Watch every club, every match, live\u2014all season long. Stream now Thriller MI5\u2019s most unruly spies are back and under attack. Stream now Documentary Step into the kitchen as expert chefs work to earn\u2014and keep\u2014Michelin\u00a0Stars. Stream now Action A friendship with major red flags. Stream now Mystery 14 Emmy\u00ae Awards Including Best Comedy Play now Hello Kitty Island Adventure Miley: The Zane Lowe Interview Listen now Miley: The Zane Lowe Interview Watch now Join the Team with \u201cTed Lasso\u201d Play now PowerWash Simulator New Music Daily Listen now New Music Daily Watch now Meditation with Christian Play now Madden NFL 27 Arcade Edition Today\u2019s Hits Listen now Today\u2019s Hits Watch now Programs Apple Footer Based on data from an Apple-conducted study of heart rate accuracy, during July and August 2026, utilizing commercially available best-selling wearables available as of June 2026. For more information, visit apple.com/HRAccuracy . Apple\u00a0Upgrade is a device leasing program available in the U.S. (excluding U.S. territories). Leases are provided by Klarna: subject to eligibility and credit approval, including final approval at checkout. To be eligible, you must be a U.S. resident, at least 18 years old (or the legal age in your state), have an accepted credit or debit card, and have an Apple\u00a0Account. Additional eligibility criteria apply. Device must be in good condition upon return; damage fees may apply. For iPhone only: In order to lease an iPhone, you must select an eligible carrier (but you cannot use a prepaid carrier plan). Upgrades require entering into a new lease and are subject to eligibility and credit approval. Apple\u00a0Upgrade is not available on refurbished devices or online at the following special stores: Apple Employee Purchase Plan; participating corporate Employee Purchase Programs; Apple at Work for small businesses or enterprises; Government, Education, or Veterans and Military Purchase Programs. To access and use all Apple\u00a0Card features and products available only to Apple\u00a0Card users, you must add Apple\u00a0Card to Wallet on an iPhone or iPad that supports and has the latest version of iOS or iPadOS. Apple\u00a0Card is subject to credit approval, available only for qualifying applicants in the United States, and issued by Goldman Sachs Bank USA, Salt Lake City Branch. Apple\u00a0Payments\u00a0Services\u00a0LLC, a subsidiary of Apple\u00a0Inc., is a service provider of Goldman Sachs Bank USA for Apple\u00a0Card and Savings accounts. Neither Apple\u00a0Inc. nor Apple\u00a0Payments\u00a0Services\u00a0LLC is a bank. All communications from Apple and Goldman Sachs Bank USA about Apple\u00a0Card (including transactional and marketing communications) and customer service support are available in English. Certain communications about Apple\u00a0Card can be viewed in another language depending on your device language set",
+            "snippet": "Apple Apple Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple HomeView Designed for life at home. Available starting 11.13 Learn more Pre-order iPhone 18 Pro Pro further. Learn more Buy iPhone Duo Hello, hello. Pre-order starting 5:00 a.m. PT on 10.16 Available starting 10.23 Learn more View pricing Apple TV 4K Stunning picture. Stunningly simple. Available starting 11.13 Learn more Pre-order HomePo...",
+            "url": "https://www.apple.com/",
+            "has_url": true,
+            "source": "www.apple.com",
+            "platform": "web",
+            "author": "www.apple.com",
+            "published_at": "",
+            "retrieved_at": "2026-10-14T04:59:19.136014",
+            "source_role": "PRIMARY",
+            "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+            "independence_group": "publisher_apple.com",
+            "is_primary": true,
+            "content_depth": "PRIMARY_DOCUMENT",
+            "query_id": "q_002",
+            "query_class": "general_reputation",
+            "query_text": "Apple latest news"
+          },
+          {
+            "evidence_id": "ev_002",
+            "discovered_candidate_id": "ev_0c75fcf130a4",
+            "ranked_candidate_id": "cand_rank_ev_0c75fcf130a4",
+            "accepted_candidate_id": "cand_acc_ev_0c75fcf130a4",
+            "acquisition_attempt_id": "acq_att_049c7b9152",
+            "acquired_candidate_id": "cand_acq_ev_0c75fcf130a4",
+            "selection_decision": "ACCEPTED",
+            "selection_reason": "PRIMARY_DOCUMENT",
+            "title": "OfficialAppleSupport",
+            "content": "Official Apple Support Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple Support Need help? Start here. iPhone Mac iPad Watch Vision AirPods Reset Apple Account password Change a subscription Billing and payments Search for More Topics Search Support To reveal list of choices, type. Search Support Clear Search Handled with AppleCare Every AppleCare plan provides one-stop service for your Apple products, with quick and easy repairs for accidents like drops and spills. You\u2019re also covered if your iPhone, iPad, or Apple\u00a0Watch is lost or stolen. Learn more Apple Repair and Service We can help you find an Apple-certified repair, performed by trusted experts who use genuine Apple parts. Start a repair More to Explore Apple Support on YouTube Watch videos to get the most out of the latest features, devices, and services. Visit Apple Support on YouTube Today at Apple Learn, create, and be inspired in hands-on sessions at your Apple\u00a0Store. Sign up Designing for longevity At Apple, we are always working to create the best experience for our customers, which is why we design products that last. Designing for longevity is a company-wide effort, informing our earliest decisions long before the first prototype is built and guided by historical customer-use data and predictions on future usage. It requires striking a balance between durability and repairability while not compromising on safety, security, and privacy. Learn more about Apple's approach to designing for longevity, which includes access to safe and reliable repairs. View (PDF) Beware of counterfeit parts Some counterfeit and third party power adapters and batteries may not be designed properly and could result in safety issues. To ensure you receive a genuine Apple battery during a battery replacement, we recommend visiting an Apple\u00a0Store or Apple Authorized Service Provider . If you need a replacement adapter to charge your Apple device, we recommend getting an Apple power adapter. Also non-genuine replacement displays may have compromised visual quality and may fail to work correctly. Apple-certified screen repairs are performed by trusted experts who use genuine Apple parts. Be aware of gift card scams Be aware of scams involving Apple Gift Cards, App Store & iTunes Gift Cards, and Apple Store Gift Cards. Learn more Apple Service Programs Mac\u00a0mini Service Program for No Power Issue iPhone\u00a014\u00a0Plus Service Program for Rear Camera Issue 15-inch MacBook Pro Battery Recall Program See all programs Apple Footer Apple Support Product Support Open Menu Close Menu iPhone Support Mac Support iPad Support Watch Support Apple Vision Pro Support AirPods Support TV Support Support Site Map Service and Repair Open Menu Close Menu Apple Repair Options Service and Repair Information AppleCare Products Hardware Warranties Software License Agreements Complimentary Support Resources Open Menu Close Menu My Support Product Documentation Apple Support Videos Accessibility Connect Open Menu Close Menu Contact Us Support app Apple Communities United States Copyright \u00a9 2026 Apple Inc. All rights reserved. Privacy Policy Terms of Use Sales and Refunds Legal Site Map",
+            "snippet": "Official Apple Support Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple Support Need help? Start here. iPhone Mac iPad Watch Vision AirPods Reset Apple Account password Change a subscription Billing and payments Search for More Topics Search Support To reveal list of choices, type. Search Support Clear Search Handled with AppleCare Every AppleCare plan provides one-stop service for your Apple produ...",
+            "url": "https://support.apple.com/",
+            "has_url": true,
+            "source": "support.apple.com",
+            "platform": "web",
+            "author": "support.apple.com",
+            "published_at": "",
+            "retrieved_at": "2026-10-14T04:59:19.136727",
+            "source_role": "PRIMARY",
+            "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+            "independence_group": "publisher_apple.com",
+            "is_primary": true,
+            "content_depth": "PRIMARY_DOCUMENT",
+            "query_id": "q_002",
+            "query_class": "general_reputation",
+            "query_text": "Apple latest news"
+          },
+          {
+            "evidence_id": "ev_003",
+            "discovered_candidate_id": "ev_25f406cdba5c",
+            "ranked_candidate_id": "cand_rank_ev_25f406cdba5c",
+            "accepted_candidate_id": "cand_acc_ev_25f406cdba5c",
+            "acquisition_attempt_id": "acq_att_0e392fe9bc",
+            "acquired_candidate_id": "cand_acq_ev_25f406cdba5c",
+            "selection_decision": "ACCEPTED",
+            "selection_reason": "PRIMARY_DOCUMENT",
+            "title": "Apple(India)",
+            "content": "Apple (India) Apple Apple Store Mac iPad iPhone Watch AirPods Home Entertainment Accessories Support 0 + Get up to 12 months of No\u00a0Cost\u00a0EMI plus up to \u20b915000 instant cashback on selected products with eligible\u00a0cards. \u2021 Shop Apple HomeView Designed for life at home. Available from 13\u00a0November Learn more Pre-order Welcome Joy. Celebrate the season with our festive offers. Shop iPhone 18 Pro Pro further. Learn more Buy Apple TV 4K Stunning picture. Stunningly simple. Available from 13\u00a0November Learn more Pre-order HomePod mini 2 Sound in living colour. Available from 30\u00a0October Learn more Pre-order iPhone Duo Hello, hello. Pre-order starting at 5:30 PM IST on 16 October Available\u00a0from\u00a023\u00a0October Learn more View pricing Apple Watch Series 12 The most accurate heart rate sensing in a wearable. 1 Learn more Buy AirPods 5 Special Edition AirPods 5 with Wireless\u00a0Charging\u00a0Case featuring festive\u00a0engraving. 2 Buy Apple Pay Make way for Apple Pay. Learn more Item 1 - Monarch: Legacy of Monsters Item 2 - Slow Horses Item 3 - Hijack Item 4 - Pluribus Item 5 - Shrinking Item 6 - F1 The Movie Item 7 - Severance Item 8 - Your Friends & Neighbours Item 9 - The Studio Stream now Adventure A new threat will surface. Stream now Thriller Emmy\u00ae Award Winner Stream now Thriller Who can you trust when it's all on the line? Stream now Drama Happiness is a state of mind. Stream now Comedy Getting it together. Together. Stream now Action Let\u2019s ride. Stream now Thriller Winner of 8 Emmy\u00ae Awards Stream now Drama Is it a crime to want more? Stream now Comedy Winner of 13 Emmy\u00ae Awards Apple Footer \u2021Includes instant cashback and No Cost EMI. Instant cashback is available with the purchase of an eligible product with qualifying American Express, Axis Bank and ICICI Bank cards only. Minimum transaction value of \u20b910001 applies. Click here to see instant cashback amounts and eligible devices. Instant cashback is available for up to two orders per rolling 90-day period with an eligible card. Card eligibility is subject to terms and conditions between you and your card issuer. Total transaction value is calculated after any trade-in credit or eligible discount is applied. Any subsequent order adjustment(s) or cancellation(s) may result in instant cashback being recalculated, and any refund may be adjusted to account for instant cashback clawback; this may result in no refund being made to you. Offer may be revised or withdrawn at any time without any prior notice. Additional terms apply . Instant cashback is not available to business customers and cannot be combined with Apple Store for Education or Corporate Employee Purchase Plan pricing. Multiple separate orders cannot be combined for instant cashback. From 11 October 2026 through 11 November 2026, No Cost EMI is available with the purchase of an eligible product made using qualifying cards on 3-, 6-, 9- and 12-month tenures from most leading card issuers. Eligible iPhone Duo, Apple Watch, AirPods and Beats products are available with No Cost EMI on 3- and 6-month tenures only. Monthly pricing is rounded to the nearest rupee. Exact pricing will be provided by your card issuer, subject to your card issuer\u2019s terms and conditions. Minimum order spend applies as per your card issuer\u2019s threshold. No Cost EMI is not available to Business customers and cannot be combined with Apple Store for Education or Corporate Employee Purchase Plan pricing. Card eligibility is subject to terms and conditions between you and your card issuer. Offer may be revised or withdrawn at any time without any prior notice. Terms\u00a0apply . 1. Based on data from an Apple-conducted study of heart rate accuracy, during July and August 2026, utilising commercially available best-selling wearables available as of June\u00a02026. For more information, visit apple.com/HRAccuracy . 2. Special Edition AirPods 5 with Wireless Charging Case are available from 11 October 2026 through 11 November 2026 in India at Apple Store locations, the Apple Store Online and",
+            "snippet": "Apple (India) Apple Apple Store Mac iPad iPhone Watch AirPods Home Entertainment Accessories Support 0 + Get up to 12 months of No Cost EMI plus up to \u20b915000 instant cashback on selected products with eligible cards. \u2021 Shop Apple HomeView Designed for life at home. Available from 13 November Learn more Pre-order Welcome Joy. Celebrate the season with our festive offers. Shop iPhone 18 Pro Pro further. Learn more Buy Apple TV 4K Stunning picture. ...",
+            "url": "https://www.apple.com/in/",
+            "has_url": true,
+            "source": "www.apple.com",
+            "platform": "web",
+            "author": "www.apple.com",
+            "published_at": "",
+            "retrieved_at": "2026-10-14T04:59:19.136260",
+            "source_role": "PRIMARY",
+            "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+            "independence_group": "publisher_apple.com",
+            "is_primary": true,
+            "content_depth": "PRIMARY_DOCUMENT",
+            "query_id": "q_002",
+            "query_class": "general_reputation",
+            "query_text": "Apple latest news"
+          }
+        ],
+        "timeline": [
+          {
+            "time": "Monitored Stream",
+            "platform": "web",
+            "title": "Apple",
+            "url": "https://www.apple.com/",
+            "has_url": true,
+            "source_role": "PRIMARY"
+          },
+          {
+            "time": "Monitored Stream",
+            "platform": "web",
+            "title": "OfficialAppleSupport",
+            "url": "https://support.apple.com/",
+            "has_url": true,
+            "source_role": "PRIMARY"
+          },
+          {
+            "time": "Monitored Stream",
+            "platform": "web",
+            "title": "Apple(India)",
+            "url": "https://www.apple.com/in/",
+            "has_url": true,
+            "source_role": "PRIMARY"
+          }
+        ],
+        "recommendations": [
+          "Verify seller credentials on reported Apple listings.",
+          "Review primary corporate communication channels for official statements."
+        ],
+        "limitations": [
+          "Only platforms actively returned by Agent Reach search endpoints are displayed.",
+          "E-commerce product reviews reflect public web mentions; closed private marketplace databases are not directly polled.",
+          "All citations reflect retrieved public web records; direct human investigation is recommended before legal escalation."
+        ],
+        "unified_report": {
+          "summary": "{'threats_count': 0, 'claims_count': 0, 'counterfeit_count': 0, 'impersonation_count': 0, 'independent_groups_count': 1, 'high_priority_count': 0}",
+          "findings": [],
+          "evidence": {
+            "primary": [
+              {
+                "title": "Apple",
+                "snippet": "Apple Apple Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple HomeView Designed for life at home. Available starting 11.13 Learn more Pre-order iPhone 18 Pro Pro further. Learn more Buy iPhone Duo Hello, hello. Pre-order starting 5:00 a.m. PT on 10.16 Available starting 10.23 Learn more View pricing Apple TV 4K Stunning picture. Stunningly simple. Available starting 11.13 Learn more Pre-order HomePo...",
+                "url": "https://www.apple.com/",
+                "timestamp": null,
+                "source": {
+                  "name": "www.apple.com",
+                  "type": null,
+                  "domain": null,
+                  "is_primary": true
+                },
+                "quality_tensor": null,
+                "retrieval_lineage": []
+              },
+              {
+                "title": "OfficialAppleSupport",
+                "snippet": "Official Apple Support Apple Store Mac iPad iPhone Watch Vision AirPods Home Entertainment Accessories Support 0 + Apple Support Need help? Start here. iPhone Mac iPad Watch Vision AirPods Reset Apple Account password Change a subscription Billing and payments Search for More Topics Search Support To reveal list of choices, type. Search Support Clear Search Handled with AppleCare Every AppleCare plan provides one-stop service for your Apple produ...",
+                "url": "https://support.apple.com/",
+                "timestamp": null,
+                "source": {
+                  "name": "support.apple.com",
+                  "type": null,
+                  "domain": null,
+                  "is_primary": true
+                },
+                "quality_tensor": null,
+                "retrieval_lineage": []
+              },
+              {
+                "title": "Apple(India)",
+                "snippet": "Apple (India) Apple Apple Store Mac iPad iPhone Watch AirPods Home Entertainment Accessories Support 0 + Get up to 12 months of No Cost EMI plus up to \u20b915000 instant cashback on selected products with eligible cards. \u2021 Shop Apple HomeView Designed for life at home. Available from 13 November Learn more Pre-order Welcome Joy. Celebrate the season with our festive offers. Shop iPhone 18 Pro Pro further. Learn more Buy Apple TV 4K Stunning picture. ...",
+                "url": "https://www.apple.com/in/",
+                "timestamp": null,
+                "source": {
+                  "name": "www.apple.com",
+                  "type": null,
+                  "domain": null,
+                  "is_primary": true
+                },
+                "quality_tensor": null,
+                "retrieval_lineage": []
+              }
+            ],
+            "independent": [],
+            "community": []
+          },
+          "disagreements": [],
+          "changes": [],
+          "timeline": [
+            {
+              "timestamp": null,
+              "description": null
+            },
+            {
+              "timestamp": null,
+              "description": null
+            },
+            {
+              "timestamp": null,
+              "description": null
+            }
+          ],
+          "trust": {
+            "quality_tensor": null,
+            "independent_source_count": null,
+            "query_telemetry": {
+              "queries_planned": 0,
+              "queries_submitted": 0,
+              "queries_started": 0,
+              "queries_succeeded": 0,
+              "queries_failed": 0,
+              "queries_timed_out": 0,
+              "queries_auth_required": 0,
+              "queries_skipped": 0,
+              "execution_log": []
+            }
+          },
+          "next_steps": [
+            "Alert your legal team to any counterfeit listings.",
+            "Submit DMCA/trademark takedown requests where applicable.",
+            "Improve brand keyword monitoring cadence."
+          ],
+          "_meta": {
+            "agent": "brandshield",
+            "query": "Apple impersonation phishing brand threats",
+            "generated_at": "2026-10-14T04:59:31.316490+00:00",
+            "schema_version": "3.8.0"
+          }
+        }
+      }
+    }
+  },
+  "requests": {
+    "brandshield": {
+      "brand_name": "Apple",
+      "query": "Apple impersonation phishing brand threats"
+    }
+  },
+  "overall_research_gate": "PARTIAL",
+  "prompt_injection_model_evaluation": "NOT_VERIFIED"
+}

@@ -36,13 +36,11 @@ def build_investigation_dossiers(
         evidence_ids = threat.get("evidence_ids", [])
 
         linked_ev = [ev_map[eid] for eid in evidence_ids if eid in ev_map]
-        if not linked_ev and evidence_list:
-            linked_ev = [evidence_list[0]]
 
         sorted_ev = sorted(linked_ev, key=lambda x: str(x.get("published_at", "")), reverse=False)
         earliest_item = sorted_ev[0] if sorted_ev else (linked_ev[0] if linked_ev else {})
         origin_platform = earliest_item.get("platform", threat.get("platform", "Web"))
-        first_observed_time = earliest_item.get("published_at", "Recent")
+        first_observed_time = earliest_item.get("published_at", "")
 
         platforms_affected = list(set([e.get("platform", "Web") for e in linked_ev]))
         source_urls = [e.get("url") for e in linked_ev if e.get("url") and e.get("url") != "#"]
@@ -72,8 +70,8 @@ def build_investigation_dossiers(
                     "title": e["title"],
                     "snippet": e["snippet"],
                     "url": e["url"],
-                    "author": e.get("author", "@user"),
-                    "published_at": e.get("published_at", "Recent")
+                    "author": e.get("author", ""),
+                    "published_at": e.get("published_at", "")
                 }
                 for e in linked_ev
             ],
@@ -93,7 +91,9 @@ def build_threat_timeline(evidence_list: List[Dict[str, Any]]) -> List[Dict[str,
     timeline: List[Dict[str, Any]] = []
 
     for e in evidence_list[:12]:
-        pub = e.get("published_at", "Recent")
+        pub = e.get("published_at", "")
+        if not pub or pub == "Recent":
+            continue
         timeline.append({
             "timestamp": pub,
             "platform": e.get("platform", "Web"),

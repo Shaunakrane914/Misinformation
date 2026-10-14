@@ -5,6 +5,10 @@ For current Phase 8 acceptance and known browser/backend gaps, read the
 [dated project state](../docs/CURRENT_STATE.md). Static-page checks do not
 establish real acquisition or production deployment.
 
+## Independent review checkpoint — 2026-10-14
+
+See the [independent review](../docs/architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md) and [handoff](../docs/handoffs/2026-10-14_PHASE8_INDEPENDENT_REVIEW.md). Exact unknown verdicts stay unverified; source scores are heuristic. Real recorded API replays exposed and corrected Scout and BrandShield 320px overflow plus an incomplete explorer ARIA tab role. Browser/axe checks are bounded; gradient contrast, manual screen reader and evidence-rich live result acceptance remain open. Screenshots are real captures, not fabricated data; synthetic stress inputs are labeled test-only.
+
 ## Pages
 | File | Description |
 |------|-------------|

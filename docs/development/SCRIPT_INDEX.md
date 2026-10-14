@@ -10,6 +10,16 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ## 1. Overview & Script Taxonomy
 
+### Independent Phase 8 additions — 2026-10-14
+
+- [Real API investigation audit](../../scripts/audits/run_realworld_investigation_audit.py): `--allow-live --profile apple --output-root <new-directory>`; one call per actual agent, temporary persistence, sanitized payloads. Execution success is not research PASS.
+- [Authoritative live probe](../../scripts/audits/run_phase8d_authoritative_source_live_probe.py): `--output-root <new-directory>`; append-only, SEC metadata/NVD/abstract/ClaimReview distinctions, explicit config/auth limitations.
+- [Reference holdout](../../scripts/evaluation/run_phase8_reference_holdout.py): `--output-root <new-directory>`; optional `--engine-root <baseline-worktree>` for comparison. Source-adjudicated component replay, not human annotations/live retrieval/population accuracy.
+- [Result rendering stress](../../scripts/audits/audit_phase8_result_stress.py): `--base-url <served-frontend> --api-results <summary.json> --output-root <new-directory> --axe-script <installed-file>`; recorded API replay and labeled synthetic large/hostile controls, not fresh browser requests.
+- [General rendering audit](../../scripts/audits/audit_phase8_frontend_rendering.py) now accepts `--api-results <summary.json>` alongside optional `--test-fixtures`; explicit input provenance is retained.
+
+See the [review handoff](../handoffs/2026-10-14_PHASE8_INDEPENDENT_REVIEW.md) for actual results and limitations. Existing output directories are rejected; never redirect these scripts over tracked benchmark results.
+
 All executable scripts in `scripts/` are physically organized into six distinct functional package directories with `__init__.py`. To ensure backward compatibility for legacy external CLI callers, key root entry points (`validate_release_candidate_smoke.py`, `validate_rollback_compatibility.py`, `evaluate_dataset.py`, `live_agent_smoke_test.py`, `run_retrieval_quality_benchmark.py`) are maintained via lightweight wrappers at the `scripts/` root.
 
 ```text

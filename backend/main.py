@@ -98,11 +98,16 @@ Aegis Protocol orchestrates a deterministic evidence pipeline with 7 specialized
     openapi_tags=tags_metadata
 )
 
+from backend.core.settings import settings
+
 # ── Middleware ───────────────────────────────────────────────────────────────
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[os.getenv("ALLOWED_ORIGIN", "*")],
-    allow_credentials=True,
+    allow_origins=settings.allowed_origins,
+    # Browsers reject credentialed CORS with a wildcard origin.  Public local
+    # development may use "*", but credentials are enabled only for an
+    # explicit origin allowlist.
+    allow_credentials="*" not in settings.allowed_origins,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -138,12 +143,20 @@ except (ImportError, ModuleNotFoundError):
 
 
 # ── Startup & Shutdown Lifecycle ─────────────────────────────────────────────
+_background_tasks: set[asyncio.Task] = set()
+
+
 @app.on_event("startup")
 async def startup_event():
     logger.info("=" * 80)
-    logger.info("[FastAPI] Aegis Protocol API v3.7.0 — STARTING (Modular Architecture)")
-    logger.info(f"[FastAPI] Supabase URL: {os.getenv('SUPABASE_URL', 'NOT SET (Using Local SQLite)')}")
+    logger.info("[FastAPI] Aegis Protocol API v%s — STARTING (Modular Architecture)", __version__)
+    logger.info(f"[FastAPI] Supabase URL: {settings.supabase_url or 'NOT SET (Using Local SQLite)'}")
     logger.info("[FastAPI] Agents: ClaimIngestion | Research | Investigator | Trending | Scout | BrandShield | PersonalWatch")
+    if settings.environment == "production" and "*" in settings.allowed_origins:
+        logger.warning(
+            "[Security] Production environment running with wildcard CORS ('*'). "
+            "Configure ALLOWED_ORIGIN in production deployment."
+        )
     logger.info("=" * 80)
 
     # Warm dashboard cache
@@ -163,12 +176,19 @@ async def startup_event():
     # Start RSS ingestion background loop
     if os.getenv("RSS_INGESTION_ENABLED", "true").lower() != "false":
         from backend.services.rss_ingestion import rss_ingestion_loop
-        asyncio.create_task(rss_ingestion_loop())
+        task = asyncio.create_task(rss_ingestion_loop(), name="rss-ingestion")
+        _background_tasks.add(task)
+        task.add_done_callback(_background_tasks.discard)
         logger.info("[FastAPI] RSS ingestion loop scheduled (15 min interval)")
 
 
 @app.on_event("shutdown")
 async def shutdown_event():
+    for task in tuple(_background_tasks):
+        task.cancel()
+    if _background_tasks:
+        await asyncio.gather(*tuple(_background_tasks), return_exceptions=True)
+        _background_tasks.clear()
     logger.info("=" * 80)
     logger.info("[FastAPI] Aegis Protocol API — SHUTTING DOWN")
     logger.info("=" * 80)
@@ -186,7 +206,7 @@ async def health_check():
     """
     return {
         "status": "ok",
-        "version": "3.7.0",
+        "version": __version__,
         "uptime_seconds": round(time.time() - _START_TIME, 1),
         "timestamp": datetime.utcnow().isoformat() + "Z",
     }
@@ -202,10 +222,13 @@ async def root():
 @app.get("/launch-video", tags=["Media & Teaser"])
 @app.get("/teaser", tags=["Media & Teaser"])
 async def serve_launch_video():
-    video_page = "brag-output/composition/index.html"
+    video_page = "docs/showcase/composition/index.html"
+    if not os.path.exists(video_page):
+        video_page = "brag-output/composition/index.html"
     if os.path.exists(video_page):
         return FileResponse(video_page)
     return FileResponse("frontend/index.html")
+
 
 
 @app.get("/dashboard")
@@ -294,11 +317,14 @@ async def dashboard_js():
 @app.get("/{filename:path}")
 async def serve_static_root(filename: str):
     """Serve any static asset located in frontend directory at root URL."""
-    if ".." in filename:
+    if ".." in filename or "\\" in filename:
         raise HTTPException(status_code=400, detail="Invalid path")
-    file_path = os.path.join("frontend", filename)
-    if os.path.isfile(file_path):
-        return FileResponse(file_path)
+    safe_root = os.path.abspath("frontend")
+    target_path = os.path.abspath(os.path.join(safe_root, filename))
+    if os.path.commonpath([safe_root, target_path]) != safe_root:
+        raise HTTPException(status_code=400, detail="Invalid path")
+    if os.path.isfile(target_path):
+        return FileResponse(target_path)
     raise HTTPException(status_code=404, detail=f"File not found: {filename}")
 
 

@@ -1,6 +1,10 @@
 # Aegis Protocol — Master Improvement Plan (Phases 0 - 8)
 **Branch**: `aegis/full-project-improvement`  
-**Execution Horizon**: Phased Full-Repository Transformation
+**Execution Horizon**: Phased Full-Repository Transformation  
+
+> [!WARNING]
+> **DOCUMENT STATUS: SUPERSEDED / HISTORICAL ROADMAP**  
+> This document represents an earlier historical roadmap from the `aegis/full-project-improvement` branch. Its tasks have either been completed in previous releases or superseded by the authoritative, audited migration roadmap in [Migration Plan](../architecture/MIGRATION_PLAN.md).
 
 ---
 

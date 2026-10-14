@@ -242,9 +242,11 @@ class BrandShieldAcquisition(AgentAcquisitionBase):
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+        return self.enrich_fragments(frags, candidate=candidate)
 
-        for f in frags:
-            f.content_depth = self.profile.content_depth
+    def enrich_fragments(self, fragments: List[EvidenceFragment], candidate: Optional[CandidateSource] = None, **kwargs) -> List[EvidenceFragment]:
+        """Add domain annotations without claiming a deeper acquisition."""
+        for f in fragments:
             text_corpus = f"{f.title} {f.content} {f.snippet}"
 
             # Extract seller / store domain
@@ -259,11 +261,11 @@ class BrandShieldAcquisition(AgentAcquisitionBase):
 
             # Detect counterfeit indicators
             f.metadata["counterfeit_indicators"] = self.COMPLAINT_PATTERNS.findall(text_corpus)
-            is_mkt = any(m in parsed_url.netloc for m in self.MARKETPLACE_DOMAINS) or candidate.metadata.get("is_marketplace", False)
+            is_mkt = any(m in parsed_url.netloc for m in self.MARKETPLACE_DOMAINS) or bool(candidate and candidate.metadata.get("is_marketplace", False))
             f.metadata["marketplace_listing"] = is_mkt
             f.metadata["is_marketplace"] = is_mkt
 
-        return frags
+        return fragments
 
     def health(self) -> Dict[str, Any]:
         return {
@@ -342,25 +344,25 @@ class TrendingAcquisition(AgentAcquisitionBase):
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+        return self.enrich_fragments(frags, candidate=candidate, document=doc)
 
-        for f in frags:
-            f.content_depth = self.profile.content_depth
+    def enrich_fragments(self, fragments: List[EvidenceFragment], candidate: Optional[CandidateSource] = None,
+                         document: Optional[FetchedDocument] = None, **kwargs) -> List[EvidenceFragment]:
+        for f in fragments:
             netloc = urllib.parse.urlparse(f.url).netloc.lower()
 
             # Identify wire syndication vs independent narrative post
             is_wire = any(w in netloc for w in self.WIRE_OUTLETS)
             f.metadata["is_wire_syndication"] = is_wire
-            f.metadata["social_origin"] = candidate.metadata.get("social_origin", False)
+            f.metadata["social_origin"] = bool(candidate and candidate.metadata.get("social_origin", False)) or f.platform.lower() in {"twitter", "x", "reddit", "youtube"}
 
             # Preserve engagement signals
-            if "likes" in doc.raw_metadata:
-                f.metadata["likes"] = doc.raw_metadata["likes"]
-            if "retweets" in doc.raw_metadata:
-                f.metadata["retweets"] = doc.raw_metadata["retweets"]
-            if "views" in doc.raw_metadata:
-                f.metadata["views"] = doc.raw_metadata["views"]
+            observed_metadata = document.raw_metadata if document else f.raw_metadata
+            for key in ("likes", "retweets", "views"):
+                if key in observed_metadata:
+                    f.metadata[key] = observed_metadata[key]
 
-        return frags
+        return fragments
 
     def health(self) -> Dict[str, Any]:
         return {
@@ -409,8 +411,9 @@ class ScoutAcquisition(AgentAcquisitionBase):
         for q in financial_queries:
             discovered = search_adapter.discover_candidates(query=q, limit=limit)
             for cand in discovered:
-                url_low = (cand.canonical_url or cand.url).lower()
-                is_primary = any(p in url_low for p in self.PRIMARY_FINANCIAL_DOMAINS)
+                host = (urllib.parse.urlsplit(cand.canonical_url or cand.url).hostname or "").lower().rstrip(".")
+                is_primary = any(host == domain or host.endswith("." + domain)
+                                 for domain in ("sec.gov", "prnewswire.com", "businesswire.com"))
                 cand.metadata["is_primary_source"] = is_primary
 
                 # Heavy boost for primary regulatory filings and investor relations
@@ -455,20 +458,22 @@ class ScoutAcquisition(AgentAcquisitionBase):
         request: RetrievalRequest,
     ) -> List[EvidenceFragment]:
         """
-        Normalizes into FULL_ARTICLE EvidenceFragment records with financial metadata.
+        Preserves observed content depth while adding financial metadata.
         """
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+        return self.enrich_fragments(frags)
 
-        for f in frags:
-            f.content_depth = self.profile.content_depth  # FULL_ARTICLE
-            url_low = f.url.lower()
-            is_primary = any(p in url_low for p in self.PRIMARY_FINANCIAL_DOMAINS)
+    def enrich_fragments(self, fragments: List[EvidenceFragment], **kwargs) -> List[EvidenceFragment]:
+        for f in fragments:
+            host = (urllib.parse.urlsplit(f.url).hostname or "").lower().rstrip(".")
+            is_primary = any(host == domain or host.endswith("." + domain)
+                             for domain in ("sec.gov", "prnewswire.com", "businesswire.com"))
             f.metadata["is_primary_source"] = is_primary
             f.metadata["financial_domain"] = True
 
-        return frags
+        return fragments
 
     def health(self) -> Dict[str, Any]:
         return {
@@ -552,10 +557,10 @@ class PersonalWatchAcquisition(AgentAcquisitionBase):
         from backend.services.agent_reach.native.router import native_router
         adapter = native_router.adapter_registry.get_adapter_for_candidate(candidate)
         frags = adapter.normalize(doc, candidate, request)
+        return self.enrich_fragments(frags)
 
-        for f in frags:
-            f.content_depth = self.profile.content_depth
-
+    def enrich_fragments(self, fragments: List[EvidenceFragment], **kwargs) -> List[EvidenceFragment]:
+        for f in fragments:
             # Automated PII sanitization across snippet and content
             sanitized_content = self._sanitize_pii(f.content)
             sanitized_snippet = self._sanitize_pii(f.snippet)
@@ -565,7 +570,7 @@ class PersonalWatchAcquisition(AgentAcquisitionBase):
             f.metadata["pii_filtered"] = True
             f.metadata["public_figure_monitoring"] = True
 
-        return frags
+        return fragments
 
     def _sanitize_pii(self, text: str) -> str:
         """Redact phone numbers, SSNs, and residential street addresses."""

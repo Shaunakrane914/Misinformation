@@ -41,7 +41,7 @@ class CapabilityRegistry:
         """Register a channel implementation."""
         name = channel.name
         self._channels[name] = channel
-        self._status[name] = ChannelStatus.AVAILABLE  # Assume healthy until probed
+        self._status[name] = ChannelStatus.NOT_PROBED
         logger.info(f"[CapabilityRegistry] Registered channel: {name}")
 
     def unregister(self, name: str) -> None:
@@ -90,7 +90,7 @@ class CapabilityRegistry:
 
     # ── Discovery & Health Check ──────────────────────────────────────────
 
-    def discover(self) -> Dict[str, str]:
+    def discover(self, timeout: float = 6.0) -> Dict[str, str]:
         """
         Probe all registered channels concurrently and update their status.
 
@@ -110,21 +110,30 @@ class CapabilityRegistry:
                 logger.warning(f"[CapabilityRegistry] Health check failed for {name}: {e}")
                 return name, ChannelStatus.UNAVAILABLE
 
-        with concurrent.futures.ThreadPoolExecutor(max_workers=min(len(self._channels) or 1, 8)) as executor:
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=min(len(self._channels) or 1, 8))
+        try:
             future_to_name = {
                 executor.submit(_check, name, chan): name
                 for name, chan in self._channels.items()
             }
-            for fut in concurrent.futures.as_completed(future_to_name):
-                name = future_to_name[fut]
-                try:
-                    c_name, st = fut.result(timeout=6.0)
-                    self.update_status(c_name, st)
-                    results[c_name] = st.value
-                except Exception as e:
-                    logger.warning(f"[CapabilityRegistry] Future error for {name}: {e}")
-                    self.update_status(name, ChannelStatus.UNAVAILABLE)
-                    results[name] = ChannelStatus.UNAVAILABLE.value
+            try:
+                for fut in concurrent.futures.as_completed(future_to_name, timeout=max(0.0, timeout)):
+                    name = future_to_name[fut]
+                    try:
+                        c_name, st = fut.result()
+                        self.update_status(c_name, st)
+                        results[c_name] = st.value
+                    except Exception as e:
+                        logger.warning(f"[CapabilityRegistry] Future error for {name}: {e}")
+                        self.update_status(name, ChannelStatus.UNAVAILABLE)
+                        results[name] = ChannelStatus.UNAVAILABLE.value
+            except concurrent.futures.TimeoutError:
+                for name in future_to_name.values():
+                    if name not in results:
+                        self.update_status(name, ChannelStatus.UNKNOWN)
+                        results[name] = ChannelStatus.UNKNOWN.value
+        finally:
+            executor.shutdown(wait=False, cancel_futures=True)
 
         healthy = sum(1 for s in results.values() if s == ChannelStatus.AVAILABLE.value)
         logger.info(f"[CapabilityRegistry] Discovery complete: {healthy}/{len(results)} healthy")
@@ -143,7 +152,11 @@ class CapabilityRegistry:
             platform_filter: Optional set of channel names to include.
                              If None, returns all healthy channels.
         """
-        healthy_statuses = {ChannelStatus.AVAILABLE, ChannelStatus.DEGRADED}
+        # NOT_PROBED is routable but never rendered as healthy. Execution itself
+        # supplies the first empirical observation.
+        healthy_statuses = {
+            ChannelStatus.AVAILABLE, ChannelStatus.DEGRADED, ChannelStatus.NOT_PROBED,
+        }
         channels = []
 
         for name, channel in self._channels.items():

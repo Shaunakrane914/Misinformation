@@ -7,6 +7,7 @@ deterministic rankers, deep readers, passage extractors, and the unified Researc
 
 from backend.services.research.research_models import (
     AtomicClaim,
+    ClaimVerdict,
     ConfidenceLevel,
     ContentDepth,
     ContradictionType,
@@ -29,14 +30,19 @@ from backend.services.research.passage_extractor import PassageExtractor, passag
 from backend.services.research.primary_source_escalator import PrimarySourceEscalator, primary_source_escalator
 from backend.services.research.corroboration import CorroborationEngine, corroboration_engine
 from backend.services.research.contradiction_detector import ContradictionDetector, contradiction_detector
+from backend.services.research.claim_intelligence import ClaimIntelligenceEngine, claim_intelligence_engine
 from backend.services.research.evidence_graph import EvidenceGraphBuilder, evidence_graph_builder
 from backend.services.research.research_budget import ResearchBudget, default_budget
 from backend.services.research.research_engine import ResearchEngine, research_engine
+from backend.services.research.temporal_guard import TemporalGuard, temporal_guard, TemporalAssessment
 
 __all__ = [
     "AtomicClaim",
     "CandidateRanker",
     "CandidateReranker",
+    "ClaimIntelligenceEngine",
+    "claim_intelligence_engine",
+    "ClaimVerdict",
     "ConfidenceLevel",
     "ContentDepth",
     "ContradictionDetector",

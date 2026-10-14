@@ -1,0 +1,24 @@
+{
+  "schema_version": "phase8-live-acquisition-v1",
+  "generated_at": "2026-10-13T02:50:20.286610+00:00",
+  "commit": "7fcf97a49e896a733b825eaa14bddeb4866fd267",
+  "branch": "feat/phase8b-extraction",
+  "worktree_dirty": true,
+  "router_source": "backend/infrastructure/acquisition/routing/router.py",
+  "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "tools": {
+    "gh": true,
+    "yt-dlp": true
+  },
+  "credential_presence": {
+    "GITHUB_TOKEN": false,
+    "YOUTUBE_API_KEY": false,
+    "GROQ_API_KEY": false
+  },
+  "probe_budget": {
+    "max_scenarios_per_operation": 1,
+    "result_limit": 3
+  },
+  "evidence_policy": "No complete response bodies or secrets retained.",
+  "consolidated_source_runs": []
+}

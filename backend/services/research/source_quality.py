@@ -7,7 +7,7 @@ and forensic tier, establishing deterministic quality scoring.
 
 import re
 import urllib.parse
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import (
     ContentDepth,
@@ -52,12 +52,79 @@ SOCIAL_DOMAINS: Set[str] = {
     "twitter.com", "x.com", "youtube.com", "youtu.be", "instagram.com", "tiktok.com"
 }
 
+ENCYCLOPEDIA_DOMAINS: Set[str] = {
+    "wikipedia.org", "wikimedia.org", "wiktionary.org", "britannica.com"
+}
+
+# Explicit identity knowledge, not a heuristic derived from a queried name.
+# Deployments can inject additional verified mappings into SourceQualityEngine.
+VERIFIED_CORPORATE_DOMAINS = {
+    "tesla": {"tesla.com"},
+    "nvidia": {"nvidia.com"},
+    "apple": {"apple.com"},
+    "microsoft": {"microsoft.com"},
+    "anthropic": {"anthropic.com"},
+}
+
+
+def hostname_matches(host: str, trusted: str) -> bool:
+    host, trusted = host.rstrip(".").lower(), trusted.rstrip(".").lower()
+    return bool(trusted) and (host == trusted or host.endswith("." + trusted))
+
+
+def _matches_registry(host: str, registry) -> bool:
+    return any(hostname_matches(host, trusted) for trusted in registry)
+
+
+class UtilityUrlCheck(tuple):
+    """Dual-mode return type: supports both tuple unpacking (bool, str) and boolean evaluation."""
+    def __new__(cls, is_utility: bool, utility_type: str = ""):
+        return super().__new__(cls, (is_utility, utility_type))
+
+    def __bool__(self) -> bool:
+        return bool(self[0])
+
+
+def is_utility_or_auth_url(url: str) -> UtilityUrlCheck:
+    """
+    Check if URL represents an authentication portal, login screen, account manager,
+    or app storefront utility page.
+    """
+    if not url:
+        return UtilityUrlCheck(False, "")
+    try:
+        parsed = urllib.parse.urlsplit(url.lower())
+        host = (parsed.hostname or "").lower()
+        path = (parsed.path or "").lower()
+    except Exception:
+        return UtilityUrlCheck(False, "")
+
+    # Login / Auth hostnames
+    if any(host == p or host.startswith(p + ".") or f".{p}." in host for p in ("account", "myaccount", "login", "signin", "auth", "sso", "oauth", "identity", "accounts")):
+        return UtilityUrlCheck(True, "AUTH_PORTAL")
+
+    # Login / Auth paths
+    if any(seg in path for seg in ("/login", "/signin", "/sign-in", "/myaccount", "/auth", "/sso", "/oauth")):
+        return UtilityUrlCheck(True, "AUTH_PORTAL")
+
+    # Store / App Catalog hostnames & paths
+    if any(host == p or host.startswith(p + ".") for p in ("apps", "store", "play.google.com")):
+        return UtilityUrlCheck(True, "APP_CATALOG")
+    if path.startswith("/store") or path.startswith("/apps") or (path.startswith("/home") and any(h in host for h in ("microsoft.com", "apple.com", "google.com"))):
+        return UtilityUrlCheck(True, "APP_CATALOG")
+
+    return UtilityUrlCheck(False, "")
+
 
 class SourceQualityEngine:
     """Classifies source roles, forensic tiers, and calculates source quality scores."""
 
-    def __init__(self):
-        pass
+    def __init__(self, official_domains=None):
+        self.official_domains = {
+            re.sub(r"[^a-z0-9]", "", name.lower()): set(domains)
+            for name, domains in (official_domains if official_domains is not None
+                                  else VERIFIED_CORPORATE_DOMAINS).items()
+        }
 
     def classify_and_score(self, item: EvidenceItem, target_name: str = "") -> EvidenceItem:
         """
@@ -65,10 +132,19 @@ class SourceQualityEngine:
         and computes source_quality_score (0.0 to 1.0).
         """
         url = (item.canonical_url or "").lower()
-        domain = item.source_domain.lower() if item.source_domain else ""
-        if not domain and url:
-            domain = urllib.parse.urlparse(url).netloc.lower()
-            item.source_domain = domain
+        try:
+            parsed = urllib.parse.urlsplit(url)
+            # Trigger urllib's numeric/range validation for explicitly supplied ports.
+            _ = parsed.port
+            domain = (parsed.hostname or "").lower().rstrip(".")
+            if parsed.scheme not in ("http", "https") or parsed.username or parsed.password:
+                domain = ""
+        except ValueError:
+            domain = ""
+        # A supplied source_domain cannot override the actual source URL.
+        item.source_domain = domain
+        item.primary_source = False
+        item.official_source = False
 
         title_lower = (item.title or "").lower()
         snippet_lower = (item.snippet or "").lower()
@@ -78,25 +154,30 @@ class SourceQualityEngine:
         # Clean target name for matching official domains
         clean_target = re.sub(r'[^a-z0-9]', '', target_name.lower()) if target_name else ""
         
-        # 1. Detect Official Corporate Domain
-        is_official = False
-        if clean_target and len(clean_target) >= 3:
-            if clean_target in domain or domain.endswith(f".{clean_target}.com") or domain == f"{clean_target}.com":
-                is_official = True
-            elif f"investor.{clean_target}" in domain or f"ir.{clean_target}" in domain:
-                is_official = True
+        # 1. Detect Utility / Auth / Store / Encyclopedia
+        is_utility = is_utility_or_auth_url(url)
+        is_encyclopedia = _matches_registry(domain, ENCYCLOPEDIA_DOMAINS)
 
-        # 2. Regulatory & Government Filings
-        is_regulatory = any(rd in domain for rd in REGULATORY_GOVERNMENT_DOMAINS)
+        # 2. Detect Official Corporate Domain
+        is_official = _matches_registry(domain, self.official_domains.get(clean_target, set()))
+
+        # 3. Regulatory & Government Filings
+        is_regulatory = _matches_registry(domain, REGULATORY_GOVERNMENT_DOMAINS)
         filing_markers = [
             "form 10-k", "form 10-q", "form 8-k", "regulatory filing", "exchange filing",
-            "annual report", "press release", "bse filing", "nse filing", "sec filing",
-            "court order", "consent decree", "official announcement"
+            "bse filing", "nse filing", "sec filing", "court order", "consent decree"
         ]
         has_filing_marker = any(fm in full_text for fm in filing_markers)
 
-        # 3. Assign Role, Tier, and Base Quality Score
-        if is_regulatory or (is_official and has_filing_marker):
+        # 4. Assign Role, Tier, and Base Quality Score
+        if is_utility:
+            item.source_role = SourceRole.UTILITY_PORTAL.value
+            item.source_tier = SourceTier.TIER_4_UTILITY.value
+            item.primary_source = False
+            item.official_source = False
+            base_score = 0.15
+
+        elif is_regulatory or (has_filing_marker and "sec.gov" in domain):
             item.source_role = SourceRole.PRIMARY.value
             item.source_tier = SourceTier.TIER_1_OFFICIAL_FILING.value
             item.primary_source = True
@@ -104,35 +185,43 @@ class SourceQualityEngine:
             base_score = 0.98
 
         elif is_official:
+            # Corporate domain without utility path: official corporate document, NOT a regulatory filing
             item.source_role = SourceRole.PRIMARY.value
             item.source_tier = SourceTier.TIER_1_ORIGINAL_DOCUMENT.value
             item.primary_source = True
             item.official_source = True
             base_score = 0.92
 
-        elif "github.com" in domain:
+        elif is_encyclopedia:
+            item.source_role = SourceRole.AGGREGATOR.value
+            item.source_tier = SourceTier.TIER_3_AGGREGATE.value
+            item.primary_source = False
+            item.official_source = False
+            base_score = 0.60
+
+        elif hostname_matches(domain, "github.com"):
             item.source_role = SourceRole.PRIMARY.value
             item.source_tier = SourceTier.TIER_1_ORIGINAL_DOCUMENT.value
             item.primary_source = True
             base_score = 0.88
 
-        elif any(t1 in domain for t1 in TIER1_PRESS_DOMAINS):
+        elif _matches_registry(domain, TIER1_PRESS_DOMAINS):
             item.source_role = SourceRole.SECONDARY.value
             item.source_tier = SourceTier.TIER_2_FINANCIAL_PRESS.value
             base_score = 0.82
 
-        elif any(sp in domain for sp in SPECIALIZED_TECH_INDUSTRY_DOMAINS):
+        elif _matches_registry(domain, SPECIALIZED_TECH_INDUSTRY_DOMAINS):
             item.source_role = SourceRole.SECONDARY.value
             item.source_tier = SourceTier.TIER_2_INVESTIGATIVE.value
             base_score = 0.75
 
-        elif any(cd in domain for cd in COMMUNITY_DOMAINS) or item.channel in ("reddit", "hackernews"):
+        elif _matches_registry(domain, COMMUNITY_DOMAINS) or item.channel in ("reddit", "hackernews"):
             item.source_role = SourceRole.COMMUNITY.value
             item.source_tier = SourceTier.TIER_3_INVESTOR_COMMUNITY.value
             base_score = 0.50
 
-        elif any(sd in domain for sd in SOCIAL_DOMAINS) or item.channel in ("twitter", "youtube", "tiktok", "instagram"):
-            if "youtube" in domain or item.channel == "youtube":
+        elif _matches_registry(domain, SOCIAL_DOMAINS) or item.channel in ("twitter", "youtube", "tiktok", "instagram"):
+            if hostname_matches(domain, "youtube.com") or item.channel == "youtube":
                 item.source_role = SourceRole.SECONDARY.value
                 item.source_tier = SourceTier.TIER_2_VIDEO_ANALYSIS.value
                 base_score = 0.58
@@ -141,7 +230,7 @@ class SourceQualityEngine:
                 item.source_tier = SourceTier.TIER_3_SOCIAL_SIGNALS.value
                 base_score = 0.45
 
-        elif any(ad in domain for ad in AGGREGATOR_CONTENT_DOMAINS):
+        elif _matches_registry(domain, AGGREGATOR_CONTENT_DOMAINS):
             item.source_role = SourceRole.AGGREGATOR.value
             item.source_tier = SourceTier.TIER_3_AGGREGATE.value
             base_score = 0.60
@@ -165,3 +254,24 @@ class SourceQualityEngine:
 
 
 source_quality_engine = SourceQualityEngine()
+
+
+def classify_and_score(url: str, target_name: str = "", title: str = "", content: str = "") -> Dict[str, Any]:
+    """Helper function to classify and score a URL/snippet directly."""
+    item = EvidenceItem(
+        id="probe",
+        title=title,
+        content=content,
+        snippet=content[:200] if content else title,
+        canonical_url=url,
+        channel="web",
+    )
+    res = source_quality_engine.classify_and_score(item, target_name=target_name)
+    return {
+        "source_role": SourceRole(res.source_role) if res.source_role in [e.value for e in SourceRole] else res.source_role,
+        "source_tier": SourceTier(res.source_tier) if res.source_tier in [e.value for e in SourceTier] else res.source_tier,
+        "primary_source": res.primary_source,
+        "official_source": res.official_source,
+        "quality_score": res.source_quality_score,
+        "item": res,
+    }

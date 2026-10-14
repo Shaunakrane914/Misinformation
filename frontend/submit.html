@@ -12,7 +12,6 @@
   <meta name="twitter:title" content="Claim Verification &amp; Fact-Check Agent — Aegis Protocol">
   <meta name="twitter:description" content="Forensic claim verification engine with dual-column provenance.">
   <link rel="stylesheet" href="aegis-theme.css">
-  <script src="gemini-client.js"></script>
   <script src="forensic-explorer.js"></script>
   <script src="unified-report-renderer.js"></script>
 
@@ -287,17 +286,11 @@
       </form>
     </div>
 
-    <!-- Staged Progress Loading Indicator -->
+    <!-- Backend response status; no timed or simulated research progress. -->
     <div id="evalStageBox" class="eval-stage-box">
       <div style="display:inline-flex;align-items:center;gap:8px;color:var(--accent);font-weight:600;font-size:0.92rem;">
         <span class="aegis-orientation-dot" style="width:8px;height:8px;"></span>
-        <span id="stageLabel">Checking the claim against retrieved sources...</span>
-      </div>
-      <div class="stage-steps-list">
-        <span id="stg_ingest" class="stage-step-item active">1. Search Recent Sources</span>
-        <span id="stg_contradict" class="stage-step-item">2. Check Contradictions</span>
-        <span id="stg_weight" class="stage-step-item">3. Evaluate Evidence Strength</span>
-        <span id="stg_synthesize" class="stage-step-item">4. Synthesize Assessment</span>
+        <span id="stageLabel" role="status" aria-live="polite">Waiting for the research service. Source checks are not yet verified.</span>
       </div>
     </div>
 
@@ -371,7 +364,7 @@
               <span id="supportCountBadge" class="aegis-matrix-count">0</span>
             </div>
             <div id="supportingListContainer">
-              <div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No verified supporting evidence identified.</div>
+              <div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No supporting evidence has been returned.</div>
             </div>
           </div>
 
@@ -465,7 +458,12 @@
     // Support URL param prefill: ?q=... or ?claim=...
     document.addEventListener('DOMContentLoaded', () => {
       const urlParams = new URLSearchParams(window.location.search);
-      const initialQuery = urlParams.get('q') || urlParams.get('claim');
+      let pendingClaim = '';
+      try {
+        pendingClaim = sessionStorage.getItem('aegis_pending_claim') || '';
+        sessionStorage.removeItem('aegis_pending_claim');
+      } catch (_) { /* Storage can be disabled; URL prefill still works. */ }
+      const initialQuery = pendingClaim || urlParams.get('q') || urlParams.get('claim');
       if (initialQuery && claimInput) {
         claimInput.value = initialQuery;
         if (charCounter) charCounter.textContent = `${initialQuery.length} / 1000`;
@@ -487,21 +485,34 @@
         .replace(/'/g, '&#039;');
     }
 
+    function safeEvidenceUrl(value) {
+      if (typeof value !== 'string' || !/^https?:\/\//i.test(value.trim())) return '';
+      try {
+        const parsed = new URL(value.trim());
+        return ['http:', 'https:'].includes(parsed.protocol) && parsed.hostname &&
+          !parsed.username && !parsed.password ? parsed.href : '';
+      } catch (_) {
+        return '';
+      }
+    }
+
+    function hasInspectableEvidence(data, claimObj) {
+      const unified = data.unified_report && data.unified_report.evidence || {};
+      const candidates = [
+        data.supporting_evidence, data.refuting_evidence, data.evidence,
+        data.sources, claimObj.evidence,
+        unified.primary, unified.independent, unified.community,
+      ];
+      return candidates.some(list => Array.isArray(list) && list.some(item => {
+        if (!item || typeof item !== 'object') return false;
+        const text = item.text || item.evidence_text || item.snippet || item.content;
+        return Boolean(safeEvidenceUrl(item.url || item.canonical_url) &&
+          typeof text === 'string' && text.trim());
+      }));
+    }
+
     function setStage(stepId, label) {
       document.getElementById('stageLabel').innerText = label;
-      const steps = ['stg_ingest', 'stg_contradict', 'stg_weight', 'stg_synthesize'];
-      let found = false;
-      steps.forEach(id => {
-        const el = document.getElementById(id);
-        if (id === stepId) {
-          el.className = 'stage-step-item active';
-          found = true;
-        } else if (!found) {
-          el.className = 'stage-step-item done';
-        } else {
-          el.className = 'stage-step-item';
-        }
-      });
     }
 
     async function handleClaimVerification(e) {
@@ -520,20 +531,7 @@
       stageBox.style.display = 'block';
       workspace.style.display = 'none';
 
-      // Stage progression timer for smooth UX while multi-agent pipeline runs
-      let stageTimer = null;
-      let stageStep = 0;
-      setStage('stg_ingest', '1. Ingesting claim & querying news wires, registries, and archives...');
-      stageTimer = setInterval(() => {
-        stageStep++;
-        if (stageStep === 3) {
-          setStage('stg_contradict', '2. Cross-referencing evidence and detecting contradictions...');
-        } else if (stageStep === 8) {
-          setStage('stg_weight', '3. Evaluating source independence & evidence weight...');
-        } else if (stageStep === 14) {
-          setStage('stg_synthesize', '4. Multi-agent stance synthesis & Truth Dossier generation...');
-        }
-      }, 1000);
+      setStage('request', 'Waiting for the research service. Source checks are not yet verified.');
 
       try {
         let reportData = null;
@@ -608,22 +606,19 @@
           }
         }
 
-        // 3. Fallback to client Gemini ONLY if backend completely unreachable
+        // 3. A disconnected backend cannot be replaced with model-generated
+        // evidence or a verdict. Preserve the unavailable state explicitly.
         if (!reportData || (!reportData.verdict && (!reportData.claim || !reportData.claim.verdict))) {
-          if (stageTimer) clearInterval(stageTimer);
-          setStage('stg_synthesize', 'Synthesizing evidence assessment...');
+          setStage('stg_synthesize', 'Verification unavailable; no source evidence was retrieved.');
           reportData = await runClientFactCheck(text, url);
         }
 
-        if (stageTimer) clearInterval(stageTimer);
         renderClaimWorkspace(text, reportData);
 
       } catch (err) {
-        if (stageTimer) clearInterval(stageTimer);
         console.error('[Aegis Claim] Error:', err);
         renderErrorState(text, err.message);
       } finally {
-        if (stageTimer) clearInterval(stageTimer);
         stageBox.style.display = 'none';
         btn.disabled = false;
         btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="5 3 19 12 5 21 5 3"/></svg><span>Verify Claim</span>`;
@@ -631,70 +626,18 @@
     }
 
     async function runClientFactCheck(claimText, sourceUrl) {
-      if (typeof window.askGemini === 'function') {
-        const prompt = `You are the Aegis Fact-Check Agent.
-Evaluate this claim: "${claimText}" ${sourceUrl ? `(Source URL: ${sourceUrl})` : ''}
-
-Output strictly valid JSON with this exact schema:
-{
-  "verdict": "TRUE" | "FALSE" | "MISLEADING" | "UNVERIFIED",
-  "evidence_strength": "Strong" | "Moderate" | "Limited" | "Insufficient",
-  "category": "String (e.g. Geopolitical, Corporate, Science)",
-  "bottom_line": "1-3 concise factual sentences stating the core answer directly.",
-  "why": [
-    "Factual point 1 explaining the verdict",
-    "Factual point 2",
-    "Factual point 3"
-  ],
-  "what_is_unknown": [
-    "Known limitation, missing official registry confirmation, or unverified detail"
-  ],
-  "supporting_evidence": [
-    {
-      "source_name": "Name of publisher (e.g. Reuters, Official Gazette)",
-      "source_role": "PRIMARY" | "SECONDARY" | "FACT-CHECK",
-      "independence_group": "G-1",
-      "text": "Exact factual quote or empirical finding",
-      "url": ""
-    }
-  ],
-  "refuting_evidence": [
-    {
-      "source_name": "Name of publisher",
-      "source_role": "PRIMARY" | "SECONDARY" | "FACT-CHECK",
-      "independence_group": "G-2",
-      "text": "Exact contradiction or refutation point",
-      "url": ""
-    }
-  ],
-  "timeline": []
-}
-
-CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty string unless it is a well-known canonical government/official URL.`;
-        try {
-          const raw = await window.askGemini(prompt, 'gemini-1.5-flash');
-          const clean = raw.replace(/```json/gi, '').replace(/```/g, '').trim();
-          const parsed = JSON.parse(clean);
-          parsed._mode = 'AI_SYNTHESIS';
-          return parsed;
-        } catch (e) {
-          console.warn('[Client FactCheck] Direct model evaluation note:', e.message || e);
-        }
-      }
-
-      // Honest fallback when neither backend nor client AI is connected
+      // Kept as a compatibility entry point for the existing page flow.
+      // This function makes no network request and never creates evidence.
       return {
         _mode: 'INSUFFICIENT_EVIDENCE',
-        verdict: "UNVERIFIED",
+        verdict: "INSUFFICIENT_EVIDENCE",
         evidence_strength: "Insufficient",
-        bottom_line: "Investigation Inconclusive: Backend research service is currently unreachable and primary verification registries could not be retrieved.",
+        bottom_line: "Verification could not complete because the research service did not return an evidence-backed result.",
         why: [
-          "Primary governmental, academic, or corporate registries could not be retrieved in offline/unconnected mode.",
-          "Live multi-channel retrieval requires an active backend connection or configured AI reasoning key."
+          "No source acquisition or official-registry check is confirmed by this page."
         ],
         what_is_unknown: [
-          "Original author attribution and primary documentation remain unverified.",
-          "Verification requires active channel access to establish empirical consensus."
+          "The claim, source origin, and any supporting or contradicting records remain unverified."
         ],
         supporting_evidence: [],
         refuting_evidence: [],
@@ -704,32 +647,33 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
 
     function renderClaimWorkspace(claimText, data) {
       const claimObj = (typeof data.claim === 'object' && data.claim !== null) ? data.claim : data;
-      const rawVerdict = String(data.verdict || claimObj.verdict || "UNVERIFIED").toUpperCase();
+      let rawVerdict = String(data.verdict || claimObj.verdict || "UNVERIFIED").toUpperCase();
+      const decisive = ['TRUE', 'SUPPORTED', 'FALSE', 'REFUTED', 'MISLEADING', 'MIXED', 'PARTIALLY_TRUE'];
+      const evidenceGuardFailed = decisive.includes(rawVerdict) && !hasInspectableEvidence(data, claimObj);
+      if (evidenceGuardFailed) rawVerdict = 'INSUFFICIENT_EVIDENCE';
       let verdict = "unverified";
       let displayVerdict = "UNRESOLVED";
-      if (rawVerdict.includes("TRUE")) {
+      if (rawVerdict === "TRUE" || rawVerdict === "SUPPORTED") {
         verdict = "true";
-        displayVerdict = "LIKELY TRUE";
-      } else if (rawVerdict.includes("FALSE")) {
+        displayVerdict = "SUPPORTED";
+      } else if (rawVerdict === "FALSE" || rawVerdict === "REFUTED") {
         verdict = "false";
-        displayVerdict = "LIKELY FALSE";
-      } else if (rawVerdict.includes("MISLEADING")) {
+        displayVerdict = "REFUTED";
+      } else if (rawVerdict === "MISLEADING") {
         verdict = "misleading";
         displayVerdict = "MISLEADING";
+      } else if (rawVerdict === "MIXED" || rawVerdict === "PARTIALLY_TRUE") {
+        verdict = "unverified";
+        displayVerdict = "MIXED";
       } else {
         verdict = "unverified";
         displayVerdict = "UNRESOLVED";
       }
 
-      // Evidence strength: Strong, Moderate, Limited, Insufficient
-      let strength = data.evidence_strength || claimObj.evidence_strength;
-      if (!strength && (data.confidence || claimObj.confidence)) {
-        const conf = Number(data.confidence || claimObj.confidence);
-        strength = conf >= 75 ? "Strong" : (conf >= 50 ? "Moderate" : "Limited");
-      }
-      if (!["Strong", "Moderate", "Limited", "Insufficient"].includes(strength)) {
-        strength = verdict === 'unverified' ? 'Insufficient' : 'Moderate';
-      }
+      // Evidence strength is a distinct backend assessment, not a confidence
+      // percentage or a verdict-derived default.
+      let strength = evidenceGuardFailed ? 'Insufficient' : data.evidence_strength || claimObj.evidence_strength;
+      if (!["Strong", "Moderate", "Limited", "Insufficient"].includes(strength)) strength = null;
 
       // Level 1: Orientation
       document.getElementById('verdictClaimQuote').innerHTML = `&ldquo;${esc(claimText)}&rdquo;`;
@@ -739,50 +683,54 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
       vPill.textContent = displayVerdict;
 
       const sPill = document.getElementById('strengthPill');
-      sPill.className = `aegis-strength-pill ${strength.toLowerCase()}`;
-      sPill.textContent = `Evidence: ${strength}`;
+      sPill.className = `aegis-strength-pill ${strength ? strength.toLowerCase() : 'limited'}`;
+      sPill.textContent = strength ? `Evidence: ${strength}` : 'Evidence strength unavailable';
 
-      const bottomLine = data.bottom_line || data.debunk_statement || data.explanation || claimObj.explanation || claimObj.reasoning || "Checking the claim against retrieved sources.";
+      const bottomLine = evidenceGuardFailed
+        ? 'A decisive backend verdict was not displayed because no inspectable source passage was attached.'
+        : data.bottom_line || data.explanation || claimObj.explanation || claimObj.reasoning || "No evidence-backed explanation was returned.";
       document.getElementById('bottomLineText').textContent = bottomLine;
 
       const execMode = data._mode || 'BACKEND_INVESTIGATION';
-      let modeText = 'Verified Multi-Source Evidence Pipeline';
-      if (execMode === 'AI_SYNTHESIS') {
-        modeText = 'AI Synthesis (Direct Model Reasoning · Primary Retrieval Inactive)';
-      } else if (execMode === 'INSUFFICIENT_EVIDENCE') {
-        modeText = 'Inconclusive (Insufficient Verifiable Records)';
-      } else if (data.agents_executed && data.agents_executed.length) {
-        modeText = `Live Multi-Agent Pipeline (${data.agents_executed.join(' → ')})`;
+      let modeText = 'Backend response; inspect evidence and retrieval coverage';
+      if (execMode === 'INSUFFICIENT_EVIDENCE') {
+        modeText = 'Unverified: research service unavailable';
       }
-      document.getElementById('auditTimestamp').textContent = `Audit Completed: ${new Date().toLocaleTimeString()} · ${modeText}`;
+      if (evidenceGuardFailed) modeText = 'Unverified: inspectable source passage absent';
+      document.getElementById('auditTimestamp').textContent = `Response received: ${new Date().toLocaleTimeString()} · ${modeText}`;
 
       // Level 2: Why Box (2-4 points)
       const whyList = document.getElementById('whyPointsList');
-      const whyPoints = data.why || (data.explanation ? [data.explanation] : [
-        `Cross-referenced across primary wire registries and independent source archives.`,
-        `Verification algorithm evaluated stance and empirical contradiction matrices.`
-      ]);
+      const whyPoints = evidenceGuardFailed
+        ? ['The backend did not attach a source passage with a safe URL and readable text.']
+        : Array.isArray(data.why) ? data.why :
+        (data.explanation ? [data.explanation] : ['No reasoning was returned by the research service.']);
       whyList.innerHTML = whyPoints.map(pt => `<li>${esc(pt)}</li>`).join('');
 
       // Level 2: What is Unknown Box
       const unknownList = document.getElementById('unknownPointsList');
-      const unknownPoints = data.what_is_unknown || [
-        `Historical velocity data is limited to available search index windows.`,
-        `Direct author testimony or internal non-public records could not be audited.`
-      ];
+      const unknownPoints = evidenceGuardFailed
+        ? ['The decisive claim assessment remains unverified until inspectable evidence is supplied.']
+        : Array.isArray(data.what_is_unknown) ? data.what_is_unknown :
+        ['The research service did not return an explicit uncertainty assessment.'];
       unknownList.innerHTML = unknownPoints.map(pt => `<li>${esc(pt)}</li>`).join('');
 
       // Level 2: Dual-Column Evidence Matrix
-      const mapItem = (ev) => ({
-        source_name: ev.source_name || ev.source || ev.publisher || ev.platform || "Archival Source",
-        source_role: ev.source_role || (ev.is_primary ? "PRIMARY" : (ev.platform === 'Wire' ? 'PRIMARY' : 'FACT-CHECK')),
-        independence_group: ev.independence_group || (ev.platform ? `GRP-${ev.platform}` : 'G-1'),
-        text: ev.text || ev.evidence_text || ev.summary || ev.content || "Empirical observation cross-referenced.",
-        url: ev.url && ev.url !== '#' ? ev.url : ''
-      });
+      const mapItem = (ev) => {
+        const item = ev && typeof ev === 'object' ? ev : { text: typeof ev === 'string' ? ev : '' };
+        return {
+          source_name: item.source_name || item.source || item.publisher || item.platform || "Source not identified",
+          source_role: item.source_role || (item.is_primary ? "PRIMARY" : "UNCLASSIFIED"),
+          independence_group: item.independence_group || '',
+          retrieval_mode: item.retrieval_mode || '',
+          text: item.text || item.evidence_text || item.summary || item.content || "",
+          url: safeEvidenceUrl(item.url)
+        };
+      };
 
-      let supporting = (data.supporting_evidence || []).map(mapItem);
-      let refuting = (data.refuting_evidence || []).map(mapItem);
+      let supporting = (Array.isArray(data.supporting_evidence) ? data.supporting_evidence : []).map(mapItem);
+      let refuting = (Array.isArray(data.refuting_evidence) ? data.refuting_evidence : []).map(mapItem);
+      let unclassified = [];
 
       // If flat list was returned
       if (!supporting.length && !refuting.length) {
@@ -790,11 +738,13 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
         if (Array.isArray(flatEv)) {
           flatEv.forEach(ev => {
             const item = mapItem(ev);
-            const stance = (ev.stance || '').toLowerCase();
+            const stance = ev && typeof ev === 'object' ? String(ev.stance || '').toLowerCase() : '';
             if (stance === 'supporting' || stance === 'supports' || stance === 'true') {
               supporting.push(item);
-            } else {
+            } else if (stance === 'refuting' || stance === 'refutes' || stance === 'false' || stance === 'contradicting') {
               refuting.push(item);
+            } else {
+              unclassified.push(item);
             }
           });
         }
@@ -805,16 +755,16 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
 
       // Calculate independent source groups
       const groups = new Set();
-      [...supporting, ...refuting].forEach(e => {
+      [...supporting, ...refuting, ...unclassified].forEach(e => {
         if (e.independence_group) groups.add(e.independence_group);
-        else if (e.source_name) groups.add(e.source_name);
       });
-      document.getElementById('sourceGroupCounts').textContent = `${supporting.length + refuting.length} sources · ${groups.size} independent groups`;
+      document.getElementById('sourceGroupCounts').textContent =
+        `${supporting.length + refuting.length + unclassified.length} evidence items · ${groups.size} reported source groups (independence unverified)`;
 
       // Render Supporting
       const supContainer = document.getElementById('supportingListContainer');
       if (supporting.length === 0) {
-        supContainer.innerHTML = `<div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No verified supporting evidence identified.</div>`;
+        supContainer.innerHTML = `<div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No supporting evidence was returned; this does not prove none exists.</div>`;
       } else {
         supContainer.innerHTML = supporting.map(item => `
           <div class="evidence-item-card">
@@ -833,7 +783,7 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
       // Render Refuting
       const refContainer = document.getElementById('refutingListContainer');
       if (refuting.length === 0) {
-        refContainer.innerHTML = `<div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No refuting contradictions detected.</div>`;
+        refContainer.innerHTML = `<div style="color:var(--text-dim);font-size:0.84rem;font-style:italic;padding:12px;">No refuting evidence was returned; this does not prove none exists.</div>`;
       } else {
         refContainer.innerHTML = refuting.map(item => `
           <div class="evidence-item-card">
@@ -867,18 +817,18 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
 
       // Level 3: Reusable Aegis Evidence Rows with expandable drawers
       const rowsContainer = document.getElementById('evidenceRowsContainer');
-      const allEvidence = [...supporting, ...refuting];
+      const allEvidence = [...supporting, ...refuting, ...unclassified];
       if (allEvidence.length === 0) {
         rowsContainer.innerHTML = `<div class="aegis-empty-state"><p>No raw evidence records attached to this claim.</p></div>`;
       } else {
         rowsContainer.innerHTML = allEvidence.map((ev, idx) => {
           const rowId = `ev_row_${idx}`;
-          const safeUrl = ev.url && ev.url !== '#' ? ev.url : '';
+          const safeUrl = safeEvidenceUrl(ev.url);
           return `
             <div class="aegis-evidence-row" id="${rowId}">
               <div class="aegis-evidence-summary" onclick="toggleEvidenceRow('${rowId}')">
                 <div class="aegis-ev-title">
-                  <strong>${esc(ev.source_name || 'Archival Registry')}</strong>
+                  <strong>${esc(ev.source_name)}</strong>
                   <span style="color:var(--text-dim);font-weight:400;margin-left:8px;">${esc((ev.text || '').slice(0, 70))}...</span>
                 </div>
                 <div class="aegis-ev-meta">
@@ -892,8 +842,8 @@ CRITICAL INSTRUCTION: Do NOT invent or fabricate source URLs. Leave url as empty
                 </div>
                 <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);padding:10px 0;border-top:1px solid rgba(255,255,255,0.06);margin-bottom:12px;">
                   <div>Source Role: <strong style="color:#fff;">${esc(ev.source_role || 'SECONDARY')}</strong></div>
-                  <div>Independent Group: <strong style="color:var(--accent);">${esc(ev.independence_group || 'G-01')}</strong></div>
-                  <div>Retrieval Mode: <strong style="color:#fff;">Zero-token HTTP + Wire Reader</strong></div>
+                  <div>Reported Group: <strong style="color:var(--accent);">${esc(ev.independence_group || 'Unverified')}</strong></div>
+                  <div>Retrieval Mode: <strong style="color:#fff;">${esc(ev.retrieval_mode || 'Unknown')}</strong></div>
                 </div>
                 <div>
                   ${safeUrl ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" class="aegis-open-src-btn">Open source &nearr;</a>` : `<span style="font-family:var(--font-mono);font-size:0.74rem;color:var(--text-dim);">Source URL not available</span>`}

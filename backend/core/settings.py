@@ -1,0 +1,200 @@
+"""
+Aegis Protocol — Centralized Validated Settings
+================================================
+ADR 0004 Implementation: Pydantic-based validated configuration model.
+Eliminates ad-hoc `os.getenv` reads across agents and business logic.
+Guarantees fail-fast startup validation and deterministic offline mock detection.
+"""
+
+from __future__ import annotations
+
+import os
+from functools import lru_cache
+from pathlib import Path
+from typing import List, Optional
+from dotenv import load_dotenv
+from backend import __version__
+
+# Ensure base .env is loaded into process
+load_dotenv()
+
+from pydantic import AliasChoices, Field, SecretStr, field_validator, model_validator
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+def _discover_gemini_api_keys() -> List[str]:
+    """Scan environment for all configured GEMINI_API_KEY* variants."""
+    discovered: List[str] = []
+    for k, v in sorted(os.environ.items()):
+        if k == "GEMINI_API_KEY" or k.startswith("GEMINI_API_KEY_") or k.startswith("GEMINI_KEY_"):
+            cleaned = v.strip().strip('"').strip("'") if v else ""
+            if cleaned and cleaned not in discovered:
+                discovered.append(cleaned)
+    return discovered
+
+
+class Settings(BaseSettings):
+    """Authoritative Aegis Protocol application configuration."""
+
+    # 1. Application & Core Environment
+    app_name: str = Field(default="Aegis Protocol", description="Application service name")
+    version: str = Field(default=__version__, description="Semantic service version")
+    environment: str = Field(default_factory=lambda: os.getenv("ENVIRONMENT", os.getenv("AEGIS_ENV", "development")).lower())
+    port: int = Field(default_factory=lambda: int(os.getenv("PORT", "8000")))
+    allowed_origins: List[str] = Field(default_factory=lambda: [os.getenv("ALLOWED_ORIGIN", "*")])
+
+    # 2. Generative AI & LLM Gateway
+    gemini_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("GEMINI_API_KEY"))
+    gemini_api_key_2: Optional[str] = Field(default_factory=lambda: os.getenv("GEMINI_API_KEY_2"))
+    gemini_api_key_3: Optional[str] = Field(default_factory=lambda: os.getenv("GEMINI_API_KEY_3"))
+    gemini_api_keys: List[str] = Field(default_factory=_discover_gemini_api_keys)
+    gemini_models: List[str] = Field(default_factory=lambda: [
+        "gemini-3.8-flash",
+        "gemini-3.7-flash",
+        "gemini-2.5-flash",
+        "gemini-2.5-flash-lite",
+    ])
+    default_model: str = Field(default="gemini-3.8-flash")
+    aegis_mock_llm: bool = Field(
+        default_factory=lambda: (
+            os.getenv("AEGIS_MOCK_LLM", "").lower() in ("true", "1", "yes")
+            or os.getenv("ENVIRONMENT", "").lower() == "test"
+            or os.getenv("AEGIS_ENV", "").lower() == "test"
+        )
+    )
+    llm_request_timeout: float = Field(default=25.0, gt=0)
+    llm_max_retries: int = Field(default=3, ge=1)
+
+    # 3. Persistence & Database (Supabase / Local SQLite)
+    supabase_url: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_URL"))
+    supabase_key: Optional[str] = Field(
+        default_factory=lambda: (
+            os.getenv("SUPABASE_KEY")
+            or os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+            or os.getenv("SUPABASE_ANON_KEY")
+        )
+    )
+    supabase_service_role_key: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_SERVICE_ROLE_KEY"))
+    supabase_anon_key: Optional[str] = Field(default_factory=lambda: os.getenv("SUPABASE_ANON_KEY"))
+    supabase_legacy_key: Optional[str] = Field(default=None, validation_alias="SUPABASE_KEY", repr=False)
+    sqlite_db_path: str = Field(
+        default=str(Path(__file__).resolve().parents[1] / "data" / "aegis_local.db"),
+        validation_alias=AliasChoices("SQLITE_DB_PATH", "AEGIS_SQLITE_PATH"),
+        description="Canonical local persistence path; AEGIS_SQLITE_PATH is a legacy alias",
+    )
+    admin_api_token: Optional[SecretStr] = Field(
+        default=None,
+        repr=False,
+        description="Bearer token required for privileged API writes",
+    )
+
+    # 4. Intelligence & External Telemetry APIs
+    apify_token: Optional[str] = Field(default_factory=lambda: os.getenv("APIFY_TOKEN"))
+    yf_api_key: Optional[str] = Field(default_factory=lambda: os.getenv("YF_API_KEY"))
+
+    # 5. Authoritative Shared Acquisition Runtime
+    agent_reach_enabled: bool = Field(default_factory=lambda: os.getenv("AGENT_REACH_ENABLED", "true").lower() == "true")
+    agent_reach_timeout: float = Field(default_factory=lambda: float(os.getenv("AGENT_REACH_TIMEOUT", "12.0")))
+    agent_reach_max_channels: int = Field(default_factory=lambda: int(os.getenv("AGENT_REACH_MAX_CHANNELS", "6")))
+    agent_reach_max_results: int = Field(default_factory=lambda: int(os.getenv("AGENT_REACH_MAX_RESULTS", "10")))
+
+    # 6. Notifications & Dispatch Alerts
+    twilio_account_sid: Optional[str] = Field(default_factory=lambda: os.getenv("TWILIO_ACCOUNT_SID"))
+    twilio_auth_token: Optional[str] = Field(default_factory=lambda: os.getenv("TWILIO_AUTH_TOKEN"))
+    twilio_phone_number: Optional[str] = Field(default_factory=lambda: os.getenv("TWILIO_PHONE_NUMBER"))
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
+        case_sensitive=False,
+        populate_by_name=True,
+    )
+
+    @field_validator("environment", mode="before")
+    @classmethod
+    def normalize_environment(cls, value) -> str:
+        environment = str(value).strip().lower()
+        if environment not in {"production", "staging", "development", "test", "testing"}:
+            raise ValueError("ENVIRONMENT must be production, staging, development, test or testing")
+        return environment
+
+    @field_validator("sqlite_db_path", mode="before")
+    @classmethod
+    def validate_sqlite_path(cls, value) -> str:
+        if not isinstance(value, (str, os.PathLike)):
+            raise ValueError("SQLITE_DB_PATH must name a persistent file")
+        path = str(value).strip()
+        if not path or path == ":memory:":
+            raise ValueError("SQLITE_DB_PATH must name a persistent file, not an empty or per-connection memory database")
+        return path
+
+    @model_validator(mode="after")
+    def validate_llm_model_order(self) -> "Settings":
+        """Keep the preferred model first and remove duplicate/blank IDs."""
+        ordered: List[str] = []
+        for model_name in [self.default_model, *self.gemini_models]:
+            clean_name = model_name.strip() if model_name else ""
+            if clean_name and clean_name not in ordered:
+                ordered.append(clean_name)
+        if not ordered:
+            raise ValueError("At least one Gemini model identifier must be configured")
+        self.default_model = ordered[0]
+        self.gemini_models = ordered
+        return self
+
+    @model_validator(mode="after")
+    def validate_production_mock_guard(self) -> "Settings":
+        """Production environment strictly forbids synthetic mock evidence generation."""
+        if self.environment == "production" and self.aegis_mock_llm:
+            raise ValueError(
+                "Production environment (ENVIRONMENT=production) forbids AEGIS_MOCK_LLM=true "
+                "to prevent synthetic mock evidence"
+            )
+        return self
+
+    # ── Convenience Introspection Properties ─────────────────────────────────
+
+    @property
+    def has_supabase(self) -> bool:
+        """True if Supabase URL and at least one credentials key are present."""
+        return bool(self.supabase_url and (self.supabase_key or self.supabase_service_role_key or self.supabase_anon_key))
+
+    @property
+    def supabase_write_key(self) -> Optional[str]:
+        """Use explicit server credentials; retain SUPABASE_KEY as a legacy alias.
+
+        An explicitly configured anonymous key is not a server write credential.
+        Deployments should prefer SUPABASE_SERVICE_ROLE_KEY over the legacy alias.
+        """
+        return self.supabase_service_role_key or self.supabase_legacy_key or None
+
+    @property
+    def has_gemini(self) -> bool:
+        """True if at least one valid Gemini API key is configured."""
+        return bool(any(k.startswith("AIzaSy") for k in self.gemini_api_keys))
+
+    @property
+    def has_apify(self) -> bool:
+        """True if Apify API token is configured."""
+        return bool(self.apify_token)
+
+    @property
+    def is_test_environment(self) -> bool:
+        """True when the validated application environment explicitly selects tests."""
+        return self.environment in ("test", "testing")
+
+    @property
+    def is_mock_llm(self) -> bool:
+        """True only when deterministic mock execution is explicitly authorized."""
+        return self.aegis_mock_llm or self.is_test_environment
+
+
+@lru_cache(maxsize=1)
+def get_settings() -> Settings:
+    """Return the cached singleton Settings instance."""
+    return Settings()
+
+
+# Canonical global settings instance
+settings: Settings = get_settings()

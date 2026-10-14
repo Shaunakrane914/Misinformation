@@ -1,0 +1,60 @@
+{
+  "query": "Tesla",
+  "channel": "twitter",
+  "condition": "2_new_resolution",
+  "latency_sec": 0.0,
+  "resolved_info": {
+    "entity_id": "Q478214",
+    "entity_label": "Tesla, Inc.",
+    "handle": "Tesla",
+    "relationship": "OFFICIAL",
+    "confidence": 0.98,
+    "verification_method": "CURATED_ENTERPRISE_MAP",
+    "official_website": "https://www.tesla.com"
+  },
+  "telemetry": {
+    "status": "SUCCESS",
+    "backend": "fxtwitter",
+    "retrieval_mode": "zero_auth_public_mirror",
+    "authenticated": false
+  },
+  "metrics": {
+    "total_items": 1,
+    "total_chars": 57,
+    "total_bytes": 57,
+    "body_text_chars": 0,
+    "metadata_text_chars": 57,
+    "body_utf8_bytes": 0,
+    "metadata_utf8_bytes": 57,
+    "entity_matching_reddit_submissions": 0,
+    "claim_relevant_reddit_submissions": 0,
+    "feed_summaries": 0,
+    "full_post_bodies": 0,
+    "direct_comment_bodies": 0,
+    "x_profile_metadata": 1,
+    "actual_x_statuses": 0,
+    "indexed_snippets": 0,
+    "off_platform_general_web_results": 0,
+    "cached_results": 0,
+    "fresh_network_results": 1,
+    "discussion_posts_acquired": 0,
+    "profile_metadata_acquired": 1
+  },
+  "http_audit_records": [
+    {
+      "source_endpoint": "https://x.com/Tesla",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "payload_size_bytes": 57,
+      "body_text_chars": 0,
+      "metadata_text_chars": 57,
+      "body_utf8_bytes": 0,
+      "metadata_utf8_bytes": 57,
+      "content_depth": "PROFILE_METADATA",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "",
+      "metadata_sample": "Electric vehicles, giant batteries & solar, SI & robotics"
+    }
+  ]
+}

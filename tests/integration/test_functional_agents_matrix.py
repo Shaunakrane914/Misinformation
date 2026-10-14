@@ -178,7 +178,13 @@ def test_scout_normal_positive_case():
     agent = ScoutAgent()
 
     # 1. Processing pipeline
-    task_res = agent.process_task({"ticker": "NVDA"})
+    # Exercise the real scoring pipeline over fixed provider data, never Yahoo
+    # availability or local API credentials. Network failures have separate tests.
+    chart_data = {"chart": {"result": [{"indicators": {"quote": [
+        {"close": [120.0, 121.0, 119.0, 122.0, 123.0]},
+    ]}}]}}
+    with patch.object(agent, "fetch_stock_data", return_value=chart_data):
+        task_res = agent.process_task({"ticker": "NVDA"})
     assert task_res is not None
     assert task_res.get("ticker") == "NVDA"
     assert "current_price" in task_res

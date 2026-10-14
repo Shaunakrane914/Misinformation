@@ -204,8 +204,8 @@
       if (!findings || findings.length === 0) {
         return `
           <div class="fe-empty-state">
-            <span class="fe-empty-icon">✓</span>
-            <p>No anomalous findings or contradictions flagged. Evidence indicates standard consistency.</p>
+            <span class="fe-empty-icon" aria-hidden="true">—</span>
+            <p>No grounded findings were returned. This does not establish that the claim is true, the market is normal, or the available sources are complete.</p>
           </div>
         `;
       }

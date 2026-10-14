@@ -1,76 +1,119 @@
 """
-Aegis Protocol — Centralized Type-Safe Configuration & Environment Settings
-===========================================================================
-Provides dataclass-based environment configuration with defaults, type validation,
-and status introspection for all services and agent dependencies.
+Aegis Protocol — Configuration (Backward Compatibility Shim)
+============================================================
+Canonical configuration relocated to `backend.core.settings.Settings`.
+Preserves historical import paths, `AppConfig` class identity, and properties.
 """
 
-import os
-from dataclasses import dataclass, field
-from typing import Optional, List
-from dotenv import load_dotenv
+from typing import List, Optional
+from backend.core.settings import Settings, get_settings, settings as core_settings
 from backend import __version__
 
-# Ensure .env is loaded
-load_dotenv()
 
-@dataclass(frozen=True)
 class AppConfig:
-    """Central configuration for Aegis Protocol."""
-    app_name: str = "Aegis Protocol"
-    version: str = __version__
-    environment: str = os.getenv("ENVIRONMENT", "development")
-    port: int = int(os.getenv("PORT", "8000"))
-    allowed_origins: List[str] = field(default_factory=lambda: [os.getenv("ALLOWED_ORIGIN", "*")])
+    """Backward-compatible AppConfig wrapper delegating to backend.core.settings.Settings."""
 
-    # AI & Model APIs
-    gemini_api_key: Optional[str] = os.getenv("GEMINI_API_KEY")
-    gemini_api_key_2: Optional[str] = os.getenv("GEMINI_API_KEY_2")
-    gemini_api_key_3: Optional[str] = os.getenv("GEMINI_API_KEY_3")
+    def __init__(self, settings_instance: Optional[Settings] = None):
+        self._s = settings_instance or core_settings
 
-    # Supabase Database
-    supabase_url: Optional[str] = os.getenv("SUPABASE_URL")
-    supabase_key: Optional[str] = (
-        os.getenv("SUPABASE_KEY")
-        or os.getenv("SUPABASE_SERVICE_ROLE_KEY")
-        or os.getenv("SUPABASE_ANON_KEY")
-    )
-    supabase_service_role_key: Optional[str] = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
-    supabase_anon_key: Optional[str] = os.getenv("SUPABASE_ANON_KEY")
+    @property
+    def app_name(self) -> str:
+        return self._s.app_name
 
-    # Scrapers & Financial Intelligence
-    apify_token: Optional[str] = os.getenv("APIFY_TOKEN")
-    yf_api_key: Optional[str] = os.getenv("YF_API_KEY")
+    @property
+    def version(self) -> str:
+        return self._s.version
 
-    # Agent Reach Capability Layer
-    agent_reach_enabled: bool = os.getenv("AGENT_REACH_ENABLED", "true").lower() == "true"
-    agent_reach_timeout: float = float(os.getenv("AGENT_REACH_TIMEOUT", "12.0"))
-    agent_reach_max_channels: int = int(os.getenv("AGENT_REACH_MAX_CHANNELS", "6"))
-    agent_reach_max_results: int = int(os.getenv("AGENT_REACH_MAX_RESULTS", "10"))
+    @property
+    def environment(self) -> str:
+        return self._s.environment
 
-    # Notifications & Alerts
-    twilio_account_sid: Optional[str] = os.getenv("TWILIO_ACCOUNT_SID")
-    twilio_auth_token: Optional[str] = os.getenv("TWILIO_AUTH_TOKEN")
-    twilio_phone_number: Optional[str] = os.getenv("TWILIO_PHONE_NUMBER")
+    @property
+    def port(self) -> int:
+        return self._s.port
 
+    @property
+    def allowed_origins(self) -> List[str]:
+        return self._s.allowed_origins
+
+    @property
+    def gemini_api_key(self) -> Optional[str]:
+        return self._s.gemini_api_key
+
+    @property
+    def gemini_api_key_2(self) -> Optional[str]:
+        return self._s.gemini_api_key_2
+
+    @property
+    def gemini_api_key_3(self) -> Optional[str]:
+        return self._s.gemini_api_key_3
+
+    @property
+    def supabase_url(self) -> Optional[str]:
+        return self._s.supabase_url
+
+    @property
+    def supabase_key(self) -> Optional[str]:
+        return self._s.supabase_key
+
+    @property
+    def supabase_service_role_key(self) -> Optional[str]:
+        return self._s.supabase_service_role_key
+
+    @property
+    def supabase_anon_key(self) -> Optional[str]:
+        return self._s.supabase_anon_key
+
+    @property
+    def apify_token(self) -> Optional[str]:
+        return self._s.apify_token
+
+    @property
+    def yf_api_key(self) -> Optional[str]:
+        return self._s.yf_api_key
+
+    @property
+    def agent_reach_enabled(self) -> bool:
+        return self._s.agent_reach_enabled
+
+    @property
+    def agent_reach_timeout(self) -> float:
+        return self._s.agent_reach_timeout
+
+    @property
+    def agent_reach_max_channels(self) -> int:
+        return self._s.agent_reach_max_channels
+
+    @property
+    def agent_reach_max_results(self) -> int:
+        return self._s.agent_reach_max_results
+
+    @property
+    def twilio_account_sid(self) -> Optional[str]:
+        return self._s.twilio_account_sid
+
+    @property
+    def twilio_auth_token(self) -> Optional[str]:
+        return self._s.twilio_auth_token
+
+    @property
+    def twilio_phone_number(self) -> Optional[str]:
+        return self._s.twilio_phone_number
 
     @property
     def has_supabase(self) -> bool:
-        return bool(self.supabase_url and (self.supabase_key or self.supabase_service_role_key or self.supabase_anon_key))
+        return self._s.has_supabase
 
     @property
     def has_gemini(self) -> bool:
-        return bool(self.gemini_api_key or self.gemini_api_key_2 or self.gemini_api_key_3)
+        return self._s.has_gemini
 
     @property
     def has_apify(self) -> bool:
-        return bool(self.apify_token)
+        return self._s.has_apify
 
-# Singleton global configuration instance
-settings = AppConfig()
 
-if __name__ == "__main__":
-    print(f"[{settings.app_name} v{settings.version}] Config Initialized")
-    print(f"Supabase configured: {settings.has_supabase}")
-    print(f"Gemini configured: {settings.has_gemini}")
-    print(f"Apify configured: {settings.has_apify}")
+# Singleton global configuration instances
+settings = AppConfig(core_settings)
+
+__all__ = ["AppConfig", "settings", "get_settings"]

@@ -1,0 +1,22 @@
+{
+  "schema_version": "phase8-live-acquisition-v1",
+  "generated_at": "2026-10-12T10:55:08.727820+00:00",
+  "commit": "dc249fe369506c8677916b57f8022d292be62216",
+  "branch": "feat/phase8-real-acquisition-proof",
+  "worktree_dirty": true,
+  "python": "3.13.5 (tags/v3.13.5:6cb20a2, Jun 11 2025, 16:15:46) [MSC v.1943 64 bit (AMD64)]",
+  "tools": {
+    "gh": true,
+    "yt-dlp": true
+  },
+  "credential_presence": {
+    "GITHUB_TOKEN": false,
+    "YOUTUBE_API_KEY": false,
+    "GROQ_API_KEY": false
+  },
+  "probe_budget": {
+    "max_scenarios_per_operation": 1,
+    "result_limit": 3
+  },
+  "evidence_policy": "No complete response bodies or secrets retained."
+}

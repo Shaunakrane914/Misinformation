@@ -251,6 +251,23 @@ class WebChannel(Channel):
         return ChannelStatus.DEGRADED
 
 
+class WebSearchChannel(Channel):
+    """Compatibility alias for the canonical open-web search implementation."""
+
+    @property
+    def name(self) -> str:
+        return "web_search"
+
+    def search(self, query: str, limit: int = 6, **kwargs) -> List[EvidenceFragment]:
+        return _dispatch_channel_query(self.name, query, limit=limit, default_domain="web", **kwargs)
+
+    def health_check(self) -> ChannelStatus:
+        st = native_doctor.get_channel_status("web")
+        if st.get("status") == "ok":
+            return ChannelStatus.AVAILABLE
+        return ChannelStatus.DEGRADED
+
+
 # ─────────────────────────────────────────────────────────────────────────────
 # 9. REDDIT & TWITTER CHANNELS
 # ─────────────────────────────────────────────────────────────────────────────

@@ -1,32 +1,28 @@
 """
-Aegis Protocol — Scout Adapters Registry
+Aegis Protocol — Scout Source Adapters (Shim)
+=============================================
+Backward-compatibility shim. Canonical implementation relocated to
+`backend.agents.scout.sources.adapters`.
 """
 
-from typing import List
-from .base import ScoutSourceAdapter
-from .web_adapter import GenericWebAdapter
-from .reddit_adapter import RedditAdapter
-from .x_adapter import XAdapter
-from .primary_adapter import PrimaryFilingAdapter
-from .youtube_adapter import YouTubeAdapter
-from .github_adapter import GitHubAdapter
-
-ALL_SCOUT_ADAPTERS: List[ScoutSourceAdapter] = [
-    PrimaryFilingAdapter(),
-    RedditAdapter(),
-    XAdapter(),
-    YouTubeAdapter(),
-    GitHubAdapter(),
-    GenericWebAdapter(),  # Fallback for general web & news
-]
+from backend.agents.scout.sources.adapters import (
+    ALL_SCOUT_ADAPTERS,
+    GenericWebAdapter,
+    GitHubAdapter,
+    PrimaryFilingAdapter,
+    RedditAdapter,
+    ScoutSourceAdapter,
+    XAdapter,
+    YouTubeAdapter,
+)
 
 __all__ = [
     "ScoutSourceAdapter",
+    "PrimaryFilingAdapter",
     "GenericWebAdapter",
     "RedditAdapter",
     "XAdapter",
-    "PrimaryFilingAdapter",
-    "YouTubeAdapter",
     "GitHubAdapter",
+    "YouTubeAdapter",
     "ALL_SCOUT_ADAPTERS",
 ]

@@ -1,7 +1,7 @@
 # SPECIALIST AGENT: BRANDSHIELD AGENT SPECIFICATION
 
 **Agent:** Specialist Agent — BRANDSHIELD  
-**Implementation:** [`backend/agents/brandshield_agent.py`](file:///backend/agents/brandshield_agent.py)  
+**Implementation:** [`backend/agents/brandshield_agent.py`](../../../backend/agents/brandshield_agent.py)  
 **System:** Aegis Protocol
 
 ---

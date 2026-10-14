@@ -101,14 +101,21 @@ class UnifiedEvidenceSource:
     type: Optional[str] = None   # "news" | "social" | "filing" | "video" | "other"
     domain: Optional[str] = None
     is_primary: bool = False
+    authority: Optional[str] = None
+    reliability: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        d = {
             "name": self.name,
             "type": self.type,
             "domain": self.domain,
             "is_primary": self.is_primary,
         }
+        if self.authority is not None:
+            d["authority"] = self.authority
+        if self.reliability is not None:
+            d["reliability"] = self.reliability
+        return d
 
 
 def _safe_str(val: Any) -> Optional[str]:
@@ -169,11 +176,20 @@ class UnifiedEvidenceItem:
 
         # Build source
         source_name = getattr(item, "source_name", None)
+        raw_meta = getattr(item, "raw_metadata", None) or {}
+        auth = getattr(item, "source_authority", None) or raw_meta.get("source_authority")
+        rel = getattr(item, "reliability_score", None) or raw_meta.get("reliability_score")
+        if isinstance(rel, (int, float)) and not isinstance(rel, bool):
+            rel = float(rel)
+        else:
+            rel = None
         source = UnifiedEvidenceSource(
             name=_safe_str(source_name),
             type=_infer_source_type(item),
             domain=_safe_str(getattr(item, "source_domain", None)),
             is_primary=bool(getattr(item, "primary_source", False)),
+            authority=_safe_str(auth),
+            reliability=rel,
         )
 
         # Quality tensor
@@ -385,6 +401,12 @@ class UnifiedReport:
     # Guidance
     next_steps: List[str] = field(default_factory=list)
 
+    # Optional rich intelligence fields (Phase 8)
+    claim_decomposition: List[Dict[str, Any]] = field(default_factory=list)
+    detailed_contradictions: List[Dict[str, Any]] = field(default_factory=list)
+    authoritative_sources: List[Dict[str, Any]] = field(default_factory=list)
+    agent_intelligence: Dict[str, Any] = field(default_factory=dict)
+
     # Internal metadata (not rendered in report sections)
     agent: Optional[str] = None          # e.g. "claim_verifier"
     query: Optional[str] = None          # original user query
@@ -393,7 +415,7 @@ class UnifiedReport:
     )
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        d = {
             "summary": self.summary,
             "findings": self.findings,
             "evidence": self.evidence.to_dict(),
@@ -409,6 +431,15 @@ class UnifiedReport:
                 "schema_version": "3.8.0",
             },
         }
+        if self.claim_decomposition:
+            d["claim_decomposition"] = self.claim_decomposition
+        if self.detailed_contradictions:
+            d["contradictions"] = self.detailed_contradictions
+        if self.authoritative_sources:
+            d["authoritative_sources"] = self.authoritative_sources
+        if self.agent_intelligence:
+            d["agent_intelligence"] = self.agent_intelligence
+        return d
 
 
 # ─────────────────────────────────────────────────────────────────────────────

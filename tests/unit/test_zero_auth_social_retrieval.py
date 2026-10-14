@@ -29,6 +29,7 @@ Validates:
 """
 
 import json
+import socket
 import pytest
 from unittest.mock import MagicMock, patch
 import urllib.error
@@ -42,7 +43,18 @@ from backend.services.url_validator import validate_url_safe, APPROVED_SOCIAL_MI
 
 
 @pytest.fixture
-def router():
+def public_dns(monkeypatch):
+    """Provider responses are mocked; DNS must be deterministic and offline too."""
+    monkeypatch.setattr(socket, "getaddrinfo", lambda *args, **kwargs: [
+        (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))
+    ])
+
+
+@pytest.fixture
+def router(monkeypatch, public_dns):
+    # Mirror behavior is tested only under explicit, policy-approved access.
+    # Separate acquisition policy tests verify the default denial.
+    monkeypatch.setenv("REDDIT_APPROVED_ACCESS", "true")
     return NativeRouter()
 
 
@@ -348,22 +360,18 @@ def test_facebook_channel_remains_unchanged(router):
     assert "authentication" in str(telem.get("error", "")).lower() or "FACEBOOK_COOKIE" in str(telem.get("error", ""))
 
 
-def test_doctor_reports_zero_auth_availability():
-    """NativeDoctor reports Arctic Shift and FxTwitter as available without authentication."""
-    reddit_st = native_doctor.get_channel_status("reddit")
-    assert reddit_st["status"] == "ok"
-    assert reddit_st["active_backend"] == "Arctic Shift"
-    assert reddit_st["zero_auth"] == "AVAILABLE"
-    assert reddit_st["auth_required"] is False
-
-    twitter_st = native_doctor.get_channel_status("twitter")
-    assert twitter_st["status"] == "ok"
-    assert twitter_st["active_backend"] == "FxTwitter"
-    assert twitter_st["zero_auth"] == "AVAILABLE"
-    assert twitter_st["auth_required"] is False
+def test_doctor_does_not_claim_zero_auth_availability_before_observation():
+    """Configured mirrors remain unverified until a meaningful operation is observed."""
+    doctor = type(native_doctor)()
+    for channel in ("reddit", "twitter"):
+        status = doctor.get_channel_status(channel)
+        assert status["status"] == "not_probed"
+        assert status["active_backend"] is None
+        assert status["zero_auth"] == "UNVERIFIED"
+        assert status["auth_required"] is False
 
 
-def test_ssrf_allowlist_preserves_public_mirrors():
+def test_ssrf_allowlist_preserves_public_mirrors(public_dns):
     """Outbound SSRF validation allows approved mirror hostnames over HTTPS."""
     assert "api.fxtwitter.com" in APPROVED_SOCIAL_MIRROR_HOSTNAMES
     assert "arctic-shift.photon-reddit.com" in APPROVED_SOCIAL_MIRROR_HOSTNAMES

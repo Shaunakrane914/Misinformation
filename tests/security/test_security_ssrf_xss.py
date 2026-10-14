@@ -74,3 +74,20 @@ def test_html_xss_escaping_logic():
     escaped_attr = escape_html(attr_payload)
     assert "<img" not in escaped_attr
     assert "&gt;" in escaped_attr
+
+
+@pytest.mark.security
+def test_static_file_path_traversal_prevention():
+    from starlette.testclient import TestClient
+    from backend.main import app
+
+    client = TestClient(app)
+    traversal_paths = [
+        "/../backend/main.py",
+        "/../../etc/passwd",
+        "/..%2f..%2fetc%2fpasswd",
+        "/..\\..\\windows\\system32",
+    ]
+    for p in traversal_paths:
+        res = client.get(p)
+        assert res.status_code in (400, 404), f"Path traversal should be rejected: {p}"

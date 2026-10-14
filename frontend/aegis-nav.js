@@ -15,7 +15,7 @@
   window.sanitizeText = window.escapeHtml;
 
   // ── Version Identity ──
-  window.AEGIS_VERSION = '3.7.0';
+  window.AEGIS_VERSION = '4.1.0';
   window.AEGIS_RELEASE_DATE = '2026-10-02';
 
   // ── Standardized Production Backend Base Resolution ──
@@ -128,7 +128,7 @@
       </nav>
 
       <div class="ae-nav-actions">
-        <button type="button" class="ae-nav-cmd-trigger" id="aeCmdTrigger" aria-label="Quick Search">
+        <button type="button" class="ae-nav-cmd-trigger" id="aeCmdTrigger">
           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
           <span>Search</span>
           <kbd style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);padding:1px 4px;border-radius:4px;font-size:0.68rem;">⌘K</kbd>
@@ -177,8 +177,10 @@
       backdrop = document.createElement('div');
       backdrop.id = 'cmdPalette';
       backdrop.className = 'cmd-palette-backdrop';
+      backdrop.inert = true;
+      backdrop.setAttribute('aria-hidden', 'true');
       backdrop.innerHTML = `
-        <div class="cmd-palette-box">
+        <div class="cmd-palette-box" role="dialog" aria-modal="true" aria-label="Search pages and tools">
           <div class="cmd-input-wrap">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--text-dim)"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
             <input type="text" class="cmd-input" id="cmdPaletteInput" placeholder="Type a command, tool, or page..." autocomplete="off" spellcheck="false" />
@@ -232,6 +234,8 @@
     }
 
     function openPalette() {
+      backdrop.inert = false;
+      backdrop.removeAttribute('aria-hidden');
       backdrop.classList.add('open');
       input.value = '';
       filteredItems = [...cmdPaletteItems];
@@ -243,6 +247,9 @@
     function closePalette() {
       backdrop.classList.remove('open');
       input.blur();
+      backdrop.inert = true;
+      backdrop.setAttribute('aria-hidden', 'true');
+      if (triggerBtn) triggerBtn.focus();
     }
 
     // Toggle triggers
@@ -318,12 +325,35 @@
   }
 
   // ── 5. Scroll Reveal Observer ──
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.06 });
+  const observer = typeof IntersectionObserver === 'function'
+    ? new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.06 })
+    : null;
+
+  function observeReveals(root) {
+    if (root.nodeType === 1 && root.matches('.ae-reveal')) {
+      if (observer) observer.observe(root);
+      else root.classList.add('visible');
+    }
+    if (root.querySelectorAll) {
+      root.querySelectorAll('.ae-reveal').forEach(el => {
+        if (observer) observer.observe(el);
+        else el.classList.add('visible');
+      });
+    }
+  }
 
   function initAll() {
-    document.querySelectorAll('.ae-reveal').forEach(el => observer.observe(el));
+    observeReveals(document);
+    // Agent results, progress panels and dossiers are inserted after the
+    // initial page load. Without observing those nodes they remain opacity:0.
+    if (typeof MutationObserver === 'function') {
+      const additions = new MutationObserver(records => records.forEach(record =>
+        record.addedNodes.forEach(observeReveals)
+      ));
+      additions.observe(document.body, { childList: true, subtree: true });
+    }
     init3DCardTilt();
     initCommandPalette();
   }

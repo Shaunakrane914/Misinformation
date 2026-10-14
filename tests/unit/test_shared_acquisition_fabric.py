@@ -18,6 +18,7 @@ Validates the unified scraper/acquisition architecture:
 """
 
 import json
+import socket
 from unittest.mock import MagicMock, patch
 import pytest
 
@@ -40,6 +41,14 @@ from backend.services.agent_reach.native.adapters import (
 from backend.services.agent_reach.native.cache import SocialCache
 from backend.services.agent_reach.native.evidence_sufficiency import evidence_sufficiency_evaluator
 from backend.services.agent_reach.native.route_policy import RouteClass, RouteDecision, RoutePolicyEngine
+
+
+@pytest.fixture
+def public_dns(monkeypatch):
+    """Resolve mocked provider targets without making an external DNS request."""
+    monkeypatch.setattr(socket, "getaddrinfo", lambda *args, **kwargs: [
+        (socket.AF_INET, socket.SOCK_STREAM, socket.IPPROTO_TCP, "", ("93.184.216.34", 443))
+    ])
 from backend.services.agent_reach.native.router import native_router
 from backend.services.agent_reach.native.telemetry import acquisition_telemetry
 from backend.services.agent_reach.extraction import (
@@ -97,7 +106,7 @@ def test_playwright_rescue_decision_gate():
 
 # ── 2. YOUTUBE IN-PROCESS YT-DLP TEST ─────────────────────────────────────────
 
-def test_youtube_adapter_in_process():
+def test_youtube_adapter_in_process(public_dns):
     """Verify YouTubeAdapter imports yt-dlp in-process and produces normalized EvidenceFragment."""
     adapter = YouTubeAdapter()
     cand = CandidateSource(url="https://www.youtube.com/watch?v=dQw4w9WgXcQ", platform="youtube", title="Test Video")
@@ -139,7 +148,7 @@ def test_youtube_adapter_in_process():
 
 # ── 3. REDDIT ARCTIC SHIFT SPECIALIST MIRROR TEST ─────────────────────────────
 
-def test_reddit_adapter_arctic_shift():
+def test_reddit_adapter_arctic_shift(public_dns):
     """Verify RedditAdapter queries Arctic Shift zero-auth public mirror and caches result."""
     adapter = RedditAdapter()
     cand = CandidateSource(
@@ -184,7 +193,7 @@ def test_reddit_adapter_arctic_shift():
 
 # ── 4. X / TWITTER FXTWITTER SPECIALIST MIRROR TEST ───────────────────────────
 
-def test_twitter_adapter_fxtwitter():
+def test_twitter_adapter_fxtwitter(public_dns):
     """Verify TwitterAdapter acquires public tweets via FxTwitter zero-auth mirror."""
     adapter = TwitterAdapter()
     cand = CandidateSource(
@@ -227,8 +236,8 @@ def test_twitter_adapter_fxtwitter():
 
 # ── 5. WEB ADAPTER SCRAPLING PRIMARY & PLAYWRIGHT RESCUE TEST ─────────────────
 
-def test_web_adapter_scrapling_and_rescue():
-    """Verify WebAdapter uses Scrapling HTTP primary and invokes Playwright rescue on short/blocked page."""
+def test_web_adapter_bounded_http_without_unsafe_browser_rescue(public_dns):
+    """Typed web acquisition uses the bounded transport without browser bypass."""
     adapter = WebAdapter()
     cand = CandidateSource(url="https://example.com/article", platform="web", title="Example Article")
     assert adapter.can_handle(cand) is True
@@ -239,17 +248,20 @@ def test_web_adapter_scrapling_and_rescue():
     with patch.object(adapter, "_fetch_scrapling", return_value=(200, "<html><body><title>Tech Insights</title><p>Deep technical article discussing enterprise infrastructure and supply chains.</p></body></html>", {}, 120, None)):
         doc = adapter.acquire(cand, req)
         assert doc.status == "SUCCESS"
-        assert doc.backend_id == "scrapling_http"
+        assert doc.backend_id == "bounded_urllib"
         frags = adapter.normalize(doc, cand, req)
         assert len(frags) == 1
         assert frags[0].retrieval_mode == RetrievalMode.WEB_READER.value
+        assert frags[0].author == ""
+        assert frags[0].content_depth != "FULL_ARTICLE"
 
-    # Case B: Scrapling returns empty shell (<250 chars) -> Playwright rescue succeeds
+    # A JS shell does not authorize an unpinned browser/network fallback.
     with patch.object(adapter, "_fetch_scrapling", return_value=(200, "<html><div id='root'></div></html>", {}, 80, None)):
-        with patch.object(adapter, "_fetch_playwright_rescue", return_value=(200, "<html><body><title>Rendered Page</title><p>Hydrated client-side DOM content with full article text.</p></body></html>", {}, 950, None)):
+        with patch.object(adapter, "_fetch_playwright_rescue") as rescue:
             doc = adapter.acquire(cand, req)
             assert doc.status == "SUCCESS"
-            assert doc.backend_id == "playwright_rescue"
+            assert doc.backend_id == "bounded_urllib"
+            rescue.assert_not_called()
 
 
 # ── 6. SOCIAL CACHE TESTS ─────────────────────────────────────────────────────

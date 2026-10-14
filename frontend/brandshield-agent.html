@@ -6,6 +6,8 @@
   <title>BrandShield Agent — Brand Protection &amp; Review Pattern Analysis · Aegis Protocol</title>
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
+  <script src="operation-health.js"></script>
+  <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -175,6 +177,9 @@
       display: flex; flex-direction: column; gap: 8px; transition: border-color 0.18s;
     }
     .source-table-card:hover { border-color: rgba(16, 185, 129, 0.35); }
+    .source-table-card > div { min-width: 0; overflow-wrap: anywhere; }
+    .source-table-card > div:first-child > div:first-child,
+    .source-table-card > div:last-child { flex-wrap: wrap; min-width: 0; }
 
     .source-link-btn {
       display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
@@ -205,6 +210,7 @@
     @media(max-width:760px){
       .agent-hero { padding: 88px 20px 48px; }
       .agent-body { padding: 28px 18px 60px; }
+      .source-table-card { padding: 14px; }
     }
   </style>
 </head>
@@ -213,6 +219,7 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <main id="main-content">
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>BrandShield Agent &bull; Observed Review &amp; Marketplace Signals</div>
       <h1>BrandShield <span>Agent</span></h1>
@@ -223,7 +230,7 @@
         <div class="tel-cell"><span class="tel-val" id="telChannels" style="color:var(--accent)">Available</span><span class="tel-key">Channel Feeds</span></div>
         <div class="tel-cell"><span class="tel-val" id="telThreats" style="color:#fbbf24">0 Flagged</span><span class="tel-key">Observed Signals</span></div>
         <div class="tel-cell"><span class="tel-val" id="telGroups" style="color:var(--emerald)">Audited</span><span class="tel-key">Syndication Audit</span></div>
-        <div class="tel-cell"><span class="tel-val" id="telStatus" style="color:#10b981">READY</span><span class="tel-key">System Status</span></div>
+        <div class="tel-cell"><span class="tel-val" id="telStatus" style="color:var(--text-muted)">IDLE</span><span class="tel-key">System Status</span></div>
       </div>
     </div>
 
@@ -239,20 +246,31 @@
           </button>
         </div>
         <div class="preset-chips">
-          <span class="chip" onclick="runPreset('Nike')">Nike (Brand)</span>
-          <span class="chip" onclick="runPreset('Nike Air Max')">Nike Air Max (Product Line)</span>
-          <span class="chip" onclick="runPreset('Samsung Galaxy S24')">Samsung Galaxy S24</span>
-          <span class="chip" onclick="runPreset('Tata Motors')">Tata Motors</span>
-          <span class="chip" onclick="runPreset('Zomato')">Zomato</span>
-          <span class="chip" onclick="runPreset('Sony Electronics')">Sony Electronics</span>
+          <button type="button" class="chip" onclick="runPreset('Nike')">Nike (Brand)</button>
+          <button type="button" class="chip" onclick="runPreset('Nike Air Max')">Nike Air Max (Product Line)</button>
+          <button type="button" class="chip" onclick="runPreset('Samsung Galaxy S24')">Samsung Galaxy S24</button>
+          <button type="button" class="chip" onclick="runPreset('Tata Motors')">Tata Motors</button>
+          <button type="button" class="chip" onclick="runPreset('Zomato')">Zomato</button>
+          <button type="button" class="chip" onclick="runPreset('Sony Electronics')">Sony Electronics</button>
         </div>
       </div>
+
+      <section class="agent-guide ae-reveal" aria-label="How BrandShield evaluates a brand claim" style="--agent-accent:#36d5aa;">
+        <div class="agent-guide-heading"><h2>Investigate the claim, not just the mention</h2><p>Signals become findings only when source evidence supports them.</p></div>
+        <div class="agent-guide-grid">
+          <div class="agent-guide-card"><span class="step">01 / IDENTITY</span><h3>Check the real brand</h3><p>Compare the named product, seller, and account with verifiable official identity. Similar names are not proof of impersonation.</p></div>
+          <div class="agent-guide-card"><span class="step">02 / INDEPENDENCE</span><h3>Group repeated stories</h3><p>Reviews, marketplace listings, and news can repeat one origin. Inspect source links and sampling limits.</p></div>
+          <div class="agent-guide-card"><span class="step">03 / RESPONSE</span><h3>Prioritize with uncertainty</h3><p>Separate observed complaints from confirmed false claims and show what a brand should verify next.</p></div>
+        </div>
+      </section>
 
       <!-- Results Container -->
       <div id="resultsContainer"></div>
 
       <!-- PIPELINE SPEC TABLE (Audited & Truthful - Hidden on Live Search) -->
       <div id="brandInitialSpec">
+        <details class="agent-method-details">
+          <summary>Technical method and output contract</summary>
         <div class="ae-reveal" style="margin-top: 40px;">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:#10b981;letter-spacing:0.08em;margin-bottom:10px;">// BRAND PROTECTION PIPELINE SPECIFICATION</div>
           <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
@@ -285,8 +303,10 @@
             </div>
           </div>
         </div>
+        </details>
       </div>
     </div>
+    </main>
 
     <!-- Dossier Modal Target -->
     <div id="dossierModalWrap"></div>
@@ -307,6 +327,22 @@
 
   <script>
     let activeScanData = null;
+    let brandDossierReturnFocus = null;
+
+    function loadBrandOperationHealth(latencyMs) {
+      return AegisOperationHealth.renderPills(
+        document.getElementById('brandOperationHealth'),
+        {
+          news: { label: 'News', operations: ['search'] },
+          web: { label: 'Web', operations: ['search', 'read'] },
+          reddit: { label: 'Reddit', operations: ['search', 'comments'] },
+          twitter: { label: 'X / Twitter', operations: ['search', 'profile'] },
+          youtube: { label: 'YouTube', operations: ['search', 'comments'] },
+          rss: { label: 'RSS / Wires', operations: ['search', 'read'] }
+        },
+        { lead: 'CHANNEL OPERATIONS:', tail: `${latencyMs || 0}ms scan latency` }
+      );
+    }
 
     async function scanBrand() {
       const inputVal = document.getElementById('brandInput').value.trim();
@@ -411,8 +447,12 @@
       // Update Telemetry Ribbon
       document.getElementById('telSources').textContent = `${sources.length} Items`;
       document.getElementById('telThreats').textContent = `${threats.length} Flagged`;
-      document.getElementById('telGroups').textContent = `${summary.independent_groups_count || 1} Independent`;
-      document.getElementById('telStatus').textContent = data.scan_metadata?.ai_enrichment === 'OFFLINE_HEURISTIC' ? 'HEURISTIC' : 'LIVE AI';
+      document.getElementById('telGroups').textContent = summary.independent_groups_count == null ? 'Groups unverified' : `${summary.independent_groups_count} grouped (verify independence)`;
+      const enrichment = data.scan_metadata?.ai_enrichment;
+      document.getElementById('telStatus').textContent = sources.length === 0 ? 'NO EVIDENCE'
+        : enrichment === 'OFFLINE_HEURISTIC' ? 'HEURISTIC'
+          : enrichment === 'SYNTHETIC_MOCK' ? 'SYNTHETIC MOCK'
+            : enrichment === 'ONLINE_GEMINI' ? 'LIVE AI' : 'AI UNVERIFIED';
 
       let html = '';
 
@@ -428,15 +468,9 @@
           </div>
         </div>
 
-        <div class="health-strip ae-reveal">
+        <div class="health-strip ae-reveal" id="brandOperationHealth">
           <span style="color:var(--text-dim);font-weight:700;">CHANNELS MONITORED:</span>
-          <span class="health-pill healthy"><span>News</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>Web</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>Reddit</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>Twitter</span> <span>✓</span></span>
-          <span class="health-pill healthy"><span>YouTube</span> <span>✓</span></span>
-          <span class="health-pill ${channels.rss === 'degraded' ? 'degraded' : 'healthy'}"><span>RSS Wires</span> <span>✓</span></span>
-          <span style="margin-left:auto;color:var(--text-dim);">${retrieval.latency_ms || 0}ms scan latency</span>
+          <span class="health-pill degraded">Loading operation status…</span>
         </div>
       `;
 
@@ -465,7 +499,7 @@
             <span class="snap-lbl">Listing Signals</span>
           </div>
           <div class="snap-card">
-            <span class="snap-val" style="color:${impersonations > 0 ? 'var(--rose)' : 'var(--emerald)'};">${impersonations}</span>
+            <span class="snap-val" style="color:${impersonations > 0 ? 'var(--rose)' : 'var(--text-dim)'};">${impersonations}</span>
             <span class="snap-lbl">Potential Impersonation</span>
           </div>
         </div>
@@ -475,11 +509,10 @@
       if (sources.length === 0 && threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin:24px 0;">
-            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No Verified Public Evidence Found</div>
-            <div>No matching adversarial or deceptive public signals were retrieved for "${escapeHtml(data.brand_name)}" across active search channels.</div>
+            <div style="font-weight:700;color:#fff;margin-bottom:6px;">No source evidence returned</div>
+            <div>This run returned no inspectable records for "${escapeHtml(data.brand_name)}". It cannot establish that relevant public activity is absent.</div>
             <div style="font-size:0.8rem;color:var(--text-dim);margin-top:8px;">
-              Possible causes: obscure keyword, search provider rate limits, or genuine absence of indexed public complaints.
-              (Synthetic news &amp; fake reviews are strictly disabled in Aegis Protocol).
+              Inspect source coverage and provider availability before interpreting this result. No synthetic news or review records are substituted.
             </div>
           </div>
         `;
@@ -492,15 +525,16 @@
       if (threats.length === 0) {
         html += `
           <div class="empty-banner ae-reveal" style="margin-bottom:20px;">
-            <div style="color:#10b981;font-weight:700;margin-bottom:4px;">No Suspicious Patterns Detected</div>
-            <div>Public discussions reflect standard consumer queries or positive brand mentions without observed duplicate clusters.</div>
+            <div style="color:var(--text-muted);font-weight:700;margin-bottom:4px;">No threat records returned</div>
+            <div>This response does not establish that no suspicious public activity exists. Inspect source coverage and channel availability.</div>
           </div>
         `;
       } else {
         html += `<div class="ae-reveal" style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;">`;
         threats.forEach((t, idx) => {
-          const sevClass = (t.severity || 'medium').toLowerCase();
-          const sevColor = sevClass === 'critical' || sevClass === 'high' ? 'var(--rose)' : sevClass === 'medium' ? '#fbbf24' : '#10b981';
+          const rawSeverity = String(t.severity || '').toLowerCase();
+          const sevClass = ['critical', 'high', 'medium', 'low'].includes(rawSeverity) ? rawSeverity : 'unassessed';
+          const sevColor = sevClass === 'critical' || sevClass === 'high' ? 'var(--rose)' : sevClass === 'medium' ? '#fbbf24' : 'var(--text-dim)';
           const evCount = (t.evidence_ids || []).length;
           html += `
             <div class="threat-card ${sevClass}" style="padding:20px;">
@@ -522,20 +556,20 @@
               <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:12px;margin-bottom:12px;font-size:0.85rem;line-height:1.5;">
                 <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
                   <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Observation &amp; Pattern</div>
-                  <div style="color:#cbd5e1;">${escapeHtml(t.summary || 'Unverified pattern detected.')}</div>
+                  <div style="color:#cbd5e1;">${escapeHtml(t.summary || 'No pattern summary supplied.')}</div>
                 </div>
                 <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px 12px;">
                   <div style="font-family:var(--font-mono);font-size:0.68rem;color:var(--text-dim);text-transform:uppercase;font-weight:700;margin-bottom:3px;">Assessment</div>
-                  <div style="color:${sevColor};font-weight:600;">${escapeHtml(t.severity || 'Medium').toUpperCase()} PRIORITY &bull; ${(t.status || 'Under Review').toUpperCase()}</div>
+                  <div style="color:${sevColor};font-weight:600;">${escapeHtml(t.severity || 'Unassessed').toUpperCase()} PRIORITY &bull; ${escapeHtml((t.status || 'Unverified').toUpperCase())}</div>
                   <div style="font-size:0.78rem;color:var(--text-dim);margin-top:3px;">Pattern observed; requires source corroboration before establishing coordination.</div>
                 </div>
               </div>
 
               <div class="threat-footer" style="padding-top:8px;">
                 <div class="threat-meta">
-                  <span>Evidence: <strong>${evCount} verified sources</strong></span>
-                  <span>First Observed: <strong>${escapeHtml(t.first_seen || 'Recent scan')}</strong></span>
-                  <span>Platforms: <strong>${(t.platforms || ['Web']).join(', ')}</strong></span>
+                  <span>Evidence: <strong>${evCount} linked item(s); verify each source</strong></span>
+                  <span>First Observed: <strong>${escapeHtml(t.first_seen || 'Not supplied')}</strong></span>
+                  <span>Platforms: <strong>${escapeHtml((t.platforms || []).join(', ') || 'Not supplied')}</strong></span>
                 </div>
               </div>
             </div>
@@ -563,9 +597,9 @@
               <tbody>
                 ${listingThreats.map((lt, lIdx) => `
                   <tr>
-                    <td><strong>${escapeHtml((lt.platforms || ['Marketplace'])[0])}</strong></td>
+                    <td><strong>${escapeHtml((lt.platforms || [])[0] || 'Not supplied')}</strong></td>
                     <td style="color:#fff;font-weight:600;">${escapeHtml(lt.title)}</td>
-                    <td style="font-family:var(--font-mono);color:var(--text-dim);">${escapeHtml(lt.seller || '@unverified')}</td>
+                    <td style="font-family:var(--font-mono);color:var(--text-dim);">${escapeHtml(lt.seller || 'Not supplied')}</td>
                     <td><span class="ae-badge ae-badge-red" style="font-size:0.7rem;">${escapeHtml(lt.type || 'Signal')}</span></td>
                     <td>
                       <button class="aegis-open-src-btn" style="padding:3px 8px;font-size:0.72rem;" onclick="openDossierModal(${lIdx})">
@@ -581,7 +615,7 @@
       }
 
       // 4. Review Pattern Screening & Duplication Audit
-      const isInsufficient = reviewIntel.status === 'INSUFFICIENT_EVIDENCE' || reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
+      const isInsufficient = !reviewIntel.status || !reviewIntel.signals_analyzed || reviewIntel.status === 'INSUFFICIENT_EVIDENCE' || reviewIntel.status === 'INSUFFICIENT_EVIDENCE_TO_ASSESS';
       const isSuspicious = reviewIntel.review_manipulation_detected || reviewIntel.status === 'SUSPICIOUS_PATTERNS_DETECTED';
       const statusTitle = isInsufficient
         ? '⚪ INSUFFICIENT EVIDENCE FOR REVIEW SCREENING'
@@ -601,13 +635,13 @@
             </span>
           </div>
           <div style="font-size:0.88rem;color:var(--text-muted);line-height:1.6;margin-bottom:8px;">
-            ${escapeHtml(reviewIntel.assessment || 'No anomalous review signals detected.')}
+            ${escapeHtml(reviewIntel.assessment || 'Review screening was not established for this run.')}
           </div>
           <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-top:6px;">
             SCREENING DATA: ${reviewIntel.signals_analyzed || 0} signals analyzed &bull; ${reviewIntel.near_duplicate_clusters || 0} near-duplicate clusters identified
           </div>
           <div style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);margin-top:3px;">
-            FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'Natural lexical variance across retrieved signals.')}
+            FINDINGS: ${escapeHtml(reviewIntel.cluster_notes || 'No cluster analysis returned.')}
           </div>
           <div style="font-size:0.75rem;color:var(--text-dim);margin-top:8px;font-style:italic;line-height:1.4;">
             Assessment: This pattern is consistent with copied content, but does not by itself establish coordinated manipulation.
@@ -632,10 +666,10 @@
             <div class="scan-card" style="padding:18px;margin-bottom:0;">
               <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
                 <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);text-transform:uppercase;">CLAIM · ${escapeHtml(c.category || 'General')}</span>
-                <span style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:${stColor};">${(c.status || 'UNVERIFIED').toUpperCase()}</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:${stColor};">${escapeHtml((c.status || 'UNVERIFIED').toUpperCase())}</span>
               </div>
               <div style="font-size:0.88rem;font-weight:600;color:#fff;line-height:1.45;margin-bottom:8px;">${escapeHtml(c.claim_text)}</div>
-              <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Evidence: ${(c.evidence_ids || []).join(', ')}</div>
+              <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">Evidence: ${escapeHtml((c.evidence_ids || []).join(', '))}</div>
             </div>
           `;
         });
@@ -645,7 +679,7 @@
             <div class="scan-card" style="padding:18px;margin-bottom:0;border-color:rgba(0,229,255,0.2);">
               <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
                 <span style="font-family:var(--font-mono);font-size:0.7rem;color:#00e5ff;text-transform:uppercase;">NARRATIVE THEME</span>
-                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">${(n.threat_level || 'LOW').toUpperCase()} RISK</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">${escapeHtml((n.threat_level || 'UNASSESSED').toUpperCase())} RISK</span>
               </div>
               <div style="font-size:0.88rem;font-weight:700;color:#fff;line-height:1.45;margin-bottom:6px;">${escapeHtml(n.theme)}</div>
               <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${escapeHtml(n.description)}</div>
@@ -666,7 +700,7 @@
               <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;min-width:110px;">${escapeHtml(t.time)}</span>
               <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);min-width:80px;text-transform:uppercase;">${escapeHtml(t.platform || 'Web')}</span>
               <span style="font-size:0.85rem;color:var(--text-muted);flex:1;">${escapeHtml(t.title)}</span>
-              ${t.has_url ? `<a href="${t.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open ↗</a>` : ''}
+              ${aegisSafeSourceUrl(t.url) ? `<a href="${escapeHtml(aegisSafeSourceUrl(t.url))}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open ↗</a>` : ''}
             </div>
           `;
         });
@@ -675,15 +709,15 @@
 
       // 7. Interactive Source Explorer
       html += `
-        <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${summary.independent_groups_count || 1} INDEPENDENT GROUPS)</div>
+        <div class="sec-hdr">EVIDENCE &amp; SOURCE EXPLORER (${sources.length} TOTAL · ${escapeHtml(summary.independent_groups_count ?? 'UNVERIFIED')} GROUPS; INDEPENDENCE UNVERIFIED)</div>
         <div class="explorer-wrap ae-reveal">
           <div class="filter-tabs" id="sourceFilters">
-            <span class="filter-tab active" onclick="filterSources('ALL')">ALL (${sources.length})</span>
-            <span class="filter-tab" onclick="filterSources('PRIMARY')">PRIMARY</span>
-            <span class="filter-tab" onclick="filterSources('NEWS')">NEWS</span>
-            <span class="filter-tab" onclick="filterSources('WEB')">WEB</span>
-            <span class="filter-tab" onclick="filterSources('SOCIAL')">SOCIAL</span>
-            <span class="filter-tab" onclick="filterSources('VIDEO')">VIDEO</span>
+            <button type="button" class="filter-tab active" aria-pressed="true" onclick="filterSources('ALL')">ALL (${sources.length})</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('PRIMARY')">PRIMARY</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('NEWS')">NEWS</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('WEB')">WEB</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('SOCIAL')">SOCIAL</button>
+            <button type="button" class="filter-tab" aria-pressed="false" onclick="filterSources('VIDEO')">VIDEO</button>
           </div>
           <div id="sourcesListContainer">
             ${renderSourceCards(sources)}
@@ -692,6 +726,7 @@
       `;
 
       container.innerHTML = html;
+      loadBrandOperationHealth(retrieval.latency_ms);
 
       // Mount Unified Investigation Report (schema v3.8.0)
       if (data.unified_report && window.renderUnifiedReport) {
@@ -710,8 +745,9 @@
 
       return items.map(s => {
         const roleColor = s.source_role === 'PRIMARY' ? '#10b981' : s.source_role === 'SECONDARY' ? '#00e5ff' : '#fbbf24';
-        const linkHtml = s.has_url
-          ? `<a href="${s.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn">Open Source ↗</a>`
+        const safeUrl = aegisSafeSourceUrl(s.url);
+        const linkHtml = safeUrl
+          ? `<a href="${escapeHtml(safeUrl)}" target="_blank" rel="noopener noreferrer" class="source-link-btn">Open Source ↗</a>`
           : `<span class="source-link-disabled">Source URL unavailable</span>`;
 
         return `
@@ -722,7 +758,7 @@
                   ${escapeHtml(s.source_role || 'DISCOVERY')}
                 </span>
                 <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--text-dim);">${escapeHtml(s.platform || s.source || 'Web')}</span>
-                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">[${s.evidence_id || ''}]</span>
+                <span style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);">[${escapeHtml(s.evidence_id || '')}]</span>
               </div>
               <div>${linkHtml}</div>
             </div>
@@ -730,8 +766,8 @@
             <div style="font-size:0.82rem;color:var(--text-muted);line-height:1.5;">${escapeHtml(s.snippet || '')}</div>
             <div style="display:flex;gap:14px;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-dim);border-top:1px solid rgba(255,255,255,0.04);padding-top:6px;">
               <span>Author/Publisher: <strong>${escapeHtml(s.author || 'Unknown')}</strong></span>
-              <span>Published: <strong>${escapeHtml(s.published_at || 'Recent')}</strong></span>
-              <span>Group: <strong>${escapeHtml(s.independence_group || 'independent')}</strong></span>
+              <span>Published: <strong>${escapeHtml(s.published_at || 'Not supplied')}</strong></span>
+              <span>Group: <strong>${escapeHtml(s.independence_group || 'Unverified')}</strong></span>
             </div>
           </div>
         `;
@@ -744,9 +780,9 @@
 
       // Update active tab style
       const tabs = document.querySelectorAll('.filter-tab');
-      tabs.forEach(t => t.classList.remove('active'));
+      tabs.forEach(t => { t.classList.remove('active'); t.setAttribute('aria-pressed', 'false'); });
       const activeTab = Array.from(tabs).find(t => t.textContent.startsWith(filterType));
-      if (activeTab) activeTab.classList.add('active');
+      if (activeTab) { activeTab.classList.add('active'); activeTab.setAttribute('aria-pressed', 'true'); }
 
       let filtered = allSources;
       if (filterType === 'PRIMARY') {
@@ -771,15 +807,17 @@
       if (!d) return;
 
       const modalWrap = document.getElementById('dossierModalWrap');
-      const sevColor = d.severity === 'critical' || d.severity === 'high' ? 'var(--rose)' : d.severity === 'medium' ? '#fbbf24' : '#10b981';
+      brandDossierReturnFocus = document.activeElement;
+      const sevColor = d.severity === 'critical' || d.severity === 'high' ? 'var(--rose)' : d.severity === 'medium' ? '#fbbf24' : 'var(--text-dim)';
+      const evidenceChain = Array.isArray(d.evidence_chain) ? d.evidence_chain : [];
 
       modalWrap.innerHTML = `
         <div class="modal-backdrop" onclick="closeDossierModal(event)">
-          <div class="modal-content ae-reveal" onclick="event.stopPropagation()">
-            <button class="modal-close" onclick="closeDossierModal()">&times;</button>
+          <div class="modal-content ae-reveal" role="dialog" aria-modal="true" aria-label="Brand investigation dossier" onclick="event.stopPropagation()">
+            <button type="button" class="modal-close" aria-label="Close brand dossier" onclick="closeDossierModal()">&times;</button>
             
             <div style="font-family:var(--font-mono);font-size:0.75rem;color:${sevColor};letter-spacing:0.08em;margin-bottom:8px;">
-              // INVESTIGATION DOSSIER · ${escapeHtml(d.dossier_id || 'DOS_001')}
+              // INVESTIGATION DOSSIER · ${escapeHtml(d.dossier_id || 'ID not supplied')}
             </div>
             
             <h2 style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:12px;line-height:1.3;">
@@ -794,7 +832,7 @@
                 CONFIDENCE: ${d.confidence != null ? Math.round(d.confidence * 100) + '%' : 'UNAVAILABLE'}
               </span>
               <span style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;padding:4px 8px;background:rgba(16,185,129,0.08);border-radius:4px;">
-                STATUS: ${(d.status || 'UNVERIFIED').toUpperCase()}
+                STATUS: ${escapeHtml((d.status || 'UNVERIFIED').toUpperCase())}
               </span>
             </div>
 
@@ -803,13 +841,13 @@
               <div style="font-size:0.9rem;color:#a7f3d0;font-weight:600;">${escapeHtml(d.recommended_action)}</div>
             </div>
 
-            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;margin-bottom:10px;">EVIDENCE CHAIN &amp; SOURCE PROVENANCE (${d.evidence_chain.length})</div>
+            <div style="font-family:var(--font-mono);font-size:0.75rem;color:#10b981;margin-bottom:10px;">EVIDENCE CHAIN &amp; SOURCE PROVENANCE (${evidenceChain.length})</div>
             <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:24px;">
-              ${d.evidence_chain.map(ev => `
+              ${evidenceChain.map(ev => `
                 <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 16px;">
                   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
-                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${escapeHtml(ev.platform)} · [${ev.evidence_id}]</span>
-                    ${ev.has_url ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open Source ↗</a>` : '<span style="font-size:0.7rem;color:var(--text-dim);">No URL</span>'}
+                    <span style="font-family:var(--font-mono);font-size:0.72rem;color:var(--text-dim);">${escapeHtml(ev.platform)} · [${escapeHtml(ev.evidence_id)}]</span>
+                    ${aegisSafeSourceUrl(ev.url) ? `<a href="${escapeHtml(aegisSafeSourceUrl(ev.url))}" target="_blank" rel="noopener noreferrer" class="source-link-btn" style="padding:2px 8px;font-size:0.68rem;">Open Source ↗</a>` : '<span style="font-size:0.7rem;color:var(--text-dim);">No safe URL</span>'}
                   </div>
                   <div style="font-size:0.86rem;font-weight:600;color:#fff;margin-bottom:4px;">${escapeHtml(ev.title)}</div>
                   <div style="font-size:0.8rem;color:var(--text-muted);">${escapeHtml(ev.snippet)}</div>
@@ -823,12 +861,20 @@
           </div>
         </div>
       `;
+      const closeButton = modalWrap.querySelector('.modal-close');
+      if (closeButton && typeof closeButton.focus === 'function') closeButton.focus();
     }
 
     function closeDossierModal() {
       const modalWrap = document.getElementById('dossierModalWrap');
       if (modalWrap) modalWrap.innerHTML = '';
+      if (brandDossierReturnFocus && typeof brandDossierReturnFocus.focus === 'function') brandDossierReturnFocus.focus();
+      brandDossierReturnFocus = null;
     }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('dossierModalWrap').innerHTML) closeDossierModal();
+    });
 
     function runPreset(name) {
       document.getElementById('brandInput').value = name;

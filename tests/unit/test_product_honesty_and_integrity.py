@@ -23,6 +23,7 @@ from unittest.mock import MagicMock, patch
 from fastapi.testclient import TestClient
 
 from backend.main import app
+from backend import __version__
 from backend.services.agent_reach.channels import ChannelStatus, QueryExecutionRecord
 from backend.services.agent_reach.native.doctor import DoctorBridge
 from backend.agents.brandshield_agent import BrandShieldAgent
@@ -225,15 +226,15 @@ class TestProductHonestyAndIntegrity:
         assert len(fake_threats) >= 1
         assert "ev_1" in fake_threats[0]["evidence_ids"]
 
-    def test_h_doctor_status_marks_unprobed_baseline_as_unknown_not_available(self):
-        """DoctorBridge fallback baseline must mark capabilities as not_probed / UNKNOWN, not available."""
+    def test_h_doctor_status_marks_unprobed_baseline_explicitly_not_available(self):
+        """DoctorBridge fallback baseline must remain explicitly NOT_PROBED, not available."""
         doc = DoctorBridge()
         baseline = doc._generate_fallback_baseline()
         for cap, details in baseline.items():
             assert details["status"] == "not_probed"
             assert details["active_backend"] is None
             code = doc.get_canonical_status_code(details)
-            assert code == "UNKNOWN"
+            assert code == "NOT_PROBED"
 
     def test_i_query_execution_record_preserves_genuine_telemetry(self):
         """QueryExecutionRecord must record real latency and channel without inventing SUCCESS."""
@@ -259,7 +260,7 @@ class TestProductHonestyAndIntegrity:
         resp = client.get("/api/")
         assert resp.status_code == 200
         data = resp.json()
-        assert data["version"] == "3.7.0"
+        assert data["version"] == __version__
         assert "Modular Multi-Agent Swarm with Zero-Cost Omni-Scraper Fabric" not in data.get("architecture", "")
         assert data["architecture"] == "Deterministic Evidence Pipeline with Selective Semantic AI"
         assert "registered_modules" in data
@@ -271,24 +272,33 @@ class TestProductHonestyAndIntegrity:
         redirects = Path("frontend/_redirects").read_text(encoding="utf-8")
         assert "/* /index.html 200" not in redirects, "Catch-all 200 mask must be removed"
 
-        # 2. Version 3.7.0 across shared nav
+        # 2. Shared nav must match the canonical backend version.
+        from backend import __version__
         nav = Path("frontend/aegis-nav.js").read_text(encoding="utf-8")
-        assert "window.AEGIS_VERSION = '3.7.0'" in nav, "Nav missing authoritative version 3.7.0"
+        assert f"window.AEGIS_VERSION = '{__version__}'" in nav, "Nav version differs from the canonical backend version"
 
-        # 3. submit.html: distinct AI_SYNTHESIS vs BACKEND_INVESTIGATION
+        # 3. Claim verification never substitutes a model-generated verdict
+        #    or evidence when the backend cannot provide an inspectable result.
         sub = Path("frontend/submit.html").read_text(encoding="utf-8")
-        assert "AI_SYNTHESIS" in sub
+        assert "INSUFFICIENT_EVIDENCE" in sub
+        assert "gemini-client.js" not in sub
+        assert "hasInspectableEvidence" in sub
         assert "reuters.com" not in sub
 
-        # 4. investigator-agent.html: honest initial state
+        # 4. The legacy investigator route is a safe gateway, not a
+        #    client-model or fabricated-dossier generator.
         inv = Path("frontend/investigator-agent.html").read_text(encoding="utf-8")
-        assert "NO CASE LOADED" in inv
+        assert "No sample dossier is generated here" in inv
+        assert "gemini-client.js" not in inv
+        assert "askGemini" not in inv
         assert "CASE-2026-A109" not in inv
 
-        # 5. research-agent.html: honest initial state
+        # 5. research-agent.html: safe entry, not client-model output
         res = Path("frontend/research-agent.html").read_text(encoding="utf-8")
-        assert "Awaiting Research Inquiry" in res
-        assert "No findings yet" in res
+        assert "No sample findings are generated here" in res
+        assert "gemini-client.js" not in res
+        assert "askGemini" not in res
+        assert "/api/research/query" not in Path("frontend/agents.html").read_text(encoding="utf-8")
 
         # 6. trending-agent.html: no synthetic fallback generator
         tr = Path("frontend/trending-agent.html").read_text(encoding="utf-8")

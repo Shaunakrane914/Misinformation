@@ -1,0 +1,1973 @@
+{
+  "schema_version": "phase8-extraction-summary-v1",
+  "source_probe_files": [
+    "artifacts/phase8_live_acquisition/2026-10-12_11-06-45Z/probe_records.jsonl",
+    "artifacts/phase8_extraction_spotchecks/2026-10-13_02-49-51Z/probe_records.jsonl"
+  ],
+  "method": "Observed live probe records; latest matching operation/scenario wins.",
+  "limitations": [
+    "Normalized samples and bounded parsed adapter-item key names are scored; raw provider field completeness is unverified.",
+    "Sample size is small and source-dependent, not a continuous health guarantee.",
+    "No request is made by this summarizer and no inferred data fills missing fields."
+  ],
+  "operations": {
+    "github.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_observation_count": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "forks",
+        "language",
+        "operation",
+        "pagination",
+        "provider_fields",
+        "readme_path",
+        "readme_sha",
+        "readme_source_url",
+        "readme_transport",
+        "repository",
+        "repository_description",
+        "retrieval_lineage",
+        "stars",
+        "topics",
+        "watchers"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "allow_forking",
+        "archive_url",
+        "archived",
+        "assignees_url",
+        "blobs_url",
+        "branches_url",
+        "clone_url",
+        "collaborators_url",
+        "comments_url",
+        "commits_url",
+        "compare_url",
+        "contents_url",
+        "contributors_url",
+        "created_at",
+        "custom_properties",
+        "default_branch",
+        "deployments_url",
+        "description",
+        "disabled",
+        "downloads_url",
+        "events_url",
+        "fork",
+        "forks",
+        "forks_count",
+        "forks_url",
+        "full_name",
+        "git_commits_url",
+        "git_refs_url",
+        "git_tags_url",
+        "git_url",
+        "has_discussions",
+        "has_downloads",
+        "has_issues",
+        "has_pages",
+        "has_projects",
+        "has_pull_requests",
+        "has_wiki",
+        "homepage",
+        "hooks_url",
+        "html_url",
+        "id",
+        "is_template",
+        "issue_comment_url",
+        "issue_events_url",
+        "issues_url",
+        "keys_url",
+        "labels_url",
+        "language",
+        "languages_url",
+        "license",
+        "license.key",
+        "license.name",
+        "license.node_id",
+        "license.spdx_id",
+        "license.url",
+        "merges_url",
+        "milestones_url",
+        "mirror_url",
+        "name",
+        "network_count",
+        "node_id",
+        "notifications_url",
+        "open_issues",
+        "open_issues_count",
+        "organization",
+        "organization.avatar_url",
+        "organization.events_url",
+        "organization.followers_url",
+        "organization.following_url",
+        "organization.gists_url",
+        "organization.gravatar_id",
+        "organization.html_url",
+        "organization.id",
+        "organization.login",
+        "organization.node_id",
+        "organization.organizations_url",
+        "organization.received_events_url",
+        "organization.repos_url",
+        "organization.site_admin",
+        "organization.starred_url",
+        "organization.subscriptions_url",
+        "organization.type",
+        "organization.url",
+        "organization.user_view_type",
+        "owner",
+        "owner.avatar_url",
+        "owner.events_url",
+        "owner.followers_url",
+        "owner.following_url",
+        "owner.gists_url",
+        "owner.gravatar_id",
+        "owner.html_url",
+        "owner.id",
+        "owner.login",
+        "owner.node_id",
+        "owner.organizations_url",
+        "owner.received_events_url",
+        "owner.repos_url",
+        "owner.site_admin",
+        "owner.starred_url",
+        "owner.subscriptions_url",
+        "owner.type",
+        "owner.url",
+        "owner.user_view_type",
+        "private",
+        "pull_request_creation_policy",
+        "pulls_url",
+        "pushed_at",
+        "readme",
+        "readme_path",
+        "readme_sha",
+        "readme_source_url",
+        "readme_transport",
+        "readme_transport.attempts",
+        "readme_transport.cache_status",
+        "readme_transport.content_type",
+        "readme_transport.endpoint",
+        "readme_transport.http_status",
+        "readme_transport.network_latency_ms",
+        "readme_transport.network_observed_this_attempt",
+        "readme_transport.protocol",
+        "readme_transport.raw_body_bytes",
+        "readme_transport.raw_body_sha256",
+        "readme_transport.redirect_chain",
+        "readme_transport.requested_endpoint",
+        "releases_url",
+        "size",
+        "ssh_url",
+        "stargazers_count",
+        "stargazers_url",
+        "statuses_url",
+        "subscribers_count",
+        "subscribers_url",
+        "subscription_url",
+        "svn_url",
+        "tags_url",
+        "teams_url",
+        "temp_clone_token",
+        "topics",
+        "trees_url",
+        "updated_at",
+        "url",
+        "visibility",
+        "watchers",
+        "watchers_count",
+        "web_commit_signoff_required"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        },
+        "content": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "metadata.readme_sha": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 21038,
+      "median_probe_latency_ms": 1403,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "DIRECT_METADATA": 1,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "PARTIAL_CONTENT": 1,
+        "METADATA": 1
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "github.issues": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 4,
+      "normalized_sample_count": 4,
+      "normalized_field_observation_count": {
+        "title": 4,
+        "canonical_url": 4,
+        "author": 2,
+        "published": 4,
+        "backend_id": 4,
+        "content_depth": 4
+      },
+      "normalized_field_population": {
+        "title": 4,
+        "canonical_url": 4,
+        "author": 2,
+        "published": 4,
+        "backend_id": 4,
+        "content_depth": 4
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "operation",
+        "pagination",
+        "provider_fields",
+        "repository",
+        "retrieval_lineage"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "active_lock_reason",
+        "assignee",
+        "assignees",
+        "author_association",
+        "body",
+        "closed_at",
+        "closed_by",
+        "comments",
+        "comments_url",
+        "created_at",
+        "events_url",
+        "html_url",
+        "id",
+        "issue_dependencies_summary",
+        "issue_dependencies_summary.blocked_by",
+        "issue_dependencies_summary.blocking",
+        "issue_dependencies_summary.total_blocked_by",
+        "issue_dependencies_summary.total_blocking",
+        "issue_field_values",
+        "labels",
+        "labels_url",
+        "locked",
+        "milestone",
+        "node_id",
+        "number",
+        "performed_via_github_app",
+        "performed_via_github_app.client_id",
+        "performed_via_github_app.created_at",
+        "performed_via_github_app.description",
+        "performed_via_github_app.events",
+        "performed_via_github_app.external_url",
+        "performed_via_github_app.html_url",
+        "performed_via_github_app.id",
+        "performed_via_github_app.name",
+        "performed_via_github_app.node_id",
+        "performed_via_github_app.owner",
+        "performed_via_github_app.permissions",
+        "performed_via_github_app.slug",
+        "performed_via_github_app.updated_at",
+        "pinned_comment",
+        "reactions",
+        "reactions.confused",
+        "reactions.eyes",
+        "reactions.heart",
+        "reactions.hooray",
+        "reactions.laugh",
+        "reactions.rocket",
+        "reactions.total_count",
+        "reactions.url",
+        "repository_url",
+        "state",
+        "state_reason",
+        "sub_issues_summary",
+        "sub_issues_summary.completed",
+        "sub_issues_summary.percent_completed",
+        "sub_issues_summary.total",
+        "timeline_url",
+        "title",
+        "type",
+        "updated_at",
+        "url",
+        "user",
+        "user.avatar_url",
+        "user.events_url",
+        "user.followers_url",
+        "user.following_url",
+        "user.gists_url",
+        "user.gravatar_id",
+        "user.html_url",
+        "user.id",
+        "user.login",
+        "user.node_id",
+        "user.organizations_url",
+        "user.received_events_url",
+        "user.repos_url",
+        "user.site_admin",
+        "user.starred_url",
+        "user.subscriptions_url",
+        "user.type",
+        "user.url",
+        "user.user_view_type"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 4,
+          "measured_samples": 4,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 4,
+          "measured_samples": 4,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "published": {
+          "populated": 4,
+          "measured_samples": 4,
+          "population_rate": 1.0
+        },
+        "provider.number": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "provider.state": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 2834,
+      "median_probe_latency_ms": 638,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 2
+      },
+      "pagination_observations": [
+        "BOUNDED_EXPLICIT_PAGE_1_TO_5",
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "github.prs": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_observation_count": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "operation",
+        "pagination",
+        "provider_fields",
+        "repository",
+        "retrieval_lineage"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "active_lock_reason",
+        "assignee",
+        "assignees",
+        "author_association",
+        "auto_merge",
+        "base",
+        "base.label",
+        "base.ref",
+        "base.repo",
+        "base.sha",
+        "base.user",
+        "body",
+        "closed_at",
+        "comments_url",
+        "commits_url",
+        "created_at",
+        "diff_url",
+        "draft",
+        "head",
+        "head.label",
+        "head.ref",
+        "head.repo",
+        "head.sha",
+        "head.user",
+        "html_url",
+        "id",
+        "issue_url",
+        "labels",
+        "locked",
+        "merge_commit_sha",
+        "merged_at",
+        "milestone",
+        "node_id",
+        "number",
+        "patch_url",
+        "requested_reviewers",
+        "requested_teams",
+        "review_comment_url",
+        "review_comments_url",
+        "state",
+        "statuses_url",
+        "title",
+        "updated_at",
+        "url",
+        "user",
+        "user.avatar_url",
+        "user.events_url",
+        "user.followers_url",
+        "user.following_url",
+        "user.gists_url",
+        "user.gravatar_id",
+        "user.html_url",
+        "user.id",
+        "user.login",
+        "user.node_id",
+        "user.organizations_url",
+        "user.received_events_url",
+        "user.repos_url",
+        "user.site_admin",
+        "user.starred_url",
+        "user.subscriptions_url",
+        "user.type",
+        "user.url",
+        "user.user_view_type"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "published": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "provider.number": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "provider.state": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 1339,
+      "median_probe_latency_ms": 1649,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 2
+      },
+      "pagination_observations": [
+        "BOUNDED_EXPLICIT_PAGE_1_TO_5",
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "github.commits": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_observation_count": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "operation",
+        "pagination",
+        "provider_fields",
+        "repository",
+        "retrieval_lineage"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "author",
+        "author.avatar_url",
+        "author.events_url",
+        "author.followers_url",
+        "author.following_url",
+        "author.gists_url",
+        "author.gravatar_id",
+        "author.html_url",
+        "author.id",
+        "author.login",
+        "author.node_id",
+        "author.organizations_url",
+        "author.received_events_url",
+        "author.repos_url",
+        "author.site_admin",
+        "author.starred_url",
+        "author.subscriptions_url",
+        "author.type",
+        "author.url",
+        "author.user_view_type",
+        "comments_url",
+        "commit",
+        "commit.author",
+        "commit.comment_count",
+        "commit.committer",
+        "commit.message",
+        "commit.tree",
+        "commit.url",
+        "commit.verification",
+        "committer",
+        "committer.avatar_url",
+        "committer.events_url",
+        "committer.followers_url",
+        "committer.following_url",
+        "committer.gists_url",
+        "committer.gravatar_id",
+        "committer.html_url",
+        "committer.id",
+        "committer.login",
+        "committer.node_id",
+        "committer.organizations_url",
+        "committer.received_events_url",
+        "committer.repos_url",
+        "committer.site_admin",
+        "committer.starred_url",
+        "committer.subscriptions_url",
+        "committer.type",
+        "committer.url",
+        "committer.user_view_type",
+        "html_url",
+        "node_id",
+        "parents",
+        "sha",
+        "url"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "published": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "provider.sha": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 304,
+      "median_probe_latency_ms": 706,
+      "classification_counts": {
+        "DIRECT_METADATA": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "METADATA": 2
+      },
+      "pagination_observations": [
+        "BOUNDED_EXPLICIT_PAGE_1_TO_5",
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "github.releases": {
+      "scenario_count": 3,
+      "live_success_count": 1,
+      "live_success_rate": 0.333,
+      "sampled_item_count": 3,
+      "normalized_sample_count": 3,
+      "normalized_field_observation_count": {
+        "title": 3,
+        "canonical_url": 3,
+        "author": 3,
+        "published": 3,
+        "backend_id": 3,
+        "content_depth": 3
+      },
+      "normalized_field_population": {
+        "title": 3,
+        "canonical_url": 3,
+        "author": 3,
+        "published": 3,
+        "backend_id": 3,
+        "content_depth": 3
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "operation",
+        "pagination",
+        "provider_fields",
+        "repository",
+        "retrieval_lineage"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "assets",
+        "assets_url",
+        "author",
+        "author.avatar_url",
+        "author.events_url",
+        "author.followers_url",
+        "author.following_url",
+        "author.gists_url",
+        "author.gravatar_id",
+        "author.html_url",
+        "author.id",
+        "author.login",
+        "author.node_id",
+        "author.organizations_url",
+        "author.received_events_url",
+        "author.repos_url",
+        "author.site_admin",
+        "author.starred_url",
+        "author.subscriptions_url",
+        "author.type",
+        "author.url",
+        "author.user_view_type",
+        "body",
+        "created_at",
+        "draft",
+        "html_url",
+        "id",
+        "immutable",
+        "name",
+        "node_id",
+        "prerelease",
+        "published_at",
+        "tag_name",
+        "tarball_url",
+        "target_commitish",
+        "updated_at",
+        "upload_url",
+        "url",
+        "zipball_url"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "published": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "provider.tag_name": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 1129,
+      "median_probe_latency_ms": 701,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 1,
+        "NOT_FOUND": 2
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 1
+      },
+      "pagination_observations": [
+        "BOUNDED_EXPLICIT_PAGE_1_TO_5",
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "youtube.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_observation_count": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 1,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 0.5,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "retrieval_lineage",
+        "video_metadata"
+      ],
+      "observed_populated_video_metadata_field_names": [
+        "availability",
+        "categories",
+        "channel",
+        "channel_id",
+        "comment_count",
+        "duration_seconds",
+        "like_count",
+        "live_status",
+        "tags",
+        "timestamp",
+        "upload_date",
+        "video_id",
+        "view_count"
+      ],
+      "observed_adapter_item_field_names": [],
+      "important_field_population": {
+        "title": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "video.video_id": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        },
+        "video.channel": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        },
+        "video.upload_date": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 1400,
+      "median_probe_latency_ms": 2357,
+      "classification_counts": {
+        "DIRECT_METADATA": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "VIDEO_METADATA": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "youtube.transcript": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_observation_count": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 0,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 0.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "caption_language",
+        "caption_origin",
+        "retrieval_lineage",
+        "segments",
+        "segments_truncated"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [],
+      "important_field_population": {
+        "canonical_url": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "content": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "metadata.segments": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        },
+        "metadata.caption_language": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 2228,
+      "median_probe_latency_ms": 4520,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "VIDEO_TRANSCRIPT": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "youtube.comments": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_observation_count": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "comment_id",
+        "likes",
+        "retrieval_lineage",
+        "source_timestamp"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "author",
+        "author_id",
+        "author_is_uploader",
+        "author_is_verified",
+        "author_thumbnail",
+        "author_url",
+        "id",
+        "is_favorited",
+        "is_pinned",
+        "like_count",
+        "parent",
+        "text",
+        "timestamp"
+      ],
+      "important_field_population": {
+        "canonical_url": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "content": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "metadata.comment_id": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 95,
+      "median_probe_latency_ms": 6349,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "COMMENT": 2
+      },
+      "pagination_observations": [
+        "TOP_COMMENTS_BOUNDED_NO_CONTINUATION"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "v2ex.latest": {
+      "scenario_count": 3,
+      "live_success_count": 3,
+      "live_success_rate": 1.0,
+      "sampled_item_count": 9,
+      "normalized_sample_count": 9,
+      "normalized_field_observation_count": {
+        "title": 9,
+        "canonical_url": 9,
+        "author": 3,
+        "published": 9,
+        "backend_id": 9,
+        "content_depth": 9
+      },
+      "normalized_field_population": {
+        "title": 9,
+        "canonical_url": 9,
+        "author": 3,
+        "published": 9,
+        "backend_id": 9,
+        "content_depth": 9
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "created",
+        "deleted",
+        "last_modified",
+        "last_touched",
+        "node",
+        "node_name",
+        "replies",
+        "retrieval_lineage",
+        "topic_id"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "content",
+        "content_rendered",
+        "created",
+        "deleted",
+        "id",
+        "last_modified",
+        "last_reply_by",
+        "last_touched",
+        "member",
+        "member.avatar_large",
+        "member.avatar_mini",
+        "member.avatar_normal",
+        "member.avatar_xlarge",
+        "member.bio",
+        "member.btc",
+        "member.created",
+        "member.github",
+        "member.id",
+        "member.last_modified",
+        "member.location",
+        "member.pro",
+        "member.psn",
+        "member.tagline",
+        "member.twitter",
+        "member.url",
+        "member.username",
+        "member.website",
+        "node",
+        "node.aliases",
+        "node.avatar_large",
+        "node.avatar_mini",
+        "node.avatar_normal",
+        "node.footer",
+        "node.founder_id",
+        "node.header",
+        "node.id",
+        "node.name",
+        "node.parent_node_name",
+        "node.root",
+        "node.stars",
+        "node.title",
+        "node.title_alternative",
+        "node.topics",
+        "node.url",
+        "replies",
+        "title",
+        "url"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 9,
+          "measured_samples": 9,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 9,
+          "measured_samples": 9,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "metadata.topic_id": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "metadata.node": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 298,
+      "median_probe_latency_ms": 495,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 3
+      },
+      "content_depth_counts": {
+        "SNIPPET": 3,
+        "FULL_ARTICLE": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "v2ex.search": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_observation_count": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "created",
+        "deleted",
+        "last_modified",
+        "last_reply_by",
+        "last_touched",
+        "node",
+        "node_name",
+        "replies",
+        "retrieval_lineage",
+        "topic_id"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "content",
+        "content_rendered",
+        "created",
+        "deleted",
+        "id",
+        "last_modified",
+        "last_reply_by",
+        "last_touched",
+        "member",
+        "member.avatar_large",
+        "member.avatar_mini",
+        "member.avatar_normal",
+        "member.avatar_xlarge",
+        "member.avatar_xxlarge",
+        "member.avatar_xxxlarge",
+        "member.bio",
+        "member.btc",
+        "member.created",
+        "member.github",
+        "member.id",
+        "member.last_modified",
+        "member.location",
+        "member.pro",
+        "member.psn",
+        "member.tagline",
+        "member.twitter",
+        "member.url",
+        "member.username",
+        "member.website",
+        "node",
+        "node.aliases",
+        "node.avatar_large",
+        "node.avatar_mini",
+        "node.avatar_normal",
+        "node.footer",
+        "node.founder_id",
+        "node.header",
+        "node.id",
+        "node.name",
+        "node.parent_node_name",
+        "node.root",
+        "node.stars",
+        "node.title",
+        "node.title_alternative",
+        "node.topics",
+        "node.url",
+        "replies",
+        "title",
+        "url"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "metadata.topic_id": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "metadata.node": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 494,
+      "median_probe_latency_ms": 492,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 1,
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 2,
+        "SNIPPET": 1
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "v2ex.topic": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_observation_count": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "created",
+        "deleted",
+        "last_modified",
+        "last_reply_by",
+        "last_touched",
+        "node",
+        "node_name",
+        "replies",
+        "retrieval_lineage",
+        "topic_id"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "content",
+        "content_rendered",
+        "created",
+        "deleted",
+        "id",
+        "last_modified",
+        "last_reply_by",
+        "last_touched",
+        "member",
+        "member.avatar_large",
+        "member.avatar_mini",
+        "member.avatar_normal",
+        "member.avatar_xlarge",
+        "member.avatar_xxlarge",
+        "member.avatar_xxxlarge",
+        "member.bio",
+        "member.btc",
+        "member.created",
+        "member.github",
+        "member.id",
+        "member.last_modified",
+        "member.location",
+        "member.pro",
+        "member.psn",
+        "member.tagline",
+        "member.twitter",
+        "member.url",
+        "member.username",
+        "member.website",
+        "node",
+        "node.aliases",
+        "node.avatar_large",
+        "node.avatar_mini",
+        "node.avatar_normal",
+        "node.footer",
+        "node.founder_id",
+        "node.header",
+        "node.id",
+        "node.name",
+        "node.parent_node_name",
+        "node.root",
+        "node.stars",
+        "node.title",
+        "node.title_alternative",
+        "node.topics",
+        "node.url",
+        "replies",
+        "title",
+        "url"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        },
+        "metadata.topic_id": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        },
+        "content": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 896,
+      "median_probe_latency_ms": 457,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 1,
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 1,
+        "SNIPPET": 1
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "v2ex.replies": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_observation_count": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population": {
+        "title": 3,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 0.5,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "last_modified",
+        "reply_id",
+        "retrieval_lineage",
+        "topic_id"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "content",
+        "content_rendered",
+        "created",
+        "id",
+        "last_modified",
+        "member",
+        "member.avatar_large",
+        "member.avatar_mini",
+        "member.avatar_normal",
+        "member.avatar_xlarge",
+        "member.avatar_xxlarge",
+        "member.avatar_xxxlarge",
+        "member.bio",
+        "member.btc",
+        "member.created",
+        "member.github",
+        "member.id",
+        "member.last_modified",
+        "member.location",
+        "member.pro",
+        "member.psn",
+        "member.tagline",
+        "member.twitter",
+        "member.url",
+        "member.username",
+        "member.website",
+        "member_id",
+        "topic_id"
+      ],
+      "important_field_population": {
+        "canonical_url": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "author": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "content": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "metadata.reply_id": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "metadata.topic_id": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 66,
+      "median_probe_latency_ms": 740,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "COMMENT": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "web.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_observation_count": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 0,
+        "published": 1,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 0.0,
+        "published": 0.5,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "char_count",
+        "observed_final_endpoint",
+        "page_metadata",
+        "retrieval_lineage"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [],
+      "important_field_population": {
+        "title": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "content": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "page.title": {
+          "populated": 0,
+          "measured_samples": 1,
+          "population_rate": 0.0
+        },
+        "page.headings": {
+          "populated": 0,
+          "measured_samples": 1,
+          "population_rate": 0.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 4000,
+      "median_probe_latency_ms": 449,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "PARTIAL_CONTENT": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "rss.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_observation_count": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 3,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "author": 0,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 0.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "feed_content_present",
+        "feed_title",
+        "guid",
+        "linked_article_retrieved",
+        "retrieval_lineage",
+        "summary",
+        "updated"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "author",
+        "categories",
+        "enclosures",
+        "feed_content",
+        "feed_publisher",
+        "feed_title",
+        "guid",
+        "link",
+        "published",
+        "summary",
+        "title",
+        "updated"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "published": {
+          "populated": 6,
+          "measured_samples": 6,
+          "population_rate": 1.0
+        },
+        "metadata.guid": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "metadata.feed_title": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 250,
+      "median_probe_latency_ms": 269,
+      "classification_counts": {
+        "SYNDICATED_SUMMARY": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FEED_ENTRY_SUMMARY": 2
+      },
+      "pagination_observations": [
+        "FIRST_FEED_PAGE_BOUNDED"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "xiaoyuzhou.podcast": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_observation_count": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "author": 1,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "backend",
+        "episode_count",
+        "has_audio",
+        "item_type",
+        "podcast",
+        "retrieval_lineage",
+        "source_contract",
+        "source_tier",
+        "subscription_count",
+        "transcript_available"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "audio_url",
+        "author",
+        "episode_count",
+        "item_type",
+        "link",
+        "podcast",
+        "published",
+        "source_contract",
+        "subscription_count",
+        "summary",
+        "title"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 2,
+          "measured_samples": 2,
+          "population_rate": 1.0
+        },
+        "metadata.item_type": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        },
+        "metadata.episode_count": {
+          "populated": 1,
+          "measured_samples": 1,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 150,
+      "median_probe_latency_ms": 1902,
+      "classification_counts": {
+        "DIRECT_METADATA": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "METADATA": 2
+      },
+      "pagination_observations": [
+        "FIRST_SEARCH_PAGE_AND_FIRST_FEED_PAGE_BOUNDED"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    },
+    "xiaoyuzhou.episodes": {
+      "scenario_count": 3,
+      "live_success_count": 1,
+      "live_success_rate": 0.333,
+      "sampled_item_count": 3,
+      "normalized_sample_count": 3,
+      "normalized_field_observation_count": {
+        "title": 3,
+        "canonical_url": 3,
+        "author": 3,
+        "published": 3,
+        "backend_id": 3,
+        "content_depth": 3
+      },
+      "normalized_field_population": {
+        "title": 3,
+        "canonical_url": 3,
+        "author": 3,
+        "published": 3,
+        "backend_id": 3,
+        "content_depth": 3
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "author": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "observed_populated_metadata_field_names": [
+        "audio_url",
+        "backend",
+        "comment_count",
+        "duration",
+        "has_audio",
+        "item_type",
+        "play_count",
+        "podcast",
+        "retrieval_lineage",
+        "source_contract",
+        "source_tier",
+        "transcript_available"
+      ],
+      "observed_populated_video_metadata_field_names": [],
+      "observed_adapter_item_field_names": [
+        "audio_url",
+        "comment_count",
+        "duration",
+        "item_type",
+        "link",
+        "play_count",
+        "podcast",
+        "published",
+        "source_contract",
+        "summary",
+        "title",
+        "transcript_available"
+      ],
+      "important_field_population": {
+        "title": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "canonical_url": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "published": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "content": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        },
+        "metadata.duration": {
+          "populated": 3,
+          "measured_samples": 3,
+          "population_rate": 1.0
+        }
+      },
+      "mean_relevant_chars_per_successful_item": 953,
+      "median_probe_latency_ms": 2057,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 2
+      },
+      "content_depth_counts": {
+        "PARTIAL_CONTENT": 1
+      },
+      "pagination_observations": [
+        "FIRST_SEARCH_PAGE_AND_FIRST_FEED_PAGE_BOUNDED"
+      ],
+      "limits": "Parsed adapter-item keys are a bounded observed subset, not a raw provider schema. Whole-page completeness is not measurable here."
+    }
+  }
+}

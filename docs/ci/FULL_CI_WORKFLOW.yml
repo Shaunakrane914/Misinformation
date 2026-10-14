@@ -1,0 +1,3 @@
+# Historical Phase 7.1 proposal retired.
+# The only authoritative, executable CI workflow is ../../.github/workflows/ci.yml.
+# Do not copy this file over the active workflow; see ../testing/CI_COVERAGE_MATRIX.md.

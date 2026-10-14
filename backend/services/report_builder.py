@@ -107,14 +107,38 @@ class ReportBuilder:
             evidence = classify_evidence_items(items)
 
         # ── Disagreements ─────────────────────────────────────────────────────
+        # ── Disagreements & Contradictions ────────────────────────────────────
         disagreements: List[str] = []
+        structured_contradictions: List[Dict[str, Any]] = []
         if corpus is not None:
-            contradictions = getattr(corpus, "contradictions", []) or []
-            for c in contradictions[:6]:
+            raw_contra = getattr(corpus, "contradictions", []) or []
+            for c in raw_contra[:6]:
                 if isinstance(c, dict):
-                    desc = c.get("description") or c.get("summary") or str(c)
+                    desc = c.get("explanation") or c.get("description") or c.get("summary") or str(c)
                     if desc:
                         disagreements.append(desc)
+                    structured_contradictions.append(c)
+                elif hasattr(c, "to_dict"):
+                    d = c.to_dict()
+                    structured_contradictions.append(d)
+                    desc = d.get("explanation") or d.get("description") or str(c)
+                    if desc:
+                        disagreements.append(desc)
+        if verdict and isinstance(verdict.get("contradictions"), list):
+            for c in verdict["contradictions"][:6]:
+                if isinstance(c, dict):
+                    desc = c.get("explanation") or c.get("description") or str(c)
+                    if desc and desc not in disagreements:
+                        disagreements.append(desc)
+                    if c not in structured_contradictions:
+                        structured_contradictions.append(c)
+
+        # ── Claim Decomposition ──────────────────────────────────────────────
+        decomposed: List[Dict[str, Any]] = []
+        if verdict:
+            raw_decomp = verdict.get("claim_decomposition") or verdict.get("sub_claims") or []
+            if isinstance(raw_decomp, list):
+                decomposed = [item for item in raw_decomp if isinstance(item, dict)]
 
         # ── Changes ──────────────────────────────────────────────────────────
         changes: List[str] = []
@@ -161,6 +185,8 @@ class ReportBuilder:
             next_steps=next_steps,
             agent="claim_verifier",
             query=claim_text,
+            claim_decomposition=decomposed,
+            detailed_contradictions=structured_contradictions,
         )
 
     # ── Trending Agent ────────────────────────────────────────────────────────
@@ -222,9 +248,11 @@ class ReportBuilder:
 
         # ── Disagreements ─────────────────────────────────────────────────────
         disagreements: List[str] = []
+        structured_contradictions: List[Dict[str, Any]] = []
         for c in (trend_data.get("contradictions") or trend_data.get("disputes") or [])[:4]:
             if isinstance(c, dict):
-                disagreements.append(c.get("description") or c.get("text") or str(c))
+                disagreements.append(c.get("explanation") or c.get("description") or c.get("text") or str(c))
+                structured_contradictions.append(c)
             else:
                 disagreements.append(str(c))
 
@@ -242,7 +270,7 @@ class ReportBuilder:
                     description=ev.get("description") or ev.get("event"),
                 ))
 
-        # ── Trust ────────────────────────────────────────────────────────────
+        # ── Trust ────────────────────────────────────────────────────
         ind_count = trend_data.get("independent_source_count") or trend_data.get("independent_sources")
         raw_qt = trend_data.get("quality_vector") or trend_data.get("quality_tensor")
         qt = _dict_to_quality_tensor(raw_qt) if raw_qt else None
@@ -256,6 +284,15 @@ class ReportBuilder:
             independent_source_count=int(ind_count) if ind_count is not None else None,
             query_telemetry=telemetry,
         )
+
+        # ── Agent Intelligence (Trending) ────────────────────────────────────
+        t_intel: Dict[str, Any] = {}
+        if trend_data.get("bot_amplification"):
+            t_intel["bot_amplification"] = trend_data["bot_amplification"]
+        if trend_data.get("narrative_velocity"):
+            t_intel["narrative_velocity"] = trend_data["narrative_velocity"]
+        if trend_data.get("claim_mutations"):
+            t_intel["claim_mutations"] = trend_data["claim_mutations"]
 
         # ── Next steps ────────────────────────────────────────────────────────
         next_steps = [
@@ -274,6 +311,8 @@ class ReportBuilder:
             next_steps=next_steps,
             agent="trending",
             query=query,
+            detailed_contradictions=structured_contradictions,
+            agent_intelligence=t_intel,
         )
 
     # ── Scout Agent (Financial Intelligence) ──────────────────────────────────
@@ -316,7 +355,14 @@ class ReportBuilder:
             evidence.community.append(_dict_to_evidence_item(s) if isinstance(s, dict) else UnifiedEvidenceItem.from_evidence_item(s))
 
         # ── Disagreements, changes, timeline ─────────────────────────────────
-        disagreements = [str(d) for d in (scout_data.get("disputes") or [])[:4]]
+        disagreements = []
+        structured_contradictions: List[Dict[str, Any]] = []
+        for d in (scout_data.get("contradictions") or scout_data.get("disputes") or [])[:4]:
+            if isinstance(d, dict):
+                disagreements.append(d.get("explanation") or d.get("description") or str(d))
+                structured_contradictions.append(d)
+            else:
+                disagreements.append(str(d))
         changes = [str(c) for c in (scout_data.get("changes") or scout_data.get("updates") or [])[:4]]
         timeline = [
             TimelineEvent(timestamp=t.get("timestamp"), description=t.get("description"))
@@ -338,6 +384,19 @@ class ReportBuilder:
             query_telemetry=telemetry,
         )
 
+        # ── Agent Intelligence (Scout) ───────────────────────────────────────
+        s_intel: Dict[str, Any] = {}
+        if scout_data.get("filing_comparison"):
+            s_intel["filing_comparison"] = scout_data["filing_comparison"]
+        if scout_data.get("misinformation"):
+            s_intel["corporate_rumors"] = scout_data["misinformation"]
+        if scout_data.get("stock"):
+            stk = scout_data["stock"]
+            s_intel["stock_anomaly"] = {
+                "z_score": stk.get("z_score"),
+                "is_crashing": stk.get("is_crashing"),
+            }
+
         next_steps = [
             "Review regulatory filings for confirmation.",
             "Monitor earnings announcements and SEC/SEBI disclosures.",
@@ -354,6 +413,8 @@ class ReportBuilder:
             next_steps=next_steps,
             agent="scout",
             query=query,
+            detailed_contradictions=structured_contradictions,
+            agent_intelligence=s_intel,
         )
 
     # ── BrandShield Agent ─────────────────────────────────────────────────────
@@ -413,6 +474,15 @@ class ReportBuilder:
             query_telemetry=telemetry,
         )
 
+        # ── Agent Intelligence (BrandShield) ─────────────────────────────────
+        b_intel: Dict[str, Any] = {}
+        if brand_data.get("executive_impersonation"):
+            b_intel["executive_impersonation"] = brand_data["executive_impersonation"]
+        if brand_data.get("smear_analysis"):
+            b_intel["smear_analysis"] = brand_data["smear_analysis"]
+        if brand_data.get("counterfeit_domains"):
+            b_intel["counterfeit_domains"] = brand_data["counterfeit_domains"]
+
         next_steps = [
             "Alert your legal team to any counterfeit listings.",
             "Submit DMCA/trademark takedown requests where applicable.",
@@ -430,6 +500,7 @@ class ReportBuilder:
             next_steps=next_steps,
             agent="brandshield",
             query=query,
+            agent_intelligence=b_intel,
         )
 
     # ── Personal Watch Agent ──────────────────────────────────────────────────
@@ -489,6 +560,17 @@ class ReportBuilder:
             query_telemetry=telemetry,
         )
 
+        # ── Agent Intelligence (Personal Watch) ──────────────────────────────
+        p_intel: Dict[str, Any] = {}
+        if personal_data.get("identity_verification") or personal_data.get("subject"):
+            p_intel["identity_verification"] = personal_data.get("identity_verification") or personal_data.get("subject")
+        if personal_data.get("doxxing_exposure"):
+            p_intel["doxxing_exposure"] = personal_data["doxxing_exposure"]
+        if personal_data.get("synthetic_media"):
+            p_intel["synthetic_media"] = personal_data["synthetic_media"]
+        if personal_data.get("quote_attribution"):
+            p_intel["quote_attribution"] = personal_data["quote_attribution"]
+
         next_steps = [
             "Report impostor accounts to the relevant platform.",
             "Share official verified identity references to counter misinformation.",
@@ -505,6 +587,7 @@ class ReportBuilder:
             next_steps=next_steps,
             agent="personal_watch",
             query=query,
+            agent_intelligence=p_intel,
         )
 
 
@@ -525,12 +608,25 @@ def _dict_to_evidence_item(d: Dict[str, Any]) -> UnifiedEvidenceItem:
 
     url = _str_val(d.get("url") or d.get("canonical_url") or d.get("source_url"))
 
-    source = UnifiedEvidenceSource(
-        name=_str_val(d.get("source") or d.get("publisher") or d.get("source_name")),
-        type=_str_val(d.get("type") or d.get("source_type")),
-        domain=_str_val(d.get("domain") or d.get("source_domain")),
-        is_primary=bool(d.get("is_primary") or d.get("primary_source", False)),
-    )
+    raw_source = d.get("source")
+    if isinstance(raw_source, dict):
+        source = UnifiedEvidenceSource(
+            name=_str_val(raw_source.get("name")),
+            type=_str_val(raw_source.get("type")),
+            domain=_str_val(raw_source.get("domain")),
+            is_primary=bool(raw_source.get("is_primary") or d.get("is_primary") or d.get("primary_source", False)),
+            authority=_str_val(raw_source.get("authority") or d.get("authority")),
+            reliability=float(raw_source["reliability"]) if raw_source.get("reliability") is not None else (float(d["reliability"]) if d.get("reliability") is not None else None),
+        )
+    else:
+        source = UnifiedEvidenceSource(
+            name=_str_val(d.get("source") or d.get("publisher") or d.get("source_name")),
+            type=_str_val(d.get("type") or d.get("source_type")),
+            domain=_str_val(d.get("domain") or d.get("source_domain")),
+            is_primary=bool(d.get("is_primary") or d.get("primary_source", False)),
+            authority=_str_val(d.get("authority")),
+            reliability=float(d["reliability"]) if d.get("reliability") is not None else None,
+        )
 
     raw_qt = d.get("quality_tensor")
     qt = _dict_to_quality_tensor(raw_qt) if isinstance(raw_qt, (dict, object)) else None

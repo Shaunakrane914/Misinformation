@@ -100,3 +100,28 @@ class TestDoctorBridgeStatusMapping:
             }
             code = bridge.get_canonical_status_code("tiktok")
             assert code == "UNAVAILABLE"
+
+    def test_social_channel_is_not_green_before_measured_observation(self):
+        bridge = DoctorBridge()
+        status = bridge.get_channel_status("reddit")
+        assert status["status"] == "not_probed"
+        assert status["active_backend"] is None
+        assert bridge.get_canonical_status_code("reddit") == "NOT_PROBED"
+
+    def test_metadata_observation_is_limited_not_healthy(self):
+        bridge = DoctorBridge()
+        bridge.record_observation(
+            "twitter",
+            {
+                "outcome": "DIRECT_METADATA",
+                "backend": "fxtwitter",
+                "operation": "twitter.profile",
+                "content_class": "METADATA",
+                "network_observed": True,
+                "http_statuses": [200],
+            },
+            [object()],
+        )
+        status = bridge.get_channel_status("twitter")
+        assert status["health_class"] == "LIMITED"
+        assert bridge.get_canonical_status_code("twitter") == "DEGRADED"

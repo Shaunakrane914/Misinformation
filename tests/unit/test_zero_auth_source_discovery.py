@@ -269,10 +269,11 @@ def test_candidate_ranking_prefers_specific_matches():
 # End-to-End Routing & Provenance Verification Tests
 # ==============================================================================
 
-def test_reddit_discovery_to_mirror_provenance(router):
+def test_reddit_discovery_to_mirror_provenance(router, monkeypatch):
     """
     Search discovery -> Arctic Shift batch post lookup -> verified zero-auth public mirror provenance.
     """
+    monkeypatch.setenv("REDDIT_APPROVED_ACCESS", "true")
     mock_search_results = [
         EvidenceFragment(
             platform="Web",
@@ -378,7 +379,7 @@ def test_mirror_failure_falls_back_to_search_with_honest_disclosure(router):
         platform="Web",
         title="News Article referencing Twitter statement",
         snippet="A news site quoting a tweet.",
-        url="https://news.example.com/article/1",
+        url="https://x.com/news_outlet/status/12345",
         retrieval_mode=RetrievalMode.WEB_SEARCH_INDEX.value
     )
     with patch.object(router, "_execute_web_search") as mock_search:

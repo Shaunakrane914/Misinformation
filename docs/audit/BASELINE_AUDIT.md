@@ -1,4 +1,13 @@
 # Aegis Protocol — Baseline Technical Audit
+
+> [!WARNING]
+> **[SUPERSEDED ARCHITECTURAL SNAPSHOT]**  
+> This document reflects historical discovery conducted in September 2026 when `backend/main.py` was a monolithic router. It is preserved strictly for historical audit lineage. For the canonical architecture, codebase inventory, and migration roadmap, refer to:
+> - [`docs/architecture/CODEBASE_INVENTORY.md`](../architecture/CODEBASE_INVENTORY.md)
+> - [`docs/architecture/TARGET_ARCHITECTURE.md`](../architecture/TARGET_ARCHITECTURE.md)
+> - [`docs/architecture/MIGRATION_PLAN.md`](../architecture/MIGRATION_PLAN.md)
+> - [`docs/archive/README.md`](../archive/README.md)
+
 **Repository**: [Shaunakrane914/Misinformation](https://github.com/Shaunakrane914/Misinformation)  
 **Documented Version**: 3.5.1  
 **Audit Date**: September 21, 2026  

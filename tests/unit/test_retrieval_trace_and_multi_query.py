@@ -120,7 +120,8 @@ class TestRetrievalTraceAndTelemetry:
                     assert "query_text" in item
                     assert len(item["query_text"]) > 0
 
-    def test_retrieve_many_executes_queries_and_preserves_provenance(self):
+    def test_retrieve_many_executes_queries_and_preserves_provenance(self, monkeypatch):
+        monkeypatch.setenv("REDDIT_APPROVED_ACCESS", "true")
         service = AgentReachService()
 
         # Mock channels to avoid live network requests in unit test
@@ -235,7 +236,11 @@ class TestSentinelIntegrationWithRetrievalTrace:
             channel_name="web",
         )
 
-        with patch("backend.services.agent_reach.adapter.AgentReachService.retrieve_many") as mock_retrieve:
+        with patch("backend.services.agent_reach.adapter.AgentReachService.retrieve_many") as mock_retrieve, \
+             patch("backend.services.agent_reach.agent_reach_service.read", return_value={
+                 "status": "success", "backend": "fixture_reader",
+                 "markdown": "Nike official brand overview and product information. " * 30,
+             }):
             mock_retrieve.return_value = RetrievalResult(
                 query="Nike",
                 domain="brand",

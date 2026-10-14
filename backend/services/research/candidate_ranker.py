@@ -93,27 +93,20 @@ class CandidateRanker(CandidateReranker):
 
         return max(0.10, min(1.0, score))
 
-    def _compute_recency(self, item: EvidenceItem) -> float:
-        """Estimate recency score from published string."""
-        pub = (item.published_at or "").lower()
-        if any(w in pub for w in ["minute", "hour", "today", "yesterday", "just now"]):
-            return 1.0
-        if "day" in pub:
-            return 0.85
-        if "week" in pub:
-            return 0.70
-        if "month" in pub:
-            return 0.50
-        if "year" in pub:
-            return 0.30
-        return 0.60
+    def _compute_recency(self, item: Any, reference_time: Optional[Any] = None) -> float:
+        """Estimate recency score using TemporalGuard's continuous exponential decay."""
+        from backend.services.research.temporal_guard import temporal_guard
+        assessment = temporal_guard.evaluate(item, reference_time=reference_time)
+        return assessment.recency_score
 
     def rank_candidates(
         self,
         candidates: List[EvidenceItem],
         target_name: str,
         intent: str = "",
-        query_classes: Optional[List[str]] = None
+        query_classes: Optional[List[str]] = None,
+        domain: str = "general",
+        reference_time: Optional[Any] = None,
     ) -> List[EvidenceItem]:
         """
         Calculates candidate_score for each candidate and returns them sorted descending.
@@ -127,7 +120,7 @@ class CandidateRanker(CandidateReranker):
             item.relevance_score = round(rel_score, 3)
 
             # 2. Recency
-            rec_score = self._compute_recency(item)
+            rec_score = self._compute_recency(item, reference_time=reference_time)
             item.recency_score = round(rec_score, 3)
 
             # 3. Quality
@@ -147,10 +140,10 @@ class CandidateRanker(CandidateReranker):
 
             # 6. Uniqueness vs Syndication Penalty
             uniqueness_bonus = 0.0
-            domain = item.source_domain.lower() if item.source_domain else ""
-            if domain and domain not in seen_domains:
+            domain_name = item.source_domain.lower() if item.source_domain else ""
+            if domain_name and domain_name not in seen_domains:
                 uniqueness_bonus = 0.12
-                seen_domains.add(domain)
+                seen_domains.add(domain_name)
 
             syndication_penalty = 0.0
             if item.independence_group and item.independence_group.startswith("wire_"):
@@ -169,6 +162,14 @@ class CandidateRanker(CandidateReranker):
                 + uniqueness_bonus
                 - syndication_penalty
             )
+
+            # Invariant: If candidate failed temporal eligibility in trending, penalize score
+            if domain == "trending" and (
+                item.metadata.get("temporal_eligible") is False
+                or item.metadata.get("rejection_stage") == "TEMPORAL_GATE_ERROR"
+            ):
+                candidate_score = 0.0
+
             item.metadata["candidate_score"] = round(candidate_score, 3)
             item.metadata["ranking_mechanism"] = self.scoring_mechanism
 

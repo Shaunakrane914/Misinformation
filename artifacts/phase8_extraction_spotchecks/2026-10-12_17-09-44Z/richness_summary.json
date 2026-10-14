@@ -1,0 +1,564 @@
+{
+  "schema_version": "phase8-extraction-summary-v1",
+  "source_probe_files": [
+    "artifacts/phase8_live_acquisition/2026-10-12_11-06-45Z/probe_records.jsonl",
+    "artifacts/phase8_extraction_spotchecks/2026-10-12_17-09-44Z/probe_records.jsonl"
+  ],
+  "method": "Observed live probe records; latest matching operation/scenario wins.",
+  "limitations": [
+    "Only normalized sample fields are scored; raw provider field completeness is unverified.",
+    "Sample size is small and source-dependent, not a continuous health guarantee.",
+    "No request is made by this summarizer and no inferred data fills missing fields."
+  ],
+  "operations": {
+    "github.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 25476,
+      "median_probe_latency_ms": 885,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "PARTIAL_CONTENT": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "github.issues": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 4,
+      "normalized_sample_count": 4,
+      "normalized_field_population": {
+        "title": 4,
+        "canonical_url": 4,
+        "published": 4,
+        "backend_id": 4,
+        "content_depth": 4
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 1972,
+      "median_probe_latency_ms": 1343,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 2
+      },
+      "pagination_observations": [
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "github.prs": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 1263,
+      "median_probe_latency_ms": 1649,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 2
+      },
+      "pagination_observations": [
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "github.commits": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 281,
+      "median_probe_latency_ms": 731,
+      "classification_counts": {
+        "DIRECT_METADATA": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "METADATA": 2
+      },
+      "pagination_observations": [
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "github.releases": {
+      "scenario_count": 3,
+      "live_success_count": 1,
+      "live_success_rate": 0.333,
+      "sampled_item_count": 3,
+      "normalized_sample_count": 3,
+      "normalized_field_population": {
+        "title": 3,
+        "canonical_url": 3,
+        "published": 3,
+        "backend_id": 3,
+        "content_depth": 3
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 1129,
+      "median_probe_latency_ms": 820,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 1,
+        "NOT_FOUND": 2
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 1
+      },
+      "pagination_observations": [
+        "FIRST_PAGE_BOUNDED_NO_FOLLOWUP"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "youtube.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "published": 0,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 0.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 1400,
+      "median_probe_latency_ms": 2357,
+      "classification_counts": {
+        "DIRECT_METADATA": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "VIDEO_METADATA": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "youtube.transcript": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "published": 0,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 0.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 2228,
+      "median_probe_latency_ms": 4520,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "VIDEO_TRANSCRIPT": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "youtube.comments": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 80,
+      "median_probe_latency_ms": 5313,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "COMMENT": 2
+      },
+      "pagination_observations": [
+        "TOP_COMMENTS_BOUNDED_NO_CONTINUATION"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "v2ex.latest": {
+      "scenario_count": 3,
+      "live_success_count": 3,
+      "live_success_rate": 1.0,
+      "sampled_item_count": 9,
+      "normalized_sample_count": 9,
+      "normalized_field_population": {
+        "title": 9,
+        "canonical_url": 9,
+        "published": 9,
+        "backend_id": 9,
+        "content_depth": 9
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 362,
+      "median_probe_latency_ms": 806,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 3
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 3,
+        "SNIPPET": 3
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "v2ex.search": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 494,
+      "median_probe_latency_ms": 607,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 1,
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 2,
+        "SNIPPET": 1
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "v2ex.topic": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 896,
+      "median_probe_latency_ms": 307,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 1,
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FULL_ARTICLE": 1,
+        "SNIPPET": 1
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "v2ex.replies": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_population": {
+        "title": 0,
+        "canonical_url": 6,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 0.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 81,
+      "median_probe_latency_ms": 675,
+      "classification_counts": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "COMMENT": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "web.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 4000,
+      "median_probe_latency_ms": 449,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "PARTIAL_CONTENT": 2
+      },
+      "pagination_observations": [
+        "NOT_IMPLEMENTED_OR_NOT_APPLICABLE"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "rss.read": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 6,
+      "normalized_sample_count": 6,
+      "normalized_field_population": {
+        "title": 6,
+        "canonical_url": 6,
+        "published": 6,
+        "backend_id": 6,
+        "content_depth": 6
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 669,
+      "median_probe_latency_ms": 817,
+      "classification_counts": {
+        "SYNDICATED_SUMMARY": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "FEED_ENTRY_SUMMARY": 1,
+        "FEED_ENTRY_CONTENT": 1
+      },
+      "pagination_observations": [
+        "FIRST_FEED_PAGE_BOUNDED"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "xiaoyuzhou.podcast": {
+      "scenario_count": 3,
+      "live_success_count": 2,
+      "live_success_rate": 0.667,
+      "sampled_item_count": 2,
+      "normalized_sample_count": 2,
+      "normalized_field_population": {
+        "title": 2,
+        "canonical_url": 2,
+        "published": 2,
+        "backend_id": 2,
+        "content_depth": 2
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 150,
+      "median_probe_latency_ms": 2149,
+      "classification_counts": {
+        "DIRECT_METADATA": 2,
+        "NOT_FOUND": 1
+      },
+      "content_depth_counts": {
+        "METADATA": 2
+      },
+      "pagination_observations": [
+        "FIRST_SEARCH_PAGE_AND_FIRST_FEED_PAGE_BOUNDED"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    },
+    "xiaoyuzhou.episodes": {
+      "scenario_count": 3,
+      "live_success_count": 1,
+      "live_success_rate": 0.333,
+      "sampled_item_count": 3,
+      "normalized_sample_count": 3,
+      "normalized_field_population": {
+        "title": 3,
+        "canonical_url": 3,
+        "published": 3,
+        "backend_id": 3,
+        "content_depth": 3
+      },
+      "normalized_field_population_rate": {
+        "title": 1.0,
+        "canonical_url": 1.0,
+        "published": 1.0,
+        "backend_id": 1.0,
+        "content_depth": 1.0
+      },
+      "mean_relevant_chars_per_successful_item": 953,
+      "median_probe_latency_ms": 2057,
+      "classification_counts": {
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 2
+      },
+      "content_depth_counts": {
+        "PARTIAL_CONTENT": 1
+      },
+      "pagination_observations": [
+        "FIRST_SEARCH_PAGE_AND_FIRST_FEED_PAGE_BOUNDED"
+      ],
+      "limits": "Normalized samples only; source-response field availability and whole-page completeness are not measurable from these artifacts."
+    }
+  }
+}

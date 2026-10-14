@@ -3,7 +3,7 @@
 **Component:** Agent 1 — Scout / `ScoutSourceEngine` (`backend/services/agent_reach/scout/`)  
 **Status:** ALL TESTS PASSING (23/23 Unit/Integration/Regression Tests, 100%)  
 **Execution Environment:** Python 3.13.5 / Pytest 8.4.2 / Windows NT  
-**Test Suite Path:** [`tests/unit/test_scout_source_engine.py`](file:///tests/unit/test_scout_source_engine.py)
+**Test Suite Path:** [`tests/unit/test_scout_source_engine.py`](../../../tests/unit/test_scout_source_engine.py)
 
 ---
 

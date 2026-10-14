@@ -10,16 +10,20 @@ Endpoints for:
 """
 
 import asyncio
+import json
 import logging
-import requests
+import threading
 from datetime import datetime
-from typing import Any, Dict, List, Optional
-from fastapi import APIRouter, HTTPException
+from typing import Any, Dict, List, Literal, Optional
+from urllib.parse import quote as quote_url
+from fastapi import APIRouter, Depends, HTTPException, Query
 from pydantic import BaseModel, Field
 
 from backend.db import database as db
 from backend.agents.trending_agent import TrendingAgent
 from backend.services.report_builder import ReportBuilder
+from backend.api.security import require_response_operator
+from backend.infrastructure.acquisition.network.http import fetch_public_http
 
 logger = logging.getLogger(__name__)
 
@@ -30,6 +34,22 @@ _scout_agent = None
 _trending_agent = None
 _brandshield_agent = None
 _personal_agent = None
+_scan_locks = {name: threading.Lock() for name in ("scout", "trending", "brandshield", "personal")}
+
+
+def _run_bounded_scan(name, callback):
+    """Protect mutable agent session state without blocking the event loop.
+
+    Busy scans are rejected, not queued without limit. The lock is acquired in
+    the worker and covers initialization plus the complete synchronous scan.
+    """
+    lock = _scan_locks[name]
+    if not lock.acquire(blocking=False):
+        raise HTTPException(status_code=429, detail="Agent is handling another scan; retry shortly", headers={"Retry-After": "3"})
+    try:
+        return callback()
+    finally:
+        lock.release()
 
 
 def get_scout_agent():
@@ -66,22 +86,22 @@ def get_personal_agent():
 # ── Request Models ───────────────────────────────────────────────────────────
 
 class ScoutAnalyzeRequest(BaseModel):
-    ticker: str = Field(..., description="Stock ticker symbol (e.g. 'NVDA', 'TATAMOTORS.NS')", json_schema_extra={"example": "NVDA"})
-    query: Optional[str] = Field(None, description="Optional search query override.", json_schema_extra={"example": "Nvidia Blackwell AI chip delay packaging defect"})
+    ticker: str = Field(..., min_length=1, max_length=80, description="Stock ticker symbol (e.g. 'NVDA', 'TATAMOTORS.NS')", json_schema_extra={"example": "NVDA"})
+    query: Optional[str] = Field(None, max_length=2000, description="Optional search query override.", json_schema_extra={"example": "Nvidia Blackwell AI chip delay packaging defect"})
 
 
 class BrandShieldScanRequest(BaseModel):
-    brand_name: str = Field(..., description="Brand, company, or trademark name.", json_schema_extra={"example": "Sony Electronics"})
-    query: Optional[str] = Field(None, description="Optional search query override or specific product line.", json_schema_extra={"example": "Nike Air Max counterfeit fake store"})
+    brand_name: str = Field(..., min_length=1, max_length=200, description="Brand, company, or trademark name.", json_schema_extra={"example": "Sony Electronics"})
+    query: Optional[str] = Field(None, max_length=2000, description="Optional search query override or specific product line.", json_schema_extra={"example": "Nike Air Max counterfeit fake store"})
 
 
 class PersonalScanRequest(BaseModel):
-    name: str = Field(..., description="Full name of VIP, executive, creator, or public figure.", json_schema_extra={"example": "Sam Altman"})
-    official_handles: Optional[Dict[str, str]] = Field(None, description="Official verified social media handles.", json_schema_extra={"example": {"twitter": "@sama"}})
+    name: str = Field(..., min_length=1, max_length=200, description="Full name of VIP, executive, creator, or public figure.", json_schema_extra={"example": "Sam Altman"})
+    official_handles: Optional[Dict[str, str]] = Field(None, description="Legacy field name: user-supplied candidate handles, not authenticated official identities.", json_schema_extra={"example": {"twitter": "@sama"}})
     phone_number: Optional[str] = Field(None, description="Optional phone number for Twilio security alerts.")
     aliases: Optional[List[str]] = Field(None, description="Known public aliases, nicknames, or common spellings.", json_schema_extra={"example": ["Sama"]})
     category: Optional[str] = Field(None, description="'executive' | 'creator' | 'public_figure' | 'researcher' | 'employee'", json_schema_extra={"example": "executive"})
-    official_domains: Optional[List[str]] = Field(None, description="Official websites or domains belonging to subject.")
+    official_domains: Optional[List[str]] = Field(None, description="Legacy field name: user-supplied candidate domains, not authenticated official domains.")
     monitoring_terms: Optional[List[str]] = Field(None, description="Specific terms, project names, or controversy keywords to monitor.")
     alert_preferences: Optional[Dict[str, Any]] = Field(None, description="Alert settings: level ('HIGH_ONLY', 'HIGH_AND_MEDIUM', 'ALL_NEW_THREATS').")
     query: Optional[str] = Field(None, description="Optional custom query override.")
@@ -96,12 +116,12 @@ class TrendingScanRequest(BaseModel):
 
 
 class DefenseRequest(BaseModel):
-    rumor_text: str = Field(..., description="Misinformation or smear claim text.", json_schema_extra={"example": "Secret leaked audit confirms company is declaring bankruptcy next week."})
+    rumor_text: str = Field(..., min_length=1, max_length=5000, description="Misinformation or smear claim text.", json_schema_extra={"example": "Secret leaked audit confirms company is declaring bankruptcy next week."})
 
 
 class DeployResponseRequest(BaseModel):
-    event_id: int = Field(..., description="ID of verified threat event.")
-    response_type: str = Field(..., description="'cease_desist' | 'official_denial' | 'ceo_alert' | 'sec_filing'", json_schema_extra={"example": "official_denial"})
+    event_id: int = Field(..., gt=0, description="ID of verified threat event.")
+    response_type: Literal["cease_desist", "official_denial", "ceo_alert", "sec_filing"] = Field(..., description="Operator response measure.", json_schema_extra={"example": "official_denial"})
 
 
 STOCK_NAME_MAP = {
@@ -118,16 +138,16 @@ STOCK_NAME_MAP = {
 
 @router.get("/api/stock", tags=["Scout Agent (Financial Intelligence)"], summary="Real-Time Stock Price & Volatility Z-Score")
 @router.get("/.netlify/functions/stock", tags=["Scout Agent (Financial Intelligence)"])
-async def get_stock_quote(ticker: str = "NVDA"):
+def get_stock_quote(ticker: str = Query("NVDA", min_length=1, max_length=80)):
     """Fetch live stock price and volatility metrics server-side."""
     clean_sym = ticker.strip().upper()
     sym = STOCK_NAME_MAP.get(clean_sym, clean_sym)
     try:
-        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d&range=5d"
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{quote_url(sym, safe='')}?interval=1d&range=5d"
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"}
-        r = requests.get(url, headers=headers, timeout=8)
-        if r.status_code == 200:
-            data = r.json()
+        response = fetch_public_http(url, headers=headers, timeout=5.0, max_bytes=1_000_000, max_attempts=1)
+        if response.status_code == 200:
+            data = json.loads(response.body)
             result = data.get("chart", {}).get("result", [])
             if result:
                 meta = result[0].get("meta", {})
@@ -182,12 +202,13 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
     """
     logger.info(f"[API] POST /api/scout/analyze - ticker={request.ticker}")
     try:
-        scout = get_scout_agent()
-        result = scout.analyze_stock(ticker=request.ticker, query=request.query)
+        def analyze():
+            return get_scout_agent().analyze_stock(ticker=request.ticker, query=request.query)
+        result = await asyncio.to_thread(_run_bounded_scan, "scout", analyze)
 
         # If stock price is 0, attempt live quote fallback
         if not result.get("stock", {}).get("current_price"):
-            quote_data = await get_stock_quote(request.ticker)
+            quote_data = await asyncio.to_thread(get_stock_quote, request.ticker)
             if quote_data and quote_data.get("current_price", 0) > 0:
                 result["stock"] = quote_data
 
@@ -203,6 +224,8 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
             result["unified_report"] = None
 
         return result
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"[API] Error in scout analysis: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
@@ -216,18 +239,15 @@ async def trending_scan(request: TrendingScanRequest):
     target_name = request.asset_name or request.query or "General"
     logger.info(f"[API] POST /api/trending/scan - asset={target_name} mode={request.mode}")
     try:
-        agent = get_trending_agent()
         ident_dict = request.identifiers if isinstance(request.identifiers, dict) else {}
-        result = await asyncio.to_thread(
-            agent.scan,
-            target_name,
-            identifiers=ident_dict,
-            category=request.category,
-            mode=request.mode
-        )
+        def scan():
+            return get_trending_agent().scan(
+                target_name, identifiers=ident_dict, category=request.category, mode=request.mode
+            )
+        result = await asyncio.to_thread(_run_bounded_scan, "trending", scan)
         try:
             from backend.services.alerts import check_critical_threats
-            result["alerts"] = check_critical_threats(result)
+            result["alerts"] = await asyncio.to_thread(check_critical_threats, result)
         except Exception as alert_err:
             logger.warning(f"Alert check note: {alert_err}")
             result["alerts"] = []
@@ -244,13 +264,15 @@ async def trending_scan(request: TrendingScanRequest):
             result["unified_report"] = None
 
         return result
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"[API] Trending scan failed: {e}")
         raise HTTPException(status_code=500, detail=f"Trending scan failed: {str(e)}")
 
 
 @router.post("/api/defense/generate", tags=["Trending & Contagion Agent"], summary="Generate Rapid Crisis PR Defense Statement")
-async def generate_defense_endpoint(request: DefenseRequest):
+def generate_defense_endpoint(request: DefenseRequest):
     """Generate a PR defense statement using Gemini."""
     logger.info("[API] POST /api/defense/generate")
     try:
@@ -263,7 +285,7 @@ async def generate_defense_endpoint(request: DefenseRequest):
 
 
 @router.get("/api/trending-news", tags=["Trending & Contagion Agent"], summary="Real-Time Market Moving Google News Feeds")
-async def get_trending_news():
+def get_trending_news():
     """Fetch live trending stock market news from Google News RSS."""
     logger.info("[API] GET /api/trending-news")
     try:
@@ -317,7 +339,9 @@ async def personal_watch_scan(request: PersonalScanRequest):
             "alert_preferences": request.alert_preferences or {"level": "HIGH_ONLY"},
             "query": request.query
         }
-        results = process_personal_watch(vip_profile)
+        results = await asyncio.to_thread(
+            _run_bounded_scan, "personal", lambda: process_personal_watch(vip_profile)
+        )
 
         # ── Unified Report (schema v3.8.0) ────────────────────────────────────
         try:
@@ -331,6 +355,8 @@ async def personal_watch_scan(request: PersonalScanRequest):
             logger.warning(f"[PersonalWatch] unified_report assembly note: {_ur_err}")
 
         return results
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"[API] Personal Watch scan failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Scan failed: {str(e)}")
@@ -348,8 +374,9 @@ async def brandshield_scan(request: BrandShieldScanRequest):
     """
     logger.info(f"[API] POST /api/brandshield/scan - brand={request.brand_name}")
     try:
-        agent = get_brandshield_agent()
-        results = agent.scan(brand_name=request.brand_name, query=request.query)
+        def scan():
+            return get_brandshield_agent().scan(brand_name=request.brand_name, query=request.query)
+        results = await asyncio.to_thread(_run_bounded_scan, "brandshield", scan)
 
         # ── Unified Report (schema v3.8.0) ────────────────────────────────────
         try:
@@ -363,6 +390,8 @@ async def brandshield_scan(request: BrandShieldScanRequest):
             logger.warning(f"[BrandShield] unified_report assembly note: {_ur_err}")
 
         return results
+    except HTTPException:
+        raise
     except Exception as e:
         logger.error(f"[API] BrandShield scan failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"BrandShield scan failed: {str(e)}")
@@ -372,7 +401,7 @@ async def brandshield_scan(request: BrandShieldScanRequest):
 
 @router.get("/api/war-room/signals", tags=["War Room & Incident Response"], summary="Get Live Detected Market Threat Signals")
 @router.get("/war-room/signals", tags=["War Room & Incident Response"])
-async def get_war_room_signals(limit: int = 20):
+def get_war_room_signals(limit: int = Query(20, ge=1, le=100)):
     """Get recent active signals detected by the Scout Agent."""
     try:
         if db.supabase:
@@ -388,7 +417,7 @@ async def get_war_room_signals(limit: int = 20):
 
 @router.get("/api/feed/live", tags=["War Room & Incident Response"], summary="Get Verified Crisis Threats Feed")
 @router.get("/feed/live", tags=["War Room & Incident Response"])
-async def get_live_feed(limit: int = 10):
+def get_live_feed(limit: int = Query(10, ge=1, le=100)):
     """Get recent verified threats (correlated misinformation + stock crashes)."""
     try:
         if db.supabase:
@@ -404,7 +433,7 @@ async def get_live_feed(limit: int = 10):
 
 @router.post("/api/deploy-response", tags=["War Room & Incident Response"], summary="Deploy Crisis Countermeasure")
 @router.post("/deploy-response", tags=["War Room & Incident Response"])
-async def deploy_response(request: DeployResponseRequest):
+def deploy_response(request: DeployResponseRequest, _operator: None = Depends(require_response_operator)):
     """Deploy a crisis response measure for a verified threat."""
     logger.info(f"[API] POST /deploy-response - event_id={request.event_id}, type={request.response_type}")
     try:

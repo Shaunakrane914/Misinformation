@@ -1,0 +1,55 @@
+{
+  "gate": "PARTIAL",
+  "protected_operation_count": 16,
+  "live_verified_operation_count": 0,
+  "missing_operations": [
+    "github.commits",
+    "github.issues",
+    "github.prs",
+    "github.read",
+    "rss.read",
+    "v2ex.latest",
+    "v2ex.replies",
+    "v2ex.search",
+    "v2ex.topic",
+    "web.read",
+    "xiaoyuzhou.episodes",
+    "xiaoyuzhou.podcast",
+    "youtube.comments",
+    "youtube.read",
+    "youtube.transcript"
+  ],
+  "not_live_verified_operations": [
+    "github.commits",
+    "github.issues",
+    "github.prs",
+    "github.read",
+    "github.releases",
+    "rss.read",
+    "v2ex.latest",
+    "v2ex.replies",
+    "v2ex.search",
+    "v2ex.topic",
+    "web.read",
+    "xiaoyuzhou.episodes",
+    "xiaoyuzhou.podcast",
+    "youtube.comments",
+    "youtube.read",
+    "youtube.transcript"
+  ],
+  "operations": {
+    "github.releases": {
+      "protected": true,
+      "status": "NOT_LIVE_VERIFIED",
+      "verified_classifications": [],
+      "probe_count": 1,
+      "live_verified_probe_count": 0,
+      "classifications": {
+        "RATE_LIMITED": 1
+      },
+      "limitations": [
+        "Provider HTTP 403"
+      ]
+    }
+  }
+}

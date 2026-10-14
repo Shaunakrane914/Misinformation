@@ -64,7 +64,10 @@ def get_upstream_info() -> Dict[str, Any]:
     commit = UPSTREAM_COMMIT_PINNED
 
     try:
-        import agent_reach
+        try:
+            import agent_reach
+        except ImportError:
+            from backend.services import agent_reach
         installed = True
         version = getattr(agent_reach, "__version__", "1.5.0")
     except ImportError:

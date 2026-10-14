@@ -1,7 +1,7 @@
 # AGENT 2: CLAIM INGESTION AGENT SPECIFICATION
 
 **Agent:** Agent 2 — CLAIM INGESTION  
-**Implementation:** [`backend/agents/claim_ingestion_agent.py`](file:///backend/agents/claim_ingestion_agent.py)  
+**Implementation:** [`backend/agents/claim_ingestion_agent.py`](../../../backend/agents/claim_ingestion_agent.py)  
 **System:** Aegis Protocol
 
 ---

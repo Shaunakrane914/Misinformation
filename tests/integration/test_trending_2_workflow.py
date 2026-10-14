@@ -4,6 +4,7 @@ Validates end-to-end execution of /api/trending/scan in Entity Mode & Discovery 
 historical snapshot tracking, /api/trending-news, and backward compatibility.
 """
 
+from datetime import datetime, timezone, timedelta
 import pytest
 from starlette.testclient import TestClient
 from backend.main import app
@@ -18,20 +19,21 @@ def test_trending_scan_entity_mode_api(client: TestClient, monkeypatch):
     """Test POST /api/trending/scan in Entity Mode with mocked or live retrieval."""
     from backend.agents.trending_agent import TrendingAgent, TrendEvidence
 
-    # Mock fetch_news to be fast and deterministic
+    # Mock fetch_news to be fast, fresh, and deterministic
+    now = datetime.now(timezone.utc)
     def mock_fetch_news(self, keyword, limit=8):
         return [
             {
                 "title": f"{keyword} announces new film project with global studio",
                 "link": "https://reuters.com/entertainment/announcement-1",
-                "published": "2026-09-21T10:00:00Z",
+                "published": (now - timedelta(hours=2)).isoformat(),
                 "source": "Reuters",
                 "summary": "Official announcement confirmed by studio heads."
             },
             {
                 "title": f"Fans react to {keyword} new project announcement",
                 "link": "https://variety.com/reactions-1",
-                "published": "2026-09-21T10:30:00Z",
+                "published": (now - timedelta(hours=1)).isoformat(),
                 "source": "Variety",
                 "summary": "Social media reception to the announcement."
             }
@@ -79,11 +81,12 @@ def test_trending_scan_discovery_mode_api(client: TestClient, monkeypatch):
     from backend.agents.trending_agent import TrendingAgent
 
     def mock_fetch_news(self, keyword, limit=8):
+        now = datetime.now(timezone.utc)
         return [
             {
                 "title": "Top cultural festival begins in Mumbai",
                 "link": "https://thehindu.com/festival",
-                "published": "2026-09-21T08:00:00Z",
+                "published": (now - timedelta(hours=2)).isoformat(),
                 "source": "The Hindu",
                 "summary": "Festival launches today with wide public turnout."
             }
@@ -108,13 +111,14 @@ def test_trending_repeat_scan_velocity_snapshot(client: TestClient, monkeypatch)
     from backend.agents.trending_agent import TrendingAgent
 
     def mock_fetch_news(self, keyword, limit=8):
+        now = datetime.now(timezone.utc)
         return [
             {
-                "title": "Tech company unveils open frontier AI architecture",
+                "title": f"{keyword} unveils open frontier AI architecture",
                 "link": "https://techcrunch.com/ai-launch",
-                "published": "2026-09-21T07:00:00Z",
+                "published": (now - timedelta(hours=2)).isoformat(),
                 "source": "TechCrunch",
-                "summary": "New model architecture released open weights."
+                "summary": f"New model architecture released open weights by {keyword}."
             }
         ]
 

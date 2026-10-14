@@ -144,6 +144,30 @@ class TestAgentReachServiceTelemetry:
             assert rec.status == "FAILED"
             assert "Connection refused" in (rec.error or "")
 
+    def test_retrieve_many_deduplicates_identical_provider_requests(self):
+        service = AgentReachService()
+        web_ch = service.registry.get_channel("web")
+        frag = EvidenceFragment(
+            platform="Web", title="Fixture", content="Evidence",
+            url="https://example.com/evidence", channel_name="web",
+        )
+        with patch.object(web_ch, "search", return_value=[frag]) as search:
+            result = service.retrieve_many(
+                channel_queries={
+                    "web": [
+                        {"query_id": "q1", "query_text": "Acme evidence", "operation": "search"},
+                        {"query_id": "q2", "query_text": " acme EVIDENCE ", "operation": "SEARCH"},
+                    ]
+                },
+                domain="general",
+                perform_reads=False,
+            )
+
+        search.assert_called_once()
+        assert result.retrieval_trace["planning"]["queries_generated"] == 1
+        assert result.retrieval_trace["planning"]["queries_executed"] == 1
+        assert [record.query_id for record in result.query_records] == ["q1"]
+
 
 class TestResearchEngineQueryFunnel:
     """Verifies ResearchEngine Stage 13 funnel counters and Stage 6/7/14 behavior."""

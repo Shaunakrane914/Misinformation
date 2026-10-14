@@ -290,7 +290,11 @@ class TestDeepResearchEngine:
         mock_retrieval_result.channel_health = {"web": "AVAILABLE"}
         mock_retrieval_result.retrieval_trace = {"total_raw": 1}
 
-        with patch("backend.services.agent_reach.adapter.AgentReachService.retrieve_many", return_value=mock_retrieval_result):
+        with patch("backend.services.agent_reach.adapter.AgentReachService.retrieve_many", return_value=mock_retrieval_result), \
+             patch("backend.services.agent_reach.agent_reach_service.read", return_value={
+                 "status": "success", "backend": "fixture_reader",
+                 "markdown": "Tesla reported annual revenue of $96.7 billion and announced factory expansion in Nevada. " * 15,
+             }):
             req = ResearchRequest(
                 target="Tesla",
                 domain="financial",

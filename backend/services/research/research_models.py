@@ -24,6 +24,8 @@ class ContentDepth(str, Enum):
     VIDEO_TRANSCRIPT = "VIDEO_TRANSCRIPT"
     REGULATORY_FILING = "REGULATORY_FILING"
     OFFICIAL_STATEMENT = "OFFICIAL_STATEMENT"
+    DIRECT_METADATA = "DIRECT_METADATA"
+    DIRECT_ABSTRACT = "DIRECT_ABSTRACT"
 
 
 class SourceRole(str, Enum):
@@ -34,6 +36,7 @@ class SourceRole(str, Enum):
     DISCOVERY = "DISCOVERY"
     AGGREGATOR = "AGGREGATOR"
     SEARCH_INDEX = "SEARCH_INDEX"
+    UTILITY_PORTAL = "UTILITY_PORTAL"
 
 
 class SourceTier(str, Enum):
@@ -45,6 +48,7 @@ class SourceTier(str, Enum):
     TIER_3_INVESTOR_COMMUNITY = "TIER_3_INVESTOR_COMMUNITY"
     TIER_3_SOCIAL_SIGNALS = "TIER_3_SOCIAL_SIGNALS"
     TIER_3_AGGREGATE = "TIER_3_AGGREGATE"
+    TIER_4_UTILITY = "TIER_4_UTILITY"
 
 
 class FindingType(str, Enum):
@@ -70,6 +74,21 @@ class ContradictionType(str, Enum):
     TIMELINE_DISAGREEMENT = "TIMELINE_DISAGREEMENT"
     INTERPRETATION_DIFFERENCE = "INTERPRETATION_DIFFERENCE"
     NO_CONTRADICTION = "NO_CONTRADICTION"
+    TEMPORAL_DIVERGENCE = "TEMPORAL_DIVERGENCE"
+    NUMERICAL_DISCREPANCY = "NUMERICAL_DISCREPANCY"
+    SCOPE_CONTEXT_MISMATCH = "SCOPE_CONTEXT_MISMATCH"
+    CREDIBILITY_ASYMMETRY = "CREDIBILITY_ASYMMETRY"
+
+
+class ClaimVerdict(str, Enum):
+    SUPPORTED = "SUPPORTED"
+    REFUTED = "REFUTED"
+    MISLEADING = "MISLEADING"
+    OUTDATED = "OUTDATED"
+    MIXED = "MIXED"
+    UNVERIFIED = "UNVERIFIED"
+    INSUFFICIENT_EVIDENCE = "INSUFFICIENT_EVIDENCE"
+
 
 
 class TemporalStatus(str, Enum):
@@ -455,6 +474,7 @@ class AtomicClaim:
     verdict: str = "Unverified"
     confidence: float = 0.50
     rationale: str = ""
+    evidence_citations: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -472,6 +492,7 @@ class AtomicClaim:
             "verdict": self.verdict,
             "confidence": round(self.confidence, 3),
             "rationale": self.rationale,
+            "evidence_citations": self.evidence_citations,
         }
 
 

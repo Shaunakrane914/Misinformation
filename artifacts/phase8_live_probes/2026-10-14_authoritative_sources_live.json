@@ -1,0 +1,111 @@
+{
+  "suite": "Phase 8D Authoritative Source Live Verification",
+  "timestamp": "2026-10-13T18:02:58Z",
+  "probes": {
+    "sec_edgar": {
+      "target": "SEC EDGAR Submissions",
+      "query": "AAPL (CIK 0000320193)",
+      "status": "SUCCESS",
+      "latency_ms": 521.92,
+      "raw_items_count": 5,
+      "fragment_count": 5,
+      "auth_required": false,
+      "error": null,
+      "extracted_fields": [
+        "cik",
+        "company_name",
+        "form",
+        "filing_date",
+        "report_date",
+        "accession_number",
+        "doc_url"
+      ],
+      "sample_fragment": {
+        "title": "Apple Inc. Form 4 (2026-10-08)",
+        "url": "https://www.sec.gov/Archives/edgar/data/320193/000114036126039158/xslF345X06/form4.xml",
+        "author": "U.S. Securities and Exchange Commission (SEC EDGAR)",
+        "published": "2026-10-08",
+        "content_depth": "DIRECT_CONTENT",
+        "retrieval_mode": "direct_api",
+        "snippet": "Official SEC filing for Apple Inc.. Form: 4. Filing Date: 2026-10-08. Period: 2026-10-06. Description: FORM 4. Accession: 0001140361-26-039158."
+      }
+    },
+    "nist_nvd": {
+      "target": "NIST NVD CVE 2.0",
+      "query": "CVE-2021-44228",
+      "status": "SUCCESS",
+      "latency_ms": 1409.41,
+      "raw_items_count": 1,
+      "fragment_count": 1,
+      "auth_required": false,
+      "error": null,
+      "extracted_fields": [
+        "cve_id",
+        "cvss_score",
+        "severity",
+        "description",
+        "references",
+        "published",
+        "nvd_url"
+      ],
+      "sample_fragment": {
+        "title": "CVE-2021-44228 Official Advisory: CRITICAL (CVSS 10.0)",
+        "url": "https://nvd.nist.gov/vuln/detail/CVE-2021-44228",
+        "author": "National Institute of Standards and Technology (NIST NVD)",
+        "published": "2021-12-10T10:15:09.143",
+        "content_depth": "DIRECT_CONTENT",
+        "retrieval_mode": "direct_api",
+        "snippet": "NIST National Vulnerability Database Official Record: CVE-2021-44228. Severity: CRITICAL (Score: 10.0). Status: Analyzed. Description: Apache Log4j2 2"
+      }
+    },
+    "arxiv": {
+      "target": "arXiv Academic Preprints",
+      "query": "quantum computing",
+      "status": "SUCCESS",
+      "latency_ms": 201.05,
+      "raw_items_count": 3,
+      "fragment_count": 3,
+      "auth_required": false,
+      "error": null,
+      "extracted_fields": [
+        "arxiv_id",
+        "title",
+        "authors",
+        "summary",
+        "category",
+        "published",
+        "abs_url",
+        "pdf_url"
+      ],
+      "sample_fragment": {
+        "title": "[arXiv:2211.02350v1] Tierkreis: A Dataflow Framework for Hybrid Quantum-Classical Computing",
+        "url": "http://arxiv.org/abs/2211.02350v1",
+        "author": "Seyon Sivarajah, Lukas Heidemann, Alan Lawrence et al.",
+        "published": "2022-11-04T10:14:47Z",
+        "content_depth": "DIRECT_CONTENT",
+        "retrieval_mode": "direct_api",
+        "snippet": "Scientific Preprint: Tierkreis: A Dataflow Framework for Hybrid Quantum-Classical Computing. Authors: Seyon Sivarajah, Lukas Heidemann, Alan Lawrence "
+      }
+    },
+    "google_factcheck": {
+      "target": "Google FactCheck ClaimReview",
+      "query": "moon landing",
+      "status": "AUTH_REQUIRED",
+      "latency_ms": 373.59,
+      "raw_items_count": 0,
+      "fragment_count": 0,
+      "auth_required": true,
+      "error": "Provider HTTP 403",
+      "extracted_fields": [
+        "claim_text",
+        "claimant",
+        "publisher",
+        "rating",
+        "review_url",
+        "review_date"
+      ],
+      "sample_fragment": null,
+      "honest_disclosure": "Google FactCheck Tools API requires GOOGLE_FACTCHECK_API_KEY; returned HTTP 403 without key."
+    }
+  }
+}

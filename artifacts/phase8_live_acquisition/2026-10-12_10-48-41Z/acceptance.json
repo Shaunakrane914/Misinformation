@@ -1,0 +1,306 @@
+{
+  "gate": "PASS",
+  "protected_operation_count": 16,
+  "live_verified_operation_count": 16,
+  "missing_operations": [],
+  "not_live_verified_operations": [],
+  "operations": {
+    "github.commits": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "github.issues": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "github.prs": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "github.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_METADATA"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_METADATA": 2,
+        "NOT_FOUND": 1
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "github.releases": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 1,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 1,
+        "NOT_FOUND": 1,
+        "UNVERIFIED": 1
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "github.search": {
+      "protected": false,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 1,
+      "live_verified_probe_count": 1,
+      "classifications": {
+        "DIRECT_PARTIAL_CONTENT": 1
+      },
+      "limitations": []
+    },
+    "rss.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "SYNDICATED_SUMMARY"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "NOT_FOUND": 1,
+        "SYNDICATED_SUMMARY": 2
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "rss.search": {
+      "protected": false,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "SYNDICATED_SUMMARY"
+      ],
+      "probe_count": 1,
+      "live_verified_probe_count": 1,
+      "classifications": {
+        "SYNDICATED_SUMMARY": 1
+      },
+      "limitations": []
+    },
+    "v2ex.latest": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 3,
+      "classifications": {
+        "DIRECT_PARTIAL_CONTENT": 3
+      },
+      "limitations": []
+    },
+    "v2ex.replies": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "limitations": []
+    },
+    "v2ex.search": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT",
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 1,
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "v2ex.topic": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT",
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 1,
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1
+      },
+      "limitations": []
+    },
+    "web.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NETWORK_FAILURE": 1
+      },
+      "limitations": [
+        "Provider HTTP 404"
+      ]
+    },
+    "web.search": {
+      "protected": false,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "SEARCH_DISCOVERY_ONLY"
+      ],
+      "probe_count": 1,
+      "live_verified_probe_count": 1,
+      "classifications": {
+        "SEARCH_DISCOVERY_ONLY": 1
+      },
+      "limitations": []
+    },
+    "xiaoyuzhou.episodes": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 1,
+      "classifications": {
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1,
+        "UNVERIFIED": 1
+      },
+      "limitations": []
+    },
+    "xiaoyuzhou.podcast": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 1,
+      "classifications": {
+        "DIRECT_PARTIAL_CONTENT": 1,
+        "NOT_FOUND": 1,
+        "UNVERIFIED": 1
+      },
+      "limitations": []
+    },
+    "youtube.comments": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "limitations": []
+    },
+    "youtube.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_METADATA"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 3,
+      "classifications": {
+        "DIRECT_METADATA": 3
+      },
+      "limitations": []
+    },
+    "youtube.search": {
+      "protected": false,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_METADATA"
+      ],
+      "probe_count": 1,
+      "live_verified_probe_count": 1,
+      "classifications": {
+        "DIRECT_METADATA": 1
+      },
+      "limitations": []
+    },
+    "youtube.transcript": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_FULL_CONTENT"
+      ],
+      "probe_count": 3,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_FULL_CONTENT": 2,
+        "NOT_FOUND": 1
+      },
+      "limitations": []
+    }
+  }
+}

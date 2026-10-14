@@ -1,159 +1,93 @@
-// Netlify Serverless Function — Gemini Proxy
-// Keys stored in Netlify environment variables (never in code/git)
-// Endpoint: /.netlify/functions/gemini
+// Gemini proxy: only real provider output is returned. Credentials stay server-side.
+const MAX_PROMPT_CHARS = 20000;
+const MAX_RESPONSE_BYTES = 1000000;
+const REQUEST_TIMEOUT_MS = 5000;
+const TOTAL_BUDGET_MS = 20000;
+const MAX_ATTEMPTS = 6;
+
+async function readBoundedJson(response) {
+  if (!response.body || typeof response.body.getReader !== 'function') throw new Error('Provider response is not streamable');
+  const reader = response.body.getReader();
+  const chunks = [];
+  let size = 0;
+  try {
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      size += value.byteLength;
+      if (size > MAX_RESPONSE_BYTES) throw new Error('Provider response exceeds limit');
+      chunks.push(Buffer.from(value));
+    }
+    return JSON.parse(Buffer.concat(chunks).toString('utf8'));
+  } finally {
+    await reader.cancel().catch(() => {});
+    reader.releaseLock();
+  }
+}
 
 exports.handler = async (event) => {
-  const CORS = {
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Content-Type',
-    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
-    'Content-Type': 'application/json',
-  };
-
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 200, headers: CORS, body: '' };
+  const headers = { 'Content-Type': 'application/json', 'Cache-Control': 'no-store' };
+  const reply = (statusCode, payload) => ({ statusCode, headers, body: JSON.stringify(payload) });
+  const production = String(process.env.ENVIRONMENT || '').trim().toLowerCase() === 'production';
+  const origin = event.headers?.origin || event.headers?.Origin;
+  const host = event.headers?.host || event.headers?.Host;
+  const origins = String(process.env.AEGIS_ALLOWED_ORIGINS || '').split(',').map(s => s.trim()).filter(Boolean);
+  if (host) origins.push(`https://${host}`);
+  if (!production && host) origins.push(`http://${host}`);
+  if (origin) {
+    if (!origins.includes(origin)) return reply(403, { status: 'failed', error: 'Origin not allowed' });
+    headers['Access-Control-Allow-Origin'] = origin;
+    headers.Vary = 'Origin';
   }
+  headers['Access-Control-Allow-Headers'] = 'Content-Type';
+  headers['Access-Control-Allow-Methods'] = 'POST, OPTIONS';
 
-  // GET: debug endpoint — shows which env vars are present (not values)
-  if (event.httpMethod === 'GET') {
-    const present = ['GEMINI_KEY_1','GEMINI_KEY_2','GEMINI_KEY_3','GEMINI_API_KEY','GEMINI_API_KEY_1','GEMINI_API_KEY_2']
-      .filter(k => !!process.env[k]);
-    return { statusCode: 200, headers: CORS, body: JSON.stringify({ present, total: present.length }) };
+  if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers, body: '' };
+  if (event.httpMethod !== 'POST') return reply(405, { error: 'Method not allowed' });
+  if (production && String(process.env.AEGIS_MOCK_LLM || '').trim().toLowerCase() === 'true') {
+    return reply(503, { status: 'failed', error: 'Mock LLM mode is forbidden in production' });
   }
+  if (Buffer.byteLength(event.body || '', 'utf8') > 100000) return reply(413, { error: 'Request exceeds limit' });
+  let body;
+  try { body = JSON.parse(event.body || '{}'); }
+  catch (_) { return reply(400, { error: 'Invalid JSON body' }); }
+  if (!body || typeof body.prompt !== 'string' || !body.prompt.trim()) return reply(400, { error: 'Missing prompt' });
+  if (body.prompt.length > MAX_PROMPT_CHARS) return reply(413, { error: 'Prompt exceeds limit' });
 
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, headers: CORS, body: 'Method Not Allowed' };
-  }
+  const keys = [...new Set([
+    process.env.GEMINI_KEY_1, process.env.GEMINI_KEY_2, process.env.GEMINI_KEY_3,
+    process.env.GEMINI_API_KEY, process.env.GEMINI_API_KEY_1, process.env.GEMINI_API_KEY_2,
+  ].filter(Boolean))];
+  if (!keys.length) return reply(503, { status: 'failed', error: 'AI provider is not configured' });
 
-  let body = {};
-  try {
-    body = JSON.parse(event.body || '{}');
-  } catch {
-    return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Invalid JSON body' }) };
-  }
-
-  const prompt = (body && body.prompt) ? String(body.prompt) : '';
-  if (!prompt) {
-    return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'Missing prompt' }) };
-  }
-
-  // Accept both naming conventions
-  const KEYS = [
-    process.env.GEMINI_KEY_1,
-    process.env.GEMINI_KEY_2,
-    process.env.GEMINI_KEY_3,
-    process.env.GEMINI_API_KEY,
-    process.env.GEMINI_API_KEY_1,
-    process.env.GEMINI_API_KEY_2,
-  ].filter(Boolean);
-
-  if (KEYS.length === 0) {
-    let fallbackText = '';
-    if (prompt.includes('STRICT JSON array') && prompt.includes('financial')) {
-      fallbackText = JSON.stringify([
-        { title: "Market Volatility Index Rebalances Amid Macro Shifts", source: "Economic Times", category: "Market Analysis", summary: "High frequency trading desks adjust risk exposure following rate decisions.", is_threat: false, sentiment: 15 },
-        { title: "Earnings Guidance and Capital Allocation Update", source: "Bloomberg", category: "Company News", summary: "Corporate disclosures confirm stable revenue projections for upcoming quarter.", is_threat: false, sentiment: 25 },
-        { title: "Social Media Rumors of Product Defect Under Scrutiny", source: "Reddit", category: "Market Analysis", summary: "Unverified viral claims circulating in retail investor forums investigated.", is_threat: true, sentiment: -40 }
-      ]);
-    } else if (prompt.includes('STRICT JSON array')) {
-      fallbackText = JSON.stringify([
-        { title: "Synthetic Media Scan Completed for Entity", source: "X / Twitter", summary: "Automated scan shows standard organic engagement across verified graphs.", is_threat: false, sentiment: 20 },
-        { title: "Spokesperson Issues Clarification on Project Schedule", source: "Google News", summary: "Official press wire verifies release dates and clarifies unverified claims.", is_threat: false, sentiment: 35 }
-      ]);
-    } else {
-      fallbackText = "Aegis autonomous telemetry active. Intelligence streams synced.";
-    }
-    return {
-      statusCode: 200,
-      headers: CORS,
-      body: JSON.stringify({ text: fallbackText, model: 'aegis-fallback-engine', note: 'Keys quota reached or unconfigured, synthesized telemetry served' })
-    };
-  }
-
-  // Try models in order: 2.5-flash, 2.0-flash, and flash-latest fallback.
-  // The user's specific API key has access to v1beta 2.5 and 2.0 models.
-  const MODELS = [
-    { model: 'gemini-3-flash-preview', version: 'v1beta' },
-    { model: 'gemini-3.1-flash-lite-preview', version: 'v1beta' },
-    { model: 'gemini-3.6-flash', version: 'v1beta' },
-    { model: 'gemini-flash-latest', version: 'v1beta' },
-    { model: 'gemini-2.0-flash-lite-preview-02-05', version: 'v1beta' },
-    { model: 'gemini-2.5-flash', version: 'v1beta' },
-    { model: 'gemini-2.0-flash', version: 'v1beta' },
-    { model: 'gemini-1.5-flash', version: 'v1beta' },
-    { model: 'gemini-1.5-pro', version: 'v1beta' },
-  ];
-
-  const lastErrors = [];
-
-  for (const { model, version } of MODELS) {
-    const BASE_URL = `https://generativelanguage.googleapis.com/${version}/models/${model}:generateContent`;
-
-    for (let i = 0; i < KEYS.length; i++) {
-      const key = KEYS[i];
+  const models = ['gemini-2.5-flash', 'gemini-2.0-flash', 'gemini-flash-latest'];
+  const deadline = Date.now() + TOTAL_BUDGET_MS;
+  let attempts = 0;
+  for (const model of models) {
+    for (const key of keys) {
+      if (++attempts > MAX_ATTEMPTS || Date.now() >= deadline) break;
+      const controller = new AbortController();
+      const timeout = setTimeout(() => controller.abort(), Math.min(REQUEST_TIMEOUT_MS, deadline - Date.now()));
       try {
-        const res = await fetch(`${BASE_URL}?key=${key}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] }),
+        const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent`, {
+          method: 'POST', signal: controller.signal,
+          headers: { 'Content-Type': 'application/json', 'x-goog-api-key': key },
+          body: JSON.stringify({ contents: [{ parts: [{ text: body.prompt }] }] }),
         });
-
-        if (res.status === 429) {
-          lastErrors.push(`${model} key${i+1}: 429`);
-          await new Promise(r => setTimeout(r, 200));
+        if (!response.ok) {
+          await response.body?.cancel().catch(() => {});
+          if (response.status === 404) break;
           continue;
         }
-
-        if (res.status === 404) {
-          lastErrors.push(`${model}: 404 not found`);
-          break; // try next model
-        }
-
-        if (!res.ok) {
-          const err = await res.text();
-          lastErrors.push(`${model} key${i+1}: ${res.status}`);
-          continue;
-        }
-
-        const data = await res.json();
-        const text = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-        if (!text) {
-          lastErrors.push(`${model} key${i+1}: empty response`);
-          continue;
-        }
-
-        return {
-          statusCode: 200,
-          headers: CORS,
-          body: JSON.stringify({ text, model }),
-        };
-      } catch (e) {
-        lastErrors.push(`${model} key${i+1}: ${e.message}`);
-        continue;
+        const data = await readBoundedJson(response);
+        const text = data?.candidates?.[0]?.content?.parts?.map(part => part.text || '').join('') || '';
+        if (text) return reply(200, { text, model, status: 'success' });
+      } catch (_) {
+        // Do not echo provider errors: they can include credential-bearing URLs.
+      } finally {
+        clearTimeout(timeout);
       }
     }
   }
-
-  // Graceful synthesis fallback when Google API keys are exhausted / 429
-  let fallbackText = '';
-  if (prompt.includes('STRICT JSON array') && prompt.includes('financial')) {
-    fallbackText = JSON.stringify([
-      { title: "Market Volatility Index Rebalances Amid Macro Shifts", source: "Economic Times", category: "Market Analysis", summary: "High frequency trading desks adjust risk exposure following rate decisions.", is_threat: false, sentiment: 15 },
-      { title: "Earnings Guidance and Capital Allocation Update", source: "Bloomberg", category: "Company News", summary: "Corporate disclosures confirm stable revenue projections for upcoming quarter.", is_threat: false, sentiment: 25 },
-      { title: "Social Media Rumors of Product Defect Under Scrutiny", source: "Reddit", category: "Market Analysis", summary: "Unverified viral claims circulating in retail investor forums investigated.", is_threat: true, sentiment: -40 }
-    ]);
-  } else if (prompt.includes('STRICT JSON array')) {
-    fallbackText = JSON.stringify([
-      { title: "Synthetic Media Scan Completed for Entity", source: "X / Twitter", summary: "Automated scan shows standard organic engagement across verified graphs.", is_threat: false, sentiment: 20 },
-      { title: "Spokesperson Issues Clarification on Project Schedule", source: "Google News", summary: "Official press wire verifies release dates and clarifies unverified claims.", is_threat: false, sentiment: 35 }
-    ]);
-  } else {
-    fallbackText = "Aegis autonomous telemetry active. Intelligence streams synced.";
-  }
-
-  return {
-    statusCode: 200,
-    headers: CORS,
-    body: JSON.stringify({ text: fallbackText, model: 'aegis-fallback-engine', note: 'Keys quota reached, synthesized telemetry served' })
-  };
+  return reply(503, { status: 'failed', error: 'AI provider is unavailable', retryable: true });
 };

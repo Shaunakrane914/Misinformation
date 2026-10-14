@@ -1,6 +1,10 @@
 # Aegis Protocol — Architecture Review
-**Audit Date**: October 2, 2026 *(updated from September 21, 2026)*
-**Version**: 3.7.0
+**Audit Date**: October 2, 2026 *(updated from September 21, 2026)*  
+**Version**: 3.7.0  
+
+> [!WARNING]
+> **DOCUMENT STATUS: SUPERSEDED / HISTORICAL SNAPSHOT**  
+> This document represents an earlier architectural audit snapshot from October 2, 2026. References to "backend/main.py is over 2,100 lines long" reflect historical pre-refactoring topology. In the current production codebase, `backend/main.py` is 308 lines, endpoints are decomposed across modular routers in `backend/api/`, and the authoritative architecture is defined in [Target Architecture](../architecture/TARGET_ARCHITECTURE.md) and [Codebase Inventory](../architecture/CODEBASE_INVENTORY.md).
 
 > **v3.7.0 Delta** — Multi-intent hero launcher, cross-agent URL routing (`?q=` param prefill),
 > immutable cache headers on Netlify, `GET /health` liveness probe, and `.editorconfig`

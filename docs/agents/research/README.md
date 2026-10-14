@@ -1,7 +1,7 @@
 # AGENT 3: RESEARCH AGENT SPECIFICATION
 
 **Agent:** Agent 3 — RESEARCH  
-**Implementation:** [`backend/agents/research_agent.py`](file:///backend/agents/research_agent.py) & [`backend/services/research/`](file:///backend/services/research/)  
+**Implementation:** [`backend/agents/research_agent.py`](../../../backend/agents/research_agent.py) & [`backend/services/research/`](../../../backend/services/research/)  
 **System:** Aegis Protocol
 
 ---

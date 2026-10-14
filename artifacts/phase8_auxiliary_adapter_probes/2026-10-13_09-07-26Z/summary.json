@@ -1,0 +1,90 @@
+{
+  "observed_at_utc": "2026-10-13T09:07:26.535994+00:00",
+  "git_head": "21ce6aa2b75d2ab28663731123998494118bd0e3",
+  "dirty_worktree": false,
+  "scope": "Bounded auxiliary adapter spot-check only; not 16-operation or Phase 8B acceptance",
+  "records": [
+    {
+      "adapter": "GitHubAdapter",
+      "target": "https://github.com/openai/openai-python",
+      "status": "SUCCESS",
+      "failure_reason_present": false,
+      "backend_id": "github_api",
+      "retrieval_mode": "direct_api",
+      "latency_ms": 813,
+      "raw_body_chars": 6636,
+      "normalized_count": 1,
+      "fragments": [
+        {
+          "content_depth": "STRUCTURED_METADATA",
+          "content_chars": 122,
+          "has_title": true,
+          "has_author": false,
+          "has_publication": false,
+          "metadata_keys": [
+            "created_at",
+            "language",
+            "owner_login",
+            "pushed_at",
+            "stars",
+            "transport",
+            "updated_at"
+          ]
+        }
+      ]
+    },
+    {
+      "adapter": "WebAdapter",
+      "target": "https://example.com/",
+      "status": "SUCCESS",
+      "failure_reason_present": false,
+      "backend_id": "bounded_urllib",
+      "retrieval_mode": "web_reader",
+      "latency_ms": 499,
+      "raw_body_chars": 577,
+      "normalized_count": 1,
+      "fragments": [
+        {
+          "content_depth": "SNIPPET",
+          "content_chars": 171,
+          "has_title": true,
+          "has_author": false,
+          "has_publication": false,
+          "metadata_keys": [
+            "discovery_published_at",
+            "source_rank"
+          ]
+        }
+      ]
+    },
+    {
+      "adapter": "YouTubeAdapter",
+      "target": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+      "status": "SUCCESS",
+      "failure_reason_present": false,
+      "backend_id": "yt_dlp_in_process",
+      "retrieval_mode": "direct_api",
+      "latency_ms": 3480,
+      "raw_body_chars": 658686,
+      "normalized_count": 1,
+      "fragments": [
+        {
+          "content_depth": "VIDEO_METADATA",
+          "content_chars": 2507,
+          "has_title": true,
+          "has_author": true,
+          "has_publication": true,
+          "metadata_keys": [
+            "channel_id",
+            "comment_count",
+            "duration",
+            "like_count",
+            "tags",
+            "title_origin",
+            "view_count"
+          ]
+        }
+      ]
+    }
+  ]
+}

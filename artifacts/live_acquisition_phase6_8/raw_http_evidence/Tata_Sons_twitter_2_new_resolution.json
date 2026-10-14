@@ -1,0 +1,80 @@
+{
+  "query": "Tata Sons",
+  "channel": "twitter",
+  "condition": "2_new_resolution",
+  "latency_sec": 1.339,
+  "resolved_info": {
+    "entity_id": "Q331715",
+    "entity_label": "Tata Group",
+    "handle": "TataCompanies",
+    "relationship": "PARENT_COMPANY",
+    "confidence": 0.92,
+    "verification_method": "CURATED_ENTERPRISE_MAP",
+    "official_website": "https://www.tata.com"
+  },
+  "telemetry": {
+    "resolved_entity": "Tata Sons",
+    "entity_sector": "indian_markets",
+    "x_candidate_count": 2,
+    "status": "SUCCESS",
+    "backend": "fxtwitter",
+    "retrieval_mode": "zero_auth_public_mirror",
+    "authenticated": false,
+    "discovered_from": "entity_resolution",
+    "mirror_result": "SUCCESS"
+  },
+  "metrics": {
+    "total_items": 2,
+    "total_chars": 103,
+    "total_bytes": 105,
+    "body_text_chars": 0,
+    "metadata_text_chars": 103,
+    "body_utf8_bytes": 0,
+    "metadata_utf8_bytes": 105,
+    "entity_matching_reddit_submissions": 0,
+    "claim_relevant_reddit_submissions": 0,
+    "feed_summaries": 0,
+    "full_post_bodies": 0,
+    "direct_comment_bodies": 0,
+    "x_profile_metadata": 2,
+    "actual_x_statuses": 0,
+    "indexed_snippets": 0,
+    "off_platform_general_web_results": 0,
+    "cached_results": 0,
+    "fresh_network_results": 2,
+    "discussion_posts_acquired": 0,
+    "profile_metadata_acquired": 2
+  },
+  "http_audit_records": [
+    {
+      "source_endpoint": "https://x.com/TataCompanies",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "payload_size_bytes": 33,
+      "body_text_chars": 0,
+      "metadata_text_chars": 33,
+      "body_utf8_bytes": 0,
+      "metadata_utf8_bytes": 33,
+      "content_depth": "PROFILE_METADATA",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "",
+      "metadata_sample": "Official handle of the Tata Group"
+    },
+    {
+      "source_endpoint": "https://x.com/TataMotors",
+      "http_status": 200,
+      "content_type": "application/json; charset=utf-8",
+      "payload_size_bytes": 72,
+      "body_text_chars": 0,
+      "metadata_text_chars": 70,
+      "body_utf8_bytes": 0,
+      "metadata_utf8_bytes": 72,
+      "content_depth": "PROFILE_METADATA",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "",
+      "metadata_sample": "Smart tech. Safer mobility. Greener journeys \u2014 shaping a better future"
+    }
+  ]
+}

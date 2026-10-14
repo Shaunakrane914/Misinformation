@@ -47,8 +47,21 @@ def test_personal_entity_resolution():
     res_custom = agent.resolve_personal_entity(custom_input)
     assert res_custom["canonical_name"] == "Dr. Jane Doe"
     assert res_custom["category"] == "researcher"
-    assert res_custom["official_handles"]["twitter"] == "@janedoe_ai"
-    assert "janedoe-lab.org" in res_custom["official_domains"]
+    assert res_custom["candidate_handles"]["twitter"] == "@janedoe_ai"
+    assert "janedoe-lab.org" in res_custom["candidate_domains"]
+    assert res_custom["official_handles"] == {}
+    assert res_custom["official_domains"] == []
+
+    # A submitted lookalike must never replace catalog-listed identity data.
+    spoofed = agent.resolve_personal_entity({
+        "name": "Sam Altman",
+        "official_handles": {"twitter": "@lookalike"},
+        "official_domains": ["openai.com.attacker.example"],
+    })
+    assert spoofed["official_handles"]["twitter"] == "@sama"
+    assert "openai.com.attacker.example" not in spoofed["official_domains"]
+    assert spoofed["candidate_handles"]["twitter"] == "@lookalike"
+    assert spoofed["candidate_domains"] == ["openai.com.attacker.example"]
 
 
 def test_personal_query_classes():

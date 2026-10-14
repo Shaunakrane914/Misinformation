@@ -735,7 +735,7 @@
         </div>
       </div>
 
-      <!-- CARD 06: RESEARCH AGENT -->
+      <!-- CARD 06: SOURCE RESEARCH ENTRY -->
       <div class="agent-card" data-category="research" style="--card-accent:#38bdf8;--card-glow:rgba(56,189,248,0.2);--card-icon-bg:rgba(56,189,248,0.1);--card-btn-bg:linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);--card-btn-color:#000;">
         <div>
           <div class="agent-card-top">
@@ -748,48 +748,46 @@
                 </svg>
               </div>
               <div>
-                <div class="agent-designation">Open Scientific &amp; Web Inquiry</div>
-                <div class="agent-name">Research Agent</div>
+                <div class="agent-designation">Claim research entry</div>
+                <div class="agent-name">Source Research</div>
               </div>
             </div>
             <div class="agent-status-indicator">
               <span class="agent-pulse-dot" style="background:#38bdf8;box-shadow:0 0 8px #38bdf8;"></span>
-              <span>Available &bull; On Demand</span>
+              <span>Claim workflow</span>
             </div>
           </div>
 
           <p class="agent-mission">
-            Provides an open inquiry workbench that synthesizes evidence around complex research questions, explicitly separating corroborated facts from gaps and unknowns.
+            Start an evidence-backed review of a specific factual claim. The research component is part of claim verification; a standalone open-ended research API is not available.
           </p>
 
           <div class="agent-best-for">
-            <strong>Best for:</strong> Multi-perspective research questions, literature comparison, contradiction audits, and curated reading lists.
+            <strong>Best for:</strong> Claims that need retrieved sources, explicit uncertainty, and inspectable passages.
           </div>
 
           <div class="agent-feeds-label">Sources &amp; Inputs</div>
           <div class="agent-feeds-tags">
-            <span class="agent-feed-tag">&#9650; Academic Repositories</span>
-            <span class="agent-feed-tag">&#9670; Verified Global Wires</span>
-            <span class="agent-feed-tag">&#9632; Regulatory Documents</span>
-            <span class="agent-feed-tag">&#9679; Primary Citation Index</span>
+            <span class="agent-feed-tag">Source coverage varies by run</span>
+            <span class="agent-feed-tag">Unavailable providers disclosed</span>
           </div>
 
           <details class="agent-tech-details">
             <summary>Technical details</summary>
             <div class="agent-tech-content">
-              Organizes multi-round query expansion into clustered findings, surfaces discrepancies across distinct publisher types, and compiles categorized primary reading lists.
+              Opens the existing claim verification workspace. It does not independently generate findings, citations, or a reading list in the browser.
             </div>
           </details>
         </div>
 
         <div>
           <a href="research-agent.html" class="agent-launch-btn">
-            <span>Open Research Agent</span>
+            <span>Open Claim Research</span>
             <span class="launch-arrow">&rarr;</span>
           </a>
           <div class="agent-card-bottom">
-            <span>API: <code>POST /api/research/query</code></span>
-            <a href="research-agent.html">Open Console &rarr;</a>
+            <span>API: <code>POST /api/claims/verify</code></span>
+            <a href="research-agent.html">Open Entry &rarr;</a>
           </div>
         </div>
       </div>

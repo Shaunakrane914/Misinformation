@@ -42,6 +42,9 @@ wheels/
 *.sqlite3
 aegis.db
 
+# Agent skills lock (managed by Antigravity IDE, kept in .gemini/)
+.gemini/skills-lock.json
+
 # Test files (root scratch files only)
 /test_*.py
 /check_*.py
@@ -60,6 +63,7 @@ personal_api.txt
 append_function.py
 FORCE_CRASH_TEST
 scratch/
+.scratch/
 
 # OS
 .DS_Store
@@ -81,6 +85,7 @@ frontend/.netlify/
 port.txt
 .pytest_cache/
 *.pyc
+pytest.ini
 
 # Test output artifacts
 scripts/*_report.json
@@ -89,9 +94,12 @@ backend/data/dossiers/*.json
 !backend/data/dossiers/.gitkeep
 research/scraper_bakeoff/artifacts/
 /artifacts/*
+!/artifacts/README.md
 !/artifacts/all_agents_evaluation.json
 !/artifacts/all_agents_evaluation.md
 !/artifacts/live_agent_smoke_result.json
+!/artifacts/phase7_1_smoke_validation_results.json
+
 !/artifacts/single_case_4_agent_fetch_audit.json
 !/artifacts/single_case_4_agent_fetch_audit.md
 !/artifacts/single_case_study_retrieval_audit.json
@@ -102,11 +110,33 @@ research/scraper_bakeoff/artifacts/
 !/artifacts/complete_retrieval_fix_live_audit.md
 !/artifacts/final_retrieval_audit.json
 !/artifacts/final_retrieval_audit.md
+!/artifacts/retrieval_benchmark/
+!/artifacts/retrieval_benchmark/**
+!/artifacts/live_retrieval_evaluation/
+!/artifacts/live_retrieval_evaluation/**
+!/artifacts/live_acquisition_audit/
+!/artifacts/live_acquisition_audit/**
+!/artifacts/live_acquisition_audit_reconciled/
+!/artifacts/live_acquisition_audit_reconciled/**
+!/artifacts/live_acquisition_audit_phase6_7/
+!/artifacts/live_acquisition_audit_phase6_7/**
+!/artifacts/live_acquisition_phase6_8/
+!/artifacts/live_acquisition_phase6_8/**
+!/artifacts/phase8_live_acquisition/
+!/artifacts/phase8_live_acquisition/**
+!/artifacts/phase8_live_probes/
+!/artifacts/phase8_live_probes/**
+!/artifacts/phase8_frontend_visual/
+artifacts/phase8_frontend_visual/*
+!/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/
+!/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/**
 research/scraper_bakeoff/repos/
 
 # Large video binaries
 brag-output/*.mp4
+docs/showcase/*.mp4
 *.mp4
+
 
 # Scratch research notes
 temp_user_prompts.txt

@@ -1,0 +1,117 @@
+{
+  "query": "Anthropic",
+  "channel": "reddit",
+  "condition": "2_new_resolution",
+  "latency_sec": 4.743,
+  "resolved_info": {
+    "entity": "Anthropic",
+    "subreddits": [
+      "OpenAI",
+      "technology",
+      "artificial",
+      "LocalLLaMA"
+    ],
+    "sector": "ai_tech",
+    "region": "global",
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "rss_status": "OPERATIONAL",
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    }
+  },
+  "telemetry": {
+    "resolved_entity": "Anthropic",
+    "entity_sector": "ai_tech",
+    "subreddit_candidate_count": 4,
+    "rss_deprecation_info": {
+      "rss_sunset_announced": "2026-11-13",
+      "legacy_api_deadline": "2026-10-31",
+      "data_api_sunset": "2027-03-31",
+      "rss_active": true,
+      "rss_status": "OPERATIONAL",
+      "feature_flag": "AEGIS_REDDIT_RSS_ENABLED",
+      "compliance_policy": "Strict zero-auth adherence. Graceful degradation on 429/403 or deprecation."
+    },
+    "rss_active": true,
+    "rss_status": "OPERATIONAL",
+    "status": "SUCCESS",
+    "backend": "reddit-rss",
+    "retrieval_mode": "zero_auth_public_mirror",
+    "authenticated": false,
+    "discovered_from": "entity_subreddit_resolution",
+    "mirror_result": "SUCCESS"
+  },
+  "metrics": {
+    "total_items": 3,
+    "total_chars": 1833,
+    "total_bytes": 1837,
+    "body_text_chars": 1139,
+    "metadata_text_chars": 694,
+    "body_utf8_bytes": 1139,
+    "metadata_utf8_bytes": 698,
+    "entity_matching_reddit_submissions": 3,
+    "claim_relevant_reddit_submissions": 0,
+    "feed_summaries": 3,
+    "full_post_bodies": 0,
+    "direct_comment_bodies": 0,
+    "x_profile_metadata": 0,
+    "actual_x_statuses": 0,
+    "indexed_snippets": 0,
+    "off_platform_general_web_results": 0,
+    "cached_results": 0,
+    "fresh_network_results": 3,
+    "discussion_posts_acquired": 3,
+    "profile_metadata_acquired": 0
+  },
+  "http_audit_records": [
+    {
+      "source_endpoint": "https://www.reddit.com/r/OpenAI/comments/1x1bxtb/anthropic_bans_abusive_or_cruel_behavior_toward/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 292,
+      "body_text_chars": 71,
+      "metadata_text_chars": 83,
+      "body_utf8_bytes": 71,
+      "metadata_utf8_bytes": 87,
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "&#32; submitted by &#32;   /u/sourdub       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: Anthropic bans \u2018abusive or cruel behavior\u2019 toward Claude | Subreddit: OpenAI"
+    },
+    {
+      "source_endpoint": "https://www.reddit.com/r/OpenAI/comments/1x2fbhn/new_pro500_plan_not_ready_for_prime_time/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 810,
+      "body_text_chars": 609,
+      "metadata_text_chars": 68,
+      "body_utf8_bytes": 609,
+      "metadata_utf8_bytes": 68,
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "I've had a 200 Max account since they released them, and have always been happy with the usage limits and honestly felt they were generous in comparison to my Anthropic Max account.    I switched to the Pro500 Plan yesterday after I used up the last of my resets, and I'm just really confused, with the exact same sessions that I was running with the Legacy Pro200, I burned through the Pro 500's weekly usage within like 1/4th of the time.   So Pro500 is more expensive, and has less usage than the ",
+      "metadata_sample": "Title: New Pro500 plan not ready for prime time? | Subreddit: OpenAI"
+    },
+    {
+      "source_endpoint": "https://www.reddit.com/r/OpenAI/comments/1x1nj77/if_openai_is_supposedly_trying_to_slow_down/",
+      "http_status": 200,
+      "content_type": "application/atom+xml; charset=UTF-8",
+      "payload_size_bytes": 759,
+      "body_text_chars": 459,
+      "metadata_text_chars": 168,
+      "body_utf8_bytes": 459,
+      "metadata_utf8_bytes": 168,
+      "content_depth": "FEED_ENTRY_SUMMARY",
+      "retrieval_mode": "zero_auth_public_mirror",
+      "cache_status": "FRESH_NETWORK",
+      "clean_body_sample": "It just doesn't make any sense. If they have much smarter models internally and Dario released something so much better than Astra then surely you would think they would respond in kind. I was actually kind of ready for an &quot;intelligence explosion&quot; but if Anthropic solidly wins this race then it will be worse for us all. Competition is the only way we get better models.     &#32; submitted by &#32;   /u/ozone6587       [link]   &#32;   [comments]",
+      "metadata_sample": "Title: If OpenAI is supposedly trying to slow down because the models are improving too fast then why are ALL OpenAI models solidly behind Opus 5.5? | Subreddit: OpenAI"
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "gate": "PARTIAL",
+  "protected_operation_count": 16,
+  "live_verified_operation_count": 1,
+  "missing_operations": [
+    "github.commits",
+    "github.issues",
+    "github.prs",
+    "github.read",
+    "github.releases",
+    "rss.read",
+    "v2ex.latest",
+    "v2ex.replies",
+    "v2ex.search",
+    "v2ex.topic",
+    "xiaoyuzhou.episodes",
+    "xiaoyuzhou.podcast",
+    "youtube.comments",
+    "youtube.read",
+    "youtube.transcript"
+  ],
+  "not_live_verified_operations": [
+    "github.commits",
+    "github.issues",
+    "github.prs",
+    "github.read",
+    "github.releases",
+    "rss.read",
+    "v2ex.latest",
+    "v2ex.replies",
+    "v2ex.search",
+    "v2ex.topic",
+    "xiaoyuzhou.episodes",
+    "xiaoyuzhou.podcast",
+    "youtube.comments",
+    "youtube.read",
+    "youtube.transcript"
+  ],
+  "operations": {
+    "web.read": {
+      "protected": true,
+      "status": "LIVE_VERIFIED",
+      "verified_classifications": [
+        "DIRECT_PARTIAL_CONTENT"
+      ],
+      "probe_count": 2,
+      "live_verified_probe_count": 2,
+      "classifications": {
+        "DIRECT_PARTIAL_CONTENT": 2
+      },
+      "limitations": []
+    }
+  }
+}

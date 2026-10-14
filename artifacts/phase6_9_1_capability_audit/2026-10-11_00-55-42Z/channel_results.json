@@ -1,0 +1,1998 @@
+{
+  "bilibili": {
+    "operations": [
+      {
+        "channel": "bilibili",
+        "operation": "search",
+        "query": "Nvidia RTX 5090",
+        "backend": "B站搜索 API",
+        "outcome": "DIRECT_METADATA",
+        "legacy_status": "SUCCESS",
+        "health": "LIMITED",
+        "content_depths": [
+          "VIDEO_METADATA"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 247,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "http://www.bilibili.com/video/av117417174899285",
+            "endpoint": "https://api.bilibili.com/x/web-interface/search/all/v2?keyword=Nvidia%20RTX%205090",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 31521,
+            "network_latency_ms": 847,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 88,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "http://www.bilibili.com/video/av117410715666398",
+            "endpoint": "https://api.bilibili.com/x/web-interface/search/all/v2?keyword=Nvidia%20RTX%205090",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 31521,
+            "network_latency_ms": 847,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 99,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "http://www.bilibili.com/video/av117414557719128",
+            "endpoint": "https://api.bilibili.com/x/web-interface/search/all/v2?keyword=Nvidia%20RTX%205090",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 31521,
+            "network_latency_ms": 847,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 62,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "http://www.bilibili.com/video/av117417174899285",
+          "http://www.bilibili.com/video/av117410715666398",
+          "http://www.bilibili.com/video/av117414557719128"
+        ],
+        "titles": [
+          "RTX5090 停产： RTX Pro专业卡将独占GB202｜显卡日报10月11日",
+          "硬核跨国维修！7000 公里现场抢救 5090 ，能修复成功吗？",
+          "居然会有人质疑 5090 ?开箱：枪神9 超竞版 RTX5090"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 847
+      },
+      {
+        "channel": "bilibili",
+        "operation": "hot",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "bilibili",
+        "operation": "rank",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "bilibili",
+        "operation": "read",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "LIMITED"
+  },
+  "boss": {
+    "operations": [
+      {
+        "channel": "boss",
+        "operation": "search_jobs",
+        "query": "AI engineer",
+        "backend": "boss-agent-cli (CDP)",
+        "outcome": "AUTH_REQUIRED",
+        "legacy_status": "AUTH_REQUIRED",
+        "health": "BLOCKED",
+        "content_depths": [],
+        "retrieval_modes": [],
+        "evidence_item_count": 0,
+        "usable_text_chars": 0,
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "transport": [],
+        "canonical_urls": [],
+        "titles": [],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": "Platform 'boss' requires authentication/session on backend 'boss-agent-cli (CDP)'. Required credential/session 'BOSS_CDP_PORT' not found in environment",
+        "latency_ms": 0
+      },
+      {
+        "channel": "boss",
+        "operation": "read_jd",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "BLOCKED"
+  },
+  "facebook": {
+    "operations": [
+      {
+        "channel": "facebook",
+        "operation": "search",
+        "query": "Nvidia",
+        "backend": "Meta oEmbed",
+        "outcome": "AUTH_REQUIRED",
+        "legacy_status": "AUTH_REQUIRED",
+        "health": "BLOCKED",
+        "content_depths": [],
+        "retrieval_modes": [],
+        "evidence_item_count": 0,
+        "usable_text_chars": 0,
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "transport": [],
+        "canonical_urls": [],
+        "titles": [],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": "Platform 'facebook' requires authentication/session on backend 'Meta oEmbed'. Required credential/session 'FACEBOOK_COOKIE' not found in environment",
+        "latency_ms": 0
+      },
+      {
+        "channel": "facebook",
+        "operation": "feed",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "facebook",
+        "operation": "groups",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "facebook",
+        "operation": "oembed",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      },
+      {
+        "channel": "facebook",
+        "operation": "profile",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "BLOCKED"
+  },
+  "github": {
+    "operations": [
+      {
+        "channel": "github",
+        "operation": "search",
+        "query": "misinformation research retrieval",
+        "backend": "gh CLI",
+        "outcome": "PARTIAL_OR_UNCLASSIFIED",
+        "legacy_status": "SUCCESS",
+        "health": "DEGRADED",
+        "content_depths": [
+          "SNIPPET"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 925,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://api.github.com/repos/vasmats/Information-Retrieval-",
+            "endpoint": "https://api.github.com/search/repositories?q=misinformation+research+retrieval&per_page=3",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 17187,
+            "network_latency_ms": 422,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 375,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://api.github.com/repos/Abiskar-Acharya/crag-fin",
+            "endpoint": "https://api.github.com/search/repositories?q=misinformation+research+retrieval&per_page=3",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 17187,
+            "network_latency_ms": 422,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 291,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://api.github.com/repos/shakibaam/RAG_ROBUSTNESS_EVAL",
+            "endpoint": "https://api.github.com/search/repositories?q=misinformation+research+retrieval&per_page=3",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 17187,
+            "network_latency_ms": 422,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 262,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://api.github.com/repos/vasmats/Information-Retrieval-",
+          "https://api.github.com/repos/Abiskar-Acharya/crag-fin",
+          "https://api.github.com/repos/shakibaam/RAG_ROBUSTNESS_EVAL"
+        ],
+        "titles": [
+          "Information-Retrieval-",
+          "crag-fin",
+          "RAG_ROBUSTNESS_EVAL"
+        ],
+        "fallback_used": true,
+        "fallback_backend": "GitHub REST API",
+        "error_category": "GH_CLI_UNAVAILABLE",
+        "latency_ms": 1004
+      },
+      {
+        "channel": "github",
+        "operation": "read",
+        "query": "pallets/flask",
+        "backend": "GitHub REST API",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 1638,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://github.com/pallets/flask",
+            "endpoint": "https://api.github.com/repos/pallets/flask",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 6174,
+            "network_latency_ms": 345,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 1639,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://github.com/pallets/flask"
+        ],
+        "titles": [
+          "pallets/flask"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 715
+      },
+      {
+        "channel": "github",
+        "operation": "issues",
+        "query": "pallets/flask",
+        "backend": "GitHub REST API",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 277,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://github.com/pallets/flask/issues/6146",
+            "endpoint": "https://api.github.com/repos/pallets/flask/issues?per_page=3",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 10354,
+            "network_latency_ms": 393,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 277,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://github.com/pallets/flask/issues/6146"
+        ],
+        "titles": [
+          "Add Cloudflare to Flask Hosting Platforms docs?"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 394
+      },
+      {
+        "channel": "github",
+        "operation": "releases",
+        "query": "pallets/flask",
+        "backend": "GitHub REST API",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 1901,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://github.com/pallets/flask/releases/tag/3.1.3",
+            "endpoint": "https://api.github.com/repos/pallets/flask/releases?per_page=3",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 19368,
+            "network_latency_ms": 420,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 534,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://github.com/pallets/flask/releases/tag/3.1.2",
+            "endpoint": "https://api.github.com/repos/pallets/flask/releases?per_page=3",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 19368,
+            "network_latency_ms": 420,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 591,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://github.com/pallets/flask/releases/tag/3.1.1",
+            "endpoint": "https://api.github.com/repos/pallets/flask/releases?per_page=3",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json; charset=utf-8",
+            "raw_body_bytes": 19368,
+            "network_latency_ms": 420,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 778,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://github.com/pallets/flask/releases/tag/3.1.3",
+          "https://github.com/pallets/flask/releases/tag/3.1.2",
+          "https://github.com/pallets/flask/releases/tag/3.1.1"
+        ],
+        "titles": [
+          "3.1.3",
+          "3.1.2",
+          "3.1.1"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 421
+      },
+      {
+        "channel": "github",
+        "operation": "commits",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      },
+      {
+        "channel": "github",
+        "operation": "prs",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      }
+    ],
+    "best_verified_health": "HEALTHY"
+  },
+  "instagram": {
+    "operations": [
+      {
+        "channel": "instagram",
+        "operation": "search",
+        "query": "Nvidia",
+        "backend": "Meta oEmbed",
+        "outcome": "AUTH_REQUIRED",
+        "legacy_status": "AUTH_REQUIRED",
+        "health": "BLOCKED",
+        "content_depths": [],
+        "retrieval_modes": [],
+        "evidence_item_count": 0,
+        "usable_text_chars": 0,
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "transport": [],
+        "canonical_urls": [],
+        "titles": [],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": "Platform 'instagram' requires authentication/session on backend 'Meta oEmbed'. Required credential/session 'INSTAGRAM_COOKIE' not found in environment",
+        "latency_ms": 0
+      },
+      {
+        "channel": "instagram",
+        "operation": "explore",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "instagram",
+        "operation": "oembed",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      },
+      {
+        "channel": "instagram",
+        "operation": "posts",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "instagram",
+        "operation": "profile",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "BLOCKED"
+  },
+  "jina_reader": {
+    "operations": [
+      {
+        "channel": "jina_reader",
+        "operation": "read",
+        "query": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+        "backend": "Jina Reader",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE"
+        ],
+        "retrieval_modes": [
+          "web_reader"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 3999,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+            "endpoint": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=UTF-8",
+            "raw_body_bytes": 466680,
+            "network_latency_ms": 155,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 4000,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/"
+        ],
+        "titles": [
+          "Article from www.nvidia.com"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 156
+      }
+    ],
+    "best_verified_health": "HEALTHY"
+  },
+  "linkedin": {
+    "operations": [
+      {
+        "channel": "linkedin",
+        "operation": "jobs",
+        "query": "AI research engineer",
+        "backend": "linkedin-guest-jobs-api",
+        "outcome": "PARTIAL_OR_UNCLASSIFIED",
+        "legacy_status": "SUCCESS",
+        "health": "DEGRADED",
+        "content_depths": [
+          "SNIPPET"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 801,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.linkedin.com/jobs/view/ai-ml-engineers-and-researchers-at-closr-4474449166?position=1&pageNum=0&refId=FIb1jTAxFlUtpPnxIWYc1A%3D%3D&trackingId=3hbI%2BUbexOw6sAV5m5KvTQ%3D%3D",
+            "endpoint": "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=AI%20research%20engineer&start=0",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 26963,
+            "network_latency_ms": 966,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 288,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.linkedin.com/jobs/view/staff-r-d-ai-engineer-at-webai-4270318682?position=2&pageNum=0&refId=FIb1jTAxFlUtpPnxIWYc1A%3D%3D&trackingId=wZne31ntIuFgW2vCX8lbMA%3D%3D",
+            "endpoint": "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=AI%20research%20engineer&start=0",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 26963,
+            "network_latency_ms": 966,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 254,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.linkedin.com/jobs/view/ai-agent-researcher-at-vast-ai-4446146763?position=3&pageNum=0&refId=FIb1jTAxFlUtpPnxIWYc1A%3D%3D&trackingId=zyzgHpPvdTT7dyZxUAbuVg%3D%3D",
+            "endpoint": "https://www.linkedin.com/jobs-guest/jobs/api/seeMoreJobPostings/search?keywords=AI%20research%20engineer&start=0",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 26963,
+            "network_latency_ms": 966,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 259,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.linkedin.com/jobs/view/ai-ml-engineers-and-researchers-at-closr-4474449166?position=1&pageNum=0&refId=FIb1jTAxFlUtpPnxIWYc1A%3D%3D&trackingId=3hbI%2BUbexOw6sAV5m5KvTQ%3D%3D",
+          "https://www.linkedin.com/jobs/view/staff-r-d-ai-engineer-at-webai-4270318682?position=2&pageNum=0&refId=FIb1jTAxFlUtpPnxIWYc1A%3D%3D&trackingId=wZne31ntIuFgW2vCX8lbMA%3D%3D",
+          "https://www.linkedin.com/jobs/view/ai-agent-researcher-at-vast-ai-4446146763?position=3&pageNum=0&refId=FIb1jTAxFlUtpPnxIWYc1A%3D%3D&trackingId=zyzgHpPvdTT7dyZxUAbuVg%3D%3D"
+        ],
+        "titles": [
+          "AI/ML Engineers and Researchers at Closr (San Francisco Bay Area)",
+          "Staff R&D AI Engineer at webAI (Austin, TX)",
+          "AI Agent Researcher at Vast.ai (Los Angeles, CA)"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 1053
+      },
+      {
+        "channel": "linkedin",
+        "operation": "company",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "linkedin",
+        "operation": "profile",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "linkedin",
+        "operation": "read",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "DEGRADED"
+  },
+  "news": {
+    "operations": [
+      {
+        "channel": "news",
+        "operation": "search",
+        "query": "Nvidia RTX 5090 discontinuation rumor",
+        "backend": "Jina Reader",
+        "outcome": "SYNDICATED_SUMMARY",
+        "legacy_status": "SUCCESS",
+        "health": "LIMITED",
+        "content_depths": [
+          "FEED_ENTRY_SUMMARY"
+        ],
+        "retrieval_modes": [
+          "rss_feed"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 1086,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxNcExaZXhVWXRWdVdGWDB6M1d2S3B1LWxmZUktVG5FbUxCd2pSWEJ2dVNaWWFRaE52ekdYOU0xMl9lMThxWDRQYnA2dmZ2cUpwZnh3Y2p2RnhsdVNDdjJGdXFKNUFxa2JDbDFqTHBvcUpZV1g5aWs4dW1IUmVGbzk0U2l5dnlkV3BoSGJBVlpQaXZpYjFZdGlGNUhicXhIOGxVQkdXcWQxX25SMFVJRTNyR2Nndw?oc=5",
+            "endpoint": "https://news.google.com/rss/search?q=Nvidia+RTX+5090+discontinuation+rumor&hl=en-US&gl=US&ceid=US:en",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/xml; charset=utf-8",
+            "raw_body_bytes": 79992,
+            "network_latency_ms": 146,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 219,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://news.google.com/rss/articles/CBMi5AJBVV95cUxQSjBCd255Y1gyWXBvSnlpVW4xNHVteF9MTG40Yngxdml6SnJ2R2JoNkF4OTdzMGJ1dkRIaVNoVlc0MnItdkNCTV9QX2FscW4zRGw1UkFTV285VW9DZS0tWmNXdmR2dUtCNmh6dWRWcmxSN3lVWDVhZ01qNUxGZ2k1bW03LWZPWndlX3NXcENxczczNUJNSUU4OHNzN3pQbmlkMmpPM2xfVXA1Z1E0b2dsMUZ4UXRGUkJ5aWh5MnVMUjZuNDMyeHBOUFdjNEJ1X3V2Wm1seDlfWHpEbC1idlR3RFhIMzhvTzRhYXFYWF91UEhXTEpfMldZUXNhMmt6Vmtsa0dnQ1B3eS15X0tmVEFXYWo5RFlUZWl6b21LTUtGM3FQbjJ0eFZscy1IOE9LaEdWb3F2Nnd4TWVXcnBKN2J1TTNzbEhaQ0ExVEpYQTRuaEhOLWg1elY2U0pYc3dvdHBac0JLLQ?oc=5",
+            "endpoint": "https://news.google.com/rss/search?q=Nvidia+RTX+5090+discontinuation+rumor&hl=en-US&gl=US&ceid=US:en",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/xml; charset=utf-8",
+            "raw_body_bytes": 79992,
+            "network_latency_ms": 146,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 720,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE04MDg5X0NZYUZoN3FDNTA1T0VXem95TklTcENHZFlWYzRPaHFWNHg3Sm5sUnpUaGQtWEhxUG8xcGlTVlRzSXE4Xy1wSVJ6eE9fRld2ZFBsOFdiMTNHMG5SVnYxOWpfUG5mS0Rv?oc=5",
+            "endpoint": "https://news.google.com/rss/search?q=Nvidia+RTX+5090+discontinuation+rumor&hl=en-US&gl=US&ceid=US:en",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/xml; charset=utf-8",
+            "raw_body_bytes": 79992,
+            "network_latency_ms": 146,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 147,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://news.google.com/rss/articles/CBMiswFBVV95cUxNcExaZXhVWXRWdVdGWDB6M1d2S3B1LWxmZUktVG5FbUxCd2pSWEJ2dVNaWWFRaE52ekdYOU0xMl9lMThxWDRQYnA2dmZ2cUpwZnh3Y2p2RnhsdVNDdjJGdXFKNUFxa2JDbDFqTHBvcUpZV1g5aWs4dW1IUmVGbzk0U2l5dnlkV3BoSGJBVlpQaXZpYjFZdGlGNUhicXhIOGxVQkdXcWQxX25SMFVJRTNyR2Nndw?oc=5",
+          "https://news.google.com/rss/articles/CBMi5AJBVV95cUxQSjBCd255Y1gyWXBvSnlpVW4xNHVteF9MTG40Yngxdml6SnJ2R2JoNkF4OTdzMGJ1dkRIaVNoVlc0MnItdkNCTV9QX2FscW4zRGw1UkFTV285VW9DZS0tWmNXdmR2dUtCNmh6dWRWcmxSN3lVWDVhZ01qNUxGZ2k1bW03LWZPWndlX3NXcENxczczNUJNSUU4OHNzN3pQbmlkMmpPM2xfVXA1Z1E0b2dsMUZ4UXRGUkJ5aWh5MnVMUjZuNDMyeHBOUFdjNEJ1X3V2Wm1seDlfWHpEbC1idlR3RFhIMzhvTzRhYXFYWF91UEhXTEpfMldZUXNhMmt6Vmtsa0dnQ1B3eS15X0tmVEFXYWo5RFlUZWl6b21LTUtGM3FQbjJ0eFZscy1IOE9LaEdWb3F2Nnd4TWVXcnBKN2J1TTNzbEhaQ0ExVEpYQTRuaEhOLWg1elY2U0pYc3dvdHBac0JLLQ?oc=5",
+          "https://news.google.com/rss/articles/CBMia0FVX3lxTE04MDg5X0NZYUZoN3FDNTA1T0VXem95TklTcENHZFlWYzRPaHFWNHg3Sm5sUnpUaGQtWEhxUG8xcGlTVlRzSXE4Xy1wSVJ6eE9fRld2ZFBsOFdiMTNHMG5SVnYxOWpfUG5mS0Rv?oc=5"
+        ],
+        "titles": [
+          "NVIDIA reportedly discontinuing RTX 5090, GB202 GPUs to be reserved for RTX PRO series - VideoCardz.com",
+          "Nvidia reportedly halts GeForce RTX 5090 production in favor of AI data center and professional GPUs — impending supply drought expected to drive up prices, RTX 5080 24GB rumored a",
+          "RTX 5090 Discontinued? GB202 Chips Shift to Pro GPUs - shattered.io"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 147
+      }
+    ],
+    "best_verified_health": "LIMITED"
+  },
+  "reddit": {
+    "operations": [
+      {
+        "channel": "reddit",
+        "operation": "search",
+        "query": "Nvidia RTX 5090 r/hardware",
+        "outcome": "BLOCKED",
+        "health": "BLOCKED",
+        "error_category": "POLICY_RESTRICTED: no approved Reddit Data API access configured",
+        "network_io_observed": false,
+        "fragments": [],
+        "transport": [],
+        "latency_ms": 0
+      },
+      {
+        "channel": "reddit",
+        "operation": "comments",
+        "query": "https://www.reddit.com/r/technology/comments/1x2e3ar/",
+        "outcome": "BLOCKED",
+        "health": "BLOCKED",
+        "error_category": "POLICY_RESTRICTED: direct Reddit content collection was not authorized",
+        "network_io_observed": false,
+        "fragments": [],
+        "transport": [],
+        "latency_ms": 0
+      },
+      {
+        "channel": "reddit",
+        "operation": "read",
+        "outcome": "BLOCKED",
+        "health": "BLOCKED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "POLICY_BLOCKED: approved Reddit access is not configured"
+      }
+    ],
+    "best_verified_health": "BLOCKED"
+  },
+  "rss": {
+    "operations": [
+      {
+        "channel": "rss",
+        "operation": "search",
+        "query": "Nvidia official product announcement RTX 5090",
+        "backend": "feedparser",
+        "outcome": "SYNDICATED_SUMMARY",
+        "legacy_status": "SUCCESS",
+        "health": "LIMITED",
+        "content_depths": [
+          "FEED_ENTRY_SUMMARY"
+        ],
+        "retrieval_modes": [
+          "rss_feed"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 537,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE04MDg5X0NZYUZoN3FDNTA1T0VXem95TklTcENHZFlWYzRPaHFWNHg3Sm5sUnpUaGQtWEhxUG8xcGlTVlRzSXE4Xy1wSVJ6eE9fRld2ZFBsOFdiMTNHMG5SVnYxOWpfUG5mS0Rv?oc=5",
+            "endpoint": "https://news.google.com/rss/search?q=Nvidia+official+product+announcement+RTX+5090&hl=en-US&gl=US&ceid=US:en",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/xml; charset=utf-8",
+            "raw_body_bytes": 102916,
+            "network_latency_ms": 109,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 147,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://news.google.com/rss/articles/CBMia0FVX3lxTE1jQXlqYkhzSG9EMGJtajhtZ295NDFJcjJYeFJISFFKd2dkWXRWZzM0Rm10YS1lY1dkZ0RYbnFrZzkyNHJ5eGg1OENnTnpVRmJzX3laSFNtN2NQV2E0emJqUTdtbVJpb1JFX0Nj?oc=5",
+            "endpoint": "https://news.google.com/rss/search?q=Nvidia+official+product+announcement+RTX+5090&hl=en-US&gl=US&ceid=US:en",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/xml; charset=utf-8",
+            "raw_body_bytes": 102916,
+            "network_latency_ms": 109,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 197,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://news.google.com/rss/articles/CBMidkFVX3lxTFBzajNsOU5fWUxmOEZ2Vk1TR2FLbndPUzdFS25xM1RERklsWmg5a2piX3BqNFhSd21RbjV1UjdmektfclV4MXBBQ2ZNVHZoQmhISjhhd1Y3ZF9meWxla09WMzViMXl6bzc4MmlxeUw4cGs3TUItaGc?oc=5",
+            "endpoint": "https://news.google.com/rss/search?q=Nvidia+official+product+announcement+RTX+5090&hl=en-US&gl=US&ceid=US:en",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/xml; charset=utf-8",
+            "raw_body_bytes": 102916,
+            "network_latency_ms": 109,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 193,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://news.google.com/rss/articles/CBMia0FVX3lxTE04MDg5X0NZYUZoN3FDNTA1T0VXem95TklTcENHZFlWYzRPaHFWNHg3Sm5sUnpUaGQtWEhxUG8xcGlTVlRzSXE4Xy1wSVJ6eE9fRld2ZFBsOFdiMTNHMG5SVnYxOWpfUG5mS0Rv?oc=5",
+          "https://news.google.com/rss/articles/CBMia0FVX3lxTE1jQXlqYkhzSG9EMGJtajhtZ295NDFJcjJYeFJISFFKd2dkWXRWZzM0Rm10YS1lY1dkZ0RYbnFrZzkyNHJ5eGg1OENnTnpVRmJzX3laSFNtN2NQV2E0emJqUTdtbVJpb1JFX0Nj?oc=5",
+          "https://news.google.com/rss/articles/CBMidkFVX3lxTFBzajNsOU5fWUxmOEZ2Vk1TR2FLbndPUzdFS25xM1RERklsWmg5a2piX3BqNFhSd21RbjV1UjdmektfclV4MXBBQ2ZNVHZoQmhISjhhd1Y3ZF9meWxla09WMzViMXl6bzc4MmlxeUw4cGs3TUItaGc?oc=5"
+        ],
+        "titles": [
+          "RTX 5090 Discontinued? GB202 Chips Shift to Pro GPUs - shattered.io",
+          "Rumor: NVIDIA to End GeForce RTX 5090 Supply and Shift GB202 Chips to RTX PRO - XenoSpectrum",
+          "Nvidia Shifts Flagship GPU Silicon to Pro Cards, Squeezing RTX 5090 Supply - BigGo Finance"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 110
+      },
+      {
+        "channel": "rss",
+        "operation": "read",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      }
+    ],
+    "best_verified_health": "LIMITED"
+  },
+  "twitter": {
+    "operations": [
+      {
+        "channel": "twitter",
+        "operation": "profile",
+        "query": "@OpenAI",
+        "backend": "fxtwitter",
+        "outcome": "DIRECT_METADATA",
+        "legacy_status": "SUCCESS",
+        "health": "LIMITED",
+        "content_depths": [
+          "PROFILE_METADATA"
+        ],
+        "retrieval_modes": [
+          "zero_auth_public_mirror"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 129,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://x.com/OpenAI",
+            "endpoint": "https://api.fxtwitter.com/OpenAI",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json",
+            "raw_body_bytes": 1046,
+            "network_latency_ms": 376,
+            "cache_status": "CACHE_MISS",
+            "normalized_chars": 129,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://x.com/OpenAI"
+        ],
+        "titles": [
+          "Profile: OpenAI (@OpenAI)"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 378
+      },
+      {
+        "channel": "twitter",
+        "operation": "status",
+        "query": "https://x.com/Safety/status/1775942160509989256",
+        "backend": "fxtwitter",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE"
+        ],
+        "retrieval_modes": [
+          "zero_auth_public_mirror"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 483,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://x.com/Safety/status/1775942160509989256",
+            "endpoint": "https://api.fxtwitter.com/Safety/status/1775942160509989256",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json",
+            "raw_body_bytes": 2413,
+            "network_latency_ms": 350,
+            "cache_status": "CACHE_MISS",
+            "normalized_chars": 483,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://x.com/Safety/status/1775942160509989256"
+        ],
+        "titles": [
+          "Post by Safety (@Safety)"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 350
+      },
+      {
+        "channel": "twitter",
+        "operation": "feed",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "twitter",
+        "operation": "read",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      },
+      {
+        "channel": "twitter",
+        "operation": "search",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      }
+    ],
+    "best_verified_health": "HEALTHY"
+  },
+  "v2ex": {
+    "operations": [
+      {
+        "channel": "v2ex",
+        "operation": "hot",
+        "query": "AI",
+        "backend": "V2EX API (public)",
+        "outcome": "PARTIAL_OR_UNCLASSIFIED",
+        "legacy_status": "SUCCESS",
+        "health": "DEGRADED",
+        "content_depths": [
+          "SNIPPET"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 385,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1247511",
+            "endpoint": "https://www.v2ex.com/api/topics/hot.json",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 34162,
+            "network_latency_ms": 288,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 99,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1247509",
+            "endpoint": "https://www.v2ex.com/api/topics/hot.json",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 34162,
+            "network_latency_ms": 288,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 165,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1247527",
+            "endpoint": "https://www.v2ex.com/api/topics/hot.json",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 34162,
+            "network_latency_ms": 288,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 121,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.v2ex.com/t/1247511",
+          "https://www.v2ex.com/t/1247509",
+          "https://www.v2ex.com/t/1247527"
+        ],
+        "titles": [
+          "超过 500 行的代码改动， codex 根本无法独立完成。astra 也不行",
+          "五年后，还有多少程序员能靠写代码活着？",
+          "做了一个“珠光宝气”的页面， V 友看看咋样，提提意见"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 288
+      },
+      {
+        "channel": "v2ex",
+        "operation": "latest",
+        "query": "",
+        "backend": "V2EX API (public)",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE",
+          "SNIPPET"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 957,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1247758",
+            "endpoint": "https://www.v2ex.com/api/topics/latest.json",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 268727,
+            "network_latency_ms": 407,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 543,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1247757",
+            "endpoint": "https://www.v2ex.com/api/topics/latest.json",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 268727,
+            "network_latency_ms": 407,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 52,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1247756",
+            "endpoint": "https://www.v2ex.com/api/topics/latest.json",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 268727,
+            "network_latency_ms": 407,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 364,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.v2ex.com/t/1247758",
+          "https://www.v2ex.com/t/1247757",
+          "https://www.v2ex.com/t/1247756"
+        ],
+        "titles": [
+          "[开源自荐] Artiface：在浏览器里查看本地和服务器上的 AI Agent 输出内容",
+          "想学插花 V 友们有好的课程视频推荐吗？",
+          "grokbot 有 bug 啊"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 407
+      },
+      {
+        "channel": "v2ex",
+        "operation": "topic",
+        "query": "1",
+        "backend": "V2EX API (public)",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 1683,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1",
+            "endpoint": "https://www.v2ex.com/api/topics/show.json?id=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 15175,
+            "network_latency_ms": 344,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 1683,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.v2ex.com/t/1"
+        ],
+        "titles": [
+          "♥ Introducing Project Babel 2.0"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 344
+      },
+      {
+        "channel": "v2ex",
+        "operation": "replies",
+        "query": "1",
+        "backend": "V2EX API (public)",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "COMMENT"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 284,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/1",
+            "endpoint": "https://www.v2ex.com/api/replies/show.json?topic_id=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 175376,
+            "network_latency_ms": 75,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 75,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/2",
+            "endpoint": "https://www.v2ex.com/api/replies/show.json?topic_id=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 175376,
+            "network_latency_ms": 75,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 133,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.v2ex.com/t/3",
+            "endpoint": "https://www.v2ex.com/api/replies/show.json?topic_id=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/json;charset=UTF-8",
+            "raw_body_bytes": 175376,
+            "network_latency_ms": 75,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 82,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.v2ex.com/t/1",
+          "https://www.v2ex.com/t/2",
+          "https://www.v2ex.com/t/3"
+        ],
+        "titles": [
+          "",
+          "",
+          ""
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 75
+      },
+      {
+        "channel": "v2ex",
+        "operation": "search",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      }
+    ],
+    "best_verified_health": "HEALTHY"
+  },
+  "web": {
+    "operations": [
+      {
+        "channel": "web",
+        "operation": "search",
+        "query": "Nvidia RTX 5090 discontinuation rumor",
+        "backend": "Jina Reader",
+        "outcome": "SEARCH_INDEX_DISCOVERY",
+        "legacy_status": "SUCCESS",
+        "health": "DEGRADED",
+        "content_depths": [
+          "INDEX_SNIPPET"
+        ],
+        "retrieval_modes": [
+          "web_search_index"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 672,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.nvidia.com/en-in/",
+            "endpoint": "https://www.bing.com/search?q=Nvidia+RTX+5090+discontinuation+rumor&first=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 131612,
+            "network_latency_ms": 291,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 233,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://en.wikipedia.org/wiki/Nvidia",
+            "endpoint": "https://www.bing.com/search?q=Nvidia+RTX+5090+discontinuation+rumor&first=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 131612,
+            "network_latency_ms": 291,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 206,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.nvidia.in/Download/indexsg.aspx?lang=en-in",
+            "endpoint": "https://www.bing.com/search?q=Nvidia+RTX+5090+discontinuation+rumor&first=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 131612,
+            "network_latency_ms": 291,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 233,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.nvidia.com/en-in/",
+          "https://en.wikipedia.org/wiki/Nvidia",
+          "https://www.nvidia.in/Download/indexsg.aspx?lang=en-in"
+        ],
+        "titles": [
+          "World Leader in Artificial Intelligence Computing |NVIDIA",
+          "Nvidia-Wikipedia",
+          "Drivers- DownloadNVIDIA Drivers"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 680
+      },
+      {
+        "channel": "web",
+        "operation": "read",
+        "query": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+        "backend": "Jina Reader",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "FULL_ARTICLE"
+        ],
+        "retrieval_modes": [
+          "web_reader"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 3999,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+            "endpoint": "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=UTF-8",
+            "raw_body_bytes": 466680,
+            "network_latency_ms": 344,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 4000,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.nvidia.com/en-us/geforce/graphics-cards/50-series/rtx-5090/"
+        ],
+        "titles": [
+          "Article from www.nvidia.com"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 380
+      }
+    ],
+    "best_verified_health": "HEALTHY"
+  },
+  "web_search": {
+    "operations": [
+      {
+        "channel": "web_search",
+        "operation": "search",
+        "query": "Nvidia RTX 5090 discontinuation rumor",
+        "backend": "Exa via mcporter",
+        "outcome": "SEARCH_INDEX_DISCOVERY",
+        "legacy_status": "SUCCESS",
+        "health": "DEGRADED",
+        "content_depths": [
+          "INDEX_SNIPPET"
+        ],
+        "retrieval_modes": [
+          "web_search_index"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 663,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.nvidia.com/en-in/",
+            "endpoint": "https://www.bing.com/search?q=Nvidia+RTX+5090+discontinuation+rumor&first=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 132492,
+            "network_latency_ms": 278,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 224,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://en.wikipedia.org/wiki/Nvidia",
+            "endpoint": "https://www.bing.com/search?q=Nvidia+RTX+5090+discontinuation+rumor&first=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 132492,
+            "network_latency_ms": 278,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 206,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.nvidia.in/Download/indexsg.aspx?lang=en-in",
+            "endpoint": "https://www.bing.com/search?q=Nvidia+RTX+5090+discontinuation+rumor&first=1",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "text/html; charset=utf-8",
+            "raw_body_bytes": 132492,
+            "network_latency_ms": 278,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 233,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.nvidia.com/en-in/",
+          "https://en.wikipedia.org/wiki/Nvidia",
+          "https://www.nvidia.in/Download/indexsg.aspx?lang=en-in"
+        ],
+        "titles": [
+          "World Leader in Artificial Intelligence Computing |NVIDIA",
+          "Nvidia-Wikipedia",
+          "Drivers- DownloadNVIDIA Drivers"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 288
+      }
+    ],
+    "best_verified_health": "DEGRADED"
+  },
+  "xiaohongshu": {
+    "operations": [
+      {
+        "channel": "xiaohongshu",
+        "operation": "search",
+        "query": "Nvidia",
+        "backend": "OpenCLI",
+        "outcome": "AUTH_REQUIRED",
+        "legacy_status": "AUTH_REQUIRED",
+        "health": "BLOCKED",
+        "content_depths": [],
+        "retrieval_modes": [],
+        "evidence_item_count": 0,
+        "usable_text_chars": 0,
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "transport": [],
+        "canonical_urls": [],
+        "titles": [],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": "Platform 'xiaohongshu' requires authentication/session on backend 'OpenCLI'. Required credential/session 'XIAOHONGSHU_COOKIE' not found in environment",
+        "latency_ms": 0
+      },
+      {
+        "channel": "xiaohongshu",
+        "operation": "comments",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "xiaohongshu",
+        "operation": "feed",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "xiaohongshu",
+        "operation": "read",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "BLOCKED"
+  },
+  "xiaoyuzhou": {
+    "operations": [
+      {
+        "channel": "xiaoyuzhou",
+        "operation": "podcast",
+        "query": "artificial intelligence",
+        "backend": "podcast-rss-syndication",
+        "outcome": "PARTIAL_OR_UNCLASSIFIED",
+        "legacy_status": "SUCCESS",
+        "health": "DEGRADED",
+        "content_depths": [
+          "AUDIO_METADATA_AND_SHOWNOTES"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 2241,
+        "network_io_observed": true,
+        "http_statuses_observed": [
+          200
+        ],
+        "transport": [
+          {
+            "canonical_source_url": "https://podcasters.spotify.com/pod/show/ai-literacy/episodes/8-How-a-self-driving-car-learns-how-do-drive-with-Saquib-Sarfraz-Mercedes-Benz-Daimler-e1e0omv",
+            "endpoint": "https://anchor.fm/s/4848d648/podcast/rss",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/rss+xml; charset=utf-8",
+            "raw_body_bytes": 19078,
+            "network_latency_ms": 477,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 859,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://podcasters.spotify.com/pod/show/ai-literacy/episodes/7-How-AI-will-change-the-world-by-2030-with-Eric-Redmond-Nike-e17lbko",
+            "endpoint": "https://anchor.fm/s/4848d648/podcast/rss",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/rss+xml; charset=utf-8",
+            "raw_body_bytes": 19078,
+            "network_latency_ms": 477,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 689,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://podcasters.spotify.com/pod/show/ai-literacy/episodes/6-How-FlixBus-predicts-when-you-will-travel-next-with-Carlos-Andrs-Arias-Robledo-FlixBus-e15a5hs",
+            "endpoint": "https://anchor.fm/s/4848d648/podcast/rss",
+            "network_observed_this_attempt": true,
+            "http_status": 200,
+            "content_type": "application/rss+xml; charset=utf-8",
+            "raw_body_bytes": 19078,
+            "network_latency_ms": 477,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 694,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://podcasters.spotify.com/pod/show/ai-literacy/episodes/8-How-a-self-driving-car-learns-how-do-drive-with-Saquib-Sarfraz-Mercedes-Benz-Daimler-e1e0omv",
+          "https://podcasters.spotify.com/pod/show/ai-literacy/episodes/7-How-AI-will-change-the-world-by-2030-with-Eric-Redmond-Nike-e17lbko",
+          "https://podcasters.spotify.com/pod/show/ai-literacy/episodes/6-How-FlixBus-predicts-when-you-will-travel-next-with-Carlos-Andrs-Arias-Robledo-FlixBus-e15a5hs"
+        ],
+        "titles": [
+          "[AI LITERACY - A Podcast about Artificial Intelligence] #8 How a self-driving car learns how do drive with Saquib Sarfraz (Mercedes Benz-Daimler)",
+          "[AI LITERACY - A Podcast about Artificial Intelligence] #7 How AI will change the world by 2030 with Eric Redmond (Nike)",
+          "[AI LITERACY - A Podcast about Artificial Intelligence] #6 How FlixBus predicts when you will travel next with Carlos Andrés Arias Robledo (FlixBus)"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 477
+      },
+      {
+        "channel": "xiaoyuzhou",
+        "operation": "episodes",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      },
+      {
+        "channel": "xiaoyuzhou",
+        "operation": "search",
+        "outcome": "UNVERIFIED",
+        "health": "UNVERIFIED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Not exercised in bounded live audit"
+      },
+      {
+        "channel": "xiaoyuzhou",
+        "operation": "transcribe",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "DEGRADED"
+  },
+  "xueqiu": {
+    "operations": [
+      {
+        "channel": "xueqiu",
+        "operation": "search",
+        "query": "NVDA",
+        "backend": "xueqiu-visitor-api",
+        "outcome": "AUTH_REQUIRED",
+        "legacy_status": "AUTH_REQUIRED",
+        "health": "BLOCKED",
+        "content_depths": [],
+        "retrieval_modes": [],
+        "evidence_item_count": 0,
+        "usable_text_chars": 0,
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "transport": [],
+        "canonical_urls": [],
+        "titles": [],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": "Platform 'xueqiu' requires authentication/session on backend 'xueqiu-visitor-api'. Required credential/session 'XUEQIU_COOKIE' not found in environment",
+        "latency_ms": 0
+      },
+      {
+        "channel": "xueqiu",
+        "operation": "hot_posts",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "xueqiu",
+        "operation": "hot_stocks",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      },
+      {
+        "channel": "xueqiu",
+        "operation": "quotes",
+        "outcome": "UNAVAILABLE_NOT_IMPLEMENTED",
+        "health": "UNSUPPORTED",
+        "network_io_observed": false,
+        "http_statuses_observed": [],
+        "evidence_item_count": 0,
+        "transport": [],
+        "error_category": "Declared upstream but no production execution path"
+      }
+    ],
+    "best_verified_health": "BLOCKED"
+  },
+  "youtube": {
+    "operations": [
+      {
+        "channel": "youtube",
+        "operation": "search",
+        "query": "Nvidia RTX 5090 technical analysis",
+        "backend": "yt-dlp",
+        "outcome": "DIRECT_METADATA",
+        "legacy_status": "SUCCESS",
+        "health": "LIMITED",
+        "content_depths": [
+          "VIDEO_METADATA"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 737,
+        "network_io_observed": true,
+        "http_statuses_observed": [],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=7ymRLAFK-Ps",
+            "endpoint": "ytsearch3:Nvidia RTX 5090 technical analysis",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": null,
+            "raw_body_bytes": null,
+            "network_latency_ms": 1107,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 246,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=IwlVbjOELGo",
+            "endpoint": "ytsearch3:Nvidia RTX 5090 technical analysis",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": null,
+            "raw_body_bytes": null,
+            "network_latency_ms": 1107,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 254,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=mFUvb5KB_LU",
+            "endpoint": "ytsearch3:Nvidia RTX 5090 technical analysis",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": null,
+            "raw_body_bytes": null,
+            "network_latency_ms": 1107,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 237,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.youtube.com/watch?v=7ymRLAFK-Ps",
+          "https://www.youtube.com/watch?v=IwlVbjOELGo",
+          "https://www.youtube.com/watch?v=mFUvb5KB_LU"
+        ],
+        "titles": [
+          "NVIDIA just killed Intel Quicksync 👉🏻 RTX 5090 is REVOLUTIONARY for Creators!",
+          "RTX 5090: The Ultimate Nvidia 5000 Series Graphics Card - Speculations and Analysis",
+          "THIS is WHY the RTX 5090 is REVOLUTIONARY - I'm sold! [EN/DEcoding test]"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 1107
+      },
+      {
+        "channel": "youtube",
+        "operation": "read",
+        "query": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "backend": "yt-dlp",
+        "outcome": "DIRECT_METADATA",
+        "legacy_status": "SUCCESS",
+        "health": "LIMITED",
+        "content_depths": [
+          "VIDEO_METADATA"
+        ],
+        "retrieval_modes": [
+          "native_tool_cli"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 2486,
+        "network_io_observed": true,
+        "http_statuses_observed": [],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "endpoint": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": null,
+            "raw_body_bytes": null,
+            "network_latency_ms": null,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 2486,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        ],
+        "titles": [
+          "Rick Astley - Never Gonna Give You Up (Official Video) (4K Remaster)"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 2063
+      },
+      {
+        "channel": "youtube",
+        "operation": "transcript",
+        "query": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "backend": "yt-dlp",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "VIDEO_TRANSCRIPT"
+        ],
+        "retrieval_modes": [
+          "native_tool_cli"
+        ],
+        "evidence_item_count": 1,
+        "usable_text_chars": 4015,
+        "network_io_observed": true,
+        "http_statuses_observed": [],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "endpoint": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": "text/vtt",
+            "raw_body_bytes": 4263,
+            "network_latency_ms": 4250,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 4017,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        ],
+        "titles": [
+          "YouTube transcript"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 4255
+      },
+      {
+        "channel": "youtube",
+        "operation": "comments",
+        "query": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+        "backend": "yt-dlp",
+        "outcome": "DIRECT_CONTENT",
+        "legacy_status": "SUCCESS",
+        "health": "HEALTHY",
+        "content_depths": [
+          "COMMENT"
+        ],
+        "retrieval_modes": [
+          "direct_api"
+        ],
+        "evidence_item_count": 3,
+        "usable_text_chars": 292,
+        "network_io_observed": true,
+        "http_statuses_observed": [],
+        "transport": [
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "endpoint": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": "application/json",
+            "raw_body_bytes": 662105,
+            "network_latency_ms": 2961,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 77,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "endpoint": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": "application/json",
+            "raw_body_bytes": 662105,
+            "network_latency_ms": 2961,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 74,
+            "usable_body_chars": null
+          },
+          {
+            "canonical_source_url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "endpoint": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+            "network_observed_this_attempt": true,
+            "http_status": null,
+            "content_type": "application/json",
+            "raw_body_bytes": 662105,
+            "network_latency_ms": 2961,
+            "cache_status": "UNKNOWN",
+            "normalized_chars": 141,
+            "usable_body_chars": null
+          }
+        ],
+        "canonical_urls": [
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+          "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        ],
+        "titles": [
+          "YouTube Comment by @YouTube",
+          "YouTube Comment by @spacemanvr1897",
+          "YouTube Comment by @kiaraswenson3539"
+        ],
+        "fallback_used": false,
+        "fallback_backend": null,
+        "error_category": null,
+        "latency_ms": 2965
+      }
+    ],
+    "best_verified_health": "HEALTHY"
+  }
+}

@@ -9,6 +9,8 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="forensic-explorer.js"></script>
   <script src="unified-report-renderer.js"></script>
+  <script src="operation-health.js"></script>
+  <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -162,6 +164,11 @@
 
     /* Catalysts and Risks */
     .catalyst-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .social-signal-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+    .contradiction-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 18px; }
+    @media(max-width:600px) {
+      .catalyst-grid, .social-signal-grid, .contradiction-grid { grid-template-columns: minmax(0, 1fr); }
+    }
     .cat-box { background: rgba(0,0,0,0.3); border-radius: 12px; padding: 18px; border: 1px solid var(--border); }
     .cat-box.pos { border-left: 4px solid var(--emerald); }
     .cat-box.neg { border-left: 4px solid var(--rose); }
@@ -269,6 +276,7 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <main id="main-content">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>Scout Agent &bull; Emerging Information &amp; Financial Signals</div>
@@ -276,11 +284,11 @@
       <p>Emerging information and financial signal discovery. Correlates market quotes, statutory regulatory filings (SEC, NSE/BSE), and multi-channel public discussion to verify financial rumors.</p>
       
       <div class="tel-ribbon">
-        <div class="tel-cell"><span class="tel-val">Live Quotes</span><span class="tel-key">Market Data</span></div>
+        <div class="tel-cell"><span class="tel-val">Quotes if available</span><span class="tel-key">Market Data</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:var(--accent)">Activity Volume</span><span class="tel-key">Observed Signal</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">Multi-Channel</span><span class="tel-key">Source Coverage</span></div>
         <div class="tel-cell"><span class="tel-val" style="color:#fbbf24">Audit Trail</span><span class="tel-key">Source Ledger</span></div>
-        <div class="tel-cell"><span class="tel-val" style="color:var(--emerald)">READY</span><span class="tel-key">Module Status</span></div>
+        <div class="tel-cell"><span class="tel-val" style="color:var(--text-muted)">IDLE</span><span class="tel-key">Module Status</span></div>
       </div>
     </div>
 
@@ -311,42 +319,31 @@
         </div>
         <div class="quick-chips">
           <span>Quick Research:</span>
-          <span class="qchip" onclick="setTicker('TATAMOTORS.NS')">Tata Motors (TATAMOTORS.NS)</span>
-          <span class="qchip" onclick="setTicker('RELIANCE.NS')">Reliance (RELIANCE.NS)</span>
-          <span class="qchip" onclick="setTicker('NVDA')">Nvidia (NVDA)</span>
-          <span class="qchip" onclick="setTicker('TSLA')">Tesla (TSLA)</span>
-          <span class="qchip" onclick="setTicker('AAPL')">Apple (AAPL)</span>
+          <button type="button" class="qchip" onclick="setTicker('TATAMOTORS.NS')">Tata Motors (TATAMOTORS.NS)</button>
+          <button type="button" class="qchip" onclick="setTicker('RELIANCE.NS')">Reliance (RELIANCE.NS)</button>
+          <button type="button" class="qchip" onclick="setTicker('NVDA')">Nvidia (NVDA)</button>
+          <button type="button" class="qchip" onclick="setTicker('TSLA')">Tesla (TSLA)</button>
+          <button type="button" class="qchip" onclick="setTicker('AAPL')">Apple (AAPL)</button>
         </div>
       </div>
 
       <!-- WORKSPACE ROOT CONTAINER (Renders the 8 Hierarchy Levels) -->
       <div id="workspaceRoot"></div>
 
-      <!-- HONEST ANOMALY SIMULATION & HISTORICAL CASE STUDY (Hidden on Live Search) -->
+      <!-- Method guidance only; no fabricated quote, market or filing evidence. -->
       <div id="scoutInitialDemo">
-        <div class="case-study-card ae-reveal">
-          <div style="font-family:var(--font-mono);font-size:0.72rem;font-weight:700;color:var(--rose);letter-spacing:0.08em;margin-bottom:10px;">// REFERENCE CASE STUDY</div>
-          <div style="font-size:1.1rem;font-weight:800;margin-bottom:8px;">Unverified Short-Seller Rumor Scenario</div>
-          <p style="font-size:0.86rem;color:var(--text-muted);line-height:1.6;margin-bottom:16px;">
-            This case study demonstrates how Scout compares trading volume anomalies against statutory filings (SEBI, NSE, SEC) to corroborate or refute market rumors.
-          </p>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;">
-            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-              <div style="color:var(--rose);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">-5.8% Δ</div>
-              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Simulated Sell-off</div>
-            </div>
-            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-              <div style="color:#fbbf24;font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">4.2σ</div>
-              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Dispersion Z-Score</div>
-            </div>
-            <div style="background:rgba(0,0,0,0.3);padding:12px;border-radius:10px;">
-              <div style="color:var(--emerald);font-family:var(--font-mono);font-size:1.2rem;font-weight:800;">0 Filings</div>
-              <div style="color:var(--text-dim);font-size:0.72rem;font-family:var(--font-mono);">Regulatory Portal Cross-Check</div>
-            </div>
+        <section class="agent-guide ae-reveal" aria-label="How Scout evaluates a financial claim" style="--agent-accent:#b79aff;">
+          <div class="agent-guide-heading"><h2>Read the evidence, not the market noise</h2><p>These are review steps, not findings about the prefilled company.</p></div>
+          <div class="agent-guide-grid">
+            <div class="agent-guide-card"><span class="step">01 / IDENTITY</span><h3>Confirm the entity</h3><p>Separate a ticker and company from similarly named entities; check the reported event and its date.</p></div>
+            <div class="agent-guide-card"><span class="step">02 / ORIGINAL SOURCE</span><h3>Inspect filings and statements</h3><p>Follow source links to issuer, exchange, or regulator records. A price move alone does not establish causation.</p></div>
+            <div class="agent-guide-card"><span class="step">03 / VERDICT</span><h3>Show uncertainty</h3><p>Compare independent reporting with the primary record. Missing filings or inaccessible channels must remain explicit gaps.</p></div>
           </div>
-        </div>
+        </section>
 
         <!-- PIPELINE SPECIFICATION TABLE -->
+        <details class="agent-method-details">
+          <summary>Technical method and output contract</summary>
         <div class="ae-reveal">
           <div style="font-family:var(--font-mono);font-size:0.72rem;color:var(--accent);letter-spacing:0.08em;margin-bottom:10px;">// INVESTIGATION PIPELINE SPECIFICATION</div>
           <div style="background:rgba(7,9,14,0.85);border:1px solid rgba(255,255,255,0.07);border-radius:14px;overflow:hidden;">
@@ -379,15 +376,17 @@
             </div>
           </div>
         </div>
+        </details>
       </div>
     </div>
+    </main>
 
     <!-- PROVENANCE "WHY THIS FINDING?" DRAWER -->
-    <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeProvenanceDrawer()"></div>
-    <div class="provenance-drawer" id="provenanceDrawer">
+    <div class="drawer-backdrop" id="drawerBackdrop" aria-hidden="true" onclick="closeProvenanceDrawer()"></div>
+    <div class="provenance-drawer" id="provenanceDrawer" role="dialog" aria-modal="true" aria-labelledby="drawerFindingTitle" aria-hidden="true" inert>
       <div class="drawer-head">
         <h3 id="drawerFindingTitle">// SOURCE PROVENANCE &amp; QUALITY DIMENSIONS</h3>
-        <button class="drawer-close" onclick="closeProvenanceDrawer()">&times;</button>
+        <button type="button" class="drawer-close" aria-label="Close provenance details" onclick="closeProvenanceDrawer()">&times;</button>
       </div>
       <div class="drawer-body" id="drawerBody">
         <!-- Rendered by openProvenanceDrawer -->
@@ -411,6 +410,7 @@
   <script>
     let currentResearchData = null;
     let currentFilter = 'ALL';
+    let drawerReturnFocus = null;
 
     function setTicker(t) {
       document.getElementById('tickerInput').value = t;
@@ -438,7 +438,7 @@
     }
 
     function getEpistemicBadge(state) {
-      const s = (state || 'SUPPORTED').toUpperCase();
+      const s = (state || 'UNVERIFIED').toUpperCase();
       if (s === 'KNOWN_FACT') return `<span class="epistemic-badge ep-known">KNOWN FACT</span>`;
       if (s === 'SUPPORTED') return `<span class="epistemic-badge ep-supported">SUPPORTED</span>`;
       if (s === 'CONTESTED') return `<span class="epistemic-badge ep-contested">CONTESTED</span>`;
@@ -448,11 +448,15 @@
     }
 
     // ── Live Channel Adapters Capability Status ──
-    async function loadLiveDoctorStatus() {
+    let stopScoutHealthObservation = null;
+    function loadLiveDoctorStatus() {
+      if (!stopScoutHealthObservation) stopScoutHealthObservation = AegisOperationHealth.subscribeCapabilities(renderScoutOperationHealth);
+      return AegisOperationHealth.fetchCapabilities({ force: true }).catch(() => {});
+    }
+
+    function renderScoutOperationHealth(data, cacheState) {
       try {
-        const resp = await fetch('/api/agent-reach/capabilities', { signal: AbortSignal.timeout(3000) });
-        if (!resp.ok) return;
-        const data = await resp.json();
+        if (!data) throw new Error('Operation status unavailable');
         const ch = data.channels || {};
         const strip = document.getElementById('agentReachLiveStrip');
         if (!strip) return;
@@ -463,18 +467,23 @@
         const displayKeys = ['web', 'rss', 'reddit', 'twitter', 'youtube', 'bilibili', 'v2ex', 'github'];
         displayKeys.forEach(k => {
           const item = ch[k] || {};
-          const st = item.status || 'UNAVAILABLE';
+          const required = {
+            web: ['search', 'read'], rss: ['search', 'read'], reddit: ['search', 'comments'],
+            twitter: ['search', 'profile', 'status'], youtube: ['search', 'transcript', 'comments'],
+            bilibili: ['search'], v2ex: ['latest', 'topic', 'replies'], github: ['read', 'issues', 'prs']
+          }[k] || [];
+          const summary = AegisOperationHealth.summarizeChannel(item, required, { isStale: cacheState.isStale });
           let cls = 'off';
           let label = k.toUpperCase();
           if (k === 'web') label = 'Web (Jina)';
           if (k === 'rss') label = 'RSS / Wires';
           if (k === 'twitter') label = 'X / Twitter';
 
-          if (st === 'AVAILABLE') cls = 'active';
-          else if (st === 'AUTH_REQUIRED' || st === 'DEGRADED') cls = 'warn';
+          if (summary.state === 'healthy') cls = 'active';
+          else if (['limited', 'degraded', 'auth_required', 'stale'].includes(summary.state)) cls = 'warn';
 
           rendered.push(`
-            <span class="channel-pill ${cls}" title="Backend: ${esc(item.backend || 'none')} · Status: ${st}">
+            <span class="channel-pill ${cls}" title="${esc(summary.label)} · ${esc(summary.details.map(d => `${d.name}: ${d.state}`).join(', '))}">
               <span class="cp-dot"></span>${label}
             </span>
           `);
@@ -483,7 +492,8 @@
         rendered.push(`<span class="channel-pill" style="margin-left:auto;color:var(--text-dim);">Source Adapters &bull; ${data.agent_reach?.version || 'Active'}</span>`);
         strip.innerHTML = rendered.join('');
       } catch (e) {
-        // keep baseline
+        const strip = document.getElementById('agentReachLiveStrip');
+        if (strip) strip.textContent = 'Operation status unavailable';
       }
     }
 
@@ -617,7 +627,7 @@
           <div class="snapshot-grid">
             <div class="snap-card">
               <div class="snap-val" style="color:${deltaColor}">${symPrefix}${price}</div>
-              <div class="snap-lbl">Last Price (${esc(stock.currency || 'USD')})</div>
+              <div class="snap-lbl">Last Price (${esc(stock.currency || 'currency unreported')})</div>
             </div>
             <div class="snap-card">
               <div class="snap-val" style="color:${deltaColor}">${deltaStr}</div>
@@ -632,14 +642,14 @@
               <div class="snap-lbl">${stock.z_score != null && Math.abs(stock.z_score) >= 2 ? `Activity is ${Math.abs(Number(stock.z_score)).toFixed(1)}σ above baseline` : 'Trading Volume Dispersion'}</div>
             </div>
             <div class="snap-card">
-              <div class="snap-val" style="color:${isCrashing ? 'var(--rose)' : 'var(--emerald)'}">
-                ${isCrashing ? 'UNUSUAL DISPERSION' : 'NOMINAL'}
+              <div class="snap-val" style="color:${isCrashing === true ? 'var(--rose)' : 'var(--text-dim)'}">
+                ${isCrashing === true ? 'UNUSUAL DISPERSION' : isCrashing === false ? 'NOT FLAGGED BY MODEL' : 'NOT ASSESSED'}
               </div>
               <div class="snap-lbl">Observed Condition</div>
             </div>
           </div>
           <div class="freshness-note">
-            <strong>Data Source:</strong> ${esc(stock.data_source || 'Daily Close series via Financial REST Provider')}.
+            <strong>Data Source:</strong> ${esc(stock.data_source || 'Not supplied')}.
           </div>
         </div>
 
@@ -682,9 +692,9 @@
             <div class="cat-box pos">
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
                 <span>POSITIVE CATALYSTS (${posCats.length})</span>
-                <span class="epistemic-badge ep-supported">SUPPORTED</span>
+                <span class="epistemic-badge ep-unverified">REPORTED SIGNALS</span>
               </div>
-              ${posCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No positive catalysts detected.</div>' : ''}
+              ${posCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No positive catalysts returned in this analysis.</div>' : ''}
               ${posCats.map((c, i) => `
                 <div class="cat-item">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -698,9 +708,9 @@
             <div class="cat-box neg">
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:12px;display:flex;justify-content:space-between;align-items:center;">
                 <span>NEGATIVE HEADWINDS (${negCats.length})</span>
-                <span class="epistemic-badge ep-contested">CONTESTED</span>
+                <span class="epistemic-badge ep-unverified">REPORTED SIGNALS</span>
               </div>
-              ${negCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No significant headwinds detected.</div>' : ''}
+              ${negCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No headwinds returned in this analysis.</div>' : ''}
               ${negCats.map((c, i) => `
                 <div class="cat-item">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -716,7 +726,7 @@
                 <span>UNRESOLVED FACTORS (${unresCats.length})</span>
                 <span class="epistemic-badge ep-unverified">UNVERIFIED</span>
               </div>
-              ${unresCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No unresolved factors.</div>' : ''}
+              ${unresCats.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No unresolved factors returned.</div>' : ''}
               ${unresCats.map((c, i) => `
                 <div class="cat-item">
                   <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px;">
@@ -739,10 +749,10 @@
         <div class="intel-section ae-reveal">
           <div class="intel-section-title">
             <span>// 04 · CONTRADICTION ANALYSIS &amp; DISINFORMATION RISK</span>
-            <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'NOMINAL')}</span>
+            <span class="intel-count-badge">Risk: ${esc(misinfo.status || 'UNAVAILABLE')}</span>
           </div>
 
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;">
+          <div class="contradiction-grid">
             <div class="cat-box pos">
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--emerald);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
                 Evidence For Bullish / Official Narrative
@@ -755,7 +765,7 @@
               <div style="font-family:var(--font-mono);font-size:0.74rem;color:var(--rose);font-weight:700;margin-bottom:10px;text-transform:uppercase;">
                 Evidence Against / Counter-Claims
               </div>
-              ${cAgainst.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No contradictory claims detected.</div>' : ''}
+              ${cAgainst.length === 0 ? '<div style="font-size:0.8rem;color:var(--text-dim);">No contradictory claims returned in this analysis.</div>' : ''}
               ${cAgainst.map(a => `<div class="cat-item">${esc(a)}</div>`).join('')}
             </div>
           </div>
@@ -763,7 +773,7 @@
           <!-- Misinformation & Rumors Summary -->
           <div style="background:rgba(0,0,0,0.35);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px;">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-family:var(--font-mono);font-size:0.8rem;">
-              <span>Disinformation Vulnerability Status: <strong style="color:${misinfo.status === 'ELEVATED' ? 'var(--rose)' : 'var(--emerald)'}">${esc(misinfo.status || 'NOMINAL')}</strong></span>
+              <span>Disinformation Vulnerability Status: <strong style="color:${misinfo.status === 'ELEVATED' ? 'var(--rose)' : 'var(--text-dim)'}">${esc(misinfo.status || 'UNAVAILABLE')}</strong></span>
               <span>Evidence Quality Score: <strong>${misinfo.evidence_quality_score != null ? Math.round(misinfo.evidence_quality_score * 100) + '%' : '—'}</strong></span>
             </div>
             ${rumors.length > 0 ? `
@@ -771,7 +781,7 @@
               <ul style="margin:4px 0 0 18px;font-size:0.8rem;color:var(--text-muted);">
                 ${rumors.map(r => `<li>${esc(r)}</li>`).join('')}
               </ul>
-            ` : '<div style="font-size:0.8rem;color:var(--text-muted);">Zero coordinated smear campaigns or high-probability rumors observed in retrieved channels.</div>'}
+            ` : '<div style="font-size:0.8rem;color:var(--text-muted);">No rumor findings returned; coverage and absence of coordinated activity are not established.</div>'}
           </div>
         </div>
       `;
@@ -787,7 +797,7 @@
             <span>// 05 · MULTI-CHANNEL SOCIAL &amp; VIDEO SIGNALS</span>
             <span class="intel-count-badge">${reddit.length + twitter.length + youtube.length} Signals</span>
           </div>
-          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(320px, 1fr));gap:16px;">
+          <div class="social-signal-grid">
             <div class="cat-box">
               <div style="font-family:var(--font-mono);font-size:0.75rem;color:#fbbf24;font-weight:700;margin-bottom:12px;text-transform:uppercase;">
                 Reddit Investor Threads (${reddit.length})
@@ -798,7 +808,7 @@
                   <div style="font-weight:600;margin-bottom:4px;">${esc(r.title)}</div>
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
                     <span>${esc(r.author || 'u/community')}</span>
-                    ${r.url ? `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Thread ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                    ${aegisSafeSourceUrl(r.url) ? `<a href="${esc(aegisSafeSourceUrl(r.url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Thread ↗</a>` : `<span class="ae-no-link">No safe link</span>`}
                   </div>
                 </div>
               `).join('')}
@@ -814,7 +824,7 @@
                   <div style="font-weight:600;margin-bottom:4px;">${esc(t.title || t.snippet)}</div>
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
                     <span>${esc(t.author || '@pulse')}</span>
-                    ${t.url ? `<a href="${esc(t.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Post ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                    ${aegisSafeSourceUrl(t.url) ? `<a href="${esc(aegisSafeSourceUrl(t.url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Post ↗</a>` : `<span class="ae-no-link">No safe link</span>`}
                   </div>
                 </div>
               `).join('')}
@@ -830,7 +840,7 @@
                   <div style="font-weight:600;margin-bottom:4px;">${esc(y.title)}</div>
                   <div style="display:flex;justify-content:space-between;align-items:center;font-size:0.74rem;color:var(--text-dim);font-family:var(--font-mono);">
                     <span>${esc(y.author || 'YouTube Channel')}</span>
-                    ${y.url ? `<a href="${esc(y.url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Video ↗</a>` : `<span class="ae-no-link">No link</span>`}
+                    ${aegisSafeSourceUrl(y.url) ? `<a href="${esc(aegisSafeSourceUrl(y.url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn" style="padding:2px 6px;">Open Video ↗</a>` : `<span class="ae-no-link">No safe link</span>`}
                   </div>
                 </div>
               `).join('')}
@@ -919,12 +929,13 @@
       const backdrop = document.getElementById('drawerBackdrop');
       const titleEl = document.getElementById('drawerFindingTitle');
       const bodyEl = document.getElementById('drawerBody');
+      drawerReturnFocus = document.activeElement;
 
       let item = {};
       let itemTitle = 'Finding Inspection';
-      let epistemic = 'SUPPORTED';
-      let snippet = 'Corroborated across independent reporting channels.';
-      let rationale = 'High convergence across wire reporting and official statements with 0 active rebuttals.';
+      let epistemic = 'UNVERIFIED';
+      let snippet = '';
+      let rationale = 'No source-specific corroboration rationale was supplied.';
       let url = '';
 
       if (type === 'news' && currentResearchData?.news) {
@@ -933,36 +944,34 @@
         itemTitle = item.title || 'Breaking Development';
         snippet = item.summary || item.snippet || '';
         url = item.source_url || item.url || '';
-        epistemic = idx === 0 ? 'KNOWN_FACT' : (item.epistemic_state || 'SUPPORTED');
-        rationale = item.rationale || 'Wire reporting corroborated across financial market press.';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
+        rationale = item.rationale || 'No source-specific corroboration rationale was supplied.';
       } else if (type === 'primary' && currentResearchData?.primary_sources) {
         item = currentResearchData.primary_sources[idx] || {};
-        itemTitle = item.title || 'Official Filing';
+        itemTitle = item.title || 'Source record';
         snippet = item.snippet || '';
         url = item.url || '';
-        epistemic = 'KNOWN_FACT';
-        rationale = item.rationale || 'Primary regulatory filing registered with exchange authority; definitive ground truth.';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
+        rationale = item.rationale || 'A primary-source label does not establish that this record confirms the claim.';
       } else if (type === 'source' && currentResearchData?.sources) {
         item = currentResearchData.sources[idx] || {};
         itemTitle = item.title || 'Indexed Evidence Record';
         snippet = item.snippet || '';
         url = item.url || '';
-        epistemic = item.source_role === 'PRIMARY' ? 'KNOWN_FACT' : (item.source_role === 'COMMUNITY' ? 'UNVERIFIED' : 'SUPPORTED');
-        rationale = item.source_role === 'COMMUNITY'
-          ? 'Social media discourse; speculative retail sentiment without authoritative filing.'
-          : (item.source_role === 'PRIMARY' ? 'Official regulatory portal disclosure.' : 'Financial news report.');
+        epistemic = item.epistemic_state || 'UNVERIFIED';
+        rationale = item.rationale || 'The source role alone does not establish claim truth or official status.';
       } else if (type === 'pos') {
         item = currentResearchData?.catalysts?.positive?.[idx] || {};
         itemTitle = item.catalyst || 'Positive Catalyst';
-        epistemic = 'SUPPORTED';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
         snippet = item.catalyst || '';
-        rationale = 'Extracted positive catalyst from confirmed announcements.';
+        rationale = item.rationale || 'Returned catalyst; inspect its cited records before drawing a conclusion.';
       } else if (type === 'neg') {
         item = currentResearchData?.catalysts?.negative?.[idx] || {};
         itemTitle = item.catalyst || 'Negative Headwind';
-        epistemic = 'CONTESTED';
+        epistemic = item.epistemic_state || 'UNVERIFIED';
         snippet = item.catalyst || '';
-        rationale = 'Headwind signal detected in reporting; conflicting commentary observed.';
+        rationale = item.rationale || 'Returned headwind; no contradiction assessment was supplied.';
       } else if (type === 'unres') {
         item = currentResearchData?.catalysts?.unresolved?.[idx] || {};
         itemTitle = item.factor || item.catalyst || 'Unresolved Factor';
@@ -985,7 +994,7 @@
           <div style="font-size:0.83rem;color:var(--text-muted);background:rgba(0,0,0,0.3);padding:12px 14px;border-radius:8px;border-left:3px solid var(--accent);line-height:1.5;">
             "${esc(snippet)}"
           </div>
-          ${url ? `<div style="margin-top:8px;"><a href="${esc(url)}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open Original Source Document ↗</a></div>` : ''}
+          ${aegisSafeSourceUrl(url) ? `<div style="margin-top:8px;"><a href="${esc(aegisSafeSourceUrl(url))}" target="_blank" rel="noopener noreferrer" class="ae-open-btn">Open Source ↗</a></div>` : ''}
         </div>
 
         <div>
@@ -1053,15 +1062,24 @@
         </div>
       `;
 
+      drawer.inert = false;
+      drawer.removeAttribute('aria-hidden');
       drawer.classList.add('open');
       backdrop.classList.add('open');
+      drawer.querySelector('.drawer-close').focus();
     }
 
     function closeProvenanceDrawer() {
       const drawer = document.getElementById('provenanceDrawer');
       const backdrop = document.getElementById('drawerBackdrop');
-      if (drawer) drawer.classList.remove('open');
+      if (drawer) {
+        drawer.classList.remove('open');
+        drawer.inert = true;
+        drawer.setAttribute('aria-hidden', 'true');
+      }
       if (backdrop) backdrop.classList.remove('open');
+      if (drawerReturnFocus && typeof drawerReturnFocus.focus === 'function') drawerReturnFocus.focus();
+      drawerReturnFocus = null;
     }
 
     window.addEventListener('keydown', e => {

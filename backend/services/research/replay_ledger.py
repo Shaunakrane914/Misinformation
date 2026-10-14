@@ -10,6 +10,11 @@ import hashlib
 import json
 import logging
 import os
+import re
+import secrets
+import tempfile
+from copy import deepcopy
+from pathlib import Path
 import time
 import uuid
 from dataclasses import dataclass, field, asdict
@@ -18,6 +23,134 @@ from typing import Any, Dict, List, Optional
 logger = logging.getLogger(__name__)
 
 DOSSIER_STORAGE_DIR = os.path.join(os.path.dirname(__file__), "..", "..", "data", "dossiers")
+DOSSIER_ID = re.compile(r"R-\d{4}-[A-Za-z0-9_-]{1,64}\Z", re.ASCII)
+
+
+def _payload_hash(data: Dict[str, Any]) -> str:
+    payload = {key: value for key, value in data.items() if key != "integrity"}
+    encoded = json.dumps(payload, sort_keys=True, ensure_ascii=False,
+                         separators=(",", ":"), allow_nan=False).encode("utf-8")
+    return hashlib.sha256(encoded).hexdigest()
+
+
+def _validate_dossier_structure(data: Any) -> None:
+    """Validate traversed record shapes before treating a legacy trace as readable.
+
+    Older dossiers may omit modern fields, but provided containers and their
+    entries must have the documented types. Errors name fields, never contents.
+    """
+    if not isinstance(data, dict):
+        raise ValueError("Dossier must be an object")
+
+    def object_value(value: Any, path: str) -> Dict[str, Any]:
+        if not isinstance(value, dict):
+            raise ValueError(f"{path} must be an object")
+        return value
+
+    def object_list(value: Any, path: str) -> List[Dict[str, Any]]:
+        if not isinstance(value, list):
+            raise ValueError(f"{path} must be a list")
+        for index, entry in enumerate(value):
+            object_value(entry, f"{path}[{index}]")
+        return value
+
+    def text_fields(record: Dict[str, Any], path: str, fields: List[str]) -> None:
+        for field_name in fields:
+            value = record.get(field_name)
+            if value is not None and not isinstance(value, str):
+                raise ValueError(f"{path}.{field_name} must be text or null")
+
+    def string_list(value: Any, path: str) -> None:
+        if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
+            raise ValueError(f"{path} must be a list of strings")
+
+    text_fields(data, "dossier", ["session_id", "target", "domain", "created_at", "summary", "status"])
+    queries = object_list(data.get("queries_executed", []), "queries_executed")
+    for index, query in enumerate(queries):
+        text_fields(query, f"queries_executed[{index}]", ["channel", "query_text"])
+    decisions = object_list(data.get("decision_log", []), "decision_log")
+    for index, decision in enumerate(decisions):
+        path = f"decision_log[{index}]"
+        text_fields(decision, path, ["stage", "decision_type", "rationale", "entity_or_query"])
+        if "evidence_ids_affected" in decision:
+            string_list(decision["evidence_ids_affected"], f"{path}.evidence_ids_affected")
+
+    hashes = object_value(data.get("candidate_hashes", {}), "candidate_hashes")
+    for candidate_id, digest in hashes.items():
+        if (not isinstance(candidate_id, str) or not candidate_id
+                or not isinstance(digest, str) or not re.fullmatch(r"(?:[0-9a-fA-F]{16}|[0-9a-fA-F]{64})", digest)):
+            raise ValueError("candidate_hashes must map nonempty string IDs to 16/64-character hexadecimal hashes")
+    snapshots = object_value(data.get("candidate_snapshots", {}), "candidate_snapshots")
+    for candidate_id, snapshot in snapshots.items():
+        if not isinstance(candidate_id, str) or not candidate_id:
+            raise ValueError("candidate_snapshots keys must be nonempty strings")
+        snapshot = object_value(snapshot, "candidate_snapshots entry")
+        if not isinstance(snapshot.get("content"), str):
+            raise ValueError("candidate_snapshots content must be text")
+        if not isinstance(snapshot.get("sha256"), str) or not re.fullmatch(r"[0-9a-f]{64}", snapshot["sha256"]):
+            raise ValueError("candidate_snapshots sha256 must be a hexadecimal SHA-256 digest")
+
+    lineage = object_value(data.get("source_lineage", {}), "source_lineage")
+    nodes = object_list(lineage.get("nodes", []), "source_lineage.nodes")
+    for index, node in enumerate(nodes):
+        text_fields(node, f"source_lineage.nodes[{index}]", ["id", "url"])
+    object_list(lineage.get("edges", []), "source_lineage.edges")
+    object_value(lineage.get("metrics", {}), "source_lineage.metrics")
+
+    findings = object_list(data.get("findings_provenance", []), "findings_provenance")
+    for index, finding in enumerate(findings):
+        path = f"findings_provenance[{index}]"
+        text_fields(finding, path, ["finding_id", "title", "epistemic_state"])
+        for field_name in ("primary_sources", "supporting_evidence_ids", "contradicting_evidence_ids"):
+            if field_name in finding:
+                string_list(finding[field_name], f"{path}.{field_name}")
+        if finding.get("quality_tensor") is not None:
+            object_value(finding["quality_tensor"], f"{path}.quality_tensor")
+
+    saturation = object_value(data.get("saturation_summary", {}), "saturation_summary")
+    if "saturation_curve" in saturation:
+        object_list(saturation["saturation_curve"], "saturation_summary.saturation_curve")
+    object_list(data.get("capability_graph", []), "capability_graph")
+    if data.get("integrity") is not None:
+        object_value(data["integrity"], "integrity")
+
+
+def verify_dossier_integrity(data: Dict[str, Any]) -> Dict[str, Any]:
+    """Verify new snapshots/checksums without pretending legacy traces are sealed.
+
+    Checksums detect drift; they do not authenticate a writer or prove that
+    external statements are true. Historical JSON records are never rewritten.
+    """
+    try:
+        _validate_dossier_structure(data)
+    except ValueError as error:
+        return {"status": "FAILED", "valid": False, "reason": str(error)}
+    manifest = data.get("integrity")
+    if manifest is None:
+        return {"status": "LEGACY_UNSEALED", "valid": False,
+                "reason": "Historical dossier has no verifiable integrity manifest"}
+    try:
+        expected = manifest["payload_sha256"]
+        if (manifest.get("version") != 1 or manifest.get("algorithm") != "sha256"
+                or not isinstance(expected, str) or not re.fullmatch(r"[0-9a-f]{64}", expected)
+                or not secrets.compare_digest(expected, _payload_hash(data))):
+            raise ValueError("Dossier payload checksum mismatch")
+        snapshots = data["candidate_snapshots"]
+        hashes = data["candidate_hashes"]
+        if set(snapshots) != set(hashes):
+            raise ValueError("Candidate snapshot/hash membership mismatch")
+        for candidate_id, snapshot in snapshots.items():
+            digest = hashlib.sha256(snapshot["content"].encode("utf-8")).hexdigest()
+            if not secrets.compare_digest(digest, snapshot["sha256"]):
+                raise ValueError("Candidate content checksum mismatch")
+            legacy_hash = hashes[candidate_id]
+            if not isinstance(legacy_hash, str) or len(legacy_hash) not in (16, 64):
+                raise ValueError("Invalid candidate content hash")
+            if not secrets.compare_digest(digest[:len(legacy_hash)], legacy_hash):
+                raise ValueError("Candidate content/hash mismatch")
+    except (KeyError, TypeError, AttributeError, ValueError, UnicodeError) as error:
+        return {"status": "FAILED", "valid": False, "reason": str(error)}
+    return {"status": "VERIFIED", "valid": True, "reason": "Payload and captured candidate checksums match"}
 
 
 @dataclass(slots=True)
@@ -68,7 +201,7 @@ class ReplayLedger:
     Persistent ledger storing and replaying research dossiers.
 
     Each investigation is assigned a canonical session ID in the format
-    ``R-<YEAR>-<6HEX>`` (e.g. ``R-2026-A3F1C0``).
+    ``R-<YEAR>-<32HEX>``. Existing shorter historical IDs remain readable.
 
     Storage Strategy
     ----------------
@@ -85,15 +218,23 @@ class ReplayLedger:
     """
 
     def __init__(self, storage_dir: Optional[str] = None) -> None:
-        self.storage_dir: str = storage_dir or DOSSIER_STORAGE_DIR
+        self.storage_dir: str = storage_dir or os.getenv("AEGIS_DOSSIER_DIR") or DOSSIER_STORAGE_DIR
         os.makedirs(self.storage_dir, exist_ok=True)
         self._memory_cache: Dict[str, Dict[str, Any]] = {}
 
     def _generate_dossier_id(self, target: str) -> str:
-        """Create canonical content-addressed research dossier ID."""
+        """Create collision-resistant research dossier IDs, retaining the prefix."""
         year = time.strftime("%Y")
-        short_uuid = uuid.uuid4().hex[:6].upper()
-        return f"R-{year}-{short_uuid}"
+        full_uuid = uuid.uuid4().hex.upper()
+        return f"R-{year}-{full_uuid}"
+
+    def _dossier_path(self, session_id: str) -> Optional[Path]:
+        if not isinstance(session_id, str) or not DOSSIER_ID.fullmatch(session_id):
+            return None
+        storage = Path(self.storage_dir).resolve()
+        path = (storage / f"{session_id}.json").resolve()
+        # Also reject existing symlinks targeting files outside the storage root.
+        return path if path.parent == storage else None
 
     def record_investigation(
         self,
@@ -112,11 +253,18 @@ class ReplayLedger:
 
         # 1. Compute candidate content SHA-256 hashes
         candidate_hashes = {}
+        candidate_snapshots = {}
         for c in candidates:
-            c_id = getattr(c, "id", None) or c.get("id", "ev_unknown")
-            text_to_hash = getattr(c, "snippet", "") or getattr(c, "content", "") or str(c)
-            h = hashlib.sha256(text_to_hash.encode("utf-8", errors="ignore")).hexdigest()[:16]
-            candidate_hashes[c_id] = h
+            c_dict = c if isinstance(c, dict) else {}
+            c_id = getattr(c, "id", None) or c_dict.get("id", "ev_unknown")
+            text_to_hash = (getattr(c, "snippet", "") or c_dict.get("snippet")
+                            or getattr(c, "content", "") or c_dict.get("content") or str(c))
+            text_to_hash = str(text_to_hash).encode("utf-8", errors="replace").decode("utf-8")
+            digest = hashlib.sha256(text_to_hash.encode("utf-8")).hexdigest()
+            # Retain legacy hash field for old readers; new manifests verify the
+            # complete SHA-256 against the exact captured text, not a live page.
+            candidate_hashes[c_id] = digest[:16]
+            candidate_snapshots[c_id] = {"content": text_to_hash, "sha256": digest}
 
         # 2. Build decision log from telemetry & lineage
         decision_log = []
@@ -186,31 +334,55 @@ class ReplayLedger:
         )
 
         dossier_data = dossier.to_dict()
-        self._memory_cache[dossier_id] = dossier_data
-
-        # Persist to disk
-        file_path = os.path.join(self.storage_dir, f"{dossier_id}.json")
+        dossier_data["candidate_snapshots"] = candidate_snapshots
+        _validate_dossier_structure(dossier_data)
+        # Publish a complete file atomically without replacing any existing ID.
+        temporary_path = None
         try:
-            with open(file_path, "w", encoding="utf-8") as fp:
-                json.dump(dossier_data, fp, indent=2)
-            logger.info(f"[ReplayLedger] Saved research dossier '{dossier_id}' to {file_path}")
-        except Exception as e:
-            logger.warning(f"[ReplayLedger] Could not persist dossier to disk: {e}")
-
-        return dossier_id
+            for _ in range(8):
+                file_path = self._dossier_path(dossier_id)
+                if file_path is None:
+                    raise ValueError("Invalid generated dossier ID")
+                dossier_data["session_id"] = dossier_id
+                dossier_data["integrity"] = {"version": 1, "algorithm": "sha256",
+                                             "payload_sha256": _payload_hash(dossier_data)}
+                with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=self.storage_dir,
+                                                 prefix=".dossier-", suffix=".tmp", delete=False) as fp:
+                    temporary_path = fp.name
+                    json.dump(dossier_data, fp, indent=2, allow_nan=False)
+                    fp.flush()
+                    os.fsync(fp.fileno())
+                try:
+                    os.link(temporary_path, file_path)
+                except FileExistsError:
+                    os.unlink(temporary_path)
+                    temporary_path = None
+                    dossier_id = self._generate_dossier_id(target)
+                    continue
+                self._memory_cache[dossier_id] = deepcopy(dossier_data)
+                logger.info("[ReplayLedger] Saved research dossier '%s'", dossier_id)
+                return dossier_id
+            raise FileExistsError("Could not allocate an unused dossier ID")
+        finally:
+            if temporary_path is not None:
+                os.unlink(temporary_path)
 
     def get_dossier(self, session_id: str) -> Optional[Dict[str, Any]]:
         """Retrieve a stored dossier by its R-YYYY-XXXX ID."""
+        file_path = self._dossier_path(session_id)
+        if file_path is None:
+            return None
         if session_id in self._memory_cache:
-            return self._memory_cache[session_id]
+            return deepcopy(self._memory_cache[session_id])
 
-        file_path = os.path.join(self.storage_dir, f"{session_id}.json")
         if os.path.exists(file_path):
             try:
                 with open(file_path, "r", encoding="utf-8") as fp:
                     data = json.load(fp)
+                    if not isinstance(data, dict) or data.get("session_id") != session_id:
+                        return None
                     self._memory_cache[session_id] = data
-                    return data
+                    return deepcopy(data)
             except Exception as e:
                 logger.error(f"[ReplayLedger] Failed loading dossier {session_id}: {e}")
 
@@ -260,7 +432,21 @@ class ReplayLedger:
         if norm_mode not in ("trace_playback", "refetch_verification"):
             norm_mode = "trace_playback"
 
+        integrity = verify_dossier_integrity(dossier)
+        if integrity["status"] == "FAILED":
+            return {
+                "status": "failed", "session_id": session_id,
+                "replay_mode": norm_mode, "integrity_status": "FAILED",
+                "integrity_check": integrity, "error": "Dossier integrity or structure validation failed",
+                "deterministic_reproducibility": "UNVERIFIED_TRACE_PLAYBACK",
+                "total_queries_replayed": 0, "queries_replayed": 0,
+                "candidates_integrity_verified": 0, "findings_verified": 0,
+                "sources_checked": 0, "hash_matches": 0,
+                "playback_steps": [], "verification_details": [],
+            }
+
         if norm_mode == "trace_playback":
+            verified = integrity["valid"]
             replay_steps = []
             # Step 1: Query Execution Sequence
             for idx, q in enumerate(dossier.get("queries_executed", [])):
@@ -269,12 +455,12 @@ class ReplayLedger:
                     "type": "QUERY_EXECUTION",
                     "channel": q.get("channel", "web"),
                     "query_text": q.get("query_text", ""),
-                    "verified": True,
+                    "verified": verified,
                 })
 
             # Step 2: Evidence Verification via Hash Check
             candidate_hashes = dossier.get("candidate_hashes", {})
-            verified_candidates = len(candidate_hashes)
+            verified_candidates = len(candidate_hashes) if verified else 0
 
             # Step 3: Decision Ledger Playback
             for d in dossier.get("decision_log", []):
@@ -293,13 +479,14 @@ class ReplayLedger:
                 "domain": dossier.get("domain"),
                 "replayed_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
                 "replay_mode": "trace_playback",
-                "integrity_status": "TRACE_VERIFIED",
-                "deterministic_reproducibility": "SEALED_AUDIT_TRACE_PLAYBACK",
+                "integrity_status": "TRACE_VERIFIED" if verified else integrity["status"],
+                "integrity_check": integrity,
+                "deterministic_reproducibility": "CHECKSUM_VERIFIED_TRACE_PLAYBACK" if verified else "UNVERIFIED_TRACE_PLAYBACK",
                 "total_queries_replayed": len(dossier.get("queries_executed", [])),
                 "candidates_integrity_verified": verified_candidates,
-                "findings_verified": len(dossier.get("findings_provenance", [])),
+                "findings_verified": len(dossier.get("findings_provenance", [])) if verified else 0,
                 "playback_steps": replay_steps,
-                "audit_disclosure": "Replay executes cryptographically sealed trace playback of original retrieval, normalization, and decision checkpoints without re-querying live external endpoints.",
+                "audit_disclosure": "Replay checks captured content and payload checksums when available. Historical unsealed dossiers remain unverified. Checksums do not authenticate writers or establish external truth; no live sources are queried.",
             }
 
         # ── Refetch Verification Mode ──

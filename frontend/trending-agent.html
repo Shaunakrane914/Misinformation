@@ -7,6 +7,8 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="unified-report-renderer.js"></script>
+  <script src="operation-health.js"></script>
+  <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
       position: relative;
@@ -202,6 +204,17 @@
     .exp-tab.active { background: rgba(244, 114, 182, 0.15); color: #f472b6; border-color: rgba(244, 114, 182, 0.35); }
     .evidence-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 16px; }
     @media(max-width: 600px){ .evidence-grid { grid-template-columns: 1fr; } }
+    @media(max-width: 600px){
+      .agent-body { padding: 26px 14px 60px; }
+      .scan-card { padding: 20px 16px; }
+      .scan-input { min-width: 0; width: 100%; }
+      .scan-row > *, .main-grid > *, .panel, .explorer-panel { min-width: 0; max-width: 100%; }
+      .panel, .explorer-panel { padding: 18px 16px; }
+      .panel-header { flex-wrap: wrap; gap: 8px; }
+      .mode-toggle { display: flex; width: 100%; }
+      .mode-btn { flex: 1; min-width: 0; padding: 7px 6px; }
+      .ev-card, .trend-card { min-width: 0; overflow-wrap: anywhere; }
+    }
     .ev-card {
       background: rgba(0,0,0,0.3); border: 1px solid var(--border); border-radius: 12px;
       padding: 16px; display: flex; flex-direction: column; gap: 8px; transition: border-color 0.16s;
@@ -247,6 +260,7 @@
   <script src="aegis-nav.js"></script>
 
   <div class="ae-page">
+    <main id="main-content">
     <!-- HERO -->
     <div class="agent-hero ae-reveal">
       <div class="agent-tag"><span class="dot"></span>Trending Agent &bull; Trend Signals &amp; Public Discourse</div>
@@ -268,12 +282,12 @@
       <!-- SCAN CONFIGURATION -->
       <div class="scan-card ae-reveal">
         <div class="mode-toggle">
-          <button class="mode-btn active" id="btnModeEntity" onclick="setMode('entity')">Entity Investigation</button>
-          <button class="mode-btn" id="btnModeDiscovery" onclick="setMode('discovery')">Discovery Mode</button>
+          <button type="button" class="mode-btn active" id="btnModeEntity" aria-pressed="true" onclick="setMode('entity')">Entity Investigation</button>
+          <button type="button" class="mode-btn" id="btnModeDiscovery" aria-pressed="false" onclick="setMode('discovery')">Discovery Mode</button>
         </div>
         <div class="scan-row">
           <input type="text" id="scanQueryInput" aria-label="Topic or region to scan" class="scan-input" placeholder="Enter entity name (e.g. Deepika Padukone, Jawan, OpenAI, Tesla)..." value="Deepika Padukone">
-          <select id="catSelect" class="cat-select">
+          <select id="catSelect" class="cat-select" aria-label="Trend category">
             <option value="general">All Categories</option>
             <option value="entertainment" selected>Entertainment &amp; Cinema</option>
             <option value="technology">Technology &amp; AI</option>
@@ -287,14 +301,23 @@
 
         <div class="quick-chips-wrap">
           <span class="chip-label">// Quick Start Examples:</span>
-          <span class="quick-chip" onclick="applyQuickStart('Deepika Padukone', 'entity', 'entertainment')">Deepika Padukone</span>
-          <span class="quick-chip" onclick="applyQuickStart('Shah Rukh Khan', 'entity', 'entertainment')">Shah Rukh Khan</span>
-          <span class="quick-chip" onclick="applyQuickStart('Jawan (Film)', 'entity', 'cinema')">Jawan (Film)</span>
-          <span class="quick-chip" onclick="applyQuickStart('OpenAI', 'entity', 'technology')">OpenAI</span>
-          <span class="quick-chip" onclick="applyQuickStart('What\'s trending in India?', 'discovery', 'general')">What's trending in India?</span>
-          <span class="quick-chip" onclick="applyQuickStart('What\'s trending in AI?', 'discovery', 'technology')">What's trending in AI?</span>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('Deepika Padukone', 'entity', 'entertainment')">Deepika Padukone</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('Shah Rukh Khan', 'entity', 'entertainment')">Shah Rukh Khan</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('Jawan (Film)', 'entity', 'entertainment')">Jawan (Film)</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('OpenAI', 'entity', 'technology')">OpenAI</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('What\'s trending in India?', 'discovery', 'general')">What's trending in India?</button>
+          <button type="button" class="quick-chip" onclick="applyQuickStart('What\'s trending in AI?', 'discovery', 'technology')">What's trending in AI?</button>
         </div>
       </div>
+
+      <section class="agent-guide ae-reveal" aria-label="How Trending evaluates a narrative" style="--agent-accent:#f48ac5;">
+        <div class="agent-guide-heading"><h2>Separate attention from truth</h2><p>Panels below stay empty until a real scan returns observations.</p></div>
+        <div class="agent-guide-grid">
+          <div class="agent-guide-card"><span class="step">01 / SAMPLE</span><h3>Scope the signal</h3><p>Source counts describe retrieved samples, not platform-wide reach or virality.</p></div>
+          <div class="agent-guide-card"><span class="step">02 / ORIGIN</span><h3>Trace the repetition</h3><p>Distinguish an earliest sampled source from the actual origin; syndication is not independent confirmation.</p></div>
+          <div class="agent-guide-card"><span class="step">03 / CLAIM</span><h3>Verify the assertion</h3><p>Compare circulating wording with dated original evidence. A trend can remain unverified or disputed.</p></div>
+        </div>
+      </section>
 
       <!-- REAL-TIME PROGRESS BAR MOUNT -->
       <div id="trendingProgressMount"></div>
@@ -302,12 +325,12 @@
       <!-- CHANNEL HEALTH STRIP -->
       <div class="channel-strip ae-reveal" id="channelStrip">
         <span class="channel-label">// Channels:</span>
-        <div class="ch-badge" id="ch_news"><span>News</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_reddit"><span>Reddit</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_twitter"><span>Twitter / X</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_youtube"><span>YouTube</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_web"><span>Web</span><span class="dot-val">Ready</span></div>
-        <div class="ch-badge" id="ch_instagram"><span>Instagram</span><span class="dot-val">Optional</span></div>
+        <div class="ch-badge" id="ch_news"><span>News</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_reddit"><span>Reddit</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_twitter"><span>Twitter / X</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_youtube"><span>YouTube</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_web"><span>Web</span><span class="dot-val">Not tested</span></div>
+        <div class="ch-badge" id="ch_instagram"><span>Instagram</span><span class="dot-val">Auth gated</span></div>
       </div>
 
       <!-- MAIN CONTENT GRID -->
@@ -326,7 +349,7 @@
             <div style="height: 180px; position: relative;">
               <canvas id="velocityChart"></canvas>
               <div id="chartEmptyState" style="display:none;position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;font-size:0.8rem;color:var(--text-dim);padding:20px;font-family:var(--font-mono);">
-                Initial scan snapshot recorded. Run repeat scans over time to plot the multi-interval velocity curve.
+                Run a scan to establish the first observation. Repeat later to plot a multi-interval velocity curve.
               </div>
             </div>
           </div>
@@ -375,7 +398,7 @@
               </div>
             </div>
             <div class="tl-wrap" id="timelineList">
-              <div style="padding:10px 0;color:var(--text-dim);font-size:0.84rem;">Timestamps will be sequenced from verified sources.</div>
+              <div style="padding:10px 0;color:var(--text-dim);font-size:0.84rem;">Dated source records will be sequenced here when supplied.</div>
             </div>
           </div>
 
@@ -416,7 +439,7 @@
 
         <div class="evidence-grid" id="evidenceGrid">
           <div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--text-dim);font-size:0.86rem;">
-            Evidence records with verified clickable source URLs will be displayed here.
+            Retrieved evidence records and safe source links, when supplied, will be displayed here.
           </div>
         </div>
       </div>
@@ -424,11 +447,12 @@
       <!-- UNIFIED INVESTIGATION REPORT (Schema v3.8.0) -->
       <div id="trendingUnifiedReportContainer" style="margin-top:36px;display:none;"></div>
     </div>
+    </main>
 
     <!-- DOSSIER DETAIL MODAL -->
     <div class="dossier-modal" id="dossierModal" onclick="if(event.target===this)closeDossier()">
-      <div class="dossier-content" id="dossierModalBody">
-        <button class="modal-close" onclick="closeDossier()">&times;</button>
+      <div class="dossier-content" id="dossierModalBody" role="dialog" aria-modal="true" aria-label="Trend dossier">
+        <button type="button" class="modal-close" aria-label="Close trend dossier" onclick="closeDossier()">&times;</button>
         <div id="dossierModalInner"></div>
       </div>
     </div>
@@ -454,10 +478,49 @@
     let activeEvidenceFilter = 'all';
     let chartInstance = null;
 
+    let stopTrendingHealthObservation = null;
+    function loadTrendingOperationHealth() {
+      if (!stopTrendingHealthObservation) stopTrendingHealthObservation = AegisOperationHealth.subscribeCapabilities(renderTrendingOperationHealth);
+      return AegisOperationHealth.fetchCapabilities({ force: true }).catch(() => {});
+    }
+
+    function renderTrendingOperationHealth(data, cacheState) {
+      const requirements = {
+        news: ['search'], reddit: ['search', 'comments'],
+        twitter: ['search', 'profile', 'status'], youtube: ['search', 'transcript'],
+        web: ['search', 'read'], instagram: ['search', 'oembed']
+      };
+      try {
+        if (!data) throw new Error('Operation status unavailable');
+        Object.entries(requirements).forEach(([channel, operations]) => {
+          const badge = document.getElementById(`ch_${channel}`);
+          if (!badge) return;
+          const summary = AegisOperationHealth.summarizeChannel(
+            (data.channels || {})[channel] || {}, operations, { isStale: cacheState.isStale }
+          );
+          badge.className = summary.state === 'healthy' ? 'ch-badge ok'
+            : ['limited', 'degraded', 'auth_required', 'stale'].includes(summary.state) ? 'ch-badge warn'
+              : 'ch-badge';
+          badge.querySelector('.dot-val').textContent = summary.label;
+          badge.title = summary.details.map(item => `${item.name}: ${item.state}`).join(', ');
+        });
+      } catch (_error) {
+        Object.keys(requirements).forEach(channel => {
+          const badge = document.getElementById(`ch_${channel}`);
+          if (badge) {
+            badge.className = 'ch-badge';
+            badge.querySelector('.dot-val').textContent = 'Status unavailable';
+          }
+        });
+      }
+    }
+
     function setMode(mode) {
       currentMode = mode;
       document.getElementById('btnModeEntity').className = `mode-btn ${mode === 'entity' ? 'active' : ''}`;
       document.getElementById('btnModeDiscovery').className = `mode-btn ${mode === 'discovery' ? 'active' : ''}`;
+      document.getElementById('btnModeEntity').setAttribute('aria-pressed', String(mode === 'entity'));
+      document.getElementById('btnModeDiscovery').setAttribute('aria-pressed', String(mode === 'discovery'));
       const inp = document.getElementById('scanQueryInput');
       if (mode === 'discovery') {
         inp.placeholder = "Enter discovery question (e.g. What's trending in India?, trending in AI, viral entertainment today)...";
@@ -481,6 +544,11 @@
         .replace(/</g, '&lt;')
         .replace(/>/g, '&gt;')
         .replace(/"/g, '&quot;');
+    }
+
+    function claimStatus(value) {
+      const status = String(value || '').toUpperCase();
+      return ['VERIFIED', 'CONTRADICTED', 'MIXED', 'UNVERIFIED'].includes(status) ? status : 'UNVERIFIED';
     }
 
     function showLoadingState(query) {
@@ -581,28 +649,14 @@
       const tel = data.telemetry || {};
       document.getElementById('telSignals').textContent = tel.signals_retrieved || (data.evidence ? data.evidence.length : 0);
       document.getElementById('telSources').textContent = tel.unique_sources || 0;
-      document.getElementById('telGroups').textContent = tel.independent_groups || 0;
+      document.getElementById('telGroups').textContent = tel.independent_groups == null ? 'Unverified' : `${tel.independent_groups} grouped`;
       document.getElementById('telPlatforms').textContent = tel.platforms_active || (data.platform_breakdown ? Object.keys(data.platform_breakdown).length : 0);
       document.getElementById('telTrends').textContent = tel.discovered_trends || (data.trends ? data.trends.length : 0);
       document.getElementById('telDuration').textContent = `${tel.scan_duration_s || 0.0}s`;
 
       // 2. Update Channel Strip
-      const channels = (data.retrieval && data.retrieval.channels) || {};
-      for (const [ch, info] of Object.entries(channels)) {
-        const badge = document.getElementById(`ch_${ch}`);
-        if (badge) {
-          if (info.status === 'ok') {
-            badge.className = 'ch-badge ok';
-            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">✓ ${info.retrieved_count}</span>`;
-          } else if (info.status === 'unavailable') {
-            badge.className = 'ch-badge warn';
-            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">⚠ offline</span>`;
-          } else {
-            badge.className = 'ch-badge';
-            badge.innerHTML = `<span>${ch.toUpperCase()}</span><span class="dot-val">0</span>`;
-          }
-        }
-      }
+      // Result counts are not provider health. Only the operation presenter paints badges.
+      loadTrendingOperationHealth();
 
       // 3. Render Trend Clusters
       renderTrends(data.trends || []);
@@ -657,7 +711,7 @@
 
       feed.innerHTML = '';
       trends.forEach((t, idx) => {
-        const velStatus = (t.velocity && t.velocity.status) || 'EMERGING';
+        const velStatus = (t.velocity && t.velocity.status) || 'UNMEASURED';
         const velClass = velStatus === 'ACCELERATING' ? 'acc' : 'active';
         const misClass = t.misinformation_risk === 'HIGH' ? 'misinfo-high' : t.misinformation_risk === 'MEDIUM' ? 'misinfo-med' : '';
 
@@ -669,19 +723,19 @@
             <span class="t-tag ${velClass}">Observed Velocity: ${esc(velStatus)}</span>
           </div>
           <div class="trend-badge-row">
-            <span class="t-tag">${esc(t.category.toUpperCase())}</span>
+            <span class="t-tag">${esc((t.category || 'UNCATEGORIZED').toUpperCase())}</span>
             <span class="t-tag">OBSERVED ACTIVITY</span>
-            <span class="t-tag ${misClass}">SIGNAL RISK: ${esc(t.misinformation_risk)}</span>
+            <span class="t-tag ${misClass}">SIGNAL RISK: ${esc(t.misinformation_risk || 'UNASSESSED')}</span>
           </div>
           <div class="trend-metrics-grid">
-            <div class="tm-cell"><span class="tm-val">${t.signal_count}</span><span class="tm-lbl">Observed Signals</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.unique_source_count}</span><span class="tm-lbl">Reporting Outlets</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.independent_source_count}</span><span class="tm-lbl">Independent Groups</span></div>
-            <div class="tm-cell"><span class="tm-val">${t.platform_count}</span><span class="tm-lbl">Platforms</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.signal_count ?? '—')}</span><span class="tm-lbl">Sampled Signals</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.unique_source_count ?? '—')}</span><span class="tm-lbl">Reporting Outlets</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.independent_source_count ?? '—')}</span><span class="tm-lbl">Grouped Sources (unverified)</span></div>
+            <div class="tm-cell"><span class="tm-val">${esc(t.platform_count ?? '—')}</span><span class="tm-lbl">Sampled Platforms</span></div>
           </div>
           <div class="origin-note">
-            First observed on <strong>${esc(t.origin.first_observed_platform.toUpperCase())}</strong> via <em>${esc(t.origin.first_observed_source)}</em>
-            ${t.origin.amplification_platforms && t.origin.amplification_platforms.length > 0 ? ` · Amplified by ${t.origin.amplification_platforms.map(p => esc(p.toUpperCase())).join(', ')}` : ''}
+            Earliest sampled source: <strong>${esc((t.origin?.first_observed_platform || 'unavailable').toUpperCase())}</strong> via <em>${esc(t.origin?.first_observed_source || 'unavailable')}</em>
+            ${t.origin?.amplification_platforms?.length > 0 ? ` · Also observed on ${t.origin.amplification_platforms.map(p => esc(String(p).toUpperCase())).join(', ')}` : ''}
           </div>
           <button class="btn-dossier" onclick="openDossier(${idx})">Examine Topic Evidence ↗</button>
         `;
@@ -707,16 +761,18 @@
       allClaims.forEach(c => {
         const card = document.createElement('div');
         card.className = 'claim-card';
-        const urlLink = c.source_urls && c.source_urls.length > 0 ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Open Source ↗</a>` : '';
-        const claimStatusLabel = c.status === 'VERIFIED' ? 'Corroborated by independent sources' : c.status === 'CONTRADICTED' ? 'Contradicted by evidence' : 'Mixed / Unconfirmed';
+        const sourceUrl = aegisSafeSourceUrl((c.source_urls || [])[0]);
+        const urlLink = sourceUrl ? `<a href="${esc(sourceUrl)}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Open Source ↗</a>` : '';
+        const status = claimStatus(c.status);
+        const claimStatusLabel = status === 'VERIFIED' ? 'Marked verified; inspect cited evidence' : status === 'CONTRADICTED' ? 'Marked contradicted; inspect evidence' : 'Mixed / Unconfirmed';
         card.innerHTML = `
           <div class="claim-top">
-            <span class="c-status ${c.status}">${claimStatusLabel}</span>
+            <span class="c-status ${status}">${claimStatusLabel}</span>
             ${urlLink}
           </div>
           <div class="claim-text">"${esc(c.claim_text)}"</div>
           <div class="claim-meta">
-            <span>Evidence: ${c.supporting_sources || 0} supporting &bull; ${c.contradicting_sources || 0} contradicting</span>
+            <span>Evidence: ${esc(c.supporting_sources ?? 'unreported')} supporting &bull; ${esc(c.contradicting_sources ?? 'unreported')} contradicting</span>
           </div>
         `;
         container.appendChild(card);
@@ -734,11 +790,12 @@
       timeline.forEach(ev => {
         const item = document.createElement('div');
         item.className = 'tl-item';
-        const cleanTime = ev.timestamp ? ev.timestamp.replace('T', ' ').substring(0, 19) : 'Observed signal';
-        const link = ev.url && ev.url !== 'Source URL unavailable' ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;text-decoration:none;margin-left:6px;">↗</a>` : '';
+        const cleanTime = ev.timestamp ? String(ev.timestamp).replace('T', ' ').substring(0, 19) : 'Time unavailable';
+        const safeUrl = aegisSafeSourceUrl(ev.url);
+        const link = safeUrl ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;text-decoration:none;margin-left:6px;">↗</a>` : '';
         item.innerHTML = `
           <div class="tl-dot"></div>
-          <div class="tl-time">${esc(cleanTime)} · ${esc(ev.platform.toUpperCase())}</div>
+          <div class="tl-time">${esc(cleanTime)} · ${esc(String(ev.platform || 'unknown').toUpperCase())}</div>
           <div class="tl-event">${esc(ev.event)} ${link}</div>
           <div class="tl-src">${esc(ev.source)}</div>
         `;
@@ -752,7 +809,7 @@
 
       const filtered = activeEvidenceFilter === 'all' 
         ? evidence 
-        : evidence.filter(e => e.platform.toLowerCase() === activeEvidenceFilter.toLowerCase());
+        : evidence.filter(e => String(e.platform || '').toLowerCase() === activeEvidenceFilter.toLowerCase());
 
       if (!filtered.length) {
         grid.innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-dim);font-size:0.85rem;">No evidence records for filter "${activeEvidenceFilter.toUpperCase()}".</div>`;
@@ -763,14 +820,14 @@
       filtered.forEach(ev => {
         const card = document.createElement('div');
         card.className = 'ev-card';
-        const hasUrl = ev.url && ev.url !== 'Source URL unavailable' && ev.url.startsWith('http');
-        const urlHtml = hasUrl 
-          ? `<a href="${ev.url}" target="_blank" rel="noopener noreferrer" class="open-src-btn">OPEN SOURCE ↗</a>`
+        const safeUrl = aegisSafeSourceUrl(ev.url);
+        const urlHtml = safeUrl
+          ? `<a href="${esc(safeUrl)}" target="_blank" rel="noopener noreferrer" class="open-src-btn">OPEN SOURCE ↗</a>`
           : `<span class="open-src-disabled">Source URL unavailable</span>`;
 
         card.innerHTML = `
           <div class="ev-head">
-            <span class="ev-platform">${esc(ev.platform.toUpperCase())} · ${esc(ev.source)}</span>
+            <span class="ev-platform">${esc(String(ev.platform || 'unknown').toUpperCase())} · ${esc(ev.source)}</span>
             <span class="ev-role">${esc(ev.source_role)}</span>
           </div>
           <div class="ev-title">${esc(ev.title)}</div>
@@ -810,7 +867,7 @@
 
       ctx.style.display = 'block';
       if (emptyState) emptyState.style.display = 'none';
-      document.getElementById('chartStatusBadge').textContent = `${history.length} Verified Intervals`;
+      document.getElementById('chartStatusBadge').textContent = `${history.length} Recorded Intervals`;
 
       const labels = history.map((h, i) => `Scan ${i + 1}`);
       const data = history.map(h => h.signal_count || 0);
@@ -843,6 +900,8 @@
       });
     }
 
+    let dossierReturnFocus = null;
+
     function openDossier(idx) {
       if (!currentScanData || !currentScanData.trends || !currentScanData.trends[idx]) return;
       const t = currentScanData.trends[idx];
@@ -858,8 +917,8 @@
       let claimsHtml = (t.claims || []).map(c => `
         <div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;">
           <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
-            <span class="c-status ${c.status}">${c.status}</span>
-            ${c.source_urls && c.source_urls.length ? `<a href="${c.source_urls[0]}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Source Link ↗</a>` : ''}
+            <span class="c-status ${claimStatus(c.status)}">${claimStatus(c.status)}</span>
+            ${aegisSafeSourceUrl((c.source_urls || [])[0]) ? `<a href="${esc(aegisSafeSourceUrl(c.source_urls[0]))}" target="_blank" rel="noopener noreferrer" style="color:#f472b6;font-family:var(--font-mono);font-size:0.72rem;text-decoration:none;">Source Link ↗</a>` : ''}
           </div>
           <div style="font-size:0.84rem;color:#fff;">"${esc(c.claim_text)}"</div>
         </div>
@@ -881,12 +940,20 @@
         <div>${claimsHtml}</div>
       `;
 
+      dossierReturnFocus = document.activeElement;
       document.getElementById('dossierModal').style.display = 'flex';
+      document.querySelector('#dossierModal .modal-close').focus();
     }
 
     function closeDossier() {
       document.getElementById('dossierModal').style.display = 'none';
+      if (dossierReturnFocus && typeof dossierReturnFocus.focus === 'function') dossierReturnFocus.focus();
+      dossierReturnFocus = null;
     }
+
+    window.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && document.getElementById('dossierModal').style.display === 'flex') closeDossier();
+    });
 
     function renderFailureState(query) {
       document.getElementById('telSignals').textContent = '0';
@@ -911,6 +978,7 @@
     window.addEventListener('DOMContentLoaded', () => {
       // Initialize with empty state note
       updateVelocityChart([]);
+      loadTrendingOperationHealth();
       const urlParams = new URLSearchParams(window.location.search);
       const q = urlParams.get('q') || urlParams.get('topic');
       if (q) {

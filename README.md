@@ -9,16 +9,25 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![Tests](https://img.shields.io/badge/Tests-180%20Passed-success?style=for-the-badge&logo=pytest&logoColor=white)](docs/TESTING.md)
+[![CI](https://img.shields.io/badge/CI-Phase%208%20branch%20passing-success?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/Shaunakrane914/Misinformation/actions/runs/38420523255)
 [![Evaluation](https://img.shields.io/badge/Evaluation-Audited%20ML%20Baseline-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
+[![Status](https://img.shields.io/badge/Status-Phase%208%20in%20progress-orange?style=for-the-badge)](docs/CURRENT_STATE.md)
 
-**Aegis Protocol is an evidence-first claim verification system and research framework. It combines cross-platform evidence retrieval, learned candidate reranking, source-independence clustering, contradiction analysis, and multi-perspective LLM reasoning with abstention-aware classification.**
+**Aegis Protocol is an evidence-first claim verification system and research framework. It combines cross-platform evidence retrieval across 16 operations, claim-aware source planning, learned candidate reranking, source-independence clustering, contradiction analysis, and multi-perspective LLM reasoning with abstention-aware classification.**
 
-[System Architecture](docs/ARCHITECTURE.md) · [Feature Status & Truth Matrix](docs/FEATURE_STATUS.md) · [Scientific Evaluation](docs/EVALUATION.md) · [Testing Suite](docs/TESTING.md) · [Security Model](docs/SECURITY.md) · [Operations](docs/OPERATIONS.md)
+[📚 Documentation Portal](docs/index.md) · [Current State](docs/CURRENT_STATE.md) · [🤖 Coding Agents Guide](AGENTS.md) · [🗺️ Workspace Map](docs/development/WORKSPACE_MAP.md) · [📜 Script Index](docs/development/SCRIPT_INDEX.md) · [🏛️ Target Architecture](docs/architecture/TARGET_ARCHITECTURE.md) · [Testing Suite](docs/testing/CI_COVERAGE_MATRIX.md)
 
 </div>
 
 ---
+
+The current Phase 8 branch has bounded live proof for 16 protected acquisition
+operations and passing offline CI, but maximum extraction, research-quality
+evaluation, complete frontend acceptance and deployed rollback are not finished.
+The 1,051-test local result and five-job hosted run are dated checkpoints, not
+live-provider uptime or production-launch approval. See the
+[current-state matrix](docs/CURRENT_STATE.md) before using the historical
+benchmarks and capability descriptions below.
 
 ## 🔬 System Capabilities & Status Matrix
 
@@ -26,16 +35,16 @@ To maintain strict scientific integrity, Aegis Protocol explicitly separates **w
 
 | Subsystem / Component | Technical Implementation | Operational Status | Benchmark / Verification |
 | :--- | :--- | :--- | :--- |
-| 🛡️ **Claim Ingestion Engine** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication, dual-column extraction | **Production / Implemented** | Tested (`pytest`), 100% deterministic |
-| 🌐 **Agent Reach Layer** | 14-channel capability registry, domain retrieval planner, wire syndication clustering, SSRF defense | **Production / Implemented** | Tested (`pytest`), RFC 3986 URL parsing |
-| ⚡ **Learned Evidence Reranker** | 7-feature linear ranking model (pairwise cross-entropy fit on train pairs, evaluated on held-out test queries) | **Production / Tested** | **MRR: 0.20 → 1.00 (+0.80)**, 0.26ms p50 |
-| 📊 **Classical Supervised Baseline** | Deduplicated TF-IDF (10k unigram+bigram) + L2 Logistic Regression on held-out test split | **Production / Implemented** | **88.50% Accuracy, 0.8850 F1** ($N=2,948$) |
-| ⚖️ **Investigator Agent** | Structured forensic case dossiers, 6-verdict taxonomy, evidence limitations disclosure | **Production / Implemented** | Tested (`pytest`), schema validated |
-| 🔬 **Research Agent** | Multi-source investigation, primary source escalation, corroboration scoring | **Production / Implemented** | Tested (`pytest`), passage extraction |
-| 🔍 **Scout Agent (Financial)** | Yahoo Finance real-time price feeds, volume z-scores, event-clustered news correlation | **Production / Implemented** | Tested (`pytest`), ticker validation |
-| 📈 **Trending Agent (Viral Claims)** | Multi-channel RSS discovery, velocity estimation, narrative summary dossiers | **Production / Implemented** | Tested (`pytest`), sentiment baseline |
-| 🛡️ **BrandShield Agent** | Brand threat cards, suspicious listing audit, coordinated astroturfing heuristic | **Production / Implemented** | Tested (`pytest`), 4-question threat cards |
-| 👤 **Personal Watch Agent** | Executive & public figure monitoring across news and web channels with severity triage | **Production / Implemented** | Tested (`pytest`), diff classification |
+| 🛡️ **Claim Ingestion Engine** | Unicode NFC normalization, whitespace collapsing, SHA-256 deduplication | **Implemented / offline-tested** | Deterministic contracts; not verdict-accuracy proof |
+| 🌐 **Agent Reach Layer** | 16 protected routes, auxiliary channels, bounded acquisition, source planning and SSRF defense | **Implemented / sampled live proof** | [8A/8B status](docs/CURRENT_STATE.md); source availability and field depth vary |
+| ⚡ **Learned Evidence Reranker** | 7-feature linear ranking model | **Offline benchmarked** | Historical held-out MRR 0.20 → 1.00; not a live-verdict score |
+| 📊 **Classical Supervised Baseline** | Deduplicated TF-IDF + L2 Logistic Regression | **Offline benchmarked** | Historical WELFake 88.50% accuracy; not Aegis end-to-end accuracy |
+| ⚖️ **Investigator Agent** | Claim verdict synthesis and evidence limitations | **Integrated / partially evaluated** | Abstains when inspectable evidence is insufficient; adversarial quality gate open |
+| 🔬 **Research Agent** | Source planning, reading, qualification and synthesis | **Integrated / partially evaluated** | Source depth, coverage and entailment vary by investigation |
+| 🔍 **Scout Agent (Financial)** | Financial signal and source research | **Implemented / offline-tested** | Prices and disclosures require actual live source availability |
+| 📈 **Trending Agent (Viral Claims)** | Topic discovery and sampled narrative signals | **Implemented / offline-tested** | Source counts do not prove platform-wide reach or independent origins |
+| 🛡️ **BrandShield Agent** | Brand-threat observation and review screening | **Implemented / offline-tested** | Empty results do not prove absence of threats or coordination |
+| 👤 **Personal Watch Agent** | Public identity and impersonation research | **Implemented / offline-tested** | User-entered handles are unverified candidates; privacy limits apply |
 | 🇮🇳 **India Multilingual Track** | Curated gold benchmark across English, Hindi, Marathi, and Hinglish across 5 civic domains (14 claims) | **Research / Prototype** | Gold institutional annotations (Curated Prototype) |
 | ⚡ **Hawkes Process Blast Radius** | Point-process self-excitation simulation ($\lambda(t) = \mu + \sum \alpha e^{-\beta(t-t_i)}$), $R_0$ velocity | **Simulated / Demonstration** | Algorithmic model demo |
 | 📐 **Zipf-Mandelbrot Detector** | Token-rank power-law fit ($P(r) = P_0(r+\beta)^{-\gamma}$) evaluating $R^2$, Shannon entropy, TTR | **Simulated / Experimental** | Statistical distribution analysis |
@@ -86,7 +95,7 @@ User / External Ingestion
 │  ┌──────▼─────────────────▼─────────────────▼────────────────▼──────┐  │
 │  │                      Agent & Capability Layer                    │  │
 │  │  • ClaimIngestionAgent: Unicode NFC + SHA-256 deduplication      │  │
-│  │  • Agent Reach Layer: 14-channel capability router + SSRF guard  │  │
+│  │  • Agent Reach Layer: protected routes + SSRF guard           │  │
 │  │  • Learned Evidence Reranker: 7-dim TF-IDF feature ranker        │  │
 │  │  • Source Independence Engine: Wire syndication clustering       │  │
 │  │  • Contradiction Detector: Polarity & conflict matrix            │  │
@@ -146,25 +155,25 @@ Open [http://localhost:8000](http://localhost:8000) for the UI and [http://local
 
 ---
 
-## 🧪 Scientific Benchmark CLI
+## 🧪 Benchmarks & Release Validation CLI
 
-Run reproducible, leak-free evaluations directly from the command line:
+Run reproducible evaluations and release validation directly from the command line:
 
 ```bash
-# 1. Run all offline ML benchmarks (WELFake Classical ML + Learned Reranker)
+# 1. Run the full offline regression suite (current count varies)
+pytest tests/ -q
+
+# 2. Run isolated release-candidate smoke validation (all 4 agents)
+python scripts/validate_release_candidate_smoke.py
+
+# 3. Validate database and dossier rollback compatibility
+python scripts/validate_rollback_compatibility.py
+
+# 4. Run all offline ML benchmarks (WELFake Classical ML + Learned Reranker)
 python scripts/evaluate_dataset.py --mode all_offline --seed 42
 
-# 2. Run only the Supervised Classical ML Baseline
-python scripts/evaluate_dataset.py --mode classical_ml --seed 42
-
-# 3. Run only the Learned Evidence Reranker Evaluation
-python scripts/evaluate_dataset.py --mode reranker --seed 42
-
-# 4. Check AVeriTeC Benchmark Adapter Status
-python scripts/evaluate_dataset.py --mode averitec_status
-
-# 5. Execute full test suite (180 tests)
-pytest tests/unit/ tests/evaluation/ -v
+# 5. Run Cranfield retrieval quality benchmark on frozen fixtures
+python scripts/benchmarks/run_retrieval_benchmark.py
 ```
 
 ---
@@ -176,8 +185,8 @@ pytest tests/unit/ tests/evaluation/ -v
 | `/` | **Landing Page** | System overview, capability matrix, and architecture entry points |
 | `/dashboard` | **Live Claims Feed** | Verified claims feed with evidence badges, confidence, and source provenance |
 | `/submit` | **Claim Submission** | Ingestion portal with live normalization, status polling, and dossier generation |
-| `/investigator-agent` | **Investigator** | Forensic evidence dossiers, timeline reconstructor, contradiction matrix, and verdict synthesis |
-| `/research-agent` | **Research** | Deep research workspace, extracted passage citations, source quality scores, and reading list |
+| `/investigator-agent` | **Investigator entry** | Opens the claim-verification workspace; no standalone browser-side dossier generator |
+| `/research-agent` | **Research entry** | Opens the claim-verification workspace; no standalone open-ended query API |
 | `/scout-agent` | **Scout (Financial)** | Market anomaly monitor, ticker volatility correlation, and event-clustered news signals |
 | `/trending-agent` | **Trending (Viral)** | Multi-channel trend discovery, velocity estimation, and narrative defense statements |
 | `/brandshield-agent` | **BrandShield** | Brand reputation defense, 4-question threat cards, and astroturfing review audit |

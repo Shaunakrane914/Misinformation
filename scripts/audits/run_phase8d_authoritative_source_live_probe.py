@@ -3,7 +3,7 @@ Aegis Protocol — Phase 8D Authoritative Source Live Probe
 =========================================================
 Executes independent, real-network live requests to verify the 4 new authoritative
 source integrations:
-  1. SEC EDGAR (data.sec.gov Submissions & Company Facts)
+  1. SEC EDGAR (data.sec.gov submission metadata only)
   2. NIST NVD (services.nvd.nist.gov CVE 2.0 API)
   3. arXiv Preprints (export.arxiv.org Atom API)
   4. Google FactCheck (factchecktools.googleapis.com ClaimReview API)
@@ -19,6 +19,9 @@ import logging
 import os
 import sys
 import time
+import argparse
+import subprocess
+import uuid
 from pathlib import Path
 from typing import Any, Dict
 
@@ -193,7 +196,7 @@ def run_live_probe() -> Dict[str, Any]:
             "error": fc_res.get("error"),
             "extracted_fields": ["claim_text", "claimant", "publisher", "rating", "review_url", "review_date"],
             "sample_fragment": None,
-            "honest_disclosure": "Google FactCheck Tools API requires GOOGLE_FACTCHECK_API_KEY; returned HTTP 403 without key.",
+            "honest_disclosure": "Requires GOOGLE_FACTCHECK_API_KEY; missing credentials abstain without a network request.",
         }
     except Exception as exc:
         results["probes"]["google_factcheck"] = {
@@ -206,11 +209,18 @@ def run_live_probe() -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--output-root", type=Path)
+    args = parser.parse_args()
+    out_dir = args.output_root or REPO_ROOT / "artifacts" / "phase8_independent_sources" / (time.strftime("%Y-%m-%d_%H-%M-%SZ", time.gmtime()) + "_" + uuid.uuid4().hex[:8])
+    out_dir.mkdir(parents=True, exist_ok=False)
     res = run_live_probe()
-    out_dir = os.path.join("artifacts", "phase8_live_probes")
-    os.makedirs(out_dir, exist_ok=True)
-    out_file = os.path.join(out_dir, "2026-10-14_authoritative_sources_live.json")
-    with open(out_file, "w", encoding="utf-8") as f:
+    res["commit"] = subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=REPO_ROOT, text=True).strip()
+    res["dirty_source"] = bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=REPO_ROOT, text=True).strip())
+    from scripts.audits.run_realworld_investigation_audit import sanitize_audit_data
+    res = sanitize_audit_data(res)
+    out_file = out_dir / "summary.json"
+    with open(out_file, "x", encoding="utf-8") as f:
         json.dump(res, f, indent=2)
     print("\n" + json.dumps(res, indent=2))
     print(f"\nWritten real machine-readable probe evidence to {out_file}")

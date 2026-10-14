@@ -127,14 +127,9 @@ function pct(val) {
 function normalizeVerdictKey(raw) {
   if (!raw || typeof raw !== 'string') return null;
   const s = raw.trim().toUpperCase();
-  if (s.includes('SUPPORTED') || s === 'TRUE' || s === 'VERIFIED') return 'SUPPORTED';
-  if (s.includes('REFUTED') || s === 'FALSE') return 'REFUTED';
-  if (s.includes('MISLEADING')) return 'MISLEADING';
-  if (s.includes('OUTDATED')) return 'OUTDATED';
-  if (s.includes('MIXED')) return 'MIXED';
-  if (s.includes('INSUFFICIENT')) return 'INSUFFICIENT_EVIDENCE';
-  if (s.includes('UNVERIFIED') || s.includes('UNCONFIRMED') || s.includes('PENDING')) return 'UNVERIFIED';
-  return null;
+  const aliases = { TRUE: 'SUPPORTED', VERIFIED: 'SUPPORTED', FALSE: 'REFUTED',
+    'INSUFFICIENT EVIDENCE': 'INSUFFICIENT_EVIDENCE', UNCONFIRMED: 'UNVERIFIED', PENDING: 'UNVERIFIED' };
+  return Object.hasOwn(VERDICT_CONFIG, s) ? s : aliases[s] || null;
 }
 
 /** Render a section heading <h2> with standardized class and mobile disclosure button. */
@@ -313,7 +308,7 @@ function renderEvidenceCard(item) {
     authBadge = `<span class="ur-badge ur-badge--factcheck">ClaimReview · Fact Check</span>`;
   }
   const relBadge = (typeof source.reliability === 'number' && Number.isFinite(source.reliability))
-    ? `<span class="ur-badge ur-badge--rel">Authority: ${pct(source.reliability)}</span>`
+    ? `<span class="ur-badge ur-badge--rel">Heuristic source score: ${pct(source.reliability)}</span>`
     : '';
 
   const titleEl = url

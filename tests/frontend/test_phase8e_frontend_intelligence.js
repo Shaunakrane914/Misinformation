@@ -39,6 +39,12 @@ for (const v of verdicts) {
 console.log('✓ All 7 non-binary verdict states verified');
 
 console.log('--- TEST 2: Claim Decomposition Multi-Premise Sub-claims ---');
+for (const unknown of ['UNSUPPORTED', 'NOT_SUPPORTED', 'NOT_REFUTED']) {
+  const mount = createTestMount();
+  renderUnifiedReport(mount, { verdict: { verdict: unknown } });
+  assert(!mount.innerHTML.includes('ur-verdict--supported'), unknown);
+  assert(!mount.innerHTML.includes('ur-verdict--refuted'), unknown);
+}
 {
   const mount = createTestMount();
   renderUnifiedReport(mount, {
@@ -143,8 +149,8 @@ console.log('--- TEST 4: Authoritative Source Badges (SEC EDGAR, NIST, arXiv, Cl
   assert(mount.innerHTML.includes('NIST NVD · Security'));
   assert(mount.innerHTML.includes('arXiv · Preprint'));
   assert(mount.innerHTML.includes('ClaimReview · Fact Check'));
-  assert(mount.innerHTML.includes('Authority: 99%'));
-  assert(mount.innerHTML.includes('Authority: 88%'));
+  assert(mount.innerHTML.includes('Heuristic source score: 99%'));
+  assert(mount.innerHTML.includes('Heuristic source score: 88%'));
 }
 console.log('✓ Authoritative source badges verified');
 

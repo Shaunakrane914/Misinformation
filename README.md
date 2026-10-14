@@ -9,7 +9,7 @@
 [![Gemini](https://img.shields.io/badge/Gemini_2.5_Flash-AI-8b5cf6?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev)
 [![Supabase](https://img.shields.io/badge/Supabase-Database-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
 [![License](https://img.shields.io/badge/License-MIT-f59e0b?style=for-the-badge)](LICENSE)
-[![CI](https://img.shields.io/badge/CI-Phase%208%20branch%20passing-success?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/Shaunakrane914/Misinformation/actions/runs/38420523255)
+[![CI](https://img.shields.io/badge/CI-Independent%20review%20verified-success?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/Shaunakrane914/Misinformation/actions/runs/38514681102)
 [![Evaluation](https://img.shields.io/badge/Evaluation-Audited%20ML%20Baseline-blueviolet?style=for-the-badge)](docs/EVALUATION.md)
 [![Status](https://img.shields.io/badge/Status-Phase%208%20in%20progress-orange?style=for-the-badge)](docs/CURRENT_STATE.md)
 

@@ -75,3 +75,5 @@ Node: run every `tests/frontend/test_*.js` separately (seven currently). Browser
 6. Infrastructure owner: distributed admission, p95/concurrency/memory tests, bounded completion of provider work beyond research deadline, and staging rollback. No merge/deploy authorized.
 
 Hosted verification of the final pushed head is recorded in the separate [CI closeout](2026-10-14_PHASE8_INDEPENDENT_CI_CLOSEOUT.md); do not assume baseline CI verifies these changes.
+
+Committed and pushed checkpoint `c27ffc72cda48e28d102056f0fee8b248f95a879` passed all five hosted jobs in [run 38514681102](https://github.com/Shaunakrane914/Misinformation/actions/runs/38514681102). This documentation-only record is a successor; check exact current-head CI rather than assuming a new implementation inherits the recorded PASS. All protected historical paths remain unchanged; no merge/deploy.

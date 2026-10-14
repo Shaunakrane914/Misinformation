@@ -155,8 +155,8 @@ def heuristic_threat_synthesis(
         claims.append({
             "claim_id": "clm_01",
             "text": f"Public discourse regarding {subject_name} activity and public statements.",
-            "status": "supported",
-            "confidence": 0.80,
+            "status": "unverified",
+            "confidence": 0.0,
             "evidence_ids": [evidence_list[0]["evidence_id"]]
         })
 
@@ -323,17 +323,14 @@ Return a STRICT JSON object:
         threats = parsed.get("threats", [])
         for t in threats:
             t["evidence_ids"] = [eid for eid in t.get("evidence_ids", []) if eid in valid_ev_ids]
-            if not t["evidence_ids"] and evidence_list:
-                t["evidence_ids"] = [evidence_list[0]["evidence_id"]]
 
         claims = parsed.get("claims", [])
         for c in claims:
             c["evidence_ids"] = [eid for eid in c.get("evidence_ids", []) if eid in valid_ev_ids]
-            if not c["evidence_ids"] and evidence_list:
-                c["evidence_ids"] = [evidence_list[0]["evidence_id"]]
 
-        parsed["threats"] = threats
-        parsed["claims"] = claims
+        # A valid ID is necessary, not proof of entailment. Never manufacture a citation.
+        parsed["threats"] = [t for t in threats if t["evidence_ids"]]
+        parsed["claims"] = [c for c in claims if c["evidence_ids"]]
         provenance = parsed.get("_aegis_provenance", {})
         parsed["ai_enrichment_active"] = not provenance.get("synthetic", False)
         parsed["ai_enrichment"] = (
@@ -403,13 +400,13 @@ def verify_identity_match(
         }
 
     if score >= 0.75:
-        status = "CONFIRMED_MATCH"
+        status = "CONTEXTUAL_MATCH_UNVERIFIED"
         rationale = f"Candidate confirmed as subject '{canonical_name}' with matching affiliation ({', '.join(org_matches) or 'title/handle'})."
     elif score >= 0.50 and (known_orgs or known_titles):
         status = "AMBIGUOUS_NAMESAKE"
         rationale = f"Candidate mentions '{canonical_name}' but lacks confirming corporate affiliation or title context."
     else:
-        status = "CONFIRMED_MATCH"
+        status = "CONTEXTUAL_MATCH_UNVERIFIED"
         rationale = f"Candidate matches '{canonical_name}'."
 
     return {
@@ -418,6 +415,8 @@ def verify_identity_match(
         "canonical_name": canonical_name,
         "matched_affiliations": org_matches,
         "matched_titles": title_matches,
+        "identity_authenticated": False,
+        "assessment_is_heuristic": True,
         "rationale": rationale
     }
 
@@ -467,15 +466,17 @@ def detect_doxxing_exposure(
         severity = "CRITICAL"
 
     return {
-        "status": "DOXXING_DETECTED" if findings else "NO_PII_EXPOSED",
+        "status": "PII_PATTERN_REQUIRES_REVIEW" if findings else "NO_PII_PATTERN_IN_SAMPLE",
+        "unauthorized_exposure_verified": False,
+        "assessment_is_heuristic": True,
         "subject_name": subject_name,
         "exposure_severity": severity,
         "pii_findings_count": len(findings),
         "findings": findings,
         "defensive_recommendation": (
-            "Initiate immediate emergency PII removal requests and law enforcement alert."
+            "Urgently verify subject linkage, privacy context and authorization before escalating or requesting removal."
             if severity == "CRITICAL"
-            else ("Submit web privacy removal request to hosting provider." if severity == "HIGH" else "No action required.")
+            else ("Review subject linkage and public/private context before requesting removal." if severity == "HIGH" else "No PII pattern was established in this sample.")
         )
     }
 
@@ -512,23 +513,23 @@ def assess_synthetic_media_allegations(
             synthetic_claims += 1
         if any(w in text for w in debunk_keywords):
             debunk_claims += 1
-        if any(w in text for w in media_indicators):
+        if re.search(r'https?://[^\s]+\.(?:mp4|mp3|wav|webm)(?:[?\s]|$)|https?://(?:www\.)?(?:youtube\.com/watch\?|youtu\.be/|vimeo\.com/\d)', text):
             media_count += 1
         if ev.get("source_role") in ("PRIMARY", "PRIMARY_OFFICIAL"):
             primary_authentic += 1
 
     if debunk_claims >= 1:
-        epistemic = "DEBUNKED_DEEPFAKE_HOAX"
-        conf = 0.92
-        expl = "Circulating allegations of synthetic manipulation have been definitively debunked by primary records or official fact-checks."
+        epistemic = "REPORTED_DEBUNKING_UNVERIFIED"
+        conf = 0.35
+        expl = "The sample contains debunking language. This text-only screen does not establish which recording was examined or verify its authenticity."
     elif synthetic_claims >= 2 and debunk_claims == 0:
         epistemic = "SUSPICIOUS_UNVERIFIED_SYNTHETIC_CLAIM"
         conf = 0.70
         expl = "Multiple sources report viral synthetic media circulating without formal forensic verification or primary corroboration."
     elif synthetic_claims == 0 and primary_authentic >= 1 and media_count >= 1:
-        epistemic = "AUTHENTIC_VERIFIED_RECORDING"
-        conf = 0.90
-        expl = "Sample media items corroborated by primary broadcast channels with no indicators of AI manipulation."
+        epistemic = "UNVERIFIED_MEDIA_AUTHENTICITY"
+        conf = 0.0
+        expl = "A media URL was referenced by a primary-labeled record. No recording bytes or forensic analysis were performed; authenticity remains unverified."
     elif media_count == 0 and synthetic_claims == 0:
         epistemic = "UNVERIFIED_IN_SAMPLE"
         conf = 0.0
@@ -544,7 +545,8 @@ def assess_synthetic_media_allegations(
         "confidence": conf,
         "synthetic_mentions": synthetic_claims,
         "debunk_mentions": debunk_claims,
-        "media_assets_analyzed": media_count,
+        "media_assets_analyzed": 0,
+        "media_assets_referenced": media_count,
         "summary": expl
     }
 
@@ -592,13 +594,13 @@ def verify_quote_attribution(
             social_only_matches.append(ev)
 
     if debunk_matches:
-        verdict = "FABRICATED_OR_MISATTRIBUTED_QUOTE"
-        conf = 0.94
-        summary = f"Quote attributed to {subject_name} is explicitly disproven by reporting noting the statement was fabricated or never uttered."
+        verdict = "REPORTED_MISATTRIBUTION_UNVERIFIED"
+        conf = 0.35
+        summary = "The sample contains overlapping words and debunking language; speaker, exact quote and transcript attribution require review."
     elif primary_matches:
-        verdict = "VERIFIED_PRIMARY_ATTRIBUTION"
-        conf = 0.92
-        summary = f"Quote verified by official speech transcript or primary press release."
+        verdict = "UNVERIFIED_PRIMARY_TEXT_MATCH"
+        conf = 0.35
+        summary = "Primary-labeled text overlaps the quote; word overlap does not verify speaker attribution, context or an original recording."
     elif social_only_matches and not primary_matches:
         verdict = "UNVERIFIED_VIRAL_ATTRIBUTION"
         conf = 0.35
@@ -615,6 +617,7 @@ def verify_quote_attribution(
         "confidence": conf,
         "primary_matches_count": len(primary_matches),
         "debunk_matches_count": len(debunk_matches),
+        "assessment_is_heuristic": True,
         "summary": summary
     }
 

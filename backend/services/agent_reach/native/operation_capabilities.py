@@ -89,11 +89,12 @@ OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
     ("nist_cve", "read"): {"DIRECT_CONTENT"},
     ("arxiv", "search"): {"DIRECT_ABSTRACT", "DIRECT_METADATA"},
     ("arxiv", "read"): {"DIRECT_ABSTRACT"},
-    ("fact_check", "search"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
+    ("fact_check", "search"): {"DIRECT_METADATA"},
 }
 
 
 CHANNEL_AUTH_ENVIRONMENT: Dict[str, str] = {
+    "fact_check": "GOOGLE_FACTCHECK_API_KEY",
     "linkedin": "LINKEDIN_COOKIE",
     "xueqiu": "XUEQIU_COOKIE",
     "xiaohongshu": "XIAOHONGSHU_COOKIE",
@@ -116,7 +117,6 @@ PUBLIC_UNAUTHENTICATED_OPERATIONS: Set[Tuple[str, str]] = {
     ("nist_cve", "read"),
     ("arxiv", "search"),
     ("arxiv", "read"),
-    ("fact_check", "search"),
 }
 
 

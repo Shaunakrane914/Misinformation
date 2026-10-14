@@ -122,10 +122,12 @@ def screen_review_patterns(evidence_list: List[Dict[str, Any]]) -> Dict[str, Any
                 f"Match between {c1['evidence_id']} and {c2['evidence_id']} ({int(p[2]*100)}% overlap): \"{c1['text'][:65]}...\""
             )
         return {
-            "status": "SUSPICIOUS_PATTERNS_DETECTED",
-            "review_manipulation_detected": True,
+            "status": "REPETITION_REQUIRES_REVIEW",
+            "review_manipulation_detected": False,
+            "repetition_observed": True,
+            "assessment_is_heuristic": True,
             "assessment": f"Review-pattern screening completed. {signals_analyzed} review signals analyzed; {near_duplicate_clusters} near-duplicate text pairs identified.",
-            "confidence": 0.85,
+            "confidence": 0.35,
             "signals_analyzed": signals_analyzed,
             "near_duplicate_clusters": near_duplicate_clusters,
             "signals_found": signals_found,
@@ -381,11 +383,13 @@ def heuristic_threat_synthesis(
         r"\b(?:sec|ftc|doj)\s+(?:investigation|probe|lawsuit|inquiry|subpoena|enforcement|fine)\b",
         r"\bclass action\b", r"\bcourt\s+order\b", r"\bfined\s+by\s+regulator\b"
     ]
-    complaint_kw = ["delay", "complaint", "broken", "worst", "bad service", "refund", "poor", "issue"]
+    # Navigation labels such as billing/refunds/issues are not customer grievances.
+    complaint_kw = ["customer complaint", "delivery delayed", "broken", "worst", "bad service", "poor service", "never received", "my refund"]
 
     for idx, ev in enumerate(evidence_list):
         is_util, _ = is_utility_or_auth_url(ev.get("url", ""))
-        is_official = any(corp in (ev.get("url", "")).lower() for corp in ("microsoft.com", "apple.com", "tesla.com", "nvidia.com", "tatamotors.com", "nike.com"))
+        from backend.services.research.source_quality import canonical_hostname, hostname_matches
+        is_official = any(hostname_matches(canonical_hostname(ev.get("url", "")), corp) for corp in ("microsoft.com", "apple.com", "tesla.com", "nvidia.com", "tatamotors.com", "nike.com"))
 
         full_text = f"{ev['title']} {ev.get('snippet', '')} {ev.get('content', '')}".lower()
 
@@ -468,7 +472,7 @@ def heuristic_threat_synthesis(
         elif any(re.search(pat, full_text) for pat in legal_patterns):
             is_reg_authority = (
                 ev.get("source_tier") == "TIER_1_OFFICIAL_FILING" or
-                any(reg in (ev.get("url", "")).lower() for reg in ("sec.gov", "ftc.gov", "justice.gov", "cpsc.gov", "docket"))
+                any(hostname_matches(canonical_hostname(ev.get("url", "")), reg) for reg in ("sec.gov", "ftc.gov", "justice.gov", "cpsc.gov"))
             )
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
@@ -477,13 +481,13 @@ def heuristic_threat_synthesis(
                 "summary": f"Legal proceedings or regulatory inquiries reported by {ev['platform']}.",
                 "severity": "medium",
                 "confidence": 0.90 if is_reg_authority else 0.70,
-                "status": "confirmed" if is_reg_authority else "unverified",
+                "status": "unverified",
                 "platforms": [ev["platform"]],
                 "evidence_ids": [ev["evidence_id"]],
                 "origin_evidence_id": ev["evidence_id"]
             })
 
-        elif any(k in full_text for k in complaint_kw):
+        elif not is_official and any(k in full_text for k in complaint_kw):
             # Classify legitimate customer complaints distinctly from malicious attacks
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
@@ -491,8 +495,8 @@ def heuristic_threat_synthesis(
                 "title": f"Consumer service grievance: {ev['title'][:55]}",
                 "summary": f"User complaint regarding service or product performance on {ev['platform']}.",
                 "severity": "low",
-                "confidence": 0.88,
-                "status": "confirmed",
+                "confidence": 0.35,
+                "status": "unverified",
                 "platforms": [ev["platform"]],
                 "evidence_ids": [ev["evidence_id"]],
                 "origin_evidence_id": ev["evidence_id"]
@@ -569,7 +573,7 @@ def detect_executive_impersonation(
         bio = prof.get("bio", prof.get("description", "")).lower()
         verified = prof.get("verified", False)
         platform = prof.get("platform", "Social")
-        profile_url = prof.get("url", f"https://{platform.lower()}.com/{handle}")
+        profile_url = prof.get("url", "")
 
         clean_handle = re.sub(r'[^a-z0-9]', '', handle.lower())
 
@@ -589,7 +593,7 @@ def detect_executive_impersonation(
 
             if has_solicitation:
                 risk_level = "CRITICAL_FRAUDULENT_IMPERSONATION"
-                classification = "CONFIRMED_IMPERSONATION"
+                classification = "SUSPECTED_IMPERSONATION_REQUIRES_REVIEW"
                 indicators.append("Unverified lookalike profile soliciting funds, DMs, or cryptocurrency.")
             elif has_lookalike_affix:
                 risk_level = "HIGH_SUSPICIOUS_LOOKALIKE"
@@ -602,8 +606,8 @@ def detect_executive_impersonation(
 
         elif verified and is_exec_name_claimed:
             risk_level = "NOMINAL"
-            classification = "OFFICIAL_VERIFIED"
-            indicators.append("Platform verification badge present; consistent with authentic persona.")
+            classification = "BADGE_REPORTED_IDENTITY_UNVERIFIED"
+            indicators.append("Input reports a badge; a badge alone does not authenticate executive identity.")
 
         if risk_level != "NOMINAL":
             if max_risk in ("NOMINAL", "MEDIUM_UNVERIFIED_MATCH") and risk_level.startswith("HIGH"):
@@ -623,7 +627,7 @@ def detect_executive_impersonation(
                 "profile_url": profile_url,
                 "indicators": indicators,
                 "recommended_action": (
-                    "Submit immediate expedited impersonation takedown notice to platform Trust & Safety."
+                    "Verify account ownership and solicitation context before requesting platform review."
                     if risk_level.startswith("CRITICAL")
                     else "Monitor handle and issue public brand verification advisory."
                 )
@@ -634,6 +638,7 @@ def detect_executive_impersonation(
         "brand": brand_name,
         "executive": executive_name,
         "profiles_analyzed": len(candidate_profiles),
+        "assessment_is_heuristic": True,
         "impersonation_threats": threats,
         "max_risk_level": max_risk,
         "summary": f"Analyzed {len(candidate_profiles)} profiles for {executive_name}. Detected {len(threats)} potential impersonation threats."
@@ -699,20 +704,19 @@ def classify_smear_vs_organic_criticism(
     is_smear = duplicate_pairs >= 2 or (duplicate_pairs >= 1 and not has_specific_product_feedback)
 
     if is_smear:
-        classification = "COORDINATED_SMEAR_CAMPAIGN"
-        confidence = 0.88
-        smear_flag = True
-        reason = (
-            f"Detected coordinated phrasing across {duplicate_pairs} review pairs with tightly clustered temporal distribution. "
-            "Characteristics indicate orchestrated copy-paste campaign rather than independent customer experiences."
-        )
-    elif has_specific_product_feedback:
-        classification = "ORGANIC_CONSUMER_CRITICISM"
-        confidence = 0.92
+        classification = "REPETITION_REQUIRES_REVIEW"
+        confidence = 0.35
         smear_flag = False
         reason = (
-            "Reviews exhibit natural lexical variance and contain specific personal transaction/product experience details. "
-            "Properly classified as organic consumer feedback, NOT malicious misinformation."
+            f"Observed similar wording across {duplicate_pairs} pairs; temporal burst={burst_detected}. "
+            "Repetition can come from quotations, syndication or shared experiences and does not establish malicious coordination."
+        )
+    elif has_specific_product_feedback:
+        classification = "PRODUCT_FEEDBACK_IN_SAMPLE"
+        confidence = 0.35
+        smear_flag = False
+        reason = (
+            "Records contain product or transaction language. Author authenticity, independence and motive are unverified."
         )
     else:
         classification = "MIXED_DISCOURSE"

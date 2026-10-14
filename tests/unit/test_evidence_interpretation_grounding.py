@@ -20,7 +20,7 @@ from backend.services.research.relevance_gate import relevance_gate
 from backend.agents.brandshield.assessment import screen_review_patterns, heuristic_threat_synthesis
 from backend.agents.trending.agent import TrendingAgent
 from backend.agents.personal_watch.assessment import assess_synthetic_media_allegations
-from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import SEC_USER_AGENT, normalize_sec_items
+from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import SEC_USER_AGENT_ENV, normalize_sec_items
 from backend.infrastructure.acquisition.adapters.authoritative.arxiv_preprints import normalize_arxiv_items
 from backend.services.agent_reach.native.operation_capabilities import OPERATION_DEPTHS
 
@@ -168,8 +168,7 @@ def test_authoritative_adapter_content_depths_and_sec_header():
     assert ContentDepth.DIRECT_ABSTRACT.value in OPERATION_DEPTHS[("arxiv", "read")]
 
     # Test SEC User-Agent format: AegisProtocol MisinfoResearch compliance@aegisprotocol.org
-    assert SEC_USER_AGENT.startswith("AegisProtocol")
-    assert "@" in SEC_USER_AGENT
+    assert SEC_USER_AGENT_ENV == "SEC_USER_AGENT"
 
     # Test SEC normalization sets DIRECT_METADATA
     sec_item = {

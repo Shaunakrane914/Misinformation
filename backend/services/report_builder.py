@@ -41,6 +41,15 @@ from backend.schemas.unified_report import (
 
 logger = logging.getLogger(__name__)
 
+
+def _record_list(value):
+    """Normalize grouped agent records without treating mapping keys as evidence."""
+    if isinstance(value, list):
+        return value
+    if isinstance(value, dict):
+        return [entry for entries in value.values() if isinstance(entries, list) for entry in entries]
+    return []
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CLAIM VERIFIER
 # ─────────────────────────────────────────────────────────────────────────────
@@ -339,6 +348,10 @@ class ReportBuilder:
         catalysts = scout_data.get("catalysts") or scout_data.get("catalyst_summary") or []
         if isinstance(catalysts, str):
             catalysts = [catalysts]
+        elif isinstance(catalysts, dict):
+            # Scout's production contract groups factors by polarity.
+            catalysts = [f"{polarity}: {entry.get('factor', '')}" for polarity, entries in catalysts.items()
+                         if isinstance(entries, list) for entry in entries if isinstance(entry, dict) and entry.get("factor")]
         for cat in catalysts[:6]:
             findings.append(str(cat).strip())
 
@@ -347,17 +360,26 @@ class ReportBuilder:
         filings = scout_data.get("primary_filings") or scout_data.get("filings") or []
         for f in filings:
             evidence.primary.append(_dict_to_evidence_item(f) if isinstance(f, dict) else UnifiedEvidenceItem.from_evidence_item(f))
-        news = scout_data.get("news_articles") or scout_data.get("news") or []
+        news = _record_list(scout_data.get("news_articles") or scout_data.get("news"))
         for n in news:
             evidence.independent.append(_dict_to_evidence_item(n) if isinstance(n, dict) else UnifiedEvidenceItem.from_evidence_item(n))
-        social = scout_data.get("social_posts") or scout_data.get("social") or []
+        social = _record_list(scout_data.get("social_posts") or scout_data.get("social"))
         for s in social:
             evidence.community.append(_dict_to_evidence_item(s) if isinstance(s, dict) else UnifiedEvidenceItem.from_evidence_item(s))
+        # Do not discard the canonical source list when specialized legacy buckets are absent.
+        if not (filings or news or social):
+            for source in scout_data.get("sources", []):
+                if isinstance(source, dict):
+                    item = _dict_to_evidence_item(source)
+                    if source.get("is_primary") or source.get("primary_source"):
+                        evidence.primary.append(item)
+                    else:
+                        evidence.independent.append(item)
 
         # ── Disagreements, changes, timeline ─────────────────────────────────
         disagreements = []
         structured_contradictions: List[Dict[str, Any]] = []
-        for d in (scout_data.get("contradictions") or scout_data.get("disputes") or [])[:4]:
+        for d in _record_list(scout_data.get("contradictions") or scout_data.get("disputes"))[:4]:
             if isinstance(d, dict):
                 disagreements.append(d.get("explanation") or d.get("description") or str(d))
                 structured_contradictions.append(d)
@@ -519,6 +541,8 @@ class ReportBuilder:
             or personal_data.get("summary")
             or personal_data.get("identity_summary")
         )
+        if isinstance(raw_summary, dict):
+            raw_summary = personal_data.get("status_note") or "Sampled evidence requires contextual review; telemetry is shown separately."
         summary = str(raw_summary).strip() if raw_summary else None
 
         findings: List[str] = []

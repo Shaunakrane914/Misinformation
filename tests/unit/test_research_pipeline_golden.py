@@ -26,6 +26,7 @@ from backend.services.research.research_models import ResearchRequest
 
 
 MANIFEST = Path(__file__).with_name("fixtures") / "research_phase4_golden.json"
+REVIEWED_MANIFEST = Path(__file__).with_name("fixtures") / "research_phase8_independent_golden.json"
 STAMP = "2026-10-10T00:00:00+00:00"
 
 
@@ -239,17 +240,24 @@ def capture_scenario(name, include_payload=False):
 
 
 @pytest.mark.parametrize("name", sorted(SCENARIOS))
-def test_research_result_and_replay_match_pre_refactor(name):
-    expected = json.loads(MANIFEST.read_text(encoding="utf-8"))[name]
+def test_research_result_and_replay_match_reviewed_policy(name):
+    historical = json.loads(MANIFEST.read_text(encoding="utf-8"))[name]
+    expected = json.loads(REVIEWED_MANIFEST.read_text(encoding="utf-8"))["scenarios"][name]
     if name == "discovery_timeout":
         # Explicit correctness exception: the historical implementation read
         # documents AFTER its deadline. Keep that baseline, but require no reads.
         payload = capture_scenario(name, include_payload=True)
         assert payload["corpus"]["deep_read_sources"] == []
         assert payload["result"]["telemetry"]["deep_read_attempted"] == 0
-        assert payload["dossier"]["candidate_hashes"] == expected["candidate_hashes"]
+        assert payload["dossier"]["candidate_hashes"] == historical["candidate_hashes"]
         return
-    assert capture_scenario(name) == expected
+    actual = capture_scenario(name)
+    # The historical manifest stays intact. Source-authority classification,
+    # publisher grouping and FactCheck eligibility deliberately change ranks,
+    # source-plan disclosure and serialized hashes, never acquired bytes/IDs.
+    for invariant in ("candidate_hashes", "candidate_ids", "rejected_ids"):
+        assert actual[invariant] == historical[invariant]
+    assert actual == expected
 
 
 if __name__ == "__main__":

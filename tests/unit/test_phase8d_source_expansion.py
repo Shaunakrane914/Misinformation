@@ -273,7 +273,7 @@ def test_fact_check_fetch_and_normalize():
     def mock_fetcher(url, **kwargs):
         return _make_http_response(json.dumps(mock_payload).encode("utf-8"), endpoint=url)
 
-    res = fetch_fact_check_claims("shut down operations next Monday", limit=2, http_fetcher=mock_fetcher)
+    res = fetch_fact_check_claims("shut down operations next Monday", limit=2, api_key="fixture-key", http_fetcher=mock_fetcher)
     assert res["status"] == "SUCCESS"
     assert len(res["items"]) == 1
     item = res["items"][0]
@@ -297,9 +297,9 @@ def test_authoritative_capability_matrix_registered():
         assert plat in AUTHORITATIVE_CAPABILITY_MATRIX
         cap = get_capability(plat)
         assert cap.platform == plat
-        assert cap.tier == 0
+        assert cap.tier == (1 if plat == "fact_check" else 0)
         assert cap.cloud_safe is True
-        assert cap.auth_mode == "none"
+        assert cap.auth_mode == ("api_key" if plat == "fact_check" else "none")
 
     for plat in ("sec_edgar", "nist_cve", "arxiv", "fact_check"):
         assert plat in EXECUTABLE_CAPABILITIES
@@ -335,6 +335,7 @@ def test_runtime_capabilities_assess_authoritative_sources():
 # ── 6. Router and StandardChannelHandlers Dispatch ───────────────────────────
 
 def test_router_executes_authoritative_sec_edgar(monkeypatch):
+    monkeypatch.setenv("SEC_USER_AGENT", "AegisOfflineFixture test@example.invalid")
     router = NativeRouter()
     mock_payload = {
         "cik": "0001045810",
@@ -443,7 +444,8 @@ def test_source_planning_engine_plans_arxiv_for_preprint_claim():
     assert actions[0].authoritative is True
 
 
-def test_source_planning_engine_plans_fact_check_when_allowed():
+def test_source_planning_engine_plans_fact_check_when_allowed(monkeypatch):
+    monkeypatch.setenv("GOOGLE_FACTCHECK_API_KEY", "fixture-key")
     planner = SourcePlanningEngine()
     plan = planner.plan(
         claim="Viral claim that drinking bleach cures all known viral infections",

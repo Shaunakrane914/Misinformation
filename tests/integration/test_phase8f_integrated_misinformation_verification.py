@@ -66,12 +66,15 @@ class TestPhase8FIntegratedVerification:
         filing_facts = {
             "filing_url": "https://sec.gov/Archives/edgar/data/320193/001.htm",
             "period": "Q3 2026",
+            "unit": "USD",
             "revenue": 500_000_000,
             "net_income": 45_000_000,
         }
         circulating_claims = [
             {
                 "metric": "revenue",
+                "period": "Q3 2026",
+                "unit": "USD",
                 "claimed_value": 100_000_000,
                 "raw_text": "$100M revenue (claims 80% loss)",
                 "url": "https://social.example/post/1",
@@ -169,7 +172,7 @@ class TestPhase8FIntegratedVerification:
         velocity_intel = track_narrative_acceleration(snapshots)
 
         assert bot_intel["coordination_score"] > 0
-        assert bot_intel["amplification_risk"] in ("HIGH_COORDINATED_AMPLIFICATION", "ELEVATED_SUSPICIOUS_ACTIVITY")
+        assert bot_intel["amplification_risk"] in ("HIGH_PATTERN_SIMILARITY", "ELEVATED_SUSPICIOUS_ACTIVITY")
         assert velocity_intel["current_velocity"] > 0.0
         assert velocity_intel["explosive_breakout_alert"] is True
 
@@ -298,9 +301,9 @@ class TestPhase8FIntegratedVerification:
             quote=quoted,
             evidence_list=evidence,
         )
-        assert attribution["verdict"] == "FABRICATED_OR_MISATTRIBUTED_QUOTE"
-        assert attribution["confidence"] >= 0.90
-        assert "Director Smith" in attribution["summary"]
+        assert attribution["verdict"] == "REPORTED_MISATTRIBUTION_UNVERIFIED"
+        assert attribution["confidence"] == 0.35
+        assert attribution["assessment_is_heuristic"]
 
     # ── Scenario 7: Outdated Information Recirculated ────────────────────────
     def test_scenario_7_outdated_information_recirculated(self):

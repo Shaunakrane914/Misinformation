@@ -89,12 +89,13 @@ def test_cross_origin_redirect_strips_authorization(monkeypatch):
         "backend.infrastructure.acquisition.network.http.is_safe_url", lambda _url: (True, "")
     )
     request = urllib.request.Request(
-        "https://api.example.com/start", headers={"Authorization": "Bearer secret"}
+        "https://api.example.com/start", headers={"Authorization": "Bearer secret", "X-Goog-Api-Key": "private-key"}
     )
     redirected = handler.redirect_request(
         request, None, 302, "Found", {}, "https://cdn.example.net/result"
     )
     assert redirected.get_header("Authorization") is None
+    assert redirected.get_header("X-goog-api-key") is None
 
 
 def test_oversized_response_is_rejected(monkeypatch):

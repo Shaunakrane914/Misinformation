@@ -22,6 +22,7 @@ from backend.services.research.research_models import (
     SourceRole,
     SourceTier,
 )
+from backend.services.research.proposition_grounding import context_compatible, evaluate_grounded_claim
 
 logger = logging.getLogger(__name__)
 
@@ -69,6 +70,9 @@ def extract_numeric_facts(text: str) -> List[Dict[str, Any]]:
             val = float(num_str)
         except ValueError:
             continue
+        # Bare years and ambiguous untyped values are not financial measurements.
+        if not unit:
+            continue
 
         multiplier = 1.0
         if unit in ("billion", "b"):
@@ -87,6 +91,7 @@ def extract_numeric_facts(text: str) -> List[Dict[str, Any]]:
         start = max(0, match.start() - 40)
         end = min(len(text), match.end() + 40)
         context = text[start:end].strip()
+        metrics = re.findall(r"\b(revenue|profit|earnings|cost|price|employees|valuation|deal|acquisition|buyout)\b", context.lower())
 
         facts.append({
             "raw_text": match.group(0).strip(),
@@ -94,6 +99,7 @@ def extract_numeric_facts(text: str) -> List[Dict[str, Any]]:
             "unit": unit,
             "normalized_value": normalized_val,
             "context": context,
+            "metric": metrics[-1] if metrics else "",
         })
     return facts
 
@@ -119,7 +125,7 @@ class ClaimIntelligenceEngine:
     """
 
     def __init__(self):
-        logger.info("[ClaimIntelligenceEngine] Initialized with 5-dimension contradiction detection and calibrated verdicts")
+        logger.info("[ClaimIntelligenceEngine] Initialized with conservative lexical alignment and uncalibrated heuristic verdicts")
 
     def decompose_claims(self, text: str) -> List[AtomicClaim]:
         """
@@ -135,8 +141,9 @@ class ClaimIntelligenceEngine:
         lines = [line.strip().lstrip('-*• ') for line in raw_clean.split('\n') if line.strip()]
         
         candidates: List[str] = []
-        for line in lines:
-            parts = [p.strip() for p in re.split(r'(?<=[.?!])\s+|\s+(?:and also|additionally|furthermore|claiming that)\s+', line) if len(p.strip()) > 8]
+        preserve_scope = bool(re.search(r'\b(?:if|unless|he|she|they|it|would|could)\b|["“”]|\b(?:Dr|Mr|Ms)\.', raw, re.I))
+        for line in ([raw] if preserve_scope else lines):
+            parts = [line] if preserve_scope else [p.strip() for p in re.split(r'(?<=[.?!])\s+|\s+(?:and also|additionally|furthermore)\s+', line) if p.strip()]
             if parts:
                 candidates.extend(parts)
             elif len(line) > 8:
@@ -202,8 +209,8 @@ class ClaimIntelligenceEngine:
                 claim_type=claim_type,
                 verifiable_dimensions=dims,
                 verdict=ClaimVerdict.UNVERIFIED.value,
-                confidence=0.50,
-                rationale="Ingested and decomposed into atomic claim."
+                confidence=0.0,
+                rationale="Heuristic segmentation preserves ambiguous attribution/conditional scope; evidence assessment pending."
             ))
 
         return claims
@@ -223,12 +230,11 @@ class ClaimIntelligenceEngine:
         5. CREDIBILITY_ASYMMETRY: High-tier official/regulatory document refutes low-tier social rumor.
         """
         contradictions: List[Dict[str, Any]] = []
-        if len(items) < 2:
-            return contradictions
-
         # Reset contradiction flags
         for item in items:
             item.contradiction_flag = False
+        if len(items) < 2:
+            return contradictions
 
         # --- Axis 1 & 5: Factual Contradiction and Credibility Asymmetry ---
         denial_items: List[EvidenceItem] = []
@@ -249,7 +255,7 @@ class ClaimIntelligenceEngine:
                 a_text = f"{a_item.title} {a_item.snippet} {a_item.relevant_excerpt}"
                 shared = subject_terms(a_text, target_name) & d_terms
 
-                if len(shared) >= 2:
+                if len(shared) >= 2 and context_compatible(a_text, d_text, numeric=False):
                     d_item.contradiction_flag = True
                     a_item.contradiction_flag = True
                     c_id = f"cont_fac_{len(contradictions) + 1:03d}"
@@ -298,7 +304,8 @@ class ClaimIntelligenceEngine:
                 if len(shared_subj) >= 2:
                     has_temporal1 = any(p.search(t1) for p in TEMPORAL_SHIFT_PATTERNS)
                     has_temporal2 = any(p.search(t2) for p in TEMPORAL_SHIFT_PATTERNS)
-                    if has_temporal1 or has_temporal2:
+                    explicit_transition = any(re.search(r"\b(?:returns? as|resumed|no longer|superseded|since reversed|corrected)\b", text) for text in (t1, t2))
+                    if (has_temporal1 or has_temporal2) and explicit_transition and it1.published_at and it2.published_at and it1.published_at != it2.published_at:
                         newer = it2 if (it2.published_at or "") > (it1.published_at or "") else it1
                         older = it1 if newer is it2 else it2
                         c_id = f"cont_tmp_{len(contradictions) + 1:03d}"
@@ -326,12 +333,12 @@ class ClaimIntelligenceEngine:
                 
                 if facts1 and facts2:
                     shared_subj = subject_terms(f"{it1.title} {it1.snippet}", target_name) & subject_terms(f"{it2.title} {it2.snippet}", target_name)
-                    if len(shared_subj) >= 2:
+                    if len(shared_subj) >= 2 and context_compatible(f"{it1.title} {it1.snippet}", f"{it2.title} {it2.snippet}"):
                         for f1 in facts1:
                             for f2 in facts2:
                                 v1 = f1["normalized_value"]
                                 v2 = f2["normalized_value"]
-                                if v1 > 0 and v2 > 0 and f1["unit"] == f2["unit"]:
+                                if v1 > 0 and v2 > 0 and f1["unit"] == f2["unit"] and f1["metric"] and f1["metric"] == f2["metric"]:
                                     ratio = max(v1, v2) / min(v1, v2)
                                     if ratio > 1.25:  # > 25% discrepancy
                                         c_id = f"cont_num_{len(contradictions) + 1:03d}"
@@ -363,7 +370,8 @@ class ClaimIntelligenceEngine:
                     # Look for opposing location scopes (e.g., Europe vs US, or State A vs State B)
                     locs1 = set(re.findall(r'\b(?:ohio|florida|texas|california|china|europe|us|uk|india)\b', t1))
                     locs2 = set(re.findall(r'\b(?:ohio|florida|texas|california|china|europe|us|uk|india)\b', t2))
-                    if locs1 and locs2 and not (locs1 & locs2):
+                    same_event = it1.metadata.get("proposition_id") and it1.metadata.get("proposition_id") == it2.metadata.get("proposition_id")
+                    if same_event and locs1 and locs2 and not (locs1 & locs2):
                         c_id = f"cont_scp_{len(contradictions) + 1:03d}"
                         it1.contradiction_flag = True
                         it2.contradiction_flag = True
@@ -392,116 +400,8 @@ class ClaimIntelligenceEngine:
         - Links citations (evidence_id, url, source_name, role, excerpt).
         - Computes calibrated confidence and non-binary verdict.
         """
-        if not evidence_items:
-            claim.verdict = ClaimVerdict.INSUFFICIENT_EVIDENCE.value
-            claim.confidence = 0.0
-            claim.rationale = "Zero acquired evidence items available for verification. Never fabricating results."
-            claim.supporting_evidence_ids = []
-            claim.contradicting_evidence_ids = []
-            claim.evidence_citations = []
-            return claim
+        return evaluate_grounded_claim(claim, evidence_items)
 
-        claim_text = claim.claim_text.lower()
-        c_terms = subject_terms(claim_text, claim.entity)
-
-        supporting_ids: List[str] = []
-        contradicting_ids: List[str] = []
-        citations: List[Dict[str, Any]] = []
-
-        primary_corroboration = 0
-        secondary_corroboration = 0
-        community_signals = 0
-        denial_detected = False
-        temporal_shift_detected = False
-
-        for item in evidence_items:
-            ev_text = f"{item.title} {item.snippet} {item.relevant_excerpt}".lower()
-            ev_terms = subject_terms(ev_text, claim.entity)
-            shared = c_terms & ev_terms
-
-            # If evidence discusses the same entity/event
-            if len(shared) >= 1 or (claim.entity.lower() in ev_text and len(ev_terms) > 0):
-                # Check for explicit denial or debunking
-                is_denial = any(p.search(ev_text) for p in DENIAL_PATTERNS)
-                is_temporal = any(p.search(ev_text) for p in TEMPORAL_SHIFT_PATTERNS)
-
-                citation_entry = {
-                    "evidence_id": item.id,
-                    "canonical_url": item.canonical_url,
-                    "source_name": item.source_name,
-                    "source_role": item.source_role,
-                    "source_tier": item.source_tier,
-                    "primary_source": item.primary_source,
-                    "published_at": item.published_at or "Recent",
-                    "relevant_excerpt": item.relevant_excerpt[:200] if item.relevant_excerpt else item.snippet[:200],
-                }
-                citations.append(citation_entry)
-
-                if is_denial:
-                    denial_detected = True
-                    contradicting_ids.append(item.id)
-                elif is_temporal:
-                    temporal_shift_detected = True
-                    contradicting_ids.append(item.id)
-                else:
-                    supporting_ids.append(item.id)
-
-                if item.primary_source or item.source_tier == SourceTier.TIER_1_OFFICIAL_FILING.value:
-                    primary_corroboration += 1
-                elif item.source_role == SourceRole.SECONDARY.value:
-                    secondary_corroboration += 1
-                else:
-                    community_signals += 1
-
-        claim.supporting_evidence_ids = supporting_ids
-        claim.contradicting_evidence_ids = contradicting_ids
-        claim.evidence_citations = citations
-
-        # Epistemic Decision Engine
-        if not citations:
-            claim.verdict = ClaimVerdict.INSUFFICIENT_EVIDENCE.value
-            claim.confidence = 0.0
-            claim.rationale = "No retrieved evidence items matched the factual proposition of this claim."
-            return claim
-
-        if denial_detected and primary_corroboration > 0:
-            claim.verdict = ClaimVerdict.REFUTED.value
-            claim.confidence = min(0.98, round(0.85 + 0.04 * primary_corroboration, 2))
-            claim.rationale = f"Claim refuted by {primary_corroboration} authoritative primary/official source(s) with explicit denial language."
-        elif denial_detected:
-            claim.verdict = ClaimVerdict.REFUTED.value
-            claim.confidence = 0.82
-            claim.rationale = "Claim contradicts reporting that contains explicit debunking or denial statements."
-        elif temporal_shift_detected:
-            claim.verdict = ClaimVerdict.OUTDATED.value
-            claim.confidence = 0.88
-            claim.rationale = "Evidence indicates the claimed event/status was historical or has been superseded by subsequent updates."
-        elif supporting_ids and contradicting_ids:
-            claim.verdict = ClaimVerdict.MIXED.value
-            claim.confidence = 0.55
-            claim.rationale = "Conflicting evidence retrieved across monitored channels without definitive authoritative resolution."
-        elif primary_corroboration >= 2:
-            claim.verdict = ClaimVerdict.SUPPORTED.value
-            claim.confidence = min(0.96, round(0.85 + 0.03 * primary_corroboration, 2))
-            claim.rationale = f"Strongly corroborated by {primary_corroboration} independent primary/official sources with no contradictions."
-        elif primary_corroboration == 1 and secondary_corroboration >= 1:
-            claim.verdict = ClaimVerdict.SUPPORTED.value
-            claim.confidence = 0.88
-            claim.rationale = "Corroborated by primary source and verified secondary reporting."
-        elif secondary_corroboration >= 2:
-            claim.verdict = ClaimVerdict.SUPPORTED.value
-            claim.confidence = 0.78
-            claim.rationale = "Corroborated by multiple secondary journalistic sources."
-        elif community_signals >= 1 and primary_corroboration == 0 and secondary_corroboration == 0:
-            claim.verdict = ClaimVerdict.UNVERIFIED.value
-            claim.confidence = min(0.40, round(0.20 + 0.05 * community_signals, 2))
-            claim.rationale = "Claim circulating solely across unverified community/social channels without primary corroboration."
-        else:
-            claim.verdict = ClaimVerdict.UNVERIFIED.value
-            claim.confidence = 0.45
-            claim.rationale = "Sparse corroboration retrieved; claim remains unverified pending independent confirmation."
-
-        return claim
 
     def synthesize_intelligence(
         self,
@@ -533,16 +433,16 @@ class ClaimIntelligenceEngine:
         if not evaluated_claims or all(c.verdict == ClaimVerdict.INSUFFICIENT_EVIDENCE.value for c in evaluated_claims):
             overall_verdict = ClaimVerdict.INSUFFICIENT_EVIDENCE.value
             overall_confidence = 0.0
-        elif counts.get(ClaimVerdict.REFUTED.value, 0) > 0:
+        elif counts.get(ClaimVerdict.REFUTED.value, 0) == len(evaluated_claims):
             overall_verdict = ClaimVerdict.REFUTED.value
             overall_confidence = max(c.confidence for c in evaluated_claims if c.verdict == ClaimVerdict.REFUTED.value)
-        elif counts.get(ClaimVerdict.OUTDATED.value, 0) > 0:
+        elif counts.get(ClaimVerdict.OUTDATED.value, 0) == len(evaluated_claims):
             overall_verdict = ClaimVerdict.OUTDATED.value
             overall_confidence = max(c.confidence for c in evaluated_claims if c.verdict == ClaimVerdict.OUTDATED.value)
-        elif counts.get(ClaimVerdict.MIXED.value, 0) > 0:
+        elif counts.get(ClaimVerdict.MIXED.value, 0) > 0 or (counts.get(ClaimVerdict.SUPPORTED.value, 0) and counts.get(ClaimVerdict.REFUTED.value, 0)):
             overall_verdict = ClaimVerdict.MIXED.value
             overall_confidence = 0.55
-        elif counts.get(ClaimVerdict.SUPPORTED.value, 0) > 0 and counts.get(ClaimVerdict.UNVERIFIED.value, 0) == 0:
+        elif counts.get(ClaimVerdict.SUPPORTED.value, 0) == len(evaluated_claims):
             overall_verdict = ClaimVerdict.SUPPORTED.value
             overall_confidence = round(sum(c.confidence for c in evaluated_claims) / max(1, len(evaluated_claims)), 2)
         elif counts.get(ClaimVerdict.UNVERIFIED.value, 0) > 0:
@@ -563,6 +463,8 @@ class ClaimIntelligenceEngine:
                     deduped_citations.append(cit)
 
         return {
+            "is_heuristic": True,
+            "confidence_model": "uncalibrated_conservative_lexical",
             "overall_verdict": overall_verdict,
             "overall_confidence": overall_confidence,
             "claims": [c.to_dict() for c in evaluated_claims],

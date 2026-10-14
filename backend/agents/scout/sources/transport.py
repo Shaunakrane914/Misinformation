@@ -90,62 +90,31 @@ class ScoutTransport:
         Returns:
             (status_code, content_text, response_headers, latency_ms, error_message)
         """
-        clean_url = url.strip()
+        from backend.infrastructure.acquisition.network.http import fetch_public_http, decode_bounded_http_body
+        clean_url = (url or "").strip()
         if not clean_url:
             return 400, "", {}, 0, "EMPTY_URL"
-
-        # 1. SSRF Gate
-        is_safe, reason = validate_url_safe(clean_url)
-        if not is_safe:
-            logger.warning(f"[ScoutTransport] SSRF check blocked {clean_url}: {reason}")
-            return 403, "", {}, 0, f"BLOCKED_SSRF: {reason}"
-
-        # 2. Domain Rate Limiting
-        try:
-            parsed = urllib.parse.urlparse(clean_url)
-            domain = parsed.netloc or ""
-            self.rate_limiter.wait_for_domain(domain)
-        except Exception:
-            pass
-
-        req_timeout = timeout or self.default_timeout
+        if params:
+            parsed = urllib.parse.urlsplit(clean_url)
+            query = urllib.parse.urlencode(params, doseq=True)
+            clean_url = urllib.parse.urlunsplit(parsed._replace(query="&".join(filter(None, [parsed.query, query]))))
         merged_headers = dict(self.session.headers)
-        if headers:
-            merged_headers.update(headers)
+        merged_headers.update(headers or {})
+        started = time.monotonic()
+        try:
+            self.rate_limiter.wait_for_domain(urllib.parse.urlsplit(clean_url).hostname or "")
+            response = fetch_public_http(
+                clean_url, headers=merged_headers,
+                timeout=min(5.0, float(timeout or self.default_timeout)),
+                max_bytes=1_000_000, max_attempts=max(1, min(3, max_retries + 1)),
+            )
+            body = decode_bounded_http_body(response, max_bytes=1_000_000)
+            response_headers = dict(response.headers)
+            response_headers["X-Aegis-Observed-Endpoint"] = response.endpoint
+            return response.status_code or 200, body.decode("utf-8", errors="replace"), response_headers, int((time.monotonic() - started) * 1000), None
+        except Exception as exc:
+            return getattr(exc, "status_code", None) or 0, "", {}, int((time.monotonic() - started) * 1000), type(exc).__name__
 
-        # 3. Retries with exponential backoff on 429/503
-        last_error = None
-        for attempt in range(max_retries + 1):
-            t0 = time.time()
-            try:
-                resp = self.session.get(
-                    clean_url,
-                    params=params,
-                    headers=merged_headers,
-                    timeout=req_timeout
-                )
-                latency_ms = int((time.time() - t0) * 1000)
-                resp_headers = dict(resp.headers)
-
-                if resp.status_code in (429, 503) and attempt < max_retries:
-                    backoff = 0.5 * (2 ** attempt)
-                    time.sleep(backoff)
-                    continue
-
-                return resp.status_code, resp.text, resp_headers, latency_ms, None
-
-            except requests.Timeout as te:
-                last_error = f"TIMEOUT: {te}"
-            except requests.RequestException as re:
-                last_error = f"REQUEST_ERROR: {re}"
-            except Exception as e:
-                last_error = f"UNEXPECTED_TRANSPORT_ERROR: {e}"
-
-            if attempt < max_retries:
-                time.sleep(0.4 * (2 ** attempt))
-
-        latency_ms = int((time.time() - t0) * 1000) if 't0' in locals() else 0
-        return 0, "", {}, latency_ms, last_error
 
 
 # Global singleton transport for Scout

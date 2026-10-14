@@ -353,7 +353,7 @@ class SourcePlanningEngine:
 
         # Cross-reference claim against fact-checking databases if allowed
         if "fact_check" in allowed and explicitly_allowed:
-            actions.append(self._action(1, "fact_check", "search", claim, "fact_check_database", "DIRECT_CONTENT", 2, "Cross-reference claim against public ClaimReview fact checks.", True))
+            actions.append(self._action(1, "fact_check", "search", claim, "fact_check_database", "DIRECT_METADATA", 2, "Retrieve publisher-attributed ClaimReview metadata; the review body is not fetched.", True))
 
         # Agent objectives adjust priority, not the capability truth contract.
         if agent.lower() in {"trending", "trending_agent"}:

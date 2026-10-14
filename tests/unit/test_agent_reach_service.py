@@ -94,16 +94,16 @@ def test_source_independence_syndication_clustering():
 def test_source_role_attribution():
     service = AgentReachService()
     frags = [
-        EvidenceFragment(platform="GitHub", retrieval_method="github_api"),
-        EvidenceFragment(platform="News", retrieval_method="agent_reach"),
-        EvidenceFragment(platform="Reddit", retrieval_method="agent_reach"),
-        EvidenceFragment(platform="YouTube", retrieval_method="agent_reach"),
+        EvidenceFragment(platform="GitHub", url="https://github.com/project/repo", retrieval_method="github_api"),
+        EvidenceFragment(platform="News", url="https://reuters.com/report", retrieval_method="agent_reach"),
+        EvidenceFragment(platform="Reddit", url="https://reddit.com/r/stocks", retrieval_method="agent_reach"),
+        EvidenceFragment(platform="YouTube", url="https://youtube.com/watch?v=sample", retrieval_method="agent_reach"),
     ]
     service._assign_source_roles(frags)
     assert frags[0].raw_metadata["source_role"] == "PRIMARY"
     assert frags[1].raw_metadata["source_role"] == "SECONDARY"
     assert frags[2].raw_metadata["source_role"] == "COMMUNITY"
-    assert frags[3].raw_metadata["source_role"] == "DIRECT_MEDIA"
+    assert frags[3].raw_metadata["source_role"] == "SECONDARY"
 
 
 def test_ssrf_protection_in_read():

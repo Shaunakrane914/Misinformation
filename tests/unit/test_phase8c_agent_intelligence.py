@@ -141,7 +141,7 @@ def test_contradiction_axis_3_numerical_discrepancy():
     ev2 = EvidenceItem(
         id="ev_n2",
         title="Stark AI deal valued at $18.5 billion",
-        snippet="Stark AI deal valued at $18.5 billion inclusive of debt.",
+        snippet="Stark AI deal valued at $18.5 billion cash.",
         source_name="Wire Two"
     )
     contradictions = engine.detect_contradictions([ev1, ev2], target_name="Stark AI")
@@ -156,13 +156,15 @@ def test_contradiction_axis_4_scope_context_mismatch():
         id="ev_s1",
         title="Chemical spill incident reported in Ohio facility",
         snippet="Spill contained at Ohio manufacturing center.",
-        source_name="Local News"
+        source_name="Local News",
+        metadata={"proposition_id": "spill-event-1"}
     )
     ev_florida = EvidenceItem(
         id="ev_s2",
         title="Chemical spill incident reported in Florida plant",
         snippet="Spill contained at Florida manufacturing site.",
-        source_name="Southern News"
+        source_name="Southern News",
+        metadata={"proposition_id": "spill-event-1"}
     )
     contradictions = engine.detect_contradictions([ev_ohio, ev_florida], target_name="Chemical spill incident")
     scope_conts = [c for c in contradictions if c["type"] == ContradictionType.SCOPE_CONTEXT_MISMATCH.value]
@@ -241,7 +243,7 @@ def test_calibrated_verdicts_official_refuted():
         id="ev_d1",
         canonical_url="https://acme.com/statement",
         title="Acme Corp Denies False Rumors of Bankruptcy",
-        snippet="Acme Corp officially refuted and rejected rumors of bankruptcy.",
+        snippet="Acme Corp did not file for bankruptcy.",
         source_name="Acme PR",
         source_role=SourceRole.PRIMARY.value,
         primary_source=True
@@ -278,11 +280,12 @@ def test_scout_sec_filing_numerical_comparison_detects_whisper_divergence():
         "revenue": 30.0e9,
         "net_income": 16.6e9,
         "period": "Q2 2026",
+        "unit": "USD",
         "source_url": "https://www.sec.gov/edgar/acme-10q"
     }
     claims = [
-        {"metric": "revenue", "claimed_value": 45.0e9, "raw_text": "$45B Revenue rumor", "url": "https://x.com/leaker"},
-        {"metric": "net_income", "claimed_value": 16.5e9, "raw_text": "$16.5B net income", "url": "https://reuters.com/acme"}
+        {"metric": "revenue", "claimed_value": 45.0e9, "period": "Q2 2026", "unit": "USD", "raw_text": "$45B Revenue rumor", "url": "https://x.com/leaker"},
+        {"metric": "net_income", "claimed_value": 16.5e9, "period": "Q2 2026", "unit": "USD", "raw_text": "$16.5B net income", "url": "https://reuters.com/acme"}
     ]
     res = compare_sec_filing_numbers(filing, claims)
     assert res["status"] == "ANOMALIES_DETECTED"
@@ -340,7 +343,8 @@ def test_trending_bot_amplification_detects_burst_and_copypasta():
     res = detect_bot_amplification(posts)
     assert res["burst_detected"] is True
     assert res["copypasta_clusters"] >= 1
-    assert res["amplification_risk"] in ("HIGH_COORDINATED_AMPLIFICATION", "ELEVATED_SUSPICIOUS_ACTIVITY")
+    assert res["amplification_risk"] in ("HIGH_PATTERN_SIMILARITY", "ELEVATED_SUSPICIOUS_ACTIVITY")
+    assert res["automation_verified"] is False
     assert res["coordination_score"] >= 65
 
 
@@ -396,7 +400,7 @@ def test_brandshield_executive_impersonation_detection():
     assert res["profiles_analyzed"] == 2
     assert len(res["impersonation_threats"]) == 1
     t = res["impersonation_threats"][0]
-    assert t["classification"] == "CONFIRMED_IMPERSONATION"
+    assert t["classification"] == "SUSPECTED_IMPERSONATION_REQUIRES_REVIEW"
     assert t["risk_level"] == "CRITICAL_FRAUDULENT_IMPERSONATION"
 
 
@@ -414,7 +418,7 @@ def test_brandshield_smear_vs_organic_criticism_differentiates_feedback():
         }
     ]
     res_organic = classify_smear_vs_organic_criticism(organic_reviews)
-    assert res_organic["classification"] == "ORGANIC_CONSUMER_CRITICISM"
+    assert res_organic["classification"] == "PRODUCT_FEEDBACK_IN_SAMPLE"
     assert res_organic["smear_campaign_detected"] is False
 
     coordinated_smear = [
@@ -430,8 +434,8 @@ def test_brandshield_smear_vs_organic_criticism_differentiates_feedback():
         }
     ]
     res_smear = classify_smear_vs_organic_criticism(coordinated_smear)
-    assert res_smear["classification"] == "COORDINATED_SMEAR_CAMPAIGN"
-    assert res_smear["smear_campaign_detected"] is True
+    assert res_smear["classification"] == "REPETITION_REQUIRES_REVIEW"
+    assert res_smear["smear_campaign_detected"] is False
 
 
 def test_brandshield_counterfeit_domain_detection():
@@ -462,7 +466,8 @@ def test_personal_watch_identity_separation_rejects_namesake():
         "author": "TechCrunch"
     }
     res_match = verify_identity_match(catalog, target_match)
-    assert res_match["match_status"] == "CONFIRMED_MATCH"
+    assert res_match["match_status"] == "CONTEXTUAL_MATCH_UNVERIFIED"
+    assert res_match["identity_authenticated"] is False
     assert res_match["match_confidence"] >= 0.75
 
     namesake = {
@@ -481,7 +486,8 @@ def test_personal_watch_doxxing_exposure_detects_pii():
         "Phone: 206-555-0199, SSN: 123-45-6789, Personal email: vip_private@gmail.com"
     )
     res = detect_doxxing_exposure("VIP Person", text_with_pii)
-    assert res["status"] == "DOXXING_DETECTED"
+    assert res["status"] == "PII_PATTERN_REQUIRES_REVIEW"
+    assert res["unauthorized_exposure_verified"] is False
     assert res["exposure_severity"] == "CRITICAL"
     assert res["pii_findings_count"] == 4
     types = {f["type"] for f in res["findings"]}
@@ -500,8 +506,8 @@ def test_personal_watch_synthetic_media_allegations():
         }
     ]
     res = assess_synthetic_media_allegations(evidence)
-    assert res["epistemic_state"] == "DEBUNKED_DEEPFAKE_HOAX"
-    assert res["confidence"] >= 0.85
+    assert res["epistemic_state"] == "REPORTED_DEBUNKING_UNVERIFIED"
+    assert res["media_assets_analyzed"] == 0
 
 
 def test_personal_watch_quote_attribution():
@@ -513,5 +519,5 @@ def test_personal_watch_quote_attribution():
         }
     ]
     res = verify_quote_attribution("CEO", "We plan to fire all employees tomorrow", evidence)
-    assert res["verdict"] == "FABRICATED_OR_MISATTRIBUTED_QUOTE"
-    assert res["confidence"] >= 0.90
+    assert res["verdict"] == "REPORTED_MISATTRIBUTION_UNVERIFIED"
+    assert res["assessment_is_heuristic"] is True

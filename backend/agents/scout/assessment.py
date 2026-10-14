@@ -207,8 +207,8 @@ Respond in STRICT JSON with this schema:
         })
     if not narratives:
         narratives.append({
-            "theme": "General Market Momentum",
-            "description": f"Trading volume and sector momentum surrounding {company_name}.",
+            "theme": "Unclassified sampled references",
+            "description": "Retrieved records did not establish a specific market catalyst or momentum narrative.",
             "sentiment": "Neutral",
             "evidence_ids": [sources[0]['evidence_id']] if sources else []
         })
@@ -216,7 +216,7 @@ Respond in STRICT JSON with this schema:
     for nc in neg_cats[:3]:
         risks.append(nc["catalyst"])
     if not risks:
-        risks.append(f"Standard macroeconomic and sector-wide volatility impacting {company_name}.")
+        risks.append("No specific market risk was established from the sampled records.")
 
     return {
         "catalysts": {
@@ -262,24 +262,33 @@ def compare_sec_filing_numbers(
     comparisons: List[Dict[str, Any]] = []
     anomalies = 0
 
-    filing_url = filing_facts.get("source_url") or filing_facts.get("filing_url", "https://www.sec.gov/edgar")
-    period = filing_facts.get("period", "Official Period")
+    from backend.services.research.source_quality import canonical_hostname, hostname_matches
+    import math
+    filing_url = filing_facts.get("source_url") or filing_facts.get("filing_url", "")
+    period = filing_facts.get("period", "")
 
     for claim in circulating_claims:
         metric = claim.get("metric", "").lower().strip()
         claimed_val = claim.get("claimed_value")
         if claimed_val is None:
             continue
+        if (not hostname_matches(canonical_hostname(filing_url), "sec.gov")
+                or not period or claim.get("period") != period
+                or not filing_facts.get("unit") or claim.get("unit") != filing_facts.get("unit")
+                or not isinstance(claimed_val, (int, float)) or not math.isfinite(claimed_val)):
+            comparisons.append({"metric": metric, "status": "UNVERIFIED_ALIGNMENT", "verdict": "UNVERIFIED",
+                                "citation": filing_url, "explanation": "A trusted filing URL and matching period/unit are required for numeric comparison."})
+            continue
 
         # Look up metric in official filing facts
         official_val = None
         for k, v in filing_facts.items():
-            if k.lower() == metric or metric in k.lower():
+            if k.lower() == metric:
                 if isinstance(v, (int, float)):
                     official_val = float(v)
                     break
 
-        if official_val is None or official_val == 0:
+        if official_val is None or official_val == 0 or not math.isfinite(official_val):
             comparisons.append({
                 "metric": metric,
                 "circulating_claim": claim.get("raw_text", str(claimed_val)),
@@ -293,10 +302,10 @@ def compare_sec_filing_numbers(
             continue
 
         # Compute percentage deviation
-        delta_pct = round(((claimed_val - official_val) / official_val) * 100.0, 2)
-        ratio = max(claimed_val, official_val) / min(claimed_val, official_val) if min(claimed_val, official_val) > 0 else 999.0
+        delta_pct = round(((claimed_val - official_val) / abs(official_val)) * 100.0, 2)
+        ratio = max(abs(claimed_val), abs(official_val)) / min(abs(claimed_val), abs(official_val)) if min(abs(claimed_val), abs(official_val)) > 0 else None
 
-        if ratio > 1.20:  # >20% discrepancy
+        if abs(delta_pct) > 20.0:
             status = "CONTRADICTED_BY_OFFICIAL_FILING"
             verdict = "REFUTED"
             anomalies += 1
@@ -321,7 +330,7 @@ def compare_sec_filing_numbers(
             "official_filing_value": official_val,
             "status": status,
             "discrepancy_pct": delta_pct,
-            "discrepancy_ratio": round(ratio, 2),
+            "discrepancy_ratio": round(ratio, 2) if ratio is not None else None,
             "citation": filing_url,
             "explanation": expl,
             "verdict": verdict,
@@ -329,7 +338,7 @@ def compare_sec_filing_numbers(
         })
 
     return {
-        "status": "ANOMALIES_DETECTED" if anomalies > 0 else "CONSISTENT",
+        "status": "ANOMALIES_DETECTED" if anomalies > 0 else "INSUFFICIENT_ALIGNMENT" if all(c["verdict"] == "UNVERIFIED" for c in comparisons) else "CONSISTENT",
         "comparisons": comparisons,
         "anomalies_detected": anomalies,
         "filing_citation": filing_url,

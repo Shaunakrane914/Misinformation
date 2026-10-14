@@ -27,6 +27,7 @@ from backend.services.research.entity_resolver import (
     entity_resolver,
 )
 from backend.services.research.temporal_guard import temporal_guard, TemporalAssessment
+from backend.services.research.source_quality import canonical_hostname, hostname_matches
 
 
 @dataclass
@@ -269,13 +270,13 @@ class RelevanceGate:
 
         # ── Stage 5: Source Quality & Platform Structure Check ──
         sq_score = 0.60
-        domain_name = urllib.parse.urlparse(url).netloc.lower() if url else ""
+        domain_name = canonical_hostname(url)
         if domain_name:
-            if any(ext in domain_name for ext in [".gov", ".edu", "sec.gov", "microsoft.com", "reuters.com", "bloomberg.com", "wsj.com", "cnbc.com"]):
+            if domain_name.endswith((".gov", ".edu")) or any(hostname_matches(domain_name, ext) for ext in ["sec.gov", "microsoft.com", "reuters.com", "bloomberg.com", "wsj.com", "cnbc.com"]):
                 sq_score = 0.95
-            elif any(plat in domain_name for plat in ["x.com", "twitter.com", "reddit.com", "youtube.com"]):
+            elif any(hostname_matches(domain_name, plat) for plat in ["x.com", "twitter.com", "reddit.com", "youtube.com"]):
                 sq_score = 0.85
-            elif "stackoverflow.com" in domain_name or "zhihu.com" in domain_name:
+            elif any(hostname_matches(domain_name, plat) for plat in ["stackoverflow.com", "zhihu.com"]):
                 sq_score = 0.40  # Generic developer / Q&A forums penalized unless tech domain
 
         # ── Stage 6: Calculate Composite Relevance Score ──

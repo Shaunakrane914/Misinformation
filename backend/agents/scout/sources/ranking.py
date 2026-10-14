@@ -9,6 +9,7 @@ Implements:
 
 import re
 import urllib.parse
+from backend.services.research.source_quality import registered_authority_url
 from typing import List, Optional, Tuple
 from backend.agents.scout.sources.models import (
     CandidateSource,
@@ -128,7 +129,7 @@ class ScoutRankingEngine:
                 score += 0.15
 
         # Primary source bonus
-        if cand.platform == "primary_filing" or "sec.gov" in cand.canonical_url or "investor." in cand.canonical_url:
+        if registered_authority_url(cand.canonical_url):
             score += 0.25
 
         # Query term density

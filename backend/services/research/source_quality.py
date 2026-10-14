@@ -59,12 +59,29 @@ ENCYCLOPEDIA_DOMAINS: Set[str] = {
 # Explicit identity knowledge, not a heuristic derived from a queried name.
 # Deployments can inject additional verified mappings into SourceQualityEngine.
 VERIFIED_CORPORATE_DOMAINS = {
+    "tatamotors": {"tatamotors.com"},
     "tesla": {"tesla.com"},
     "nvidia": {"nvidia.com"},
     "apple": {"apple.com"},
     "microsoft": {"microsoft.com"},
     "anthropic": {"anthropic.com"},
 }
+
+
+def canonical_hostname(url: str) -> str:
+    """Parse a public URL identity without granting trust to URL text or userinfo."""
+    try:
+        parsed = urllib.parse.urlsplit(url or "")
+        _ = parsed.port
+        if parsed.scheme.lower() not in {"http", "https"} or parsed.username or parsed.password:
+            return ""
+        host = (parsed.hostname or "").rstrip(".").encode("idna").decode("ascii").lower()
+        if not host or any(not re.fullmatch(r"[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", label)
+                           for label in host.split(".")):
+            return ""
+        return host
+    except (ValueError, UnicodeError):
+        return ""
 
 
 def hostname_matches(host: str, trusted: str) -> bool:
@@ -74,6 +91,14 @@ def hostname_matches(host: str, trusted: str) -> bool:
 
 def _matches_registry(host: str, registry) -> bool:
     return any(hostname_matches(host, trusted) for trusted in registry)
+
+
+def registered_authority_url(url: str) -> bool:
+    """Registry ownership hint for candidate routing, never claim confirmation."""
+    host = canonical_hostname(url)
+    return _matches_registry(host, REGULATORY_GOVERNMENT_DOMAINS) or any(
+        _matches_registry(host, domains) for domains in VERIFIED_CORPORATE_DOMAINS.values()
+    )
 
 
 class UtilityUrlCheck(tuple):
@@ -110,7 +135,7 @@ def is_utility_or_auth_url(url: str) -> UtilityUrlCheck:
     # Store / App Catalog hostnames & paths
     if any(host == p or host.startswith(p + ".") for p in ("apps", "store", "play.google.com")):
         return UtilityUrlCheck(True, "APP_CATALOG")
-    if path.startswith("/store") or path.startswith("/apps") or (path.startswith("/home") and any(h in host for h in ("microsoft.com", "apple.com", "google.com"))):
+    if path.startswith("/store") or path.startswith("/apps") or (path.startswith("/home") and _matches_registry(host, {"microsoft.com", "apple.com", "google.com"})):
         return UtilityUrlCheck(True, "APP_CATALOG")
 
     return UtilityUrlCheck(False, "")
@@ -131,16 +156,10 @@ class SourceQualityEngine:
         Assigns source_role, source_tier, official/primary flags,
         and computes source_quality_score (0.0 to 1.0).
         """
-        url = (item.canonical_url or "").lower()
-        try:
-            parsed = urllib.parse.urlsplit(url)
-            # Trigger urllib's numeric/range validation for explicitly supplied ports.
-            _ = parsed.port
-            domain = (parsed.hostname or "").lower().rstrip(".")
-            if parsed.scheme not in ("http", "https") or parsed.username or parsed.password:
-                domain = ""
-        except ValueError:
-            domain = ""
+        # Web redirects are observed by the transport. Publisher-declared
+        # canonical metadata cannot override that observed origin.
+        url = item.metadata.get("observed_final_endpoint") or item.canonical_url or ""
+        domain = canonical_hostname(url)
         # A supplied source_domain cannot override the actual source URL.
         item.source_domain = domain
         item.primary_source = False
@@ -177,12 +196,20 @@ class SourceQualityEngine:
             item.official_source = False
             base_score = 0.15
 
-        elif is_regulatory or (has_filing_marker and "sec.gov" in domain):
-            item.source_role = SourceRole.PRIMARY.value
-            item.source_tier = SourceTier.TIER_1_OFFICIAL_FILING.value
-            item.primary_source = True
+        elif is_regulatory:
+            path = urllib.parse.urlsplit(url).path.lower().rstrip("/")
+            is_index = path in {"", "/search", "/edgar", "/edgar/search", "/filings"} or "/submissions/" in path
+            is_metadata = item.content_depth in {ContentDepth.DIRECT_METADATA.value, ContentDepth.HEADLINE_ONLY.value}
+            is_document = bool(not is_index and not is_metadata and (
+                has_filing_marker or path.endswith((".htm", ".html", ".pdf", ".xml")) or "/filing" in path
+                or re.search(r"/edgar/(?:10k|10q|8k)(?:/|$)", path)
+            ))
+            item.metadata["authority_scope"] = "REGULATORY_DOCUMENT" if is_document else "REGULATOR_REFERENCE"
+            item.source_role = SourceRole.PRIMARY.value if is_document else SourceRole.DISCOVERY.value
+            item.source_tier = SourceTier.TIER_1_OFFICIAL_FILING.value if is_document else SourceTier.TIER_3_AGGREGATE.value
+            item.primary_source = is_document
             item.official_source = True
-            base_score = 0.98
+            base_score = 0.98 if is_document else 0.60
 
         elif is_official:
             # Corporate domain without utility path: official corporate document, NOT a regulatory filing

@@ -351,7 +351,7 @@ class ScoutAgent:
             }
             all_sources.append(source_record)
 
-            if is_primary or "investor" in url.lower() or "filing" in title.lower() or "sec.gov" in url.lower():
+            if is_primary:
                 primary_sources.append(source_record)
 
             ch_low = channel.lower()

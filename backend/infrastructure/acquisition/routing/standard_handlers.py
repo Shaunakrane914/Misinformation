@@ -793,7 +793,7 @@ class StandardChannelHandlers:
         self._record_transport(telemetry, result)
         items = result.get("items", [])
         if not items:
-            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else "FAILED")
+            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else result.get("status", "FAILED"))
             return []
         fragments = normalize_sec_items(items, query_id=query_id, query_class=query_class, query_text=query_text)
         self._attach_transport(fragments, result.get("transport"))
@@ -842,7 +842,7 @@ class StandardChannelHandlers:
         self._record_transport(telemetry, result)
         items = result.get("items", [])
         if not items:
-            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else "FAILED")
+            telemetry.update(status="EMPTY_RESULT" if result.get("status") == "SUCCESS" else result.get("status", "FAILED"))
             return []
         fragments = normalize_fact_check_items(items, query_id=query_id, query_class=query_class, query_text=query_text)
         self._attach_transport(fragments, result.get("transport"))

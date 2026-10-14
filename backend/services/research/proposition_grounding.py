@@ -101,7 +101,8 @@ _NORMAL = {
 # Negation specifically asserting denial or non-occurrence of an event or metric
 _CLAIM_NEGATION = re.compile(
     r"\b(?:did not|does not|has not|was not|have not|is not|are not|were not|do not|cannot|could not|"
-    r"will not|would not|should not|not true|false rumor|denied|denies|dismissed|refuted|rejected|debunked|"
+    r"will not|would not|should not|never|unauthorized|unaffiliated|not affiliated|not authorized|"
+    r"not true|false rumor|denied|denies|dismissed|refuted|rejected|debunked|"
     r"hoax|fabrication|unfounded|no plans|no announcement|no record|"
     r"categorically denies|never occurred|did not order|not announced|do not establish|does not establish)\b",
     re.I
@@ -442,6 +443,13 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         # --- Axis J: Immutable Historical Market Ledgers Contradiction ---
         if any(w in wanted for w in {"alter", "backward", "future", "3000", "travel"}) and any(w in wanted for w in {"stock", "price", "prices", "market"}):
             if any(p in passage.lower() for p in {"permanent ledgers", "permanent ledger", "established transaction settlement", "audited market records"}):
+                return "CONTRADICT", passage[:500]
+
+        # --- Axis K: Ticker Symbol Contradiction ---
+        ticker_m_claim = re.search(r'\b(?:ticker|symbol|ticker symbol)\s+([A-Z]{1,5})\b', claim_text)
+        ticker_m_pass = re.search(r'\b(?:trades under symbol|symbol|ticker)\s+([A-Z]{1,5})\b', passage)
+        if ticker_m_claim and ticker_m_pass:
+            if ticker_m_claim.group(1).upper() != ticker_m_pass.group(1).upper():
                 return "CONTRADICT", passage[:500]
                     
         # --- Axis G: Semantic Proposition Overlap ---

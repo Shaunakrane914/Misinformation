@@ -1,0 +1,700 @@
+{
+  "split": "held_out",
+  "description": "30 strictly held-out claims reserved for blind post-tuning evaluation.",
+  "case_count": 30,
+  "cases": [
+    {
+      "id": "HELD_01",
+      "claim": "Alphabet Inc. class A shares trade on Nasdaq under the ticker symbol GOOGL",
+      "entity": "Alphabet",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nasdaq.com/market-activity/stocks/googl",
+        "passage": "Alphabet Inc. Class A Common Stock (GOOGL) trades on the Nasdaq Global Select Market.",
+        "claim_context": "Nasdaq Official Security Directory",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Nasdaq listing specification for Alphabet Class A shares.",
+      "evidence_limitations": "Official market listing record.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_02",
+      "claim": "Alphabet Inc. class A shares trade under the ticker symbol AAPL",
+      "entity": "Alphabet",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nasdaq.com/market-activity/stocks/googl",
+        "passage": "Alphabet Inc. Class A Common Stock trades under symbol GOOGL. AAPL is the ticker symbol for Apple Inc.",
+        "claim_context": "Nasdaq Official Security Directory",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "AAPL belongs to Apple Inc., not Alphabet.",
+      "evidence_limitations": "Ticker symbol mismatch.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_03",
+      "claim": "OpenAI published the research paper introducing the GPT-4 model under arXiv identifier 2303.08774",
+      "entity": "OpenAI",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://arxiv.org/abs/2303.08774",
+        "passage": "arXiv:2303.08774 [cs.CL]. Title: GPT-4 Technical Report. Authors: OpenAI. We report the development of GPT-4, a large-scale, multimodal model.",
+        "claim_context": "arXiv preprint catalog",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "arXiv 2303.08774 is the official GPT-4 Technical Report preprint.",
+      "evidence_limitations": "Preprint bibliographic record.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_04",
+      "claim": "The GPT-4 Technical Report was published in 1985 before the creation of the World Wide Web",
+      "entity": "OpenAI",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://arxiv.org/abs/2303.08774",
+        "passage": "arXiv:2303.08774 submitted on 15 Mar 2023. Authors: OpenAI.",
+        "claim_context": "arXiv preprint catalog",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Published March 2023, not 1985.",
+      "evidence_limitations": "Severe anachronism.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "incorrect_dates"
+    },
+    {
+      "id": "HELD_05",
+      "claim": "Microsoft Azure is a cloud computing platform operated by Microsoft",
+      "entity": "Microsoft",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://azure.microsoft.com/en-us/overview/what-is-azure/",
+        "passage": "The Azure cloud platform is more than 200 products and cloud services designed to help you bring new solutions to life. Microsoft Azure provides computing, analytics, storage and networking.",
+        "claim_context": "Microsoft Azure official overview",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Established cloud computing platform operated by Microsoft.",
+      "evidence_limitations": "Official product service description.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_06",
+      "claim": "Microsoft Azure is a brand of physical running shoes manufactured from leather by Microsoft",
+      "entity": "Microsoft",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://azure.microsoft.com/en-us/overview/what-is-azure/",
+        "passage": "Microsoft Azure is an enterprise cloud computing infrastructure, not footwear or athletic apparel.",
+        "claim_context": "Microsoft Azure official overview",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Azure is cloud computing software/infrastructure, not physical shoes.",
+      "evidence_limitations": "Category error.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_07",
+      "claim": "Jensen Huang is the co-founder, President, and Chief Executive Officer of Nvidia",
+      "entity": "Nvidia",
+      "domain": "personal_watch",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nvidia.com/en-us/about-nvidia/leadership-team/jensen-huang/",
+        "passage": "Jensen Huang founded NVIDIA in 1993 and has served since its inception as president, chief executive officer, and a member of the board of directors.",
+        "claim_context": "Nvidia Executive Biography",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official Nvidia leadership documentation.",
+      "evidence_limitations": "Executive officer bio.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_08",
+      "claim": "Jensen Huang was terminated from Nvidia in 1999 and replaced by Bill Gates",
+      "entity": "Nvidia",
+      "domain": "personal_watch",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nvidia.com/en-us/about-nvidia/leadership-team/jensen-huang/",
+        "passage": "Jensen Huang has served continuously since its inception as president, chief executive officer, and a member of the board of directors.",
+        "claim_context": "Nvidia Executive Biography",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Contradicted by continuous service record.",
+      "evidence_limitations": "Fabricated executive termination.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_09",
+      "claim": "The Federal Trade Commission sued to block Microsoft's acquisition of Activision Blizzard in December 2022",
+      "entity": "FTC",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.ftc.gov/news-events/news/press-releases/2022/12/ftc-seeks-block-microsofts-acquisition-activision-blizzard",
+        "passage": "Dec. 8, 2022 \u2014 The Federal Trade Commission today issued an administrative complaint seeking to block technology giant Microsoft Corp. from acquiring leading video game developer Activision Blizzard, Inc.",
+        "claim_context": "FTC Official Press Release",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official FTC administrative action announced December 8, 2022.",
+      "evidence_limitations": "Regulatory enforcement action.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_10",
+      "claim": "The FTC never challenged or reviewed Microsoft's acquisition of Activision Blizzard",
+      "entity": "FTC",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.ftc.gov/news-events/news/press-releases/2022/12/ftc-seeks-block-microsofts-acquisition-activision-blizzard",
+        "passage": "The Federal Trade Commission today issued an administrative complaint seeking to block technology giant Microsoft Corp. from acquiring leading video game developer Activision Blizzard, Inc.",
+        "claim_context": "FTC Official Press Release",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by FTC formal administrative complaint and district court litigation.",
+      "evidence_limitations": "Regulatory denial of documented legal action.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_11",
+      "claim": "Tesla Cybertruck features an exoskeleton exterior made from ultra-hard 30X cold-rolled stainless steel",
+      "entity": "Tesla",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.tesla.com/cybertruck",
+        "passage": "Cybertruck is built with an exterior shell made for ultimate durability and passenger protection. Starting with a nearly impenetrable exoskeleton, every component is designed for superior strength and endurance, from Ultra-Hard 30X Cold-Rolled stainless-steel structural skin to Tesla armor glass.",
+        "claim_context": "Tesla Cybertruck Product Specification",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official Tesla product specification material description.",
+      "evidence_limitations": "Manufacturer product specifications.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_12",
+      "claim": "Tesla Cybertruck body panels are manufactured from 100% biodegradable corrugated cardboard",
+      "entity": "Tesla",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.tesla.com/cybertruck",
+        "passage": "Cybertruck is built with an exterior shell made from Ultra-Hard 30X Cold-Rolled stainless-steel structural skin.",
+        "claim_context": "Tesla Cybertruck Product Specification",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by manufacturing materials: stainless steel, not cardboard.",
+      "evidence_limitations": "Absurd material composition claim.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_13",
+      "claim": "Apple Inc. was originally incorporated on January 3, 1977 as Apple Computer, Inc.",
+      "entity": "Apple",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.sec.gov/edgar/browse/?CIK=0000320193",
+        "passage": "SEC CIK 0000320193: Apple Inc. State of incorporation: California. Date of incorporation: January 3, 1977. Formerly Apple Computer, Inc.",
+        "claim_context": "SEC EDGAR Apple Corporate Filing Record",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official SEC EDGAR corporate registration record.",
+      "evidence_limitations": "Corporate registration historical record.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_14",
+      "claim": "Apple Inc. was incorporated for the first time in December 2025",
+      "entity": "Apple",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.sec.gov/edgar/browse/?CIK=0000320193",
+        "passage": "SEC CIK 0000320193: Apple Inc. Date of incorporation: January 3, 1977.",
+        "claim_context": "SEC EDGAR Apple Corporate Filing Record",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Contradicts incorporation date by nearly 50 years.",
+      "evidence_limitations": "Severe historical anachronism.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "incorrect_dates"
+    },
+    {
+      "id": "HELD_15",
+      "claim": "The United States Food and Drug Administration regulates medical devices, pharmaceuticals, and biological products",
+      "entity": "FDA",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.fda.gov/about-fda/what-we-do",
+        "passage": "The Food and Drug Administration is responsible for protecting the public health by ensuring the safety, efficacy, and security of human and veterinary drugs, biological products, and medical devices.",
+        "claim_context": "FDA Statutory Mission Overview",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Statutory regulatory authority overview.",
+      "evidence_limitations": "Government agency statutory scope.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_16",
+      "claim": "The FDA's sole responsibility is regulating the design of submarine torpedoes",
+      "entity": "FDA",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.fda.gov/about-fda/what-we-do",
+        "passage": "The FDA regulates foods, drugs, medical devices, radiation-emitting products, vaccines, cosmetics, and tobacco. It does not regulate military naval munitions.",
+        "claim_context": "FDA Statutory Mission Overview",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by statutory jurisdiction.",
+      "evidence_limitations": "Jurisdictional contradiction.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_17",
+      "claim": "An unidentified rumor on an unmoderated message board claims an executive secretly bought a diamond mine on Mars",
+      "entity": "Martian Diamond Mine",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "INSUFFICIENT_EVIDENCE",
+      "expected_verdicts": [
+        "INSUFFICIENT_EVIDENCE",
+        "UNVERIFIED"
+      ],
+      "reference": {
+        "primary_url": "",
+        "passage": "",
+        "claim_context": "Anonymous message board rumor",
+        "source_tier": "TIER_4_UNVERIFIED",
+        "source_role": "COMMUNITY"
+      },
+      "ground_truth_rationale": "Zero verifiable evidence, primary filings, or planetary mining assets exist.",
+      "evidence_limitations": "Absurd unverified rumor.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "insufficient_evidence"
+    },
+    {
+      "id": "HELD_18",
+      "claim": "A social media user alleges that a commercial airplane was spotted landing on the surface of the sun",
+      "entity": "Solar Landing",
+      "domain": "trending",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://science.nasa.gov/sun/",
+        "passage": "The surface temperature of the Sun is approximately 5,500 degrees Celsius (9,932 degrees Fahrenheit). No commercial aircraft or physical human structure can land on the Sun.",
+        "claim_context": "NASA Solar Physics Reference",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by basic astrophysics and thermal limits of materials.",
+      "evidence_limitations": "Physical impossibility.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_19",
+      "claim": "A phishing domain spoofing Bank of America was identified asking users to submit PIN and debit card details",
+      "entity": "Bank of America",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.cisa.gov/news-events/alerts/2020/09/24/cisa-fbi-fbi-ic3-phishing-guidance",
+        "passage": "CISA/FBI Alert: Malicious actors frequently establish domain names mimicking major financial institutions (e.g. bankofamerica-security-portal.xyz) to harvest account credentials and payment card PINs.",
+        "claim_context": "CISA/FBI Financial Phishing Alert",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "CISA security alert describes documented financial phishing vector.",
+      "evidence_limitations": "Cybersecurity advisory.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "cybersecurity"
+    },
+    {
+      "id": "HELD_20",
+      "claim": "All banking phishing domains are operated directly by official bank tellers during business hours",
+      "entity": "Banking Phishing",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.cisa.gov/news-events/alerts/2020/09/24/cisa-fbi-fbi-ic3-phishing-guidance",
+        "passage": "Phishing websites are registered and hosted by third-party criminal threat actors and cybercrime syndicates seeking unauthorized access, completely unaffiliated with authorized bank personnel.",
+        "claim_context": "CISA/FBI Financial Phishing Alert",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Phishing infrastructure is operated by criminal threat actors, not official bank staff.",
+      "evidence_limitations": "Attribution contradiction.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_21",
+      "claim": "The United States Constitution was signed in Philadelphia in September 1787",
+      "entity": "United States",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.archives.gov/founding-docs/constitution",
+        "passage": "The Constitution of the United States: Signed in Convention September 17, 1787 by thirty-nine delegates at Independence Hall in Philadelphia, Pennsylvania.",
+        "claim_context": "National Archives Founding Documents",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "National Archives primary historical record.",
+      "evidence_limitations": "Historical founding document.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_22",
+      "claim": "The United States Constitution was written and signed on the moon in 2020",
+      "entity": "United States",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.archives.gov/founding-docs/constitution",
+        "passage": "Signed September 17, 1787 at Independence Hall in Philadelphia, Pennsylvania.",
+        "claim_context": "National Archives Founding Documents",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Contradicts date by 233 years and location by astronomical distances.",
+      "evidence_limitations": "Severe spatial and temporal fabrication.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_23",
+      "claim": "A customer who received a wrong sneaker size in the mail proves a coordinated international criminal counterfeit conspiracy",
+      "entity": "Retail Customer",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED",
+        "MISLEADING"
+      ],
+      "reference": {
+        "primary_url": "https://www.consumerfinance.gov/consumer-tools/",
+        "passage": "Consumer fulfillment errors (such as shipping an incorrect size) are routine retail order fulfillment mistakes, distinguished from organized counterfeit trademark counterfeiting rings.",
+        "claim_context": "Consumer protection order resolution guidance",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Fulfillment packaging errors do not substantiate criminal trademark counterfeiting conspiracies.",
+      "evidence_limitations": "Grievance exaggeration.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_24",
+      "claim": "The official Google Chrome browser web store is hosted on chromewebstore.google.com",
+      "entity": "Google",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://chromewebstore.google.com",
+        "passage": "Chrome Web Store: Discover extensions and themes to customize Google Chrome.",
+        "claim_context": "Google Chrome Web Store Official Portal",
+        "source_tier": "TIER_4_UTILITY",
+        "source_role": "UTILITY_PORTAL"
+      },
+      "ground_truth_rationale": "Official Google web store portal domain.",
+      "evidence_limitations": "Catalog utility portal.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_25",
+      "claim": "A website at chrome-malware-download-store.cc offering free pirated movies is an official Google Chrome store",
+      "entity": "Google",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://chromewebstore.google.com",
+        "passage": "The official Chrome Web Store is hosted under google.com domains. Third-party domains offering pirated media are unauthorized and unaffiliated.",
+        "claim_context": "Google Chrome Web Store Official Portal",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Unauthorized third-party domain hosting pirated content.",
+      "evidence_limitations": "Hostile lookalike domain.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "brand_impersonation"
+    },
+    {
+      "id": "HELD_26",
+      "claim": "The National Institute of Standards and Technology (NIST) maintains the National Vulnerability Database (NVD)",
+      "entity": "NIST",
+      "domain": "cybersecurity",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://nvd.nist.gov/general",
+        "passage": "The NVD is the U.S. government repository of standards based vulnerability management data represented using the Common Vulnerabilities and Exposures (CVE) specification, operated by NIST.",
+        "claim_context": "NIST NVD Program Overview",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official government agency program documentation.",
+      "evidence_limitations": "U.S. government agency operational mandate.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_27",
+      "claim": "NIST NVD is operated as a secret underground gambling casino in Las Vegas",
+      "entity": "NIST",
+      "domain": "cybersecurity",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://nvd.nist.gov/general",
+        "passage": "The NVD is operated by the National Institute of Standards and Technology, a non-regulatory agency of the United States Department of Commerce.",
+        "claim_context": "NIST NVD Program Overview",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Contradicted by federal statutory mandate.",
+      "evidence_limitations": "Absurd fabrication.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "HELD_28",
+      "claim": "An anonymous social media rumor claims that a secret portal exists to another dimension beneath a corporate office",
+      "entity": "Dimensional Portal",
+      "domain": "trending",
+      "reference_date": "2026-10-14",
+      "truth_label": "INSUFFICIENT_EVIDENCE",
+      "expected_verdicts": [
+        "INSUFFICIENT_EVIDENCE",
+        "UNVERIFIED"
+      ],
+      "reference": {
+        "primary_url": "",
+        "passage": "",
+        "claim_context": "Unsubstantiated fantasy rumor",
+        "source_tier": "TIER_4_UNVERIFIED",
+        "source_role": "COMMUNITY"
+      },
+      "ground_truth_rationale": "Zero evidence exists for an interdimensional portal in corporate architecture.",
+      "evidence_limitations": "Fantasy proposition with no verifiable empirical evidence.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "insufficient_evidence"
+    },
+    {
+      "id": "HELD_29",
+      "claim": "The World Wide Web Consortium (W3C) published the HTML5 Recommendation in October 2014",
+      "entity": "W3C",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.w3.org/News/2014/html5-rec.html.en",
+        "passage": "28 October 2014 \u2014 Today W3C announced that HTML5 is a completed W3C Recommendation. The specification defines the 5th major version of HTML.",
+        "claim_context": "W3C HTML5 Recommendation Announcement",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "W3C official press release on October 28, 2014.",
+      "evidence_limitations": "Standards body publication record.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "HELD_30",
+      "claim": "HTML5 was originally created by ancient Greek philosophers in 400 BC",
+      "entity": "W3C",
+      "domain": "general_science",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.w3.org/News/2014/html5-rec.html.en",
+        "passage": "HTML5 was developed by the W3C Web Applications and WHATWG working groups in the 21st century and recommended in 2014.",
+        "claim_context": "W3C HTML5 Recommendation Announcement",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by technological and human history.",
+      "evidence_limitations": "Extreme anachronistic fabrication.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    }
+  ]
+}

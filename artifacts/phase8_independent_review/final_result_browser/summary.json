@@ -1,0 +1,371 @@
+{
+  "scope": "320px recorded live-API replay plus synthetic 200-record/long-title/hostile-link controls. No manual screen reader.",
+  "records": [
+    {
+      "agent": "scout",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 154.0,
+      "screenshot": "scout-API_REPLAY-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udcd6 Deep-Read Sources\n0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83c\udfdb\ufe0f Primary Filings\n0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\u2442 Syndication & Independence\n1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udccb Selection Audit\n2"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "2"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udd78\ufe0f Evidence Graph"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        },
+        {
+          "id": "",
+          "cls": "drawer-head",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n\u00d7"
+        },
+        {
+          "id": "drawerFindingTitle",
+          "cls": "",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS"
+        },
+        {
+          "id": "",
+          "cls": "drawer-close",
+          "text": "\u00d7"
+        },
+        {
+          "id": "drawerBody",
+          "cls": "drawer-body",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "scout",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 173.49,
+      "screenshot": "scout-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udcd6 Deep-Read Sources\n0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83c\udfdb\ufe0f Primary Filings\n0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "0"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\u2442 Syndication & Independence\n1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "1"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udccb Selection Audit\n2"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-count",
+          "text": "2"
+        },
+        {
+          "id": "",
+          "cls": "fe-tab-btn ",
+          "text": "\ud83d\udd78\ufe0f Evidence Graph"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        },
+        {
+          "id": "",
+          "cls": "drawer-head",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS\n\u00d7"
+        },
+        {
+          "id": "drawerFindingTitle",
+          "cls": "",
+          "text": "// SOURCE PROVENANCE & QUALITY DIMENSIONS"
+        },
+        {
+          "id": "",
+          "cls": "drawer-close",
+          "text": "\u00d7"
+        },
+        {
+          "id": "drawerBody",
+          "cls": "drawer-body",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "trending",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 174.65,
+      "screenshot": "trending-API_REPLAY-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": []
+    },
+    {
+      "agent": "trending",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 92.08,
+      "screenshot": "trending-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": []
+    },
+    {
+      "agent": "brandshield",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 99.26,
+      "screenshot": "brandshield-API_REPLAY-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 459,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "scan-card",
+          "text": "NARRATIVE THEME\nLOW RISK\nGeneral Consumer Discourse on Apple\nPublic commentary and reviews"
+        },
+        {
+          "id": "",
+          "cls": "source-link-btn",
+          "text": "Open \u2197"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "OfficialAppleSupport"
+        },
+        {
+          "id": "",
+          "cls": "source-link-btn",
+          "text": "Open \u2197"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "Apple(India)"
+        },
+        {
+          "id": "",
+          "cls": "source-link-btn",
+          "text": "Open \u2197"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "brandshield",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 123.88,
+      "screenshot": "brandshield-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 459,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": [
+        {
+          "id": "",
+          "cls": "scan-card",
+          "text": "NARRATIVE THEME\nLOW RISK\nGeneral Consumer Discourse on Apple\nPublic commentary and reviews"
+        },
+        {
+          "id": "",
+          "cls": "source-link-btn",
+          "text": "Open \u2197"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "OfficialAppleSupport"
+        },
+        {
+          "id": "",
+          "cls": "source-link-btn",
+          "text": "Open \u2197"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": "Apple(India)"
+        },
+        {
+          "id": "",
+          "cls": "source-link-btn",
+          "text": "Open \u2197"
+        },
+        {
+          "id": "",
+          "cls": "",
+          "text": ""
+        }
+      ]
+    },
+    {
+      "agent": "personal_watch",
+      "mode": "API_REPLAY",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 89.39,
+      "screenshot": "personal_watch-API_REPLAY-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": []
+    },
+    {
+      "agent": "personal_watch",
+      "mode": "SYNTHETIC_STRESS",
+      "error": null,
+      "page_errors": [],
+      "render_ms": 97.7,
+      "screenshot": "personal_watch-SYNTHETIC_STRESS-320.png",
+      "axe": {
+        "violations": [],
+        "incomplete": [
+          "color-contrast"
+        ]
+      },
+      "width": 320,
+      "document_width": 320,
+      "unsafe_links": 0,
+      "injected_images": 0,
+      "overflow": []
+    }
+  ]
+}

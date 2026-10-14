@@ -5,6 +5,10 @@ inventory, not proof that every external provider is available.
 
 ## Executed path
 
+### Independent follow-up — 2026-10-14
+
+[Current review](PHASE8_INDEPENDENT_REVIEW_2026-10-14.md) traced real four-agent FastAPI scans through shared planning/acquisition/qualification and temporary dossier persistence. Authoritative native adapters are now registered in the actual shared service; source ownership/content authority use shared canonical-origin classification. Specialist model extractions retain only explicit valid evidence IDs and cannot self-promote to verified claims. This does not prove citation entailment or online model correctness. Grouped Scout records are normalized into unified reports without fabricated dictionary-key sources. Recorded API replay, not fresh browser requests, is used for result-rendering proof.
+
 | Step | Production owner | Principal hand-off |
 |---|---|---|
 | Claim request | `backend/api/claims.py` | `POST /api/claims/verify` validates and normalizes the user claim. |

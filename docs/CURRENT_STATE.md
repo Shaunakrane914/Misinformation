@@ -1,77 +1,60 @@
-# Current project state — 2026-10-13
+# Current project state — 2026-10-14
 
-This is the maintained status entry point for `feat/phase8b-extraction` at
-`e74b9847ab107e2793f69e2155914028f02391b6`. It is a dated observation,
-not a claim that every future checkout or deployment has the same state. Read
-the [latest handoff](handoffs/README.md), inspect `git status --short --branch`
-and the checked-out commit, then use the code and tests as the source of truth.
-The separate `feat/phase8-real-acquisition-proof` worktree is older and does
-not yet contain this branch's Phase 8B/8C/8E implementation; do not silently
-combine their test counts or source files.
+Current review branch: `feat/phase8-independent-audit-codex`, based on Gemini
+`a10fde82467df21508b4a254507b414cd5b6e9fd`. Implementation checkpoints
+`195ae0a`, `220f16f`, `d58c5ba`, `c420296` and `0f5a659`; later commits package proof and documentation.
+Inspect the checked-out commit and worktree before continuing.
 
-## Phase 8 acceptance
+Start with the [independent Phase 8 review](architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md)
+and [handoff](handoffs/2026-10-14_PHASE8_INDEPENDENT_REVIEW.md).
+Earlier all-stage completion claims do not override independent evidence.
 
-| Gate | State | Evidence and boundary |
+## Acceptance
+
+| Stage | State | Boundary |
 |---|---|---|
-| 8A — real acquisition proof | PASS for the bounded 16-operation clean-commit re-probe | [48-scenario record](../artifacts/phase8_extraction_spotchecks/2026-10-13_09-13-13Z/) and [handoff](handoffs/2026-10-13_PHASE8B_FULL_REPROBE_AND_SUMMARY_RUNNER.md). This is sampled live connectivity/content-depth proof, not universal provider availability. |
-| 8B — maximum extraction | PARTIAL | [Field matrix](architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md) distinguishes captured, conditional and missing fields. Pagination, full discussions and complete provider schemas remain unproved. |
-| 8C — four-agent intelligence | PARTIAL | [Research-truth checkpoint](handoffs/2026-10-13_PHASE8C_8E_TRUTH_AND_RENDERING.md) removes unsupported contradiction and identity-certainty claims; evaluated claim-level usefulness is still outstanding. |
-| 8D — source expansion | NOT ACCEPTED | No new source should be called production-ready without permission assessment, real acquisition proof, provenance, tests and measured added value. |
-| 8E — frontend redesign | PARTIAL | Four agent pages were improved and [rendered in Chromium](../artifacts/phase8_frontend_visual/2026-10-13_final_truthful_labels/summary.json) at 1440/390/320px. [Automated axe](../artifacts/phase8_frontend_accessibility/2026-10-13_final_truthful_labels_axe/summary.json) found zero violations in 12 initial states, but contrast checks were incomplete on gradients. Live backend-result, large-set and manual screen-reader acceptance remain open. |
-| 8F — final integration/research-quality audit | NOT ACCEPTED | Offline regressions and hosted CI pass; adversarial real-world investigation quality and release acceptance have not been established. |
+| 8A acquisition | PASS, bounded sample | All 16 protected operations returned real samples. Not uptime, full history or unrestricted provider access. |
+| 8B extraction | PARTIAL | Full pagination, filing/XBRL bodies and full academic papers remain incomplete. |
+| 8C intelligence | PARTIAL | Source spoofing, unrelated support, manufactured citations and specialist false certainty corrected. General semantic adjudication is not calibrated. |
+| 8D expansion | PARTIAL | SEC/NVD/arXiv/FactCheck registered in shared runtime. SEC contact and FactCheck key required; added claim value not fully verified. |
+| 8E frontend | PARTIAL | Chromium/API-replay and hostile/large-input checks; mobile/accessibility corrections. Contrast, manual screen reader and evidence-rich live acceptance remain open. |
+| 8F integration | PARTIAL; release gate unmet | API and persistence execution work; sparse coverage and independent accuracy/recall not accepted. |
 
-The 16 protected operations are listed in [AGENTS.md](../AGENTS.md) and
-exercised by [route-contract tests](../tests/unit/test_recovered_operation_routes.py).
-The runtime also exposes auxiliary channels; a count of registered channels,
-eligible operations, or successful test fixtures is not a count of healthy
-live providers. All external reads remain bounded and may legitimately return
-`EMPTY_RESULT`, `AUTH_REQUIRED`, `RATE_LIMITED` or another non-success class.
+## Dated evidence snapshot
 
-## Executed system and evidence boundaries
+Full offline suite **1,156 passed**; fast suite **948 passed**. Fatal Python
+lint, all seven Node frontend scripts and frozen hashes pass. Isolated smoke
+and persistence/rollback readers pass; historical archive and deployed
+rollback remain **NOT_VERIFIED**.
 
-FastAPI routers in [`backend/api/`](../backend/api/) handle claim submission,
-the four specialist scans, acquisition diagnostics, replay and system status.
-Claim verification proceeds through source planning, the shared acquisition
-runtime, evidence qualification, research and verdict synthesis. The
-[production-path trace](architecture/PHASE8_INVESTIGATION_PATH_TRACE.md)
-identifies concrete owners and remaining bypass risks. The four static
-[agent pages](../frontend/README.md) render supplied backend data and explicit
-absence/uncertainty states; a safe clickable URL is not a verified publisher,
-a user-entered handle is not an official identity, and an empty finding list
-is not proof of truth. Simulation and offline ML benchmark metrics are not
-live misinformation-verdict accuracy.
+Clean `220f16f` Apple API run: 3/0/0/0 evidence records; four HTTP 200 responses
+and assembled unified reports. Mocks disabled, no live LLM key, deterministic
+fallback used. This is not a correct-investigation PASS. Ten source-adjudicated
+holdout cases: safe outcomes 10/10, **truth resolution 0/4** before and after.
+Not human ground truth, population accuracy, precision or recall.
 
-## Verification snapshot and limits
+Post-fix narrow-browser replay/stress has zero observed axe violations,
+script images, unsafe links or document overflow. Gradient contrast and
+manual assistive-technology acceptance remain open.
+[Proof](../artifacts/phase8_independent_review/) is append-only.
+[CI closeout](handoffs/2026-10-14_PHASE8_INDEPENDENT_CI_CLOSEOUT.md) separates
+remote verification from local tests; baseline CI does not verify new changes.
 
-On this branch before the documentation-only update, local commands reported
-`pytest tests/ -q`: **1,051 passed**; `pytest tests/unit tests/chaos
-tests/security -q`: **855 passed**; all six Node frontend scripts, fatal
-Python lint, frozen-hash verification and isolated release smoke passed. The
-offline rollback check passed against fresh temporary persistence, while the
-historical archive was `NOT_VERIFIED` in the isolated worktree. Hosted
-[GitHub Actions run 38420523255](https://github.com/Shaunakrane914/Misinformation/actions/runs/38420523255)
-passed all five jobs for exact commit `e74b984`. It does not run a hosted
-browser or live-provider matrix. Current documentation edits require their
-own validation before this snapshot is extended.
+## Preserve and continue
 
-The protected historical dossier inventory in the original worktree reported
-55 malformed JSON files. Those files are not present for inspection in this
-isolated worktree and must never be overwritten or silently repaired. The
-frozen retrieval datasets, `research/`, prior `artifacts/`, working scrapers
-and compatibility shims are protected. Neither offline tests nor this status
-document authorize a production deployment, merge to `main`, or launch claim.
+Frozen retrieval datasets, all historical dossiers, `research/`, old
+`artifacts/`, scrapers and shims remain unchanged. The original workspace
+inventory reported 55 malformed dossiers; no repair or overwrite occurred.
+No merge, deployment, paid provider or production-secret change.
 
-## Documentation reading paths
+Prioritize external claim-to-passage adjudication, claim-relevant discovery,
+issuer/period/unit-aligned financial evidence, citation entailment,
+authorized model/provider checks, lineage and evidence-rich accessibility.
+An official hostname, heuristic confidence or valid citation ID is not truth.
 
-- New contributor: [README](../README.md) → [developer guide](development/README.md)
-  → [testing/CI](testing/CI_COVERAGE_MATRIX.md) → [latest handoff](handoffs/README.md).
-- Architecture/research reviewer: [target architecture](architecture/TARGET_ARCHITECTURE.md)
-  → [executed path](architecture/PHASE8_INVESTIGATION_PATH_TRACE.md)
-  → [8B field matrix](architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md).
-- Operator: [production configuration](operations/PRODUCTION_CONFIGURATION_MATRIX.md)
-  → [rollback limitations](operations/ROLLBACK_VERIFICATION.md)
-  → [current CI coverage](testing/CI_COVERAGE_MATRIX.md).
-
-Older phase reports, benchmark results and handoffs are immutable historical
-evidence. Their past-tense numbers or readiness assessments do not override
-this dated status, the checked-out code, or a new verification run.
+Read the [target architecture](architecture/TARGET_ARCHITECTURE.md),
+[executed path](architecture/PHASE8_INVESTIGATION_PATH_TRACE.md),
+[extraction matrix](architecture/PHASE8B_MAXIMUM_EXTRACTION_SCHEMA_MATRIX.md),
+[configuration](operations/PRODUCTION_CONFIGURATION_MATRIX.md),
+[CI coverage](testing/CI_COVERAGE_MATRIX.md) and [handoff index](handoffs/README.md).
+Historical reports are retained as dated snapshots, not permanent acceptance.

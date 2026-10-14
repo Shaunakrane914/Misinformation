@@ -1,5 +1,9 @@
 # Phase 8B maximum extraction schema matrix — working assessment
 
+## Independent source-expansion correction — 2026-10-14
+
+The [independent review](PHASE8_INDEPENDENT_REVIEW_2026-10-14.md) retains this gate as PARTIAL. SEC submission records carry `DIRECT_METADATA`/discovery, not acquired full filings or XBRL facts; missing owner-approved `SEC_USER_AGENT` stops network execution. NVD supplies vulnerability descriptions/CVSS/references, not product-reputation evidence. arXiv supplies `DIRECT_ABSTRACT`, not full paper content or peer-review certification. FactCheck supplies publisher-attributed `DIRECT_METADATA` ClaimReview records, not review bodies or Aegis verdicts; missing key abstains without traffic. Four routes are now registered in the shared service, but successful adapter normalization alone is not measured downstream claim value.
+
 **Gate: PARTIAL (2026-10-13).** This is a measured checkpoint, not a claim
 that every possible public field or page has been extracted. The
 [clean-commit 48-scenario re-probe](../../artifacts/phase8_extraction_spotchecks/2026-10-13_09-13-13Z/)

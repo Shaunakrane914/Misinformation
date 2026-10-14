@@ -1,0 +1,333 @@
+{
+  "scope": "Small analyst-adjudicated primary-reference holdout, not human ground truth or population accuracy. Created after development fixes; no subsequent tuning to these cases.",
+  "engine_commit": "a10fde82467df21508b4a254507b414cd5b6e9fd",
+  "dirty_source": false,
+  "manifest_sha256": "c7887334753ed5a15692893d20344f3b508cfa41bde4764117b15382b4e29090",
+  "cases": [
+    {
+      "id": "SEC_TRUE",
+      "entity": "SEC",
+      "claim": "SEC EDGAR has a maximum request rate of 10 requests per second",
+      "reference": "sec",
+      "truth_label": "TRUE_AT_OBSERVATION",
+      "expected": [
+        "SUPPORTED",
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Exact policy value; one reference permits conservative abstention.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "SEC_TRUE",
+          "canonical_url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+          "source_name": "",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_OFFICIAL_FILING",
+          "primary_source": true,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Current max request rate: 10 requests/second.",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "SEC_FALSE",
+      "entity": "SEC",
+      "claim": "SEC EDGAR has a maximum request rate of 100 requests per second",
+      "reference": "sec",
+      "truth_label": "FALSE_AT_OBSERVATION",
+      "expected": [
+        "REFUTED",
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Counterfactual value directly conflicts with the published policy.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "SEC_FALSE",
+          "canonical_url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+          "source_name": "",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_OFFICIAL_FILING",
+          "primary_source": true,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Current max request rate: 10 requests/second.",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "ARXIV_TITLE",
+      "entity": "arXiv",
+      "claim": "The title of arXiv paper 1706.03762 is Attention Is All You Need",
+      "reference": "arxiv",
+      "truth_label": "TRUE",
+      "expected": [
+        "SUPPORTED",
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Primary bibliographic title; passage-only engine may abstain.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "ARXIV_TITLE",
+          "canonical_url": "https://arxiv.org/abs/1706.03762",
+          "source_name": "",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_INVESTIGATIVE",
+          "primary_source": false,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Attention Is All You Need",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "ARXIV_FAKE_TITLE",
+      "entity": "arXiv",
+      "claim": "The title of arXiv paper 1706.03762 is Recurrence Is All You Need",
+      "reference": "arxiv",
+      "truth_label": "FALSE",
+      "expected": [
+        "REFUTED",
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Counterfactual title disagrees with the indexed record.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "ARXIV_FAKE_TITLE",
+          "canonical_url": "https://arxiv.org/abs/1706.03762",
+          "source_name": "",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_INVESTIGATIVE",
+          "primary_source": false,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Attention Is All You Need",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "IRRELEVANT",
+      "entity": "SEC",
+      "claim": "SEC announced a new cryptocurrency product",
+      "reference": "sec",
+      "truth_label": "NOT_ESTABLISHED",
+      "expected": [
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Fair-access policy does not support a product announcement.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "IRRELEVANT",
+          "canonical_url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+          "source_name": "",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_OFFICIAL_FILING",
+          "primary_source": true,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Current max request rate: 10 requests/second.",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "QUOTE",
+      "entity": "SEC",
+      "claim": "The SEC chair said every cryptocurrency is safe",
+      "reference": "sec",
+      "truth_label": "NOT_ESTABLISHED",
+      "expected": [
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Retrieved policy contains no speaker or quote evidence.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "QUOTE",
+          "canonical_url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+          "source_name": "",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_OFFICIAL_FILING",
+          "primary_source": true,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Current max request rate: 10 requests/second.",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "RECENCY",
+      "entity": "SEC",
+      "claim": "SEC changed the EDGAR maximum request rate today",
+      "reference": "sec",
+      "truth_label": "NOT_ESTABLISHED",
+      "expected": [
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Observation time is not policy publication or change time.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "RECENCY",
+          "canonical_url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+          "source_name": "",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_OFFICIAL_FILING",
+          "primary_source": true,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Current max request rate: 10 requests/second.",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "SPOOF",
+      "entity": "SEC",
+      "claim": "SEC approved a cryptocurrency product",
+      "reference": "sec",
+      "replace_url": "https://sec.gov.attacker.example/filing",
+      "truth_label": "NOT_ESTABLISHED",
+      "expected": [
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Counterfactual hostile origin must not gain regulator authority.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.25,
+      "citations": [
+        {
+          "evidence_id": "SPOOF",
+          "canonical_url": "https://sec.gov.attacker.example/filing",
+          "source_name": "",
+          "source_role": "DISCOVERY",
+          "source_tier": "TIER_3_AGGREGATE",
+          "primary_source": false,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Claim circulating solely across unverified community/social channels without primary corroboration.",
+      "reference_passage": "Current max request rate: 10 requests/second.",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "METADATA_ONLY",
+      "entity": "arXiv",
+      "claim": "The paper proves every language model is trustworthy",
+      "reference": "arxiv",
+      "depth": "DIRECT_METADATA",
+      "truth_label": "NOT_ESTABLISHED",
+      "expected": [
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Paper title is not proof of research conclusions.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "METADATA_ONLY",
+          "canonical_url": "https://arxiv.org/abs/1706.03762",
+          "source_name": "",
+          "source_role": "SECONDARY",
+          "source_tier": "TIER_2_INVESTIGATIVE",
+          "primary_source": false,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Attention Is All You Need",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    },
+    {
+      "id": "CONDITIONAL",
+      "entity": "SEC",
+      "claim": "If SEC allows 100 requests per second, the crawler will be faster",
+      "reference": "sec",
+      "truth_label": "NOT_ESTABLISHED",
+      "expected": [
+        "UNVERIFIED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reason": "Conditional assertion must not turn into a verified policy change.",
+      "actual_verdict": "UNVERIFIED",
+      "confidence": 0.45,
+      "citations": [
+        {
+          "evidence_id": "CONDITIONAL",
+          "canonical_url": "https://www.sec.gov/search-filings/edgar-search-assistance/accessing-edgar-data",
+          "source_name": "",
+          "source_role": "PRIMARY",
+          "source_tier": "TIER_1_OFFICIAL_FILING",
+          "primary_source": true,
+          "published_at": "Recent",
+          "relevant_excerpt": ""
+        }
+      ],
+      "rationale": "Sparse corroboration retrieved; claim remains unverified pending independent confirmation.",
+      "reference_passage": "Current max request rate: 10 requests/second.",
+      "retrieved_in_this_run": false,
+      "acceptable_safe_outcome": true,
+      "truth_resolved": false
+    }
+  ],
+  "safe_outcomes": 10,
+  "case_count": 10,
+  "labeled_truth_cases": 4,
+  "truth_resolved": 0,
+  "false_positive_supports": 0,
+  "precision": null,
+  "recall": null,
+  "population_accuracy": null,
+  "limitations": "Small manually source-adjudicated component set; abstention is safe but not successful truth resolution. No human annotation, retrieval recall, speaker verification or prevalence estimates."
+}

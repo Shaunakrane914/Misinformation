@@ -24,8 +24,10 @@
 The current Phase 8 branch has bounded live proof for 16 protected acquisition
 operations and passing offline CI, but maximum extraction, research-quality
 evaluation, complete frontend acceptance and deployed rollback are not finished.
-The 1,051-test local result and five-job hosted run are dated checkpoints, not
-live-provider uptime or production-launch approval. See the
+The [independent Phase 8 review](docs/architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md)
+corrected source spoofing, manufactured citations, unsupported specialist labels,
+real API contract failures and mobile result overflow. Test/CI results are dated
+checkpoints, not misinformation accuracy or production-launch approval. See the
 [current-state matrix](docs/CURRENT_STATE.md) before using the historical
 benchmarks and capability descriptions below.
 

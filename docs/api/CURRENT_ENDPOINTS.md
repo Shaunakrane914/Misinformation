@@ -1,4 +1,6 @@
-# Current API route map — 2026-10-13
+# Current API route map — independent follow-up 2026-10-14
+
+Route decorators remain as below; the [independent review](../architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md) corrected output-contract behavior. Scout grouped catalysts/contradictions/news/social now assemble without slice errors or dictionary-key evidence. Specialist identity/media/PII/review outputs may use new conservative review-required status strings; unknown frontend values must stay unverified. Model-provided claims cannot verify themselves merely by citing a valid ID. Capability inventory includes four authoritative channels without implying live health. Exact runtime schemas remain authoritative.
 
 This map is based on the decorators and router registry in
 [`backend/api/`](../../backend/api/) at `e74b984`. The runtime OpenAPI at

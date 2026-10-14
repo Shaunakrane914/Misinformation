@@ -1,0 +1,86 @@
+{
+  "suite": "Phase 7.1 Isolated Release-Candidate Smoke Validation",
+  "timestamp": "2026-10-14T04:51:32.951683+00:00",
+  "execution_mode": "OFFLINE_REGRESSION",
+  "gates": {
+    "healthz": {
+      "status": "PASS",
+      "data": {
+        "status": "ok",
+        "system": "Aegis Protocol",
+        "version": "4.1.0",
+        "response_generated_at": "2026-10-14T04:51:32.952544Z",
+        "registered_modules": 7,
+        "active_agents": null,
+        "active_agent_count_status": "NOT_APPLICABLE_ON_DEMAND_EXECUTION"
+      }
+    },
+    "readyz": {
+      "status": "PASS",
+      "data": {
+        "status": "ready",
+        "mode": "READY_UNVERIFIED",
+        "version": "4.1.0",
+        "operation_summary": {
+          "total": 69,
+          "eligible": 39,
+          "verified": 0,
+          "auth_required": 6,
+          "policy_blocked": 3,
+          "not_implemented": 21
+        },
+        "note": "Readiness does not imply that unprobed third-party providers are healthy.",
+        "response_generated_at": "2026-10-14T04:51:32.954063Z"
+      }
+    },
+    "capabilities": {
+      "status": "PASS",
+      "channels_count": 22
+    },
+    "doctor": {
+      "status": "PASS",
+      "summary": {
+        "healthy": 0,
+        "degraded": 7,
+        "auth_required": 9,
+        "unavailable": 2
+      }
+    },
+    "secret_redaction": {
+      "status": "PASS"
+    },
+    "frontend_pages": {
+      "status": "PASS",
+      "pages_verified": 5
+    }
+  },
+  "scenarios": {
+    "nvidia_revenue_scout": {
+      "status": "PASS",
+      "report_id": null,
+      "evidence_count": 0
+    },
+    "nvidia_rtx5090_trending": {
+      "status": "PASS",
+      "trend_count": 0
+    },
+    "tata_sons_brandshield": {
+      "status": "PASS",
+      "threats_count": 0
+    },
+    "anthropic_personal_watch": {
+      "status": "PASS",
+      "alerts_count": 0
+    },
+    "zero_evidence_guard": {
+      "status": "PASS",
+      "verdict": "INSUFFICIENT_EVIDENCE"
+    }
+  },
+  "errors": [],
+  "verdict": "OFFLINE_SMOKE_PASS",
+  "limitations": [
+    "Uses temporary storage, disabled acquisition and explicit test LLM mocks.",
+    "Does not verify live scraping, deployed credentials, or production readiness."
+  ]
+}

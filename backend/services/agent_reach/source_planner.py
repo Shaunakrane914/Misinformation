@@ -316,15 +316,22 @@ class SourcePlanningEngine:
             return [direct] if direct.channel in allowed else []
 
         target = entity or claim
+        cve_match = re.search(r'\b(CVE-\d{4}-\d{4,7})\b', claim, re.I)
+        arxiv_match = re.search(r'\b(?:arxiv:\s*)?(\d{4}\.\d{4,5})\b', claim, re.I)
+        quotes = re.findall(r'"([^"]{5,})"', claim)
+
         actions: List[SourceAction] = []
         if intent_class == "technical_product":
-            if "nist_cve" in allowed and (explicitly_allowed or agent.lower() in {"brandshield", "brandshield_agent"}) and any(k in claim.lower() for k in ("cve", "vulnerability", "flaw", "exploit", "zero-day", "0-day", "security")):
-                actions.append(self._action(1, "nist_cve", "search", target, "vulnerability_advisory", "DIRECT_METADATA", 1, "Verify official CVE security advisory in NIST NVD database.", True))
-            if "arxiv" in allowed and (explicitly_allowed or agent.lower() in {"trending", "trending_agent"}) and any(k in claim.lower() for k in ("paper", "study", "research", "arxiv", "preprint", "algorithm", "model", "proof")):
-                actions.append(self._action(1, "arxiv", "search", target, "scientific_preprint", "DIRECT_ABSTRACT", 1, "Verify scientific claims against arXiv preprint research.", True))
+            cve_target = cve_match.group(1).upper() if cve_match else target
+            arxiv_target = arxiv_match.group(1) if arxiv_match else target
+            if "nist_cve" in allowed and (explicitly_allowed or agent.lower() in {"brandshield", "brandshield_agent"}) and (cve_match or any(k in claim.lower() for k in ("cve", "vulnerability", "flaw", "exploit", "zero-day", "0-day", "security"))):
+                actions.append(self._action(1, "nist_cve", "search", cve_target, "vulnerability_advisory", "DIRECT_METADATA", 1, "Verify official CVE security advisory in NIST NVD database.", True))
+            if "arxiv" in allowed and (explicitly_allowed or agent.lower() in {"trending", "trending_agent"}) and (arxiv_match or any(k in claim.lower() for k in ("paper", "study", "research", "arxiv", "preprint", "algorithm", "model", "proof"))):
+                actions.append(self._action(1, "arxiv", "search", arxiv_target, "scientific_preprint", "DIRECT_ABSTRACT", 1, "Verify scientific claims against arXiv preprint research.", True))
             actions.extend([
                 self._action(1, "web", "search", f"{target} official product announcement {claim}", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
                 self._action(1, "news", "search", f"{claim} hardware reporting", "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),
+                self._action(2, "web", "search", f"{target} rumor debunked false announcement {claim}", "contradiction_probe", "SEARCH_INDEX_DISCOVERY", 2, "Search for explicit denials or debunking records."),
                 self._action(2, "reddit", "search", f"{target} {claim} r/hardware", "hardware_discussion", "SYNDICATED_OR_INDEXED", 3, "Collect relevant hardware-community signals without treating them as authoritative.", limitations=["RSS may expose only titles/summaries; comments may be unavailable."]),
                 self._action(2, "youtube", "search", f"{claim} technical analysis", "technical_video", "VIDEO_METADATA", 4, "Find technical demonstrations or analysis; transcript availability is separate."),
             ])
@@ -336,18 +343,23 @@ class SourcePlanningEngine:
                 self._action(1, "web", "search", f"{target} investor relations quarterly filing {regulator} {claim}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
                 self._action(1, "rss", "search", f"{target} official results filing press release {claim}", "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),
                 self._action(1, "news", "search", f"{claim} independent financial investigation", "financial_reporting", "SYNDICATED_SUMMARY", 3, "Find independent financial reporting and contradiction checks."),
+                self._action(2, "web", "search", f"{target} denied rumor false report {claim}", "contradiction_probe", "SEARCH_INDEX_DISCOVERY", 3, "Probe for corporate denials or debunked rumors."),
                 self._action(2, "reddit", "search", f"{target} {claim} investor discussion", "investor_discussion", "SYNDICATED_OR_INDEXED", 4, "Capture investor discussion as unverified community evidence.", limitations=["Community discussion cannot prove accounting claims."]),
             ])
         elif intent_class == "identity_attribution":
+            quote_query = f'"{quotes[0]}" {target}' if quotes else f"{target} official statement impersonation deepfake"
             actions.extend([
                 self._action(1, "web", "search", f"{target} official website verified social accounts", "identity_primary", "SEARCH_INDEX_DISCOVERY", 1, "Establish the entity's official web identity before resolving social handles.", True),
+                self._action(1, "web", "search", quote_query, "quotation_verification", "SEARCH_INDEX_DISCOVERY", 1, "Verify authentic quotation or speech transcripts against public records.", True),
                 self._action(2, "twitter", "profile", target, "verified_profile", "PROFILE_METADATA", 2, "Resolve the organization to a candidate X identity; profile metadata is not post evidence.", limitations=["Plain entity names must not be interpreted as literal handles."]),
                 self._action(2, "news", "search", claim, "identity_corroboration", "SYNDICATED_SUMMARY", 3, "Look for independent identity or impersonation reporting."),
+                self._action(2, "web", "search", f"{target} denies false quote fabricated statement", "contradiction_probe", "SEARCH_INDEX_DISCOVERY", 3, "Probe for spokesperson denials of fabricated statements."),
             ])
         else:
             actions.extend([
                 self._action(1, "web", "search", f"{claim} official source", "primary_discovery", "SEARCH_INDEX_DISCOVERY", 1, "Find an authoritative or original source first.", True),
                 self._action(1, "news", "search", f"{claim} latest independent reporting", "independent_reporting", "SYNDICATED_SUMMARY", 2, "Find current independent reporting."),
+                self._action(2, "web", "search", f"{target} debunked false rumor {claim}", "contradiction_probe", "SEARCH_INDEX_DISCOVERY", 3, "Probe for explicit debunking or contradiction."),
                 self._action(2, "reddit", "search", f"{target} {claim}", "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."]),
             ])
 

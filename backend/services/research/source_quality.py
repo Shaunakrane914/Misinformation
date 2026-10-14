@@ -63,8 +63,13 @@ VERIFIED_CORPORATE_DOMAINS = {
     "tesla": {"tesla.com"},
     "nvidia": {"nvidia.com"},
     "apple": {"apple.com"},
-    "microsoft": {"microsoft.com"},
+    "microsoft": {"microsoft.com", "windows.com", "azure.com", "office.com"},
     "anthropic": {"anthropic.com"},
+    "amazon": {"amazon.com", "aboutamazon.com"},
+    "google": {"google.com", "deepmind.google"},
+    "alphabet": {"abc.xyz", "google.com"},
+    "meta": {"meta.com", "about.fb.com", "facebook.com"},
+    "openai": {"openai.com"},
 }
 
 

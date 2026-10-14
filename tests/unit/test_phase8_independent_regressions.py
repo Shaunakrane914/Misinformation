@@ -41,6 +41,8 @@ def test_actual_support_navigation_is_not_a_confirmed_customer_grievance():
                "platform": "web", "snippet": "Apple Support Need help? Billing and payments Reset Apple Account password Change a subscription"}]
     result = heuristic_threat_synthesis({"brand": "Apple", "resolved_entity": "Apple"}, sample)
     assert not any(t["type"] == "CUSTOMER_COMPLAINT" for t in result["threats"])
+    assert result["narratives"][0]["threat_level"] == "unassessed"
+    assert "consumer sentiment" in result["narratives"][0]["description"]
 
 
 @pytest.mark.parametrize("url", [

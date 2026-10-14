@@ -503,9 +503,9 @@ def heuristic_threat_synthesis(
             })
 
     narratives.append({
-        "theme": f"General Consumer Discourse on {target_name}",
-        "description": f"Public commentary and reviews monitored across {len(evidence_list)} evidence signals.",
-        "threat_level": "medium" if threats else "low",
+        "theme": f"Sampled references mentioning {target_name}",
+        "description": "These retrieved records do not by themselves establish consumer sentiment, a campaign or the brand's overall risk.",
+        "threat_level": "unassessed",
         "evidence_ids": [e["evidence_id"] for e in evidence_list[:5]]
     })
 

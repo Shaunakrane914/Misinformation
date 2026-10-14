@@ -2,7 +2,16 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Independent Phase 8 review — 2026-10-14
+## Latest: Phase 9 Intelligence, Evidence Discovery & Misinformation Detection Accuracy — 2026-10-14
+
+- [Phase 9 Intelligence & Accuracy handoff](2026-10-14_PHASE9_INTELLIGENCE_ACCURACY.md):
+  comprehensive benchmark creation (88 cases across Dev, Regression, and Held-Out splits);
+  elimination of systematic abstention via multi-dimensional proposition grounding;
+  numerical, temporal, defect, ticker, and syndication contradiction axes;
+  100% acceptable safe outcomes and 95% truth resolution on regression split with 0 false positives;
+  all 1,156 pytest tests passing; offline smoke and persistence validated.
+
+## Previous: Independent Phase 8 review — 2026-10-14
 
 - [Independent review handoff](2026-10-14_PHASE8_INDEPENDENT_REVIEW.md): reproduced source spoofing, unsupported conclusions, false citations, actual navigation false positives, disconnected integrations and browser/API defects; implemented corrections and retained real observations. Bounded acquisition passes; full research/release acceptance remains partial.
 - [Review report](../architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md) and [CI closeout](2026-10-14_PHASE8_INDEPENDENT_CI_CLOSEOUT.md).

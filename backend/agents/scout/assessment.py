@@ -386,7 +386,7 @@ def evaluate_corporate_rumor(
             primary_source=e.get("source_role") in ("PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY") or e.get("primary_source", False),
             snippet=e.get("snippet", ""),
             relevant_excerpt=e.get("content", e.get("snippet", "")),
-            published_at=e.get("published_at", "Recent")
+            published_at=e.get("published_at", "")
         ))
 
     synthesis = claim_intelligence_engine.synthesize_intelligence(

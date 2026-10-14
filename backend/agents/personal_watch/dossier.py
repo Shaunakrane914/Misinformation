@@ -91,7 +91,9 @@ def build_threat_timeline(evidence_list: List[Dict[str, Any]]) -> List[Dict[str,
     timeline: List[Dict[str, Any]] = []
 
     for e in evidence_list[:12]:
-        pub = e.get("published_at", "Recent")
+        pub = e.get("published_at", "")
+        if not pub or pub == "Recent":
+            continue
         timeline.append({
             "timestamp": pub,
             "platform": e.get("platform", "Web"),

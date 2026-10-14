@@ -38,6 +38,29 @@ def test_model_verified_label_and_valid_id_do_not_prove_entailment():
     assert result["threats"] == []
 
 
+def test_actual_brand_scan_cannot_repromote_spoofed_url_or_invent_date(monkeypatch):
+    from types import SimpleNamespace
+    from backend.services.research.research_engine import research_engine
+    from backend.agents.brandshield.scanning import search_brand_evidence
+    item = EvidenceItem(id="spoof", canonical_url="https://sec.gov.attacker.example/filing",
+                        title="Apple SEC filing Form 10-K", content="Apple fabricated filing", channel="web")
+    monkeypatch.setattr(research_engine, "investigate", lambda request: SimpleNamespace(evidence=[item], telemetry={}))
+    records, *_ = search_brand_evidence({"brand": "Apple", "resolved_entity": "Apple"})
+    assert len(records) == 1
+    assert records[0]["is_primary"] is False
+    assert records[0]["source_tier"] != "TIER_1_OFFICIAL_FILING"
+    assert records[0]["published_at"] == ""
+
+
+def test_personal_sample_counts_do_not_measure_velocity_or_invent_time():
+    from backend.agents.personal_watch.monitoring import analyze_spread_and_velocity
+    record = {"title": "Public mention", "platform": "web", "source": "Publisher"}
+    result = analyze_spread_and_velocity([record])
+    assert result["first_observed"] == result["latest_observed"] == ""
+    result = analyze_spread_and_velocity([{**record, "published_at": "2021-01-01"}] * 12)
+    assert result["velocity_trend"] != "Accelerating"
+
+
 def test_different_financial_metrics_are_not_a_numerical_contradiction():
     items = [evidence("a", "Acme revenue was 100 billion in 2024"),
              evidence("b", "Acme profit was 5 billion in 2024")]

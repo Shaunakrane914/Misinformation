@@ -216,7 +216,7 @@ class PersonalWatchAgent:
                         ev_ids = threat.get("evidence_ids", [])
                         matching_ev = [e for e in evidence_list if e.get("evidence_id") in ev_ids]
                         src_url = matching_ev[0].get("url") if matching_ev else None
-                        first_obs = matching_ev[0].get("published_at") if matching_ev else "Recent"
+                        first_obs = matching_ev[0].get("published_at", "") if matching_ev else ""
 
                         success = send_security_alert(
                             to_number=phone_number,

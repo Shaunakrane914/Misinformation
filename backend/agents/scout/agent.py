@@ -285,7 +285,7 @@ class ScoutAgent:
                 url = item.canonical_url or ""
                 source_name = item.source_name or item.channel
                 channel = item.channel
-                published = item.published_at or "Recent"
+                published = item.published_at or ""
                 discovered = item.discovered_at
                 snippet = item.snippet or item.relevant_excerpt[:240]
                 relevant_excerpt = item.relevant_excerpt
@@ -304,7 +304,7 @@ class ScoutAgent:
                 url = item.get("url", "")
                 source_name = item.get("source", item.get("platform", "Channel"))
                 channel = item.get("channel", item.get("platform", "news"))
-                published = item.get("published_at", item.get("published", "Recent"))
+                published = item.get("published_at", item.get("published", ""))
                 discovered = item.get("retrieved_at", "")
                 snippet = item.get("snippet", "")
                 relevant_excerpt = item.get("relevant_excerpt", "")

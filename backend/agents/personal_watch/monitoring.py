@@ -213,7 +213,7 @@ def search_personal_evidence(
                 role = f.source_role
                 tier = f.source_tier
                 author = f.source_name or f.channel
-                pub = f.published_at or "Recent"
+                pub = f.published_at or ""
                 depth = f.content_depth
                 q_id = f.query_id
                 q_class = f.query_class
@@ -238,7 +238,7 @@ def search_personal_evidence(
                 role = f.raw_metadata.get("source_role", "WEB_REFERENCE") if hasattr(f, "raw_metadata") else "WEB_REFERENCE"
                 tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE") if hasattr(f, "raw_metadata") else "TIER_3_AGGREGATE"
                 author = getattr(f, "author", "Web")
-                pub = getattr(f, "published", "Recent")
+                pub = getattr(f, "published", "")
                 depth = getattr(f, "content_depth", "SNIPPET")
                 q_id = getattr(f, "query_id", "")
                 q_class = getattr(f, "query_class", "general")
@@ -323,13 +323,13 @@ def analyze_spread_and_velocity(evidence_list: List[Dict[str, Any]]) -> Dict[str
     if len(timestamps) >= 3:
         first_seen = min(timestamps)
         latest_seen = max(timestamps)
-        velocity_trend = "Accelerating" if len(evidence_list) > 10 else "Steady"
-        assessment = f"Activity spreading across {len(platforms)} platforms with {len(sources)} distinct sources."
+        velocity_trend = "Not measured across repeated observation windows"
+        assessment = f"The sample includes {len(platforms)} platforms and {len(sources)} source labels; this does not establish propagation or independent origins."
     else:
-        first_seen = "Recent"
-        latest_seen = "Recent"
+        first_seen = min(timestamps) if timestamps else ""
+        latest_seen = max(timestamps) if timestamps else ""
         velocity_trend = "Insufficient historical data"
-        assessment = f"Current active cross-platform visibility across {len(platforms)} platform(s)."
+        assessment = f"Sampled references from {len(platforms)} platform(s); current activity and velocity are not established."
 
     return {
         "status": "computed",

@@ -82,7 +82,7 @@ def search_brand_evidence(
             source = f.source_name or f.channel
             platform = f.channel
             author = f.source_name or f.channel
-            published_at = f.published_at or "Recent"
+            published_at = f.published_at or ""
             retrieved_at = f.discovered_at
             role = f.source_role
             tier = f.source_tier
@@ -107,7 +107,7 @@ def search_brand_evidence(
             source = f.platform or getattr(f, "channel_name", "web")
             platform = getattr(f, "channel_name", None) or f.platform
             author = f.author or (f.channel_name.title() if getattr(f, "channel_name", None) else "Web")
-            published_at = getattr(f, "published", "Recent")
+            published_at = getattr(f, "published", "")
             retrieved_at = getattr(f, "retrieved_at", "")
             role = f.raw_metadata.get("source_role", "DISCOVERY") if hasattr(f, "raw_metadata") else "DISCOVERY"
             tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE") if hasattr(f, "raw_metadata") else "TIER_3_AGGREGATE"
@@ -125,24 +125,15 @@ def search_brand_evidence(
             sel_dec = None
             sel_rea = None
 
-        norm_url = url.lower()
-        is_util, _ = is_utility_or_auth_url(norm_url)
-        if is_util:
-            is_primary = False
-            role = "UTILITY_PORTAL"
-            tier = "TIER_4_UTILITY"
-        elif any(m in norm_url for m in regulatory_markers):
-            is_primary = True
-            role = "PRIMARY"
-            tier = "TIER_1_OFFICIAL_FILING"
-        elif any(m in norm_url for m in corporate_markers):
-            is_primary = True
-            role = "PRIMARY"
-            tier = "TIER_1_ORIGINAL_DOCUMENT"
-        elif any(m in norm_url for m in consumer_markers):
-            is_primary = False
-            role = "COMMUNITY"
-            tier = "TIER_3_INVESTOR_COMMUNITY"
+        # Do not undo shared source qualification with URL substring promotions.
+        from backend.services.research.source_quality import SourceQualityEngine
+        from backend.services.research.research_models import EvidenceItem
+        qualified = SourceQualityEngine().classify_and_score(EvidenceItem(
+            id="brand_qualification", canonical_url=url, title=title,
+            content=content, snippet=snippet, content_depth=content_depth,
+            metadata=getattr(f, "metadata", getattr(f, "raw_metadata", {})),
+        ), target_name)
+        is_primary, role, tier = qualified.primary_source, qualified.source_role, qualified.source_tier
 
         if group.startswith("syndicated_"):
             syndicated_count += 1

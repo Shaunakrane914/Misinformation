@@ -318,6 +318,8 @@ Return a STRICT JSON object:
             logger.info("[PersonalWatch 2.0] LLM output contains no threat extractions; using grounded heuristics.")
             return heuristic_threat_synthesis(subject_name, evidence_list)
 
+        from backend.services.research.model_grounding import constrain_model_extractions
+        parsed = constrain_model_extractions(parsed, evidence_list)
         valid_ev_ids = {e["evidence_id"] for e in evidence_list}
 
         threats = parsed.get("threats", [])

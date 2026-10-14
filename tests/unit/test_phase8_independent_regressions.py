@@ -28,6 +28,16 @@ def test_unlinked_personal_dossier_keeps_empty_evidence_chain():
     assert result[0]["first_observed_at"] == ""
 
 
+def test_model_verified_label_and_valid_id_do_not_prove_entailment():
+    from backend.services.research.model_grounding import constrain_model_extractions
+    parsed = {"claims": [{"claim_text": "Invented conclusion", "status": "verified", "evidence_ids": ["real"]}],
+              "threats": [{"status": "confirmed", "evidence_ids": ["invented"]}]}
+    result = constrain_model_extractions(parsed, [{"evidence_id": "real"}])
+    assert result["claims"][0]["status"] == "unverified"
+    assert result["claims"][0]["citation_entailment_verified"] is False
+    assert result["threats"] == []
+
+
 def test_different_financial_metrics_are_not_a_numerical_contradiction():
     items = [evidence("a", "Acme revenue was 100 billion in 2024"),
              evidence("b", "Acme profit was 5 billion in 2024")]

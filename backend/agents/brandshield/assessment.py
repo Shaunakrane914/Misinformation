@@ -302,6 +302,8 @@ Return ONLY valid JSON. No markdown code fences, no extra text."""
         parsed = json.loads(cleaned)
 
         if isinstance(parsed, dict) and "threats" in parsed:
+            from backend.services.research.model_grounding import constrain_model_extractions
+            parsed = constrain_model_extractions(parsed, evidence_list)
             provenance = parsed.get("_aegis_provenance", {})
             parsed["ai_enrichment"] = (
                 "SYNTHETIC_MOCK" if provenance.get("synthetic") else "ONLINE_GEMINI"

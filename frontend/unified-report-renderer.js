@@ -254,6 +254,11 @@ function renderEvidence(report) {
   const primary     = array(ev.primary).filter(item => item && typeof item === 'object');
   const independent = array(ev.independent).filter(item => item && typeof item === 'object');
   const community   = array(ev.community).filter(item => item && typeof item === 'object');
+  const allEvidence = [...primary, ...independent, ...community];
+  const inspected = allEvidence.filter(item => item.extraction && typeof item.extraction === 'object');
+  const discoveryOnly = inspected.filter(item => item.extraction.evidentiary_use === 'DISCOVERY_ONLY').length;
+  const missingDates = inspected.filter(item => array(item.extraction.missing_fields).includes('published_at')).length;
+  const coverageBrief = inspected.length ? `<p class="ur-ev-note">${esc(allEvidence.length)} captured records; ${esc(inspected.length)} extraction inspections; ${esc(discoveryOnly)} metadata/unknown-depth records; ${esc(missingDates)} without observed publication dates. These are sample counts, not independent corroboration or website coverage.</p>` : '';
 
   const renderColumn = (items, label, emptyMsg) => {
     if (items.length === 0) {
@@ -263,7 +268,7 @@ function renderEvidence(report) {
           <p class="ur-ev-empty">${esc(emptyMsg)}</p>
         </div>`;
     }
-    const cards = items.map(renderEvidenceCard).join('');
+    const cards = items.map(item => renderEvidenceCard(item)).join('');
     return `
       <div class="ur-ev-col">
         <h3 class="ur-ev-col-head">${esc(label)}</h3>
@@ -273,6 +278,7 @@ function renderEvidence(report) {
 
   const content = `
     <p class="ur-ev-note">Source grouping is not proof of independent corroboration. Inspect each citation and retrieval path.</p>
+    ${coverageBrief}
     <div class="ur-ev-grid">
       ${renderColumn(primary,     'Primary',     'No primary evidence found.')}
       ${renderColumn(independent, 'Other reporting', 'No other reporting found.')}
@@ -283,7 +289,7 @@ function renderEvidence(report) {
 }
 
 /** Render a single evidence card. */
-function renderEvidenceCard(item) {
+function renderEvidenceCard(item, allowRead = true) {
   const title   = esc(item.title   || PH_STR);
   const snippet = esc(item.snippet || '');
   const url     = safeEvidenceUrl(item.url);
@@ -329,6 +335,24 @@ function renderEvidenceCard(item) {
       </li>`).join('')}</ul>
     </details>` : '';
 
+  const extraction = item.extraction && typeof item.extraction === 'object' ? item.extraction : null;
+  const passages = extraction ? array(extraction.passages).filter(p => p && typeof p.text === 'string').slice(0, 8) : [];
+  const inspection = extraction ? `<details class="ur-ev-trace ur-ev-inspection">
+    <summary>Inspect captured passages and extraction limits</summary>
+    <p>Depth: ${esc(extraction.content_depth || 'UNKNOWN')} · ${esc(extraction.evidentiary_use || 'NOT_ASSESSED')}</p>
+    <p>Captured characters: ${esc(extraction.captured_chars ?? 'Unknown')}. Remote source completeness: unknown. Passage support requires review.</p>
+    <p>Missing observed fields: ${esc(array(extraction.missing_fields).join(', ') || 'None in this field inventory')}.</p>
+    ${extraction.provider_truncated === true || extraction.inspection_truncated === true ? '<p>Captured content or inspection was truncated.</p>' : ''}
+    ${passages.map(p => `<figure><figcaption>${esc(p.id || 'Passage')} · captured offsets ${esc(p.start ?? '?')}–${esc(p.end ?? '?')}</figcaption><blockquote>${esc(p.text.slice(0, 600))}</blockquote></figure>`).join('')}
+    ${array(extraction.observed_numeric_mentions).slice(0, 12).length ? `<details><summary>Observed numeric mentions — not aligned financial facts</summary><ul>${array(extraction.observed_numeric_mentions).slice(0, 12).map(m => `<li>${esc(m && m.text || '')}: ${esc(m && m.context || '')}</li>`).join('')}</ul></details>` : ''}
+    ${extraction.page_observations && typeof extraction.page_observations === 'object' ? `<details><summary>Extracted page observations — unverified</summary>
+      ${array(extraction.page_observations.tables).slice(0, 3).map((table, index) => `<div class="ur-observed-table"><table><caption>Observed table ${index + 1}; bounded cells, source context requires review</caption><tbody>${array(table).slice(0, 10).map(row => `<tr>${array(row).slice(0, 6).map(cell => `<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}
+      ${['quotations', 'potential_corrections', 'media_captions'].map(key => array(extraction.page_observations[key]).slice(0, 5).map(value => `<p>${esc(key)}: ${esc(value)}</p>`).join('')).join('')}
+    </details>` : ''}
+    ${Number(extraction.passages_omitted) > 0 ? `<p>${esc(extraction.passages_omitted)} captured-text chunks omitted from this bounded preview.</p>` : ''}
+    <p>Captured-text SHA-256: ${esc(extraction.captured_text_sha256 || 'Unavailable')}</p>
+  </details>` : '';
+
   return `
     <article class="ur-ev-card">
       <div class="ur-ev-card-head">
@@ -341,7 +365,35 @@ function renderEvidenceCard(item) {
         ${srcType}${srcDomain}
       </footer>
       ${trace}
+      ${inspection}
+      ${url && allowRead ? `<div class="ur-source-read"><button type="button" class="ur-export-btn" data-ur-read-page="${esc(url)}">Request bounded source read</button><p>May contact this source. Optional follow-ups remain bounded; this does not revise the verdict.</p><div data-ur-read-result role="status" aria-live="polite"></div></div>` : ''}
     </article>`;
+}
+
+/** Select an existing operation from an exact public hostname, not URL text. */
+function sourceReadRequest(value) {
+  const safe = safeEvidenceUrl(value);
+  if (!safe) return null;
+  const u = new URL(safe);
+  const host = u.hostname.toLowerCase();
+  let platform = 'web', operation = 'read', query = safe;
+  if (['reddit.com', 'www.reddit.com', 'old.reddit.com'].includes(host)) platform = 'reddit';
+  else if (['x.com', 'www.x.com', 'twitter.com', 'www.twitter.com'].includes(host)) {
+    platform = 'twitter'; operation = /\/status\/\d+/.test(u.pathname) ? 'status' : 'profile';
+  } else if (['youtube.com', 'www.youtube.com', 'youtu.be'].includes(host)) {
+    platform = 'youtube'; operation = 'transcript';
+  } else if (host === 'news.ycombinator.com') platform = 'hackernews';
+  else if (host === 'stackoverflow.com') platform = 'stackexchange';
+  else if (host === 'github.com') {
+    const repo = u.pathname.match(/^\/([^/]+)\/([^/]+)/);
+    if (repo) { platform = 'github'; query = `${repo[1]}/${repo[2]}`; }
+  } else if (['v2ex.com', 'www.v2ex.com'].includes(host)) {
+    const topic = u.pathname.match(/^\/t\/(\d+)/);
+    if (topic) { platform = 'v2ex'; operation = 'topic'; query = topic[1]; }
+  } else if (['xiaoyuzhoufm.com', 'www.xiaoyuzhoufm.com'].includes(host)) {
+    platform = 'xiaoyuzhou'; operation = 'episodes';
+  }
+  return { platform, operation, query, limit: 2, mode: 'deep', max_chars: 12000 };
 }
 
 /** SECTION 4 — WHAT DISAGREES? (Supports structured 5-dimensional contradictions) */
@@ -670,6 +722,40 @@ function renderUnifiedReport(container, report) {
     });
   });
 
+  container.querySelectorAll('[data-ur-read-page]').forEach(button => {
+    if (!button.dataset || !button.dataset.urReadPage) return;
+    button.addEventListener('click', async () => {
+      if (button.disabled) return;
+      const request = sourceReadRequest(button.dataset.urReadPage);
+      const card = button.closest('.ur-ev-card');
+      const result = card && card.querySelector('[data-ur-read-result]');
+      if (!request || !result) return;
+      button.disabled = true;
+      result.textContent = `Reading ${request.platform}.${request.operation}; original verdict unchanged…`;
+      const controller = new AbortController();
+      const deadline = setTimeout(() => controller.abort(), 30000);
+      try {
+        const endpoint = typeof window !== 'undefined' && window.getAegisApiUrl
+          ? window.getAegisApiUrl('/api/agent-reach/extract') : '/api/agent-reach/extract';
+        const response = await fetch(endpoint, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(request), signal: controller.signal,
+        });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        const records = array(data.evidence).filter(item => item && typeof item === 'object').slice(0, 15);
+        result.innerHTML = `<p>Follow-up ${esc(data.status || 'UNKNOWN')} · ${esc(records.length)} returned records. Claim support not assessed; original verdict unchanged.</p>${data.runtime_reason ? `<p>${esc(data.runtime_reason)}</p>` : ''}${records.map(item => renderEvidenceCard(item, false)).join('')}`;
+      } catch (error) {
+        result.textContent = error && error.name === 'AbortError'
+          ? 'The browser wait timed out. Provider work may still be completing; no result or verdict change is claimed.'
+          : 'Source read unavailable. No additional evidence or verdict change is claimed.';
+      } finally {
+        clearTimeout(deadline);
+        button.disabled = false;
+      }
+    });
+  });
+
   // Client-side dossier export handler
   const exportBtn = typeof container.querySelector === 'function'
     ? container.querySelector('#urBtnExportJson')
@@ -726,5 +812,5 @@ if (typeof window !== 'undefined') {
   window.fetchAndRenderReport = fetchAndRenderReport;
 }
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { renderUnifiedReport, fetchAndRenderReport };
+  module.exports = { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest };
 }

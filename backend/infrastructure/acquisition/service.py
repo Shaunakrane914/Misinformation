@@ -56,7 +56,7 @@ from backend.services.agent_reach.native.operation_capabilities import (
     runtime_operation_capabilities,
 )
 from backend.services.agent_reach.registry import CapabilityRegistry
-from backend.services.agent_reach.native.channel_capabilities import AUTHORITATIVE_CAPABILITY_MATRIX
+from backend.services.agent_reach.native.channel_capabilities import AUTHORITATIVE_CAPABILITY_MATRIX, COMMUNITY_CAPABILITY_MATRIX
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
 
 logger = logging.getLogger(__name__)
@@ -101,6 +101,9 @@ class AgentReachService:
         from backend.infrastructure.acquisition.adapters.authoritative.channel import AuthoritativeChannel
         for name in ("sec_edgar", "nist_cve", "arxiv", "fact_check"):
             self.registry.register(AuthoritativeChannel(name))
+        from backend.infrastructure.acquisition.adapters.community_channel import CommunityChannel
+        for name in COMMUNITY_CAPABILITY_MATRIX:
+            self.registry.register(CommunityChannel(name))
 
         # Optional / authenticated channels (gracefully report status)
         self.registry.register(AuthenticatedOptionalChannel("linkedin", "LinkedIn", "LINKEDIN_COOKIE"))
@@ -122,7 +125,7 @@ class AgentReachService:
 
         native_channels = {}
         operation_inventory = runtime_operation_capabilities.inventory()
-        for plat, cap in {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX}.items():
+        for plat, cap in {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX, **COMMUNITY_CAPABILITY_MATRIX}.items():
             doc_entry = native_doctor.get_channel_status(plat)
             registered = plat in self.registry.channel_names
             status_code = native_doctor.get_canonical_status_code(plat) if registered else "UNAVAILABLE"
@@ -362,6 +365,7 @@ class AgentReachService:
         max_res_per_q = max(0, int(budget.get("max_results_per_query", 5)))
         max_total_ev = max(0, int(budget.get("max_total_evidence", 40)))
         max_deep_reads = max(0, int(budget.get("max_deep_reads", 4)))
+        max_read_chars = min(20_000, max(0, int(budget.get("max_read_chars", 8000))))
         task_timeout = max(0.0, budget.get("channel_timeout", min(timeout, 8.0)))
 
         def _read_with_deadline(url: str, max_chars: int = 4000) -> Dict[str, Any]:
@@ -701,13 +705,19 @@ class AgentReachService:
                 if time.monotonic() >= deadline:
                     break
                 try:
-                    read_res = _read_with_deadline(cand.url, max_chars=2500)
+                    read_res = _read_with_deadline(cand.url, max_chars=max_read_chars)
                     if read_res.get("status") in ("success", "fallback_soup") and read_res.get("markdown"):
                         md = read_res["markdown"].strip()
                         if len(md) > 200:
                             cand.content = md
                             cand.snippet = md[:350] + ("..." if len(md) > 350 else "")
-                            cand.content_depth = "FULL_ARTICLE" if len(md) > 1000 else "PARTIAL_CONTENT"
+                            # Length never proves full remote-document coverage.
+                            cand.content_depth = "PARTIAL_CONTENT"
+                            cand.raw_metadata["deep_read"] = {
+                                "max_chars": max_read_chars,
+                                "captured_chars": len(md),
+                                "source_completeness": "UNKNOWN",
+                            }
                             readable_sources += 1
                 except Exception as r_err:
                     logger.debug(f"[AgentReachService] Deep reading pass error for {cand.url}: {r_err}")

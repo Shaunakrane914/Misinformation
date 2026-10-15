@@ -81,7 +81,7 @@ def search_brand_evidence(
             snippet = f.relevant_excerpt or f.snippet or content[:240]
             source = f.source_name or f.channel
             platform = f.channel
-            author = f.source_name or f.channel
+            author = getattr(f, "author", "")
             published_at = f.published_at or ""
             retrieved_at = f.discovered_at
             role = f.source_role
@@ -106,7 +106,7 @@ def search_brand_evidence(
             snippet = f.snippet or content[:240]
             source = f.platform or getattr(f, "channel_name", "web")
             platform = getattr(f, "channel_name", None) or f.platform
-            author = f.author or (f.channel_name.title() if getattr(f, "channel_name", None) else "Web")
+            author = f.author or ""
             published_at = getattr(f, "published", "")
             retrieved_at = getattr(f, "retrieved_at", "")
             role = f.raw_metadata.get("source_role", "DISCOVERY") if hasattr(f, "raw_metadata") else "DISCOVERY"

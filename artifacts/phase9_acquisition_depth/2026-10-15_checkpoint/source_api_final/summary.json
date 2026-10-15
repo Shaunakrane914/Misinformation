@@ -1,0 +1,59 @@
+{
+  "scope": "Real FastAPI extraction routes, public source probes; no LLM call or full response retention",
+  "records": [
+    {
+      "platform": "hackernews",
+      "operation": "read",
+      "http_status": 200,
+      "status": "SUCCESS",
+      "runtime_reason": null,
+      "network_observed": true,
+      "returned_records": 3,
+      "inspected_records": 3,
+      "captured_chars": 1053,
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    },
+    {
+      "platform": "stackexchange",
+      "operation": "read",
+      "http_status": 200,
+      "status": "SUCCESS",
+      "runtime_reason": null,
+      "network_observed": true,
+      "returned_records": 1,
+      "inspected_records": 1,
+      "captured_chars": 1009,
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    },
+    {
+      "platform": "twitter",
+      "operation": "status",
+      "http_status": 200,
+      "status": "SUCCESS",
+      "runtime_reason": null,
+      "network_observed": true,
+      "returned_records": 1,
+      "inspected_records": 1,
+      "captured_chars": 24,
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    },
+    {
+      "platform": "reddit",
+      "operation": "read",
+      "http_status": 200,
+      "status": "SKIPPED",
+      "runtime_reason": "POLICY_BLOCKED: approved Reddit access is not configured",
+      "network_observed": false,
+      "returned_records": 0,
+      "inspected_records": 0,
+      "captured_chars": 0,
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    }
+  ],
+  "all_sources_acquired": false,
+  "claim_accuracy": null
+}

@@ -299,11 +299,15 @@ class DeepReader:
                             orig_item.acquired_id = f"cand_acq_{orig_item.id}"
                             attempt_record["acquired_candidate_id"] = orig_item.acquired_id
                             
-                            # Upgrade content depth
-                            if orig_item.primary_source:
+                            # Preserve metadata kinds; length and official
+                            # ownership never establish full-document coverage.
+                            reported_depth = read_res.get("content_depth")
+                            if not reported_depth and isinstance(read_res.get("video_metadata"), dict):
+                                reported_depth = read_res["video_metadata"].get("content_depth")
+                            if reported_depth in {"PROFILE_METADATA", "VIDEO_METADATA", "METADATA", "DIRECT_METADATA", "SOCIAL_POST", "VIDEO_TRANSCRIPT"}:
+                                orig_item.content_depth = reported_depth
+                            elif orig_item.primary_source:
                                 orig_item.content_depth = ContentDepth.PRIMARY_DOCUMENT.value
-                            elif len(content_body) > 1000:
-                                orig_item.content_depth = ContentDepth.FULL_ARTICLE.value
                             else:
                                 orig_item.content_depth = ContentDepth.PARTIAL_CONTENT.value
 

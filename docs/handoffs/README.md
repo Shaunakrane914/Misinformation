@@ -2,7 +2,12 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Independent Phase 8 review — 2026-10-14
+## Latest: Phase 9 acquisition-depth checkpoint — 2026-10-15
+
+- [Acquisition depth and strategic evidence UI](2026-10-15_PHASE9_ACQUISITION_DEPTH.md): repeated 28-operation sampling, additive HN/Stack Overflow, policy-preserving extraction API, exact captured-passage inspection, source-read controls and real API/browser checks. Overall Phase 9 remains PARTIAL; blocked sources are retained by explicit user direction.
+- [Extraction runbook](../operations/PHASE9_EXTRACTION_RUNBOOK.md) and [phase plan](../architecture/PHASE9_EVIDENCE_DEPTH_AND_STRATEGIC_WORKBENCH_PLAN.md).
+
+## Previous: Independent Phase 8 review — 2026-10-14
 
 - [Independent review handoff](2026-10-14_PHASE8_INDEPENDENT_REVIEW.md): reproduced source spoofing, unsupported conclusions, false citations, actual navigation false positives, disconnected integrations and browser/API defects; implemented corrections and retained real observations. Bounded acquisition passes; full research/release acceptance remains partial.
 - [Review report](../architecture/PHASE8_INDEPENDENT_REVIEW_2026-10-14.md) and [CI closeout](2026-10-14_PHASE8_INDEPENDENT_CI_CLOSEOUT.md).
@@ -30,7 +35,7 @@ Start here when resuming work. These are dated engineering records, not promises
   improvements, terminal Chromium screenshots, automated accessibility
   results, full offline validation and explicit remaining Phase 8 gates.
 
-## Latest: Phase 8B bounded GitHub issue-discussion follow-up — 2026-10-13
+## Previous: Phase 8B bounded GitHub issue-discussion follow-up — 2026-10-13
 
 - [Issue-discussion follow-up handoff](2026-10-13_PHASE8B_GITHUB_ISSUE_COMMENTS.md):
   opt-in bounded comment acquisition, negative and clean-commit live samples,
@@ -110,7 +115,7 @@ The Phase 8A gate below is complete but does not imply Phase 8B completion.
 
 The Phase 7.4 section below remains the preceding security and data-integrity checkpoint.
 
-## Latest: Phase 7.4 verification — 2026-10-12
+## Previous: Phase 7.4 verification — 2026-10-12
 
 - [Phase 7.4 closeout handoff](2026-10-12_PHASE7_4_CLOSEOUT.md): pushed commits, hosted CI evidence, local archive limitation and safe continuation.
 - [Phase 7.4 machine context](2026-10-12_PHASE7_4_CONTEXT.json): commit SHAs, run ID, validation counts and unresolved boundaries.

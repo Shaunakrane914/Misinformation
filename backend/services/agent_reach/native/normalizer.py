@@ -496,9 +496,9 @@ class NativeNormalizer:
         url = tw.get("url") or f"https://x.com/{screen_name}/status/{tid}"
         created = str(tw.get("created_at") or tw.get("created_timestamp") or "")
 
-        likes = tw.get("likes", 0)
-        retweets = tw.get("retweets", 0)
-        replies = tw.get("replies", 0)
+        likes = tw.get("likes")
+        retweets = tw.get("retweets")
+        replies = tw.get("replies")
         views = tw.get("views")
         media_list = [m.get("url") for m in tw.get("media", {}).get("all", []) if m.get("url")]
 
@@ -528,12 +528,12 @@ class NativeNormalizer:
             author=author,
             published=created,
             snippet=full_content[:300],
-            score=float(likes),
+            score=float(likes) if isinstance(likes, (int, float)) and not isinstance(likes, bool) else 0.0,
             retrieval_method="fxtwitter",
             retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
             native_backend_id="fxtwitter",
             channel_name="twitter",
-            content_depth="FULL_ARTICLE" if len(full_content) > 0 else "SNIPPET",
+            content_depth="TWEET_STATUS" if full_content else "METADATA",
             query_id=query_id,
             query_class=query_class,
             query_text=query_text,
@@ -553,14 +553,16 @@ class NativeNormalizer:
         """Normalize FxTwitter public profile JSON object."""
         if not u:
             return None
-        screen_name = u.get("screen_name", "") or "user"
+        screen_name = u.get("screen_name") or ""
+        if not isinstance(screen_name, str) or not re.fullmatch(r"[A-Za-z0-9_]{1,15}", screen_name):
+            return None
         name = u.get("name", "") or screen_name
         author = f"@{screen_name}"
-        desc = u.get("description", "") or f"Public profile of {author}"
+        desc = u.get("description") or ""
         url = f"https://x.com/{screen_name}"
         joined = str(u.get("joined", ""))
-        followers = u.get("followers", 0)
-        tweets_count = u.get("tweets", 0)
+        followers = u.get("followers")
+        tweets_count = u.get("tweets")
 
         return EvidenceFragment(
             platform="twitter",
@@ -568,14 +570,15 @@ class NativeNormalizer:
             content=desc,
             url=url,
             author=author,
-            published=joined,
+            # Account creation is not a publication date for this observation.
+            published="",
             snippet=desc[:300],
-            score=float(followers),
+            score=float(followers) if isinstance(followers, (int, float)) and not isinstance(followers, bool) else 0.0,
             retrieval_method="fxtwitter",
             retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
             native_backend_id="fxtwitter",
             channel_name="twitter",
-            content_depth="PARTIAL_CONTENT",
+            content_depth="PROFILE_METADATA",
             query_id=query_id,
             query_class=query_class,
             query_text=query_text,
@@ -585,6 +588,7 @@ class NativeNormalizer:
             raw_metadata={
                 "backend": "fxtwitter",
                 "screen_name": screen_name,
+                "account_created_at": joined or None,
                 "followers": followers,
                 "tweets_count": tweets_count,
                 "source_tier": "SPECIALIST_MIRROR",

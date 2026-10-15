@@ -256,12 +256,28 @@ AUTHORITATIVE_CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
 }
 
 
+COMMUNITY_CAPABILITY_MATRIX: Dict[str, PlatformCapability] = {
+    "hackernews": PlatformCapability(
+        platform="hackernews", display_name="Hacker News discussion",
+        operations={"search", "read"}, auth_mode="none", tier=0, cloud_safe=True,
+        backends=["hn-firebase-api"], doc_ref="https://github.com/HackerNews/API",
+    ),
+    "stackexchange": PlatformCapability(
+        platform="stackexchange", display_name="Stack Overflow questions",
+        operations={"search", "read"}, auth_mode="none", tier=0, cloud_safe=True,
+        backends=["stackexchange-api"], doc_ref="https://api.stackexchange.com/docs/advanced-search",
+    ),
+}
+
+
 def get_capability(platform: str) -> PlatformCapability:
     """Retrieve capability descriptor or a generic web fallback descriptor."""
     if platform in CAPABILITY_MATRIX:
         return CAPABILITY_MATRIX[platform]
     if platform in AUTHORITATIVE_CAPABILITY_MATRIX:
         return AUTHORITATIVE_CAPABILITY_MATRIX[platform]
+    if platform in COMMUNITY_CAPABILITY_MATRIX:
+        return COMMUNITY_CAPABILITY_MATRIX[platform]
     return PlatformCapability(
         platform=platform,
         display_name=f"Generic Platform ({platform})",

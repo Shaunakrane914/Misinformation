@@ -1,118 +1,58 @@
-# Aegis Protocol — Operations, Deployment & Runtime Runbook
+# Operations and runtime boundaries
 
-**Document Version**: 4.1.0  
-**Environment**: Production Docker / Cloud Run / Kubernetes / Local Workstation
+Maintained against `abe547f` on 2026-10-14. **No production deployment or merge is authorized.** Use [current state](../CURRENT_STATE.md), [configuration](PRODUCTION_CONFIGURATION_MATRIX.md), [security](../security/README.md) and [rollback limits](ROLLBACK_VERIFICATION.md).
 
----
+## Topology and persistence
 
-## 1. System Topology & Operational Architecture
+FastAPI serves the API and static frontend. Specialist scans and claim verification share acquisition/research services, with optional authorized external providers. Persistence uses configured Supabase server credentials or **file-backed SQLite**, not an automatic in-memory demo. Dossiers have separate storage and integrity checks.
 
-Aegis Protocol operates as a resilient modular monolith designed for zero-downtime execution and graceful degradation:
+The [Dockerfile](../../Dockerfile) describes a Python 3.13 multi-stage, non-root container. It does not prove a zero-downtime, Kubernetes, Cloud Run or production deployment has been tested. [.dockerignore](../../.dockerignore) excludes environment secrets, local databases, research/artifact trees and workspace caches from build context; inspect the current rules rather than old disk-size estimates.
 
-```
-                      ┌──────────────────────┐
-                      │    Reverse Proxy     │
-                      │   (Caddy / Nginx)    │
-                      └──────────┬───────────┘
-                                 │ :8000
-                                 ▼
-                      ┌──────────────────────┐
-                      │   Uvicorn / FastAPI  │
-                      │    Aegis Protocol    │
-                      └─────┬──────────┬─────┘
-                            │          │
-         ┌──────────────────┴──┐    ┌──┴──────────────────┐
-         ▼                     ▼    ▼                     ▼
-┌──────────────────┐ ┌────────────┐ ┌─────────────┐ ┌───────────────┐
-│ Primary Database │ │ In-Memory  │ │ Live Gemini │ │ Offline Mock  │
-│ Supabase / PG    │ │ SQLite     │ │ API Keys    │ │ Provider      │
-│ (Active Mode)    │ │ (Fallback) │ │ (Key Cycle) │ │ (Zero-Crash)  │
-└──────────────────┘ └────────────┘ └─────────────┘ └───────────────┘
+A deployment owner must explicitly choose writable database/dossier paths, mount durable storage, protect secrets, establish external access policy and prove reload/rollback. Do not copy local historical dossiers into a new image as a recovery strategy.
+
+## Diagnostic checks
+
+From the intended worktree, local-only startup is:
+
+```text
+python -m uvicorn backend.main:app --host 127.0.0.1 --port 8000
 ```
 
----
+| Read-only endpoint | Meaning |
+|---|---|
+| `GET /api/healthz` (alias `/healthz`) | Process liveness; not model/provider or evidence-quality acceptance. |
+| `GET /api/readyz` (alias `/readyz`) | Runtime readiness observations; READY_UNVERIFIED is not healthy live providers. |
+| `GET /api/agent-reach/capabilities` | Registry/operation inventory and current policy observations; registration is not successful acquisition. |
+| `GET /api/agent-reach/doctor` | Diagnostic snapshot, not a universal connectivity certificate. |
+| `GET /api/system/deployment-status` | Deployment/runtime observations; not authorization to launch. |
 
-## 2. Configuration Reference
+See [route map](../api/CURRENT_ENDPOINTS.md) and running OpenAPI for exact response fields. Do not copy old sample JSON into monitoring assertions.
 
-All settings are resolved from system environment variables or local `.env`:
+## Operating safely
 
-| Setting | Type | Default | Description |
-| :--- | :--- | :--- | :--- |
-| `PORT` | Integer | `8000` | Port on which the HTTP server listens. |
-| `HOST` | String | `0.0.0.0` | Bind host address. |
-| `LOG_LEVEL` | String | `INFO` | Standard logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`). |
-| `GEMINI_API_KEY` | String | `None` | Primary Google Gemini API key. |
-| `GEMINI_API_KEY_1`, `_2`, `_3` | String | `None` | Secondary keys for automatic key rotation on HTTP 429 quota exhaustion. |
-| `AEGIS_MOCK_LLM` | Boolean | `false` | When `true`, all reasoning pipelines utilize deterministic offline mocks. |
-| `SUPABASE_URL` | String | `None` | Supabase / PostgreSQL endpoint. |
-| `SUPABASE_SERVICE_ROLE_KEY` | String | `None` | Elevated service role key for database operations. |
-| `DASHBOARD_TTL` | Integer | `300` | In-memory stats cache time-to-live in seconds. |
+- Missing model credentials do not silently enable production mocks. Authorized live inference and deterministic fallback are different execution modes.
+- Keep ADMIN_API_TOKEN and provider keys server-side. Missing operator configuration is 503; unauthenticated/invalid bearer calls to the guarded action are 401. Do not send a test response action or notification as a health check.
+- Per-agent admission protects shared mutable state within a process; busy scans can return 429. It is not a distributed queue/lock or concurrency SLA.
+- Honor operation-level authentication, capability policy and cooldowns. SEC needs an owner contact; FactCheck needs an authorized key.
+- Network operations have bounded attempts/body/decode sizes. A per-attempt timeout is not an end-to-end API latency promise; some native extractor routes and auxiliary quote requests take longer.
+- Run background RSS once in an approved worker, not independently in every API process.
+- A safe URL, an official domain and a dossier hash are not proof that a factual claim is true.
 
----
+## Incident and recovery triage
 
-## 3. Docker Container Deployment
+| Symptom | Safe response |
+|---|---|
+| Database unavailable / unexpected persistence path | Check selected backend, server credentials, file/volume permissions and reload evidence. Do not delete, silently relocate or overwrite data. |
+| Corrupt or hash-invalid dossier | Preserve original bytes; record path/hash/error in a new read-only inventory; keep it out of verified conclusions. |
+| Sparse evidence / unavailable source | Preserve coverage/failure telemetry and abstain. Do not generate filler evidence or label execution PASS as research PASS. |
+| Rate limit / timeout | Keep the failure class and cooldown, reduce scoped work and respect provider restrictions. |
+| Suspected source spoofing / XSS / injected instructions | Retain sanitized diagnostic context, run focused security regressions and review the relevant boundary. Passing a regex trap is not online model-injection proof. |
+| Rollback needed | Use an owner-controlled staging exercise and the [rollback verification contract](ROLLBACK_VERIFICATION.md); current offline reader checks do not prove deployed rollback. |
 
-### Container Hygiene & `.dockerignore`
-Aegis Protocol enforces strict build context isolation via [`.dockerignore`](../../.dockerignore). The following sensitive and heavy artifacts are excluded from images:
-- `.env`, `.env.*` (Secrets and credentials)
-- `research/` (~338 MB ungrounded exploratory materials)
-- `docs/visual-audit/` (~31 MB high-resolution visual regression frames)
-- `aegis_local.db` (~17.6 MB local developer database)
-- `.git`, `__pycache__`, `.pytest_cache`, `.venv`
+The prior original-worktree inventory reported 55 malformed historical dossiers; this isolated worktree does not establish their repair or current archive count. Historical originals, frozen benchmark data and old proof must remain intact.
 
-### Docker Build & Run
-```bash
-# Build the production container
-docker build -t aegis-protocol:latest .
+## Validation and release gate
 
-# Run the container with environment variables
-docker run -d \
-  -p 8000:8000 \
-  -e GEMINI_API_KEY="AIzaSy..." \
-  -e LOG_LEVEL="INFO" \
-  --name aegis-app \
-  aegis-protocol:latest
-```
+Run [offline checks](../testing/README.md); independently authorize any live audits and use new output directories. Hosted [CI evidence](../handoffs/2026-10-14_PHASE8_INDEPENDENT_CI_CLOSEOUT.md) proves only its exact observed commit and configured jobs.
 
----
-
-## 4. Health Probes & Monitoring
-
-Aegis Protocol provides dedicated probes for Kubernetes and container orchestrators:
-
-### 1. Liveness Probe (`GET /healthz`)
-- **Purpose**: Verifies the HTTP process is responsive.
-- **Success Response**: `HTTP 200 OK`
-```json
-{
-  "status": "ok",
-  "version": "4.1.0",
-  "timestamp": "2026-10-09T21:40:00Z"
-}
-```
-
-### 2. Readiness Probe (`GET /api/healthz`)
-- **Purpose**: Verifies database connectivity, memory pressure, and channel availability.
-- **Success Response**: `HTTP 200 OK`
-```json
-{
-  "status": "healthy",
-  "database": "connected",
-  "llm_gateway": "ready",
-  "active_channels": 14
-}
-```
-
----
-
-## 5. Fault Tolerance & Recovery Runbook
-
-1. **Database Unreachable**:
-   - *Behavior*: Aegis Protocol logs a warning and falls back to an in-memory SQLite store (`backend/db/database.py`).
-   - *Action*: Inspect `SUPABASE_URL` and firewall egress; claims written to memory will not persist across process restarts.
-2. **Gemini API Rate Limiting (HTTP 429)**:
-   - *Behavior*: `GeminiService` engages jittered exponential backoff and cycles to the next configured backup key.
-   - *Action*: Supply additional backup keys (`GEMINI_API_KEY_1`, `_2`) in production `.env`.
-3. **SSRF Attempt Detected**:
-   - *Behavior*: Inbound URL is rejected with HTTP 400 and logged to security telemetry.
-   - *Action*: No operational intervention required; defenses are automated.
+Release remains blocked on externally adjudicated research quality, claim-relevant coverage, authorized provider/model checks, evidence-rich manual accessibility/usability, historical-integrity disclosure and staging rollback. This guide describes operational preparation; it does not authorize or certify a launch.

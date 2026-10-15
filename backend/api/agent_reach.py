@@ -10,7 +10,7 @@ Endpoints for omni-channel internet evidence acquisition:
 
 import logging
 import time
-from typing import Optional
+from typing import Literal, Optional
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 
@@ -80,7 +80,56 @@ class AgentReachDebugRequest(BaseModel):
     perform_reads: Optional[bool] = Field(True, description="Attempt deep reading on top URLs")
 
 
+class AgentReachExtractRequest(BaseModel):
+    platform: str = Field(..., pattern=r"^[a-z_]{1,32}$")
+    operation: str = Field("read", pattern=r"^[a-z_]{1,32}$")
+    query: str = Field(..., min_length=1, max_length=2000)
+    limit: int = Field(2, ge=1, le=5)
+    mode: Literal["quick", "deep"] = "quick"
+    max_chars: int = Field(8000, ge=1, le=20000)
+
+
 # ── Endpoints ────────────────────────────────────────────────────────────────
+
+
+@router.post("/extract", summary="Bounded source operation with captured-passage inspection")
+def agent_reach_extract(request: AgentReachExtractRequest):
+    """Native production dispatch; never bypass policy, credentials or cooldowns.
+
+    Deep means optional bounded follow-ups, not whole-site completeness. This
+    synchronous handler runs in FastAPI's worker pool, not the async event loop.
+    """
+    from backend.services.agent_reach.native import native_router
+    from backend.services.agent_reach.native.operation_capabilities import EXECUTABLE_CAPABILITIES
+    from backend.schemas.unified_report import UnifiedEvidenceItem
+    from backend.schemas.evidence_inspection import summarize_inspections
+
+    platform = "twitter" if request.platform == "x" else request.platform
+    if request.operation not in EXECUTABLE_CAPABILITIES.get(platform, set()):
+        raise HTTPException(status_code=422, detail="Unsupported source operation")
+    options = {"max_chars": request.max_chars}
+    if request.mode == "deep":
+        options.update(include_comments=True, comment_limit=3, include_files=True,
+                       file_limit=3, follow_linked_article=True)
+    try:
+        fragments, telemetry = native_router.execute_channel_query(
+            platform=platform, operation=request.operation, query=request.query,
+            limit=request.limit, **options,
+        )
+    except Exception as error:
+        logger.warning("Bounded extraction failed: %s", type(error).__name__)
+        raise HTTPException(status_code=502, detail="Source extraction failed") from error
+    return {
+        "schema_version": "source-extraction-v1", "platform": platform,
+        "operation": request.operation, "mode": request.mode,
+        "status": telemetry.get("status", "UNKNOWN"), "outcome": telemetry.get("outcome", "UNKNOWN"),
+        "network_observed": telemetry.get("network_observed", False),
+        "evidence": [UnifiedEvidenceItem.from_evidence_item(fragment).to_dict() for fragment in fragments],
+        "inspection_summary": summarize_inspections(fragments),
+        "source_completeness": "UNKNOWN", "claim_support": "NOT_ASSESSED",
+        "runtime_decision": (telemetry.get("runtime_decision") or {}).get("decision"),
+        "runtime_reason": (telemetry.get("runtime_decision") or {}).get("reason"),
+    }
 
 @router.get("/capabilities", summary="Capability Inventory & Status")
 def agent_reach_capabilities():

@@ -2,7 +2,11 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 9 acquisition-depth checkpoint — 2026-10-15
+## Latest: Main publication and deployment — 2026-10-15
+
+- [Publication and deployment handoff](2026-10-15_MAIN_PUBLICATION_AND_DEPLOYMENT.md): Phase 9 checkpoint pushed to main, exact-commit hosted CI green, existing Cloudflare frontend deployed and static bytes verified. Render is healthy but still exposes the older API; its CLI login is expired, so backend deployment remains blocked. No source approval gates were changed.
+
+## Previous: Phase 9 acquisition-depth checkpoint — 2026-10-15
 
 - [Acquisition depth and strategic evidence UI](2026-10-15_PHASE9_ACQUISITION_DEPTH.md): repeated 28-operation sampling, additive HN/Stack Overflow, policy-preserving extraction API, exact captured-passage inspection, source-read controls and real API/browser checks. Overall Phase 9 remains PARTIAL; blocked sources are retained by explicit user direction.
 - [Extraction runbook](../operations/PHASE9_EXTRACTION_RUNBOOK.md) and [phase plan](../architecture/PHASE9_EVIDENCE_DEPTH_AND_STRATEGIC_WORKBENCH_PLAN.md).

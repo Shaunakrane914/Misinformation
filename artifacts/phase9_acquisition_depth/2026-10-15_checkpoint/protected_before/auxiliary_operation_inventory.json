@@ -1,0 +1,479 @@
+[
+  {
+    "operation": "arxiv.read",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "arxiv.search",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "bilibili.hot",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "bilibili.rank",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "bilibili.read",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "bilibili.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "boss.read_jd",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "BOSS_CDP_PORT",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "boss.search_jobs",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": "BOSS_CDP_PORT",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "facebook.feed",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "FACEBOOK_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "facebook.groups",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "FACEBOOK_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "facebook.oembed",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "facebook.profile",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "FACEBOOK_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "facebook.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": "FACEBOOK_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "fact_check.search",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": "GOOGLE_FACTCHECK_API_KEY",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "github.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "instagram.explore",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "INSTAGRAM_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "instagram.oembed",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "instagram.posts",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "INSTAGRAM_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "instagram.profile",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "INSTAGRAM_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "instagram.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": "INSTAGRAM_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "jina_reader.read",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "linkedin.company",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "LINKEDIN_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "linkedin.jobs",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "linkedin.profile",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "LINKEDIN_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "linkedin.read",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "LINKEDIN_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "news.search",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "nist_cve.read",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "nist_cve.search",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "reddit.comments",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": false,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "reddit.read",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": false,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "reddit.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": false,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "rss.search",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "sec_edgar.read",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "sec_edgar.search",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "twitter.feed",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "twitter.profile",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "twitter.read",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "twitter.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "twitter.status",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "v2ex.hot",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "web.search",
+    "declared": false,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "web_search.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xiaohongshu.comments",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "XIAOHONGSHU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xiaohongshu.feed",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "XIAOHONGSHU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xiaohongshu.read",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "XIAOHONGSHU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xiaohongshu.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": "XIAOHONGSHU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xiaoyuzhou.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xiaoyuzhou.transcribe",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "GROQ_API_KEY",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xueqiu.hot_posts",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "XUEQIU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xueqiu.hot_stocks",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "XUEQIU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xueqiu.quotes",
+    "declared": true,
+    "handler_available": false,
+    "auth_environment": "XUEQIU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "xueqiu.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": "XUEQIU_COOKIE",
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "EXCLUDE",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  },
+  {
+    "operation": "youtube.search",
+    "declared": true,
+    "handler_available": true,
+    "auth_environment": null,
+    "policy_eligible": true,
+    "runtime_decision_before_live_probe": "ELIGIBLE_UNVERIFIED",
+    "note": "Static inventory; live evidence is recorded only when a matching probe exists."
+  }
+]

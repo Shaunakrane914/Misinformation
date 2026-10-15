@@ -51,7 +51,9 @@ def normalize_item(
     platform = item.get("platform") or default_platform
     domain = extract_domain(url).lower()
     source = item.get("source") or domain or platform
-    author = item.get("author") or item.get("channel") or "@user"
+    author = item.get("author") or ""
+    observed_metadata = item.get("metadata")
+    observed_metadata = observed_metadata if isinstance(observed_metadata, dict) else {}
 
     raw_id_seed = f"{url}:{title}:{author}"
     evidence_id = f"ev_{hashlib.md5(raw_id_seed.encode()).hexdigest()[:10]}"
@@ -97,11 +99,15 @@ def normalize_item(
         "source_role": source_role,
         "source_tier": source_tier,
         "retrieval_method": "Agent Reach Omni-Retrieval",
+        "content_depth": item.get("content_depth") or observed_metadata.get("content_depth") or "UNKNOWN",
         "metadata": {
-            "likes": item.get("likes", 0),
-            "retweets": item.get("retweets", 0),
-            "score": item.get("score", 0),
-            "is_official": item.get("is_official", False)
+            "likes": item.get("likes"),
+            "retweets": item.get("retweets"),
+            "score": item.get("score"),
+            "is_official": item.get("is_official"),
+            **{key: value for key, value in observed_metadata.items()
+               if key in {"content_depth", "query_id", "query_class", "query_text", "relevant_excerpt", "independence_group"}
+               and isinstance(value, str) and len(value) <= 2000},
         }
     }
 
@@ -212,7 +218,7 @@ def search_personal_evidence(
                 platform = f.channel
                 role = f.source_role
                 tier = f.source_tier
-                author = f.source_name or f.channel
+                author = getattr(f, "author", "")
                 pub = f.published_at or ""
                 depth = f.content_depth
                 q_id = f.query_id
@@ -237,7 +243,7 @@ def search_personal_evidence(
                 platform = getattr(f, "channel_name", "web")
                 role = f.raw_metadata.get("source_role", "WEB_REFERENCE") if hasattr(f, "raw_metadata") else "WEB_REFERENCE"
                 tier = f.raw_metadata.get("source_tier", "TIER_3_AGGREGATE") if hasattr(f, "raw_metadata") else "TIER_3_AGGREGATE"
-                author = getattr(f, "author", "Web")
+                author = getattr(f, "author", "")
                 pub = getattr(f, "published", "")
                 depth = getattr(f, "content_depth", "SNIPPET")
                 q_id = getattr(f, "query_id", "")

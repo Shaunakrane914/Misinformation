@@ -40,6 +40,8 @@ DIRECT_URL_HOSTS = {
     "github.com": "github",
     "www.youtube.com": "youtube",
     "youtu.be": "youtube",
+    "news.ycombinator.com": "hackernews",
+    "stackoverflow.com": "stackexchange",
 }
 
 
@@ -356,6 +358,16 @@ class SourcePlanningEngine:
             actions.append(self._action(1, "fact_check", "search", claim, "fact_check_database", "DIRECT_METADATA", 2, "Retrieve publisher-attributed ClaimReview metadata; the review body is not fetched.", True))
 
         # Agent objectives adjust priority, not the capability truth contract.
+        # Additional discussion sources are opt-in or explicitly named, not
+        # indiscriminately queried for financial/privacy investigations.
+        for channel, names in (("hackernews", ("hacker news", "ycombinator")),
+                               ("stackexchange", ("stack overflow", "stackoverflow", "stackexchange"))):
+            if channel in allowed and (explicitly_allowed or any(name in claim.lower() for name in names)):
+                actions.append(self._action(
+                    2, channel, "search", claim, "technical_discussion", "DIRECT_CONTENT_OR_METADATA", 4,
+                    "Inspect sampled technical discussion, not an authoritative verdict.",
+                    limitations=["Bounded sample; external linked documents and full reply history are not acquired."],
+                ))
         if agent.lower() in {"trending", "trending_agent"}:
             actions.append(self._action(2, "twitter", "search", claim, "trend_signal", "PROFILE_STATUS_OR_INDEX", 3, "Look for concrete public status URLs and recency signals.", limitations=["Profile metadata and index snippets are not tweet bodies."]))
         elif agent.lower() in {"brandshield", "brandshield_agent"}:

@@ -1,0 +1,19 @@
+{
+  "sample_gate": "PASS",
+  "sample_gate_scope": "16 protected operations only, bounded examples",
+  "all_requested_sources_gate": "PARTIAL",
+  "requested_operations_without_records": [
+    "reddit.read",
+    "reddit.comments",
+    "sec_edgar.read",
+    "nist_cve.read",
+    "fact_check.search"
+  ],
+  "protected_operations_missing": [],
+  "operations_sampled": 28,
+  "rounds_completed": 1,
+  "observed_items": 41,
+  "claim_accuracy": null,
+  "source_completeness": "UNKNOWN",
+  "release_acceptance": "NOT_ESTABLISHED"
+}

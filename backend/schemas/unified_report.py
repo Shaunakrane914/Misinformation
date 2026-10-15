@@ -23,6 +23,7 @@ from dataclasses import dataclass, field, asdict
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 import uuid
+from urllib.parse import urlsplit
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -140,6 +141,7 @@ class UnifiedEvidenceItem:
     source: UnifiedEvidenceSource = field(default_factory=UnifiedEvidenceSource)
     quality_tensor: Optional[UnifiedQualityTensor] = None
     retrieval_lineage: List[RetrievalLineageEntry] = field(default_factory=list)
+    extraction: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -150,6 +152,7 @@ class UnifiedEvidenceItem:
             "source": self.source.to_dict(),
             "quality_tensor": self.quality_tensor.to_dict() if self.quality_tensor else None,
             "retrieval_lineage": [r.to_dict() for r in self.retrieval_lineage],
+            "extraction": self.extraction,
         }
 
     @classmethod
@@ -183,10 +186,16 @@ class UnifiedEvidenceItem:
             rel = float(rel)
         else:
             rel = None
+        source_domain = _safe_str(getattr(item, "source_domain", None))
+        if not source_domain:
+            try:
+                source_domain = urlsplit(url or "").hostname
+            except ValueError:
+                source_domain = None
         source = UnifiedEvidenceSource(
-            name=_safe_str(source_name),
+            name=_safe_str(source_name or getattr(item, "platform", None)),
             type=_infer_source_type(item),
-            domain=_safe_str(getattr(item, "source_domain", None)),
+            domain=source_domain,
             is_primary=bool(getattr(item, "primary_source", False)),
             authority=_safe_str(auth),
             reliability=rel,
@@ -231,14 +240,16 @@ class UnifiedEvidenceItem:
                     retrieved_at=_safe_str(d_at),
                 ))
 
+        from backend.schemas.evidence_inspection import inspect_evidence
         return cls(
             title=_safe_str(getattr(item, "title", None)),
             snippet=_safe_str(getattr(item, "snippet", None) or getattr(item, "relevant_excerpt", None)),
             url=url,
-            timestamp=_safe_str(getattr(item, "published_at", None)),
+            timestamp=_safe_str(getattr(item, "published_at", None) or getattr(item, "published", None)),
             source=source,
             quality_tensor=qt,
             retrieval_lineage=lineage,
+            extraction=inspect_evidence(item),
         )
 
 

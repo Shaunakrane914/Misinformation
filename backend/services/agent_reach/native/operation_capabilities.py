@@ -16,6 +16,7 @@ from typing import Any, Callable, Dict, Iterable, Optional, Set, Tuple
 
 from backend.services.agent_reach.native.channel_capabilities import (
     AUTHORITATIVE_CAPABILITY_MATRIX,
+    COMMUNITY_CAPABILITY_MATRIX,
     CAPABILITY_MATRIX,
 )
 
@@ -45,6 +46,8 @@ EXECUTABLE_CAPABILITIES: Dict[str, Set[str]] = {
     "nist_cve": {"search", "read"},
     "arxiv": {"search", "read"},
     "fact_check": {"search"},
+    "hackernews": {"search", "read"},
+    "stackexchange": {"search", "read"},
 }
 
 
@@ -90,6 +93,10 @@ OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
     ("arxiv", "search"): {"DIRECT_ABSTRACT", "DIRECT_METADATA"},
     ("arxiv", "read"): {"DIRECT_ABSTRACT"},
     ("fact_check", "search"): {"DIRECT_METADATA"},
+    ("hackernews", "search"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
+    ("hackernews", "read"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
+    ("stackexchange", "search"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
+    ("stackexchange", "read"): {"DIRECT_CONTENT", "DIRECT_METADATA"},
 }
 
 
@@ -248,7 +255,7 @@ class RuntimeOperationCapabilities:
     ) -> Dict[str, Any]:
         channel, operation = self.normalize(channel, operation)
         key = (channel, operation)
-        all_capabilities = {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX}
+        all_capabilities = {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX, **COMMUNITY_CAPABILITY_MATRIX}
         declared = operation in all_capabilities.get(channel, _EMPTY_CAPABILITY).operations
         implemented = operation in EXECUTABLE_CAPABILITIES.get(channel, set())
         env_name = required_auth_environment(channel, operation)
@@ -327,7 +334,7 @@ class RuntimeOperationCapabilities:
         }
 
     def inventory(self) -> Dict[str, Dict[str, Dict[str, Any]]]:
-        all_capabilities = {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX}
+        all_capabilities = {**CAPABILITY_MATRIX, **AUTHORITATIVE_CAPABILITY_MATRIX, **COMMUNITY_CAPABILITY_MATRIX}
         channels = set(all_capabilities) | set(EXECUTABLE_CAPABILITIES)
         result: Dict[str, Dict[str, Dict[str, Any]]] = {}
         for channel in sorted(channels):

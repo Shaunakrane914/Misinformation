@@ -486,6 +486,7 @@ class StandardChannelHandlers:
             return self._execute_jina_reader(
                 query, limit, query_id, query_class, query_text, telemetry,
                 url=query, requested_channel="web",
+                max_chars=min(20_000, max(0, int(_.get("max_chars", 4000)))),
             )
         try:
             fragments = self.router._execute_web_search(query, limit, query_id, query_class, query_text)
@@ -506,13 +507,16 @@ class StandardChannelHandlers:
         target_url = kwargs.get("url") or query
         requested_channel = kwargs.get("requested_channel", "jina_reader")
         actual_channel = "jina_reader"
-        result = self.router.execute_channel_read(target_url, max_chars=kwargs.get("max_chars", 4000))
+        max_chars = min(20_000, max(0, int(kwargs.get("max_chars", 4000))))
+        result = self.router.execute_channel_read(target_url, max_chars=max_chars)
         self._record_transport(telemetry, result)
         if result.get("status") != "success":
             telemetry.update(status="FAILED", error=result.get("error", "Failed to read content"))
             return []
         content = result.get("markdown", "") or result.get("content", "")
         backend_id = result.get("backend") or "jina-reader"
+        reported_depth = result.get("content_depth") or (result.get("video_metadata") or {}).get("content_depth")
+        depth = reported_depth if reported_depth in {"PROFILE_METADATA", "VIDEO_METADATA", "SOCIAL_POST", "VIDEO_TRANSCRIPT"} else "PARTIAL_CONTENT"
         fragment = EvidenceFragment(
             platform="Web", title=result.get("title") or "",
             content=content, url=target_url, author=result.get("author") or "",
@@ -523,7 +527,7 @@ class StandardChannelHandlers:
             actual_retrieval_channel=actual_channel,
             # Generic page text may contain navigation or omit dynamic sections;
             # length alone cannot prove a complete underlying article.
-            content_depth="PARTIAL_CONTENT", query_id=query_id,
+            content_depth=depth, query_id=query_id,
             query_class=query_class, query_text=query_text,
             raw_metadata={
                 "backend": result.get("backend", "Jina Reader"),
@@ -783,6 +787,29 @@ class StandardChannelHandlers:
             retrieval_mode=mode,
             status="SUCCESS" if fragments else "DEGRADED",
         )
+
+    def _execute_community(self, platform, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
+        from backend.infrastructure.acquisition.adapters.community import acquire_community
+        fragments, observed = acquire_community(
+            platform, query, limit, operation=kwargs.get("operation", "search"), page=kwargs.get("page", 1),
+            include_comments=kwargs.get("include_comments", False),
+        )
+        telemetry.update(observed)
+        for fragment in fragments:
+            fragment.query_id = query_id
+            fragment.query_class = query_class
+            fragment.query_text = query_text
+            if not fragment.raw_metadata.get("transport") and observed.get("transport_observations"):
+                fragment.raw_metadata["transport"] = dict(observed["transport_observations"][-1])
+        self.router._tag_fragments(fragments, platform, platform, RetrievalMode.DIRECT_API.value,
+                                   "hn-firebase-api" if platform == "hackernews" else "stackexchange-api", None, False)
+        return fragments
+
+    def _execute_hackernews(self, *args, **kwargs):
+        return self._execute_community("hackernews", *args, **kwargs)
+
+    def _execute_stackexchange(self, *args, **kwargs):
+        return self._execute_community("stackexchange", *args, **kwargs)
 
     def _execute_sec_edgar(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
         from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import (

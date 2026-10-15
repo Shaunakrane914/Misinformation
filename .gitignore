@@ -130,6 +130,11 @@ research/scraper_bakeoff/artifacts/
 artifacts/phase8_frontend_visual/*
 !/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/
 !/artifacts/phase8_frontend_visual/2026-10-14_phase8_audit/**
+# Allow only this reviewed Phase 9 checkpoint, not arbitrary future scrape dumps.
+!/artifacts/phase9_acquisition_depth/
+/artifacts/phase9_acquisition_depth/*
+!/artifacts/phase9_acquisition_depth/2026-10-15_checkpoint/
+!/artifacts/phase9_acquisition_depth/2026-10-15_checkpoint/**
 research/scraper_bakeoff/repos/
 
 # Large video binaries

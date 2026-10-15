@@ -4,6 +4,10 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 ## Next coding agent: start here
 
+Next-phase proposal: [Phase 9 — Evidence Depth & Strategic Investigation Workbench](architecture/PHASE9_EVIDENCE_DEPTH_AND_STRATEGIC_WORKBENCH_PLAN.md), dated 2026-10-15. This is a plan, not implemented capability or Phase 8 acceptance.
+
+Latest implementation: [Phase 9 acquisition checkpoint](handoffs/2026-10-15_PHASE9_ACQUISITION_DEPTH.md), [source extraction runbook](operations/PHASE9_EXTRACTION_RUNBOOK.md), [system guide](SYSTEM_GUIDE.md) and [current code map](development/CURRENT_CODE_MAP.md). This bounded implementation does not accept the entire Phase 9 plan.
+
 Start with the [dated current state](CURRENT_STATE.md) and [agent handoff
 index](handoffs/README.md), then inspect the checked-out branch and commit.
 Phase 8A has bounded live proof; 8B–8F remain partial and release acceptance

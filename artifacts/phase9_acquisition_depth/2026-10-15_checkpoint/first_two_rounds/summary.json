@@ -1,0 +1,10 @@
+{
+  "sample_gate": "PASS",
+  "protected_operations_missing": [],
+  "operations_sampled": 28,
+  "rounds_completed": 2,
+  "observed_items": 35,
+  "claim_accuracy": null,
+  "source_completeness": "UNKNOWN",
+  "release_acceptance": "NOT_ESTABLISHED"
+}

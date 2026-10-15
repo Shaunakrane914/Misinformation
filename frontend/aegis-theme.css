@@ -2339,6 +2339,22 @@ select:focus-visible,
 .ur-ev-trace summary:focus-visible { outline: 2px solid var(--accent); }
 .ur-ev-trace ul { margin: 0.45rem 0 0; padding-left: 1.2rem; }
 .ur-ev-trace li { display: flex; flex-wrap: wrap; gap: 0.45rem; padding: 0.25rem 0; }
+.ur-ev-inspection { max-width: 100%; min-width: 0; }
+.ur-ev-inspection figure { margin: 0.75rem 0; min-width: 0; }
+.ur-observed-table { max-width: 100%; overflow-x: auto; }
+.ur-observed-table table { width: 100%; border-collapse: collapse; }
+.ur-observed-table td { padding: 0.4rem; border: 1px solid var(--border-subtle); overflow-wrap: anywhere; }
+.ur-source-read { margin-top: 0.8rem; min-width: 0; overflow-wrap: anywhere; }
+.ur-source-read > p { font-size: 0.72rem; color: var(--text-muted); }
+.ur-source-read button { white-space: normal; max-width: 100%; }
+.ur-source-read button:disabled { opacity: 0.65; cursor: wait; }
+.ur-source-read .ur-ev-card { margin: 0.6rem 0; }
+.ur-ev-inspection figcaption { overflow-wrap: anywhere; font-size: 0.7rem; }
+.ur-ev-inspection blockquote {
+  margin: 0.35rem 0; padding: 0.6rem; border-left: 2px solid var(--accent);
+  white-space: pre-wrap; overflow-wrap: anywhere; color: var(--text);
+  max-height: 18rem; overflow-y: auto;
+}
 
 /* ── Badge ───────────────────────────────────────────────────────────────── */
 .ur-badge {

@@ -1,0 +1,51 @@
+{
+  "suite": "Offline persistence and rollback reader validation",
+  "execution_mode": "OFFLINE_REGRESSION",
+  "checks": {
+    "fresh_process_reload": {
+      "status": "PASS",
+      "producer_pid": 20312,
+      "consumer_pid": 20596
+    },
+    "persistent_state": {
+      "pid": 20596,
+      "claim_id": "7d5a4689-4e4d-4642-baca-b88e929f4693",
+      "archive": {
+        "status": "PASS",
+        "counts": {
+          "VERIFIED": 1,
+          "LEGACY_UNSEALED": 0,
+          "FAILED": 0
+        },
+        "invalid_files": [],
+        "disclosure": "Legacy JSON readability is not cryptographic integrity verification."
+      },
+      "tamper_detection": "PASS",
+      "legacy_unsealed_disclosure": "PASS",
+      "healthz": "ok",
+      "readyz": "ready"
+    },
+    "historical_readers": {
+      "status": "PASS",
+      "baseline_commit": "258cb4f1fc71c379d0e882d8804c2a9770fc7f60",
+      "pid": 19088,
+      "scope": "Actual historical SQLite and JSON readers, not a full old-version deployment"
+    },
+    "historical_archive_read_only": {
+      "status": "NOT_VERIFIED",
+      "counts": {
+        "VERIFIED": 0,
+        "LEGACY_UNSEALED": 0,
+        "FAILED": 0
+      },
+      "invalid_files": [],
+      "disclosure": "Legacy JSON readability is not cryptographic integrity verification."
+    },
+    "preserved_dossier_bytes": "PASS",
+    "deployed_previous_version": {
+      "status": "NOT_VERIFIED",
+      "reason": "Requires an owner-controlled staging rollback"
+    }
+  },
+  "verdict": "OFFLINE_PERSISTENCE_PASS"
+}

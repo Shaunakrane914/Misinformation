@@ -132,6 +132,12 @@ def test_exact_claim_not_purpose_boilerplate_reaches_source_planner():
     assert plan.call_args.kwargs["entity"] == "Example"
 
 
+def test_personal_entity_scan_keeps_identity_intent_without_boilerplate_query():
+    from backend.services.agent_reach.source_planner import SourcePlanningEngine
+    assert SourcePlanningEngine._classify_intent("Sam Altman", "personal") == "identity_attribution"
+    assert SourcePlanningEngine._classify_intent("Example quarterly revenue", "financial") == "financial_integrity"
+
+
 def test_parent_group_does_not_substitute_for_requested_issuer():
     item = record("Tata announced a new Air India route and is investing in airline facilities.")
     passage_extractor.extract_passages([item], "Tata Motors (TATAMOTORS.NS)", "financial results")

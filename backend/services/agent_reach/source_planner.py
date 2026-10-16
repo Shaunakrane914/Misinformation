@@ -564,6 +564,8 @@ class SourcePlanningEngine:
             return "technical_product"
         if financial or domain == "financial":
             return "financial_integrity"
+        if domain in {"personal", "personal_watch"}:
+            return "identity_attribution"
         if domain == "trending":
             return "trend_discovery"
         return "general_verification"

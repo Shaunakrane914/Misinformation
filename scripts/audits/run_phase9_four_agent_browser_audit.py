@@ -32,6 +32,20 @@ args = parser.parse_args()
 OUT = args.output_dir.resolve()
 OUT.mkdir(parents=True, exist_ok=False)
 sys.path.insert(0, str(ROOT))
+
+
+def application_fingerprint():
+    digest = hashlib.sha256()
+    names = subprocess.check_output(['git','ls-files','backend','frontend'], cwd=ROOT, text=True).splitlines()
+    for name in names:
+        path = ROOT / name
+        if path.is_file():
+            digest.update(name.encode())
+            digest.update(path.read_bytes())
+    return digest.hexdigest()
+
+
+initial_application_sha256 = application_fingerprint()
 values = dotenv_values(args.env_file)
 allowed = ('GEMINI_API_KEY', 'GEMINI_KEY_', 'GROQ_API_KEY', 'YF_API_KEY', 'AGENT_REACH_', 'REDDIT_',
            'AEGIS_REDDIT_', 'EXA_API_KEY', 'TAVILY_API_KEY', 'BRAVE_API_KEY', 'FACTCHECK_API_KEY',
@@ -108,7 +122,8 @@ mapping = {'scout':('scout-agent','tickerInput','analyzeBtn'), 'trending':('tren
 summary = {'scope':'Actual Chromium page buttons to real local backend SSE; 12 new acquisitions, no response or progress stubs. 390/1440px screenshots share one result per input. Startup lifespan/background ingestion off; remote persistence and notifications disabled; external fonts blocked; actual pinned Chart.js served from saved bytes.',
            'configured_gemini_credentials':len(settings.gemini_api_keys), 'mock_llm':settings.is_mock_llm, 'cases':[]}
 summary.update(head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
-               dirty_source=True, llm_timeout_seconds=settings.llm_request_timeout,
+               dirty_source=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()),
+               application_sha256=initial_application_sha256, llm_timeout_seconds=settings.llm_request_timeout,
                llm_max_retries=settings.llm_max_retries, chart_sha256=hashlib.sha256(chart).hexdigest(),
                independent_entailment_accuracy=None, retrieval_recall=None)
 print(json.dumps({'api_base':api_base, 'configured_gemini_credentials':summary['configured_gemini_credentials']}), flush=True)
@@ -241,6 +256,8 @@ finally:
     static.shutdown()
     static.server_close()
 print('UI_COMPLETE ' + str(OUT / 'summary.json'),flush=True)
+summary['application_unchanged_during_run'] = application_fingerprint() == initial_application_sha256
+write_json(OUT / 'summary.json', summary)
 failed = not summary['cases'] or any(
     row.get('error_type') or not row.get('result_event') or row.get('error_events') or row.get('page_errors')
     or any(not view['unified_report_visible'] or view['missing_finding_texts']
@@ -249,4 +266,4 @@ failed = not summary['cases'] or any(
            or view['rendered_acquired_cards'] != row['acquired_records']
            or view['rendered_discovery_cards'] != row['discovery_records'] for view in row.get('views',[]))
     for row in summary['cases'])
-raise SystemExit(1 if failed else 0)
+raise SystemExit(1 if failed or not summary['application_unchanged_during_run'] else 0)

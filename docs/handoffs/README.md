@@ -2,7 +2,16 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Phase 9 Intelligence, Evidence Discovery & Misinformation Detection Accuracy — 2026-10-14
+## Latest: Main publication and deployment — 2026-10-15
+
+- [Publication and deployment handoff](2026-10-15_MAIN_PUBLICATION_AND_DEPLOYMENT.md): Phase 9 checkpoint pushed to main, exact-commit hosted CI green, existing Cloudflare frontend deployed and static bytes verified. Render is healthy but still exposes the older API; its CLI login is expired, so backend deployment remains blocked. No source approval gates were changed.
+
+## Previous: Phase 9 acquisition-depth checkpoint — 2026-10-15
+
+- [Acquisition depth and strategic evidence UI](2026-10-15_PHASE9_ACQUISITION_DEPTH.md): repeated 28-operation sampling, additive HN/Stack Overflow, policy-preserving extraction API, exact captured-passage inspection, source-read controls and real API/browser checks. Overall Phase 9 remains PARTIAL; blocked sources are retained by explicit user direction.
+- [Extraction runbook](../operations/PHASE9_EXTRACTION_RUNBOOK.md) and [phase plan](../architecture/PHASE9_EVIDENCE_DEPTH_AND_STRATEGIC_WORKBENCH_PLAN.md).
+
+## Previous: Phase 9 Intelligence, Evidence Discovery & Misinformation Detection Accuracy — 2026-10-14
 
 - [Phase 9 Intelligence & Accuracy handoff](2026-10-14_PHASE9_INTELLIGENCE_ACCURACY.md):
   comprehensive benchmark creation (88 cases across Dev, Regression, and Held-Out splits);
@@ -39,7 +48,7 @@ Start here when resuming work. These are dated engineering records, not promises
   improvements, terminal Chromium screenshots, automated accessibility
   results, full offline validation and explicit remaining Phase 8 gates.
 
-## Latest: Phase 8B bounded GitHub issue-discussion follow-up — 2026-10-13
+## Previous: Phase 8B bounded GitHub issue-discussion follow-up — 2026-10-13
 
 - [Issue-discussion follow-up handoff](2026-10-13_PHASE8B_GITHUB_ISSUE_COMMENTS.md):
   opt-in bounded comment acquisition, negative and clean-commit live samples,
@@ -119,7 +128,7 @@ The Phase 8A gate below is complete but does not imply Phase 8B completion.
 
 The Phase 7.4 section below remains the preceding security and data-integrity checkpoint.
 
-## Latest: Phase 7.4 verification — 2026-10-12
+## Previous: Phase 7.4 verification — 2026-10-12
 
 - [Phase 7.4 closeout handoff](2026-10-12_PHASE7_4_CLOSEOUT.md): pushed commits, hosted CI evidence, local archive limitation and safe continuation.
 - [Phase 7.4 machine context](2026-10-12_PHASE7_4_CONTEXT.json): commit SHAs, run ID, validation counts and unresolved boundaries.

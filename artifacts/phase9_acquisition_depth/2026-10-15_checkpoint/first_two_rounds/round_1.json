@@ -1,0 +1,740 @@
+[
+  {
+    "operation": "github.read",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 42044,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1019,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.issues",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 10471,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1501,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.prs",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1214,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 2087,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.commits",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2202,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1834,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.releases",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2213,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 767,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "youtube.read",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 2487,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 2679,
+    "target_sha256": "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93"
+  },
+  {
+    "operation": "youtube.transcript",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 4017,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 1,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 3114,
+    "target_sha256": "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93"
+  },
+  {
+    "operation": "youtube.comments",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 66,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 4750,
+    "target_sha256": "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93"
+  },
+  {
+    "operation": "v2ex.latest",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 318,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 473,
+    "target_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "operation": "v2ex.search",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1007,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 438,
+    "target_sha256": "11a4a60b518bf24989d481468076e5d5982884626aed9faeb35b8576fcd223e1"
+  },
+  {
+    "operation": "v2ex.topic",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 1652,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1233,
+    "target_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  {
+    "operation": "v2ex.replies",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 148,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1263,
+    "target_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  {
+    "operation": "web.read",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 4607,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 317,
+    "target_sha256": "9ad94f2841a20c5919a28241056635f7c783464367fc162ea0e25a2299f62f3d"
+  },
+  {
+    "operation": "rss.read",
+    "status": "SUCCESS",
+    "outcome": "SYNDICATED_SUMMARY",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2518,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 2,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1311,
+    "target_sha256": "8453e2a872e7cbe3f9941ca712374b22ef41e7c3b4c60d952f3755c461d2407b"
+  },
+  {
+    "operation": "xiaoyuzhou.podcast",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 261,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1229,
+    "target_sha256": "cafc9e6cac1e50493c9a3d98d9f4be3e9fb7773c1aeeb4f5da4dc3a5429c9e7a"
+  },
+  {
+    "operation": "xiaoyuzhou.episodes",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2348,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 937,
+    "target_sha256": "cafc9e6cac1e50493c9a3d98d9f4be3e9fb7773c1aeeb4f5da4dc3a5429c9e7a"
+  },
+  {
+    "operation": "reddit.read",
+    "status": "SKIPPED",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 0,
+    "target_sha256": "0a67ec58213f0b712cc4ae14a6da0079a06bc9941095afec35ade2603ee10822"
+  },
+  {
+    "operation": "reddit.comments",
+    "status": "SKIPPED",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 0,
+    "target_sha256": "0a67ec58213f0b712cc4ae14a6da0079a06bc9941095afec35ade2603ee10822"
+  },
+  {
+    "operation": "twitter.status",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 24,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 525,
+    "target_sha256": "2da49e2f7e72bf7bc5a0c2980d56217fd3d34b836df92cf3343d3af150224f7c"
+  },
+  {
+    "operation": "twitter.profile",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 129,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1456,
+    "target_sha256": "b6174dacc6ee05e736dc73da8ce4b97ac44d534bd33b857817def3633cb1f0db"
+  },
+  {
+    "operation": "hackernews.read",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 0,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 1
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 634,
+    "target_sha256": "d5bacbb64f5915047d37c6a603214a35062270fa7e1524d4ef8b7ae6877f4149"
+  },
+  {
+    "operation": "hackernews.search",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 0,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 2
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 2155,
+    "target_sha256": "18885f27b5af9012df19e496460f9294d5ab76128824c6f993787004f6d9a7db"
+  },
+  {
+    "operation": "stackexchange.read",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 1009,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 474,
+    "target_sha256": "af11bfff45a4254e274e8b13552280c6caa9b6f0a18ae94fb774704579fe470e"
+  },
+  {
+    "operation": "stackexchange.search",
+    "status": "SUCCESS",
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2614,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 411,
+    "target_sha256": "9bb22bfcf77cafa91ee50fcee5abc3cec6d4aaf7997982407c0631ece01e74f9"
+  },
+  {
+    "operation": "sec_edgar.read",
+    "status": "CONFIG_REQUIRED",
+    "outcome": "EMPTY",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 5,
+    "target_sha256": "1eb44d625271a4eb75016f276d13783617c012685cb598f20ae93249164c0121"
+  },
+  {
+    "operation": "nist_cve.read",
+    "status": "FAILED",
+    "outcome": "FAILED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 10367,
+    "target_sha256": "6254dc332644b00acecc0b5e850672f136444e06d1b70730dffff5484420383d"
+  },
+  {
+    "operation": "arxiv.read",
+    "status": "SUCCESS",
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 1136,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 442,
+    "target_sha256": "d1462f6c8548b609b9403833215842d16d790d7a370e3e75be0f5f713553519c"
+  },
+  {
+    "operation": "fact_check.search",
+    "status": "AUTH_REQUIRED",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 0,
+    "target_sha256": "f28d567cf5453b5cdf19411e9e8f3b827f46fffa6b4db5377bab0a90d271a524"
+  }
+]

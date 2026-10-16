@@ -333,12 +333,16 @@ class ScoutAgent:
                 "title": title,
                 "url": url,
                 "has_url": bool(url),
-                "author": source_name,
+                "author": getattr(item, "author", "") if hasattr(item, "id") else item.get("author", ""),
                 "source": source_name,
                 "channel": channel,
                 "published_at": published,
                 "retrieved_at": discovered,
                 "snippet": snippet,
+                # Preserve a bounded captured body through the public report;
+                # snippets alone previously discarded the acquired depth.
+                "content": (getattr(item, "content", "") if hasattr(item, "id") else item.get("content", ""))[:20000],
+                "metadata": {"truncated": len(getattr(item, "content", "") if hasattr(item, "id") else item.get("content", "")) > 20000},
                 "relevant_excerpt": relevant_excerpt,
                 "source_role": role,
                 "source_tier": tier,

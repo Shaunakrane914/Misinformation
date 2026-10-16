@@ -6,6 +6,8 @@
 **Historical Phase 7.2 Offline Baseline:** 787 / 787 tests passing
 **Current Agent Handoff:** [Start here](docs/handoffs/README.md). Test totals and local validation evidence are dated snapshots, not permanent acceptance counts.
 
+**Latest continuation (2026-10-15):** [Phase 9 acquisition depth](docs/handoffs/2026-10-15_PHASE9_ACQUISITION_DEPTH.md), overall PARTIAL. [Extraction runbook](docs/operations/PHASE9_EXTRACTION_RUNBOOK.md) covers new HN/Stack Overflow routes and explicit policy-checked UI reads. User confirmed no approved access is configured and requested retaining blocked states; do not set approval flags or invent credentials to obtain a green probe.
+
 ---
 
 ## 1. System Architecture at a Glance

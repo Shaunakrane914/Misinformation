@@ -2,7 +2,7 @@
 
 const assert = require('node:assert/strict');
 const path = require('node:path');
-const { renderUnifiedReport, fetchAndRenderReport } = require(
+const { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest } = require(
   path.resolve(__dirname, '../../frontend/unified-report-renderer.js')
 );
 
@@ -53,6 +53,28 @@ assert(container.innerHTML.includes('Observed query outcomes'));
 assert(container.innerHTML.includes('aria-controls="ur-summary-body"'));
 assert(container.innerHTML.includes('<button type="button" class="ur-heading-button"'));
 assert(!container.innerHTML.includes('width:200%'));
+
+const inspectionMount = mount();
+renderUnifiedReport(inspectionMount, { evidence: { community: [{ title: 'Observed', extraction: {
+  content_depth: 'METADATA', evidentiary_use: 'DISCOVERY_ONLY', captured_chars: 600,
+  missing_fields: ['published_at'], provider_truncated: true, passages_omitted: 2,
+  passages: [{ id: attack, start: 0, end: 25, text: attack }],
+} }] } });
+assert(inspectionMount.innerHTML.includes('Inspect captured passages'));
+assert(inspectionMount.innerHTML.includes('Remote source completeness: unknown'));
+assert(inspectionMount.innerHTML.includes('published_at'));
+assert(inspectionMount.innerHTML.includes('was truncated'));
+assert(!inspectionMount.innerHTML.includes(attack));
+assert.equal(sourceReadRequest('javascript:alert(1)'), null);
+assert.equal(sourceReadRequest('https://x.com/jack/status/20').operation, 'status');
+assert.equal(sourceReadRequest('https://www.reddit.com/r/Python/comments/abc/').platform, 'reddit');
+assert.equal(sourceReadRequest('https://news.ycombinator.com/item?id=8863').platform, 'hackernews');
+assert.equal(sourceReadRequest('https://stackoverflow.com/questions/231767').platform, 'stackexchange');
+assert.equal(sourceReadRequest('https://github.com/python/cpython/releases').query, 'python/cpython');
+assert.equal(sourceReadRequest('https://github.com.evil/python/cpython').platform, 'web');
+assert.equal(sourceReadRequest('https://example.org/?redirect=https://x.com/jack/status/20').platform, 'web');
+assert.equal(sourceReadRequest('https://youtu.be/video').operation, 'transcript');
+assert.equal(sourceReadRequest('https://www.v2ex.com/t/1000000').query, '1000000');
 
 report.evidence.primary[0].url = 'https://example.org/source?q=1&view=full';
 renderUnifiedReport(container, report);

@@ -468,8 +468,7 @@ class ReportBuilder:
                 findings.append(text.strip())
 
         evidence = UnifiedEvidenceSet()
-        for doc in (brand_data.get("documents") or brand_data.get("evidence") or []):
-            evidence.primary.append(_dict_to_evidence_item(doc) if isinstance(doc, dict) else UnifiedEvidenceItem.from_evidence_item(doc))
+        _append_observed_evidence(evidence, brand_data.get("documents") or brand_data.get("evidence") or [])
         for n in (brand_data.get("news") or []):
             evidence.independent.append(_dict_to_evidence_item(n) if isinstance(n, dict) else UnifiedEvidenceItem.from_evidence_item(n))
         for s in (brand_data.get("social") or brand_data.get("social_posts") or []):
@@ -562,6 +561,8 @@ class ReportBuilder:
             evidence.independent.append(_dict_to_evidence_item(n) if isinstance(n, dict) else UnifiedEvidenceItem.from_evidence_item(n))
         for s in (personal_data.get("social") or personal_data.get("impostor_accounts") or []):
             evidence.community.append(_dict_to_evidence_item(s) if isinstance(s, dict) else UnifiedEvidenceItem.from_evidence_item(s))
+        if not (evidence.primary or evidence.independent or evidence.community):
+            _append_observed_evidence(evidence, personal_data.get("evidence") or personal_data.get("sources") or [])
 
         disagreements = [str(c) for c in (personal_data.get("conflicts") or [])[:4]]
         changes = [str(c) for c in (personal_data.get("new_incidents") or personal_data.get("changes") or [])[:4]]
@@ -619,6 +620,24 @@ class ReportBuilder:
 # PRIVATE HELPERS
 # ─────────────────────────────────────────────────────────────────────────────
 
+def _append_observed_evidence(evidence, records):
+    """Generic evidence is not inherently primary, official or independent."""
+    for record in _record_list(records):
+        if not isinstance(record, dict):
+            continue
+        item = _dict_to_evidence_item(record)
+        role = str(record.get("source_role") or "").upper()
+        platform = str(record.get("channel") or record.get("platform") or "").lower()
+        primary = item.source.is_primary or role in {"PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY"}
+        if primary:
+            item.source.is_primary = True
+            evidence.primary.append(item)
+        elif role == "COMMUNITY" or platform in {"reddit", "twitter", "twitter/x", "x", "youtube", "v2ex", "hackernews", "stackexchange"}:
+            evidence.community.append(item)
+        else:
+            evidence.independent.append(item)
+
+
 def _dict_to_evidence_item(d: Dict[str, Any]) -> UnifiedEvidenceItem:
     """Convert an arbitrary evidence dict into a UnifiedEvidenceItem."""
     if not isinstance(d, dict):
@@ -670,6 +689,7 @@ def _dict_to_evidence_item(d: Dict[str, Any]) -> UnifiedEvidenceItem:
                     retrieved_at=_str_val(entry.get("retrieved_at")),
                 ))
 
+    from backend.schemas.evidence_inspection import inspect_evidence
     return UnifiedEvidenceItem(
         title=_str_val(d.get("title")),
         snippet=_str_val(d.get("snippet") or d.get("content") or d.get("summary")),
@@ -678,6 +698,7 @@ def _dict_to_evidence_item(d: Dict[str, Any]) -> UnifiedEvidenceItem:
         source=source,
         quality_tensor=qt,
         retrieval_lineage=lineage,
+        extraction=inspect_evidence(d),
     )
 
 

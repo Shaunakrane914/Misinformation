@@ -83,7 +83,7 @@ class DoctorBridge:
         observation = self._observed_results.get("twitter" if plat_lower == "x" else plat_lower)
         if observation:
             return dict(observation)
-        if plat_lower in ("reddit", "twitter", "x"):
+        if plat_lower in ("reddit", "twitter", "x", "hackernews", "stackexchange"):
             return {
                 "status": "not_probed",
                 "name": "twitter" if plat_lower in ("twitter", "x") else "reddit",

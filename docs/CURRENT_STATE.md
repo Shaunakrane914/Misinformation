@@ -1,5 +1,13 @@
 # Current project state — 2026-10-14
 
+## Latest publication — 2026-10-15
+
+User authorized main publication and deployment. Phase 9 checkpoint `cba5cb6` was pushed to main; all five hosted CI jobs passed (1,207 full-suite tests; 999 fast-suite tests on each of Python 3.11–3.13). The existing Cloudflare production frontend was deployed and seven public assets/pages matched the release bytes. Render health is 200 but its OpenAPI still lacks the extraction route; its CLI login is expired, so backend deployment is blocked. See the [publication handoff](handoffs/2026-10-15_MAIN_PUBLICATION_AND_DEPLOYMENT.md). Phase 9/research acceptance remains PARTIAL; source approval gates and protected historical data remain unchanged.
+
+## Earlier continuation snapshot — 2026-10-15
+
+[Phase 9 acquisition checkpoint](handoffs/2026-10-15_PHASE9_ACQUISITION_DEPTH.md) adds repeated all-source sampling, HN/Stack Overflow, policy-preserving extraction, passage inspection and shared UI follow-up reads. Phase 9 remains PARTIAL. User explicitly requested retaining blocked states because approved access is not configured. No new commit/push, deployment or whole-site completeness/accuracy claim. The dated Phase 8 baseline below remains historical context, not proof of later code.
+
 Current review branch: `feat/phase8-independent-audit-codex`, based on Gemini
 `a10fde82467df21508b4a254507b414cd5b6e9fd`. Implementation checkpoints
 `195ae0a`, `220f16f`, `d58c5ba`, `c420296` and `0f5a659`; later commits package proof and documentation.

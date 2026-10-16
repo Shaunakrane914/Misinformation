@@ -215,7 +215,7 @@ class ReportBuilder:
             or trend_data.get("summary")
             or trend_data.get("narrative_summary")
         )
-        summary = str(raw_summary).strip() if raw_summary else None
+        summary = _summary_text(raw_summary)
 
         # ── Findings ─────────────────────────────────────────────────────────
         findings: List[str] = []
@@ -242,7 +242,7 @@ class ReportBuilder:
         else:
             raw_evidence = raw_evidence or []
 
-        for ev in raw_evidence:
+        for ev in _record_list(raw_evidence):
             if isinstance(ev, dict):
                 item = _dict_to_evidence_item(ev)
             else:
@@ -309,7 +309,7 @@ class ReportBuilder:
             "Cross-reference with official sources before sharing.",
         ]
 
-        return UnifiedReport(
+        return _complete_agent_report(UnifiedReport(
             summary=summary,
             findings=findings,
             evidence=evidence,
@@ -322,7 +322,7 @@ class ReportBuilder:
             query=query,
             detailed_contradictions=structured_contradictions,
             agent_intelligence=t_intel,
-        )
+        ), trend_data, execution_log, queries_planned)
 
     # ── Scout Agent (Financial Intelligence) ──────────────────────────────────
 
@@ -341,7 +341,7 @@ class ReportBuilder:
             or scout_data.get("summary")
             or scout_data.get("narrative")
         )
-        summary = str(raw_summary).strip() if raw_summary else None
+        summary = _summary_text(raw_summary)
 
         # ── Findings ─────────────────────────────────────────────────────────
         findings: List[str] = []
@@ -350,8 +350,9 @@ class ReportBuilder:
             catalysts = [catalysts]
         elif isinstance(catalysts, dict):
             # Scout's production contract groups factors by polarity.
-            catalysts = [f"{polarity}: {entry.get('factor', '')}" for polarity, entries in catalysts.items()
-                         if isinstance(entries, list) for entry in entries if isinstance(entry, dict) and entry.get("factor")]
+            catalysts = [f"{polarity}: {entry.get('factor') or entry.get('catalyst')}"
+                         for polarity, entries in catalysts.items() if isinstance(entries, list)
+                         for entry in entries if isinstance(entry, dict) and (entry.get("factor") or entry.get("catalyst"))]
         for cat in catalysts[:6]:
             findings.append(str(cat).strip())
 
@@ -424,7 +425,7 @@ class ReportBuilder:
             "Monitor earnings announcements and SEC/SEBI disclosures.",
         ]
 
-        return UnifiedReport(
+        return _complete_agent_report(UnifiedReport(
             summary=summary,
             findings=findings,
             evidence=evidence,
@@ -437,7 +438,7 @@ class ReportBuilder:
             query=query,
             detailed_contradictions=structured_contradictions,
             agent_intelligence=s_intel,
-        )
+        ), scout_data, execution_log, queries_planned)
 
     # ── BrandShield Agent ─────────────────────────────────────────────────────
 
@@ -451,11 +452,11 @@ class ReportBuilder:
     ) -> UnifiedReport:
         """Build a UnifiedReport from BrandShieldAgent output."""
         raw_summary = (
-            brand_data.get("status")
-            or brand_data.get("summary")
+            brand_data.get("summary")
+            or brand_data.get("status")
             or brand_data.get("brand_health_summary")
         )
-        summary = str(raw_summary).strip() if raw_summary else None
+        summary = _summary_text(raw_summary)
 
         findings: List[str] = []
         threats = brand_data.get("threats") or brand_data.get("threat_list") or []
@@ -510,7 +511,7 @@ class ReportBuilder:
             "Improve brand keyword monitoring cadence.",
         ]
 
-        return UnifiedReport(
+        return _complete_agent_report(UnifiedReport(
             summary=summary,
             findings=findings,
             evidence=evidence,
@@ -522,7 +523,7 @@ class ReportBuilder:
             agent="brandshield",
             query=query,
             agent_intelligence=b_intel,
-        )
+        ), brand_data, execution_log, queries_planned)
 
     # ── Personal Watch Agent ──────────────────────────────────────────────────
 
@@ -536,13 +537,13 @@ class ReportBuilder:
     ) -> UnifiedReport:
         """Build a UnifiedReport from PersonalWatchAgent output."""
         raw_summary = (
-            personal_data.get("status")
-            or personal_data.get("summary")
+            personal_data.get("summary")
+            or personal_data.get("status")
             or personal_data.get("identity_summary")
         )
         if isinstance(raw_summary, dict):
             raw_summary = personal_data.get("status_note") or "Sampled evidence requires contextual review; telemetry is shown separately."
-        summary = str(raw_summary).strip() if raw_summary else None
+        summary = _summary_text(raw_summary)
 
         findings: List[str] = []
         alerts = personal_data.get("threats") or personal_data.get("alerts") or []
@@ -601,7 +602,7 @@ class ReportBuilder:
             "Share official verified identity references to counter misinformation.",
         ]
 
-        return UnifiedReport(
+        return _complete_agent_report(UnifiedReport(
             summary=summary,
             findings=findings,
             evidence=evidence,
@@ -613,7 +614,7 @@ class ReportBuilder:
             agent="personal_watch",
             query=query,
             agent_intelligence=p_intel,
-        )
+        ), personal_data, execution_log, queries_planned)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -626,6 +627,10 @@ def _append_observed_evidence(evidence, records):
         if not isinstance(record, dict):
             continue
         item = _dict_to_evidence_item(record)
+        existing = [entry for bucket in (evidence.primary, evidence.independent, evidence.community) for entry in bucket]
+        if any((item.evidence_id and item.evidence_id == entry.evidence_id)
+               or (not item.evidence_id and item.url and item.url == entry.url) for entry in existing):
+            continue
         role = str(record.get("source_role") or "").upper()
         platform = str(record.get("channel") or record.get("platform") or "").lower()
         primary = item.source.is_primary or role in {"PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY"}
@@ -692,13 +697,14 @@ def _dict_to_evidence_item(d: Dict[str, Any]) -> UnifiedEvidenceItem:
     from backend.schemas.evidence_inspection import inspect_evidence
     return UnifiedEvidenceItem(
         title=_str_val(d.get("title")),
-        snippet=_str_val(d.get("snippet") or d.get("content") or d.get("summary")),
+        snippet=_str_val(d.get("snippet") or d.get("relevant_excerpt") or d.get("content") or d.get("summary")),
         url=url,
         timestamp=_str_val(d.get("timestamp") or d.get("published_at") or d.get("published")),
         source=source,
         quality_tensor=qt,
         retrieval_lineage=lineage,
         extraction=inspect_evidence(d),
+        evidence_id=_str_val(d.get("evidence_id") or d.get("id") or d.get("candidate_id")),
     )
 
 
@@ -718,5 +724,107 @@ def _dict_to_quality_tensor(d: Any) -> Optional[UnifiedQualityTensor]:
         independence=d.get("independence"),
         primary_weight=d.get("primary_weight"),
         freshness=d.get("freshness"),
-        contradiction=d.get("contradiction") or d.get("contradiction_level"),
+        contradiction=d.get("contradiction") if d.get("contradiction") is not None else d.get("contradiction_level"),
     )
+
+
+def _summary_text(value):
+    """A structured summary is not Python-dict prose or a factual verdict."""
+    if isinstance(value, dict):
+        value = next((value.get(key) for key in ("text", "summary", "description", "status_note")
+                      if isinstance(value.get(key), str) and value[key].strip()), None)
+    return value.strip() if isinstance(value, str) and value.strip() else None
+
+
+def _complete_agent_report(report, data, execution_log, queries_planned):
+    """Preserve canonical observations at the four native-agent boundaries.
+
+    Keep the old string/bucket projections for compatibility. Discovery stays
+    separate from acquired sources, and no inference or new retrieval occurs.
+    Explicit caller log=[] means no log: do not replace it through truthiness.
+    """
+    from copy import deepcopy
+
+    details = []
+    finding_texts = []
+    for finding in _record_list(data.get("findings_structured")) + _record_list(data.get("findings")):
+        if hasattr(finding, "to_dict"):
+            finding = finding.to_dict()
+        if isinstance(finding, dict):
+            text = _summary_text(finding.get("statement") or finding.get("description")
+                                 or finding.get("summary") or finding.get("title"))
+            if text:
+                details.append(deepcopy(finding))
+        else:
+            text = _summary_text(finding)
+        if text and text not in finding_texts:
+            finding_texts.append(text)
+    report.finding_details = details
+    report.findings = list(dict.fromkeys(finding_texts + report.findings))
+
+    # Rich canonical records take precedence over lossy legacy news summaries.
+    canonical = UnifiedEvidenceSet()
+    _append_observed_evidence(canonical, _record_list(data.get("sources")) + _record_list(data.get("evidence")))
+    retained = [item for bucket in (canonical.primary, canonical.independent, canonical.community) for item in bucket]
+    seen_ids = {item.evidence_id for item in retained if item.evidence_id}
+    seen_urls = {item.url for item in retained if item.url}
+    for name in ("primary", "independent", "community"):
+        for item in getattr(report.evidence, name):
+            if (item.evidence_id and item.evidence_id in seen_ids) or (item.url and item.url in seen_urls):
+                continue
+            getattr(canonical, name).append(item)
+            if item.evidence_id:
+                seen_ids.add(item.evidence_id)
+            if item.url:
+                seen_urls.add(item.url)
+    report.evidence = canonical
+
+    corpus = data.get("research_corpus") or {}
+    corpus = corpus if isinstance(corpus, dict) else {}
+    candidates = _record_list(corpus.get("ranked_candidates"))
+    cited_ids = {e_id for detail in details for e_id in _record_list(detail.get("supporting_evidence_ids"))
+                 if isinstance(e_id, str)}
+    candidates += [item for item in _record_list(corpus.get("raw_candidates"))
+                   if isinstance(item, dict) and (item.get("id") or item.get("evidence_id")) in cited_ids]
+    discovery_seen = set()
+    for candidate in candidates:
+        if not isinstance(candidate, dict):
+            continue
+        item = _dict_to_evidence_item(candidate)
+        identity = item.evidence_id or item.url
+        if not identity or identity in discovery_seen or item.evidence_id in seen_ids or item.url in seen_urls:
+            continue
+        discovery_seen.add(identity)
+        # Qualification/read failure never promotes a candidate into a body.
+        item.extraction["evidentiary_use"] = "DISCOVERY_ONLY"
+        item.source.is_primary = False
+        report.discovery.append(item)
+
+    discovery_ids = {item.evidence_id for item in report.discovery if item.evidence_id}
+    for detail in details:
+        # Presence of an ID is not entailment. Resolve what can actually be
+        # inspected and disclose missing references instead of inventing text.
+        detail["citation_observations"] = [
+            {"evidence_id": e_id, "availability": "SOURCE_RECORD" if e_id in seen_ids
+             else "DISCOVERY_ONLY" if e_id in discovery_ids else "UNAVAILABLE"}
+            for e_id in _record_list(detail.get("supporting_evidence_ids")) if isinstance(e_id, str)]
+
+    report.timeline = [TimelineEvent(
+        timestamp=item.get("timestamp") or item.get("time") or item.get("ts"),
+        description=item.get("description") or item.get("title") or item.get("event"))
+        for item in _record_list(data.get("timeline")) if isinstance(item, dict)]
+    trace = data.get("deep_research_trace") or {}
+    trace = trace if isinstance(trace, dict) else {}
+    log = execution_log if execution_log is not None else data.get("query_log") or trace.get("query_records") or []
+    planned = queries_planned or trace.get("queries_planned") or 0
+    report.trust.query_telemetry = QueryTelemetry.from_execution_log(log, planned)
+    if report.trust.independent_source_count is None:
+        count = trace.get("independent_source_groups")
+        if isinstance(count, int) and not isinstance(count, bool) and count >= 0:
+            report.trust.independent_source_count = count
+    if not report.summary:
+        record_count = sum(len(getattr(canonical, name)) for name in ("primary", "independent", "community"))
+        report.summary = (f"Report retains {len(report.findings)} finding(s), {record_count} source record(s) "
+                          f"and {len(report.discovery)} discovery-only candidate(s). "
+                          "Claim support requires review of captured passages and acquisition limits.")
+    return report

@@ -218,13 +218,13 @@ class ScoutAgent:
             stock_data = {
                 "ticker": sym,
                 "name": company_name,
-                "current_price": 0.0,
-                "prev_close": 0.0,
-                "drop_percent": 0.0,
-                "z_score": 0.0,
+                "current_price": None,
+                "prev_close": None,
+                "drop_percent": None,
+                "z_score": None,
                 "currency": "INR" if sym.endswith(".NS") or sym.endswith(".BO") else "USD",
-                "is_crashing": False,
-                "data_source": "Historical Daily Close via Yahoo Finance Chart API (Delayed) — Non-realtime"
+                "is_crashing": None,
+                "data_source": "Unavailable: market quote retrieval did not return a usable price"
             }
         else:
             stock_data["name"] = company_name
@@ -393,10 +393,14 @@ class ScoutAgent:
         reasoning = self._synthesize_financial_intelligence(company_name, sym, stock_data, all_sources)
 
         # 6. Backward compatibility fields
-        drop_pct = abs(stock_data.get("drop_percent", 0.0))
-        z_score = abs(stock_data.get("z_score", 0.0))
+        drop_pct = abs(stock_data.get("drop_percent") or 0.0)
+        z_score = abs(stock_data.get("z_score") or 0.0)
         total_social = len(reddit_items) + len(twitter_items) + len(youtube_items)
-        if drop_pct >= 3.0 and total_social >= 4:
+        market_assessed = stock_data.get("drop_percent") is not None and stock_data.get("z_score") is not None
+        if not market_assessed:
+            risk_level = "NOT ASSESSED"
+            corr_score = None
+        elif drop_pct >= 3.0 and total_social >= 4:
             risk_level = "CRITICAL COVERT SHORT ATTACK"
             corr_score = 92
         elif drop_pct >= 1.5 or z_score >= 1.5:
@@ -410,10 +414,12 @@ class ScoutAgent:
             "risk_level": risk_level,
             "correlation_score": corr_score,
             "social_catalyst_volume": total_social,
-            "drop_percent": stock_data.get("drop_percent", 0.0),
-            "z_score": stock_data.get("z_score", 0.0),
-            "is_anomalous": risk_level != "NOMINAL (NO ANOMALY)",
+            "drop_percent": stock_data.get("drop_percent"),
+            "z_score": stock_data.get("z_score"),
+            "is_anomalous": risk_level != "NOMINAL (NO ANOMALY)" if market_assessed else None,
             "recommendation": (
+                "Obtain usable market observations before assessing price anomalies."
+                if not market_assessed else
                 "Immediate War Room escalation: Coordinated negative narrative volume matches algorithmic sell threshold."
                 if risk_level.startswith("CRITICAL")
                 else "Continue passive monitoring of cashtag sentiment."
@@ -481,7 +487,7 @@ class ScoutAgent:
             "stock": stock_data,
             "market_state": {
                 "observed_price": stock_data.get("current_price", 0.0),
-                "volatility_status": stock_data.get("stats", {}).get("volatility_status", "STABLE"),
+                "volatility_status": stock_data.get("stats", {}).get("volatility_status", "NOT_ASSESSED"),
                 "drop_percent": stock_data.get("drop_percent", 0.0),
                 "z_score": stock_data.get("z_score", 0.0),
                 "data_source": stock_data.get("data_source", "Market Feed")

@@ -4,6 +4,8 @@ Planning date: 2026-10-15. Status: PROPOSED, not implementation or release accep
 
 Implementation update, 2026-10-15: [acquisition-depth checkpoint](../handoffs/2026-10-15_PHASE9_ACQUISITION_DEPTH.md) implements a bounded subset of this plan, including all-operation evaluation, additive community sources, inspection contracts and UI follow-ups. The complete plan remains PARTIAL, not accepted. User confirmed no approved source access is configured and requested retaining explicit blocked states.
 
+Planning update, 2026-10-16: [acquisition pipeline improvement plan](ACQUISITION_PIPELINE_IMPROVEMENT_PLAN_2026-10-16.md) defines the proposed implementation order for report preservation, one-line entity/intent planning, subreddit/source selection, source depth, shared budgets and four-agent evidence views. The operator subsequently enabled a local Reddit diagnostic; [its actual results](../handoffs/2026-10-16_LOCAL_REDDIT_PROBE.md) distinguish RSS from archive fallback. Production access was not enabled. These updates do not establish full Phase 9 acceptance.
+
 ## Objective and baseline
 
 Maximize useful, authorized, claim-relevant evidence from existing sources and make its meaning, limits and next investigative actions clear on all four agent frontends. More bytes, cards, HTTP successes or model prose are not success metrics.

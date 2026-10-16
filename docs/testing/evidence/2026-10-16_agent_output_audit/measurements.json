@@ -1,0 +1,2941 @@
+{
+  "date": "2026-10-16",
+  "branch": "release/phase9-acquisition-20261015",
+  "head": "ff6d246bfe1e9cfd0f21d8e32135582e631636f1",
+  "uncommitted_application_changes": true,
+  "scope": "Local diagnostics, not deployment. No mock LLM. GEMINI_API_KEY nonempty but not accepted by current prefix gate; no successful live Gemini inference. No credentials included.",
+  "definitions": {
+    "retained_body_bytes": "UTF-8 native content/snippet text per record, excluding JSON metadata and duplicated projections; newlines join records.",
+    "words": "Whitespace tokens, not usefulness, unique claims or accuracy.",
+    "acquired_records": "Retained native records, including metadata. Not independently adjudicated full-body sources.",
+    "finding_detail_records": "Includes legacy projection details; not necessarily distinct canonical findings."
+  },
+  "pass_a": {
+    "totals": {
+      "cases": 12,
+      "http_200": 12,
+      "zero_acquired_cases": 6,
+      "findings": 12,
+      "acquired_records": 6,
+      "retained_body_words": 1948,
+      "citation_availability": {
+        "SOURCE_RECORD": 1,
+        "DISCOVERY_ONLY": 4,
+        "UNAVAILABLE": 13
+      }
+    },
+    "cases": [
+      {
+        "case_id": "01-scout",
+        "agent": "scout",
+        "input": "TATAMOTORS.NS",
+        "elapsed_seconds": 18.91,
+        "http_status": 200,
+        "payload_bytes": 517788,
+        "payload_sha256": "5bd4f21804f08c6bfcfc90e46d925db3c50b270bc711ddcdc3c912be1ba56e31",
+        "findings": 2,
+        "acquired_records": 1,
+        "retained_body_bytes": 4005,
+        "retained_body_words": 623,
+        "discovery_cards": 18,
+        "funnel": {
+          "queries_planned": 12,
+          "queries_submitted": 12,
+          "queries_started": 12,
+          "queries_succeeded": 10,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 12,
+          "candidates_found": 29,
+          "candidates_accepted": 20,
+          "candidates_rejected": 9,
+          "unique_candidates": 20,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 3,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 3,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "SOURCE_RECORD": 1
+        },
+        "native_source_ids": [
+          "ev_bccd78115af9"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_bccd78115af9",
+            "id": null,
+            "title": "TheTatagroup. Leadership with Trust.",
+            "url": "https://www.tata.com/",
+            "content_depth": "PARTIAL_CONTENT",
+            "source_role": "DISCOVERY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 12,
+          "queries_submitted": 12,
+          "queries_started": 12,
+          "queries_succeeded": 10,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 12
+          },
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 1,
+              "TIMEOUT": 2
+            },
+            "returned_records": 5
+          },
+          "rss": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 10
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "02-scout",
+        "agent": "scout",
+        "input": "INFY.NS",
+        "elapsed_seconds": 27.81,
+        "http_status": 200,
+        "payload_bytes": 313322,
+        "payload_sha256": "70064273fbfc39546c9aa96e4e5e615ff0d27d1178437a8f925f66d89743460d",
+        "findings": 1,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 4,
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 7,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 9,
+          "candidates_found": 30,
+          "candidates_accepted": 4,
+          "candidates_rejected": 26,
+          "unique_candidates": 4,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 2,
+        "deep_read_success": 0,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "DISCOVERY_ONLY": 4
+        },
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 7,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 10
+          },
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 1,
+              "TIMEOUT": 2
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "03-scout",
+        "agent": "scout",
+        "input": "AAPL",
+        "elapsed_seconds": 25.18,
+        "http_status": 200,
+        "payload_bytes": 135810,
+        "payload_sha256": "4d51e7b695949020cc9dfaf70dd1b9e1a34778da5524a0eeb0960233293cd854",
+        "findings": 0,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 6,
+          "candidates_found": 11,
+          "candidates_accepted": 0,
+          "candidates_rejected": 11,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 0,
+        "deep_read_success": 0,
+        "canonical_states": {},
+        "citation_availability": {},
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 0
+      },
+      {
+        "case_id": "04-trending",
+        "agent": "trending",
+        "input": "OpenAI",
+        "elapsed_seconds": 27.6,
+        "http_status": 200,
+        "payload_bytes": 57330,
+        "payload_sha256": "d7ba169de0fd482634aaf3ca7389cad605028ab573e47589e8b13e95e08a5511",
+        "findings": 0,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 9,
+          "candidates_found": 6,
+          "candidates_accepted": 0,
+          "candidates_rejected": 6,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 0,
+        "deep_read_success": 0,
+        "canonical_states": {},
+        "citation_availability": {},
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "TIMEOUT": 3
+            },
+            "returned_records": 0
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 3
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 0
+      },
+      {
+        "case_id": "05-trending",
+        "agent": "trending",
+        "input": "NVIDIA",
+        "elapsed_seconds": 17.85,
+        "http_status": 200,
+        "payload_bytes": 48830,
+        "payload_sha256": "6319f9e635f7b8d6c28ce557130e037d2a2398a7361c24ad9dc90e705788abc1",
+        "findings": 0,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 1,
+          "queries_failed": 0,
+          "queries_timed_out": 5,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 6,
+          "candidates_found": 5,
+          "candidates_accepted": 0,
+          "candidates_rejected": 5,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 0,
+        "deep_read_success": 0,
+        "canonical_states": {},
+        "citation_availability": {},
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 1,
+          "queries_failed": 0,
+          "queries_timed_out": 5,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "TIMEOUT": 3
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 1,
+              "TIMEOUT": 2
+            },
+            "returned_records": 5
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 0
+      },
+      {
+        "case_id": "06-trending",
+        "agent": "trending",
+        "input": "electric vehicles",
+        "elapsed_seconds": 12.56,
+        "http_status": 200,
+        "payload_bytes": 59343,
+        "payload_sha256": "46bd4c5fb4bd3534fe7b633de5348c3e175f0b5c1cf3086fb86120a4886a3d6f",
+        "findings": 0,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 5,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 9,
+          "candidates_found": 8,
+          "candidates_accepted": 0,
+          "candidates_rejected": 8,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 0,
+        "deep_read_success": 0,
+        "canonical_states": {},
+        "citation_availability": {},
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 5,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 0
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "TIMEOUT": 3
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 7
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 0
+      },
+      {
+        "case_id": "07-brandshield",
+        "agent": "brandshield",
+        "input": "Nike",
+        "elapsed_seconds": 15.88,
+        "http_status": 200,
+        "payload_bytes": 106547,
+        "payload_sha256": "cdd39290fc1800bf20350b7c68236f8484628e72d069d70a9e01596932eb57fe",
+        "findings": 2,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 7,
+          "queries_started": 7,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 7,
+          "candidates_found": 13,
+          "candidates_accepted": 12,
+          "candidates_rejected": 1,
+          "unique_candidates": 12,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 5,
+          "contradictions_count": 0,
+          "findings_count": 2,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 6,
+        "deep_read_success": 0,
+        "canonical_states": {
+          "SUPPORTED": 2
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 8
+        },
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 7,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 6
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 2
+      },
+      {
+        "case_id": "08-brandshield",
+        "agent": "brandshield",
+        "input": "Apple",
+        "elapsed_seconds": 15.26,
+        "http_status": 200,
+        "payload_bytes": 119082,
+        "payload_sha256": "52f3685402482ea45339d2dd1d14fbbfefb70dc4796e43d7643e87ecb65249c6",
+        "findings": 2,
+        "acquired_records": 1,
+        "retained_body_bytes": 4031,
+        "retained_body_words": 666,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 7,
+          "queries_started": 7,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 7,
+          "candidates_found": 15,
+          "candidates_accepted": 10,
+          "candidates_rejected": 5,
+          "unique_candidates": 10,
+          "deep_reads_count": 1,
+          "primary_sources_count": 3,
+          "independent_groups_count": 3,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 5,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "KNOWN_FACT": 1,
+          "UNSPECIFIED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_001"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_001",
+            "id": null,
+            "title": "Apple(India)",
+            "url": "https://www.apple.com/in/",
+            "content_depth": "PRIMARY_DOCUMENT",
+            "source_role": "PRIMARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 7,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 10
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 2
+      },
+      {
+        "case_id": "09-brandshield",
+        "agent": "brandshield",
+        "input": "Tata Motors",
+        "elapsed_seconds": 10.05,
+        "http_status": 200,
+        "payload_bytes": 96119,
+        "payload_sha256": "433146e78d31e2ce1efb5463e45f82a0ab4217f175744b4427b75095f5e11cdb",
+        "findings": 2,
+        "acquired_records": 1,
+        "retained_body_bytes": 4005,
+        "retained_body_words": 623,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 4,
+          "queries_started": 4,
+          "queries_succeeded": 3,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 4,
+          "candidates_found": 5,
+          "candidates_accepted": 1,
+          "candidates_rejected": 4,
+          "unique_candidates": 1,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 1,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1,
+          "UNSPECIFIED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_001"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_001",
+            "id": null,
+            "title": "TheTatagroup. Leadership with Trust.",
+            "url": "https://www.tata.com/",
+            "content_depth": "PARTIAL_CONTENT",
+            "source_role": "DISCOVERY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 4,
+          "queries_succeeded": 3,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 2
+      },
+      {
+        "case_id": "10-personal_watch",
+        "agent": "personal_watch",
+        "input": "Sam Altman",
+        "elapsed_seconds": 7.57,
+        "http_status": 200,
+        "payload_bytes": 75728,
+        "payload_sha256": "36f7988fb7397db36073dee1b6b6801e44eba5a52eaa92906d57f2a20d77f8af",
+        "findings": 1,
+        "acquired_records": 1,
+        "retained_body_bytes": 101,
+        "retained_body_words": 18,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 4,
+          "queries_started": 4,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 4,
+          "candidates_found": 16,
+          "candidates_accepted": 1,
+          "candidates_rejected": 15,
+          "unique_candidates": 1,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 1,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_a9f1136843"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_a9f1136843",
+            "id": null,
+            "title": "Profile: Sam Altman (@sama)",
+            "url": "https://x.com/sama",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 4,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": 0,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "11-personal_watch",
+        "agent": "personal_watch",
+        "input": "Tim Cook",
+        "elapsed_seconds": 7.35,
+        "http_status": 200,
+        "payload_bytes": 82213,
+        "payload_sha256": "54803437e004e57c0ac599b4117fa4b28821f9a550fba3e26fdec8d8c9003cca",
+        "findings": 1,
+        "acquired_records": 1,
+        "retained_body_bytes": 59,
+        "retained_body_words": 8,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 6,
+          "candidates_found": 15,
+          "candidates_accepted": 1,
+          "candidates_rejected": 14,
+          "unique_candidates": 1,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 1,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_e339bf5c3e"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_e339bf5c3e",
+            "id": null,
+            "title": "Profile: Tim Cook (@tim_cook)",
+            "url": "https://x.com/tim_cook",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 6,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "reddit": {
+            "queries": 1,
+            "statuses": {
+              "TIMEOUT": 1
+            },
+            "returned_records": 0
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 4,
+            "statuses": {
+              "SUCCESS": 3,
+              "TIMEOUT": 1
+            },
+            "returned_records": 14
+          }
+        },
+        "alerts_sent": 0,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "12-personal_watch",
+        "agent": "personal_watch",
+        "input": "Satya Nadella",
+        "elapsed_seconds": 7.76,
+        "http_status": 200,
+        "payload_bytes": 83145,
+        "payload_sha256": "b963edd579c2f2e94a1e2b7e22939d7710bbf35d8e8b489913df61a7ada1be53",
+        "findings": 1,
+        "acquired_records": 1,
+        "retained_body_bytes": 73,
+        "retained_body_words": 10,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 6,
+          "candidates_found": 6,
+          "candidates_accepted": 1,
+          "candidates_rejected": 5,
+          "unique_candidates": 1,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 1,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_329968b0f3"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_329968b0f3",
+            "id": null,
+            "title": "Profile: Satya Nadella (@satyanadella)",
+            "url": "https://x.com/satyanadella",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 6,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "reddit": {
+            "queries": 1,
+            "statuses": {
+              "TIMEOUT": 1
+            },
+            "returned_records": 0
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 4,
+            "statuses": {
+              "SUCCESS": 3,
+              "TIMEOUT": 1
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": 0,
+        "finding_detail_records": 1
+      }
+    ]
+  },
+  "pass_b": {
+    "scope": "Exact Pass A payload replay, real buttons/renderers, result-only transport and stub health. 24 viewport states.",
+    "states": 24,
+    "uncaught_page_errors": 0,
+    "horizontal_overflows": 0,
+    "report_hidden_cases": [
+      {
+        "case_id": "07-brandshield",
+        "width": 390
+      },
+      {
+        "case_id": "07-brandshield",
+        "width": 1440
+      }
+    ],
+    "discovery_keyboard_checks": 4
+  },
+  "pass_c": {
+    "totals": {
+      "cases": 12,
+      "http_200": 12,
+      "zero_acquired_cases": 5,
+      "findings": 20,
+      "acquired_records": 12,
+      "retained_body_words": 3527,
+      "citation_availability": {
+        "SOURCE_RECORD": 1,
+        "DISCOVERY_ONLY": 12,
+        "UNAVAILABLE": 12
+      }
+    },
+    "cases": [
+      {
+        "case_id": "01-scout",
+        "agent": "scout",
+        "input": "TATAMOTORS.NS",
+        "elapsed_seconds": 18.44,
+        "http_status": 200,
+        "payload_sha256": "e9851d827a5bbfdc62d6e19b975162d25bdaf2366eee276a567b8a7a30fc4136",
+        "findings": 2,
+        "acquired_records": 1,
+        "retained_body_bytes": 4005,
+        "retained_body_words": 623,
+        "discovery_cards": 18,
+        "funnel": {
+          "queries_planned": 12,
+          "queries_submitted": 12,
+          "queries_started": 12,
+          "queries_succeeded": 9,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 12,
+          "candidates_found": 24,
+          "candidates_accepted": 20,
+          "candidates_rejected": 4,
+          "unique_candidates": 20,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 3,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 3,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "SOURCE_RECORD": 1
+        },
+        "native_source_ids": [
+          "ev_bccd78115af9"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_bccd78115af9",
+            "id": null,
+            "title": "TheTatagroup. Leadership with Trust.",
+            "url": "https://www.tata.com/",
+            "content_depth": "PARTIAL_CONTENT",
+            "source_role": "DISCOVERY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 12,
+          "queries_submitted": 12,
+          "queries_started": 12,
+          "queries_succeeded": 9,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 12
+          },
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "TIMEOUT": 3
+            },
+            "returned_records": 0
+          },
+          "rss": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 10
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "02-scout",
+        "agent": "scout",
+        "input": "INFY.NS",
+        "elapsed_seconds": 29.83,
+        "http_status": 200,
+        "payload_sha256": "ca503c1cc47920b0cff0bbb8f13911c9e9897def61f4ce93b5b093d63e9dcf27",
+        "findings": 2,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 5,
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 7,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 9,
+          "candidates_found": 17,
+          "candidates_accepted": 5,
+          "candidates_rejected": 12,
+          "unique_candidates": 5,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 2,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 3,
+        "deep_read_success": 0,
+        "canonical_states": {
+          "SUPPORTED": 2
+        },
+        "citation_availability": {
+          "DISCOVERY_ONLY": 5
+        },
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 7,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 10
+          },
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 1,
+              "TIMEOUT": 2
+            },
+            "returned_records": 3
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 12
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 2
+      },
+      {
+        "case_id": "03-scout",
+        "agent": "scout",
+        "input": "AAPL",
+        "elapsed_seconds": 29.87,
+        "http_status": 200,
+        "payload_sha256": "6d7941ab00200e3c052619713bf44ad9b1d87bdb29d24cecd896709be37bc58f",
+        "findings": 2,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 7,
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 8,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 9,
+          "candidates_found": 23,
+          "candidates_accepted": 7,
+          "candidates_rejected": 16,
+          "unique_candidates": 7,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 2,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 2,
+        "deep_read_success": 0,
+        "canonical_states": {
+          "SUPPORTED": 2
+        },
+        "citation_availability": {
+          "DISCOVERY_ONLY": 7
+        },
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 9,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 8,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 12
+          },
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 6
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 2
+      },
+      {
+        "case_id": "04-trending",
+        "agent": "trending",
+        "input": "OpenAI",
+        "elapsed_seconds": 18.35,
+        "http_status": 200,
+        "payload_sha256": "6c7fe0defd7241052b9daf5704984803d484df536a629e08a7d3738330e86910",
+        "findings": 1,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 12,
+          "queries_submitted": 12,
+          "queries_started": 12,
+          "queries_succeeded": 8,
+          "queries_failed": 0,
+          "queries_timed_out": 4,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 12,
+          "candidates_found": 13,
+          "candidates_accepted": 1,
+          "candidates_rejected": 12,
+          "unique_candidates": 1,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 1,
+        "deep_read_success": 0,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 12,
+          "queries_submitted": 12,
+          "queries_started": 12,
+          "queries_succeeded": 8,
+          "queries_failed": 0,
+          "queries_timed_out": 4,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 7
+          },
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "TIMEOUT": 3
+            },
+            "returned_records": 0
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 2
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "05-trending",
+        "agent": "trending",
+        "input": "NVIDIA",
+        "elapsed_seconds": 14.11,
+        "http_status": 200,
+        "payload_sha256": "5d3a4ec6f35170144608406a280c5b4540f2630dd16a6b9656d658a2e67e4e56",
+        "findings": 0,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 6,
+          "candidates_found": 6,
+          "candidates_accepted": 0,
+          "candidates_rejected": 6,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 0,
+        "deep_read_success": 0,
+        "canonical_states": {},
+        "citation_availability": {},
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 1,
+              "TIMEOUT": 2
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 0
+      },
+      {
+        "case_id": "06-trending",
+        "agent": "trending",
+        "input": "electric vehicles",
+        "elapsed_seconds": 12.32,
+        "http_status": 200,
+        "payload_sha256": "2b5db8007c799ffa35a628ffa345e18571a18654e32afd80b7d7886f6be633c9",
+        "findings": 0,
+        "acquired_records": 0,
+        "retained_body_bytes": 0,
+        "retained_body_words": 0,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 2,
+          "queries_failed": 0,
+          "queries_timed_out": 4,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 6,
+          "candidates_found": 6,
+          "candidates_accepted": 0,
+          "candidates_rejected": 6,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 0,
+        "deep_read_success": 0,
+        "canonical_states": {},
+        "citation_availability": {},
+        "native_source_ids": [],
+        "source_records": [],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 2,
+          "queries_failed": 0,
+          "queries_timed_out": 4,
+          "queries_auth_required": 0,
+          "queries_skipped": 0
+        },
+        "channels": {
+          "reddit": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 1,
+              "TIMEOUT": 2
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 1,
+              "TIMEOUT": 2
+            },
+            "returned_records": 5
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 0
+      },
+      {
+        "case_id": "07-brandshield",
+        "agent": "brandshield",
+        "input": "Nike",
+        "elapsed_seconds": 17.07,
+        "http_status": 200,
+        "payload_sha256": "33cea759d9909c1ca77ff39ff70ec6420042b2fff3f3c0321d56a8b06924a50c",
+        "findings": 2,
+        "acquired_records": 1,
+        "retained_body_bytes": 4027,
+        "retained_body_words": 678,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 4,
+          "queries_started": 4,
+          "queries_succeeded": 3,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 4,
+          "candidates_found": 7,
+          "candidates_accepted": 7,
+          "candidates_rejected": 0,
+          "unique_candidates": 7,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 4,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 5,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1,
+          "UNSPECIFIED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_001"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_001",
+            "id": null,
+            "title": "Nike– Official Online Store for Athletic Shoes, Clothing & Gear",
+            "url": "https://www.nike.in/mens-shoes/c/99427",
+            "content_depth": "PARTIAL_CONTENT",
+            "source_role": "DISCOVERY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 4,
+          "queries_succeeded": 3,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "TIMEOUT": 1
+            },
+            "returned_records": 0
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 2
+      },
+      {
+        "case_id": "08-brandshield",
+        "agent": "brandshield",
+        "input": "Apple",
+        "elapsed_seconds": 13.98,
+        "http_status": 200,
+        "payload_sha256": "c248f22de29b576e085915eaed565e7862661097a802e51f07dc5b98027e4241",
+        "findings": 5,
+        "acquired_records": 5,
+        "retained_body_bytes": 12200,
+        "retained_body_words": 1551,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 4,
+          "queries_started": 4,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 4,
+          "candidates_found": 12,
+          "candidates_accepted": 5,
+          "candidates_rejected": 7,
+          "unique_candidates": 5,
+          "deep_reads_count": 5,
+          "primary_sources_count": 3,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 2,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 5,
+        "deep_read_success": 5,
+        "canonical_states": {
+          "KNOWN_FACT": 1,
+          "SUPPORTED": 1,
+          "UNSPECIFIED": 3
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 5
+        },
+        "native_source_ids": [
+          "ev_001",
+          "ev_002",
+          "ev_003",
+          "ev_004",
+          "ev_005"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_001",
+            "id": null,
+            "title": "Apple(India)",
+            "url": "https://www.apple.com/in/",
+            "content_depth": "PRIMARY_DOCUMENT",
+            "source_role": "PRIMARY",
+            "published_at": ""
+          },
+          {
+            "evidence_id": "ev_002",
+            "id": null,
+            "title": "AppleSupport",
+            "url": "https://getsupport.apple.com/?locale=en_IN&s=n",
+            "content_depth": "PRIMARY_DOCUMENT",
+            "source_role": "PRIMARY",
+            "published_at": ""
+          },
+          {
+            "evidence_id": "ev_003",
+            "id": null,
+            "title": "Apple",
+            "url": "https://www.apple.com/",
+            "content_depth": "PRIMARY_DOCUMENT",
+            "source_role": "PRIMARY",
+            "published_at": ""
+          },
+          {
+            "evidence_id": "ev_004",
+            "id": null,
+            "title": "Profile: Apple (@Apple)",
+            "url": "https://x.com/Apple",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          },
+          {
+            "evidence_id": "ev_005",
+            "id": null,
+            "title": "Profile: Apple Support (@AppleSupport)",
+            "url": "https://x.com/AppleSupport",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 4,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 2
+          },
+          "web": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 5
+      },
+      {
+        "case_id": "09-brandshield",
+        "agent": "brandshield",
+        "input": "Tata Motors",
+        "elapsed_seconds": 5.9,
+        "http_status": 200,
+        "payload_sha256": "bc3108cc691111bcbefad46595b4d196f139651d2c7d1075ad2b37319d49f1f7",
+        "findings": 3,
+        "acquired_records": 2,
+        "retained_body_bytes": 4118,
+        "retained_body_words": 639,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 7,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 5,
+          "candidates_found": 6,
+          "candidates_accepted": 2,
+          "candidates_rejected": 6,
+          "unique_candidates": 2,
+          "deep_reads_count": 2,
+          "primary_sources_count": 0,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 2,
+          "saturation_score": 0,
+          "halt_reason": "BUDGET_CEILING",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 2,
+        "deep_read_success": 2,
+        "canonical_states": {
+          "SUPPORTED": 2,
+          "UNSPECIFIED": 2
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 2
+        },
+        "native_source_ids": [
+          "ev_001",
+          "ev_002"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_001",
+            "id": null,
+            "title": "Profile: Tata Motors (@TataMotors)",
+            "url": "https://x.com/TataMotors",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          },
+          {
+            "evidence_id": "ev_002",
+            "id": null,
+            "title": "TheTatagroup. Leadership with Trust.",
+            "url": "https://www.tata.com/",
+            "content_depth": "PARTIAL_CONTENT",
+            "source_role": "DISCOVERY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 7,
+          "queries_submitted": 7,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 4,
+            "statuses": {
+              "SUCCESS": 4
+            },
+            "returned_records": 18
+          }
+        },
+        "alerts_sent": null,
+        "finding_detail_records": 4
+      },
+      {
+        "case_id": "10-personal_watch",
+        "agent": "personal_watch",
+        "input": "Sam Altman",
+        "elapsed_seconds": 13.25,
+        "http_status": 200,
+        "payload_sha256": "97e42124345db32b7d4691ad23c3b070daf67dcef5ef50b61bd7021e4f18fc86",
+        "findings": 1,
+        "acquired_records": 1,
+        "retained_body_bytes": 101,
+        "retained_body_words": 18,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 11,
+          "queries_submitted": 9,
+          "queries_started": 9,
+          "queries_succeeded": 9,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 9,
+          "candidates_found": 16,
+          "candidates_accepted": 9,
+          "candidates_rejected": 12,
+          "unique_candidates": 9,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 4,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 3,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_a9f1136843"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_a9f1136843",
+            "id": null,
+            "title": "Profile: Sam Altman (@sama)",
+            "url": "https://x.com/sama",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 11,
+          "queries_submitted": 11,
+          "queries_started": 9,
+          "queries_succeeded": 9,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "news": {
+            "queries": 3,
+            "statuses": {
+              "SUCCESS": 3
+            },
+            "returned_records": 10
+          },
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 5,
+            "statuses": {
+              "SUCCESS": 5
+            },
+            "returned_records": 20
+          }
+        },
+        "alerts_sent": 0,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "11-personal_watch",
+        "agent": "personal_watch",
+        "input": "Tim Cook",
+        "elapsed_seconds": 8.13,
+        "http_status": 200,
+        "payload_sha256": "d41b8efd336af1c2b42b2888195240ece449860f016750e8221b6e17fcc6241a",
+        "findings": 1,
+        "acquired_records": 1,
+        "retained_body_bytes": 59,
+        "retained_body_words": 8,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 7,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 5,
+          "candidates_found": 6,
+          "candidates_accepted": 1,
+          "candidates_rejected": 5,
+          "unique_candidates": 1,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 1,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_e339bf5c3e"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_e339bf5c3e",
+            "id": null,
+            "title": "Profile: Tim Cook (@tim_cook)",
+            "url": "https://x.com/tim_cook",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 7,
+          "queries_submitted": 7,
+          "queries_started": 5,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 4,
+            "statuses": {
+              "SUCCESS": 3,
+              "TIMEOUT": 1
+            },
+            "returned_records": 15
+          }
+        },
+        "alerts_sent": 0,
+        "finding_detail_records": 1
+      },
+      {
+        "case_id": "12-personal_watch",
+        "agent": "personal_watch",
+        "input": "Satya Nadella",
+        "elapsed_seconds": 6.7,
+        "http_status": 200,
+        "payload_sha256": "0bb44b5c4b4e73c2f0b80eacfa2e1b57ea6c09b7430d9203634b5483248fbe70",
+        "findings": 1,
+        "acquired_records": 1,
+        "retained_body_bytes": 73,
+        "retained_body_words": 10,
+        "discovery_cards": 0,
+        "funnel": {
+          "queries_planned": 7,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2,
+          "queries_executed": 5,
+          "candidates_found": 6,
+          "candidates_accepted": 1,
+          "candidates_rejected": 8,
+          "unique_candidates": 1,
+          "deep_reads_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "BUDGET_CEILING",
+          "adaptive_rounds": 0
+        },
+        "deep_read_attempted": 1,
+        "deep_read_success": 1,
+        "canonical_states": {
+          "SUPPORTED": 1
+        },
+        "citation_availability": {
+          "UNAVAILABLE": 1
+        },
+        "native_source_ids": [
+          "ev_329968b0f3"
+        ],
+        "source_records": [
+          {
+            "evidence_id": "ev_329968b0f3",
+            "id": null,
+            "title": "Profile: Satya Nadella (@satyanadella)",
+            "url": "https://x.com/satyanadella",
+            "content_depth": "PROFILE_METADATA",
+            "source_role": "COMMENTARY",
+            "published_at": ""
+          }
+        ],
+        "queries": {
+          "queries_planned": 7,
+          "queries_submitted": 7,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 2
+        },
+        "channels": {
+          "twitter": {
+            "queries": 3,
+            "statuses": {
+              "SKIPPED": 2,
+              "SUCCESS": 1
+            },
+            "returned_records": 1
+          },
+          "web": {
+            "queries": 4,
+            "statuses": {
+              "SUCCESS": 4
+            },
+            "returned_records": 18
+          }
+        },
+        "alerts_sent": 0,
+        "finding_detail_records": 1
+      }
+    ],
+    "browser": {
+      "scope": "Actual Chromium page buttons to real local backend SSE; 12 new acquisitions, no response or progress stubs. 390/1440px screenshots share one result per input. Startup lifespan/background ingestion off; remote persistence and notifications disabled; external fonts blocked; actual pinned Chart.js served from saved bytes.",
+      "valid_gemini_key_count": 0,
+      "mock_llm": false,
+      "cases": [
+        {
+          "case_id": "01-scout",
+          "agent": "scout",
+          "input": "TATAMOTORS.NS",
+          "elapsed_seconds": 18.44,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 2,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 2,
+          "acquired_records": 1,
+          "discovery_records": 18,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 18,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "01-scout-390-full.png",
+                "01-scout-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 18,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "01-scout-1440-full.png",
+                "01-scout-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: the server responded with a status of 404 (File not found)"
+          ],
+          "posts": [
+            {
+              "url": "/api/scout/analyze/stream",
+              "body": {
+                "ticker": "TATAMOTORS.NS"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "02-scout",
+          "agent": "scout",
+          "input": "INFY.NS",
+          "elapsed_seconds": 29.83,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 4,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 2,
+          "acquired_records": 0,
+          "discovery_records": 5,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 5,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "02-scout-390-full.png",
+                "02-scout-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 5,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "02-scout-1440-full.png",
+                "02-scout-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: the server responded with a status of 404 (File not found)"
+          ],
+          "posts": [
+            {
+              "url": "/api/scout/analyze/stream",
+              "body": {
+                "ticker": "INFY.NS"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "03-scout",
+          "agent": "scout",
+          "input": "AAPL",
+          "elapsed_seconds": 29.87,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 4,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 2,
+          "acquired_records": 0,
+          "discovery_records": 7,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 7,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "03-scout-390-full.png",
+                "03-scout-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 7,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "03-scout-1440-full.png",
+                "03-scout-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: the server responded with a status of 404 (File not found)"
+          ],
+          "posts": [
+            {
+              "url": "/api/scout/analyze/stream",
+              "body": {
+                "ticker": "AAPL"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "04-trending",
+          "agent": "trending",
+          "input": "OpenAI",
+          "elapsed_seconds": 18.35,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 1,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 1,
+          "acquired_records": 0,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "04-trending-390-full.png",
+                "04-trending-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "04-trending-1440-full.png",
+                "04-trending-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: the server responded with a status of 404 (File not found)"
+          ],
+          "posts": [
+            {
+              "url": "/api/trending/scan/stream",
+              "body": {
+                "asset_name": "OpenAI",
+                "query": "OpenAI",
+                "category": "technology",
+                "mode": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "05-trending",
+          "agent": "trending",
+          "input": "NVIDIA",
+          "elapsed_seconds": 14.11,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 1,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 0,
+          "acquired_records": 0,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 0,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "05-trending-390-full.png",
+                "05-trending-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 0,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "05-trending-1440-full.png",
+                "05-trending-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: the server responded with a status of 404 (File not found)"
+          ],
+          "posts": [
+            {
+              "url": "/api/trending/scan/stream",
+              "body": {
+                "asset_name": "NVIDIA",
+                "query": "NVIDIA",
+                "category": "technology",
+                "mode": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "06-trending",
+          "agent": "trending",
+          "input": "electric vehicles",
+          "elapsed_seconds": 12.32,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 2,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 0,
+          "acquired_records": 0,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 0,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "06-trending-390-full.png",
+                "06-trending-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 0,
+              "rendered_acquired_cards": 0,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "06-trending-1440-full.png",
+                "06-trending-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED",
+            "Failed to load resource: the server responded with a status of 404 (File not found)"
+          ],
+          "posts": [
+            {
+              "url": "/api/trending/scan/stream",
+              "body": {
+                "asset_name": "electric vehicles",
+                "query": "electric vehicles",
+                "category": "business",
+                "mode": "entity"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "07-brandshield",
+          "agent": "brandshield",
+          "input": "Nike",
+          "elapsed_seconds": 17.07,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 3,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 2,
+          "acquired_records": 1,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "07-brandshield-390-full.png",
+                "07-brandshield-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 2,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "07-brandshield-1440-full.png",
+                "07-brandshield-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED"
+          ],
+          "posts": [
+            {
+              "url": "/api/brandshield/scan/stream",
+              "body": {
+                "brand_name": "Nike",
+                "query": "Nike"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "08-brandshield",
+          "agent": "brandshield",
+          "input": "Apple",
+          "elapsed_seconds": 13.98,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 1,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 5,
+          "acquired_records": 5,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 5,
+              "rendered_acquired_cards": 5,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "08-brandshield-390-full.png",
+                "08-brandshield-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 5,
+              "rendered_acquired_cards": 5,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "08-brandshield-1440-full.png",
+                "08-brandshield-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED"
+          ],
+          "posts": [
+            {
+              "url": "/api/brandshield/scan/stream",
+              "body": {
+                "brand_name": "Apple",
+                "query": "Apple"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "09-brandshield",
+          "agent": "brandshield",
+          "input": "Tata Motors",
+          "elapsed_seconds": 5.9,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 0,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 3,
+          "acquired_records": 2,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 3,
+              "rendered_acquired_cards": 2,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "09-brandshield-390-full.png",
+                "09-brandshield-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 3,
+              "rendered_acquired_cards": 2,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "09-brandshield-1440-full.png",
+                "09-brandshield-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED"
+          ],
+          "posts": [
+            {
+              "url": "/api/brandshield/scan/stream",
+              "body": {
+                "brand_name": "Tata Motors",
+                "query": "Tata Motors"
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "10-personal_watch",
+          "agent": "personal_watch",
+          "input": "Sam Altman",
+          "elapsed_seconds": 13.25,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 1,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 1,
+          "acquired_records": 1,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "10-personal_watch-390-full.png",
+                "10-personal_watch-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "10-personal_watch-1440-full.png",
+                "10-personal_watch-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED"
+          ],
+          "posts": [
+            {
+              "url": "/api/personal/scan/stream",
+              "body": {
+                "name": "Sam Altman",
+                "category": "public_figure",
+                "official_handles": {},
+                "aliases": []
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "11-personal_watch",
+          "agent": "personal_watch",
+          "input": "Tim Cook",
+          "elapsed_seconds": 8.13,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 1,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 1,
+          "acquired_records": 1,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "11-personal_watch-390-full.png",
+                "11-personal_watch-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "11-personal_watch-1440-full.png",
+                "11-personal_watch-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED"
+          ],
+          "posts": [
+            {
+              "url": "/api/personal/scan/stream",
+              "body": {
+                "name": "Tim Cook",
+                "category": "public_figure",
+                "official_handles": {},
+                "aliases": []
+              }
+            }
+          ]
+        },
+        {
+          "case_id": "12-personal_watch",
+          "agent": "personal_watch",
+          "input": "Satya Nadella",
+          "elapsed_seconds": 6.7,
+          "http_status": 200,
+          "result_event": true,
+          "error_events": [],
+          "progress_events": 29,
+          "heartbeat_events": 1,
+          "progress_phases": [
+            "accepted",
+            "analysis",
+            "report"
+          ],
+          "findings": 1,
+          "acquired_records": 1,
+          "discovery_records": 0,
+          "views": [
+            {
+              "width": 390,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 390,
+              "screenshots": [
+                "12-personal_watch-390-full.png",
+                "12-personal_watch-390-report.png"
+              ]
+            },
+            {
+              "width": 1440,
+              "unified_report_visible": true,
+              "rendered_findings": 1,
+              "rendered_acquired_cards": 1,
+              "rendered_discovery_cards": 0,
+              "missing_finding_texts": [],
+              "document_width": 1440,
+              "screenshots": [
+                "12-personal_watch-1440-full.png",
+                "12-personal_watch-1440-report.png"
+              ]
+            }
+          ],
+          "page_errors": [],
+          "console_errors": [
+            "Failed to load resource: net::ERR_FAILED"
+          ],
+          "posts": [
+            {
+              "url": "/api/personal/scan/stream",
+              "body": {
+                "name": "Satya Nadella",
+                "category": "public_figure",
+                "official_handles": {},
+                "aliases": []
+              }
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "capture_limitations": {
+    "abandoned_harness": {
+      "reason": "Chrome response.body() did not expose fetch-consumed SSE. Not an application error. Replaced observer with response.clone().text() without changing app response consumption.",
+      "started": 7,
+      "backend_completed": 6,
+      "interrupted": 1,
+      "excluded_from_acceptance_denominators": true
+    },
+    "transient_tim_cook_desktop": "One initial 1440 screenshot had blank cards despite populated DOM. Exact-payload replay after natural fonts/layout/frame waits showed content in two repeated desktop captures; no confirmed persistent rendering defect. Original retained.",
+    "not_verified": [
+      "Measured contrast",
+      "axe",
+      "manual screen reader",
+      "cross-browser",
+      "production deployment",
+      "successful live Gemini",
+      "all 16 operations"
+    ]
+  }
+}

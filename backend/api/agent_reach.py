@@ -81,7 +81,7 @@ class AgentReachDebugRequest(BaseModel):
 
 
 class AgentReachExtractRequest(BaseModel):
-    platform: str = Field(..., pattern=r"^[a-z_]{1,32}$")
+    platform: str = Field(..., pattern=r"^[a-z][a-z0-9_]{0,31}$")
     operation: str = Field("read", pattern=r"^[a-z_]{1,32}$")
     query: str = Field(..., min_length=1, max_length=2000)
     limit: int = Field(2, ge=1, le=5)

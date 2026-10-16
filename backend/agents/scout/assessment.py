@@ -94,11 +94,11 @@ def synthesize_financial_intelligence(
             "narratives": [],
             "contradictions": {"for": [], "against": [], "unresolved": []},
             "misinformation": {
-                "status": "NOMINAL",
+                "status": "INSUFFICIENT_EVIDENCE",
                 "rumors_detected": [],
-                "manipulation_risk": "LOW",
-                "evidence_quality_score": 0.0,
-                "notes": "Zero external records discovered for cross-verdict synthesis."
+                "manipulation_risk": "UNASSESSED",
+                "evidence_quality_score": None,
+                "notes": "No acquired source records available for synthesis; discovery-only candidates may still exist."
             }
         }
 

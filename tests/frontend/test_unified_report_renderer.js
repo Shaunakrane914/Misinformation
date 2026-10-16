@@ -54,6 +54,21 @@ assert(container.innerHTML.includes('aria-controls="ur-summary-body"'));
 assert(container.innerHTML.includes('<button type="button" class="ur-heading-button"'));
 assert(!container.innerHTML.includes('width:200%'));
 
+const preservationMount = mount();
+renderUnifiedReport(preservationMount, {
+  findings: ['Observed finding'],
+  finding_details: [{ statement: 'Observed finding', epistemic_state: attack,
+    citation_observations: [{ evidence_id: attack, availability: 'UNAVAILABLE' }] }],
+  discovery: [{ evidence_id: attack, title: attack, snippet: 'Captured index text',
+    url: 'javascript:alert(1)', extraction: { evidentiary_use: 'DISCOVERY_ONLY', passages: [] } }],
+});
+assert(preservationMount.innerHTML.includes('Observed finding'));
+assert(preservationMount.innerHTML.includes('Captured index text'));
+assert(preservationMount.innerHTML.includes('UNAVAILABLE'));
+assert(preservationMount.innerHTML.includes('DISCOVERY ONLY'));
+assert(!preservationMount.innerHTML.includes(attack));
+assert(!preservationMount.innerHTML.includes('href="javascript:'));
+
 const inspectionMount = mount();
 renderUnifiedReport(inspectionMount, { evidence: { community: [{ title: 'Observed', extraction: {
   content_depth: 'METADATA', evidentiary_use: 'DISCOVERY_ONLY', captured_chars: 600,

@@ -2,7 +2,23 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: All-agent progress deployed — 2026-10-16
+## Latest diagnostic: Four-agent output audit — 2026-10-16
+
+- [Audit handoff](2026-10-16_FOUR_AGENT_OUTPUT_AUDIT.md), [full report](../testing/FOUR_AGENT_OUTPUT_AUDIT_2026-10-16.md) and [screenshots/measurements](../testing/evidence/2026-10-16_agent_output_audit/README.md): 12 direct local API runs plus 12 real browser/SSE investigations, three inputs per agent. Research quality FAIL; frontend PARTIAL. Documents shallow acquisition, false threat signals, citation mismatches, hidden zero-source findings, counter disagreement and the present-but-unaccepted Gemini configuration. No application fixes or deployment in this audit.
+
+## Latest implementation: Report preservation — 2026-10-16
+
+- [Slice A implementation handoff](2026-10-16_REPORT_PRESERVATION_IMPLEMENTATION.md): four-agent findings/query/evidence/timeline preservation, separate discovery-only observations, truthful missing Scout quotes and V2EX API validation. Local full/fast suites: 1,243 / 1,035 passed; 24 recorded/synthetic Chromium states passed. No commit, push, deployment or full-plan acceptance.
+
+## Previous planning: Acquisition pipeline improvement — 2026-10-16
+
+- [Implementation plan](../architecture/ACQUISITION_PIPELINE_IMPROVEMENT_PLAN_2026-10-16.md) and [planning handoff](2026-10-16_ACQUISITION_PIPELINE_PLAN.md): proposed work for one-line entity/intent interpretation, subreddit/source selection, extraction depth, evidence preservation and four-agent reporting. Starts with confirmed report-loss defects; no implementation or deployment acceptance is claimed.
+
+## Latest diagnostic: Local Reddit gate-enabled probe — 2026-10-16
+
+- [Local Reddit probe](2026-10-16_LOCAL_REDDIT_PROBE.md): operator requested a local flag override; three explicit subreddit samples returned 15 records / 1,124 words. Distinguishes direct RSS from Arctic Shift fallback after HTTP 429. Production settings and scraper code were not changed; earlier evidence/report quality limitations remain.
+
+## Latest deployment: All-agent progress deployed — 2026-10-16
 
 - [Deployment closeout](2026-10-16_ALL_AGENT_PROGRESS_DEPLOYMENT_CLOSEOUT.md): corrected `8c8ecf2` passed all five hosted CI jobs and was verified on Render/Cloudflare. A real deployed Scout Infosys request rendered its report after 110.61s end-to-end; this establishes progress/wait behavior, not evidence richness or research accuracy. Includes exact deployment IDs, the initial CI ordering failure and the safe documentation-only publication boundary.
 

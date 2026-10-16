@@ -42,3 +42,16 @@ def test_unsupported_operation_rejected():
     with pytest.raises(HTTPException) as error:
         agent_reach_extract(AgentReachExtractRequest(platform="web", operation="private_dump", query="x"))
     assert error.value.status_code == 422
+
+
+@pytest.mark.parametrize("operation", ["latest", "search", "topic", "replies"])
+def test_registered_v2ex_operations_reach_real_api_boundary(api_client, monkeypatch, operation):
+    calls = []
+    def execute(**kwargs):
+        calls.append(kwargs)
+        return [], {"status": "EMPTY_RESULT"}
+    monkeypatch.setattr("backend.services.agent_reach.native.native_router.execute_channel_query", execute)
+    response = api_client.post("/api/agent-reach/extract", json={
+        "platform": "v2ex", "operation": operation, "query": "1000000"})
+    assert response.status_code == 200
+    assert calls[0]["platform"] == "v2ex" and calls[0]["operation"] == operation

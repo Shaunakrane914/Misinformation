@@ -244,8 +244,25 @@ function renderClaimDecomposition(report) {
 
 /** SECTION 2 — KEY FINDINGS */
 function renderFindings(report) {
-  const content = bulletList(report.findings, 'No significant findings.');
+  const details = array(report.finding_details).filter(item => item && typeof item === 'object');
+  const findings = array(report.findings).filter(item => typeof item === 'string' && item.trim());
+  const content = findings.length ? `<ul>${findings.map(text => {
+    const matches = details.filter(item => (item.statement || item.description || item.summary || item.title) === text);
+    const states = [...new Set(matches.map(item => item.epistemic_state || 'Unspecified'))];
+    const citations = [...new Set(matches.flatMap(item => array(item.citation_observations).map(c =>
+      c && typeof c === 'object' ? `${c.evidence_id}: ${c.availability || 'UNAVAILABLE'}` : '')).filter(Boolean))];
+    return `<li>${esc(text)}${matches.length ? `<p class="ur-ev-note">Reported state: ${states.map(esc).join(', ')}. Source support requires passage review.${citations.length ? ` Citation observations: ${citations.map(esc).join(', ')}.` : ''}</p>` : ''}</li>`;
+  }).join('')}</ul>` : '<p class="ur-empty">No significant findings.</p>';
   return section('ur-findings', 'KEY FINDINGS', content);
+}
+
+/** Candidates remain inspectable without claiming a successful body read. */
+function renderDiscovery(report) {
+  const candidates = array(report.discovery).filter(item => item && typeof item === 'object');
+  if (!candidates.length) return '';
+  return section('ur-discovery', 'DISCOVERY ONLY — NOT ACQUIRED BODIES',
+    `<p class="ur-ev-note">${candidates.length} candidate(s) retained. Snippets and URLs are leads, not verified claim support or successful deep reads.</p>
+     <details><summary>Inspect discovery-only candidates</summary>${candidates.map(item => renderEvidenceCard(item)).join('')}</details>`);
 }
 
 /** SECTION 3 — EVIDENCE (Primary / Independent / Community) */
@@ -358,6 +375,8 @@ function renderEvidenceCard(item, allowRead = true) {
       <div class="ur-ev-card-head">
         ${titleEl}${badge}${authBadge}${relBadge}${noUrl}
       </div>
+      ${item.evidence_id ? `<p class="ur-ev-note">Evidence ID: ${esc(item.evidence_id)}</p>` : ''}
+      ${item.extraction && item.extraction.evidentiary_use === 'DISCOVERY_ONLY' ? '<p class="ur-ev-note">Discovery only; not verified claim support.</p>' : ''}
       ${snippet ? `<p class="ur-ev-snippet">${snippet}</p>` : ''}
       <footer class="ur-ev-card-foot">
         <span class="ur-ev-source">${srcName}</span>
@@ -700,6 +719,7 @@ function renderUnifiedReport(container, report) {
     renderClaimDecomposition(report),
     renderFindings(report),
     renderEvidence(report),
+    renderDiscovery(report),
     renderDisagreements(report),
     renderChanges(report),
     renderAgentIntelligence(report),

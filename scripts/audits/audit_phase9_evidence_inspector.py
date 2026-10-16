@@ -68,6 +68,14 @@ def main():
                     inspectors = page.locator('#phase9-inspector-test .ur-ev-inspection > summary')
                     keyboard = None
                     if inspectors.count():
+                        # Discovery candidates have an outer disclosure. Expose
+                        # ancestors, but leave the inspected disclosure closed
+                        # so Enter still tests its actual keyboard behavior.
+                        inspectors.first.evaluate("""el => {
+                            for (let parent = el.parentElement.parentElement; parent; parent = parent.parentElement) {
+                                if (parent.tagName === 'DETAILS') parent.open = true;
+                            }
+                        }""")
                         inspectors.first.focus()
                         page.keyboard.press("Enter")
                         keyboard = inspectors.first.evaluate("el => el.parentElement.open")

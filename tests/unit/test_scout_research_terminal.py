@@ -162,4 +162,7 @@ def test_empty_retrieval_no_synthetic_hallucination():
     assert empty_intel["catalysts"]["negative"] == []
     assert empty_intel["catalysts"]["unresolved"] == []
     assert empty_intel["narratives"] == []
-    assert empty_intel["misinformation"]["status"] == "NOMINAL"
+    # Absence of acquired evidence cannot establish a nominal/low-risk result.
+    assert empty_intel["misinformation"]["status"] == "INSUFFICIENT_EVIDENCE"
+    assert empty_intel["misinformation"]["manipulation_risk"] == "UNASSESSED"
+    assert empty_intel["misinformation"]["evidence_quality_score"] is None

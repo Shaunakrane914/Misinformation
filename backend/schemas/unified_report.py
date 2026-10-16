@@ -142,6 +142,7 @@ class UnifiedEvidenceItem:
     quality_tensor: Optional[UnifiedQualityTensor] = None
     retrieval_lineage: List[RetrievalLineageEntry] = field(default_factory=list)
     extraction: Optional[Dict[str, Any]] = None
+    evidence_id: Optional[str] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -153,6 +154,7 @@ class UnifiedEvidenceItem:
             "quality_tensor": self.quality_tensor.to_dict() if self.quality_tensor else None,
             "retrieval_lineage": [r.to_dict() for r in self.retrieval_lineage],
             "extraction": self.extraction,
+            "evidence_id": self.evidence_id,
         }
 
     @classmethod
@@ -250,6 +252,7 @@ class UnifiedEvidenceItem:
             quality_tensor=qt,
             retrieval_lineage=lineage,
             extraction=inspect_evidence(item),
+            evidence_id=_safe_str(getattr(item, "evidence_id", None) or getattr(item, "id", None)),
         )
 
 
@@ -417,6 +420,10 @@ class UnifiedReport:
     detailed_contradictions: List[Dict[str, Any]] = field(default_factory=list)
     authoritative_sources: List[Dict[str, Any]] = field(default_factory=list)
     agent_intelligence: Dict[str, Any] = field(default_factory=dict)
+    # Additive contracts: candidates are not acquired bodies; finding IDs and
+    # citations must survive the legacy string findings projection.
+    discovery: List[UnifiedEvidenceItem] = field(default_factory=list)
+    finding_details: List[Dict[str, Any]] = field(default_factory=list)
 
     # Internal metadata (not rendered in report sections)
     agent: Optional[str] = None          # e.g. "claim_verifier"
@@ -450,6 +457,10 @@ class UnifiedReport:
             d["authoritative_sources"] = self.authoritative_sources
         if self.agent_intelligence:
             d["agent_intelligence"] = self.agent_intelligence
+        if self.discovery:
+            d["discovery"] = [item.to_dict() for item in self.discovery]
+        if self.finding_details:
+            d["finding_details"] = self.finding_details
         return d
 
 

@@ -88,3 +88,9 @@ def test_flattened_bibliographic_authors_are_not_part_of_the_title():
     item.canonical_url = "https://arxiv.org/abs/1706.03762"
     assert relation("The title of arXiv paper 1706.03762 is Attention Is All You Need.", "arXiv", item)[0] == "SUPPORT"
     assert relation("The title of arXiv paper 1706.03762 is Recurrence Is All You Need.", "arXiv", item)[0] == "CONTRADICT"
+
+
+def test_related_wire_mentions_do_not_prove_independent_investigations():
+    item = evidence("Republished articles carry identical Example shipment reporting. They represent syndicated distribution of a single report.")
+    claim = "Identical republished articles about Example shipments prove separate independent investigations."
+    assert relation(claim, "Example", item)[0] == "CONTRADICT"

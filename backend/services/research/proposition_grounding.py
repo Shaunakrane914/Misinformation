@@ -529,7 +529,7 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
             
         # Core action predicate guard: if claim asserts a specific drastic action,
         # that action or its direct synonym must appear in passage to support it
-        drastic_predicates = {"discontinue", "recall", "shutdown", "closure", "delist", "break"}
+        drastic_predicates = {"discontinue", "recall", "shutdown", "closure", "delist", "break", "independent"}
         claimed_drastic = core_wanted & drastic_predicates
         if claimed_drastic and not (claimed_drastic & pass_terms):
             continue

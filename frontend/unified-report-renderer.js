@@ -216,19 +216,20 @@ function renderClaimDecomposition(report) {
     const cfg = VERDICT_CONFIG[vKey] || VERDICT_CONFIG.UNVERIFIED;
     const cVal = typeof sub.confidence === 'number' && Number.isFinite(sub.confidence) ? pct(sub.confidence) : PH_NUM;
     const citations = array(sub.evidence_citations || sub.citations).map(c => {
-      const citeUrl = safeEvidenceUrl(typeof c === 'string' ? c : (c && c.url));
-      const citeTitle = esc(typeof c === 'string' ? c : ((c && c.title) || (c && c.url) || 'Citation'));
+      const citeUrl = safeEvidenceUrl(typeof c === 'string' ? c : (c && (c.canonical_url || c.url)));
+      const citeTitle = esc(typeof c === 'string' ? c : ((c && c.source_name) || (c && c.title) || (c && (c.canonical_url || c.url)) || 'Citation'));
+      const excerpt = c && typeof c === 'object' && c.relevant_excerpt ? `<blockquote>${esc(c.relevant_excerpt)}</blockquote>` : '';
       return citeUrl
-        ? `<a href="${esc(citeUrl)}" target="_blank" rel="noopener noreferrer" class="ur-decomp-cite">${citeTitle} ↗</a>`
-        : `<span class="ur-decomp-cite">${citeTitle}</span>`;
+        ? `<div><a href="${esc(citeUrl)}" target="_blank" rel="noopener noreferrer" class="ur-decomp-cite">${citeTitle} ↗</a>${excerpt}</div>`
+        : `<span class="ur-decomp-cite">${citeTitle}</span>${excerpt}`;
     }).join(' ');
-    const reasoning = sub.reasoning ? `<p class="ur-decomp-reason">${esc(sub.reasoning)}</p>` : '';
+    const reasoning = sub.reasoning || sub.rationale ? `<p class="ur-decomp-reason">${esc(sub.reasoning || sub.rationale)}</p>` : '';
 
     return `
       <div class="ur-decomp-card">
         <div class="ur-decomp-head">
           <span class="ur-decomp-pill ${cfg.badgeClass}">${esc(cfg.label)}</span>
-          <span class="ur-decomp-conf">Confidence: ${cVal}</span>
+          <span class="ur-decomp-conf">${sub.is_heuristic ? 'Uncalibrated heuristic' : 'Confidence'}: ${cVal}</span>
         </div>
         <p class="ur-decomp-text">${text}</p>
         ${reasoning}
@@ -246,7 +247,7 @@ function renderClaimDecomposition(report) {
 function renderFindings(report) {
   const details = array(report.finding_details).filter(item => item && typeof item === 'object');
   const findings = array(report.findings).filter(item => typeof item === 'string' && item.trim());
-  const content = findings.length ? `<ul>${findings.map(text => {
+  const content = findings.length ? `<ul class="ur-list">${findings.map(text => {
     const matches = details.filter(item => (item.statement || item.description || item.summary || item.title) === text);
     const states = [...new Set(matches.map(item => item.epistemic_state || 'Unspecified'))];
     const citations = [...new Set(matches.flatMap(item => array(item.citation_observations).map(c =>

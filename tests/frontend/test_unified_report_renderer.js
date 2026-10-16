@@ -63,6 +63,7 @@ renderUnifiedReport(preservationMount, {
     url: 'javascript:alert(1)', extraction: { evidentiary_use: 'DISCOVERY_ONLY', passages: [] } }],
 });
 assert(preservationMount.innerHTML.includes('Observed finding'));
+assert(preservationMount.innerHTML.includes('<ul class="ur-list">'), 'findings retain the design-system inset');
 assert(preservationMount.innerHTML.includes('Captured index text'));
 assert(preservationMount.innerHTML.includes('UNAVAILABLE'));
 assert(preservationMount.innerHTML.includes('DISCOVERY ONLY'));
@@ -123,6 +124,18 @@ assert(container.innerHTML.includes('Reported domain: example.org'));
 assert(container.innerHTML.includes('No contradiction assessment was returned'));
 assert(container.innerHTML.includes('No change history was returned'));
 assert(!container.innerHTML.includes('<img src=x onerror=alert(1)>'));
+
+renderUnifiedReport(container, {claim_decomposition: [{
+  claim_text: 'Example revenue was $50 billion.', verdict: 'REFUTED', confidence: .8,
+  is_heuristic: true, rationale: 'Matched period and metric; observed value differs.',
+  evidence_citations: [{canonical_url: 'https://example.org/results', source_name: 'Original issuer',
+    relevant_excerpt: 'Example revenue was $10 billion. <script>attack()</script>'}],
+}], evidence: {}, trust: {}});
+assert(container.innerHTML.includes('href="https://example.org/results"'));
+assert(container.innerHTML.includes('Matched period and metric'));
+assert(container.innerHTML.includes('Uncalibrated heuristic'));
+assert(container.innerHTML.includes('&lt;script&gt;attack()&lt;/script&gt;'));
+assert(!container.innerHTML.includes('<script>attack()'));
 
 (async () => {
   const previousFetch = global.fetch;

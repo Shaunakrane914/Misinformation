@@ -113,6 +113,11 @@ function testBrandShield() {
   context.renderBrandShieldWorkspace({ brand_name: 'Acme', threats: [], review_intel: {} }, container);
   const html = rendered(container);
   assert(html.includes('No source evidence returned'));
+  let sharedReport = null;
+  context.renderUnifiedReport = (_mount, report) => { sharedReport = report; };
+  const sparseReport = { findings: ['Retained discovery observation'], trust: { query_telemetry: { queries_submitted: 1 } } };
+  context.renderBrandShieldWorkspace({ brand_name: 'Acme', threats: [], sources: [], unified_report: sparseReport }, container);
+  assert.equal(sharedReport, sparseReport, 'zero-acquisition runs must retain the shared findings and diagnostics');
   context.renderBrandShieldWorkspace({ brand_name: 'Acme', sources: [{ title: 'A public item' }], threats: [], review_intel: {} }, container);
   assert(rendered(container).includes('INSUFFICIENT EVIDENCE FOR REVIEW SCREENING'));
   assert(!html.includes('No Suspicious Patterns Detected'));

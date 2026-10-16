@@ -486,6 +486,8 @@
           </div>
         `;
         container.innerHTML = html;
+        mountBrandUnifiedReport(container, data);
+        loadBrandOperationHealth(retrieval.latency_ms);
         return;
       }
 
@@ -698,6 +700,10 @@
       loadBrandOperationHealth(retrieval.latency_ms);
 
       // Mount Unified Investigation Report (schema v3.8.0)
+      mountBrandUnifiedReport(container, data);
+    }
+
+    function mountBrandUnifiedReport(container, data) {
       if (data.unified_report && window.renderUnifiedReport) {
         const urWrap = document.createElement('div');
         urWrap.id = 'brandshieldUnifiedReportContainer';

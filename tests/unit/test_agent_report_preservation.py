@@ -50,7 +50,8 @@ def test_canonical_observations_survive_adapter(native_payload, agent, method, k
     report = getattr(ReportBuilder, method)(query="Example", **{key: native_payload}).to_dict()
     assert report["findings"] == [native_payload["findings"][0]["statement"]]
     assert report["finding_details"][0]["supporting_evidence_ids"] == ["ev_discovery"]
-    assert report["trust"]["query_telemetry"]["queries_submitted"] == 2
+    assert report["trust"]["query_telemetry"]["queries_submitted"] == 1
+    assert report["trust"]["query_telemetry"]["queries_skipped"] == 1
     assert report["trust"]["query_telemetry"]["queries_succeeded"] == 1
     assert report["timeline"][0] == {"timestamp": "2026-10-15", "description": "Observed dated event"}
     assert report["discovery"][0]["evidence_id"] == "ev_discovery"

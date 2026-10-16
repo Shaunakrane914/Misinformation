@@ -1,0 +1,67 @@
+"""Adversarial context controls, not externally adjudicated accuracy cases."""
+import pytest
+
+from backend.services.research.proposition_grounding import (
+    extract_numeric_tokens, is_authoritative_registry_or_filing, relation,
+)
+from backend.services.research.research_models import EvidenceItem
+
+
+def evidence(text, **kwargs):
+    return EvidenceItem(id="context", title="Example results", canonical_url="https://example.org/results",
+                        content=text, content_depth="PARTIAL_CONTENT", **kwargs)
+
+
+@pytest.mark.parametrize("claim,passage", [
+    ("Example revenue was $50 billion in 2025.", "Example net income was $10 billion in 2025."),
+    ("Example revenue was $50 billion in 2025.", "Example revenue was $10 billion in 2024."),
+    ("Example revenue was $50 billion in 2025.", "Example revenue was EUR 10 billion in 2025."),
+    ("Example revenue increased 20% in 2025.", "Example profit increased 80% in 2025."),
+    ("Example profit margin increased 20 percentage points.", "Example profit margin increased 80 percent."),
+])
+def test_different_metrics_periods_currencies_and_units_abstain(claim, passage):
+    assert relation(claim, "Example", evidence(passage))[0] == "NONE"
+
+
+def test_secondary_number_does_not_refute_matching_revenue():
+    claim = "Example revenue was $50 billion in 2025."
+    item = evidence("Example revenue was $50 billion in 2025. Net income was $10 billion in 2025.")
+    assert relation(claim, "Example", item)[0] == "SUPPORT"
+
+
+def test_matching_metric_wrong_value_remains_refutable():
+    assert relation("Example revenue was $50 billion in 2025.", "Example",
+                    evidence("Example revenue was $10 billion in 2025."))[0] == "CONTRADICT"
+
+
+def test_currency_scale_equivalence_is_supported():
+    assert relation("Example revenue was $1 billion in 2025.", "Example",
+                    evidence("Example revenue was $1000 million in 2025."))[0] == "SUPPORT"
+
+
+def test_percentage_symbol_and_percentage_points_are_distinct():
+    assert extract_numeric_tokens("20% growth")[0]["val"] == 20
+    assert extract_numeric_tokens("20 percentage points")[0]["type"] == "percentage_points"
+
+
+def test_profile_metadata_cannot_prove_employment():
+    item = evidence("Example is the chief executive officer of Corporation.")
+    item.content_depth = "PROFILE_METADATA"
+    assert relation("Example is the chief executive officer of Corporation.", "Example", item)[0] == "NONE"
+
+
+def test_utility_host_suffix_spoof_is_not_authoritative():
+    item = evidence("An account portal.", source_role="UTILITY_PORTAL")
+    item.canonical_url = "https://microsoft.com.attacker.example/login"
+    assert not is_authoritative_registry_or_filing(item)
+
+
+def test_current_role_cannot_be_proved_by_someone_elses_appointment():
+    item = evidence("Jordan Hill is chief executive officer of Example. Morgan Lane stepped down as CEO in 2024.")
+    assert relation("Morgan Lane is the current chief executive officer of Example.", "Example", item)[0] != "SUPPORT"
+
+
+def test_identifier_year_is_not_a_financial_reporting_period():
+    item = evidence("Base Score: 10.0 CRITICAL.")
+    item.canonical_url = "https://nvd.nist.gov/vuln/detail/CVE-2021-44228"
+    assert relation("NIST rated CVE-2021-44228 a CVSS score of 2.1.", "NIST", item)[0] == "CONTRADICT"

@@ -1,13 +1,14 @@
 """Passage analysis, grounded finding synthesis, and evidence graphs."""
 
 from typing import Any, Dict, List
+import re
 
 from backend.application.research.contracts import Analysis, RankedEvidence, ReadEvidence
 from backend.services.research.contradiction_detector import contradiction_detector
 from backend.services.research.corroboration import corroboration_engine
 from backend.services.research.evidence_graph import evidence_graph_builder
 from backend.services.research.evidence_integrity import evidence_integrity_validator
-from backend.services.research.passage_extractor import passage_extractor
+from backend.services.research.passage_extractor import has_usable_passage, passage_extractor
 from backend.services.research.research_models import (
     ContentDepth, EpistemicState, EvidenceItem, Finding, FindingType,
     QualityTensor, ResearchRequest, SourceRole, TemporalStatus,
@@ -27,6 +28,7 @@ def synthesize_grounded_findings(
     Every finding strictly maps to supporting evidence IDs.
     """
     findings: List[Finding] = []
+    investigated_items = [item for item in investigated_items if has_usable_passage(item)]
     if not investigated_items:
         return findings
 
@@ -104,22 +106,9 @@ def synthesize_grounded_findings(
         # An original document (e.g. an arbitrary GitHub repository) is not an
         # authenticated authority. Neither a primary-role label nor unrelated
         # results sharing a query class are sufficient to declare a known fact.
-        official_assertion = top_item.official_source and top_item.primary_source
-        normalized_statement = " ".join(statement.lower().split())
-        agreeing_credible_groups = {
-            it.independence_group for it in items_in_class
-            if it.independence_group and it.source_quality_score >= 0.8
-            and (it.official_source or it.source_role == SourceRole.SECONDARY.value)
-            and " ".join((it.relevant_excerpt or it.snippet or it.title).lower().split()) == normalized_statement
-        }
-
         # Evaluate 6-State Epistemic Status
         if matched_cont_ids:
             ep_state = EpistemicState.CONTESTED.value
-        elif official_assertion or len(agreeing_credible_groups) >= 2:
-            ep_state = EpistemicState.KNOWN_FACT.value
-        elif len(items_in_class) >= 1:
-            ep_state = EpistemicState.SUPPORTED.value
         else:
             ep_state = EpistemicState.UNVERIFIED.value
 
@@ -136,8 +125,9 @@ def synthesize_grounded_findings(
             contradicting_evidence_ids=matched_cont_ids,
             independence_groups=corrob["independent_groups"],
             primary_sources=prim_sources,
-            explanation=f"Substantiated across {corrob['independent_group_count']} independent source group(s) with {len(items_in_class)} citations.",
-            temporal_status=TemporalStatus.NEW_EVENT.value,
+            explanation=f"Observed passages from {corrob['independent_group_count']} publisher group(s) with {len(items_in_class)} citations; claim support requires proposition-level assessment.",
+            metadata={"observation_only": True, "citation_entailment_verified": False},
+            temporal_status=TemporalStatus.UNKNOWN.value,
             invalidation_criteria=f"Rebuttal or retraction issued by primary official channels ({', '.join(prim_sources) if prim_sources else 'official portal'})."
         )
         findings.append(f)
@@ -165,10 +155,36 @@ class GroundedSynthesisStage:
         findings = synthesize_grounded_findings(
             target_name=request.target,
             domain=request.domain,
-            investigated_items=read.investigated or ranked.ranked[:8],
+            investigated_items=read.investigated,
             contradictions=contradictions,
             intent=request.intent,
         )
+        exact_claim = request.extra_params.get("claim_text") or (request.target if request.domain == "fact_check" else "")
+        if request.domain != "fact_check" and exact_claim.strip().casefold() == re.sub(r"\([^)]*\)", "", request.target).strip().casefold():
+            exact_claim = ""
+        if exact_claim:
+            # Reuse the shared proposition assessor, not a second verdict path.
+            # Entity scans without a claim retain explicitly unverified observations.
+            from backend.services.research.claim_intelligence import claim_intelligence_engine
+            claims = claim_intelligence_engine.decompose_claims(exact_claim)[:6]
+            findings = []
+            for index, claim in enumerate(claims, 1):
+                if request.domain != "fact_check":
+                    claim.entity = re.sub(r"\([^)]*\)", "", request.target).strip()
+                evaluated = claim_intelligence_engine.evaluate_claim(claim, read.investigated)
+                assessment = evaluated.to_dict()
+                assessment.update(is_heuristic=True, confidence_model="uncalibrated_conservative_lexical")
+                state = evaluated.verdict if evaluated.verdict in {"SUPPORTED", "REFUTED"} else "CONTESTED" if evaluated.verdict == "MIXED" else "UNVERIFIED"
+                findings.append(Finding(
+                    finding_id=f"fnd_claim_{index:03d}", title=f"{evaluated.verdict}: {evaluated.claim_text[:100]}",
+                    statement=evaluated.claim_text, confidence="INSUFFICIENT" if not evaluated.evidence_citations else "LOW",
+                    quality_tensor=None,  # No measured six-axis tensor for a proposition assessment.
+                    epistemic_state=state, temporal_status=TemporalStatus.UNKNOWN.value,
+                    supporting_evidence_ids=evaluated.supporting_evidence_ids,
+                    contradicting_evidence_ids=evaluated.contradicting_evidence_ids,
+                    explanation=evaluated.rationale,
+                    metadata={"claim_assessment": assessment, "observation_only": False},
+                ))
         valid_findings, integrity_report = evidence_integrity_validator.validate(
             findings=findings, evidence_pool=ranked.ranked, fail_on_invalid=True
         )

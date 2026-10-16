@@ -18,6 +18,27 @@ SIGNAL_MARKERS: Set[str] = {
     "warning", "advisory", "recalled", "halted", "resigned", "settlement"
 }
 
+# This is an explicitly heuristic passage-quality filter, not entailment or
+# calibrated confidence. Preserve rejected text in the corpus for inspection.
+NAVIGATION_MARKERS = ("toggle navigation", "switch to dark", "switch to light", "shop all",
+                      "privacy policy", "contact us", "men women", "add to cart", "browse select")
+
+
+def has_usable_passage(item) -> bool:
+    from backend.schemas.evidence_inspection import METADATA_DEPTHS
+    value = item.get if isinstance(item, dict) else lambda key, default=None: getattr(item, key, default)
+    depth = str(value("content_depth", "UNKNOWN") or "UNKNOWN").upper()
+    if depth in METADATA_DEPTHS | {"SEARCH_SNIPPET", "SEARCH_INDEX_DISCOVERY", "SYNDICATED_SUMMARY"}:
+        return False
+    if value("extraction_status") in {"EMPTY", "NO_RELEVANT_PASSAGE", "METADATA_ONLY"}:
+        return False
+    text = value("relevant_excerpt") or value("content") or value("snippet") or ""
+    lower = text.lower()
+    return (len(text.strip()) >= 40
+            and sum(marker in lower for marker in NAVIGATION_MARKERS) < 2
+            and bool(re.search(r"\b(?:is|are|was|were|has|have|allows|contains|includes|limits|rated)\b", lower)
+                     or any(re.search(r"\b" + marker + r"\b", lower) for marker in SIGNAL_MARKERS)))
+
 
 class PassageExtractor:
     """Extracts target-relevant passages and key factual claims from source text."""
@@ -34,11 +55,16 @@ class PassageExtractor:
         """
         Processes each evidence item, finding the most relevant excerpt and entities.
         """
-        clean_target = (target_name or "").lower().strip()
-        target_tokens = set(w for w in clean_target.split() if len(w) >= 3)
+        clean_target = re.sub(r"\([^)]*\)", "", target_name or "").lower().strip()
+        target_tokens = set(re.findall(r"[a-z0-9]{3,}", clean_target)) - {"inc", "ltd", "limited", "corp", "corporation", "company"}
         intent_tokens = set(w for w in (intent or "").lower().split() if len(w) >= 4)
 
         for item in items:
+            from backend.schemas.evidence_inspection import METADATA_DEPTHS
+            if item.content_depth in METADATA_DEPTHS | {"SEARCH_SNIPPET", "SEARCH_INDEX_DISCOVERY", "SYNDICATED_SUMMARY"}:
+                item.relevant_excerpt = ""
+                item.extraction_status = "METADATA_ONLY"
+                continue
             raw_text = item.content or item.snippet
             if not raw_text:
                 item.relevant_excerpt = item.title
@@ -46,7 +72,7 @@ class PassageExtractor:
                 continue
 
             # Split into paragraphs or sentences
-            paragraphs = [p.strip() for p in raw_text.split("\n\n") if len(p.strip()) > 60]
+            paragraphs = [p.strip() for p in re.split(r'\n\s*\n|(?<=[.?!])\s+(?=[A-Z])', raw_text) if len(p.strip()) >= 40]
             if not paragraphs:
                 paragraphs = [p.strip() for p in re.split(r'(?<=[.?!])\s+', raw_text) if len(p.strip()) > 60]
 
@@ -61,7 +87,12 @@ class PassageExtractor:
             best_idx = 0
 
             for idx, p in enumerate(paragraphs):
+                if not has_usable_passage({"content": p, "content_depth": item.content_depth}):
+                    continue
                 p_lower = p.lower()
+                present = target_tokens & set(re.findall(r"[a-z0-9]{3,}", p_lower))
+                if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower:
+                    continue
                 score = 0.0
 
                 # Target presence
@@ -91,10 +122,15 @@ class PassageExtractor:
                     best_p = p
                     best_idx = idx
 
+            if best_score < 1.5:
+                item.relevant_excerpt = ""
+                item.extraction_status = "NO_RELEVANT_PASSAGE"
+                continue
+
             # Clean and truncate best excerpt
             clean_excerpt = re.sub(r'\s+', ' ', best_p).strip()
             if len(clean_excerpt) > 450:
-                clean_excerpt = clean_excerpt[:450] + "..."
+                clean_excerpt = clean_excerpt[:450]
 
             item.relevant_excerpt = clean_excerpt
             item.excerpt_start = raw_text.find(best_p) if best_p in raw_text else 0

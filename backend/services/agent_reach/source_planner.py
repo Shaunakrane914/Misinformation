@@ -318,6 +318,13 @@ class SourcePlanningEngine:
             return [direct] if direct.channel in allowed else []
 
         target = entity or claim
+        # Keep the factual proposition intact (including negation, quotations
+        # and dates) without repeating it or adding a paragraph of agent intent.
+        query_base = claim if claim and claim != target else target
+        from backend.services.research.source_quality import VERIFIED_CORPORATE_DOMAINS
+        registry_key = re.sub(r"[^a-z0-9]", "", re.sub(r"\([^)]*\)", "", target).lower())
+        known_domains = sorted(VERIFIED_CORPORATE_DOMAINS.get(registry_key, set()))
+        issuer_scope = f" site:{known_domains[0]}" if len(known_domains) == 1 else ""
         cve_match = re.search(r'\b(CVE-\d{4}-\d{4,7})\b', claim, re.I)
         arxiv_match = re.search(r'\b(?:arxiv:\s*)?(\d{4}\.\d{4,5})\b', claim, re.I)
         quotes = re.findall(r'"([^"]{5,})"', claim)
@@ -334,7 +341,7 @@ class SourcePlanningEngine:
             if "arxiv" in allowed and (explicitly_allowed or agent.lower() in {"trending", "trending_agent"}) and (arxiv_match or any(k in claim.lower() for k in ("paper", "study", "research", "arxiv", "preprint", "algorithm", "model", "proof"))):
                 actions.append(self._action(1, "arxiv", "search", arxiv_target, "scientific_preprint", "DIRECT_ABSTRACT", 1, "Verify scientific claims against arXiv preprint research.", True))
             actions.extend([
-                self._action(1, "web", "search", f"{target} official product announcement {claim}", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
+                self._action(1, "web", "search", f"{query_base}{issuer_scope} product announcement", "official_product", "SEARCH_INDEX_DISCOVERY", 1, "Locate first-party product documentation or announcements.", True),
                 self._action(1, "news", "search", f"{claim} hardware reporting", "specialist_reporting", "SYNDICATED_SUMMARY", 2, "Find independent specialist reporting about the product claim."),
             ])
             if include_contradiction_probe:
@@ -348,14 +355,14 @@ class SourcePlanningEngine:
             if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and not self._looks_indian(target):
                 actions.append(self._action(1, "sec_edgar", "search", target, "regulatory_filing", "DIRECT_METADATA", 1, "Retrieve official SEC EDGAR corporate filings directly.", True))
             actions.extend([
-                self._action(1, "web", "search", f"{target} investor relations quarterly filing {regulator} {claim}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
-                self._action(1, "rss", "search", f"{target} official results filing press release {claim}", "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),
-                self._action(1, "news", "search", f"{claim} independent financial investigation", "financial_reporting", "SYNDICATED_SUMMARY", 3, "Find independent financial reporting and contradiction checks."),
+                self._action(1, "web", "search", f"{query_base}{issuer_scope} quarterly results filing {regulator}", "regulatory_filing", "SEARCH_INDEX_DISCOVERY", 1, "Locate regulatory filings and issuer disclosures before commentary.", True),
+                self._action(1, "rss", "search", f"{query_base} results press release", "official_disclosure", "SYNDICATED_SUMMARY", 2, "Locate time-stamped official disclosures and press releases.", True),
+                self._action(1, "news", "search", f"{query_base} financial report", "financial_reporting", "SYNDICATED_SUMMARY", 3, "Find independent financial reporting and contradiction checks."),
             ])
             if include_contradiction_probe:
                 actions.append(self._action(2, "web", "search", f"{target} denied rumor false report {claim}", "contradiction_probe", "SEARCH_INDEX_DISCOVERY", 3, "Probe for corporate denials or debunked rumors."))
             actions.append(
-                self._action(2, "reddit", "search", f"{target} {claim} investor discussion", "investor_discussion", "SYNDICATED_OR_INDEXED", 4, "Capture investor discussion as unverified community evidence.", limitations=["Community discussion cannot prove accounting claims."])
+                self._action(2, "reddit", "search", f"{query_base} investor discussion", "investor_discussion", "SYNDICATED_OR_INDEXED", 4, "Capture investor discussion as unverified community evidence.", limitations=["Community discussion cannot prove accounting claims."])
             )
         elif intent_class == "identity_attribution":
             quote_query = f'"{quotes[0]}" {target}' if quotes else f"{target} official statement impersonation deepfake"
@@ -375,7 +382,7 @@ class SourcePlanningEngine:
             if include_contradiction_probe:
                 actions.append(self._action(2, "web", "search", f"{target} debunked false rumor {claim}", "contradiction_probe", "SEARCH_INDEX_DISCOVERY", 3, "Probe for explicit debunking or contradiction."))
             actions.append(
-                self._action(2, "reddit", "search", f"{target} {claim}", "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."])
+                self._action(2, "reddit", "search", query_base, "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."])
             )
 
         # Cross-reference claim against fact-checking databases if allowed

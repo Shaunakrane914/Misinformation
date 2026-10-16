@@ -1,0 +1,403 @@
+{
+  "review": "Phase 9 reviewed policy: acquired body fixtures, exact-claim planning, read reservations, acquired-primary counts, unverified grouped observations and truthful summaries. Historical Phase 4/8 manifests unchanged; test asserts original candidate bytes/hashes and IDs.",
+  "scenarios": {
+    "adaptive_saturation": {
+      "candidate_hashes": {
+        "ev_sec": "bc72958f48c2f93d"
+      },
+      "candidate_ids": [
+        "ev_sec"
+      ],
+      "corpus_sha256": "ed6ddb42b922f18e568e2d961782c84221bd3ddd27a0a635e1d1441691f968a9",
+      "dossier_sha256": "cded20e8010ac5bd6e16c1224f20d0f0f1d385352d1e1ae7744f53e6ab4bf265",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 1,
+        "true_independent_count": 1
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ],
+        [
+          "q_initial",
+          "SUCCESS"
+        ],
+        [
+          "q_adaptive_1",
+          "SUCCESS"
+        ],
+        [
+          "q_adaptive_2",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_sec"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "a3927d9a6888040eaabe0508995a47be147c8b43047ea99f1757c77015c432e4"
+    },
+    "adversarial": {
+      "candidate_hashes": {
+        "ev_sec": "bc72958f48c2f93d"
+      },
+      "candidate_ids": [
+        "ev_wrong",
+        "ev_sec"
+      ],
+      "corpus_sha256": "83a6ab0b3bedf14ae5619c3dce38c0490f5611936b2af8845eeb085d96d17823",
+      "dossier_sha256": "e52bd58d117661c148a10e65c790105a6ea5ea17d06a5ecceedbd55d3e0bbfb4",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 1,
+        "true_independent_count": 1
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_sec"
+      ],
+      "rejected_ids": [
+        "ev_wrong"
+      ],
+      "result_sha256": "67cc99ac5ff4dc6c5762895d078bbcdb7edd82e0632153c914520fbca5eab5b5"
+    },
+    "conflicting": {
+      "candidate_hashes": {
+        "ev_adverse": "f417277294732846",
+        "ev_sec": "bc72958f48c2f93d"
+      },
+      "candidate_ids": [
+        "ev_sec",
+        "ev_adverse"
+      ],
+      "corpus_sha256": "37ecf80055a67ade527e6f64cefd4f451d013136a65f3514ca687d405c98199a",
+      "dossier_sha256": "e337e2a288b1c8bbe6f757515a0d0813438d2e5a1175dd264932bc73c203ff8d",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 2,
+        "true_independent_count": 2
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_sec",
+        "ev_adverse"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "49b303eb567cc71df8276debdb2a43da06d061506ed05589f0ee966bb363e4cd"
+    },
+    "credential_failure": {
+      "candidate_hashes": {},
+      "candidate_ids": [],
+      "corpus_sha256": "5d564e3ca187ac5b7a07ed2b7679d1a86b061086d1d0a93b3dc329e0639e4893",
+      "dossier_sha256": "7f9ee24945b4b55fe05bba1daab40084ef20f7ee0a1b5243f9e4435aa41077aa",
+      "finding_ids": [],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 0,
+        "true_independent_count": 1
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "AUTH_REQUIRED"
+        ]
+      ],
+      "ranked_ids": [],
+      "rejected_ids": [],
+      "result_sha256": "d07fe107ca7e66a1aee9f855fa0bf78fd65cdbd4b71816cbcc3dd0c5d01981ca"
+    },
+    "discovery_timeout": {
+      "candidate_hashes": {
+        "ev_sec": "bc72958f48c2f93d"
+      },
+      "candidate_ids": [
+        "ev_sec"
+      ],
+      "corpus_sha256": "24b96f1ba058ca8360e39b8d6616dd4caf25116b5998707d3366726228f998dc",
+      "dossier_sha256": "7d94336bafb579fba7c88f235b06579946ce4d1dedd2511a5963fe7d6115b656",
+      "finding_ids": [],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 1,
+        "true_independent_count": 1
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_sec"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "11d7b2d301357b659a53d672903e2efebb2fb58d5dc57a87cf3e8ccbf6f24080"
+    },
+    "empty": {
+      "candidate_hashes": {},
+      "candidate_ids": [],
+      "corpus_sha256": "a7caa606bfc41713b037e4c5681bb0a53db4e5ab97dc55f0b4d28b4d73e894ad",
+      "dossier_sha256": "9f2fbd844eb8aed6c5bf6a00c5046c5d763ac8a680803d10f86862d0007c78b5",
+      "finding_ids": [],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 0,
+        "true_independent_count": 1
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [],
+      "rejected_ids": [],
+      "result_sha256": "abcc70bf2b1f7fc84c62fa0bce515997e2e5b684f9201796e24411bee2bb2b2b"
+    },
+    "insufficient": {
+      "candidate_hashes": {},
+      "candidate_ids": [
+        "ev_wrong"
+      ],
+      "corpus_sha256": "d1f1461ebffd99e965820967e8718cd7cc9889c0cdcdfeb7d59f397d355e74d4",
+      "dossier_sha256": "3948cd45dfcd822937e0811108d1b2885ff81a3d467dc838d4ee5a482ca25e90",
+      "finding_ids": [],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 0,
+        "true_independent_count": 1
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [],
+      "rejected_ids": [
+        "ev_wrong"
+      ],
+      "result_sha256": "be16abc0e12fe8a9af40299c4cbd3b4a3ca65da4e1d7e0a6a1033650891d0a18"
+    },
+    "malformed_metadata": {
+      "candidate_hashes": {
+        "ev_malformed": "7b80d7a24cb57c8a",
+        "ev_sec": "bc72958f48c2f93d"
+      },
+      "candidate_ids": [
+        "ev_malformed",
+        "ev_sec"
+      ],
+      "corpus_sha256": "3f8ef632da03950b39bbfb92c0ab71cdb233ee00e49b4b0af3fa1931d9c9ba18",
+      "dossier_sha256": "6c61f4801fcb839055bf43c61ddda36b594577bd256db347304c9665e9de8a1a",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 2,
+        "true_independent_count": 2
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_sec",
+        "ev_malformed"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "5f55e1abfd7e8a4a3fd0eb319b2ceb99d56c5d833cbc7ba8f6de1a87e52961fe"
+    },
+    "missing_primary": {
+      "candidate_hashes": {
+        "ev_reuters": "7e096981e40b3fda"
+      },
+      "candidate_ids": [
+        "ev_reuters"
+      ],
+      "corpus_sha256": "59deacde1132acf50567330d77e7ebce621d77c7d9d86b3794ace81d4e638750",
+      "dossier_sha256": "dff2f8e6a4e4241646630d8479d4461ada187aafeadb26ae1f877d5cbf19fdb3",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 1,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 1,
+        "true_independent_count": 1
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_reuters"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "ffb67642d19b654becd7da3ca0c680a134fd50a2e86e824f8bc2a5a37a32a3bc"
+    },
+    "primary_escalation": {
+      "candidate_hashes": {
+        "ev_escalated": "bc72958f48c2f93d",
+        "ev_secondary": "055d353fd09ea6e4"
+      },
+      "candidate_ids": [
+        "ev_secondary"
+      ],
+      "corpus_sha256": "bb5ca30790be6021e6239927d3baab663c6ae954bb3a51ca6fe0ff5aaada2508",
+      "dossier_sha256": "81e17d56c1b56b2a3b8e6746b952e77ab7f517bba889c9e265f3c81992d73dfe",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 0,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 2,
+        "true_independent_count": 2
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ],
+        [
+          "q_esc_001",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_escalated",
+        "ev_secondary"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "a25e519a670182675b4a0d41f2c24ddd0707e53897f2d08415f33d20fd9c81e0"
+    },
+    "relevant": {
+      "candidate_hashes": {
+        "ev_reuters": "7e096981e40b3fda",
+        "ev_sec": "bc72958f48c2f93d"
+      },
+      "candidate_ids": [
+        "ev_sec",
+        "ev_reuters"
+      ],
+      "corpus_sha256": "c88dfeefeda7e016e2143cf2e50f3108f28277d737845751eafd9dcade64a13a",
+      "dossier_sha256": "d932d82beb867091c1c200a1c937502dc477b6532377de3c0236591b9c0bce96",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 1,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 2,
+        "true_independent_count": 2
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_reuters",
+        "ev_sec"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "3ea17ceda112530c445d3049cf1a99bfb00cb8751939b023c7769f2653d3f90b"
+    },
+    "syndicated": {
+      "candidate_hashes": {
+        "ev_echo": "4ea103b30ce878bc",
+        "ev_reuters": "7e096981e40b3fda",
+        "ev_sec": "bc72958f48c2f93d"
+      },
+      "candidate_ids": [
+        "ev_reuters",
+        "ev_echo",
+        "ev_sec"
+      ],
+      "corpus_sha256": "a9e3a99e3dc1fc2289b80517a71f8df739f9a4ecedcc8d755a30df82780575f3",
+      "dossier_sha256": "55d041aee1f551570cbd089f4bcc0a88785c2177a86ae428297021da75207140",
+      "finding_ids": [
+        "fnd_fi_001"
+      ],
+      "lineage_metrics": {
+        "echo_count": 0,
+        "edges_count": 0,
+        "origin_count": 1,
+        "syndication_compression_ratio": 0,
+        "total_nodes": 3,
+        "true_independent_count": 3
+      },
+      "query_statuses": [
+        [
+          "q_initial",
+          "SUCCESS"
+        ]
+      ],
+      "ranked_ids": [
+        "ev_reuters",
+        "ev_sec",
+        "ev_echo"
+      ],
+      "rejected_ids": [],
+      "result_sha256": "47272e96db31f242f35da3f91975729c04308e0bb685c3a2fd41f796728ed839"
+    }
+  }
+}

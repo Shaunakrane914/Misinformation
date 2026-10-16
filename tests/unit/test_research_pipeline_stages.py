@@ -328,6 +328,7 @@ def test_stage_8_and_9_synthesis_and_graph_construction_stages():
     request = ResearchRequest(target="Tesla Inc", domain="financial")
     ev1 = _make_item("ev_001", "Tesla Revenue Report", "Tesla Q3 earnings report confirmed revenue increase.", "https://sec.gov/1", query_class="financial_earnings", primary=True)
     ev1.relevant_excerpt = "Tesla Q3 earnings report confirmed revenue increase."
+    ev1.content_depth = "PARTIAL_CONTENT"  # This stage receives an acquired body, not a search snippet.
     ev1.source_name = "SEC"
 
     from backend.application.research.contracts import RankedEvidence, ReadEvidence

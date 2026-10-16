@@ -321,7 +321,7 @@ class QueryTelemetry:
                 continue
 
             status = d.get("status", "")
-            if status not in ("PLANNED",):
+            if status not in ("PLANNED", "SKIPPED", "UNRECORDED"):
                 submitted += 1
             if status in ("SUCCESS", "FAILED", "TIMEOUT", "AUTH_REQUIRED"):
                 started += 1

@@ -56,7 +56,7 @@ def normalize_item(
     observed_metadata = observed_metadata if isinstance(observed_metadata, dict) else {}
 
     raw_id_seed = f"{url}:{title}:{author}"
-    evidence_id = f"ev_{hashlib.md5(raw_id_seed.encode()).hexdigest()[:10]}"
+    evidence_id = item.get("evidence_id") or item.get("id") or f"ev_{hashlib.md5(raw_id_seed.encode()).hexdigest()[:10]}"
 
     source_lower = source.lower()
     if is_utility_or_auth_url(url):
@@ -195,6 +195,7 @@ def search_personal_evidence(
             domain="personal",
             agent_name="personal_watch",
             intent=f"monitor personal identity threat surface, impersonation profiles, synthetic deepfakes, scams, and false claims for {target_name}",
+            extra_params={"claim_text": subject_info.get("query") or ""},
             query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
             deep_read_budget=15,
             corroboration_budget=4,
@@ -261,6 +262,7 @@ def search_personal_evidence(
 
             ch = (channel or platform or "Web").title()
             norm_dict = {
+                "evidence_id": getattr(f, "id", None) or getattr(f, "evidence_id", None),
                 "title": title,
                 "url": url,
                 "snippet": snippet,

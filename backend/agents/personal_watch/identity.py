@@ -40,6 +40,7 @@ def resolve_personal_entity(profile_or_name: Any) -> Dict[str, Any]:
         "affiliations": profile.get("affiliations", []),
         "category": profile.get("category", "public_figure"),
         "monitoring_terms": profile.get("monitoring_terms", []),
+        "query": profile.get("query") or "",
         "alert_preferences": profile.get("alert_preferences", {"level": "HIGH_ONLY"}),
         "confidence": 0.70,
         "resolution_notes": "User-configured subject profile"

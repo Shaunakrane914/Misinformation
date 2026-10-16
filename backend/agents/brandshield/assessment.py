@@ -394,6 +394,11 @@ def heuristic_threat_synthesis(
         is_official = any(hostname_matches(canonical_hostname(ev.get("url", "")), corp) for corp in ("microsoft.com", "apple.com", "tesla.com", "nvidia.com", "tatamotors.com", "nike.com"))
 
         full_text = f"{ev['title']} {ev.get('snippet', '')} {ev.get('content', '')}".lower()
+        # A warning/advisory is a report ABOUT abuse, not an observed attacker.
+        # Do not grant ownership or suppress separate listings on the same domain.
+        safety_notice = bool(re.search(
+            r"\b(?:beware of|avoid|warning about|reporting|protect yourself from)\b.{0,60}\b(?:scams?|fraud|phishing)\b"
+            r"|\bwe (?:do not|never) (?:charge|accept|ask|request)\b", full_text))
 
         if not is_official and any(k in full_text for k in counterfeit_kw):
             threats.append({
@@ -416,7 +421,7 @@ def heuristic_threat_synthesis(
                 "evidence_ids": [ev["evidence_id"]]
             })
 
-        elif not is_official and any(k in full_text for k in scam_kw):
+        elif not is_official and not safety_notice and any(k in full_text for k in scam_kw):
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
                 "type": "PHISHING_SCAM",
@@ -424,6 +429,7 @@ def heuristic_threat_synthesis(
                 "summary": f"Discussion or listing on {ev['platform']} referencing fraudulent promotions or scams.",
                 "severity": "high",
                 "confidence": 0.78,
+                "confidence_is_heuristic": True,
                 "status": "investigating",
                 "platforms": [ev["platform"]],
                 "evidence_ids": [ev["evidence_id"]],

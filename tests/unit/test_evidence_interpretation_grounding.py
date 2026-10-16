@@ -58,8 +58,11 @@ def test_relevance_gate_hard_rejects_utility_pages():
 
 
 def test_corporate_domain_vs_regulatory_filing():
-    """Verify corporate domain is ORIGINAL_DOCUMENT and regulatory filing is OFFICIAL_FILING."""
-    corp_cls = classify_and_score("https://www.microsoft.com/en-us/", "Microsoft", "Corporate homepage")
+    """Ownership is not content depth: documents and landing pages differ."""
+    landing = classify_and_score("https://www.microsoft.com/en-us/", "Microsoft", "Corporate homepage")
+    assert landing["source_role"] == SourceRole.DISCOVERY
+    assert not landing["primary_source"]
+    corp_cls = classify_and_score("https://www.microsoft.com/news/announcement", "Microsoft", "Corporate announcement")
     assert corp_cls["source_role"] == SourceRole.PRIMARY
     assert corp_cls["source_tier"] == SourceTier.TIER_1_ORIGINAL_DOCUMENT
     assert corp_cls["source_tier"] != SourceTier.TIER_1_OFFICIAL_FILING

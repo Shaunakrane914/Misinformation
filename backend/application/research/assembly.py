@@ -10,6 +10,7 @@ from backend.application.research.contracts import (
 )
 from backend.services.agent_reach.channels import QueryExecutionRecord
 from backend.services.research.research_budget import ResearchBudget
+from backend.services.research.passage_extractor import has_usable_passage
 from backend.services.research.research_models import (
     ContentDepth, EvidenceItem, ResearchCorpus, ResearchRequest, ResearchResult, SourceRole,
 )
@@ -47,8 +48,8 @@ class CorpusAssemblyStage:
 
         # Compile specialized source subsets (Requirement 19)
         primary_sources = [
-            it for it in ranked_candidates
-            if it.primary_source or it.source_role == SourceRole.PRIMARY.value
+            it for it in investigated_items
+            if (it.primary_source or it.source_role == SourceRole.PRIMARY.value) and has_usable_passage(it)
         ]
         social_sources = [
             it for it in ranked_candidates
@@ -91,7 +92,7 @@ class CorpusAssemblyStage:
 
         queries_planned = len(all_query_records)
         queries_skipped = sum(1 for q in all_query_records if q.status == "SKIPPED")
-        queries_submitted = queries_planned - queries_skipped
+        queries_submitted = sum(q.status not in {"PLANNED", "SKIPPED", "UNRECORDED"} for q in all_query_records)
         queries_started = queries_submitted
         queries_succeeded = sum(1 for q in all_query_records if q.status == "SUCCESS")
         queries_failed = sum(1 for q in all_query_records if q.status == "FAILED")
@@ -124,6 +125,8 @@ class CorpusAssemblyStage:
             "candidates_rejected": len(all_rejected_audit),
             "unique_candidates": len(ranked_candidates),
             "deep_reads_count": read_telemetry.get("successful", read_telemetry.get("reads_succeeded", 0)),
+            "acquired_record_count": len(investigated_items),
+            "reused_acquired_count": read_telemetry.get("reused_acquired_count", 0),
             "primary_sources_count": len(primary_sources),
             "independent_groups_count": len(clusters_map),
             "contradictions_count": len(contradictions),
@@ -202,9 +205,9 @@ class CorpusAssemblyStage:
         summary = (
             f"Forensic investigation for '{request.target}' across {len(multi_queries)} channels yielded "
             f"{len(ranked_candidates)} deduplicated candidates, with {read_telemetry['successful']} deep-read "
-            f"primary/investigative documents across {len(clusters_map)} independent source groups. "
-            f"Identified {len(findings)} substantive evidence-backed findings, {len(contradictions)} conflicting signal(s), "
-            f"and isolated {lineage_graph.get('metrics', {}).get('origin_count', 0)} verified origin sources from "
+            f"reads and {len(investigated_items)} retained record(s) across {len(clusters_map)} publisher groups (not proof of independence). "
+            f"Identified {len(findings)} observations or claim assessments, {len(contradictions)} possible conflicting signal(s), "
+            f"and estimated {lineage_graph.get('metrics', {}).get('origin_count', 0)} origin groups from "
             f"{lineage_graph.get('metrics', {}).get('echo_count', 0)} syndicated echoes."
         )
 

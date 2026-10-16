@@ -172,7 +172,9 @@ class Settings(BaseSettings):
     @property
     def has_gemini(self) -> bool:
         """True if at least one valid Gemini API key is configured."""
-        return bool(any(k.startswith("AIzaSy") for k in self.gemini_api_keys))
+        # Configured is not provider-verified. Google supports authorization
+        # keys as well as legacy standard keys; prefixes are not authentication.
+        return any(bool(k.strip()) for k in self.gemini_api_keys)
 
     @property
     def has_apify(self) -> bool:

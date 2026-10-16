@@ -313,7 +313,7 @@ def test_primary_source_escalation_provenance():
             relevance_score=0.80
         )
     ]
-    with patch("backend.services.agent_reach.adapter.AgentReachService.search_channel") as mock_search:
+    with patch("backend.services.agent_reach.adapter.AgentReachService.retrieve_many") as mock_search:
         mock_frag = MagicMock()
         mock_frag.url = "https://exchange.com/filing/123"
         mock_frag.author = "Exchange"
@@ -322,7 +322,7 @@ def test_primary_source_escalation_provenance():
         mock_frag.content = "Official disclosure text"
         mock_frag.published = "Today"
         mock_frag.raw_metadata = {}
-        mock_search.return_value = [mock_frag]
+        mock_search.return_value = MagicMock(fragments=[mock_frag])
 
         primaries, tel = primary_source_escalator.escalate(candidates, target_name="Tata Motors", max_escalations=1)
         assert len(primaries) == 1

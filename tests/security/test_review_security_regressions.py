@@ -52,8 +52,7 @@ def test_original_github_document_is_not_automatically_a_known_fact():
                         independence_group="repo", source_name="Unverified repository")
     SourceQualityEngine().classify_and_score(item, "Tesla")
     assert item.primary_source and not item.official_source
-    finding = synthesize_grounded_findings("Tesla", "general", [item], [])[0]
-    assert finding.epistemic_state == "SUPPORTED"
+    assert synthesize_grounded_findings("Tesla", "general", [item], []) == []
 
 
 def test_unrelated_secondary_results_do_not_become_fact_from_group_count():
@@ -61,8 +60,7 @@ def test_unrelated_secondary_results_do_not_become_fact_from_group_count():
                           source_role="SECONDARY", source_quality_score=0.9,
                           independence_group=str(index))
              for index, text in enumerate(["Tesla revenue rose.", "Tesla changed its battery design."])]
-    finding = synthesize_grounded_findings("Tesla", "general", items, [])[0]
-    assert finding.epistemic_state == "SUPPORTED"
+    assert synthesize_grounded_findings("Tesla", "general", items, []) == []
 
 
 def _address(ip):

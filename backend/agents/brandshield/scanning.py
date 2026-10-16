@@ -43,6 +43,7 @@ def search_brand_evidence(
             domain="brand",
             agent_name="brandshield",
             intent=f"investigate brand reputation, counterfeits, impersonations, phishing, and online threats for {target_name}",
+            extra_params={"claim_text": brand_info.get("query") or ""},
             query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
             deep_read_budget=15,
             corroboration_budget=4,
@@ -139,7 +140,7 @@ def search_brand_evidence(
             syndicated_count += 1
 
         evidence_items.append({
-            "evidence_id": f"ev_{idx+1:03d}",
+            "evidence_id": getattr(f, "id", None) or getattr(f, "evidence_id", None) or f"ev_{idx+1:03d}",
             "discovered_candidate_id": disc_id,
             "ranked_candidate_id": rank_id,
             "accepted_candidate_id": acc_id,

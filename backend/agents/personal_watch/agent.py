@@ -311,6 +311,7 @@ class PersonalWatchAgent:
             "findings": [f.to_dict() if hasattr(f, "to_dict") else f for f in self._last_research_res.findings] if getattr(self, "_last_research_res", None) else [],
             "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in self._last_research_res.contradictions] if getattr(self, "_last_research_res", None) else [],
             "deep_research_trace": retrieval_plan_info.get("trace", {}),
+            "research_corpus": getattr(self._last_research_res, "research_corpus", {}) if self._last_research_res else {},
             "deep_reads": retrieval_plan_info.get("trace", {}).get("deep_read_success", 0),
             "spread_analysis": spread_analysis,
             "timeline": timeline,

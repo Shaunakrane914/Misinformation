@@ -19,12 +19,16 @@ class PrimaryEscalationStage:
             start_ts: float, effective_timeout: float) -> EscalatedEvidence:
         # Stage 7: Adaptive Primary Source Escalation (Requirement 16)
         escalation_query_records: List[QueryExecutionRecord] = []
-        if (time.time() - start_ts) < effective_timeout:
+        # Escalation shares discovery's slice; it cannot consume the protected
+        # deep-read and synthesis reservation after initial/adaptive discovery.
+        escalation_time = min(budget.discovery_timeout_seconds, effective_timeout * 0.45) - (time.time() - start_ts)
+        if escalation_time > 0:
             escalated_primaries, esc_telemetry = primary_source_escalator.escalate(
                 ranked.ranked,
                 target_name=request.target,
                 domain=request.domain,
-                max_escalations=budget.max_primary_escalations
+                max_escalations=budget.max_primary_escalations,
+                timeout_seconds=escalation_time,
             )
             if escalated_primaries:
                 for p in escalated_primaries:
@@ -69,10 +73,16 @@ class DeepReadingStage:
             start_ts: float, effective_timeout: float) -> ReadEvidence:
         # Stage 8: Diversity-Aware Deep Reading (Requirement 13 & 14)
         deep_read_budget = max(0, min(request.deep_read_budget, budget.max_deep_reads))
-        time_left = max(0.0, effective_timeout - (time.time() - start_ts))
-        if deep_read_budget > 0 and ranked.ranked and time_left > 0:
+        # The bounded discovery transport already fetched explicit source URLs.
+        # Preserve those bodies without requesting the same URL twice.
+        carried = [item for item in ranked.ranked if item.metadata.get("acquired_during_discovery")
+                   and item.acquired_id and item.acquisition_attempt_id]
+        pending = [item for item in ranked.ranked if item not in carried
+                   and item.canonical_url not in {source.canonical_url for source in carried}]
+        time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+        if deep_read_budget > 0 and pending and time_left > 0:
             investigated_items, read_telemetry = deep_reader.deep_read(
-                ranked.ranked,
+                pending,
                 max_reads=deep_read_budget,
                 timeout_per_read=min(budget.channel_timeout_seconds, time_left)
             )
@@ -87,4 +97,5 @@ class DeepReadingStage:
                 "candidate_selection_audit": [],
             }
 
-        return ReadEvidence(investigated_items, read_telemetry)
+        read_telemetry["reused_acquired_count"] = len(carried)
+        return ReadEvidence(carried + investigated_items, read_telemetry)

@@ -760,6 +760,10 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         if text and text not in finding_texts:
             finding_texts.append(text)
     report.finding_details = details
+    assessments = [detail.get("metadata", {}).get("claim_assessment") for detail in details
+                   if isinstance(detail.get("metadata"), dict)]
+    if any(isinstance(assessment, dict) for assessment in assessments):
+        report.claim_decomposition = [assessment for assessment in assessments if isinstance(assessment, dict)]
     report.findings = list(dict.fromkeys(finding_texts + report.findings))
 
     # Rich canonical records take precedence over lossy legacy news summaries.

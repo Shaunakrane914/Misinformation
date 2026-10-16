@@ -218,18 +218,32 @@ def test_mock_llm_provider_scenarios():
 
 
 def test_gemini_provider_availability_and_key_filtering():
-    """Verify GeminiProvider filters only AIzaSy keys and reports availability correctly."""
-    settings_no_keys = Settings(gemini_api_keys=["invalid_key_1", "invalid_key_2"])
+    """Empty credentials are unavailable; opaque credentials need upstream validation."""
+    settings_no_keys = Settings(gemini_api_keys=["", "  "])
     provider_no_keys = GeminiProvider(settings_instance=settings_no_keys)
     assert provider_no_keys.is_available() is False
 
     with pytest.raises(RuntimeError, match="GeminiProvider unavailable"):
         provider_no_keys.generate("test prompt")
 
-    settings_with_keys = Settings(gemini_api_keys=["AIzaSyValidKey1", "AIzaSyValidKey2"])
+    settings_with_keys = Settings(gemini_api_keys=["AIzaSyFixtureKey1", "opaque-authorization-fixture"])
     provider_with_keys = GeminiProvider(settings_instance=settings_with_keys)
     assert provider_with_keys.is_available() is True
     assert len(provider_with_keys.api_keys) == 2
+
+
+@patch("requests.post")
+def test_opaque_gemini_credential_is_header_only_and_upstream_rejection_fails_closed(mock_post):
+    mock_post.return_value = MagicMock(status_code=401)
+    settings = Settings(environment="production", aegis_mock_llm=False,
+                        gemini_api_keys=["opaque-authorization-fixture"],
+                        default_model="fixture", gemini_models=["fixture"], llm_max_retries=1)
+    assert settings.has_gemini
+    with pytest.raises(RuntimeError, match="HTTP 401") as failure:
+        GeminiProvider(settings).generate("Minimal diagnostic")
+    assert "opaque-authorization-fixture" not in str(failure.value)
+    assert "params" not in mock_post.call_args.kwargs
+    assert mock_post.call_args.kwargs["headers"]["x-goog-api-key"] == "opaque-authorization-fixture"
 
 
 @patch("time.sleep", return_value=None)

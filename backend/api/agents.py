@@ -244,7 +244,9 @@ async def trending_scan(request: TrendingScanRequest):
     target_name = request.asset_name or request.query or "General"
     logger.info(f"[API] POST /api/trending/scan - asset={target_name} mode={request.mode}")
     try:
-        ident_dict = request.identifiers if isinstance(request.identifiers, dict) else {}
+        ident_dict = dict(request.identifiers) if isinstance(request.identifiers, dict) else {}
+        if request.query:
+            ident_dict["claim_text"] = request.query
         def scan():
             return get_trending_agent().scan(
                 target_name, identifiers=ident_dict, category=request.category, mode=request.mode

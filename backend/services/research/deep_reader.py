@@ -111,7 +111,7 @@ class DeepReader:
                 continue
 
             domain = item.source_domain.lower() if item.source_domain else "other"
-            if item.primary_source or item.source_role == SourceRole.PRIMARY.value or item.official_source:
+            if (item.primary_source or item.source_role == SourceRole.PRIMARY.value) and item.metadata.get("authority_scope") != "CORPORATE_LANDING":
                 if primary_satisfied_count >= 5:
                     item.rejection_reason = "primary_already_satisfied"
                     continue
@@ -168,7 +168,7 @@ class DeepReader:
             if item.selected_for_read:
                 item.accepted_id = f"cand_acc_{item.id}"
                 item.selection_decision = "ACCEPTED"
-                item.selection_reason = "PRIMARY_DOCUMENT" if (item.primary_source or item.official_source) else "DIVERSE_SOURCE"
+                item.selection_reason = "PRIMARY_DOCUMENT" if item.primary_source else "DIVERSE_SOURCE"
                 item.rejection_reason = None
             else:
                 item.accepted_id = None

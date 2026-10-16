@@ -125,7 +125,7 @@ class TrendingAgent:
 
         for idx, item in enumerate(raw_items):
             resolved_platform = item.get("platform") or platform_name
-            ev_id = f"EV-{resolved_platform.upper()[:2]}-{idx + 1:03d}"
+            ev_id = item.get("evidence_id") or item.get("id") or f"EV-{resolved_platform.upper()[:2]}-{idx + 1:03d}"
             title = item.get("title") or item.get("headline") or item.get("caption") or item.get("text") or "Trend signal"
             content = item.get("content") or item.get("snippet") or item.get("summary") or item.get("text") or title
             snippet = content[:200] + ("..." if len(content) > 200 else "")
@@ -304,6 +304,7 @@ class TrendingAgent:
         retrieval_trace: Dict[str, Any] = {}
         research_findings = []
         research_contradictions = []
+        research_corpus = {}
 
         try:
             research_req = ResearchRequest(
@@ -311,6 +312,7 @@ class TrendingAgent:
                 domain="trending",
                 agent_name="trending",
                 intent=f"discover emerging viral trends, public narratives, and cross-channel discourse for {target_query}",
+                extra_params={"claim_text": identifiers.get("claim_text") or ""},
                 query_classes=list(query_classes.keys()) if isinstance(query_classes, dict) else query_classes,
                 deep_read_budget=15,
                 corroboration_budget=2,
@@ -319,6 +321,7 @@ class TrendingAgent:
             retrieval_trace = research_res.telemetry
             research_findings = research_res.findings
             research_contradictions = research_res.contradictions
+            research_corpus = research_res.research_corpus if isinstance(research_res.research_corpus, dict) else {}
 
             from backend.services.research.source_quality import is_utility_or_auth_url
             for item in research_res.evidence:
@@ -342,7 +345,7 @@ class TrendingAgent:
                     role = "UTILITY_PORTAL"
                     tier = "TIER_4_UTILITY"
 
-                ev_id = f"EV-{ch.upper()[:2]}-{len(all_raw_evidence) + 1:03d}"
+                ev_id = item.id
                 group = item.independence_group
 
                 all_raw_evidence.append(TrendEvidence(
@@ -511,6 +514,7 @@ class TrendingAgent:
             "findings": [f.to_dict() if hasattr(f, "to_dict") else f for f in research_findings],
             "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in research_contradictions],
             "deep_research_trace": retrieval_trace,
+            "research_corpus": research_corpus,
             "timeline": timeline,
             "platform_breakdown": platform_breakdown,
             "chart_history": chart_history,

@@ -427,7 +427,7 @@ class Finding:
     explanation: str = ""
     temporal_status: str = TemporalStatus.NEW_EVENT.value
     epistemic_state: str = EpistemicState.SUPPORTED.value
-    quality_tensor: QualityTensor = field(default_factory=QualityTensor)
+    quality_tensor: Optional[QualityTensor] = field(default_factory=QualityTensor)
     catalyst_direction: Optional[str] = None  # POSITIVE | NEGATIVE | NEUTRAL | UNCERTAIN
     invalidation_criteria: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)

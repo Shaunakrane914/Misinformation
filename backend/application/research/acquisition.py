@@ -1,6 +1,7 @@
 """Planning, broad discovery, qualification, and evidence ranking."""
 
 from typing import Any
+import hashlib
 
 from backend.application.research.contracts import Discovery, QueryPlan, RankedEvidence
 from backend.services.research.candidate_ranker import candidate_ranker
@@ -20,8 +21,11 @@ class QueryPlanningStage:
         legacy_queries, query_classes = planner.build_multi_channel_queries(
             request.target, domain=request.domain
         )
+        # Purpose boilerplate is not a factual claim or useful provider query.
+        # Preserve a caller's exact claim separately from the resolved entity.
+        planning_text = request.extra_params.get("claim_text") or request.target
         source_plan = source_planning_engine.plan(
-            f"{request.target}. {request.intent}",
+            planning_text,
             entity=request.target,
             domain=request.domain,
             agent=request.agent_name,
@@ -68,13 +72,32 @@ class BroadDiscoveryStage:
                 "max_deep_reads": 0,
             },
             perform_reads=False,
-            timeout=channel_timeout * 2,
+            timeout=min(channel_timeout * 2, budget.discovery_timeout_seconds, effective_timeout * 0.45),
         )
 
 
 class CandidateQualificationStage:
     def run(self, request: ResearchRequest, retrieval: Any) -> Discovery:
         raw_candidates: list[EvidenceItem] = []
+        source_doc = getattr(retrieval, "source_article", None)
+        if isinstance(source_doc, dict) and source_doc.get("status") in {"success", "fallback_soup"}:
+            text = source_doc.get("markdown") or source_doc.get("content") or ""
+            url = source_doc.get("url") or request.source_url or ""
+            if url and len(text.strip()) >= 30:
+                item_id = "ev_source_" + hashlib.sha256(url.encode()).hexdigest()[:12]
+                transport = source_doc.get("transport") or {}
+                item = EvidenceItem(
+                    id=item_id, canonical_url=url, channel="web", content=text,
+                    snippet=text[:280], title=source_doc.get("title") or "User-supplied source",
+                    published_at=source_doc.get("published") or "", source_name=source_doc.get("author") or "Web source",
+                    content_depth=source_doc.get("content_depth") or "PARTIAL_CONTENT",
+                    query_class="user_supplied_source", query_text=request.extra_params.get("claim_text") or request.target,
+                    read_status="SUCCESS", acquisition_attempt_id=f"attempt_source_{item_id}", acquired_id=f"cand_acq_{item_id}",
+                    metadata={"read_success": True, "acquired_during_discovery": True,
+                              "observed_final_endpoint": transport.get("endpoint"), "transport": transport},
+                )
+                source_quality_engine.classify_and_score(item, target_name=request.target)
+                raw_candidates.append(item)
         for idx, frag in enumerate(retrieval.fragments):
             item_id = getattr(frag, "candidate_id", None) or getattr(frag, "evidence_id", None) or f"ev_{idx + 1:03d}"
             ev_item = EvidenceItem.from_evidence_fragment(frag, item_id=item_id, target_name=request.target)

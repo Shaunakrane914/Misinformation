@@ -13,7 +13,7 @@ from __future__ import annotations
 import re
 from typing import Any, Dict, List, Set, Tuple
 
-from backend.services.research.source_quality import canonical_hostname
+from backend.services.research.source_quality import canonical_hostname, hostname_matches
 
 # Comprehensive stop words covering prepositions, auxiliary verbs, and discourse markers
 _STOP = set(
@@ -179,13 +179,12 @@ def terms(text: str) -> Set[str]:
 def context_compatible(first: str, second: str, numeric: bool = True) -> bool:
     """Do not compare different periods, scopes, currencies or measurement bases."""
     patterns = [
-        r"\b(?:19|20)\d{2}\b|\bq[1-4]\b",
+        r"(?<![\w-])(?:19|20)\d{2}\b|\bq[1-4]\b",
         r"\b(?:ohio|florida|texas|california|china|europe|us|uk|india)\b",
     ]
     if numeric:
         patterns += [
-            r"\b(?:annual|quarterly|monthly|cash|including debt|inclusive of debt|excluding debt)\b",
-            r"[$€£¥₹]|\b(?:usd|eur|gbp|inr)\b",
+            r"\b(?:annual|quarterly|monthly|including debt|inclusive of debt|excluding debt)\b",
         ]
     for pattern in patterns:
         a = set(re.findall(pattern, first.lower()))
@@ -241,8 +240,9 @@ def extract_numeric_tokens(text: str) -> List[Dict[str, Any]]:
             tokens.append({"type": "currency", "val": val, "raw": raw})
             
     # 4. Percentages: e.g. 80%, 20 percent, 100%, 126%
-    for m in re.finditer(r'\b(\d+(?:\.\d+)?)\s*(?:%|percent)\b', text, re.I):
-        tokens.append({"type": "percent", "val": float(m.group(1)), "raw": m.group(0).lower()})
+    for m in re.finditer(r'\b(\d+(?:\.\d+)?)\s*(?:percentage points?\b|%|percent\b)', text, re.I):
+        unit = "percentage_points" if "point" in m.group(0).lower() else "percent"
+        tokens.append({"type": unit, "val": float(m.group(1)), "raw": m.group(0).lower()})
         
     # 5. Base score / Rating: e.g. score of 10.0, Base Score: 10.0, score of 2.1
     for m in re.finditer(r'\b(?:score|rating)(?:\s*(?:of|is|:))?\s*(\d+(?:\.\d+)?)\b', text, re.I):
@@ -252,7 +252,35 @@ def extract_numeric_tokens(text: str) -> List[Dict[str, Any]]:
     for m in re.finditer(r'\b299[,\s]?792[,\s]?458\b', text):
         tokens.append({"type": "speed_of_light", "val": 299792458.0, "raw": m.group(0)})
         
+    # Currency identity is not interchangeable with the magnitude multiplier.
+    currencies = {"USD": r"\$|\busd\b|\bdollars?\b", "EUR": r"€|\beur\b|\beuros?\b",
+                  "GBP": r"£|\bgbp\b|\bpounds?\b", "INR": r"₹|\binr\b|\brupees?\b",
+                  "JPY": r"¥|\bjpy\b|\byen\b"}
+    for token in tokens:
+        if token["type"] == "currency":
+            # A document with several currencies is ambiguous without a local
+            # attachment parser; do not infer conversions or a default currency.
+            found = {code for code, pattern in currencies.items() if re.search(pattern, text, re.I)}
+            token["currency"] = next(iter(found)) if len(found) == 1 else "UNKNOWN"
     return tokens
+
+
+def _numeric_context_matches(claim: str, passage: str) -> bool:
+    if not context_compatible(claim, passage):
+        return False
+    metrics = {"revenue": r"\b(?:revenue|sales|turnover)\b", "profit": r"\b(?:profit|net income|earnings)\b",
+               "debt": r"\bdebt\b", "margin": r"\bmargin\b", "cash": r"\b(?:cash balance|cash reserves|cash flows?)\b"}
+    claimed = {key for key, pattern in metrics.items() if re.search(pattern, claim, re.I)}
+    observed = {key for key, pattern in metrics.items() if re.search(pattern, passage, re.I)}
+    # Multiple financial metrics in one passage require finer alignment. Try
+    # individual sentences instead of cross-pairing all document numbers.
+    return claimed == observed if claimed or observed else True
+
+
+def _same_numeric_unit(first: Dict[str, Any], second: Dict[str, Any]) -> bool:
+    return first["type"] == second["type"] and (
+        first["type"] != "currency" or first.get("currency") == second.get("currency")
+    )
 
 
 def extract_identifiers(text: str) -> Dict[str, Set[str]]:
@@ -264,7 +292,7 @@ def extract_identifiers(text: str) -> Dict[str, Set[str]]:
 
 def extract_event_years(text: str) -> Set[str]:
     """Extract 4-digit calendar years."""
-    return set(re.findall(r'\b(19\d{2}|20\d{2})\b', text))
+    return set(re.findall(r'(?<![\w-])(19\d{2}|20\d{2})\b', text))
 
 
 def check_entity_match(entity: str, context_text: str) -> bool:
@@ -307,7 +335,7 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         if not any(w in wanted for w in {"portal", "utility", "login", "authentication", "account", "domain"}):
             return "NONE", ""
 
-    if item.content_depth in {"DIRECT_METADATA", "HEADLINE_ONLY", "VIDEO_METADATA", "METADATA", "SEARCH_SNIPPET"}:
+    if item.content_depth in {"DIRECT_METADATA", "HEADLINE_ONLY", "VIDEO_METADATA", "METADATA", "SEARCH_SNIPPET", "PROFILE_METADATA", "SEARCH_INDEX_DISCOVERY"}:
         return "NONE", ""
         
     text = item.relevant_excerpt or item.content or item.snippet
@@ -333,7 +361,7 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         return "NONE", ""
         
     # 2. Build candidate passages: full text first, then paragraphs/sentences
-    candidate_passages = [text]
+    candidate_passages = []
     
     # Split sentences while protecting common abbreviations
     protected = text
@@ -342,17 +370,27 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         
     for s in re.split(r"(?<=[.!?])\s+|[\r\n]+", protected):
         cleaned = s.replace("§", ".").strip()
-        if len(cleaned) > 20 and cleaned != text:
+        if len(cleaned) > 20:
             candidate_passages.append(cleaned)
+    if not candidate_passages:
+        candidate_passages = [text]
             
     for passage in candidate_passages:
         if _CONDITIONAL_HYPOTHETICAL.search(passage):
+            continue
+
+        subject = re.match(r"^(.+?)\s+(?:is|are|was|were|has|have)\b", claim_text, re.I)
+        role_claim = re.search(r"\b(?:ceo|chief executive officer|president|chairman|chairwoman|prime minister)\b", claim_text, re.I)
+        if role_claim and subject and not terms(subject.group(1)).issubset(terms(passage)):
             continue
             
         pass_terms = terms(passage)
         pass_ids = extract_identifiers(passage)
         pass_nums = extract_numeric_tokens(passage)
         pass_years = extract_event_years(passage)
+
+        if claim_nums and not _numeric_context_matches(claim_text, passage):
+            continue
         
         doc_cves = pass_ids["cve"] | url_ids["cve"]
         doc_arxivs = pass_ids["arxiv"] | url_ids["arxiv"]
@@ -367,8 +405,9 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         # --- Axis B: Numerical Value Contradiction ---
         if claim_nums and pass_nums:
             for cn in claim_nums:
-                for pn in pass_nums:
-                    if cn["type"] == pn["type"]:
+                comparable = [pn for pn in pass_nums if _same_numeric_unit(cn, pn)]
+                if comparable and not any(abs(cn["val"] - pn["val"]) / max(cn["val"], pn["val"], 1.0) < 0.05 for pn in comparable):
+                    for pn in comparable:
                         diff_ratio = abs(cn["val"] - pn["val"]) / max(cn["val"], pn["val"], 1.0)
                         if diff_ratio >= 0.15:
                             shared = (wanted - _META_WRAPPER_WORDS) & pass_terms
@@ -467,7 +506,7 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         if claim_nums:
             for cn in claim_nums:
                 matched = any(
-                    pn["type"] == cn["type"] and (abs(cn["val"] - pn["val"]) / max(cn["val"], pn["val"], 1.0) < 0.05)
+                    _same_numeric_unit(cn, pn) and (abs(cn["val"] - pn["val"]) / max(cn["val"], pn["val"], 1.0) < 0.05)
                     for pn in pass_nums
                 )
                 if not matched:
@@ -508,12 +547,7 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         # Aligned proposition established! Check polarity and temporal state:
         # 1. Temporal shift / outdated narrative
         if _TEMPORAL_SUPERSEDED.search(passage) and not _TEMPORAL_SUPERSEDED.search(claim_text):
-            claim_subjects = wanted & {"sundar", "pichai", "satya", "nadella", "andy", "jassy"}
-            if claim_subjects and any(v in pass_terms for v in {"appoint", "become", "lead", "chair"}):
-                # The claim's subject was appointed; the superseded entity was someone else
-                pass
-            else:
-                return "OUTDATED", passage[:500]
+            return "OUTDATED", passage[:500]
             
         # 2. Targeted claim negation / denial in passage
         if _CLAIM_NEGATION.search(passage) and not _CLAIM_NEGATION.search(claim_text):
@@ -558,7 +592,7 @@ def is_authoritative_registry_or_filing(item: Any) -> bool:
         return True
     if item.source_tier == "TIER_1_ORIGINAL_DOCUMENT" and item.primary_source and item.official_source:
         return True
-    if getattr(item, "source_role", "") == "UTILITY_PORTAL" and any(k in host for k in ("microsoft.com", "google.com", "apple.com", "amazon.com")):
+    if getattr(item, "source_role", "") == "UTILITY_PORTAL" and any(hostname_matches(host, k) for k in ("microsoft.com", "google.com", "apple.com", "amazon.com")):
         return True
     return False
 

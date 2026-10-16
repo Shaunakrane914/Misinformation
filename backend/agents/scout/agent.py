@@ -237,6 +237,7 @@ class ScoutAgent:
             target=f"{company_name} ({sym})",
             domain="financial",
             intent=query or f"investigate financial performance, corporate filings, regulatory risks, and market catalysts for {company_name}",
+            extra_params={"claim_text": query or ""},
             query_classes=[
                 "latest_primary", "official_statement", "regulatory", "investigative",
                 "independent_reporting", "community_signal", "contradiction"

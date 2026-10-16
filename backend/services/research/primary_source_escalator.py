@@ -51,7 +51,8 @@ class PrimarySourceEscalator:
         candidates: List[EvidenceItem],
         target_name: str,
         domain: str = "general",
-        max_escalations: int = 2
+        max_escalations: int = 2,
+        timeout_seconds: float = 5.0,
     ) -> Tuple[List[EvidenceItem], Dict[str, Any]]:
         """
         If secondary candidates reference primary filings/statements and no primary
@@ -61,6 +62,7 @@ class PrimarySourceEscalator:
             Tuple of (newly_discovered_primary_items, escalation_telemetry)
         """
         from backend.services.agent_reach import agent_reach_service
+        deadline = time.monotonic() + max(0.0, timeout_seconds)
 
         telemetry = {
             "references_detected": 0,
@@ -116,6 +118,9 @@ class PrimarySourceEscalator:
 
         execution_records: List[QueryExecutionRecord] = []
         for spec in unique_specs[:max_escalations]:
+            if time.monotonic() >= deadline:
+                telemetry["stop_reason"] = "escalation_deadline_reached"
+                break
             eq = spec["query"]
             originating_id = spec["originating_id"]
             ref_type = spec["ref_type"]
@@ -133,11 +138,24 @@ class PrimarySourceEscalator:
 
             try:
                 # Query Web and RSS channels
-                frags = agent_reach_service.search_channel("web", eq, limit=2)
+                def bounded_search(channel):
+                    remaining = max(0.0, deadline - time.monotonic())
+                    if not remaining:
+                        return []
+                    result = agent_reach_service.retrieve_many(
+                        channel_queries={channel: [{"query_id": q_id, "query_text": eq, "query_class": "primary_escalation"}]},
+                        domain=domain, target_name=target_name, perform_reads=False,
+                        budget={"max_queries_per_channel": 1, "max_results_per_query": 2,
+                                "max_total_evidence": 2, "max_deep_reads": 0},
+                        timeout=remaining,
+                    )
+                    return result.fragments
+
+                frags = bounded_search("web")
                 frags_retrieved = len(frags)
                 if not frags:
                     actual_channel = "rss"
-                    frags = agent_reach_service.search_channel("rss", eq, limit=2)
+                    frags = bounded_search("rss")
                     frags_retrieved = len(frags)
 
                 for f in frags:

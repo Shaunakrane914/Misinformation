@@ -29,7 +29,7 @@ class GeminiProvider(LLMProvider):
 
     def __init__(self, settings_instance: Optional[Settings] = None):
         self.settings = settings_instance or get_settings()
-        self.api_keys: List[str] = [k for k in self.settings.gemini_api_keys if k.startswith("AIzaSy")]
+        self.api_keys: List[str] = [k.strip() for k in self.settings.gemini_api_keys if k.strip()]
         self._key_cycle = itertools.cycle(self.api_keys) if self.api_keys else None
         self._key_lock = threading.Lock()
         self.models: List[str] = list(self.settings.gemini_models)
@@ -37,13 +37,13 @@ class GeminiProvider(LLMProvider):
         self.max_retries: int = self.settings.llm_max_retries
 
     def is_available(self) -> bool:
-        """True if at least one valid AIzaSy API key is available."""
+        """True if a credential is configured, not proof of upstream acceptance."""
         return bool(self.api_keys)
 
     def generate(self, prompt: str, model: Optional[str] = None, **kwargs: Any) -> LLMResponse:
         """Execute inference against Gemini with automatic key rotation and model fallback."""
         if not self.is_available():
-            raise RuntimeError("GeminiProvider unavailable: No valid Google AIzaSy API keys configured.")
+            raise RuntimeError("GeminiProvider unavailable: No API keys configured.")
 
         # An explicit model is a strict identity request. With no explicit
         # model, Settings has already placed the preferred model first and the
@@ -66,8 +66,7 @@ class GeminiProvider(LLMProvider):
                     try:
                         resp = requests.post(
                             url,
-                            headers=headers,
-                            params={"key": api_key},
+                            headers={**headers, "x-goog-api-key": api_key},
                             json=payload,
                             timeout=self.timeout
                         )

@@ -94,6 +94,7 @@ class BrandShieldAgent:
 
         # 1. Entity Resolution
         brand_info = self.resolve_brand_entity(clean_input)
+        brand_info["query"] = query or ""
 
         # 2. Multi-Channel Evidence Retrieval via Agent Reach
         evidence_items, channel_health, plan, syndicated_count = self.search_brand_evidence(brand_info)
@@ -200,6 +201,7 @@ class BrandShieldAgent:
             "findings_structured": [f.to_dict() if hasattr(f, "to_dict") else f for f in self._last_research_res.findings] if getattr(self, "_last_research_res", None) else [],
             "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in self._last_research_res.contradictions] if getattr(self, "_last_research_res", None) else [],
             "deep_research_trace": plan.get("trace", {}),
+            "research_corpus": getattr(self._last_research_res, "research_corpus", {}) if self._last_research_res else {},
             "retrieval": {
                 "plan": plan,
                 "channels": channel_health,

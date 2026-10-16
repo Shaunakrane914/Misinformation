@@ -176,7 +176,10 @@ class SourceQualityEngine:
         full_text = f"{domain} {title_lower} {snippet_lower} {content_lower[:400]}"
 
         # Clean target name for matching official domains
-        clean_target = re.sub(r'[^a-z0-9]', '', target_name.lower()) if target_name else ""
+        # Resolved financial entities may retain a parenthesized ticker. It is
+        # an alias, not part of the ownership-registry key.
+        registry_name = re.sub(r"\([^)]*\)", "", target_name)
+        clean_target = re.sub(r'[^a-z0-9]', '', registry_name.lower()) if target_name else ""
         
         # 1. Detect Utility / Auth / Store / Encyclopedia
         is_utility = is_utility_or_auth_url(url)
@@ -217,12 +220,14 @@ class SourceQualityEngine:
             base_score = 0.98 if is_document else 0.60
 
         elif is_official:
-            # Corporate domain without utility path: official corporate document, NOT a regulatory filing
-            item.source_role = SourceRole.PRIMARY.value
-            item.source_tier = SourceTier.TIER_1_ORIGINAL_DOCUMENT.value
-            item.primary_source = True
+            path = urllib.parse.urlsplit(url).path.lower().strip("/")
+            is_landing = not path or bool(re.fullmatch(r"[a-z]{2}(?:[-/][a-z]{2})?", path))
+            item.metadata["authority_scope"] = "CORPORATE_LANDING" if is_landing else "CORPORATE_DOCUMENT"
+            item.source_role = SourceRole.DISCOVERY.value if is_landing else SourceRole.PRIMARY.value
+            item.source_tier = SourceTier.TIER_3_AGGREGATE.value if is_landing else SourceTier.TIER_1_ORIGINAL_DOCUMENT.value
+            item.primary_source = not is_landing
             item.official_source = True
-            base_score = 0.92
+            base_score = 0.60 if is_landing else 0.92
 
         elif is_encyclopedia:
             item.source_role = SourceRole.AGGREGATOR.value

@@ -87,6 +87,8 @@ def synthesize_financial_intelligence(
     Synthesize financial intelligence over retrieved evidence fragments.
     Relies strictly on provided evidence. Never hallucinates facts, dates, or sources.
     """
+    from backend.services.research.passage_extractor import has_usable_passage
+    sources = [source for source in sources if has_usable_passage(source)]
     if not sources:
         return {
             "catalysts": {"positive": [], "negative": [], "unresolved": []},
@@ -98,7 +100,7 @@ def synthesize_financial_intelligence(
                 "rumors_detected": [],
                 "manipulation_risk": "UNASSESSED",
                 "evidence_quality_score": None,
-                "notes": "No acquired source records available for synthesis; discovery-only candidates may still exist."
+                "notes": "No substantive acquired passages available for synthesis; discovery-only or navigation/profile records may still exist."
             }
         }
 
@@ -152,7 +154,8 @@ Respond in STRICT JSON with this schema:
             cleaned = cleaned.split("```")[1].split("```")[0].strip()
         parsed = json.loads(cleaned)
         if isinstance(parsed, dict) and "catalysts" in parsed:
-            return parsed
+            from backend.services.research.model_grounding import constrain_financial_extractions
+            return constrain_financial_extractions(parsed, sources)
     except Exception as e:
         logger.debug(f"[ScoutAssessment:synthesize] LLM synthesis notice, using grounded rule-based parsing: {e}")
 
@@ -232,10 +235,10 @@ Respond in STRICT JSON with this schema:
             "unresolved": [u["factor"] for u in unres_cats[:2]]
         },
         "misinformation": {
-            "status": "ELEVATED" if rumors else "NOMINAL",
+            "status": "UNVERIFIED" if rumors else "INSUFFICIENT_EVIDENCE",
             "rumors_detected": rumors[:3],
-            "manipulation_risk": "ELEVATED" if len(rumors) >= 2 else ("MEDIUM" if rumors else "LOW"),
-            "evidence_quality_score": round(min(0.95, 0.50 + 0.05 * len(sources)), 2),
+            "manipulation_risk": "UNASSESSED",
+            "evidence_quality_score": None,
             "primary_corroboration": any(s["source_role"] == "PRIMARY" for s in sources)
         }
     }

@@ -27,6 +27,7 @@ from backend.services.research.research_models import ResearchRequest
 
 MANIFEST = Path(__file__).with_name("fixtures") / "research_phase4_golden.json"
 REVIEWED_MANIFEST = Path(__file__).with_name("fixtures") / "research_phase8_independent_golden.json"
+PHASE9_MANIFEST = Path(__file__).with_name("fixtures") / "research_phase9_reviewed_golden.json"
 STAMP = "2026-10-10T00:00:00+00:00"
 
 
@@ -154,6 +155,7 @@ def capture_scenario(name, include_payload=False):
             item.acquisition_attempt_id = f"attempt_{item.id}"
             item.acquired_id = f"acquired_{item.id}"
             item.read_status = "SUCCESS"
+            item.content_depth = "PARTIAL_CONTENT"  # This fixture represents an acquired body, not a search snippet.
         return selected, {
             "attempted": len(selected), "successful": len(selected), "failed": 0,
             "cached": 0, "total_chars_read": 0, "read_urls": [item.canonical_url for item in selected],
@@ -165,7 +167,7 @@ def capture_scenario(name, include_payload=False):
             return [fixtures["relevant"]]
         return []
 
-    def escalate_fixture(ranked, target_name, domain, max_escalations):
+    def escalate_fixture(ranked, target_name, domain, max_escalations, timeout_seconds=5.0):
         if name != "primary_escalation":
             return [], {"queries": [], "escalations": 0}
         from backend.services.research.research_models import EvidenceItem
@@ -242,7 +244,7 @@ def capture_scenario(name, include_payload=False):
 @pytest.mark.parametrize("name", sorted(SCENARIOS))
 def test_research_result_and_replay_match_reviewed_policy(name):
     historical = json.loads(MANIFEST.read_text(encoding="utf-8"))[name]
-    expected = json.loads(REVIEWED_MANIFEST.read_text(encoding="utf-8"))["scenarios"][name]
+    expected = json.loads(PHASE9_MANIFEST.read_text(encoding="utf-8"))["scenarios"][name]
     if name == "discovery_timeout":
         # Explicit correctness exception: the historical implementation read
         # documents AFTER its deadline. Keep that baseline, but require no reads.

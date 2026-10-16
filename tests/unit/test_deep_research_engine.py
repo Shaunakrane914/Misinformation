@@ -192,7 +192,7 @@ class TestDeepResearchEngine:
             "expenditures of $2.4 billion for autonomous compute.\n\n"
             "In other news, weather across California remained unseasonably mild according to meteorological bureaus."
         )
-        item = EvidenceItem(id="ev_test", title="Tesla Earnings Release", content=content, canonical_url="https://tesla.com/press")
+        item = EvidenceItem(id="ev_test", title="Tesla Earnings Release", content=content, canonical_url="https://tesla.com/press", content_depth="PARTIAL_CONTENT")
         extractor.extract_passages([item], target_name="Tesla", intent="earnings revenue")
 
         assert "$25.17 billion" in item.relevant_excerpt

@@ -12,8 +12,8 @@ Computes:
 - Truth resolution rate (correct SUPPORTED for TRUE, REFUTED for FALSE)
 - Abstention metrics (correct vs incorrect abstentions)
 - False positive rate (SUPPORTED on FALSE/INSUFFICIENT claims)
-- False negative rate (REFUTED on TRUE/INSUFFICIENT claims)
-- Entailment and contradiction identification accuracy
+- Support false negatives (including abstentions on TRUE claims)
+- Citation joins and model-reported relation consistency (not entailment accuracy)
 - Execution latency per case
 """
 
@@ -53,6 +53,7 @@ def evaluate_benchmark_case(
     source_quality_engine: Any,
     AtomicClaim: Any,
     EvidenceItem: Any,
+    reference_authority: bool = False,
 ) -> Dict[str, Any]:
     """Evaluates a single benchmark case against its adjudicated reference evidence."""
     t0 = time.perf_counter()
@@ -66,16 +67,17 @@ def evaluate_benchmark_case(
         canonical_url=ref.get("primary_url", "https://example.org/source"),
         content_depth="DIRECT_CONTENT" if ref.get("passage") else "DIRECT_METADATA",
         source_name=ref.get("claim_context", "Primary Reference"),
-        primary_source=ref.get("source_role") in {"PRIMARY", "REGULATORY_FILING", "OFFICIAL_COMMUNICATION", "RESEARCH_REGISTRY"},
+        primary_source=False,  # Runtime classifier owns authority; never import a label as proof.
     )
     
     # Classify source quality
     source_quality_engine.classify_and_score(evidence, case.get("entity", ""))
     
-    # Override tier/role if explicitly specified in benchmark ground truth
-    if ref.get("source_tier"):
+    # Labels describe the reference, not runtime authority. An explicit legacy
+    # oracle mode is retained only to reproduce historical benchmark reports.
+    if reference_authority and ref.get("source_tier"):
         evidence.source_tier = ref["source_tier"]
-    if ref.get("source_role"):
+    if reference_authority and ref.get("source_role"):
         evidence.source_role = ref["source_role"]
     
     # Evaluate claim
@@ -109,21 +111,29 @@ def evaluate_benchmark_case(
     is_abstention = actual_verdict in {"UNVERIFIED", "INSUFFICIENT_EVIDENCE"}
     expected_abstention = any(v in {"UNVERIFIED", "INSUFFICIENT_EVIDENCE"} for v in expected_verdicts)
     
-    correct_abstention = is_abstention and expected_abstention
-    incorrect_abstention = is_abstention and not expected_abstention
+    correct_abstention = is_abstention and truth_label in {"INSUFFICIENT_EVIDENCE", "UNVERIFIED"}
+    incorrect_abstention = is_abstention and truth_label in {"TRUE", "FALSE", "PARTIALLY_TRUE", "MIXED", "OUTDATED"}
     
     false_positive = (actual_verdict == "SUPPORTED") and (
         truth_label.startswith("FALSE") or truth_label == "INSUFFICIENT_EVIDENCE" or "REFUTED" in expected_verdicts
     )
-    false_negative = (actual_verdict == "REFUTED") and (
-        truth_label.startswith("TRUE") or truth_label == "INSUFFICIENT_EVIDENCE" or "SUPPORTED" in expected_verdicts
-    )
+    # Binary SUPPORT recall treats abstention as an unresolved positive, not a
+    # true negative. Erroneous definitive refutations are recorded separately.
+    false_negative = truth_label == "TRUE" and actual_verdict != "SUPPORTED"
     
     # Entailment / Contradiction check
     entailment_aligned = False
     citation_valid = False
     if evaluated_claim.evidence_citations:
-        citation_valid = True
+        citation_valid = all(
+            c.get("evidence_id") == evidence.id
+            and c.get("canonical_url") == evidence.canonical_url.split("#", 1)[0]
+            and bool(c.get("relevant_excerpt"))
+            and " ".join(c["relevant_excerpt"].split()) in " ".join(
+                f"{evidence.title} {evidence.content} {evidence.snippet}".split()
+            )
+            for c in evaluated_claim.evidence_citations
+        )
         cit = evaluated_claim.evidence_citations[0]
         if actual_verdict == "SUPPORTED" and cit.get("relation") == "SUPPORT":
             entailment_aligned = True
@@ -149,6 +159,11 @@ def evaluate_benchmark_case(
         "is_abstention": is_abstention,
         "correct_abstention": correct_abstention,
         "incorrect_abstention": incorrect_abstention,
+        "permitted_abstention": is_abstention and expected_abstention,
+        "unsupported_refutation": actual_verdict == "REFUTED" and truth_label in {"TRUE", "INSUFFICIENT_EVIDENCE"},
+        "human_reviewed": case.get("human_reviewed", False),
+        "label_provenance": case.get("label_provenance", "UNSPECIFIED"),
+        "source_retrieved_during_evaluation": False,
         "false_positive": false_positive,
         "false_negative": false_negative,
         "elapsed_ms": elapsed_ms,
@@ -186,9 +201,10 @@ def compute_metrics(results: List[Dict[str, Any]]) -> Dict[str, Any]:
     fp = sum(r["actual_verdict"] == "SUPPORTED" for r in false_cases)
     fn = sum(r["actual_verdict"] != "SUPPORTED" for r in true_cases)
     
-    precision = round(tp / (tp + fp), 4) if (tp + fp) > 0 else 0.0
-    recall = round(tp / (tp + fn), 4) if (tp + fn) > 0 else 0.0
-    f1 = round(2 * precision * recall / (precision + recall), 4) if (precision + recall) > 0 else 0.0
+    precision = round(tp / (tp + fp), 4) if (tp + fp) > 0 else None
+    recall = round(tp / (tp + fn), 4) if (tp + fn) > 0 else None
+    f1 = (round(2 * precision * recall / (precision + recall), 4)
+          if precision is not None and recall is not None and precision + recall else None)
     
     verdict_distribution: Dict[str, int] = {}
     for r in results:
@@ -208,11 +224,23 @@ def compute_metrics(results: List[Dict[str, Any]]) -> Dict[str, Any]:
         "incorrect_abstentions": incorrect_abstentions,
         "false_positives": fp_count,
         "false_negatives": fn_count,
+        "unsupported_refutations": sum(r.get("unsupported_refutation", False) for r in results),
+        "support_confusion": {"true_positive": tp, "false_positive": fp, "false_negative": fn},
         "precision_support": precision,
         "recall_support": recall,
         "f1_support": f1,
         "citation_valid_count": citation_valid_count,
         "entailment_aligned_count": entailment_aligned_count,
+        "entailment_accuracy": None,
+        "retrieval_recall": None,
+        "calibration_error": None,
+        "human_reviewed_labels": sum(r.get("human_reviewed", False) for r in results),
+        "metric_limitations": [
+            "Supplied-reference reasoning only; no source retrieval or live-provider accuracy measured.",
+            "entailment_aligned_count is model-reported relation consistency, not independently judged entailment.",
+            "Citation validity checks reference IDs/URLs/excerpts, not reference authenticity or logical support.",
+            "SUPPORT false negatives include abstentions on TRUE claims; undefined precision/recall/F1 remain null.",
+        ],
         "average_latency_ms": avg_latency,
         "verdict_distribution": verdict_distribution,
     }
@@ -223,20 +251,23 @@ def generate_markdown_report(metrics: Dict[str, Any], split_name: str, results: 
     lines = [
         f"# Phase 9 Misinformation Benchmark Evaluation Report — Split: `{split_name.upper()}`",
         "",
+        "Supplied-reference reasoning evaluation, not live acquisition. Labels are not human validated unless explicitly recorded.",
+        "Relation consistency is not independent entailment accuracy; internal scores are not calibration.",
+        "",
         f"**Evaluated Cases:** {metrics['case_count']} | **Acceptable Rate:** {metrics['acceptable_rate'] * 100:.1f}% | **Truth Resolution Rate:** {metrics['truth_resolution_rate'] * 100:.1f}%",
         "",
         "## Summary Metrics",
         "",
         "| Metric | Value | Description |",
         "| :--- | :--- | :--- |",
-        f"| **Total Cases** | `{metrics['case_count']}` | Number of verified reference cases evaluated |",
+        f"| **Total Cases** | `{metrics['case_count']}` | Number of supplied reference fixtures evaluated |",
         f"| **Acceptable Safe Outcomes** | `{metrics['acceptable_safe_outcomes']} / {metrics['case_count']}` ({metrics['acceptable_rate'] * 100:.1f}%) | Actual verdict is within expected ground truth |",
         f"| **Truth Resolved Cases** | `{metrics['truth_resolved_count']} / {metrics['truth_eligible_cases']}` ({metrics['truth_resolution_rate'] * 100:.1f}%) | Definite factual claims correctly resolved (SUPPORTED/REFUTED) |",
         f"| **Abstention Rate** | `{metrics['total_abstentions']} / {metrics['case_count']}` ({metrics['abstention_rate'] * 100:.1f}%) | Proportion of claims returned as UNVERIFIED or INSUFFICIENT |",
         f"| **Correct Abstentions** | `{metrics['correct_abstentions']}` | Ground-truth uncertain/insufficient cases correctly abstained |",
         f"| **Incorrect Abstentions** | `{metrics['incorrect_abstentions']}` | Resolvable claims where system failed to reach a verdict |",
         f"| **False Positives** | `{metrics['false_positives']}` | False/insufficient claims incorrectly labeled SUPPORTED |",
-        f"| **False Negatives** | `{metrics['false_negatives']}` | True/insufficient claims incorrectly labeled REFUTED |",
+        f"| **False Negatives (SUPPORT)** | `{metrics['false_negatives']}` | TRUE claims not labeled SUPPORTED, including abstention |",
         f"| **Precision (SUPPORT)** | `{metrics['precision_support']}` | TP / (TP + FP) for affirmative verdicts |",
         f"| **Recall (SUPPORT)** | `{metrics['recall_support']}` | TP / (TP + FN) for affirmative verdicts |",
         f"| **F1 Score** | `{metrics['f1_support']}` | Harmonic mean of precision and recall |",
@@ -270,7 +301,8 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--benchmark-dir", type=Path, default=Path(__file__).resolve().parents[2] / "tests/evaluation/phase9_benchmark")
     parser.add_argument("--split", choices=["dev", "regression", "held_out", "all"], default="dev")
-    parser.add_argument("--output-dir", type=Path, default=Path(__file__).resolve().parents[2] / "artifacts/phase9_evaluation")
+    parser.add_argument("--output-dir", type=Path, required=True, help="Fresh output directory; existing result files are never overwritten")
+    parser.add_argument("--reference-authority", action="store_true", help="Legacy oracle mode: inject reference tier/role; not runtime source qualification")
     args = parser.parse_args()
     
     root = Path(__file__).resolve().parents[2]
@@ -287,7 +319,7 @@ def main():
     print(f"Running Phase 9 Benchmark Evaluation on split: {args.split} ({len(cases)} cases)...")
     
     results = [
-        evaluate_benchmark_case(c, claim_intel, source_quality, AtomicClaim, EvidenceItem)
+        evaluate_benchmark_case(c, claim_intel, source_quality, AtomicClaim, EvidenceItem, args.reference_authority)
         for c in cases
     ]
     
@@ -296,11 +328,17 @@ def main():
     args.output_dir.mkdir(parents=True, exist_ok=True)
     out_json = args.output_dir / f"benchmark_{args.split}_results.json"
     out_md = args.output_dir / f"benchmark_{args.split}_report.md"
+    if out_json.exists() or out_md.exists():
+        raise FileExistsError("Refusing to overwrite evaluation evidence; choose a fresh output directory")
     
     payload = {
         "split": args.split,
         "engine_commit": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
         "dirty_source": bool(subprocess.check_output(["git", "status", "--porcelain"], cwd=root, text=True).strip()),
+        "evaluation_mode": "LEGACY_REFERENCE_AUTHORITY" if args.reference_authority else "CLASSIFIED_REFERENCE_REPLAY",
+        "source_retrieved_during_evaluation": False,
+        "dataset_sha256": {p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+                           for p in args.benchmark_dir.glob("*_set.json")},
         "metrics": metrics,
         "results": results,
     }

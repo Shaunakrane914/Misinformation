@@ -1,0 +1,471 @@
+{
+  "split": "regression",
+  "description": "20 targeted claims verifying fixed defects remain stable and unregressed.",
+  "case_count": 20,
+  "cases": [
+    {
+      "id": "REG_01",
+      "claim": "Tesla Cybertruck was recalled in April 2024 because the accelerator pedal pad could become trapped",
+      "entity": "Tesla",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nhtsa.gov/recalls?nhtsaId=24V276000",
+        "passage": "Tesla is recalling certain 2024 Cybertruck vehicles. When high force is applied to the pad on the accelerator pedal, the pad may dislodge, which may cause the pedal to become trapped in the interior trim.",
+        "claim_context": "NHTSA Recall Bulletin 24V276000",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official NHTSA filing confirms exact defect and recall date.",
+      "evidence_limitations": "NHTSA official bulletin.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "REG_02",
+      "claim": "Tesla Cybertruck accelerator pedal recall in April 2024 was caused by a nuclear reactor explosion",
+      "entity": "Tesla",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nhtsa.gov/recalls?nhtsaId=24V276000",
+        "passage": "An unapproved change introduced lubricant to aid in the component assembly of the pad onto the accelerator pedal, causing reduced retention of the pad to the pedal.",
+        "claim_context": "NHTSA Recall Bulletin 24V276000",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by official cause: assembly soap lubricant, not nuclear explosion.",
+      "evidence_limitations": "Absurd causal attribution directly contradicted by engineering documentation.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "REG_03",
+      "claim": "Apple released the Vision Pro spatial computer in the United States on February 2, 2024",
+      "entity": "Apple",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.apple.com/newsroom/2024/01/apple-vision-pro-available-in-the-us-on-february-2/",
+        "passage": "CUPERTINO, Calif. \u2014 Jan. 8, 2024 \u2014 Apple today announced Apple Vision Pro will be available beginning Friday, February 2, at all U.S. Apple Store locations and the U.S. Apple Store online.",
+        "claim_context": "Apple Official Vision Pro Release Announcement",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official Apple release date confirmed as February 2, 2024 in the US.",
+      "evidence_limitations": "Corporate product launch announcement.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "REG_04",
+      "claim": "Apple released the Vision Pro spatial computer in 1995",
+      "entity": "Apple",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.apple.com/newsroom/2024/01/apple-vision-pro-available-in-the-us-on-february-2/",
+        "passage": "Apple today announced Apple Vision Pro will be available beginning Friday, February 2, 2024.",
+        "claim_context": "Apple Official Vision Pro Release Announcement",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Contradicts product launch date by nearly three decades.",
+      "evidence_limitations": "Severe anachronism.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "incorrect_dates"
+    },
+    {
+      "id": "REG_05",
+      "claim": "Nvidia was founded in 1993 by Jensen Huang, Chris Malachowsky, and Curtis Priem",
+      "entity": "Nvidia",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nvidia.com/en-us/about-nvidia/corporate-timeline/",
+        "passage": "1993: NVIDIA is founded by Jensen Huang, Chris Malachowsky, and Curtis Priem.",
+        "claim_context": "Nvidia Corporate Timeline",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official corporate timeline confirms founders and founding year 1993.",
+      "evidence_limitations": "Official historical corporate record.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "REG_06",
+      "claim": "Nvidia was founded in 2022 by anonymous internet developers",
+      "entity": "Nvidia",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.nvidia.com/en-us/about-nvidia/corporate-timeline/",
+        "passage": "1993: NVIDIA is founded by Jensen Huang, Chris Malachowsky, and Curtis Priem.",
+        "claim_context": "Nvidia Corporate Timeline",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by Nvidia corporate history.",
+      "evidence_limitations": "Fictional founding narrative.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "REG_07",
+      "claim": "Sundar Pichai was appointed CEO of Alphabet in December 2019 while retaining his role as CEO of Google",
+      "entity": "Alphabet",
+      "domain": "personal_watch",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204419000037/goog8-k120319.htm",
+        "passage": "Item 5.02: Larry Page and Sergey Brin have stepped down from their respective roles as CEO and President of Alphabet. Sundar Pichai will become the CEO of Alphabet while remaining the CEO of Google.",
+        "claim_context": "Alphabet SEC Form 8-K Filing Dec 3, 2019",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official SEC 8-K filing confirms appointment in December 2019.",
+      "evidence_limitations": "SEC Form 8-K authoritative executive disclosure.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "REG_08",
+      "claim": "Larry Page is currently the active Chief Executive Officer of Alphabet",
+      "entity": "Alphabet",
+      "domain": "personal_watch",
+      "reference_date": "2026-10-14",
+      "truth_label": "OUTDATED",
+      "expected_verdicts": [
+        "OUTDATED",
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.sec.gov/Archives/edgar/data/1652044/000165204419000037/goog8-k120319.htm",
+        "passage": "Larry Page and Sergey Brin have stepped down from their respective roles as CEO and President of Alphabet. Sundar Pichai will become the CEO of Alphabet.",
+        "claim_context": "Alphabet SEC Form 8-K Filing Dec 3, 2019",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Larry Page stepped down as Alphabet CEO in 2019.",
+      "evidence_limitations": "Superseded executive status.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "outdated_facts"
+    },
+    {
+      "id": "REG_09",
+      "claim": "Microsoft launched the Windows 11 operating system on October 5, 2021",
+      "entity": "Microsoft",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://blogs.windows.com/windowsexperience/2021/08/31/windows-11-available-on-october-5/",
+        "passage": "Today, we are thrilled to announce Windows 11 will start to become available on October 5, 2021. On this day, the free upgrade to Windows 11 will begin rolling out.",
+        "claim_context": "Microsoft Official Windows Blog",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Official Microsoft Windows Blog confirms October 5, 2021 general availability date.",
+      "evidence_limitations": "Operating system release announcement.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "REG_10",
+      "claim": "Windows 11 was released in 2010 prior to Windows 8",
+      "entity": "Microsoft",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://blogs.windows.com/windowsexperience/2021/08/31/windows-11-available-on-october-5/",
+        "passage": "Windows 11 will start to become available on October 5, 2021, succeeding Windows 10.",
+        "claim_context": "Microsoft Official Windows Blog",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Directly contradicted by software release chronology (Windows 11 was released in 2021, not 2010).",
+      "evidence_limitations": "Chronological inversion.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "incorrect_dates"
+    },
+    {
+      "id": "REG_11",
+      "claim": "Tata Motors acquired Jaguar Land Rover from Ford Motor Company in 2008 for approximately $2.3 billion",
+      "entity": "Tata Motors",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.tatamotors.com/press-releases/tata-motors-completes-acquisition-of-jaguar-land-rover/",
+        "passage": "Tata Motors today completed the acquisition of the Jaguar Land Rover businesses from Ford Motor Company for a net consideration of US $2.3 billion on a cash-free, debt-free basis.",
+        "claim_context": "Tata Motors Official Acquisition Closing Release",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Tata Motors completed acquisition of JLR from Ford in June 2008 for $2.3B.",
+      "evidence_limitations": "Corporate acquisition agreement.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "REG_12",
+      "claim": "Ford Motor Company acquired Tata Motors in 2024 for 100 dollars",
+      "entity": "Tata Motors",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.tatamotors.com/investors/",
+        "passage": "Tata Motors is a flagship $44 billion organization of the Tata Group, listed on BSE and NSE. It is not an acquired subsidiary of Ford.",
+        "claim_context": "Tata Motors Corporate Information",
+        "source_tier": "TIER_1_ORIGINAL_DOCUMENT",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Fabricated multi-entity transaction inversion.",
+      "evidence_limitations": "Entity role inversion and absurd valuation.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "REG_13",
+      "claim": "Reuters wire report stating Sony reported 65 million PlayStation 5 console shipments was syndicated across financial news outlets",
+      "entity": "Sony",
+      "domain": "trending",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.reuters.com/technology/sony-ps5-shipments-2024/",
+        "passage": "TOKYO (Reuters) - Sony Group Corp said cumulative shipments of its PlayStation 5 gaming console reached 65.5 million units in the second quarter.",
+        "claim_context": "Reuters Wire Service Report",
+        "source_tier": "TIER_2_FINANCIAL_PRESS",
+        "source_role": "SECONDARY"
+      },
+      "ground_truth_rationale": "Syndicated wire news story originating from Reuters Tokyo reporting Sony's official console shipment disclosures.",
+      "evidence_limitations": "Wire syndication cluster.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "wire_syndication"
+    },
+    {
+      "id": "REG_14",
+      "claim": "Three identical republished Reuters wire articles about Sony console shipments prove three separate independent investigations",
+      "entity": "Sony",
+      "domain": "trending",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED",
+        "MISLEADING"
+      ],
+      "reference": {
+        "primary_url": "https://www.reuters.com/technology/sony-ps5-shipments-2024/",
+        "passage": "Republished articles on Yahoo Finance, MSN, and MarketWatch carry the identical text: '(Reuters) - Sony Group Corp said cumulative shipments...'. They represent syndicated distribution of a single report.",
+        "claim_context": "Wire syndication analysis",
+        "source_tier": "TIER_2_FINANCIAL_PRESS",
+        "source_role": "SECONDARY"
+      },
+      "ground_truth_rationale": "Syndication copies of a single wire story share a single information origin and do not constitute independent corroboration.",
+      "evidence_limitations": "False independence assertion.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "wire_syndication"
+    },
+    {
+      "id": "REG_15",
+      "claim": "A customer complaint regarding delayed sneakers delivery is evidence of a coordinated corporate counterfeit ring",
+      "entity": "Nike",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED",
+        "MISLEADING"
+      ],
+      "reference": {
+        "primary_url": "https://reddit.com/r/sneakers/comments/sample",
+        "passage": "Reddit user post: 'I ordered shoes 10 days ago, delayed shipment, customer support was slow.' Genuine customer grievance regarding transit times.",
+        "claim_context": "Consumer complaint distinguishing review triage",
+        "source_tier": "TIER_3_INVESTOR_COMMUNITY",
+        "source_role": "COMMUNITY"
+      },
+      "ground_truth_rationale": "A standard shipping delay complaint does not substantiate an organized counterfeit distribution crime.",
+      "evidence_limitations": "Grievance vs threat conflation.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "REG_16",
+      "claim": "The domain myaccount.microsoft.com is an official Microsoft authentication and account management portal",
+      "entity": "Microsoft",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "TRUE",
+      "expected_verdicts": [
+        "SUPPORTED"
+      ],
+      "reference": {
+        "primary_url": "https://myaccount.microsoft.com",
+        "passage": "Microsoft Account: Manage your security info, privacy settings, active sessions, and subscriptions.",
+        "claim_context": "Microsoft official utility portal",
+        "source_tier": "TIER_4_UTILITY",
+        "source_role": "UTILITY_PORTAL"
+      },
+      "ground_truth_rationale": "myaccount.microsoft.com is an official Microsoft account portal, correctly classified as an authentication utility.",
+      "evidence_limitations": "Utility service endpoint.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_true"
+    },
+    {
+      "id": "REG_17",
+      "claim": "The login page at myaccount.microsoft.com proves Microsoft was fined 50 billion dollars by the Federal Trade Commission",
+      "entity": "Microsoft",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED",
+        "INSUFFICIENT_EVIDENCE"
+      ],
+      "reference": {
+        "primary_url": "https://myaccount.microsoft.com/login",
+        "passage": "Sign in to your Microsoft account. Enter your email, phone, or Skype. Terms of Use, Privacy & Cookies.",
+        "claim_context": "Microsoft login page content",
+        "source_tier": "TIER_4_UTILITY",
+        "source_role": "UTILITY_PORTAL"
+      },
+      "ground_truth_rationale": "A login utility screen contains no regulatory enforcement or penalty information.",
+      "evidence_limitations": "Utility portal mislabeled as regulatory sanction.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "REG_18",
+      "claim": "A website at appleid-security-verification.com/login asking for SSN and password is an authentic Apple Inc corporate filing",
+      "entity": "Apple",
+      "domain": "brandshield",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://appleid-security-verification.com/login",
+        "passage": "Urgent Apple ID verification required. Enter your Apple password and SSN immediately to avoid lockout.",
+        "claim_context": "Adversarial lookalike phishing page",
+        "source_tier": "TIER_4_UNVERIFIED",
+        "source_role": "ADVERSARIAL"
+      },
+      "ground_truth_rationale": "It is a credential phishing page on an unauthorized lookalike domain, not a corporate filing.",
+      "evidence_limitations": "Phishing spoofing domain.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "brand_impersonation"
+    },
+    {
+      "id": "REG_19",
+      "claim": "An audio clip generated by synthetic voice cloning software without camera recording constitutes authenticated video evidence",
+      "entity": "Synthetic Media",
+      "domain": "personal_watch",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.cisa.gov/resources-tools/resources/understanding-and-mitigating-synthetic-media",
+        "passage": "CISA Advisory: Audio-only synthetic voice recordings do not establish verified visual presence or authentic video documentation.",
+        "claim_context": "CISA Guidance on Synthetic Media Verification",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Audio voice clones lack video asset bytes and cannot establish visual authenticity.",
+      "evidence_limitations": "Media format forensic distinction.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    },
+    {
+      "id": "REG_20",
+      "claim": "A future artificial intelligence model has traveled backward in time from year 3000 to alter historical stock prices in 1980",
+      "entity": "Time Travel AI",
+      "domain": "scout",
+      "reference_date": "2026-10-14",
+      "truth_label": "FALSE",
+      "expected_verdicts": [
+        "REFUTED"
+      ],
+      "reference": {
+        "primary_url": "https://www.sec.gov/edgar",
+        "passage": "Official historical stock prices and market records are maintained in permanent ledgers with established transaction settlement dates.",
+        "claim_context": "Audited market records",
+        "source_tier": "TIER_1_OFFICIAL_FILING",
+        "source_role": "PRIMARY"
+      },
+      "ground_truth_rationale": "Physically impossible counterfactual claim with zero evidentiary support in market ledgers.",
+      "evidence_limitations": "Physical impossibility.",
+      "label_provenance": "source-adjudicated",
+      "human_reviewed": false,
+      "category": "clearly_false"
+    }
+  ]
+}

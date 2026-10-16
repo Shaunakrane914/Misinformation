@@ -28,6 +28,7 @@ parser.add_argument('--output-dir', type=Path, required=True)
 parser.add_argument('--env-file', type=Path, required=True, help='Server-side local configuration, never copied to output')
 parser.add_argument('--chart-js', type=Path, required=True, help='Actual pinned Chart.js 4.4.1 asset')
 parser.add_argument('--limit', type=int, default=12)
+parser.add_argument('--replay-dir', type=Path, help='Replay saved SSE events through page buttons; no acquisition, explicitly labeled')
 args = parser.parse_args()
 OUT = args.output_dir.resolve()
 OUT.mkdir(parents=True, exist_ok=False)
@@ -126,6 +127,9 @@ summary.update(head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,
                application_sha256=initial_application_sha256, llm_timeout_seconds=settings.llm_request_timeout,
                llm_max_retries=settings.llm_max_retries, chart_sha256=hashlib.sha256(chart).hexdigest(),
                independent_entailment_accuracy=None, retrieval_recall=None)
+summary['mode'] = 'EXACT_SAVED_SSE_REPLAY' if args.replay_dir else 'LIVE_BROWSER_BACKEND'
+if args.replay_dir:
+    summary['scope'] = 'Exact saved SSE replay through all agent page buttons; no fresh provider or research claims. Local health remains real.'
 print(json.dumps({'api_base':api_base, 'configured_gemini_credentials':summary['configured_gemini_credentials']}), flush=True)
 try:
     with sync_playwright() as p:
@@ -158,7 +162,11 @@ try:
 
             def route(request):
                 url = request.request.url
-                if urlsplit(url).netloc in origins:
+                if args.replay_dir and request.request.method == 'POST' and '/stream' in url:
+                    saved = json.loads((args.replay_dir / (case_id + '-events.json')).read_text(encoding='utf-8'))
+                    body = ''.join('event: ' + event['event'] + '\ndata: ' + json.dumps(event['data']) + '\n\n' for event in saved)
+                    request.fulfill(status=200,content_type='text/event-stream',body=body)
+                elif urlsplit(url).netloc in origins:
                     request.continue_()
                 elif url == 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js':
                     request.fulfill(status=200, content_type='application/javascript', body=chart)

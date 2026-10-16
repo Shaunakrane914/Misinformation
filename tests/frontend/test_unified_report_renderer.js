@@ -2,6 +2,8 @@
 
 const assert = require('node:assert/strict');
 const path = require('node:path');
+const theme = require('node:fs').readFileSync(path.resolve(__dirname, '../../frontend/aegis-theme.css'), 'utf8');
+assert(theme.includes('minmax(min(100%, 320px), 1fr)'), 'Claim grid must shrink inside narrow cards; rendered clipping is separately tested');
 const { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest } = require(
   path.resolve(__dirname, '../../frontend/unified-report-renderer.js')
 );

@@ -2663,11 +2663,12 @@ select:focus-visible,
 /* ── Claim Decomposition ─────────────────────────────────────────────────── */
 .ur-decomp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
   gap: 12px;
   padding: 0 1.4rem 1.4rem;
 }
 .ur-decomp-card {
+  min-width: 0;
   background: var(--surface);
   border: 1px solid var(--border-subtle);
   border-radius: 10px;
@@ -2713,6 +2714,7 @@ select:focus-visible,
   border-radius: 6px;
 }
 .ur-decomp-citations {
+  min-width: 0;
   font-size: 0.74rem;
   color: var(--text-dim);
   font-family: var(--font-mono);
@@ -2720,6 +2722,13 @@ select:focus-visible,
   flex-wrap: wrap;
   gap: 6px;
   align-items: center;
+}
+.ur-decomp-citations > div { min-width: 0; max-width: 100%; }
+.ur-decomp-citations blockquote {
+  margin: 0.4rem 0;
+  padding-left: 0.6rem;
+  border-left: 2px solid var(--accent);
+  overflow-wrap: anywhere;
 }
 .ur-decomp-cite {
   color: var(--accent);

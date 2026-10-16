@@ -91,7 +91,11 @@ def main():
                     metrics = page.evaluate("""() => ({width:innerWidth,document_width:document.documentElement.scrollWidth,
                         injected:!!window.fixtureInjected,unsafe_links:document.querySelectorAll('a[href^="javascript:"]').length,
                         injected_images:document.querySelectorAll('img[onerror]').length,
-                        cards:document.querySelectorAll('#ur-evidence .ur-ev-card').length})""")
+                        cards:document.querySelectorAll('#ur-evidence .ur-ev-card').length,
+                        clipped_claim_cards:[...document.querySelectorAll('.ur-decomp-card')].filter(card=>{
+                          const boundary=card.closest('section')||card.parentElement;
+                          return card.getBoundingClientRect().right > boundary.getBoundingClientRect().right+1;
+                        }).length})""")
                     toggle = page.locator(".ur-heading-button").first
                     toggle.focus()
                     before = toggle.get_attribute("aria-expanded")
@@ -110,6 +114,7 @@ def main():
     (args.output_dir / "summary.json").write_text(json.dumps(result, indent=2), encoding="utf-8")
     failures = [row for row in rows if row["page_errors"] or row["document_width"] > row["width"] + 1
                 or row["injected"] or row["unsafe_links"] or row["injected_images"]
+                or row["clipped_claim_cards"]
                 or not row["keyboard_disclosure"] or not row["report_visible"]]
     print(json.dumps({"states": len(rows), "failed_states": len(failures), "scope": result["scope"]}))
     return 1 if failures else 0

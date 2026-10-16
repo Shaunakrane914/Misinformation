@@ -1,0 +1,599 @@
+{
+  "head": "30fe3d1c9b6840d607e9380631ce4423fb884f12",
+  "dirty_source": false,
+  "application_sha256": "86a78c8d3362045b9b26ca671d0ce85c3893220b3af6858cc752e3bccbb23dc6",
+  "application_unchanged_during_run": true,
+  "mock_llm": false,
+  "llm_timeout_seconds": 5,
+  "llm_max_retries": 1,
+  "cases": [
+    {
+      "id": "01-scout",
+      "input": "TATAMOTORS.NS",
+      "seconds": 15.11,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 21,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 2,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 21,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "01-scout-390-full.png",
+            "01-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 21,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "01-scout-1440-full.png",
+            "01-scout-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "02-scout",
+      "input": "INFY.NS",
+      "seconds": 28.95,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 7,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 2,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 7,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "02-scout-390-full.png",
+            "02-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 7,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "02-scout-1440-full.png",
+            "02-scout-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "03-scout",
+      "input": "AAPL",
+      "seconds": 26.25,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 9,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 2,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 9,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "03-scout-390-full.png",
+            "03-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 9,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "03-scout-1440-full.png",
+            "03-scout-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "04-trending",
+      "input": "OpenAI",
+      "seconds": 13.93,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 2,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 2,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 2,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "04-trending-390-full.png",
+            "04-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 2,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "04-trending-1440-full.png",
+            "04-trending-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "05-trending",
+      "input": "NVIDIA",
+      "seconds": 12.61,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 6,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 2,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 6,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "05-trending-390-full.png",
+            "05-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 6,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "05-trending-1440-full.png",
+            "05-trending-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "06-trending",
+      "input": "electric vehicles",
+      "seconds": 4.89,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 0,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 2,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "06-trending-390-full.png",
+            "06-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "06-trending-1440-full.png",
+            "06-trending-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "07-brandshield",
+      "input": "Nike",
+      "seconds": 18.83,
+      "records": 2,
+      "kb": 8.202,
+      "words": 1398,
+      "findings": 2,
+      "discovery": 17,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 1,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 17,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "07-brandshield-390-full.png",
+            "07-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 17,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "07-brandshield-1440-full.png",
+            "07-brandshield-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "08-brandshield",
+      "input": "Apple",
+      "seconds": 2.42,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 0,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 1,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "08-brandshield-390-full.png",
+            "08-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "08-brandshield-1440-full.png",
+            "08-brandshield-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "09-brandshield",
+      "input": "Tata Motors",
+      "seconds": 1.87,
+      "records": 0,
+      "kb": 0,
+      "words": 0,
+      "findings": 0,
+      "discovery": 0,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 1,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "09-brandshield-390-full.png",
+            "09-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "09-brandshield-1440-full.png",
+            "09-brandshield-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "10-personal_watch",
+      "input": "Sam Altman",
+      "seconds": 10.87,
+      "records": 1,
+      "kb": 0.101,
+      "words": 18,
+      "findings": 0,
+      "discovery": 0,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 1,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "10-personal_watch-390-full.png",
+            "10-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "10-personal_watch-1440-full.png",
+            "10-personal_watch-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "11-personal_watch",
+      "input": "Tim Cook",
+      "seconds": 11.68,
+      "records": 1,
+      "kb": 0.059,
+      "words": 8,
+      "findings": 0,
+      "discovery": 0,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 1,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "11-personal_watch-390-full.png",
+            "11-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "11-personal_watch-1440-full.png",
+            "11-personal_watch-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "12-personal_watch",
+      "input": "Satya Nadella",
+      "seconds": 16.02,
+      "records": 1,
+      "kb": 0.073,
+      "words": 10,
+      "findings": 0,
+      "discovery": 0,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": 0,
+      "page_errors": 0,
+      "console_error_count": 1,
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "12-personal_watch-390-full.png",
+            "12-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "12-personal_watch-1440-full.png",
+            "12-personal_watch-1440-report.png"
+          ]
+        }
+      ]
+    }
+  ]
+}

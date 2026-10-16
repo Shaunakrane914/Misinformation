@@ -2,7 +2,11 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest diagnostic: Four-agent output audit — 2026-10-16
+## Latest implementation and verification: Phase 9 remediation — 2026-10-16
+
+- [Continuation handoff](2026-10-16_PHASE9_REMEDIATION.md), [verification report](../testing/PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md) and [durable evidence](../testing/evidence/2026-10-16_phase9_remediation/README.md). Source-body/citation preservation, scoped grounding, conservative specialist output, truthful evaluation and rendered-card fixes. Local 1,285 full / 1,077 fast cases; backend hosted CI five jobs passed. **Phase 9 research acceptance FAIL / overall PARTIAL**: resolution regressed and eight of twelve final entity inputs acquired no records. No merge/deployment. Read the handoff before resuming.
+
+## Previous diagnostic: Four-agent output audit — 2026-10-16
 
 - [Audit handoff](2026-10-16_FOUR_AGENT_OUTPUT_AUDIT.md), [full report](../testing/FOUR_AGENT_OUTPUT_AUDIT_2026-10-16.md) and [screenshots/measurements](../testing/evidence/2026-10-16_agent_output_audit/README.md): 12 direct local API runs plus 12 real browser/SSE investigations, three inputs per agent. Research quality FAIL; frontend PARTIAL. Documents shallow acquisition, false threat signals, citation mismatches, hidden zero-source findings, counter disagreement and the present-but-unaccepted Gemini configuration. No application fixes or deployment in this audit.
 

@@ -2,6 +2,8 @@
 
 The authoritative executable configuration is [`.github/workflows/ci.yml`](../../.github/workflows/ci.yml), not a proposed workflow copied into documentation. It triggers for pushes and pull requests on all branches, plus manual dispatch. This document describes configured gates; it is not evidence that a remote run has passed.
 
+Latest dated backend remediation evidence: exact `8c8b6c5` passed all five jobs in [run 38928988850](https://github.com/Shaunakrane914/Misinformation/actions/runs/38928988850). See the [Phase 9 verification report](PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md) for later frontend/publication verification, the 1,285/1,077 local counts and the separate **FAIL** research-quality gate. Live providers, screenshots and source-adjudicated accuracy replays remain outside hosted CI acceptance; no deployment is authorized.
+
 | Active job | Interpreter | Actual gate |
 |---|---|---|
 | `code-quality` | Python 3.12 / Node 20 | Fatal lint scoped to `backend tests scripts`; every `tests/frontend/test_*.js`; pinned frozen benchmark hashes |

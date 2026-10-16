@@ -1,0 +1,1295 @@
+{
+  "before": {
+    "head": "ff6d246bfe1e9cfd0f21d8e32135582e631636f1",
+    "observed_at": "2026-10-16T15:42:17.199416+00:00",
+    "scope": "Live ResearchEngine through immutable dossier and shared report, not HTTP/frontend acceptance",
+    "human_reviewed": false,
+    "source_passages_injected": false,
+    "cases": [
+      {
+        "id": "corporate_announcement",
+        "claim": "Microsoft completed its acquisition of LinkedIn in December 2016.",
+        "expected": "SUPPORTED",
+        "seconds": 15.294,
+        "records": 2,
+        "words": 1145,
+        "kb": 7.391,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 8,
+          "candidates_found": 20,
+          "candidates_accepted": 15,
+          "candidates_rejected": 5,
+          "unique_candidates": 15,
+          "deep_reads_count": 2,
+          "primary_sources_count": 2,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "false_financial",
+        "claim": "Apple quarterly net income was $900 billion in Q1 fiscal 2024.",
+        "expected": "REFUTED",
+        "seconds": 13.46,
+        "records": 3,
+        "words": 1834,
+        "kb": 11.28,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 10,
+          "queries_submitted": 10,
+          "queries_started": 10,
+          "queries_succeeded": 9,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 10,
+          "candidates_found": 20,
+          "candidates_accepted": 11,
+          "candidates_rejected": 9,
+          "unique_candidates": 11,
+          "deep_reads_count": 3,
+          "primary_sources_count": 3,
+          "independent_groups_count": 4,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "product_release",
+        "claim": "Apple announced iPhone 15 in September 2023.",
+        "expected": "SUPPORTED",
+        "seconds": 10.171,
+        "records": 3,
+        "words": 1834,
+        "kb": 11.28,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 8,
+          "candidates_found": 20,
+          "candidates_accepted": 14,
+          "candidates_rejected": 6,
+          "unique_candidates": 14,
+          "deep_reads_count": 3,
+          "primary_sources_count": 3,
+          "independent_groups_count": 3,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "outdated_news",
+        "claim": "Steve Ballmer is the current chief executive officer of Microsoft.",
+        "expected": "OUTDATED",
+        "seconds": 13.888,
+        "records": 2,
+        "words": 1145,
+        "kb": 7.391,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 7,
+          "queries_started": 7,
+          "queries_succeeded": 7,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 1,
+          "queries_executed": 7,
+          "candidates_found": 20,
+          "candidates_accepted": 14,
+          "candidates_rejected": 7,
+          "unique_candidates": 14,
+          "deep_reads_count": 2,
+          "primary_sources_count": 3,
+          "independent_groups_count": 3,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "scientific_title_true",
+        "claim": "The title of arXiv paper 1706.03762 is Attention Is All You Need.",
+        "expected": "SUPPORTED",
+        "seconds": 9.865,
+        "records": 3,
+        "words": 1828,
+        "kb": 12.23,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 3,
+          "queries_submitted": 3,
+          "queries_started": 3,
+          "queries_succeeded": 3,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 3,
+          "candidates_found": 5,
+          "candidates_accepted": 4,
+          "candidates_rejected": 1,
+          "unique_candidates": 4,
+          "deep_reads_count": 3,
+          "primary_sources_count": 0,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "scientific_title_false",
+        "claim": "The title of arXiv paper 1706.03762 is Recurrence Is All You Need.",
+        "expected": "REFUTED",
+        "seconds": 11.229,
+        "records": 3,
+        "words": 1828,
+        "kb": 12.23,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 6,
+          "candidates_found": 5,
+          "candidates_accepted": 4,
+          "candidates_rejected": 2,
+          "unique_candidates": 4,
+          "deep_reads_count": 3,
+          "primary_sources_count": 0,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cybersecurity",
+        "claim": "NIST rated CVE-2021-44228 a CVSS score of 2.1.",
+        "expected": "REFUTED",
+        "seconds": 10.019,
+        "records": 0,
+        "words": 0,
+        "kb": 0,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 3,
+          "queries_submitted": 3,
+          "queries_started": 3,
+          "queries_succeeded": 0,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 3,
+          "candidates_found": 0,
+          "candidates_accepted": 0,
+          "candidates_rejected": 0,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "impersonation_allegation",
+        "claim": "Apple's iPhone 15 announcement proves an impersonation ring was identified.",
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "seconds": 10.082,
+        "records": 3,
+        "words": 1834,
+        "kb": 11.28,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 5,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 5,
+          "candidates_found": 7,
+          "candidates_accepted": 5,
+          "candidates_rejected": 2,
+          "unique_candidates": 5,
+          "deep_reads_count": 3,
+          "primary_sources_count": 3,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "fabricated_quote",
+        "claim": "Microsoft said \"the Earth is flat\" in its LinkedIn acquisition announcement.",
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "seconds": 8.988,
+        "records": 2,
+        "words": 1145,
+        "kb": 7.391,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 5,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 5,
+          "candidates_found": 5,
+          "candidates_accepted": 4,
+          "candidates_rejected": 3,
+          "unique_candidates": 4,
+          "deep_reads_count": 2,
+          "primary_sources_count": 4,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "mixed_claim",
+        "claim": "Apple announced iPhone 15 in September 2023 and it has a physical keyboard.",
+        "expected": "UNVERIFIED",
+        "seconds": 3.475,
+        "records": 3,
+        "words": 1834,
+        "kb": 11.28,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 5,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 5,
+          "candidates_found": 5,
+          "candidates_accepted": 3,
+          "candidates_rejected": 2,
+          "unique_candidates": 3,
+          "deep_reads_count": 3,
+          "primary_sources_count": 3,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "Marginal novelty depleted (N_3=0.05 < 0.08)",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "source_unavailable",
+        "claim": "Example announced an acquisition in 2026.",
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "seconds": 3.501,
+        "records": 0,
+        "words": 0,
+        "kb": 0,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 4,
+          "queries_submitted": 4,
+          "queries_started": 4,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 4,
+          "candidates_found": 15,
+          "candidates_accepted": 0,
+          "candidates_rejected": 18,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 0,
+          "saturation_score": 0,
+          "halt_reason": "Saturation threshold reached (S_1=1.00 >= 0.88)",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": null,
+            "verdict": null,
+            "rationale": null,
+            "is_heuristic": null,
+            "citations": [
+              {
+                "evidence_id": null,
+                "url": null,
+                "relation": null,
+                "excerpt_present": false
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "after": {
+    "head": "e0df73c3297cda1fc13bc27d92e8b16db294840c",
+    "observed_at": "2026-10-16T15:46:19.327747+00:00",
+    "scope": "Live ResearchEngine through immutable dossier and shared report, not HTTP/frontend acceptance",
+    "human_reviewed": false,
+    "source_passages_injected": false,
+    "cases": [
+      {
+        "id": "corporate_announcement",
+        "claim": "Microsoft completed its acquisition of LinkedIn in December 2016.",
+        "expected": "SUPPORTED",
+        "seconds": 11.988,
+        "records": 2,
+        "words": 1145,
+        "kb": 7.391,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 8,
+          "candidates_found": 20,
+          "candidates_accepted": 15,
+          "candidates_rejected": 5,
+          "unique_candidates": 15,
+          "deep_reads_count": 2,
+          "acquired_record_count": 2,
+          "reused_acquired_count": 0,
+          "primary_sources_count": 1,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Microsoft completed its acquisition of LinkedIn in December 2016.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      },
+      {
+        "id": "false_financial",
+        "claim": "Apple quarterly net income was $900 billion in Q1 fiscal 2024.",
+        "expected": "REFUTED",
+        "seconds": 11.684,
+        "records": 2,
+        "words": 1090,
+        "kb": 7.239,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 10,
+          "queries_submitted": 10,
+          "queries_started": 10,
+          "queries_succeeded": 9,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 10,
+          "candidates_found": 21,
+          "candidates_accepted": 11,
+          "candidates_rejected": 10,
+          "unique_candidates": 11,
+          "deep_reads_count": 1,
+          "acquired_record_count": 2,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 1,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Apple quarterly net income was $900 billion in Q1 fiscal 2024.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      },
+      {
+        "id": "product_release",
+        "claim": "Apple announced iPhone 15 in September 2023.",
+        "expected": "SUPPORTED",
+        "seconds": 12.916,
+        "records": 3,
+        "words": 1793,
+        "kb": 11.282,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 7,
+          "queries_failed": 0,
+          "queries_timed_out": 1,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 8,
+          "candidates_found": 21,
+          "candidates_accepted": 16,
+          "candidates_rejected": 5,
+          "unique_candidates": 16,
+          "deep_reads_count": 2,
+          "acquired_record_count": 3,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 1,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Apple announced iPhone 15 in September 2023.",
+            "verdict": "SUPPORTED",
+            "rationale": "An inspectable official regulatory filing or verified public research registry directly establishes the proposition.",
+            "is_heuristic": true,
+            "citations": [
+              {
+                "evidence_id": "ev_source_33350b5917d3",
+                "url": "https://www.apple.com/newsroom/2023/09/apple-debuts-iphone-15-and-iphone-15-plus/",
+                "relation": "SUPPORT",
+                "excerpt_present": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "outdated_news",
+        "claim": "Steve Ballmer is the current chief executive officer of Microsoft.",
+        "expected": "OUTDATED",
+        "seconds": 11.48,
+        "records": 4,
+        "words": 2487,
+        "kb": 16.149,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 4,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 8,
+          "candidates_found": 16,
+          "candidates_accepted": 10,
+          "candidates_rejected": 6,
+          "unique_candidates": 10,
+          "deep_reads_count": 3,
+          "acquired_record_count": 4,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 2,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Steve Ballmer is the current chief executive officer of Microsoft.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      },
+      {
+        "id": "scientific_title_true",
+        "claim": "The title of arXiv paper 1706.03762 is Attention Is All You Need.",
+        "expected": "SUPPORTED",
+        "seconds": 12.407,
+        "records": 4,
+        "words": 2468,
+        "kb": 16.236,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 9,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 8,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 1,
+          "queries_executed": 8,
+          "candidates_found": 21,
+          "candidates_accepted": 5,
+          "candidates_rejected": 17,
+          "unique_candidates": 5,
+          "deep_reads_count": 3,
+          "acquired_record_count": 4,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "The title of arXiv paper 1706.03762 is Attention Is All You Need.",
+            "verdict": "REFUTED",
+            "rationale": "Independent credible reporting contradicts the asserted claim or metrics.",
+            "is_heuristic": true,
+            "citations": [
+              {
+                "evidence_id": "ev_source_a7468c685165",
+                "url": "https://arxiv.org/abs/1706.03762",
+                "relation": "CONTRADICT",
+                "excerpt_present": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "scientific_title_false",
+        "claim": "The title of arXiv paper 1706.03762 is Recurrence Is All You Need.",
+        "expected": "REFUTED",
+        "seconds": 6.713,
+        "records": 4,
+        "words": 2468,
+        "kb": 16.236,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 6,
+          "queries_submitted": 6,
+          "queries_started": 6,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 6,
+          "candidates_found": 11,
+          "candidates_accepted": 5,
+          "candidates_rejected": 7,
+          "unique_candidates": 5,
+          "deep_reads_count": 3,
+          "acquired_record_count": 4,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "Marginal novelty depleted (N_3=0.05 < 0.08)",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "The title of arXiv paper 1706.03762 is Recurrence Is All You Need.",
+            "verdict": "REFUTED",
+            "rationale": "Independent credible reporting contradicts the asserted claim or metrics.",
+            "is_heuristic": true,
+            "citations": [
+              {
+                "evidence_id": "ev_source_a7468c685165",
+                "url": "https://arxiv.org/abs/1706.03762",
+                "relation": "CONTRADICT",
+                "excerpt_present": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "cybersecurity",
+        "claim": "NIST rated CVE-2021-44228 a CVSS score of 2.1.",
+        "expected": "REFUTED",
+        "seconds": 6.94,
+        "records": 0,
+        "words": 0,
+        "kb": 0,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 3,
+          "queries_submitted": 3,
+          "queries_started": 3,
+          "queries_succeeded": 0,
+          "queries_failed": 0,
+          "queries_timed_out": 3,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 3,
+          "candidates_found": 0,
+          "candidates_accepted": 0,
+          "candidates_rejected": 0,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "acquired_record_count": 0,
+          "reused_acquired_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "NIST rated CVE-2021-44228 a CVSS score of 2.1.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      },
+      {
+        "id": "impersonation_allegation",
+        "claim": "Apple's iPhone 15 announcement proves an impersonation ring was identified.",
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "seconds": 8.299,
+        "records": 4,
+        "words": 2463,
+        "kb": 15.311,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 5,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 3,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 5,
+          "candidates_found": 6,
+          "candidates_accepted": 4,
+          "candidates_rejected": 2,
+          "unique_candidates": 4,
+          "deep_reads_count": 3,
+          "acquired_record_count": 4,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 1,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Apple's iPhone 15 announcement proves an impersonation ring was identified.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      },
+      {
+        "id": "fabricated_quote",
+        "claim": "Microsoft said \"the Earth is flat\" in its LinkedIn acquisition announcement.",
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "seconds": 8.196,
+        "records": 2,
+        "words": 1145,
+        "kb": 7.391,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 5,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 5,
+          "candidates_found": 5,
+          "candidates_accepted": 4,
+          "candidates_rejected": 3,
+          "unique_candidates": 4,
+          "deep_reads_count": 2,
+          "acquired_record_count": 2,
+          "reused_acquired_count": 0,
+          "primary_sources_count": 1,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "BUDGET_CEILING",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Microsoft said \"the Earth is flat\" in its LinkedIn acquisition announcement.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      },
+      {
+        "id": "mixed_claim",
+        "claim": "Apple announced iPhone 15 in September 2023 and it has a physical keyboard.",
+        "expected": "UNVERIFIED",
+        "seconds": 6.77,
+        "records": 4,
+        "words": 2463,
+        "kb": 15.311,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 5,
+          "queries_submitted": 5,
+          "queries_started": 5,
+          "queries_succeeded": 5,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 5,
+          "candidates_found": 6,
+          "candidates_accepted": 4,
+          "candidates_rejected": 2,
+          "unique_candidates": 4,
+          "deep_reads_count": 3,
+          "acquired_record_count": 4,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 1,
+          "independent_groups_count": 1,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "Marginal novelty depleted (N_3=0.05 < 0.08)",
+          "adaptive_rounds": 1
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Apple announced iPhone 15 in September 2023 and it has a physical keyboard.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      },
+      {
+        "id": "source_unavailable",
+        "claim": "Example announced an acquisition in 2026.",
+        "expected": "INSUFFICIENT_EVIDENCE",
+        "seconds": 3.807,
+        "records": 0,
+        "words": 0,
+        "kb": 0,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 4,
+          "queries_submitted": 4,
+          "queries_started": 4,
+          "queries_succeeded": 4,
+          "queries_failed": 0,
+          "queries_timed_out": 0,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 4,
+          "candidates_found": 15,
+          "candidates_accepted": 0,
+          "candidates_rejected": 18,
+          "unique_candidates": 0,
+          "deep_reads_count": 0,
+          "acquired_record_count": 0,
+          "reused_acquired_count": 0,
+          "primary_sources_count": 0,
+          "independent_groups_count": 0,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "Saturation threshold reached (S_1=1.00 >= 0.88)",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "Example announced an acquisition in 2026.",
+            "verdict": "INSUFFICIENT_EVIDENCE",
+            "rationale": "No inspectable passage establishes the full proposition, polarity, period and scope.",
+            "is_heuristic": true,
+            "citations": []
+          }
+        ]
+      }
+    ]
+  },
+  "title_recheck": {
+    "head": "17a7d87dee49a17217261793b32741259aa66632",
+    "observed_at": "2026-10-16T15:50:51.048590+00:00",
+    "scope": "Live ResearchEngine through immutable dossier and shared report, not HTTP/frontend acceptance",
+    "human_reviewed": false,
+    "source_passages_injected": false,
+    "cases": [
+      {
+        "id": "scientific_title_true",
+        "claim": "The title of arXiv paper 1706.03762 is Attention Is All You Need.",
+        "expected": "SUPPORTED",
+        "seconds": 9.669,
+        "records": 4,
+        "words": 2468,
+        "kb": 16.236,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 8,
+          "candidates_found": 21,
+          "candidates_accepted": 5,
+          "candidates_rejected": 16,
+          "unique_candidates": 5,
+          "deep_reads_count": 3,
+          "acquired_record_count": 4,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 2,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "The title of arXiv paper 1706.03762 is Attention Is All You Need.",
+            "verdict": "SUPPORTED",
+            "rationale": "An inspectable official regulatory filing or verified public research registry directly establishes the proposition.",
+            "is_heuristic": true,
+            "citations": [
+              {
+                "evidence_id": "ev_source_a7468c685165",
+                "url": "https://arxiv.org/abs/1706.03762",
+                "relation": "SUPPORT",
+                "excerpt_present": true
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "scientific_title_false",
+        "claim": "The title of arXiv paper 1706.03762 is Recurrence Is All You Need.",
+        "expected": "REFUTED",
+        "seconds": 12.19,
+        "records": 3,
+        "words": 1857,
+        "kb": 12.235,
+        "dossier_integrity": {
+          "status": "VERIFIED",
+          "valid": true,
+          "reason": "Payload and captured candidate checksums match"
+        },
+        "funnel": {
+          "queries_planned": 8,
+          "queries_submitted": 8,
+          "queries_started": 8,
+          "queries_succeeded": 6,
+          "queries_failed": 0,
+          "queries_timed_out": 2,
+          "queries_auth_required": 0,
+          "queries_skipped": 0,
+          "queries_executed": 8,
+          "candidates_found": 21,
+          "candidates_accepted": 10,
+          "candidates_rejected": 11,
+          "unique_candidates": 10,
+          "deep_reads_count": 2,
+          "acquired_record_count": 3,
+          "reused_acquired_count": 1,
+          "primary_sources_count": 0,
+          "independent_groups_count": 3,
+          "contradictions_count": 0,
+          "findings_count": 1,
+          "saturation_score": 0,
+          "halt_reason": "discovery_timeout_reached",
+          "adaptive_rounds": 0
+        },
+        "error_type": null,
+        "assessments": [
+          {
+            "claim": "The title of arXiv paper 1706.03762 is Recurrence Is All You Need.",
+            "verdict": "REFUTED",
+            "rationale": "Independent credible reporting contradicts the asserted claim or metrics.",
+            "is_heuristic": true,
+            "citations": [
+              {
+                "evidence_id": "ev_source_a7468c685165",
+                "url": "https://arxiv.org/abs/1706.03762",
+                "relation": "CONTRADICT",
+                "excerpt_present": true
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,10 @@
-# Current project state — 2026-10-14
+# Current project state — 2026-10-16
 
-## Latest verified publication — 2026-10-16
+## Latest development verification — 2026-10-16
+
+[Phase 9 remediation](testing/PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md) fixes demonstrated evidence/citation, scoped grounding, evaluation and rendered-card defects on `feat/phase9-intelligence-remediation-20261016`. Local 1,285 full / 1,077 fast cases pass; backend hosted CI passed all five jobs. **This is not deployed main or completed Phase 9**: comparable fixture resolution regressed, eight of twelve final entity scans acquired no records, and live Gemini generation remains unverified. See the [handoff](handoffs/2026-10-16_PHASE9_REMEDIATION.md) and [evidence](testing/evidence/2026-10-16_phase9_remediation/README.md). No merge/deployment authorized.
+
+## Earlier verified publication — 2026-10-16
 
 All-agent progress code `8c8ecf2` passed all five hosted CI jobs (1,222 full-suite tests; 1,014 fast cases on Python 3.11–3.13) and was verified on the existing Render/Cloudflare deployment. All four pages have startup-aware waiting, live server step counts and diagnostic IDs. A real deployed Infosys Scout request completed in 110.61s including connection/startup waiting, but its report was sparse: completion is not research-quality acceptance. See the [deployment closeout](handoffs/2026-10-16_ALL_AGENT_PROGRESS_DEPLOYMENT_CLOSEOUT.md). The final documentation-only successor skips Render deployment; its application/frontend source is identical to that verified release.
 

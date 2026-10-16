@@ -10,6 +10,15 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ## 1. Overview & Script Taxonomy
 
+### Phase 9 remediation additions — 2026-10-16
+
+- [Reference replay](../../scripts/evaluation/run_phase9_benchmark.py): requires `--output-dir`; runtime source qualification by default, explicit legacy oracle flag, never overwrites existing evidence. Not live accuracy.
+- [Claim probes](../../scripts/audits/run_phase9_claim_probes.py): explicit `--allow-live --env-file --output-dir`, temporary persistence, real research/dossier/report path; optional named rechecks and baseline worktree. No HTTP/browser acceptance claim.
+- [Four-agent browser audit](../../scripts/audits/run_phase9_four_agent_browser_audit.py): actual page buttons/local SSE for three inputs each, screenshots and count invariants. `--replay-dir` explicitly switches to saved-event replay without reacquisition. Requires an actual pinned Chart.js asset and existing Playwright/Chromium.
+- [Rendered controls](../../scripts/audits/run_phase9_render_controls.py): separately labeled synthetic verdict/hostile/large/zero-source controls plus exact saved backend reports. Measures internal card clipping and keyboard disclosures; not screen-reader/contrast certification.
+
+Use fresh output paths. See the [dated handoff](../handoffs/2026-10-16_PHASE9_REMEDIATION.md) for command templates, actual failures, counts and source-access limits.
+
 ### Independent Phase 8 additions — 2026-10-14
 
 - [Real API investigation audit](../../scripts/audits/run_realworld_investigation_audit.py): `--allow-live --profile apple --output-root <new-directory>`; one call per actual agent, temporary persistence, sanitized payloads. Execution success is not research PASS.

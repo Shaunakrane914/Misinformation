@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-16",
+  "scope": "Actual observed commands; final local backend 8c8b6c5, later CSS/CLI checked by Node/rendered replay/fatal lint. Not live accuracy acceptance.",
+  "baseline": {
+    "command": "python -m pytest tests/ -q",
+    "exit_code": 0,
+    "passed": 1243,
+    "seconds": 97.53
+  },
+  "final": [
+    {
+      "command": "python -m pytest tests/ -q",
+      "exit_code": 0,
+      "passed": 1285,
+      "seconds": 96.33
+    },
+    {
+      "command": "python -m pytest tests/unit tests/chaos tests/security -q",
+      "exit_code": 0,
+      "passed": 1077,
+      "seconds": 66.43
+    },
+    {
+      "command": "python -m flake8 backend tests scripts --count --select=E9,F63,F7,F82 --show-source --statistics",
+      "exit_code": 0,
+      "fatal_count": 0
+    },
+    {
+      "command": "All tests/frontend/test_*.js, executed with node",
+      "exit_code": 0,
+      "scripts": 8
+    },
+    {
+      "command": "python scripts/validate_release_candidate_smoke.py",
+      "exit_code": 0,
+      "scope": "OFFLINE_REGRESSION"
+    },
+    {
+      "command": "python scripts/validate_rollback_compatibility.py",
+      "exit_code": 0,
+      "verdict": "OFFLINE_PERSISTENCE_PASS",
+      "historical_archive": "NOT_VERIFIED",
+      "deployed_rollback": "NOT_VERIFIED"
+    },
+    {
+      "command": "python scripts/validation/verify_frozen_benchmarks.py",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --exit-code -- tests/retrieval_benchmark artifacts research backend/data/dossiers",
+      "exit_code": 0
+    },
+    {
+      "command": "run_phase9_four_agent_browser_audit.py (live mode)",
+      "exit_code": 0,
+      "inputs": 12,
+      "viewport_states": 24
+    },
+    {
+      "command": "run_phase9_four_agent_browser_audit.py --replay-dir (after CSS)",
+      "exit_code": 0,
+      "mode": "EXACT_SAVED_SSE_REPLAY",
+      "viewport_states": 24
+    },
+    {
+      "command": "run_phase9_render_controls.py (strong clipping control, before CSS)",
+      "exit_code": 1,
+      "states": 22,
+      "failed": 9
+    },
+    {
+      "command": "run_phase9_render_controls.py (same control, after CSS)",
+      "exit_code": 0,
+      "states": 22,
+      "failed": 0
+    }
+  ],
+  "llm_probe": {
+    "endpoint": "https://generativelanguage.googleapis.com/v1beta/interactions",
+    "model": "gemini-3.8-flash",
+    "http_status": 503,
+    "seconds": 0.9,
+    "successful_generation": false,
+    "secrets_recorded": false
+  },
+  "limitations": [
+    "No human-reviewed benchmark labels or independent entailment/calibration/retrieval-recall measurement.",
+    "Existing held-out aggregates were repeated; not a fresh blind evaluation.",
+    "No manual screen reader, measured contrast, axe, cross-browser or production parity verification."
+  ]
+}

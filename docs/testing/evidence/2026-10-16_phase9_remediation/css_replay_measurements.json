@@ -1,0 +1,417 @@
+{
+  "head": "8c8b6c50c275dbee6a19c8ef9de40570bb1474f1",
+  "mode": "EXACT_SAVED_SSE_REPLAY",
+  "scope": "Exact saved SSE replay through all agent page buttons; no fresh provider or research claims. Local health remains real.",
+  "application_sha256": "b0d2dc0d4996ee84fd65c19d39bc34521d807fbff7bd14eba71c0789f17fe7a1",
+  "application_unchanged_during_run": true,
+  "cases": [
+    {
+      "id": "01-scout",
+      "input": "TATAMOTORS.NS",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 21,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "01-scout-390-full.png",
+            "01-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 21,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "01-scout-1440-full.png",
+            "01-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "02-scout",
+      "input": "INFY.NS",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 7,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "02-scout-390-full.png",
+            "02-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 7,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "02-scout-1440-full.png",
+            "02-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "03-scout",
+      "input": "AAPL",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 9,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "03-scout-390-full.png",
+            "03-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 9,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "03-scout-1440-full.png",
+            "03-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "04-trending",
+      "input": "OpenAI",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 2,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "04-trending-390-full.png",
+            "04-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 2,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "04-trending-1440-full.png",
+            "04-trending-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "05-trending",
+      "input": "NVIDIA",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 6,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "05-trending-390-full.png",
+            "05-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 6,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "05-trending-1440-full.png",
+            "05-trending-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "06-trending",
+      "input": "electric vehicles",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "06-trending-390-full.png",
+            "06-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "06-trending-1440-full.png",
+            "06-trending-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "07-brandshield",
+      "input": "Nike",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 17,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "07-brandshield-390-full.png",
+            "07-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 17,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "07-brandshield-1440-full.png",
+            "07-brandshield-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "08-brandshield",
+      "input": "Apple",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "08-brandshield-390-full.png",
+            "08-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "08-brandshield-1440-full.png",
+            "08-brandshield-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "09-brandshield",
+      "input": "Tata Motors",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "09-brandshield-390-full.png",
+            "09-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "09-brandshield-1440-full.png",
+            "09-brandshield-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "10-personal_watch",
+      "input": "Sam Altman",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "10-personal_watch-390-full.png",
+            "10-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "10-personal_watch-1440-full.png",
+            "10-personal_watch-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "11-personal_watch",
+      "input": "Tim Cook",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "11-personal_watch-390-full.png",
+            "11-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "11-personal_watch-1440-full.png",
+            "11-personal_watch-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    },
+    {
+      "id": "12-personal_watch",
+      "input": "Satya Nadella",
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "12-personal_watch-390-full.png",
+            "12-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "12-personal_watch-1440-full.png",
+            "12-personal_watch-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": 0,
+      "result_event": true
+    }
+  ]
+}

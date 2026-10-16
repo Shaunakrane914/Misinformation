@@ -103,6 +103,10 @@ def test_disconnect_or_deadline_does_not_unlock_running_worker(monkeypatch, disc
     async def exercise():
         stream = research_stream.analysis_stream("scout", callback, lock)
         try:
+            # A heartbeat may precede executor admission under CPU contention.
+            # Exercise cancellation of an actually running worker, not a queued
+            # callback; retain the lock/429/cleanup assertions unchanged.
+            assert await asyncio.to_thread(started.wait, 1)
             messages = []
             async for message in stream.body_iterator:
                 messages.append(message)

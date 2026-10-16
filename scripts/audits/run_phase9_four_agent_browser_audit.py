@@ -241,3 +241,12 @@ finally:
     static.shutdown()
     static.server_close()
 print('UI_COMPLETE ' + str(OUT / 'summary.json'),flush=True)
+failed = not summary['cases'] or any(
+    row.get('error_type') or not row.get('result_event') or row.get('error_events') or row.get('page_errors')
+    or any(not view['unified_report_visible'] or view['missing_finding_texts']
+           or view['document_width'] > view['width'] + 1
+           or view['rendered_findings'] != row['findings']
+           or view['rendered_acquired_cards'] != row['acquired_records']
+           or view['rendered_discovery_cards'] != row['discovery_records'] for view in row.get('views',[]))
+    for row in summary['cases'])
+raise SystemExit(1 if failed else 0)

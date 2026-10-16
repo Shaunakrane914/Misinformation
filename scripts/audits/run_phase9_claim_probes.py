@@ -24,6 +24,7 @@ def main():
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--env-file", type=Path, required=True)
     parser.add_argument("--repo-root", type=Path, default=Path(__file__).resolve().parents[2])
+    parser.add_argument("--case-ids", nargs="+", help="Explicit diagnostic recheck subset; not a replacement for the full matrix")
     args = parser.parse_args()
     output = args.output_dir.resolve()
     output.mkdir(parents=True, exist_ok=False)
@@ -84,6 +85,12 @@ def main():
                "labels": "Source-adjudicated diagnostic expectations, mixed/absence cases require human assessment",
                "cases": []}
     engine = ResearchEngine()
+    if args.case_ids:
+        unknown = set(args.case_ids) - {case[0] for case in cases}
+        if unknown:
+            parser.error("Unknown diagnostic case ID")
+        cases = [case for case in cases if case[0] in args.case_ids]
+    payload["selected_case_ids"] = [case[0] for case in cases]
     for code, entity, claim, url, expected in cases:
         start = time.perf_counter()
         request = ResearchRequest(target=entity, domain="general", agent_name="phase9_live_probe",

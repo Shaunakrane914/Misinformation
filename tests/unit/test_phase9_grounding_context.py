@@ -65,3 +65,19 @@ def test_identifier_year_is_not_a_financial_reporting_period():
     item = evidence("Base Score: 10.0 CRITICAL.")
     item.canonical_url = "https://nvd.nist.gov/vuln/detail/CVE-2021-44228"
     assert relation("NIST rated CVE-2021-44228 a CVSS score of 2.1.", "NIST", item)[0] == "CONTRADICT"
+
+
+def test_missing_quotation_cannot_be_supported_by_a_related_announcement():
+    item = evidence("Example announced its acquisition of Widget Corporation in September 2023.")
+    assert relation('Example said "the Earth is flat" in its Widget acquisition announcement.', "Example", item)[0] == "NONE"
+
+
+def test_supported_first_premise_does_not_establish_unobserved_second_premise():
+    item = evidence("Example announced Widget 15 in September 2023.")
+    assert relation("Example announced Widget 15 in September 2023 and it has a physical keyboard.", "Example", item)[0] == "NONE"
+
+
+def test_other_identifier_is_not_a_refutation_of_the_requested_record():
+    item = evidence("NIST rated CVE-2025-10001 a CVSS score of 9.8.")
+    item.canonical_url = "https://nvd.nist.gov/vuln/detail/CVE-2025-10001"
+    assert relation("NIST rated CVE-2025-10002 a CVSS score of 9.8.", "NIST", item)[0] == "NONE"

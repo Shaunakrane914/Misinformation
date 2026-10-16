@@ -341,6 +341,10 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
     text = item.relevant_excerpt or item.content or item.snippet
     if not text:
         return "NONE", ""
+    quoted = re.findall(r'"([^"\n]{3,})"|“([^”\n]{3,})”', claim_text)
+    normalized_text = re.sub(r"\s+", " ", text).casefold()
+    if any(re.sub(r"\s+", " ", first or second).casefold() not in normalized_text for first, second in quoted):
+        return "NONE", ""
         
     claim_nums = extract_numeric_tokens(claim_text)
     claim_ids = extract_identifiers(claim_text)
@@ -397,10 +401,10 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         
         # --- Axis A: Technical Identifier Contradiction ---
         if claim_ids["cve"] and doc_cves and not (claim_ids["cve"] & doc_cves):
-            return "CONTRADICT", passage[:500]
+            continue  # A different record is unrelated, not a denial of this one.
                 
         if claim_ids["arxiv"] and doc_arxivs and not (claim_ids["arxiv"] & doc_arxivs):
-            return "CONTRADICT", passage[:500]
+            continue
                 
         # --- Axis B: Numerical Value Contradiction ---
         if claim_nums and pass_nums:
@@ -543,6 +547,15 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
                 
         if not is_aligned:
             continue
+        # A matching first premise does not license an unobserved second one.
+        # Ambiguous conjunction scope remains intact; do not drop its negation
+        # or manufacture a MIXED judgment from missing evidence.
+        unquoted_claim = re.sub(r'"[^"\n]+"|“[^”\n]+”', "", claim_text)
+        clauses = re.split(r"\band\b", unquoted_claim, flags=re.I)
+        if len(clauses) > 1:
+            cores = [(terms(clause) - entity_terms - _META_WRAPPER_WORDS) for clause in clauses]
+            if any(core and len(core & pass_terms) / len(core) < 0.8 for core in cores):
+                continue
             
         # Aligned proposition established! Check polarity and temporal state:
         # 1. Temporal shift / outdated narrative

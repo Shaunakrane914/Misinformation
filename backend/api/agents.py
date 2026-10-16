@@ -25,6 +25,7 @@ from backend.services.report_builder import ReportBuilder
 from backend.api.security import require_response_operator
 from backend.infrastructure.acquisition.network.http import fetch_public_http
 from backend.application.research.progress import report_progress
+from backend.api.research_stream import EventStreamResponse
 
 logger = logging.getLogger(__name__)
 
@@ -403,25 +404,25 @@ async def brandshield_scan(request: BrandShieldScanRequest):
 
 # ── War Room & Incident Response ─────────────────────────────────────────────
 
-@router.post("/api/scout/analyze/stream", tags=["Scout Agent (Financial Intelligence)"])
+@router.post("/api/scout/analyze/stream", tags=["Scout Agent (Financial Intelligence)"], response_class=EventStreamResponse)
 async def scout_analysis_stream(request: ScoutAnalyzeRequest):
     from backend.api.research_stream import analysis_stream
     return analysis_stream("scout", lambda: analyze_stock_live(request), _scan_locks["scout"])
 
 
-@router.post("/api/trending/scan/stream", tags=["Trending & Contagion Agent"])
+@router.post("/api/trending/scan/stream", tags=["Trending & Contagion Agent"], response_class=EventStreamResponse)
 async def trending_analysis_stream(request: TrendingScanRequest):
     from backend.api.research_stream import analysis_stream
     return analysis_stream("trending", lambda: trending_scan(request), _scan_locks["trending"])
 
 
-@router.post("/api/brandshield/scan/stream", tags=["BrandShield Agent (Brand Defense)"])
+@router.post("/api/brandshield/scan/stream", tags=["BrandShield Agent (Brand Defense)"], response_class=EventStreamResponse)
 async def brandshield_analysis_stream(request: BrandShieldScanRequest):
     from backend.api.research_stream import analysis_stream
     return analysis_stream("brandshield", lambda: brandshield_scan(request), _scan_locks["brandshield"])
 
 
-@router.post("/api/personal/scan/stream", tags=["Personal Watch Agent (VIP Protection)"])
+@router.post("/api/personal/scan/stream", tags=["Personal Watch Agent (VIP Protection)"], response_class=EventStreamResponse)
 async def personal_analysis_stream(request: PersonalScanRequest):
     from backend.api.research_stream import analysis_stream
     return analysis_stream("personal", lambda: personal_watch_scan(request), _scan_locks["personal"])

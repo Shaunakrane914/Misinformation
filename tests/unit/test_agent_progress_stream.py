@@ -42,6 +42,8 @@ def test_all_four_routes_stream_observed_stages_without_changing_results(api_cli
     response = api_client.post(path + "/stream", json=payload)
     assert response.status_code == 200
     assert response.headers["content-type"].startswith("text/event-stream")
+    schema = api_client.get("/openapi.json").json()
+    assert "text/event-stream" in schema["paths"][path + "/stream"]["post"]["responses"]["200"]["content"]
     assert response.headers.get("content-encoding") != "gzip"
     assert "no-store" in response.headers["cache-control"]
     events = records(response.text)

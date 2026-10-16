@@ -22,6 +22,10 @@ HEARTBEAT_SECONDS = 5
 _running = set()
 
 
+class EventStreamResponse(StreamingResponse):
+    media_type = "text/event-stream"
+
+
 def analysis_stream(agent, callback, admission_lock):
     # Fast precheck; _run_bounded_scan remains the atomic admission owner.
     if admission_lock.locked():
@@ -90,7 +94,7 @@ def analysis_stream(agent, callback, admission_lock):
         finally:
             observing = False
 
-    return StreamingResponse(events(), media_type="text/event-stream", headers={
+    return EventStreamResponse(events(), headers={
         "Cache-Control": "no-cache, no-store, no-transform", "X-Accel-Buffering": "no",
         "X-Analysis-ID": analysis_id,
     })

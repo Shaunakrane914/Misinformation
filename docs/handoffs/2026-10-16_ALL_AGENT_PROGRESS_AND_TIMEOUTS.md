@@ -98,3 +98,27 @@ checks, exact hosted CI, Render release and Cloudflare publication separately
 before reporting deployment complete. The preceding local Render verification
 notes are included in this normal publication; their earlier local-only status
 was a dated snapshot, not a restriction on this user-approved release.
+
+## Combined release validation
+
+Normal merge `50bc75758888326fd5ed1b0f6617fd5b03f4a60d` preserved all eight
+concurrent main commits, including their new benchmark files, without conflicts
+or fixture updates. A small follow-up declares the SSE response class explicitly
+and tests its OpenAPI media type. On that final combined application tree:
+
+- Full suite: **1,221 passed in 36.93s**, exit 0.
+- Fast suite: **1,013 passed in 17.91s**, exit 0.
+- Fatal flake8: zero errors, exit 0. All eight Node scripts also passed on the
+  merged frontend (unchanged by the OpenAPI-only follow-up).
+- Offline smoke and persistence: exit 0; archive and deployed rollback still
+  NOT_VERIFIED. Frozen hashes passed; protected tracked outputs were unchanged.
+- Additional isolated real-handler smoke used the existing test runtime before
+  importing the app: each of the four actual stream routes returned HTTP 200,
+  29 progress events and a terminal report. Explicit Python exit status was 0.
+  No production provider request or dossier was involved. This is separate from
+  the unit tests that substitute handlers and the synthetic UI transport test.
+- Changed-text secret-pattern scan: zero matches. Changed Markdown local links
+  had no missing targets. The existing `.env` remains ignored and untracked.
+
+Remote CI and deployment are not inferred from these local results. The release
+publication/verification closeout records their independently observed IDs.

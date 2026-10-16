@@ -1,6 +1,10 @@
 # Current project state — 2026-10-14
 
-## Latest implementation — 2026-10-16
+## Latest verified publication — 2026-10-16
+
+All-agent progress code `8c8ecf2` passed all five hosted CI jobs (1,222 full-suite tests; 1,014 fast cases on Python 3.11–3.13) and was verified on the existing Render/Cloudflare deployment. All four pages have startup-aware waiting, live server step counts and diagnostic IDs. A real deployed Infosys Scout request completed in 110.61s including connection/startup waiting, but its report was sparse: completion is not research-quality acceptance. See the [deployment closeout](handoffs/2026-10-16_ALL_AGENT_PROGRESS_DEPLOYMENT_CLOSEOUT.md). The final documentation-only successor skips Render deployment; its application/frontend source is identical to that verified release.
+
+## Earlier implementation snapshot — 2026-10-16
 
 [All-agent progress and timeout remediation](handoffs/2026-10-16_ALL_AGENT_PROGRESS_AND_TIMEOUTS.md) adds startup-aware waiting, a five-minute browser analysis wait, server-observed research step counts and safe diagnostics to Scout, Trending, BrandShield and Personal Watch. User approved deployment after checks. Read its publication record before assuming the code is deployed; local regression acceptance is not live-provider or research-accuracy acceptance. [Operations contract](operations/AGENT_PROGRESS_AND_TIMEOUTS.md).
 

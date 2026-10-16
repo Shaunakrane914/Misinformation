@@ -2,7 +2,11 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: All-agent progress and timeout remediation — 2026-10-16
+## Latest: All-agent progress deployed — 2026-10-16
+
+- [Deployment closeout](2026-10-16_ALL_AGENT_PROGRESS_DEPLOYMENT_CLOSEOUT.md): corrected `8c8ecf2` passed all five hosted CI jobs and was verified on Render/Cloudflare. A real deployed Scout Infosys request rendered its report after 110.61s end-to-end; this establishes progress/wait behavior, not evidence richness or research accuracy. Includes exact deployment IDs, the initial CI ordering failure and the safe documentation-only publication boundary.
+
+## Previous: All-agent progress and timeout remediation — 2026-10-16
 
 - [All-agent progress handoff](2026-10-16_ALL_AGENT_PROGRESS_AND_TIMEOUTS.md): startup-aware waiting, live backend stage counts, safe retry/disconnect behavior and diagnostics for all four agents. Includes offline Chromium and regression evidence; exact deployment status must be checked separately.
 - [Progress/timeout operations runbook](../operations/AGENT_PROGRESS_AND_TIMEOUTS.md).

@@ -146,3 +146,8 @@ smoke/persistence/frozen checks passed. Protected outputs remained unchanged.
 These new results supersede, but do not erase, the preceding counts and failure.
 Hosted verification of the correction is still required before publication is
 reported complete.
+
+Subsequent verification is recorded in the [deployment closeout](2026-10-16_ALL_AGENT_PROGRESS_DEPLOYMENT_CLOSEOUT.md):
+all five hosted jobs passed for corrected code `8c8ecf2`, both existing hosts
+were verified, and the deployed Infosys UI request completed. The earlier
+pending/failure statements above remain dated execution observations.

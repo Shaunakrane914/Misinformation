@@ -2976,3 +2976,13 @@ select:focus-visible,
   outline-offset: 2px;
 }
 
+/* Live research progress: native semantics, no timer-driven percentage or ETA. */
+.research-progress { min-width: 0; padding: clamp(18px, 4vw, 30px); }
+.research-progress h3 { overflow-wrap: anywhere; margin: 0 0 14px; }
+.research-progress p, .research-progress label { color: var(--text-muted); font-size: .85rem; line-height: 1.6; }
+.research-progress label { display: block; margin: 12px 0; }
+.research-progress progress { display: block; width: 100%; height: 12px; margin-top: 10px; accent-color: var(--cyan, #00e5ff); }
+.research-progress details { margin-top: 18px; border-top: 1px solid var(--border); padding-top: 14px; }
+.research-progress summary { cursor: pointer; padding: 8px 0; }
+.research-progress pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: .75rem; max-width: 100%; }
+.research-progress :focus-visible { outline: 2px solid var(--cyan, #00e5ff); outline-offset: 4px; }

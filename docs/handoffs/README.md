@@ -2,7 +2,12 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Render live verification — 2026-10-16
+## Latest: All-agent progress and timeout remediation — 2026-10-16
+
+- [All-agent progress handoff](2026-10-16_ALL_AGENT_PROGRESS_AND_TIMEOUTS.md): startup-aware waiting, live backend stage counts, safe retry/disconnect behavior and diagnostics for all four agents. Includes offline Chromium and regression evidence; exact deployment status must be checked separately.
+- [Progress/timeout operations runbook](../operations/AGENT_PROGRESS_AND_TIMEOUTS.md).
+
+## Previous: Render live verification — 2026-10-16
 
 - [Render verification](2026-10-16_RENDER_LIVE_VERIFICATION.md): `.env` credential successfully accessed the exact backend. Render already had CI-green `4b484c4` live through automatic deployment; no duplicate deployment triggered. Health and extraction route verified publicly; readiness remains provider-unverified and operator writes are disabled because their separate token is unconfigured.
 

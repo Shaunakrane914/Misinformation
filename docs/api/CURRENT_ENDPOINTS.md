@@ -18,6 +18,7 @@ deployment readiness. See [Current State](../CURRENT_STATE.md).
 | GET | `/api/claims/{claim_id}/evidence` | `claims.py` | Stored evidence records for a claim. |
 | GET | `/api/claims` | `claims.py` | Paginated stored claims. |
 | POST | `/api/scout/analyze` | `agents.py` | Scout financial investigation. |
+| POST | `/api/scout/analyze/stream`, `/api/trending/scan/stream`, `/api/brandshield/scan/stream`, `/api/personal/scan/stream` | `agents.py`, `research_stream.py` | Additive live progress/result streams using the original validated payloads. Server-confirmed steps, not ETA or source-truth scores. See [stream contract](../operations/AGENT_PROGRESS_AND_TIMEOUTS.md). |
 | POST | `/api/trending/scan` | `agents.py` | Trending investigation. |
 | POST | `/api/brandshield/scan` | `agents.py` | BrandShield investigation. |
 | POST | `/api/personal/scan` | `agents.py` | Personal Watch investigation; `/api/personal-watch/scan` is an alias. Legacy `official_handles`/`official_domains` request keys are unverified candidate hints. |

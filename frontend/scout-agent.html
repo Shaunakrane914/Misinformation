@@ -10,6 +10,7 @@
   <script src="forensic-explorer.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="agent-research-client.js"></script>
   <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
@@ -507,19 +508,14 @@
 
       const root = document.getElementById('workspaceRoot');
       const btn = document.getElementById('analyzeBtn');
+      if (btn.disabled) return;
 
       btn.innerHTML = `<span class="pulse-dot"></span> Researching ${esc(rawInput)}...`;
       btn.disabled = true;
 
-      const progress = window.createAgentProgressBar ? window.createAgentProgressBar(root, {
-        title: `Scout Market Research: Evaluating ${esc(rawInput)}`,
-        stages: [
-          { name: '01 · Ingestion', desc: 'Exchange quotes & 5-day price history' },
-          { name: '02 · Z-Score', desc: 'Statistical dispersion & anomaly detection' },
-          { name: '03 · Lineage & Reach', desc: 'Multi-channel queries & primary filings' },
-          { name: '04 · Saturation & Synthesis', desc: 'Stopping criterion & evidence quality dimensions' }
-        ]
-      }) : null;
+      const progress = window.AegisResearch.createProgress(root, {
+        title: `Scout Market Research: Evaluating ${rawInput}`
+      });
 
       if (!progress) {
         root.innerHTML = `
@@ -531,33 +527,7 @@
       }
 
       try {
-        let data = null;
-        let lastErr = null;
-        const endpoints = [
-          (window.getAegisApiUrl ? window.getAegisApiUrl('/api/scout/analyze') : '/api/scout/analyze')
-        ];
-
-        for (const ep of endpoints) {
-          try {
-            const resp = await fetch(ep, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ ticker: rawInput }),
-              signal: AbortSignal.timeout(35000)
-            });
-            if (resp.ok) {
-              data = await resp.json();
-              break;
-            }
-          } catch (e) {
-            lastErr = e;
-            console.warn(`[Scout] Endpoint ${ep} failed:`, e);
-          }
-        }
-
-        if (!data) {
-          throw lastErr || new Error('All Scout analysis endpoints failed to respond.');
-        }
+        const data = await window.AegisResearch.run('/api/scout/analyze', { ticker: rawInput }, progress);
 
         currentResearchData = data;
         if (progress) {
@@ -574,7 +544,7 @@
             <div style="color:var(--rose);font-weight:700;margin-bottom:8px;">Research Acquisition Error</div>
             <div style="color:var(--text-muted);font-size:0.86rem;line-height:1.6;">
               Unable to complete multi-channel research query for <strong>${esc(rawInput)}</strong>: ${esc(err.message)}.
-              Ensure the backend server is running and accessible at <code>/api/scout/analyze</code>.
+              A timeout is not proof that the backend is down. Server work may still continue; avoid repeated submissions.
             </div>
           </div>
         `;

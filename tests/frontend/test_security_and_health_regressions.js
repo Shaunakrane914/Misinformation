@@ -38,6 +38,9 @@ function pageContext(page) {
   });
   context.window = context;
   vm.runInContext(fs.readFileSync(path.join(root, 'frontend', 'operation-health.js'), 'utf8'), context);
+  vm.runInContext(fs.readFileSync(path.join(root, 'frontend', 'agent-research-client.js'), 'utf8'), context);
+  const runResearch = context.AegisResearch.run;
+  context.AegisResearch.run = (endpoint, payload, progress) => runResearch(endpoint, payload, progress, { startupMs: 15 });
   const html = fs.readFileSync(path.join(root, 'frontend', page), 'utf8');
   for (const match of html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)) {
     if (match[1].trim()) vm.runInContext(match[1], context, { filename: page });

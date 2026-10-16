@@ -24,6 +24,7 @@ from backend.agents.trending_agent import TrendingAgent
 from backend.services.report_builder import ReportBuilder
 from backend.api.security import require_response_operator
 from backend.infrastructure.acquisition.network.http import fetch_public_http
+from backend.application.research.progress import report_progress
 
 logger = logging.getLogger(__name__)
 
@@ -47,7 +48,10 @@ def _run_bounded_scan(name, callback):
     if not lock.acquire(blocking=False):
         raise HTTPException(status_code=429, detail="Agent is handling another scan; retry shortly", headers={"Retry-After": "3"})
     try:
-        return callback()
+        report_progress(phase="analysis", completed=1, total=3)
+        result = callback()
+        report_progress(phase="report", completed=2, total=3)
+        return result
     finally:
         lock.release()
 
@@ -398,6 +402,30 @@ async def brandshield_scan(request: BrandShieldScanRequest):
 
 
 # ── War Room & Incident Response ─────────────────────────────────────────────
+
+@router.post("/api/scout/analyze/stream", tags=["Scout Agent (Financial Intelligence)"])
+async def scout_analysis_stream(request: ScoutAnalyzeRequest):
+    from backend.api.research_stream import analysis_stream
+    return analysis_stream("scout", lambda: analyze_stock_live(request), _scan_locks["scout"])
+
+
+@router.post("/api/trending/scan/stream", tags=["Trending & Contagion Agent"])
+async def trending_analysis_stream(request: TrendingScanRequest):
+    from backend.api.research_stream import analysis_stream
+    return analysis_stream("trending", lambda: trending_scan(request), _scan_locks["trending"])
+
+
+@router.post("/api/brandshield/scan/stream", tags=["BrandShield Agent (Brand Defense)"])
+async def brandshield_analysis_stream(request: BrandShieldScanRequest):
+    from backend.api.research_stream import analysis_stream
+    return analysis_stream("brandshield", lambda: brandshield_scan(request), _scan_locks["brandshield"])
+
+
+@router.post("/api/personal/scan/stream", tags=["Personal Watch Agent (VIP Protection)"])
+async def personal_analysis_stream(request: PersonalScanRequest):
+    from backend.api.research_stream import analysis_stream
+    return analysis_stream("personal", lambda: personal_watch_scan(request), _scan_locks["personal"])
+
 
 @router.get("/api/war-room/signals", tags=["War Room & Incident Response"], summary="Get Live Detected Market Threat Signals")
 @router.get("/war-room/signals", tags=["War Room & Incident Response"])

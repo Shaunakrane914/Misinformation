@@ -1,6 +1,10 @@
 # Current project state — 2026-10-14
 
-## Latest deployment verification — 2026-10-16
+## Latest implementation — 2026-10-16
+
+[All-agent progress and timeout remediation](handoffs/2026-10-16_ALL_AGENT_PROGRESS_AND_TIMEOUTS.md) adds startup-aware waiting, a five-minute browser analysis wait, server-observed research step counts and safe diagnostics to Scout, Trending, BrandShield and Personal Watch. User approved deployment after checks. Read its publication record before assuming the code is deployed; local regression acceptance is not live-provider or research-accuracy acceptance. [Operations contract](operations/AGENT_PROGRESS_AND_TIMEOUTS.md).
+
+## Earlier deployment verification — 2026-10-16
 
 The user's Git-ignored `.env` credential enabled authenticated verification: Render already deployed exact CI-green main commit `4b484c4` automatically. Public health responds and OpenAPI contains the extraction route. No duplicate deployment or secret/configuration change was made. Provider readiness remains `READY_UNVERIFIED`; operator writes fail closed because `ADMIN_API_TOKEN` is unconfigured. See the [Render verification handoff](handoffs/2026-10-16_RENDER_LIVE_VERIFICATION.md) for observed CORS/health-check configuration limitations. This supersedes the earlier deployment blocker, not the PARTIAL research acceptance.
 

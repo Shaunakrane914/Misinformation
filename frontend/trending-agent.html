@@ -8,6 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="agent-research-client.js"></script>
   <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
@@ -293,7 +294,7 @@
             <option value="technology">Technology &amp; AI</option>
             <option value="business">Business &amp; Markets</option>
           </select>
-          <button class="btn-scan" onclick="runTrendingScan()">
+          <button id="trendingScanBtn" class="btn-scan" onclick="runTrendingScan()">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
             Discover Trends
           </button>
@@ -567,22 +568,23 @@
       document.getElementById('evidenceGrid').innerHTML = `<div style="grid-column:1/-1;padding:30px;text-align:center;color:var(--text-dim);font-size:0.85rem;">Retrieving and normalizing multi-channel evidence...</div>`;
     }
 
+    let trendingScanBusy = false;
     async function runTrendingScan() {
       const query = document.getElementById('scanQueryInput').value.trim();
       if (!query) return;
+      if (trendingScanBusy) return;
+      trendingScanBusy = true;
+      const scanButton = document.getElementById('trendingScanBtn');
+      const buttonContent = scanButton.innerHTML;
+      scanButton.disabled = true;
+      scanButton.textContent = 'Researching…';
       const category = document.getElementById('catSelect').value;
 
       showLoadingState(query);
 
-      const progress = window.createAgentProgressBar ? window.createAgentProgressBar('#trendingProgressMount', {
-        title: `Trending: Scanning Public Feeds for "${esc(query)}"`,
-        stages: [
-          { name: '01 · Source Retrieval', desc: 'Google News RSS & public discourse feeds' },
-          { name: '02 · Signal Analysis', desc: 'Narrative momentum & cluster detection' },
-          { name: '03 · Diffusion Modeling', desc: 'Hawkes process diffusion modeling' },
-          { name: '04 · Verification', desc: 'Comparing claims against wire evidence' }
-        ]
-      }) : null;
+      const progress = window.AegisResearch.createProgress('#trendingProgressMount', {
+        title: `Trending: Scanning Public Feeds for "${query}"`
+      });
 
       const payload = {
         asset_name: query,
@@ -592,37 +594,15 @@
       };
 
       let result = null;
-      const endpoints = [
-        (window.getAegisApiUrl ? window.getAegisApiUrl('/api/trending/scan') : '/api/trending/scan')
-      ];
-
-      for (const ep of endpoints) {
-        try {
-          const resp = await fetch(ep, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload),
-            signal: AbortSignal.timeout(25000)
-          });
-          if (resp.ok) {
-            result = await resp.json();
-            break;
-          }
-        } catch (e) {
-          console.warn(`Endpoint ${ep} note:`, e.message || e);
-        }
-      }
-
-      if (!result) {
-        // Check for genuine cached scan from localStorage
-        const cacheKey = 'aegis_trending_cache_' + query.toLowerCase().trim();
-        const cachedRaw = localStorage.getItem(cacheKey);
-        if (cachedRaw) {
-          try {
-            result = JSON.parse(cachedRaw);
-            result._cached = true;
-          } catch(e) {}
-        }
+      let failureMessage = '';
+      try {
+        result = await window.AegisResearch.run('/api/trending/scan', payload, progress);
+      } catch (error) {
+        failureMessage = error.message;
+      } finally {
+        trendingScanBusy = false;
+        scanButton.disabled = false;
+        scanButton.innerHTML = buttonContent;
       }
 
       if (result) {
@@ -639,8 +619,8 @@
           renderScanResults(result);
         }
       } else {
-        if (progress) progress.error('All trending scan endpoints failed to respond.');
-        renderFailureState(query);
+        if (progress) progress.error(failureMessage);
+        renderFailureState(query, failureMessage);
       }
     }
 
@@ -955,24 +935,24 @@
       if (e.key === 'Escape' && document.getElementById('dossierModal').style.display === 'flex') closeDossier();
     });
 
-    function renderFailureState(query) {
-      document.getElementById('telSignals').textContent = '0';
-      document.getElementById('telSources').textContent = '0';
-      document.getElementById('telGroups').textContent = '0';
-      document.getElementById('telPlatforms').textContent = '0';
-      document.getElementById('telTrends').textContent = '0';
-      document.getElementById('telDuration').textContent = '0.0s';
+    function renderFailureState(query, message = '') {
+      document.getElementById('telSignals').textContent = '—';
+      document.getElementById('telSources').textContent = '—';
+      document.getElementById('telGroups').textContent = '—';
+      document.getElementById('telPlatforms').textContent = '—';
+      document.getElementById('telTrends').textContent = '—';
+      document.getElementById('telDuration').textContent = 'Unknown';
       document.getElementById('trendsFeed').innerHTML = `
         <div style="text-align:center;padding:48px 24px;background:rgba(9,13,22,0.6);border:1px solid var(--border);border-radius:14px;">
-          <div style="font-weight:700;color:#fff;font-size:1rem;margin-bottom:8px;">Multi-Channel Retrieval Offline</div>
+          <div style="font-weight:700;color:#fff;font-size:1rem;margin-bottom:8px;">Research report unavailable</div>
           <div style="color:var(--text-muted);font-size:0.86rem;max-width:540px;margin:0 auto;line-height:1.6;">
-            No live trend signals could be retrieved for <strong>${esc(query)}</strong>.
-            The backend analysis service (<code>/api/trending/scan</code>) is currently offline or unreachable. Connect an active backend cluster to stream live multi-channel signals and Hawkes process velocity tracking.
+            No completed live report was received for <strong>${esc(query)}</strong>.
+            ${esc(message)} A missing report does not prove the backend is offline. Server work may still continue; avoid repeated submissions.
           </div>
         </div>
       `;
-      document.getElementById('claimsList').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-dim);font-size:0.84rem;">No claims evaluated · Live retrieval inactive.</div>`;
-      document.getElementById('evidenceGrid').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-dim);font-size:0.85rem;">No evidence items retrieved from active streams.</div>`;
+      document.getElementById('claimsList').innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-dim);font-size:0.84rem;">Claim results unavailable from this request.</div>`;
+      document.getElementById('evidenceGrid').innerHTML = `<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--text-dim);font-size:0.85rem;">Evidence results unavailable from this request.</div>`;
     }
 
     window.addEventListener('DOMContentLoaded', () => {

@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="agent-research-client.js"></script>
   <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
@@ -392,29 +393,9 @@
 
     function showLoadingAnimation(targetName) {
       const mount = document.getElementById('loadingMount');
-      activeProgressBar = window.createAgentProgressBar ? window.createAgentProgressBar(mount, {
-        title: `Personal Watch: Investigating ${escapeHtml(targetName)}`,
-        stages: [
-          { name: '01 · Source Retrieval', desc: 'Targeted multi-platform search dispatch' },
-          { name: '02 · Signal Categorization', desc: 'Impersonation, claims & public statements' },
-          { name: '03 · De-duplication', desc: 'Cross-platform syndication & source clustering' },
-          { name: '04 · Synthesis', desc: 'Evidence summary & qualified findings' }
-        ]
-      }) : null;
-    }
-
-    function clearLoadingAnimation() {
-      if (activeProgressBar) {
-        activeProgressBar.finish(() => {
-          setTimeout(() => {
-            const mount = document.getElementById('loadingMount');
-            if (mount) mount.innerHTML = '';
-          }, 350);
-        });
-      } else {
-        const mount = document.getElementById('loadingMount');
-        if (mount) mount.innerHTML = '';
-      }
+      activeProgressBar = window.AegisResearch.createProgress(mount, {
+        title: `Personal Watch: Investigating ${targetName}`
+      });
     }
 
     function setPersonalScanBusy(button, name) {
@@ -428,6 +409,7 @@
       if (!name) return;
 
       const btn = document.getElementById('scanBtn');
+      if (btn.disabled) return;
       btn.disabled = true;
       setPersonalScanBusy(btn, name);
 
@@ -445,39 +427,14 @@
         aliases: rawAliases ? rawAliases.split(',').map(s => s.trim()).filter(Boolean) : []
       };
 
-      const endpoints = [
-        (window.getAegisApiUrl ? window.getAegisApiUrl('/api/personal/scan') : '/api/personal/scan'),
-        '/api/personal-watch/scan'
-      ];
-      let data = null;
-      let errorMsg = null;
-
       try {
-        for (const ep of endpoints) {
-          try {
-            const resp = await fetch(ep, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify(payload),
-              signal: AbortSignal.timeout(35000)
-            });
-            if (resp.ok) {
-              data = await resp.json();
-              break;
-            }
-          } catch (err) {
-            errorMsg = err.message;
-          }
-        }
-
-        if (data) {
-          currentData = data;
-          renderDashboard(data);
-        } else {
-          renderTruthfulError(errorMsg || 'No response from intelligence nodes');
-        }
+        const data = await window.AegisResearch.run('/api/personal/scan', payload, activeProgressBar);
+        currentData = data;
+        renderDashboard(data);
+        if (activeProgressBar) activeProgressBar.finish();
+      } catch (error) {
+        renderTruthfulError(error.message);
       } finally {
-        clearLoadingAnimation();
         btn.disabled = false;
         btn.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> Scan Identity`;
       }
@@ -488,7 +445,7 @@
       mount.innerHTML = `
         <div class="empty-banner" style="border-color:rgba(244,63,94,0.3);background:rgba(244,63,94,0.03);">
           <div style="font-family:var(--font-mono);font-size:0.8rem;color:var(--rose);font-weight:700;margin-bottom:8px;">// LIVE QUERY NOTICE</div>
-          <div style="color:var(--text-muted);">${escapeHtml(msg)}. No verified live evidence was retrieved for this subject.</div>
+          <div style="color:var(--text-muted);">${escapeHtml(msg)}. No completed report was received. This does not establish that no evidence exists or that server work stopped.</div>
         </div>
       `;
     }

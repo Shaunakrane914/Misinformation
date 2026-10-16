@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="aegis-theme.css">
   <script src="unified-report-renderer.js"></script>
   <script src="operation-health.js"></script>
+  <script src="agent-research-client.js"></script>
   <script src="safe-source-url.js"></script>
   <style>
     .agent-hero {
@@ -353,19 +354,14 @@
       if (initialSpec) initialSpec.style.display = 'none';
 
       const btn = document.getElementById('scanBtn');
+      if (btn.disabled) return;
       const container = document.getElementById('resultsContainer');
       btn.innerHTML = `<span class="pulse-dot"></span> Auditing...`;
       btn.disabled = true;
 
-      const progress = window.createAgentProgressBar ? window.createAgentProgressBar(container, {
-        title: `BrandShield: Auditing Brand Signals for ${escapeHtml(inputVal)}`,
-        stages: [
-          { name: '01 · Brand Mapping', desc: 'Catalog lookup & multi-channel query matrix' },
-          { name: '02 · Evidence Search', desc: 'Listing reviews, consumer reports & web mentions' },
-          { name: '03 · Pattern Analysis', desc: 'Counterfeits, misleading claims & syndication' },
-          { name: '04 · Synthesis', desc: 'Evidence summary & investigation findings' }
-        ]
-      }) : null;
+      const progress = window.AegisResearch.createProgress(container, {
+        title: `BrandShield: Auditing Brand Signals for ${inputVal}`
+      });
 
       if (!progress) {
         container.innerHTML = `
@@ -379,34 +375,7 @@
       }
 
       try {
-        let data = null;
-        let lastErr = null;
-        const endpoints = [
-          (window.getAegisApiUrl ? window.getAegisApiUrl('/api/brandshield/scan') : '/api/brandshield/scan'),
-          '/brandshield/scan'
-        ];
-
-        for (const ep of endpoints) {
-          try {
-            const res = await fetch(ep, {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ brand_name: inputVal, query: inputVal }),
-              signal: AbortSignal.timeout(35000)
-            });
-            if (res.ok) {
-              data = await res.json();
-              break;
-            }
-          } catch (e) {
-            lastErr = e;
-            console.warn(`[BrandShield] Endpoint ${ep} failed:`, e);
-          }
-        }
-
-        if (!data) {
-          throw lastErr || new Error('All BrandShield endpoints failed to respond.');
-        }
+        const data = await window.AegisResearch.run('/api/brandshield/scan', { brand_name: inputVal, query: inputVal }, progress);
 
         activeScanData = data;
         if (progress) {
@@ -422,7 +391,7 @@
             <div style="color:var(--rose);font-weight:700;margin-bottom:8px;">⚠️ Scan Execution Notice</div>
             <div>${escapeHtml(err.message || 'Unable to complete brand audit.')}</div>
             <div style="margin-top:10px;font-size:0.78rem;color:var(--text-dim);">
-              Please verify backend connectivity or try a different brand keyword.
+              A timeout does not prove the backend is offline. Server work may still continue; avoid repeated submissions.
             </div>
           </div>
         `;

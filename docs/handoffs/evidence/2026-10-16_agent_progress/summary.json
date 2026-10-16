@@ -1,0 +1,185 @@
+{
+  "mode": "OFFLINE_SYNTHETIC_HTTP_STREAM_UI",
+  "cases": [
+    {
+      "agent": "scout",
+      "width": 390,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "scout",
+      "width": 390,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "scout",
+      "width": 1440,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "scout",
+      "width": 1440,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "trending",
+      "width": 390,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "trending",
+      "width": 390,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "trending",
+      "width": 1440,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "trending",
+      "width": 1440,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "brandshield",
+      "width": 390,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "brandshield",
+      "width": 390,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "brandshield",
+      "width": 1440,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "brandshield",
+      "width": 1440,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "personal-watch",
+      "width": 390,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "personal-watch",
+      "width": 390,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "personal-watch",
+      "width": 1440,
+      "scenario": "success",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    },
+    {
+      "agent": "personal-watch",
+      "width": 1440,
+      "scenario": "failure",
+      "input": "SYNTHETIC_ONLY",
+      "observed_steps": "4/13",
+      "observed_overall": "1/3",
+      "overflow": false,
+      "page_errors": [],
+      "keyboard_details": "PASS"
+    }
+  ],
+  "limitations": [
+    "Not live-provider or research-accuracy acceptance",
+    "Not manual screen-reader acceptance"
+  ]
+}

@@ -122,3 +122,27 @@ and tests its OpenAPI media type. On that final combined application tree:
 
 Remote CI and deployment are not inferred from these local results. The release
 publication/verification closeout records their independently observed IDs.
+
+## Hosted ordering regression and correction
+
+Initial publication `af539bed6462838414aa9e80ad6964cc482041e7` reached main.
+[Hosted run 38851807553](https://github.com/Shaunakrane914/Misinformation/actions/runs/38851807553)
+passed lint/frontend, full regression and Python 3.11/3.12 fast jobs, but failed
+two fast-completion progress assertions on Python 3.13 (1,011 passed, two failed).
+This was not dismissed as infrastructure flakiness and frontend publication was
+withheld. Render's existing on-commit auto-deploy proceeds independently of CI;
+the operator setting was not changed during this task.
+
+Cause: progress used `call_soon_threadsafe`, but terminal events went directly
+into the async queue. A sufficiently fast callback could enqueue its result
+before scheduled progress callbacks, ending observation before those updates.
+Both terminal event types now use the **same FIFO event-loop bridge**. A new
+deterministic immediate-callback test requires accepted/analysis/report progress
+to precede the result, without sleeps, retries or weakened assertions.
+
+Fresh local gates after this correction: full **1,222 passed in 49.88s**, fast
+**1,014 passed in 28.78s**, all 15 stream unit cases passed, fatal lint zero,
+smoke/persistence/frozen checks passed. Protected outputs remained unchanged.
+These new results supersede, but do not erase, the preceding counts and failure.
+Hosted verification of the correction is still required before publication is
+reported complete.

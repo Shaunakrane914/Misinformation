@@ -58,12 +58,14 @@ def analysis_stream(agent, callback, admission_lock):
             logger.info("[Analysis] id=%s agent=%s started", analysis_id, agent)
             result = jsonable_encoder(await callback())
             json.dumps(result, allow_nan=False)  # Fail inside the guarded task, not mid-stream.
-            enqueue("result", {"analysis_id": analysis_id, "completed": 3, "total": 3, "result": result})
+            # Use the SAME FIFO bridge as worker progress. Direct enqueue here
+            # can overtake call_soon_threadsafe callbacks on a fast completion.
+            loop.call_soon_threadsafe(enqueue, "result", {"analysis_id": analysis_id, "completed": 3, "total": 3, "result": result})
             logger.info("[Analysis] id=%s agent=%s completed elapsed_s=%.2f", analysis_id, agent, time.monotonic() - started)
         except Exception as error:
             code = error.status_code if isinstance(error, HTTPException) else 500
-            enqueue("error", {"analysis_id": analysis_id, "status": code,
-                              "message": "Agent is busy; wait before retrying." if code == 429 else "Research failed; no completed result is claimed."})
+            loop.call_soon_threadsafe(enqueue, "error", {"analysis_id": analysis_id, "status": code,
+                                                       "message": "Agent is busy; wait before retrying." if code == 429 else "Research failed; no completed result is claimed."})
             logger.warning("[Analysis] id=%s agent=%s failed type=%s status=%s", analysis_id, agent, type(error).__name__, code)
         finally:
             progress_observer.reset(token)

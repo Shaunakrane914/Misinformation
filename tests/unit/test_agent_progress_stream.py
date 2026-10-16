@@ -159,6 +159,19 @@ def test_concurrent_agents_keep_progress_request_local():
     asyncio.run(exercise())
 
 
+def test_immediate_result_cannot_overtake_scheduled_progress():
+    async def exercise():
+        async def immediate():
+            report_progress(phase="analysis", completed=1, total=3)
+            report_progress(phase="report", completed=2, total=3)
+            return {"sources": []}
+        response = research_stream.analysis_stream("scout", immediate, threading.Lock())
+        events = records("".join([message async for message in response.body_iterator]))
+        assert [event for event, _ in events] == ["progress", "progress", "progress", "result"]
+        assert [data["phase"] for _, data in events[:-1]] == ["accepted", "analysis", "report"]
+    asyncio.run(exercise())
+
+
 def test_failed_pipeline_step_is_not_counted_as_completed(monkeypatch):
     from backend.application.research import pipeline
     from backend.services.research.research_budget import ResearchBudget

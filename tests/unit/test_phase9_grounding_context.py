@@ -81,3 +81,10 @@ def test_other_identifier_is_not_a_refutation_of_the_requested_record():
     item = evidence("NIST rated CVE-2025-10001 a CVSS score of 9.8.")
     item.canonical_url = "https://nvd.nist.gov/vuln/detail/CVE-2025-10001"
     assert relation("NIST rated CVE-2025-10002 a CVSS score of 9.8.", "NIST", item)[0] == "NONE"
+
+
+def test_flattened_bibliographic_authors_are_not_part_of_the_title():
+    item = evidence("arXiv:1706.03762 Title: Attention Is All You Need Authors: A. Researcher, B. Scientist Abstract: A research abstract.")
+    item.canonical_url = "https://arxiv.org/abs/1706.03762"
+    assert relation("The title of arXiv paper 1706.03762 is Attention Is All You Need.", "arXiv", item)[0] == "SUPPORT"
+    assert relation("The title of arXiv paper 1706.03762 is Recurrence Is All You Need.", "arXiv", item)[0] == "CONTRADICT"

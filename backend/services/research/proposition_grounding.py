@@ -454,7 +454,7 @@ def relation(claim_text: str, entity: str, item: Any) -> Tuple[str, str]:
         # --- Axis F: Title Contradiction (arXiv / Papers) ---
         if "title" in claim_text.lower() and ("title" in passage.lower() or "arxiv" in passage.lower() or "authors" in passage.lower()):
             title_m_claim = re.search(r'\btitle\b.*?\bis\s+([^,.]+)', claim_text, re.I)
-            title_m_pass = re.search(r'\btitle:\s*([^,.]+)', passage, re.I)
+            title_m_pass = re.search(r'\btitle:\s*(.+?)(?=\s+(?:authors?|abstract|subjects|comments|journal reference)\s*:|[\r\n]|$)', passage, re.I)
             if title_m_claim and title_m_pass:
                 words_c = terms(title_m_claim.group(1)) - _META_WRAPPER_WORDS
                 words_p = terms(title_m_pass.group(1)) - _META_WRAPPER_WORDS

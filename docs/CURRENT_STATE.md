@@ -1,6 +1,10 @@
 # Current project state — 2026-10-14
 
-## Latest publication — 2026-10-15
+## Latest deployment verification — 2026-10-16
+
+The user's Git-ignored `.env` credential enabled authenticated verification: Render already deployed exact CI-green main commit `4b484c4` automatically. Public health responds and OpenAPI contains the extraction route. No duplicate deployment or secret/configuration change was made. Provider readiness remains `READY_UNVERIFIED`; operator writes fail closed because `ADMIN_API_TOKEN` is unconfigured. See the [Render verification handoff](handoffs/2026-10-16_RENDER_LIVE_VERIFICATION.md) for observed CORS/health-check configuration limitations. This supersedes the earlier deployment blocker, not the PARTIAL research acceptance.
+
+## Earlier publication snapshot — 2026-10-15
 
 User authorized main publication and deployment. Phase 9 checkpoint `cba5cb6` was pushed to main; all five hosted CI jobs passed (1,207 full-suite tests; 999 fast-suite tests on each of Python 3.11–3.13). The existing Cloudflare production frontend was deployed and seven public assets/pages matched the release bytes. Render health is 200 but its OpenAPI still lacks the extraction route; its CLI login is expired, so backend deployment is blocked. See the [publication handoff](handoffs/2026-10-15_MAIN_PUBLICATION_AND_DEPLOYMENT.md). Phase 9/research acceptance remains PARTIAL; source approval gates and protected historical data remain unchanged.
 

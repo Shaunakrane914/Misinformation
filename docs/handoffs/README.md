@@ -2,7 +2,11 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest: Main publication and deployment — 2026-10-15
+## Latest: Render live verification — 2026-10-16
+
+- [Render verification](2026-10-16_RENDER_LIVE_VERIFICATION.md): `.env` credential successfully accessed the exact backend. Render already had CI-green `4b484c4` live through automatic deployment; no duplicate deployment triggered. Health and extraction route verified publicly; readiness remains provider-unverified and operator writes are disabled because their separate token is unconfigured.
+
+## Previous: Main publication and deployment — 2026-10-15
 
 - [Publication and deployment handoff](2026-10-15_MAIN_PUBLICATION_AND_DEPLOYMENT.md): Phase 9 checkpoint pushed to main, exact-commit hosted CI green, existing Cloudflare frontend deployed and static bytes verified. Render is healthy but still exposes the older API; its CLI login is expired, so backend deployment remains blocked. No source approval gates were changed.
 

@@ -215,7 +215,10 @@ Hosted backend checkpoint `8c8b6c5` passed all five jobs:
 [run 38928988850](https://github.com/Shaunakrane914/Misinformation/actions/runs/38928988850).
 This includes Python 3.11–3.13 fast suites, full offline regression/persistence,
 fatal lint and frontend contracts. The later CSS/replay changes have separate
-publication verification; consult the handoff/closeout, not an assumed main merge.
+publication verification: full application/report commit `084aae3` passed all five
+jobs in [run 38933423125](https://github.com/Shaunakrane914/Misinformation/actions/runs/38933423125).
+See the [publication closeout](../handoffs/2026-10-16_PHASE9_REMEDIATION_CI_CLOSEOUT.md),
+not an assumed main merge or deployment.
 
 ## Highest-value remaining work
 

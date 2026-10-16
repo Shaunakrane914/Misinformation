@@ -4,6 +4,8 @@ Start here when resuming work. These are dated engineering records, not promises
 
 ## Latest implementation and verification: Phase 9 remediation — 2026-10-16
 
+- [Publication and CI closeout](2026-10-16_PHASE9_REMEDIATION_CI_CLOSEOUT.md): final application/report checkpoint `084aae3` is confirmed remote with all five hosted jobs successful. Later closeout is documentation-only. No merge/deployment or research acceptance.
+
 - [Continuation handoff](2026-10-16_PHASE9_REMEDIATION.md), [verification report](../testing/PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md) and [durable evidence](../testing/evidence/2026-10-16_phase9_remediation/README.md). Source-body/citation preservation, scoped grounding, conservative specialist output, truthful evaluation and rendered-card fixes. Local 1,285 full / 1,077 fast cases; backend hosted CI five jobs passed. **Phase 9 research acceptance FAIL / overall PARTIAL**: resolution regressed and eight of twelve final entity inputs acquired no records. No merge/deployment. Read the handoff before resuming.
 
 ## Previous diagnostic: Four-agent output audit — 2026-10-16

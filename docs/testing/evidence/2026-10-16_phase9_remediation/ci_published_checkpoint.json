@@ -1,0 +1,38 @@
+{
+  "headSha": "084aae39d0a1727a4509ed16968ecbcfd84050f1",
+  "url": "https://github.com/Shaunakrane914/Misinformation/actions/runs/38933423125",
+  "status": "completed",
+  "conclusion": "success",
+  "jobs": [
+    {
+      "name": "Fatal Python lint and frontend contracts",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Shaunakrane914/Misinformation/actions/runs/38933423125/job/117082829263"
+    },
+    {
+      "name": "Entire offline suite, persistence and release validators",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Shaunakrane914/Misinformation/actions/runs/38933423125/job/117083044794"
+    },
+    {
+      "name": "Unit, chaos and security (Python 3.13)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Shaunakrane914/Misinformation/actions/runs/38933423125/job/117083044849"
+    },
+    {
+      "name": "Unit, chaos and security (Python 3.12)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Shaunakrane914/Misinformation/actions/runs/38933423125/job/117083044975"
+    },
+    {
+      "name": "Unit, chaos and security (Python 3.11)",
+      "status": "completed",
+      "conclusion": "success",
+      "url": "https://github.com/Shaunakrane914/Misinformation/actions/runs/38933423125/job/117083045021"
+    }
+  ]
+}

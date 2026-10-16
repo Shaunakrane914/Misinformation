@@ -5,6 +5,8 @@
 **Phase 9 is NOT fully accepted. Do not merge or deploy as a finished release.**
 Read the [verification report](../testing/PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md)
 and [durable evidence index](../testing/evidence/2026-10-16_phase9_remediation/README.md).
+Publication of the full application/report checkpoint and exact-commit hosted CI
+is confirmed in the [CI closeout](2026-10-16_PHASE9_REMEDIATION_CI_CLOSEOUT.md).
 The implementation fixes security/evidence defects but does not establish the
 required increase in useful misinformation-verification coverage.
 

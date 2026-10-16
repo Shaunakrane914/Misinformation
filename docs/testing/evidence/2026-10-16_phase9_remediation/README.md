@@ -35,6 +35,8 @@ not. No production merge/deployment is represented here.
   re-rendered saved reports; they did not reacquire sources or measure accuracy.
 - [Hosted backend CI](ci_backend_checkpoint.json): five successful hosted jobs at
   exact SHA `8c8b6c5`. Later frontend/publication validation is recorded separately.
+- [Published full checkpoint CI](ci_published_checkpoint.json): all five jobs
+  successful at exact `084aae3`, including the final application/frontend fixes.
 
 Full event streams, raw responses, temporary dossiers and logs remain in a unique
 system-temp audit directory. They may be ephemeral; the maintained scripts and

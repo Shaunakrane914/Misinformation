@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const theme = require('node:fs').readFileSync(path.resolve(__dirname, '../../frontend/aegis-theme.css'), 'utf8');
 assert(theme.includes('minmax(min(100%, 320px), 1fr)'), 'Claim grid must shrink inside narrow cards; rendered clipping is separately tested');
+assert(theme.includes('grid-template-columns: repeat(3, minmax(0, 1fr))'), 'Evidence grid tracks must not expand to unbounded min-content widths');
 const { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest } = require(
   path.resolve(__dirname, '../../frontend/unified-report-renderer.js')
 );
@@ -77,12 +78,19 @@ renderUnifiedReport(inspectionMount, { evidence: { community: [{ title: 'Observe
   content_depth: 'METADATA', evidentiary_use: 'DISCOVERY_ONLY', captured_chars: 600,
   missing_fields: ['published_at'], provider_truncated: true, passages_omitted: 2,
   passages: [{ id: attack, start: 0, end: 25, text: attack }],
+  text_metrics: { raw_words: 200, raw_utf8_bytes: 4000, readable_words: 80, readable_utf8_bytes: 1250,
+    selection_method: attack, content_scope: 'article' },
+  source_observations: { answer_lookup_status: attack, content_license: 'CC BY-SA 4.0' },
 } }] } });
 assert(inspectionMount.innerHTML.includes('Inspect captured passages'));
 assert(inspectionMount.innerHTML.includes('Remote source completeness: unknown'));
 assert(inspectionMount.innerHTML.includes('published_at'));
 assert(inspectionMount.innerHTML.includes('was truncated'));
 assert(!inspectionMount.innerHTML.includes(attack));
+assert(inspectionMount.innerHTML.includes('Retained raw text: 200 words / 4.000 KB'));
+assert(inspectionMount.innerHTML.includes('Readable capture: 80 words / 1.250 KB'));
+assert(inspectionMount.innerHTML.includes('CC BY-SA 4.0'));
+assert(inspectionMount.innerHTML.includes('Text volume does not establish usefulness'));
 assert.equal(sourceReadRequest('javascript:alert(1)'), null);
 assert.equal(sourceReadRequest('https://x.com/jack/status/20').operation, 'status');
 assert.equal(sourceReadRequest('https://www.reddit.com/r/Python/comments/abc/').platform, 'reddit');

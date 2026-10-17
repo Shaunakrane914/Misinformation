@@ -1,0 +1,1628 @@
+[
+  {
+    "operation": "github.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 42167,
+      "raw_words": 4749,
+      "raw_utf8_bytes": 42167,
+      "readable_words": 4749,
+      "readable_utf8_bytes": 42167,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 939,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.issues",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 5842,
+      "raw_words": 710,
+      "raw_utf8_bytes": 5843,
+      "readable_words": 710,
+      "readable_utf8_bytes": 5843,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 776,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.prs",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1146,
+      "raw_words": 97,
+      "raw_utf8_bytes": 1146,
+      "readable_words": 97,
+      "readable_utf8_bytes": 1146,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1472,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.commits",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2897,
+      "raw_words": 302,
+      "raw_utf8_bytes": 2897,
+      "readable_words": 302,
+      "readable_utf8_bytes": 2897,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1580,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "github.releases",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2651,
+      "raw_words": 124,
+      "raw_utf8_bytes": 2651,
+      "readable_words": 124,
+      "readable_utf8_bytes": 2651,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 540,
+    "target_sha256": "1ddc14405196659658ad4c6fb446485c529f02953a04637c16265f34fa2d8ee6"
+  },
+  {
+    "operation": "youtube.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 2487,
+      "raw_words": 379,
+      "raw_utf8_bytes": 2546,
+      "readable_words": 379,
+      "readable_utf8_bytes": 2546,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 2813,
+    "target_sha256": "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93"
+  },
+  {
+    "operation": "youtube.transcript",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 4017,
+      "raw_words": 675,
+      "raw_utf8_bytes": 4263,
+      "readable_words": 675,
+      "readable_utf8_bytes": 4263,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 1,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 4208,
+    "target_sha256": "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93"
+  },
+  {
+    "operation": "youtube.comments",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 38,
+      "raw_words": 10,
+      "raw_utf8_bytes": 38,
+      "readable_words": 10,
+      "readable_utf8_bytes": 38,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 3651,
+    "target_sha256": "0424974c68530290458c8d58674e2637f65abc127057957d7b3acbd24c208f93"
+  },
+  {
+    "operation": "v2ex.latest",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 958,
+      "raw_words": 79,
+      "raw_utf8_bytes": 1978,
+      "readable_words": 79,
+      "readable_utf8_bytes": 1978,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 454,
+    "target_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "operation": "v2ex.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1007,
+      "raw_words": 95,
+      "raw_utf8_bytes": 2065,
+      "readable_words": 95,
+      "readable_utf8_bytes": 2065,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 243,
+    "target_sha256": "11a4a60b518bf24989d481468076e5d5982884626aed9faeb35b8576fcd223e1"
+  },
+  {
+    "operation": "v2ex.topic",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 1652,
+      "raw_words": 165,
+      "raw_utf8_bytes": 3622,
+      "readable_words": 165,
+      "readable_utf8_bytes": 3622,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 421,
+    "target_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  {
+    "operation": "v2ex.replies",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 148,
+      "raw_words": 19,
+      "raw_utf8_bytes": 314,
+      "readable_words": 19,
+      "readable_utf8_bytes": 314,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 179,
+    "target_sha256": "6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"
+  },
+  {
+    "operation": "web.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 2253,
+      "raw_words": 680,
+      "raw_utf8_bytes": 4616,
+      "readable_words": 333,
+      "readable_utf8_bytes": 2258,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 379,
+    "target_sha256": "9ad94f2841a20c5919a28241056635f7c783464367fc162ea0e25a2299f62f3d"
+  },
+  {
+    "operation": "rss.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "SYNDICATED_SUMMARY",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2521,
+      "raw_words": 374,
+      "raw_utf8_bytes": 2523,
+      "readable_words": 374,
+      "readable_utf8_bytes": 2523,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 2,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 492,
+    "target_sha256": "8453e2a872e7cbe3f9941ca712374b22ef41e7c3b4c60d952f3755c461d2407b"
+  },
+  {
+    "operation": "xiaoyuzhou.podcast",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 261,
+      "raw_words": 17,
+      "raw_utf8_bytes": 443,
+      "readable_words": 17,
+      "readable_utf8_bytes": 443,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 858,
+    "target_sha256": "cafc9e6cac1e50493c9a3d98d9f4be3e9fb7773c1aeeb4f5da4dc3a5429c9e7a"
+  },
+  {
+    "operation": "xiaoyuzhou.episodes",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 2348,
+      "raw_words": 116,
+      "raw_utf8_bytes": 4052,
+      "readable_words": 116,
+      "readable_utf8_bytes": 4052,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 708,
+    "target_sha256": "cafc9e6cac1e50493c9a3d98d9f4be3e9fb7773c1aeeb4f5da4dc3a5429c9e7a"
+  },
+  {
+    "operation": "reddit.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1269,
+      "raw_words": 211,
+      "raw_utf8_bytes": 1273,
+      "readable_words": 211,
+      "readable_utf8_bytes": 1273,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 3548,
+    "target_sha256": "0a67ec58213f0b712cc4ae14a6da0079a06bc9941095afec35ade2603ee10822"
+  },
+  {
+    "operation": "reddit.comments",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1269,
+      "raw_words": 211,
+      "raw_utf8_bytes": 1273,
+      "readable_words": 211,
+      "readable_utf8_bytes": 1273,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1,
+    "target_sha256": "0a67ec58213f0b712cc4ae14a6da0079a06bc9941095afec35ade2603ee10822"
+  },
+  {
+    "operation": "twitter.status",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 24,
+      "raw_words": 5,
+      "raw_utf8_bytes": 24,
+      "readable_words": 5,
+      "readable_utf8_bytes": 24,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 353,
+    "target_sha256": "2da49e2f7e72bf7bc5a0c2980d56217fd3d34b836df92cf3343d3af150224f7c"
+  },
+  {
+    "operation": "twitter.profile",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 129,
+      "raw_words": 16,
+      "raw_utf8_bytes": 133,
+      "readable_words": 16,
+      "readable_utf8_bytes": 133,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 354,
+    "target_sha256": "b6174dacc6ee05e736dc73da8ce4b97ac44d534bd33b857817def3633cb1f0db"
+  },
+  {
+    "operation": "hackernews.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 3,
+      "captured_chars": 1053,
+      "raw_words": 184,
+      "raw_utf8_bytes": 1053,
+      "readable_words": 184,
+      "readable_utf8_bytes": 1053,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 1
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 2057,
+    "target_sha256": "d5bacbb64f5915047d37c6a603214a35062270fa7e1524d4ef8b7ae6877f4149"
+  },
+  {
+    "operation": "hackernews.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 6,
+      "captured_chars": 2888,
+      "raw_words": 484,
+      "raw_utf8_bytes": 2888,
+      "readable_words": 484,
+      "readable_utf8_bytes": 2888,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 2
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 4547,
+    "target_sha256": "18885f27b5af9012df19e496460f9294d5ab76128824c6f993787004f6d9a7db"
+  },
+  {
+    "operation": "stackexchange.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 3,
+      "captured_chars": 13740,
+      "raw_words": 2319,
+      "raw_utf8_bytes": 13740,
+      "readable_words": 2319,
+      "readable_utf8_bytes": 13740,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1300,
+    "target_sha256": "af11bfff45a4254e274e8b13552280c6caa9b6f0a18ae94fb774704579fe470e"
+  },
+  {
+    "operation": "stackexchange.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 6,
+      "captured_chars": 21271,
+      "raw_words": 3548,
+      "raw_utf8_bytes": 21277,
+      "readable_words": 3548,
+      "readable_utf8_bytes": 21277,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 881,
+    "target_sha256": "9bb22bfcf77cafa91ee50fcee5abc3cec6d4aaf7997982407c0631ece01e74f9"
+  },
+  {
+    "operation": "sec_edgar.read",
+    "status": "CONFIG_REQUIRED",
+    "reason": null,
+    "outcome": "EMPTY",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 15,
+    "target_sha256": "1eb44d625271a4eb75016f276d13783617c012685cb598f20ae93249164c0121"
+  },
+  {
+    "operation": "nist_cve.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 713,
+      "raw_words": 103,
+      "raw_utf8_bytes": 713,
+      "readable_words": 103,
+      "readable_utf8_bytes": 713,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1270,
+    "target_sha256": "6254dc332644b00acecc0b5e850672f136444e06d1b70730dffff5484420383d"
+  },
+  {
+    "operation": "arxiv.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 1136,
+      "raw_words": 166,
+      "raw_utf8_bytes": 1136,
+      "readable_words": 166,
+      "readable_utf8_bytes": 1136,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 149,
+    "target_sha256": "d1462f6c8548b609b9403833215842d16d790d7a370e3e75be0f5f713553519c"
+  },
+  {
+    "operation": "fact_check.search",
+    "status": "AUTH_REQUIRED",
+    "reason": "AUTH_REQUIRED: GOOGLE_FACTCHECK_API_KEY is not configured",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 0,
+    "target_sha256": "f28d567cf5453b5cdf19411e9e8f3b827f46fffa6b4db5377bab0a90d271a524"
+  },
+  {
+    "operation": "arxiv.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 3730,
+      "raw_words": 514,
+      "raw_utf8_bytes": 3730,
+      "readable_words": 514,
+      "readable_utf8_bytes": 3730,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 145,
+    "target_sha256": "95d24a085819f47233b303ebd32b90bdd56b28ae606fc2165e53e4a3eb4437b4"
+  },
+  {
+    "operation": "bilibili.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 631,
+      "raw_words": 35,
+      "raw_utf8_bytes": 1431,
+      "readable_words": 35,
+      "readable_utf8_bytes": 1431,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 943,
+    "target_sha256": "18885f27b5af9012df19e496460f9294d5ab76128824c6f993787004f6d9a7db"
+  },
+  {
+    "operation": "boss.search_jobs",
+    "status": "AUTH_REQUIRED",
+    "reason": "AUTH_REQUIRED: BOSS_CDP_PORT is not configured",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1,
+    "target_sha256": "18885f27b5af9012df19e496460f9294d5ab76128824c6f993787004f6d9a7db"
+  },
+  {
+    "operation": "facebook.oembed",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 270,
+      "raw_words": 10,
+      "raw_utf8_bytes": 270,
+      "readable_words": 10,
+      "readable_utf8_bytes": 270,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1364,
+    "target_sha256": "d6939362b1f3dd58cbb27224253f608820a0bd38bb83513bc62797d5e724afbb"
+  },
+  {
+    "operation": "facebook.search",
+    "status": "AUTH_REQUIRED",
+    "reason": "AUTH_REQUIRED: FACEBOOK_COOKIE is not configured",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1,
+    "target_sha256": "8b7d1a3187ab355dc31bc683aaa71ab5ed217940c12196a9cd5f4ca984babfa4"
+  },
+  {
+    "operation": "github.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 284,
+      "raw_words": 23,
+      "raw_utf8_bytes": 284,
+      "readable_words": 23,
+      "readable_utf8_bytes": 284,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 2,
+        "published_at": 2,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 593,
+    "target_sha256": "3dc0667a9cd9aea6cb8ba84f463d6448a55bb90cc53879c7d0db0780a23a39b4"
+  },
+  {
+    "operation": "instagram.oembed",
+    "status": "DEGRADED",
+    "reason": null,
+    "outcome": "EMPTY",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1119,
+    "target_sha256": "e905cb66afefb5f45a8c99088dcdea7c3fd3d5b0319d8c618ce90d6bd56d0d62"
+  },
+  {
+    "operation": "instagram.search",
+    "status": "AUTH_REQUIRED",
+    "reason": "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 2,
+    "target_sha256": "8b7d1a3187ab355dc31bc683aaa71ab5ed217940c12196a9cd5f4ca984babfa4"
+  },
+  {
+    "operation": "jina_reader.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 2253,
+      "raw_words": 680,
+      "raw_utf8_bytes": 4616,
+      "readable_words": 333,
+      "readable_utf8_bytes": 2258,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 253,
+    "target_sha256": "9ad94f2841a20c5919a28241056635f7c783464367fc162ea0e25a2299f62f3d"
+  },
+  {
+    "operation": "linkedin.jobs",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 559,
+      "raw_words": 30,
+      "raw_utf8_bytes": 559,
+      "readable_words": 30,
+      "readable_utf8_bytes": 559,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1097,
+    "target_sha256": "7a95380c7102b9ed80c3f7abfdc1f370b9c8e4496e699d57dd44a1ee6e37b957"
+  },
+  {
+    "operation": "news.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "SYNDICATED_SUMMARY",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 360,
+      "raw_words": 62,
+      "raw_utf8_bytes": 360,
+      "readable_words": 62,
+      "readable_utf8_bytes": 360,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 2,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1056,
+    "target_sha256": "8b7d1a3187ab355dc31bc683aaa71ab5ed217940c12196a9cd5f4ca984babfa4"
+  },
+  {
+    "operation": "nist_cve.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 675,
+      "raw_words": 104,
+      "raw_utf8_bytes": 675,
+      "readable_words": 104,
+      "readable_utf8_bytes": 675,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1053,
+    "target_sha256": "240a47d30f331e84cabb2c1a9f60fb39f6ed8f749bb20bbaf7993387374800f6"
+  },
+  {
+    "operation": "reddit.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1096,
+      "raw_words": 215,
+      "raw_utf8_bytes": 1098,
+      "readable_words": 215,
+      "readable_utf8_bytes": 1098,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 15850,
+    "target_sha256": "18885f27b5af9012df19e496460f9294d5ab76128824c6f993787004f6d9a7db"
+  },
+  {
+    "operation": "rss.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "SYNDICATED_SUMMARY",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 214,
+      "raw_words": 32,
+      "raw_utf8_bytes": 214,
+      "readable_words": 32,
+      "readable_utf8_bytes": 214,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 2,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 618,
+    "target_sha256": "8b7d1a3187ab355dc31bc683aaa71ab5ed217940c12196a9cd5f4ca984babfa4"
+  },
+  {
+    "operation": "sec_edgar.search",
+    "status": "CONFIG_REQUIRED",
+    "reason": null,
+    "outcome": "EMPTY",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 0,
+    "target_sha256": "1eb44d625271a4eb75016f276d13783617c012685cb598f20ae93249164c0121"
+  },
+  {
+    "operation": "twitter.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 24,
+      "raw_words": 5,
+      "raw_utf8_bytes": 24,
+      "readable_words": 5,
+      "readable_utf8_bytes": 24,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1,
+    "target_sha256": "2da49e2f7e72bf7bc5a0c2980d56217fd3d34b836df92cf3343d3af150224f7c"
+  },
+  {
+    "operation": "twitter.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 129,
+      "raw_words": 16,
+      "raw_utf8_bytes": 133,
+      "readable_words": 16,
+      "readable_utf8_bytes": 133,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 363,
+    "target_sha256": "8b7d1a3187ab355dc31bc683aaa71ab5ed217940c12196a9cd5f4ca984babfa4"
+  },
+  {
+    "operation": "v2ex.hot",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 386,
+      "raw_words": 14,
+      "raw_utf8_bytes": 1076,
+      "readable_words": 14,
+      "readable_utf8_bytes": 1076,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 182,
+    "target_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  {
+    "operation": "web.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "SEARCH_INDEX_DISCOVERY",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 415,
+      "raw_words": 60,
+      "raw_utf8_bytes": 419,
+      "readable_words": 60,
+      "readable_utf8_bytes": 419,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 2,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 362,
+    "target_sha256": "6c4f236543b506f9153219ab5e9711a9bd0d059c38a167599137ca14e99a7dca"
+  },
+  {
+    "operation": "web_search.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "SEARCH_INDEX_DISCOVERY",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 406,
+      "raw_words": 59,
+      "raw_utf8_bytes": 410,
+      "readable_words": 59,
+      "readable_utf8_bytes": 410,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 2,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 392,
+    "target_sha256": "6c4f236543b506f9153219ab5e9711a9bd0d059c38a167599137ca14e99a7dca"
+  },
+  {
+    "operation": "xiaohongshu.search",
+    "status": "AUTH_REQUIRED",
+    "reason": "AUTH_REQUIRED: XIAOHONGSHU_COOKIE is not configured",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 0,
+    "target_sha256": "e91fadf24f78c081972a2015146e9b7ad4636bb5a208f5733b54ee4407682078"
+  },
+  {
+    "operation": "xiaoyuzhou.search",
+    "status": "DEGRADED",
+    "reason": null,
+    "outcome": "EMPTY",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 375,
+    "target_sha256": "e91fadf24f78c081972a2015146e9b7ad4636bb5a208f5733b54ee4407682078"
+  },
+  {
+    "operation": "xueqiu.search",
+    "status": "AUTH_REQUIRED",
+    "reason": "AUTH_REQUIRED: XUEQIU_COOKIE is not configured",
+    "outcome": "EXCLUDED",
+    "network_observed": false,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 0,
+      "captured_chars": 0,
+      "raw_words": 0,
+      "raw_utf8_bytes": 0,
+      "readable_words": 0,
+      "readable_utf8_bytes": 0,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1,
+    "target_sha256": "1eb44d625271a4eb75016f276d13783617c012685cb598f20ae93249164c0121"
+  },
+  {
+    "operation": "youtube.search",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 451,
+      "raw_words": 72,
+      "raw_utf8_bytes": 455,
+      "readable_words": 72,
+      "readable_utf8_bytes": 455,
+      "discovery_only_items": 2,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 2,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1677,
+    "target_sha256": "ade54bc3a1224406268696feffbded14bce63737ca092b79c7b832994d8190d1"
+  }
+]

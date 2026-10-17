@@ -1,0 +1,258 @@
+[
+  {
+    "operation": "web.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 2253,
+      "raw_words": 680,
+      "raw_utf8_bytes": 4616,
+      "readable_words": 333,
+      "readable_utf8_bytes": 2258,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 1,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 831,
+    "target_sha256": "9ad94f2841a20c5919a28241056635f7c783464367fc162ea0e25a2299f62f3d"
+  },
+  {
+    "operation": "reddit.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 1260,
+      "raw_words": 210,
+      "raw_utf8_bytes": 1264,
+      "readable_words": 210,
+      "readable_utf8_bytes": 1264,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 1
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 3621,
+    "target_sha256": "0a67ec58213f0b712cc4ae14a6da0079a06bc9941095afec35ade2603ee10822"
+  },
+  {
+    "operation": "reddit.comments",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 2,
+      "captured_chars": 21,
+      "raw_words": 4,
+      "raw_utf8_bytes": 21,
+      "readable_words": 4,
+      "readable_utf8_bytes": 21,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 1
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1352,
+    "target_sha256": "0a67ec58213f0b712cc4ae14a6da0079a06bc9941095afec35ade2603ee10822"
+  },
+  {
+    "operation": "twitter.status",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 24,
+      "raw_words": 5,
+      "raw_utf8_bytes": 24,
+      "readable_words": 5,
+      "readable_utf8_bytes": 24,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 344,
+    "target_sha256": "2da49e2f7e72bf7bc5a0c2980d56217fd3d34b836df92cf3343d3af150224f7c"
+  },
+  {
+    "operation": "twitter.profile",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_METADATA",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 129,
+      "raw_words": 16,
+      "raw_utf8_bytes": 133,
+      "readable_words": 16,
+      "readable_utf8_bytes": 133,
+      "discovery_only_items": 1,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 1,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 587,
+    "target_sha256": "b6174dacc6ee05e736dc73da8ce4b97ac44d534bd33b857817def3633cb1f0db"
+  },
+  {
+    "operation": "stackexchange.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "DIRECT_CONTENT",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 3,
+      "captured_chars": 13740,
+      "raw_words": 2319,
+      "raw_utf8_bytes": 13740,
+      "readable_words": 2319,
+      "readable_utf8_bytes": 13740,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 825,
+    "target_sha256": "af11bfff45a4254e274e8b13552280c6caa9b6f0a18ae94fb774704579fe470e"
+  },
+  {
+    "operation": "nist_cve.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 713,
+      "raw_words": 103,
+      "raw_utf8_bytes": 713,
+      "readable_words": 103,
+      "readable_utf8_bytes": 713,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 1358,
+    "target_sha256": "6254dc332644b00acecc0b5e850672f136444e06d1b70730dffff5484420383d"
+  },
+  {
+    "operation": "arxiv.read",
+    "status": "SUCCESS",
+    "reason": null,
+    "outcome": "PARTIAL_OR_UNCLASSIFIED",
+    "network_observed": true,
+    "http_statuses": [
+      200
+    ],
+    "metrics": {
+      "schema_version": "captured-evidence-v1",
+      "items": 1,
+      "captured_chars": 1136,
+      "raw_words": 166,
+      "raw_utf8_bytes": 1136,
+      "readable_words": 166,
+      "readable_utf8_bytes": 1136,
+      "discovery_only_items": 0,
+      "missing_field_counts": {
+        "title": 0,
+        "url": 0,
+        "author": 0,
+        "published_at": 0,
+        "captured_text": 0
+      },
+      "inspections_truncated": 0,
+      "source_completeness": "UNKNOWN",
+      "claim_accuracy": null
+    },
+    "latency_ms": 174,
+    "target_sha256": "d1462f6c8548b609b9403833215842d16d790d7a370e3e75be0f5f713553519c"
+  }
+]

@@ -4,7 +4,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 ## Next coding agent: start here
 
-Current development checkpoint: [Phase 9 remediation handoff](handoffs/2026-10-16_PHASE9_REMEDIATION.md), [verification report](testing/PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md) and [actual evidence](testing/evidence/2026-10-16_phase9_remediation/README.md). Regression checks pass; research acceptance does not. This dedicated branch is not merged/deployed or a completed Phase 9.
+Current development checkpoint: [source-text pipeline handoff](handoffs/2026-10-17_SOURCE_TEXT_PIPELINE.md), [52-operation review](testing/SOURCE_TEXT_PIPELINE_REVIEW_2026-10-17.md) and [actual evidence](testing/evidence/2026-10-17_source_text_pipeline/README.md). Local 1,309 full / 1,101 fast cases pass; eight of twelve native entity inputs still acquire no records. This dedicated branch is not merged/deployed or a completed Phase 9. [Previous remediation evidence](testing/PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md) remains historical context.
 
 Next-phase proposal: [Phase 9 — Evidence Depth & Strategic Investigation Workbench](architecture/PHASE9_EVIDENCE_DEPTH_AND_STRATEGIC_WORKBENCH_PLAN.md), dated 2026-10-15. This is a plan, not implemented capability or Phase 8 acceptance.
 

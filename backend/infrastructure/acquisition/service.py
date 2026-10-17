@@ -421,7 +421,7 @@ class AgentReachService:
         # 2. Source Article Reading (if provided)
         source_doc = None
         if source_url:
-            source_doc = _read_with_deadline(source_url)
+            source_doc = _read_with_deadline(source_url, max_chars=max_read_chars)
 
         # 3. Channel Telemetry Setup
         channel_telemetry_map: Dict[str, ChannelTelemetry] = {}

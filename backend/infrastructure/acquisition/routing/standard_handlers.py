@@ -533,6 +533,8 @@ class StandardChannelHandlers:
                 "backend": result.get("backend", "Jina Reader"),
                 "char_count": len(content),
                 "page_metadata": result.get("page_metadata") or {},
+                "raw_capture": result.get("raw_capture") or {},
+                "truncated": result.get("truncated"),
                 "observed_final_endpoint": (result.get("transport") or {}).get("endpoint"),
                 "transport": result.get("transport"),
             },
@@ -793,6 +795,7 @@ class StandardChannelHandlers:
         fragments, observed = acquire_community(
             platform, query, limit, operation=kwargs.get("operation", "search"), page=kwargs.get("page", 1),
             include_comments=kwargs.get("include_comments", False),
+            include_answers=kwargs.get("include_answers", False),
         )
         telemetry.update(observed)
         for fragment in fragments:

@@ -1,0 +1,860 @@
+{
+  "scope": "Actual Chromium page buttons to real local backend SSE; 12 new acquisitions, no response or progress stubs. 390/1440px screenshots share one result per input. Startup lifespan/background ingestion off; remote persistence and notifications disabled; external fonts blocked; actual pinned Chart.js served from saved bytes.",
+  "configured_gemini_credentials": 1,
+  "mock_llm": false,
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "TATAMOTORS.NS",
+      "elapsed_seconds": 13.02,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 1,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 20,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 20,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "01-scout-390-full.png",
+            "01-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 20,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "01-scout-1440-full.png",
+            "01-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/scout/analyze/stream",
+          "body": {
+            "ticker": "TATAMOTORS.NS"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "02-scout",
+      "agent": "scout",
+      "input": "INFY.NS",
+      "elapsed_seconds": 26.42,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 3,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 13,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 13,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "02-scout-390-full.png",
+            "02-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 13,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "02-scout-1440-full.png",
+            "02-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/scout/analyze/stream",
+          "body": {
+            "ticker": "INFY.NS"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "03-scout",
+      "agent": "scout",
+      "input": "AAPL",
+      "elapsed_seconds": 17.83,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 2,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 3,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 3,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "03-scout-390-full.png",
+            "03-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 3,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "03-scout-1440-full.png",
+            "03-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/scout/analyze/stream",
+          "body": {
+            "ticker": "AAPL"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "04-trending",
+      "agent": "trending",
+      "input": "OpenAI",
+      "elapsed_seconds": 1.66,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 0,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "04-trending-390-full.png",
+            "04-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "04-trending-1440-full.png",
+            "04-trending-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/trending/scan/stream",
+          "body": {
+            "asset_name": "OpenAI",
+            "query": "OpenAI",
+            "category": "technology",
+            "mode": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "05-trending",
+      "agent": "trending",
+      "input": "NVIDIA",
+      "elapsed_seconds": 1.65,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 0,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "05-trending-390-full.png",
+            "05-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "05-trending-1440-full.png",
+            "05-trending-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/trending/scan/stream",
+          "body": {
+            "asset_name": "NVIDIA",
+            "query": "NVIDIA",
+            "category": "technology",
+            "mode": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "06-trending",
+      "agent": "trending",
+      "input": "electric vehicles",
+      "elapsed_seconds": 1.65,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 0,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "06-trending-390-full.png",
+            "06-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "06-trending-1440-full.png",
+            "06-trending-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/trending/scan/stream",
+          "body": {
+            "asset_name": "electric vehicles",
+            "query": "electric vehicles",
+            "category": "business",
+            "mode": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "07-brandshield",
+      "agent": "brandshield",
+      "input": "Nike",
+      "elapsed_seconds": 7.18,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 1,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 5,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 5,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "07-brandshield-390-full.png",
+            "07-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 5,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "07-brandshield-1440-full.png",
+            "07-brandshield-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/brandshield/scan/stream",
+          "body": {
+            "brand_name": "Nike",
+            "query": "Nike"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "08-brandshield",
+      "agent": "brandshield",
+      "input": "Apple",
+      "elapsed_seconds": 14.59,
+      "http_status": 200,
+      "retained_native_records": 2,
+      "retained_text_words": 319,
+      "retained_text_kb": 1.837,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 2,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 1,
+      "acquired_records": 2,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "08-brandshield-390-full.png",
+            "08-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "08-brandshield-1440-full.png",
+            "08-brandshield-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/brandshield/scan/stream",
+          "body": {
+            "brand_name": "Apple",
+            "query": "Apple"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "09-brandshield",
+      "agent": "brandshield",
+      "input": "Tata Motors",
+      "elapsed_seconds": 1.41,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 0,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "09-brandshield-390-full.png",
+            "09-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "09-brandshield-1440-full.png",
+            "09-brandshield-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/brandshield/scan/stream",
+          "body": {
+            "brand_name": "Tata Motors",
+            "query": "Tata Motors"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "10-personal_watch",
+      "agent": "personal_watch",
+      "input": "Sam Altman",
+      "elapsed_seconds": 14.77,
+      "http_status": 200,
+      "retained_native_records": 1,
+      "retained_text_words": 18,
+      "retained_text_kb": 0.101,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 2,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 1,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "10-personal_watch-390-full.png",
+            "10-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "10-personal_watch-1440-full.png",
+            "10-personal_watch-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/personal/scan/stream",
+          "body": {
+            "name": "Sam Altman",
+            "category": "public_figure",
+            "official_handles": {},
+            "aliases": []
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "11-personal_watch",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "elapsed_seconds": 19.49,
+      "http_status": 200,
+      "retained_native_records": 1,
+      "retained_text_words": 8,
+      "retained_text_kb": 0.059,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 2,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 1,
+      "discovery_records": 12,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 12,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "11-personal_watch-390-full.png",
+            "11-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 12,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "11-personal_watch-1440-full.png",
+            "11-personal_watch-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/personal/scan/stream",
+          "body": {
+            "name": "Tim Cook",
+            "category": "public_figure",
+            "official_handles": {},
+            "aliases": []
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "12-personal_watch",
+      "agent": "personal_watch",
+      "input": "Satya Nadella",
+      "elapsed_seconds": 18.45,
+      "http_status": 200,
+      "retained_native_records": 1,
+      "retained_text_words": 10,
+      "retained_text_kb": 0.073,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 3,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 0,
+      "acquired_records": 1,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "12-personal_watch-390-full.png",
+            "12-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "12-personal_watch-1440-full.png",
+            "12-personal_watch-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/personal/scan/stream",
+          "body": {
+            "name": "Satya Nadella",
+            "category": "public_figure",
+            "official_handles": {},
+            "aliases": []
+          }
+        }
+      ]
+    }
+  ],
+  "head": "77f8ec4612317c6eec6bbbb49ccd17eb522138ef",
+  "dirty_source": true,
+  "application_sha256": "095aa95d56902e4f814ac40c17f2849f55df3476d3a8e71d3121a7335691b2c7",
+  "llm_timeout_seconds": 5.0,
+  "llm_max_retries": 1,
+  "chart_sha256": "d2af8974e95271638772e9e9524db5b9a6f58d6ec2d5d781400447b4a31c681e",
+  "independent_entailment_accuracy": null,
+  "retrieval_recall": null,
+  "mode": "LIVE_BROWSER_BACKEND",
+  "application_unchanged_during_run": true
+}

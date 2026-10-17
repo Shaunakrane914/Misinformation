@@ -8,6 +8,7 @@ Enforces caching via SocialCache and exponential backoff on retryable 422/429/50
 """
 
 import json
+import hashlib
 import copy
 import html
 import logging
@@ -32,6 +33,7 @@ from backend.services.agent_reach.native.cache import social_cache
 from backend.services.agent_reach.native.normalizer import native_normalizer
 from backend.services.agent_reach.native.source_discovery import extract_reddit_source
 from backend.services.url_validator import validate_url_safe
+from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http
 
 logger = logging.getLogger(__name__)
 
@@ -227,6 +229,11 @@ def fetch_arctic_shift_comments(
 ) -> List[EvidenceFragment]:
     """Fetch comments for a known Reddit submission via Arctic Shift REST API."""
     clean_pid = post_id.replace("t3_", "").strip()
+    if not re.fullmatch(r"[a-z0-9]{1,12}", clean_pid, re.I):
+        return []
+    limit = min(50, max(0, int(limit)))
+    if not limit:
+        return []
     link_id = f"t3_{clean_pid}"
     cache_key = f"reddit:comments:{clean_pid}:{limit}"
     get_c = cache_get or social_cache.get
@@ -241,37 +248,24 @@ def fetch_arctic_shift_comments(
         return cached_copy
 
     url = f"{ARCTIC_SHIFT_BASE}/comments/search?link_id={link_id}&limit={min(limit, 50)}&sort=desc"
-    req = urllib.request.Request(
-        url,
-        headers={
-            "User-Agent": "AegisAgentReach/3.0 (Zero-Auth Public Evidence Mirror)",
-            "Accept": "application/json",
-        },
-    )
     try:
-        request_started = time.perf_counter()
-        with urllib.request.urlopen(req, timeout=3.0) as resp:
-            raw_body = resp.read()
-            data = json.loads(raw_body.decode("utf-8"))
-            comments = data.get("data", [])
-            frags = native_normalizer.normalize_arctic_shift_comments(
-                comments, query_id=query_id, query_class=query_class, query_text=query_text
-            )
-            if frags:
-                transport = {
-                    "network_observed_this_attempt": True,
-                    "endpoint": url,
-                    "http_status": getattr(resp, "status", None),
-                    "content_type": resp.headers.get("Content-Type") if getattr(resp, "headers", None) else None,
-                    "raw_body_bytes": len(raw_body),
-                    "network_latency_ms": int((time.perf_counter() - request_started) * 1000),
-                    "cache_status": "CACHE_MISS",
-                    "rate_limit_remaining": resp.headers.get("X-Ratelimit-Remaining") if getattr(resp, "headers", None) else None,
-                }
-                for fragment in frags:
-                    fragment.raw_metadata["transport"] = dict(transport)
-                set_c(cache_key, frags)
-                return frags
+        response = fetch_public_http(url, timeout=3.0, max_bytes=1_000_000, headers={
+            "User-Agent": "AegisAgentReach/3.0", "Accept": "application/json", "Accept-Encoding": "identity"})
+        data = json.loads(decode_bounded_http_body(response).decode("utf-8"))
+        comments = [comment for comment in data.get("data", [])[:limit]
+                    if isinstance(comment, dict) and comment.get("link_id") == link_id]
+        frags = native_normalizer.normalize_arctic_shift_comments(
+            comments, query_id=query_id, query_class=query_class, query_text=query_text)
+        if frags:
+            transport = {"network_observed_this_attempt": True, "endpoint": response.endpoint,
+                         "http_status": response.status_code, "content_type": response.content_type,
+                         "raw_body_bytes": len(response.body),
+                         "raw_body_sha256": hashlib.sha256(response.body).hexdigest(),
+                         "network_latency_ms": response.latency_ms, "cache_status": "CACHE_MISS"}
+            for fragment in frags:
+                fragment.raw_metadata["transport"] = dict(transport)
+            set_c(cache_key, frags)
+            return frags
     except Exception as e:
         logger.debug(f"[RedditAdapter] Arctic Shift comments fetch failed for {clean_pid}: {e}")
     return []

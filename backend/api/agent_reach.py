@@ -110,7 +110,7 @@ def agent_reach_extract(request: AgentReachExtractRequest):
     options = {"max_chars": request.max_chars}
     if request.mode == "deep":
         options.update(include_comments=True, comment_limit=3, include_files=True,
-                       file_limit=3, follow_linked_article=True)
+                       file_limit=3, follow_linked_article=True, include_answers=True)
     try:
         fragments, telemetry = native_router.execute_channel_query(
             platform=platform, operation=request.operation, query=request.query,

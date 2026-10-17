@@ -1,7 +1,8 @@
 """Repeat bounded production extraction probes; never silently optimize on labels.
 
 Live traffic is explicit. Every run writes a new directory, retains aggregate
-field/depth observations rather than raw bodies, and discloses dirty source.
+field/depth observations by default, and discloses dirty source. Public text
+samples require --capture-samples and remain separately bounded research data.
 Use --rounds/--interval-seconds for continuous sampling, not an unbounded crawler.
 """
 from __future__ import annotations
@@ -9,6 +10,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 import time
@@ -20,17 +22,18 @@ sys.path.insert(0, str(ROOT))
 
 from backend.schemas.evidence_inspection import summarize_inspections
 from backend.infrastructure.acquisition.routing.router import NativeRouter
+from backend.services.agent_reach.native.operation_capabilities import EXECUTABLE_CAPABILITIES
 from scripts.audits.run_phase8_live_acquisition_audit import PROBES, PROTECTED_OPERATIONS
 
 
-def probe_specs():
+def probe_specs(all_operations=False):
     seen = set()
     specs = []
     for spec in PROBES:
         if spec.operation not in seen:
             specs.append((spec.operation, spec.target))
             seen.add(spec.operation)
-    return specs + [
+    specs += [
         ("reddit.read", "https://www.reddit.com/r/IAmA/comments/z1c9z/i_am_barack_obama/"),
         ("reddit.comments", "https://www.reddit.com/r/IAmA/comments/z1c9z/i_am_barack_obama/"),
         ("twitter.status", "https://x.com/jack/status/20"),
@@ -44,6 +47,38 @@ def probe_specs():
         ("arxiv.read", "1706.03762"),
         ("fact_check.search", "climate change"),
     ]
+    if all_operations:
+        # Fixed public samples, not credentials, guessed private endpoints or
+        # held-out benchmark cases. Policy/credential decisions stay upstream.
+        defaults = {
+            "news": "OpenAI", "web": "OpenAI official announcements",
+            "web_search": "OpenAI official announcements",
+            "jina_reader": "https://www.python.org/about/",
+            "rss": "OpenAI", "github": "openai/openai-python",
+            "youtube": "Python programming", "v2ex": "python",
+            "bilibili": "Python", "reddit": "Python",
+            "twitter": "OpenAI", "linkedin": "Python developer",
+            "xueqiu": "AAPL", "xiaohongshu": "technology",
+            "instagram": "OpenAI", "facebook": "OpenAI", "boss": "Python",
+            "xiaoyuzhou": "technology", "sec_edgar": "AAPL",
+            "nist_cve": "Log4j", "arxiv": "attention transformer",
+            "fact_check": "climate change", "hackernews": "Python",
+            "stackexchange": "python generator",
+        }
+        overrides = {
+            "github.search": "misinformation verification", "v2ex.hot": "",
+            "twitter.read": "https://x.com/jack/status/20",
+            # oEmbed requires an explicit public object, not a search string.
+            "instagram.oembed": "https://www.instagram.com/p/CxJgZZXu99M/",
+            "facebook.oembed": "https://www.facebook.com/Meta/posts/10153231379946729",
+        }
+        present = {operation for operation, _ in specs}
+        for channel, actions in sorted(EXECUTABLE_CAPABILITIES.items()):
+            for action in sorted(actions):
+                operation = f"{channel}.{action}"
+                if operation not in present:
+                    specs.append((operation, overrides.get(operation, defaults[channel])))
+    return specs
 
 
 def git(*args):
@@ -62,7 +97,7 @@ def source_fingerprint():
     return digest.hexdigest()
 
 
-def run_round(router, specs, limit, deep):
+def run_round(router, specs, limit, deep, capture_directory=None):
     records = []
     for operation, target in specs:
         channel, action = operation.split(".", 1)
@@ -78,6 +113,8 @@ def run_round(router, specs, limit, deep):
                 options.update(max_chars=12000)
             elif channel == "hackernews":
                 options.update(include_comments=True)
+            elif channel == "stackexchange":
+                options.update(include_answers=True)
         started = time.monotonic()
         try:
             fragments, telemetry = router.execute_channel_query(
@@ -88,6 +125,23 @@ def run_round(router, specs, limit, deep):
                       "outcome": telemetry.get("outcome"), "network_observed": telemetry.get("network_observed", False),
                       "http_statuses": telemetry.get("http_statuses", []),
                       "metrics": summarize_inspections(fragments)}
+            if capture_directory is not None:
+                from backend.schemas.evidence_inspection import inspect_evidence
+                samples = []
+                for fragment in fragments[:limit]:
+                    content = fragment.content or fragment.snippet or ""
+                    metadata = fragment.raw_metadata or {}
+                    raw = metadata.get("raw_capture") or {}
+                    samples.append({
+                        "title": fragment.title, "content_depth": fragment.content_depth,
+                        "captured_text": content[:100_000],
+                        "raw_text": str(raw.get("text", content))[:100_000],
+                        "sample_truncated": len(content) > 100_000,
+                        "inspection": inspect_evidence(fragment),
+                    })
+                target_id = hashlib.sha256(target.encode()).hexdigest()[:12]
+                (capture_directory / f"{operation}_{target_id}.json").write_text(
+                    json.dumps(samples, ensure_ascii=False, indent=2), encoding="utf-8")
         except Exception as error:
             # Do not persist arbitrary exception messages or provider payloads.
             record = {"operation": operation, "status": "FAILED", "error_type": type(error).__name__,
@@ -107,6 +161,10 @@ def main():
     parser.add_argument("--interval-seconds", type=float, default=60.0)
     parser.add_argument("--limit", type=int, choices=(1, 2, 3), default=2)
     parser.add_argument("--deep", action="store_true")
+    parser.add_argument("--all-operations", action="store_true", help="Sample every executable operation, including blocked ones")
+    parser.add_argument("--capture-samples", action="store_true", help="Retain bounded public source text in the new output tree; treat as research data")
+    parser.add_argument("--extra-web-url", action="append", default=[], help="Up to five explicit supplemental public page reads; normal SSRF rules apply")
+    parser.add_argument("--env-file", type=Path, help="Optional existing server config; import only source access settings, never write secrets")
     parser.add_argument("--operations", help="Comma-separated exact operations; unknown operations are rejected")
     parser.add_argument("--output-root", type=Path, required=True)
     args = parser.parse_args()
@@ -114,13 +172,23 @@ def main():
         parser.error("Live probes require --allow-live; offline regression is pytest")
     if not 60 <= args.interval_seconds <= 3600:
         parser.error("Interval must be 60–3600 seconds to avoid rapid repeat requests")
-    specs = probe_specs()
+    if args.env_file:
+        from dotenv import dotenv_values
+        from backend.services.agent_reach.native.operation_capabilities import CHANNEL_AUTH_ENVIRONMENT
+        allowed = set(CHANNEL_AUTH_ENVIRONMENT.values()) | {"REDDIT_APPROVED_ACCESS", "SEC_USER_AGENT"}
+        for key, value in dotenv_values(args.env_file).items():
+            if key in allowed and value is not None:
+                os.environ.setdefault(key, value)
+    specs = probe_specs(args.all_operations)
     if args.operations:
         selected = set(args.operations.split(","))
         unknown = selected - {operation for operation, _ in specs}
         if unknown:
             parser.error("Unknown operation filter")
         specs = [spec for spec in specs if spec[0] in selected]
+    if len(args.extra_web_url) > 5:
+        parser.error("At most five supplemental public page URLs")
+    specs.extend(("web.read", url) for url in args.extra_web_url)
     source = Path(sys.modules[NativeRouter.__module__].__file__).resolve()
     if not source.is_relative_to(ROOT):
         raise RuntimeError("Refusing to audit an editable-installed different checkout")
@@ -134,19 +202,29 @@ def main():
         "rounds": args.rounds, "interval_seconds": args.interval_seconds,
         "limit": args.limit, "deep": args.deep,
         "operations": [operation for operation, _ in specs],
-        "policy": "Bounded public samples; no raw bodies retained; no accuracy/completeness claim",
+        "supplemental_public_urls": args.extra_web_url,
+        "policy": "Bounded public samples; no accuracy/completeness claim",
+        "captures_public_text": args.capture_samples,
+        "explicit_env_file_used": bool(args.env_file),
+        "reddit_approved_access_flag": os.getenv("REDDIT_APPROVED_ACCESS", "false").lower() in {"1", "true", "yes"},
+        "access_note": "Operator configuration observation only, not independent provider authorization",
     }, indent=2), encoding="utf-8")
     router = NativeRouter()
     all_rounds = []
     for index in range(args.rounds):
         if index:
             time.sleep(args.interval_seconds)
-        records = run_round(router, specs, args.limit, args.deep)
+        capture_directory = directory / f"samples_{index + 1}" if args.capture_samples else None
+        if capture_directory:
+            capture_directory.mkdir()
+        records = run_round(router, specs, args.limit, args.deep, capture_directory)
         all_rounds.append(records)
         (directory / f"round_{index + 1}.json").write_text(json.dumps(records, indent=2), encoding="utf-8")
     last = all_rounds[-1]
     successful = {record["operation"] for record in last if record["metrics"]["items"] > 0}
+    unchanged = source_fingerprint() == json.loads((directory / "metadata.json").read_text(encoding="utf-8"))["source_tree_sha256"]
     summary = {
+        "source_unchanged_during_run": unchanged,
         "sample_gate": "PASS" if set(PROTECTED_OPERATIONS) <= successful else "PARTIAL",
         "sample_gate_scope": "16 protected operations only, bounded examples",
         "all_requested_sources_gate": "PASS" if len(successful) == len(specs) else "PARTIAL",
@@ -160,7 +238,7 @@ def main():
     print(directory.as_posix(), flush=True)
     print(json.dumps(summary), flush=True)
     # A completed sampling loop is distinct from a passing acquisition gate.
-    return 0
+    return 0 if unchanged else 1
 
 
 if __name__ == "__main__":

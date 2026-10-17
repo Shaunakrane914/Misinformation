@@ -16,6 +16,46 @@ _CORRECTION_PATTERN = re.compile(r"\b(?:correction|editor['’]s note|updated on
 _DECLARED_FIELDS = ("@type", "headline", "datePublished", "dateModified", "description")
 
 
+def extract_readable_page(soup) -> dict:
+    """Select semantic document text without rewriting propositions.
+
+    No network or model work. The separate raw text retains visible boilerplate
+    for diagnosis. Only structural chrome is excluded; words such as 'scam',
+    'not', 'correction' or 'cookie' never trigger prose deletion. Body fallback
+    is explicitly weaker than an article/main selection, not full coverage.
+    """
+    from bs4 import BeautifulSoup
+
+    original = BeautifulSoup(str(soup), "html.parser")
+    for node in original.select("script, style, noscript, template"):
+        node.decompose()
+    raw = " ".join(original.stripped_strings)
+    main = original.find("main") or original.find(attrs={"role": "main"})
+    articles = (main or original).find_all("article")
+    # A collection page must keep all its stories; never pick a random card.
+    if len(articles) == 1 and (main is None or len(articles[0].get_text()) >= len(main.get_text()) * 0.5):
+        root, scope = articles[0], "article"
+    elif main is not None:
+        root, scope = main, "main"
+    else:
+        root, scope = original.body or original, "body_fallback"
+    for node in list(root.select(
+        'nav, footer, script, style, noscript, template, form, button, input, select, svg, '
+        '[role="navigation"], [role="contentinfo"], [role="search"], [hidden], [aria-hidden="true"]'
+    )):
+        if node.parent is not None:
+            node.decompose()
+    # Preserve headers/bylines, asides/corrections, table rows and inline
+    # negation. Blank lines are presentation boundaries, never summarization.
+    for node in list(root.find_all(("p", "h1", "h2", "h3", "h4", "li", "tr", "pre", "blockquote", "figcaption"))):
+        node.insert_before("\n\n")
+        node.insert_after("\n\n")
+    blocks = [" ".join(part.split()) for part in re.split(r"\n\s*\n", root.get_text(" "))]
+    text = "\n\n".join(block for block in blocks if block)
+    return {"raw_text": raw, "text": text, "content_scope": scope,
+            "selection_method": "DOM_SEMANTIC_TEXT"}
+
+
 def _text(node, limit: int) -> str:
     return node.get_text(" ", strip=True)[:limit]
 

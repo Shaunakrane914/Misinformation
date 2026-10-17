@@ -9,6 +9,7 @@ Enforces 15-point source contract, XML sanitization, SSRF safety, and bounded pa
 from __future__ import annotations
 
 import logging
+import hashlib
 import re
 import urllib.parse
 import xml.etree.ElementTree as ET
@@ -119,8 +120,12 @@ def fetch_arxiv_preprints(
         "status": "SUCCESS",
         "items": items,
         "transport": {
-            "endpoint": url,
+            "endpoint": response.endpoint,
             "status_code": response.status_code,
+            "http_status": response.status_code,
+            "network_observed_this_attempt": http_fetcher is None,
+            "raw_body_bytes": len(response.body),
+            "raw_body_sha256": hashlib.sha256(response.body).hexdigest(),
             "latency_ms": response.latency_ms,
         }
     }

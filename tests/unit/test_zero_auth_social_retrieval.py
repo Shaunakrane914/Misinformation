@@ -179,10 +179,10 @@ def test_reddit_comments_search_arctic_shift(router):
         ]
     }
 
-    with patch("urllib.request.urlopen") as mock_urlopen:
-        mock_resp = MagicMock()
-        mock_resp.read.return_value = json.dumps(mock_comment_data).encode("utf-8")
-        mock_urlopen.return_value.__enter__.return_value = mock_resp
+    from backend.infrastructure.acquisition.network.http import BoundedHTTPResponse
+    response = BoundedHTTPResponse(json.dumps(mock_comment_data).encode("utf-8"),
+        "https://arctic-shift.photon-reddit.com/api/comments/search", 200, "application/json", {}, 1, 1)
+    with patch("backend.infrastructure.acquisition.adapters.social.reddit.fetch_public_http", return_value=response):
 
         frags, telem = router.execute_channel_query(platform="reddit", query="comments:z1c9z", limit=5)
         assert len(frags) == 1

@@ -1,4 +1,8 @@
-# Current project state — 2026-10-16
+# Current project state — 2026-10-17
+
+## Latest source-pipeline iteration — 2026-10-17
+
+[Source capture review](testing/SOURCE_TEXT_PIPELINE_REVIEW_2026-10-17.md) measures all 52 registered operations, distinguishes default and existing configured access, adds article/main-before-truncation extraction, separate raw/readable metrics, bounded Stack Overflow answers and correct Reddit comment/removal semantics. All four frontends expose the same inspection contract. Evidence-grid clipping changed from eight failing display states to zero. Local 1,309 full / 1,101 fast cases pass. **Overall PARTIAL / research acceptance FAIL:** a fresh normal twelve-input run still had eight empty inputs. Source probes do not establish successful agent investigations. Remaining discovery depth, financial PDFs, legacy social transport and independent evaluation are in the [handoff](handoffs/2026-10-17_SOURCE_TEXT_PIPELINE.md). No main merge or deployment.
 
 ## Latest development verification — 2026-10-16
 

@@ -94,6 +94,9 @@ class CandidateQualificationStage:
                     query_class="user_supplied_source", query_text=request.extra_params.get("claim_text") or request.target,
                     read_status="SUCCESS", acquisition_attempt_id=f"attempt_source_{item_id}", acquired_id=f"cand_acq_{item_id}",
                     metadata={"read_success": True, "acquired_during_discovery": True,
+                              "raw_capture": source_doc.get("raw_capture") or {},
+                              "page_metadata": source_doc.get("page_metadata") or {},
+                              "truncated": source_doc.get("truncated"),
                               "observed_final_endpoint": transport.get("endpoint"), "transport": transport},
                 )
                 source_quality_engine.classify_and_score(item, target_name=request.target)

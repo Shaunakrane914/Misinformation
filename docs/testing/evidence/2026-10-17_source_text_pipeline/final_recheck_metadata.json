@@ -1,0 +1,27 @@
+{
+  "schema_version": "phase9-extraction-cycle-v1",
+  "head": "77f8ec4612317c6eec6bbbb49ccd17eb522138ef",
+  "worktree_dirty": true,
+  "source_diff_sha256": "b453e5bd95d87c3faf760436cddb8b9af1d2308e4e3611aa700ecb8e03eb227f",
+  "source_tree_sha256": "f018464212c4346f9a93d7896c850956528df28bb8df8e783ba298530b24cc62",
+  "rounds": 1,
+  "interval_seconds": 60.0,
+  "limit": 2,
+  "deep": true,
+  "operations": [
+    "web.read",
+    "reddit.read",
+    "reddit.comments",
+    "twitter.status",
+    "twitter.profile",
+    "stackexchange.read",
+    "nist_cve.read",
+    "arxiv.read"
+  ],
+  "supplemental_public_urls": [],
+  "policy": "Bounded public samples; no accuracy/completeness claim",
+  "captures_public_text": true,
+  "explicit_env_file_used": true,
+  "reddit_approved_access_flag": true,
+  "access_note": "Operator configuration observation only, not independent provider authorization"
+}

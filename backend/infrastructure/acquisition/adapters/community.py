@@ -67,9 +67,69 @@ def _json(url, observations, fetcher):
     return payload
 
 
-def acquire_community(platform, query, limit=3, *, operation="search", page=1, include_comments=False, http_fetcher=None):
-    """Return fragments plus all observed requests; exceptions keep safe HTTP semantics."""
+def _stack_limits(data, telemetry):
+    """Conservatively share backoff across this adapter, including follow-ups."""
     global _backoff_until
+    backoff = data.get("backoff")
+    if isinstance(backoff, (int, float)) and not isinstance(backoff, bool) and backoff > 0:
+        with _backoff_lock:
+            _backoff_until = max(_backoff_until, time.monotonic() + min(backoff, 86400))
+        telemetry["retry_after_seconds"] = backoff
+    telemetry["quota_remaining"] = data.get("quota_remaining")
+    return bool(data.get("error_id") or data.get("quota_remaining") == 0)
+
+
+def _stack_answers(question, observations, telemetry, fetcher):
+    """At most one page/two vote-ranked answers, separate from their question."""
+    with _backoff_lock:
+        if _backoff_until > time.monotonic():
+            question.raw_metadata["answer_lookup_status"] = "BACKOFF_ACTIVE"
+            return []
+    question_id = question.raw_metadata["question_id"]
+    params = urlencode({"site": "stackoverflow", "filter": "withbody", "pagesize": 2,
+                        "page": 1, "order": "desc", "sort": "votes"})
+    try:
+        data = _json(f"https://api.stackexchange.com/2.3/questions/{question_id}/answers?{params}", observations, fetcher)
+        if _stack_limits(data, telemetry):
+            question.raw_metadata["answer_lookup_status"] = "PROVIDER_LIMIT_OR_ERROR"
+            return []
+    except Exception as error:
+        telemetry.setdefault("followup_failures", []).append(type(error).__name__)
+        question.raw_metadata["answer_lookup_status"] = "FAILED"
+        return []
+    answers = []
+    for item in data.get("items", [])[:2]:
+        if not isinstance(item, dict) or item.get("question_id") != question_id:
+            continue
+        answer_id = item.get("answer_id")
+        if not isinstance(answer_id, int) or isinstance(answer_id, bool) or answer_id <= 0:
+            continue
+        body = _plain(item.get("body"))
+        if not body:
+            continue
+        owner = item.get("owner") or {}
+        answers.append(EvidenceFragment(
+            platform="Stack Overflow", channel_name="stackexchange",
+            title=f"Answer to: {question.title}", content=body[:12000], snippet=body[:350],
+            url=f"https://stackoverflow.com/a/{answer_id}",
+            source_id=f"src_so_answer_{answer_id}", evidence_id=f"ev_so_answer_{answer_id}",
+            author=_plain(owner.get("display_name")), published=_date(item.get("creation_date")),
+            content_depth="PARTIAL_CONTENT", retrieval_mode=RetrievalMode.DIRECT_API.value,
+            native_backend_id="stackexchange-api",
+            raw_metadata={"question_id": question_id, "answer_id": answer_id,
+                          "score": item.get("score"), "is_accepted": item.get("is_accepted"),
+                          "content_license": item.get("content_license"),
+                          "attribution_url": f"https://stackoverflow.com/a/{answer_id}",
+                          "transport": dict(observations[-1]), "truncated": len(body) > 12000,
+                          "discussion_completeness": "BOUNDED_TWO_VOTE_RANKED_ANSWERS"},
+        ))
+    question.raw_metadata.update(answers_acquired=bool(answers), answer_lookup_status="SUCCESS" if answers else "EMPTY",
+                                 sampled_answer_count=len(answers), answer_has_more=data.get("has_more"))
+    return answers
+
+
+def acquire_community(platform, query, limit=3, *, operation="search", page=1, include_comments=False, include_answers=False, http_fetcher=None):
+    """Return fragments plus all observed requests; exceptions keep safe HTTP semantics."""
     fetcher = http_fetcher or fetch_public_http
     limit = min(5, max(0, int(limit)))
     page = min(5, max(1, int(page)))
@@ -173,14 +233,9 @@ def acquire_community(platform, query, limit=3, *, operation="search", page=1, i
             path = "search/advanced"
             params.update(q=query, order="desc", sort="relevance")
         data = _json("https://api.stackexchange.com/2.3/" + path + "?" + urlencode(params), observations, fetcher)
-        backoff = data.get("backoff")
-        if isinstance(backoff, (int, float)) and backoff > 0:
-            with _backoff_lock:
-                _backoff_until = max(_backoff_until, time.monotonic() + min(backoff, 86400))
-            telemetry["retry_after_seconds"] = backoff
-        telemetry.update(has_more=data.get("has_more"), quota_remaining=data.get("quota_remaining"))
-        if data.get("error_id") or data.get("quota_remaining") == 0:
-            return [], {**telemetry, "status": "RATE_LIMITED" if backoff or data.get("quota_remaining") == 0 else "FAILED",
+        telemetry["has_more"] = data.get("has_more")
+        if _stack_limits(data, telemetry):
+            return [], {**telemetry, "status": "RATE_LIMITED" if data.get("backoff") or data.get("quota_remaining") == 0 else "FAILED",
                         "error": "Stack Exchange rate limit or provider error"}
         for item in data.get("items", [])[:limit]:
             if not isinstance(item, dict) or not isinstance(item.get("question_id"), int):
@@ -194,7 +249,7 @@ def acquire_community(platform, query, limit=3, *, operation="search", page=1, i
                 author=_plain(owner.get("display_name")), published=_date(item.get("creation_date")),
                 content_depth="PARTIAL_CONTENT" if body else "METADATA",
                 retrieval_mode=RetrievalMode.DIRECT_API.value, native_backend_id="stackexchange-api",
-                raw_metadata={"score": item.get("score"), "answer_count": item.get("answer_count"),
+                raw_metadata={"question_id": item["question_id"], "score": item.get("score"), "answer_count": item.get("answer_count"),
                               "transport": dict(observations[-1]),
                               "is_answered": item.get("is_answered"), "tags": item.get("tags", [])[:10],
                               "accepted_answer_id": item.get("accepted_answer_id"),
@@ -203,5 +258,14 @@ def acquire_community(platform, query, limit=3, *, operation="search", page=1, i
                               "answers_acquired": False, "has_more": data.get("has_more"), "page": page,
                               "truncated": len(body) > 12000, "pagination_complete": None},
             ))
+        # Follow only two questions, at most two answers each. Keep acquisition
+        # failures local and never replace an intact question with an error.
+        if include_answers is True:
+            for question in list(fragments)[:2]:
+                count = question.raw_metadata.get("answer_count")
+                if isinstance(count, int) and not isinstance(count, bool) and count > 0:
+                    fragments.extend(_stack_answers(question, observations, telemetry, fetcher))
+                else:
+                    question.raw_metadata["answer_lookup_status"] = "NO_OBSERVED_ANSWERS"
     telemetry["status"] = "SUCCESS" if fragments else "EMPTY_RESULT"
     return fragments, telemetry

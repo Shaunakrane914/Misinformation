@@ -43,10 +43,13 @@ def main():
                          "network_observed": body.get("network_observed"), "returned_records": len(evidence),
                          "inspected_records": sum(bool(item.get("extraction")) for item in evidence),
                          "captured_chars": sum((item.get("extraction") or {}).get("captured_chars", 0) for item in evidence),
+                         "text_metrics": body.get("inspection_summary"),
                          "claim_support": body.get("claim_support"), "source_completeness": body.get("source_completeness")})
         client.close()
     report = {"scope": "Real FastAPI extraction routes, public source probes; no LLM call or full response retention",
               "records": rows, "all_sources_acquired": all(row["returned_records"] > 0 for row in rows),
+              "reddit_approved_access_flag": os.getenv("REDDIT_APPROVED_ACCESS", "false").lower() in {"true", "1", "yes"},
+              "access_note": "Existing application configuration; flag presence is not independent provider authorization",
               "claim_accuracy": None}
     (args.output_root / "summary.json").write_text(json.dumps(report, indent=2), encoding="utf-8")
     print(json.dumps(report, indent=2))

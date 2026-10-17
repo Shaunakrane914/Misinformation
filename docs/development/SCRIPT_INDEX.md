@@ -10,6 +10,14 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ## 1. Overview & Script Taxonomy
 
+### Source text pipeline — 2026-10-17
+
+- [Repeated source cycle](../../scripts/audits/run_phase9_extraction_cycle.py): `--all-operations` covers all 52 registered operations; `--capture-samples` retains bounded public text in fresh output; `--env-file` explicitly reads existing source settings without changing them. Source fingerprint stability and raw/readable measurements are not research accuracy.
+- [Source display audit](../../scripts/audits/audit_source_text_frontend.py): requires a saved cycle directory, round number, pinned Chart.js asset and fresh output path. Exact native inspections in a labeled display scaffold across all four pages at 320/390/1440px. Checks both document overflow and evidence-card clipping; not native agent/API acceptance.
+- [Source API smoke](../../scripts/audits/run_phase9_source_api_smoke.py): real local FastAPI extraction requests with word/byte metrics, isolated persistence and explicit access-context observation. No LLM inference or whole-source completeness claim.
+
+Commands, results and limitations: [handoff](../handoffs/2026-10-17_SOURCE_TEXT_PIPELINE.md).
+
 ### Phase 9 remediation additions — 2026-10-16
 
 - [Reference replay](../../scripts/evaluation/run_phase9_benchmark.py): requires `--output-dir`; runtime source qualification by default, explicit legacy oracle flag, never overwrites existing evidence. Not live accuracy.

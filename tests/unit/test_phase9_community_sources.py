@@ -117,3 +117,49 @@ def test_community_direct_urls_route_for_each_agent(monkeypatch):
                              ("https://stackoverflow.com/questions/231767", "stackexchange")):
             plan = SourcePlanningEngine().plan(url, agent=agent, use_llm=False)
             assert any(action.channel == channel and action.operation == "read" for action in plan.actions)
+
+
+def test_stack_deep_answers_are_separate_attributed_parent_checked_and_bounded(monkeypatch):
+    monkeypatch.setattr(community, "_backoff_until", 0.0)
+    calls = []
+    def fetch(url, **kwargs):
+        calls.append(url)
+        assert kwargs["timeout"] <= 5 and kwargs["max_bytes"] == 1_000_000
+        if "/answers?" in url:
+            return response(url, {"quota_remaining": 4, "has_more": True, "items": [
+                {"answer_id": 8, "question_id": 123, "body": "<p>Answer with context.</p>",
+                 "owner": {"display_name": "Author"}, "is_accepted": True, "content_license": "CC BY-SA 4.0"},
+                {"answer_id": 9, "question_id": 999, "body": "Wrong parent"},
+                {"answer_id": 10, "question_id": 123, "body": "Outside sample"},
+            ]})
+        return response(url, {"quota_remaining": 5, "items": [{
+            "question_id": 123, "title": "Question", "body": "Original question", "answer_count": 3,
+        }]})
+    fragments, _ = acquire_community("stackexchange", "123", operation="read", include_answers=True, http_fetcher=fetch)
+    assert len(calls) == 2 and "pagesize=2" in calls[1] and "sort=votes" in calls[1]
+    assert len(fragments) == 2 and fragments[0].content == "Original question"
+    assert fragments[1].evidence_id == "ev_so_answer_8"
+    assert fragments[1].url == "https://stackoverflow.com/a/8"
+    assert fragments[1].author == "Author"
+    assert fragments[1].raw_metadata["content_license"] == "CC BY-SA 4.0"
+    assert fragments[0].raw_metadata["answer_has_more"] is True
+
+
+@pytest.mark.parametrize("failure", ["backoff", "quota", "timeout"])
+def test_stack_deep_backoff_and_failures_preserve_questions(monkeypatch, failure):
+    monkeypatch.setattr(community, "_backoff_until", 0.0)
+    calls = []
+    def fetch(url, **kwargs):
+        calls.append(url)
+        if "/answers?" in url:
+            if failure == "timeout":
+                raise TimeoutError("test-only")
+            return response(url, {"items": [], "quota_remaining": 0})
+        data = {"items": [{"question_id": 123, "body": "Question preserved", "answer_count": 1}], "quota_remaining": 4}
+        if failure == "backoff":
+            data["backoff"] = 60
+        return response(url, data)
+    fragments, _ = acquire_community("stackexchange", "123", operation="read", include_answers=True, http_fetcher=fetch)
+    assert len(fragments) == 1 and fragments[0].content == "Question preserved"
+    assert len(calls) == (1 if failure == "backoff" else 2)
+    assert not fragments[0].raw_metadata["answers_acquired"]

@@ -1,0 +1,141 @@
+{
+  "scope": "Real FastAPI extraction routes, public source probes; no LLM call or full response retention",
+  "records": [
+    {
+      "platform": "hackernews",
+      "operation": "read",
+      "http_status": 200,
+      "status": "SUCCESS",
+      "runtime_reason": null,
+      "network_observed": true,
+      "returned_records": 3,
+      "inspected_records": 3,
+      "captured_chars": 1053,
+      "text_metrics": {
+        "schema_version": "captured-evidence-v1",
+        "items": 3,
+        "captured_chars": 1053,
+        "raw_words": 184,
+        "raw_utf8_bytes": 1053,
+        "readable_words": 184,
+        "readable_utf8_bytes": 1053,
+        "discovery_only_items": 1,
+        "missing_field_counts": {
+          "title": 0,
+          "url": 0,
+          "author": 0,
+          "published_at": 0,
+          "captured_text": 1
+        },
+        "inspections_truncated": 0,
+        "source_completeness": "UNKNOWN",
+        "claim_accuracy": null
+      },
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    },
+    {
+      "platform": "stackexchange",
+      "operation": "read",
+      "http_status": 200,
+      "status": "SUCCESS",
+      "runtime_reason": null,
+      "network_observed": true,
+      "returned_records": 3,
+      "inspected_records": 3,
+      "captured_chars": 13740,
+      "text_metrics": {
+        "schema_version": "captured-evidence-v1",
+        "items": 3,
+        "captured_chars": 13740,
+        "raw_words": 2319,
+        "raw_utf8_bytes": 13740,
+        "readable_words": 2319,
+        "readable_utf8_bytes": 13740,
+        "discovery_only_items": 0,
+        "missing_field_counts": {
+          "title": 0,
+          "url": 0,
+          "author": 0,
+          "published_at": 0,
+          "captured_text": 0
+        },
+        "inspections_truncated": 0,
+        "source_completeness": "UNKNOWN",
+        "claim_accuracy": null
+      },
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    },
+    {
+      "platform": "twitter",
+      "operation": "status",
+      "http_status": 200,
+      "status": "SUCCESS",
+      "runtime_reason": null,
+      "network_observed": true,
+      "returned_records": 1,
+      "inspected_records": 1,
+      "captured_chars": 24,
+      "text_metrics": {
+        "schema_version": "captured-evidence-v1",
+        "items": 1,
+        "captured_chars": 24,
+        "raw_words": 5,
+        "raw_utf8_bytes": 24,
+        "readable_words": 5,
+        "readable_utf8_bytes": 24,
+        "discovery_only_items": 0,
+        "missing_field_counts": {
+          "title": 0,
+          "url": 0,
+          "author": 0,
+          "published_at": 0,
+          "captured_text": 0
+        },
+        "inspections_truncated": 0,
+        "source_completeness": "UNKNOWN",
+        "claim_accuracy": null
+      },
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    },
+    {
+      "platform": "reddit",
+      "operation": "read",
+      "http_status": 200,
+      "status": "SUCCESS",
+      "runtime_reason": null,
+      "network_observed": true,
+      "returned_records": 1,
+      "inspected_records": 1,
+      "captured_chars": 1260,
+      "text_metrics": {
+        "schema_version": "captured-evidence-v1",
+        "items": 1,
+        "captured_chars": 1260,
+        "raw_words": 210,
+        "raw_utf8_bytes": 1264,
+        "readable_words": 210,
+        "readable_utf8_bytes": 1264,
+        "discovery_only_items": 0,
+        "missing_field_counts": {
+          "title": 0,
+          "url": 0,
+          "author": 0,
+          "published_at": 0,
+          "captured_text": 0
+        },
+        "inspections_truncated": 0,
+        "source_completeness": "UNKNOWN",
+        "claim_accuracy": null
+      },
+      "claim_support": "NOT_ASSESSED",
+      "source_completeness": "UNKNOWN"
+    }
+  ],
+  "all_sources_acquired": true,
+  "reddit_approved_access_flag": true,
+  "access_note": "Existing application configuration; flag presence is not independent provider authorization",
+  "claim_accuracy": null
+}

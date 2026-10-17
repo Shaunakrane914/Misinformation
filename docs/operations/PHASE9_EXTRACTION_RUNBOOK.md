@@ -1,6 +1,6 @@
 # Phase 9 acquisition depth and evidence inspection
 
-Maintained checkpoint: 2026-10-15. Implementation is locally validated; overall Phase 9 acceptance remains PARTIAL. See the [handoff](../handoffs/2026-10-15_PHASE9_ACQUISITION_DEPTH.md) for exact results, source snapshots and remaining work. This is not production-launch authorization.
+Maintained checkpoint: 2026-10-17. See the [source-text handoff](../handoffs/2026-10-17_SOURCE_TEXT_PIPELINE.md) and [52-operation review](../testing/SOURCE_TEXT_PIPELINE_REVIEW_2026-10-17.md). Overall Phase 9 remains PARTIAL / research acceptance FAIL. The [2026-10-15 handoff](../handoffs/2026-10-15_PHASE9_ACQUISITION_DEPTH.md) is historical evidence. This is not production-launch authorization.
 
 ## Scope
 
@@ -13,10 +13,10 @@ The protected set contains 16 operations, not 16 different websites. All remain 
 | V2EX | `v2ex.latest`, `v2ex.search`, `v2ex.topic`, `v2ex.replies` | Sampled topics/replies. Search is node lookup, not unrestricted full-text search. |
 | Web / RSS | `web.read`, `rss.read` | Bounded page content and feed entries; optional one linked-article follow-up. Feed content and acquired article content remain different observations. |
 | Xiaoyuzhou | `xiaoyuzhou.podcast`, `xiaoyuzhou.episodes` | Observed identity/episode metadata and show notes. No inferred audio semantics or guaranteed transcripts. |
-| Reddit | `reddit.read`, `reddit.comments`, existing search | Existing approved-access policy applies. User confirmed no approved access is configured; retain blocked state and make no requests. |
+| Reddit | `reddit.read`, `reddit.comments`, existing search | Default approved-access policy remains blocked. The previously operator-enabled local flag produced samples in the explicitly configured pass; flag presence is not independent provider authorization or production configuration. Never toggle it for a green result. Comments require an explicit thread/ID, never return the submission body, and removal markers are metadata with no body. |
 | X | `twitter.status`, `twitter.profile`, existing search/read | Public-mirror observations are labeled as such. No authenticated identity, complete reply history or global-coverage claim. |
 | Hacker News | `hackernews.search`, `hackernews.read` | Disclosed Algolia discovery followed by original Firebase item reads. Deep mode follows at most two direct replies per story; deleted/dead replies are skipped and parent IDs checked. External linked articles are not automatically acquired. |
-| Stack Overflow | `stackexchange.search`, `stackexchange.read` | Body-inclusive questions on the explicit `stackoverflow` site. No claim of all Stack Exchange sites, answers or complete discussion. Provider backoff and quota are respected; identical public requests are cached for 60 seconds in-process. |
+| Stack Overflow | `stackexchange.search`, `stackexchange.read` | Body-inclusive questions on the explicit `stackoverflow` site. Deep mode samples at most two vote-ranked answers from each of two questions, separately attributed/parent-checked/licensed. Not all Stack Exchange sites or complete discussion. Backoff/quota are respected; identical public requests are cached for 60 seconds in-process. |
 | SEC / NVD / arXiv / FactCheck | Existing registered operations | SEC contact and FactCheck credentials remain absent. NVD had timeout/503 failures before a later normalized success; NVD/arXiv samples with false network flags do not establish fresh transport proof. arXiv abstracts are not full papers or peer-review certification. |
 
 Provider references: [HN official item API](https://github.com/HackerNews/API), [Algolia HN discovery](https://hn.algolia.com/api), [Stack Exchange search](https://api.stackexchange.com/docs/advanced-search), [body filter](https://api.stackexchange.com/docs/filters), [backoff and caching requirements](https://api.stackexchange.com/docs/throttle). These are contracts to consult, not proof of current uptime. Do not bypass authentication, CAPTCHA, paywalls or access policy.
@@ -41,6 +41,14 @@ The additive `extraction` field on unified evidence items is computed by [pure c
 
 ## Frontend use
 
+The shared inspection now adds retained raw/readable word and UTF-8 byte counts,
+selection scope and bounded source-specific observations. Generic HTML selects
+article/main before its readable character cap; a separate bounded raw-text
+capture/hash remains internal for diagnosis. Passage offsets still address the
+readable captured text. Structural removal is not relevance or truth assessment.
+Discovery/feed/profile metadata is never promoted merely because it is long.
+See the current review for remaining legacy social-transport limitations.
+
 All four agent pages use the shared unified-report renderer. Evidence cards provide expandable passages, acquisition traces, numeric mention context, bounded observed tables/quotes/corrections and sample coverage counts. Missing fields remain visible. Personal Watch's canonical evidence is now retained by its report adapter; generic BrandShield evidence is no longer automatically primary. Missing X engagement stays null rather than invented zero.
 
 “Request bounded source read” chooses an existing operation from an exact hostname and makes an explicit API request. It uses the configured API URL resolver. Returned records are separate follow-up observations; they do not revise the original verdict. Unsafe links are not actionable. Text is escaped, repeated clicks are disabled during the request, nested read buttons are suppressed, and the browser wait ends after 30 seconds. A browser abort does not prove server-side cancellation.
@@ -53,6 +61,15 @@ Run from the intended checkout, not an editable-installed sibling worktree. Use 
 python scripts/audits/run_phase9_extraction_cycle.py --allow-live --rounds 2 --interval-seconds 60 --deep --limit 2 --output-root <new-root>
 python scripts/audits/run_phase9_source_api_smoke.py --allow-live --output-root <new-directory>
 ```
+
+Add `--all-operations` to include all 52 executable routes, `--capture-samples`
+to retain bounded public research text outside tracked proof, and optional
+`--env-file <existing-server-env>` to explicitly use existing source access
+configuration. Default standalone probes do not load the server environment.
+The runner records boolean access context without copying secrets, and fails
+its execution exit code if implementation files change during the cycle.
+`--extra-web-url` allows up to five explicit supplemental URLs through the same
+SSRF boundary. Never overwrite previous output or silently change access flags.
 
 For longer bounded observation use up to ten rounds and an interval of 60–3,600 seconds. This is a repeatable sampling tool, not an installed daemon or automatic self-modifying optimizer. It preserves failed/blocked operations in the denominator, cache/network distinctions, dirty-HEAD disclosure and a fingerprint including untracked implementation files. It stores metrics instead of raw discussion bodies. Do not tune on held-out labels or silently overwrite old results.
 

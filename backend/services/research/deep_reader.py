@@ -232,7 +232,10 @@ class DeepReader:
                     return item, cached_res, attempt_id, dur_ms
 
             try:
-                res = agent_reach_service.read(url, max_chars=4000)
+                # The transport is already byte/time bounded. Select the body
+                # first, then retain a larger bounded research window rather
+                # than discarding later financial/contextual paragraphs.
+                res = agent_reach_service.read(url, max_chars=12_000)
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                 if res.get("status") in ("success", "fallback_soup") and res.get("markdown"):
                     self._cache[url] = (res, now)
@@ -295,6 +298,9 @@ class DeepReader:
                             orig_item.content = content_body
                             orig_item.metadata["read_success"] = True
                             orig_item.metadata["char_count"] = len(content_body)
+                            for key in ("raw_capture", "page_metadata", "transport", "truncated"):
+                                if key in read_res:
+                                    orig_item.metadata[key] = read_res[key]
                             orig_item.acquisition_attempt_id = attempt_id
                             orig_item.acquired_id = f"cand_acq_{orig_item.id}"
                             attempt_record["acquired_candidate_id"] = orig_item.acquired_id

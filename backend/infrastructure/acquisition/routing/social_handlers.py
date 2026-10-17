@@ -58,6 +58,28 @@ class SocialChannelHandlers:
     def _execute_reddit(self, query: str, limit: int, query_id: str, query_class: str, query_text: str, telemetry: Dict[str, Any], context: Dict[str, Any]) -> List[EvidenceFragment]:
         fragments: List[EvidenceFragment] = []
 
+        if str(context.get("operation", "search")).lower() == "comments":
+            # A comment operation must never return the submission itself or
+            # silently turn into unrelated subreddit/entity search.
+            source = extract_reddit_source(query.strip(), query=query.strip())
+            post_id = (source.parent_id if source and source.source_type == "comment" else
+                       source.external_id if source and source.source_type == "post" else "")
+            if not post_id and re.fullmatch(r"[a-z0-9]{1,12}", query.strip(), re.I):
+                post_id = query.strip()
+            if not post_id:
+                telemetry.update(status="FAILED", error="reddit.comments requires an explicit thread URL or post ID")
+                return []
+            if not self.router.use_arctic_shift:
+                telemetry.update(status="DEGRADED", error="Configured comment backend is disabled")
+                return []
+            fragments = self.router._fetch_arctic_shift_comments(post_id, limit, query_id, query_class, query_text)
+            self._annotate(fragments, "direct_input", "bounded_comments", post_id)
+            if fragments:
+                self._mark_mirror_success(fragments, "reddit", "arctic_shift", telemetry)
+            else:
+                telemetry.update(status="DEGRADED", error="No inspectable comments returned by configured backend")
+            return fragments[:limit] if limit else []
+
         # 1. Direct input parsing (explicit r/<subname> or reddit.com post URL)
         source = extract_reddit_source(query.strip(), query=query.strip())
         if source:

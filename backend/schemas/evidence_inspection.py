@@ -16,10 +16,24 @@ SCHEMA = "captured-evidence-v1"
 METADATA_DEPTHS = frozenset({
     "METADATA", "DIRECT_METADATA", "PROFILE_METADATA", "VIDEO_METADATA", "HEADLINE_ONLY",
     "INDEX_SNIPPET", "SNIPPET", "UNKNOWN", "",
+    "SEARCH_INDEX_DISCOVERY", "SEARCH_DISCOVERY_ONLY", "SYNDICATED_SUMMARY", "FEED_ENTRY_SUMMARY",
 })
 MAX_CAPTURE_CHARS = 100_000
 MAX_PASSAGES = 8
 PASSAGE_CHARS = 600
+SOURCE_FIELDS = (
+    "operation", "repo", "number", "state", "sha", "readme_sha", "comment_count",
+    "comment_lookup_status", "comment_has_next_page", "answer_count", "answers_acquired",
+    "answer_lookup_status", "sampled_answer_count", "answer_has_more", "question_id", "answer_id",
+    "is_accepted", "content_license", "discussion_completeness", "parent_id", "subreddit",
+    "tweet_id", "screen_name", "followers", "tweets_count", "likes", "retweets", "replies", "views",
+    "mirror_backend", "account_created_at", "video_id", "duration", "caption_language", "caption_origin",
+    "feed_title", "feed_content_present", "linked_article_retrieved", "item_type", "podcast",
+    "transcript_available", "episode_count", "source_contract", "arxiv_id", "category", "doi",
+    "content_depth_detail", "cve_id", "cvss_score", "filing_type", "form", "accession_number",
+    "referenced_url_acquired", "has_more", "page",
+    "observed_body_marker", "content_status",
+)
 
 
 def _value(item: Any, *names: str) -> Any:
@@ -75,11 +89,31 @@ def inspect_evidence(item: Any) -> dict:
         provider_truncated = None
     page = meta.get("page_metadata") or {}
     page = page if isinstance(page, dict) else {}
+    raw = meta.get("raw_capture")
+    raw = raw if isinstance(raw, dict) else {}
+    raw_text = raw.get("text") if isinstance(raw.get("text"), str) else content
+    # Counts describe retained public text, not the HTTP envelope, relevance,
+    # independent corroboration, or the remote document's complete size.
+    text_metrics = {
+        "raw_words": len(raw_text.split()), "raw_utf8_bytes": len(raw_text.encode("utf-8")),
+        "readable_words": len(content.split()), "readable_utf8_bytes": len(content.encode("utf-8")),
+        "raw_text_sha256": hashlib.sha256(raw_text.encode("utf-8")).hexdigest(),
+        "raw_capture_truncated": raw.get("truncated") if isinstance(raw.get("truncated"), bool) else None,
+        "selection_method": raw.get("selection_method", "NATIVE_SOURCE_TEXT"),
+        "content_scope": page.get("content_scope", "SOURCE_RECORD"),
+        "quality_assessment": "NOT_ASSESSED",
+    }
     observations = {}
     for key in ("quotations", "potential_corrections", "media_captions"):
         values = page.get(key)
         if isinstance(values, list):
             observations[key] = [value[:500] for value in values[:5] if isinstance(value, str)]
+    # Explicit allowlist: never forward cookies, auth headers or arbitrary
+    # provider metadata. These are observed fields, not verified conclusions.
+    source_observations = {
+        key: (meta[key][:300] if isinstance(meta[key], str) else meta[key])
+        for key in SOURCE_FIELDS if key in meta and isinstance(meta[key], (str, bool, int, float))
+    }
     tables = page.get("tables")
     if isinstance(tables, list):
         observations["tables"] = [
@@ -105,6 +139,8 @@ def inspect_evidence(item: Any) -> dict:
         "passages": passages,
         "observed_numeric_mentions": mentions,
         "page_observations": observations,
+        "text_metrics": text_metrics,
+        "source_observations": source_observations,
         "observation_warning": "Extracted mentions and page declarations are not independently verified facts.",
         "passages_omitted": max(0, len(chunks) - len(passages)),
         "support_assessment": "NOT_ASSESSED",
@@ -116,6 +152,10 @@ def summarize_inspections(items: list) -> dict:
     return {
         "schema_version": SCHEMA, "items": len(inspections),
         "captured_chars": sum(item["captured_chars"] for item in inspections),
+        "raw_words": sum(item["text_metrics"]["raw_words"] for item in inspections),
+        "raw_utf8_bytes": sum(item["text_metrics"]["raw_utf8_bytes"] for item in inspections),
+        "readable_words": sum(item["text_metrics"]["readable_words"] for item in inspections),
+        "readable_utf8_bytes": sum(item["text_metrics"]["readable_utf8_bytes"] for item in inspections),
         "discovery_only_items": sum(item["evidentiary_use"] == "DISCOVERY_ONLY" for item in inspections),
         "missing_field_counts": {key: sum(key in item["missing_fields"] for item in inspections)
                                  for key in ("title", "url", "author", "published_at", "captured_text")},

@@ -28,7 +28,7 @@ from backend.infrastructure.acquisition.network.http import (
     decode_bounded_http_body,
     fetch_public_http,
 )
-from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_observed_page_details
+from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_observed_page_details, extract_readable_page
 from backend.services.agent_reach.native.errors import (
     AuthRequiredError,
     BackendExecutionError,
@@ -111,6 +111,7 @@ class NativeExecutor:
         observed_endpoint = clean_url
         selected_response: Optional[BoundedHTTPResponse] = None
         page_metadata: Dict[str, Any] = {}
+        raw_capture: Dict[str, Any] = {}
         primary_http_error: Optional[ProviderHTTPError] = None
 
         # Primary: shared bounded HTTP.  Redirect targets are validated before
@@ -179,9 +180,16 @@ class NativeExecutor:
                 if page_metadata["declared_canonical_url"]:
                     page_metadata["declared_canonical_verified"] = False
                 page_metadata.update(extract_observed_page_details(soup, response.endpoint))
-                for tag in soup(("script", "style", "noscript")):
-                    tag.decompose()
-                markdown_text = " ".join(soup.stripped_strings)
+                extracted = extract_readable_page(soup)
+                markdown_text = extracted["text"]
+                page_metadata["content_scope"] = extracted["content_scope"]
+                raw_text = extracted["raw_text"]
+                raw_capture = {
+                    "text": raw_text[:100_000], "truncated": len(raw_text) > 100_000,
+                    "selection_method": extracted["selection_method"],
+                    "source_text_chars": len(raw_text),
+                    "source_text_sha256": hashlib.sha256(raw_text.encode("utf-8")).hexdigest(),
+                }
             else:
                 markdown_text = raw_text.strip()
             selected_response = response
@@ -223,6 +231,7 @@ class NativeExecutor:
                     # Metadata from the challenged source page must not be
                     # attached to content returned by a separate reader.
                     page_metadata = {}
+                    raw_capture = {}
                     active_backend = "jina_reader_fallback"
                     status_code = response.status_code
                     content_type = response.content_type
@@ -248,6 +257,7 @@ class NativeExecutor:
             "content": markdown_text,
             "char_count": len(markdown_text),
             "page_metadata": page_metadata,
+            "raw_capture": raw_capture,
             "latency_ms": latency_ms,
             "transport": {
                 "endpoint": observed_endpoint,

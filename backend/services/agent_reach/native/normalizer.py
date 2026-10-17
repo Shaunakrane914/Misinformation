@@ -417,6 +417,9 @@ class NativeNormalizer:
         for c in raw_comments:
             cid = c.get("id", "")
             body = c.get("body", "") or ""
+            removal_marker = body.strip() if body.strip().lower() in {"[removed]", "[deleted]"} else ""
+            if removal_marker:
+                body = ""
             author_raw = c.get("author") or "[deleted]"
             author = f"u/{author_raw}" if not author_raw.startswith("u/") else author_raw
             link_id = str(c.get("link_id", "")).replace("t3_", "")
@@ -438,7 +441,7 @@ class NativeNormalizer:
                 retrieval_mode=RetrievalMode.ZERO_AUTH_PUBLIC_MIRROR.value,
                 native_backend_id="arctic_shift",
                 channel_name="reddit",
-                content_depth="FULL_ARTICLE" if len(body) > 300 else "SNIPPET",
+                content_depth="COMMENT" if body else "METADATA",
                 query_id=query_id,
                 query_class=query_class,
                 query_text=query_text,
@@ -448,6 +451,8 @@ class NativeNormalizer:
                 raw_metadata={
                     "backend": "arctic_shift",
                     "comment_id": cid,
+                    "observed_body_marker": removal_marker or None,
+                    "content_status": "REMOVED_OR_DELETED" if removal_marker else "CAPTURED" if body else "EMPTY",
                     "link_id": link_id,
                     "parent_id": c.get("parent_id", ""),
                     "subreddit": subreddit,

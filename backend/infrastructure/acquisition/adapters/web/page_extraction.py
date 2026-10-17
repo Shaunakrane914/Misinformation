@@ -143,7 +143,9 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
     origin = (urlsplit(endpoint).hostname or "").lower()
     links: list[dict] = []
     seen: set[str] = set()
-    for anchor in root.find_all("a", href=True, limit=200):
+    for anchor in root.find_all("a", href=True, limit=500):
+        if anchor.find_parent(("nav", "footer")) or anchor.find_parent(attrs={"role": "navigation"}):
+            continue
         href = _http_link(endpoint, str(anchor.get("href") or ""))
         if not href or href in seen:
             continue
@@ -154,8 +156,12 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
             "external_domain": (urlsplit(href).hostname or "").lower() != origin,
             "verification": "UNVERIFIED_PAGE_LINK",
         })
-        if len(links) >= 20:
-            break
+    # Document links often follow a large issuer menu. Preserve observed text
+    # and URLs, but prioritize substantive documents within this bounded sample
+    # rather than spending every slot on Home/Careers/contact links.
+    document_terms = re.compile(r"quarter|results|filing|annual.report|earnings|press.release|transcript|statement", re.I)
+    links.sort(key=lambda item: not bool(document_terms.search(item["text"] + " " + item["url"])))
+    links = links[:20]
     tables = []
     for table in root.find_all("table", limit=3):
         rows = []

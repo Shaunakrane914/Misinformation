@@ -2,6 +2,10 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
+## Active implementation: continuous source intelligence — 2026-10-17
+
+- [Implementation cycles and continuation queue](2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md). Repeated normal investigations, original publisher feed discovery and acquisition preservation. Research acceptance remains incomplete; no merge/deployment.
+
 ## Latest implementation: source text pipeline — 2026-10-17
 
 - [Publication/CI closeout](2026-10-17_SOURCE_TEXT_PIPELINE_CLOSEOUT.md): implementation `f887c9c` is confirmed remote and all five exact-commit hosted jobs passed. Later closeout is documentation-only. No merge/deployment or research acceptance.

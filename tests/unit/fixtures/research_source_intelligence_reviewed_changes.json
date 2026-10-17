@@ -1,0 +1,20 @@
+{
+  "reason": "First empty discovery no longer claims saturation; only stopping/decision telemetry changes in these zero-follow-up fixtures. Candidate bytes, IDs, rejected IDs, citations and query outcomes remain pinned by existing manifests. Stage timings are nondeterministic additive diagnostics tested independently.",
+  "scenarios": {
+    "credential_failure": {
+      "result_sha256": "53a0563f8fb42c8799f3286e6210383e5b5f7f11a6a63716ad3084f383ec3fce",
+      "corpus_sha256": "709d82f4f22e8e25514d9ba90fe141f6ccc0ec399e95296e39fb3aab45dadb67",
+      "dossier_sha256": "310f11a07f1164f23ff18e5a81a7e65ad81be92c9b4cd8c1dde5d6a645fb7790"
+    },
+    "empty": {
+      "result_sha256": "685f8aa9cd585b8bda79847efdc27474803bedf3e51fe5f42aafe2923cf75555",
+      "corpus_sha256": "ba78240822b444d122a397d51f4bac9119db3c87f1e3f6b3b7f3a3f6bf9a175c",
+      "dossier_sha256": "a194d2ab9117ba0aecaf9da4ddfdbb7e0847cc987c3be024480010e7d320a3df"
+    },
+    "insufficient": {
+      "result_sha256": "e7d8357129a722ede9814be3ef60cd14c372b95990708430c1c56ab29bfae426",
+      "corpus_sha256": "01f57b8a625cfbbeba66064500dcd30d39bd7e3961c08c5c6d2c99f892c69424",
+      "dossier_sha256": "048d8762fbe0bc51cf1c27753e48dbbb69d174a8316a08f7e3125148b5746947"
+    }
+  }
+}

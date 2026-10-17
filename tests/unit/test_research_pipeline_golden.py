@@ -112,13 +112,15 @@ def _hash(value):
                 key: sorted(canonical(entry) for entry in val) if key in {"independence_groups", "entities"} and isinstance(val, list)
                 else canonical(val)
                 for key, val in node.items()
+                if key != "stage_timings_ms"
             }
         if isinstance(node, list):
             return [canonical(entry) for entry in node]
         return node
 
     # Corroboration group membership and extracted entity names come from sets.
-    # Their order is undefined; all IDs, names, and every other field are exact.
+    # Their order is undefined. Additive wall-clock stage diagnostics are also
+    # excluded, not evidence/lineage: they have an independent contract test.
     encoded = json.dumps(canonical(value), sort_keys=True, ensure_ascii=False, separators=(",", ":"), default=str)
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
@@ -245,6 +247,8 @@ def capture_scenario(name, include_payload=False):
 def test_research_result_and_replay_match_reviewed_policy(name):
     historical = json.loads(MANIFEST.read_text(encoding="utf-8"))[name]
     expected = json.loads(PHASE9_MANIFEST.read_text(encoding="utf-8"))["scenarios"][name]
+    corrections = json.loads((PHASE9_MANIFEST.parent / "research_source_intelligence_reviewed_changes.json").read_text(encoding="utf-8"))["scenarios"]
+    expected = {**expected, **corrections.get(name, {})}
     if name == "discovery_timeout":
         # Explicit correctness exception: the historical implementation read
         # documents AFTER its deadline. Keep that baseline, but require no reads.

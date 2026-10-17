@@ -32,6 +32,7 @@ def main():
             inspection = sample["inspection"]
             evidence.append({"title": f"{path.stem.split('_')[0]} — {sample['title']}",
                              "snippet": sample["captured_text"][:350],
+                             "url": sample.get("url") or "",
                              "evidence_id": inspection["document_id"], "extraction": inspection})
     report = {"summary": "Native source-capture display audit. Not an agent verdict or verified finding.",
               "evidence": {"community": evidence}, "trust": {}}

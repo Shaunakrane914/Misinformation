@@ -2,6 +2,7 @@
 
 from typing import Any
 import hashlib
+import re
 
 from backend.application.research.contracts import Discovery, QueryPlan, RankedEvidence
 from backend.services.research.candidate_ranker import candidate_ranker
@@ -10,6 +11,35 @@ from backend.services.research.research_budget import ResearchBudget
 from backend.services.research.research_models import EvidenceItem, ResearchRequest
 from backend.services.research.source_independence import source_independence_engine
 from backend.services.research.source_quality import source_quality_engine
+
+
+def _observed_issuer_documents(parent: EvidenceItem) -> list[EvidenceItem]:
+    """Bounded leads from a fetched issuer index, never invented body evidence."""
+    from backend.services.research.source_quality import canonical_hostname, hostname_matches
+    if parent.query_class != "issuer_documents" or not parent.metadata.get("read_success"):
+        return []
+    origin = canonical_hostname(parent.metadata.get("observed_final_endpoint") or parent.canonical_url)
+    links = (parent.metadata.get("page_metadata") or {}).get("observed_links") or []
+    documents = []
+    seen = {parent.canonical_url}
+    for link in links:
+        url, title = str(link.get("url") or ""), str(link.get("text") or "")
+        if (url in seen or not hostname_matches(canonical_hostname(url), origin)
+                or not re.search(r"quarter|results|filing|earnings|annual.report", title + " " + url, re.I)):
+            continue
+        seen.add(url)
+        item_id = "ev_link_" + hashlib.sha256(url.encode()).hexdigest()[:12]
+        documents.append(EvidenceItem(
+            id=item_id, canonical_url=url, channel="web", title=title,
+            snippet=title, content="", content_depth="INDEX_SNIPPET",
+            query_class="observed_issuer_document", query_text=parent.query_text,
+            metadata={"discovered_on_url": parent.canonical_url,
+                      "discovered_on_candidate_id": parent.id, "link_text": title,
+                      "linked_article_retrieved": False},
+        ))
+        if len(documents) >= 4:
+            break
+    return documents
 
 
 class QueryPlanningStage:
@@ -104,8 +134,22 @@ class CandidateQualificationStage:
         for idx, frag in enumerate(retrieval.fragments):
             item_id = getattr(frag, "candidate_id", None) or getattr(frag, "evidence_id", None) or f"ev_{idx + 1:03d}"
             ev_item = EvidenceItem.from_evidence_fragment(frag, item_id=item_id, target_name=request.target)
+            # A native body is already acquired evidence, not a search snippet
+            # needing another generic page read. Keep its canonical ID and
+            # provenance; qualification and passage-support gates still apply.
+            body_depths = {"PARTIAL_CONTENT", "FULL_ARTICLE", "DIRECT_CONTENT", "DIRECT_ABSTRACT",
+                           "COMMENT", "SOCIAL_POST", "TWEET_STATUS", "VIDEO_TRANSCRIPT", "FEED_ENTRY_CONTENT"}
+            if ev_item.content_depth in body_depths and ev_item.content.strip() and ev_item.canonical_url:
+                ev_item.read_status = "SUCCESS"
+                ev_item.acquisition_attempt_id = f"attempt_native_{item_id}"
+                ev_item.acquired_id = f"cand_acq_{item_id}"
+                ev_item.metadata.update(read_success=True, acquired_during_discovery=True,
+                                        acquisition_origin="NATIVE_SOURCE_BODY")
             source_quality_engine.classify_and_score(ev_item, target_name=request.target)
             raw_candidates.append(ev_item)
+            for child in _observed_issuer_documents(ev_item):
+                source_quality_engine.classify_and_score(child, target_name=request.target)
+                raw_candidates.append(child)
 
         accepted, rejected = relevance_gate.filter_candidates(
             raw_candidates,

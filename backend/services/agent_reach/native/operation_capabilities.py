@@ -299,7 +299,13 @@ class RuntimeOperationCapabilities:
             if fresh and observation.outcome == "RATE_LIMITED":
                 decision, reason = "DEFER_TEMPORARY", "RATE_LIMITED"
                 runtime_health, temporary = "RATE_LIMITED", True
-            elif fresh and observation.outcome in {"FAILED", "EMPTY", "UNAVAILABLE"}:
+            elif fresh and observation.outcome == "EMPTY":
+                # An empty result for one target is not a provider outage.
+                # Keep that observation visible without suppressing unrelated
+                # queries for every subsequent agent in this process.
+                reason = "RECENT_EMPTY_QUERY_NOT_PROVIDER_FAILURE"
+                runtime_health = "LIMITED"
+            elif fresh and observation.outcome in {"FAILED", "UNAVAILABLE"}:
                 decision, reason = "DEFER_TEMPORARY", f"RECENT_{observation.outcome}"
                 runtime_health, temporary = "DEGRADED", True
             elif fresh and observation.outcome in self.SUCCESS_OUTCOMES:

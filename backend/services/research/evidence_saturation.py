@@ -154,7 +154,9 @@ class EvidenceNoveltyTracker:
         halt_triggered = False
         halt_reason = None
 
-        if cumulative_saturation >= self.saturation_threshold:
+        # A first empty discovery is a failed opportunity, not evidence that
+        # the topic is exhausted. Allow bounded alternatives before halting.
+        if cumulative_saturation >= self.saturation_threshold and step >= 2:
             halt_triggered = True
             halt_reason = f"Saturation threshold reached (S_{step}={cumulative_saturation:.2f} >= {self.saturation_threshold})"
         elif marginal_novelty < self.min_novelty_epsilon and step >= 3:

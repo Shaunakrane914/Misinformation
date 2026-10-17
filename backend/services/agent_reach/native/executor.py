@@ -1013,7 +1013,7 @@ class NativeExecutor:
                 entries.append({
                     "title": e.get("title", ""),
                     "link": e.get("link", ""),
-                    "published": e.get("published", ""),
+                    "published": e.get("published", "") or e.get("created", ""),
                     "updated": e.get("updated", ""),
                     "author": e.get("author", ""),
                     "guid": e.get("id", ""),

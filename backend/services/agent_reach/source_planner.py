@@ -28,6 +28,22 @@ from backend.services.agent_reach.native.operation_capabilities import (
 
 AUTH_GATED_CHANNELS = set(CHANNEL_AUTH_ENVIRONMENT)
 
+# Verified publisher discovery endpoints, not hand-selected investigation
+# answers. Feed entries still pass entity, temporal and passage gates; reading
+# the feed never claims the linked article was acquired.
+PUBLISHER_FEEDS = {
+    "openai": "https://openai.com/news/rss.xml",
+    "nvidia": "https://nvidianews.nvidia.com/releases.xml",
+    "apple": "https://www.apple.com/newsroom/rss-feed.rss",
+    "microsoft": "https://blogs.microsoft.com/feed/",
+}
+
+# Original issuer indexes, not frozen quarterly answers. Child URLs must be
+# observed on the fetched page and qualified before bounded deep reading.
+ISSUER_DOCUMENT_INDEXES = {
+    "infosys": "https://www.infosys.com/investors/reports-filings.html",
+}
+
 DIRECT_URL_HOSTS = {
     "reddit.com": "reddit",
     "www.reddit.com": "reddit",
@@ -320,7 +336,12 @@ class SourcePlanningEngine:
         target = entity or claim
         # Keep the factual proposition intact (including negation, quotations
         # and dates) without repeating it or adding a paragraph of agent intent.
-        query_base = claim if claim and claim != target else target
+        entity_only = not claim or claim.strip().casefold() == target.strip().casefold()
+        if entity_only:
+            # A ticker alias is useful for quotes/cashtags, not every issuer
+            # disclosure search. Never alter literal propositions or quotes.
+            target = re.sub(r"\s*\([A-Z0-9.^-]{1,20}\)\s*", " ", target).strip()
+        query_base = claim if claim and not entity_only else target
         from backend.services.research.source_quality import VERIFIED_CORPORATE_DOMAINS
         registry_key = re.sub(r"[^a-z0-9]", "", re.sub(r"\([^)]*\)", "", target).lower())
         known_domains = sorted(VERIFIED_CORPORATE_DOMAINS.get(registry_key, set()))
@@ -329,7 +350,7 @@ class SourcePlanningEngine:
         arxiv_match = re.search(r'\b(?:arxiv:\s*)?(\d{4}\.\d{4,5})\b', claim, re.I)
         quotes = re.findall(r'"([^"]{5,})"', claim)
         include_contradiction_probe = agent.lower() not in {"phase4_fixture", "fixture"} and (
-            claim != target or any(k in claim.lower() for k in ("rumor", "debunk", "false", "hoax", "claim", "reported", "alleged", "cve", "arxiv"))
+            not entity_only or any(k in claim.lower() for k in ("rumor", "debunk", "false", "hoax", "claim", "reported", "alleged", "cve", "arxiv"))
         )
 
         actions: List[SourceAction] = []
@@ -351,6 +372,10 @@ class SourcePlanningEngine:
                 self._action(2, "youtube", "search", f"{claim} technical analysis", "technical_video", "VIDEO_METADATA", 4, "Find technical demonstrations or analysis; transcript availability is separate."),
             ])
         elif intent_class == "financial_integrity":
+            index = ISSUER_DOCUMENT_INDEXES.get(registry_key)
+            if index and "web" in allowed:
+                actions.append(self._action(1, "web", "read", index, "issuer_documents",
+                    "DIRECT_CONTENT", 0, "Inspect original issuer document links before general search.", True))
             regulator = "SEC" if not self._looks_indian(target) else "SEBI"
             if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and not self._looks_indian(target):
                 actions.append(self._action(1, "sec_edgar", "search", target, "regulatory_filing", "DIRECT_METADATA", 1, "Retrieve official SEC EDGAR corporate filings directly.", True))
@@ -406,6 +431,14 @@ class SourcePlanningEngine:
             actions.append(self._action(2, "web", "search", f"{target} impersonation scam counterfeit complaint", "brand_risk", "SEARCH_INDEX_DISCOVERY", 3, "Search for impersonation, counterfeit, and scam indicators."))
         elif agent.lower() in {"personal", "personal_watch", "personal_watch_agent"}:
             actions.append(self._action(2, "web", "search", f"{target} official statement impersonation deepfake", "personal_watch", "SEARCH_INDEX_DISCOVERY", 3, "Monitor public statements and identity abuse while excluding private data."))
+
+        # Complement uncertain general search with original publisher feeds.
+        # This registry routes by resolved issuer identity, not benchmark input.
+        feed = PUBLISHER_FEEDS.get(registry_key)
+        if feed and entity_only and "rss" in allowed:
+            actions.insert(0, self._action(
+                1, "rss", "read", feed, "publisher_announcements", "SYNDICATED_SUMMARY", 0,
+                "Discover dated original publisher articles; acquire linked bodies separately.", True))
 
         return [
             action for action in actions

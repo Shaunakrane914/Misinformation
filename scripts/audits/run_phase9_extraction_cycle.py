@@ -134,6 +134,10 @@ def run_round(router, specs, limit, deep, capture_directory=None):
                     raw = metadata.get("raw_capture") or {}
                     samples.append({
                         "title": fragment.title, "content_depth": fragment.content_depth,
+                        "url": fragment.url, "evidence_id": fragment.evidence_id,
+                        "author": fragment.author, "published": fragment.published,
+                        "retrieved_at": getattr(fragment, "retrieved_at", None),
+                        "operation": operation,
                         "captured_text": content[:100_000],
                         "raw_text": str(raw.get("text", content))[:100_000],
                         "sample_truncated": len(content) > 100_000,

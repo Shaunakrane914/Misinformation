@@ -45,10 +45,12 @@ class ResearchPipeline:
                   "Deep reading", "Passage analysis", "Grounded synthesis", "Evidence graph",
                   "Corpus assembly", "Dossier registration", "Research result publication")
         pass_id, completed = str(uuid.uuid4()), 0
+        stage_timings_ms = {}
 
         def run_stage(stage, *args):
             nonlocal completed
             label = labels[completed]
+            stage_start = time.monotonic()
             report_progress(pipeline_pass=pass_id, pipeline_step=label,
                             pipeline_completed=completed, pipeline_total=len(labels))
             try:
@@ -57,6 +59,8 @@ class ResearchPipeline:
                 report_progress(pipeline_pass=pass_id, pipeline_step=label,
                                 pipeline_completed=completed, pipeline_total=len(labels), pipeline_failed=True)
                 raise
+            finally:
+                stage_timings_ms[label] = round((time.monotonic() - stage_start) * 1000, 2)
             completed += 1
             report_progress(pipeline_pass=pass_id, pipeline_step=label,
                             pipeline_completed=completed, pipeline_total=len(labels))
@@ -84,6 +88,9 @@ class ResearchPipeline:
             request, self.budget, plan, discovery, escalated.ranked,
             adaptive, escalated, read, analysis, start_ts,
         )
+        # Store the completed acquisition/processing measurements before dossier
+        # registration, so diagnostic evidence is preserved as well as exported.
+        assembled.telemetry["stage_timings_ms"] = dict(stage_timings_ms)
         run_stage(DossierRegistrationStage(), request, escalated.ranked, analysis, assembled)
         return run_stage(ResultPublicationStage(),
             request, self.budget, discovery, escalated.ranked, read, analysis, assembled

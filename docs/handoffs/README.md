@@ -4,7 +4,7 @@ Start here when resuming work. These are dated engineering records, not promises
 
 ## Active implementation: continuous source intelligence — 2026-10-17
 
-- [Implementation cycles and continuation queue](2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md). Repeated normal investigations, original publisher feed discovery and acquisition preservation. Research acceptance remains incomplete; no merge/deployment.
+- [Implementation cycles and continuation queue](2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md), [two-section source/agent review](../testing/CONTINUOUS_SOURCE_INTELLIGENCE_REVIEW_2026-10-17.md) and [durable measurements/screenshots](../testing/evidence/2026-10-17_continuous_source_intelligence/README.md). Local 1,329 full / 1,121 fast passed; all five exact-application hosted CI jobs passed at `bc67b83`. Two of twelve normal inputs still acquired nothing; remaining records include shallow/index material. Overall PARTIAL / research acceptance FAIL. Read the precise next queue; no main merge/deployment.
 
 ## Latest implementation: source text pipeline — 2026-10-17
 

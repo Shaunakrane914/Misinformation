@@ -4,7 +4,7 @@ Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomou
 
 ## Next coding agent: start here
 
-Current development checkpoint: [source-text pipeline handoff](handoffs/2026-10-17_SOURCE_TEXT_PIPELINE.md), [52-operation review](testing/SOURCE_TEXT_PIPELINE_REVIEW_2026-10-17.md) and [actual evidence](testing/evidence/2026-10-17_source_text_pipeline/README.md). Local 1,309 full / 1,101 fast cases pass; eight of twelve native entity inputs still acquire no records. This dedicated branch is not merged/deployed or a completed Phase 9. [Previous remediation evidence](testing/PHASE9_REMEDIATION_VERIFICATION_2026-10-16.md) remains historical context.
+Current development checkpoint: [continuous source-intelligence handoff](handoffs/2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md), [source-by-source and actual-agent review](testing/CONTINUOUS_SOURCE_INTELLIGENCE_REVIEW_2026-10-17.md) and [durable evidence](testing/evidence/2026-10-17_continuous_source_intelligence/README.md). Local **1,329 full / 1,121 fast** cases and all five exact-application hosted CI jobs passed. Latest normal twelve-input run: two empty inputs, 33 native records and 11,336 retained-text words; these include shallow profiles/indexes, not successful research counts. **Overall PARTIAL / research acceptance FAIL.** Development branch only; no main merge/deployment or Phase 9 completion. The [previous source-text pass](testing/SOURCE_TEXT_PIPELINE_REVIEW_2026-10-17.md) remains the historical baseline.
 
 Next-phase proposal: [Phase 9 — Evidence Depth & Strategic Investigation Workbench](architecture/PHASE9_EVIDENCE_DEPTH_AND_STRATEGIC_WORKBENCH_PLAN.md), dated 2026-10-15. This is a plan, not implemented capability or Phase 8 acceptance.
 

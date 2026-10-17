@@ -1,5 +1,9 @@
 # Current project state — 2026-10-17
 
+## Latest continuous source-intelligence checkpoint — 2026-10-17
+
+[Source-by-source and actual-agent review](testing/CONTINUOUS_SOURCE_INTELLIGENCE_REVIEW_2026-10-17.md), [evidence](testing/evidence/2026-10-17_continuous_source_intelligence/README.md) and [continuation handoff](handoffs/2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md). All 52 executable operations remeasured; 16 protected operations sampled. Normal twelve-input zero-acquisition count fell from eight to two, but 33 native records / 11,336 words include indexes, feed entries and profiles. NVIDIA article depth improved; financial statement parsing, brand/identity relevance and EV author-bio pollution remain unresolved. **Overall PARTIAL / research acceptance FAIL.** Local 1,329 full / 1,121 fast cases passed; all five hosted CI jobs passed for application/frontend `bc67b83`. This development branch is not merged or deployed. No successful live Gemini synthesis or production readiness claimed.
+
 ## Latest source-pipeline iteration — 2026-10-17
 
 [Source capture review](testing/SOURCE_TEXT_PIPELINE_REVIEW_2026-10-17.md) measures all 52 registered operations, distinguishes default and existing configured access, adds article/main-before-truncation extraction, separate raw/readable metrics, bounded Stack Overflow answers and correct Reddit comment/removal semantics. All four frontends expose the same inspection contract. Evidence-grid clipping changed from eight failing display states to zero. Local 1,309 full / 1,101 fast cases pass. **Overall PARTIAL / research acceptance FAIL:** a fresh normal twelve-input run still had eight empty inputs. Source probes do not establish successful agent investigations. Remaining discovery depth, financial PDFs, legacy social transport and independent evaluation are in the [handoff](handoffs/2026-10-17_SOURCE_TEXT_PIPELINE.md). No main merge or deployment.

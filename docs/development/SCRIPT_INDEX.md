@@ -10,6 +10,14 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ## 1. Overview & Script Taxonomy
 
+### Continuous source-intelligence additions — 2026-10-17
+
+- [Saved investigation comparison](../../scripts/audits/summarize_intelligence_loop.py): `--baseline <saved-native-dir> --after <saved-native-dir> --output <new-json>`. Read-only inventory of native records, depth labels, retained words, citation joins, read outcomes and stage timings; no provider calls or inferred accuracy. Refuses an existing output file.
+- [Normal browser audit](../../scripts/audits/run_phase9_four_agent_browser_audit.py): default fixed twelve-input matrix; repeat `--case "agent:literal input"` for up to four additional controls. Records actual acquired-text metrics, failed resources and keyboard source-inspection screenshots. `--replay-dir` is explicitly saved SSE replay, not live research. Requires an existing server environment and actual pinned Chart.js 4.4.1 bytes; audit persistence/notifications are isolated.
+- [All-operation extraction cycle](../../scripts/audits/run_phase9_extraction_cycle.py): preserves 52-operation coverage, captures public URL/ID/author/date where observed, and reads Git diagnostics explicitly as UTF-8 on Windows. Repeated source samples are not a research accuracy benchmark.
+
+[Commands, results, failure history and next acceptance queue](../handoffs/2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md); [source-by-source and agent review](../testing/CONTINUOUS_SOURCE_INTELLIGENCE_REVIEW_2026-10-17.md). Do not overwrite old proof, frozen benchmarks or dossiers.
+
 ### Source text pipeline — 2026-10-17
 
 - [Repeated source cycle](../../scripts/audits/run_phase9_extraction_cycle.py): `--all-operations` covers all 52 registered operations; `--capture-samples` retains bounded public text in fresh output; `--env-file` explicitly reads existing source settings without changing them. Source fingerprint stability and raw/readable measurements are not research accuracy.

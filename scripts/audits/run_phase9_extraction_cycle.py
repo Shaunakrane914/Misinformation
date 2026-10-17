@@ -82,7 +82,8 @@ def probe_specs(all_operations=False):
 
 
 def git(*args):
-    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True, check=False).stdout.strip()
+    return subprocess.run(["git", *args], cwd=ROOT, capture_output=True,
+                          encoding="utf-8", check=False).stdout.strip()
 
 
 def source_fingerprint():

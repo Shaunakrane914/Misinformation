@@ -16,6 +16,29 @@ _CORRECTION_PATTERN = re.compile(r"\b(?:correction|editor['’]s note|updated on
 _DECLARED_FIELDS = ("@type", "headline", "datePublished", "dateModified", "description")
 
 
+def document_link_priority(link):
+    """Prefer observed result/release documents over navigation and ratio indexes."""
+    text, url = str(link.get("text") or ""), str(link.get("url") or "")
+    if re.search(r"results for .*quarter|quarter.*ended|earnings.release|quarterly-results/.+/q[1-4]", text + " " + url, re.I):
+        return 0
+    if re.search(r"press.release|financial.statements|annual.report", text, re.I):
+        return 1
+    if re.search(r"quarter|results|filing|earnings|report|profit-loss|balance-sheet", text + " " + url, re.I):
+        return 2
+    return 3
+
+
+def _semantic_root(soup):
+    """Use the same source scope for text and linked-document observations."""
+    main = soup.find("main") or soup.find(attrs={"role": "main"})
+    articles = (main or soup).find_all("article")
+    if len(articles) == 1 and (main is None or len(articles[0].get_text()) >= len(main.get_text()) * 0.5):
+        return articles[0], "article"
+    if main is not None:
+        return main, "main"
+    return soup.body or soup, "body_fallback"
+
+
 def extract_readable_page(soup) -> dict:
     """Select semantic document text without rewriting propositions.
 
@@ -30,15 +53,8 @@ def extract_readable_page(soup) -> dict:
     for node in original.select("script, style, noscript, template"):
         node.decompose()
     raw = " ".join(original.stripped_strings)
-    main = original.find("main") or original.find(attrs={"role": "main"})
-    articles = (main or original).find_all("article")
     # A collection page must keep all its stories; never pick a random card.
-    if len(articles) == 1 and (main is None or len(articles[0].get_text()) >= len(main.get_text()) * 0.5):
-        root, scope = articles[0], "article"
-    elif main is not None:
-        root, scope = main, "main"
-    else:
-        root, scope = original.body or original, "body_fallback"
+    root, scope = _semantic_root(original)
     for node in list(root.select(
         'nav, footer, script, style, noscript, template, form, button, input, select, svg, '
         '[role="navigation"], [role="contentinfo"], [role="search"], [hidden], [aria-hidden="true"]'
@@ -133,13 +149,12 @@ def _declared_open_graph(soup) -> dict:
 
 def extract_observed_page_details(soup, endpoint: str) -> dict:
     """Extract small source-context samples from article/main, or body fallback."""
-    root = soup.find("article") or soup.find("main") or soup.body
+    root, content_scope = _semantic_root(soup)
     if root is None:
         return {"content_scope": "UNAVAILABLE", "observed_links": [], "tables": [],
                 "quotations": [], "media_captions": [], "potential_corrections": [],
                 "declared_structured_data": _declared_json_ld(soup),
                 "declared_open_graph": _declared_open_graph(soup)}
-    content_scope = "article" if root.name == "article" else "main" if root.name == "main" else "body_fallback"
     origin = (urlsplit(endpoint).hostname or "").lower()
     links: list[dict] = []
     seen: set[str] = set()
@@ -159,8 +174,7 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
     # Document links often follow a large issuer menu. Preserve observed text
     # and URLs, but prioritize substantive documents within this bounded sample
     # rather than spending every slot on Home/Careers/contact links.
-    document_terms = re.compile(r"quarter|results|filing|annual.report|earnings|press.release|transcript|statement", re.I)
-    links.sort(key=lambda item: not bool(document_terms.search(item["text"] + " " + item["url"])))
+    links.sort(key=document_link_priority)
     links = links[:20]
     tables = []
     for table in root.find_all("table", limit=3):

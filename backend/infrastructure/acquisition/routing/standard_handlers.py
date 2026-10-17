@@ -669,7 +669,7 @@ class StandardChannelHandlers:
                         content=html_snippet,
                         url=url,
                         author=author,
-                        published="Recent",
+                        published="",
                         snippet=html_snippet[:300],
                         score=60.0,
                         retrieval_method=f"{platform}_oembed",

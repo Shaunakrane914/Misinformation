@@ -6,6 +6,7 @@ into strongly typed Aegis EvidenceFragment and EvidenceItem objects with full pr
 """
 
 import re
+import html
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
@@ -17,7 +18,7 @@ def _clean_html_text(text: str) -> str:
     if not text:
         return ""
     clean = re.sub(r"<[^>]+>", " ", text)
-    return " ".join(clean.split()).strip()
+    return " ".join(html.unescape(clean).split()).strip()
 
 
 def _extract_text_links(text: str, max_links: int = 5, tag: str = "UNVERIFIED_REFERENCED_LINK") -> List[Dict[str, str]]:
@@ -269,7 +270,8 @@ class NativeNormalizer:
                 content=f"{title}\n\nUP主: {author} | 播放: {play}\n\n{desc}",
                 url=arcurl,
                 author=author,
-                published="Recent",
+                published=(datetime.fromtimestamp(v["pubdate"], timezone.utc).isoformat()
+                           if isinstance(v.get("pubdate"), (int, float)) and 0 < v["pubdate"] < 253402300800 else ""),
                 snippet=desc[:300] if desc else f"Bilibili video by {author}",
                 score=45.0,
                 retrieval_method="bilibili_search_api",
@@ -641,7 +643,7 @@ class NativeNormalizer:
                 content=content,
                 url=item.get("url") or "https://xueqiu.com",
                 author=item.get("author") or "雪球行情",
-                published="Live / Recent",
+                published="",
                 snippet=content[:300],
                 score=75.0,
                 retrieval_method="xueqiu_visitor_api",
@@ -751,7 +753,7 @@ class NativeNormalizer:
                 content=content,
                 url=url,
                 author=company,
-                published="Recent",
+                published=str(j.get("published") or ""),
                 snippet=f"{title} - {company} ({location})",
                 score=65.0,
                 retrieval_method="linkedin_guest_jobs_api",

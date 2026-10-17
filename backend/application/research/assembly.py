@@ -28,7 +28,7 @@ class CorpusAssemblyStage:
         retrieval_res = discovery.retrieval
         channel_status = retrieval_res.channel_health
         trace_dict = retrieval_res.retrieval_trace or {}
-        raw_candidates = discovery.raw_candidates
+        raw_candidates = discovery.raw_candidates + list(getattr(read, "linked_candidates", []) or [])
         accepted_candidates = ranked.accepted
         ranked_candidates = ranked.ranked
         clusters_map = ranked.clusters

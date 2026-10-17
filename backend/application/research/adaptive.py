@@ -1,6 +1,7 @@
 """Bounded adaptive query expansion with novelty/saturation halting."""
 
 from datetime import datetime
+import concurrent.futures
 import logging
 import time
 from typing import Any, Dict, List, Optional, Set
@@ -17,6 +18,21 @@ from backend.services.research.source_independence import source_independence_en
 from backend.services.research.source_quality import source_quality_engine
 
 logger = logging.getLogger(__name__)
+
+
+def _bounded_channel_search(service, channel, query, timeout):
+    """A late provider may update its cache, never this investigation's corpus."""
+    if timeout <= 0:
+        raise TimeoutError("Adaptive search timeout: discovery budget exhausted")
+    executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    future = executor.submit(service.search_channel, channel, query, limit=2)
+    try:
+        return future.result(timeout=timeout)
+    except concurrent.futures.TimeoutError as error:
+        future.cancel()
+        raise TimeoutError("Adaptive search timeout: discovery deadline reached") from error
+    finally:
+        executor.shutdown(wait=False, cancel_futures=True)
 
 
 class AdaptiveExpansionStage:
@@ -135,7 +151,7 @@ class AdaptiveExpansionStage:
                             "max_deep_reads": 0,
                         },
                         perform_reads=False,
-                        timeout=min(6.0, max(2.0, discovery_ceiling - (time.time() - start_ts))),
+                        timeout=min(6.0, max(0.0, discovery_ceiling - (time.time() - start_ts))),
                     )
                     replan_candidates: List[EvidenceItem] = []
                     for idx, fragment in enumerate(replan_result.fragments):
@@ -264,7 +280,8 @@ class AdaptiveExpansionStage:
                             fu_error = skip_reason if fu_error is None else f"{fu_error}; {skip_reason}"
                             continue
                         try:
-                            frags = agent_reach_service.search_channel(ch, fu["query_text"], limit=2)
+                            remaining = max(0.0, discovery_ceiling - (time.time() - start_ts))
+                            frags = _bounded_channel_search(agent_reach_service, ch, fu["query_text"], remaining)
                             if frags:
                                 query_had_success = True
                                 raw_fu_count += len(frags)

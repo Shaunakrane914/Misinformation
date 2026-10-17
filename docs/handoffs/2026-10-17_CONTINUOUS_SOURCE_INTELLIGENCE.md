@@ -39,7 +39,7 @@ remain empty in cycle 3. Personal Watch still has profile metadata only.
 
 All 52 operations were probed once at stable source; 16 protected operations
 returned sampled observations, eleven operations returned none, overall PARTIAL
-(script exit 1, not a crash). A display-only replay of 67 native samples passed
+(a partial acquisition gate, not a crash). A display-only replay of 67 native samples passed
 12 Chromium states across four pages and three widths. That scaffold is not
 proof those sources are selected by normal investigations.
 
@@ -83,3 +83,59 @@ OpenAI article bodies returned HTTP 403; no restriction bypass was attempted.
 
 No agent/research-quality completion, production acceptance, merge or deployment
 is claimed. Subsequent updates below must distinguish later code and validation.
+
+## Subsequent implemented cycles
+
+The diagnosed semantic-root mismatch and structured financial aliases were
+fixed. Text and linked-document observations now share one root. The Trending
+native adapter retains up to 12,000 captured characters and original bounded
+raw/page metadata instead of silently cutting bodies at 1,000 characters.
+
+Later real runs exposed keyword-heavy legal disclosures winning passage
+selection and distinct propositions inheriting one discovery query's citations.
+Both defects have failing-before/fixed-after development controls. Disclosures
+remain in raw/captured text; selected excerpts retain exact offsets and up to
+2,000 characters rather than silently cutting qualifiers at 450. Distinct
+captured propositions are separate UNVERIFIED observations, not corroboration.
+Four reviewed development goldens now have two separately cited observations;
+their old manifests, candidate bytes/IDs and query outcomes remain preserved.
+
+Publisher feeds now include a specialist EV reporting endpoint, with explicit
+topic aliases (not a lower entity threshold), and official Apple/Tata issuer
+indexes. A fetched issuer index may contribute bounded observed child links;
+one second-hop HTML read spends an existing remaining read slot. Maximum depth
+is two, links remain same-origin and go through qualification/SSRF controls,
+PDF leads remain visible but unread, and publisher grouping is recomputed.
+Indexes/careers pages no longer become primary documents merely through issuer
+ownership. Authentic-statement and identity-abuse queries are separate.
+
+Missing dates no longer become `Recent` in Reddit RSS, Bilibili, LinkedIn,
+Xueqiu or Meta embedding normalization. HTML entities decode to readable text.
+An omitted ResearchRequest timeout now inherits configured engine bounds
+(local default 25s/server 20s), rather than silently replacing them with 15s.
+Adaptive calls enforce their remaining discovery deadline; late provider
+results cannot mutate the returned investigation corpus. A second-hop HTML
+selector looks past unread PDFs before applying its link-count bound.
+
+Final implementation regression checkpoint: `pytest tests/ -q` exit 0,
+**1,329 passed (79.03s)**; fast unit/chaos/security exit 0, **1,121 passed
+(42.33s)**. Targeted retrieval/golden/stage controls: 45 passed. The final
+52-operation probe completed at an unchanged source fingerprint, 78 observations,
+11 operations without observations; all 16 protected operations sampled.
+Live normal-matrix and publication evidence is recorded in the final review.
+
+Intermediate audit limitations are retained: one all-source run invalidated its
+fingerprint after an audit-script edit; another stopped before probing because
+Windows decoded a Unicode Git diff as CP1252. The runner now explicitly reads
+Git output as UTF-8; fresh stable passes succeeded. Initial test failures also
+include a test-double method-name typo, then genuine red controls for passage,
+mixed citations, dates, topic aliases, inherited timeout and adaptive deadline.
+No unsuccessful run is silently substituted as acceptance.
+
+The latest twelve normal investigations still cannot establish research
+completion: financial statement PDFs/metric-period binding remain incomplete,
+several brand/identity flows lack relevant bodies, OpenAI body reads return 403,
+and live Gemini attempts report HTTP 429 plus a fallback model HTTP 404.
+Configured credentials are not successful live synthesis. Do not bypass these
+limits, promote profiles/feed summaries, or treat offline/CI success as launch
+authorization.

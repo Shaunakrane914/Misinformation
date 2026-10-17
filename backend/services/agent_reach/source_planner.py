@@ -42,7 +42,12 @@ PUBLISHER_FEEDS = {
 # observed on the fetched page and qualified before bounded deep reading.
 ISSUER_DOCUMENT_INDEXES = {
     "infosys": "https://www.infosys.com/investors/reports-filings.html",
+    "apple": "https://investor.apple.com/investor-relations/default.aspx",
+    "tatamotors": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
 }
+
+# Topic-specific specialist discovery, not authoritative company statements.
+TOPIC_FEEDS = {"electricvehicles": "https://electrek.co/feed/"}
 
 DIRECT_URL_HOSTS = {
     "reddit.com": "reddit",
@@ -390,7 +395,7 @@ class SourcePlanningEngine:
                 self._action(2, "reddit", "search", f"{query_base} investor discussion", "investor_discussion", "SYNDICATED_OR_INDEXED", 4, "Capture investor discussion as unverified community evidence.", limitations=["Community discussion cannot prove accounting claims."])
             )
         elif intent_class == "identity_attribution":
-            quote_query = f'"{quotes[0]}" {target}' if quotes else f"{target} official statement impersonation deepfake"
+            quote_query = f'"{quotes[0]}" {target}' if quotes else f'"{target}" statement interview transcript'
             actions.extend([
                 self._action(1, "web", "search", f"{target} official website verified social accounts", "identity_primary", "SEARCH_INDEX_DISCOVERY", 1, "Establish the entity's official web identity before resolving social handles.", True),
                 self._action(1, "web", "search", quote_query, "quotation_verification", "SEARCH_INDEX_DISCOVERY", 1, "Verify authentic quotation or speech transcripts against public records.", True),
@@ -430,7 +435,7 @@ class SourcePlanningEngine:
         elif agent.lower() in {"brandshield", "brandshield_agent"}:
             actions.append(self._action(2, "web", "search", f"{target} impersonation scam counterfeit complaint", "brand_risk", "SEARCH_INDEX_DISCOVERY", 3, "Search for impersonation, counterfeit, and scam indicators."))
         elif agent.lower() in {"personal", "personal_watch", "personal_watch_agent"}:
-            actions.append(self._action(2, "web", "search", f"{target} official statement impersonation deepfake", "personal_watch", "SEARCH_INDEX_DISCOVERY", 3, "Monitor public statements and identity abuse while excluding private data."))
+            actions.append(self._action(2, "web", "search", f'"{target}" impersonation deepfake', "personal_watch", "SEARCH_INDEX_DISCOVERY", 3, "Monitor public identity abuse separately from authentic statements; exclude private data."))
 
         # Complement uncertain general search with original publisher feeds.
         # This registry routes by resolved issuer identity, not benchmark input.
@@ -439,6 +444,11 @@ class SourcePlanningEngine:
             actions.insert(0, self._action(
                 1, "rss", "read", feed, "publisher_announcements", "SYNDICATED_SUMMARY", 0,
                 "Discover dated original publisher articles; acquire linked bodies separately.", True))
+        topic_feed = TOPIC_FEEDS.get(registry_key)
+        if topic_feed and entity_only and "rss" in allowed:
+            actions.insert(0, self._action(1, "rss", "read", topic_feed,
+                "specialist_topic_reporting", "SYNDICATED_SUMMARY", 0,
+                "Discover dated specialist reporting; qualify topic and acquire original bodies separately."))
 
         return [
             action for action in actions

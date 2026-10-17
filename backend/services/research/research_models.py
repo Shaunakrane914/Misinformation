@@ -510,7 +510,9 @@ class ResearchRequest:
     time_scope: str = "recent"
     source_url: Optional[str] = None
     agent_name: str = "research_engine"
-    timeout_seconds: float = 15.0
+    # None inherits the configured engine budget. An explicit zero still means
+    # no acquisition time; do not silently override deployment configuration.
+    timeout_seconds: Optional[float] = None
     extra_params: Dict[str, Any] = field(default_factory=dict)
 
 

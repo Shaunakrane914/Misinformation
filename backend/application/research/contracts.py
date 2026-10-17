@@ -56,6 +56,7 @@ class EscalatedEvidence:
 class ReadEvidence:
     investigated: list[EvidenceItem]
     telemetry: dict[str, Any]
+    linked_candidates: list[EvidenceItem] = field(default_factory=list)
 
 
 @dataclass

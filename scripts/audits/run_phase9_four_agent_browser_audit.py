@@ -28,6 +28,7 @@ parser.add_argument('--output-dir', type=Path, required=True)
 parser.add_argument('--env-file', type=Path, required=True, help='Server-side local configuration, never copied to output')
 parser.add_argument('--chart-js', type=Path, required=True, help='Actual pinned Chart.js 4.4.1 asset')
 parser.add_argument('--limit', type=int, default=12)
+parser.add_argument('--case', action='append', default=[], help='Up to four explicit unseen controls as agent:input; default is the fixed twelve-case matrix')
 parser.add_argument('--replay-dir', type=Path, help='Replay saved SSE events through page buttons; no acquisition, explicitly labeled')
 args = parser.parse_args()
 OUT = args.output_dir.resolve()
@@ -118,9 +119,19 @@ matrix = [{'agent':a, 'input':q} for a, queries in (
     ('brandshield', ('Nike','Apple','Tata Motors')),
     ('personal_watch', ('Sam Altman','Tim Cook','Satya Nadella')),
 ) for q in queries][:max(0, min(12,args.limit))]
+if args.case:
+    if len(args.case) > 4:
+        parser.error('At most four explicit control inputs')
+    controls = []
+    for value in args.case:
+        agent, separator, query = value.partition(':')
+        if not separator or agent not in {'scout', 'trending', 'brandshield', 'personal_watch'} or not query.strip():
+            parser.error('Control must be a supported agent:input')
+        controls.append({'agent': agent, 'input': query.strip()})
+    matrix = controls
 mapping = {'scout':('scout-agent','tickerInput','analyzeBtn'), 'trending':('trending-agent','scanQueryInput','trendingScanBtn'),
            'brandshield':('brandshield-agent','brandInput','scanBtn'), 'personal_watch':('personal-watch-agent','personInput','scanBtn')}
-summary = {'scope':'Actual Chromium page buttons to real local backend SSE; 12 new acquisitions, no response or progress stubs. 390/1440px screenshots share one result per input. Startup lifespan/background ingestion off; remote persistence and notifications disabled; external fonts blocked; actual pinned Chart.js served from saved bytes.',
+summary = {'scope':f'Actual Chromium page buttons to real local backend SSE; {len(matrix)} new acquisitions, no response or progress stubs. 390/1440px screenshots share one result per input. Startup lifespan/background ingestion off; remote persistence and notifications disabled; external fonts blocked; actual pinned Chart.js served from saved bytes.',
            'configured_gemini_credentials':len(settings.gemini_api_keys), 'mock_llm':settings.is_mock_llm, 'cases':[]}
 summary.update(head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,text=True).strip(),
                dirty_source=bool(subprocess.check_output(['git','status','--porcelain'],cwd=ROOT,text=True).strip()),
@@ -238,8 +249,21 @@ try:
                     page.screenshot(path=str(OUT / shot))
                     text = page.locator('body').inner_text()
                     (OUT / (case_id + '-' + str(width) + '-text.txt')).write_text(text,encoding='utf-8')
+                    inspection = page.locator('#ur-evidence .ur-ev-inspection').first
+                    inspection_keyboard = None
+                    inspection_shot = None
+                    if inspection.count():
+                        inspection.locator(':scope > summary').focus()
+                        page.keyboard.press('Enter')
+                        inspection_keyboard = inspection.evaluate('el=>el.open')
+                        inspection.evaluate("el=>window.scrollTo({top:el.getBoundingClientRect().top+scrollY-90,behavior:'instant'})")
+                        inspection_shot = case_id + '-' + str(width) + '-inspection.png'
+                        page.screenshot(path=str(OUT / inspection_shot))
+                        inspection.evaluate('el=>el.open=false')
                     normalized = re.sub(r'\s+',' ', report_node.inner_text() if visible else '')
                     row['views'].append({'width':width, 'unified_report_visible':visible,
+                                         'inspection_keyboard_open':inspection_keyboard,
+                                         'inspection_screenshot':inspection_shot,
                                          'rendered_findings':page.locator('#ur-findings li').count(),
                                          'rendered_acquired_cards':page.locator('#ur-evidence .ur-ev-card').count(),
                                          'rendered_discovery_cards':page.locator('#ur-discovery .ur-ev-card').count(),
@@ -268,7 +292,7 @@ summary['application_unchanged_during_run'] = application_fingerprint() == initi
 write_json(OUT / 'summary.json', summary)
 failed = not summary['cases'] or any(
     row.get('error_type') or not row.get('result_event') or row.get('error_events') or row.get('page_errors')
-    or any(not view['unified_report_visible'] or view['missing_finding_texts']
+    or any(not view['unified_report_visible'] or view['missing_finding_texts'] or view.get('inspection_keyboard_open') is False
            or view['document_width'] > view['width'] + 1
            or view['rendered_findings'] != row['findings']
            or view['rendered_acquired_cards'] != row['acquired_records']

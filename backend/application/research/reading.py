@@ -79,12 +79,19 @@ class DeepReadingStage:
                    and item.acquired_id and item.acquisition_attempt_id]
         pending = [item for item in ranked.ranked if item not in carried
                    and item.canonical_url not in {source.canonical_url for source in carried}]
+        # An issuer index -> quarterly index -> HTML statement is a bounded
+        # two-hop document chain. Reserve one existing read slot, not extra
+        # fan-out or extra wall time. PDF links remain visible, not misread as HTML.
+        issuer_chain = request.domain == "financial" and any(
+            item.query_class == "issuer_documents" for item in carried)
+        first_limit = max(1, deep_read_budget - 1) if issuer_chain and deep_read_budget > 1 else deep_read_budget
         time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+        first_timeout = max(0.0, time_left - 1.5) if issuer_chain and deep_read_budget > 1 else time_left
         if deep_read_budget > 0 and pending and time_left > 0:
             investigated_items, read_telemetry = deep_reader.deep_read(
                 pending,
-                max_reads=deep_read_budget,
-                timeout_per_read=min(budget.channel_timeout_seconds, time_left)
+                max_reads=first_limit,
+                timeout_per_read=min(budget.channel_timeout_seconds, first_timeout)
             )
         else:
             investigated_items, read_telemetry = [], {
@@ -97,5 +104,44 @@ class DeepReadingStage:
                 "candidate_selection_audit": [],
             }
 
+        linked_candidates = []
+        remaining_reads = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
+        time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+        if issuer_chain and remaining_reads and time_left > 0:
+            from urllib.parse import urlsplit
+            from backend.application.research.acquisition import _observed_issuer_documents
+            from backend.infrastructure.acquisition.adapters.web.page_extraction import document_link_priority
+            seen = {item.canonical_url for item in ranked.ranked}
+            for parent in sorted(investigated_items, key=lambda item: document_link_priority({"text": item.title, "url": item.canonical_url})):
+                if parent.query_class != "observed_issuer_document":
+                    continue
+                for child in _observed_issuer_documents(parent, html_only=True):
+                    if (child.canonical_url in seen
+                            or not urlsplit(child.canonical_url).path.lower().endswith((".html", ".htm"))):
+                        continue
+                    seen.add(child.canonical_url)
+                    source_quality_engine.classify_and_score(child, target_name=request.target)
+                    linked_candidates.append(child)
+                    if len(linked_candidates) >= min(1, remaining_reads):
+                        break
+                if linked_candidates:
+                    break
+            accepted, rejected = relevance_gate.filter_candidates(
+                linked_candidates, target_entity=request.target, domain=request.domain, intent=request.intent)
+            ranked.rejected.extend(rejected)
+            ranked.accepted.extend(accepted)
+            ranked.ranked.extend(item for item in accepted if item not in ranked.ranked)
+            if accepted:
+                from backend.services.research.source_independence import source_independence_engine
+                ranked.ranked, ranked.clusters = source_independence_engine.cluster_independence(ranked.ranked)
+                time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+                extra, observed = deep_reader.deep_read(accepted, max_reads=min(1, remaining_reads),
+                    timeout_per_read=min(budget.channel_timeout_seconds, time_left))
+                investigated_items.extend(extra)
+                for key in ("attempted", "successful", "failed", "cached", "total_chars_read"):
+                    read_telemetry[key] = read_telemetry.get(key, 0) + observed.get(key, 0)
+                for key in ("read_urls", "candidate_selection_audit", "acquisition_attempts"):
+                    read_telemetry.setdefault(key, []).extend(observed.get(key, []))
+                read_telemetry["issuer_link_follow_up_count"] = len(extra)
         read_telemetry["reused_acquired_count"] = len(carried)
-        return ReadEvidence(carried + investigated_items, read_telemetry)
+        return ReadEvidence(carried + investigated_items, read_telemetry, linked_candidates)

@@ -18,6 +18,9 @@ SIGNAL_MARKERS: Set[str] = {
     "warning", "advisory", "recalled", "halted", "resigned", "settlement"
 }
 
+DISCLOSURE_CONTEXT = ("forward-looking statements", "certain statements in this press release",
+                      "safe harbor statement")
+
 # This is an explicitly heuristic passage-quality filter, not entailment or
 # calibrated confidence. Preserve rejected text in the corpus for inspection.
 NAVIGATION_MARKERS = ("toggle navigation", "switch to dark", "switch to light", "shop all",
@@ -58,6 +61,9 @@ class PassageExtractor:
         clean_target = re.sub(r"\([^)]*\)", "", target_name or "").lower().strip()
         target_tokens = set(re.findall(r"[a-z0-9]{3,}", clean_target)) - {"inc", "ltd", "limited", "corp", "corporation", "company"}
         intent_tokens = set(w for w in (intent or "").lower().split() if len(w) >= 4)
+        from backend.services.research.entity_resolver import entity_resolver
+        profile = entity_resolver.parse_request(target_name).target_entity
+        topic_aliases = profile.aliases if profile.entity_type == "topic" else []
 
         for item in items:
             from backend.schemas.evidence_inspection import METADATA_DEPTHS
@@ -91,12 +97,13 @@ class PassageExtractor:
                     continue
                 p_lower = p.lower()
                 present = target_tokens & set(re.findall(r"[a-z0-9]{3,}", p_lower))
-                if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower:
+                topic_match = any(re.search(r"\b" + re.escape(alias.casefold()) + r"\b", p_lower) for alias in topic_aliases)
+                if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower and not topic_match:
                     continue
                 score = 0.0
 
                 # Target presence
-                if clean_target and clean_target in p_lower:
+                if topic_match or (clean_target and clean_target in p_lower):
                     score += 3.0
                 elif any(t in p_lower for t in target_tokens):
                     score += 1.5
@@ -117,6 +124,12 @@ class PassageExtractor:
                 if '"' in p or '“' in p or "'" in p:
                     score += 0.5
 
+                # Keyword-dense legal disclosures must not crowd out the
+                # substantive announcement. Keep them in captured source text;
+                # this is selection priority, never prose deletion or truth.
+                if any(marker in p_lower for marker in DISCLOSURE_CONTEXT):
+                    score -= 3.0
+
                 if score > best_score:
                     best_score = score
                     best_p = p
@@ -128,12 +141,15 @@ class PassageExtractor:
                 continue
 
             # Clean and truncate best excerpt
-            clean_excerpt = re.sub(r'\s+', ' ', best_p).strip()
-            if len(clean_excerpt) > 450:
-                clean_excerpt = clean_excerpt[:450]
+            # Preserve exact offsets and qualifications. A short display
+            # preview must not silently delete a later negation/date. The full
+            # captured source remains available even if this bounded window ends.
+            clean_excerpt = best_p[:2000]
+            if len(best_p) > 2000:
+                item.metadata["excerpt_truncated"] = True
 
             item.relevant_excerpt = clean_excerpt
-            item.excerpt_start = raw_text.find(best_p) if best_p in raw_text else 0
+            item.excerpt_start = raw_text.find(best_p)
             item.excerpt_end = item.excerpt_start + len(clean_excerpt)
             item.extraction_status = "SUCCESS"
 

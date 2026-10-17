@@ -13,17 +13,22 @@ from backend.services.research.source_independence import source_independence_en
 from backend.services.research.source_quality import source_quality_engine
 
 
-def _observed_issuer_documents(parent: EvidenceItem) -> list[EvidenceItem]:
+def _observed_issuer_documents(parent: EvidenceItem, *, html_only: bool = False) -> list[EvidenceItem]:
     """Bounded leads from a fetched issuer index, never invented body evidence."""
     from backend.services.research.source_quality import canonical_hostname, hostname_matches
-    if parent.query_class != "issuer_documents" or not parent.metadata.get("read_success"):
+    from backend.infrastructure.acquisition.adapters.web.page_extraction import document_link_priority
+    from urllib.parse import urlsplit
+    if (parent.query_class not in {"issuer_documents", "observed_issuer_document"}
+            or not parent.metadata.get("read_success") or parent.metadata.get("document_hop", 0) >= 2):
         return []
     origin = canonical_hostname(parent.metadata.get("observed_final_endpoint") or parent.canonical_url)
     links = (parent.metadata.get("page_metadata") or {}).get("observed_links") or []
     documents = []
     seen = {parent.canonical_url}
-    for link in links:
+    for link in sorted(links, key=document_link_priority):
         url, title = str(link.get("url") or ""), str(link.get("text") or "")
+        if html_only and not urlsplit(url).path.lower().endswith((".html", ".htm")):
+            continue
         if (url in seen or not hostname_matches(canonical_hostname(url), origin)
                 or not re.search(r"quarter|results|filing|earnings|annual.report", title + " " + url, re.I)):
             continue
@@ -35,6 +40,7 @@ def _observed_issuer_documents(parent: EvidenceItem) -> list[EvidenceItem]:
             query_class="observed_issuer_document", query_text=parent.query_text,
             metadata={"discovered_on_url": parent.canonical_url,
                       "discovered_on_candidate_id": parent.id, "link_text": title,
+                      "document_hop": parent.metadata.get("document_hop", 0) + 1,
                       "linked_article_retrieved": False},
         ))
         if len(documents) >= 4:

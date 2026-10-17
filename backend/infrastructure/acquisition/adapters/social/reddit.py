@@ -355,7 +355,7 @@ def fetch_reddit_subreddit_rss(
                     content=content,
                     url=link,
                     author=author,
-                    published=published or "Recent",
+                    published=published or "",
                     snippet=clean_text[:300] if clean_text else title,
                     score=65.0,
                     retrieval_method="reddit_subreddit_rss",

@@ -223,6 +223,8 @@ class SourceQualityEngine:
         elif is_official:
             path = urllib.parse.urlsplit(url).path.lower().strip("/")
             is_landing = not path or bool(re.fullmatch(r"[a-z]{2}(?:[-/][a-z]{2})?", path))
+            is_landing = is_landing or bool(re.match(r"(?:careers|jobs)(?:[/.]|$)", path)) or path in {
+                "investors/reports-filings.html", "investor-relations/default.aspx", "intimation-to-stock-exchanges"}
             item.metadata["authority_scope"] = "CORPORATE_LANDING" if is_landing else "CORPORATE_DOCUMENT"
             item.source_role = SourceRole.DISCOVERY.value if is_landing else SourceRole.PRIMARY.value
             item.source_tier = SourceTier.TIER_3_AGGREGATE.value if is_landing else SourceTier.TIER_1_ORIGINAL_DOCUMENT.value

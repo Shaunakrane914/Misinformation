@@ -1,5 +1,5 @@
 {
-  "reason": "First empty discovery no longer claims saturation; only stopping/decision telemetry changes in these zero-follow-up fixtures. Candidate bytes, IDs, rejected IDs, citations and query outcomes remain pinned by existing manifests. Stage timings are nondeterministic additive diagnostics tested independently.",
+  "reason": "First empty discovery no longer claims saturation. Separately, different captured propositions no longer inherit citations merely because they share a discovery query class. Four reviewed development fixtures now produce two independently cited UNVERIFIED observations instead of one with mixed/opposing support. Candidate bytes/IDs/rejections/query outcomes and lineage metrics remain pinned. Nondeterministic stage timings have an independent contract test.",
   "scenarios": {
     "credential_failure": {
       "result_sha256": "53a0563f8fb42c8799f3286e6210383e5b5f7f11a6a63716ad3084f383ec3fce",
@@ -15,6 +15,42 @@
       "result_sha256": "e7d8357129a722ede9814be3ef60cd14c372b95990708430c1c56ab29bfae426",
       "corpus_sha256": "01f57b8a625cfbbeba66064500dcd30d39bd7e3961c08c5c6d2c99f892c69424",
       "dossier_sha256": "048d8762fbe0bc51cf1c27753e48dbbb69d174a8316a08f7e3125148b5746947"
+    },
+    "conflicting": {
+      "result_sha256": "7275c1a0f522d02dc9df29954fc5bb0dfbc0a839b30154fa5f67d5902f0efdcb",
+      "corpus_sha256": "2cb5664ad42d30ea2aa4d9c6880c4e97fb976c2555eb257438518ebce9a08092",
+      "dossier_sha256": "65bac055e06ec22978e039baf2647ba062898a08b89ee446c3c93c5982a88c71",
+      "finding_ids": [
+        "fnd_fi_001",
+        "fnd_fi_002"
+      ]
+    },
+    "primary_escalation": {
+      "result_sha256": "9dc79e62b4b10dcece4af5e9861b2442f92da46713ba92fac7d6451ffbfe770b",
+      "corpus_sha256": "65b4fc0fe3e15eee32b33d5567004fecef032600c5ba4f3441f2ec050b634838",
+      "dossier_sha256": "53b6ea2f5ea55d82dd6e3c695823d2add2943ff5bd7b7ec1c304c875af229a7a",
+      "finding_ids": [
+        "fnd_fi_001",
+        "fnd_fi_002"
+      ]
+    },
+    "relevant": {
+      "result_sha256": "f05135fb0bec4038698d57820eccb78894a626758be743e1edb3d25be4fee578",
+      "corpus_sha256": "ba4fb59cfdd9cf2b1da0c951e0514681aff37d12ea3c9b2fbb72da2de04b4b80",
+      "dossier_sha256": "c5862b5f3914abb46c6af87a7d8cdf9bcd58e6f213f1e29cc1267b47cd5941b5",
+      "finding_ids": [
+        "fnd_fi_001",
+        "fnd_fi_002"
+      ]
+    },
+    "syndicated": {
+      "result_sha256": "873a4412490b346ff5450205149e46079a5218bf1a1cb04139648e5aeb0cb467",
+      "corpus_sha256": "e4b9214154910da1831355ba4d77d7028b71c900c6d7037b362150522f10d322",
+      "dossier_sha256": "552d15c1568a7d24fa36fd2cb201e699c16c9f00745df157219f629529fa0e7e",
+      "finding_ids": [
+        "fnd_fi_001",
+        "fnd_fi_002"
+      ]
     }
   }
 }

@@ -32,14 +32,17 @@ def synthesize_grounded_findings(
     if not investigated_items:
         return findings
 
-    # Group items by query_class
-    class_map: Dict[str, List[EvidenceItem]] = {}
+    # A shared discovery query is not a shared proposition. Only identical
+    # observed passages may share a finding/citation group; paraphrase-level
+    # corroboration requires separate entailment evaluation.
+    class_map: Dict[tuple, List[EvidenceItem]] = {}
     for item in investigated_items:
         qc = item.query_class or "general"
-        class_map.setdefault(qc, []).append(item)
+        passage = re.sub(r"\s+", " ", item.relevant_excerpt or item.snippet or item.title).strip().casefold()
+        class_map.setdefault((qc, passage), []).append(item)
 
     # Generate findings per significant query class
-    for q_class, items_in_class in class_map.items():
+    for (q_class, _passage), items_in_class in class_map.items():
         if len(findings) >= 6:
             break
 

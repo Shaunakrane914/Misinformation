@@ -98,6 +98,12 @@ class ParsedInvestigationRequest:
 
 # Knowledge base of canonical profiles for standard tech & business entities
 KNOWN_CANONICAL_PROFILES: Dict[str, TargetEntity] = {
+    "electric vehicles": TargetEntity(
+        canonical_name="Electric Vehicles", entity_type="topic",
+        aliases=["electric vehicle", "electric vehicles", "EVs", "EV chargers"],
+        positive_context=["automaker", "charging", "battery", "vehicle"],
+        negative_context=["electricity bill", "utility account"],
+    ),
     "satya nadella": TargetEntity(
         canonical_name="Satya Nadella",
         entity_type="person",
@@ -264,6 +270,14 @@ class EntityResolver:
 
         # 2. If explicit entity is provided, use it directly
         candidate_entity_str = explicit_entity.strip() if explicit_entity else ""
+
+        # Scout passes a resolved issuer followed by its structured ticker.
+        # Those alias tokens are not extra words in a person's/company's name.
+        # Match only a short name plus terminal ticker, not arbitrary claims.
+        issuer_alias = re.fullmatch(r"([A-Za-z][A-Za-z &.'-]{1,90}?)\s+\(([A-Z][A-Z0-9.^-]{0,19})\)", clean_input)
+        if (not candidate_entity_str and domain == "financial" and issuer_alias
+                and len(issuer_alias.group(1).split()) <= 6):
+            candidate_entity_str = issuer_alias.group(1).strip()
 
         # Otherwise extract from remaining words
         if not candidate_entity_str:

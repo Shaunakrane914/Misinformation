@@ -123,3 +123,20 @@ The separate combined audited-results PDF failed the existing 1MB transport cap;
 it is not a parser success or authorization to enlarge the cap. Normal financial
 results still vary with read budgets/provider timing and often retain indexes.
 Do not turn a successful direct PDF read into an accepted Scout investigation.
+
+## Source-to-frontend metadata repair
+
+Actual Scout PDF captures exposed that Scout's serializer replaced metadata with
+only `truncated`. Added `public_capture_metadata` to the inspection contract and
+used it at Scout/BrandShield boundaries: explicit field allowlist, bounded raw
+capture/page observations, no auth/cookie/provider envelope passthrough. PDF page
+offsets are clipped to the actual retained body; beyond-body pages are omitted,
+partial pages remain labeled truncated. Known index/landing/profile roles are
+explicitly discovery-only in inspection, not body support.
+
+Two red-then-green controls are in `tests/unit/test_public_capture_metadata.py`.
+Full suite exit 0 **1,363 passed (53.90s)**, fast exit 0 **1,155 passed (30.70s)**
+after this repair. A fresh all-operation pass adds one observed public PDF URL:
+**52 unique operations / 53 executions**, not 53 supported operations. It
+captures 79 observations including the PDF, at a stable source fingerprint.
+The final current-code normal matrix and display checks are in the review.

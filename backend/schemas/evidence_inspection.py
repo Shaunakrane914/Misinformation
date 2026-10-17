@@ -123,9 +123,12 @@ def inspect_evidence(item: Any) -> dict:
     mentions = []
     pdf_pages = page.get("pdf_pages")
     if isinstance(pdf_pages, list):
-        observations["pdf_pages"] = [{key: p[key] for key in ("page", "start", "end", "text_truncated")
-                                       if key in p and type(p[key]) in (int, bool)}
-                                      for p in pdf_pages[:8] if isinstance(p, dict)]
+        observations["pdf_pages"] = [
+            {"page": p["page"], "start": p["start"], "end": min(p["end"], len(captured)),
+             "text_truncated": bool(p.get("text_truncated")) or p["end"] > len(captured)}
+            for p in pdf_pages[:8] if isinstance(p, dict)
+            and all(type(p.get(key)) is int for key in ("page", "start", "end"))
+            and 0 <= p["start"] < min(p["end"], len(captured)) and p["page"] >= 1]
         for key in ("pdf_page_count", "pdf_truncated", "pdf_source_sha256", "table_structure_verified", "extraction_method"):
             if isinstance(page.get(key), (str, bool, int)):
                 source_observations[key] = page[key]
@@ -137,7 +140,8 @@ def inspect_evidence(item: Any) -> dict:
     return {
         "schema_version": SCHEMA, "document_id": document_id,
         "captured_text_sha256": fingerprint, "content_depth": depth,
-        "evidentiary_use": "DISCOVERY_ONLY" if depth in METADATA_DEPTHS else "REQUIRES_PASSAGE_REVIEW",
+        "evidentiary_use": "DISCOVERY_ONLY" if depth in METADATA_DEPTHS or meta.get("content_role") in {
+            "DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE", "AUTHOR_BIO", "NAVIGATION"} else "REQUIRES_PASSAGE_REVIEW",
         "captured_chars": len(content), "inspected_chars": len(captured),
         "inspection_truncated": len(content) > MAX_CAPTURE_CHARS,
         "provider_truncated": provider_truncated,
@@ -153,6 +157,40 @@ def inspect_evidence(item: Any) -> dict:
         "passages_omitted": max(0, len(chunks) - len(passages)),
         "support_assessment": "NOT_ASSESSED",
     }
+
+
+def public_capture_metadata(item, max_chars=20_000):
+    """Bounded public capture context; never forward arbitrary provider metadata.
+
+    Used by native agent serializers that would otherwise discard structural
+    context. Inspection is recomputed against the actual exported body later.
+    """
+    meta = _value(item, "raw_metadata", "metadata") or {}
+    meta = meta if isinstance(meta, dict) else {}
+    body = _value(item, "content") or ""
+    body = body if isinstance(body, str) else ""
+    result = {"truncated": bool(meta.get("truncated")) or len(body) > max_chars}
+    for key in SOURCE_FIELDS:
+        value = meta.get(key)
+        if type(value) in (str, bool, int, float):
+            result[key] = value[:300] if isinstance(value, str) else value
+    raw = meta.get("raw_capture")
+    if isinstance(raw, dict) and isinstance(raw.get("text"), str):
+        result["raw_capture"] = {"text": raw["text"][:max_chars],
+            "truncated": bool(raw.get("truncated")) or len(raw["text"]) > max_chars,
+            "selection_method": str(raw.get("selection_method", "NATIVE_SOURCE_TEXT"))[:100]}
+    page = meta.get("page_metadata")
+    if isinstance(page, dict):
+        observed = inspect_evidence(item)
+        public_page = dict(observed["page_observations"])
+        for key in ("title", "author", "published", "content_scope", "extraction_method", "pdf_source_sha256"):
+            if isinstance(page.get(key), str):
+                public_page[key] = page[key][:300]
+        for key in ("pdf_page_count", "pdf_truncated", "table_structure_verified"):
+            if type(page.get(key)) in (int, bool):
+                public_page[key] = page[key]
+        result["page_metadata"] = public_page
+    return result
 
 
 def summarize_inspections(items: list) -> dict:

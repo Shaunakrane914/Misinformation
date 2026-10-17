@@ -322,6 +322,7 @@ class ScoutAgent:
             if group and group.startswith("syndicated_"):
                 syndicated_count += 1
 
+            from backend.schemas.evidence_inspection import public_capture_metadata
             source_record = {
                 "evidence_id": e_id,
                 "discovered_candidate_id": getattr(item, "discovered_id", getattr(item, "id", None)) if hasattr(item, "id") else item.get("discovered_id", item.get("id")),
@@ -343,7 +344,7 @@ class ScoutAgent:
                 # Preserve a bounded captured body through the public report;
                 # snippets alone previously discarded the acquired depth.
                 "content": (getattr(item, "content", "") if hasattr(item, "id") else item.get("content", ""))[:20000],
-                "metadata": {"truncated": len(getattr(item, "content", "") if hasattr(item, "id") else item.get("content", "")) > 20000},
+                "metadata": public_capture_metadata(item),
                 "relevant_excerpt": relevant_excerpt,
                 "source_role": role,
                 "source_tier": tier,

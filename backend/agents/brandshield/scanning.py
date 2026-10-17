@@ -135,6 +135,7 @@ def search_brand_evidence(
             metadata=getattr(f, "metadata", getattr(f, "raw_metadata", {})),
         ), target_name)
         is_primary, role, tier = qualified.primary_source, qualified.source_role, qualified.source_tier
+        from backend.schemas.evidence_inspection import public_capture_metadata
 
         if group.startswith("syndicated_"):
             syndicated_count += 1
@@ -150,7 +151,7 @@ def search_brand_evidence(
             "selection_reason": sel_rea,
             "title": title,
             "content": content,
-            "raw_metadata": dict(qualified.metadata),
+            "raw_metadata": public_capture_metadata(qualified),
             "snippet": snippet,
             "url": url,
             "has_url": bool(url and url.startswith("http")),

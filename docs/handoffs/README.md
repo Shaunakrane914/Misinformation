@@ -4,7 +4,7 @@ Start here when resuming work. These are dated engineering records, not promises
 
 ## Active implementation: role-aware evidence and bounded AI — 2026-10-17
 
-- [Implementation, safety boundaries, tests and continuation](2026-10-17_ROLE_AWARE_AI_EVIDENCE.md). Role/objective gates, bounded PDF text extraction, validated AI query/passage suggestions and shared frontend inspection. Local 1,359 full / 1,151 fast tests pass. Live model listing succeeds but generation returns 429; research/launch acceptance remains incomplete. Read publication evidence before assuming CI or deployment.
+- [Implementation, safety boundaries and continuation](2026-10-17_ROLE_AWARE_AI_EVIDENCE.md), [source/agent review](../testing/ROLE_AWARE_AI_EVIDENCE_REVIEW_2026-10-17.md) and [evidence](../testing/evidence/2026-10-17_role_aware_ai_evidence/README.md). Local **1,363 full / 1,155 fast** tests and all five exact-application hosted jobs pass at `3d628e1`. Actual Infosys PDF passage, EV bio filtering, Cyclone false-positive fix and public metadata preservation are verified within stated bounds. Live AI generation returns 429; legacy brand findings and specialist acquisition remain incomplete. Overall PARTIAL / research acceptance FAIL. No main merge/deployment.
 
 ## Previous implementation: continuous source intelligence — 2026-10-17
 

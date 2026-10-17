@@ -1,6 +1,10 @@
 # Current project state — 2026-10-17
 
-## Latest continuous source-intelligence checkpoint — 2026-10-17
+## Latest role-aware evidence / bounded AI checkpoint — 2026-10-17
+
+[Review](testing/ROLE_AWARE_AI_EVIDENCE_REVIEW_2026-10-17.md), [proof](testing/evidence/2026-10-17_role_aware_ai_evidence/README.md) and [handoff](handoffs/2026-10-17_ROLE_AWARE_AI_EVIDENCE.md). Role/objective gates, bounded PDF text-layer parsing, validated AI search/passage advice, fixed Cyclone/clone false positive and preserved public extraction metadata. Local **1,363 full / 1,155 fast**; five hosted application jobs passed at `3d628e1`. Final twelve normal investigations retain 29 records / 12,736 words, including an Infosys PDF; two cases still empty and several others remain generic/profile-only. Live model listing is 200, generation 429. **Overall PARTIAL / research acceptance FAIL; no main merge/deployment.**
+
+## Previous continuous source-intelligence checkpoint — 2026-10-17
 
 [Source-by-source and actual-agent review](testing/CONTINUOUS_SOURCE_INTELLIGENCE_REVIEW_2026-10-17.md), [evidence](testing/evidence/2026-10-17_continuous_source_intelligence/README.md) and [continuation handoff](handoffs/2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md). All 52 executable operations remeasured; 16 protected operations sampled. Normal twelve-input zero-acquisition count fell from eight to two, but 33 native records / 11,336 words include indexes, feed entries and profiles. NVIDIA article depth improved; financial statement parsing, brand/identity relevance and EV author-bio pollution remain unresolved. **Overall PARTIAL / research acceptance FAIL.** Local 1,329 full / 1,121 fast cases passed; all five hosted CI jobs passed for application/frontend `bc67b83`. This development branch is not merged or deployed. No successful live Gemini synthesis or production readiness claimed.
 

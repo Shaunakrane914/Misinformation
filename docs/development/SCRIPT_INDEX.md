@@ -10,6 +10,13 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ## 1. Overview & Script Taxonomy
 
+### Bounded AI / PDF diagnostics — 2026-10-17
+
+- [Minimal live AI diagnostic](../../scripts/diagnostics/check_ai_advisory_runtime.py): requires `--allow-live --env-file <existing-env> --output <new-json>`. Reads credentials securely without printing/editing them, checks the fixed provider model-list endpoint and one bounded structured generation request. Exit 2 means inference unavailable; listing 200 alone is not working AI. No scraping/deployment or fallback credential fabrication.
+- The existing extraction cycle accepts `--extra-web-url <observed-public-pdf>` to exercise bounded PDF reading in addition to all 52 original targets. One extra target makes 53 executions, not 53 supported operations. Existing source display scaffolds remain explicitly separate from native agent investigations.
+
+[Implementation, test commands and current-code live review](../handoffs/2026-10-17_ROLE_AWARE_AI_EVIDENCE.md).
+
 ### Continuous source-intelligence additions — 2026-10-17
 
 - [Saved investigation comparison](../../scripts/audits/summarize_intelligence_loop.py): `--baseline <saved-native-dir> --after <saved-native-dir> --output <new-json>`. Read-only inventory of native records, depth labels, retained words, citation joins, read outcomes and stage timings; no provider calls or inferred accuracy. Refuses an existing output file.

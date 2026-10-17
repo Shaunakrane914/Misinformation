@@ -140,3 +140,36 @@ after this repair. A fresh all-operation pass adds one observed public PDF URL:
 **52 unique operations / 53 executions**, not 53 supported operations. It
 captures 79 observations including the PDF, at a stable source fingerprint.
 The final current-code normal matrix and display checks are in the review.
+
+## Final measurement / CI closeout
+
+[Two-section review](../testing/ROLE_AWARE_AI_EVIDENCE_REVIEW_2026-10-17.md),
+[durable proof](../testing/evidence/2026-10-17_role_aware_ai_evidence/README.md).
+Final current-code normal matrix: twelve cases / 24 viewports, stable application
+hash `3d5290a779c290764ddb770c9168141d14d0731867da9fd1dbc339ebefc40d48`,
+29 native records / 12,736 retained-text words. Two empty cases remain (OpenAI,
+Brand/Tata); profiles/catalogs/indexes are not accepted research. Infosys now
+retains a 1,456-word PDF and one separately cited UNVERIFIED financial passage;
+EV has two article passages, no author biography. All twelve mobile report
+captures and focused real-PDF display captures were visually inspected.
+
+All final requests completed (HTTP 200 / 29 progress events); 24 states preserve
+findings/source/discovery counts and text, no document overflow or uncaught page
+exceptions. Console resource errors remain recorded. Source display: 69 samples,
+12 states / zero measured failures; separate real-PDF-only scaffold: 12 states /
+zero failures. These scaffolds are display checks, not normal investigations.
+
+Application `3d628e1b1d16640af7bc3efb857d7d363ce2efec` was committed/pushed;
+[all five exact-commit hosted jobs passed](https://github.com/Shaunakrane914/Misinformation/actions/runs/39053082338).
+Earlier `6666b08` and `19bf350` also passed five hosted jobs. Documentation/evidence
+closeout is a later successor with unchanged application code. Inspect current
+Git/CI, not just an old branch label. No main merge or deployment.
+
+**Next P1:** BrandShield's `agent.py` compatibility loop converts non-threat
+evidence into “Genuine Issue” findings. Final Nike/Apple still display product
+snippets despite shared objective gates; do not label this fixed or safe. Keep
+background observations separate and preserve contracts deliberately. Further
+priorities: financial table/period/unit alignment and oversized-document handling
+within policy; concrete brand/identity abuse acquisition; case-specific strategic
+briefs; independently reviewed claim-support evaluation. Live AI inference remains
+unavailable (429), not verified by offline fake-provider controls.

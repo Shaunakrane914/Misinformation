@@ -22,6 +22,7 @@ from backend.agents.brandshield.models import (
     THREAT_TAXONOMY,
 )
 from backend.services.agent_reach.channels import EvidenceFragment
+from backend.services.research.content_roles import contains_word_or_phrase
 
 logger = logging.getLogger(__name__)
 
@@ -68,7 +69,7 @@ class BrandShieldExtractionEngine:
             ev_id = frag.evidence_id or f"ev_{idx}"
 
             # 1. Counterfeit Detection
-            if not is_official and any(kw in text_lower for kw in counterfeit_keywords):
+            if not is_official and contains_word_or_phrase(text_lower, counterfeit_keywords):
                 c_id = f"CF-{idx:03d}"
                 counterfeits.append({
                     "id": c_id,

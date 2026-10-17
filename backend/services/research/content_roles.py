@@ -9,7 +9,7 @@ from urllib.parse import urlsplit
 NON_EVENT_ROLES = {"AUTHOR_BIO", "NAVIGATION", "LEGAL_DISCLOSURE", "DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE"}
 OBJECTIVE_TERMS = {
     "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator",
-    "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|clone|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
+    "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|\bclone\b|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
     "personal": r"impersonat|deepfake|fabricat|fake (?:account|video|profile|quote)|false (?:claim|quote)|identity (?:abuse|theft)|scam|denied|denies|authentic|transcript",
 }
 
@@ -28,6 +28,11 @@ def paragraph_role(text):
 def matches_objective(text, domain=""):
     pattern = OBJECTIVE_TERMS.get(domain)
     return not pattern or bool(re.search(pattern, text, re.I))
+
+
+def contains_word_or_phrase(text, terms):
+    """A keyword is not a substring of an unrelated product/person name."""
+    return any(re.search(r"(?<!\w)" + re.escape(term) + r"(?!\w)", text, re.I) for term in terms)
 
 
 def document_role(item):

@@ -12,6 +12,7 @@ from typing import Any, Dict, List
 
 from backend.agents.brandshield.dossier import build_investigation_dossiers
 from backend.services.research.source_quality import is_utility_or_auth_url
+from backend.services.research.content_roles import contains_word_or_phrase
 
 logger = logging.getLogger(__name__)
 
@@ -418,7 +419,7 @@ def heuristic_threat_synthesis(
             r"\b(?:beware of|avoid|warning about|reporting|protect yourself from)\b.{0,60}\b(?:scams?|fraud|phishing)\b"
             r"|\bwe (?:do not|never) (?:charge|accept|ask|request)\b", full_text))
 
-        if not is_official and any(k in full_text for k in counterfeit_kw):
+        if not is_official and contains_word_or_phrase(full_text, counterfeit_kw):
             threats.append({
                 "threat_id": f"thr_{len(threats)+1:03d}",
                 "type": "COUNTERFEIT",

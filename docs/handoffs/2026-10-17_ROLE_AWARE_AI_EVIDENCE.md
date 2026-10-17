@@ -103,3 +103,23 @@ financial table semantics remain unverified, legacy threat heuristics retain
 title-led investigatory leads, and brand/identity acquisition is still uneven.
 Frontend strategic explanations and independently reviewed claim-support
 evaluation remain follow-up work. Preserve blocked providers and protected data.
+
+## Subsequent live-discovered fix
+
+The first stable native matrix reproduced a high-severity Nike counterfeit
+false positive: substring `clone` matched the product name `Cyclone`. Fixed
+word boundaries in both the native extractor and legacy heuristic, plus the
+shared brand objective matcher. Two failing-before/passing-after controls are
+now in the role-adviser test file (25 tests). This does not authenticate or
+whitelist `nike.in`, nor suppress actual replica/clone listings.
+
+After this fix: full suite exit 0 **1,361 passed (108.21s)**; fast suite exit 0
+**1,153 passed (56.78s)**. All old research/agent goldens still pass unchanged.
+Implementation `6666b08` passed all five hosted CI jobs; the boundary followup
+and its final normal matrix must be verified independently in the closeout.
+
+A direct native read of observed `q1-2027.pdf` succeeded through `native_pdf_text`.
+The separate combined audited-results PDF failed the existing 1MB transport cap;
+it is not a parser success or authorization to enlarge the cap. Normal financial
+results still vary with read budgets/provider timing and often retain indexes.
+Do not turn a successful direct PDF read into an accepted Scout investigation.

@@ -220,3 +220,20 @@ def test_validated_ai_query_fits_existing_search_budget_and_cannot_add_reads():
     assert len(queries) <= plan.budget.max_queries_per_channel
     assert any(q["query_text"] == "Acme recall regulator notice" for q in queries)
     assert any(x["reason"] == "AI_SEARCH_SUGGESTIONS_ONLY" for x in plan.excluded)
+
+
+def test_cyclone_product_name_is_not_a_counterfeit_clone():
+    from backend.agents.brandshield.assessment import heuristic_threat_synthesis
+    result = heuristic_threat_synthesis({"brand": "Nike"}, [{"evidence_id": "ev_catalog", "platform": "web",
+        "url": "https://unverified-retailer.example/shoes", "title": "Nike shoes", "content":
+        "Nike Air Cyclone 360 cushioning is available in several sizes for running and walking.",
+        "content_depth": "PARTIAL_CONTENT"}])
+    assert not result["threats"] and not result["counterfeits"]
+
+
+def test_native_brand_extractor_does_not_confuse_cyclone_and_clone():
+    from backend.agents.brandshield.extraction import brandshield_extractor
+    from backend.services.agent_reach.channels import EvidenceFragment
+    result = brandshield_extractor.extract([EvidenceFragment(platform="web", title="Nike Cyclone shoes",
+        content="Nike Air Cyclone 360 is available in multiple sizes.", evidence_id="ev_product")], "Nike")
+    assert not result.counterfeits and not result.threats

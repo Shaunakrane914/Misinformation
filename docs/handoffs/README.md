@@ -2,7 +2,11 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Active implementation: continuous source intelligence — 2026-10-17
+## Active implementation: role-aware evidence and bounded AI — 2026-10-17
+
+- [Implementation, safety boundaries, tests and continuation](2026-10-17_ROLE_AWARE_AI_EVIDENCE.md). Role/objective gates, bounded PDF text extraction, validated AI query/passage suggestions and shared frontend inspection. Local 1,359 full / 1,151 fast tests pass. Live model listing succeeds but generation returns 429; research/launch acceptance remains incomplete. Read publication evidence before assuming CI or deployment.
+
+## Previous implementation: continuous source intelligence — 2026-10-17
 
 - [Implementation cycles and continuation queue](2026-10-17_CONTINUOUS_SOURCE_INTELLIGENCE.md), [two-section source/agent review](../testing/CONTINUOUS_SOURCE_INTELLIGENCE_REVIEW_2026-10-17.md) and [durable measurements/screenshots](../testing/evidence/2026-10-17_continuous_source_intelligence/README.md). Local 1,329 full / 1,121 fast passed; all five exact-application hosted CI jobs passed at `bc67b83`. Two of twelve normal inputs still acquired nothing; remaining records include shallow/index material. Overall PARTIAL / research acceptance FAIL. Read the precise next queue; no main merge/deployment.
 

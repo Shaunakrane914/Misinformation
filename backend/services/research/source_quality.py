@@ -7,6 +7,7 @@ and forensic tier, establishing deterministic quality scoring.
 
 import re
 import urllib.parse
+from backend.services.research.content_roles import document_role
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import (
@@ -281,6 +282,16 @@ class SourceQualityEngine:
             base_score = 0.55
 
         # 4. Depth Adjustment
+        content_role = document_role(item)
+        if content_role in {"DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE", "NAVIGATION", "AUTHOR_BIO"}:
+            item.metadata["content_role"] = content_role
+            item.primary_source = False
+            item.source_role = SourceRole.DISCOVERY.value
+            item.source_tier = SourceTier.TIER_3_AGGREGATE.value
+            base_score = min(base_score, 0.60)
+            if item.content_depth == ContentDepth.PRIMARY_DOCUMENT.value:
+                item.content_depth = ContentDepth.PARTIAL_CONTENT.value
+
         depth_modifier = 0.0
         if item.content_depth == ContentDepth.FULL_ARTICLE.value:
             depth_modifier = 0.08

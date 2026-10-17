@@ -317,6 +317,20 @@ class DeepReader:
                             else:
                                 orig_item.content_depth = ContentDepth.PARTIAL_CONTENT.value
 
+                            # Reassess the acquired body: an issuer index must
+                            # not retain a pre-read PRIMARY label, nor a deeper
+                            # thread retain a stale feed-summary completeness.
+                            from backend.services.research.content_roles import document_role
+                            role = document_role(orig_item)
+                            if role in {"DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE"}:
+                                orig_item.metadata["content_role"] = role
+                                orig_item.primary_source = False
+                                orig_item.source_role = SourceRole.DISCOVERY.value
+                                if orig_item.content_depth == ContentDepth.PRIMARY_DOCUMENT.value:
+                                    orig_item.content_depth = ContentDepth.PARTIAL_CONTENT.value
+                            if orig_item.metadata.get("content_completeness") == "feed_summary":
+                                orig_item.metadata["content_completeness"] = "BOUNDED_CAPTURE"
+
                             telemetry["successful"] += 1
                             telemetry["total_chars_read"] += len(content_body)
                             telemetry["read_urls"].append(orig_item.canonical_url)

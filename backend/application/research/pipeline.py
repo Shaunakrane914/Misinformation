@@ -81,7 +81,8 @@ class ResearchPipeline:
         read = run_stage(DeepReadingStage(),
             request, self.budget, escalated.ranked, start_ts, effective_timeout
         )
-        read = run_stage(PassageAnalysisStage(), request, escalated.ranked, read)
+        advisor_timeout = min(2.0, max(0.0, effective_timeout - (time.time() - start_ts)))
+        read = run_stage(PassageAnalysisStage(), request, escalated.ranked, read, advisor_timeout)
         analysis = run_stage(GroundedSynthesisStage(), request, escalated.ranked, read)
         analysis = run_stage(EvidenceGraphStage(), escalated.ranked, analysis)
         assembled = run_stage(CorpusAssemblyStage(),

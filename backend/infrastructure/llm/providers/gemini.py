@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import itertools
 import logging
+import math
 import random
 import threading
 import time
@@ -51,6 +52,40 @@ class GeminiProvider(LLMProvider):
         models_to_try = [model] if model else list(self.models)
         headers = {"Content-Type": "application/json"}
         payload = {"contents": [{"parts": [{"text": prompt}]}]}
+        # Advisory calls have a strict total budget across keys/models/retries.
+        # Previously caller timeouts were silently ignored by this provider.
+        call_timeout = min(self.timeout, float(kwargs.get("timeout", self.timeout)))
+        total_timeout = kwargs.get("total_timeout")
+        if not math.isfinite(call_timeout) or call_timeout <= 0:
+            raise ValueError("LLM timeout must be finite and positive")
+        deadline = None
+        if total_timeout is not None:
+            total_timeout = float(total_timeout)
+            if not math.isfinite(total_timeout) or total_timeout <= 0:
+                raise ValueError("LLM total timeout must be finite and positive")
+            deadline = time.monotonic() + total_timeout
+        max_attempts = kwargs.get("max_attempts")
+        if max_attempts is not None and (type(max_attempts) is not int or not 1 <= max_attempts <= 20):
+            raise ValueError("LLM attempt bound must be an integer from 1 to 20")
+        generation = {}
+        if "max_output_tokens" in kwargs:
+            tokens = kwargs["max_output_tokens"]
+            if type(tokens) is not int or not 1 <= tokens <= 4096:
+                raise ValueError("LLM output token bound must be 1 to 4096")
+            generation["maxOutputTokens"] = tokens
+        if kwargs.get("json_mode"):
+            generation["responseMimeType"] = "application/json"
+        if generation:
+            payload["generationConfig"] = generation
+        attempts = 0
+
+        def bounded_sleep(seconds):
+            if max_attempts is not None and attempts >= max_attempts:
+                return
+            remaining = deadline - time.monotonic() if deadline is not None else seconds
+            if remaining > 0:
+                time.sleep(min(seconds, remaining))
+
         last_error: Optional[Exception] = None
 
         t0 = time.perf_counter()
@@ -63,12 +98,16 @@ class GeminiProvider(LLMProvider):
                     api_key = next(self._key_cycle)  # type: ignore
 
                 for retry in range(self.max_retries):
+                    remaining = deadline - time.monotonic() if deadline is not None else call_timeout
+                    if remaining <= 0 or (max_attempts is not None and attempts >= max_attempts):
+                        raise RuntimeError("LLM advisory budget exhausted")
+                    attempts += 1
                     try:
                         resp = requests.post(
                             url,
                             headers={**headers, "x-goog-api-key": api_key},
                             json=payload,
-                            timeout=self.timeout
+                            timeout=min(call_timeout, remaining)
                         )
 
                         if resp.status_code == 200:
@@ -88,13 +127,14 @@ class GeminiProvider(LLMProvider):
                             )
 
                         elif resp.status_code == 429:
+                            last_error = RuntimeError(f"Gemini model {current_model} returned HTTP 429")
                             # Rate limit encountered: apply exponential backoff with jitter
                             backoff = (2 ** retry) * 0.5 + random.uniform(0.1, 0.4)
                             logger.warning(
                                 f"[GeminiProvider] HTTP 429 on {current_model}. "
                                 f"Backing off {backoff:.2f}s (retry {retry+1}/{self.max_retries})."
                             )
-                            time.sleep(backoff)
+                            bounded_sleep(backoff)
                             continue
 
                         else:
@@ -107,7 +147,7 @@ class GeminiProvider(LLMProvider):
                         last_error = RuntimeError(
                             f"Gemini request failed for {current_model}: {type(exc).__name__}"
                         )
-                        time.sleep(0.3)
+                        bounded_sleep(0.3)
 
         raise RuntimeError(
             f"All configured Gemini models and API keys were exhausted. Last error: {last_error}"

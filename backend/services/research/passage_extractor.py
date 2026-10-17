@@ -9,6 +9,7 @@ import re
 from typing import Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import EvidenceItem
+from backend.services.research.content_roles import NON_EVENT_ROLES, document_role, matches_objective, paragraph_role
 
 # High-signal action verbs and investigative indicators
 SIGNAL_MARKERS: Set[str] = {
@@ -33,11 +34,11 @@ def has_usable_passage(item) -> bool:
     depth = str(value("content_depth", "UNKNOWN") or "UNKNOWN").upper()
     if depth in METADATA_DEPTHS | {"SEARCH_SNIPPET", "SEARCH_INDEX_DISCOVERY", "SYNDICATED_SUMMARY"}:
         return False
-    if value("extraction_status") in {"EMPTY", "NO_RELEVANT_PASSAGE", "METADATA_ONLY"}:
+    if value("extraction_status") in {"EMPTY", "NO_RELEVANT_PASSAGE", "METADATA_ONLY", "FALLBACK"}:
         return False
     text = value("relevant_excerpt") or value("content") or value("snippet") or ""
     lower = text.lower()
-    return (len(text.strip()) >= 40
+    return (paragraph_role(text) not in NON_EVENT_ROLES and len(text.strip()) >= 40
             and sum(marker in lower for marker in NAVIGATION_MARKERS) < 2
             and bool(re.search(r"\b(?:is|are|was|were|has|have|allows|contains|includes|limits|rated)\b", lower)
                      or any(re.search(r"\b" + marker + r"\b", lower) for marker in SIGNAL_MARKERS)))
@@ -53,7 +54,8 @@ class PassageExtractor:
         self,
         items: List[EvidenceItem],
         target_name: str,
-        intent: str = ""
+        intent: str = "",
+        domain: str = "",
     ) -> List[EvidenceItem]:
         """
         Processes each evidence item, finding the most relevant excerpt and entities.
@@ -66,6 +68,13 @@ class PassageExtractor:
         topic_aliases = profile.aliases if profile.entity_type == "topic" else []
 
         for item in items:
+            item.relevant_excerpt = ""
+            item.excerpt_start = item.excerpt_end = -1
+            role = document_role(item)
+            if role in NON_EVENT_ROLES:
+                item.metadata["content_role"] = role
+                item.extraction_status = "NO_RELEVANT_PASSAGE"
+                continue
             from backend.schemas.evidence_inspection import METADATA_DEPTHS
             if item.content_depth in METADATA_DEPTHS | {"SEARCH_SNIPPET", "SEARCH_INDEX_DISCOVERY", "SYNDICATED_SUMMARY"}:
                 item.relevant_excerpt = ""
@@ -83,6 +92,9 @@ class PassageExtractor:
                 paragraphs = [p.strip() for p in re.split(r'(?<=[.?!])\s+', raw_text) if len(p.strip()) > 60]
 
             if not paragraphs:
+                # Preserve a bounded display-only fallback for compatibility;
+                # it is explicitly ineligible for findings, even if a later
+                # caller bypasses this extractor's subject/objective gates.
                 item.relevant_excerpt = raw_text[:350]
                 item.extraction_status = "FALLBACK"
                 continue
@@ -93,6 +105,8 @@ class PassageExtractor:
             best_idx = 0
 
             for idx, p in enumerate(paragraphs):
+                if not matches_objective(p, domain):
+                    continue
                 if not has_usable_passage({"content": p, "content_depth": item.content_depth}):
                     continue
                 p_lower = p.lower()

@@ -372,6 +372,7 @@ function renderEvidenceCard(item, allowRead = true) {
     ${passages.map(p => `<figure><figcaption>${esc(p.id || 'Passage')} · captured offsets ${esc(p.start ?? '?')}–${esc(p.end ?? '?')}</figcaption><blockquote>${esc(p.text.slice(0, 600))}</blockquote></figure>`).join('')}
     ${array(extraction.observed_numeric_mentions).slice(0, 12).length ? `<details><summary>Observed numeric mentions — not aligned financial facts</summary><ul>${array(extraction.observed_numeric_mentions).slice(0, 12).map(m => `<li>${esc(m && m.text || '')}: ${esc(m && m.context || '')}</li>`).join('')}</ul></details>` : ''}
     ${extraction.page_observations && typeof extraction.page_observations === 'object' ? `<details><summary>Extracted page observations — unverified</summary>
+      ${array(extraction.page_observations.pdf_pages).slice(0, 8).map(page => `<p>PDF page ${esc(page.page)} · captured offsets ${esc(page.start)}–${esc(page.end)}${page.text_truncated ? ' · text truncated' : ''}. Text-layer extraction only; table alignment requires review.</p>`).join('')}
       ${array(extraction.page_observations.tables).slice(0, 3).map((table, index) => `<div class="ur-observed-table"><table><caption>Observed table ${index + 1}; bounded cells, source context requires review</caption><tbody>${array(table).slice(0, 10).map(row => `<tr>${array(row).slice(0, 6).map(cell => `<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}
       ${['quotations', 'potential_corrections', 'media_captions'].map(key => array(extraction.page_observations[key]).slice(0, 5).map(value => `<p>${esc(key)}: ${esc(value)}</p>`).join('')).join('')}
     </details>` : ''}
@@ -584,6 +585,9 @@ function renderTrust(report) {
   const qt    = trust.quality_tensor || {};
   const indCount = trust.independent_source_count;
   const tel  = trust.query_telemetry || {};
+  const advice = report.processing_notes && report.processing_notes.ai_passage_advice;
+  const advisoryNote = advice && typeof advice === 'object'
+    ? `<p class="ur-trust-note">AI passage assistance: ${esc(advice.status || 'UNKNOWN')}. ${Number.isSafeInteger(advice.accepted) ? esc(advice.accepted) : '—'} selection(s) passed deterministic checks. Advisory only; this does not verify claim support. Unavailable assistance leaves deterministic processing in place.</p>` : '';
 
   // Quality tensor bars
   const axisRows = TENSOR_AXES.map(({ key, label }) => {
@@ -641,6 +645,7 @@ function renderTrust(report) {
           ⚙️ ${esc(String(succeeded))} / ${esc(String(total))} queries succeeded across ${esc(String(channels))} channel${channels !== 1 ? 's' : ''}.
         </p>
         ${telRow}${failRow}
+        ${advisoryNote}
       </div>
     </div>`;
 

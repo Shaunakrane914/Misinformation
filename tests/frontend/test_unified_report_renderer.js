@@ -124,6 +124,18 @@ renderUnifiedReport(container, report);
 assert(container.innerHTML.includes('href="https://example.org/source?q=1&amp;view=full"'));
 
 const keyboardAccessible = interactiveMount();
+renderUnifiedReport(container, { evidence: {}, trust: {}, processing_notes: { ai_passage_advice: {
+  status: '<script>unsafe()</script>', accepted: 0,
+} } });
+assert(container.innerHTML.includes('AI passage assistance: &lt;script&gt;'));
+assert(container.innerHTML.includes('0 selection(s) passed deterministic checks'));
+assert(!container.innerHTML.includes('<script>unsafe()'));
+renderUnifiedReport(container, { trust: {}, evidence: { primary: [{ title: 'Statement', extraction: {
+  missing_fields: [], passages: [], page_observations: { pdf_pages: [{ page: 2, start: 30, end: 60, text_truncated: true }] },
+} }] } });
+assert(container.innerHTML.includes('PDF page 2'));
+assert(container.innerHTML.includes('30–60'));
+assert(container.innerHTML.includes('table alignment requires review'));
 renderUnifiedReport(keyboardAccessible, report);
 keyboardAccessible.button.click();
 assert.equal(keyboardAccessible.attributes['aria-expanded'], 'false');

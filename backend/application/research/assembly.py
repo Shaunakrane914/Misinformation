@@ -202,6 +202,9 @@ class CorpusAssemblyStage:
         }
 
         # Build human-readable executive summary
+        if "ai_passage_advice" in read_telemetry:
+            telemetry["ai_passage_advice"] = read_telemetry["ai_passage_advice"]
+
         summary = (
             f"Forensic investigation for '{request.target}' across {len(multi_queries)} channels yielded "
             f"{len(ranked_candidates)} deduplicated candidates, with {read_telemetry['successful']} deep-read "

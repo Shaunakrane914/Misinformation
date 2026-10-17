@@ -1,0 +1,54 @@
+"""Conservative content-role/agent-objective heuristics, never truth judgments.
+
+Raw captures remain unchanged. A rejected passage may still be inspected.
+"""
+import re
+from urllib.parse import urlsplit
+
+
+NON_EVENT_ROLES = {"AUTHOR_BIO", "NAVIGATION", "LEGAL_DISCLOSURE", "DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE"}
+OBJECTIVE_TERMS = {
+    "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator",
+    "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|clone|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
+    "personal": r"impersonat|deepfake|fabricat|fake (?:account|video|profile|quote)|false (?:claim|quote)|identity (?:abuse|theft)|scam|denied|denies|authentic|transcript",
+}
+
+
+def paragraph_role(text):
+    lower = text.casefold().strip()
+    if re.search(r"(?:about the author|author bio(?:graphy)?|\bcovering\b.{0,100}\bfor\b.{0,80}\bsince\b|\b(?:journalist|reporter|editor)\b.{0,70}\b(?:covers|covering|writes about)\b)", lower):
+        return "AUTHOR_BIO"
+    if any(x in lower for x in ("forward-looking statements", "certain statements in this press release", "safe harbor statement")):
+        return "LEGAL_DISCLOSURE"
+    if sum(x in lower for x in ("toggle navigation", "privacy policy", "contact us", "add to cart", "shop all", "all rights reserved")) >= 2:
+        return "NAVIGATION"
+    return "SUBSTANTIVE_CANDIDATE"
+
+
+def matches_objective(text, domain=""):
+    pattern = OBJECTIVE_TERMS.get(domain)
+    return not pattern or bool(re.search(pattern, text, re.I))
+
+
+def document_role(item):
+    """Role from captured structure, not ownership or publisher-declared trust."""
+    value = item.get if isinstance(item, dict) else lambda key, default=None: getattr(item, key, default)
+    depth = value("content_depth", "")
+    if depth in {"PROFILE_METADATA", "VIDEO_METADATA", "DIRECT_METADATA", "METADATA"}:
+        return "PROFILE" if depth == "PROFILE_METADATA" else "METADATA"
+    text = value("content", "") or value("snippet", "") or ""
+    meta = value("metadata", {}) or {}
+    page = meta.get("page_metadata") or {}
+    url = value("canonical_url", "") or value("url", "")
+    path = urlsplit(url).path.lower().strip("/")
+    if url and (not path or re.fullmatch(r"[a-z]{2}(?:[-/][a-z]{2})?", path)):
+        return "LANDING_PAGE"
+    links = page.get("observed_links") or []
+    document_links = sum(bool(re.search(r"\.pdf(?:[?#\s]|$)|financial|quarter|annual|statement", str(link.get("url", "")) + " " + str(link.get("text", "")), re.I))
+                         for link in links if isinstance(link, dict))
+    # A genuine HTML statement can link PDFs too. Look for actual numeric
+    # financial prose/table content before treating a short link hub as an index.
+    metrics = bool(re.search(r"(?:revenue|profit|earnings|income|assets|cash flow).{0,60}(?:[$₹€£]|\bINR\b|\bUSD\b|\d[\d,.]{2,})", text, re.I))
+    if document_links >= 2 and not metrics and (len(text.split()) < 300 or len(re.findall(r"[.!?]\s", text)) < 3):
+        return "DOCUMENT_INDEX"
+    return "SUBSTANTIVE_CANDIDATE"

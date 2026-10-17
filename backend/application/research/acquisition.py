@@ -19,7 +19,7 @@ def _observed_issuer_documents(parent: EvidenceItem, *, html_only: bool = False)
     from backend.infrastructure.acquisition.adapters.web.page_extraction import document_link_priority
     from urllib.parse import urlsplit
     if (parent.query_class not in {"issuer_documents", "observed_issuer_document"}
-            or not parent.metadata.get("read_success") or parent.metadata.get("document_hop", 0) >= 2):
+            or not parent.metadata.get("read_success") or parent.metadata.get("document_hop", 0) >= 3):
         return []
     origin = canonical_hostname(parent.metadata.get("observed_final_endpoint") or parent.canonical_url)
     links = (parent.metadata.get("page_metadata") or {}).get("observed_links") or []

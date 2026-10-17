@@ -150,6 +150,7 @@ def search_brand_evidence(
             "selection_reason": sel_rea,
             "title": title,
             "content": content,
+            "raw_metadata": dict(qualified.metadata),
             "snippet": snippet,
             "url": url,
             "has_url": bool(url and url.startswith("http")),

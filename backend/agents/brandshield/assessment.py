@@ -347,6 +347,24 @@ def heuristic_threat_synthesis(
     target_name = brand_info.get("resolved_entity", brand_name)
 
     # Real execution stage: invoke BrandShieldExtractionEngine
+    # Generic company/about text must not create complaint/attacker signals.
+    # Select an actual subject/objective passage before either heuristic engine.
+    from backend.services.research.content_roles import NON_EVENT_ROLES, document_role, matches_objective, paragraph_role
+    from backend.services.research.research_models import EvidenceItem
+    relevant = []
+    for record in evidence_list:
+        item = EvidenceItem(id=record.get("evidence_id", ""), canonical_url=record.get("url", ""),
+            content=record.get("content") or record.get("snippet") or "",
+            content_depth=record.get("content_depth") or "PARTIAL_CONTENT",
+            title=record.get("title", ""), metadata=dict(record.get("raw_metadata") or {}))
+        # The legacy threat taxonomy accepts short, title-led leads. Retain
+        # that interface without treating it as a grounded/shared finding.
+        context = item.title + " " + item.content
+        if (document_role(item) not in NON_EVENT_ROLES - {"LANDING_PAGE"} and paragraph_role(item.content) not in NON_EVENT_ROLES
+                and matches_objective(context, "brand")):
+            relevant.append(record)
+    evidence_list = relevant
+
     from backend.services.agent_reach.channels import EvidenceFragment
     from backend.agents.brandshield.extraction import brandshield_extractor
 

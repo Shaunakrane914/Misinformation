@@ -2,6 +2,7 @@
 
 from typing import Any, Dict, List
 import re
+import os
 
 from backend.application.research.contracts import Analysis, RankedEvidence, ReadEvidence
 from backend.services.research.contradiction_detector import contradiction_detector
@@ -140,13 +141,18 @@ def synthesize_grounded_findings(
 
 
 class PassageAnalysisStage:
-    def run(self, request: ResearchRequest, ranked: RankedEvidence, read: ReadEvidence) -> ReadEvidence:
+    def run(self, request: ResearchRequest, ranked: RankedEvidence, read: ReadEvidence, advisor_timeout=0.0) -> ReadEvidence:
         read.investigated = passage_extractor.extract_passages(
-            read.investigated, target_name=request.target, intent=request.intent
+            read.investigated, target_name=request.target, intent=request.intent, domain=request.domain
         )
         passage_extractor.extract_passages(
-            ranked.ranked, target_name=request.target, intent=request.intent
+            ranked.ranked, target_name=request.target, intent=request.intent, domain=request.domain
         )
+        if os.getenv("AEGIS_EVIDENCE_ADVISOR_ENABLED", "true").lower() in {"1", "true", "yes"} and advisor_timeout > 0:
+            from backend.services.research.evidence_advisor import EvidenceAdvisor
+            advice = EvidenceAdvisor().advise(request, read.investigated, timeout=advisor_timeout)
+            if advice["status"] != "SKIPPED_NOT_NEEDED":
+                read.telemetry["ai_passage_advice"] = advice
         return read
 
 

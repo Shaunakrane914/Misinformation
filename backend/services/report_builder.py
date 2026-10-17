@@ -817,8 +817,13 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         timestamp=item.get("timestamp") or item.get("time") or item.get("ts"),
         description=item.get("description") or item.get("title") or item.get("event"))
         for item in _record_list(data.get("timeline")) if isinstance(item, dict)]
-    trace = data.get("deep_research_trace") or {}
+    trace = data.get("deep_research_trace") or data.get("retrieval_trace") or {}
     trace = trace if isinstance(trace, dict) else {}
+    advice = trace.get("ai_passage_advice")
+    if isinstance(advice, dict):
+        report.processing_notes["ai_passage_advice"] = {
+            key: advice[key] for key in ("status", "accepted", "rejected", "advisory_only", "entailment_verified")
+            if key in advice and type(advice[key]) in (str, int, bool)}
     log = execution_log if execution_log is not None else data.get("query_log") or trace.get("query_records") or []
     planned = queries_planned or trace.get("queries_planned") or 0
     report.trust.query_telemetry = QueryTelemetry.from_execution_log(log, planned)

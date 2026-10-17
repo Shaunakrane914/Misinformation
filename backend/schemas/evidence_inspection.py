@@ -32,7 +32,7 @@ SOURCE_FIELDS = (
     "transcript_available", "episode_count", "source_contract", "arxiv_id", "category", "doi",
     "content_depth_detail", "cve_id", "cvss_score", "filing_type", "form", "accession_number",
     "referenced_url_acquired", "has_more", "page",
-    "observed_body_marker", "content_status",
+    "observed_body_marker", "content_status", "content_role", "passage_selection_method", "content_completeness",
 )
 
 
@@ -121,6 +121,14 @@ def inspect_evidence(item: Any) -> dict:
             for table in tables[:3] if isinstance(table, list)
         ]
     mentions = []
+    pdf_pages = page.get("pdf_pages")
+    if isinstance(pdf_pages, list):
+        observations["pdf_pages"] = [{key: p[key] for key in ("page", "start", "end", "text_truncated")
+                                       if key in p and type(p[key]) in (int, bool)}
+                                      for p in pdf_pages[:8] if isinstance(p, dict)]
+        for key in ("pdf_page_count", "pdf_truncated", "pdf_source_sha256", "table_structure_verified", "extraction_method"):
+            if isinstance(page.get(key), (str, bool, int)):
+                source_observations[key] = page[key]
     for match in re.finditer(r"(?<!\w)(?:[$€£₹]\s*)?\d[\d,]*(?:\.\d+)?(?:\s*(?:%|billion|million|thousand|bps))?(?!\w)", captured):
         mentions.append({"text": match.group(0), "start": match.start(), "end": match.end(),
                          "context": captured[max(0, match.start() - 60):min(len(captured), match.end() + 60)]})

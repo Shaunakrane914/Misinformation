@@ -42,6 +42,7 @@ dependencies = [
     "feedparser>=6.0.10",
     "pytrends",
     "beautifulsoup4",
+    "pypdf==6.10.0",
     "duckduckgo-search>=4.0.0",
     "twilio>=8.0.0",
     "itsdangerous>=2.1.2",

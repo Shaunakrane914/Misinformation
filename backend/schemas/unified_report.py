@@ -424,6 +424,7 @@ class UnifiedReport:
     # citations must survive the legacy string findings projection.
     discovery: List[UnifiedEvidenceItem] = field(default_factory=list)
     finding_details: List[Dict[str, Any]] = field(default_factory=list)
+    processing_notes: Dict[str, Any] = field(default_factory=dict)
 
     # Internal metadata (not rendered in report sections)
     agent: Optional[str] = None          # e.g. "claim_verifier"
@@ -461,6 +462,8 @@ class UnifiedReport:
             d["discovery"] = [item.to_dict() for item in self.discovery]
         if self.finding_details:
             d["finding_details"] = self.finding_details
+        if self.processing_notes:
+            d["processing_notes"] = self.processing_notes
         return d
 
 

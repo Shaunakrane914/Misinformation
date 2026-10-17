@@ -128,6 +128,23 @@ class NativeExecutor:
             raw_body_bytes = len(response.body)
             decoded_body = decode_bounded_http_body(response, max_bytes=MAX_OUTPUT_BYTES)
             decoded_body_bytes = len(decoded_body)
+            if (response.content_type or "").split(";", 1)[0].lower().strip() == "application/pdf" or decoded_body.startswith(b"%PDF-"):
+                from backend.infrastructure.acquisition.adapters.web.pdf_text import extract_pdf_text
+                pdf = extract_pdf_text(decoded_body, timeout=min(2.5, max(0.0, timeout - (time.perf_counter() - t0))))
+                if not pdf["text"].strip():
+                    raise ValueError("PDF has no readable text layer; OCR not performed")
+                transport = self._bounded_http_transport(response)
+                return {"platform": "web", "backend": "native_pdf_text", "operation": "web.read", "status": "SUCCESS",
+                    "url": clean_url, "content": pdf["text"], "char_count": len(pdf["text"]),
+                    "truncated": pdf["truncated"], "content_depth": "PARTIAL_CONTENT", "transport": transport,
+                    "page_metadata": {"content_scope": "PDF_TEXT_LAYER", "pdf_pages": pdf["pages"],
+                        "pdf_page_count": pdf["page_count"], "pdf_truncated": pdf["truncated"],
+                        "pdf_source_sha256": pdf["source_pdf_sha256"], "table_structure_verified": False,
+                        "observed_links": [], "extraction_method": pdf["method"]},
+                    "raw_capture": {"text": pdf["text"], "selection_method": pdf["method"],
+                        "truncated": pdf["truncated"], "source_text_chars": len(pdf["text"]),
+                        "source_text_sha256": hashlib.sha256(pdf["text"].encode()).hexdigest()},
+                }
             raw_text = decoded_body.decode("utf-8")
             if any(ord(character) < 32 and character not in "\t\r\n" for character in raw_text):
                 raise ValueError("HTTP response contains binary control characters")

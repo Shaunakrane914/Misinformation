@@ -4,6 +4,8 @@ Start here when resuming work. These are dated engineering records, not promises
 
 ## Latest implementation: source text pipeline — 2026-10-17
 
+- [Publication/CI closeout](2026-10-17_SOURCE_TEXT_PIPELINE_CLOSEOUT.md): implementation `f887c9c` is confirmed remote and all five exact-commit hosted jobs passed. Later closeout is documentation-only. No merge/deployment or research acceptance.
+
 - [Handoff](2026-10-17_SOURCE_TEXT_PIPELINE.md), [review with all 52 operation measurements](../testing/SOURCE_TEXT_PIPELINE_REVIEW_2026-10-17.md) and [evidence](../testing/evidence/2026-10-17_source_text_pipeline/README.md). Structural web extraction, raw/readable metrics, bounded Stack Overflow answers, truthful Reddit comment/removal semantics and evidence-grid clipping fix. Local **1,309 full / 1,101 fast** cases pass. **Research acceptance still FAIL:** eight of twelve entity inputs acquired no records. No main merge/deployment; publication must be verified separately.
 
 ## Previous implementation and verification: Phase 9 remediation — 2026-10-16

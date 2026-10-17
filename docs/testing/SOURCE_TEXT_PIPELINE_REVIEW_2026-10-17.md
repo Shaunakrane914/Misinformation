@@ -248,5 +248,7 @@ Credential presence does not establish successful live LLM inference.
 Protected benchmarks, research/artifacts and historical dossiers remain intact.
 Manual screen-reader use, measured contrast, axe, other browsers/real devices,
 new independently reviewed accuracy, provider authorization, production parity,
-hosted CI for this new change and deployment acceptance are not established by
-the checks above. See the handoff for executed regression commands and publication.
+and deployment acceptance are not established by these checks. The implementation
+checkpoint's five hosted jobs subsequently passed; see the
+[exact publication/CI closeout](../handoffs/2026-10-17_SOURCE_TEXT_PIPELINE_CLOSEOUT.md).
+CI does not remove the live research-quality failures.

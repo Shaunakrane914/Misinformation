@@ -50,3 +50,7 @@ mirrors, caches, profile metadata and repeated rounds are not a unique corpus.
 
 No human annotation, calibration, retrieval recall, screen-reader acceptance,
 measured contrast, axe, production parity or provider authorization is inferred.
+
+`ci_implementation.json` records the observed successful five-job hosted run for
+implementation `f887c9c`, not research acceptance, deployment, or a future
+documentation successor's own CI run.

@@ -34,6 +34,10 @@
 
 'use strict';
 
+// Keep shared rendering helpers private: agent pages define their own esc,
+// array and timeline helpers after loading this classic script.
+(function aegisUnifiedReportModule() {
+
 // ─── Placeholder constants ────────────────────────────────────────────────────
 const PH_NUM     = '—';
 const PH_STR     = 'Unknown';
@@ -839,3 +843,4 @@ if (typeof window !== 'undefined') {
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest };
 }
+})();

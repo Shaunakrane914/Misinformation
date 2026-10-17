@@ -1,6 +1,7 @@
 'use strict';
 
 const assert = require('node:assert/strict');
+const vm = require('node:vm');
 const path = require('node:path');
 const theme = require('node:fs').readFileSync(path.resolve(__dirname, '../../frontend/aegis-theme.css'), 'utf8');
 assert(theme.includes('minmax(min(100%, 320px), 1fr)'), 'Claim grid must shrink inside narrow cards; rendered clipping is separately tested');
@@ -8,6 +9,22 @@ assert(theme.includes('grid-template-columns: repeat(3, minmax(0, 1fr))'), 'Evid
 const { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest } = require(
   path.resolve(__dirname, '../../frontend/unified-report-renderer.js')
 );
+
+// Agent pages own helpers named esc/array too. Loading an inline page script
+// after the shared renderer must not mutate its escaping or erase zero counts.
+const isolated = { window: {} };
+vm.createContext(isolated);
+vm.runInContext(require('node:fs').readFileSync(path.resolve(__dirname, '../../frontend/unified-report-renderer.js'), 'utf8'), isolated);
+vm.runInContext("function esc(s) { return 'PAGE_OVERRIDE'; } function array() { return []; } function renderTimeline() { return 'PAGE_TIMELINE'; }", isolated);
+const isolatedMount = { innerHTML: '', querySelectorAll: () => [] };
+isolated.window.renderUnifiedReport(isolatedMount, { summary: 'Retained summary', timeline: [{ timestamp: '2026-10-17', description: 'Captured timeline' }], evidence: { primary: [{
+  title: 'Captured source', extraction: { evidentiary_use: 'REQUIRES_PASSAGE_REVIEW', missing_fields: [], passages: [] },
+}] } });
+assert(isolatedMount.innerHTML.includes('Retained summary'));
+assert(isolatedMount.innerHTML.includes('0 metadata/unknown-depth records'));
+assert(!isolatedMount.innerHTML.includes('PAGE_OVERRIDE'));
+assert(isolatedMount.innerHTML.includes('Captured timeline'));
+assert(!isolatedMount.innerHTML.includes('PAGE_TIMELINE'));
 
 function mount() {
   return { innerHTML: '', querySelectorAll: () => [] };

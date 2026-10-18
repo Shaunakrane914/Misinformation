@@ -1,4 +1,12 @@
-# Current project state — 2026-10-17
+# Current project state — 2026-10-18
+
+## Latest end-to-end intelligence checkpoint — 2026-10-18
+
+[Review](testing/INTELLIGENCE_PIPELINE_COMPLETION_2026-10-18.md), [handoff](handoffs/2026-10-18_INTELLIGENCE_PIPELINE_COMPLETION.md), [proof](testing/evidence/2026-10-18_intelligence_completion/README.md). Explicit AI run/investigation budgets and shared cooldown; zero live generation this task. Sam now retains public feed articles rather than only a profile. Financial units/periods/guidance, passage roles and exact citation context survive to inspection. Four live local inputs followed by offline polish and browser replay, not repeated provider investigations. Local validation/publication details are in the dated handoff. **Research acceptance remains PARTIAL; no main merge or deployment.**
+
+## Previous local terminal / cost checkpoint — 2026-10-18
+
+[Review](testing/TERMINAL_OUTPUT_AND_AI_COST_REVIEW_2026-10-18.md), [proof](testing/evidence/2026-10-18_terminal_quality/README.md), [handoff](handoffs/2026-10-18_TERMINAL_QUALITY_CLOSEOUT.md). Small-model advice and AI-off audit defaults; BrandShield background/finding separation; explicit specialist gaps. **1,375 full / 1,167 fast** offline tests pass. Twelve local inputs then exact frontend replay; Personal Watch is still profile-only and Sam rendering remains partial. Latest single capped AI attempt unavailable; no confirmed generation/quota reset. **Research NOT COMPLETE, visual PARTIAL, uncommitted/unpushed; no new hosted CI, merge or deployment.**
 
 ## Latest role-aware evidence / bounded AI checkpoint — 2026-10-17
 

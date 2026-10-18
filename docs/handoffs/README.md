@@ -2,6 +2,18 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
+## Latest implementation: end-to-end intelligence — 2026-10-18
+
+- [Handoff and reproducible commands](2026-10-18_INTELLIGENCE_PIPELINE_COMPLETION.md), [review](../testing/INTELLIGENCE_PIPELINE_COMPLETION_2026-10-18.md), [proof](../testing/evidence/2026-10-18_intelligence_completion/README.md). **1,402 full / 1,194 fast** offline tests pass; strict advisory ledger and zero live generation this task. One bounded four-agent live source pass, then saved-capture polish and 12 browser states. Sam now has substantive feed content, financial guidance is distinct from reported prose, and Trending excludes legal footers and casual chat from key findings. Research acceptance remains PARTIAL; no merge/deployment. Publication is recorded in the handoff.
+
+## Previous local checkpoint: terminal output / AI budget — 2026-10-18
+
+- [Continuation and commands](2026-10-18_TERMINAL_QUALITY_CLOSEOUT.md), [review](../testing/TERMINAL_OUTPUT_AND_AI_COST_REVIEW_2026-10-18.md), [proof](../testing/evidence/2026-10-18_terminal_quality/README.md). **1,375 full / 1,167 fast** offline tests pass. Twelve AI-disabled local inputs, exact browser replay at 24 states. Brand background no longer becomes findings; Personal Watch remains profile-only and Sam has unresolved rendered text-paint gaps. One separately authorized 96-token Flash-Lite attempt was unavailable, not a verified key/quota reset. Local uncommitted/unpushed work; no deployment or hosted CI. Research incomplete / visual PARTIAL.
+
+## Local continuation: terminal-first output / AI cost controls — 2026-10-17
+
+- [Cost-control decisions and incomplete output work](2026-10-17_TERMINAL_POLISH_AND_AI_COST_CONTROLS.md). User stopped repeated live AI tests and requested small-model suggestions. Advisory calls are pinned to Flash-Lite, one attempt / 320 output tokens / 2s; terminal scraper testing excludes AI credentials by default. Local uncommitted work; no new live AI or frontend acceptance, push or deployment. Read limitations before continuing.
+
 ## Active implementation: role-aware evidence and bounded AI — 2026-10-17
 
 - [Implementation, safety boundaries and continuation](2026-10-17_ROLE_AWARE_AI_EVIDENCE.md), [source/agent review](../testing/ROLE_AWARE_AI_EVIDENCE_REVIEW_2026-10-17.md) and [evidence](../testing/evidence/2026-10-17_role_aware_ai_evidence/README.md). Local **1,363 full / 1,155 fast** tests and all five exact-application hosted jobs pass at `3d628e1`. Actual Infosys PDF passage, EV bio filtering, Cyclone false-positive fix and public metadata preservation are verified within stated bounds. Live AI generation returns 429; legacy brand findings and specialist acquisition remain incomplete. Overall PARTIAL / research acceptance FAIL. No main merge/deployment.

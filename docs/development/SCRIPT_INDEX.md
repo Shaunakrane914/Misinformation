@@ -10,6 +10,11 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ## 1. Overview & Script Taxonomy
 
+### Terminal-first / API-cost controls — 2026-10-17
+
+- [Local terminal quality runner](../../scripts/audits/run_terminal_agent_quality.py): `--allow-live --env-file <existing-env> --output-dir <new-dir>`; repeat `--case "agent:input"` for bounded cases, otherwise twelve inputs. Acquisition is live, **AI credentials are excluded by default** and mocks remain off. Separate `--allow-live-ai` is an explicit generation opt-in, not a recommended default. Review saved JSON/SSE before browser replay; do not repeatedly run full live AI matrices. Fresh persistence and diagnostics only, no historical writes.
+- Advisory calls use `LLM_ADVISORY_MODEL=gemini-2.5-flash-lite`, strict model identity, 320 output tokens, one attempt and 2s deadline. This is separate from synthesis configuration. Provider 429 cooldown is process-local, not a shared daily spending cap. [Current limitations and handoff](../handoffs/2026-10-18_TERMINAL_QUALITY_CLOSEOUT.md). The minimal AI diagnostic accepts `--skip-model-list` for one 96-token generation only; do not use it as a polling loop. The browser matrix also excludes AI credentials by default.
+
 ### Bounded AI / PDF diagnostics — 2026-10-17
 
 - [Minimal live AI diagnostic](../../scripts/diagnostics/check_ai_advisory_runtime.py): requires `--allow-live --env-file <existing-env> --output <new-json>`. Reads credentials securely without printing/editing them, checks the fixed provider model-list endpoint and one bounded structured generation request. Exit 2 means inference unavailable; listing 200 alone is not working AI. No scraping/deployment or fallback credential fabrication.

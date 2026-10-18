@@ -1,0 +1,533 @@
+{
+  "date": "2026-10-18",
+  "scope": "AI-disabled terminal acquisition, exact saved SSE frontend replay",
+  "base_commit": "d1ffcaf7a4801b0c9f15377be0312838a65adea5",
+  "live_ai_authorized": false,
+  "mock_llm": false,
+  "terminal_tracked_source_hash": "a8180b3acb01ef106195db4e58361be10f783e6406e3f1fe4a74f3db159d5258",
+  "terminal_tracked_source_unchanged": true,
+  "browser_all_source_hash": "0125ba6203a7771d7d11d2476faec7a2b2abc52fdf2ea99fc2df100449c75eac",
+  "browser_all_source_unchanged": true,
+  "browser_mode": "EXACT_SAVED_SSE_REPLAY",
+  "browser_gemini_credentials": 0,
+  "console_error_entries": 18,
+  "page_error_entries": 0,
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "TATAMOTORS.NS",
+      "http_status": 200,
+      "records": 2,
+      "words": 666,
+      "kb": 5.434,
+      "seconds": 15.14,
+      "findings": 2,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-390-inspection.png",
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 26,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "01-scout-390-full.png",
+            "01-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-1440-inspection.png",
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 26,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "01-scout-1440-full.png",
+            "01-scout-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "02-scout",
+      "agent": "scout",
+      "input": "INFY.NS",
+      "http_status": 200,
+      "records": 6,
+      "words": 2331,
+      "kb": 17.207,
+      "seconds": 25.56,
+      "findings": 4,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "02-scout-390-inspection.png",
+          "rendered_findings": 4,
+          "rendered_acquired_cards": 6,
+          "rendered_discovery_cards": 27,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "02-scout-390-full.png",
+            "02-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "02-scout-1440-inspection.png",
+          "rendered_findings": 4,
+          "rendered_acquired_cards": 6,
+          "rendered_discovery_cards": 27,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "02-scout-1440-full.png",
+            "02-scout-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "03-scout",
+      "agent": "scout",
+      "input": "AAPL",
+      "http_status": 200,
+      "records": 7,
+      "words": 531,
+      "kb": 5.899,
+      "seconds": 26.21,
+      "findings": 2,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "03-scout-390-inspection.png",
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 7,
+          "rendered_discovery_cards": 23,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "03-scout-390-full.png",
+            "03-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "03-scout-1440-inspection.png",
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 7,
+          "rendered_discovery_cards": 23,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "03-scout-1440-full.png",
+            "03-scout-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "04-trending",
+      "agent": "trending",
+      "input": "OpenAI",
+      "http_status": 200,
+      "records": 1,
+      "words": 1463,
+      "kb": 9.732,
+      "seconds": 12,
+      "findings": 1,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "04-trending-390-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 1,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "04-trending-390-full.png",
+            "04-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "04-trending-1440-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 1,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "04-trending-1440-full.png",
+            "04-trending-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "05-trending",
+      "agent": "trending",
+      "input": "NVIDIA",
+      "http_status": 200,
+      "records": 4,
+      "words": 4795,
+      "kb": 31.78,
+      "seconds": 14.38,
+      "findings": 3,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "05-trending-390-inspection.png",
+          "rendered_findings": 3,
+          "rendered_acquired_cards": 4,
+          "rendered_discovery_cards": 5,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "05-trending-390-full.png",
+            "05-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "05-trending-1440-inspection.png",
+          "rendered_findings": 3,
+          "rendered_acquired_cards": 4,
+          "rendered_discovery_cards": 5,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "05-trending-1440-full.png",
+            "05-trending-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "06-trending",
+      "agent": "trending",
+      "input": "electric vehicles",
+      "http_status": 200,
+      "records": 2,
+      "words": 2079,
+      "kb": 12.506,
+      "seconds": 12.7,
+      "findings": 2,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "06-trending-390-inspection.png",
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "06-trending-390-full.png",
+            "06-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "06-trending-1440-inspection.png",
+          "rendered_findings": 2,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "06-trending-1440-full.png",
+            "06-trending-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "07-brandshield",
+      "agent": "brandshield",
+      "input": "Nike",
+      "http_status": 200,
+      "records": 2,
+      "words": 662,
+      "kb": 3.788,
+      "seconds": 15.16,
+      "findings": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "07-brandshield-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 17,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "07-brandshield-390-full.png",
+            "07-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "07-brandshield-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 17,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "07-brandshield-1440-full.png",
+            "07-brandshield-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "08-brandshield",
+      "agent": "brandshield",
+      "input": "Apple",
+      "http_status": 200,
+      "records": 2,
+      "words": 319,
+      "kb": 1.837,
+      "seconds": 14.38,
+      "findings": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "08-brandshield-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 13,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "08-brandshield-390-full.png",
+            "08-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "08-brandshield-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 13,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "08-brandshield-1440-full.png",
+            "08-brandshield-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "09-brandshield",
+      "agent": "brandshield",
+      "input": "Tata Motors",
+      "http_status": 200,
+      "records": 1,
+      "words": 444,
+      "kb": 3.009,
+      "seconds": 13.86,
+      "findings": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "09-brandshield-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 8,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "09-brandshield-390-full.png",
+            "09-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "09-brandshield-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 8,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "09-brandshield-1440-full.png",
+            "09-brandshield-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "10-personal_watch",
+      "agent": "personal_watch",
+      "input": "Sam Altman",
+      "http_status": 200,
+      "records": 1,
+      "words": 18,
+      "kb": 0.101,
+      "seconds": 13.77,
+      "findings": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "10-personal_watch-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 14,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "10-personal_watch-390-full.png",
+            "10-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "10-personal_watch-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 14,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "10-personal_watch-1440-full.png",
+            "10-personal_watch-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "11-personal_watch",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "http_status": 200,
+      "records": 1,
+      "words": 8,
+      "kb": 0.059,
+      "seconds": 13.28,
+      "findings": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "11-personal_watch-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 7,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "11-personal_watch-390-full.png",
+            "11-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "11-personal_watch-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 7,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "11-personal_watch-1440-full.png",
+            "11-personal_watch-1440-report.png"
+          ]
+        }
+      ]
+    },
+    {
+      "case_id": "12-personal_watch",
+      "agent": "personal_watch",
+      "input": "Satya Nadella",
+      "http_status": 200,
+      "records": 1,
+      "words": 10,
+      "kb": 0.073,
+      "seconds": 13.26,
+      "findings": 0,
+      "views": [
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "12-personal_watch-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 3,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "12-personal_watch-390-full.png",
+            "12-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "12-personal_watch-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 3,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "12-personal_watch-1440-full.png",
+            "12-personal_watch-1440-report.png"
+          ]
+        }
+      ]
+    }
+  ]
+}

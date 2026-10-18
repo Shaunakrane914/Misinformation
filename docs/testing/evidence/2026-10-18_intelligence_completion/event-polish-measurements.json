@@ -1,0 +1,852 @@
+{
+  "scope": "One bounded live four-agent pass, then offline reprocessing of the same captures. Counts are not independently verified sources or research recall.",
+  "live_generation_requests": 0,
+  "live_model_list_requests": 0,
+  "live": {
+    "mode": "REAL_LOCAL_ASGI_SSE",
+    "application_sha256": "085d610d46d975357755bc5f216d0ed180c1c733f5f6c08e841896781aafc1dc",
+    "stable_application": true,
+    "cases": [
+      {
+        "case_id": "01-scout",
+        "agent": "scout",
+        "input": "INFY.NS",
+        "http_status": 200,
+        "seconds": 26.51,
+        "result_event": true,
+        "error_events": [],
+        "records": 6,
+        "words": 2331,
+        "kb": 17.207,
+        "shared_findings": 1
+      },
+      {
+        "case_id": "02-trending",
+        "agent": "trending",
+        "input": "NVIDIA",
+        "http_status": 200,
+        "seconds": 14.27,
+        "result_event": true,
+        "error_events": [],
+        "records": 5,
+        "words": 5380,
+        "kb": 36.326,
+        "shared_findings": 4
+      },
+      {
+        "case_id": "03-brandshield",
+        "agent": "brandshield",
+        "input": "Nike",
+        "http_status": 200,
+        "seconds": 14.19,
+        "result_event": true,
+        "error_events": [],
+        "records": 2,
+        "words": 662,
+        "kb": 3.788,
+        "shared_findings": 0
+      },
+      {
+        "case_id": "04-personal_watch",
+        "agent": "personal_watch",
+        "input": "Sam Altman",
+        "http_status": 200,
+        "seconds": 13.54,
+        "result_event": true,
+        "error_events": [],
+        "records": 6,
+        "words": 2811,
+        "kb": 15.843,
+        "shared_findings": 5
+      }
+    ]
+  },
+  "offline_polish": {
+    "mode": "OFFLINE_SAVED_CAPTURE_REPROCESS",
+    "application_sha256": "69368ff3f1765e0e85337d3740acf823d96fa3cd3fe3e46484e25e375162c683",
+    "stable_application": true,
+    "cases": [
+      {
+        "case_id": "01-scout",
+        "agent": "scout",
+        "input": "INFY.NS",
+        "http_status": 200,
+        "seconds": 0.22,
+        "result_event": true,
+        "error_events": [],
+        "records": 6,
+        "words": 2331,
+        "kb": 17.207,
+        "shared_findings": 1
+      },
+      {
+        "case_id": "02-trending",
+        "agent": "trending",
+        "input": "NVIDIA",
+        "http_status": 200,
+        "seconds": 0.22,
+        "result_event": true,
+        "error_events": [],
+        "records": 5,
+        "words": 5380,
+        "kb": 36.326,
+        "shared_findings": 3
+      },
+      {
+        "case_id": "03-brandshield",
+        "agent": "brandshield",
+        "input": "Nike",
+        "http_status": 200,
+        "seconds": 0.16,
+        "result_event": true,
+        "error_events": [],
+        "records": 2,
+        "words": 662,
+        "kb": 3.788,
+        "shared_findings": 0
+      },
+      {
+        "case_id": "04-personal_watch",
+        "agent": "personal_watch",
+        "input": "Sam Altman",
+        "http_status": 200,
+        "seconds": 0.22,
+        "result_event": true,
+        "error_events": [],
+        "records": 6,
+        "words": 2811,
+        "kb": 15.843,
+        "shared_findings": 5
+      }
+    ]
+  },
+  "sources": [
+    {
+      "case_id": "01-scout",
+      "id": "ev_link_b0872564d665",
+      "url": "https://www.infosys.com/investors/reports-filings/annual-report.html",
+      "host": "www.infosys.com",
+      "title": "View all quarterly and annual reports",
+      "content_depth": "PARTIAL_CONTENT",
+      "words": 65,
+      "kb": 0.455,
+      "content_sha256": "ccf4706c0c73ec05e94ad7cdaf917bce65ad1f06d1e179b0b497f4237b07064e",
+      "passages": 5
+    },
+    {
+      "case_id": "01-scout",
+      "id": "ev_link_0e19e388d4ef",
+      "url": "https://www.infosys.com/investors/reports-filings/annual-report/annual-reports.html",
+      "host": "www.infosys.com",
+      "title": "View past annual reports",
+      "content_depth": "PARTIAL_CONTENT",
+      "words": 288,
+      "kb": 1.242,
+      "content_sha256": "adaf5b2b9d47e01302e5a478ab9948b68589e5dd4cfa69c2ce64b6acfb100d40",
+      "passages": 7
+    },
+    {
+      "case_id": "01-scout",
+      "id": "ev_e2d35e8507cd",
+      "url": "https://www.infosys.com/investors/reports-filings.html",
+      "host": "www.infosys.com",
+      "title": "Infosys - Annual Reports and Quarterly Results",
+      "content_depth": "PARTIAL_CONTENT",
+      "words": 177,
+      "kb": 1.126,
+      "content_sha256": "2e2dad5615a3e41d33f20470297aca23ff293e62246cff6f7716d735bdfbf526",
+      "passages": 10
+    },
+    {
+      "case_id": "01-scout",
+      "id": "ev_link_a0b44db8f6df",
+      "url": "https://www.infosys.com/investors/reports-filings/quarterly-results/2026-2027/q1.html",
+      "host": "www.infosys.com",
+      "title": "Results for the First Quarter ended June 30, 2026",
+      "content_depth": "PRIMARY_DOCUMENT",
+      "words": 157,
+      "kb": 1.037,
+      "content_sha256": "14ff8a31b03c559fc0b75e4b401492b60d748fe51d2111e579542c72a3902307",
+      "passages": 14
+    },
+    {
+      "case_id": "01-scout",
+      "id": "ev_link_faabc44ef87e",
+      "url": "https://www.infosys.com/investors/reports-filings/financials/profit-loss-data.html",
+      "host": "www.infosys.com",
+      "title": "P&L Data",
+      "content_depth": "PRIMARY_DOCUMENT",
+      "words": 188,
+      "kb": 1.233,
+      "content_sha256": "133fa804b0d0cc1fee62453cfc1e2bd99d6573a3602d82f11799bc0279a30eff",
+      "passages": 16
+    },
+    {
+      "case_id": "01-scout",
+      "id": "ev_link_84c81aa1067c",
+      "url": "https://www.infosys.com/investors/reports-filings/quarterly-results/2026-2027/q1/documents/ifrs-usd-press-release.pdf",
+      "host": "www.infosys.com",
+      "title": "IFRS USD",
+      "content_depth": "PRIMARY_DOCUMENT",
+      "words": 1456,
+      "kb": 12.114,
+      "content_sha256": "16b2b78285c05c0b8f2553458179e2ac34a26045d3ba48a1d16a73b4e508f38b",
+      "passages": 16
+    },
+    {
+      "case_id": "02-trending",
+      "id": "ev_079960d302c0",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x7fkt4/nvidia_rtx_spark_launch_30_years_of_innovation/",
+      "host": "www.reddit.com",
+      "title": "[r/nvidia] NVIDIA RTX Spark Launch, 30 Years of Innovation Easter Egg Hunt - Win an RTX Spark Laptop",
+      "content_depth": "PARTIAL_CONTENT",
+      "words": 976,
+      "kb": 6.514,
+      "content_sha256": "2970bea9cf0d9980d6df68c6e8c11865d013d1a0d4b36c55d04c5696de20a3c6",
+      "passages": 16
+    },
+    {
+      "case_id": "02-trending",
+      "id": "ev_d74b25c35485",
+      "url": "https://www.reddit.com/r/nvidia/comments/1x8mtwu/dial_up_the_cloud_nvidia_dlss_45_controls_arrive/",
+      "host": "www.reddit.com",
+      "title": "[r/nvidia] Dial Up the Cloud: NVIDIA DLSS 4.5 Controls Arrive on GeForce NOW",
+      "content_depth": "PARTIAL_CONTENT",
+      "words": 36,
+      "kb": 0.385,
+      "content_sha256": "7d9164a002b1a55831c5634c12f3c015422bbe44be8792ffab92272fd8ced6f4",
+      "passages": 3
+    },
+    {
+      "case_id": "02-trending",
+      "id": "ev_02bfb85bef74",
+      "url": "https://blogs.nvidia.com/blog/local-ai-rtx-spark-windows-laptops-celebration/",
+      "host": "blogs.nvidia.com",
+      "title": "RTX Spark Ignites Global Celebration as New Windows PCs Arrive",
+      "content_depth": "PRIMARY_DOCUMENT",
+      "words": 806,
+      "kb": 5.14,
+      "content_sha256": "c77fac7e6dd1e98ca240deb399af5bd77eb1a6e146bd3731a5c3a3630567be43",
+      "passages": 16
+    },
+    {
+      "case_id": "02-trending",
+      "id": "ev_29206e846eef",
+      "url": "https://nvidianews.nvidia.com/news/nvidia-rtx-spark-pcs-available-today-a-new-beginning-for-windows-pcs",
+      "host": "nvidianews.nvidia.com",
+      "title": "NVIDIA RTX Spark PCs Available Today — A New Beginning for Windows PCs",
+      "content_depth": "PRIMARY_DOCUMENT",
+      "words": 1866,
+      "kb": 12.134,
+      "content_sha256": "a9b44730bbb72c37a3ce178b07f940032166778e5c26b3d7ba34f37d81b6fad5",
+      "passages": 16
+    },
+    {
+      "case_id": "02-trending",
+      "id": "ev_b6398292b9b7",
+      "url": "https://nvidianews.nvidia.com/news/mercedes-benz-and-nvidia-expand-strategic-partnership-to-advance-safe-highly-automated-driving-in-the-next-decade",
+      "host": "nvidianews.nvidia.com",
+      "title": "Mercedes-Benz and NVIDIA Expand Strategic Partnership to Advance Safe Highly Automated Driving in the Next Decade",
+      "content_depth": "PRIMARY_DOCUMENT",
+      "words": 1696,
+      "kb": 12.153,
+      "content_sha256": "ae7b968da724fc4408f90075325089abdb19bc4c540991ee0667442c73cdc4b9",
+      "passages": 16
+    },
+    {
+      "case_id": "03-brandshield",
+      "id": "ev_51904b187702",
+      "url": "https://www.nike.in/",
+      "host": "www.nike.in",
+      "title": "Nike. Just Do It.NikeIN",
+      "content_depth": "PARTIAL_CONTENT",
+      "words": 331,
+      "kb": 1.894,
+      "content_sha256": "f70adf5176bbd5cd116719481b0e39a6fa6e1c5ea1119dde51aa45fb49530f7d",
+      "passages": 0
+    },
+    {
+      "case_id": "03-brandshield",
+      "id": "ev_4d8a735267d2",
+      "url": "https://www.nike.com/?msockid=35054bfecc6b6a540b6b5c08cd9f6b73",
+      "host": "www.nike.com",
+      "title": "Nike. Just Do It.Nike.com",
+      "content_depth": "PARTIAL_CONTENT",
+      "words": 331,
+      "kb": 1.894,
+      "content_sha256": "f70adf5176bbd5cd116719481b0e39a6fa6e1c5ea1119dde51aa45fb49530f7d",
+      "passages": 0
+    },
+    {
+      "case_id": "04-personal_watch",
+      "id": "ev_5bfb9151252f",
+      "url": "https://blog.samaltman.com/2279512",
+      "host": "blog.samaltman.com",
+      "title": "-",
+      "content_depth": "FEED_ENTRY_CONTENT",
+      "words": 1062,
+      "kb": 5.998,
+      "content_sha256": "0035ac54136c731269f5afba9fa990a8587777ebed8908946fc1badfed0658c7",
+      "passages": 16
+    },
+    {
+      "case_id": "04-personal_watch",
+      "id": "ev_818263581c81",
+      "url": "https://blog.samaltman.com/sora-update-number-1",
+      "host": "blog.samaltman.com",
+      "title": "Sora update #1",
+      "content_depth": "FEED_ENTRY_CONTENT",
+      "words": 396,
+      "kb": 2.233,
+      "content_sha256": "cee36d59722a19b37bd1995a1262986fd7d55197279092a3eecf8e78212252c4",
+      "passages": 7
+    },
+    {
+      "case_id": "04-personal_watch",
+      "id": "ev_b1cd9ce4adbd",
+      "url": "https://blog.samaltman.com/sora-2",
+      "host": "blog.samaltman.com",
+      "title": "Sora 2",
+      "content_depth": "FEED_ENTRY_CONTENT",
+      "words": 665,
+      "kb": 3.731,
+      "content_sha256": "9818f5a561bdac5781c76d52e4c5b0fcd39391855fd5b7d842b3c025ddc46036",
+      "passages": 11
+    },
+    {
+      "case_id": "04-personal_watch",
+      "id": "ev_039ff36ac532",
+      "url": "https://blog.samaltman.com/abundant-intelligence",
+      "host": "blog.samaltman.com",
+      "title": "Abundant Intelligence",
+      "content_depth": "FEED_ENTRY_CONTENT",
+      "words": 358,
+      "kb": 2.02,
+      "content_sha256": "ec28e7d91f1e724da4de735d6900a541fbfbae0f8c1e5291eab37f0406b1049a",
+      "passages": 6
+    },
+    {
+      "case_id": "04-personal_watch",
+      "id": "ev_a3ae0ff335f6",
+      "url": "https://blog.samaltman.com/jakub-and-szymon",
+      "host": "blog.samaltman.com",
+      "title": "Jakub and Szymon",
+      "content_depth": "FEED_ENTRY_CONTENT",
+      "words": 312,
+      "kb": 1.76,
+      "content_sha256": "876497bc55b7374bd6e271a8f5f06398d0478f922376acaf74527910c5a69c74",
+      "passages": 3
+    },
+    {
+      "case_id": "04-personal_watch",
+      "id": "ev_13fcaad676cc",
+      "url": "https://x.com/sama",
+      "host": "x.com",
+      "title": "Profile: Sam Altman (@sama)",
+      "content_depth": "PROFILE_METADATA",
+      "words": 18,
+      "kb": 0.101,
+      "content_sha256": "23af1c9e2e717ebc36de84b80e4115031d38f6f941a9e5679aa94f92fd9b0005",
+      "passages": 2
+    }
+  ],
+  "financial_observations": [
+    {
+      "value": "5082",
+      "start": 2648,
+      "normalized_value": "5082000000",
+      "period_end": "2026-06-30",
+      "currency": "USD",
+      "end": 2674,
+      "metric": "REVENUE",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "million",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "revenues at $5,082 million",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "5082",
+      "start": 757,
+      "normalized_value": "5082000000",
+      "period_end": "2026-06-30",
+      "currency": "USD",
+      "end": 796,
+      "metric": "REVENUE",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "million",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "delivered $5,082 million in Q1 revenues",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "21.1",
+      "start": 345,
+      "normalized_value": "21.1",
+      "period_end": "2026-06-30",
+      "currency": null,
+      "end": 370,
+      "metric": "OPERATING_MARGIN",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "percent",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "Operating Margin of 21.1%",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "21.1",
+      "start": 887,
+      "normalized_value": "21.1",
+      "period_end": "2026-06-30",
+      "currency": null,
+      "end": 932,
+      "metric": "OPERATING_MARGIN",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "percent",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "Operating margin was at                 21.1%",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "20",
+      "start": 2491,
+      "normalized_value": "20",
+      "period_end": null,
+      "currency": null,
+      "end": 2514,
+      "metric": "OPERATING_MARGIN",
+      "scope": "GUIDANCE",
+      "source_page": 1,
+      "unit": "percent",
+      "period_alignment": "AMBIGUOUS_OR_UNKNOWN",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "Operating margin of 20%",
+      "range_upper": "22",
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "21.1",
+      "start": 2714,
+      "normalized_value": "21.1",
+      "period_end": "2026-06-30",
+      "currency": null,
+      "end": 2739,
+      "metric": "OPERATING_MARGIN",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "percent",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "Operating margin at 21.1%",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "0.20",
+      "start": 2781,
+      "normalized_value": "0.20",
+      "period_end": "2026-06-30",
+      "currency": "USD",
+      "end": 2799,
+      "metric": "EPS",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "currency_unit",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "Basic EPS at $0.20",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "0.96",
+      "start": 490,
+      "normalized_value": "960000000.00",
+      "period_end": "2026-06-30",
+      "currency": "USD",
+      "end": 521,
+      "metric": "FREE_CASH_FLOW",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "billion",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "Free Cash Flow of $0.96 Billion",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    },
+    {
+      "value": "955",
+      "start": 2828,
+      "normalized_value": "955000000",
+      "period_end": "2026-06-30",
+      "currency": "USD",
+      "end": 2847,
+      "metric": "FREE_CASH_FLOW",
+      "scope": "REPORTED_SOURCE_PROSE",
+      "source_page": 1,
+      "unit": "million",
+      "period_alignment": "UNIQUE_DOCUMENT_QUARTER",
+      "table_alignment_verified": false,
+      "evidence_id": "ev_link_84c81aa1067c",
+      "text": "FCF at $955 million",
+      "range_upper": null,
+      "status": "OBSERVED_SOURCE_ASSERTION"
+    }
+  ],
+  "browser": {
+    "scope": "Exact saved SSE replay through all agent page buttons; no fresh provider or research claims. Local health remains real.",
+    "configured_gemini_credentials": 0,
+    "mock_llm": false,
+    "cases": [
+      {
+        "case_id": "01-scout",
+        "agent": "scout",
+        "input": "INFY.NS",
+        "elapsed_seconds": 0.38,
+        "http_status": 200,
+        "retained_native_records": 6,
+        "retained_text_words": 2331,
+        "retained_text_kb": 17.207,
+        "result_event": true,
+        "error_events": [],
+        "progress_events": 29,
+        "heartbeat_events": 0,
+        "progress_phases": [
+          "accepted",
+          "analysis",
+          "report"
+        ],
+        "findings": 1,
+        "acquired_records": 6,
+        "discovery_records": 28,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "01-scout-320-inspection.png",
+            "rendered_findings": 1,
+            "rendered_acquired_cards": 6,
+            "rendered_discovery_cards": 28,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "01-scout-320-full.png",
+              "01-scout-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "01-scout-390-inspection.png",
+            "rendered_findings": 1,
+            "rendered_acquired_cards": 6,
+            "rendered_discovery_cards": 28,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "01-scout-390-full.png",
+              "01-scout-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "01-scout-1440-inspection.png",
+            "rendered_findings": 1,
+            "rendered_acquired_cards": 6,
+            "rendered_discovery_cards": 28,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "01-scout-1440-full.png",
+              "01-scout-1440-report.png"
+            ]
+          }
+        ],
+        "page_errors": [],
+        "console_errors": [
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: the server responded with a status of 404 (File not found)"
+        ],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ]
+      },
+      {
+        "case_id": "02-trending",
+        "agent": "trending",
+        "input": "NVIDIA",
+        "elapsed_seconds": 0.26,
+        "http_status": 200,
+        "retained_native_records": 5,
+        "retained_text_words": 5380,
+        "retained_text_kb": 36.326,
+        "result_event": true,
+        "error_events": [],
+        "progress_events": 29,
+        "heartbeat_events": 0,
+        "progress_phases": [
+          "accepted",
+          "analysis",
+          "report"
+        ],
+        "findings": 3,
+        "acquired_records": 5,
+        "discovery_records": 7,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "02-trending-320-inspection.png",
+            "rendered_findings": 3,
+            "rendered_acquired_cards": 5,
+            "rendered_discovery_cards": 7,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "02-trending-320-full.png",
+              "02-trending-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "02-trending-390-inspection.png",
+            "rendered_findings": 3,
+            "rendered_acquired_cards": 5,
+            "rendered_discovery_cards": 7,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "02-trending-390-full.png",
+              "02-trending-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "02-trending-1440-inspection.png",
+            "rendered_findings": 3,
+            "rendered_acquired_cards": 5,
+            "rendered_discovery_cards": 7,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "02-trending-1440-full.png",
+              "02-trending-1440-report.png"
+            ]
+          }
+        ],
+        "page_errors": [],
+        "console_errors": [
+          "Failed to load resource: net::ERR_FAILED",
+          "Failed to load resource: the server responded with a status of 404 (File not found)"
+        ],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ]
+      },
+      {
+        "case_id": "03-brandshield",
+        "agent": "brandshield",
+        "input": "Nike",
+        "elapsed_seconds": 0.18,
+        "http_status": 200,
+        "retained_native_records": 2,
+        "retained_text_words": 662,
+        "retained_text_kb": 3.788,
+        "result_event": true,
+        "error_events": [],
+        "progress_events": 29,
+        "heartbeat_events": 0,
+        "progress_phases": [
+          "accepted",
+          "analysis",
+          "report"
+        ],
+        "findings": 0,
+        "acquired_records": 2,
+        "discovery_records": 17,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "03-brandshield-320-inspection.png",
+            "rendered_findings": 0,
+            "rendered_acquired_cards": 2,
+            "rendered_discovery_cards": 17,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "03-brandshield-320-full.png",
+              "03-brandshield-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "03-brandshield-390-inspection.png",
+            "rendered_findings": 0,
+            "rendered_acquired_cards": 2,
+            "rendered_discovery_cards": 17,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "03-brandshield-390-full.png",
+              "03-brandshield-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "03-brandshield-1440-inspection.png",
+            "rendered_findings": 0,
+            "rendered_acquired_cards": 2,
+            "rendered_discovery_cards": 17,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "03-brandshield-1440-full.png",
+              "03-brandshield-1440-report.png"
+            ]
+          }
+        ],
+        "page_errors": [],
+        "console_errors": [
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ]
+      },
+      {
+        "case_id": "04-personal_watch",
+        "agent": "personal_watch",
+        "input": "Sam Altman",
+        "elapsed_seconds": 0.3,
+        "http_status": 200,
+        "retained_native_records": 6,
+        "retained_text_words": 2811,
+        "retained_text_kb": 15.843,
+        "result_event": true,
+        "error_events": [],
+        "progress_events": 29,
+        "heartbeat_events": 0,
+        "progress_phases": [
+          "accepted",
+          "analysis",
+          "report"
+        ],
+        "findings": 5,
+        "acquired_records": 6,
+        "discovery_records": 14,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "04-personal_watch-320-inspection.png",
+            "rendered_findings": 5,
+            "rendered_acquired_cards": 6,
+            "rendered_discovery_cards": 14,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "04-personal_watch-320-full.png",
+              "04-personal_watch-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "04-personal_watch-390-inspection.png",
+            "rendered_findings": 5,
+            "rendered_acquired_cards": 6,
+            "rendered_discovery_cards": 14,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "04-personal_watch-390-full.png",
+              "04-personal_watch-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "04-personal_watch-1440-inspection.png",
+            "rendered_findings": 5,
+            "rendered_acquired_cards": 6,
+            "rendered_discovery_cards": 14,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "04-personal_watch-1440-full.png",
+              "04-personal_watch-1440-report.png"
+            ]
+          }
+        ],
+        "page_errors": [],
+        "console_errors": [
+          "Failed to load resource: net::ERR_FAILED"
+        ],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ]
+      }
+    ],
+    "head": "d1ffcaf7a4801b0c9f15377be0312838a65adea5",
+    "dirty_source": true,
+    "application_sha256": "69368ff3f1765e0e85337d3740acf823d96fa3cd3fe3e46484e25e375162c683",
+    "llm_timeout_seconds": 5,
+    "llm_max_retries": 1,
+    "chart_sha256": "d2af8974e95271638772e9e9524db5b9a6f58d6ec2d5d781400447b4a31c681e",
+    "independent_entailment_accuracy": null,
+    "retrieval_recall": null,
+    "mode": "EXACT_SAVED_SSE_REPLAY",
+    "application_unchanged_during_run": true
+  }
+}

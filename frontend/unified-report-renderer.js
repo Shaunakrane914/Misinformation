@@ -256,9 +256,13 @@ function renderFindings(report) {
     const states = [...new Set(matches.map(item => item.epistemic_state || 'Unspecified'))];
     const citations = [...new Set(matches.flatMap(item => array(item.citation_observations).map(c =>
       c && typeof c === 'object' ? `${c.evidence_id}: ${c.availability || 'UNAVAILABLE'}` : '')).filter(Boolean))];
-    return `<li>${esc(text)}${matches.length ? `<p class="ur-ev-note">Reported state: ${states.map(esc).join(', ')}. Source support requires passage review.${citations.length ? ` Citation observations: ${citations.map(esc).join(', ')}.` : ''}</p>` : ''}</li>`;
-  }).join('')}</ul>` : '<p class="ur-empty">No significant findings.</p>';
-  return section('ur-findings', 'KEY FINDINGS', content);
+    const body = text.length > 700 ? `<details class="ur-full-finding"><summary>Context preview — expand before interpreting: ${esc(text.slice(0, 180))}…</summary><p>${esc(text)}</p></details>` : esc(text);
+    const community = matches.some(item => item.metadata && item.metadata.community_sample_only) ? '<p class="ur-ev-note">Sampled community observation only. Virality and independent corroboration are not measured.</p>' : '';
+    return `<li>${community}${body}${matches.length ? `<p class="ur-ev-note">Reported state: ${states.map(esc).join(', ')}. Source support requires passage review.${citations.length ? ` Citation observations: ${citations.map(esc).join(', ')}.` : ''}</p>` : ''}</li>`;
+  }).join('')}</ul>` : '<p class="ur-empty">No findings returned. This does not establish an absence of risk.</p>';
+  const leads = array(report.processing_notes && report.processing_notes.unresolved_leads);
+  const unresolved = leads.length ? `<details><summary>Unresolved leads — not findings</summary><ul class="ur-list">${leads.map(lead => `<li>${esc(lead.factor || lead.catalyst || '')}</li>`).join('')}</ul></details>` : '';
+  return section('ur-findings', 'KEY FINDINGS', content + unresolved);
 }
 
 /** Candidates remain inspectable without claiming a successful body read. */
@@ -370,6 +374,8 @@ function renderEvidenceCard(item, allowRead = true) {
     ${extraction.source_observations && typeof extraction.source_observations === 'object' && Object.keys(extraction.source_observations).length ? `<details><summary>Source-specific observations — unverified</summary><dl>${Object.entries(extraction.source_observations).slice(0, 40).filter(([key, value]) => ['string', 'number', 'boolean'].includes(typeof value)).map(([key, value]) => `<dt>${esc(key)}</dt><dd>${esc(String(value).slice(0, 300))}</dd>`).join('')}</dl></details>` : ''}
     ${extraction.provider_truncated === true || extraction.inspection_truncated === true ? '<p>Captured content or inspection was truncated.</p>' : ''}
     ${passages.map(p => `<figure><figcaption>${esc(p.id || 'Passage')} · captured offsets ${esc(p.start ?? '?')}–${esc(p.end ?? '?')}</figcaption><blockquote>${esc(p.text.slice(0, 600))}</blockquote></figure>`).join('')}
+    ${array(extraction.structured_passages).length ? `<details><summary>Classified full-context passages — source assertions, not verified facts</summary>${array(extraction.structured_passages).slice(0, 16).map(p => `<figure><figcaption>${esc(p.passage_id)} · ${esc(p.content_role)} · ${esc(p.relevance)} · offsets ${esc(p.start)}–${esc(p.end)}</figcaption><blockquote>${esc(p.text)}</blockquote></figure>`).join('')}</details>` : ''}
+    ${array(extraction.financial_observations).length ? `<details><summary>Financial observations — period and units require review</summary>${array(extraction.financial_observations).map(f => `<p>${esc(f.metric)}: ${esc(f.value)} ${esc(f.unit)} ${esc(f.currency || '')}${f.range_upper ? `–${esc(f.range_upper)}` : ''} · ${esc(f.scope || 'SCOPE_UNKNOWN')} · period ${esc(f.period_end || 'unknown/ambiguous')} · page ${esc(f.source_page ?? 'unavailable')} · ${esc(f.period_alignment)}</p><blockquote>${esc(f.text)}</blockquote>`).join('')}</details>` : ''}
     ${array(extraction.observed_numeric_mentions).slice(0, 12).length ? `<details><summary>Observed numeric mentions — not aligned financial facts</summary><ul>${array(extraction.observed_numeric_mentions).slice(0, 12).map(m => `<li>${esc(m && m.text || '')}: ${esc(m && m.context || '')}</li>`).join('')}</ul></details>` : ''}
     ${extraction.page_observations && typeof extraction.page_observations === 'object' ? `<details><summary>Extracted page observations — unverified</summary>
       ${array(extraction.page_observations.pdf_pages).slice(0, 8).map(page => `<p>PDF page ${esc(page.page)} · captured offsets ${esc(page.start)}–${esc(page.end)}${page.text_truncated ? ' · text truncated' : ''}. Text-layer extraction only; table alignment requires review.</p>`).join('')}

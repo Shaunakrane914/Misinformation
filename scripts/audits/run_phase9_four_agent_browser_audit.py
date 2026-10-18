@@ -28,6 +28,7 @@ parser.add_argument('--output-dir', type=Path, required=True)
 parser.add_argument('--env-file', type=Path, required=True, help='Server-side local configuration, never copied to output')
 parser.add_argument('--chart-js', type=Path, required=True, help='Actual pinned Chart.js 4.4.1 asset')
 parser.add_argument('--limit', type=int, default=12)
+parser.add_argument('--allow-live-ai', action='store_true', help='Separate opt-in; acquisition/replay excludes AI credentials by default')
 parser.add_argument('--case', action='append', default=[], help='Up to four explicit unseen controls as agent:input; default is the fixed twelve-case matrix')
 parser.add_argument('--replay-dir', type=Path, help='Replay saved SSE events through page buttons; no acquisition, explicitly labeled')
 args = parser.parse_args()
@@ -38,8 +39,8 @@ sys.path.insert(0, str(ROOT))
 
 def application_fingerprint():
     digest = hashlib.sha256()
-    names = subprocess.check_output(['git','ls-files','backend','frontend'], cwd=ROOT, text=True).splitlines()
-    for name in names:
+    names = subprocess.check_output(['git','ls-files','--cached','--others','--exclude-standard','backend','frontend'], cwd=ROOT, text=True).splitlines()
+    for name in sorted(set(names)):
         path = ROOT / name
         if path.is_file():
             digest.update(name.encode())
@@ -52,8 +53,13 @@ values = dotenv_values(args.env_file)
 allowed = ('GEMINI_API_KEY', 'GEMINI_KEY_', 'GROQ_API_KEY', 'YF_API_KEY', 'AGENT_REACH_', 'REDDIT_',
            'AEGIS_REDDIT_', 'EXA_API_KEY', 'TAVILY_API_KEY', 'BRAVE_API_KEY', 'FACTCHECK_API_KEY',
            'SEC_USER_AGENT', 'YOUTUBE_API_KEY', 'GITHUB_TOKEN', 'JINA_API_KEY')
+ai_prefixes = ('GEMINI_', 'GROQ_', 'OPENAI_', 'ANTHROPIC_')
+if not args.allow_live_ai:
+    for key in list(os.environ):
+        if key.startswith(ai_prefixes):
+            os.environ[key] = ''
 for key, value in values.items():
-    os.environ[key] = str(value or '') if key.startswith(allowed) else ''
+    os.environ[key] = str(value or '') if key.startswith(allowed) and (args.allow_live_ai or not key.startswith(ai_prefixes)) else ''
 for key in list(os.environ):
     if key.startswith(('SUPABASE_', 'TWILIO_', 'SMTP_', 'SENDGRID_', 'RENDER_', 'CLOUDFLARE_')):
         os.environ[key] = ''
@@ -90,6 +96,8 @@ from backend.main import app
 from backend.core.settings import settings
 
 assert not settings.is_mock_llm and not settings.supabase_write_key and not settings.supabase_url
+if not args.allow_live_ai:
+    assert not settings.gemini_api_keys
 config = uvicorn.Config(app, host='127.0.0.1', port=0, lifespan='off', log_config=None, access_log=False)
 backend = uvicorn.Server(config)
 sock = config.bind_socket()
@@ -231,7 +239,7 @@ try:
                 row['discovery_records'] = len(report.get('discovery',[]))
                 page.wait_for_function('(id) => !document.getElementById(id).disabled', arg=button,timeout=20000)
                 row['views'] = []
-                for width in (390,1440):
+                for width in (320,390,1440):
                     page.set_viewport_size({'width':width,'height':1000})
                     page.evaluate('async () => { await document.fonts.ready; await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r))); }')
                     page.evaluate('window.scrollTo(0,0)')
@@ -260,11 +268,13 @@ try:
                         inspection_shot = case_id + '-' + str(width) + '-inspection.png'
                         page.screenshot(path=str(OUT / inspection_shot))
                         inspection.evaluate('el=>el.open=false')
-                    normalized = re.sub(r'\s+',' ', report_node.inner_text() if visible else '')
+                    # Full context can be intentionally collapsed; verify it is
+                    # retained in DOM separately from actual screenshot paint.
+                    normalized = re.sub(r'\s+',' ', report_node.text_content() if visible else '')
                     row['views'].append({'width':width, 'unified_report_visible':visible,
                                          'inspection_keyboard_open':inspection_keyboard,
                                          'inspection_screenshot':inspection_shot,
-                                         'rendered_findings':page.locator('#ur-findings li').count(),
+                                         'rendered_findings':page.locator('#ur-findings-body > ul > li').count(),
                                          'rendered_acquired_cards':page.locator('#ur-evidence .ur-ev-card').count(),
                                          'rendered_discovery_cards':page.locator('#ur-discovery .ur-ev-card').count(),
                                          'missing_finding_texts':[f[:100] for f in report.get('findings',[]) if re.sub(r'\s+',' ',f) not in normalized],

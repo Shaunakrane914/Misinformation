@@ -2129,7 +2129,11 @@ select:focus-visible,
   border: 1px solid var(--border);
   border-radius: 16px;
   background: var(--surface-card);
-  backdrop-filter: blur(12px);
+  /* Avoid nested backdrop compositing clipping paragraph glyphs on long
+     scroll/reflow reports. The existing card surface preserves contrast. */
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  isolation: isolate;
   overflow: hidden;
   transition: box-shadow 0.2s ease;
 }

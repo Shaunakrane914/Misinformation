@@ -2,6 +2,8 @@
 
 ## Latest end-to-end intelligence checkpoint — 2026-10-18
 
+Published implementation/proof checkpoint `b8b183e`: [all five hosted jobs passed](https://github.com/Shaunakrane914/Misinformation/actions/runs/39106817298). Local **1,402 full / 1,194 fast** tests and 12 saved-response browser states pass. Later publication-record changes are documentation-only; inspect exact-SHA CI separately.
+
 [Review](testing/INTELLIGENCE_PIPELINE_COMPLETION_2026-10-18.md), [handoff](handoffs/2026-10-18_INTELLIGENCE_PIPELINE_COMPLETION.md), [proof](testing/evidence/2026-10-18_intelligence_completion/README.md). Explicit AI run/investigation budgets and shared cooldown; zero live generation this task. Sam now retains public feed articles rather than only a profile. Financial units/periods/guidance, passage roles and exact citation context survive to inspection. Four live local inputs followed by offline polish and browser replay, not repeated provider investigations. Local validation/publication details are in the dated handoff. **Research acceptance remains PARTIAL; no main merge or deployment.**
 
 ## Previous local terminal / cost checkpoint — 2026-10-18

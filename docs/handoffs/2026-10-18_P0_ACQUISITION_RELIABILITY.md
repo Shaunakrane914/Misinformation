@@ -47,6 +47,15 @@ code, **not this P0 branch**.
   fake provider could not return a record. After implementation all pass with
   zero diagnostic refresh calls. This proves a starvation mechanism, not the
   complete historical production timing breakdown.
+- A second offline control loaded the actual `725f4e2` acquisition service from
+  Git, supplied nine fake queries across news/web/RSS and blocked live network.
+  With a 250ms allowance and each diagnostic lookup artificially delayed 300ms,
+  the old code produced nine TIMEOUTs / zero provider calls / zero records;
+  the P0 code produced nine SUCCESS records / nine fake provider calls / zero
+  diagnostic refreshes. Measured total control times were 5,445.758ms versus
+  5.879ms. The baseline made 27 instrumented diagnostic lookups; the delay was
+  intentionally applied even to repeated lookups. **This is a synthetic stress
+  control, not an estimate of production cache behavior or a scraper benchmark.**
 - [Doctor snapshots](../../backend/services/agent_reach/native/doctor.py) expose
   `peek_channel_status()`: copies observed/fresh cached capability metadata, or
   returns not-probed. No network, subprocess or cold-cache diagnostic refresh.
@@ -162,9 +171,11 @@ prefixed `aegis-p0-lenovo-`; do not copy them over old evaluation outputs.
   quote metadata, candidate-to-direct-read flow, and all-timeout pipeline/dossier
   and shared report semantics across all four agents.
 - `python -m pytest tests/ -q --tb=short --show-capture=no`: **1,456 passed**,
-  exit 0, 81.47s, final code; `full-final-code.log` in the fresh temp directory.
+  exit 0, 87.15s, latest application code; `full-last-clock.log` in the fresh temp directory.
 - `python -m pytest tests/unit tests/chaos tests/security -q --tb=short --show-capture=no`:
-  **1,248 passed**, exit 0, 51.54s; `fast-final-code.log` in the same directory.
+  **1,248 passed**, exit 0, 59.97s; `fast-last-clock.log` in the same directory.
+  The later test-only CI scheduling-margin correction passed the 71 focused
+  P0/stage/golden/remediation tests (exit 0, 2.32s); hosted CI runs the full matrix.
 - Fatal Python lint: zero errors; nine Node frontend scripts passed. Release
   smoke and isolated rollback returned `OFFLINE_SMOKE_PASS` and
   `OFFLINE_PERSISTENCE_PASS`. These do not repair the 55 original malformed
@@ -238,3 +249,15 @@ assertion that escalation cannot consume reserved reading time was preserved,
 and the fixture now patches the clock actually used. No product timeout was
 increased and no test was skipped. New P0 tests passed in that failed hosted run.
 Subsequent CI must be observed separately; this failed run is not acceptance.
+
+The [second hosted run](https://github.com/Shaunakrane914/Misinformation/actions/runs/39135975584)
+at `6ba80f4` passed full/lint/Python 3.11/Python 3.13, but one Python 3.12 test
+exceeded its synthetic 40ms allowance with ~116ms elapsed in a mocked provider
+path. Scheduling/processing overhead is the likely explanation, not measured
+external provider latency; no real source request occurs in that control.
+The initial 60/40ms reproduction above remains the historical observation.
+Current tests give the fast path a CI-tolerant 1s allowance with a simulated
+doctor delay of 1.2s (never called), still guaranteeing starvation if invoked.
+Event-controlled queue/isolation tests likewise use larger test-only margins.
+No production timeout was raised. Two remaining adaptive query duration counters
+were also made monotonic; that pass was not exercised by the single live capture.

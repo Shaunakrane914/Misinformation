@@ -28,12 +28,14 @@ def test_slow_doctor_cannot_starve_search(monkeypatch, agent):
     service = make_service(monkeypatch, {"web": search})
 
     def expensive_status(*args):
-        time.sleep(0.06)
+        # Deliberately longer than the retrieval allowance. Not called on the
+        # corrected path; use a scheduling-tolerant allowance on shared CI VMs.
+        time.sleep(1.2)
         return {"active_backend": "diagnostic"}
 
     doctor = MagicMock(side_effect=expensive_status)
     monkeypatch.setattr(module.native_doctor, "get_channel_status", doctor)
-    result = service.retrieve_many({"web": ["Lenovo results"]}, agent_name=agent, perform_reads=False, timeout=0.04)
+    result = service.retrieve_many({"web": ["Lenovo results"]}, agent_name=agent, perform_reads=False, timeout=1.0)
     assert len(result.fragments) == 1
     assert search.search.call_count == 1
     assert doctor.call_count == 0
@@ -42,14 +44,14 @@ def test_slow_doctor_cannot_starve_search(monkeypatch, agent):
 def test_timeout_isolated_and_late_completion_cannot_change_result(monkeypatch):
     release = threading.Event()
     slow, fast = MagicMock(), MagicMock()
-    slow.search.side_effect = lambda *a, **k: (release.wait(1) or [])
+    slow.search.side_effect = lambda *a, **k: (release.wait(5) or [])
     fast.search.return_value = [EvidenceFragment(platform="rss", url="https://example.com/news", title="Lenovo revenue")]
     service = make_service(monkeypatch, {"web": slow, "rss": fast})
     monkeypatch.setattr(module.native_doctor, "peek_channel_status", lambda *a: {})
     try:
         before = time.monotonic()
-        result = service.retrieve_many({"web": ["Lenovo"], "rss": ["Lenovo"]}, timeout=0.06, perform_reads=False)
-        assert time.monotonic() - before < 0.3
+        result = service.retrieve_many({"web": ["Lenovo"], "rss": ["Lenovo"]}, timeout=0.25, perform_reads=False)
+        assert time.monotonic() - before < 2
         assert len(result.fragments) == 1
         records = {r.channel: r for r in result.query_records}
         assert records["web"].status == "TIMEOUT"
@@ -81,7 +83,7 @@ def test_queued_search_is_not_reported_as_started(monkeypatch):
     release = threading.Event()
     search = MagicMock()
     def blocked(*a, **kw):
-        release.wait(1)
+        release.wait(5)
         return []
     search.search.side_effect = blocked
     service = make_service(monkeypatch, {"web": search})
@@ -89,7 +91,7 @@ def test_queued_search_is_not_reported_as_started(monkeypatch):
     monkeypatch.setattr(module, "_SEARCH_CAPACITY", threading.BoundedSemaphore(2))
     monkeypatch.setattr(module.native_doctor, "peek_channel_status", lambda *a: {})
     try:
-        result = service.retrieve_many({"web": ["first", "queued"]}, timeout=0.04, perform_reads=False)
+        result = service.retrieve_many({"web": ["first", "queued"]}, timeout=0.25, perform_reads=False)
         by_query = {row.query_text: row for row in result.query_records}
         assert by_query["queued"].status == "QUEUE_TIMEOUT"
         assert by_query["queued"].provider_started is False

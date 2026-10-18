@@ -258,7 +258,7 @@ class AdaptiveExpansionStage:
                     suggested_ch = fu.get("suggested_channels", ["web", "news"])
                     new_snippets_this_step: List[str] = []
                     query_had_success = False
-                    q_start_time = time.time()
+                    q_start_time = time.monotonic()
                     q_started_at = datetime.utcnow().isoformat()
                     fu_error: Optional[str] = None
                     raw_fu_count = 0
@@ -316,7 +316,7 @@ class AdaptiveExpansionStage:
                         ranked.accepted.append(acc_item)
                         new_snippets_this_step.append(acc_item.snippet)
 
-                    q_lat = int((time.time() - q_start_time) * 1000)
+                    q_lat = int((time.monotonic() - q_start_time) * 1000)
                     q_completed_at = datetime.utcnow().isoformat()
 
                     if query_had_success:

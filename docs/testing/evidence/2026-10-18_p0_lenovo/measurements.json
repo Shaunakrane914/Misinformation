@@ -7,6 +7,7 @@
   "historical_9706ms_exact_attribution": "NOT_VERIFIED_NOT_INSTRUMENTED",
   "original_dossier_refetch": "TIMEOUT_THEN_HTTP_404",
   "offline_slow_doctor_control": {"doctor_delay_ms": 60, "retrieval_budget_ms": 40, "agents": 4, "before": "ALL_FAILED", "after": "ALL_PASSED_NO_DOCTOR_REFRESH"},
+  "nine_query_offline_stress_control": {"baseline_source": "725f4e2", "queries": 9, "budget_ms": 250, "injected_delay_per_diagnostic_lookup_ms": 300, "baseline": {"elapsed_ms": 5445.758, "timeouts": 9, "provider_calls": 0, "diagnostic_calls": 27, "records": 0}, "p0": {"elapsed_ms": 5.879, "successes": 9, "provider_calls": 9, "diagnostic_calls": 0, "records": 9}, "scope": "SYNTHETIC_STRESS_NOT_PRODUCTION_CACHE_TIMING_OR_LIVE_SOURCE_EVIDENCE"},
   "live": {
     "mode": "ONE_LOCAL_ASGI_SSE_INVESTIGATION",
     "input": "Lenovo",

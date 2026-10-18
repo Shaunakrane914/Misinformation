@@ -970,7 +970,7 @@ class AgentEvaluationRunner:
             {
                 "evidence_id": "ev_pw_df_01",
                 "title": "Viral Deepfake Audio of CEO Circulates Online",
-                "content": "Synthetic audio and AI voice clone claiming secret corporate decision deepfake circulating.",
+                "content": "Synthetic audio and AI voice clone of Satya Nadella claiming secret corporate decision deepfake circulating.",
                 "snippet": "Synthetic audio and AI voice clone claiming corporate decision deepfake.",
                 "url": "https://youtube.com/watch?v=synthetic_audio",
                 "platform": "YouTube",

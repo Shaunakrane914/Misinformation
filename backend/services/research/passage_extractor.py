@@ -86,10 +86,9 @@ class PassageExtractor:
                 item.extraction_status = "EMPTY"
                 continue
 
-            # Split into paragraphs or sentences
-            paragraphs = [p.strip() for p in re.split(r'\n\s*\n|(?<=[.?!])\s+(?=[A-Z])', raw_text) if len(p.strip()) >= 40]
-            if not paragraphs:
-                paragraphs = [p.strip() for p in re.split(r'(?<=[.?!])\s+', raw_text) if len(p.strip()) > 60]
+            # A following sentence can negate or qualify the first. Select
+            # complete source paragraphs, never isolated affirmative sentences.
+            paragraphs = [p.strip() for p in re.split(r'\n\s*\n', raw_text) if len(p.strip()) >= 40]
 
             if not paragraphs:
                 # Preserve a bounded display-only fallback for compatibility;
@@ -105,16 +104,20 @@ class PassageExtractor:
             best_idx = 0
 
             for idx, p in enumerate(paragraphs):
-                if not matches_objective(p, domain):
+                attributed_statement = (domain == "personal" and item.query_class == "public_statement_discovery"
+                    and item.source_name.casefold().strip() == clean_target)
+                if not matches_objective(p, domain) and not attributed_statement:
                     continue
                 if not has_usable_passage({"content": p, "content_depth": item.content_depth}):
                     continue
                 p_lower = p.lower()
                 present = target_tokens & set(re.findall(r"[a-z0-9]{3,}", p_lower))
                 topic_match = any(re.search(r"\b" + re.escape(alias.casefold()) + r"\b", p_lower) for alias in topic_aliases)
-                if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower and not topic_match:
+                if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower and not topic_match and not attributed_statement:
                     continue
                 score = 0.0
+                if attributed_statement:
+                    score += 3.0
 
                 # Target presence
                 if topic_match or (clean_target and clean_target in p_lower):
@@ -158,9 +161,11 @@ class PassageExtractor:
             # Preserve exact offsets and qualifications. A short display
             # preview must not silently delete a later negation/date. The full
             # captured source remains available even if this bounded window ends.
-            clean_excerpt = best_p[:2000]
-            if len(best_p) > 2000:
+            if len(best_p) > 6000:
+                item.extraction_status = "NO_RELEVANT_PASSAGE"
                 item.metadata["excerpt_truncated"] = True
+                continue
+            clean_excerpt = best_p
 
             item.relevant_excerpt = clean_excerpt
             item.excerpt_start = raw_text.find(best_p)

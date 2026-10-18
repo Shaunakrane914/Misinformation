@@ -125,7 +125,7 @@ def test_advisor_failure_and_no_budget_do_not_block_or_fabricate():
     assert not item.relevant_excerpt
 
 
-def test_provider_respects_advisory_timeout_attempt_and_token_limits(monkeypatch):
+def test_provider_respects_advisory_timeout_attempt_and_token_limits(monkeypatch, tmp_path):
     from backend.core.settings import Settings
     from backend.infrastructure.llm.providers.gemini import GeminiProvider
     calls = []
@@ -135,11 +135,12 @@ def test_provider_respects_advisory_timeout_attempt_and_token_limits(monkeypatch
     monkeypatch.setattr("requests.post", unavailable)
     monkeypatch.setattr("time.sleep", lambda seconds: None)
     provider = GeminiProvider(Settings(gemini_api_keys=["fixture-key"], gemini_models=["one", "two"], llm_max_retries=3))
-    with pytest.raises(RuntimeError):
-        provider.generate("advice", timeout=0.5, total_timeout=0.5, max_attempts=1, max_output_tokens=600)
+    from backend.infrastructure.llm.advisory_policy import advisory_run, investigation_scope, MODEL
+    with advisory_run(verified_models=[MODEL], database=tmp_path / "policy.db"), investigation_scope(), pytest.raises(RuntimeError):
+        provider.generate("advice", model=MODEL, purpose="passage_suggestion", timeout=0.5, total_timeout=0.5, max_attempts=1, max_output_tokens=160)
     assert len(calls) == 1
     assert 0 < calls[0]["timeout"] <= 0.5
-    assert calls[0]["json"]["generationConfig"]["maxOutputTokens"] == 600
+    assert calls[0]["json"]["generationConfig"]["maxOutputTokens"] == 160
 
 
 def test_advisor_does_not_send_sensitive_content(monkeypatch):
@@ -189,6 +190,8 @@ def test_late_advice_cannot_mutate_a_timed_out_investigation():
 
 
 def test_ai_selection_survives_stage_and_public_report_contract(monkeypatch):
+    # Explicit offline-double opt-in; ordinary requests must never call AI.
+    monkeypatch.setenv("AEGIS_EVIDENCE_ADVISOR_ENABLED", "true")
     from backend.services.research import evidence_advisor
     from backend.application.research.synthesis import PassageAnalysisStage
     from backend.application.research.contracts import RankedEvidence, ReadEvidence
@@ -215,7 +218,7 @@ def test_validated_ai_query_fits_existing_search_budget_and_cannot_add_reads():
     gateway = SimpleNamespace(generate_structured=lambda *a, **k: LLMSuggestedPlan(actions=[{
         "channel": "web", "operation": "search", "query": "Acme recall regulator notice", "rationale": "Inspect original recall notice"},
         {"channel": "web", "operation": "read", "query": "http://127.0.0.1/private", "rationale": "Untrusted URL suggestion"}]))
-    plan = SourcePlanningEngine(llm_gateway=gateway).plan("Acme", entity="Acme", use_llm=True)
+    plan = SourcePlanningEngine(llm_gateway=gateway).plan("Acme", entity="Acme", use_llm=True, discovery_failed=True)
     queries = plan.to_channel_queries()["web"]
     assert len(queries) <= plan.budget.max_queries_per_channel
     assert any(q["query_text"] == "Acme recall regulator notice" for q in queries)

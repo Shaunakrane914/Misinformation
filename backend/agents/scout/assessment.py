@@ -104,60 +104,7 @@ def synthesize_financial_intelligence(
             }
         }
 
-    source_summary = "\n".join([
-        f"[{s['evidence_id']}] ({s['source_role']}) {s['source']}: {s['title']} — {s['snippet'][:160]}"
-        for s in sources[:12]
-    ])
-
-    prompt = f"""You are a principal financial intelligence analyst at Aegis Protocol.
-Analyze the following retrieved market evidence for {company_name} ({ticker}).
-CRITICAL RULE: Rely ONLY on the provided evidence below. DO NOT invent, assume, or hallucinate any facts, dates, filings, or sources.
-
-RETRIEVED EVIDENCE:
-{source_summary}
-
-STOCK STATUS: Price {stock_data.get('current_price', 'N/A')} {stock_data.get('currency', '')}, 24h Change {stock_data.get('drop_percent', 0)}%, Z-Score {stock_data.get('z_score', 0)}
-
-TASK:
-Respond in STRICT JSON with this schema:
-{{
-  "catalysts": {{
-    "positive": [{{"catalyst": "Concise factual statement", "impact": "High|Medium|Low", "evidence_ids": ["src_001"]}}],
-    "negative": [{{"catalyst": "Concise factual statement", "impact": "High|Medium|Low", "evidence_ids": ["src_002"]}}],
-    "unresolved": [{{"factor": "Concise factual statement", "evidence_ids": ["src_003"]}}]
-  }},
-  "risks": ["Specific risk grounded directly in evidence"],
-  "narratives": [
-    {{"theme": "Theme Name", "description": "Brief summary", "sentiment": "Bullish|Bearish|Neutral", "evidence_ids": ["src_001"]}}
-  ],
-  "contradictions": {{
-    "for": ["Grounded supporting point"],
-    "against": ["Grounded contradicting point"],
-    "unresolved": ["Ambiguous or conflicting aspect"]
-  }},
-  "misinformation": {{
-    "status": "NOMINAL|ELEVATED|CRITICAL",
-    "rumors_detected": ["Any unverified or sensationalized claim"],
-    "manipulation_risk": "LOW|MEDIUM|HIGH",
-    "evidence_quality_score": 0.85,
-    "primary_corroboration": true
-  }}
-}}"""
-
-    try:
-        from backend.services.gemini_service import gemini_service
-        raw_text = gemini_service.generate_text(prompt)
-        cleaned = raw_text.strip()
-        if "```json" in cleaned:
-            cleaned = cleaned.split("```json")[1].split("```")[0].strip()
-        elif "```" in cleaned:
-            cleaned = cleaned.split("```")[1].split("```")[0].strip()
-        parsed = json.loads(cleaned)
-        if isinstance(parsed, dict) and "catalysts" in parsed:
-            from backend.services.research.model_grounding import constrain_financial_extractions
-            return constrain_financial_extractions(parsed, sources)
-    except Exception as e:
-        logger.debug(f"[ScoutAssessment:synthesize] LLM synthesis notice, using grounded rule-based parsing: {e}")
+    # Final financial assessment is deterministic; AI cannot adjudicate claims.
 
     # Deterministic evidence-grounded fallback extraction
     pos_cats = []

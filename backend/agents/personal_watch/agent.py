@@ -306,6 +306,7 @@ class PersonalWatchAgent:
             "suspected_impersonations": impersonations,
             "suspected_scams": scams,
             "deepfake_claims": deepfakes,
+            "public_statements": synthesis.get("public_statements", []),
             "evidence": evidence_list,
             "dossiers": dossiers,
             "findings": [f.to_dict() if hasattr(f, "to_dict") else f for f in self._last_research_res.findings] if getattr(self, "_last_research_res", None) else [],

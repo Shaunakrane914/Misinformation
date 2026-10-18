@@ -1,157 +1,76 @@
 """
 Aegis Protocol — Google Gemini LLM Provider
 ============================================
-ADR 0004 Implementation: Unified Google Gemini provider featuring:
-- Automated key rotation across configured GEMINI_API_KEY* environment variables
-- Exponential backoff with random jitter on HTTP 429 rate limits
-- Dynamic model fallback hierarchy
-- Standardized LLMResponse containers with latency tracking
+Explicit advisory-only provider: one strict model, first configured key, one
+attempt, no rotation/fallback, and persisted run budgets/cooldown. Ordinary
+research and native verdict/report synthesis never receive live generation.
 """
 
 from __future__ import annotations
 
-import itertools
 import logging
 import math
-import random
-import threading
 import time
 from typing import Any, Dict, List, Optional
 import requests
 
 from backend.core.settings import Settings, get_settings
 from backend.infrastructure.llm.protocol import LLMProvider, LLMResponse, LLMUsage
+from backend.infrastructure.llm.providers.rate_limit import GeminiRateLimitError, quota_diagnostics
 
 logger = logging.getLogger(__name__)
 
 
 class GeminiProvider(LLMProvider):
-    """Production provider for Google Gemini models with key rotation and backoff."""
+    """Fail-closed, strictly bounded optional suggestions, not native reasoning."""
 
     def __init__(self, settings_instance: Optional[Settings] = None):
         self.settings = settings_instance or get_settings()
         self.api_keys: List[str] = [k.strip() for k in self.settings.gemini_api_keys if k.strip()]
-        self._key_cycle = itertools.cycle(self.api_keys) if self.api_keys else None
-        self._key_lock = threading.Lock()
-        self.models: List[str] = list(self.settings.gemini_models)
-        self.timeout: float = self.settings.llm_request_timeout
-        self.max_retries: int = self.settings.llm_max_retries
 
     def is_available(self) -> bool:
         """True if a credential is configured, not proof of upstream acceptance."""
         return bool(self.api_keys)
 
     def generate(self, prompt: str, model: Optional[str] = None, **kwargs: Any) -> LLMResponse:
-        """Execute inference against Gemini with automatic key rotation and model fallback."""
+        """Only explicit, serial, budgeted advisory generation is permitted."""
+        from backend.infrastructure.llm.advisory_policy import MODEL, reserve_request, set_cooldown, AdvisoryPolicyError
         if not self.is_available():
             raise RuntimeError("GeminiProvider unavailable: No API keys configured.")
-
-        # An explicit model is a strict identity request. With no explicit
-        # model, Settings has already placed the preferred model first and the
-        # provider walks the remaining permitted fallbacks in order.
-        models_to_try = [model] if model else list(self.models)
-        headers = {"Content-Type": "application/json"}
-        payload = {"contents": [{"parts": [{"text": prompt}]}]}
-        # Advisory calls have a strict total budget across keys/models/retries.
-        # Previously caller timeouts were silently ignored by this provider.
-        call_timeout = min(self.timeout, float(kwargs.get("timeout", self.timeout)))
-        total_timeout = kwargs.get("total_timeout")
-        if not math.isfinite(call_timeout) or call_timeout <= 0:
+        if model != MODEL or len(prompt) > 6000 or kwargs.get("max_attempts", 1) != 1:
+            raise AdvisoryPolicyError("Only bounded strict-identity Flash-Lite advice is permitted")
+        tokens = kwargs.get("max_output_tokens", 160)
+        if type(tokens) is not int or not 1 <= tokens <= 160:
+            raise AdvisoryPolicyError("Advisory output limit is 160 tokens")
+        timeout = min(2.0, float(kwargs.get("timeout", 2.0)))
+        if not math.isfinite(timeout) or timeout <= 0:
             raise ValueError("LLM timeout must be finite and positive")
-        deadline = None
-        if total_timeout is not None:
-            total_timeout = float(total_timeout)
-            if not math.isfinite(total_timeout) or total_timeout <= 0:
-                raise ValueError("LLM total timeout must be finite and positive")
-            deadline = time.monotonic() + total_timeout
-        max_attempts = kwargs.get("max_attempts")
-        if max_attempts is not None and (type(max_attempts) is not int or not 1 <= max_attempts <= 20):
-            raise ValueError("LLM attempt bound must be an integer from 1 to 20")
-        generation = {}
-        if "max_output_tokens" in kwargs:
-            tokens = kwargs["max_output_tokens"]
-            if type(tokens) is not int or not 1 <= tokens <= 4096:
-                raise ValueError("LLM output token bound must be 1 to 4096")
-            generation["maxOutputTokens"] = tokens
-        if kwargs.get("json_mode"):
-            generation["responseMimeType"] = "application/json"
-        if generation:
-            payload["generationConfig"] = generation
-        attempts = 0
-
-        def bounded_sleep(seconds):
-            if max_attempts is not None and attempts >= max_attempts:
-                return
-            remaining = deadline - time.monotonic() if deadline is not None else seconds
-            if remaining > 0:
-                time.sleep(min(seconds, remaining))
-
-        last_error: Optional[Exception] = None
-
-        t0 = time.perf_counter()
-
-        for current_model in models_to_try:
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/{current_model}:generateContent"
-
-            for key_attempt in range(len(self.api_keys)):
-                with self._key_lock:
-                    api_key = next(self._key_cycle)  # type: ignore
-
-                for retry in range(self.max_retries):
-                    remaining = deadline - time.monotonic() if deadline is not None else call_timeout
-                    if remaining <= 0 or (max_attempts is not None and attempts >= max_attempts):
-                        raise RuntimeError("LLM advisory budget exhausted")
-                    attempts += 1
-                    try:
-                        resp = requests.post(
-                            url,
-                            headers={**headers, "x-goog-api-key": api_key},
-                            json=payload,
-                            timeout=min(call_timeout, remaining)
-                        )
-
-                        if resp.status_code == 200:
-                            data = resp.json()
-                            content = self._extract_content(data)
-                            latency = (time.perf_counter() - t0) * 1000
-                            return LLMResponse(
-                                content=content,
-                                model=current_model,
-                                provider="gemini",
-                                latency_ms=latency,
-                                usage=self._usage_from_response(data, prompt, content),
-                                raw_response=data,
-                                metadata={"usage_source": (
-                                    "provider" if data.get("usageMetadata") else "heuristic_estimate"
-                                )},
-                            )
-
-                        elif resp.status_code == 429:
-                            last_error = RuntimeError(f"Gemini model {current_model} returned HTTP 429")
-                            # Rate limit encountered: apply exponential backoff with jitter
-                            backoff = (2 ** retry) * 0.5 + random.uniform(0.1, 0.4)
-                            logger.warning(
-                                f"[GeminiProvider] HTTP 429 on {current_model}. "
-                                f"Backing off {backoff:.2f}s (retry {retry+1}/{self.max_retries})."
-                            )
-                            bounded_sleep(backoff)
-                            continue
-
-                        else:
-                            last_error = RuntimeError(
-                                f"Gemini model {current_model} returned HTTP {resp.status_code}"
-                            )
-                            break  # Try next key or model
-
-                    except Exception as exc:
-                        last_error = RuntimeError(
-                            f"Gemini request failed for {current_model}: {type(exc).__name__}"
-                        )
-                        bounded_sleep(0.3)
-
-        raise RuntimeError(
-            f"All configured Gemini models and API keys were exhausted. Last error: {last_error}"
-        )
+        payload = {"contents": [{"parts": [{"text": prompt}]}],
+                   "generationConfig": {"maxOutputTokens": tokens, "responseMimeType": "application/json"}}
+        started = time.perf_counter()
+        with reserve_request(kwargs.get("purpose")):
+            # Exactly the first configured credential; never rotate or fallback.
+            try:
+                response = requests.post(
+                    f"https://generativelanguage.googleapis.com/v1beta/models/{MODEL}:generateContent",
+                    headers={"Content-Type": "application/json", "x-goog-api-key": self.api_keys[0]},
+                    json=payload, timeout=timeout)
+            except Exception as error:
+                raise RuntimeError("Advisory transport failed: " + type(error).__name__) from None
+            if response.status_code == 429:
+                diagnostics = quota_diagnostics(response)
+                set_cooldown(diagnostics["retry_after_seconds"] or 60)
+                raise GeminiRateLimitError(diagnostics)
+            if response.status_code != 200:
+                raise RuntimeError(f"Gemini advisory returned HTTP {response.status_code}")
+            data = response.json()
+            content = self._extract_content(data)
+            usage = self._usage_from_response(data, prompt, content)
+            logger.info("Advisory completed; usage_source=%s total_tokens=%s",
+                        "estimated" if usage.is_estimated else "provider", usage.total_tokens)
+            return LLMResponse(content=content, model=MODEL, provider="gemini",
+                latency_ms=(time.perf_counter()-started)*1000, usage=usage, raw_response=data,
+                metadata={"usage_source": "heuristic_estimate" if usage.is_estimated else "provider"})
 
     def _extract_content(self, data: Dict[str, Any]) -> str:
         candidates = data.get("candidates", [])

@@ -112,7 +112,7 @@ def _hash(value):
                 key: sorted(canonical(entry) for entry in val) if key in {"independence_groups", "entities"} and isinstance(val, list)
                 else canonical(val)
                 for key, val in node.items()
-                if key != "stage_timings_ms"
+                if key not in {"stage_timings_ms", "passages", "financial_observations"}
             }
         if isinstance(node, list):
             return [canonical(entry) for entry in node]
@@ -121,6 +121,8 @@ def _hash(value):
     # Corroboration group membership and extracted entity names come from sets.
     # Their order is undefined. Additive wall-clock stage diagnostics are also
     # excluded, not evidence/lineage: they have an independent contract test.
+    # New exact-span inspection projections have separate integrity tests in
+    # test_intelligence_completion; preserve this historical core projection.
     encoded = json.dumps(canonical(value), sort_keys=True, ensure_ascii=False, separators=(",", ":"), default=str)
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 

@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional, Set, Tuple
 from backend.services.agent_reach.planner import RetrievalPlanner
 from backend.services.research import ResearchRequest, research_engine
 from backend.services.research.source_quality import is_utility_or_auth_url, ENCYCLOPEDIA_DOMAINS
+from backend.schemas.evidence_inspection import public_capture_metadata
 
 logger = logging.getLogger(__name__)
 
@@ -94,6 +95,7 @@ def normalize_item(
         "url": url,
         "canonical_url": url,
         "author": author,
+        "query_class": item.get("query_class") or observed_metadata.get("query_class", ""),
         "published_at": published_at,
         "retrieved_at": utcnow_iso(),
         "source_role": source_role,
@@ -101,6 +103,7 @@ def normalize_item(
         "retrieval_method": "Agent Reach Omni-Retrieval",
         "content_depth": item.get("content_depth") or observed_metadata.get("content_depth") or "UNKNOWN",
         "metadata": {
+            **public_capture_metadata(item),
             "likes": item.get("likes"),
             "retweets": item.get("retweets"),
             "score": item.get("score"),
@@ -219,7 +222,7 @@ def search_personal_evidence(
                 platform = f.channel
                 role = f.source_role
                 tier = f.source_tier
-                author = getattr(f, "author", "")
+                author = getattr(f, "author", "") or (f.source_name if f.query_class == "public_statement_discovery" else "")
                 pub = f.published_at or ""
                 depth = f.content_depth
                 q_id = f.query_id
@@ -283,6 +286,7 @@ def search_personal_evidence(
                 "selection_decision": sel_dec,
                 "selection_reason": sel_rea,
                 "metadata": {
+                    **public_capture_metadata(f),
                     "content_depth": depth,
                     "query_id": q_id,
                     "query_class": q_class,

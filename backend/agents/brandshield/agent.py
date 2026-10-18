@@ -156,27 +156,20 @@ class BrandShieldAgent:
                 "url": url or None,
                 "has_url": bool(url),
                 "evidence_id": matching_ev["evidence_id"] if matching_ev else ""
+                ,"supporting_evidence_ids": t.get("evidence_ids", []),
+                "epistemic_state": "UNVERIFIED",
+                "supporting_passages": t.get("supporting_passages", []),
+                "evidence_class": t.get("evidence_class", "UNVERIFIED_ALLEGATION")
             })
 
-        # Add safe items if needed to reflect balanced state
+        # Unclassified captures are background, not findings or proof of safety.
+        # Preserve their canonical IDs in evidence; do not turn merchandising
+        # into a "Genuine Issue" merely to balance the threat list.
         safe_evs = [e for e in evidence_items if not any(e["evidence_id"] in t.get("evidence_ids", []) for t in threats)]
-        for s_ev in safe_evs[:3]:
-            findings.append({
-                "platform": s_ev["platform"],
-                "title": s_ev["title"][:60],
-                "summary": s_ev["snippet"][:120],
-                "threat_type": "Genuine Issue",
-                "is_threat": False,
-                "severity": "low",
-                "fake_review_score": None,
-                "stars": None,
-                "url": s_ev["url"] or None,
-                "has_url": bool(s_ev.get("has_url") and s_ev.get("url")),
-                "evidence_id": s_ev["evidence_id"]
-            })
 
         threat_count = sum(1 for f in findings if f.get("is_threat"))
-        safe_count = len(findings) - threat_count
+        # Retained for older consumers; no safety adjudication is performed.
+        safe_count = 0
 
         return {
             # Brand & Entity Resolution
@@ -190,6 +183,9 @@ class BrandShieldAgent:
             "threat_count": threat_count,
             "safe_count": safe_count,
             "findings": findings,
+            "background_evidence_ids": [e["evidence_id"] for e in safe_evs],
+            "non_threat_finding_count": len(findings) - threat_count,
+            "safety_assessment": "NOT_ESTABLISHED",
             "platforms": active_platforms,
 
             # Scout 2.0 / BrandShield 2.0 Rich Intelligence Payload

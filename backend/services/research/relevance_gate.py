@@ -97,7 +97,10 @@ class RelevanceGate:
             url = getattr(item, "canonical_url", None) or getattr(item, "url", "") or ""
             source = getattr(item, "source_name", None) or getattr(item, "platform", "") or ""
 
-        combined_text = f"{title} {snippet} {url}".strip()
+        author = item.get("author", "") if isinstance(item, dict) else getattr(item, "author", "")
+        if not isinstance(item, dict) and getattr(item, "query_class", "") == "public_statement_discovery":
+            author = author or getattr(item, "source_name", "")
+        combined_text = f"{title} {snippet} {url} {author}".strip()
         combined_lower = combined_text.lower()
         title_lower = title.lower()
 

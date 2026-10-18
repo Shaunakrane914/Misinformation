@@ -559,8 +559,19 @@ class NativeRouter:
                 logger.debug(f"[NativeRouter] Bing search attempt notice (page {page+1}): {e}")
                 break
 
+        # Some search responses silently broaden a quoted person's name to a
+        # first-name query. Do not let irrelevant nonempty pages disable the
+        # existing secondary search. This is qualification, never claim support.
+        quoted = re.search(r'^"([^"\n]{3,100})"', clean_q)
+        if quoted:
+            anchor = " ".join(quoted.group(1).casefold().split())
+            fragments = [f for f in fragments if anchor in " ".join(
+                f"{f.title} {f.snippet}".casefold().split())]
         if not fragments:
             fragments = self._execute_yahoo_search(clean_q, limit=limit, query_id=query_id, query_class=query_class, query_text=query_text)
+        if quoted:
+            fragments = [f for f in fragments if anchor in " ".join(
+                f"{f.title} {f.snippet}".casefold().split())]
 
         return fragments
 

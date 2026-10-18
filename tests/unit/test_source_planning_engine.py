@@ -84,7 +84,7 @@ def test_invalid_or_timed_out_llm_falls_back_without_losing_deterministic_plan()
     plan = SourcePlanningEngine(llm_gateway=gateway).plan(
         "Nvidia RTX 5090 discontinuation rumor",
         entity="Nvidia",
-        use_llm=True,
+        use_llm=True, discovery_failed=True,
     )
     assert plan.actions
     assert plan.planner_mode == "DETERMINISTIC"
@@ -106,7 +106,7 @@ def test_llm_nonexistent_subreddit_and_unsupported_operation_are_rejected():
         ),
     ])
     plan = SourcePlanningEngine(llm_gateway=gateway).plan(
-        "Nvidia RTX 5090 rumor", entity="Nvidia", use_llm=True
+        "Nvidia RTX 5090 rumor", entity="Nvidia", use_llm=True, discovery_failed=True
     )
     reasons = {item["reason"] for item in plan.excluded}
     assert "UNVERIFIED_SUBREDDIT" in reasons

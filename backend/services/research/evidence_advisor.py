@@ -14,14 +14,25 @@ from pydantic import BaseModel, ConfigDict, Field
 from backend.services.research.content_roles import NON_EVENT_ROLES, document_role, matches_objective, paragraph_role
 from backend.services.research.passage_extractor import has_usable_passage, PassageExtractor
 
-_advice_slots = threading.BoundedSemaphore(2)
-_advice_pool = concurrent.futures.ThreadPoolExecutor(max_workers=2, thread_name_prefix="aegis-advice")
+_advice_slots = threading.BoundedSemaphore(1)
+_advice_pool = concurrent.futures.ThreadPoolExecutor(max_workers=1, thread_name_prefix="aegis-advice")
+MAX_ADVISORY_TEXT_CHARS = 2400
+MAX_ADVISORY_PARAGRAPHS = 4
+
+
+def advisory_call_options(timeout=2.0):
+    """Suggestion-only cost policy; explicit model disables model fallback."""
+    from backend.core.settings import get_settings
+    return {"model": get_settings().llm_advisory_model, "allow_mock": False,
+            "timeout": min(timeout, 2.0), "total_timeout": min(timeout, 2.0),
+            "max_attempts": 1, "max_output_tokens": 160, "json_mode": True,
+            "purpose": "passage_suggestion"}
 
 
 def bounded_advice_call(callback, timeout):
     """A late provider can return data only; it cannot mutate research records.
 
-    At most two outstanding calls process-wide; no accumulating timeout threads.
+    At most one outstanding call process-wide; no accumulating timeout threads.
     The provider also gets its own HTTP timeout and one-attempt limit.
     """
     if timeout <= 0 or not _advice_slots.acquire(blocking=False):
@@ -32,7 +43,8 @@ def bounded_advice_call(callback, timeout):
         finally:
             _advice_slots.release()
     try:
-        future = _advice_pool.submit(work)
+        from contextvars import copy_context
+        future = _advice_pool.submit(copy_context().run, work)
     except Exception:
         _advice_slots.release()
         raise
@@ -73,6 +85,7 @@ class EvidenceAdvisor:
         if request.domain in {"personal", "personal_watch"} or private_or_secret_text(request.target + " " + request.intent):
             return dict(result, status="SKIPPED_PRIVACY")
         options, allowed = [], {}
+        option_chars = 0
         for item in items[:6]:
             if item.is_authenticated or document_role(item) in NON_EVENT_ROLES:
                 continue
@@ -81,16 +94,18 @@ class EvidenceAdvisor:
                 continue
             for match in re.finditer(r"[^\n]+(?:\n(?!\s*\n)[^\n]+)*", body[:6000]):
                 text = match.group().strip()
-                if (not 40 <= len(text) <= 2000 or paragraph_role(text) in NON_EVENT_ROLES
+                if (not 40 <= len(text) <= 1200 or option_chars + len(text) > MAX_ADVISORY_TEXT_CHARS
+                        or paragraph_role(text) in NON_EVENT_ROLES
                         or not matches_objective(text, request.domain) or not has_usable_passage({"content": text, "content_depth": item.content_depth})):
                     continue
                 start = body.find(text, match.start())
                 key = (item.id, start, start + len(text))
                 allowed[key] = (item, text)
                 options.append({"evidence_id": item.id, "start": key[1], "end": key[2], "text": text})
-                if len(options) >= 8:
+                option_chars += len(text)
+                if len(options) >= MAX_ADVISORY_PARAGRAPHS:
                     break
-            if len(options) >= 8:
+            if len(options) >= MAX_ADVISORY_PARAGRAPHS:
                 break
         if not options:
             return result
@@ -113,8 +128,8 @@ class EvidenceAdvisor:
                           "objective": request.intent[:400], "paragraphs": options})
         )
         try:
-            advice = bounded_advice_call(lambda: gateway.generate_structured(prompt, PassageAdvice, allow_mock=False,
-                timeout=min(timeout, 2.0), total_timeout=min(timeout, 2.0), max_attempts=1, max_output_tokens=600, json_mode=True), min(timeout, 2.0))
+            advice = bounded_advice_call(lambda: gateway.generate_structured(
+                prompt, PassageAdvice, **advisory_call_options(timeout)), min(timeout, 2.0))
             # Revalidate even an injected/test gateway; public adapter contracts
             # must not silently trust arbitrary model-shaped dictionaries.
             if not isinstance(advice, PassageAdvice):

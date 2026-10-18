@@ -1041,6 +1041,7 @@ class NativeExecutor:
                     ],
                     "summary": e.get("summary", "")[:4000],
                     "feed_content": feed_content[:8000],
+                    "feed_content_truncated": len(feed_content) > 8000,
                     "feed_title": feed.feed.get("title", ""),
                     "feed_publisher": feed.feed.get("publisher", "") or feed.feed.get("author", ""),
                 })

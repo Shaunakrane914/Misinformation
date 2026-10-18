@@ -156,7 +156,24 @@ def inspect_evidence(item: Any) -> dict:
         "observation_warning": "Extracted mentions and page declarations are not independently verified facts.",
         "passages_omitted": max(0, len(chunks) - len(passages)),
         "support_assessment": "NOT_ASSESSED",
+        "structured_passages": _validated_observations(meta, captured).get("passages", []),
+        "financial_observations": _validated_observations(meta, captured).get("financial_observations", []),
     }
+
+
+def _validated_observations(meta, body):
+    fields = {"passage_id", "evidence_id", "start", "end", "text", "content_role", "relevance", "attribution",
+              "claim_status", "dates", "negation_present", "source_url", "published_at", "metric", "value", "unit",
+              "currency", "normalized_value", "period_end", "period_alignment", "source_page", "status", "table_alignment_verified", "scope", "range_upper"}
+    result = {}
+    for field in ("passages", "financial_observations"):
+        values = meta.get(field)
+        if isinstance(values, list):
+            result[field] = [{key: value[key] for key in fields if key in value} for value in values[:24]
+                if isinstance(value, dict) and type(value.get("start")) is int and type(value.get("end")) is int
+                and 0 <= value["start"] < value["end"] <= len(body)
+                and body[value["start"]:value["end"]] == value.get("text")]
+    return result
 
 
 def public_capture_metadata(item, max_chars=20_000):
@@ -170,6 +187,7 @@ def public_capture_metadata(item, max_chars=20_000):
     body = _value(item, "content") or ""
     body = body if isinstance(body, str) else ""
     result = {"truncated": bool(meta.get("truncated")) or len(body) > max_chars}
+    result.update(_validated_observations(meta, body[:max_chars]))
     for key in SOURCE_FIELDS:
         value = meta.get(key)
         if type(value) in (str, bool, int, float):

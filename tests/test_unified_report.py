@@ -241,6 +241,9 @@ def test_report_builder_from_personal_result():
 
     d = report.to_dict()
     assert d["_meta"]["agent"] == "personal_watch"
-    assert "Nominal" in d["summary"]
+    # A directory URL with no body cannot establish nominal/safe exposure.
+    assert "cannot determine identity-abuse" in d["summary"]
+    assert d["processing_notes"]["specialist_coverage"]["status"] == "INSUFFICIENT_EVIDENCE"
+    assert d["processing_notes"]["specialist_coverage"]["records"] == 1
     assert len(d["findings"]) == 1
     assert len(d["evidence"]["primary"]) == 1

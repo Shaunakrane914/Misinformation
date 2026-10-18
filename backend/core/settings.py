@@ -55,6 +55,9 @@ class Settings(BaseSettings):
         "gemini-2.5-flash-lite",
     ])
     default_model: str = Field(default="gemini-3.8-flash")
+    # Small, strict-identity model for short advisory output. No large-model
+    # fallback when this model is unavailable or quota-limited.
+    llm_advisory_model: str = Field(default="gemini-2.5-flash-lite", pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{0,99}$")
     aegis_mock_llm: bool = Field(
         default_factory=lambda: (
             os.getenv("AEGIS_MOCK_LLM", "").lower() in ("true", "1", "yes")

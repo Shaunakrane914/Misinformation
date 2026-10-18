@@ -351,7 +351,7 @@ class ReportBuilder:
         elif isinstance(catalysts, dict):
             # Scout's production contract groups factors by polarity.
             catalysts = [f"{polarity}: {entry.get('factor') or entry.get('catalyst')}"
-                         for polarity, entries in catalysts.items() if isinstance(entries, list)
+                         for polarity, entries in catalysts.items() if isinstance(entries, list) and polarity != "unresolved"
                          for entry in entries if isinstance(entry, dict) and (entry.get("factor") or entry.get("catalyst"))]
         for cat in catalysts[:6]:
             findings.append(str(cat).strip())
@@ -819,6 +819,9 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         for item in _record_list(data.get("timeline")) if isinstance(item, dict)]
     trace = data.get("deep_research_trace") or data.get("retrieval_trace") or {}
     trace = trace if isinstance(trace, dict) else {}
+    unresolved = data.get("catalysts", {}).get("unresolved", []) if isinstance(data.get("catalysts"), dict) else []
+    if unresolved:
+        report.processing_notes["unresolved_leads"] = [item for item in unresolved[:12] if isinstance(item, dict)]
     advice = trace.get("ai_passage_advice")
     if isinstance(advice, dict):
         report.processing_notes["ai_passage_advice"] = {
@@ -836,4 +839,12 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
         report.summary = (f"Report retains {len(report.findings)} finding(s), {record_count} source record(s) "
                           f"and {len(report.discovery)} discovery-only candidate(s). "
                           "Claim support requires review of captured passages and acquisition limits.")
+    if report.agent in {"brandshield", "personal_watch"}:
+        from backend.services.research.specialist_brief import specialist_brief
+        coverage, brief, steps = specialist_brief(data, report.agent, report.query, len(report.discovery))
+        report.processing_notes["specialist_coverage"] = coverage
+        if not isinstance(data.get("summary"), str):
+            report.summary = brief
+        if coverage["status"] == "INSUFFICIENT_EVIDENCE":
+            report.next_steps = steps
     return report

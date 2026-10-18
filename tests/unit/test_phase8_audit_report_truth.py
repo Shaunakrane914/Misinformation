@@ -71,7 +71,8 @@ def test_scout_grouped_catalysts_and_canonical_sources_survive_report_adapter():
         "news": {"company": []}, "social": {"reddit": []},
         "sources": [{"title": "Disclosure", "url": "https://example.org/disclosure"}],
     }).to_dict()
-    assert report["findings"] == ["unresolved: Disclosure needs review"]
+    assert report["findings"] == []
+    assert report["processing_notes"]["unresolved_leads"][0]["factor"] == "Disclosure needs review"
     assert len(report["evidence"]["independent"]) == 1
 
 

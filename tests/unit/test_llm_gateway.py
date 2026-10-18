@@ -21,6 +21,18 @@ from backend.infrastructure.llm.gateway import (
 )
 from backend.infrastructure.llm.protocol import LLMGateway, LLMProvider, LLMResponse, LLMUsage
 from backend.infrastructure.llm.providers.gemini import GeminiProvider
+from backend.infrastructure.llm.advisory_policy import MODEL, advisory_run, investigation_scope, AdvisoryPolicyError
+
+
+@pytest.fixture(autouse=True)
+def offline_advisory_authorization(tmp_path):
+    # All transport is blocked by conftest; these are explicit offline doubles.
+    with advisory_run(verified_models=[MODEL], database=tmp_path / "advisory.db"), investigation_scope():
+        yield
+
+
+def advisory(provider, prompt, **kwargs):
+    return provider.generate(prompt, **{"model": MODEL, "purpose": "search_suggestion", **kwargs})
 from backend.infrastructure.llm.providers.mock import MockLLMProvider
 
 
@@ -157,8 +169,8 @@ def test_gateway_rejects_wrong_builtin_container(schema, payload):
     provider.generate.return_value = LLMResponse(
         content=payload, model="test", provider="test"
     )
-    gateway = DefaultLLMGateway(gemini_provider=provider)
-    gateway.mock_mode = False
+    gateway = DefaultLLMGateway(mock_provider=provider)
+    gateway.mock_mode = True
 
     with pytest.raises(ValueError, match="does not match requested schema"):
         gateway.generate_structured("prompt", schema=schema)
@@ -240,7 +252,7 @@ def test_opaque_gemini_credential_is_header_only_and_upstream_rejection_fails_cl
                         default_model="fixture", gemini_models=["fixture"], llm_max_retries=1)
     assert settings.has_gemini
     with pytest.raises(RuntimeError, match="HTTP 401") as failure:
-        GeminiProvider(settings).generate("Minimal diagnostic")
+        advisory(GeminiProvider(settings), "Minimal suggestion")
     assert "opaque-authorization-fixture" not in str(failure.value)
     assert "params" not in mock_post.call_args.kwargs
     assert mock_post.call_args.kwargs["headers"]["x-goog-api-key"] == "opaque-authorization-fixture"
@@ -248,7 +260,7 @@ def test_opaque_gemini_credential_is_header_only_and_upstream_rejection_fails_cl
 
 @patch("time.sleep", return_value=None)
 @patch("requests.post")
-def test_gemini_provider_uses_preferred_then_fallback_model(mock_post, _mock_sleep):
+def test_gemini_provider_never_uses_configured_model_fallback(mock_post, _mock_sleep):
     failed = MagicMock(status_code=404)
     succeeded = MagicMock(status_code=200)
     succeeded.json.return_value = {
@@ -264,14 +276,14 @@ def test_gemini_provider_uses_preferred_then_fallback_model(mock_post, _mock_sle
         llm_max_retries=1,
     )
 
-    response = GeminiProvider(settings).generate("prompt")
+    with pytest.raises(RuntimeError, match="HTTP 404"):
+        advisory(GeminiProvider(settings), "prompt")
 
     attempted_urls = [call.args[0] for call in mock_post.call_args_list]
     assert attempted_urls == [
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-primary:generateContent",
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-fallback:generateContent",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent",
     ]
-    assert response.model == "gemini-fallback"
+    assert mock_post.call_count == 1
 
 
 @patch("time.sleep", return_value=None)
@@ -287,11 +299,10 @@ def test_gemini_provider_explicit_model_is_strict(mock_post, _mock_sleep):
         llm_max_retries=1,
     )
 
-    with pytest.raises(RuntimeError, match="exhausted"):
+    with pytest.raises(AdvisoryPolicyError):
         GeminiProvider(settings).generate("prompt", model="gemini-strict")
 
-    assert mock_post.call_count == 1
-    assert "/gemini-strict:generateContent" in mock_post.call_args.args[0]
+    assert mock_post.call_count == 0
 
 
 def test_gateway_scientific_call_blocks_configured_mock():
@@ -313,12 +324,9 @@ def test_gateway_scientific_call_bypasses_mock_mode_when_live_is_available():
         gemini_provider=live_provider,
     )
 
-    result = gateway.generate_text("scientific verdict", allow_mock=False)
-
-    assert result == "live result"
-    assert gateway.last_response is not None
-    assert gateway.last_response.provider == "gemini"
-    assert gateway.last_response.synthetic is False
+    with pytest.raises(AdvisoryPolicyError):
+        gateway.generate_text("scientific verdict", allow_mock=False)
+    live_provider.generate.assert_not_called()
 
 
 def test_gateway_last_response_is_isolated_between_concurrent_calls():
@@ -332,12 +340,12 @@ def test_gateway_last_response_is_isolated_between_concurrent_calls():
             return LLMResponse(content=prompt, model="echo", provider="echo")
 
     gateway = DefaultLLMGateway(
-        settings_instance=Settings(environment="production", aegis_mock_llm=False),
-        gemini_provider=EchoProvider(),
+        settings_instance=Settings(environment="test", aegis_mock_llm=True),
+        mock_provider=EchoProvider(),
     )
 
     def execute(label):
-        gateway.generate_text(label, allow_mock=False)
+        gateway.generate_text(label, allow_mock=True)
         barrier.wait(timeout=2)
         return gateway.last_response.content
 
@@ -366,10 +374,10 @@ def test_gemini_provider_success_flow(mock_post):
     settings = Settings(gemini_api_keys=["AIzaSyKeySuccess1"])
     provider = GeminiProvider(settings_instance=settings)
 
-    resp = provider.generate("verify this claim", model="gemini-2.5-flash")
+    resp = advisory(provider, "Suggest a passage")
     assert resp.content == "Gemini generated verification analysis"
     assert resp.provider == "gemini"
-    assert resp.model == "gemini-2.5-flash"
+    assert resp.model == MODEL
     assert resp.usage.total_tokens > 0
     assert resp.usage.is_estimated is True
     assert mock_post.called
@@ -389,7 +397,7 @@ def test_gemini_provider_prefers_provider_reported_usage(mock_post):
     mock_post.return_value = response
     provider = GeminiProvider(Settings(gemini_api_keys=["AIzaSyUsageKey"]))
 
-    result = provider.generate("prompt", model="gemini-2.5-flash")
+    result = advisory(provider, "prompt")
 
     assert result.usage.total_tokens == 18
     assert result.usage.is_estimated is False
@@ -416,8 +424,8 @@ def test_gemini_provider_malformed_response_and_errors_do_not_leak_secrets(
         llm_max_retries=1,
     ))
 
-    with pytest.raises(RuntimeError, match="exhausted") as exc_info:
-        provider.generate("sensitive prompt")
+    with pytest.raises(ValueError, match="Unexpected response") as exc_info:
+        advisory(provider, "sensitive prompt")
 
     combined = str(exc_info.value) + caplog.text
     assert secret_key not in combined
@@ -427,9 +435,8 @@ def test_gemini_provider_malformed_response_and_errors_do_not_leak_secrets(
 
 @patch("time.sleep", return_value=None)
 @patch("requests.post")
-def test_gemini_provider_rate_limit_backoff_and_retry(mock_post, mock_sleep):
-    """Verify HTTP 429 rate limit triggers exponential backoff and retries."""
-    # First attempt: 429 rate limit; Second attempt: 200 success
+def test_gemini_provider_rate_limit_stops_immediate_retry(mock_post, mock_sleep):
+    """Cost policy: a 429 starts cooldown, not a retry/model/key waterfall."""
     resp_429 = MagicMock()
     resp_429.status_code = 429
 
@@ -444,7 +451,8 @@ def test_gemini_provider_rate_limit_backoff_and_retry(mock_post, mock_sleep):
     settings = Settings(gemini_api_keys=["AIzaSyKeyRetry1"], llm_max_retries=3)
     provider = GeminiProvider(settings_instance=settings)
 
-    resp = provider.generate("test prompt", model="gemini-2.5-flash")
-    assert resp.content == "Recovered after backoff"
-    assert mock_post.call_count == 2
-    assert mock_sleep.called
+    from backend.infrastructure.llm.providers.rate_limit import GeminiRateLimitError
+    with pytest.raises(GeminiRateLimitError):
+        advisory(provider, "test prompt")
+    assert mock_post.call_count == 1
+    assert not mock_sleep.called

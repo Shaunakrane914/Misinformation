@@ -30,6 +30,13 @@ def synthesize_grounded_findings(
     """
     findings: List[Finding] = []
     investigated_items = [item for item in investigated_items if has_usable_passage(item)]
+    if domain == "trending":
+        # Casual community conversation is retained in evidence/inspection but
+        # is not a strategic event merely because it mentions the topic.
+        investigated_items = [item for item in investigated_items
+            if item.channel.casefold() not in {"reddit", "twitter", "twitter/x"}
+            or re.search(r"announc|launch|releas|report|claim|deni|alleg|scam|deepfake|counterfeit|lawsuit|regulat|protest",
+                         item.relevant_excerpt or "", re.I)]
     if not investigated_items:
         return findings
 
@@ -73,6 +80,9 @@ def synthesize_grounded_findings(
 
         # Format finding title and statement
         clean_class_title = q_class.replace("_", " ").title()
+        community_observation = domain == "trending" and top_item.channel.casefold() in {"reddit", "twitter", "twitter/x"}
+        if community_observation:
+            clean_class_title = "Sampled Community Observation — Not Measured Virality"
         title = f"{clean_class_title}: {top_item.title[:70]}"
         statement = top_item.relevant_excerpt or top_item.snippet or top_item.title
         
@@ -121,7 +131,7 @@ def synthesize_grounded_findings(
             title=title,
             statement=statement,
             type=f_type,
-            importance="HIGH" if len(prim_sources) > 0 or corrob["independent_group_count"] >= 2 else "MEDIUM",
+            importance="LOW" if community_observation else "HIGH" if len(prim_sources) > 0 or corrob["independent_group_count"] >= 2 else "MEDIUM",
             confidence=corrob["confidence"],
             epistemic_state=ep_state,
             quality_tensor=q_tensor,
@@ -130,7 +140,8 @@ def synthesize_grounded_findings(
             independence_groups=corrob["independent_groups"],
             primary_sources=prim_sources,
             explanation=f"Observed passages from {corrob['independent_group_count']} publisher group(s) with {len(items_in_class)} citations; claim support requires proposition-level assessment.",
-            metadata={"observation_only": True, "citation_entailment_verified": False},
+            metadata={"observation_only": True, "citation_entailment_verified": False,
+                      **({"community_sample_only": True, "virality_measured": False} if community_observation else {})},
             temporal_status=TemporalStatus.UNKNOWN.value,
             invalidation_criteria=f"Rebuttal or retraction issued by primary official channels ({', '.join(prim_sources) if prim_sources else 'official portal'})."
         )
@@ -148,7 +159,13 @@ class PassageAnalysisStage:
         passage_extractor.extract_passages(
             ranked.ranked, target_name=request.target, intent=request.intent, domain=request.domain
         )
-        if os.getenv("AEGIS_EVIDENCE_ADVISOR_ENABLED", "true").lower() in {"1", "true", "yes"} and advisor_timeout > 0:
+        from backend.services.research.passage_records import captured_passages
+        from backend.services.research.financial_observations import financial_observations
+        for item in {item.id: item for item in ranked.ranked + read.investigated}.values():
+            item.metadata["passages"] = captured_passages(item, request.domain, request.target)
+            if request.domain == "financial":
+                item.metadata["financial_observations"] = financial_observations(item.content or "", item.id)
+        if os.getenv("AEGIS_EVIDENCE_ADVISOR_ENABLED", "false").lower() in {"1", "true", "yes"} and advisor_timeout > 0:
             from backend.services.research.evidence_advisor import EvidenceAdvisor
             advice = EvidenceAdvisor().advise(request, read.investigated, timeout=advisor_timeout)
             if advice["status"] != "SKIPPED_NOT_NEEDED":
@@ -183,6 +200,10 @@ class GroundedSynthesisStage:
                 evaluated = claim_intelligence_engine.evaluate_claim(claim, read.investigated)
                 assessment = evaluated.to_dict()
                 assessment.update(is_heuristic=True, confidence_model="uncalibrated_conservative_lexical")
+                if request.domain == "financial":
+                    from backend.services.research.financial_observations import compare_financial_observations
+                    assessment["financial_comparisons"] = compare_financial_observations(claim.claim_text,
+                        [o for item in read.investigated for o in item.metadata.get("financial_observations", [])])
                 state = evaluated.verdict if evaluated.verdict in {"SUPPORTED", "REFUTED"} else "CONTESTED" if evaluated.verdict == "MIXED" else "UNVERIFIED"
                 findings.append(Finding(
                     finding_id=f"fnd_claim_{index:03d}", title=f"{evaluated.verdict}: {evaluated.claim_text[:100]}",

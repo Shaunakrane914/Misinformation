@@ -65,6 +65,7 @@ class QueryPlanningStage:
             entity=request.target,
             domain=request.domain,
             agent=request.agent_name,
+            use_llm=False,
         )
         planned_queries = source_plan.to_channel_queries()
 

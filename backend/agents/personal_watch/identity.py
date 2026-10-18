@@ -58,6 +58,7 @@ def resolve_personal_entity(profile_or_name: Any) -> Dict[str, Any]:
 
             resolved["official_handles"] = dict(info.get("handles", {}))
             resolved["official_domains"] = list(info.get("domains", []))
+            resolved["publisher_feeds"] = list(info.get("feeds", []))
 
             resolved["affiliations"] = list(set(info.get("affiliations", []) + resolved["affiliations"]))
             resolved["category"] = info.get("category", resolved["category"])

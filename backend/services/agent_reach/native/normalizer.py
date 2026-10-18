@@ -21,6 +21,20 @@ def _clean_html_text(text: str) -> str:
     return " ".join(html.unescape(clean).split()).strip()
 
 
+def _clean_feed_body(text: str) -> str:
+    """Retain observed HTML paragraph boundaries, not isolated sentences."""
+    if not text:
+        return ""
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(text, "html.parser")
+    for node in soup(["script", "style"]):
+        node.decompose()
+    for node in soup.find_all(["p", "div", "li", "h1", "h2", "h3", "blockquote", "br"]):
+        node.insert_before("\n\n")
+        node.insert_after("\n\n")
+    return "\n\n".join(" ".join(part.split()) for part in soup.get_text().split("\n\n") if part.strip())
+
+
 def _extract_text_links(text: str, max_links: int = 5, tag: str = "UNVERIFIED_REFERENCED_LINK") -> List[Dict[str, str]]:
     """Extract bounded external URLs observed within text bodies."""
     if not text:
@@ -306,7 +320,7 @@ class NativeNormalizer:
             link = e.get("link", "")
             published = e.get("published", "")
             summary = _clean_html_text(e.get("summary", ""))
-            feed_content = _clean_html_text(e.get("feed_content", ""))
+            feed_content = _clean_feed_body(e.get("feed_content", ""))
             excerpt = feed_content or summary
 
             frag = EvidenceFragment(
@@ -337,6 +351,7 @@ class NativeNormalizer:
                     "enclosures": e.get("enclosures", []),
                     "summary": summary,
                     "feed_content_present": bool(feed_content),
+                    "feed_content_truncated": e.get("feed_content_truncated"),
                     "linked_article_retrieved": False,
                 }
             )

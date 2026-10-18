@@ -419,7 +419,7 @@ def golden_data():
 @pytest.mark.parametrize("scenario_name", [
     "nike_normal", "apple_threats", "brand_empty", "sony_syndicated", "tesla_scam"
 ])
-def test_brandshield_golden_master_parity(scenario_name, golden_data):
+def test_brandshield_golden_parity_with_explicit_background_migration(scenario_name, golden_data):
     agent = BrandShieldAgent()
     scenarios = _build_brand_fixtures()
     evidence = scenarios[scenario_name]
@@ -447,7 +447,16 @@ def test_brandshield_golden_master_parity(scenario_name, golden_data):
             "impersonations_count": len(res.get("impersonations", [])),
             "has_limitations": bool(res.get("limitations")),
         }
-        assert actual == expected
+        # Phase 9 deliberately removes invented "Genuine Issue" catalog
+        # findings. Preserve the historical manifest and every other expected
+        # field; specify only the approved count delta for these fixed cases.
+        removed_background = {"nike_normal": 2, "apple_threats": 1,
+                              "sony_syndicated": 2}.get(scenario_name, 0)
+        if removed_background:
+            assert expected["safe_count"] == removed_background
+            assert len(res["background_evidence_ids"]) == removed_background
+        assert actual == {**expected, "safe_count": 0,
+                          "total_findings": expected["total_findings"] - removed_background}
 
 
 @pytest.mark.parametrize("scenario_name", [
@@ -532,6 +541,11 @@ def test_personal_watch_golden_master_parity(scenario_name, golden_data):
     scenarios = _build_personal_fixtures()
     items = scenarios[scenario_name]
     expected = golden_data["personal_watch"][scenario_name]
+    if scenario_name == "delta_scan_2":
+        # Reviewed correctness exception, not a rewritten historical manifest:
+        # this scan is for 'Target VIP', but its injected records concern Satya
+        # and Jensen. Unrelated names must not create an identity-abuse finding.
+        expected = {**expected, "threats_count": 0, "high_risk_count": 0, "threat_types": []}
 
     with patch.object(
         agent,

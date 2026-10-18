@@ -30,6 +30,11 @@ class ResearchPipeline:
         self.budget = budget
 
     def run(self, request: ResearchRequest) -> ResearchResult:
+        from backend.infrastructure.llm.advisory_policy import investigation_scope
+        with investigation_scope():
+            return self._run(request)
+
+    def _run(self, request: ResearchRequest) -> ResearchResult:
         start_ts = time.time()
         effective_timeout = (
             request.timeout_seconds if getattr(request, "timeout_seconds", None) is not None

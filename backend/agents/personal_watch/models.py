@@ -52,7 +52,12 @@ KNOWN_PUBLIC_PROFILES = {
         "category": "executive",
         "handles": {"twitter": "@sama"},
         "domains": ["openai.com", "blog.samaltman.com"],
+        "feeds": ["https://blog.samaltman.com/posts.atom"],
         "affiliations": ["OpenAI", "Y Combinator", "Worldcoin"]
+    },
+    "TIM COOK": {
+        "canonical_name": "Tim Cook", "aliases": [], "category": "executive",
+        "handles": {"twitter": "@tim_cook"}, "domains": ["apple.com"], "affiliations": ["Apple"]
     },
     "MR BEAST": {
         "canonical_name": "MrBeast",

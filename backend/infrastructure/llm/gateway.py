@@ -111,6 +111,9 @@ class DefaultLLMGateway(LLMGateway):
                 provider = self.mock_provider
 
         try:
+            if provider is not self.mock_provider:
+                from backend.infrastructure.llm.advisory_policy import require_advisory
+                require_advisory(kwargs.get("purpose"))
             response = provider.generate(prompt, model=model, **kwargs)
         except Exception:
             if provider is self.mock_provider or not mock_authorized:

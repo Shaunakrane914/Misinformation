@@ -113,7 +113,7 @@ def test_escalation_cannot_spend_reserved_read_time():
     from backend.application.research.contracts import RankedEvidence
     from backend.services.research.research_budget import ResearchBudget
     ranked = RankedEvidence(accepted=[], ranked=[], clusters={}, rejected=[])
-    with patch("backend.application.research.reading.time.time", return_value=107), \
+    with patch("backend.application.research.reading.time.monotonic", return_value=107), \
             patch("backend.services.research.primary_source_escalator.primary_source_escalator.escalate") as escalate:
         result = PrimaryEscalationStage().run(ResearchRequest(target="Example"), ResearchBudget(), ranked, 100, 15)
     escalate.assert_not_called()

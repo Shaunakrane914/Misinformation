@@ -226,3 +226,15 @@ not predeclared; use `gh run list --branch fix/p0-lenovo-acquisition-20261018` a
 inspect the exact implementation SHA. No merge/deployment is authorized by a
 passing HTTP response or this report. Next review should focus on the diff and
 exact-branch CI, then production parity and persistence risks before any release.
+
+### Hosted verification follow-up
+
+Implementation `6dc92fe8a8814b4ba46846cbb273698466bf4d9e` was committed and pushed
+only to the P0 branch. [First hosted run](https://github.com/Shaunakrane914/Misinformation/actions/runs/39135745747)
+failed Python suites on an old test mocking `reading.time.time` after the
+production path moved to `time.monotonic`. Windows uptime accidentally made that
+test expire anyway; Linux runner uptime exposed the wrong clock fixture. The
+assertion that escalation cannot consume reserved reading time was preserved,
+and the fixture now patches the clock actually used. No product timeout was
+increased and no test was skipped. New P0 tests passed in that failed hosted run.
+Subsequent CI must be observed separately; this failed run is not acceptance.

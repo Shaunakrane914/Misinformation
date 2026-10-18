@@ -12,6 +12,16 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ### Terminal-first / strict API-cost controls — 2026-10-18
 
+- [Exact deployment verifier](../../scripts/diagnostics/verify_deployed_candidate.py):
+  `--env-file <existing-env> --expected-commit <full-sha> --output-dir <new-dir>`
+  checks Render's live commit and nine actual Cloudflare assets against Git
+  bytes before any research. Default is read-only/no investigations. Optional
+  `--allow-live-research` performs four real production page-button scans and
+  creates fresh dossiers, then checks 390/1440px report counts and overflow.
+  Requires existing Playwright/Chromium only for that optional mode. Not an
+  accuracy, upstream AI accounting, full visual or accessibility certification.
+  [Actual deployment observations](../testing/evidence/2026-10-18_deployed_release/README.md).
+
 - [Render release configuration](../../scripts/operations/configure_render_release.py):
   `--env-file <server-env> --service-id <existing-service> --report <new-json>`
   previews non-secret drift. Add `--apply` only with deployment authorization.

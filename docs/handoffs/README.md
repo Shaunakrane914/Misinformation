@@ -7,8 +7,12 @@ Start here when resuming work. These are dated engineering records, not promises
 - [Release scope, verification and publication ledger](2026-10-18_RELEASE_PREPARATION_AND_DEPLOYMENT.md).
   User authorized deployment. Local 1,431 full / 1,223 fast tests and all nine
   frontend scripts pass; reader/body selection, reporting/actor semantics and
-  Cloudflare direct-API routing corrected. Hosted CI and deployment outcomes
-  are appended only after actual execution. Research acceptance stays partial.
+  Cloudflare direct-API routing corrected. Application `725f4e2` passed all five
+  hosted jobs on development and main and is live on Render/Cloudflare. Four
+  actual deployed browser scans passed bounded transport/rendering checks, but
+  three acquired no bodies; Scout contradiction and Personal Watch legacy
+  projection defects remain. Research acceptance is not complete. Read the
+  appended publication ledger before treating this as launch readiness.
 
 ## Previous local checkpoint: research-quality completion — 2026-10-18
 

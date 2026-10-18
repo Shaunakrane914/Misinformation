@@ -1,0 +1,29 @@
+{
+  "date": "2026-10-18",
+  "application_commit": "725f4e251e3cb4cfbd97be90cf39c27811be556b",
+  "render_live_deploy": "dep-dbabh79srm7s73a93jl0",
+  "cloudflare_artifact": "cff4d2f6.aegis-protocol-110.pages.dev",
+  "frontend_origin": "https://aegis-protocol-110.pages.dev",
+  "api_origin": "https://misinformation-1ouh.onrender.com",
+  "checked_asset_blobs": 9,
+  "all_checked_assets_match_git_bytes": true,
+  "scope": "Actual deployment transport and bounded rendering, not research accuracy",
+  "status": "BOUNDED_LIVE_BROWSER_TRANSPORT_PASS",
+  "research_quality_acceptance": "NOT_COMPLETE",
+  "ai_generation_requested": false,
+  "upstream_ai_usage_accounting": "NOT_OBSERVED",
+  "viewports": [390, 1440],
+  "all_eight_report_count_visibility_width_checks_passed": true,
+  "uncaught_page_exceptions": 0,
+  "cases": [
+    {"agent": "scout", "input": "MSFT", "seconds": 51.03, "http_status": 200, "result_events": 1, "progress_events": 29, "error_events": 0, "retained_records": 5, "retained_text_words": 5272, "finding_strings": 3, "discovery_records": 22, "rendered_counts_both_widths": [3, 5, 22]},
+    {"agent": "trending", "input": "NVIDIA", "seconds": 32.96, "http_status": 200, "result_events": 1, "progress_events": 29, "error_events": 0, "retained_records": 0, "retained_text_words": 0, "finding_strings": 0, "discovery_records": 5, "rendered_counts_both_widths": [0, 0, 5]},
+    {"agent": "brandshield", "input": "Nike", "seconds": 21.07, "http_status": 200, "result_events": 1, "progress_events": 29, "error_events": 0, "retained_records": 0, "retained_text_words": 0, "finding_strings": 0, "discovery_records": 22, "rendered_counts_both_widths": [0, 0, 22]},
+    {"agent": "personal_watch", "input": "Satya Nadella", "seconds": 19.53, "http_status": 200, "result_events": 1, "progress_events": 29, "error_events": 0, "retained_records": 0, "retained_text_words": 0, "finding_strings": 0, "discovery_records": 3, "rendered_counts_both_widths": [0, 0, 3]}
+  ],
+  "known_visual_quality_defects": [
+    "Scout contradiction headings do not establish incompatible propositions",
+    "Personal Watch stringifies a baseline dictionary and shows LOW doxxing with zero acquired bodies"
+  ],
+  "not_verified": ["independent accuracy", "full-page visual acceptance", "screen readers", "contrast", "source inspection interactions", "other browsers", "sustained provider health", "deployed rollback", "historical dossier recovery"]
+}

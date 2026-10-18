@@ -137,3 +137,140 @@ them into a deployment or claim new persistence tests repaired them.
 
 Pending at initial candidate commit. Append exact Git/CI/deployment observations
 and any failed checks after execution; no remote result is predeclared here.
+
+### Observed closeout — 2026-10-18
+
+**Deployment integration: bounded PASS. Research-quality acceptance: NOT COMPLETE.**
+
+Application commit `725f4e251e3cb4cfbd97be90cf39c27811be556b` was pushed to the
+development branch, then fast-forwarded to `main` after its five hosted jobs
+passed. No force push or history rewrite. Both exact-commit runs completed:
+
+- [Development CI](https://github.com/Shaunakrane914/Misinformation/actions/runs/39126422858): all five jobs successful.
+- [Main CI](https://github.com/Shaunakrane914/Misinformation/actions/runs/39126603576): all five jobs successful.
+
+The first staging command failed because its path list included an already
+staged deletion; a PowerShell command chain continued and committed the older
+index as `c3d574d`. That incomplete development snapshot was not the accepted
+candidate. Strict exit-code checks then committed the complete reviewed tree
+as `725f4e2`. The first development run was canceled, not counted as passing.
+Main was advanced only after the complete candidate's CI succeeded. Future
+Git command chains must stop explicitly on every nonzero `$LASTEXITCODE`.
+
+Render deploy `dep-dbabh79srm7s73a93jl0` reached **live** at application commit
+`725f4e2`. Service `srv-d716v3dactks738os7d0` serves
+<https://misinformation-1ouh.onrender.com>. Applied the eight non-secret values
+declared by the configuration utility and `/api/healthz` health path, preserving
+provider credentials. Re-preview found no drift. No admin credential was
+created; an unauthenticated empty-body `/api/deploy-response` probe returned 503,
+not a successful mutation. Live health returned 200; the production Cloudflare
+origin received its exact CORS allow-origin, while an untrusted origin received
+no allow-origin header. An earlier rollout-time health timeout is not a pass.
+
+After the user refreshed Wrangler OAuth, Cloudflare production publication
+succeeded at <https://aegis-protocol-110.pages.dev>. Final artifact deployment:
+<https://cff4d2f6.aegis-protocol-110.pages.dev>, source application commit
+`725f4e2`. This is direct upload, not an automatic Git-integrated frontend.
+
+The first exact-commit upload (`7ab25e2e`) used a Windows archive with CRLF
+conversion. The verifier correctly stopped before research: all nine checked
+assets differed from raw Git blob bytes, though normalized text matched. A
+preceding availability check also failed before research. Repackaged with
+`git -c core.autocrlf=false archive`; the final nine deployed assets match the
+Git blobs byte-for-byte. Always disable archive conversion explicitly:
+
+```text
+git -c core.autocrlf=false archive --format=zip --output=<new-zip> 725f4e251e3cb4cfbd97be90cf39c27811be556b frontend
+```
+
+Extract into a fresh directory and deploy that directory's `frontend/`, not the
+dirty worktree. Cached Wrangler 4.151.0 was used. Cloudflare `/api/healthz` is
+still 404 by design: frontend code calls Render directly, not an unsupported
+external rewrite. Preview-domain CORS was not authorized or accepted.
+
+### Actual deployed browser observations
+
+[Measurements and selected screenshots](../testing/evidence/2026-10-18_deployed_release/README.md)
+are from real Cloudflare page buttons and Render SSE, with no transport stubs,
+saved-response replay or API-base override. One sequential investigation per
+agent, then the same completed response at 390 and 1440px. All four returned
+HTTP 200, one result and 29 progress events, no SSE error events, matching
+findings/evidence/discovery counts, visible shared reports, no detected document
+overflow or uncaught page exceptions. **These are transport/rendering checks,
+not correctness or full visual/accessibility acceptance.**
+
+| Agent / input | Seconds | Retained records | Retained words | Discovery-only records |
+| --- | ---: | ---: | ---: | ---: |
+| Scout / MSFT | 51.03 | 5 | 5,272 | 22 |
+| Trending / NVIDIA | 32.96 | 0 | 0 | 5 |
+| BrandShield / Nike | 21.07 | 0 | 0 | 22 |
+| Personal Watch / Satya Nadella | 19.53 | 0 | 0 | 3 |
+
+Records/words are retained native text, not verified relevant propositions,
+independent corroboration or an exhaustive source inventory. Nike reports six
+failed/timed-out selected reads; Satya reports two. Zero-source reports remain
+visible with honest acquisition limitations rather than invented findings.
+
+Visual inspection of one actual viewport capture per agent found two additional
+quality defects that this transport status does **not** waive:
+
+1. Scout presents several distinct Microsoft headlines under “Contradictory
+   evidence” without establishing an incompatible proposition. Do not accept
+   those labels as a contradiction assessment. Follow the native contradiction
+   records through shared-report normalization and require passage-level
+   incompatibility, not merely different story headings.
+2. Personal Watch displays a stringified baseline-change dictionary and a
+   specialized “LOW” doxxing label despite zero acquired bodies. The summary
+   correctly says exposure cannot be determined, but those legacy projections
+   need human-readable change text and an unassessed/insufficient-evidence state.
+
+No new application edit or additional provider investigation was made after
+these observations. Preserve the saved responses for offline regression work;
+do not call this a completed research-quality milestone. Screen-reader, measured
+contrast, other browsers, full-page visual review, sustained health, source
+inspection interactions and actual deployed rollback remain unverified.
+
+### Reproduction and closeout scope
+
+[Deployment diagnostic](../../scripts/diagnostics/verify_deployed_candidate.py)
+first attests the Render live commit and nine frontend blobs. Default execution
+makes **no research request**. `--allow-live-research` explicitly performs four
+normal public investigations and creates new production dossiers; do not add
+it to ordinary CI or repeat scans merely to reproduce a screenshot.
+
+```text
+python scripts/diagnostics/verify_deployed_candidate.py --env-file <existing-server-env> --expected-commit 725f4e251e3cb4cfbd97be90cf39c27811be556b --output-dir <fresh-temp-directory>
+```
+
+The final live invocation added `--allow-live-research` and exited 0 with
+`BOUNDED_LIVE_BROWSER_TRANSPORT_PASS`. Raw responses/events and full command logs
+remain in the fresh `aegis-release-preparation-*` system-temp tree; only selected
+public measurements/screenshots are durable. This is a reconstructed command
+and outcome ledger, not a verbatim terminal transcript or private reasoning log.
+
+Zero live Gemini generation/model-list calls were requested in this task; the
+four browser probes did not request advisory generation. Independent provider
+usage/accounting is **NOT OBSERVED**, not a verified account-level zero.
+
+The closeout adds only this diagnostic and documentation/evidence, not backend
+or frontend code. Its publication uses `[skip render]` to avoid rebuilding the
+already verified application ([Render skip contract](https://render.com/docs/deploys#skipping-an-auto-deploy)).
+Thus a later main documentation SHA may differ from the live application SHA;
+attest `725f4e2` until an intentional application release replaces it. No second
+frontend upload is needed for documentation-only publication. Closeout CI is
+separate from the two successful application runs above.
+
+Closeout verification actually reran fatal Python lint (zero errors), all nine
+Node frontend scripts, frozen hashes, protected tracked-path comparison,
+`git diff --check`, diagnostic `--help`, evidence JSON parsing and relative-link
+resolution: all completed with exit 0. A limited credential-pattern scan found
+no matches; that is not a comprehensive secret audit. Backend/frontend/config
+diff against `725f4e2` is empty. The full/fast suites above were not repeated
+solely for these documentation/diagnostic additions; the new opt-in diagnostic
+was exercised by the actual deployed four-case run.
+
+Next owner priorities: repair the two observed projection defects offline;
+diagnose saved failed-read outcomes without weakening relevance/access gates;
+complete independent reviewer labels; establish durable storage and an actual
+rollback exercise. The 55 corrupt historical dossiers remain untouched, and
+production-launch readiness is not asserted.

@@ -36,8 +36,9 @@ Without these, specific advanced reasoning or storage tiers degrade gracefully t
 
 | Variable Name | Purpose | Behavior When Missing |
 |---|---|---|
-| `GEMINI_API_KEY` | Generative reasoning, claim synthesis, and stance classification. | Falls back to deterministic rule-based consensus and factual extraction without hallucination. |
-| `GEMINI_API_KEY_2`, `_3` | High-throughput round-robin model rotation. | Single primary key used without failover rotation. |
+| `GEMINI_API_KEY` | Optional explicitly authorized Flash-Lite search/passage suggestions; not native generative verdicts. | Deterministic evidence processing continues; no substitute source content is generated. |
+| `GEMINI_API_KEY_2`, `_3` | Legacy key discovery aliases. Advisory calls use only the first configured key, never rotation/fallback. | No key cycling or extra quota probes. |
+| `GEMINI_MODELS`, `DEFAULT_MODEL`, `LLM_ADVISORY_MODEL` | Release settings pin `gemini-3.5-flash-lite`; provider enforces the strict advisory model independently. | Production operator must compare deployed values to the release configuration preview. Credential presence alone does not establish generation availability. |
 | `SUPABASE_URL` | Cloud PostgreSQL persistence for claims and evidence. | Automatically and safely falls back to local SQLite database (`aegis_local.db`). |
 | `SUPABASE_SERVICE_ROLE_KEY` | Supabase service-level access for mutations. | Local SQLite persistence used. |
 | `SUPABASE_KEY` | Legacy server-key alias when no service-role key is configured. | Local SQLite persistence used. Prefer the explicit service-role name; `SUPABASE_ANON_KEY` is never promoted to a server mutation credential. |

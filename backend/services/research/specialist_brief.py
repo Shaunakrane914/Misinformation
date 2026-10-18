@@ -6,6 +6,12 @@ from backend.services.research.passage_extractor import has_usable_passage
 
 def specialist_brief(data, agent, target, discovery):
     domain = "brand" if agent == "brandshield" else "personal"
+    if domain == "personal":
+        # The report query may be a source URL or allegation, not the subject
+        # whose name appears in captured speaker attribution.
+        subject = data.get("subject")
+        subject = subject if isinstance(subject, dict) else {}
+        target = subject.get("canonical_name") or subject.get("name") or data.get("vip_name") or target
     records, seen = [], set()
     for field in ("evidence", "sources", "documents", "officials", "news", "social", "impostor_accounts"):
         values = data.get(field)
@@ -19,6 +25,7 @@ def specialist_brief(data, agent, target, discovery):
             records.append(record)
     relevant = []
     profiles = 0
+    public_statements = 0
     for record in records:
         meta = record.get("metadata") or {}
         meta = meta if isinstance(meta, dict) else {}
@@ -26,8 +33,15 @@ def specialist_brief(data, agent, target, discovery):
         role = document_role(record)
         profiles += role == "PROFILE"
         body = record.get("content") or ""
+        statement = False
+        if domain == "personal" and depth not in METADATA_DEPTHS and role not in NON_EVENT_ROLES:
+            from backend.services.research.passage_records import captured_passages
+            statement = any(p["content_role"] == "PUBLIC_STATEMENT" and p["attribution"] != "SOURCE_ASSERTION"
+                            and has_usable_passage({"content": p["text"], "content_depth": depth})
+                            for p in captured_passages(record, domain, target))
+            public_statements += statement
         if (depth not in METADATA_DEPTHS and role not in NON_EVENT_ROLES and has_usable_passage(record)
-                and matches_objective(body, domain)):
+                and (matches_objective(body, domain) or statement)):
             relevant.append(record)
     corpus = data.get("research_corpus") or {}
     corpus = corpus if isinstance(corpus, dict) else {}
@@ -45,10 +59,8 @@ def specialist_brief(data, agent, target, discovery):
     if failed:
         summary += f"{failed} selected read(s) failed or timed out. "
     summary += "No media forensics or exhaustive platform coverage is established."
-    public_statements = sum((r.get("query_class") or (r.get("metadata") or {}).get("query_class")) == "public_statement_discovery"
-                            and (r.get("author") or "").casefold() == target.casefold() for r in records) if domain == "personal" else 0
     if public_statements:
-        summary += f" {public_statements} public statement record(s) are attributed by feed metadata; this is not authenticated identity or evidence of abuse."
+        summary += f" {public_statements} public statement record(s) have observed author/speaker attribution in the capture; this is not authenticated identity or evidence of abuse."
     leads = corpus.get("ranked_candidates") or []
     leads = leads if isinstance(leads, list) else []
     next_steps = []

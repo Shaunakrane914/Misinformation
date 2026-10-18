@@ -566,7 +566,7 @@
 
       for (const ep of endpoints) {
         try {
-          const resp = await fetch(ep, { signal: AbortSignal.timeout(4000) });
+          const resp = await fetch(window.getAegisApiUrl(ep), { signal: AbortSignal.timeout(4000) });
           if (resp.ok) {
             data = await resp.json();
             break;
@@ -576,24 +576,11 @@
         }
       }
 
-      if (!data || !data.dossiers || data.dossiers.length === 0) {
+      if (!data || !Array.isArray(data.dossiers) || data.dossiers.length === 0) {
         container.innerHTML = `
           <div class="dossier-card" style="grid-column: 1 / -1;">
-            <div class="dossier-header">
-              <span class="dossier-id">R-2026-65C59C</span>
-              <span class="badge-role badge-primary">SAMPLE RECORDED DOSSIER</span>
-            </div>
-            <div class="dossier-target">Tata Motors Limited (TATAMOTORS.NS)</div>
-            <div class="dossier-meta">
-              <span>Domain: financial</span>
-              <span>Queries: 5 executed</span>
-              <span>Latency: 118ms</span>
-              <span>Saturation: TRUE</span>
-            </div>
-            <div class="dossier-actions">
-              <button class="ae-btn-accent" onclick="inspectSampleDossier()">Inspect Provenance Trace &nearr;</button>
-              <button class="ae-btn-secondary" onclick="simulateReplay('R-2026-65C59C')">Re-execute Replay &#x21bb;</button>
-            </div>
+            <div class="dossier-target">${data ? 'No recorded dossiers returned.' : 'Live ledger unavailable.'}</div>
+            <p>No sample investigation or successful replay is substituted for missing records.</p>
           </div>
         `;
         return;
@@ -624,7 +611,8 @@
     async function inspectLiveDossier(id) {
       openModal(`Research Dossier · ${id}`, 'Fetching immutable trace from ledger...');
       try {
-        const resp = await fetch(`/api/research/replay/dossiers/${id}`);
+        const resp = await fetch(window.getAegisApiUrl(`/api/research/replay/dossiers/${encodeURIComponent(id)}`), { signal: AbortSignal.timeout(10000) });
+        if (!resp.ok) throw new Error(`Dossier request failed (HTTP ${resp.status})`);
         const data = await resp.json();
         document.getElementById('modalJson').textContent = JSON.stringify(data.dossier || data, null, 2);
       } catch (e) {
@@ -635,7 +623,8 @@
     async function reexecuteLiveDossier(id) {
       openModal(`Deterministic Replay Playback · ${id}`, 'Re-executing investigation trace with candidate hash verification...');
       try {
-        const resp = await fetch(`/api/research/replay/reexecute/${id}`, { method: 'POST' });
+        const resp = await fetch(window.getAegisApiUrl(`/api/research/replay/reexecute/${encodeURIComponent(id)}`), { method: 'POST', signal: AbortSignal.timeout(10000) });
+        if (!resp.ok) throw new Error(`Replay request failed (HTTP ${resp.status})`);
         const data = await resp.json();
         document.getElementById('modalJson').textContent = JSON.stringify(data, null, 2);
       } catch (e) {

@@ -1157,7 +1157,7 @@
     // ── Live Deployment Telemetry Hook ──
     (async function initLiveTelemetry() {
       try {
-        const res = await fetch('/api/system/deployment-status', { signal: AbortSignal.timeout(4000) });
+        const res = await fetch(window.getAegisApiUrl('/api/system/deployment-status'), { signal: AbortSignal.timeout(4000) });
         if (res.ok) {
           const data = await res.json();
           if (data && data.investigations_completed !== undefined && data.investigations_completed > 0) {

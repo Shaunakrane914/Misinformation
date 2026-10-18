@@ -10,7 +10,19 @@ services:
     envVars:
       - key: ENVIRONMENT
         value: production
+      - key: AEGIS_MOCK_LLM
+        value: "false"
+      - key: RSS_INGESTION_ENABLED
+        value: "false"
+      - key: GEMINI_MODELS
+        value: '["gemini-3.5-flash-lite"]'
+      - key: DEFAULT_MODEL
+        value: gemini-3.5-flash-lite
+      - key: LLM_ADVISORY_MODEL
+        value: gemini-3.5-flash-lite
       - key: ALLOWED_ORIGIN
+        value: https://aegis-protocol-110.pages.dev
+      - key: ADMIN_API_TOKEN
         sync: false
       - key: GEMINI_API_KEY
         sync: false

@@ -19,6 +19,7 @@ from backend.infrastructure.acquisition.network.http import (
 )
 from backend.services.url_validator import is_safe_url
 from backend.services.agent_reach.native.errors import SecurityPolicyViolation
+from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_reader_markdown
 
 logger = logging.getLogger(__name__)
 
@@ -50,13 +51,19 @@ def read_article_via_jina(url: str, timeout: float = 5.0) -> Optional[Dict[str, 
         if any(ord(character) < 32 and character not in "\t\r\n" for character in content):
             raise ValueError("Reader response contains binary control characters")
         if content and len(content.strip()) > 30:
+            extracted = extract_reader_markdown(content)
+            readable = extracted["text"]
+            page = extracted["page_metadata"]
             return {
                 "status": "success",
-                "title": "",
-                "content": content,
-                "markdown": content,
+                "title": page.get("title", ""),
+                "published": page.get("published", ""),
+                "page_metadata": page,
+                "raw_capture": extracted["raw_capture"],
+                "content": readable,
+                "markdown": readable,
                 "url": url,
-                "char_count": len(content),
+                "char_count": len(readable),
                 "backend": "jina-reader",
                 "fallback_used": True,
                 "fallback_backend": "jina-reader",
@@ -150,6 +157,9 @@ def execute_web_read(
         return {
             "status": "success",
             "title": jina_res.get("title", ""),
+            "published": jina_res.get("published", ""),
+            "page_metadata": jina_res.get("page_metadata") or {},
+            "raw_capture": jina_res.get("raw_capture") or {},
             "content": c[:max_chars],
             "markdown": c[:max_chars],
             "url": url,

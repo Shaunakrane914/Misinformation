@@ -55,5 +55,4 @@ replace manual screen-reader or real backend-result validation.
 and honest stale-observation badges. Documented in `tests/frontend/test_operation_health.js`.
 
 ## Deployment
-The static frontend is served by Cloudflare Pages (`https://aegis-protocol-110.pages.dev/`), configured via `_headers` and `_redirects`. API requests proxy to the active Render backend.
-
+The static frontend is served by Cloudflare Pages (`https://aegis-protocol-110.pages.dev/`), configured via `_headers` and `_redirects`. API callers use `getAegisApiUrl()` to contact Render directly. Pages `_redirects` cannot proxy external domains; there is no same-origin `/api/*` proxy guarantee. Configure Render CORS for the explicit frontend origin.

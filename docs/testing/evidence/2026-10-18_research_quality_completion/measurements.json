@@ -1,0 +1,238 @@
+{
+  "status": "CALIBRATION_AND_LOCAL_RENDERING_ONLY",
+  "date": "2026-10-18",
+  "head": "314bf17697f1424bf9aa0d60704b42d87bf8e244",
+  "dirty_source": true,
+  "mode": "EXACT_SAVED_SSE_REPLAY",
+  "application_sha256": "743504a339b4c89e3ffbb11bb3722a4d4913617ea449a7aa4a4befb36b95636f",
+  "application_unchanged_during_browser_run": true,
+  "terminal_stable_application": true,
+  "live_ai_generation_requests": 0,
+  "final_browser_replay_fresh_provider_requests": 0,
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "MSFT",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "retained_native_records": 6,
+      "retained_text_words": 5555,
+      "retained_text_kb": 35.649,
+      "findings": 3,
+      "acquired_records": 6,
+      "discovery_records": 22,
+      "page_errors": [],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 3,
+          "rendered_acquired_cards": 6,
+          "rendered_discovery_cards": 22,
+          "missing_finding_texts": [],
+          "document_width": 320
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 3,
+          "rendered_acquired_cards": 6,
+          "rendered_discovery_cards": 22,
+          "missing_finding_texts": [],
+          "document_width": 390
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 3,
+          "rendered_acquired_cards": 6,
+          "rendered_discovery_cards": 22,
+          "missing_finding_texts": [],
+          "document_width": 1440
+        }
+      ]
+    },
+    {
+      "case_id": "02-trending",
+      "agent": "trending",
+      "input": "AMD",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0,
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 3,
+      "page_errors": [],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": null,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 3,
+          "missing_finding_texts": [],
+          "document_width": 320
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": null,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 3,
+          "missing_finding_texts": [],
+          "document_width": 390
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": null,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 3,
+          "missing_finding_texts": [],
+          "document_width": 1440
+        }
+      ]
+    },
+    {
+      "case_id": "03-brandshield",
+      "agent": "brandshield",
+      "input": "Apple phishing",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "retained_native_records": 3,
+      "retained_text_words": 692,
+      "retained_text_kb": 4.221,
+      "findings": 0,
+      "acquired_records": 3,
+      "discovery_records": 13,
+      "page_errors": [],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 3,
+          "rendered_discovery_cards": 13,
+          "missing_finding_texts": [],
+          "document_width": 320
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 3,
+          "rendered_discovery_cards": 13,
+          "missing_finding_texts": [],
+          "document_width": 390
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 3,
+          "rendered_discovery_cards": 13,
+          "missing_finding_texts": [],
+          "document_width": 1440
+        }
+      ]
+    },
+    {
+      "case_id": "04-personal_watch",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "retained_native_records": 1,
+      "retained_text_words": 689,
+      "retained_text_kb": 4.046,
+      "findings": 1,
+      "acquired_records": 1,
+      "discovery_records": 0,
+      "page_errors": [],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 320
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440
+        }
+      ]
+    }
+  ],
+  "independent_accuracy": "PENDING_REVIEWER_LABELS",
+  "production_end_to_end": "NOT_VERIFIED_RENDER_HEALTH_TIMEOUT",
+  "historical_archive": {
+    "legacy_unsealed": 2445,
+    "failed": 55,
+    "verified": 0,
+    "verdict": "HISTORICAL_ARCHIVE_FAIL"
+  }
+}

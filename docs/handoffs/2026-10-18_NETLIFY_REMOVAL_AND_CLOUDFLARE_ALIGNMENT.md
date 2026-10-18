@@ -19,24 +19,24 @@ Worktree: `.scratch/phase9-remediation-20261016` (branch `feat/continuous-source
    - `frontend/netlify/`: Directory pruned.
 
 2. **Client Fallback Cleaned:**
-   - [`frontend/gemini-client.js`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/frontend/gemini-client.js): Removed `'/.netlify/functions/gemini'` fallback endpoint. Calls now route strictly to `window.getAegisApiUrl('/api/gemini') || '/api/gemini'`.
+   - [`frontend/gemini-client.js`](../../frontend/gemini-client.js): Removed `'/.netlify/functions/gemini'` fallback endpoint. Calls now route strictly to `window.getAegisApiUrl('/api/gemini') || '/api/gemini'`.
 
 3. **Tests Aligned to Cloudflare Pages:**
-   - [`tests/unit/test_frontend_operation_health_contract.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/tests/unit/test_frontend_operation_health_contract.py):
+   - [`tests/unit/test_frontend_operation_health_contract.py`](../../tests/unit/test_frontend_operation_health_contract.py):
      - Removed dependency on `ROOT / "netlify.toml"`.
      - Renamed test to `test_unhashed_runtime_assets_revalidate_on_cloudflare_pages`, verifying cache-control revalidation on `frontend/_headers`.
      - Renamed test to `test_cloudflare_pages_does_not_mask_missing_routes_with_successful_homepage`, verifying fallback rules on `frontend/_redirects`.
-   - [`tests/frontend/test_security_and_health_regressions.js`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/tests/frontend/test_security_and_health_regressions.js): Removed `testNetlifyProxy()` function and invocation.
+   - [`tests/frontend/test_security_and_health_regressions.js`](../../tests/frontend/test_security_and_health_regressions.js): Removed `testNetlifyProxy()` function and invocation.
 
 4. **Documentation & Scripts Updated:**
-   - [`frontend/README.md`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/frontend/README.md): Documented Cloudflare Pages (`https://aegis-protocol-110.pages.dev/`) as the static hosting environment.
-   - [`frontend/dashboard.js`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/frontend/dashboard.js): Updated comment from Netlify to Cloudflare Pages.
-   - [`backend/main.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/backend/main.py): Updated liveness docstring to mention Cloudflare Pages.
-   - [`backend/api/claims.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/claims.py): Updated rebuttal link to `https://aegis-protocol-110.pages.dev/submit.html`.
-   - [`scripts/diagnostics/verify_live_scan.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/scripts/diagnostics/verify_live_scan.py): Added `pages.dev` to monitored request URLs.
+   - [`frontend/README.md`](../../frontend/README.md): Documented Cloudflare Pages (`https://aegis-protocol-110.pages.dev/`) as the static hosting environment.
+   - [`frontend/dashboard.js`](../../frontend/dashboard.js): Updated comment from Netlify to Cloudflare Pages.
+   - [`backend/main.py`](../../backend/main.py): Updated liveness docstring to mention Cloudflare Pages.
+   - [`backend/api/claims.py`](../../backend/api/claims.py): Updated rebuttal link to `https://aegis-protocol-110.pages.dev/submit.html`.
+   - [`scripts/diagnostics/verify_live_scan.py`](../../scripts/diagnostics/verify_live_scan.py): Added `pages.dev` to monitored request URLs.
 
 5. **Compatibility Invariant Preserved:**
-   - Render backend compatibility routes (`@router.post("/.netlify/functions/gemini")` in [`backend/api/system.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/system.py#L310) and `@router.get("/.netlify/functions/stock")` in [`backend/api/agents.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/api/agents.py#L140)) were strictly retained.
+   - Render backend compatibility routes (`@router.post("/.netlify/functions/gemini")` in [`backend/api/system.py`](../../backend/api/system.py#L310) and `@router.get("/.netlify/functions/stock")` in [`backend/api/agents.py`](../../backend/api/agents.py#L140)) were strictly retained.
    - Cloudflare routing configuration (`frontend/_headers`, `frontend/_redirects`) was strictly retained.
 
 6. **Netlify Project Status & Deletion:**

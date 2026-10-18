@@ -8,12 +8,58 @@ neither follows them nor promotes them to independent corroboration.
 from __future__ import annotations
 
 import json
+import hashlib
 import re
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
 
 _CORRECTION_PATTERN = re.compile(r"\b(?:correction|editor['’]s note|updated on)\b", re.I)
 _DECLARED_FIELDS = ("@type", "headline", "datePublished", "dateModified", "description")
+
+
+def extract_reader_markdown(raw: str) -> dict:
+    """Select an observed reader heading before the caller's display cap.
+
+    Reader envelopes can put thousands of navigation characters before an
+    article. Only a unique explicit heading matching the declared title permits
+    skipping that preamble. No keyword-based sentence removal, inferred main
+    body, or fabricated metadata. Keep a bounded raw capture and source hash.
+    """
+    result = {"text": raw, "page_metadata": {}, "raw_capture": {
+        "text": raw[:100_000], "truncated": len(raw) > 100_000,
+        "selection_method": "READER_MARKDOWN_OBSERVED",
+        "source_text_chars": len(raw),
+        "source_text_sha256": hashlib.sha256(raw.encode("utf-8")).hexdigest(),
+    }}
+    marker = re.search(r"(?m)^Markdown Content:\s*\r?$", raw)
+    if not marker:
+        return result
+    header = raw[:marker.start()]
+    title_match = re.search(r"(?m)^Title: ([^\r\n]+)", header)
+    if not title_match:
+        return result
+    title = title_match.group(1).strip()
+    published = re.search(r"(?m)^Published Time: ([^\r\n]+)", header)
+    start = marker.end()
+    matches = []
+    # Both ATX (#) and setext (underlined) headings are structural observations.
+    headings = re.finditer(r"(?m)^(?:#{1,2}[ \t]+([^\r\n]+)|([^\r\n]+)\r?\n[=-]{3,}[ \t]*$)", raw[start:])
+    normalize = lambda value: re.sub(r"\s+", " ", value.strip().strip("#* _")).casefold()
+    for heading in headings:
+        if normalize(heading.group(1) or heading.group(2)) == normalize(title):
+            matches.append(start + heading.start())
+    scope = "reader_body_unscoped"
+    if len(matches) == 1:
+        start = matches[0]
+        scope = "reader_heading_match"
+    result["text"] = raw[start:].strip()
+    result["page_metadata"] = {"title": title[:500], "content_scope": scope,
+                               "reader_declared_metadata_verified": False,
+                               "reader_source_start": start}
+    if published:
+        result["page_metadata"]["published"] = published.group(1).strip()[:100]
+    result["raw_capture"]["selection_method"] = scope.upper()
+    return result
 
 
 def document_link_priority(link):

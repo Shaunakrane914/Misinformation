@@ -11,16 +11,16 @@ Worktree: `.scratch/phase9-remediation-20261016` (branch `feat/continuous-source
 ## Code Changes & Decisions
 
 1. **Advisory Model Update (`gemini-3.5-flash-lite`):**
-   - [`backend/infrastructure/llm/advisory_policy.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/backend/infrastructure/llm/advisory_policy.py): Updated `MODEL` from discontinued `gemini-2.5-flash-lite` to Google's recommended upgrade `gemini-3.5-flash-lite`.
-   - [`backend/core/settings.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/backend/core/settings.py): Updated `llm_advisory_model` default to `gemini-3.5-flash-lite`. Replaced deprecated `gemini-2.5-*` models in `gemini_models` with `gemini-3.5-flash` and `gemini-3.5-flash-lite`.
-   - [`frontend/netlify/functions/gemini.js`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/frontend/netlify/functions/gemini.js): Updated serverless function candidate list to `['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-flash-latest']`.
+   - [`backend/infrastructure/llm/advisory_policy.py`](../../backend/infrastructure/llm/advisory_policy.py): Updated `MODEL` from discontinued `gemini-2.5-flash-lite` to Google's recommended upgrade `gemini-3.5-flash-lite`.
+   - [`backend/core/settings.py`](../../backend/core/settings.py): Updated `llm_advisory_model` default to `gemini-3.5-flash-lite`. Replaced deprecated `gemini-2.5-*` models in `gemini_models` with `gemini-3.5-flash` and `gemini-3.5-flash-lite`.
+   - [`frontend/netlify/functions/gemini.js`](../../frontend/netlify/functions/gemini.js): Updated serverless function candidate list to `['gemini-3.5-flash-lite', 'gemini-3.5-flash', 'gemini-flash-latest']`.
 
 2. **Google AI Studio Key Prefix Normalization:**
-   - [`backend/infrastructure/llm/providers/gemini.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/backend/infrastructure/llm/providers/gemini.py): Updated API key prefix filter to `k.startswith(("AIzaSy", "AQ."))` supporting both legacy Google Cloud keys and modern Google AI Studio key formats.
+   - [`backend/infrastructure/llm/providers/gemini.py`](../../backend/infrastructure/llm/providers/gemini.py): Updated API key prefix filter to `k.startswith(("AIzaSy", "AQ."))` supporting both legacy Google Cloud keys and modern Google AI Studio key formats.
 
 3. **Regression Tests Updated:**
-   - [`tests/unit/test_ai_advisory_cost_controls.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/tests/unit/test_ai_advisory_cost_controls.py): Updated assertion to expect `gemini-3.5-flash-lite`.
-   - [`tests/unit/test_llm_gateway.py`](file:///c:/Users/Shaunak%20Rane/Desktop/Projects/Misinformation/.scratch/phase9-remediation-20261016/tests/unit/test_llm_gateway.py): Updated mocked URL target to `gemini-3.5-flash-lite:generateContent`.
+   - [`tests/unit/test_ai_advisory_cost_controls.py`](../../tests/unit/test_ai_advisory_cost_controls.py): Updated assertion to expect `gemini-3.5-flash-lite`.
+   - [`tests/unit/test_llm_gateway.py`](../../tests/unit/test_llm_gateway.py): Updated mocked URL target to `gemini-3.5-flash-lite:generateContent`.
 
 ## Empirical Verification & Validation Commands
 

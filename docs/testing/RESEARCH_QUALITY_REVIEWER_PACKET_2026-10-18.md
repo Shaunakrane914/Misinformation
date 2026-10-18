@@ -23,7 +23,7 @@ attackers or perform purchases/takedowns. Preserve access gates.
 
 ## Select held-out cases before running or tuning
 
-Choose **24 new cases, six per agent**, not cases already used in the
+Choose **48 new cases, 12 per agent**, not cases already used in the
 [four-agent audit](FOUR_AGENT_OUTPUT_AUDIT_2026-10-16.md) or the implementer's
 regression tests. If a case is exposed during tuning, retire it from acceptance
 and retain it as calibration; replace it with a newly reviewed case. Small
@@ -36,30 +36,34 @@ manual rubric rather than forcibly assigning a proposition verdict.
 
 | Case IDs | Reviewer-selected scenario |
 | --- | --- |
-| BS-01 | Direct unauthorized-offer evidence; distinguish seller from publisher |
-| BS-02 | Enforcement reporting; distinguish allegation, charge and disposition |
-| BS-03 | Protective anti-scam notice, not an attacker listing |
-| BS-04 | Specific legitimate customer complaint, not proof of counterfeit |
-| BS-05 | Debunked or disputed accusation with qualification preserved |
-| BS-06 | New brand exploration, sparse evidence or ambiguous entity |
-| PW-01 | Attributed public quotation with original context |
-| PW-02 | False-quotation allegation requiring original-source comparison |
-| PW-03 | Reported impersonation, without asserting identity authentication |
-| PW-04 | Joint statement with multiple speakers and negation |
-| PW-05 | Previously unseen public figure with ambiguous names |
-| PW-06 | Profile-only/blocked discovery; appropriate abstention |
-| SC-01 | Reported financial figure with exact period/currency/basis |
-| SC-02 | Same quantity expressed in different monetary scales |
-| SC-03 | Conflicting values requiring comparable reporting context |
-| SC-04 | Guidance/range versus actual results |
-| SC-05 | Table with units, date and consolidated/segment distinction |
-| SC-06 | Missing or incomparable filing; appropriate abstention |
-| TR-01 | Multiple articles about one underlying announcement |
-| TR-02 | Reprinted/syndicated stories, not independent corroboration |
-| TR-03 | Chronologically distinct observations with actual timestamps |
-| TR-04 | Single snapshot; no unsupported velocity/virality claim |
-| TR-05 | Contradictory or corrected narrative with attribution |
-| TR-06 | New topic with insufficient relevant observations |
+| BS-01, BS-02 | Direct unauthorized-offer evidence; distinguish seller from publisher |
+| BS-03, BS-04 | Enforcement reporting; distinguish allegation, charge and disposition |
+| BS-05, BS-06 | Protective anti-scam notice, not an attacker listing |
+| BS-07, BS-08 | Specific legitimate customer complaint, not proof of counterfeit |
+| BS-09, BS-10 | Debunked or disputed accusation with qualification preserved |
+| BS-11, BS-12 | New brand exploration, sparse evidence or ambiguous entity |
+| PW-01, PW-02 | Attributed public quotation with original context |
+| PW-03, PW-04 | False-quotation allegation requiring original-source comparison |
+| PW-05, PW-06 | Reported impersonation, without asserting identity authentication |
+| PW-07, PW-08 | Joint statement with multiple speakers and negation |
+| PW-09, PW-10 | Previously unseen public figure with ambiguous names |
+| PW-11, PW-12 | Profile-only/blocked discovery; appropriate abstention |
+| SC-01, SC-02 | Reported financial figure with exact period/currency/basis |
+| SC-03, SC-04 | Same quantity expressed in different monetary scales |
+| SC-05, SC-06 | Conflicting values requiring comparable reporting context |
+| SC-07, SC-08 | Guidance/range versus actual results |
+| SC-09, SC-10 | Table with units, date and consolidated/segment distinction |
+| SC-11, SC-12 | Missing or incomparable filing; appropriate abstention |
+| TR-01, TR-02 | Multiple articles about one underlying announcement |
+| TR-03, TR-04 | Reprinted/syndicated stories, not independent corroboration |
+| TR-05, TR-06 | Chronologically distinct observations with actual timestamps |
+| TR-07, TR-08 | Single snapshot; no unsupported velocity/virality claim |
+| TR-09, TR-10 | Contradictory or corrected narrative with attribution |
+| TR-11, TR-12 | New topic with insufficient relevant observations |
+
+Choose two different entities/events per row, not two paraphrases of one
+answer. This expands the initial six-per-agent packet to the requested
+10–15-per-agent range; no new acceptance investigations were run to fill it.
 
 For proposition scoring, balance the three expected verdicts where practical
 without inventing claims or forcing a false balance. Record when a case cannot

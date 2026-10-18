@@ -28,7 +28,7 @@ from backend.infrastructure.acquisition.network.http import (
     decode_bounded_http_body,
     fetch_public_http,
 )
-from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_observed_page_details, extract_readable_page
+from backend.infrastructure.acquisition.adapters.web.page_extraction import extract_observed_page_details, extract_readable_page, extract_reader_markdown
 from backend.services.agent_reach.native.errors import (
     AuthRequiredError,
     BackendExecutionError,
@@ -244,11 +244,12 @@ class NativeExecutor:
                 if any(ord(character) < 32 and character not in "\t\r\n" for character in j_text):
                     raise ValueError("Reader response contains binary control characters")
                 if len(j_text) > len(markdown_text):
-                    markdown_text = j_text
+                    reader = extract_reader_markdown(j_text)
+                    markdown_text = reader["text"]
                     # Metadata from the challenged source page must not be
                     # attached to content returned by a separate reader.
-                    page_metadata = {}
-                    raw_capture = {}
+                    page_metadata = reader["page_metadata"]
+                    raw_capture = reader["raw_capture"]
                     active_backend = "jina_reader_fallback"
                     status_code = response.status_code
                     content_type = response.content_type

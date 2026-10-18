@@ -143,7 +143,7 @@ def main():
             payload = {field: query}
             if agent == "trending":
                 payload["category"] = "business" if query == "electric vehicles" else "technology"
-            if args.query:
+            if args.query and args.query[number - 1]:
                 payload["query"] = args.query[number - 1]
             print("START " + case_id + " " + query, flush=True)
             started = time.perf_counter()

@@ -2,7 +2,26 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest checkpoint: Netlify removal and Cloudflare Pages alignment — 2026-10-18
+## Latest release work: preparation and authorized deployment — 2026-10-18
+
+- [Release scope, verification and publication ledger](2026-10-18_RELEASE_PREPARATION_AND_DEPLOYMENT.md).
+  User authorized deployment. Local 1,431 full / 1,223 fast tests and all nine
+  frontend scripts pass; reader/body selection, reporting/actor semantics and
+  Cloudflare direct-API routing corrected. Hosted CI and deployment outcomes
+  are appended only after actual execution. Research acceptance stays partial.
+
+## Previous local checkpoint: research-quality completion — 2026-10-18
+
+- [Implementation/testing handoff](2026-10-18_RESEARCH_QUALITY_COMPLETION.md),
+  [source review](../testing/RESEARCH_QUALITY_COMPLETION_REVIEW_2026-10-18.md),
+  [independent reviewer packet](../testing/RESEARCH_QUALITY_REVIEWER_PACKET_2026-10-18.md).
+  Focused context/attribution and conservative-claim fixes; 1,422 full / 1,214
+  fast tests pass, zero live AI calls. Real specialist acquisition remains
+  incomplete; 48 held-out slots await human review. Cloudflare navigation routes
+  to Render, but backend health timed out. Original archive still has 55 failed
+  dossiers. No commit/push/deployment by this agent; preserve the existing index.
+
+## Previous checkpoint: Netlify removal and Cloudflare Pages alignment — 2026-10-18
 
 - [Handoff](2026-10-18_NETLIFY_REMOVAL_AND_CLOUDFLARE_ALIGNMENT.md). Pruned `netlify.toml` and legacy functions in `frontend/netlify/functions/`. Removed Netlify fallback from `frontend/gemini-client.js`. Aligned operation-health and hosting contract tests to Cloudflare Pages (`frontend/_headers`, `frontend/_redirects`). Deleted orphaned `agenticai914-old` Netlify deployment via CLI. Preserved Render backend compatibility routes. All **1,194 fast / 1,402 full** tests, smoke, rollback, and frontend contracts passing.
 

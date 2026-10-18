@@ -149,7 +149,7 @@ class BrandShieldAgent:
                 "title": t.get("title", ""),
                 "summary": t.get("summary", ""),
                 "threat_type": t.get("type", "Reputation Attack"),
-                "is_threat": t.get("type") != "CUSTOMER_COMPLAINT",
+                "is_threat": t.get("is_threat", t.get("type") != "CUSTOMER_COMPLAINT"),
                 "severity": t.get("severity", "medium"),
                 "fake_review_score": None,
                 "stars": None,
@@ -159,7 +159,9 @@ class BrandShieldAgent:
                 ,"supporting_evidence_ids": t.get("evidence_ids", []),
                 "epistemic_state": "UNVERIFIED",
                 "supporting_passages": t.get("supporting_passages", []),
-                "evidence_class": t.get("evidence_class", "UNVERIFIED_ALLEGATION")
+                "evidence_class": t.get("evidence_class", "UNVERIFIED_ALLEGATION"),
+                "source_relation": t.get("source_relation"),
+                "actor_url": t.get("actor_url")
             })
 
         # Unclassified captures are background, not findings or proof of safety.

@@ -122,3 +122,13 @@ def test_trending_publisher_label_or_debunk_word_does_not_adjudicate_claim():
              TrendEvidence(evidence_id="report", platform="web", title="Fake product allegation debunked", content="Captured reporter text", source="Reporter", source_role="SECONDARY")]
     claims = extract_claims_from_cluster(items)
     assert all(c["status"] == "UNVERIFIED" and c["supporting_sources"] == c["contradicting_sources"] == 0 for c in claims)
+
+
+def test_specialist_brief_counts_observed_statement_without_calling_it_abuse():
+    from backend.services.research.specialist_brief import specialist_brief
+    source = {"evidence_id": "statement", "url": "https://publisher.example/statement", "query_class": "explicit_url",
+              "content_depth": "PARTIAL_CONTENT", "content": 'Tim Cook issued an update.\n\n“We have published the details and it is not final,” said Cook.'}
+    status, summary, _ = specialist_brief({"evidence": [source], "subject": {"canonical_name": "Tim Cook"}}, "personal_watch", "https://publisher.example/statement", 0)
+    assert status["task_text_candidates"] == 1
+    assert "1 public statement record(s)" in summary
+    assert "not authenticated identity or evidence of abuse" in summary

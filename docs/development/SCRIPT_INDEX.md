@@ -12,8 +12,16 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ### Terminal-first / strict API-cost controls — 2026-10-18
 
+- [Render release configuration](../../scripts/operations/configure_render_release.py):
+  `--env-file <server-env> --service-id <existing-service> --report <new-json>`
+  previews non-secret drift. Add `--apply` only with deployment authorization.
+  Validates repository, branch and URL before updates; uses individual variable
+  PUTs, never bulk-replaces provider credentials or triggers a deployment. The
+  [release handoff](../handoffs/2026-10-18_RELEASE_PREPARATION_AND_DEPLOYMENT.md)
+  records actual application/deployment status and rollback limitations.
+
 - [Local terminal quality runner](../../scripts/audits/run_terminal_agent_quality.py): `--allow-live --env-file <existing-env> --output-dir <new-dir>`; repeat `--case "agent:input"` for bounded cases, otherwise twelve inputs. Normal acquisition is live, **AI credentials are excluded by default** and mocks remain off. `--capture-from <saved-native-directory>` instead blocks network and reprocesses only recorded acquisition bytes through current agents/API. Saved reads are not fresh transport observations. Review JSON/SSE and per-case pipeline exports before browser replay. Fresh persistence only, no historical writes.
-- Optional advice requires a separately model-verified explicit `advisory_run` and investigation scope. Model identity is strictly `gemini-2.5-flash-lite`, <=160 output tokens, <=6,000 prompt characters, one attempt / 2s, one request/investigation and three/run. Shared SQLite reservations/cooldown cover entry points sharing its ledger path. No model/key fallback, automatic quota probes or native generative verdict/report synthesis. The audit runner's legacy `--allow-live-ai` flag only loads credentials; it does not create advisory authorization. **No generation is authorized in this checkpoint.** [Current handoff](../handoffs/2026-10-18_INTELLIGENCE_PIPELINE_COMPLETION.md).
+- Optional advice requires a separately model-verified explicit `advisory_run` and investigation scope. Model identity is strictly `gemini-3.5-flash-lite`, <=160 output tokens, <=6,000 prompt characters, one attempt / 2s, one request/investigation and three/run. Shared SQLite reservations/cooldown cover entry points sharing its ledger path. No model/key fallback, automatic quota probes or native generative verdict/report synthesis. The audit runner's legacy `--allow-live-ai` flag only loads credentials; it does not create advisory authorization. Standard regression testing excludes generation. [Research-quality handoff](../handoffs/2026-10-18_RESEARCH_QUALITY_COMPLETION.md).
 
 ### Bounded AI / PDF diagnostics — 2026-10-17
 

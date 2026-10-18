@@ -409,9 +409,29 @@ def heuristic_threat_synthesis(
         if any(p["content_role"] == "REPORTED_ENFORCEMENT" for ev in matched for p in ev.get("passages", [])):
             threat["source_relation"] = "REPORTS_ENFORCEMENT"
             threat["actor_url"] = None
+            threat["type"] = threat["threat_type"] = "ENFORCEMENT_REPORT"
+            threat["severity"] = "info"
+            threat["is_threat"] = False
+            threat["confidence"] = None
             threat["evidence_class"] = "REPORTED_ENFORCEMENT_UNVERIFIED"
             threat["title"] = "Source-reported enforcement involving " + target_name
             threat["summary"] = "The source reports enforcement or legal action. Its citation URL identifies the reporting source, not an observed seller, impersonator or phishing endpoint."
+            threat["actionable_recommendation"] = "Review the source date, alleged conduct and recorded disposition. Do not treat a reporting publisher as an attacker or issue a takedown based on this record."
+    # Multiple legacy keyword engines can classify the same enforcement article
+    # as counterfeit, safety and phishing. Retain one attributed report instead
+    # of inflating current incident counts or inventing three observed actors.
+    reports, deduplicated = set(), []
+    for threat in threats:
+        if threat.get("source_relation") == "REPORTS_ENFORCEMENT":
+            key = tuple(sorted(threat.get("evidence_ids", [])))
+            if key in reports:
+                continue
+            reports.add(key)
+        deduplicated.append(threat)
+    threats = deduplicated
+    report_ids = {identity for key in reports for identity in key}
+    counterfeits = [c for c in counterfeits if not set(c.get("evidence_ids", [])) & report_ids]
+    impersonations = [i for i in impersonations if not set(i.get("evidence_ids", [])) & report_ids]
     dossiers = build_investigation_dossiers(brand_info, threats, claims, evidence_list)
 
     return {

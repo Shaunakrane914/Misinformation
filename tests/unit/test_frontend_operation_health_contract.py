@@ -78,7 +78,7 @@ def test_operation_health_node_suite_executes_successfully():
     assert "ALL FRONTEND OPERATION HEALTH TESTS PASSED" in res.stdout
 
 
-def test_real_page_health_and_netlify_failure_behaviors():
+def test_real_page_health_and_security_behaviors():
     node_exe = shutil.which("node")
     if not node_exe:
         return
@@ -88,9 +88,7 @@ def test_real_page_health_and_netlify_failure_behaviors():
     assert "FRONTEND SECURITY AND HEALTH REGRESSIONS PASSED" in res.stdout
 
 
-def test_unhashed_runtime_assets_revalidate_on_both_static_hosts():
-    config = tomllib.loads((ROOT / "netlify.toml").read_text(encoding="utf-8"))
-    netlify_headers = {entry["for"]: entry["values"] for entry in config["headers"]}
+def test_unhashed_runtime_assets_revalidate_on_cloudflare_pages():
     cloudflare_rules = {}
     current = None
     for line in (ROOT / "frontend" / "_headers").read_text(encoding="utf-8").splitlines():
@@ -101,18 +99,17 @@ def test_unhashed_runtime_assets_revalidate_on_both_static_hosts():
             name, value = line.strip().split(":", 1)
             cloudflare_rules[current][name] = value.strip()
     for pattern in ("/*.js", "/*.css"):
-        for headers in (netlify_headers[pattern], cloudflare_rules[pattern]):
-            cache = headers["Cache-Control"]
-            assert "no-cache" in cache
-            assert "max-age=0" in cache
-            assert "must-revalidate" in cache
-            assert "immutable" not in cache
+        headers = cloudflare_rules[pattern]
+        cache = headers["Cache-Control"]
+        assert "no-cache" in cache
+        assert "max-age=0" in cache
+        assert "must-revalidate" in cache
+        assert "immutable" not in cache
 
 
-def test_static_hosts_do_not_mask_missing_routes_with_successful_homepage():
-    config = tomllib.loads((ROOT / "netlify.toml").read_text(encoding="utf-8"))
-    fallback = [entry for entry in config["redirects"] if entry["from"] == "/*"]
-    assert fallback == [{"from": "/*", "to": "/404.html", "status": 404}]
+def test_cloudflare_pages_does_not_mask_missing_routes_with_successful_homepage():
     rules = (ROOT / "frontend" / "_redirects").read_text(encoding="utf-8").splitlines()
     catchalls = [line.split() for line in rules if line.strip().startswith("/* ")]
     assert all(parts[1:] == ["/404.html", "404"] for parts in catchalls)
+    # Ensure there is no SPA redirect rule masking 404 with 200 (e.g. /* /index.html 200)
+    assert not any(line.strip().startswith("/* ") and "200" in line for line in rules)

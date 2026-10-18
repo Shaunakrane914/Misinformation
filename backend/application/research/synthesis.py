@@ -186,6 +186,9 @@ class GroundedSynthesisStage:
             intent=request.intent,
         )
         exact_claim = request.extra_params.get("claim_text") or (request.target if request.domain == "fact_check" else "")
+        if re.fullmatch(r"https?://\S+", exact_claim.strip(), re.I):
+            # A caller-supplied source URL is not itself a factual proposition.
+            exact_claim = ""
         if request.domain != "fact_check" and exact_claim.strip().casefold() == re.sub(r"\([^)]*\)", "", request.target).strip().casefold():
             exact_claim = ""
         if exact_claim:

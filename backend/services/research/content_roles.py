@@ -6,7 +6,7 @@ import re
 from urllib.parse import urlsplit
 
 
-NON_EVENT_ROLES = {"AUTHOR_BIO", "NAVIGATION", "LEGAL_DISCLOSURE", "LEGAL_NOTICE", "DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE"}
+NON_EVENT_ROLES = {"AUTHOR_BIO", "NAVIGATION", "SOURCE_METADATA", "LEGAL_DISCLOSURE", "LEGAL_NOTICE", "DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE"}
 OBJECTIVE_TERMS = {
     "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator",
     "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|\bclone\b|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
@@ -16,6 +16,12 @@ OBJECTIVE_TERMS = {
 
 def paragraph_role(text):
     lower = text.casefold().strip()
+    # Reader wrappers and links may repeat incident terms in a URL/title. They
+    # are inspectable provenance, not a captured account of that incident.
+    if re.match(r"^(?:title|url source|published time|markdown content):", lower):
+        return "SOURCE_METADATA"
+    if re.fullmatch(r"(?:\s*(?:[*_-]\s*)?(?:!?\[[^\n]*\]\([^\n]*\)|https?://\S+)\s*)+", text.strip()):
+        return "NAVIGATION"
     if len(lower) < 700 and ("all rights reserved" in lower or "trademarks of the respective" in lower):
         return "LEGAL_NOTICE"
     if re.search(r"(?:about the author|author bio(?:graphy)?|\bcovering\b.{0,100}\bfor\b.{0,80}\bsince\b|\b(?:journalist|reporter|editor)\b.{0,70}\b(?:covers|covering|writes about)\b)", lower):

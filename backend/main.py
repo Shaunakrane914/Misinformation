@@ -201,7 +201,7 @@ _START_TIME = time.time()
 @app.get("/health", tags=["System"], summary="Liveness Probe")
 async def health_check():
     """
-    Lightweight liveness probe for Render, Netlify, and uptime monitors.
+    Lightweight liveness probe for Render, Cloudflare Pages, and uptime monitors.
     Returns version, status, and uptime in seconds.
     """
     return {

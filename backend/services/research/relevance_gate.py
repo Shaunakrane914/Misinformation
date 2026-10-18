@@ -101,6 +101,13 @@ class RelevanceGate:
         if not isinstance(item, dict) and getattr(item, "query_class", "") == "public_statement_discovery":
             author = author or getattr(item, "source_name", "")
         combined_text = f"{title} {snippet} {url} {author}".strip()
+        if domain == "personal":
+            from backend.schemas.evidence_inspection import METADATA_DEPTHS
+            value = item.get if isinstance(item, dict) else lambda key, default=None: getattr(item, key, default)
+            if value("content_depth", "") not in METADATA_DEPTHS:
+                # An acquired statement may name its speaker after the preview.
+                # Discovery snippets are never upgraded to acquired body text.
+                combined_text += " " + str(value("content", "") or "")[:8000]
         combined_lower = combined_text.lower()
         title_lower = title.lower()
 

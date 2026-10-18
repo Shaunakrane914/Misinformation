@@ -55,6 +55,5 @@ replace manual screen-reader or real backend-result validation.
 and honest stale-observation badges. Documented in `tests/frontend/test_operation_health.js`.
 
 ## Deployment
-Netlify configuration is present in `netlify.toml` and
-`frontend/netlify.toml`; this documentation does not verify an active public
-deployment or approve a release.
+The static frontend is served by Cloudflare Pages (`https://aegis-protocol-110.pages.dev/`), configured via `_headers` and `_redirects`. API requests proxy to the active Render backend.
+

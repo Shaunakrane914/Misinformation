@@ -2,7 +2,15 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest implementation: end-to-end intelligence — 2026-10-18
+## Latest checkpoint: Netlify removal and Cloudflare Pages alignment — 2026-10-18
+
+- [Handoff](2026-10-18_NETLIFY_REMOVAL_AND_CLOUDFLARE_ALIGNMENT.md). Pruned `netlify.toml` and legacy functions in `frontend/netlify/functions/`. Removed Netlify fallback from `frontend/gemini-client.js`. Aligned operation-health and hosting contract tests to Cloudflare Pages (`frontend/_headers`, `frontend/_redirects`). Deleted orphaned `agenticai914-old` Netlify deployment via CLI. Preserved Render backend compatibility routes. All **1,194 fast / 1,402 full** tests, smoke, rollback, and frontend contracts passing.
+
+## Previous checkpoint: AI layer model migration and key normalization — 2026-10-18
+
+- [Handoff](2026-10-18_AI_LAYER_MODEL_MIGRATION.md). Migrated advisory model from discontinued `gemini-2.5-flash-lite` (HTTP 404) to `gemini-3.5-flash-lite` (0.74s–1.14s latency, verified JSON output). Updated provider key format check to accept Google AI Studio `AQ.` prefixes alongside `AIzaSy`. All **1,194 fast / 1,402 full** tests, smoke, rollback, and frontend contracts passing.
+
+## Previous implementation: end-to-end intelligence — 2026-10-18
 
 - [Handoff and reproducible commands](2026-10-18_INTELLIGENCE_PIPELINE_COMPLETION.md), [review](../testing/INTELLIGENCE_PIPELINE_COMPLETION_2026-10-18.md), [proof](../testing/evidence/2026-10-18_intelligence_completion/README.md). **1,402 full / 1,194 fast** offline tests pass; strict advisory ledger and zero live generation this task. One bounded four-agent live source pass, then saved-capture polish and 12 browser states. Sam now has substantive feed content, financial guidance is distinct from reported prose, and Trending excludes legal footers and casual chat from key findings. Research acceptance remains PARTIAL; no merge/deployment. Publication is recorded in the handoff.
 

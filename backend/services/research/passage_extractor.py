@@ -70,6 +70,12 @@ class PassageExtractor:
         for item in items:
             item.relevant_excerpt = ""
             item.excerpt_start = item.excerpt_end = -1
+            if domain == "brand":
+                from backend.services.research.source_quality import canonical_hostname, hostname_matches, ENCYCLOPEDIA_DOMAINS
+                if any(hostname_matches(canonical_hostname(item.canonical_url), host) for host in ENCYCLOPEDIA_DOMAINS):
+                    item.metadata["content_role"] = "BACKGROUND_REFERENCE"
+                    item.extraction_status = "NO_RELEVANT_PASSAGE"
+                    continue
             role = document_role(item)
             if role in NON_EVENT_ROLES:
                 item.metadata["content_role"] = role
@@ -104,8 +110,8 @@ class PassageExtractor:
             best_idx = 0
 
             for idx, p in enumerate(paragraphs):
-                attributed_statement = (domain == "personal" and item.query_class == "public_statement_discovery"
-                    and item.source_name.casefold().strip() == clean_target)
+                from backend.services.research.passage_records import public_statement_attribution
+                attributed_statement = domain == "personal" and bool(public_statement_attribution(item, p, clean_target))
                 if not matches_objective(p, domain) and not attributed_statement:
                     continue
                 if not has_usable_passage({"content": p, "content_depth": item.content_depth}):

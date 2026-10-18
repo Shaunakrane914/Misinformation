@@ -1,13 +1,12 @@
 /**
  * gemini-client.js
- * Calls Gemini via the backend API (/api/gemini) or Netlify serverless proxy.
+ * Calls Gemini via the backend API (/api/gemini).
  * NO API keys in client code — keys live securely in environment variables.
  */
 
 window.GeminiClient = (() => {
   const ENDPOINTS = [
-    (window.getAegisApiUrl ? window.getAegisApiUrl('/api/gemini') : '/api/gemini'),
-    '/.netlify/functions/gemini'
+    (window.getAegisApiUrl ? window.getAegisApiUrl('/api/gemini') : '/api/gemini')
   ];
 
   /**

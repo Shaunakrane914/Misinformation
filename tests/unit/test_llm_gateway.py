@@ -281,7 +281,7 @@ def test_gemini_provider_never_uses_configured_model_fallback(mock_post, _mock_s
 
     attempted_urls = [call.args[0] for call in mock_post.call_args_list]
     assert attempted_urls == [
-        "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent",
+        "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent",
     ]
     assert mock_post.call_count == 1
 

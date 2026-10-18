@@ -63,7 +63,7 @@ def run_verification():
                 "time": time.time()
             }
             network_requests.append(entry)
-            if any(k in req.url for k in ["/api/", "claims", "gemini", "render", "onrender", "netlify"]):
+            if any(k in req.url for k in ["/api/", "claims", "gemini", "render", "onrender", "pages.dev"]):
                 print(f"  [NETWORK REQ] {req.method} {req.url}")
                 if req.post_data:
                     print(f"    Payload: {req.post_data[:200]}")
@@ -72,7 +72,7 @@ def run_verification():
             body_text = None
             try:
                 # Only capture bodies for api/json calls to keep memory sensible
-                if any(k in res.url for k in ["/api/", "claims", "gemini", "render", "onrender", "netlify"]) or res.status >= 400:
+                if any(k in res.url for k in ["/api/", "claims", "gemini", "render", "onrender", "pages.dev"]) or res.status >= 400:
                     body_text = res.text()
             except Exception:
                 body_text = "<could not read body>"
@@ -86,7 +86,7 @@ def run_verification():
                 "time": time.time()
             }
             network_responses.append(entry)
-            if any(k in res.url for k in ["/api/", "claims", "gemini", "render", "onrender", "netlify"]) or res.status >= 400:
+            if any(k in res.url for k in ["/api/", "claims", "gemini", "render", "onrender", "pages.dev"]) or res.status >= 400:
                 print(f"  [NETWORK RES] {res.status} {res.url} (bytes: {len(body_text or '')})")
                 if body_text:
                     print(f"    Response preview: {body_text[:250]}")

@@ -65,11 +65,15 @@ def compare_financial_observations(claim_text, observations):
     for claim in claims:
         compatible = [o for o in observations if o.get("metric") == claim["metric"] and o.get("scope") != "GUIDANCE"
                       and claim["period_end"] and o.get("period_end") == claim["period_end"]
-                      and o.get("currency") == claim["currency"] and o.get("unit") == claim["unit"]]
-        values = {o["normalized_value"] for o in compatible}
+                      and o.get("currency") == claim["currency"]
+                      and ((o.get("currency") and claim["currency"]) or o.get("unit") == claim["unit"])
+                      and not o.get("range_upper")]
+        # Compare monetary magnitude, not spelling/scale (5.082 billion and
+        # 5,082 million). Never perform an exchange-rate conversion.
+        values = {Decimal(o["normalized_value"]) for o in compatible}
         status = "INSUFFICIENT_COMPARABLE_CONTEXT"
         if len(values) == 1 and not re.search(r"\bnot\b|\bnever\b|\bdenied\b", claim_text, re.I):
-            status = ("MATCHES_SOURCE_ASSERTION" if claim["normalized_value"] in values
+            status = ("MATCHES_SOURCE_ASSERTION" if Decimal(claim["normalized_value"]) in values
                       else "DISAGREES_WITH_SOURCE_ASSERTION")
         result.append({"claim_metric": claim["metric"], "status": status,
                        "source_evidence_ids": list(dict.fromkeys(o["evidence_id"] for o in compatible)),

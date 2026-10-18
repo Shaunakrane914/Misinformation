@@ -48,6 +48,15 @@ def parse_events(text):
     return events
 
 
+def native_source_records(native):
+    """Native agents also use 'evidence' for grouped/non-record metadata."""
+    for key in ("evidence", "sources"):
+        value = native.get(key)
+        if isinstance(value, list):
+            return [record for record in value if isinstance(record, dict)]
+    return []
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--allow-live", action="store_true", required=True)
@@ -55,6 +64,7 @@ def main():
     parser.add_argument("--env-file", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--case", action="append", default=[], help="agent:input; otherwise fixed twelve")
+    parser.add_argument("--query", action="append", default=[], help="Optional per-case query override; supply one per case, in case order")
     parser.add_argument("--capture-from", type=Path, help="Offline reprocessing of saved native responses; no provider acquisition")
     args = parser.parse_args()
     if args.capture_from and args.allow_live_ai:
@@ -66,6 +76,8 @@ def main():
             parser.error("Invalid agent:input")
         cases.append((agent, query.strip()))
     cases = cases or CASES
+    if args.query and len(args.query) != len(cases):
+        parser.error("--query must be supplied once for every selected case")
     out = args.output_dir.resolve()
     out.mkdir(parents=True, exist_ok=False)
     from dotenv import dotenv_values
@@ -131,6 +143,8 @@ def main():
             payload = {field: query}
             if agent == "trending":
                 payload["category"] = "business" if query == "electric vehicles" else "technology"
+            if args.query:
+                payload["query"] = args.query[number - 1]
             print("START " + case_id + " " + query, flush=True)
             started = time.perf_counter()
             with ExitStack() as stack:
@@ -139,7 +153,7 @@ def main():
                     from backend.services.agent_reach.channels import EvidenceFragment, RetrievalResult, QueryExecutionRecord
                     corpus = saved.get("research_corpus") or {}
                     candidates = {}
-                    for record in corpus.get("raw_candidates", []) + corpus.get("deep_read_sources", []) + (saved.get("evidence") or saved.get("sources") or []):
+                    for record in corpus.get("raw_candidates", []) + corpus.get("deep_read_sources", []) + native_source_records(saved):
                         identity = record.get("id") or record.get("evidence_id")
                         if identity:
                             prior = candidates.get(identity) or {}
@@ -196,8 +210,7 @@ def main():
                 "findings": native.get("findings_structured") or native.get("findings"),
                 "api_and_frontend_report": native.get("unified_report"),
                 "limitations": "Retained provider text only, not uncaptured HTML or inferred missing evidence. Saved-mode reads are not fresh observations."})
-            records = native.get("evidence") or native.get("sources") or []
-            records = records if isinstance(records, list) else []
+            records = native_source_records(native)
             texts = [str(e.get("content") or e.get("snippet") or "") for e in records if isinstance(e, dict)]
             report = native.get("unified_report") or {}
             row = {"case_id": case_id, "agent": agent, "input": query, "http_status": response.status_code,

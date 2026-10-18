@@ -18,7 +18,7 @@ def response(details):
 def test_small_suggestion_model_is_strict_and_bounded(monkeypatch):
     monkeypatch.delenv("LLM_ADVISORY_MODEL", raising=False)
     options = advisory_call_options(5)
-    assert options["model"] == "gemini-2.5-flash-lite"
+    assert options["model"] == "gemini-3.5-flash-lite"
     assert options["max_output_tokens"] == 160
     assert options["max_attempts"] == 1
     assert options["total_timeout"] == options["timeout"] == 2

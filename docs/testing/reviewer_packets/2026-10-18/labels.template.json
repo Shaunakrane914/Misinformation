@@ -1,0 +1,7 @@
+{
+  "label_origin": "PENDING_INDEPENDENT_HUMAN_REVIEW",
+  "reviewer": null,
+  "frozen_at": null,
+  "instructions": "Copy to a new reviewer-controlled file. Replace cases with reviewed labels before freezing. Every case needs case_id, verdict and relevant_urls. This empty template is deliberately not scoreable.",
+  "cases": []
+}

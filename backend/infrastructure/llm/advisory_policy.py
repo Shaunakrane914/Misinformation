@@ -14,7 +14,7 @@ import tempfile
 import time
 import uuid
 
-MODEL = "gemini-2.5-flash-lite"
+MODEL = "gemini-3.5-flash-lite"
 PURPOSES = {"search_suggestion", "passage_suggestion"}
 _run = ContextVar("aegis_advisory_run", default=None)
 _investigation = ContextVar("aegis_advisory_investigation", default=None)

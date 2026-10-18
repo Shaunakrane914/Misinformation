@@ -68,22 +68,15 @@ def extract_narratives_from_cluster(items: List[TrendEvidence]) -> List[Dict[str
 
 
 def extract_claims_from_cluster(items: List[TrendEvidence]) -> List[Dict[str, Any]]:
-    """Extract circulating factual claims and assign verification status."""
+    """Expose attributed headline claims without inferring truth from a label.
+
+    A primary publisher, a top tier or the word 'debunked' does not establish
+    passage entailment, independent corroboration or a refuted proposition.
+    """
     claims = []
     for idx, it in enumerate(items[:4]):
         text = it.title.strip()
-        is_unverified = any(w in text.lower() for w in ["rumor", "alleged", "claimed", "unconfirmed", "leaked", "speculation"])
-        is_contradicted = any(w in text.lower() for w in ["debunked", "false", "refutes", "denies", "fake"])
-        is_primary = it.source_role == "PRIMARY" or it.source_tier == "TIER_1"
-
-        if is_contradicted:
-            status = "CONTRADICTED"
-        elif is_primary and not is_unverified:
-            status = "VERIFIED"
-        elif not is_unverified and it.source_role == "SECONDARY":
-            status = "SUPPORTED"
-        else:
-            status = "UNVERIFIED"
+        status = "UNVERIFIED"
 
         claims.append({
             "claim_id": f"C-{idx+1:02d}",
@@ -211,12 +204,12 @@ def cluster_trends(
         if v_status == "INSUFFICIENT_HISTORY":
             why_trending = (
                 f"Circulating across {unique_platforms} platform(s) with {independent_groups} independent source group(s) "
-                f"and {len(items)} verified evidence signals (single observation baseline; rate of change requires second scan)."
+                f"and {len(items)} retained source records (single observation baseline; rate of change requires second scan; claims are not independently verified)."
             )
         else:
             why_trending = (
                 f"Circulating across {unique_platforms} platform(s) with {independent_groups} independent source group(s) "
-                f"and {len(items)} verified evidence signals ({v_status.lower()} velocity)."
+                f"and {len(items)} retained source records ({v_status.lower()} acquisition-count velocity, not measured audience reach or independently verified claims)."
             )
 
         emergence_window = f"{first_ev.published_at} to {latest_ev.published_at}"

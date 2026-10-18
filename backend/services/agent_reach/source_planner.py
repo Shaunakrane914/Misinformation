@@ -462,6 +462,9 @@ class SourcePlanningEngine:
             # on abuse reporting, not three generic identity/profile searches.
             actions.insert(0, self._action(1, "web", "search", f'"{target}" impersonation scam', "personal_watch", "SEARCH_INDEX_DISCOVERY", 0, "Locate public identity-abuse reporting; exclude private data."))
             actions.insert(0, self._action(1, "web", "search", f'"{target}" deepfake', "synthetic_media_reporting", "SEARCH_INDEX_DISCOVERY", 0, "Locate attributed synthetic-media reports, not proof of manipulation."))
+            actions.insert(0, self._action(1, "web", "search", f'"{target}" statement interview',
+                "public_statement_discovery", "SEARCH_INDEX_DISCOVERY", 0,
+                "Locate attributable public statements for any subject, not just catalog-listed feed authors."))
             if entity_only:
                 for term in ("impersonation", "deepfake"):
                     actions.insert(0, self._action(1, "news", "search", f'"{target}" {term}',

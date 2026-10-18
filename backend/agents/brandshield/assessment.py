@@ -176,21 +176,41 @@ def heuristic_threat_synthesis(
     relevant = []
     for record in evidence_list:
         from backend.services.research.passage_records import captured_passages, classify_passage
+        from backend.services.research.source_quality import canonical_hostname, hostname_matches, ENCYCLOPEDIA_DOMAINS
         passages = captured_passages(record, "brand", target_name)
         record["passages"] = passages
         record["intelligence_class"] = classify_passage(record.get("content") or record.get("snippet") or "", domain="brand")
-        if record["intelligence_class"] in {"SAFETY_WARNING", "PRODUCT_CATALOG", "ADVERTISEMENT"}:
+        if any(hostname_matches(canonical_hostname(record.get("url", "")), host) for host in ENCYCLOPEDIA_DOMAINS):
+            record["intelligence_class"] = "BACKGROUND_REFERENCE"
             continue
+        excluded_roles = NON_EVENT_ROLES | {"SAFETY_WARNING", "PRODUCT_CATALOG", "ADVERTISEMENT", "DISPUTED_CLAIM"}
+        record_context = (str(record.get("title", "")) + " " + str(record.get("content", "")) + " " + str(record.get("url", ""))).casefold()
+        has_target = bool(target_name) and target_name.casefold() in record_context
+        usable = [p for p in passages if p["content_role"] not in excluded_roles
+                  and (p["relevance"] == "DIRECTLY_RELEVANT" or
+                       (has_target and matches_objective(str(record.get("title", "")) + " " + p["text"], "brand")))]
+        if passages and not usable:
+            continue
+        # Classify only complete selected paragraphs. Keep the original captured
+        # record/text/offsets intact for inspection, including rejected warnings.
+        selected = "\n\n".join(p["text"] for p in usable)
+        candidate = {**record, "content": selected, "snippet": selected} if selected else record
         item = EvidenceItem(id=record.get("evidence_id", ""), canonical_url=record.get("url", ""),
-            content=record.get("content") or record.get("snippet") or "",
+            content=candidate.get("content") or candidate.get("snippet") or "",
             content_depth=record.get("content_depth") or "PARTIAL_CONTENT",
             title=record.get("title", ""), metadata=dict(record.get("raw_metadata") or {}))
+        if document_role(item) == "LANDING_PAGE" and not re.search(
+            r"\b(?:counterfeit|replica|knockoff)\b.{0,100}\b(?:for sale|buy|add to cart|order)|\bI ordered\b|\b(?:verify|enter|submit)\b.{0,60}\b(?:credentials|password)\b",
+            item.content, re.I):
+            # Repair/recall menu entries are not observed defective products.
+            # Keep explicit suspicious offers and customer reports investigable.
+            continue
         # The legacy threat taxonomy accepts short, title-led leads. Retain
         # that interface without treating it as a grounded/shared finding.
         context = item.title + " " + item.content
         if (document_role(item) not in NON_EVENT_ROLES - {"LANDING_PAGE"} and paragraph_role(item.content) not in NON_EVENT_ROLES
                 and matches_objective(context, "brand")):
-            relevant.append(record)
+            relevant.append(candidate)
     evidence_list = relevant
 
     from backend.services.agent_reach.channels import EvidenceFragment
@@ -385,6 +405,13 @@ def heuristic_threat_synthesis(
             if ev.get("evidence_id") in threat.get("evidence_ids", []) for p in ev.get("passages", [])
             if p["relevance"] == "DIRECTLY_RELEVANT"][:4]
         threat["evidence_class"] = "OBSERVED_COMPLAINT" if threat.get("type") == "CUSTOMER_COMPLAINT" else "UNVERIFIED_ALLEGATION"
+        matched = [ev for ev in evidence_list if ev.get("evidence_id") in threat.get("evidence_ids", [])]
+        if any(p["content_role"] == "REPORTED_ENFORCEMENT" for ev in matched for p in ev.get("passages", [])):
+            threat["source_relation"] = "REPORTS_ENFORCEMENT"
+            threat["actor_url"] = None
+            threat["evidence_class"] = "REPORTED_ENFORCEMENT_UNVERIFIED"
+            threat["title"] = "Source-reported enforcement involving " + target_name
+            threat["summary"] = "The source reports enforcement or legal action. Its citation URL identifies the reporting source, not an observed seller, impersonator or phishing endpoint."
     dossiers = build_investigation_dossiers(brand_info, threats, claims, evidence_list)
 
     return {

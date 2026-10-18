@@ -447,7 +447,11 @@ class EntityResolver:
                 # Check for strong positive co-occurrence (e.g. organization or role)
                 org_match = [org for org in target.organizations if re.search(r'\b' + re.escape(org.lower()) + r'\b', t_lower)]
                 role_match = [r for r in target.roles if re.search(r'\b' + re.escape(r.lower()) + r'\b', t_lower)]
-                pos_hits = [p for p in target.positive_context if re.search(r'\b' + re.escape(p) + r'\b', t_lower)]
+                # A repeated given name (Fei-Fei) is not two independent
+                # contextual signals for an unrelated FEI organization.
+                pos_hits = [p for p in set(target.positive_context)
+                            if p.lower() not in canonical_tokens
+                            and re.search(r'\b' + re.escape(p) + r'\b', t_lower)]
 
                 if org_match or role_match or len(pos_hits) >= 2:
                     matched_signals.append(f"first_name_with_context:{first_name}")

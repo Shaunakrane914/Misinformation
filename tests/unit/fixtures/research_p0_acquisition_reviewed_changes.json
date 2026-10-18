@@ -1,0 +1,10 @@
+{
+  "scope": "Author-reviewed calibration serialization change, not independent research labels",
+  "reason": "Credential-only acquisition failure now explains inability to retrieve evidence instead of presenting a normal empty forensic summary. Historical manifests and acquired bytes/IDs remain unchanged. Additive lifecycle/status/timing contracts are independently asserted before legacy hash projection.",
+  "scenarios": {
+    "credential_failure": {
+      "result_sha256": "090c40d5fda89a4164293e6648537c08dbcac35b1b837314d2fb4cd247eae517",
+      "dossier_sha256": "b4784ae77f8619872fded5f0991bf1aae296f323dc6abc6e9e6e8e4fc3b9d1ce"
+    }
+  }
+}

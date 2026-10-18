@@ -30,6 +30,17 @@ function mount() {
   return { innerHTML: '', querySelectorAll: () => [] };
 }
 
+const failedAcquisitionMount = mount();
+renderUnifiedReport(failedAcquisitionMount, {
+  investigation_status: 'ACQUISITION_FAILED',
+  summary: 'All sources timed out <script>bad()</script>',
+  processing_notes: { acquisition: { message: 'Unable to retrieve evidence.' } },
+  evidence: {},
+});
+assert(failedAcquisitionMount.innerHTML.includes('ACQUISITION FAILED — UNABLE TO RETRIEVE EVIDENCE'));
+assert(failedAcquisitionMount.innerHTML.includes('&lt;script&gt;'));
+assert(!failedAcquisitionMount.innerHTML.includes('<script>'));
+
 function interactiveMount() {
   const attributes = {};
   const section = { classList: { toggle: () => true } };

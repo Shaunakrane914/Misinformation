@@ -21,7 +21,7 @@ class PrimaryEscalationStage:
         escalation_query_records: List[QueryExecutionRecord] = []
         # Escalation shares discovery's slice; it cannot consume the protected
         # deep-read and synthesis reservation after initial/adaptive discovery.
-        escalation_time = min(budget.discovery_timeout_seconds, effective_timeout * 0.45) - (time.time() - start_ts)
+        escalation_time = min(budget.discovery_timeout_seconds, effective_timeout * 0.45) - (time.monotonic() - start_ts)
         if escalation_time > 0:
             escalated_primaries, esc_telemetry = primary_source_escalator.escalate(
                 ranked.ranked,
@@ -91,7 +91,7 @@ class DeepReadingStage:
         issuer_chain = request.domain == "financial" and any(
             item.query_class == "issuer_documents" for item in carried)
         first_limit = max(1, deep_read_budget - 2) if issuer_chain and deep_read_budget > 1 else deep_read_budget
-        time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+        time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
         first_timeout = max(0.0, time_left - 3.0) if issuer_chain and deep_read_budget > 1 else time_left
         if deep_read_budget > 0 and pending and time_left > 0:
             investigated_items, read_telemetry = deep_reader.deep_read(
@@ -112,7 +112,7 @@ class DeepReadingStage:
 
         linked_candidates = []
         remaining_reads = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
-        time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+        time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
         for _followup in range(2):
             if not issuer_chain or not remaining_reads or time_left <= 0:
                 break
@@ -147,7 +147,7 @@ class DeepReadingStage:
             if accepted:
                 from backend.services.research.source_independence import source_independence_engine
                 ranked.ranked, ranked.clusters = source_independence_engine.cluster_independence(ranked.ranked)
-                time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+                time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
                 extra, observed = deep_reader.deep_read(accepted, max_reads=min(1, remaining_reads),
                     timeout_per_read=min(budget.channel_timeout_seconds, time_left))
                 investigated_items.extend(extra)
@@ -159,6 +159,6 @@ class DeepReadingStage:
             if not round_candidates:
                 break
             remaining_reads = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
-            time_left = max(0.0, effective_timeout * 0.85 - (time.time() - start_ts))
+            time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
         read_telemetry["reused_acquired_count"] = len(carried)
         return ReadEvidence(carried + investigated_items, read_telemetry, linked_candidates)

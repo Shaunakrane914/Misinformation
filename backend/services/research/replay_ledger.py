@@ -334,6 +334,10 @@ class ReplayLedger:
         )
 
         dossier_data = dossier.to_dict()
+        dossier_data["status"] = telemetry.get("acquisition", {}).get("status", "COMPLETED")
+        dossier_data["acquisition"] = telemetry.get("acquisition", {})
+        dossier_data["timing"] = {key: telemetry.get(key, {}) for key in
+                                  ("stage_timings_ms", "budget_observations", "acquisition_timing", "pre_research_timings_ms")}
         dossier_data["candidate_snapshots"] = candidate_snapshots
         _validate_dossier_structure(dossier_data)
         # Publish a complete file atomically without replacing any existing ID.

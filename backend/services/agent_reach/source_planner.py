@@ -41,6 +41,7 @@ PUBLISHER_FEEDS = {
 # Original issuer indexes, not frozen quarterly answers. Child URLs must be
 # observed on the fetched page and qualified before bounded deep reading.
 ISSUER_DOCUMENT_INDEXES = {
+    "lenovo": "https://investor.lenovo.com/en/financial/results.php",
     "infosys": "https://www.infosys.com/investors/reports-filings.html",
     "apple": "https://investor.apple.com/investor-relations/default.aspx",
     "tatamotors": "https://cv.tatamotors.com/intimation-to-stock-exchanges",
@@ -384,7 +385,7 @@ class SourcePlanningEngine:
             if index and "web" in allowed:
                 actions.append(self._action(1, "web", "read", index, "issuer_documents",
                     "DIRECT_CONTENT", 0, "Inspect original issuer document links before general search.", True))
-            regulator = "SEC" if not self._looks_indian(target) else "SEBI"
+            regulator = "HKEX" if registry_key == "lenovo" else "SEC" if not self._looks_indian(target) else "SEBI"
             if "sec_edgar" in allowed and (explicitly_allowed or agent.lower() in {"scout", "scout_agent"}) and not self._looks_indian(target):
                 actions.append(self._action(1, "sec_edgar", "search", target, "regulatory_filing", "DIRECT_METADATA", 1, "Retrieve official SEC EDGAR corporate filings directly.", True))
             actions.extend([

@@ -60,6 +60,7 @@ ENCYCLOPEDIA_DOMAINS: Set[str] = {
 # Explicit identity knowledge, not a heuristic derived from a queried name.
 # Deployments can inject additional verified mappings into SourceQualityEngine.
 VERIFIED_CORPORATE_DOMAINS = {
+    "lenovo": {"lenovo.com"},
     "infosys": {"infosys.com"},
     "tatamotors": {"tatamotors.com"},
     "tesla": {"tesla.com"},

@@ -112,7 +112,9 @@ def _hash(value):
                 key: sorted(canonical(entry) for entry in val) if key in {"independence_groups", "entities"} and isinstance(val, list)
                 else canonical(val)
                 for key, val in node.items()
-                if key not in {"stage_timings_ms", "passages", "financial_observations"}
+                if key not in {"stage_timings_ms", "passages", "financial_observations", "acquisition",
+                               "acquisition_timing", "budget_observations", "pre_research_timings_ms",
+                               "submitted_at", "provider_started", "queue_wait_ms", "provider_duration_ms", "provider_duration_censored", "submission_delay_ms"}
             }
         if isinstance(node, list):
             return [canonical(entry) for entry in node]
@@ -185,6 +187,7 @@ def capture_scenario(name, include_payload=False):
         patch("backend.services.research.deep_reader.deep_reader.deep_read", side_effect=read_fixture),
         patch("backend.services.research.primary_source_escalator.primary_source_escalator.escalate", side_effect=escalate_fixture),
         patch("time.time", return_value=1000.0),
+        patch("time.monotonic", return_value=1000.0),
         patch("time.gmtime", return_value=time.struct_time((2026, 10, 10, 0, 0, 0, 5, 283, 0))),
         patch.object(ReplayLedger, "_generate_dossier_id", return_value=f"R-2026-{name.upper()}"),
     ]
@@ -228,9 +231,16 @@ def capture_scenario(name, include_payload=False):
             assert verify_dossier_integrity(dossier)["valid"]
             dossier.pop("integrity")
             dossier.pop("candidate_snapshots")
+            # New transport outcome is asserted, then removed only from the
+            # historical serialization projection. Frozen expected bytes stay.
+            assert dossier["status"] == result.telemetry["acquisition"]["status"]
+            dossier.pop("acquisition")
+            dossier.pop("timing")
+            dossier["status"] = "COMPLETED"
             serialized = result.to_dict()
             if include_payload:
                 return {"result": serialized, "corpus": result.research_corpus, "dossier": dossier}
+            assert serialized.pop("investigation_status") == result.telemetry["acquisition"]["status"]
             return {
                 "result_sha256": _hash(serialized),
                 "corpus_sha256": _hash(result.research_corpus),
@@ -251,6 +261,8 @@ def test_research_result_and_replay_match_reviewed_policy(name):
     expected = json.loads(PHASE9_MANIFEST.read_text(encoding="utf-8"))["scenarios"][name]
     corrections = json.loads((PHASE9_MANIFEST.parent / "research_source_intelligence_reviewed_changes.json").read_text(encoding="utf-8"))["scenarios"]
     expected = {**expected, **corrections.get(name, {})}
+    p0 = json.loads((PHASE9_MANIFEST.parent / "research_p0_acquisition_reviewed_changes.json").read_text(encoding="utf-8"))
+    expected = {**expected, **p0["scenarios"].get(name, {})}
     if name == "discovery_timeout":
         # Explicit correctness exception: the historical implementation read
         # documents AFTER its deadline. Keep that baseline, but require no reads.

@@ -321,9 +321,9 @@ class QueryTelemetry:
                 continue
 
             status = d.get("status", "")
-            if status not in ("PLANNED", "SKIPPED", "UNRECORDED"):
+            if status not in ("PLANNED", "SKIPPED", "UNRECORDED", "NOT_SUBMITTED"):
                 submitted += 1
-            if status in ("SUCCESS", "FAILED", "TIMEOUT", "AUTH_REQUIRED"):
+            if d.get("provider_started") is True or (d.get("provider_started") is None and status in ("SUCCESS", "FAILED", "TIMEOUT", "AUTH_REQUIRED")):
                 started += 1
             if status == "SUCCESS":
                 succeeded += 1
@@ -425,6 +425,7 @@ class UnifiedReport:
     discovery: List[UnifiedEvidenceItem] = field(default_factory=list)
     finding_details: List[Dict[str, Any]] = field(default_factory=list)
     processing_notes: Dict[str, Any] = field(default_factory=dict)
+    investigation_status: Optional[str] = None
 
     # Internal metadata (not rendered in report sections)
     agent: Optional[str] = None          # e.g. "claim_verifier"
@@ -436,6 +437,7 @@ class UnifiedReport:
     def to_dict(self) -> Dict[str, Any]:
         d = {
             "summary": self.summary,
+            "investigation_status": self.investigation_status,
             "findings": self.findings,
             "evidence": self.evidence.to_dict(),
             "disagreements": self.disagreements,

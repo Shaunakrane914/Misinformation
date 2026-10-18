@@ -94,6 +94,11 @@ const VERDICT_CONFIG = {
     badgeClass: 'ur-verdict--insufficient',
     desc: 'Retrieval completed without evidentiary quorum; reliable determination cannot be established.',
   },
+  ACQUISITION_FAILED: {
+    label: 'ACQUISITION FAILED — UNABLE TO RETRIEVE EVIDENCE',
+    badgeClass: 'ur-verdict--refuted',
+    desc: 'Source acquisition failed. This is not a conclusion that no information or risk exists.',
+  },
 };
 
 // ─── Utility helpers ──────────────────────────────────────────────────────────
@@ -169,7 +174,10 @@ function renderVerdictBanner(report) {
   let conf = null;
   let reason = '';
 
-  if (report.verdict && typeof report.verdict === 'object') {
+  if (report.investigation_status === 'ACQUISITION_FAILED') {
+    verdictKey = 'ACQUISITION_FAILED';
+    reason = report.processing_notes?.acquisition?.message || '';
+  } else if (report.verdict && typeof report.verdict === 'object') {
     verdictKey = normalizeVerdictKey(report.verdict.verdict || report.verdict.status);
     conf = report.verdict.confidence;
     reason = report.verdict.reasoning || report.verdict.explanation || '';
@@ -732,6 +740,21 @@ function renderUnifiedReport(container, report) {
   if (!report || typeof report !== 'object') {
     container.innerHTML = `<p class="ur-error">No report data available.</p>`;
     return;
+  }
+
+  // Native agent sections can precede the shared report. Put transport failure
+  // above those sections too, not several screens below an empty dashboard.
+  const parent = container.parentElement;
+  if (parent && typeof parent.prepend === 'function') {
+    parent.querySelector('[data-acquisition-alert]')?.remove();
+    if (report.investigation_status === 'ACQUISITION_FAILED') {
+      const alert = document.createElement('div');
+      alert.dataset.acquisitionAlert = 'true';
+      alert.setAttribute('role', 'alert');
+      alert.className = 'ur-verdict-banner ur-verdict--refuted';
+      alert.innerHTML = `<h2>Acquisition failed — unable to retrieve evidence</h2><p>${esc(report.summary)}</p>`;
+      parent.prepend(alert);
+    }
   }
 
   const html = [

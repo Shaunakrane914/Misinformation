@@ -2,7 +2,16 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Latest release work: preparation and authorized deployment — 2026-10-18
+## Latest P0 work: Lenovo / shared acquisition reliability — 2026-10-18
+
+- [Scope, measured timing, changes and reproduction](2026-10-18_P0_ACQUISITION_RELIABILITY.md).
+  Dedicated fix branch; no merge/deployment. One AI-disabled local Lenovo run
+  returned an observed issuer PDF (1,564 words), four index pages and explicit
+  provider failures, with monotonic timings and preserved read opportunity.
+  Shared failure controls distinguish `ACQUISITION_FAILED` from insufficient
+  evidence. Exact old 9.7s attribution and production parity remain unverified.
+
+## Previous release work: preparation and authorized deployment — 2026-10-18
 
 - [Release scope, verification and publication ledger](2026-10-18_RELEASE_PREPARATION_AND_DEPLOYMENT.md).
   User authorized deployment. Local 1,431 full / 1,223 fast tests and all nine

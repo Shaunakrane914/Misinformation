@@ -43,6 +43,14 @@ class QueryExecutionRecord:
     retrieval_mode: Optional[str] = None
     backend_id: Optional[str] = None
 
+    # None preserves unknown lifecycle on historical records; false is measured.
+    submitted_at: Optional[str] = None
+    provider_started: Optional[bool] = None
+    queue_wait_ms: Optional[float] = None
+    provider_duration_ms: Optional[float] = None
+    provider_duration_censored: Optional[bool] = None
+    submission_delay_ms: Optional[float] = None
+
     def to_dict(self) -> Dict[str, Any]:
         return {
             "query_id": self.query_id,
@@ -59,6 +67,12 @@ class QueryExecutionRecord:
             "error": self.error,
             "retrieval_mode": self.retrieval_mode,
             "backend_id": self.backend_id,
+            "submitted_at": self.submitted_at,
+            "provider_started": self.provider_started,
+            "queue_wait_ms": self.queue_wait_ms,
+            "provider_duration_ms": self.provider_duration_ms,
+            "provider_duration_censored": self.provider_duration_censored,
+            "submission_delay_ms": self.submission_delay_ms,
         }
 
 
@@ -729,10 +743,12 @@ class RetrievalTrace:
     independent_groups: int = 0
     readable_sources: int = 0
     total_latency_ms: int = 0
+    timing: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "scan_id": self.scan_id,
+            "timing": self.timing,
             "agent": self.agent,
             "query": self.query,
             "domain": self.domain,

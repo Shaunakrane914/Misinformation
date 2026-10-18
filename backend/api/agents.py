@@ -212,7 +212,7 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
         result = await asyncio.to_thread(_run_bounded_scan, "scout", analyze)
 
         # If stock price is 0, attempt live quote fallback
-        if not result.get("stock", {}).get("current_price"):
+        if not result.get("stock", {}).get("current_price") and "entity_resolution" not in result:
             quote_data = await asyncio.to_thread(get_stock_quote, request.ticker)
             if quote_data and quote_data.get("current_price", 0) > 0:
                 result["stock"] = quote_data

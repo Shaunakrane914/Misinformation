@@ -583,7 +583,7 @@
       const deltaColor = hasDelta ? (delta < -2.0 ? 'var(--rose)' : (delta > 1.0 ? 'var(--emerald)' : '#fbbf24')) : 'var(--text-dim)';
       const zScoreStr = (stock.z_score != null && stock.z_score !== "") ? `${Number(stock.z_score).toFixed(2)}σ` : '—';
       const isCrashing = stock.is_crashing;
-      const symPrefix = hasPrice ? (stock.currency === 'INR' ? '₹' : '$') : '';
+      const symPrefix = hasPrice ? ({ INR: '₹', USD: '$', HKD: 'HK$', CNY: 'CN¥' }[stock.currency] || `${stock.currency || ''} `) : '';
 
       let html = '';
 

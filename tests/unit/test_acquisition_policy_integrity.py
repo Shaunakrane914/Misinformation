@@ -195,7 +195,7 @@ def test_deep_reading_skips_zero_budget_or_expired_deadline(request_budget, star
     ranked = RankedEvidence(accepted=[], ranked=[EvidenceItem(id="e1")], rejected=[], clusters={})
     with patch("backend.application.research.reading.deep_reader.deep_read") as read:
         result = DeepReadingStage().run(request, ResearchBudget(deep_read_budget=10), ranked,
-                                       start_ts=time.time() if start_ts is None else start_ts, effective_timeout=1)
+                                       start_ts=time.monotonic() if start_ts is None else start_ts, effective_timeout=1)
     read.assert_not_called()
     assert result.telemetry["attempted"] == 0
 
@@ -204,7 +204,7 @@ def test_deep_reading_caps_request_budget_and_remaining_timeout():
     request = ResearchRequest(target="Topic", deep_read_budget=20)
     ranked = RankedEvidence(accepted=[], ranked=[EvidenceItem(id="e1")], rejected=[], clusters={})
     with patch("backend.application.research.reading.deep_reader.deep_read", return_value=([], {})) as read:
-        DeepReadingStage().run(request, ResearchBudget(deep_read_budget=2), ranked, start_ts=time.time(), effective_timeout=0.2)
+        DeepReadingStage().run(request, ResearchBudget(deep_read_budget=2), ranked, start_ts=time.monotonic(), effective_timeout=0.2)
     assert read.call_args.kwargs["max_reads"] == 2
     assert 0 < read.call_args.kwargs["timeout_per_read"] <= 0.2
 

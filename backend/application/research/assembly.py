@@ -92,13 +92,14 @@ class CorpusAssemblyStage:
 
         queries_planned = len(all_query_records)
         queries_skipped = sum(1 for q in all_query_records if q.status == "SKIPPED")
-        queries_submitted = sum(q.status not in {"PLANNED", "SKIPPED", "UNRECORDED"} for q in all_query_records)
-        queries_started = queries_submitted
+        queries_submitted = sum(q.status not in {"PLANNED", "SKIPPED", "UNRECORDED", "NOT_SUBMITTED"} for q in all_query_records)
+        queries_started = sum(q.provider_started if q.provider_started is not None else
+                              q.status in {"SUCCESS", "FAILED", "TIMEOUT", "AUTH_REQUIRED"} for q in all_query_records)
         queries_succeeded = sum(1 for q in all_query_records if q.status == "SUCCESS")
         queries_failed = sum(1 for q in all_query_records if q.status == "FAILED")
         queries_timed_out = sum(1 for q in all_query_records if q.status == "TIMEOUT")
         queries_auth_required = sum(1 for q in all_query_records if q.status == "AUTH_REQUIRED")
-        queries_executed = queries_succeeded + queries_failed + queries_timed_out + queries_auth_required
+        queries_executed = queries_started
 
         all_executed_queries: List[Dict[str, Any]] = [
             q.to_dict() if hasattr(q, "to_dict") else q for q in all_query_records
@@ -157,7 +158,7 @@ class CorpusAssemblyStage:
             channel_telemetry=channel_status,
         )
 
-        total_latency_ms = int((time.time() - start_ts) * 1000)
+        total_latency_ms = int((time.monotonic() - start_ts) * 1000)
 
         # Compile research telemetry
         telemetry = {
@@ -204,6 +205,10 @@ class CorpusAssemblyStage:
         # Build human-readable executive summary
         if "ai_passage_advice" in read_telemetry:
             telemetry["ai_passage_advice"] = read_telemetry["ai_passage_advice"]
+        from backend.services.research.acquisition_status import acquisition_outcome
+        telemetry["acquisition"] = acquisition_outcome(all_executed_queries, len(investigated_items),
+                                                       read_telemetry.get("attempted", 0))
+        telemetry["acquisition_timing"] = trace_dict.get("timing", {})
 
         summary = (
             f"Forensic investigation for '{request.target}' across {len(multi_queries)} channels yielded "
@@ -214,6 +219,8 @@ class CorpusAssemblyStage:
             f"{lineage_graph.get('metrics', {}).get('echo_count', 0)} syndicated echoes."
         )
 
+        if telemetry["acquisition"]["status"] == "ACQUISITION_FAILED":
+            summary = telemetry["acquisition"]["message"]
         return AssembledResearch(corpus, telemetry, summary, primary_sources, total_latency_ms)
 
 

@@ -10,6 +10,8 @@ Preserves full backward compatibility with the legacy AgentReachScraper.
 import concurrent.futures
 import logging
 import re
+import copy
+import threading
 import urllib.parse
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -60,6 +62,11 @@ from backend.services.agent_reach.native.channel_capabilities import AUTHORITATI
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
 
 logger = logging.getLogger(__name__)
+
+# Shared capacity across requests, including workers still exiting after timeout.
+# Python cannot kill a running thread; bounded provider transports must finish it.
+_SEARCH_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=8, thread_name_prefix="acquisition")
+_SEARCH_CAPACITY = threading.BoundedSemaphore(32)
 
 # Known news wire syndication signatures for source-independence clustering
 SYNDICATION_MARKERS = [
@@ -359,7 +366,8 @@ class AgentReachService:
         """
         import time
         start_ts = time.time()
-        deadline = time.monotonic() + max(0.0, timeout)
+        start_monotonic = time.monotonic()
+        deadline = start_monotonic + max(0.0, timeout)
         budget = budget or {}
         max_q_per_ch = max(0, int(budget.get("max_queries_per_channel", 3)))
         max_res_per_q = max(0, int(budget.get("max_results_per_query", 5)))
@@ -367,6 +375,9 @@ class AgentReachService:
         max_deep_reads = max(0, int(budget.get("max_deep_reads", 4)))
         max_read_chars = min(20_000, max(0, int(budget.get("max_read_chars", 8000))))
         task_timeout = max(0.0, budget.get("channel_timeout", min(timeout, 8.0)))
+        lifecycle = {}
+        lifecycle_lock = threading.Lock()
+        closed = False
 
         def _read_with_deadline(url: str, max_chars: int = 4000) -> Dict[str, Any]:
             remaining = deadline - time.monotonic()
@@ -424,6 +435,7 @@ class AgentReachService:
             source_doc = _read_with_deadline(source_url, max_chars=max_read_chars)
 
         # 3. Channel Telemetry Setup
+        health_started = time.monotonic()
         channel_telemetry_map: Dict[str, ChannelTelemetry] = {}
         for ch_name in self.registry.channel_names:
             ch_status = self.registry.get_status(ch_name).value
@@ -442,7 +454,7 @@ class AgentReachService:
             telemetry.queries_attempted = [q["query_text"] for q in queries]
             telemetry.requests_attempted = len(queries)
 
-            st_info = native_doctor.get_channel_status(ch_name)
+            st_info = native_doctor.peek_channel_status(ch_name)
             backend_id = st_info.get("active_backend") or ch_name
 
             channel_obj = self.registry.get_channel(ch_name)
@@ -470,6 +482,7 @@ class AgentReachService:
                         error=reason,
                         retrieval_mode="skipped",
                         backend_id=backend_id,
+                        provider_started=False,
                     )
                     query_records_map[q_spec["query_id"]] = rec
                     continue
@@ -478,16 +491,21 @@ class AgentReachService:
         # 4. Concurrent execution with bounded concurrency
         raw_fragments: List[EvidenceFragment] = []
         executed_queries_count = 0
+        health_snapshot_ms = round((time.monotonic() - health_started) * 1000, 3)
 
         def _run_single_query(task_tuple) -> Tuple[str, List[EvidenceFragment], int, Optional[str], QueryExecutionRecord]:
             ch_n, ch_obj, q_sp = task_tuple
             started_at = datetime.utcnow().isoformat()
-            t0 = time.time()
-            st_info = native_doctor.get_channel_status(ch_n)
+            t0 = time.monotonic()
+            st_info = native_doctor.peek_channel_status(ch_n)
             backend_id = st_info.get("active_backend") or ch_n
             try:
                 if time.monotonic() >= deadline or max_res_per_q <= 0:
                     raise TimeoutError("Retrieval deadline or result budget exhausted")
+                with lifecycle_lock:
+                    if closed:
+                        raise TimeoutError("Investigation already closed")
+                    lifecycle[q_sp["query_id"]].update(started=t0, started_at=started_at)
                 frags = ch_obj.search(
                     q_sp["query_text"],
                     limit=max_res_per_q,
@@ -498,7 +516,9 @@ class AgentReachService:
                     operation=q_sp.get("operation", "search"),
                 )
                 completed_at = datetime.utcnow().isoformat()
-                lat = int((time.time() - t0) * 1000)
+                lat = int((time.monotonic() - t0) * 1000)
+                # Detach provider-owned records before normalization/return.
+                frags = copy.deepcopy(frags)
                 for f in frags or []:
                     if not getattr(f, "query_id", "") and q_sp.get("query_id"):
                         f.query_id = q_sp["query_id"]
@@ -540,7 +560,7 @@ class AgentReachService:
                 return ch_n, frags or [], lat, None, q_rec
             except Exception as e:
                 completed_at = datetime.utcnow().isoformat()
-                lat = int((time.time() - t0) * 1000)
+                lat = int((time.monotonic() - t0) * 1000)
                 err_str = str(e)
                 err_lower = err_str.lower()
                 declared_status = getattr(e, "status", "")
@@ -573,15 +593,40 @@ class AgentReachService:
 
         channel_raw_fragments: Dict[str, List[EvidenceFragment]] = {ch: [] for ch in normalized_channel_queries}
 
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
+        executor = _SEARCH_POOL
         try:
-            future_to_task = {executor.submit(_run_single_query, t): t for t in tasks}
+            future_to_task = {}
+            # Round-robin channels: one slow provider cannot occupy every worker
+            # before an unrelated channel has a chance to submit.
+            tasks.sort(key=lambda task: normalized_channel_queries[task[0]].index(task[2]))
+            for task in tasks:
+                ch_n, _, q_sp = task
+                now = time.monotonic()
+                rejection = ("Discovery deadline exhausted before submission" if now >= deadline else
+                             "Configured result budget is zero" if max_res_per_q <= 0 else None)
+                if rejection is None and not _SEARCH_CAPACITY.acquire(blocking=False):
+                    rejection = "Bounded worker capacity unavailable"
+                if rejection:
+                    query_records_map[q_sp["query_id"]] = QueryExecutionRecord(
+                        query_id=q_sp["query_id"], channel=ch_n, query_text=q_sp["query_text"],
+                        query_class=q_sp["query_class"], status="SKIPPED" if max_res_per_q <= 0 else "NOT_SUBMITTED",
+                        provider_started=False, error=rejection)
+                    continue
+                lifecycle[q_sp["query_id"]] = {"submitted": now, "submitted_at": datetime.utcnow().isoformat()}
+                try:
+                    fut = executor.submit(_run_single_query, task)
+                except Exception:
+                    _SEARCH_CAPACITY.release()
+                    raise
+                fut.add_done_callback(lambda _, gate=_SEARCH_CAPACITY: gate.release())
+                future_to_task[fut] = task
             try:
                 for fut in concurrent.futures.as_completed(future_to_task, timeout=max(0.0, deadline - time.monotonic())):
                     ch_n, ch_obj, q_sp = future_to_task[fut]
                     executed_queries_count += 1
                     try:
                         ch_ret, frags, lat, err, q_rec = fut.result(timeout=task_timeout)
+                        lifecycle[q_rec.query_id]["provider_returned"] = True
                         query_records_map[q_rec.query_id] = q_rec
                         tel = channel_telemetry_map[ch_ret]
                         tel.latency_ms = max(tel.latency_ms, lat)
@@ -609,7 +654,7 @@ class AgentReachService:
                             result_count_normalized=0,
                             error=str(ex),
                             retrieval_mode="direct",
-                            backend_id=native_doctor.get_channel_status(ch_n).get("active_backend") or ch_n,
+                            backend_id=native_doctor.peek_channel_status(ch_n).get("active_backend") or ch_n,
                         )
             except concurrent.futures.TimeoutError:
                 logger.warning(f"[AgentReachService] Retrieval timeout reached after {timeout}s; collecting partial results")
@@ -631,17 +676,40 @@ class AgentReachService:
                                 result_count_normalized=0,
                                 error="Retrieval budget timeout",
                                 retrieval_mode="direct",
-                                backend_id=native_doctor.get_channel_status(ch_n).get("active_backend") or ch_n,
+                                backend_id=native_doctor.peek_channel_status(ch_n).get("active_backend") or ch_n,
                             )
         finally:
-            executor.shutdown(wait=False, cancel_futures=True)
+            with lifecycle_lock:
+                closed = True
+                frozen_lifecycle = copy.deepcopy(lifecycle)
+            for fut in future_to_task:
+                fut.cancel()
+            finished = time.monotonic()
+            for rec in query_records_map.values():
+                state = frozen_lifecycle.get(rec.query_id)
+                if not state:
+                    continue
+                rec.submitted_at = state["submitted_at"]
+                rec.submission_delay_ms = round((state["submitted"] - (deadline - max(0.0, timeout))) * 1000, 3)
+                rec.provider_started = "started" in state
+                rec.started_at = state.get("started_at")
+                rec.queue_wait_ms = round((state.get("started", finished) - state["submitted"]) * 1000, 3)
+                rec.provider_duration_censored = rec.provider_started and not state.get("provider_returned", False)
+                rec.provider_duration_ms = rec.latency_ms if rec.provider_started and state.get("provider_returned") else (
+                    round((finished - state["started"]) * 1000, 3) if rec.provider_started else 0.0)
+                if not rec.provider_started and rec.status == "TIMEOUT":
+                    rec.status = "QUEUE_TIMEOUT"
+                    rec.error = "Submitted but search did not start before discovery deadline"
 
         # Update per-channel raw counts
         for ch_n, tel in channel_telemetry_map.items():
+            attempted = [rec for rec in query_records_map.values() if rec.channel == ch_n and rec.provider_started]
+            tel.requests_attempted = len(attempted)
+            tel.queries_attempted = [rec.query_text for rec in attempted]
             ch_raw = channel_raw_fragments.get(ch_n, [])
             tel.raw_results = len(ch_raw)
             tel.normalized_results = len(ch_raw)
-            st_info = native_doctor.get_channel_status(ch_n)
+            st_info = native_doctor.peek_channel_status(ch_n)
             tel.active_backend = st_info.get("active_backend") or ch_n
             if tel.failure_reason:
                 tel.status = ChannelStatus.UNAVAILABLE.value
@@ -731,7 +799,8 @@ class AgentReachService:
         # 9. Build Capability-Aware Execution Graph & RetrievalTrace
         unique_domains = len(set(urllib.parse.urlparse(f.url).netloc.lower() for f in deduped_fragments if f.url))
         indep_groups_count = len(set(f.raw_metadata.get("source_independence_group", "independent") for f in deduped_fragments))
-        total_latency_ms = int((time.time() - start_ts) * 1000)
+        total_latency_ms = int((time.monotonic() - start_monotonic) * 1000)
+        executed_queries_count = sum(bool(rec.provider_started) for rec in query_records_map.values())
 
         execution_graph: List[Dict[str, Any]] = []
         native_backends_used: Set[str] = set()
@@ -741,7 +810,7 @@ class AgentReachService:
         for ch_n, tel in channel_telemetry_map.items():
             if tel.requests_attempted == 0 and tel.raw_results == 0:
                 continue
-            st_info = native_doctor.get_channel_status(ch_n)
+            st_info = native_doctor.peek_channel_status(ch_n)
             backend_name = st_info.get("active_backend") or tel.active_backend or ch_n
             fallback_chain = ["Playwright", "RSS", "Direct HTML"] if ch_n == "web" else ["Jina Web", "Meta API"]
             is_fallback = bool(tel.fallback_used or "fallback" in str(backend_name).lower())
@@ -775,6 +844,9 @@ class AgentReachService:
         }
 
         trace = RetrievalTrace(
+            timing={"clock": "monotonic", "capability_snapshot_ms": health_snapshot_ms,
+                    "synchronous_doctor_calls": 0, "discovery_budget_seconds": timeout,
+                    "remaining_discovery_seconds": max(0.0, deadline - time.monotonic())},
             scan_id=f"scan_{int(start_ts)}_{abs(hash(target_name or domain)) % 10000:04d}",
             agent=agent_name,
             query=target_name or "multi_query",

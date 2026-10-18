@@ -847,4 +847,18 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
             report.summary = brief
         if coverage["status"] == "INSUFFICIENT_EVIDENCE":
             report.next_steps = steps
+    acquisition = trace.get("acquisition")
+    if isinstance(acquisition, dict):
+        report.investigation_status = acquisition.get("status")
+        report.processing_notes["acquisition"] = acquisition
+        data["investigation_status"] = acquisition.get("status")
+        if acquisition.get("status") == "ACQUISITION_FAILED":
+            data["status"] = "ACQUISITION_FAILED"
+            report.summary = acquisition.get("message") or "Unable to retrieve evidence."
+            report.findings = []
+            report.finding_details = []
+            report.disagreements = []
+            report.detailed_contradictions = []
+            report.agent_intelligence = {}
+            report.next_steps = ["Inspect query-level failures below; retry only after the access or timeout failure is addressed."]
     return report

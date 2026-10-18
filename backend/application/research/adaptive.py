@@ -130,7 +130,7 @@ class AdaptiveExpansionStage:
                     gaps=gaps,
                     new_actions=[action.to_dict() for action in new_actions],
                 )
-                if new_actions and (time.time() - start_ts) < discovery_ceiling:
+                if new_actions and (time.monotonic() - start_ts) < discovery_ceiling:
                     replan_queries: Dict[str, List[Dict[str, str]]] = {}
                     for action in new_actions:
                         replan_queries.setdefault(action.channel, []).append({
@@ -151,7 +151,7 @@ class AdaptiveExpansionStage:
                             "max_deep_reads": 0,
                         },
                         perform_reads=False,
-                        timeout=min(6.0, max(0.0, discovery_ceiling - (time.time() - start_ts))),
+                        timeout=min(6.0, max(0.0, discovery_ceiling - (time.monotonic() - start_ts))),
                     )
                     replan_candidates: List[EvidenceItem] = []
                     for idx, fragment in enumerate(replan_result.fragments):
@@ -185,7 +185,7 @@ class AdaptiveExpansionStage:
 
         if budget.follow_up_budget > 0:
             for round_idx in range(1, max_adaptive_rounds + 1):
-                elapsed = time.time() - start_ts
+                elapsed = time.monotonic() - start_ts
                 if elapsed >= discovery_ceiling:
                     follow_up_telemetry["halted_early"] = True
                     follow_up_telemetry["halt_reason"] = "discovery_timeout_reached"
@@ -223,8 +223,8 @@ class AdaptiveExpansionStage:
                 follow_up_telemetry["queries_planned"] += len(new_queries)
 
                 for fu_idx, fu in enumerate(new_queries):
-                    if (time.time() - start_ts) >= discovery_ceiling or novelty_tracker.is_saturated:
-                        reason = "discovery_timeout_reached" if (time.time() - start_ts) >= discovery_ceiling else novelty_tracker.halt_reason
+                    if (time.monotonic() - start_ts) >= discovery_ceiling or novelty_tracker.is_saturated:
+                        reason = "discovery_timeout_reached" if (time.monotonic() - start_ts) >= discovery_ceiling else novelty_tracker.halt_reason
                         follow_up_telemetry["halted_early"] = True
                         follow_up_telemetry["halt_reason"] = reason
                         # Record remaining planned queries as SKIPPED
@@ -280,7 +280,7 @@ class AdaptiveExpansionStage:
                             fu_error = skip_reason if fu_error is None else f"{fu_error}; {skip_reason}"
                             continue
                         try:
-                            remaining = max(0.0, discovery_ceiling - (time.time() - start_ts))
+                            remaining = max(0.0, discovery_ceiling - (time.monotonic() - start_ts))
                             frags = _bounded_channel_search(agent_reach_service, ch, fu["query_text"], remaining)
                             if frags:
                                 query_had_success = True

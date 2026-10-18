@@ -9,6 +9,7 @@ flags coordinated short attacks and misinformation, and predicts price movement.
 import json
 import logging
 import os
+import time
 from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -26,6 +27,7 @@ from backend.agents.scout.financial import (
     fetch_stock_data,
     predict_impact,
     resolve_ticker_and_company,
+    resolve_company_identity,
 )
 from backend.services.agent_reach.adapter import agent_reach_service  # Architecture contract preservation
 
@@ -88,7 +90,7 @@ class ScoutAgent:
             ticker=ticker,
             base_url=self.base_url,
             api_key=self.api_key,
-            social_correlator=self.correlate_social_rumors
+            social_correlator=None  # Shared research below owns acquisition; no duplicate preflight scan.
         )
 
     def _synthesize_financial_intelligence(
@@ -209,11 +211,21 @@ class ScoutAgent:
         4. Chronological research timeline construction
         5. Grounded catalyst, narrative, and contradiction reasoning
         """
-        start_t = datetime.utcnow()
-        sym, company_name = self.resolve_ticker_and_company(ticker)
+        scan_start = time.monotonic()
+        resolution = resolve_company_identity(ticker)
+        sym, company_name = resolution["proposed_symbol"] or "", resolution["company_name"]
+        resolution_ms = round((time.monotonic() - scan_start) * 1000, 3)
 
         # 1. Market Telemetry
-        stock_data = self.check_stock_impact(sym)
+        quote_started = time.monotonic()
+        stock_data = self.check_stock_impact(sym) if sym else {}
+        quote_ms = round((time.monotonic() - quote_started) * 1000, 3)
+        quote_identity = stock_data.get("quote_identity") if stock_data else None
+        if not quote_identity:
+            stock_data = {}
+        else:
+            resolution.update(quote_validated=True, currency=quote_identity["currency"],
+                              exchange=quote_identity.get("exchange"), quote_source=quote_identity.get("source"))
         if not stock_data or not stock_data.get("current_price"):
             stock_data = {
                 "ticker": sym,
@@ -222,22 +234,26 @@ class ScoutAgent:
                 "prev_close": None,
                 "drop_percent": None,
                 "z_score": None,
-                "currency": "INR" if sym.endswith(".NS") or sym.endswith(".BO") else "USD",
+                "currency": resolution.get("currency"),
                 "is_crashing": None,
-                "data_source": "Unavailable: market quote retrieval did not return a usable price"
+                "data_source": ("No listing selected: multiple Lenovo markets/currencies exist; company research continues without a quote."
+                                if resolution["status"] == "AMBIGUOUS_LISTING" else
+                                "Listing unresolved; company research continues without a quote." if not sym else
+                                "Unavailable: market quote retrieval did not return a validated usable price")
             }
         else:
             stock_data["name"] = company_name
-            stock_data["currency"] = "INR" if sym.endswith(".NS") or sym.endswith(".BO") else "USD"
+            stock_data["currency"] = quote_identity["currency"]
             stock_data["data_source"] = "Historical Daily Close via Yahoo Finance Chart API (Delayed) — Non-realtime"
 
         # 2. Shared Deep Research Engine Retrieval & Investigation
         from backend.services.research import research_engine, ResearchRequest
         research_req = ResearchRequest(
-            target=f"{company_name} ({sym})",
+            target=f"{company_name} ({sym})" if sym else company_name,
             domain="financial",
             intent=query or f"investigate financial performance, corporate filings, regulatory risks, and market catalysts for {company_name}",
-            extra_params={"claim_text": query or ""},
+            extra_params={"claim_text": query or "", "pre_research_timings_ms": {
+                "entity_resolution": resolution_ms, "market_quote": quote_ms}},
             query_classes=[
                 "latest_primary", "official_statement", "regulatory", "investigative",
                 "independent_reporting", "community_signal", "contradiction"
@@ -245,6 +261,8 @@ class ScoutAgent:
             required_source_roles=["PRIMARY", "SECONDARY", "COMMUNITY"],
             deep_read_budget=15,
             corroboration_budget=4,
+            agent_name="scout",
+            timeout_seconds=max(0.0, research_engine.budget.timeout_seconds - (time.monotonic() - scan_start)),
         )
         research_res = None
         try:
@@ -393,6 +411,12 @@ class ScoutAgent:
 
         # 5. Extract Grounded Catalysts, Narratives, Contradictions, & Misinformation Risk
         reasoning = self._synthesize_financial_intelligence(company_name, sym, stock_data, all_sources)
+        acquisition_failed = research_telemetry.get("acquisition", {}).get("status") == "ACQUISITION_FAILED"
+        if acquisition_failed:
+            reasoning = {"catalysts": {"positive": [], "negative": [], "unresolved": []},
+                         "risks": [], "narratives": [], "contradictions": {"for": [], "against": [], "unresolved": []},
+                         "misinformation": {"status": "ACQUISITION_FAILED", "manipulation_risk": "UNASSESSED",
+                                            "evidence_quality_score": None, "rumors_detected": []}}
 
         # 6. Backward compatibility fields
         drop_pct = abs(stock_data.get("drop_percent") or 0.0)
@@ -445,7 +469,7 @@ class ScoutAgent:
             for n in news_items
         ]
 
-        total_time_ms = int((datetime.utcnow() - start_t).total_seconds() * 1000)
+        total_time_ms = int((time.monotonic() - scan_start) * 1000)
 
         session_id = research_telemetry.get("dossier_id") or None
         source_lineage = getattr(research_res, "source_lineage_graph", {}) or {
@@ -477,6 +501,9 @@ class ScoutAgent:
 
         return {
             "ticker": sym,
+            "entity_resolution": resolution,
+            "investigation_status": research_telemetry.get("acquisition", {}).get("status"),
+            "acquisition": research_telemetry.get("acquisition", {}),
             "company_name": company_name,
             "session_id": session_id,
             "replay_url": replay_url,
@@ -546,7 +573,7 @@ class ScoutAgent:
             "financial_facts": [f.__dict__ for f in scout_result.financial_facts] if scout_result else [],
             "corporate_events": [e.__dict__ for e in scout_result.events] if scout_result else [],
             "story_clusters": [c.__dict__ for c in scout_result.clusters] if scout_result else [],
-            "epistemic_status": scout_result.epistemic_status if scout_result else "REPORTED",
+            "epistemic_status": "ACQUISITION_FAILED" if acquisition_failed else scout_result.epistemic_status if scout_result else "REPORTED",
             "scout_source_telemetry": scout_result.telemetry if scout_result else {}
         }
 

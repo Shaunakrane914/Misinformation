@@ -12,6 +12,12 @@ This count is the historical Phase 7.2 snapshot. For current validation behavior
 
 ### Terminal-first / strict API-cost controls — 2026-10-18
 
+- [P0 all-timeout control builder](../../scripts/diagnostics/build_acquisition_failure_controls.py):
+  `--output-dir <new-dir>` creates labeled synthetic failure SSE for four-agent
+  browser replay with network blocked. It never acquires evidence or calls AI.
+  [P0 timing/failure handoff](../handoffs/2026-10-18_P0_ACQUISITION_RELIABILITY.md)
+  distinguishes the one real Lenovo run from these offline presentation controls.
+
 - [Exact deployment verifier](../../scripts/diagnostics/verify_deployed_candidate.py):
   `--env-file <existing-env> --expected-commit <full-sha> --output-dir <new-dir>`
   checks Render's live commit and nine actual Cloudflare assets against Git

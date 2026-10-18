@@ -77,6 +77,21 @@ class DoctorBridge:
         """Alias for check_all."""
         return self.check_all(force_refresh=force_refresh)
 
+    def peek_channel_status(self, platform: str) -> Dict[str, Any]:
+        """Non-probing snapshot for acquisition. Expired diagnostics are not health proof.
+
+        Explicit doctor endpoints may refresh diagnostics; active searches must
+        never start an upstream diagnostic or subprocess on a cache miss.
+        """
+        canonical = "twitter" if platform.lower() == "x" else platform.lower()
+        observed = self._observed_results.get(canonical)
+        if observed:
+            return dict(observed)
+        cached = (self._cached_results or {}).get(canonical, {})
+        if time.time() - self._last_check_ts < self.cache_ttl and isinstance(cached, dict):
+            return dict(cached)
+        return {"status": "not_probed", "active_backend": None, "snapshot_only": True}
+
     def get_channel_status(self, platform: str) -> Dict[str, Any]:
         """Get live health and active backend for a specific platform."""
         plat_lower = platform.lower()

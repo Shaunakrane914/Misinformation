@@ -201,7 +201,7 @@ def test_shared_source_replan_is_triggered_by_real_evidence_gaps():
     ) as retrieve_many:
         adaptive = AdaptiveDiscoveryCoordinator().run(
             request, budget, plan, discovery, ranked,
-            start_ts=time.time(), effective_timeout=20.0,
+            start_ts=time.monotonic(), effective_timeout=20.0,
         )
     assert adaptive.telemetry["source_replan"]["triggered"] is True
     assert "missing primary evidence" in adaptive.telemetry["source_replan"]["gaps"]
@@ -249,7 +249,7 @@ def test_adaptive_followups_skip_recently_rate_limited_operation():
     with patch("backend.services.agent_reach.agent_reach_service.search_channel") as search:
         result = AdaptiveDiscoveryCoordinator().run(
             request, ResearchBudget(follow_up_budget=1, timeout_seconds=20),
-            plan, discovery, ranked, start_ts=time.time(), effective_timeout=20.0,
+            plan, discovery, ranked, start_ts=time.monotonic(), effective_timeout=20.0,
         )
 
     search.assert_not_called()
@@ -285,7 +285,7 @@ def test_adaptive_followups_do_not_repeat_initial_query():
     with patch("backend.services.agent_reach.agent_reach_service.search_channel") as search:
         result = AdaptiveDiscoveryCoordinator().run(
             request, ResearchBudget(follow_up_budget=1, timeout_seconds=20),
-            plan, discovery, ranked, start_ts=time.time(), effective_timeout=20.0,
+            plan, discovery, ranked, start_ts=time.monotonic(), effective_timeout=20.0,
         )
     search.assert_not_called()
     assert result.telemetry["rounds_executed"] == 0
@@ -301,7 +301,7 @@ def test_stage_6_deep_reading_stage():
     ranked = RankedEvidence(accepted=[ev1], ranked=[ev1], clusters={"grp1": ["ev_001"]}, rejected=[])
 
     with patch("backend.services.research.deep_reader.deep_reader.deep_read", return_value=([ev1], {"attempted": 1, "successful": 1, "read_urls": [ev1.canonical_url]})):
-        read_res = stage.run(request, budget, ranked, start_ts=time.time(), effective_timeout=20.0)
+        read_res = stage.run(request, budget, ranked, start_ts=time.monotonic(), effective_timeout=20.0)
         assert len(read_res.investigated) == 1
         assert read_res.telemetry["successful"] == 1
 

@@ -599,6 +599,10 @@ class ResearchResult:
         return len(self.evidence)
 
     @property
+    def investigation_status(self) -> str:
+        return self.telemetry.get("acquisition", {}).get("status", "NOT_RECORDED")
+
+    @property
     def channel_health(self) -> Dict[str, str]:
         return self.channel_status
 
@@ -618,6 +622,7 @@ class ResearchResult:
     def to_dict(self) -> Dict[str, Any]:
         return {
             "agent": self.agent,
+            "investigation_status": self.investigation_status,
             "target": self.target,
             "domain": self.domain,
             "summary": self.summary,

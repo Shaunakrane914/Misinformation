@@ -10,7 +10,11 @@ from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional, Tuple
 
 import numpy as np
-import requests
+import re
+import time
+import json
+from urllib.parse import quote
+from backend.infrastructure.acquisition.network.http import fetch_public_http
 
 logger = logging.getLogger(__name__)
 
@@ -26,11 +30,52 @@ def resolve_ticker_and_company(ticker: str) -> Tuple[str, str]:
         'TCS': 'TCS.NS', 'HDFC': 'HDFCBANK.NS', 'HDFCBANK': 'HDFCBANK.NS',
         'WIPRO': 'WIPRO.NS', 'ICICI': 'ICICIBANK.NS', 'SBI': 'SBIN.NS', 'ADANI': 'ADANIENT.NS',
     }
-    sym = name_to_ticker.get(clean, clean)
+    if clean in {"LENOVO", "LENOVO GROUP", "LENOVO GROUP LIMITED"}:
+        return "", "Lenovo"
     from backend.services.agent_reach.planner import TICKER_NAME_MAP
+    sym = name_to_ticker.get(clean, clean if clean in TICKER_NAME_MAP else "")
+    if not sym:
+        # An unfamiliar company/symbol is a research target, not a listing.
+        return "", ticker.strip()
     base_sym = sym.replace('.NS', '').replace('.BO', '')
     company = TICKER_NAME_MAP.get(sym, TICKER_NAME_MAP.get(base_sym, base_sym.title()))
     return sym, company
+
+
+def resolve_company_identity(value: str) -> Dict[str, Any]:
+    """Separate corporate identity from a proposed quote symbol; no network."""
+    symbol, company = resolve_ticker_and_company(value)
+    lenovo = company == "Lenovo" or value.upper() in {"0992.HK", "992.HK", "80992.HK", "LNVGY"}
+    if lenovo:
+        selected = {"992.HK": "0992.HK"}.get(value.upper(), value.upper())
+        listings = [
+            {"symbol": "0992.HK", "exchange": "HKEX", "currency": "HKD", "kind": "ordinary_share"},
+            {"symbol": "80992.HK", "exchange": "HKEX", "currency": "CNY", "kind": "RMB_counter"},
+            {"symbol": "LNVGY", "exchange": "OTC", "currency": "USD", "kind": "ADR"},
+        ]
+        explicit = next((row for row in listings if row["symbol"] == selected), None)
+        return {"company_name": "Lenovo", "legal_name": "Lenovo Group Limited",
+                "proposed_symbol": explicit["symbol"] if explicit else None,
+                "status": "EXPLICIT_LISTING_REQUIRES_QUOTE_VALIDATION" if explicit else "AMBIGUOUS_LISTING",
+                "listing_candidates": listings, "currency": explicit["currency"] if explicit else None,
+                "exchange": explicit["exchange"] if explicit else None,
+                "listing_reference": "https://investor.lenovo.com/en/ir/stockinfo.php",
+                "listing_reference_checked": "2026-10-18", "quote_validated": False}
+    return {"company_name": company, "proposed_symbol": symbol or None,
+            "status": "CATALOG_CANDIDATE" if symbol else "UNRESOLVED_LISTING",
+            "currency": "INR" if symbol.endswith((".NS", ".BO")) else None,
+            "listing_candidates": [], "quote_validated": False}
+
+
+def validated_quote_metadata(chart_data, symbol):
+    rows = (chart_data or {}).get("chart", {}).get("result") or []
+    meta = rows[0].get("meta", {}) if rows else {}
+    # A valid body without matching identity/currency cannot supply market data.
+    if (not symbol or str(meta.get("symbol", "")).upper() != symbol.upper()
+            or not re.fullmatch(r"[A-Z]{3}", str(meta.get("currency", "")))):
+        return None
+    return {"symbol": meta["symbol"], "currency": meta["currency"],
+            "exchange": meta.get("exchangeName"), "source": "Yahoo Finance Chart"}
 
 
 def fetch_stock_data(
@@ -53,28 +98,32 @@ def fetch_stock_data(
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
         'Accept': 'application/json'
     }
+    quote_deadline = time.monotonic() + 5.0
 
     # 1. Try free zero-cost Yahoo Finance chart endpoint
     try:
-        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{ticker}?interval=1d&range=5d"
+        url = f"https://query1.finance.yahoo.com/v8/finance/chart/{quote(ticker, safe='')}?interval=1d&range=5d"
         logger.info(f"Fetching stock data for {ticker} via Yahoo Finance...")
-        response = requests.get(url, headers=browser_headers, timeout=8)
+        response = fetch_public_http(url, headers=browser_headers, timeout=5, max_bytes=1_000_000,
+                                     max_attempts=1, max_redirects=0)
         if response.status_code == 200:
-            data = response.json()
-            if data.get('chart', {}).get('result'):
+            data = json.loads(response.body)
+            if data.get('chart', {}).get('result') and validated_quote_metadata(data, ticker):
                 logger.info(f"Successfully fetched data for {ticker}")
                 return data
     except Exception as e:
         logger.debug(f"Direct Yahoo Finance fetch notice: {e}")
 
     # 2. Try yfapi.net if API key is configured
-    if api_key:
+    if api_key and time.monotonic() < quote_deadline:
         try:
-            url = f"{base_url}/v8/finance/chart/{ticker}?range=5d&interval=1d"
+            url = f"{base_url}/v8/finance/chart/{quote(ticker, safe='')}?range=5d&interval=1d"
             headers = {'X-API-KEY': api_key, 'accept': 'application/json'}
-            response = requests.get(url, headers=headers, timeout=10)
+            response = fetch_public_http(url, headers=headers, timeout=max(0.01, quote_deadline - time.monotonic()),
+                                         max_bytes=1_000_000, max_attempts=1, max_redirects=0)
             if response.status_code == 200:
-                return response.json()
+                data = json.loads(response.body)
+                return data if validated_quote_metadata(data, ticker) else None
         except Exception as e:
             logger.error(f"yfapi.net fetch failed: {e}")
 
@@ -271,22 +320,6 @@ def check_stock_impact(
         if chart_data:
             prices = extract_prices(chart_data)
         if not prices or len(prices) < 2:
-            try:
-                url = f"{base_url}/v8/finance/chart/{ticker}"
-                headers = {'X-API-KEY': api_key, 'accept': 'application/json'}
-                params = {'range': '5d', 'interval': '1d', 'indicators': 'quote', 'includeTimestamps': 'true'}
-                r = requests.get(url, headers=headers, params=params, timeout=10)
-                if r.status_code == 200:
-                    d = r.json()
-                    rr = d.get('chart', {}).get('result', [])
-                    if rr:
-                        q = rr[0].get('indicators', {}).get('quote', [])
-                        closes = [p for p in (q[0].get('close', []) if q else []) if p is not None]
-                        if len(closes) >= 2:
-                            prices = closes
-            except Exception:
-                pass
-        if not prices or len(prices) < 2:
             return {}
         first = float(prices[0])
         last = float(prices[-1])
@@ -301,6 +334,7 @@ def check_stock_impact(
         social_intel = social_correlator(ticker) if social_correlator else {}
 
         return {
+            "quote_identity": validated_quote_metadata(chart_data, ticker),
             "ticker": ticker,
             "current_price": round(last, 2),
             "drop_percent": round(drop_percent, 2),

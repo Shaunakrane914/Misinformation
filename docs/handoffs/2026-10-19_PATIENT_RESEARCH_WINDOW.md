@@ -130,3 +130,16 @@ fix-branch commit and hosted CI outcome must be recorded below. No main merge
 or deployment is authorized by a generous timeout or passing offline suite.
 Source-selection/publisher-resolution failures still need independent work;
 do not keep increasing budgets as a substitute for acquiring relevant evidence.
+
+### Published checkpoint and observed CI
+
+Application `69b48d64bc7ec8146a2da18bec5b8170dc7c861c` was committed and pushed
+only to the existing fix branch. [Hosted run 39217416499](https://github.com/Shaunakrane914/Misinformation/actions/runs/39217416499)
+passed all five jobs at that exact SHA. `gh run watch --exit-status` exited 0;
+the run conclusion was checked separately. This includes full offline tests,
+Python 3.11/3.12/3.13, frontend contracts and release validators.
+
+Main remained `8471ee349efd48644519d3a8fecde2e724ebf6ae`; no merge/deployment.
+This later ledger update is documentation-only and does not predeclare CI for
+its own commit. Earlier uncommitted wording records the local snapshot. The
+live result remains profile-only and research acceptance remains incomplete.

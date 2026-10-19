@@ -2,15 +2,16 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
-## Local repair after four-prompt failure — 2026-10-19
+## Verified fix-branch repair after four-prompt failure — 2026-10-19
 
 - [Code, decisions, tests and measured limits](2026-10-19_FOUR_PROMPT_REPAIR.md):
   fixed channel bulkheads, shared deadline propagation, unbounded feed-parser
   network calls and selection/provenance bugs. 1,468 full / 1,260 fast tests
   passed. Infosys acquired actual financial PDFs; all Tim Cook main queries
   started, but Nike remains background-only and Tim Cook profile-only. Six
-  bounded live investigations, zero AI calls; no universal research acceptance,
-  commit, push, merge or deployment. Preserve the preceding audit evidence.
+  bounded live investigations, zero AI calls. Committed/pushed only to the fix
+  branch; all five hosted jobs passed at `a674233`. No universal research
+  acceptance, merge or deployment. Preserve the preceding audit evidence.
 
 ## Four-prompt verification — 2026-10-19
 

@@ -184,7 +184,21 @@ probe blocked providers. Independent held-out claim adjudication remains open.
 
 ## Publication ledger
 
-After local validation, the repair checkpoint is intended only for the existing
-dedicated fix branch so the user-requested hosted CI can execute. No main push,
-merge or deployment is part of that publication. Inspect the exact pushed SHA
-and run conclusion; the local counts above are not predeclared hosted results.
+Repair checkpoint `a6742334481b034f3f61c33093a0e74f3cbc0619` was committed and
+pushed only to `fix/p0-lenovo-acquisition-20261018`. The preserved preceding audit
+and new evidence were included deliberately; no unrelated changes were staged.
+A limited credential-pattern scan and protected-path staged checks found no
+matches/violations; this is not a comprehensive secrets-security audit.
+
+[Hosted CI run 39212958292](https://github.com/Shaunakrane914/Misinformation/actions/runs/39212958292)
+completed successfully at that exact SHA: all five jobs passed, including
+Python 3.11/3.12/3.13, full offline regression, frontend contracts, persistence
+and release validators. `gh run view` returned success and all job conclusions
+were observed; no hosted result was inferred from HTTP 200 or local pytest.
+
+Remote main remained `8471ee349efd48644519d3a8fecde2e724ebf6ae`. No main push,
+merge or deployment was performed. This final publication-ledger update is
+documentation only and records CI for the application checkpoint above, not
+for its own later commit. Capture metadata marked uncommitted describes the
+earlier local observation, not current publication status. Research acceptance
+remains incomplete despite green CI.

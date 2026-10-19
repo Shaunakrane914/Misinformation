@@ -2,6 +2,15 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
+## P0 verification closeout — 2026-10-19
+
+- [Hosted CI and release boundary](2026-10-19_P0_CI_CLOSEOUT.md): all five hosted
+  jobs passed at application `9a730ac` on the dedicated P0 branch. Local full /
+  fast suites passed 1,456 / 1,248 tests. One AI-disabled Lenovo investigation
+  retained an issuer PDF and four index pages; exact-response frontend replay
+  and four-agent failure controls passed their bounded checks. No merge or
+  deployment; old timing attribution and production parity remain unverified.
+
 ## Latest P0 work: Lenovo / shared acquisition reliability — 2026-10-18
 
 - [Scope, measured timing, changes and reproduction](2026-10-18_P0_ACQUISITION_RELIABILITY.md).

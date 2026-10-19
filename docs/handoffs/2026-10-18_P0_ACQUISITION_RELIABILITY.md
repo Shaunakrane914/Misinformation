@@ -261,3 +261,12 @@ doctor delay of 1.2s (never called), still guaranteeing starvation if invoked.
 Event-controlled queue/isolation tests likewise use larger test-only margins.
 No production timeout was raised. Two remaining adaptive query duration counters
 were also made monotonic; that pass was not exercised by the single live capture.
+
+### Final hosted result — closeout recorded 2026-10-19
+
+The [third hosted run](https://github.com/Shaunakrane914/Misinformation/actions/runs/39136495988)
+at `9a730ac1d5e6347ca4981ce9b4d3e48395d70974` completed successfully: all five
+jobs passed, including Python 3.11/3.12/3.13, full offline regression, frontend
+contracts and isolated release validators. See the [dated CI closeout](2026-10-19_P0_CI_CLOSEOUT.md)
+for the verification ledger and remaining release limits. The fix branch was
+pushed; no merge or deployment was performed.

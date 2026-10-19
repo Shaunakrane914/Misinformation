@@ -1,5 +1,32 @@
 # Coding-agent handoffs
 
+## Consolidated defect register — 2026-10-19
+
+- [Detailed report](../testing/AEGIS_CONSOLIDATED_DEFECT_REPORT_2026-10-19.md) and
+  [report handoff](2026-10-19_CONSOLIDATED_DEFECT_REPORT_HANDOFF.md): 17 current
+  defects/reliability failures with evidence, code owners and acceptance tests;
+  historical corruption and unverified release/accuracy gates kept separate.
+  Includes missing-assessment LOW rendering, Scout disagreement projection and
+  saturation-key mismatch. Documentation only; zero new provider/AI calls.
+
+## Saved-failure root-cause follow-up — 2026-10-19
+
+- [Why the longer-window investigations still fail](2026-10-19_SAVED_FAILURE_ROOT_CAUSES.md):
+  wrapper-domain diversity collapse, unresolved publisher leads, missing replacement
+  reads, generic follow-ups and shared attribution mismatch. Actual saved traces
+  plus network-blocked selector/planner controls; 18 focused tests pass. No new
+  provider/AI calls, application edits, commit or deployment. Research remains incomplete.
+
+## Four-prompt patient-window recheck — 2026-10-19
+
+- [Actual results, frontend replay and remaining defects](2026-10-19_PATIENT_FOUR_PROMPT_RECHECK.md):
+  four AI-disabled investigations with the longer window. Infosys retained
+  financial PDFs; NVIDIA an article plus minimal Reddit metadata. Nike acquired
+  no bodies and Tim Cook remained profile-only. All initial queries started;
+  no total deadline exhausted. Twelve replay states passed, research acceptance
+  remains incomplete. Shared attribution conflict and adaptive telemetry gaps
+  recorded. No application edits, commit, merge or deployment.
+
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
 ## Patient investigation budgets — 2026-10-19

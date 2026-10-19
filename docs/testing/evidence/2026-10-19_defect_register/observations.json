@@ -1,0 +1,47 @@
+{
+  "date": "2026-10-19",
+  "mode": "SELECTED_EXISTING_CAPTURE_OBSERVATIONS_NOT_NEW_INVESTIGATIONS",
+  "head": "3a0797edc2693bef135342b1786add9c3807988f",
+  "application_sha256": "6218d514c146173b9354237c0e46cdb0a6a6e1a59d25a268bb2e936f5be052bc",
+  "source_temp_tree_name": "aegis-patient-four-70ac8794-4743-4cee-928a-26c7da893be7",
+  "new_provider_requests": 0,
+  "new_ai_calls": 0,
+  "saturation_mismatch": [
+    {"case": "01-scout", "funnel_score": 0.0, "trace_final_saturation_index": 0.747},
+    {"case": "02-trending", "funnel_score": 0.0, "trace_final_saturation_index": 0.747},
+    {"case": "03-brandshield", "funnel_score": 0.0, "trace_final_saturation_index": 0.451},
+    {"case": "04-personal_watch", "funnel_score": 0.0, "trace_final_saturation_index": 0.747}
+  ],
+  "personal_watch": {
+    "source_file": "terminal/04-personal_watch.json",
+    "rendered_text_file": "browser/04-personal_watch-390-text.txt",
+    "input": "Tim Cook",
+    "retained_records": 1,
+    "retained_words": 8,
+    "native_doxxing_exposure_present": false,
+    "shared_doxxing_exposure_present": false,
+    "shared_identity_record_present": true,
+    "rendered_doxxing_exposure_level": "LOW",
+    "change_type": "BASELINE_INITIALIZED",
+    "native_change_is_object": true,
+    "shared_change_is_dictionary_string": true,
+    "rendered_change_excerpt": "{'change_type': 'BASELINE_INITIALIZED', 'severity': 'INFO', 'description': 'Initial monitoring baseline established with 0 threats and 1 platforms.'"
+  },
+  "scout": {
+    "source_file": "terminal/01-scout.json",
+    "corpus_contradictions_count": 0,
+    "native_contradictions_unresolved": ["Results for the First Quarter ended June 30, 2026", "View past annual reports"],
+    "shared_disagreements": ["Results for the First Quarter ended June 30, 2026", "View past annual reports"]
+  },
+  "trending": {
+    "source_file": "terminal/02-trending.json",
+    "evidence_id": "ev_02bfb85bef74",
+    "native_author": "Shreevar Rastogi",
+    "discovery_author_or_source": "Gerardo Delgado",
+    "body_author": "Shreevar Rastogi",
+    "attribution_conflict": true,
+    "corpus_author": "Gerardo Delgado",
+    "shared_source_name": "Gerardo Delgado"
+  },
+  "interpretation": "Observations from saved outputs and code, not independent verification of article claims, authorship, identity, risk or production state."
+}

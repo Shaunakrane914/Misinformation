@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-19",
+  "head": "3a0797edc2693bef135342b1786add9c3807988f",
+  "application_sha256": "6218d514c146173b9354237c0e46cdb0a6a6e1a59d25a268bb2e936f5be052bc",
+  "application_unchanged": true,
+  "mode": "REAL_LOCAL_ASGI_SSE_THEN_EXACT_SAVED_SSE_REPLAY",
+  "live_investigations": 4,
+  "audit_post_retries": 0,
+  "live_ai_enabled": false,
+  "mock_llm": false,
+  "words": "Whitespace tokens in one retained native content/snippet per record; not relevant or verified word counts",
+  "kb": "UTF-8 bytes / 1000; excludes metadata and discovery projections",
+  "cases": [
+    {"agent": "scout", "input": "Infosys", "seconds": 51.13, "records": 7, "words": 3780, "kb": 29.328, "findings": 2, "discovery_cards": 24, "status": "COMPLETED", "planned": 14, "explicit_initial_provider_starts": 12, "adaptive_null_start_records": 2, "query_success": 9, "query_timeout": 3, "query_failed": 2, "read_attempts": 6, "successful_read_records": 6, "reused_acquired_records": 1, "remaining_total_seconds": 69.491, "quality": "Issuer PDFs; duplicate release excerpts, no claim adjudication"},
+    {"agent": "trending", "input": "NVIDIA", "seconds": 28.28, "records": 3, "words": 874, "kb": 5.927, "findings": 1, "discovery_cards": 5, "status": "COMPLETED", "planned": 17, "explicit_initial_provider_starts": 15, "adaptive_null_start_records": 2, "query_success": 14, "query_timeout": 2, "query_failed": 1, "read_attempts": 5, "successful_read_records": 3, "remaining_total_seconds": 91.893, "quality": "806-word article plus 68 Reddit metadata words; shared author conflict unresolved"},
+    {"agent": "brandshield", "input": "Nike", "seconds": 36.08, "records": 0, "words": 0, "kb": 0, "findings": 0, "discovery_cards": 22, "status": "ACQUISITION_FAILED", "planned": 12, "explicit_initial_provider_starts": 10, "adaptive_null_start_records": 2, "query_success": 9, "query_timeout": 3, "query_failed": 0, "read_attempts": 3, "successful_read_records": 0, "remaining_total_seconds": 84.151, "quality": "All selected article wrappers unresolved; no threat conclusion"},
+    {"agent": "personal_watch", "input": "Tim Cook", "seconds": 32.59, "records": 1, "words": 8, "kb": 0.059, "findings": 0, "discovery_cards": 9, "status": "COMPLETED", "planned": 12, "explicit_initial_provider_starts": 10, "adaptive_null_start_records": 2, "query_success": 10, "query_timeout": 0, "query_failed": 2, "read_attempts": 4, "successful_read_records": 1, "remaining_total_seconds": 87.528, "quality": "Profile-only; three article wrappers unresolved; no identity-threat determination"}
+  ],
+  "query_lifecycle": {"queue_timeout": 0, "not_submitted": 0, "skipped": 0, "explicit_initial_provider_starts": 47, "adaptive_records_with_null_start_instrumentation": 8, "synchronous_doctor_calls": 0},
+  "citation_checks": {"finding_references": 3, "canonical_source_joins": 3, "normalized_statement_in_body": 3, "independent_fact_verification": false},
+  "browser": {"widths": [320, 390, 1440], "states": 12, "matching_counts": true, "missing_finding_texts": 0, "horizontal_overflow_states": 0, "uncaught_page_errors": 0, "keyboard_inspection_pass_states": 9, "keyboard_inspection_not_applicable_states": 3, "console_resource_errors": 6, "blocked_font_errors": 4, "static_404_entries": 2, "visually_inspected_report_captures": 4, "visually_inspected_inspection_captures": 2},
+  "offline": {"full_passed": 1474, "full_seconds": 67.16, "fast_passed": 1266, "fast_seconds": 45.38, "frontend_node_scripts_passed": 9, "fatal_lint_errors": 0, "smoke": "OFFLINE_SMOKE_PASS", "rollback": "OFFLINE_PERSISTENCE_PASS", "historical_archive": "NOT_VERIFIED", "deployed_rollback": "NOT_VERIFIED", "frozen_hashes": "PASS"},
+  "research_acceptance": "INCOMPLETE",
+  "deployment": "NOT_PERFORMED"
+}

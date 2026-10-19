@@ -1,5 +1,13 @@
 # Aegis Protocol Documentation Portal
 
+## Dated defect review — 2026-10-19
+
+See the [consolidated defect report](testing/AEGIS_CONSOLIDATED_DEFECT_REPORT_2026-10-19.md)
+and [latest handoff index](handoffs/README.md) for the current fix-branch review.
+This is documentation-only, not deployment or research acceptance. Older
+“latest” checkpoint labels below are historical snapshots; the report identifies
+their metadata drift and distinguishes local, hosted-CI and deployed evidence.
+
 Welcome to the canonical documentation tree for **Aegis Protocol**, an autonomous enterprise intelligence and misinformation deconstruction system.
 
 ## Next coding agent: start here

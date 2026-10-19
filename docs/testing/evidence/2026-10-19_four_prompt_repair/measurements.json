@@ -1,0 +1,27 @@
+{
+  "date": "2026-10-19",
+  "base_commit": "264a1c27857bf4cb36d516420dd6edf5ccc00adf",
+  "state": "LOCAL_UNCOMMITTED_REPAIR",
+  "requested_ai_calls": 0,
+  "first_pass": [
+    {"agent":"scout","input":"Infosys","seconds":13.54,"records":7,"words":3780,"decimal_kb":29.328,"findings":2,"queries_planned":12,"queries_started":12,"successful_reads":6,"useful_pdf_words":[1456,1449],"quality":"SAME_ISSUER_RELEASE_VERSIONS_NOT_INDEPENDENT_CLAIMS"},
+    {"agent":"trending","input":"NVIDIA","seconds":11.43,"records":1,"words":806,"decimal_kb":5.141,"findings":1,"queries_planned":14,"queries_started":13,"successful_reads":1,"quality":"UNVERIFIED_SINGLE_PUBLISHER_OBSERVATION"},
+    {"agent":"brandshield","input":"Nike","seconds":12.17,"records":1,"words":893,"decimal_kb":5.125,"findings":0,"queries_planned":9,"queries_started":9,"successful_reads":1,"quality":"BACKGROUND_ONLY"},
+    {"agent":"personal_watch","input":"Tim Cook","seconds":11.47,"records":1,"words":8,"decimal_kb":0.059,"findings":0,"queries_planned":10,"queries_started":10,"successful_reads":1,"quality":"PROFILE_ONLY"}
+  ],
+  "specialist_recheck": [
+    {"agent":"brandshield","input":"Nike","seconds":10.73,"records":1,"words":603,"decimal_kb":3.498,"findings":0,"queries_planned":9,"queries_started":9,"timeouts":1,"queue_timeouts":0,"quality":"BACKGROUND_ONLY"},
+    {"agent":"personal_watch","input":"Tim Cook","seconds":11.19,"records":1,"words":8,"decimal_kb":0.059,"findings":0,"queries_planned":10,"queries_started":10,"timeouts":1,"queue_timeouts":0,"quality":"PROFILE_ONLY"}
+  ],
+  "synchronous_doctor_calls": 0,
+  "search_workers_bound": 12,
+  "global_search_admission_bound": 32,
+  "source_body_limit_bytes": 1000000,
+  "browser": {"mode":"EXACT_FIRST_PASS_SSE_REPLAY","states":12,"widths":[320,390,1440],"harness_exit_code":0,"matching_counts":true,"page_exceptions":0,"overflow":false,"console_resource_errors":6},
+  "final_offline": {"full_passed":1468,"fast_passed":1260,"new_focused_passed":12,"fatal_lint_errors":0,"frontend_scripts_passed":9},
+  "final_build_live_parity":"NOT_CLAIMED_LATER_TRANSPORT_GUARDS_TESTED_OFFLINE",
+  "research_acceptance":"INCOMPLETE_SPECIALIST_BODIES_NOT_ACQUIRED",
+  "remote_ci":"NOT_VERIFIED_FOR_LOCAL_PATCH",
+  "merged":false,
+  "deployed":false
+}

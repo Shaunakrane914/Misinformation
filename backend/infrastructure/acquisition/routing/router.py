@@ -569,11 +569,19 @@ class NativeRouter:
                 f"{f.title} {f.snippet}".casefold().split())]
         if not fragments:
             fragments = self._execute_yahoo_search(clean_q, limit=limit, query_id=query_id, query_class=query_class, query_text=query_text)
+        elif re.search(r"counterfeit|impersonat|phishing|deepfake", clean_q, re.I):
+            objectives = re.findall(r"counterfeit|impersonat\w*|phishing|deepfake", clean_q, re.I)
+            if not any(any(term.casefold() in f"{fragment.title} {fragment.snippet}".casefold()
+                           for term in objectives) for fragment in fragments):
+                # A storefront-only Bing result must not suppress the existing
+                # secondary search for an abuse-specific query. Preserve leads.
+                secondary = self._execute_yahoo_search(clean_q, limit=limit, query_id=query_id, query_class=query_class, query_text=query_text)
+                fragments = secondary + [fragment for fragment in fragments if fragment.url not in {other.url for other in secondary}]
         if quoted:
             fragments = [f for f in fragments if anchor in " ".join(
                 f"{f.title} {f.snippet}".casefold().split())]
 
-        return fragments
+        return fragments[:limit]
 
     def _execute_yahoo_search(self, query: str, limit: int = 6, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
         """Secondary public web search via Yahoo Search."""

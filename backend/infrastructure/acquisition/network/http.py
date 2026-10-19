@@ -23,6 +23,7 @@ from datetime import datetime, timezone
 from typing import Callable, Mapping, Optional
 
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url, resolve_public_addresses
+from backend.infrastructure.acquisition.network.budget import remaining_timeout
 
 
 RETRYABLE_STATUS_CODES = frozenset({429, 500, 502, 503, 504})
@@ -164,6 +165,7 @@ def _connect_public_socket(address, timeout=5.0, source_address=None):
     """Connect only to fresh validated numeric IPs; retain HTTP Host/TLS SNI."""
     host, port = address
     timeout = 5.0 if timeout is socket._GLOBAL_DEFAULT_TIMEOUT or timeout is None else float(timeout)
+    timeout = remaining_timeout(timeout)
     deadline = time.monotonic() + timeout
     try:
         addresses = resolve_public_addresses(host, port, timeout=min(2.5, timeout))
@@ -228,7 +230,7 @@ def _install_response_deadline(connection):
     timeout = connection.timeout
     if timeout is None or timeout is socket._GLOBAL_DEFAULT_TIMEOUT:
         timeout = 5.0
-    deadline = time.monotonic() + float(timeout)
+    deadline = time.monotonic() + remaining_timeout(float(timeout))
 
     def response(sock, *args, **kwargs):
         return http.client.HTTPResponse(_ResponseSocket(sock, deadline), *args, **kwargs)
@@ -323,11 +325,12 @@ def fetch_public_http(
     ``Retry-After`` delay is respected when it fits the local retry budget; a
     longer delay is surfaced to runtime health without blocking the worker.
     """
+    if max_bytes <= 0 or max_attempts <= 0 or max_redirects < 0 or not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError("HTTP bounds must be positive")
+    remaining_timeout(timeout)
     safe, reason = is_safe_url(url)
     if not safe:
         raise ProviderHTTPError(f"URL blocked by SSRF policy: {reason}", endpoint=url)
-    if max_bytes <= 0 or max_attempts <= 0 or max_redirects < 0 or not math.isfinite(timeout) or timeout <= 0:
-        raise ValueError("HTTP bounds must be positive")
 
     request_headers = dict(headers or {})
     request_headers.setdefault("Accept-Encoding", "identity")
@@ -335,6 +338,7 @@ def fetch_public_http(
     last_error: Optional[ProviderHTTPError] = None
 
     for attempt in range(1, max_attempts + 1):
+        attempt_timeout = remaining_timeout(timeout)
         redirect_handler = _ValidatingRedirectHandler(max_redirects=max_redirects)
         # Environment proxies must not bypass the destination-address boundary.
         opener = urllib.request.build_opener(
@@ -343,7 +347,7 @@ def fetch_public_http(
         )
         request = urllib.request.Request(url, headers=request_headers, method="GET")
         try:
-            with opener.open(request, timeout=timeout) as response:
+            with opener.open(request, timeout=attempt_timeout) as response:
                 endpoint = str(getattr(response, "url", url) or url)
                 final_safe, final_reason = is_safe_url(endpoint)
                 if not final_safe:
@@ -422,7 +426,10 @@ def fetch_public_http(
             delay = retry_after if retry_after is not None else retry_base_seconds * (2 ** (attempt - 1))
             if delay > max_retry_sleep_seconds:
                 raise last_error from error
-            sleep(max(0.0, delay + jitter(0.0, min(0.1, delay * 0.1))))
+            delay = max(0.0, delay + jitter(0.0, min(0.1, delay * 0.1)))
+            if delay >= remaining_timeout(timeout):
+                raise last_error from error
+            sleep(delay)
         except (urllib.error.URLError, TimeoutError, OSError) as error:
             last_error = ProviderHTTPError(
                 f"Provider network failure: {type(error).__name__}",
@@ -433,6 +440,9 @@ def fetch_public_http(
             if attempt >= max_attempts:
                 raise last_error from error
             delay = retry_base_seconds * (2 ** (attempt - 1))
-            sleep(delay + jitter(0.0, min(0.1, delay * 0.1)))
+            delay += jitter(0.0, min(0.1, delay * 0.1))
+            if delay >= remaining_timeout(timeout):
+                raise last_error from error
+            sleep(delay)
 
     raise last_error or ProviderHTTPError("Provider request failed", endpoint=url)

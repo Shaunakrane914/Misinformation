@@ -60,12 +60,19 @@ from backend.services.agent_reach.native.operation_capabilities import (
 from backend.services.agent_reach.registry import CapabilityRegistry
 from backend.services.agent_reach.native.channel_capabilities import AUTHORITATIVE_CAPABILITY_MATRIX, COMMUNITY_CAPABILITY_MATRIX
 from backend.infrastructure.acquisition.security.url_validator import is_safe_url
+from backend.infrastructure.acquisition.network.budget import acquisition_deadline, remaining_timeout
 
 logger = logging.getLogger(__name__)
 
 # Shared capacity across requests, including workers still exiting after timeout.
 # Python cannot kill a running thread; bounded provider transports must finish it.
-_SEARCH_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=8, thread_name_prefix="acquisition")
+_SEARCH_POOL = concurrent.futures.ThreadPoolExecutor(max_workers=2, thread_name_prefix="acquisition-other")
+# Fixed bulkheads, not per-request pools: at most 12 search threads total.
+# Hung social calls cannot take the news/web/RSS slots of a later investigation.
+_CHANNEL_SEARCH_POOLS = {
+    channel: concurrent.futures.ThreadPoolExecutor(max_workers=2, thread_name_prefix=f"acquisition-{channel}")
+    for channel in ("web", "news", "rss", "reddit", "twitter")
+}
 _SEARCH_CAPACITY = threading.BoundedSemaphore(32)
 
 # Known news wire syndication signatures for source-independence clustering
@@ -385,7 +392,10 @@ class AgentReachService:
                 return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
             read_executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:
-                future = read_executor.submit(self.read, url, max_chars=max_chars)
+                def bounded_read():
+                    with acquisition_deadline(deadline):
+                        return self.read(url, max_chars=max_chars)
+                future = read_executor.submit(bounded_read)
                 return future.result(timeout=remaining)
             except concurrent.futures.TimeoutError:
                 return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
@@ -506,15 +516,20 @@ class AgentReachService:
                     if closed:
                         raise TimeoutError("Investigation already closed")
                     lifecycle[q_sp["query_id"]].update(started=t0, started_at=started_at)
-                frags = ch_obj.search(
-                    q_sp["query_text"],
-                    limit=max_res_per_q,
-                    query_id=q_sp["query_id"],
-                    query_class=q_sp["query_class"],
-                    query_text=q_sp["query_text"],
-                    domain=domain,
-                    operation=q_sp.get("operation", "search"),
-                )
+                with acquisition_deadline(min(deadline, t0 + task_timeout)):
+                    frags = ch_obj.search(
+                        q_sp["query_text"],
+                        limit=max_res_per_q,
+                        query_id=q_sp["query_id"],
+                        query_class=q_sp["query_class"],
+                        query_text=q_sp["query_text"],
+                        domain=domain,
+                        operation=q_sp.get("operation", "search"),
+                    )
+                    if not frags:
+                        # Legacy adapters may catch a transport timeout and
+                        # return []. Do not relabel an exhausted chain SUCCESS.
+                        remaining_timeout()
                 completed_at = datetime.utcnow().isoformat()
                 lat = int((time.monotonic() - t0) * 1000)
                 # Detach provider-owned records before normalization/return.
@@ -614,7 +629,7 @@ class AgentReachService:
                     continue
                 lifecycle[q_sp["query_id"]] = {"submitted": now, "submitted_at": datetime.utcnow().isoformat()}
                 try:
-                    fut = executor.submit(_run_single_query, task)
+                    fut = _CHANNEL_SEARCH_POOLS.get(ch_n, executor).submit(_run_single_query, task)
                 except Exception:
                     _SEARCH_CAPACITY.release()
                     raise

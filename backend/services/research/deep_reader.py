@@ -8,12 +8,15 @@ preserves original snippets, and enriches evidence to FULL_ARTICLE depth.
 
 import concurrent.futures
 import logging
+import re
 import time
 import uuid
+from urllib.parse import urlsplit
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import ContentDepth, EvidenceItem, SourceRole, SourceTier
+from backend.infrastructure.acquisition.network.budget import acquisition_deadline, remaining_timeout
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +32,39 @@ class DeepReader:
     def __init__(self, cache_ttl_seconds: int = 900):
         self._cache: Dict[str, Tuple[Dict[str, Any], float]] = {}  # url -> (result_dict, timestamp)
         self.cache_ttl = cache_ttl_seconds
+
+    def _resolve_wrapper(self, item, service):
+        """One bounded headline lookup, never treat a search snippet as a body.
+
+        Encrypted Google News tokens are not publisher URLs. Record the extra
+        lookup separately from initial discovery; only observed matching leads
+        can be read. Normal service.read still enforces SSRF/access policy.
+        """
+        title = (item.title or "").rsplit(" - ", 1)[0].strip()[:180]
+        terms = set(re.findall(r"[a-z0-9]+", title.casefold()))
+        trace = {"status": "UNRESOLVED", "discovery_url": item.canonical_url,
+                 # Feed titles can be truncated mid-word. An exact full-title
+                 # phrase suppresses real publisher variants; the independent
+                 # 75% title-token join below remains unchanged.
+                 "query": title.replace(chr(34), ""), "query_records": []}
+        if len(terms) < 4:
+            return None, trace
+        result = service.retrieve_many(
+            {"web": [{"query_id": f"wr_{item.id}", "query_class": "publisher_url_resolution",
+                      "query_text": trace["query"]}]}, perform_reads=False,
+            timeout=remaining_timeout(2.0), agent_name="source_resolution",
+            budget={"max_queries_per_channel": 1, "max_results_per_query": 3,
+                    "max_total_evidence": 3, "channel_timeout": 2.0})
+        trace["query_records"] = [record.to_dict() for record in result.query_records]
+        for candidate in result.fragments:
+            host = (urlsplit(candidate.url or "").hostname or "").lower()
+            candidate_terms = set(re.findall(r"[a-z0-9]+", (candidate.title or "").casefold()))
+            if (host and host != "news.google.com" and not host.endswith(".google.com")
+                    and len(terms & candidate_terms) / len(terms) >= 0.75):
+                trace.update(status="OBSERVED_PUBLISHER_LEAD", selected_url=candidate.url,
+                             selected_title=candidate.title, claim_support_verified=False)
+                return candidate.url, trace
+        return None, trace
 
     def _select_read_candidates(
         self,
@@ -71,7 +107,11 @@ class DeepReader:
             url = item.canonical_url or ""
             score = item.metadata.get("candidate_score", item.relevance_score)
 
-            if not url or not url.startswith("http"):
+            if item.metadata.get("read_exclusion_reason"):
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = item.metadata["read_exclusion_reason"]
+            elif not url or not url.startswith("http"):
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "unsupported_read"
@@ -111,7 +151,9 @@ class DeepReader:
                 continue
 
             domain = item.source_domain.lower() if item.source_domain else "other"
-            if (item.primary_source or item.source_role == SourceRole.PRIMARY.value) and item.metadata.get("authority_scope") != "CORPORATE_LANDING":
+            if ((item.primary_source or item.source_role == SourceRole.PRIMARY.value)
+                    and item.metadata.get("authority_scope") != "CORPORATE_LANDING"
+                    and item.metadata.get("objective_read_match") is not False):
                 if primary_satisfied_count >= 5:
                     item.rejection_reason = "primary_already_satisfied"
                     continue
@@ -210,6 +252,7 @@ class DeepReader:
         max_reads = max(0, int(max_reads)) if timeout_per_read > 0 else 0
         candidates_to_read, audit = self._select_read_candidates(ranked_candidates, max_reads=max_reads)
         now = time.time()
+        read_deadline = time.monotonic() + max(0.0, timeout_per_read)
         telemetry = {
             "attempted": len(candidates_to_read),
             "successful": 0,
@@ -235,7 +278,16 @@ class DeepReader:
                 # The transport is already byte/time bounded. Select the body
                 # first, then retain a larger bounded research window rather
                 # than discarding later financial/contextual paragraphs.
-                res = agent_reach_service.read(url, max_chars=12_000)
+                with acquisition_deadline(read_deadline):
+                    resolution = None
+                    if (urlsplit(url).hostname or "").lower() == "news.google.com":
+                        url, resolution = self._resolve_wrapper(item, agent_reach_service)
+                        if not url:
+                            return item, {"status": "failed", "error": "Publisher URL unresolved; wrapper is not article evidence",
+                                          "wrapper_resolution": resolution}, attempt_id, round((time.perf_counter() - t0) * 1000, 2)
+                    res = agent_reach_service.read(url, max_chars=12_000)
+                    if resolution:
+                        res = {**res, "wrapper_resolution": resolution}
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                 if res.get("status") in ("success", "fallback_soup") and res.get("markdown"):
                     self._cache[url] = (res, now)
@@ -293,14 +345,26 @@ class DeepReader:
                             "char_count": len(content_body) if useful else 0,
                             "error_message": read_res.get("error") if not useful else None,
                         }
+                        if read_res.get("wrapper_resolution"):
+                            attempt_record["wrapper_resolution"] = read_res["wrapper_resolution"]
 
                         if useful:
+                            resolution = read_res.get("wrapper_resolution") or {}
+                            if resolution.get("selected_url"):
+                                orig_item.metadata["discovery_url"] = orig_item.canonical_url
+                                orig_item.canonical_url = resolution["selected_url"]
+                                orig_item.metadata["wrapper_resolution"] = resolution
                             orig_item.content = content_body
                             orig_item.metadata["read_success"] = True
                             orig_item.metadata["char_count"] = len(content_body)
                             for key in ("raw_capture", "page_metadata", "transport", "truncated"):
                                 if key in read_res:
                                     orig_item.metadata[key] = read_res[key]
+                            body_author = (read_res.get("page_metadata") or {}).get("author")
+                            if body_author and orig_item.source_name and body_author != orig_item.source_name:
+                                orig_item.metadata["discovery_author_or_source"] = orig_item.source_name
+                                orig_item.metadata["body_author"] = body_author
+                                orig_item.metadata["attribution_conflict"] = True
                             orig_item.acquisition_attempt_id = attempt_id
                             orig_item.acquired_id = f"cand_acq_{orig_item.id}"
                             attempt_record["acquired_candidate_id"] = orig_item.acquired_id

@@ -357,7 +357,7 @@ class TrendingAgent:
                     snippet=(item.relevant_excerpt or item.snippet)[:300],
                     url=url,
                     canonical_url=url if url != "Source URL unavailable" else "",
-                    author=item.source_name or ch,
+                    author=(item.metadata.get("page_metadata") or {}).get("author") or item.source_name or ch,
                     published_at=item.published_at or "",
                     retrieved_at=item.discovered_at or datetime.now(timezone.utc).isoformat(),
                     source_role=role,

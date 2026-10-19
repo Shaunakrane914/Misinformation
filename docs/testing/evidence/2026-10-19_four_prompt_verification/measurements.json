@@ -1,0 +1,21 @@
+{
+  "date": "2026-10-19",
+  "checkpoint": "264a1c2",
+  "mode": "FOUR_SEQUENTIAL_LOCAL_ASGI_SSE_THEN_EXACT_BROWSER_REPLAY",
+  "application_sha256": "6d1c53aa9bccb41fdca1c0932d8275114d72c2972088b5078674b075f501e0d7",
+  "application_unchanged": true,
+  "requested_live_ai_calls": 0,
+  "mock_generation": false,
+  "production_parity": "NOT_VERIFIED",
+  "research_acceptance": "FAIL",
+  "bounded_rendering_acceptance": "PASS",
+  "cases": [
+    {"agent":"scout","input":"Infosys","seconds":17.46,"candidates":38,"read_attempts":6,"successful_direct_reads":4,"records":5,"words":1168,"decimal_kb":7.403,"findings":0,"discovery_cards":29,"status":"COMPLETED","query_statuses":{"SUCCESS":10,"TIMEOUT":2},"reading_seconds_at_entry":7.569527,"synchronous_doctor_calls":0,"quality":"FOUR_INDEX_PAGES_AND_IRRELEVANT_CAREERS_PAGE_NO_FINANCIAL_VERDICT"},
+    {"agent":"trending","input":"NVIDIA","seconds":15.24,"candidates":26,"read_attempts":4,"successful_direct_reads":1,"records":1,"words":806,"decimal_kb":5.141,"findings":1,"discovery_cards":6,"status":"COMPLETED","query_statuses":{"SUCCESS":8,"TIMEOUT":6,"QUEUE_TIMEOUT":1},"reading_seconds_at_entry":7.836002,"synchronous_doctor_calls":0,"citation_id":"ev_02bfb85bef74","citation_resolves":true,"statement_occurs_in_retained_body":true,"finding_state":"UNVERIFIED","quality":"SINGLE_PUBLISHER_OBSERVATION_NOT_MEASURED_VIRALITY_AUTHOR_METADATA_MISMATCH"},
+    {"agent":"brandshield","input":"Nike","seconds":14.37,"candidates":22,"read_attempts":6,"successful_direct_reads":0,"records":0,"words":0,"decimal_kb":0,"findings":0,"discovery_cards":19,"status":"ACQUISITION_FAILED","query_statuses":{"SUCCESS":6,"TIMEOUT":3},"reading_seconds_at_entry":7.892521,"synchronous_doctor_calls":0,"quality":"NO_ACQUIRED_THREAT_EVIDENCE"},
+    {"agent":"personal_watch","input":"Tim Cook","seconds":14.91,"candidates":5,"read_attempts":1,"successful_direct_reads":0,"records":0,"words":0,"decimal_kb":0,"findings":0,"discovery_cards":1,"status":"ACQUISITION_FAILED","query_statuses":{"SUCCESS":1,"TIMEOUT":1,"QUEUE_TIMEOUT":8},"reading_seconds_at_entry":7.967324,"synchronous_doctor_calls":0,"quality":"QUEUE_STARVATION_AND_FAILED_WRAPPER_READ"}
+  ],
+  "browser": {"mode":"EXACT_SAVED_SSE_REPLAY","widths":[320,390,1440],"states":12,"matching_counts":true,"missing_finding_texts":0,"horizontal_overflow":false,"uncaught_page_exceptions":0,"failure_warnings_present_at_all_widths":true,"source_inspection_keyboard_states":6,"console_resource_errors":6,"scope_limits":["EXTERNAL_FONTS_BLOCKED","TWO_404_PATHS_NOT_MAPPED","NOT_SCREEN_READER_OR_CONTRAST_CERTIFICATION","NOT_PRODUCTION"]},
+  "merged": false,
+  "deployed": false
+}

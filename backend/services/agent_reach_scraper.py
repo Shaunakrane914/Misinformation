@@ -20,6 +20,8 @@ import requests
 from bs4 import BeautifulSoup
 
 import warnings
+from backend.infrastructure.acquisition.network.budget import remaining_timeout
+from backend.infrastructure.acquisition.network.http import fetch_public_http, decode_bounded_http_body
 
 logger = logging.getLogger(__name__)
 
@@ -32,6 +34,12 @@ class AgentReachScraper:
     Maintained for backward compatibility. New consumers should use
     `backend.services.agent_reach.agent_reach_service`.
     """
+
+    def _read_feed(self, url):
+        """Parse fetched bytes only: feedparser must never own network I/O."""
+        response = fetch_public_http(url, headers=self.headers,
+            timeout=remaining_timeout(min(5.0, self.timeout)), max_bytes=1_000_000, max_attempts=1)
+        return feedparser.parse(decode_bounded_http_body(response))
 
     def __init__(self, timeout: float = 12.0):
         self.timeout = timeout
@@ -62,7 +70,7 @@ class AgentReachScraper:
         # 1. Bing News RSS for Reddit (Fast, reliable, zero blocking)
         try:
             bing_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus('reddit ' + clean_q)}&format=rss"
-            resp = requests.get(bing_url, headers=self.headers, timeout=self.timeout)
+            resp = requests.get(bing_url, headers=self.headers, timeout=remaining_timeout(min(5.0, self.timeout)))
             if resp.status_code == 200:
                 feed = feedparser.parse(resp.content)
                 for entry in feed.get("entries", [])[:limit]:
@@ -94,7 +102,7 @@ class AgentReachScraper:
         if len(results) < limit:
             try:
                 pp_url = f"https://api.pullpush.io/reddit/search/submission/?q={encoded_q}&size={limit}"
-                resp = requests.get(pp_url, headers=self.headers, timeout=self.timeout)
+                resp = requests.get(pp_url, headers=self.headers, timeout=remaining_timeout(min(5.0, self.timeout)))
                 if resp.status_code == 200:
                     data = resp.json().get("data", [])
                     for post in data:
@@ -124,7 +132,7 @@ class AgentReachScraper:
         if len(results) < limit:
             try:
                 r_url = f"https://www.reddit.com/search.rss?q={encoded_q}&sort=new"
-                r_resp = requests.get(r_url, headers=self.headers, timeout=5)
+                r_resp = requests.get(r_url, headers=self.headers, timeout=remaining_timeout(5))
                 if r_resp.status_code == 200:
                     feed = feedparser.parse(r_resp.content)
                     for entry in feed.get("entries", [])[:limit]:
@@ -178,7 +186,7 @@ class AgentReachScraper:
                 feed_query += f' -from:{clean_handle}'
             
             feed_url = f"https://news.google.com/rss/search?q={urllib.parse.quote_plus(feed_query)}&hl=en-US&gl=US&ceid=US:en"
-            feed = feedparser.parse(feed_url)
+            feed = self._read_feed(feed_url)
             
             for entry in feed.get("entries", [])[:limit]:
                 title = entry.get("title", "")
@@ -207,7 +215,7 @@ class AgentReachScraper:
             try:
                 b_query = f"twitter {clean_q}"
                 b_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus(b_query)}&format=rss"
-                resp = requests.get(b_url, headers=self.headers, timeout=self.timeout)
+                resp = requests.get(b_url, headers=self.headers, timeout=remaining_timeout(min(5.0, self.timeout)))
                 if resp.status_code == 200:
                     feed = feedparser.parse(resp.content)
                     for entry in feed.get("entries", [])[:limit]:
@@ -233,7 +241,7 @@ class AgentReachScraper:
         if clean_handle and len(results) < limit:
             try:
                 syn_url = f"https://syndication.twitter.com/srv/timeline-profile/screen-name/{clean_handle}"
-                resp = requests.get(syn_url, headers=self.headers, timeout=self.timeout)
+                resp = requests.get(syn_url, headers=self.headers, timeout=remaining_timeout(min(5.0, self.timeout)))
                 if resp.status_code == 200 and "reactRoot" in resp.text:
                     tweet_matches = re.findall(r'<p class="timeline-Tweet-text"[^>]*>(.*?)</p>', resp.text)
                     for t_text in tweet_matches[:limit]:
@@ -264,7 +272,7 @@ class AgentReachScraper:
         try:
             feed_query = f'site:youtube.com "{clean_q}"'
             feed_url = f"https://news.google.com/rss/search?q={urllib.parse.quote_plus(feed_query)}&hl=en-US&gl=US&ceid=US:en"
-            feed = feedparser.parse(feed_url)
+            feed = self._read_feed(feed_url)
             
             for entry in feed.get("entries", [])[:limit]:
                 title = entry.get("title", "")
@@ -287,7 +295,7 @@ class AgentReachScraper:
             try:
                 b_query = f"youtube {clean_q}"
                 b_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus(b_query)}&format=rss"
-                resp = requests.get(b_url, headers=self.headers, timeout=self.timeout)
+                resp = requests.get(b_url, headers=self.headers, timeout=remaining_timeout(min(5.0, self.timeout)))
                 if resp.status_code == 200:
                     feed = feedparser.parse(resp.content)
                     for entry in feed.get("entries", [])[:limit]:
@@ -321,7 +329,7 @@ class AgentReachScraper:
         clean_q = query.strip()
         try:
             feed_url = f"https://news.google.com/rss/search?q={urllib.parse.quote_plus(clean_q)}&hl=en-US&gl=US&ceid=US:en"
-            feed = feedparser.parse(feed_url)
+            feed = self._read_feed(feed_url)
             for entry in feed.get("entries", [])[:limit]:
                 source_title = None
                 source = entry.get("source")
@@ -344,7 +352,7 @@ class AgentReachScraper:
         if len(results) < limit:
             try:
                 b_url = f"https://www.bing.com/news/search?q={urllib.parse.quote_plus(clean_q)}&format=rss"
-                resp = requests.get(b_url, headers=self.headers, timeout=self.timeout)
+                resp = requests.get(b_url, headers=self.headers, timeout=remaining_timeout(min(5.0, self.timeout)))
                 if resp.status_code == 200:
                     feed = feedparser.parse(resp.content)
                     for entry in feed.get("entries", [])[:limit]:
@@ -421,7 +429,7 @@ class AgentReachScraper:
             resp = requests.get(
                 jina_url,
                 headers={"User-Agent": USER_AGENT, "Accept": "text/plain"},
-                timeout=self.timeout
+                timeout=remaining_timeout(min(5.0, self.timeout))
             )
             if resp.status_code == 200 and len(resp.text) > 80:
                 markdown_text = resp.text[:max_chars]
@@ -439,7 +447,7 @@ class AgentReachScraper:
 
         # Fallback: standard HTTP + BeautifulSoup
         try:
-            resp = requests.get(clean_url, headers=self.headers, timeout=self.timeout)
+            resp = requests.get(clean_url, headers=self.headers, timeout=remaining_timeout(min(5.0, self.timeout)))
             if resp.status_code == 200:
                 soup = BeautifulSoup(resp.text, "html.parser")
                 for s in soup(["script", "style", "nav", "footer", "header"]):

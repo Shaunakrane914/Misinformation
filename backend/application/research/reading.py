@@ -80,11 +80,14 @@ class DeepReadingStage:
         pending = [item for item in ranked.ranked if item not in carried
                    and item.canonical_url not in {source.canonical_url for source in carried}]
         if request.domain in {"brand", "personal"}:
-            from backend.services.research.content_roles import matches_objective
+            from backend.services.research.content_roles import matches_objective, background_read_reason
             # Spend scarce reads on the agent's task, not just a famous name.
             # All candidates remain in the corpus, with their normal ranking.
             pending.sort(key=lambda item: not matches_objective(
                 f"{item.title} {item.snippet}", request.domain))
+            for item in pending:
+                item.metadata["objective_read_match"] = matches_objective(f"{item.title} {item.snippet}", request.domain)
+                item.metadata["read_exclusion_reason"] = background_read_reason(item, request.domain)
         # An issuer index -> quarterly index -> HTML statement is a bounded
         # at most three-hop document chain. Reserve existing read slots, not
         # extra fan-out or wall time. PDFs use the bounded text-layer parser.

@@ -111,6 +111,15 @@ class RelevanceGate:
         combined_lower = combined_text.lower()
         title_lower = title.lower()
 
+        from backend.services.research.content_roles import is_careers_landing
+        if (domain == "financial" and is_careers_landing(url)
+                and not re.search(r"hiring|layoff|recruitment|employment|jobs?|careers?|workforce", f"{target_entity} {intent}", re.I)):
+            return RelevanceAssessment(
+                evidence_id=e_id, relevance_score=0.0, relevance_class="REJECTED",
+                is_accepted=False, entity_score=0.0, intent_score=0.0,
+                source_quality_score=0.1, rejection_reason="Careers landing page is not financial evidence",
+                rejection_stage="HARD_GATE_OBJECTIVE", title=title, url=url)
+
         # ── Stage 0: Hard Utility & Authentication Endpoint Rejection ──
         from backend.services.research.source_quality import is_utility_or_auth_url, _matches_registry, ENCYCLOPEDIA_DOMAINS
         is_utility, utility_type = is_utility_or_auth_url(url)

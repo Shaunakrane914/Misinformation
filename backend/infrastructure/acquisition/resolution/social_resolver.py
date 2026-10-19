@@ -297,7 +297,8 @@ class WikidataXResolver:
         req = urllib.request.Request(search_url, headers={"User-Agent": WIKIDATA_USER_AGENT})
         search_data = None
         try:
-            with urllib.request.urlopen(req, timeout=self.timeout) as resp:
+            from backend.infrastructure.acquisition.network.budget import remaining_timeout
+            with urllib.request.urlopen(req, timeout=remaining_timeout(min(5.0, self.timeout))) as resp:
                 search_data = json.loads(resp.read().decode("utf-8"))
         except Exception as e:
             logger.debug(f"[WikidataXResolver] Entity search failed for '{entity_query}': {e}")
@@ -346,7 +347,8 @@ class WikidataXResolver:
         req2 = urllib.request.Request(claims_url, headers={"User-Agent": WIKIDATA_USER_AGENT})
         entities_data = {}
         try:
-            with urllib.request.urlopen(req2, timeout=self.timeout) as resp:
+            from backend.infrastructure.acquisition.network.budget import remaining_timeout
+            with urllib.request.urlopen(req2, timeout=remaining_timeout(min(5.0, self.timeout))) as resp:
                 entities_data = json.loads(resp.read().decode("utf-8")).get("entities", {})
         except Exception as e:
             logger.debug(f"[WikidataXResolver] Claims fetch failed for {top_ids}: {e}")

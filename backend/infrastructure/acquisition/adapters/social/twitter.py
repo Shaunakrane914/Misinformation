@@ -30,6 +30,7 @@ from backend.services.agent_reach.native.cache import social_cache
 from backend.services.agent_reach.native.normalizer import native_normalizer
 from backend.services.agent_reach.native.source_discovery import extract_x_source
 from backend.services.url_validator import validate_url_safe
+from backend.infrastructure.acquisition.network.budget import remaining_timeout
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +73,7 @@ def fetch_fxtwitter_status(
     for attempt in range(2):
         try:
             started = time.perf_counter()
-            with urllib.request.urlopen(req, timeout=DEFAULT_HTTP_TIMEOUT) as resp:
+            with urllib.request.urlopen(req, timeout=remaining_timeout(min(5.0, DEFAULT_HTTP_TIMEOUT))) as resp:
                 raw_body = resp.read()
                 data = json.loads(raw_body.decode("utf-8"))
                 if data.get("code") == 200 and data.get("tweet"):
@@ -132,7 +133,7 @@ def fetch_fxtwitter_profile(
     for attempt in range(2):
         try:
             started = time.perf_counter()
-            with urllib.request.urlopen(req, timeout=DEFAULT_HTTP_TIMEOUT) as resp:
+            with urllib.request.urlopen(req, timeout=remaining_timeout(min(5.0, DEFAULT_HTTP_TIMEOUT))) as resp:
                 raw_body = resp.read()
                 data = json.loads(raw_body.decode("utf-8"))
                 if data.get("code") == 200 and data.get("user"):
@@ -199,7 +200,7 @@ class TwitterAdapter(PlatformAdapter):
 
         for attempt in range(max_retries):
             try:
-                with urllib.request.urlopen(req, timeout=7.0) as resp:
+                with urllib.request.urlopen(req, timeout=remaining_timeout(5.0)) as resp:
                     data = json.loads(resp.read().decode("utf-8"))
                     social_cache.set(cache_key, data)
                     return data

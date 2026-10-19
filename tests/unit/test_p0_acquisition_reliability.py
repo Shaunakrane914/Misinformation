@@ -88,6 +88,7 @@ def test_queued_search_is_not_reported_as_started(monkeypatch):
     search.search.side_effect = blocked
     service = make_service(monkeypatch, {"web": search})
     monkeypatch.setattr(module, "_SEARCH_POOL", pool)
+    monkeypatch.setattr(module, "_CHANNEL_SEARCH_POOLS", {})
     monkeypatch.setattr(module, "_SEARCH_CAPACITY", threading.BoundedSemaphore(2))
     monkeypatch.setattr(module.native_doctor, "peek_channel_status", lambda *a: {})
     try:

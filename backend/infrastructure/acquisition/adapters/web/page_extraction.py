@@ -65,6 +65,10 @@ def extract_reader_markdown(raw: str) -> dict:
 def document_link_priority(link):
     """Prefer observed result/release documents over navigation and ratio indexes."""
     text, url = str(link.get("text") or ""), str(link.get("url") or "")
+    # Compact issuer releases should get a read opportunity before large
+    # auditor/financial statement bundles, without relaxing the byte limit.
+    if re.search(r"press[-_. ]release|earnings[-_. ]release", text + " " + url, re.I):
+        return -1
     if re.search(r"results for .*quarter|quarter.*ended|earnings.release|quarterly-results/.+/q[1-4]", text + " " + url, re.I):
         return 0
     if re.search(r"press.release|financial.statements|annual.report", text, re.I):

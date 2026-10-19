@@ -441,10 +441,14 @@ class SourcePlanningEngine:
             actions.append(self._action(2, "twitter", "search", claim, "trend_signal", "PROFILE_STATUS_OR_INDEX", 3, "Look for concrete public status URLs and recency signals.", limitations=["Profile metadata and index snippets are not tweet bodies."]))
         elif agent.lower() in {"brandshield", "brandshield_agent"}:
             if entity_only:
-                actions.insert(0, self._action(1, "web", "search", f'"{target}" counterfeit unauthorized seller',
+                actions.insert(0, self._action(1, "web", "search", f'"{target}" counterfeit',
                     "brand_risk", "SEARCH_INDEX_DISCOVERY", 0, "Find concrete suspect listings before generic company material."))
-                actions.insert(0, self._action(1, "web", "search", f'"{target}" impersonation phishing report',
+                actions.insert(0, self._action(1, "web", "search", f'"{target}" impersonation',
                     "brand_abuse_reporting", "SEARCH_INDEX_DISCOVERY", 0, "Find attributable reports of brand abuse; keyword matches alone are not threats."))
+                for term in ("phishing", "counterfeit"):
+                    actions.insert(0, self._action(1, "news", "search", f'"{target}" {term}',
+                        "brand_abuse_reporting", "SYNDICATED_SUMMARY", 0,
+                        "Discover attributable abuse reporting rather than generic stock or product headlines."))
             else:
                 actions.append(self._action(2, "web", "search", f"{target} impersonation scam counterfeit complaint", "brand_risk", "SEARCH_INDEX_DISCOVERY", 3, "Search for impersonation, counterfeit, and scam indicators."))
         elif agent.lower() in {"personal", "personal_watch", "personal_watch_agent"}:

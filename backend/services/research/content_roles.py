@@ -38,6 +38,26 @@ def matches_objective(text, domain=""):
     return not pattern or bool(re.search(pattern, text, re.I))
 
 
+def is_careers_landing(url):
+    path = urlsplit(url).path.lower().strip("/")
+    return bool(re.search(r"(?:^|/)(?:global-careers|careers|jobs|job-search)(?:\.html)?$", path))
+
+
+def background_read_reason(item, domain):
+    """Defer known background destinations, not unfamiliar publishers/reports."""
+    url = item.canonical_url or ""
+    parsed = urlsplit(url)
+    text = f"{item.title} {item.snippet}"
+    if domain in {"brand", "personal"} and not matches_objective(text, domain):
+        path = parsed.path.lower().strip("/")
+        encyclopedia = (parsed.hostname or "").endswith(".wikipedia.org")
+        storefront = bool(re.search(r"(?:^|/)(?:store|shop|nike_store|men|women)(?:/|$)", path))
+        landing = not path or bool(re.fullmatch(r"[a-z]{2}(?:[-/][a-z]{2})?", path))
+        if encyclopedia or storefront or landing:
+            return "background_not_agent_objective"
+    return ""
+
+
 def contains_word_or_phrase(text, terms):
     """A keyword is not a substring of an unrelated product/person name."""
     return any(re.search(r"(?<!\w)" + re.escape(term) + r"(?!\w)", text, re.I) for term in terms)
@@ -54,7 +74,7 @@ def document_role(item):
     page = meta.get("page_metadata") or {}
     url = value("canonical_url", "") or value("url", "")
     path = urlsplit(url).path.lower().strip("/")
-    if url and (not path or re.fullmatch(r"[a-z]{2}(?:[-/][a-z]{2})?", path)):
+    if url and (not path or re.fullmatch(r"[a-z]{2}(?:[-/][a-z]{2})?", path) or is_careers_landing(url)):
         return "LANDING_PAGE"
     links = page.get("observed_links") or []
     document_links = sum(bool(re.search(r"\.pdf(?:[?#\s]|$)|financial|quarter|annual|statement", str(link.get("url", "")) + " " + str(link.get("text", "")), re.I))

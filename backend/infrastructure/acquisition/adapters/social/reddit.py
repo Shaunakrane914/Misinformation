@@ -34,6 +34,7 @@ from backend.services.agent_reach.native.normalizer import native_normalizer
 from backend.services.agent_reach.native.source_discovery import extract_reddit_source
 from backend.services.url_validator import validate_url_safe
 from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http
+from backend.infrastructure.acquisition.network.budget import remaining_timeout
 
 logger = logging.getLogger(__name__)
 
@@ -98,7 +99,7 @@ def fetch_arctic_shift_posts_batch(
         for attempt in range(2):
             try:
                 request_started = time.perf_counter()
-                with urllib.request.urlopen(req, timeout=3.0) as resp:
+                with urllib.request.urlopen(req, timeout=remaining_timeout(3.0)) as resp:
                     raw_body = resp.read()
                     data = json.loads(raw_body.decode("utf-8"))
                     transport = {
@@ -191,7 +192,7 @@ def fetch_arctic_shift_search(
     )
     try:
         request_started = time.perf_counter()
-        with urllib.request.urlopen(req, timeout=3.0) as resp:
+        with urllib.request.urlopen(req, timeout=remaining_timeout(3.0)) as resp:
             raw_body = resp.read()
             data = json.loads(raw_body.decode("utf-8"))
             posts = data.get("data", [])
@@ -320,7 +321,7 @@ def fetch_reddit_subreddit_rss(
     try:
         import feedparser
         request_started = time.perf_counter()
-        with urllib.request.urlopen(req, timeout=timeout) as resp:
+        with urllib.request.urlopen(req, timeout=remaining_timeout(min(5.0, timeout))) as resp:
             raw_xml = resp.read()
             transport = {
                 "network_observed_this_attempt": True,
@@ -430,7 +431,7 @@ class RedditAdapter(PlatformAdapter):
 
         for attempt in range(max_retries):
             try:
-                with urllib.request.urlopen(req, timeout=7.0) as resp:
+                with urllib.request.urlopen(req, timeout=remaining_timeout(5.0)) as resp:
                     data = json.loads(resp.read().decode("utf-8"))
                     social_cache.set(cache_key, data)
                     return data

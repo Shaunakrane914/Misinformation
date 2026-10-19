@@ -27,6 +27,7 @@ from backend.services.agent_reach.native.source_discovery import (
     generate_discovery_queries,
 )
 from backend.infrastructure.acquisition.resolution import entity_social_resolver
+from backend.infrastructure.acquisition.network.budget import remaining_timeout
 
 if TYPE_CHECKING:
     from backend.infrastructure.acquisition.routing.router import NativeRouter
@@ -112,6 +113,7 @@ class SocialChannelHandlers:
             if is_rss_active and resolution.subreddit_candidates:
                 target_fetch = max(limit or 15, 20)
                 for sub_cand in resolution.subreddit_candidates:
+                    remaining_timeout()
                     try:
                         raw_entries = self.router._fetch_reddit_subreddit_rss(
                             sub_cand.subreddit, limit=target_fetch,

@@ -2,6 +2,25 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
+## Local repair after four-prompt failure — 2026-10-19
+
+- [Code, decisions, tests and measured limits](2026-10-19_FOUR_PROMPT_REPAIR.md):
+  fixed channel bulkheads, shared deadline propagation, unbounded feed-parser
+  network calls and selection/provenance bugs. 1,468 full / 1,260 fast tests
+  passed. Infosys acquired actual financial PDFs; all Tim Cook main queries
+  started, but Nike remains background-only and Tim Cook profile-only. Six
+  bounded live investigations, zero AI calls; no universal research acceptance,
+  commit, push, merge or deployment. Preserve the preceding audit evidence.
+
+## Four-prompt verification — 2026-10-19
+
+- [Actual results, failure analysis and screenshots](2026-10-19_FOUR_PROMPT_VERIFICATION.md):
+  one live AI-disabled input per agent, then exact frontend replay. Infosys
+  retained shallow records; NVIDIA returned one source-linked observation;
+  Nike and Tim Cook failed acquisition. Eight Tim Cook queries never started.
+  Rendering passed bounded checks at three widths, but research acceptance
+  failed. No application edits, merge or deployment during this audit.
+
 ## P0 verification closeout — 2026-10-19
 
 - [Hosted CI and release boundary](2026-10-19_P0_CI_CLOSEOUT.md): all five hosted

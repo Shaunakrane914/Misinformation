@@ -104,6 +104,14 @@ with Node and exited 0. No new live investigation or AI request was made.
 Hosted follow-up must still be observed at the new checkpoint; the failed
 October 19 run is not silently treated as passing.
 
+Final observation: [hosted run 39204160253](https://github.com/Shaunakrane914/Misinformation/actions/runs/39204160253)
+at `9cdccc04b4db3bb4d48a93063d49148362b70b2e` completed with all five jobs
+successful; `gh run watch 39204160253 --exit-status --interval 20` exited 0.
+This includes the corrected preservation fixture, full offline regression,
+three Python versions, frontend contracts and release validators. The later
+documentation-only publication records this observed result, not a result for
+its own commit. No merge or deployment followed.
+
 ## Limits and next-agent instructions
 
 The old 9.7-second trace lacks stage measurements, so its exact elapsed-time

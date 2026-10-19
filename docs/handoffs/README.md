@@ -5,7 +5,8 @@ Start here when resuming work. These are dated engineering records, not promises
 ## P0 verification closeout — 2026-10-19
 
 - [Hosted CI and release boundary](2026-10-19_P0_CI_CLOSEOUT.md): all five hosted
-  jobs passed at application `9a730ac` on the dedicated P0 branch. Local full /
+  jobs passed at checkpoint `9cdccc0` on the dedicated P0 branch, including a
+  calendar-independent preservation fixture correction. Local full /
   fast suites passed 1,456 / 1,248 tests. One AI-disabled Lenovo investigation
   retained an issuer PDF and four index pages; exact-response frontend replay
   and four-agent failure controls passed their bounded checks. No merge or

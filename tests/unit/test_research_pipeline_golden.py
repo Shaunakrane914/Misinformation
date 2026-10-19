@@ -153,6 +153,8 @@ def capture_scenario(name, include_payload=False):
         follow_up_budget=2 if name == "adaptive_saturation" else (1 if name == "discovery_timeout" else 0),
         primary_escalation_budget=1, deep_read_budget=2,
         timeout_seconds=0 if name == "discovery_timeout" else 20,
+        # Historical golden profile, independent of the patient live defaults.
+        channel_timeout_seconds=5.0,
     )
 
     def read_fixture(ranked, max_reads, timeout_per_read):

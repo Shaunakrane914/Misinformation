@@ -2,6 +2,15 @@
 
 Start here when resuming work. These are dated engineering records, not promises that the current checkout has been validated. Read [AGENTS.md](../../AGENTS.md) first, then inspect the live worktree before editing.
 
+## Patient investigation budgets — 2026-10-19
+
+- [User-requested longer window and real verification](2026-10-19_PATIENT_RESEARCH_WINDOW.md):
+  120s research default, 15s multi-step chains, hidden discovery cap removed;
+  individual HTTP/AI limits unchanged. 1,474 full / 1,266 fast tests pass.
+  One live Tim Cook run lasted 36s with 120s available and no clock starvation,
+  but still acquired profile metadata only. See publication ledger before
+  assuming commit/CI/deployment. Research acceptance remains incomplete.
+
 ## Verified fix-branch repair after four-prompt failure — 2026-10-19
 
 - [Code, decisions, tests and measured limits](2026-10-19_FOUR_PROMPT_REPAIR.md):

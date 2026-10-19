@@ -21,8 +21,10 @@ class ResearchBudget:
     deep_read_budget: int = 15
     transcript_budget: int = 2
     contradiction_resolution_budget: int = 2
-    timeout_seconds: float = 20.0
-    channel_timeout_seconds: float = 5.0
+    # Investigation / multi-step chain budgets, not socket timeouts.
+    # Individual HTTP calls retain their existing 5s transport safety bounds.
+    timeout_seconds: float = 120.0
+    channel_timeout_seconds: float = 15.0
     deep_read_concurrency: int = 4
 
     # ── Backward-compatible properties ────────────────────────────────────
@@ -97,8 +99,8 @@ class ResearchBudget:
         fu_b = int(os.getenv(f"{prefix}MAX_FOLLOW_UPS", os.getenv("RESEARCH_MAX_FOLLOW_UPS", "3")))
         prim_b = int(os.getenv(f"{prefix}MAX_PRIMARY_ESCALATIONS", os.getenv("RESEARCH_MAX_PRIMARY_ESCALATIONS", "2")))
         dr_b = int(os.getenv(f"{prefix}MAX_DEEP_READS", os.getenv("RESEARCH_MAX_DEEP_READS", "6")))
-        tout = float(os.getenv(f"{prefix}TIMEOUT", os.getenv("RESEARCH_MAX_TOTAL_LATENCY_SECONDS", "25.0" if not is_server else "20.0")))
-        ch_tout = float(os.getenv(f"{prefix}CHANNEL_TIMEOUT", os.getenv("RESEARCH_CHANNEL_TIMEOUT_SECONDS", "5.0")))
+        tout = float(os.getenv(f"{prefix}TIMEOUT", os.getenv("RESEARCH_MAX_TOTAL_LATENCY_SECONDS", "120.0")))
+        ch_tout = float(os.getenv(f"{prefix}CHANNEL_TIMEOUT", os.getenv("RESEARCH_CHANNEL_TIMEOUT_SECONDS", "15.0")))
 
         return cls(
             discovery_budget=disc_b,

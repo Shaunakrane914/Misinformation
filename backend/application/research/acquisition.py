@@ -107,9 +107,11 @@ class BroadDiscoveryStage:
                 "max_results_per_query": 5,
                 "max_total_evidence": request.max_candidates or budget.max_candidates,
                 "max_deep_reads": 0,
+                "channel_timeout": channel_timeout,
             },
             perform_reads=False,
-            timeout=min(channel_timeout * 2, budget.discovery_timeout_seconds, effective_timeout * 0.45),
+            # Give queued work/fallbacks the discovery slice, not two short calls.
+            timeout=min(budget.discovery_timeout_seconds, effective_timeout * 0.45),
         )
 
 

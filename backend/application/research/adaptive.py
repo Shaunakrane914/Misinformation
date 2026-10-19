@@ -25,7 +25,11 @@ def _bounded_channel_search(service, channel, query, timeout):
     if timeout <= 0:
         raise TimeoutError("Adaptive search timeout: discovery budget exhausted")
     executor = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-    future = executor.submit(service.search_channel, channel, query, limit=2)
+    def bounded_search():
+        from backend.infrastructure.acquisition.network.budget import acquisition_deadline
+        with acquisition_deadline(time.monotonic() + timeout):
+            return service.search_channel(channel, query, limit=2)
+    future = executor.submit(bounded_search)
     try:
         return future.result(timeout=timeout)
     except concurrent.futures.TimeoutError as error:

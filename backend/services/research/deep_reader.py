@@ -52,9 +52,9 @@ class DeepReader:
         result = service.retrieve_many(
             {"web": [{"query_id": f"wr_{item.id}", "query_class": "publisher_url_resolution",
                       "query_text": trace["query"]}]}, perform_reads=False,
-            timeout=remaining_timeout(2.0), agent_name="source_resolution",
+            timeout=remaining_timeout(5.0), agent_name="source_resolution",
             budget={"max_queries_per_channel": 1, "max_results_per_query": 3,
-                    "max_total_evidence": 3, "channel_timeout": 2.0})
+                    "max_total_evidence": 3, "channel_timeout": 5.0})
         trace["query_records"] = [record.to_dict() for record in result.query_records]
         for candidate in result.fragments:
             host = (urlsplit(candidate.url or "").hostname or "").lower()

@@ -107,9 +107,14 @@ def test_document_links_and_text_share_semantic_root():
 
 
 def test_trending_native_and_shared_inspection_keep_late_context(monkeypatch):
+    from datetime import datetime, timezone
     from backend.agents.trending import agent as module
     from backend.services.research.research_models import EvidenceItem
     from backend.services.report_builder import ReportBuilder
+    # This is a preservation fixture, not a moving-window freshness test.
+    # Keep its fixed publication inside the real temporal gate on every run.
+    monkeypatch.setattr(module.relevance_gate, "reference_time",
+                        datetime(2026, 10, 18, 12, tzinfo=timezone.utc))
     body = "Acme announcement context. " * 80 + "Correction: Acme did not approve the proposal in Q2 2024."
     item = EvidenceItem(id="ev_canonical", canonical_url="https://example.org/acme-announcement",
         title="Acme announcement", channel="web", content=body, content_depth="PARTIAL_CONTENT",
@@ -121,6 +126,7 @@ def test_trending_native_and_shared_inspection_keep_late_context(monkeypatch):
     monkeypatch.setattr(agent, "_cluster_trends", lambda *a: [])
     data = agent.scan("Acme", category="technology", mode="entity")
     record = data["evidence"][0]
+    assert record["metadata"]["temporal_eligible"] is True
     assert record["evidence_id"] == "ev_canonical" and record["content"] == body
     assert record["metadata"]["raw_capture"]["text"] == "Raw menu " + body
     report = ReportBuilder.from_trending_result(query="Acme", trend_data=data).to_dict()

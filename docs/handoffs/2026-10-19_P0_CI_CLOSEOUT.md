@@ -72,6 +72,38 @@ runs failed on clock-fixture and synthetic scheduling assumptions, respectively;
 their details remain in the implementation handoff. No production timeout was
 raised to make those tests pass.
 
+### Later checkpoint: calendar-dependent preservation fixture
+
+The documentation-only checkpoint `11b1b40` triggered a
+[new hosted run](https://github.com/Shaunakrane914/Misinformation/actions/runs/39203671772)
+on October 19. Its Python matrix failed
+`test_trending_native_and_shared_inspection_keep_late_context`: the fixed
+October 17 publication had aged outside Trending's real 48-hour freshness gate.
+The same single test failed locally with an empty evidence list. The previous
+green run remains a real observation, not a guarantee of later calendar behavior.
+
+The preservation test now pins the gate's supported reference clock to October
+18 and asserts temporal eligibility before checking body/citation preservation.
+No freshness rule, production code, publication timestamp or expected body was
+changed; the actual temporal gate still executes. Local follow-up commands:
+
+```text
+python -m pytest tests/unit/test_investigation_retrieval_loop.py tests/unit/test_p0_acquisition_reliability.py -q --tb=short --show-capture=no
+python -m pytest tests/ -q --tb=short --show-capture=no
+python -m pytest tests/unit tests/chaos tests/security -q --tb=short --show-capture=no
+python -m flake8 backend tests scripts --count --select=E9,F63,F7,F82 --show-source --statistics
+python scripts/validation/verify_frozen_benchmarks.py
+python scripts/validate_release_candidate_smoke.py
+python scripts/validate_rollback_compatibility.py
+```
+
+All exited 0: 45 focused tests, 1,456 full tests (96.64s), 1,248 fast tests
+(49.46s), zero fatal lint errors, frozen hashes verified and isolated smoke /
+persistence passed. All nine `tests/frontend/test_*.js` scripts were also run
+with Node and exited 0. No new live investigation or AI request was made.
+Hosted follow-up must still be observed at the new checkpoint; the failed
+October 19 run is not silently treated as passing.
+
 ## Limits and next-agent instructions
 
 The old 9.7-second trace lacks stage measurements, so its exact elapsed-time

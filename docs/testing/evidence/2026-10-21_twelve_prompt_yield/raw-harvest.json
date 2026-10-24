@@ -1,0 +1,3272 @@
+{
+  "schema": "raw-harvest-audit-summary-v1",
+  "mode": "READ_ONLY_SAVED_OBSERVATIONS",
+  "source_run_mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "53ea40a1ab4ae48eb55fb6f72d98b0b4ff58e9e3d0935a9cec4cc3d408d15eb1",
+  "final_application_sha256": "53ea40a1ab4ae48eb55fb6f72d98b0b4ff58e9e3d0935a9cec4cc3d408d15eb1",
+  "stable_application": true,
+  "requested_audit_bounds": {
+    "research_timeout_seconds": 240.0,
+    "max_deep_reads": 24,
+    "research_profile": "DEEP"
+  },
+  "model_check": {
+    "status": "DISABLED",
+    "model": "gemini-3.5-flash-lite"
+  },
+  "ai_calls_reserved": 0,
+  "ai_observations": [],
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "TATAMOTORS.NS",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 88.51,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "native_sha256": "123e901820f039eeec748ec57c294ff6139a60c2910a157a721b157e2ded98f4",
+      "pipeline_sha256": "eaeb9d9849d6a2bdef23e2326d10ff91a3653236c7af77ea11e65294009ab39e",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 18
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "bing": 6,
+        "google-news-rss": 5,
+        "legacy-news-fallback": 1
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 39,
+        "candidates_accepted_for_read": 38,
+        "discarded_by_reason": {
+          "BACKGROUND_REFERENCE_NOT_CURRENT_ACQUISITION": 1,
+          "DUPLICATE_URL": 12
+        },
+        "reads_attempted": 24,
+        "read_service_starts": 21,
+        "captures": 15,
+        "article_bodies": 1,
+        "raw_article_words": 1186,
+        "raw_capture_chars": 85093,
+        "observed_publisher_hosts": 1,
+        "independence_verified": false,
+        "failure_categories": {
+          "PROVIDER_FAILURE": 6,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "eligible_candidates_unread": 14,
+        "unread_by_reason": {
+          "READ_ATTEMPT_BUDGET_EXHAUSTED": 14
+        },
+        "service_operations_reserved": 42,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.livemint.com": 5,
+          "www.business-standard.com": 1,
+          "www.moneycontrol.com": 1,
+          "economictimes.indiatimes.com": 1,
+          "www.businesstoday.in": 4,
+          "auto.economictimes.indiatimes.com": 1,
+          "www.zeebiz.com": 1,
+          "www.news18.com": 1,
+          "brandequity.economictimes.indiatimes.com": 1,
+          "www.tata.com": 1,
+          "www.tatamotors.com": 2,
+          "ca.finance.yahoo.com": 1,
+          "sg.finance.yahoo.com": 1
+        },
+        "host_queue_wait_ms": 0.11,
+        "duration_seconds": 84.642,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 1,
+        "native_http_admissions": 70,
+        "native_http_by_host": {
+          "www.bing.com": 23,
+          "news.google.com": 6,
+          "www.moneycontrol.com": 2,
+          "economictimes.indiatimes.com": 2,
+          "www.livemint.com": 7,
+          "www.business-standard.com": 1,
+          "auto.economictimes.indiatimes.com": 2,
+          "www.news18.com": 2,
+          "www.zeebiz.com": 1,
+          "www.businesstoday.in": 8,
+          "brandequity.economictimes.indiatimes.com": 1,
+          "search.yahoo.com": 9,
+          "www.tata.com": 1,
+          "www.tatamotors.com": 2,
+          "sg.finance.yahoo.com": 1,
+          "ca.finance.yahoo.com": 2
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 0,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 39,
+        "candidate_urls": 39,
+        "by_type": {
+          "DISCOVERY_LEAD": 17,
+          "BLOCKED_OR_FAILED": 9,
+          "FEED_ENTRY": 8,
+          "PUBLISHER_HOMEPAGE": 3,
+          "BACKGROUND_REFERENCE": 1,
+          "ARTICLE_BODY": 1
+        },
+        "reads_attempted": 24,
+        "successful_captures": 15,
+        "article_bodies": 1,
+        "raw_article_words": 1186,
+        "raw_source_words": 13468,
+        "duplicate_captures": 0,
+        "qualified_source_count": 1,
+        "relevant_words": 689,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 313520,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PROVIDER_FAILURE": 6,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "DISCOVERY_LEAD": 12,
+        "PUBLISHER_HOMEPAGE": 2,
+        "ARTICLE_BODY": 1
+      },
+      "recomputed_raw_article_bodies": 1,
+      "recomputed_raw_article_words": 1186,
+      "qualified_sources": 1,
+      "qualified_useful_words": 689,
+      "observed_article_endpoint_hosts": [
+        "www.business-standard.com"
+      ],
+      "observed_qualified_endpoint_hosts": [
+        "www.business-standard.com"
+      ],
+      "observed_unique_article_endpoints": 1,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_0ae539934fa897babde0",
+          "source_url": "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Business Standard",
+          "saved_publisher_host": "www.business-standard.com",
+          "title": "Tata Motors PV unveils Tata.cars as new customer-facing brand identity",
+          "published_at": "2026-08-27T20:50:44+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1186,
+          "useful_words": 689,
+          "readable_text_sha256": "2d9cc5693611a78037129891e289ec64f051a3e5ae86e011c819537857cbed9e",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html",
+            "observed_endpoint_host": "www.business-standard.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html"
+            ],
+            "source_body_hash": "5bb0eeac7c570cd8e3b4644063b6c61ef08f7f1332a070798f5b9795bec71b25",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [
+        {
+          "source_id": "ev_hv_0ae539934fa897babde0",
+          "source_url": "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Business Standard",
+          "saved_publisher_host": "www.business-standard.com",
+          "title": "Tata Motors PV unveils Tata.cars as new customer-facing brand identity",
+          "published_at": "2026-08-27T20:50:44+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1186,
+          "useful_words": 689,
+          "readable_text_sha256": "2d9cc5693611a78037129891e289ec64f051a3e5ae86e011c819537857cbed9e",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html",
+            "observed_endpoint_host": "www.business-standard.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html"
+            ],
+            "source_body_hash": "5bb0eeac7c570cd8e3b4644063b6c61ef08f7f1332a070798f5b9795bec71b25",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "read_attempt_count": 24,
+      "read_status_counts": {
+        "SUCCESS": 15,
+        "FAILED": 9
+      },
+      "read_failure_categories": {
+        "PROVIDER_FAILURE": 6,
+        "PUBLISHER_UNRESOLVED": 3
+      },
+      "legacy_projection": {
+        "records": 1,
+        "words": 1186,
+        "kb": 7.847,
+        "displayed_finding_strings": 1,
+        "structured_findings": 1
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 1,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [
+        {
+          "finding_id": "fnd_fi_001",
+          "evidence_id": "ev_hv_0ae539934fa897babde0",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        }
+      ],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "02-scout",
+      "agent": "scout",
+      "input": "INFY.NS",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 65.33,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "native_sha256": "747c44ef7ede8763c9cddd57938cd511b2a3ad2262c548ad5de20ffa107e51db",
+      "pipeline_sha256": "979902885b11d813caace382eca0ebadb0899fb4c4f6ff8ee262f48b547d5abc",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 18
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "bing": 6,
+        "yahoo": 6,
+        "google-news-rss": 4,
+        "legacy-news-fallback": 1
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 35,
+        "candidates_accepted_for_read": 27,
+        "discarded_by_reason": {
+          "SUBJECT_NOT_OBSERVED_IN_LEAD": 8,
+          "DUPLICATE_URL": 6
+        },
+        "reads_attempted": 19,
+        "read_service_starts": 16,
+        "captures": 11,
+        "article_bodies": 3,
+        "raw_article_words": 2845,
+        "raw_capture_chars": 72730,
+        "observed_publisher_hosts": 3,
+        "independence_verified": false,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 1,
+          "PROVIDER_FAILURE": 4
+        },
+        "eligible_candidates_unread": 8,
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 8
+        },
+        "service_operations_reserved": 37,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.livemint.com": 3,
+          "www.moneycontrol.com": 1,
+          "www.financialexpress.com": 4,
+          "www.zeebiz.com": 2,
+          "www.ciol.com": 1,
+          "timesofindia.indiatimes.com": 1,
+          "www.indiatvnews.com": 1,
+          "finance.yahoo.com": 2,
+          "www.siam.in": 1
+        },
+        "host_queue_wait_ms": 0.09,
+        "duration_seconds": 63.177,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 3,
+        "native_http_admissions": 74,
+        "native_http_by_host": {
+          "www.bing.com": 21,
+          "search.yahoo.com": 24,
+          "news.google.com": 7,
+          "www.livemint.com": 3,
+          "www.moneycontrol.com": 1,
+          "www.zeebiz.com": 2,
+          "www.financialexpress.com": 7,
+          "timesofindia.indiatimes.com": 1,
+          "www.indiatvnews.com": 1,
+          "www.ciol.com": 1,
+          "finance.yahoo.com": 4,
+          "www.siam.in": 2
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 1,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 35,
+        "candidate_urls": 35,
+        "by_type": {
+          "FEED_ENTRY": 15,
+          "DISCOVERY_LEAD": 8,
+          "ARTICLE_BODY": 3,
+          "PUBLISHER_HOMEPAGE": 1,
+          "BLOCKED_OR_FAILED": 8
+        },
+        "reads_attempted": 19,
+        "successful_captures": 11,
+        "article_bodies": 3,
+        "raw_article_words": 2845,
+        "raw_source_words": 11807,
+        "duplicate_captures": 0,
+        "qualified_source_count": 3,
+        "relevant_words": 113,
+        "unique_publishers": 3,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 275889,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 4,
+          "HTTP_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "DISCOVERY_LEAD": 8,
+        "ARTICLE_BODY": 3
+      },
+      "recomputed_raw_article_bodies": 3,
+      "recomputed_raw_article_words": 2845,
+      "qualified_sources": 3,
+      "qualified_useful_words": 113,
+      "observed_article_endpoint_hosts": [
+        "www.ciol.com",
+        "www.financialexpress.com",
+        "www.indiatvnews.com"
+      ],
+      "observed_qualified_endpoint_hosts": [
+        "www.ciol.com",
+        "www.financialexpress.com",
+        "www.indiatvnews.com"
+      ],
+      "observed_unique_article_endpoints": 3,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_687178f2b42ab46619c9",
+          "source_url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "CIOL Bureau",
+          "saved_publisher_host": "www.ciol.com",
+          "title": "Infy shares hit record high ahead of earnings",
+          "published_at": "Wed, 07 Jul 2010 17:00:00 GMT",
+          "publication_time_basis": null,
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 295,
+          "useful_words": 31,
+          "readable_text_sha256": "1c80c3cb8eba6e0f66589d361ca04f42710570f60b20e4690fa3074e0d585869",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+            "observed_endpoint_host": "www.ciol.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/"
+            ],
+            "source_body_hash": "c05c3cc154f5d70670728b1097ac7d768c2751ed518e0ce7719191bc0621776a",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_86a2a468764f5354194d",
+          "source_url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Raghwendra Shukla",
+          "saved_publisher_host": "www.indiatvnews.com",
+          "title": "INFY Share Price: IT stock gains 4% as board to consider share buyback proposal on this date - Check details - India TV News",
+          "published_at": "2025-09-09T09:41:17+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 609,
+          "useful_words": 55,
+          "readable_text_sha256": "afdfe0fdb113bd7dc4da76e27f665971d0954dfa065e2351809f1865c88da015",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+            "observed_endpoint_host": "www.indiatvnews.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338"
+            ],
+            "source_body_hash": "e003b0a8de8908fd99b69b5db929c329925d6e40c198d54dc80559d6f6a792a4",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_21ce99c140aa1a649354",
+          "source_url": "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.financialexpress.com",
+          "title": "Infosys Q4FY26 Result Highlights: FY27 growth seen at 1.5%-3.55%; to hire 20,000 freshers - ADR slides 4% - Industry News | The Financial Express",
+          "published_at": "2026-04-23T09:14:47+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1941,
+          "useful_words": 27,
+          "readable_text_sha256": "0509cb43930aadef0c0fe4a3ab6e0a8fc5840c5689977217d93e55b34c184569",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/",
+            "observed_endpoint_host": "www.financialexpress.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/"
+            ],
+            "source_body_hash": "e57651e2fd6205832fa703572c3619a1f10d500d2c705825e863eb11aad2af14",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [
+        {
+          "source_id": "ev_hv_687178f2b42ab46619c9",
+          "source_url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "CIOL Bureau",
+          "saved_publisher_host": "www.ciol.com",
+          "title": "Infy shares hit record high ahead of earnings",
+          "published_at": "Wed, 07 Jul 2010 17:00:00 GMT",
+          "publication_time_basis": null,
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 295,
+          "useful_words": 31,
+          "readable_text_sha256": "1c80c3cb8eba6e0f66589d361ca04f42710570f60b20e4690fa3074e0d585869",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+            "observed_endpoint_host": "www.ciol.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/"
+            ],
+            "source_body_hash": "c05c3cc154f5d70670728b1097ac7d768c2751ed518e0ce7719191bc0621776a",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_86a2a468764f5354194d",
+          "source_url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Raghwendra Shukla",
+          "saved_publisher_host": "www.indiatvnews.com",
+          "title": "INFY Share Price: IT stock gains 4% as board to consider share buyback proposal on this date - Check details - India TV News",
+          "published_at": "2025-09-09T09:41:17+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 609,
+          "useful_words": 55,
+          "readable_text_sha256": "afdfe0fdb113bd7dc4da76e27f665971d0954dfa065e2351809f1865c88da015",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+            "observed_endpoint_host": "www.indiatvnews.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338"
+            ],
+            "source_body_hash": "e003b0a8de8908fd99b69b5db929c329925d6e40c198d54dc80559d6f6a792a4",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_21ce99c140aa1a649354",
+          "source_url": "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.financialexpress.com",
+          "title": "Infosys Q4FY26 Result Highlights: FY27 growth seen at 1.5%-3.55%; to hire 20,000 freshers - ADR slides 4% - Industry News | The Financial Express",
+          "published_at": "2026-04-23T09:14:47+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1941,
+          "useful_words": 27,
+          "readable_text_sha256": "0509cb43930aadef0c0fe4a3ab6e0a8fc5840c5689977217d93e55b34c184569",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/",
+            "observed_endpoint_host": "www.financialexpress.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/"
+            ],
+            "source_body_hash": "e57651e2fd6205832fa703572c3619a1f10d500d2c705825e863eb11aad2af14",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "read_attempt_count": 19,
+      "read_status_counts": {
+        "SUCCESS": 11,
+        "FAILED": 8
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "HTTP_FAILURE": 1,
+        "PROVIDER_FAILURE": 4
+      },
+      "legacy_projection": {
+        "records": 3,
+        "words": 2845,
+        "kb": 17.577,
+        "displayed_finding_strings": 4,
+        "structured_findings": 3
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 3,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [
+        {
+          "finding_id": "fnd_fi_001",
+          "evidence_id": "ev_hv_21ce99c140aa1a649354",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_fi_002",
+          "evidence_id": "ev_hv_687178f2b42ab46619c9",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_fi_003",
+          "evidence_id": "ev_hv_86a2a468764f5354194d",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        }
+      ],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "03-scout",
+      "agent": "scout",
+      "input": "AAPL",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 95.53,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "native_sha256": "5d5c03b596a0e88ef8a8d5d3d1176f51b9c8aa557bee151be994ed0307ebdc9f",
+      "pipeline_sha256": "9fd1b8c53feaf298d1726a4efa5122647f2f96a8cc74688b6f1be888f65c3bc3",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 17,
+        "AUTH_REQUIRED": 1
+      },
+      "providers_contacted": {
+        "bing-news-rss": 11,
+        "bing": 6,
+        "yahoo": 5,
+        "google-news-rss": 4
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 45,
+        "candidates_accepted_for_read": 44,
+        "discarded_by_reason": {
+          "BACKGROUND_REFERENCE_NOT_CURRENT_ACQUISITION": 1,
+          "DUPLICATE_URL": 8
+        },
+        "reads_attempted": 24,
+        "read_service_starts": 24,
+        "captures": 9,
+        "article_bodies": 6,
+        "raw_article_words": 6001,
+        "raw_capture_chars": 57881,
+        "observed_publisher_hosts": 6,
+        "independence_verified": false,
+        "failure_categories": {
+          "HTTP_FAILURE": 6,
+          "PROVIDER_FAILURE": 8,
+          "EMPTY_EXTRACTION": 1
+        },
+        "eligible_candidates_unread": 20,
+        "unread_by_reason": {
+          "READ_ATTEMPT_BUDGET_EXHAUSTED": 20
+        },
+        "service_operations_reserved": 42,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.theglobeandmail.com": 2,
+          "www.tipranks.com": 1,
+          "www.msn.com": 2,
+          "www.fool.com": 1,
+          "finance.yahoo.com": 3,
+          "news.alphastreet.com": 1,
+          "seekingalpha.com": 2,
+          "247wallst.com": 1,
+          "blockchain.news": 1,
+          "uk.finance.yahoo.com": 1,
+          "www.apple.com": 1,
+          "www.interactivecrypto.com": 1,
+          "stockstotrade.com": 1,
+          "economictimes.indiatimes.com": 1,
+          "beinsure.com": 1,
+          "9to5mac.com": 1,
+          "za.investing.com": 1,
+          "www.thestreet.com": 1,
+          "www.economies.com": 1
+        },
+        "host_queue_wait_ms": 0.12,
+        "duration_seconds": 93.959,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 6,
+        "native_http_admissions": 72,
+        "native_http_by_host": {
+          "www.bing.com": 17,
+          "news.google.com": 4,
+          "search.yahoo.com": 12,
+          "www.theglobeandmail.com": 3,
+          "www.tipranks.com": 1,
+          "www.fool.com": 1,
+          "www.msn.com": 2,
+          "r.jina.ai": 7,
+          "finance.yahoo.com": 5,
+          "seekingalpha.com": 2,
+          "247wallst.com": 2,
+          "news.alphastreet.com": 1,
+          "uk.finance.yahoo.com": 2,
+          "blockchain.news": 1,
+          "www.interactivecrypto.com": 1,
+          "www.apple.com": 1,
+          "economictimes.indiatimes.com": 2,
+          "beinsure.com": 2,
+          "9to5mac.com": 1,
+          "stockstotrade.com": 2,
+          "www.economies.com": 1,
+          "za.investing.com": 1,
+          "www.thestreet.com": 1
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 0,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 45,
+        "candidate_urls": 45,
+        "by_type": {
+          "DISCOVERY_LEAD": 3,
+          "BLOCKED_OR_FAILED": 15,
+          "FEED_ENTRY": 16,
+          "ARTICLE_BODY": 6,
+          "PUBLISHER_HOMEPAGE": 4,
+          "BACKGROUND_REFERENCE": 1
+        },
+        "reads_attempted": 24,
+        "successful_captures": 9,
+        "article_bodies": 6,
+        "raw_article_words": 6001,
+        "raw_source_words": 9100,
+        "duplicate_captures": 0,
+        "qualified_source_count": 6,
+        "relevant_words": 323,
+        "unique_publishers": 6,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 243369,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "HTTP_FAILURE": 6,
+          "PROVIDER_FAILURE": 8,
+          "EMPTY_EXTRACTION": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "DISCOVERY_LEAD": 3,
+        "ARTICLE_BODY": 6
+      },
+      "recomputed_raw_article_bodies": 6,
+      "recomputed_raw_article_words": 6001,
+      "qualified_sources": 6,
+      "qualified_useful_words": 323,
+      "observed_article_endpoint_hosts": [
+        "247wallst.com",
+        "9to5mac.com",
+        "blockchain.news",
+        "news.alphastreet.com",
+        "www.apple.com",
+        "www.fool.com"
+      ],
+      "observed_qualified_endpoint_hosts": [
+        "247wallst.com",
+        "9to5mac.com",
+        "blockchain.news",
+        "news.alphastreet.com",
+        "www.apple.com",
+        "www.fool.com"
+      ],
+      "observed_unique_article_endpoints": 6,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_0b51d15b94025beab21a",
+          "source_url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Daniel Sparks",
+          "saved_publisher_host": "www.fool.com",
+          "title": "Nvidia Earned About Twice as Much as Apple Last Quarter. Its Stock Is Worth Only About 20% More. | The Motley Fool",
+          "published_at": "2026-10-07T20:37:01Z",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 931,
+          "useful_words": 42,
+          "readable_text_sha256": "cdf29c2f7f71eb7d59fd6ce9b5cab9433a34f417faa3c0ef9933236869451494",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+            "observed_endpoint_host": "www.fool.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/"
+            ],
+            "source_body_hash": "e1addb751d1472821f8176bae7fb4a768d4092c0e7b31ecac6e52259ebb80df7",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_739973eb0516a3691e32",
+          "source_url": "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Omor Ibne Ehsan",
+          "saved_publisher_host": "247wallst.com",
+          "title": "Apple (AAPL) Trading Above Analyst Targets as Memory Costs Crimp Margin Outlook",
+          "published_at": "2026-10-06T12:35:42+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1131,
+          "useful_words": 51,
+          "readable_text_sha256": "cd96dc7f16a3b12ff8404f14686b15feb80e465f2e8d8a1e35b916969ff86544",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/",
+            "observed_endpoint_host": "247wallst.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/"
+            ],
+            "source_body_hash": "59279dce325f7d99366523f9526742bb4c3bc6a12b59d32660b09b3faa7f7073",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_1447d3906f82cc04f9ae",
+          "source_url": "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Newsdesk",
+          "saved_publisher_host": "news.alphastreet.com",
+          "title": "Apple (AAPL) Posts $111.2B Quarter as Services Hit a Record and a $100B Buyback Resets Capital Return Expectations - Alphastreet",
+          "published_at": "2026-05-01T18:17:46+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1043,
+          "useful_words": 86,
+          "readable_text_sha256": "3d83464400f18fe5a5ba348ca85805466c16739d0e62674bc6e8c7fe5784d490",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/",
+            "observed_endpoint_host": "news.alphastreet.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/"
+            ],
+            "source_body_hash": "72cced73569f0b1f38e37fd431be57995adacda8b7d0e5c3a09e8729dfe74317",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_c275109fca0e4f6518ee",
+          "source_url": "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Marcus Mendes",
+          "saved_publisher_host": "9to5mac.com",
+          "title": "Following Apple’s Q4 2026 guidance, JP Morgan cuts its target for the company’s stock - 9to5Mac",
+          "published_at": "2026-07-31T17:30:36+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 417,
+          "useful_words": 49,
+          "readable_text_sha256": "b0883d110ca7cd140a2e5183aac41c55483bb8d72929d8b1c0f239591b131620",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/",
+            "observed_endpoint_host": "9to5mac.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/"
+            ],
+            "source_body_hash": "4daceb54a93d93af93474c267846eed72ae77c8ad760d73d79ae29a4a9eebc13",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_7496b708c2d11de1a488",
+          "source_url": "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "blockchain.news",
+          "saved_publisher_host": "blockchain.news",
+          "title": "AAPL Price Prediction: Coiling Below $334 With October 29 Earnings as the Real Trigger",
+          "published_at": null,
+          "publication_time_basis": "CONFLICTING_CAPTURED_DECLARATIONS",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1687,
+          "useful_words": 52,
+          "readable_text_sha256": "0ad07d82ce0e50056813faa73d54b3e6325e78f51fefd46396fab7d3536e7844",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29",
+            "observed_endpoint_host": "blockchain.news",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29"
+            ],
+            "source_body_hash": "aa7edbde54397dce40d2a82c42a24924b88ba01934d5b05b47adb1ae1a7d676a",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_81ed3d17a5c626330926",
+          "source_url": "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.apple.com",
+          "title": "Apple reports second quarter results",
+          "published_at": "2026-04-30Z",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 792,
+          "useful_words": 43,
+          "readable_text_sha256": "63accb2e53f72f5522c915dc04953ba47f4a7d71b13ae396aba8955166f2d341",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/",
+            "observed_endpoint_host": "www.apple.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/"
+            ],
+            "source_body_hash": "f69329daf7bae248bc021945d0fc20f183e898910dcef6d99ac05530000375d6",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [
+        {
+          "source_id": "ev_hv_0b51d15b94025beab21a",
+          "source_url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Daniel Sparks",
+          "saved_publisher_host": "www.fool.com",
+          "title": "Nvidia Earned About Twice as Much as Apple Last Quarter. Its Stock Is Worth Only About 20% More. | The Motley Fool",
+          "published_at": "2026-10-07T20:37:01Z",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 931,
+          "useful_words": 42,
+          "readable_text_sha256": "cdf29c2f7f71eb7d59fd6ce9b5cab9433a34f417faa3c0ef9933236869451494",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+            "observed_endpoint_host": "www.fool.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/"
+            ],
+            "source_body_hash": "e1addb751d1472821f8176bae7fb4a768d4092c0e7b31ecac6e52259ebb80df7",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_739973eb0516a3691e32",
+          "source_url": "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Omor Ibne Ehsan",
+          "saved_publisher_host": "247wallst.com",
+          "title": "Apple (AAPL) Trading Above Analyst Targets as Memory Costs Crimp Margin Outlook",
+          "published_at": "2026-10-06T12:35:42+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1131,
+          "useful_words": 51,
+          "readable_text_sha256": "cd96dc7f16a3b12ff8404f14686b15feb80e465f2e8d8a1e35b916969ff86544",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/",
+            "observed_endpoint_host": "247wallst.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/"
+            ],
+            "source_body_hash": "59279dce325f7d99366523f9526742bb4c3bc6a12b59d32660b09b3faa7f7073",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_1447d3906f82cc04f9ae",
+          "source_url": "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Newsdesk",
+          "saved_publisher_host": "news.alphastreet.com",
+          "title": "Apple (AAPL) Posts $111.2B Quarter as Services Hit a Record and a $100B Buyback Resets Capital Return Expectations - Alphastreet",
+          "published_at": "2026-05-01T18:17:46+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1043,
+          "useful_words": 86,
+          "readable_text_sha256": "3d83464400f18fe5a5ba348ca85805466c16739d0e62674bc6e8c7fe5784d490",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/",
+            "observed_endpoint_host": "news.alphastreet.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/"
+            ],
+            "source_body_hash": "72cced73569f0b1f38e37fd431be57995adacda8b7d0e5c3a09e8729dfe74317",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_c275109fca0e4f6518ee",
+          "source_url": "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Marcus Mendes",
+          "saved_publisher_host": "9to5mac.com",
+          "title": "Following Apple’s Q4 2026 guidance, JP Morgan cuts its target for the company’s stock - 9to5Mac",
+          "published_at": "2026-07-31T17:30:36+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 417,
+          "useful_words": 49,
+          "readable_text_sha256": "b0883d110ca7cd140a2e5183aac41c55483bb8d72929d8b1c0f239591b131620",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/",
+            "observed_endpoint_host": "9to5mac.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/"
+            ],
+            "source_body_hash": "4daceb54a93d93af93474c267846eed72ae77c8ad760d73d79ae29a4a9eebc13",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_7496b708c2d11de1a488",
+          "source_url": "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "blockchain.news",
+          "saved_publisher_host": "blockchain.news",
+          "title": "AAPL Price Prediction: Coiling Below $334 With October 29 Earnings as the Real Trigger",
+          "published_at": null,
+          "publication_time_basis": "CONFLICTING_CAPTURED_DECLARATIONS",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1687,
+          "useful_words": 52,
+          "readable_text_sha256": "0ad07d82ce0e50056813faa73d54b3e6325e78f51fefd46396fab7d3536e7844",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29",
+            "observed_endpoint_host": "blockchain.news",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29"
+            ],
+            "source_body_hash": "aa7edbde54397dce40d2a82c42a24924b88ba01934d5b05b47adb1ae1a7d676a",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_81ed3d17a5c626330926",
+          "source_url": "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.apple.com",
+          "title": "Apple reports second quarter results",
+          "published_at": "2026-04-30Z",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 792,
+          "useful_words": 43,
+          "readable_text_sha256": "63accb2e53f72f5522c915dc04953ba47f4a7d71b13ae396aba8955166f2d341",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/",
+            "observed_endpoint_host": "www.apple.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/"
+            ],
+            "source_body_hash": "f69329daf7bae248bc021945d0fc20f183e898910dcef6d99ac05530000375d6",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "read_attempt_count": 24,
+      "read_status_counts": {
+        "FAILED": 15,
+        "SUCCESS": 9
+      },
+      "read_failure_categories": {
+        "HTTP_FAILURE": 6,
+        "PROVIDER_FAILURE": 8,
+        "EMPTY_EXTRACTION": 1
+      },
+      "legacy_projection": {
+        "records": 6,
+        "words": 6001,
+        "kb": 38.024,
+        "displayed_finding_strings": 6,
+        "structured_findings": 6
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 6,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [
+        {
+          "finding_id": "fnd_fi_001",
+          "evidence_id": "ev_hv_0b51d15b94025beab21a",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_fi_002",
+          "evidence_id": "ev_hv_1447d3906f82cc04f9ae",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_fi_003",
+          "evidence_id": "ev_hv_739973eb0516a3691e32",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_fi_004",
+          "evidence_id": "ev_hv_7496b708c2d11de1a488",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_fi_005",
+          "evidence_id": "ev_hv_81ed3d17a5c626330926",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_fi_006",
+          "evidence_id": "ev_hv_c275109fca0e4f6518ee",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        }
+      ],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "04-trending",
+      "agent": "trending",
+      "input": "OpenAI",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 71.6,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "native_sha256": "3aac5c1a05689316d626d9c4077dc499ee2c6074d67f4c086a2c0395abd10ad3",
+      "pipeline_sha256": "1ad01b56559387e49c30f43a230acd0c73fda34ac660559cab269dc8cd39a15a",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 18
+      },
+      "providers_contacted": {
+        "bing": 6,
+        "bing-news-rss": 12,
+        "google-news-rss": 12,
+        "legacy-news-fallback": 7,
+        "yahoo": 3,
+        "legacy-web-fallback": 3
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 40,
+        "candidates_accepted_for_read": 39,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 3,
+          "BACKGROUND_REFERENCE_NOT_CURRENT_ACQUISITION": 1
+        },
+        "reads_attempted": 18,
+        "read_service_starts": 15,
+        "captures": 7,
+        "article_bodies": 2,
+        "raw_article_words": 2260,
+        "raw_capture_chars": 57646,
+        "observed_publisher_hosts": 2,
+        "independence_verified": false,
+        "failure_categories": {
+          "HTTP_FAILURE": 7,
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1
+        },
+        "eligible_candidates_unread": 21,
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 20,
+          "DISCOVERY_READ_BUDGET_EXHAUSTED": 1
+        },
+        "service_operations_reserved": 36,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "openai.com": 5,
+          "platform.openai.com": 2,
+          "www.pymnts.com": 4,
+          "armoneyandpolitics.com": 1,
+          "shattered.io": 3
+        },
+        "host_queue_wait_ms": 0.08,
+        "duration_seconds": 71.172,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 2,
+        "native_http_admissions": 83,
+        "native_http_by_host": {
+          "www.bing.com": 21,
+          "news.google.com": 24,
+          "search.yahoo.com": 18,
+          "openai.com": 5,
+          "platform.openai.com": 2,
+          "www.pymnts.com": 5,
+          "armoneyandpolitics.com": 1,
+          "r.jina.ai": 3,
+          "shattered.io": 4
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 1,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 40,
+        "candidate_urls": 40,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 11,
+          "FEED_ENTRY": 20,
+          "BACKGROUND_REFERENCE": 1,
+          "PUBLISHER_HOMEPAGE": 3,
+          "SOURCE_INDEX": 2,
+          "ARTICLE_BODY": 2,
+          "DISCOVERY_LEAD": 1
+        },
+        "reads_attempted": 18,
+        "successful_captures": 7,
+        "article_bodies": 2,
+        "raw_article_words": 2260,
+        "raw_source_words": 6955,
+        "duplicate_captures": 0,
+        "qualified_source_count": 1,
+        "relevant_words": 89,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 224417,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "HTTP_FAILURE": 7,
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "PUBLISHER_HOMEPAGE": 3,
+        "SOURCE_INDEX": 2,
+        "ARTICLE_BODY": 2
+      },
+      "recomputed_raw_article_bodies": 2,
+      "recomputed_raw_article_words": 2260,
+      "qualified_sources": 1,
+      "qualified_useful_words": 89,
+      "observed_article_endpoint_hosts": [
+        "shattered.io"
+      ],
+      "observed_qualified_endpoint_hosts": [
+        "shattered.io"
+      ],
+      "observed_unique_article_endpoints": 1,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_e3e88cce9d16be0ac834",
+          "source_url": "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "shattered.io",
+          "title": "DeepSeek Opens DeepInfer, Presses OpenAI, Anthropic",
+          "published_at": "2026-10-21T00:23:16+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1765,
+          "useful_words": 89,
+          "readable_text_sha256": "ad15eef5a6e580bdb3b8d7f8d24b5f7cbd98cb5b5484cd1f96062c77ef68feb6",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/",
+            "observed_endpoint_host": "shattered.io",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/"
+            ],
+            "source_body_hash": "fd10e5278c466b0c55eeb318f215d76cae46598a35fa501ef663e44e44a59b1f",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_4a80747fc08d24557df1",
+          "source_url": "https://www.pymnts.com/news/artificial-intelligence/2026/metas-muse-reaches-10-million-downloads-faster-than-chatgpt/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "www.pymnts.com",
+          "title": "Meta’s Muse Reaches 10 Million Downloads Faster Than ChatGPT | PYMNTS.com",
+          "published_at": "2026-10-20T21:53:30+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 495,
+          "useful_words": 0,
+          "readable_text_sha256": "072903eccd322a77e7ab2458c9e445a7493204e3e50894b5e0841c77b5ac535e",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [
+        {
+          "source_id": "ev_hv_e3e88cce9d16be0ac834",
+          "source_url": "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "shattered.io",
+          "title": "DeepSeek Opens DeepInfer, Presses OpenAI, Anthropic",
+          "published_at": "2026-10-21T00:23:16+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1765,
+          "useful_words": 89,
+          "readable_text_sha256": "ad15eef5a6e580bdb3b8d7f8d24b5f7cbd98cb5b5484cd1f96062c77ef68feb6",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/",
+            "observed_endpoint_host": "shattered.io",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/"
+            ],
+            "source_body_hash": "fd10e5278c466b0c55eeb318f215d76cae46598a35fa501ef663e44e44a59b1f",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "read_attempt_count": 18,
+      "read_status_counts": {
+        "FAILED": 11,
+        "SUCCESS": 7
+      },
+      "read_failure_categories": {
+        "HTTP_FAILURE": 7,
+        "PUBLISHER_UNRESOLVED": 3,
+        "PROVIDER_FAILURE": 1
+      },
+      "legacy_projection": {
+        "records": 1,
+        "words": 1765,
+        "kb": 12.094,
+        "displayed_finding_strings": 1,
+        "structured_findings": 1
+      },
+      "projection_limitations": [
+        "Legacy source-record count is not the raw-pool article-body count.",
+        "Legacy retained words include nonarticle/homepage/index or metadata content."
+      ],
+      "citation_reference_count": 1,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [
+        {
+          "finding_id": "fnd_tr_001",
+          "evidence_id": "ev_hv_e3e88cce9d16be0ac834",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        }
+      ],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "05-trending",
+      "agent": "trending",
+      "input": "NVIDIA",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 138.96,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "native_sha256": "46114476c1bc833ffaf39d3d01979ad66c02c5283bb66a19cd389d1bc859dbcf",
+      "pipeline_sha256": "0295d41c1e2724c5eaa38d8b68cb2059285dd6d56366feabd13bcd9bbf3b0a64",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 18
+      },
+      "providers_contacted": {
+        "bing": 6,
+        "bing-news-rss": 12,
+        "google-news-rss": 12,
+        "legacy-news-fallback": 6,
+        "yahoo": 4,
+        "legacy-web-fallback": 4
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 61,
+        "candidates_accepted_for_read": 60,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 2,
+          "BACKGROUND_REFERENCE_NOT_CURRENT_ACQUISITION": 1
+        },
+        "reads_attempted": 24,
+        "read_service_starts": 21,
+        "captures": 14,
+        "article_bodies": 8,
+        "raw_article_words": 5638,
+        "raw_capture_chars": 71246,
+        "observed_publisher_hosts": 3,
+        "independence_verified": false,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "TIMEOUT": 1,
+          "PROVIDER_FAILURE": 6
+        },
+        "eligible_candidates_unread": 36,
+        "unread_by_reason": {
+          "READ_ATTEMPT_BUDGET_EXHAUSTED": 36
+        },
+        "service_operations_reserved": 42,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.nvidia.com": 6,
+          "www.nvidia.in": 1,
+          "www.nvidia.co.uk": 1,
+          "247wallst.com": 1,
+          "manufacturingdigital.com": 1,
+          "techcrunch.com": 6,
+          "blogs.nvidia.com": 4,
+          "www.afp.com": 1
+        },
+        "host_queue_wait_ms": 0.12,
+        "duration_seconds": 137.728,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 8,
+        "native_http_admissions": 101,
+        "native_http_by_host": {
+          "www.bing.com": 23,
+          "news.google.com": 23,
+          "search.yahoo.com": 17,
+          "www.nvidia.com": 11,
+          "www.nvidia.co.uk": 1,
+          "www.nvidia.in": 1,
+          "r.jina.ai": 4,
+          "247wallst.com": 2,
+          "manufacturingdigital.com": 2,
+          "techcrunch.com": 8,
+          "www.afp.com": 3,
+          "blogs.nvidia.com": 6
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 0,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 61,
+        "candidate_urls": 61,
+        "by_type": {
+          "DISCOVERY_LEAD": 22,
+          "FEED_ENTRY": 16,
+          "BLOCKED_OR_FAILED": 10,
+          "BACKGROUND_REFERENCE": 1,
+          "OFFICIAL_DOCUMENT": 2,
+          "PUBLISHER_HOMEPAGE": 3,
+          "ARTICLE_BODY": 6,
+          "SOURCE_INDEX": 1
+        },
+        "reads_attempted": 24,
+        "successful_captures": 14,
+        "article_bodies": 6,
+        "raw_article_words": 3680,
+        "raw_source_words": 9861,
+        "duplicate_captures": 0,
+        "qualified_source_count": 3,
+        "relevant_words": 262,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 304151,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PROVIDER_FAILURE": 6,
+          "TIMEOUT": 1,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "DISCOVERY_LEAD": 2,
+        "OFFICIAL_DOCUMENT": 2,
+        "PUBLISHER_HOMEPAGE": 3,
+        "ARTICLE_BODY": 6,
+        "SOURCE_INDEX": 1
+      },
+      "recomputed_raw_article_bodies": 6,
+      "recomputed_raw_article_words": 3680,
+      "qualified_sources": 3,
+      "qualified_useful_words": 262,
+      "observed_article_endpoint_hosts": [
+        "techcrunch.com"
+      ],
+      "observed_qualified_endpoint_hosts": [
+        "techcrunch.com"
+      ],
+      "observed_unique_article_endpoints": 3,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_61ce75599c83f81b177f",
+          "source_url": "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techcrunch.com",
+          "title": "Google has joined Amazon in attacking Nvidia's stronghold with AI app developers | TechCrunch",
+          "published_at": "2026-10-20T18:38:24+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 415,
+          "useful_words": 100,
+          "readable_text_sha256": "4772ae150d03ae06a2463e0080d20bc33d14fd642d33e68b8c20361ffcd41b3f",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/",
+            "observed_endpoint_host": "techcrunch.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/"
+            ],
+            "source_body_hash": "7161a647b6f60ed01130c5f6ed9e496d562c85fae1d03ae4bbbdca81850cede3",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_c1dfee28d50b17ef202b",
+          "source_url": "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techcrunch.com",
+          "title": "Amazon is taking its biggest shot at Nvidia yet with new TorchNeuron dev tool | TechCrunch",
+          "published_at": "2026-10-19T20:09:24+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 688,
+          "useful_words": 78,
+          "readable_text_sha256": "952d15610075c34257c1f8e3aace90f3e1f4315e6028f141576df7f8e074717c",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/",
+            "observed_endpoint_host": "techcrunch.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/"
+            ],
+            "source_body_hash": "13d20c3cf9433b90890c0850a90662945778e15f8b426e91e3c75c2c0258d673",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_68b9f741f3df646ee4cf",
+          "source_url": "https://techcrunch.com/video/a-nvidia-insider-turned-vc-on-why-robotics-hasnt-hit-its-chatgpt-moment-yet/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techcrunch.com",
+          "title": "An Nvidia insider-turned-VC on why robotics hasn’t hit its ChatGPT moment, yet | TechCrunch",
+          "published_at": "2026-10-16T16:30:00+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "TEMPORAL_STALE: Published 108.4h ago exceeds Trending freshness window (48.0h)"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 200,
+          "useful_words": 0,
+          "readable_text_sha256": "d44b6e2809653163acadbb486ad7503f42551e455c4ed0c41da166a62c18487e",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_2c0c78d6dd60d8434364",
+          "source_url": "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techcrunch.com",
+          "title": "Ex-Nvidia-turned-VC Amulya Vishwanath: 'Physical AI is in its LEGO era' | TechCrunch",
+          "published_at": "2026-10-20T16:20:06+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 367,
+          "useful_words": 84,
+          "readable_text_sha256": "f7328193bd0182c8b7a50213e4722ddc296e5039e3a98eb09bfef3bf4cba93ec",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/",
+            "observed_endpoint_host": "techcrunch.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/"
+            ],
+            "source_body_hash": "bc1eda92a4a0ac1ab4bf75d6d3722033a79307f9c2f359f496dbc81fdcf99ed4",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_046432880ec75ff50cbb",
+          "source_url": "https://blogs.nvidia.com/blog/vera-rubin-nvl72-mlperf-inference/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "blogs.nvidia.com",
+          "title": "NVIDIA Vera Rubin NVL72 Delivers Leading Performance in MLPerf Inference v6.1 Debut",
+          "published_at": "2026-09-16T15:00:48+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "TEMPORAL_STALE: Published 829.9h ago exceeds Trending freshness window (48.0h)"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1023,
+          "useful_words": 0,
+          "readable_text_sha256": "2153b1591cc8bd104b30bd61a9feb1c635ef6cdd697a50761de917808705a151",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_1ef3c04752a8642d9af5",
+          "source_url": "https://blogs.nvidia.com/blog/alpamayo-2-super-open-model-now-available/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "blogs.nvidia.com",
+          "title": "NVIDIA Alpamayo 2 Super, the Frontier Open Model for Robotaxis and Autonomous Vehicles, Now Available for Commercial Use",
+          "published_at": "2026-08-04T15:00:49+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "TEMPORAL_STALE: Published 1861.9h ago exceeds Trending freshness window (48.0h)"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 987,
+          "useful_words": 0,
+          "readable_text_sha256": "a03760be4649923d595019cae795291f5fcb0bab55c595915694c39d30a63a61",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [
+        {
+          "source_id": "ev_hv_61ce75599c83f81b177f",
+          "source_url": "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techcrunch.com",
+          "title": "Google has joined Amazon in attacking Nvidia's stronghold with AI app developers | TechCrunch",
+          "published_at": "2026-10-20T18:38:24+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 415,
+          "useful_words": 100,
+          "readable_text_sha256": "4772ae150d03ae06a2463e0080d20bc33d14fd642d33e68b8c20361ffcd41b3f",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/",
+            "observed_endpoint_host": "techcrunch.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/"
+            ],
+            "source_body_hash": "7161a647b6f60ed01130c5f6ed9e496d562c85fae1d03ae4bbbdca81850cede3",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_c1dfee28d50b17ef202b",
+          "source_url": "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techcrunch.com",
+          "title": "Amazon is taking its biggest shot at Nvidia yet with new TorchNeuron dev tool | TechCrunch",
+          "published_at": "2026-10-19T20:09:24+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 688,
+          "useful_words": 78,
+          "readable_text_sha256": "952d15610075c34257c1f8e3aace90f3e1f4315e6028f141576df7f8e074717c",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/",
+            "observed_endpoint_host": "techcrunch.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/"
+            ],
+            "source_body_hash": "13d20c3cf9433b90890c0850a90662945778e15f8b426e91e3c75c2c0258d673",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_2c0c78d6dd60d8434364",
+          "source_url": "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techcrunch.com",
+          "title": "Ex-Nvidia-turned-VC Amulya Vishwanath: 'Physical AI is in its LEGO era' | TechCrunch",
+          "published_at": "2026-10-20T16:20:06+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 367,
+          "useful_words": 84,
+          "readable_text_sha256": "f7328193bd0182c8b7a50213e4722ddc296e5039e3a98eb09bfef3bf4cba93ec",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/",
+            "observed_endpoint_host": "techcrunch.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/"
+            ],
+            "source_body_hash": "bc1eda92a4a0ac1ab4bf75d6d3722033a79307f9c2f359f496dbc81fdcf99ed4",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "read_attempt_count": 24,
+      "read_status_counts": {
+        "SUCCESS": 14,
+        "FAILED": 10
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "TIMEOUT": 1,
+        "PROVIDER_FAILURE": 6
+      },
+      "legacy_projection": {
+        "records": 3,
+        "words": 1470,
+        "kb": 8.924,
+        "displayed_finding_strings": 3,
+        "structured_findings": 3
+      },
+      "projection_limitations": [
+        "Legacy source-record count is not the raw-pool article-body count.",
+        "Legacy retained words include nonarticle/homepage/index or metadata content."
+      ],
+      "citation_reference_count": 3,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [
+        {
+          "finding_id": "fnd_tr_001",
+          "evidence_id": "ev_hv_61ce75599c83f81b177f",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_tr_002",
+          "evidence_id": "ev_hv_c1dfee28d50b17ef202b",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_tr_003",
+          "evidence_id": "ev_hv_2c0c78d6dd60d8434364",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        }
+      ],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "06-trending",
+      "agent": "trending",
+      "input": "electric vehicles",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 119.99,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "native_sha256": "bf5194a7d30ae7217be77625fe7b207decf80a74f58ecfc847d46d87c92cbd06",
+      "pipeline_sha256": "77d23419a2459b756f28de73984591b366ae8e593a0df9e4f6ee9553037ba78f",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 16,
+        "TIMEOUT": 2
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "google-news-rss": 12,
+        "legacy-news-fallback": 8,
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 15,
+        "candidates_accepted_for_read": 15,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 5
+        },
+        "reads_attempted": 13,
+        "read_service_starts": 11,
+        "captures": 7,
+        "article_bodies": 3,
+        "raw_article_words": 2194,
+        "raw_capture_chars": 58846,
+        "observed_publisher_hosts": 2,
+        "independence_verified": false,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 2,
+          "PROVIDER_FAILURE": 3,
+          "HTTP_FAILURE": 1
+        },
+        "eligible_candidates_unread": 2,
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 2
+        },
+        "service_operations_reserved": 32,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.bing.com": 1,
+          "www.cubaheadlines.com": 2,
+          "techxplore.com": 6,
+          "www.wvnews.com": 1,
+          "en.cibercuba.com": 1
+        },
+        "host_queue_wait_ms": 0.06,
+        "duration_seconds": 118.476,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 3,
+        "native_http_admissions": 90,
+        "native_http_by_host": {
+          "www.bing.com": 24,
+          "news.google.com": 24,
+          "search.yahoo.com": 24,
+          "sustainabilityonline.net": 2,
+          "www.cubaheadlines.com": 4,
+          "techxplore.com": 9,
+          "www.wvnews.com": 2,
+          "en.cibercuba.com": 1
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 8,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 15,
+        "candidate_urls": 15,
+        "by_type": {
+          "ARTICLE_BODY": 3,
+          "FEED_ENTRY": 2,
+          "BLOCKED_OR_FAILED": 6,
+          "PUBLISHER_HOMEPAGE": 2,
+          "SOURCE_INDEX": 2
+        },
+        "reads_attempted": 13,
+        "successful_captures": 7,
+        "article_bodies": 3,
+        "raw_article_words": 2194,
+        "raw_source_words": 6991,
+        "duplicate_captures": 0,
+        "qualified_source_count": 3,
+        "relevant_words": 179,
+        "unique_publishers": 2,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 173527,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 2,
+          "PROVIDER_FAILURE": 3,
+          "HTTP_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "ARTICLE_BODY": 3,
+        "PUBLISHER_HOMEPAGE": 2,
+        "SOURCE_INDEX": 2
+      },
+      "recomputed_raw_article_bodies": 3,
+      "recomputed_raw_article_words": 2194,
+      "qualified_sources": 3,
+      "qualified_useful_words": 179,
+      "observed_article_endpoint_hosts": [
+        "sustainabilityonline.net",
+        "techxplore.com"
+      ],
+      "observed_qualified_endpoint_hosts": [
+        "sustainabilityonline.net",
+        "techxplore.com"
+      ],
+      "observed_unique_article_endpoints": 3,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_03a7813b8a3eb47e6047",
+          "source_url": "https://sustainabilityonline.net/news/most-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Editor",
+          "saved_publisher_host": "sustainabilityonline.net",
+          "title": "Most that have switched to EVs have no plans to go back",
+          "published_at": "2026-10-21T04:00:00+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 401,
+          "useful_words": 65,
+          "readable_text_sha256": "ac90dbd46b7134b031194b514f3e4f7184e95ea91a2a24e4d05c5aaec6b41ce1",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://sustainabilityonline.net/news/most-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back/",
+            "observed_endpoint_host": "sustainabilityonline.net",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad845f798724e29a0ee17401a96a16a&url=https%3a%2f%2fsustainabilityonline.net%2fnews%2fmost-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back%2f&c=4248571812382610721&mkt=en-in",
+              "https://sustainabilityonline.net/news/most-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back/"
+            ],
+            "source_body_hash": "47ff734680c937e35122b0399542435ab0b2d600ff9dac96f0cffd1ea47fd345",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_2e7d46cefb387440a1f7",
+          "source_url": "https://techxplore.com/news/2026-10-digital-natives-buying-electric-cars.html",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techxplore.com",
+          "title": "Digital natives are buying electric cars as if they were smartphones",
+          "published_at": "2026-10-20T20:20:08-0400",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1095,
+          "useful_words": 29,
+          "readable_text_sha256": "c19d3da160423143ec67a11cc3cf9231961bc9a7d341f9e57fc2d452bf5b9eb9",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techxplore.com/news/2026-10-digital-natives-buying-electric-cars.html",
+            "observed_endpoint_host": "techxplore.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techxplore.com/news/2026-10-digital-natives-buying-electric-cars.html"
+            ],
+            "source_body_hash": "5aad32f87e1b02d4900fdf1c1ac033f0b9c83d15bb9d8f1d3ea2d71ac3e02bb9",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_f60e30afe4b19ac76a45",
+          "source_url": "https://techxplore.com/news/2026-10-discovery-domain-cyberattack-electric-vehicle.html",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techxplore.com",
+          "title": "Discovery of cross-domain cyberattack risk targeting electric vehicle charging navigation systems",
+          "published_at": "2026-10-20T14:40:12-0400",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 698,
+          "useful_words": 85,
+          "readable_text_sha256": "e4e052e723f7fab270ac9ecb1311c12e60f7d445aec8beed5b4887d1d151e0e1",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techxplore.com/news/2026-10-discovery-domain-cyberattack-electric-vehicle.html",
+            "observed_endpoint_host": "techxplore.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techxplore.com/news/2026-10-discovery-domain-cyberattack-electric-vehicle.html"
+            ],
+            "source_body_hash": "c4e555b7dd889fbd60895fe990ee2f3fdc8dd745fd940c37434b2f7509c08286",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [
+        {
+          "source_id": "ev_hv_03a7813b8a3eb47e6047",
+          "source_url": "https://sustainabilityonline.net/news/most-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Editor",
+          "saved_publisher_host": "sustainabilityonline.net",
+          "title": "Most that have switched to EVs have no plans to go back",
+          "published_at": "2026-10-21T04:00:00+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 401,
+          "useful_words": 65,
+          "readable_text_sha256": "ac90dbd46b7134b031194b514f3e4f7184e95ea91a2a24e4d05c5aaec6b41ce1",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://sustainabilityonline.net/news/most-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back/",
+            "observed_endpoint_host": "sustainabilityonline.net",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad845f798724e29a0ee17401a96a16a&url=https%3a%2f%2fsustainabilityonline.net%2fnews%2fmost-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back%2f&c=4248571812382610721&mkt=en-in",
+              "https://sustainabilityonline.net/news/most-drivers-that-have-switched-to-electric-vehicles-have-no-plans-to-go-back/"
+            ],
+            "source_body_hash": "47ff734680c937e35122b0399542435ab0b2d600ff9dac96f0cffd1ea47fd345",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_2e7d46cefb387440a1f7",
+          "source_url": "https://techxplore.com/news/2026-10-digital-natives-buying-electric-cars.html",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techxplore.com",
+          "title": "Digital natives are buying electric cars as if they were smartphones",
+          "published_at": "2026-10-20T20:20:08-0400",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1095,
+          "useful_words": 29,
+          "readable_text_sha256": "c19d3da160423143ec67a11cc3cf9231961bc9a7d341f9e57fc2d452bf5b9eb9",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techxplore.com/news/2026-10-digital-natives-buying-electric-cars.html",
+            "observed_endpoint_host": "techxplore.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techxplore.com/news/2026-10-digital-natives-buying-electric-cars.html"
+            ],
+            "source_body_hash": "5aad32f87e1b02d4900fdf1c1ac033f0b9c83d15bb9d8f1d3ea2d71ac3e02bb9",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_f60e30afe4b19ac76a45",
+          "source_url": "https://techxplore.com/news/2026-10-discovery-domain-cyberattack-electric-vehicle.html",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "",
+          "saved_publisher_host": "techxplore.com",
+          "title": "Discovery of cross-domain cyberattack risk targeting electric vehicle charging navigation systems",
+          "published_at": "2026-10-20T14:40:12-0400",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 698,
+          "useful_words": 85,
+          "readable_text_sha256": "e4e052e723f7fab270ac9ecb1311c12e60f7d445aec8beed5b4887d1d151e0e1",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://techxplore.com/news/2026-10-discovery-domain-cyberattack-electric-vehicle.html",
+            "observed_endpoint_host": "techxplore.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://techxplore.com/news/2026-10-discovery-domain-cyberattack-electric-vehicle.html"
+            ],
+            "source_body_hash": "c4e555b7dd889fbd60895fe990ee2f3fdc8dd745fd940c37434b2f7509c08286",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "read_attempt_count": 13,
+      "read_status_counts": {
+        "SUCCESS": 7,
+        "FAILED": 6
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 2,
+        "PROVIDER_FAILURE": 3,
+        "HTTP_FAILURE": 1
+      },
+      "legacy_projection": {
+        "records": 3,
+        "words": 2194,
+        "kb": 15.404,
+        "displayed_finding_strings": 3,
+        "structured_findings": 3
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 3,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [
+        {
+          "finding_id": "fnd_tr_001",
+          "evidence_id": "ev_hv_03a7813b8a3eb47e6047",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_tr_002",
+          "evidence_id": "ev_hv_2e7d46cefb387440a1f7",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_tr_003",
+          "evidence_id": "ev_hv_f60e30afe4b19ac76a45",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        }
+      ],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "07-brandshield",
+      "agent": "brandshield",
+      "input": "Nike",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 89.71,
+      "error_events": [],
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "native_sha256": "6b37d6d5170a8b24a3e9def927a7df57ba3932ff12aa56c89e3ba0939178fa8f",
+      "pipeline_sha256": "adb2f690ed3ce0373979628600326cc8b6242ece30448fdcb32c7e00efc09a7d",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 17,
+        "TIMEOUT": 1
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "google-news-rss": 11,
+        "legacy-news-fallback": 5,
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 19,
+        "candidates_accepted_for_read": 19,
+        "discarded_by_reason": {},
+        "reads_attempted": 11,
+        "read_service_starts": 8,
+        "captures": 2,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_capture_chars": 20177,
+        "observed_publisher_hosts": 0,
+        "independence_verified": false,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 4,
+          "TIMEOUT": 1,
+          "HTTP_FAILURE": 1
+        },
+        "eligible_candidates_unread": 8,
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 8
+        },
+        "service_operations_reserved": 29,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "wwd.com": 1,
+          "www.msn.com": 2,
+          "timesofindia.indiatimes.com": 1,
+          "www.hrgrapevine.com": 2,
+          "www.complex.com": 1,
+          "decrypt.co": 1
+        },
+        "host_queue_wait_ms": 0.04,
+        "duration_seconds": 89.293,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 0,
+        "native_http_admissions": 90,
+        "native_http_by_host": {
+          "www.bing.com": 23,
+          "news.google.com": 24,
+          "search.yahoo.com": 24,
+          "timesofindia.indiatimes.com": 1,
+          "wwd.com": 2,
+          "www.msn.com": 2,
+          "r.jina.ai": 8,
+          "www.hrgrapevine.com": 3,
+          "www.complex.com": 2,
+          "decrypt.co": 1
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 2,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 19,
+        "candidate_urls": 19,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 9,
+          "DISCOVERY_LEAD": 1,
+          "FEED_ENTRY": 8,
+          "PUBLISHER_HOMEPAGE": 1
+        },
+        "reads_attempted": 11,
+        "successful_captures": 2,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_source_words": 3192,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 84374,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "TIMEOUT": 1,
+          "PROVIDER_FAILURE": 4,
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "DISCOVERY_LEAD": 1,
+        "PUBLISHER_HOMEPAGE": 1
+      },
+      "recomputed_raw_article_bodies": 0,
+      "recomputed_raw_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_useful_words": 0,
+      "observed_article_endpoint_hosts": [],
+      "observed_qualified_endpoint_hosts": [],
+      "observed_unique_article_endpoints": 0,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [],
+      "qualified_source_metadata": [],
+      "read_attempt_count": 11,
+      "read_status_counts": {
+        "SUCCESS": 2,
+        "FAILED": 9
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "PROVIDER_FAILURE": 4,
+        "TIMEOUT": 1,
+        "HTTP_FAILURE": 1
+      },
+      "legacy_projection": {
+        "records": 0,
+        "words": 0,
+        "kb": 0.0,
+        "displayed_finding_strings": 0,
+        "structured_findings": 0
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 0,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "08-brandshield",
+      "agent": "brandshield",
+      "input": "Apple",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 30.86,
+      "error_events": [],
+      "investigation_status": "ACQUISITION_FAILED",
+      "native_sha256": "bc78367a1e76e80831c652f9bc0036030122cb39fa8597473c71ac05f3ddca45",
+      "pipeline_sha256": "dcd11445f6c6f7a3aa6f7884018829b85cd9dea6e0f491064e6860aa656da8c5",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 18
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "google-news-rss": 2,
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 66,
+        "candidates_accepted_for_read": 66,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 4
+        },
+        "reads_attempted": 24,
+        "read_service_starts": 24,
+        "captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_capture_chars": 0,
+        "observed_publisher_hosts": 0,
+        "independence_verified": false,
+        "failure_categories": {
+          "HTTP_FAILURE": 1,
+          "PROVIDER_FAILURE": 3,
+          "ACCESS_REJECTED": 20
+        },
+        "eligible_candidates_unread": 42,
+        "unread_by_reason": {
+          "READ_ATTEMPT_BUDGET_EXHAUSTED": 42
+        },
+        "service_operations_reserved": 42,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.msn.com": 1,
+          "cxotoday.com": 1,
+          "www.freepressjournal.in": 1,
+          "www.forbes.com": 1,
+          "www.businessworld.in": 1,
+          "www.telegraphindia.com": 1,
+          "www.livemint.com": 1,
+          "www.moneycontrol.com": 1,
+          "telecom.economictimes.indiatimes.com": 1,
+          "www.thehansindia.com": 1,
+          "www.analyticsinsight.net": 1,
+          "www.financialexpress.com": 1,
+          "www.deccanherald.com": 1,
+          "www.asiaone.com": 1,
+          "www.helpnetsecurity.com": 1,
+          "lawenforcementtoday.com": 1,
+          "wccftech.com": 1,
+          "www.china.org.cn": 1,
+          "www.thehindu.com": 1,
+          "cryptoslate.com": 1,
+          "www.dailymail.com": 1,
+          "money.rediff.com": 1,
+          "www.digit.in": 1,
+          "www.zeebiz.com": 1
+        },
+        "host_queue_wait_ms": 0.14,
+        "duration_seconds": 30.148,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 0,
+        "native_http_admissions": 49,
+        "native_http_by_host": {
+          "www.bing.com": 18,
+          "search.yahoo.com": 16,
+          "news.google.com": 8,
+          "www.msn.com": 2,
+          "cxotoday.com": 2,
+          "www.forbes.com": 1,
+          "www.freepressjournal.in": 2
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 0,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 66,
+        "candidate_urls": 66,
+        "by_type": {
+          "FEED_ENTRY": 23,
+          "BLOCKED_OR_FAILED": 24,
+          "DISCOVERY_LEAD": 19
+        },
+        "reads_attempted": 24,
+        "successful_captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_source_words": 0,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 120492,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "ACCESS_REJECTED": 20,
+          "PROVIDER_FAILURE": 3,
+          "HTTP_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {},
+      "recomputed_raw_article_bodies": 0,
+      "recomputed_raw_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_useful_words": 0,
+      "observed_article_endpoint_hosts": [],
+      "observed_qualified_endpoint_hosts": [],
+      "observed_unique_article_endpoints": 0,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [],
+      "qualified_source_metadata": [],
+      "read_attempt_count": 24,
+      "read_status_counts": {
+        "FAILED": 24
+      },
+      "read_failure_categories": {
+        "HTTP_FAILURE": 1,
+        "PROVIDER_FAILURE": 3,
+        "ACCESS_REJECTED": 20
+      },
+      "legacy_projection": {
+        "records": 0,
+        "words": 0,
+        "kb": 0.0,
+        "displayed_finding_strings": 0,
+        "structured_findings": 0
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 0,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "09-brandshield",
+      "agent": "brandshield",
+      "input": "Tata Motors",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 8.32,
+      "error_events": [],
+      "investigation_status": "ACQUISITION_FAILED",
+      "native_sha256": "4cd3c289d2f84a65067b659f12ff2a6606ba9dfc8b347e429b04bba34839c0d2",
+      "pipeline_sha256": "c5fc06299eacb3a6aa4d681da1e6267c7f3fbbaae76ce4b035a9da2de1990b92",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "FAILED": 18
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "google-news-rss": 12,
+        "legacy-news-fallback": 12,
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 0,
+        "candidates_accepted_for_read": 0,
+        "discarded_by_reason": {},
+        "reads_attempted": 0,
+        "read_service_starts": 0,
+        "captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_capture_chars": 0,
+        "observed_publisher_hosts": 0,
+        "independence_verified": false,
+        "failure_categories": {},
+        "eligible_candidates_unread": 0,
+        "unread_by_reason": {},
+        "service_operations_reserved": 18,
+        "service_operation_cap": 80,
+        "host_read_reservations": {},
+        "host_queue_wait_ms": 0.0,
+        "duration_seconds": 8.155,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 0,
+        "native_http_admissions": 60,
+        "native_http_by_host": {
+          "www.bing.com": 24,
+          "news.google.com": 24,
+          "search.yahoo.com": 12
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 20,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 0,
+        "candidate_urls": 0,
+        "by_type": {},
+        "reads_attempted": 0,
+        "successful_captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_source_words": 0,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 2,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {},
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {},
+      "recomputed_raw_article_bodies": 0,
+      "recomputed_raw_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_useful_words": 0,
+      "observed_article_endpoint_hosts": [],
+      "observed_qualified_endpoint_hosts": [],
+      "observed_unique_article_endpoints": 0,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [],
+      "qualified_source_metadata": [],
+      "read_attempt_count": 0,
+      "read_status_counts": {},
+      "read_failure_categories": {},
+      "legacy_projection": {
+        "records": 0,
+        "words": 0,
+        "kb": 0.0,
+        "displayed_finding_strings": 0,
+        "structured_findings": 0
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 0,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "10-personal_watch",
+      "agent": "personal_watch",
+      "input": "Sam Altman",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 8.23,
+      "error_events": [],
+      "investigation_status": "ACQUISITION_FAILED",
+      "native_sha256": "a6c88b8281e6de54fb2a00fc38ecbe8913aae68a376d70b8f33a969c41b189ea",
+      "pipeline_sha256": "cdc6c4405544ae8ad277a09abe45c8d69b048d1729847032681e758d43c02bd0",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "FAILED": 18
+      },
+      "providers_contacted": {
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6,
+        "bing-news-rss": 12,
+        "google-news-rss": 12,
+        "legacy-news-fallback": 12
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 0,
+        "candidates_accepted_for_read": 0,
+        "discarded_by_reason": {},
+        "reads_attempted": 0,
+        "read_service_starts": 0,
+        "captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_capture_chars": 0,
+        "observed_publisher_hosts": 0,
+        "independence_verified": false,
+        "failure_categories": {},
+        "eligible_candidates_unread": 0,
+        "unread_by_reason": {},
+        "service_operations_reserved": 18,
+        "service_operation_cap": 80,
+        "host_read_reservations": {},
+        "host_queue_wait_ms": 0.0,
+        "duration_seconds": 8.084,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 0,
+        "native_http_admissions": 60,
+        "native_http_by_host": {
+          "www.bing.com": 24,
+          "search.yahoo.com": 12,
+          "news.google.com": 24
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 20,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 0,
+        "candidate_urls": 0,
+        "by_type": {},
+        "reads_attempted": 0,
+        "successful_captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_source_words": 0,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 2,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {},
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {},
+      "recomputed_raw_article_bodies": 0,
+      "recomputed_raw_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_useful_words": 0,
+      "observed_article_endpoint_hosts": [],
+      "observed_qualified_endpoint_hosts": [],
+      "observed_unique_article_endpoints": 0,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [],
+      "qualified_source_metadata": [],
+      "read_attempt_count": 0,
+      "read_status_counts": {},
+      "read_failure_categories": {},
+      "legacy_projection": {
+        "records": 0,
+        "words": 0,
+        "kb": 0.0,
+        "displayed_finding_strings": 0,
+        "structured_findings": 0
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 0,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "11-personal_watch",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 22.48,
+      "error_events": [],
+      "investigation_status": "ACQUISITION_FAILED",
+      "native_sha256": "0c3cfb34f93a4a12b4f9bccab63df35e4c96d1b11cd0b0db93e6144a2039df1a",
+      "pipeline_sha256": "0b5bd261a90ce4665008f1fedbe8bb4bd0896771a9bb285427e35830323e0db7",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "FAILED": 12,
+        "TIMEOUT": 6
+      },
+      "providers_contacted": {
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6,
+        "bing-news-rss": 12,
+        "google-news-rss": 12,
+        "legacy-news-fallback": 12
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 0,
+        "candidates_accepted_for_read": 0,
+        "discarded_by_reason": {},
+        "reads_attempted": 0,
+        "read_service_starts": 0,
+        "captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_capture_chars": 0,
+        "observed_publisher_hosts": 0,
+        "independence_verified": false,
+        "failure_categories": {},
+        "eligible_candidates_unread": 0,
+        "unread_by_reason": {},
+        "service_operations_reserved": 18,
+        "service_operation_cap": 80,
+        "host_read_reservations": {},
+        "host_queue_wait_ms": 0.0,
+        "duration_seconds": 22.26,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 0,
+        "native_http_admissions": 60,
+        "native_http_by_host": {
+          "www.bing.com": 24,
+          "search.yahoo.com": 12,
+          "news.google.com": 24
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 19,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 0,
+        "candidate_urls": 0,
+        "by_type": {},
+        "reads_attempted": 0,
+        "successful_captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_source_words": 0,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 2,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {},
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {},
+      "recomputed_raw_article_bodies": 0,
+      "recomputed_raw_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_useful_words": 0,
+      "observed_article_endpoint_hosts": [],
+      "observed_qualified_endpoint_hosts": [],
+      "observed_unique_article_endpoints": 0,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [],
+      "qualified_source_metadata": [],
+      "read_attempt_count": 0,
+      "read_status_counts": {},
+      "read_failure_categories": {},
+      "legacy_projection": {
+        "records": 0,
+        "words": 0,
+        "kb": 0.0,
+        "displayed_finding_strings": 0,
+        "structured_findings": 0
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 0,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "12-personal_watch",
+      "agent": "personal_watch",
+      "input": "Satya Nadella",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 32.42,
+      "error_events": [],
+      "investigation_status": "ACQUISITION_FAILED",
+      "native_sha256": "f3b95b2ea58e631208a40bbc3df9a626af6a39a6ddde9efce21b87caffab2db0",
+      "pipeline_sha256": "01f8802f1c4a9737302594e87fd377e4682ad30f979ce560ab142c1a14508e23",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "TIMEOUT": 6,
+        "FAILED": 12
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "google-news-rss": 12,
+        "legacy-news-fallback": 12,
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 0,
+        "candidates_accepted_for_read": 0,
+        "discarded_by_reason": {},
+        "reads_attempted": 0,
+        "read_service_starts": 0,
+        "captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_capture_chars": 0,
+        "observed_publisher_hosts": 0,
+        "independence_verified": false,
+        "failure_categories": {},
+        "eligible_candidates_unread": 0,
+        "unread_by_reason": {},
+        "service_operations_reserved": 18,
+        "service_operation_cap": 80,
+        "host_read_reservations": {},
+        "host_queue_wait_ms": 0.0,
+        "duration_seconds": 32.294,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 0,
+        "native_http_admissions": 56,
+        "native_http_by_host": {
+          "www.bing.com": 24,
+          "news.google.com": 24,
+          "search.yahoo.com": 8
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 17,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 0,
+        "candidate_urls": 0,
+        "by_type": {},
+        "reads_attempted": 0,
+        "successful_captures": 0,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_source_words": 0,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 2,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {},
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {},
+      "recomputed_raw_article_bodies": 0,
+      "recomputed_raw_article_words": 0,
+      "qualified_sources": 0,
+      "qualified_useful_words": 0,
+      "observed_article_endpoint_hosts": [],
+      "observed_qualified_endpoint_hosts": [],
+      "observed_unique_article_endpoints": 0,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [],
+      "qualified_source_metadata": [],
+      "read_attempt_count": 0,
+      "read_status_counts": {},
+      "read_failure_categories": {},
+      "legacy_projection": {
+        "records": 0,
+        "words": 0,
+        "kb": 0.0,
+        "displayed_finding_strings": 0,
+        "structured_findings": 0
+      },
+      "projection_limitations": [],
+      "citation_reference_count": 0,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    }
+  ],
+  "limitations": [
+    "No network or AI call; no source requalification or original capture edits.",
+    "Raw-pool article and qualification decisions are the saved code's classifications, not independent accuracy acceptance.",
+    "Different endpoint hosts do not establish independent reporting; publication declarations are not independently verified dates.",
+    "No-result cases retain unknown article/qualification counts; internal dossiers are disclosed separately, not promoted to returned results.",
+    "Body text, headers and credentials are excluded. Exact public source/transport URLs are retained unless credential-shaped."
+  ]
+}

@@ -1,0 +1,39 @@
+{
+  "mode": "REPORT_ONLY_SAVED_NATIVE_REPROJECTION",
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Adobe",
+      "original_response_sha256": "9e4fcf7fbca288344a2a373f57250f917e0fdc7701fd32180dde298e08609ad0",
+      "unchanged_native_fields_sha256": "afabc1fdb11d202f784a7310a03eb1745391b4d569c796ee17e1dbdf654a9f01",
+      "investigation_status": "COMPLETED"
+    },
+    {
+      "case_id": "02-brandshield",
+      "agent": "brandshield",
+      "input": "Dyson",
+      "original_response_sha256": "9d5145c3c2568abb252ea7accef346b6b1309770862846b7b4d10f9ed8339735",
+      "unchanged_native_fields_sha256": "71df2f8782b449b9555a405f3921dbf459e326c707e645732e02b406833c4754",
+      "investigation_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "case_id": "03-trending",
+      "agent": "trending",
+      "input": "battery recycling",
+      "original_response_sha256": "3c2068434b2174531b5c03bd9c07df415199fea6aa8c1c6561c46ac20d07d64d",
+      "unchanged_native_fields_sha256": "b947a9964bef8179c3ba8d3443168154b5291f162a083d4eb0136d0042206a31",
+      "investigation_status": "INSUFFICIENT_EVIDENCE"
+    },
+    {
+      "case_id": "04-personal_watch",
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "original_response_sha256": "bda37ab3a028465e2eee2b7215326014ede639e57f3035060d0b712afd095560",
+      "unchanged_native_fields_sha256": "488e822c6ccd7b832441677b082ad0caa97b1e1ee44fff213dabc40446eb13e6",
+      "investigation_status": "INSUFFICIENT_EVIDENCE"
+    }
+  ],
+  "network_and_ai_calls": 0,
+  "progress_events": "NOT_REPLAYED"
+}

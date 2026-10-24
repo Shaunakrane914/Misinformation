@@ -1,0 +1,31 @@
+{
+  "record_kind": "SELECTED_ACTUAL_CLOSEOUT_RESULTS_NOT_RAW_TRANSCRIPT",
+  "closeout_date": "2026-10-23",
+  "branch": "fix/p0-lenovo-acquisition-20261018",
+  "head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "dirty_worktree_preserved": true,
+  "application_sha256": "3b8fc973e011eaf4db6a0ff0bec130b003e7240df087f3d03857adf19a84cd2a",
+  "full_python": {"command": "python -m pytest tests/ -q", "exit_code": 0, "passed": 1969, "seconds": 79.26},
+  "fast_python": {"command": "python -m pytest tests/unit tests/chaos tests/security -q", "exit_code": 0, "passed": 1761, "seconds": 65.46},
+  "fatal_flake8": {"exit_code": 0, "fatal_findings": 0, "selection": "E9,F63,F7,F82"},
+  "node_frontend": {"scripts": 9, "failed_scripts": 0, "exit_code_each": 0},
+  "offline_smoke": {"exit_code": 0, "verdict": "OFFLINE_SMOKE_PASS"},
+  "offline_rollback": {"exit_code": 0, "verdict": "OFFLINE_PERSISTENCE_PASS", "historical_archive": "NOT_VERIFIED", "deployed_previous_version": "NOT_VERIFIED"},
+  "frozen_benchmarks": {"exit_code": 0, "hashes_match": true},
+  "protected_git_diff": {"exit_code": 0, "empty": true},
+  "whitespace": {"exit_code": 0},
+  "relative_document_links": {"checked": 322, "broken": 0, "exit_code": 0},
+  "final_browser": {"exit_code": 0, "cases": 2, "viewport_states": 6, "widths": [320, 390, 1440], "fresh_source_calls": 0, "model_calls": 0},
+  "live_investigations": {"authorized": 2, "performed_once_each": 2, "ai_disabled": true, "audit_retries": 0, "authorization_remaining": 0},
+  "model_generation_and_capability_calls": 0,
+  "committed": false,
+  "pushed": false,
+  "merged": false,
+  "deployed": false,
+  "limitations": [
+    "Full and fast test suites overlap and must not be added.",
+    "Browser replay and final interpretation corrections are not fresh final-code acquisition.",
+    "Original incident causality, broad reliability, independent research accuracy and release readiness remain unaccepted.",
+    "Failed and intermediate runs are disclosed separately in the report; final results do not erase them."
+  ]
+}

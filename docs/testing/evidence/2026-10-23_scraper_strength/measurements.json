@@ -1,0 +1,655 @@
+{
+  "schema": "native-scraper-strength-selected-observations-v1",
+  "observed_date": "2026-10-23",
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "7ef5c2b36683729fd53736a614a9edbd46748c2506ecd94d5140420722dc8410",
+  "final_application_sha256": "7ef5c2b36683729fd53736a614a9edbd46748c2506ecd94d5140420722dc8410",
+  "stable_application": true,
+  "ai_calls_reserved": 0,
+  "ai_observations": [],
+  "paid_firecrawl_calls": 0,
+  "bounds_per_case": {
+    "seconds": 180,
+    "reads": 16,
+    "native_http_admissions": 80
+  },
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Adobe",
+      "seconds": 34.73,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "raw_pool_stats": {
+        "source_count": 35,
+        "candidate_urls": 35,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 6,
+          "ARTICLE_BODY": 9,
+          "DISCOVERY_LEAD": 1,
+          "FEED_ENTRY": 13,
+          "PUBLISHER_HOMEPAGE": 5,
+          "BACKGROUND_REFERENCE": 1
+        },
+        "reads_attempted": 16,
+        "successful_captures": 10,
+        "article_bodies": 9,
+        "raw_article_words": 9460,
+        "raw_source_words": 10303,
+        "duplicate_captures": 0,
+        "qualified_source_count": 9,
+        "relevant_words": 420,
+        "unique_publishers": 9,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 286143,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "ACCESS_DENIED": 5,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "article_utf8_bytes": 63260,
+      "harvesting": {
+        "queries_generated": 18,
+        "candidate_urls_discovered": 35,
+        "candidates_accepted_for_read": 34,
+        "reads_attempted": 16,
+        "read_service_starts": 16,
+        "captures": 10,
+        "article_bodies": 9,
+        "failure_categories": {
+          "ACCESS_DENIED": 5,
+          "PROVIDER_FAILURE": 1
+        },
+        "unread_by_reason": {
+          "READ_ATTEMPT_BUDGET_EXHAUSTED": 18
+        },
+        "native_http_admissions": 65,
+        "native_http_budget_rejections": 1,
+        "native_http_by_host": {
+          "www.bing.com": 17,
+          "search.yahoo.com": 24,
+          "news.google.com": 4,
+          "www.investing.com": 1,
+          "www.marketscreener.com": 1,
+          "www.nbcmiami.com": 1,
+          "www.theglobeandmail.com": 1,
+          "r.jina.ai": 4,
+          "247wallst.com": 1,
+          "www.techtimes.com": 1,
+          "www.fool.com": 1,
+          "siliconangle.com": 1,
+          "finance.yahoo.com": 1,
+          "stocktwits.com": 1,
+          "www.msn.com": 1,
+          "note.com": 1,
+          "www.thestreet.com": 1,
+          "www.stocktitan.net": 1,
+          "cryptobriefing.com": 1,
+          "uk.investing.com": 1
+        }
+      },
+      "query_statuses": {
+        "SUCCESS": 17,
+        "AUTH_REQUIRED": 1
+      },
+      "captured_sites": [
+        {
+          "source_url": "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520",
+          "publisher_host": "www.marketscreener.com",
+          "title": "Adobe : Earnings press release (au56y4ter)",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 1543,
+          "utf8_bytes": 12005,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 55,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://www.theglobeandmail.com/investing/markets/stocks/GOOGL/pressreleases/4492304/oracle-adobe-micron-alphabet-and-nvidia-are-part-of-zacks-earnings-preview/",
+          "publisher_host": "www.theglobeandmail.com",
+          "title": "Oracle, Adobe, Micron, Alphabet and Nvidia are part of Zacks Earnings Preview",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 1154,
+          "utf8_bytes": 7437,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 37,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://www.techtimes.com/articles/318264/20260612/adobe-q2-2026-earnings-record-662b-revenue-ai-arr-triples-cfo-exits-days.htm",
+          "publisher_host": "www.techtimes.com",
+          "title": "Adobe Q2 2026 Earnings: Record $6.62B Revenue, AI ARR Triples, CFO Exits in Days",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 1818,
+          "utf8_bytes": 11812,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 75,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://www.stocktitan.net/news/ADBE/adobe-to-announce-q3-fy2026-earnings-results-on-sept-10-xt5v7ajgtmhl.html",
+          "publisher_host": "www.stocktitan.net",
+          "title": "Adobe's next financial update is scheduled after markets close Sept. 10",
+          "source_type": "DISCOVERY_LEAD",
+          "word_count": 843,
+          "utf8_bytes": 5493,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "NO_STRUCTURAL_BODY"
+          ]
+        },
+        {
+          "source_url": "https://cryptobriefing.com/adobe-q3-earnings-revenue-eps-beat/",
+          "publisher_host": "cryptobriefing.com",
+          "title": "Adobe reports Q3 earnings with revenue hitting $6.76B and EPS of $6.13, beating estimates",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 381,
+          "utf8_bytes": 2468,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 53,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://note.com/ote_walk/n/n7241a8b7e1a3?hl=en",
+          "publisher_host": "note.com",
+          "title": "How to Read Financial Statements for Subscription Companies: Practical Edition - Decoding Adobe's Business Transformation Through Numbers｜【#会計クイズ】大手町のランダムウォーカー",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 399,
+          "utf8_bytes": 2965,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 17,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://www.fool.com/investing/2025/09/15/adobe-after-boosting-guidance-is-its-beaten-down-s/",
+          "publisher_host": "www.fool.com",
+          "title": "Adobe: After Boosting Guidance, Is Its Beaten-Down Stock Ready to Break Out? | The Motley Fool",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 775,
+          "utf8_bytes": 4887,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 46,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://247wallst.com/investing/2026/06/11/live-will-adobe-smash-q2-earnings-after-the-bell-tonight/liveupdates/3/",
+          "publisher_host": "247wallst.com",
+          "title": "Adobe's Guidance Will Likely Drive the Market's Reaction After Tonight's Q2 Earnings",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 1612,
+          "utf8_bytes": 10077,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 39,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://finance.yahoo.com/news/adobe-adbe-hidden-gem-overpriced-163253212.html",
+          "publisher_host": "finance.yahoo.com",
+          "title": "Adobe (ADBE): A Hidden Gem or Overpriced Stock? An In-Depth Analysis of Its Market Value",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 748,
+          "utf8_bytes": 4870,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 65,
+          "qualification_reasons": []
+        },
+        {
+          "source_url": "https://siliconangle.com/2023/12/18/adobe-figma-end-proposed-20b-proposed-merger-amid-regulatory-issues/",
+          "publisher_host": "siliconangle.com",
+          "title": "Adobe and Figma end $20B proposed merger amid regulatory issues - SiliconANGLE",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 1030,
+          "utf8_bytes": 6739,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 33,
+          "qualification_reasons": []
+        }
+      ],
+      "displayed_finding_count": 6
+    },
+    {
+      "case_id": "02-brandshield",
+      "agent": "brandshield",
+      "input": "Dyson",
+      "seconds": 40.56,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "raw_pool_stats": {
+        "source_count": 10,
+        "candidate_urls": 10,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 4,
+          "FEED_ENTRY": 2,
+          "PUBLISHER_HOMEPAGE": 2,
+          "SOURCE_INDEX": 1,
+          "DISCOVERY_LEAD": 1
+        },
+        "reads_attempted": 8,
+        "successful_captures": 4,
+        "article_bodies": 0,
+        "raw_article_words": 0,
+        "raw_source_words": 4235,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 116547,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "article_utf8_bytes": 0,
+      "harvesting": {
+        "queries_generated": 18,
+        "candidate_urls_discovered": 10,
+        "candidates_accepted_for_read": 10,
+        "reads_attempted": 8,
+        "read_service_starts": 5,
+        "captures": 4,
+        "article_bodies": 0,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 2
+        },
+        "native_http_admissions": 79,
+        "native_http_budget_rejections": 6,
+        "native_http_by_host": {
+          "www.bing.com": 21,
+          "search.yahoo.com": 24,
+          "news.google.com": 24,
+          "cybernews.com": 1,
+          "r.jina.ai": 3,
+          "www.wral.com": 2,
+          "trendlife.com": 2,
+          "www.thisismoney.co.uk": 2
+        }
+      },
+      "query_statuses": {
+        "SUCCESS": 18
+      },
+      "captured_sites": [
+        {
+          "source_url": "https://www.wral.com",
+          "publisher_host": "www.wral.com",
+          "title": "WRAL | News and Weather in Raleigh NC",
+          "source_type": "PUBLISHER_HOMEPAGE",
+          "word_count": 1760,
+          "utf8_bytes": 11200,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Insufficient entity match confidence (0.0 < 0.35)"
+          ]
+        },
+        {
+          "source_url": "https://www.wral.com/sitemap_index.xml",
+          "publisher_host": "www.wral.com",
+          "title": "Not Found",
+          "source_type": "SOURCE_INDEX",
+          "word_count": 47,
+          "utf8_bytes": 321,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Insufficient entity match confidence (0.0 < 0.35)"
+          ]
+        },
+        {
+          "source_url": "https://trendlife.com/en-us",
+          "publisher_host": "trendlife.com",
+          "title": "TrendLife | An AI-powered life companion for families",
+          "source_type": "PUBLISHER_HOMEPAGE",
+          "word_count": 351,
+          "utf8_bytes": 2307,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Insufficient entity match confidence (0.0 < 0.35)"
+          ]
+        },
+        {
+          "source_url": "https://www.thisismoney.co.uk/money/index.html",
+          "publisher_host": "www.thisismoney.co.uk",
+          "title": "Money - Financial & Business News, Stocks | This is Money",
+          "source_type": "DISCOVERY_LEAD",
+          "word_count": 2077,
+          "utf8_bytes": 12045,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Insufficient entity match confidence (0.0 < 0.35)"
+          ]
+        }
+      ],
+      "displayed_finding_count": 0
+    },
+    {
+      "case_id": "03-trending",
+      "agent": "trending",
+      "input": "battery recycling",
+      "seconds": 35.21,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "raw_pool_stats": {
+        "source_count": 36,
+        "candidate_urls": 36,
+        "by_type": {
+          "ARTICLE_BODY": 2,
+          "BLOCKED_OR_FAILED": 5,
+          "FEED_ENTRY": 6,
+          "PUBLISHER_HOMEPAGE": 1,
+          "SOURCE_INDEX": 1,
+          "DISCOVERY_LEAD": 21
+        },
+        "reads_attempted": 12,
+        "successful_captures": 7,
+        "article_bodies": 2,
+        "raw_article_words": 2008,
+        "raw_source_words": 8978,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 379527,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 2,
+          "PROVIDER_FAILURE": 3
+        },
+        "dropped_by_limit": {}
+      },
+      "article_utf8_bytes": 14725,
+      "harvesting": {
+        "queries_generated": 18,
+        "candidate_urls_discovered": 36,
+        "candidates_accepted_for_read": 36,
+        "reads_attempted": 12,
+        "read_service_starts": 10,
+        "captures": 7,
+        "article_bodies": 2,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 2,
+          "PROVIDER_FAILURE": 3
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 6,
+          "HOST_READ_BUDGET_EXHAUSTED": 18
+        },
+        "native_http_admissions": 80,
+        "native_http_budget_rejections": 13,
+        "native_http_by_host": {
+          "www.bing.com": 22,
+          "search.yahoo.com": 24,
+          "news.google.com": 24,
+          "www.indexbox.io": 6,
+          "www.recyclingtoday.com": 1,
+          "r.jina.ai": 2,
+          "www.ess-news.com": 1
+        }
+      },
+      "query_statuses": {
+        "SUCCESS": 18
+      },
+      "captured_sites": [
+        {
+          "source_url": "https://www.ess-news.com/2026/10/23/swedish-industry-seeks-battery-recycling-checks-for-grid-service-access/",
+          "publisher_host": "www.ess-news.com",
+          "title": "Swedish industry seeks battery recycling checks for grid service access - Energy Storage",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 374,
+          "utf8_bytes": 2691,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ]
+        },
+        {
+          "source_url": "https://www.indexbox.io",
+          "publisher_host": "www.indexbox.io",
+          "title": "IndexBox - Market Intelligence Platform - Data, Tools, and Analytics",
+          "source_type": "PUBLISHER_HOMEPAGE",
+          "word_count": 984,
+          "utf8_bytes": 6158,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Insufficient multi-token topic match"
+          ]
+        },
+        {
+          "source_url": "https://www.indexbox.io/find/?q=Battery+Recycling",
+          "publisher_host": "www.indexbox.io",
+          "title": "Search IndexBox: Battery Recycling - IndexBox",
+          "source_type": "SOURCE_INDEX",
+          "word_count": 1148,
+          "utf8_bytes": 8456,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+          ]
+        },
+        {
+          "source_url": "https://www.indexbox.io/store/world-battery-recycling-leaching-reactors-market-analysis-forecast-size-trends-and-insights/",
+          "publisher_host": "www.indexbox.io",
+          "title": "Battery Recycling Leaching Reactors Market in the World | Report - IndexBox - Prices, Size, Forecast, and Companies",
+          "source_type": "DISCOVERY_LEAD",
+          "word_count": 1576,
+          "utf8_bytes": 12019,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Rejected utility/authentication endpoint (APP_CATALOG): contains zero substantive claim evidence"
+          ]
+        },
+        {
+          "source_url": "https://www.indexbox.io/store/world-battery-recycling-technologies-market-analysis-forecast-size-trends-and-insights/",
+          "publisher_host": "www.indexbox.io",
+          "title": "Battery Recycling Technologies Market in World | Report - IndexBox - Prices, Size, Forecast, and Companies",
+          "source_type": "DISCOVERY_LEAD",
+          "word_count": 1614,
+          "utf8_bytes": 12009,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Rejected utility/authentication endpoint (APP_CATALOG): contains zero substantive claim evidence"
+          ]
+        },
+        {
+          "source_url": "https://www.indexbox.io/store/world-transportation-battery-recycling-market-analysis-forecast-size-trends-and-insights/",
+          "publisher_host": "www.indexbox.io",
+          "title": "Transportation Battery Recycling Market in the world | Report - IndexBox - Prices, Size, Forecast, and Companies",
+          "source_type": "DISCOVERY_LEAD",
+          "word_count": 1648,
+          "utf8_bytes": 12083,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "Rejected utility/authentication endpoint (APP_CATALOG): contains zero substantive claim evidence"
+          ]
+        },
+        {
+          "source_url": "https://www.indexbox.io/blog/nimh-battery-recycling-market-forecast-points-higher-toward-2035-driven-by-hybrid-vehicle-battery-retirements-and-rare-earth-recovery-mandates/",
+          "publisher_host": "www.indexbox.io",
+          "title": "Nimh Battery Recycling Market To Reach New Heights by 2035 Amid Growing End-of-Life Battery Volumes and Circular Economy Policies - News and Statistics - IndexBox",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 1634,
+          "utf8_bytes": 12034,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "TEMPORAL_STALE: Published 2537.7h ago exceeds Trending freshness window (48.0h)"
+          ]
+        }
+      ],
+      "displayed_finding_count": 0
+    },
+    {
+      "case_id": "04-personal_watch",
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "seconds": 27.11,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "raw_pool_stats": {
+        "source_count": 16,
+        "candidate_urls": 16,
+        "by_type": {
+          "ARTICLE_BODY": 1,
+          "DISCOVERY_LEAD": 3,
+          "BLOCKED_OR_FAILED": 5,
+          "FEED_ENTRY": 7
+        },
+        "reads_attempted": 6,
+        "successful_captures": 1,
+        "article_bodies": 1,
+        "raw_article_words": 484,
+        "raw_source_words": 484,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 41634,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1,
+          "ACCESS_DENIED": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "article_utf8_bytes": 3009,
+      "harvesting": {
+        "queries_generated": 18,
+        "candidate_urls_discovered": 16,
+        "candidates_accepted_for_read": 16,
+        "reads_attempted": 6,
+        "read_service_starts": 3,
+        "captures": 1,
+        "article_bodies": 1,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1,
+          "ACCESS_DENIED": 1
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 10
+        },
+        "native_http_admissions": 73,
+        "native_http_budget_rejections": 4,
+        "native_http_by_host": {
+          "www.bing.com": 21,
+          "search.yahoo.com": 24,
+          "news.google.com": 24,
+          "auto.economictimes.indiatimes.com": 1,
+          "www.freep.com": 1,
+          "r.jina.ai": 1,
+          "chicagodefender.com": 1
+        }
+      },
+      "query_statuses": {
+        "SUCCESS": 18
+      },
+      "captured_sites": [
+        {
+          "source_url": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+          "publisher_host": "auto.economictimes.indiatimes.com",
+          "title": "GM CEO Barra first woman to chair Business Roundtable",
+          "source_type": "ARTICLE_BODY",
+          "word_count": 484,
+          "utf8_bytes": 3009,
+          "qualification_status": "REJECTED",
+          "useful_words": 0,
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ]
+        }
+      ],
+      "displayed_finding_count": 0
+    }
+  ],
+  "limitations": [
+    "Selected saved observations, not a raw transcript or independent accuracy evaluation.",
+    "Qualified/source-type labels and useful-word spans are code decisions, not verified truth.",
+    "HTTP admissions are bounded attempts, not a complete count of remote requests.",
+    "Four representative cases, not verification of all operation contracts.",
+    "No fresh browser, remote CI, deployment or Huginn validation."
+  ],
+  "validation": {
+    "focused": {
+      "passed": 88,
+      "failed": 0,
+      "seconds": 2.94,
+      "exit_code": 0
+    },
+    "full": {
+      "passed": 2018,
+      "failed": 1,
+      "seconds": 82.49,
+      "exit_code": 1
+    },
+    "fast": {
+      "passed": 1810,
+      "failed": 1,
+      "seconds": 65.77,
+      "exit_code": 1
+    },
+    "remaining_failure": "tests/unit/test_huginn_monitoring.py::test_huginn_inject_into_raw_pool (disabled optional integration; deliberately not skipped)",
+    "fatal_lint": {
+      "findings": 0,
+      "exit_code": 0
+    },
+    "frontend": {
+      "scripts": 9,
+      "failed": 0
+    },
+    "smoke": {
+      "verdict": "OFFLINE_SMOKE_PASS",
+      "exit_code": 0
+    },
+    "rollback": {
+      "verdict": "OFFLINE_PERSISTENCE_PASS",
+      "exit_code": 0,
+      "historical_archive": "NOT_VERIFIED",
+      "deployed_rollback": "NOT_VERIFIED"
+    },
+    "frozen_benchmark_hashes": "MATCH",
+    "protected_tracked_diff": "EMPTY"
+  },
+  "source_temp_basename": "aegis-native-strength-22672d05ff0849d19830f006ba744ae2",
+  "git": {
+    "branch": "fix/p0-lenovo-acquisition-20261018",
+    "head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+    "inherited_dirty_worktree": true,
+    "committed": false,
+    "pushed": false,
+    "merged": false,
+    "deployed": false
+  }
+}

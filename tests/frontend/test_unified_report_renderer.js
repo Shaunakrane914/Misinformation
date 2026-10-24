@@ -30,6 +30,72 @@ function mount() {
   return { innerHTML: '', querySelectorAll: () => [] };
 }
 
+const publisherMount = mount();
+renderUnifiedReport(publisherMount, { trust: { observed_publisher_count: 1, independent_source_count: 5 } });
+assert(publisherMount.innerHTML.includes('<strong>1</strong> observed publisher group in retained source records'));
+assert(publisherMount.innerHTML.includes('does not establish independent confirmation'));
+assert(!publisherMount.innerHTML.includes('<strong>5</strong> source groups'));
+
+const competitiveMount = mount();
+renderUnifiedReport(competitiveMount, { findings: ['Exact captured competitor passage.'],
+  finding_details: [{statement:'Exact captured competitor passage.',metadata:{source_context:{classification:'COMPETITIVE_CONTEXT'}}}],
+  agent_intelligence: {recent_developments:[],competitive_context:[{title:'Rival announcement',passage:'Not a target announcement.',url:'javascript:alert(1)'}]} });
+assert(competitiveMount.innerHTML.includes('COMPETITIVE CONTEXT'));
+assert(competitiveMount.innerHTML.includes('not primary-topic announcements'));
+assert(competitiveMount.innerHTML.includes('Not a target announcement.'));
+assert(!competitiveMount.innerHTML.includes('href="javascript:'));
+
+// Inspection controls retain an escaped identity and the exact safe source URL.
+const identityMount = mount();
+renderUnifiedReport(identityMount, { evidence: { independent: [{
+  evidence_id: 'ev_"<bad>', title: 'Observed source', url: 'https://example.org/article?edition=2',
+}] } });
+assert(identityMount.innerHTML.includes('data-ur-evidence-id="ev_&quot;&lt;bad&gt;"'));
+assert(identityMount.innerHTML.includes('data-ur-source-url="https://example.org/article?edition=2"'));
+
+const specialistContextMount = mount();
+renderUnifiedReport(specialistContextMount, { agent_intelligence: {
+  recent_developments: [null, { title: 'Source announcement', published_at: '2026-10-20',
+    url: 'javascript:alert(1)', evidence_id: 'ev_real', passage: '<script>not markup</script>' }],
+  source_assessments: [null, { classification: 'WARNING_ADVISORY', evidence_id: 'ev_warning',
+    reason: 'Preventive guidance only', actor_url: null, epistemic_state: 'UNVERIFIED' }],
+} });
+assert(specialistContextMount.innerHTML.includes('not measured audience growth'));
+assert(specialistContextMount.innerHTML.includes('WARNING ADVISORY'));
+assert(specialistContextMount.innerHTML.includes('reporting-source URL is not an attacker'));
+assert(specialistContextMount.innerHTML.includes('&lt;script&gt;not markup&lt;/script&gt;'));
+assert(!specialistContextMount.innerHTML.includes('href="javascript:'));
+
+const disputedMount = mount();
+renderUnifiedReport(disputedMount, {agent_intelligence: {public_statements: [], disputed_claims: [{
+  text: '<img src=x onerror=alert(1)> A publisher disputes a quotation.',
+  evidence_ids: ['ev_<disputed>'], source_report_url: 'javascript:alert(1)',
+  source_passages: [{start: 0, end: 57}],
+}]}});
+assert(disputedMount.innerHTML.includes('Personal Watch // Disputed attribution'));
+assert(disputedMount.innerHTML.includes('DISPUTED ATTRIBUTION — UNVERIFIED'));
+assert(disputedMount.innerHTML.includes('publisher-reported disputes'));
+assert(disputedMount.innerHTML.includes('&lt;img'));
+assert(!disputedMount.innerHTML.includes('<img'));
+assert(!disputedMount.innerHTML.includes('href="javascript:'));
+assert(!disputedMount.innerHTML.includes('Personal Watch // Reported quotations'));
+
+// Missing fields cannot become measured safe/reconciled assessments.
+for (const intel of [
+  { identity_verification: { canonical_name: 'Public Person' } },
+  { executive_impersonation: {} },
+  { filing_comparison: { status: 'INSUFFICIENT_DATA', comparisons: [] } },
+  { bot_amplification: { bot_risk_score: 0.8 }, narrative_velocity: { velocity_score: 0.9 } },
+]) {
+  const target = mount();
+  renderUnifiedReport(target, { evidence: {}, agent_intelligence: intel });
+  assert(!target.innerHTML.includes('<strong>LOW</strong>'));
+  assert(!target.innerHTML.includes('✓ Official filing metrics reconcile'));
+  assert(!target.innerHTML.includes('<strong>80%</strong>'));
+  assert(!target.innerHTML.includes('ORGANIC_CRITICISM'));
+  assert(target.innerHTML.includes('UNASSESSED') || target.innerHTML.includes('INSUFFICIENT'));
+}
+
 const failedAcquisitionMount = mount();
 renderUnifiedReport(failedAcquisitionMount, {
   investigation_status: 'ACQUISITION_FAILED',
@@ -97,7 +163,8 @@ assert(preservationMount.innerHTML.includes('Observed finding'));
 assert(preservationMount.innerHTML.includes('<ul class="ur-list">'), 'findings retain the design-system inset');
 assert(preservationMount.innerHTML.includes('Captured index text'));
 assert(preservationMount.innerHTML.includes('UNAVAILABLE'));
-assert(preservationMount.innerHTML.includes('DISCOVERY ONLY'));
+assert(preservationMount.innerHTML.includes('DISCOVERY LEADS AND UNQUALIFIED CAPTURES'));
+assert(!preservationMount.innerHTML.includes('NOT ACQUIRED BODIES'));
 assert(!preservationMount.innerHTML.includes(attack));
 assert(!preservationMount.innerHTML.includes('href="javascript:'));
 
@@ -147,6 +214,15 @@ renderUnifiedReport(container, { trust: {}, evidence: { primary: [{ title: 'Stat
 assert(container.innerHTML.includes('PDF page 2'));
 assert(container.innerHTML.includes('30–60'));
 assert(container.innerHTML.includes('table alignment requires review'));
+renderUnifiedReport(container, { trust: {}, evidence: { primary: [{ title: 'Observed date', extraction: {
+  missing_fields: [], passages: [], page_observations: { date_observations: [
+    { text: '<script>unsafe()</script>', meaning: 'UNSPECIFIED_DATE_LABEL' },
+  ] },
+} }] } });
+assert(container.innerHTML.includes('not assumed to be publication time'));
+assert(container.innerHTML.includes('UNSPECIFIED_DATE_LABEL'));
+assert(container.innerHTML.includes('&lt;script&gt;unsafe()&lt;/script&gt;'));
+assert(!container.innerHTML.includes('<script>unsafe()'));
 renderUnifiedReport(keyboardAccessible, report);
 keyboardAccessible.button.click();
 assert.equal(keyboardAccessible.attributes['aria-expanded'], 'false');

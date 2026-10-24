@@ -8,6 +8,21 @@ affected platforms, evidence chains, and verified URLs.
 from typing import Any, Dict, List
 
 
+def _claim_text(claim):
+    """Read observed legacy/structured claim fields without inventing prose."""
+    if not isinstance(claim, dict):
+        return ""
+    for key in ("claim_text", "text", "claim", "statement"):
+        value = claim.get(key)
+        if isinstance(value, str) and value.strip():
+            return value.strip()
+        if isinstance(value, dict):
+            for nested in ("text", "statement", "claim_text"):
+                if isinstance(value.get(nested), str) and value[nested].strip():
+                    return value[nested].strip()
+    return ""
+
+
 def build_investigation_dossiers(
     brand_info: Dict[str, Any],
     threats: List[Dict[str, Any]],
@@ -31,10 +46,16 @@ def build_investigation_dossiers(
         origin_ev = ev_map.get(t.get("origin_evidence_id")) or (matched_sources[0] if matched_sources else None)
 
         # Match related claims
-        related_claims = [
-            c["claim_text"] for c in claims
-            if any(eid in ev_ids for eid in c.get("evidence_ids", []))
-        ]
+        claim_records = []
+        for claim in claims:
+            if not isinstance(claim, dict):
+                continue
+            matched_ids = [eid for eid in claim.get("evidence_ids", []) if eid in ev_ids]
+            text = _claim_text(claim)
+            if matched_ids and text:
+                claim_records.append({"text": text, "claim_id": claim.get("claim_id") or claim.get("id"),
+                                      "evidence_ids": matched_ids})
+        related_claims = [claim["text"] for claim in claim_records]
 
         dossiers.append({
             "dossier_id": f"dos_{t['threat_id']}",
@@ -44,6 +65,10 @@ def build_investigation_dossiers(
             "severity": t.get("severity", "MEDIUM"),
             "confidence": t.get("confidence", 0.8),
             "status": t.get("status", "unverified"),
+            "classification": t.get("classification", "UNVERIFIED"),
+            "source_relation": t.get("source_relation"),
+            "actor_url": t.get("actor_url"),
+            "ownership_verified": False,
             "first_seen": origin_ev.get("published_at", "") if origin_ev else "",
             "latest_seen": matched_sources[-1].get("published_at", "") if matched_sources else "",
             "platforms": platforms,
@@ -69,11 +94,9 @@ def build_investigation_dossiers(
                 for s in matched_sources
             ],
             "related_claims": related_claims,
-            "recommended_action": (
-                "Initiate formal marketplace takedown notice and notify legal team."
-                if t.get("type") in ("COUNTERFEIT", "PHISHING_SCAM", "BRAND_IMPERSONATION")
-                else "Monitor discussion velocity and prepare PR rebuttal if narrative accelerates."
-            )
+            "related_claim_records": claim_records,
+            "recommended_action": t.get("actionable_recommendation") or
+                "Review the cited source, captured behavior and ownership before considering escalation. A category match alone does not justify a takedown or rebuttal."
         })
 
     return dossiers

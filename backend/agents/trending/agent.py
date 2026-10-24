@@ -351,13 +351,13 @@ class TrendingAgent:
                 all_raw_evidence.append(TrendEvidence(
                     evidence_id=ev_id,
                     platform=ch,
-                    source=item.source_name or ch,
+                    source=item.source_name or item.source_domain or ch,
                     title=item.title[:220],
                     content=(item.content or item.snippet or "")[:12_000],
                     snippet=(item.relevant_excerpt or item.snippet)[:300],
                     url=url,
                     canonical_url=url if url != "Source URL unavailable" else "",
-                    author=(item.metadata.get("page_metadata") or {}).get("author") or item.source_name or ch,
+                    author=(item.metadata.get("page_metadata") or {}).get("author") or "",
                     published_at=item.published_at or "",
                     retrieved_at=item.discovered_at or datetime.now(timezone.utc).isoformat(),
                     source_role=role,
@@ -391,21 +391,14 @@ class TrendingAgent:
                 }
 
         except Exception as reach_err:
-            logger.warning(f"[TrendingAgent] ResearchEngine investigate encountered: {reach_err}")
+            logger.warning("[TrendingAgent] ResearchEngine failed: %s", type(reach_err).__name__)
+            retrieval_trace["acquisition"] = {"status": "ACQUISITION_FAILED",
+                "reason": "RESEARCH_PIPELINE_ERROR", "error_type": type(reach_err).__name__,
+                "message": "Research acquisition failed before a usable report could be assembled; no conclusion about available public evidence is established."}
 
-        # Fallback to direct news retrieval if research_engine produced no evidence
-        if not all_raw_evidence:
-            news_raw = self.fetch_news(target_query, limit=8)
-            if news_raw:
-                news_norm = self._normalize_evidence(news_raw, "news", retrieval_method="news")
-                all_raw_evidence.extend(news_norm)
-                channel_health["news"] = {
-                    "status": "LIMITED",
-                    "retrieved_count": len(news_raw),
-                    "latency_ms": None,
-                    "content_class": "SYNDICATED_OR_INDEXED",
-                    "limitation": "Fallback result count does not prove direct article acquisition",
-                }
+        # All source discovery/fallback belongs to the shared bounded pipeline.
+        # Neither an empty qualified set nor a pipeline exception authorizes an
+        # extra headline request outside that investigation's HTTP/deadline cap.
 
         accepted_ev, _ = relevance_gate.filter_candidates(
             all_raw_evidence,
@@ -466,7 +459,22 @@ class TrendingAgent:
 
         limitations = []
         if not deduped_evidence:
-            limitations.append("No verified live trend evidence was retrieved for this query.")
+            limitations.append("No task-relevant acquired evidence with an eligible publication date was retained in the 48-hour window. This does not establish that no recent public information exists.")
+        limitations.append("Reports describe observed recent developments, not measured popularity, audience reach or amplification. Source groups are heuristic; independence is not established.")
+        def context_kind(evidence):
+            return (evidence.metadata.get("trend_source_context") or {}).get("classification", "PRIMARY_TOPIC")
+
+        primary_topic = [e for e in deduped_evidence if context_kind(e) != "COMPETITIVE_CONTEXT"]
+        competitive = [e for e in deduped_evidence if context_kind(e) == "COMPETITIVE_CONTEXT"]
+        if competitive:
+            limitations.append("Competitive-context articles describe other actors' developments and possible impact on the target; they are not announcements by the target.")
+
+        def development(evidence, scope):
+            return {"title": evidence.title, "published_at": evidence.published_at,
+                "publisher": evidence.source, "evidence_id": evidence.evidence_id, "url": evidence.url,
+                "passage": evidence.metadata.get("relevant_excerpt") or evidence.snippet,
+                "observation_scope": scope,
+                "publication_time_basis": evidence.metadata.get("publication_time_basis", "OBSERVED_SOURCE_DECLARATION_UNVERIFIED")}
         if channel_health.get("instagram", {}).get("status") == "unavailable":
             limitations.append("Instagram / Paparazzi node unavailable or rate-limited.")
 
@@ -517,6 +525,14 @@ class TrendingAgent:
             "contradictions": [c.to_dict() if hasattr(c, "to_dict") else c for c in research_contradictions],
             "deep_research_trace": retrieval_trace,
             "research_corpus": research_corpus,
+            "recent_developments": [development(e, "SOURCE_REPORTED_DEVELOPMENT") for e in primary_topic[:12]],
+            "competitive_context": [development(e, "COMPETITIVE_CONTEXT") for e in competitive[:12]],
+            "primary_topic_coverage": {"status": "PRIMARY_TOPIC_REPORTING" if primary_topic else
+                "COMPETITIVE_CONTEXT_ONLY" if competitive else "NO_QUALIFIED_ARTICLE",
+                "primary_topic_source_count": len(primary_topic), "competitive_context_source_count": len(competitive)},
+            "summary": (f"Only {len(competitive)} competitive-context source(s) were retained for {target_query}; "
+                "no direct primary-topic development was acquired. These source assertions are not independently verified."
+                if competitive and not primary_topic else None),
             "timeline": timeline,
             "platform_breakdown": platform_breakdown,
             "chart_history": chart_history,
@@ -524,7 +540,10 @@ class TrendingAgent:
             "telemetry": {
                 "signals_retrieved": len(deduped_evidence),
                 "unique_sources": len({e.source.lower() for e in deduped_evidence}),
-                "independent_groups": len({e.source_group_id for e in deduped_evidence}),
+                "independent_groups": None,
+                "source_groups_observed": len({e.source_group_id for e in deduped_evidence}),
+                "publisher_independence_verified": False,
+                "popularity_growth_measured": False,
                 "platforms_active": len(platform_breakdown),
                 "discovered_trends": len(trends),
                 "deep_reads": retrieval_trace.get("deep_read_success", 0),
@@ -568,14 +587,17 @@ class TrendingAgent:
 
         # 2. Inferred interpretations
         inferred: List[str] = []
+        from backend.services.research.passage_extractor import has_usable_passage
+        has_bodies = any(has_usable_passage(item) and bool(item.get("content")) for item in evidence_items)
         for t in trends[:3]:
-            vel = t.get("velocity", {}).get("label", "STABLE")
-            inferred.append(f"Narrative '{t.get('topic')}' exhibits {vel} spread velocity across {t.get('platform_count', 1)} platforms.")
-        if not inferred and evidence_items:
-            inferred.append(f"Public attention is steady with {len(evidence_items)} recorded signals.")
+            velocity = t.get("velocity") or {}
+            if has_bodies and len(velocity.get("history") or []) >= 2 and velocity.get("velocity_status") != "INSUFFICIENT_HISTORY":
+                inferred.append(f"Sampled signal-count change for '{t.get('topic')}': {velocity.get('signals_per_hour')} signals/hour; not platform-wide reach or narrative truth.")
 
         # 3. Uncertain / Unknown
         uncertain: List[str] = []
+        if not has_bodies or not inferred:
+            uncertain.append("Reach, amplification and narrative velocity are UNASSESSED without substantive captures and comparable repeated observations.")
         for t in trends:
             if t.get("misinformation_risk") in ("HIGH", "MEDIUM"):
                 uncertain.append(f"Potential unverified viral narrative: {t.get('topic')} ({t.get('misinformation_rationale')})")

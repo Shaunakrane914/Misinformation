@@ -1,0 +1,31 @@
+{
+  "date": "2026-10-21",
+  "mode": "OFFLINE_GENUINE_SOURCE_TO_API_AND_SAVED_SSE_BROWSER_REPLAY",
+  "new_source_requests": 0,
+  "model_calls": 0,
+  "application_sha256": "53ea40a1ab4ae48eb55fb6f72d98b0b4ff58e9e3d0935a9cec4cc3d408d15eb1",
+  "application_unchanged_during_final_browser_run": true,
+  "cases": [
+    {"agent": "scout", "subject": "Samsung", "previous_report_trust_groups": 7,
+     "retained_source_records": 7, "observed_publisher_groups": 6,
+     "independent_source_count": null, "upstream_heuristic_origin_groups": 4,
+     "findings": 6, "discovery_cards": 22,
+     "current_replay_json_sha256": "6384f082f9ec083392955572eadece3f05e8f359f4b09da14960a9367ab9d5f5"},
+    {"agent": "personal_watch", "subject": "Sundar Pichai", "previous_report_trust_groups": 5,
+     "retained_source_records": 1, "observed_publisher_groups": 1,
+     "independent_source_count": null, "upstream_heuristic_origin_groups": 5,
+     "findings": 1, "discovery_cards": 38,
+     "current_replay_json_sha256": "6776083384db922a80fa04644c3854ecce97f2dadc1b0a43e53b830f173c53c1"}
+  ],
+  "browser": {"engine": "Chromium", "viewports": [320, 390, 1440], "states": 6,
+    "uncaught_page_errors": 0, "horizontal_overflow_states": 0,
+    "source_identity_mismatches": 0, "missing_finding_texts": 0,
+    "first_source_keyboard_inspection_open_states": 6,
+    "external_fonts": "INTENTIONALLY_BLOCKED",
+    "accessibility_certification": "NOT_VERIFIED"},
+  "tests": {"full_passed": 1826, "full_seconds": 51.12,
+    "fast_passed": 1618, "fast_seconds": 45.54, "frontend_node_scripts_passed": 9},
+  "independent_accuracy": "NOT_VERIFIED",
+  "historical_archive_and_deployed_rollback": "NOT_VERIFIED",
+  "commit_push_merge_deployment": "NOT_PERFORMED"
+}

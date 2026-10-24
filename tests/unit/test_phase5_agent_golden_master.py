@@ -499,7 +499,18 @@ def test_trending_golden_master_parity(scenario_name, golden_data):
         "signal_counts": [t.signal_count for t in trends],
         "evidence_counts": [len(t.evidence_ids) for t in trends],
     }
-    assert actual == expected
+    # Preserve the historical manifest. These four fixtures contain attributed
+    # reporting, not an adjudication or proof of absence of misinformation.
+    # Require exactly the intended epistemic delta; all counts/titles/sentiments
+    # and citation cardinalities must still match the recorded baseline.
+    if scenario_name in {"openai_entity", "discovery_mode", "spacex_syndicated", "avatar_criticism"}:
+        assert all(claim["status"] == "UNVERIFIED" for trend in trends for claim in trend.claims)
+        assert set(expected["misinfo_risks"]) == {"LOW"}
+        assert set(expected["debunk_statuses"]) == {"NO_CONTRADICTION"}
+        assert actual == {**expected, "misinfo_risks": ["UNASSESSED"] * len(trends),
+                          "debunk_statuses": ["UNASSESSED"] * len(trends)}
+    else:
+        assert actual == expected
 
 
 @pytest.mark.parametrize("scenario_name", [
@@ -566,4 +577,28 @@ def test_personal_watch_golden_master_parity(scenario_name, golden_data):
             "alerts_sent": res.get("alerts_sent"),
             "has_privacy_guard": "privacy_guard" in res or "disclaimer" in res or "limitations" in res,
         }
+        if scenario_name == "jensen_impersonation":
+            # Reviewed correctness delta: the historical keyword/extractor
+            # double pass made two HIGH incidents from one allegation record.
+            # Preserve that manifest and every unrelated field, but require
+            # one unverified report without invented actor proof or scores.
+            assert expected["threats_count"] == expected["high_risk_count"] == 2
+            assert expected["threat_types"] == ["IMPERSONATION", "IMPERSONATION"]
+            threat, = res["threats"]
+            assert threat["assessment_status"] == "SOURCE_REPORT_ONLY"
+            assert threat["risk_level"] == "UNASSESSED"
+            assert threat["confidence"] is None
+            assert threat["technical_forensics_run"] is False
+            assert threat["direct_actor_capture"] is False
+            assert threat["observed_actor_url"] is None
+            assert threat["indicators"] == []
+            assert threat["evidence_ids"] == ["ev_pa_03"]
+            assert all(eid in {item["evidence_id"] for item in items}
+                       for eid in threat["evidence_ids"])
+            assert threat["source_passages"]
+            assert all(p["text"] in items[0]["content"] for p in threat["source_passages"])
+            suspect, = res["suspected_impersonations"]
+            assert suspect["handle"] is None and suspect["observed_actor_url"] is None
+            expected = {**expected, "threats_count": 1, "high_risk_count": 0,
+                        "threat_types": ["IMPERSONATION"]}
         assert actual == expected

@@ -144,6 +144,11 @@ function testPersonalWatch() {
   assert(!html.includes('Verified OSINT footprint'));
   assert(!html.includes('href="javascript:'));
   assert(html.includes('>0</div>'), 'no change event should be inferred from a threat');
+  assert(html.includes('class="compact-signal-row"'));
+  assert(html.includes('class="compact-signal-details"'));
+  const personalSource = fs.readFileSync(path.join(root, 'frontend/personal-watch-agent.html'), 'utf8');
+  assert(/\.compact-signal-row\s*\{[^}]*flex-wrap:\s*wrap/.test(personalSource));
+  assert(/\.compact-signal-details\s*\{[^}]*min-width:\s*0[^}]*overflow-wrap:\s*anywhere/.test(personalSource));
   context.renderDashboard({ vip_name: 'Public person', subject: {
     canonical_name: 'Public person', official_handles: { twitter: '@catalog' },
     candidate_handles: { twitter: '<img onerror=alert(1)>' },

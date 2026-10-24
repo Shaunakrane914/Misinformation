@@ -28,8 +28,9 @@ SEC_USER_AGENT_ENV = "SEC_USER_AGENT"
 # Backwards-compatible export; never invent a real organization's contact.
 SEC_USER_AGENT = os.environ.get(SEC_USER_AGENT_ENV, "").strip()
 
-# Known high-volume tickers to 10-digit zero-padded CIK
+# Extended high-volume and global ADR tickers to 10-digit zero-padded CIK
 TICKER_CIK_MAP: Dict[str, str] = {
+    # Mega-cap Tech & Communication
     "NVDA": "0001045810",
     "AAPL": "0000320193",
     "MSFT": "0000789019",
@@ -43,19 +44,93 @@ TICKER_CIK_MAP: Dict[str, str] = {
     "ORCL": "0001341439",
     "CSCO": "0000858877",
     "IBM": "0000051143",
+    "AVGO": "0001730168",
+    "ADBE": "0000796343",
+    "CRM": "0001108524",
+    "NFLX": "0001065280",
+    # Financials & Payments
     "JPM": "0000019617",
     "BAC": "0000070858",
+    "V": "0001403161",
+    "MA": "0001141391",
+    "BRK.A": "0001067983",
+    "BRK.B": "0001067983",
+    # Healthcare & Pharma
+    "JNJ": "0000200406",
+    "LLY": "0000059478",
+    "UNH": "0000731766",
+    "PFE": "0000078003",
+    "ABBV": "0001551152",
+    "MRK": "0000310158",
+    # Consumer & Industrial
+    "WMT": "0000104169",
+    "COST": "0000909832",
+    "PG": "0000080424",
+    "HD": "0000354950",
+    "KO": "0000021344",
+    "PEP": "0000077476",
+    "DIS": "0001744489",
+    "NKE": "0000320187",
+    "XOM": "0000034088",
+    "CVX": "0000093410",
+    # Key International ADRs (Foreign Private Issuers filing 20-F / 6-K)
+    "INFY": "0001065837",  # Infosys ADR
+    "TTM": "0000926042",   # Tata Motors ADR
+    "LNVGY": "0001002517", # Lenovo ADR
+    "BABA": "0001577552",  # Alibaba ADR
+    "TSM": "0001046179",   # TSMC ADR
+    "ASML": "0000937966",  # ASML ADR
+    "SAP": "0001000184",   # SAP ADR
+    "SONY": "0000092380",  # Sony ADR
+    "TM": "0001094517",    # Toyota ADR
+    "NVO": "0000353278",   # Novo Nordisk ADR
+    "AZN": "0001071495",   # AstraZeneca ADR
+}
+
+COMPANY_NAME_CIK_MAP: Dict[str, str] = {
+    "NVIDIA": "0001045810",
+    "APPLE": "0000320193",
+    "MICROSOFT": "0000789019",
+    "AMAZON": "0001018724",
+    "GOOGLE": "0001652044",
+    "ALPHABET": "0001652044",
+    "META": "0001326801",
+    "FACEBOOK": "0001326801",
+    "TESLA": "0001318605",
+    "INFOSYS": "0001065837",
+    "TATA MOTORS": "0000926042",
+    "JOHNSON & JOHNSON": "0000200406",
+    "JOHNSON AND JOHNSON": "0000200406",
+    "JOHNSON JOHNSON": "0000200406",
+    "WALMART": "0000104169",
+    "PFIZER": "0000078003",
+    "BERKSHIRE HATHAWAY": "0001067983",
 }
 
 
 def resolve_cik(query: str) -> Optional[str]:
-    """Resolve a query string (ticker or raw CIK number) into a 10-digit zero-padded CIK."""
-    clean = query.strip().upper()
-    if clean in TICKER_CIK_MAP:
-        return TICKER_CIK_MAP[clean]
+    """Resolve a query string (ticker, clean company name, or raw CIK number) into a 10-digit zero-padded CIK."""
+    raw = query.strip()
+    if not raw:
+        return None
     # Check if purely numeric
-    if clean.isdigit() and len(clean) <= 10:
-        return clean.zfill(10)
+    if raw.isdigit() and len(raw) <= 10:
+        return raw.zfill(10)
+    clean = raw.upper()
+    # Strip market/exchange prefixes like NASDAQ:, NYSE:, BATS:
+    clean = re.sub(r"^(?:NASDAQ|NYSE|AMEX|BATS):\s*", "", clean)
+    # Strip country/exchange suffixes like .NS, .BO, .O, .N, .US, .HK
+    clean_sym = re.sub(r"\.(?:O|N|US|NS|BO|HK)$", "", clean)
+    clean_sym = clean_sym.replace("-", ".").replace("/", ".")
+    if clean_sym in TICKER_CIK_MAP:
+        return TICKER_CIK_MAP[clean_sym]
+    # Check company name aliases
+    name_clean = re.sub(r"[^\w\s&]", "", clean).strip()
+    if name_clean in COMPANY_NAME_CIK_MAP:
+        return COMPANY_NAME_CIK_MAP[name_clean]
+    base_name = re.sub(r"\s+(?:INC|CORP|CORPORATION|LTD|LIMITED|CO|COMPANY|GROUP)\b.*$", "", name_clean).strip()
+    if base_name in COMPANY_NAME_CIK_MAP:
+        return COMPANY_NAME_CIK_MAP[base_name]
     return None
 
 

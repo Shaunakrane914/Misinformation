@@ -10,13 +10,15 @@ from typing import Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import EvidenceItem
 from backend.services.research.content_roles import NON_EVENT_ROLES, document_role, matches_objective, paragraph_role
+from backend.infrastructure.acquisition.adapters.web.page_extraction import recovered_span_allowed
 
 # High-signal action verbs and investigative indicators
 SIGNAL_MARKERS: Set[str] = {
     "announced", "reported", "disclosed", "filed", "confirmed", "denied",
     "investigating", "lawsuit", "alleged", "probe", "regulatory", "earnings",
     "revenue", "profit", "loss", "plunged", "surged", "counterfeit", "scam",
-    "warning", "advisory", "recalled", "halted", "resigned", "settlement"
+    "warning", "advisory", "recalled", "halted", "resigned", "settlement", "impersonated",
+    "said", "says", "wrote", "writes", "warned", "warns", "achieved", "recorded", "generated"
 }
 
 DISCLOSURE_CONTEXT = ("forward-looking statements", "certain statements in this press release",
@@ -28,20 +30,82 @@ NAVIGATION_MARKERS = ("toggle navigation", "switch to dark", "switch to light", 
                       "privacy policy", "contact us", "men women", "add to cart", "browse select")
 
 
+def _bare_label(text):
+    """A short keyword/date label is not a proposition. Numeric rows survive.
+
+    This is a conservative fallback for text without DOM spans, not a parser
+    proving grammar/entailment. Captured headings are excluded independently.
+    """
+    if len(text) > 160:
+        return False
+    predicate = re.search(r"\b(?:is|are|was|were|has|have|had|will|can|could|may|must|did|does|do|said|says|wrote|writes|reported|reports|announced|announces|confirmed|confirms|denied|denies|warned|warns|seized|charged|arrested|filed|rose|fell|grew|increased|decreased|appointed|joined|tested|found|shows|offers|offered|sold|allows|contains|includes|limits|rated|received|ordered|launched|released|endorsed|claimed|claims)\b", text, re.I)
+    measurement = re.search(r"(?:[$€£₹]|\b(?:USD|INR|EUR|GBP)\b)\s*\d|\d+(?:\.\d+)?\s*(?:%|(?:percent|million|billion|crore)\b)", text, re.I)
+    return not predicate and not measurement
+
+
 def has_usable_passage(item) -> bool:
     from backend.schemas.evidence_inspection import METADATA_DEPTHS
     value = item.get if isinstance(item, dict) else lambda key, default=None: getattr(item, key, default)
     depth = str(value("content_depth", "UNKNOWN") or "UNKNOWN").upper()
     if depth in METADATA_DEPTHS | {"SEARCH_SNIPPET", "SEARCH_INDEX_DISCOVERY", "SYNDICATED_SUMMARY"}:
         return False
-    if value("extraction_status") in {"EMPTY", "NO_RELEVANT_PASSAGE", "METADATA_ONLY", "FALLBACK"}:
+    if (value("metadata", {}) or {}).get("layer2_eligible") is False:
+        return False
+    if value("extraction_status") in {"EMPTY", "NO_RELEVANT_PASSAGE", "METADATA_ONLY", "FALLBACK", "TEMPORAL_INELIGIBLE", "LAYER2_REJECTED"}:
+        return False
+    if document_role(item) in NON_EVENT_ROLES:
         return False
     text = value("relevant_excerpt") or value("content") or value("snippet") or ""
     lower = text.lower()
-    return (paragraph_role(text) not in NON_EVENT_ROLES and len(text.strip()) >= 40
+    return (paragraph_role(text) not in NON_EVENT_ROLES and len(text.strip()) >= 40 and not _bare_label(text)
             and sum(marker in lower for marker in NAVIGATION_MARKERS) < 2
             and bool(re.search(r"\b(?:is|are|was|were|has|have|allows|contains|includes|limits|rated)\b", lower)
                      or any(re.search(r"\b" + marker + r"\b", lower) for marker in SIGNAL_MARKERS)))
+
+
+def _brand_context_window(item, raw_text, target_tokens, clean_target):
+    """At most three adjacent actual-article paragraphs, never headline joins.
+
+    Incident prose may name a brand once and describe the same operation in the
+    following paragraph. This exception requires an explicit incident verb and
+    objective in the subject paragraph; generic product prose cannot borrow an
+    unrelated accusation from another paragraph or a related-story heading.
+    """
+    page = item.metadata.get("page_metadata") or {}
+    quality = page.get("body_quality") or {}
+    kind = page.get("body_kind") or (quality.get("body_kind") if isinstance(quality, dict) else None)
+    acquired = item.metadata.get("read_success") is True or bool(item.acquired_id)
+    if kind != "ARTICLE_BODY" or not acquired:
+        return None
+    spans = list(re.finditer(r"\S[^\n]*(?:\n(?!\s*\n)[^\n]+)*", raw_text))
+    for index, anchor in enumerate(spans):
+        paragraph = anchor.group().rstrip()
+        if not recovered_span_allowed(raw_text, page, anchor.start(), anchor.start() + len(paragraph)):
+            continue
+        lower = paragraph.casefold()
+        present = target_tokens & set(re.findall(r"[a-z0-9]{3,}", lower))
+        subject = bool(clean_target and clean_target in lower) or bool(target_tokens and len(present) >= min(2, len(target_tokens)))
+        incident_verb = re.search(r"\b(?:uncovered|unearthed|intercepted|recovered|documented|reported|investigated|seized|arrested|charged)\b", paragraph, re.I)
+        objective = matches_objective(paragraph, "brand") or bool(
+            re.search(r"\billicit (?:operation|goods|merchandise)\b", paragraph, re.I)
+            and re.search(r"\b(?:dupes|imitations)\b", paragraph, re.I))
+        if not subject or not incident_verb or not objective:
+            continue
+        for end_index in range(index, min(index + 3, len(spans))):
+            current = spans[end_index]
+            text = current.group().rstrip()
+            if (not recovered_span_allowed(raw_text, page, current.start(), current.start() + len(text))
+                    or len(text) < 40 or paragraph_role(text) in NON_EVENT_ROLES
+                    or text in page.get("headings", [])
+                    or any(isinstance(row, dict) and row.get("role") == "HEADING"
+                           and row.get("start") == current.start() for row in page.get("text_blocks", []))):
+                break
+            window = raw_text[anchor.start():current.start() + len(text)]
+            if len(window) > 2000:
+                break
+            if has_usable_passage({"content": window, "content_depth": item.content_depth}):
+                return window
+    return None
 
 
 class PassageExtractor:
@@ -70,6 +134,9 @@ class PassageExtractor:
         for item in items:
             item.relevant_excerpt = ""
             item.excerpt_start = item.excerpt_end = -1
+            if item.metadata.get("temporal_required") and not item.metadata.get("temporal_eligible"):
+                item.extraction_status = "TEMPORAL_INELIGIBLE"
+                continue
             if domain == "brand":
                 from backend.services.research.source_quality import canonical_hostname, hostname_matches, ENCYCLOPEDIA_DOMAINS
                 if any(hostname_matches(canonical_hostname(item.canonical_url), host) for host in ENCYCLOPEDIA_DOMAINS):
@@ -92,6 +159,16 @@ class PassageExtractor:
                 item.extraction_status = "EMPTY"
                 continue
 
+            if domain == "trending":
+                from backend.services.research.trend_context import classify_source_context
+                context = classify_source_context(item.title, raw_text, clean_target,
+                    is_topic=profile.entity_type == "topic")
+                item.metadata["trend_source_context"] = context
+                if context["classification"] == "INCIDENTAL_MENTION":
+                    item.extraction_status = "NO_RELEVANT_PASSAGE"
+                    item.metadata["post_read_qualification_reason"] = context["reason"]
+                    continue
+
             # A following sentence can negate or qualify the first. Select
             # complete source paragraphs, never isolated affirmative sentences.
             paragraphs = [p.strip() for p in re.split(r'\n\s*\n', raw_text) if len(p.strip()) >= 40]
@@ -110,6 +187,17 @@ class PassageExtractor:
             best_idx = 0
 
             for idx, p in enumerate(paragraphs):
+                page = item.metadata.get("page_metadata") or {}
+                start = raw_text.find(p)
+                if not recovered_span_allowed(raw_text, page, start, start + len(p)):
+                    continue
+                structural_heading = any(isinstance(row, dict) and row.get("role") == "HEADING"
+                    and row.get("start") == start and row.get("end") == start + len(p)
+                    for row in page.get("text_blocks", []))
+                # Older genuine captures have heading text, not span metadata.
+                if (structural_heading or p in page.get("headings", [])
+                        or p in {item.title, page.get("title")}):
+                    continue
                 from backend.services.research.passage_records import public_statement_attribution
                 attributed_statement = domain == "personal" and bool(public_statement_attribution(item, p, clean_target))
                 if not matches_objective(p, domain) and not attributed_statement:
@@ -153,15 +241,75 @@ class PassageExtractor:
                 if any(marker in p_lower for marker in DISCLOSURE_CONTEXT):
                     score -= 3.0
 
+                if domain == "trending":
+                    # Fresh publication is not proof every paragraph describes
+                    # a new event. Prefer an explicit source-reported lead over
+                    # keyword/number-heavy historical comparison. This ranks
+                    # exact source text; it does not infer an event timestamp,
+                    # remove qualifications or verify a publisher's assertions.
+                    if idx < 3 and re.search(
+                        r"\b(?:has|have)\s+(?:(?:just|now|recently|not)\s+){0,2}"
+                        r"(?:begun|started|launched|opened|announced|released|introduced)\b"
+                        r"|\b(?:is|are)\s+(?:now\s+)?(?:testing|launching|opening|deploying)\b",
+                        p_lower,
+                    ):
+                        score += 2.0
+                    if re.search(r"\b(?:historically|historical background|in the past)\b", p_lower):
+                        score -= 2.0
+                    from backend.services.research.trend_context import event_priority
+                    score += event_priority(p, idx)
+
+                if domain == "financial" and clean_target:
+                    # Prefer the paragraph's actual target proposition over a
+                    # comparison that merely says "beside <target>" and then
+                    # reports another company's figures. Do not delete context
+                    # or infer that two brands/affiliates are the same issuer.
+                    first_sentence = re.split(r"(?<=[.!?])\s+", p, maxsplit=1)[0]
+                    target_subject = re.search(r"\b" + re.escape(clean_target)
+                        + r"(?:\s+[A-Za-z-]+){0,2}\s+(?:said|reported|posted|announced|expects?|projects?|sees|recorded|achieved|disclosed|earned|generated|plans?|will|has|had)\b", p_lower)
+                    if target_subject:
+                        score += 2.5
+                    nearby_financial = any(re.search(r"\b(?:profits?|revenues?|earnings|sales|margins?|shares?|prices?|dividends?)\b",
+                        p_lower[max(0, match.start() - 100):match.end() + 130])
+                        for match in re.finditer(r"\b" + re.escape(clean_target) + r"\b", p_lower))
+                    if nearby_financial:
+                        score += 2.5
+                    from backend.services.research.financial_context import extract_financial_metrics_and_scales
+                    observed_amounts = extract_financial_metrics_and_scales(p)
+                    # Prefer exact financial performance text over a webcast
+                    # schedule or a list of companies in an earnings preview.
+                    # Amount presence is a relevance signal, never verification;
+                    # consensus/forecast values keep their own explicit roles.
+                    if observed_amounts:
+                        score += 4.0 if any(row["amount_role"] == "REPORTED_AMOUNT"
+                                            for row in observed_amounts) else 2.0
+                    if not observed_amounts and re.search(
+                            r"\b(?:webcast|conference call|investor relations website|dial.in|replay available)\b", p_lower):
+                        score -= 4.0
+                    if re.search(r"\b(?:list (?:of companies )?(?:includes|including)|companies likely to|earnings preview)\b", p_lower):
+                        score -= 2.0
+                    if re.search(r"\b(?:beside|besides|except for|compared with|unlike)\s+" + re.escape(clean_target) + r"\b", first_sentence, re.I):
+                        score -= 3.0
+                    # Prefer a concise complete paragraph, never an arbitrary
+                    # clipped sentence window that could lose a qualification.
+                    score -= min(4.0, max(0.0, (len(p.split()) - 180) / 100))
+
                 if score > best_score:
                     best_score = score
                     best_p = p
                     best_idx = idx
 
             if best_score < 1.5:
-                item.relevant_excerpt = ""
-                item.extraction_status = "NO_RELEVANT_PASSAGE"
-                continue
+                if domain == "brand":
+                    contextual = _brand_context_window(item, raw_text, target_tokens, clean_target)
+                    if contextual:
+                        best_p = contextual
+                        best_score = 3.0
+                        item.metadata["excerpt_context"] = "BOUNDED_ADJACENT_ARTICLE_PARAGRAPHS"
+                if best_score < 1.5:
+                    item.relevant_excerpt = ""
+                    item.extraction_status = "NO_RELEVANT_PASSAGE"
+                    continue
 
             # Clean and truncate best excerpt
             # Preserve exact offsets and qualifications. A short display
@@ -172,6 +320,9 @@ class PassageExtractor:
                 item.metadata["excerpt_truncated"] = True
                 continue
             clean_excerpt = best_p
+            if domain == "personal":
+                from backend.services.research.passage_records import without_related_link_tail
+                clean_excerpt = without_related_link_tail(clean_excerpt)
 
             item.relevant_excerpt = clean_excerpt
             item.excerpt_start = raw_text.find(best_p)

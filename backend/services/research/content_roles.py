@@ -6,9 +6,11 @@ import re
 from urllib.parse import urlsplit
 
 
-NON_EVENT_ROLES = {"AUTHOR_BIO", "NAVIGATION", "SOURCE_METADATA", "LEGAL_DISCLOSURE", "LEGAL_NOTICE", "DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE"}
+NON_EVENT_ROLES = {"AUTHOR_BIO", "NAVIGATION", "SOURCE_METADATA", "CMS_METADATA", "ASSET_METADATA", "LEGAL_DISCLOSURE", "LEGAL_NOTICE", "DOCUMENT_INDEX", "NEWS_INDEX", "LANDING_PAGE", "PROFILE"}
+NON_EVENT_ROLES.add("BACKGROUND_REFERENCE")
+NON_EVENT_ROLES.update({"QUESTION_PROMPT", "INSTRUCTIONAL_PROMPT"})
 OBJECTIVE_TERMS = {
-    "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator",
+    "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator|appoint|chief.executive|\bCEO\b|executive.chair|leadership.transition|board.of.directors",
     "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|\bclone\b|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
     "personal": r"impersonat|deepfake|fabricat|fake (?:account|video|profile|quote)|false (?:claim|quote)|identity (?:abuse|theft)|scam|denied|denies|authentic|transcript",
 }
@@ -16,6 +18,20 @@ OBJECTIVE_TERMS = {
 
 def paragraph_role(text):
     lower = text.casefold().strip()
+    # An interrogative/quiz prompt is not an assertion, even when it contains a
+    # target, financial numbers or words such as "declined". Do not reject a
+    # reported quotation, an incident report containing a question, or a full
+    # question-and-answer paragraph merely for containing a question mark.
+    prompt = re.sub(r"^(?:(?:question|q)\s*\d*\s*[:.)-]\s*|\d+[.)]\s*)", "", lower)
+    if prompt.endswith("?") and re.match(
+            r"^(?:what|which|who|whom|whose|when|where|why|how|is|are|was|were|do|does|did|has|have|had|can|could|would|should|will)\b", prompt):
+        return "QUESTION_PROMPT"
+    if re.match(r"^(?:choose|select|pick|identify)\b", prompt) and re.search(
+            r"\b(?:correct answer|one of the following|all that apply|answer below)\b", prompt):
+        return "INSTRUCTIONAL_PROMPT"
+    if re.match(r"^(?:card(?:title|description|image(?:alttext)?)|contenttype|cta\d(?:text|url)|badge(?:text|image))\b", lower) or re.fullmatch(
+            r"style\s+(?:[\w-]+[ ,]*){1,8}|#[a-f0-9]{6}", lower):
+        return "CMS_METADATA"
     # Reader wrappers and links may repeat incident terms in a URL/title. They
     # are inspectable provenance, not a captured account of that incident.
     if re.match(r"^(?:title|url source|published time|markdown content):", lower):
@@ -34,6 +50,14 @@ def paragraph_role(text):
 
 
 def matches_objective(text, domain=""):
+    if domain == "brand" and re.search(r"\b(?:giveaways?|sweepstakes|free gifts?)\b", text, re.I):
+        # A promotional contest is not brand-abuse evidence merely because
+        # scams can also use giveaways. Keep reported abuse, recalls, complaints
+        # and observable credential/money solicitations investigable.
+        incident = re.search(r"counterfeit|impersonat|fake|replica|phishing|scam|fraud|complaint|recall|hazard|defect|trademark|lawsuit|unauthori[sz]ed|refund|stolen|credential|password|decept|victim", text, re.I)
+        solicitation = re.search(r"\b(?:crypto(?:currency)?|bitcoin|ethereum|btc|eth|usdt|wallets?)\b|\b(?:send|deposit|transfer|pay)\b.{0,55}\b(?:receive|double|return|back|prize)\b", text, re.I)
+        if not incident and not solicitation:
+            return False
     pattern = OBJECTIVE_TERMS.get(domain)
     return not pattern or bool(re.search(pattern, text, re.I))
 
@@ -72,11 +96,24 @@ def document_role(item):
     text = value("content", "") or value("snippet", "") or ""
     meta = value("metadata", {}) or {}
     page = meta.get("page_metadata") or {}
+    if page.get("content_scope") in {"FEED_INDEX", "SITEMAP_INDEX", "PUBLIC_DISCOVERY_INDEX"}:
+        return "NEWS_INDEX"
     url = value("canonical_url", "") or value("url", "")
+    host = (urlsplit(url).hostname or "").lower()
+    if any(host == domain or host.endswith("." + domain) for domain in
+           ("wikipedia.org", "wikimedia.org", "wiktionary.org", "britannica.com")):
+        return "BACKGROUND_REFERENCE"
     path = urlsplit(url).path.lower().strip("/")
+    if re.search(r"\.(?:svg|png|jpe?g|gif|webp|ico|css|js|woff2?|mp[34]|zip)$", path):
+        return "ASSET_METADATA"
     if url and (not path or re.fullmatch(r"[a-z]{2}(?:[-/][a-z]{2})?", path) or is_careers_landing(url)):
         return "LANDING_PAGE"
     links = page.get("observed_links") or []
+    # A semantic <article> can wrap a news listing. A collection endpoint with
+    # several observed links is discovery context, not one acquired article.
+    if (re.search(r"(?:^|/)(?:(?:news|newsroom|press-releases)|(?:category|tag)(?:/[^/]+)?)$", path)
+            and len(links) >= 5 and not re.search(r"\b\d{4}\b|\.html?$", path)):
+        return "NEWS_INDEX"
     document_links = sum(bool(re.search(r"\.pdf(?:[?#\s]|$)|financial|quarter|annual|statement", str(link.get("url", "")) + " " + str(link.get("text", "")), re.I))
                          for link in links if isinstance(link, dict))
     # A genuine HTML statement can link PDFs too. Look for actual numeric

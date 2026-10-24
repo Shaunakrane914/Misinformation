@@ -9,7 +9,7 @@ import subprocess
 import sys
 import threading
 
-from dotenv import dotenv_values
+from dotenv import dotenv_values, find_dotenv
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 RESULT_PREFIX = "AEGIS_VALIDATION_RESULT="
@@ -19,20 +19,26 @@ CREDENTIAL_PREFIXES = (
     "YOUTUBE_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY", "YF_API_KEY",
     "ADMIN_API_TOKEN", "BRAVE_API_KEY", "EXA_API_KEY", "JINA_API_KEY",
     "GROQ_API_KEY", "LINKEDIN_COOKIE", "XUEQIU_COOKIE", "INSTAGRAM_COOKIE",
-    "FACEBOOK_COOKIE", "XIAOHONGSHU_COOKIE",
+    "FACEBOOK_COOKIE", "XIAOHONGSHU_COOKIE", "FIRECRAWL_API_KEY", "HUGINN_WEBHOOK_SECRET",
 )
 
 
 def isolated_environment(storage: Path) -> dict:
     """Explicit empty secrets prevent a repository .env from restoring them."""
     environment = dict(os.environ)
-    configured = set(environment) | set(dotenv_values(REPO_ROOT / ".env"))
+    # Match load_dotenv's parent search as well as the explicit local file.
+    # The installed dotenv version may not honor PYTHON_DOTENV_DISABLED.
+    configured = set(environment) | set(dotenv_values(REPO_ROOT / ".env")) | set(dotenv_values(find_dotenv()))
     for name in configured | set(CREDENTIAL_PREFIXES):
         if name.startswith(CREDENTIAL_PREFIXES):
             environment[name] = ""
     environment.update({
+        # Defense in depth for dotenv versions that support this switch; the
+        # explicit blanking above also protects older installed versions.
+        "PYTHON_DOTENV_DISABLED": "1",
         "ENVIRONMENT": "test", "AEGIS_ENV": "test", "AEGIS_MOCK_LLM": "true",
         "RSS_INGESTION_ENABLED": "false", "AGENT_REACH_ENABLED": "false",
+        "HUGINN_ENABLED": "false", "HUGINN_DB_PATH": str(storage / "huginn.db"),
         "SQLITE_DB_PATH": str(storage / "aegis.db"),
         "AEGIS_SQLITE_PATH": str(storage / "aegis.db"),
         "AEGIS_DOSSIER_DIR": str(storage / "dossiers"),

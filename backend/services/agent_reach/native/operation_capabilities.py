@@ -9,6 +9,7 @@ an operation forever; credentials and policy are evaluated on every decision.
 from __future__ import annotations
 
 import os
+import threading
 import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
@@ -163,6 +164,7 @@ class OperationObservation:
     http_statuses: list[int] = field(default_factory=list)
     error: Optional[str] = None
     retry_after_seconds: Optional[float] = None
+    failure_scope: Optional[str] = None
 
 
 class RuntimeOperationCapabilities:
@@ -188,6 +190,7 @@ class RuntimeOperationCapabilities:
         self.rate_limit_ttl_seconds = rate_limit_ttl_seconds
         self.max_rate_limit_ttl_seconds = max_rate_limit_ttl_seconds
         self._observations: Dict[Tuple[str, str], OperationObservation] = {}
+        self._observation_lock = threading.Lock()
 
     @staticmethod
     def normalize(channel: str, operation: str) -> Tuple[str, str]:
@@ -230,21 +233,34 @@ class RuntimeOperationCapabilities:
 
         # A cache hit proves reusable evidence, but must not overwrite a newer
         # network-health observation for the same operation.
-        existing = self._observations.get((channel, operation))
-        if cache_only and existing and existing.network_observed:
-            return
-        now = self._clock()
-        self._observations[(channel, operation)] = OperationObservation(
-            outcome=outcome,
-            content_class=str(telemetry.get("content_class", "UNKNOWN")),
-            observed_at_monotonic=now,
-            observed_at=datetime.now(timezone.utc).isoformat(),
-            network_observed=network_observed,
-            cache_only=cache_only,
-            http_statuses=statuses,
-            error=error,
-            retry_after_seconds=retry_after,
-        )
+        with self._observation_lock:
+            existing = self._observations.get((channel, operation))
+            if cache_only and existing and existing.network_observed:
+                return
+            now = self._clock()
+            if existing and existing.outcome == "RATE_LIMITED":
+                ttl = (existing.retry_after_seconds if existing.retry_after_seconds is not None
+                       else self.rate_limit_ttl_seconds)
+                remaining = existing.observed_at_monotonic + ttl - now
+                if remaining >= 0:
+                    # Already-admitted requests can finish after a 429. Their
+                    # late DNS error, empty response or success cannot erase an
+                    # active operation fence, nor restart its original expiry.
+                    if not rate_limited:
+                        return
+                    retry_after = max(retry_after, remaining)
+            self._observations[(channel, operation)] = OperationObservation(
+                outcome=outcome,
+                content_class=str(telemetry.get("content_class", "UNKNOWN")),
+                observed_at_monotonic=now,
+                observed_at=datetime.now(timezone.utc).isoformat(),
+                network_observed=network_observed,
+                cache_only=cache_only,
+                http_statuses=statuses,
+                error=error,
+                retry_after_seconds=retry_after,
+                failure_scope=telemetry.get("failure_scope"),
+            )
 
     def assess(
         self,
@@ -290,7 +306,8 @@ class RuntimeOperationCapabilities:
         elif observation:
             age = max(0.0, self._clock() - observation.observed_at_monotonic)
             ttl = (
-                (observation.retry_after_seconds or self.rate_limit_ttl_seconds)
+                (observation.retry_after_seconds if observation.retry_after_seconds is not None
+                 else self.rate_limit_ttl_seconds)
                 if observation.outcome == "RATE_LIMITED"
                 else self.healthy_ttl_seconds if observation.outcome in self.SUCCESS_OUTCOMES
                 else self.failure_ttl_seconds
@@ -304,6 +321,12 @@ class RuntimeOperationCapabilities:
                 # Keep that observation visible without suppressing unrelated
                 # queries for every subsequent agent in this process.
                 reason = "RECENT_EMPTY_QUERY_NOT_PROVIDER_FAILURE"
+                runtime_health = "LIMITED"
+            elif fresh and observation.outcome in {"FAILED", "UNAVAILABLE"} and observation.failure_scope == "DESTINATION":
+                # A concrete publisher failure does not establish that every
+                # other public destination is unavailable. Policy/credentials
+                # and rate limiting are evaluated above and remain enforced.
+                reason = "RECENT_DESTINATION_FAILURE_NOT_CHANNEL_OUTAGE"
                 runtime_health = "LIMITED"
             elif fresh and observation.outcome in {"FAILED", "UNAVAILABLE"}:
                 decision, reason = "DEFER_TEMPORARY", f"RECENT_{observation.outcome}"
@@ -354,7 +377,8 @@ class RuntimeOperationCapabilities:
 
     def reset_observations(self) -> None:
         """Clear ephemeral runtime evidence (primarily for isolated test processes)."""
-        self._observations.clear()
+        with self._observation_lock:
+            self._observations.clear()
 
     @staticmethod
     def _depth_satisfies(required: str, supported: Iterable[str]) -> bool:

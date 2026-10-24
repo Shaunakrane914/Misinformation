@@ -1,0 +1,89 @@
+{
+  "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+  "agent": "brandshield",
+  "subject": "Apple",
+  "input_sha256": "9b0602aa83880225e99ab19bb188891d93341ef623d575081c22bd0f3c65d8d9",
+  "new_network_calls": 0,
+  "model_calls": 0,
+  "acquisition_boundary": "HASH_VALIDATED_SAVED_SOURCES; LIVE_DISCOVERY_NOT_RERUN",
+  "api_transport": "CURRENT_AGENT_ROUTER_IN_ISOLATED_ASGI_APP; NO_BACKGROUND_LIFESPAN",
+  "unchanged_source_id_url_title_body_hash": true,
+  "unchanged_source_id_url_title_date_body_hash": true,
+  "publication_changes": [],
+  "temporal_reference": "2026-10-22T06:17:59.930449+00:00",
+  "original_raw_sources": 62,
+  "processing_progress_events": 20,
+  "acquisition_metrics": {
+    "source_count": 62,
+    "candidate_urls": 62,
+    "by_type": {
+      "DISCOVERY_LEAD": 50,
+      "ARTICLE_BODY": 7,
+      "BLOCKED_OR_FAILED": 5
+    },
+    "reads_attempted": 16,
+    "successful_captures": 11,
+    "article_bodies": 7,
+    "raw_article_words": 5197,
+    "raw_source_words": 9118,
+    "duplicate_captures": 0,
+    "qualified_source_count": 4,
+    "relevant_words": 97,
+    "unique_publishers": 4,
+    "publisher_independence": "NOT_ESTABLISHED",
+    "storage_bytes": 344067,
+    "acquisition_mode": "OBSERVED_ACQUISITION",
+    "ambiguous_alias_count": 0,
+    "failed_reads_by_cause": {
+      "PROVIDER_FAILURE": 2,
+      "BUDGET_EXHAUSTED": 1,
+      "ACCESS_DENIED": 1,
+      "CONNECTION_FAILURE": 1
+    },
+    "dropped_by_limit": {},
+    "findings": 4,
+    "publisher_independence_verified": false
+  },
+  "public_statements": [],
+  "identity_risk": null,
+  "filing_comparison": null,
+  "generation_policy": "LIVE_AND_SYNTHETIC_GATEWAY_GENERATION_BLOCKED; ZERO_ATTEMPTS_REQUIRED",
+  "qualified_sources": [
+    {
+      "source_id": "ev_hv_7bb4855d80991eb50b9b",
+      "source_url": "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million",
+      "raw_content_hash": "2e9fabc0c4d42b08e7421b6f9888345cd7c0863a5d33aec690efdda92568df23",
+      "retained_words": 470,
+      "qualification_status": "QUALIFIED",
+      "useful_words": 37
+    },
+    {
+      "source_id": "ev_hv_be9cb5f5cdc4c3986e82",
+      "source_url": "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece",
+      "raw_content_hash": "b9673efb5923adf66c4fc6c3e657a905bdc8f87fe0c436f5a4e28a605f5e9a66",
+      "retained_words": 165,
+      "qualification_status": "QUALIFIED",
+      "useful_words": 24
+    },
+    {
+      "source_id": "ev_hv_6e806704335e19a66774",
+      "source_url": "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/",
+      "raw_content_hash": "9d3a00e4dee95df840c06e66da89c2508497f68a67df9ed884c5fb82a8f1832a",
+      "retained_words": 635,
+      "qualification_status": "QUALIFIED",
+      "useful_words": 17
+    },
+    {
+      "source_id": "ev_hv_bf8f5945fe9ff28266c1",
+      "source_url": "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/",
+      "raw_content_hash": "8fe7734e758539e34915b68297c373fcc4cb09bd937e4a88102edb97e11dd85a",
+      "retained_words": 1774,
+      "qualification_status": "QUALIFIED",
+      "useful_words": 19
+    }
+  ],
+  "limitations": [
+    "Source replay proves current interpretation/projection, not new live provider health or recall.",
+    "Fresh processing SSE events are not original network progress or latency measurements."
+  ]
+}

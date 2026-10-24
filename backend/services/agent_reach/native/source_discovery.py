@@ -82,21 +82,37 @@ class SourceDiscoveryResult:
 
 
 def resolve_bing_redirect(raw_url: str) -> str:
-    """
-    Resolve Bing /ck/a? redirect and URL-decode the target.
-    Handles URL-safe base64 padding cleanly.
+    """Decode only observed, known Bing redirect envelopes without fetching.
+
+    Keep ordinary URI percent escapes intact: generic unquote changes resource
+    identity (encoded slashes, ampersands and fragments). This is syntax-only
+    discovery; native acquisition still validates target DNS/SSRF/access.
     """
     if not raw_url or not isinstance(raw_url, str):
         return ""
     dest = raw_url.strip()
-    if "bing.com/ck/a?" in dest and "&u=a1" in dest:
-        try:
-            encoded_part = dest.split("&u=a1")[1].split("&")[0]
-            padded = encoded_part + "=" * (-len(encoded_part) % 4)
-            dest = base64.urlsafe_b64decode(padded.encode("ascii")).decode("utf-8", errors="ignore")
-        except Exception:
-            pass
-    return urllib.parse.unquote(dest)
+    try:
+        parsed = urllib.parse.urlsplit(dest)
+        if (parsed.scheme not in {"http", "https"} or parsed.hostname not in {"bing.com", "www.bing.com"}
+                or parsed.username or parsed.password):
+            return dest
+        parameters = urllib.parse.parse_qs(parsed.query, keep_blank_values=True)
+        target = None
+        if parsed.path == "/news/apiclick.aspx" and len(parameters.get("url", [])) == 1:
+            target = parameters["url"][0]  # parse_qs decodes exactly the envelope layer
+        elif parsed.path == "/ck/a" and len(parameters.get("u", [])) == 1:
+            encoded = parameters["u"][0]
+            if encoded.startswith("a1"):
+                encoded = encoded[2:]
+                target = base64.urlsafe_b64decode(encoded + "=" * (-len(encoded) % 4)).decode("utf-8")
+        if not target or len(target) > 8192 or any(character.isspace() or ord(character) < 32 for character in target):
+            return dest
+        actual = urllib.parse.urlsplit(target)
+        if actual.scheme not in {"http", "https"} or not actual.hostname or actual.username or actual.password:
+            return dest
+        return target
+    except (ValueError, UnicodeError, TypeError):
+        return dest
 
 
 def generate_discovery_queries(

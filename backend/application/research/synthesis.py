@@ -30,6 +30,21 @@ def synthesize_grounded_findings(
     """
     findings: List[Finding] = []
     investigated_items = [item for item in investigated_items if has_usable_passage(item)]
+    financial_contexts = {}
+    if domain == "financial":
+        from backend.services.research.financial_context import financial_passage_context
+        for item in investigated_items:
+            financial_contexts[item.id] = financial_passage_context(item.relevant_excerpt,
+                title=item.title, published_at=item.published_at,
+                observed_at=item.metadata.get("acquired_at") or item.metadata.get("retrieved_at") or item.discovered_at,
+                issuer=target_name, intent=intent)
+        # Historical captures remain in the corpus/evidence inspection. They
+        # cannot become a current financial finding merely because a query
+        # returned an old, relevant article. Unknown dates stay explicitly
+        # undated observations, not current performance verification.
+        investigated_items = [item for item in investigated_items
+            if financial_contexts[item.id]["publication_scope"] not in {"HISTORICAL_BACKGROUND", "FUTURE_PUBLICATION"}
+            or financial_contexts[item.id]["assessment_eligible"]]
     if domain == "trending":
         # Casual community conversation is retained in evidence/inspection but
         # is not a strategic event merely because it mentions the topic.
@@ -37,6 +52,7 @@ def synthesize_grounded_findings(
             if item.channel.casefold() not in {"reddit", "twitter", "twitter/x"}
             or re.search(r"announc|launch|releas|report|claim|deni|alleg|scam|deepfake|counterfeit|lawsuit|regulat|protest",
                          item.relevant_excerpt or "", re.I)]
+        investigated_items.sort(key=lambda item: (item.metadata.get("trend_source_context") or {}).get("classification") == "COMPETITIVE_CONTEXT")
     if not investigated_items:
         return findings
 
@@ -60,6 +76,8 @@ def synthesize_grounded_findings(
         # Find any contradictions matching these items
         matched_cont_ids = []
         for c in contradictions:
+            if c.get("established") is False or c.get("type") == "POSSIBLE_DISAGREEMENT":
+                continue
             if c.get("source_a_id") in sup_ids or c.get("source_b_id") in sup_ids:
                 matched_cont_ids.append(c.get("source_b_id") if c.get("source_a_id") in sup_ids else c.get("source_a_id"))
 
@@ -83,6 +101,14 @@ def synthesize_grounded_findings(
         community_observation = domain == "trending" and top_item.channel.casefold() in {"reddit", "twitter", "twitter/x"}
         if community_observation:
             clean_class_title = "Sampled Community Observation — Not Measured Virality"
+        financial_context = financial_contexts.get(top_item.id)
+        if financial_context and financial_context["publication_scope"] == "UNKNOWN_PUBLICATION_OR_CAPTURE_TIME":
+            clean_class_title = "Undated Financial Observation — Current Period Unverified"
+        elif financial_context and financial_context["assessment_scope"] == "HISTORICAL_REQUEST":
+            clean_class_title = "Historical Financial Context — Not Current Performance"
+        elif financial_context and financial_context["content_kind"] == "CORPORATE_STRATEGY_CONTEXT":
+            clean_class_title = "Corporate Strategy Context — Not Financial Verification"
+            f_type = FindingType.EVENT.value
         title = f"{clean_class_title}: {top_item.title[:70]}"
         statement = top_item.relevant_excerpt or top_item.snippet or top_item.title
         
@@ -131,7 +157,10 @@ def synthesize_grounded_findings(
             title=title,
             statement=statement,
             type=f_type,
-            importance="LOW" if community_observation else "HIGH" if len(prim_sources) > 0 or corrob["independent_group_count"] >= 2 else "MEDIUM",
+            importance="LOW" if community_observation or (top_item.metadata.get("trend_source_context") or {}).get("classification") == "COMPETITIVE_CONTEXT"
+                or (financial_context and not financial_context["current_assessment_eligible"])
+                or (financial_context and financial_context["content_kind"] == "CORPORATE_STRATEGY_CONTEXT")
+                else "HIGH" if len(prim_sources) > 0 or corrob["independent_group_count"] >= 2 else "MEDIUM",
             confidence=corrob["confidence"],
             epistemic_state=ep_state,
             quality_tensor=q_tensor,
@@ -141,8 +170,11 @@ def synthesize_grounded_findings(
             primary_sources=prim_sources,
             explanation=f"Observed passages from {corrob['independent_group_count']} publisher group(s) with {len(items_in_class)} citations; claim support requires proposition-level assessment.",
             metadata={"observation_only": True, "citation_entailment_verified": False,
+                      **({"financial_context": financial_context} if financial_context else {}),
+                      **({"source_context": top_item.metadata["trend_source_context"]} if top_item.metadata.get("trend_source_context") else {}),
                       **({"community_sample_only": True, "virality_measured": False} if community_observation else {})},
-            temporal_status=TemporalStatus.UNKNOWN.value,
+            temporal_status=TemporalStatus.HISTORICAL_CONTEXT.value
+                if financial_context and financial_context["assessment_scope"] == "HISTORICAL_REQUEST" else TemporalStatus.UNKNOWN.value,
             invalidation_criteria=f"Rebuttal or retraction issued by primary official channels ({', '.join(prim_sources) if prim_sources else 'official portal'})."
         )
         findings.append(f)
@@ -153,9 +185,26 @@ def synthesize_grounded_findings(
 
 class PassageAnalysisStage:
     def run(self, request: ResearchRequest, ranked: RankedEvidence, read: ReadEvidence, advisor_timeout=0.0) -> ReadEvidence:
+        from backend.services.research.source_identity import unique_captures
+        read.telemetry["duplicate_captures"] = []
+        read.investigated = unique_captures(read.investigated, read.telemetry["duplicate_captures"])
+        from backend.services.research.body_context import reconcile_captured_context
+        from backend.services.research.relevance_gate import relevance_gate
+        for item in read.investigated:
+            if request.domain == "trending":
+                item.metadata["temporal_required"] = True
+            reconcile_captured_context(item)
+            if request.domain == "trending":
+                # Recheck the acquired page, not its provisional snippet.
+                result = relevance_gate.evaluate_item(item, request.target, domain="trending", intent=request.intent)
+                item.metadata["temporal_eligible"] = result.is_accepted
+                item.metadata["post_read_qualification_reason"] = result.rejection_reason
         read.investigated = passage_extractor.extract_passages(
             read.investigated, target_name=request.target, intent=request.intent, domain=request.domain
         )
+        from backend.services.research.body_context import reconcile_captured_context
+        for item in read.investigated:
+            reconcile_captured_context(item)
         passage_extractor.extract_passages(
             ranked.ranked, target_name=request.target, intent=request.intent, domain=request.domain
         )

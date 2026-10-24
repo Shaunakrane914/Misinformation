@@ -1,0 +1,52 @@
+{
+  "date": "2026-10-19",
+  "mode": "OFFLINE_SAVED_CAPTURE_REPROCESS_AND_EXACT_SSE_REPLAY",
+  "branch": "fix/p0-lenovo-acquisition-20261018",
+  "base_head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "uncommitted_source": true,
+  "application_sha256": "df0dcf9bd27b5c7290fece6ffe9a505fa1ff36b4a24e6c9759d98e5f8052f442",
+  "stable_application_terminal": true,
+  "stable_application_browser": true,
+  "new_provider_investigations": 0,
+  "live_ai_generation_calls": 0,
+  "push_merge_deployment": false,
+  "cases": [
+    {"agent": "scout", "input": "MSFT", "records": 5, "words": 5272, "decimal_kb": 33.847, "legacy_finding_strings": 3, "discovery_cards": 22},
+    {"agent": "trending", "input": "NVIDIA", "records": 0, "words": 0, "decimal_kb": 0, "legacy_finding_strings": 0, "discovery_cards": 3},
+    {"agent": "brandshield", "input": "Nike", "records": 0, "words": 0, "decimal_kb": 0, "legacy_finding_strings": 0, "discovery_cards": 19},
+    {"agent": "personal_watch", "input": "Satya Nadella", "records": 0, "words": 0, "decimal_kb": 0, "legacy_finding_strings": 0, "discovery_cards": 3}
+  ],
+  "browser": {
+    "widths": [320, 390, 1440],
+    "states": 12,
+    "report_visible_states": 12,
+    "card_count_matching_states": 12,
+    "horizontal_overflow_states": 0,
+    "missing_finding_texts": 0,
+    "uncaught_page_exceptions": 0,
+    "scout_keyboard_inspection_states": 3,
+    "readiness": "REPLAY_HARNESS_STUB",
+    "other_backend_apis": "BLOCKED",
+    "external_fonts": "BLOCKED",
+    "console_resource_errors": "RECORDED_IN_RAW_TEMP_EVIDENCE_NOT_DECLARED_RESOLVED"
+  },
+  "validation": {
+    "full": {"exit": 0, "passed": 1498, "seconds": 54.41},
+    "fast": {"exit": 0, "passed": 1290, "seconds": 225.62},
+    "new_and_acquisition_policy": {"exit": 0, "passed": 52, "seconds": 0.74},
+    "node_scripts": {"exit": 0, "passed_scripts": 9},
+    "fatal_lint": {"exit": 0, "findings": 0},
+    "release_smoke": {"exit": 0, "verdict": "OFFLINE_SMOKE_PASS"},
+    "persistence": {"exit": 0, "verdict": "OFFLINE_PERSISTENCE_PASS"},
+    "frozen_benchmarks": {"exit": 0, "status": "HASHES_MATCH"},
+    "terminal_reprocess": {"exit": 0},
+    "browser_replay": {"exit": 0}
+  },
+  "screenshots": [
+    {"file": "01-scout-390-report.png", "sha256": "66d4f9ae6f63b46638eba06f9ec78e0c22a768ba70a47ddcaec3ef5bba8e14d4"},
+    {"file": "02-trending-390-report.png", "sha256": "d6985d5daaf1996deef84fdeb0c5da928253d1e2decd11de16d6b0bef32df796"},
+    {"file": "03-brandshield-390-report.png", "sha256": "86c039d825d0528822b1ca2cd7e664ed45f6e7af69baf35b723967495a10d450"},
+    {"file": "04-personal_watch-390-report.png", "sha256": "969be5280a1b42761003f977daf7cdf43607e18a158e5d2a0b446160f153fb8d"}
+  ],
+  "not_verified": ["fresh_provider_success", "independent_research_accuracy", "historical_archive_recovery", "deployed_rollback", "hosted_ci_for_these_edits", "production_parity", "screen_reader_contrast_axe_other_browsers"]
+}

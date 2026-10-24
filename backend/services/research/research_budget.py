@@ -26,6 +26,9 @@ class ResearchBudget:
     timeout_seconds: float = 120.0
     channel_timeout_seconds: float = 15.0
     deep_read_concurrency: int = 4
+    # Explicitly constructed budgets retain the historical API. Runtime defaults
+    # use acquisition-first STANDARD, with QUICK/DEEP selectable per request.
+    research_profile: Optional[str] = None
 
     # ── Backward-compatible properties ────────────────────────────────────
     @property
@@ -82,6 +85,8 @@ class ResearchBudget:
 
     def to_dict(self) -> Dict[str, Any]:
         d = asdict(self)
+        if self.research_profile is None:
+            d.pop("research_profile")  # Preserve explicit legacy-budget serialization.
         d["discovery_timeout_seconds"] = self.discovery_timeout_seconds
         d["deep_read_timeout_seconds"] = self.deep_read_timeout_seconds
         d["synthesis_timeout_seconds"] = self.synthesis_timeout_seconds
@@ -94,12 +99,15 @@ class ResearchBudget:
         """Factory: Read overrides from environment variables if present."""
         is_server = os.getenv("RENDER") or os.getenv("PORT") or os.getenv("SERVER_MODE")
         prefix = "SERVER_RESEARCH_" if is_server else "LOCAL_RESEARCH_"
-
-        disc_b = int(os.getenv(f"{prefix}MAX_QUERIES", os.getenv("RESEARCH_MAX_CANDIDATES", "40")))
+        profile = os.getenv("AEGIS_RESEARCH_PROFILE", "STANDARD").upper()
+        from backend.services.research.research_profiles import get_research_profile
+        selected = get_research_profile(profile)
+        candidates, reads, duration = selected.max_candidates, selected.max_reads, selected.timeout_seconds
+        disc_b = int(os.getenv(f"{prefix}MAX_QUERIES", os.getenv("RESEARCH_MAX_CANDIDATES", str(candidates))))
         fu_b = int(os.getenv(f"{prefix}MAX_FOLLOW_UPS", os.getenv("RESEARCH_MAX_FOLLOW_UPS", "3")))
         prim_b = int(os.getenv(f"{prefix}MAX_PRIMARY_ESCALATIONS", os.getenv("RESEARCH_MAX_PRIMARY_ESCALATIONS", "2")))
-        dr_b = int(os.getenv(f"{prefix}MAX_DEEP_READS", os.getenv("RESEARCH_MAX_DEEP_READS", "6")))
-        tout = float(os.getenv(f"{prefix}TIMEOUT", os.getenv("RESEARCH_MAX_TOTAL_LATENCY_SECONDS", "120.0")))
+        dr_b = int(os.getenv(f"{prefix}MAX_DEEP_READS", os.getenv("RESEARCH_MAX_DEEP_READS", str(reads))))
+        tout = float(os.getenv(f"{prefix}TIMEOUT", os.getenv("RESEARCH_MAX_TOTAL_LATENCY_SECONDS", str(duration))))
         ch_tout = float(os.getenv(f"{prefix}CHANNEL_TIMEOUT", os.getenv("RESEARCH_CHANNEL_TIMEOUT_SECONDS", "15.0")))
 
         return cls(
@@ -112,6 +120,7 @@ class ResearchBudget:
             timeout_seconds=tout,
             channel_timeout_seconds=ch_tout,
             deep_read_concurrency=int(os.getenv("RESEARCH_DEEP_READ_CONCURRENCY", "4")),
+            research_profile=profile,
         )
 
 

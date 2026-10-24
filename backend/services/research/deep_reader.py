@@ -11,12 +11,16 @@ import logging
 import re
 import time
 import uuid
+from contextvars import copy_context
 from urllib.parse import urlsplit
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import ContentDepth, EvidenceItem, SourceRole, SourceTier
 from backend.infrastructure.acquisition.network.budget import acquisition_deadline, remaining_timeout
+from backend.infrastructure.acquisition.network.http import transport_failure_kind
+from backend.infrastructure.acquisition.security.url_validator import validation_failure_kind
+from backend.infrastructure.acquisition.adapters.web.search_matching import headline_overlap
 
 logger = logging.getLogger(__name__)
 
@@ -24,6 +28,48 @@ logger = logging.getLogger(__name__)
 UNSUPPORTED_AUTH_DOMAINS = {
     "instagram.com", "tiktok.com", "facebook.com", "threads.net", "linkedin.com", "weibo.com"
 }
+
+
+def _diagnostic_url(url):
+    """Bounded public locator; never copy credentials/query tokens into errors."""
+    try:
+        parsed = urlsplit(url or "")
+        return f"{parsed.scheme}://{parsed.hostname or ''}{parsed.path}"[:500]
+    except ValueError:
+        return "INVALID_URL"
+
+
+def _challenge_body(body):
+    return bool(re.match(r"\s*(?:#{1,3}\s*)?(?:just a moment|verify (?:that )?you are human|checking your browser|access denied|attention required)", body[:200], re.I))
+
+
+def _read_failure_kind(result, transport_success, body):
+    status = str(result.get("status", "")).lower()
+    error = str(result.get("error", "")).lower()
+    if result.get("failure_kind") in {"TIMEOUT", "ACCESS_REJECTED", "HTTP_FAILURE", "CHALLENGE_PAGE", "EMPTY_EXTRACTION", "PROVIDER_FAILURE", "PUBLISHER_UNRESOLVED",
+                                     "DNS_ERROR", "DNS_TIMEOUT", "DNS_CAPACITY", "SSRF_BLOCKED", "CONNECTION_FAILURE", "BUDGET_EXHAUSTED", "RATE_LIMITED", "AUTH_REQUIRED", "ACCESS_DENIED"}:
+        return result["failure_kind"]
+    if "dns resolution failed" in error:
+        return validation_failure_kind(error)
+    if status == "blocked_ssrf" or result.get("runtime_decision"):
+        return "ACCESS_REJECTED"
+    if "timed out" in error or "timeout" in error or "deadline" in error:
+        return "TIMEOUT"
+    if _challenge_body(body):
+        return "CHALLENGE_PAGE"
+    if transport_success and len(body) < 30:
+        return "EMPTY_EXTRACTION"
+    if re.search(r"\bhttp(?:\s+(?:error|status))?\s*:?[ ]*[45]\d\d|\bforbidden\b", error) or _http_status(result) in {400, 401, 403, 404, 429, 500, 502, 503, 504}:
+        return "HTTP_FAILURE"
+    return "PROVIDER_FAILURE"
+
+
+def _http_status(result):
+    value = result.get("status_code") or (result.get("transport") or {}).get("http_status")
+    if type(value) is int and 100 <= value <= 599:
+        return value
+    match = re.search(r"\bhttp(?:\s+(?:error|status))?\s*:?[ ]*([45]\d\d)", str(result.get("error", "")), re.I)
+    return int(match.group(1)) if match else None
 
 
 class DeepReader:
@@ -46,25 +92,59 @@ class DeepReader:
                  # Feed titles can be truncated mid-word. An exact full-title
                  # phrase suppresses real publisher variants; the independent
                  # 75% title-token join below remains unchanged.
-                 "query": title.replace(chr(34), ""), "query_records": []}
+                 "query": title.replace(chr(34), ""), "query_records": [], "candidates": []}
         if len(terms) < 4:
             return None, trace
+        from backend.services.research.source_quality import canonical_hostname
+        publisher = canonical_hostname(item.metadata.get("publisher_source_url") or "")
+        if publisher and publisher != "google.com" and not publisher.endswith(".google.com"):
+            # Use a publisher observed in the actual feed, never a guessed
+            # outlet/domain. Replace the one existing lookup, not an extra retry.
+            trace["publisher_scope"] = publisher
+            trace["query_basis"] = "FEED_DECLARED_PUBLISHER_UNVERIFIED"
+            trace["query"] = f"site:{publisher} {trace['query']}"
+        # Resolution is a multi-provider chain, not one HTTP call. Reserve a
+        # third of the remaining read window for the actual publisher body.
+        # Each transport remains capped at five seconds; never extend a parent.
+        resolution_timeout = min(10.0, remaining_timeout(15.0) * (2.0 / 3.0))
         result = service.retrieve_many(
             {"web": [{"query_id": f"wr_{item.id}", "query_class": "publisher_url_resolution",
                       "query_text": trace["query"]}]}, perform_reads=False,
-            timeout=remaining_timeout(5.0), agent_name="source_resolution",
+            timeout=resolution_timeout, agent_name="source_resolution",
             budget={"max_queries_per_channel": 1, "max_results_per_query": 3,
-                    "max_total_evidence": 3, "channel_timeout": 5.0})
+                    "max_total_evidence": 3, "channel_timeout": resolution_timeout})
         trace["query_records"] = [record.to_dict() for record in result.query_records]
-        for candidate in result.fragments:
-            host = (urlsplit(candidate.url or "").hostname or "").lower()
-            candidate_terms = set(re.findall(r"[a-z0-9]+", (candidate.title or "").casefold()))
-            if (host and host != "news.google.com" and not host.endswith(".google.com")
-                    and len(terms & candidate_terms) / len(terms) >= 0.75):
+        for candidate in result.fragments[:3]:
+            try:
+                parsed = urlsplit(candidate.url or "")
+                host = (parsed.hostname or "").lower()
+            except ValueError:
+                parsed, host = None, ""
+            overlap = headline_overlap(title, candidate.title)
+            reason = ("INVALID_URL" if not parsed or parsed.scheme not in {"http", "https"} or not host
+                      else "URL_CREDENTIALS" if parsed.username or parsed.password
+                      else "WRAPPER_URL" if host == "google.com" or host.endswith(".google.com")
+                      else "TITLE_MISMATCH" if overlap < 0.75 else None)
+            trace["candidates"].append({"url": _diagnostic_url(candidate.url), "title": (candidate.title or "")[:180],
+                                        "title_token_overlap": round(overlap, 3), "rejection_reason": reason})
+            if reason is None:
                 trace.update(status="OBSERVED_PUBLISHER_LEAD", selected_url=candidate.url,
                              selected_title=candidate.title, claim_support_verified=False)
                 return candidate.url, trace
         return None, trace
+
+    @staticmethod
+    def _selection_domain(item):
+        # An opaque transport wrapper is not publisher identity. Separate read
+        # opportunities within the existing attempt cap; do NOT rewrite source
+        # domain/independence or assert that these leads are independent.
+        try:
+            host = (urlsplit(item.canonical_url or "").hostname or "").lower()
+        except ValueError:
+            host = "invalid-url"
+        if host == "news.google.com":
+            return "unresolved-wrapper:" + item.id
+        return (item.source_domain or host or "other").lower()
 
     def _select_read_candidates(
         self,
@@ -94,6 +174,7 @@ class DeepReader:
         seen_wire_families: Set[str] = set()
         seen_selected_ids: Set[str] = set()
         seen_selected_urls: Set[str] = set()
+        from backend.services.research.source_identity import source_url_key
         primary_satisfied_count = 0
         audit: List[Dict[str, Any]] = []
 
@@ -106,8 +187,15 @@ class DeepReader:
 
             url = item.canonical_url or ""
             score = item.metadata.get("candidate_score", item.relevance_score)
+            from backend.services.research.content_roles import document_role
+            if document_role(item) == "BACKGROUND_REFERENCE":
+                item.metadata["read_exclusion_reason"] = "REFERENCE_BACKGROUND_NOT_CURRENT_EVIDENCE"
 
-            if item.metadata.get("read_exclusion_reason"):
+            if item.metadata.get("defer_non_objective_read"):
+                item.eligible_for_read = False
+                item.selected_for_read = False
+                item.rejection_reason = "deferred_not_agent_objective"
+            elif item.metadata.get("read_exclusion_reason"):
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = item.metadata["read_exclusion_reason"]
@@ -131,7 +219,7 @@ class DeepReader:
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "low_quality"
-            elif item.relevance_score < 0.10:
+            elif item.relevance_score < 0.10 and item.metadata.get("discovery_kind") != "FEED_INDEX":
                 item.eligible_for_read = False
                 item.selected_for_read = False
                 item.rejection_reason = "low_relevance"
@@ -146,11 +234,11 @@ class DeepReader:
                 break
             if not item.eligible_for_read:
                 continue
-            if item.id in seen_selected_ids or (item.canonical_url and item.canonical_url in seen_selected_urls):
+            if item.id in seen_selected_ids or (item.canonical_url and source_url_key(item.canonical_url) in seen_selected_urls):
                 item.rejection_reason = "duplicate_candidate"
                 continue
 
-            domain = item.source_domain.lower() if item.source_domain else "other"
+            domain = self._selection_domain(item)
             if ((item.primary_source or item.source_role == SourceRole.PRIMARY.value)
                     and item.metadata.get("authority_scope") != "CORPORATE_LANDING"
                     and item.metadata.get("objective_read_match") is not False):
@@ -162,7 +250,7 @@ class DeepReader:
                 item.rejection_reason = None
                 seen_selected_ids.add(item.id)
                 if item.canonical_url:
-                    seen_selected_urls.add(item.canonical_url)
+                    seen_selected_urls.add(source_url_key(item.canonical_url))
                 primary_satisfied_count += 1
                 domain_items.setdefault(domain, []).append(item)
                 if item.source_family_id:
@@ -172,11 +260,11 @@ class DeepReader:
         for item in ranked_candidates:
             if not item.eligible_for_read:
                 continue
-            if item in selected or item.id in seen_selected_ids or (item.canonical_url and item.canonical_url in seen_selected_urls):
+            if item in selected or item.id in seen_selected_ids or (item.canonical_url and source_url_key(item.canonical_url) in seen_selected_urls):
                 item.rejection_reason = "duplicate_candidate"
                 continue
 
-            domain = item.source_domain.lower() if item.source_domain else "other"
+            domain = self._selection_domain(item)
             d_list = domain_items.get(domain, [])
 
             if len(selected) >= max_reads:
@@ -200,7 +288,7 @@ class DeepReader:
             item.rejection_reason = None
             seen_selected_ids.add(item.id)
             if item.canonical_url:
-                seen_selected_urls.add(item.canonical_url)
+                seen_selected_urls.add(source_url_key(item.canonical_url))
             domain_items.setdefault(domain, []).append(item)
             if item.source_family_id:
                 seen_wire_families.add(item.source_family_id)
@@ -238,7 +326,8 @@ class DeepReader:
         self,
         ranked_candidates: List[EvidenceItem],
         max_reads: int = 15,
-        timeout_per_read: float = 6.0
+        timeout_per_read: float = 6.0,
+        *, service=None, max_concurrency: Optional[int] = None,
     ) -> Tuple[List[EvidenceItem], Dict[str, Any]]:
         """
         Deep-reads top diverse candidates using bounded concurrency and caching.
@@ -248,6 +337,7 @@ class DeepReader:
             Tuple of (investigated_items, deep_read_telemetry)
         """
         from backend.services.agent_reach import agent_reach_service
+        read_service = service if service is not None else agent_reach_service
 
         max_reads = max(0, int(max_reads)) if timeout_per_read > 0 else 0
         candidates_to_read, audit = self._select_read_candidates(ranked_candidates, max_reads=max_reads)
@@ -281,21 +371,22 @@ class DeepReader:
                 with acquisition_deadline(read_deadline):
                     resolution = None
                     if (urlsplit(url).hostname or "").lower() == "news.google.com":
-                        url, resolution = self._resolve_wrapper(item, agent_reach_service)
+                        url, resolution = self._resolve_wrapper(item, read_service)
                         if not url:
                             return item, {"status": "failed", "error": "Publisher URL unresolved; wrapper is not article evidence",
-                                          "wrapper_resolution": resolution}, attempt_id, round((time.perf_counter() - t0) * 1000, 2)
-                    res = agent_reach_service.read(url, max_chars=12_000)
+                                          "failure_kind": "PUBLISHER_UNRESOLVED", "wrapper_resolution": resolution}, attempt_id, round((time.perf_counter() - t0) * 1000, 2)
+                    res = read_service.read(url, max_chars=20_000 if service is not None else 12_000)
                     if resolution:
                         res = {**res, "wrapper_resolution": resolution}
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)
-                if res.get("status") in ("success", "fallback_soup") and res.get("markdown"):
+                if res.get("status") in ("success", "fallback_soup") and res.get("markdown") and not _challenge_body(res["markdown"]):
                     self._cache[url] = (res, now)
                 return item, res, attempt_id, dur_ms
             except Exception as e:
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)
-                logger.debug(f"[DeepReader] Failed reading {url}: {e}")
-                return item, {"status": "error", "error": str(e), "url": url}, attempt_id, dur_ms
+                kind = transport_failure_kind(e)
+                logger.debug("[DeepReader] Read failed (%s)", kind)
+                return item, {"status": "error", "failure_kind": kind}, attempt_id, dur_ms
 
         # Prepare attempt IDs
         candidate_attempts = []
@@ -304,12 +395,19 @@ class DeepReader:
             candidate_attempts.append((item, att_id))
 
         # Execute bounded concurrent reading
-        max_workers = min(len(candidate_attempts) or 1, 6)
+        # Wrapper resolution uses the shared two-worker web bulkhead. Do not
+        # queue six short-lived resolver searches behind those same two slots.
+        wrappers_only = bool(candidate_attempts) and all(
+            (urlsplit(item.canonical_url).hostname or "").lower() == "news.google.com"
+            for item, _ in candidate_attempts)
+        max_workers = min(len(candidate_attempts) or 1, 2 if wrappers_only else 6)
+        if max_concurrency is not None:
+            max_workers = min(max_workers, max(1, min(6, int(max_concurrency))))
         completed_futures = set()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=max_workers)
         try:
             future_to_info = {
-                executor.submit(_fetch_url, item, att_id): (item, att_id)
+                executor.submit(copy_context().run, _fetch_url, item, att_id): (item, att_id)
                 for item, att_id in candidate_attempts
             }
             try:
@@ -325,7 +423,8 @@ class DeepReader:
                         transport_success = bool(read_res.get("status") in ("success", "fallback_soup"))
                         content_body = (read_res.get("markdown") or read_res.get("content") or "").strip()
                         content_extraction_success = bool(transport_success and len(content_body) >= 30)
-                        useful = bool(transport_success and content_extraction_success)
+                        useful = bool(transport_success and content_extraction_success and not _challenge_body(content_body))
+                        failure_kind = None if useful else _read_failure_kind(read_res, transport_success, content_body)
 
                         attempt_record = {
                             "attempt_id": attempt_id,
@@ -343,7 +442,12 @@ class DeepReader:
                             "content_extraction_success": content_extraction_success,
                             "useful_content_extracted": useful,
                             "char_count": len(content_body) if useful else 0,
-                            "error_message": read_res.get("error") if not useful else None,
+                            "failure_kind": failure_kind,
+                            "http_status": _http_status(read_res),
+                            "rejection_layer": ("DNS" if failure_kind and failure_kind.startswith("DNS_") else
+                                                "SSRF" if read_res.get("status") == "blocked_ssrf" else
+                                                "RUNTIME_POLICY" if read_res.get("runtime_decision") else None),
+                            "error_message": failure_kind.replace("_", " ").capitalize() if failure_kind else None,
                         }
                         if read_res.get("wrapper_resolution"):
                             attempt_record["wrapper_resolution"] = read_res["wrapper_resolution"]
@@ -360,14 +464,34 @@ class DeepReader:
                             for key in ("raw_capture", "page_metadata", "transport", "truncated"):
                                 if key in read_res:
                                     orig_item.metadata[key] = read_res[key]
+                            # A validated native redirect is observed publisher
+                            # provenance. Never attribute its body to the search
+                            # click tracker, or to the optional reader host.
+                            transport = read_res.get("transport") or {}
+                            endpoint = transport.get("endpoint") or ""
+                            redirects = transport.get("redirect_chain") or []
+                            endpoint_host = (urlsplit(endpoint).hostname or "").lower()
+                            if (endpoint and endpoint in redirects and endpoint_host not in {"r.jina.ai", "news.google.com"}
+                                    and urlsplit(endpoint).scheme in {"http", "https"}
+                                    and not urlsplit(endpoint).username and not urlsplit(endpoint).password):
+                                if endpoint != orig_item.canonical_url:
+                                    orig_item.metadata.setdefault("discovery_url", orig_item.canonical_url)
+                                    orig_item.canonical_url = endpoint
+                                orig_item.source_domain = endpoint_host
+                                orig_item.metadata["observed_final_endpoint"] = endpoint
                             body_author = (read_res.get("page_metadata") or {}).get("author")
                             if body_author and orig_item.source_name and body_author != orig_item.source_name:
                                 orig_item.metadata["discovery_author_or_source"] = orig_item.source_name
                                 orig_item.metadata["body_author"] = body_author
                                 orig_item.metadata["attribution_conflict"] = True
+                                orig_item.source_name = body_author
                             orig_item.acquisition_attempt_id = attempt_id
                             orig_item.acquired_id = f"cand_acq_{orig_item.id}"
                             attempt_record["acquired_candidate_id"] = orig_item.acquired_id
+                            from backend.services.research.body_context import reconcile_captured_context
+                            reconcile_captured_context(orig_item)
+                            if orig_item.metadata.get("discovery_kind") == "FEED_INDEX":
+                                orig_item.metadata.setdefault("page_metadata", {})["content_scope"] = "PUBLIC_DISCOVERY_INDEX"
                             
                             # Preserve metadata kinds; length and official
                             # ownership never establish full-document coverage.
@@ -386,7 +510,7 @@ class DeepReader:
                             # thread retain a stale feed-summary completeness.
                             from backend.services.research.content_roles import document_role
                             role = document_role(orig_item)
-                            if role in {"DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE"}:
+                            if role in {"DOCUMENT_INDEX", "NEWS_INDEX", "LANDING_PAGE", "PROFILE"}:
                                 orig_item.metadata["content_role"] = role
                                 orig_item.primary_source = False
                                 orig_item.source_role = SourceRole.DISCOVERY.value
@@ -419,9 +543,10 @@ class DeepReader:
                             "duration_ms": int(timeout_per_read * 1000),
                             "useful_content_extracted": False,
                             "char_count": 0,
-                            "error_message": str(ex),
+                            "failure_kind": "PROVIDER_FAILURE",
+                            "error_message": "Source processing failed",
                         })
-                        logger.debug(f"[DeepReader] Task error on {orig_item.canonical_url}: {ex}")
+                        logger.debug("[DeepReader] Source processing failed (%s)", type(ex).__name__)
 
             except concurrent.futures.TimeoutError:
                 logger.info("[DeepReader] Bounded deep-reading deadline reached; preserving existing reads.")
@@ -442,6 +567,7 @@ class DeepReader:
                             "useful_content_extracted": False,
                             "char_count": 0,
                             "error_message": "ThreadPoolExecutor timeout",
+                            "failure_kind": "TIMEOUT",
                         })
         finally:
             # Context-manager shutdown waits for running calls and defeats the

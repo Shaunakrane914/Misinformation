@@ -79,6 +79,7 @@ class RelevanceGate:
         reference_time: Optional[datetime] = None,
         window_hours: Optional[float] = None,
         allow_updated: Optional[bool] = None,
+        provisional_read: bool = False,
     ) -> RelevanceAssessment:
         """
         Evaluate a single candidate EvidenceItem or dict.
@@ -108,6 +109,23 @@ class RelevanceGate:
                 # An acquired statement may name its speaker after the preview.
                 # Discovery snippets are never upgraded to acquired body text.
                 combined_text += " " + str(value("content", "") or "")[:8000]
+        if domain == "trending":
+            # Specialist projection shortens the display snippet. Rechecking
+            # that preview alone can lose a topic modifier present in the
+            # already-qualified native body and orphan its source-backed finding.
+            # Reuse only an acquired, structurally classified article; never
+            # upgrade feed/search text or change the exact topic/date gates.
+            from backend.schemas.evidence_inspection import METADATA_DEPTHS
+            value = item.get if isinstance(item, dict) else lambda key, default=None: getattr(item, key, default)
+            metadata = value("metadata", {}) or {}
+            page = metadata.get("page_metadata") or {}
+            depth = value("content_depth", "") or metadata.get("content_depth", "")
+            body_kind = page.get("body_kind") or (page.get("body_quality") or {}).get("body_kind")
+            acquired = value("acquired_id") or value("acquired_candidate_id")
+            if (metadata.get("read_success") is True and metadata.get("layer2_eligible") is True
+                    and acquired and depth and depth not in METADATA_DEPTHS
+                    and body_kind == "ARTICLE_BODY"):
+                combined_text += " " + str(value("content", "") or "")[:12_000]
         combined_lower = combined_text.lower()
         title_lower = title.lower()
 
@@ -246,7 +264,7 @@ class RelevanceGate:
                 item["temporal_status"] = temporal_assessment.status
                 item["recency_score"] = temporal_assessment.recency_score
 
-            if not temporal_assessment.is_eligible:
+            if not temporal_assessment.is_eligible and not (provisional_read and temporal_assessment.status == "MISSING_TIMESTAMP"):
                 return RelevanceAssessment(
                     evidence_id=e_id,
                     relevance_score=0.0,
@@ -347,6 +365,7 @@ class RelevanceGate:
         reference_time: Optional[datetime] = None,
         window_hours: Optional[float] = None,
         allow_updated: Optional[bool] = None,
+        provisional_read: bool = False,
     ) -> Tuple[List[Any], List[Dict[str, Any]]]:
         """
         Partition candidates into accepted items and rejected audit records.
@@ -364,6 +383,7 @@ class RelevanceGate:
                 reference_time=reference_time,
                 window_hours=window_hours,
                 allow_updated=allow_updated,
+                provisional_read=provisional_read,
             )
             
             # Tag metadata on object if supported

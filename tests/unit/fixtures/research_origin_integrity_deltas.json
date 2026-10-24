@@ -1,0 +1,23 @@
+{
+  "status": "ENGINEERING_CORRECTNESS_DELTA_NOT_INDEPENDENT_ACCURACY_LABELS",
+  "reason": "2026-10-21: reporting-origin groups no longer include wire headline slugs; missing URLs receive no known origin and zero independence score. Original golden manifests remain untouched.",
+  "scenarios": {
+    "malformed_metadata": {
+      "corpus_sha256": "5ad0da54221d32567c846997ce1ce96d038e77acea288dbb224f7567a12dbd38",
+      "result_sha256": "eb46826d7a72485e9ae15f4dc2179425358d1eaf0342607f9f394d0c6e5486ff",
+      "dossier_sha256": "f429ec436a61fba14476851296c88edd01fd7e79d74f1d5a61ecaaa3e8ee5d96"
+    },
+    "missing_primary": {
+      "corpus_sha256": "310b19102bdc2964574ef3f9307608f8ceb6c61e5ac637a86739b5458ae8e062",
+      "result_sha256": "5792d912eaad0673ae28825bf938e2bba64493b2b584ac4827447ecef6582ba0"
+    },
+    "relevant": {
+      "corpus_sha256": "31b715bb2b5058c1c04d70dc910ad4db031b28127211b59b2f29b836ac0ca73f",
+      "result_sha256": "111e1cdaca898210b5004042ffbe5c524569fad12250dbf2ede3321d16f73a1f"
+    },
+    "syndicated": {
+      "corpus_sha256": "aeedc22936f4baa5927310c438934909d316e08d1ef26ab3273a1f9651fe6a26",
+      "result_sha256": "755c8f5ece19cf699a9bce298e9ddf03f199d87754e702ebceb9f2a095e99ce8"
+    }
+  }
+}

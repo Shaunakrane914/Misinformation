@@ -435,7 +435,21 @@ class EntityResolver:
                 score = max(score, 0.88)
 
         # ── Step 6: Multi-Word Entity Rules ──
-        if target.is_multi_word:
+        if target.is_multi_word and target.entity_type in {"general", "topic", "concept", "product"}:
+            # Topics are not given-name/surname pairs. Require every meaningful
+            # topic token (or a strong explicit alias), allowing conservative
+            # inflection variants such as computing/computers. A lone common
+            # word still cannot admit an unrelated company or subject.
+            def stem(token):
+                return re.sub(r"(?:ing|ers?|ed|s)$", "", token) if len(token) >= 6 else token
+            expected = {stem(token) for token in canonical_tokens if token not in GENERAL_STOPWORDS}
+            observed = {stem(token) for token in re.findall(r"[a-z0-9]+", t_lower)}
+            if len(expected) >= 2 and expected <= observed:
+                matched_signals.append("topic_token_cooccurrence")
+                score = max(score, 0.80)
+            elif score < 0.35:
+                return 0.15, matched_signals, "Insufficient multi-token topic match"
+        elif target.is_multi_word:
             first_name = canonical_tokens[0] if canonical_tokens else ""
             surname = canonical_tokens[-1] if len(canonical_tokens) >= 2 else ""
 

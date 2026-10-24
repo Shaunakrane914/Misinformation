@@ -7,8 +7,10 @@ Includes LLM reasoning with untrusted data boundary and offline heuristic fallba
 
 from __future__ import annotations
 
+import copy
 import json
 import logging
+import re
 from typing import Any, Dict, List
 
 from backend.agents.personal_watch.extraction import personal_watch_extractor
@@ -172,18 +174,139 @@ def heuristic_threat_synthesis(
     }
 
 
+def _source_report_synthesis(subject_name, evidence_list):
+    """Normalize captured allegations without inventing observed actors or risk.
+
+    These records enter through UNVERIFIED_ALLEGATION passages. Neither the
+    publisher's byline nor a report about a recording is a captured suspect
+    account/media asset. The legacy extractor's keyword scores cannot establish
+    either. Keep one report observation per primary kind and canonical source
+    set, while preserving every exact supporting passage for inspection.
+    """
+    result = {"threats": [], "claims": [], "narratives": [],
+              "suspected_impersonations": [], "suspected_scams": [],
+              "deepfake_claims": [], "ai_enrichment_active": False}
+    kinds = [
+        ("IMPERSONATION", r"impersonat|fake account|fake profile|spoofed|fake handle"),
+        ("SCAM", r"scam|phishing|fake giveaway|crypto fraud|send btc|investment scheme"),
+        ("DEEPFAKE", r"deepfake|ai[- ]generated|ai voice|voice clone|manipulated video|synthetic audio|elevenlabs"),
+        ("DOXXING_PRIVACY", r"doxx|leaked database|leaked phone|leaked address|credential breach"),
+        ("REPUTATION_ATTACK", r"allegation|controversy|smear|lawsuit|boycott|rumor|defamation"),
+    ]
+    observations = {}
+    for record in evidence_list:
+        passages = record["allegation_passages"]
+        text = "\n\n".join(p["text"] for p in passages)
+        detected = [kind for kind, pattern in kinds if re.search(pattern, text, re.I)]
+        if not detected:
+            continue
+        kind = detected[0]
+        evidence_ids = list(dict.fromkeys(p["evidence_id"] for p in passages))
+        key = (kind, tuple(sorted(evidence_ids)))
+        if key in observations:
+            existing = observations[key]["source_passages"]
+            known = {p["passage_id"] for p in existing}
+            existing.extend(dict(p) for p in passages if p["passage_id"] not in known)
+            continue
+        observation = {
+            "threat_id": f"reported_{kind.lower()}_{len(observations) + 1}",
+            "threat_type": kind, "risk_level": "UNASSESSED",
+            "title": f"Source-reported {kind.lower().replace('_', ' ')} allegation concerning {subject_name}",
+            "reason": "Captured publisher allegation; actor identity, current activity and authenticity are not established.",
+            "platform": record.get("platform", "Web"), "evidence_ids": evidence_ids,
+            "confidence": None, "confidence_basis": "NOT_ASSESSED",
+            "confidence_is_heuristic": False, "epistemic_state": "UNVERIFIED",
+            "assessment_status": "SOURCE_REPORT_ONLY", "technical_forensics_run": False,
+            "direct_actor_capture": False, "observed_actor_url": None,
+            "indicators": [], "reported_signal_types": detected,
+            "source_report_title": record.get("title", ""),
+            "source_report_url": record.get("canonical_url") or record.get("url", ""),
+            "source_published_at": record.get("published_at") or record.get("published") or None,
+            "source_date_status": "DECLARED_SOURCE_DATE_UNVERIFIED",
+            "temporal_state": "CURRENT_ACTIVITY_NOT_ESTABLISHED",
+            "source_passages": [dict(p) for p in passages],
+        }
+        observations[key] = observation
+        result["threats"].append(observation)
+        result["claims"].append({
+            "claim_id": f"reported_claim_{len(observations)}", "text": passages[0]["text"],
+            "status": "unverified", "confidence": None, "evidence_ids": evidence_ids,
+            "assessment_status": "SOURCE_REPORT_ONLY", "source_passages": observation["source_passages"],
+        })
+        report = {"platform": record.get("platform", "Web"), "evidence_ids": evidence_ids,
+                  "assessment_status": "SOURCE_REPORT_ONLY", "epistemic_state": "UNVERIFIED",
+                  "source_report_url": observation["source_report_url"],
+                  "source_published_at": observation["source_published_at"],
+                  "source_date_status": observation["source_date_status"],
+                  "temporal_state": observation["temporal_state"],
+                  "source_passages": observation["source_passages"], "indicators": []}
+        if kind == "IMPERSONATION":
+            result["suspected_impersonations"].append({**report, "handle": None,
+                "claimed_identity": subject_name, "observed_actor_url": None})
+        elif kind == "SCAM":
+            result["suspected_scams"].append({**report, "offer": None, "call_to_action": None})
+        elif kind == "DEEPFAKE":
+            result["deepfake_claims"].append({**report, "claim_text": passages[0]["text"],
+                "technical_forensics_run": False,
+                "forensic_status": "Source-reported synthetic media allegation; technical verification unavailable."})
+    return result
+
+
 def synthesize_personal_threats(subject_info, evidence_list):
     """Deterministic public observations; no generative threat adjudication."""
-    from backend.services.research.content_roles import document_role
+    from backend.schemas.evidence_inspection import METADATA_DEPTHS
+    from backend.services.research.content_roles import document_role, NON_EVENT_ROLES
     from backend.services.research.passage_records import captured_passages
     subject_name = subject_info.get("canonical_name", subject_info.get("name", ""))
-    records = [ev for ev in evidence_list if document_role(ev) not in {"PROFILE", "METADATA"}]
+    records = []
+    for ev in evidence_list:
+        metadata = ev.get("metadata") or ev.get("raw_metadata") or {}
+        depth = ev.get("content_depth") or metadata.get("content_depth")
+        page = metadata.get("page_metadata") or {}
+        if (document_role(ev) in NON_EVENT_ROLES | {"METADATA"}
+                or depth in METADATA_DEPTHS | {"SEARCH_SNIPPET"} or metadata.get("layer2_eligible") is False
+                or page.get("content_scope") in {"FEED_INDEX", "SITEMAP_INDEX", "PUBLIC_DISCOVERY_INDEX"}):
+            continue
+        # Normalization and output annotation must not alter the caller's raw
+        # evidence, existing passage cache or nested metadata.
+        records.append(copy.deepcopy(ev))
     if not records:
         return {"threats": [], "claims": [], "narratives": [], "suspected_impersonations": [],
                 "suspected_scams": [], "deepfake_claims": [], "ai_enrichment_active": False,
+                "public_statements": [], "disputed_claims": [], "identity_authenticated": False,
+                "identity_risk": "UNASSESSED", "impersonation_status": "UNASSESSED",
                 "status_note": "No verified live evidence was retrieved; metadata does not establish identity abuse."}
     for record in records:
         record["passages"] = captured_passages(record, "personal", subject_name)
+    disputed = []
+    disputed_ids = set()
+    subject_tokens = re.findall(r"\w+", subject_name.casefold())
+    for record in records:
+        for passage in record["passages"]:
+            text = passage["text"]
+            # Broader quotation wording remains a source assertion, not a
+            # statement authored by the monitored person or an adjudication.
+            dispute = (passage["content_role"] == "DISPUTED_CLAIM" or bool(re.search(
+                r"\b(?:fabricated|misattributed|false|fake)\s+(?:quote|quotation|claim)\b"
+                r"|\bfalsely attributed\b|\b(?:did not|never)\s+(?:say|said|endorse|endorsed)\b", text, re.I)))
+            target_link = bool(subject_tokens) and all(
+                re.search(r"\b" + re.escape(token) + r"\b", text, re.I) for token in subject_tokens)
+            if (not dispute or not target_link or passage["relevance"] in {"BACKGROUND", "DISCOVERY_ONLY"}
+                    or passage["passage_id"] in disputed_ids):
+                continue
+            disputed_ids.add(passage["passage_id"])
+            source_passage = {**copy.deepcopy(passage), "content_role": "DISPUTED_CLAIM",
+                              "attribution": "SOURCE_ASSERTION", "claim_status": "UNVERIFIED"}
+            disputed.append({
+                "claim_id": "disputed_" + passage["passage_id"], "claim_type": "DISPUTED_ATTRIBUTION",
+                "text": text, "speaker": None, "claim_status": "UNVERIFIED",
+                "epistemic_state": "UNVERIFIED", "assessment_status": "SOURCE_REPORT_ONLY",
+                "confidence": None, "identity_authenticated": False, "technical_forensics_run": False,
+                "evidence_ids": [passage["evidence_id"]], "source_passages": [source_passage],
+                "source_report_url": passage["source_url"], "source_published_at": passage["published_at"],
+                "interpretation": "Publisher-reported disputed attribution; the quotation, original speaker and dispute are not independently verified.",
+            })
+    disputed = disputed[:16]
     # Public statements are observations, not identity-abuse incidents simply
     # because an author discusses scams, litigation or synthetic media policy.
     threat_records = []
@@ -192,20 +315,28 @@ def synthesize_personal_threats(subject_info, evidence_list):
         body_link = bool(subject_name) and subject_name.casefold() in str(record.get("content", "")).casefold()
         passages = [p for p in record["passages"]
                     if (p["relevance"] == "DIRECTLY_RELEVANT" or title_link or body_link)
-                    and p["content_role"] == "UNVERIFIED_ALLEGATION"]
+                    and p["content_role"] == "UNVERIFIED_ALLEGATION"
+                    and p["passage_id"] not in disputed_ids]
         query_class = record.get("query_class") or (record.get("metadata") or {}).get("query_class")
         if passages and query_class != "public_statement_discovery":
-            threat_records.append({**record, "content": "\n\n".join(p["text"] for p in passages),
-                                   "snippet": ""})
-    result = heuristic_threat_synthesis(subject_name, threat_records)
+            threat_records.append({**record, "allegation_passages": passages})
+    result = _source_report_synthesis(subject_name, threat_records)
     if not threat_records:
         result["claims"] = []
-    result["public_statements"] = [p for record in records for p in record["passages"]
-                                   if p["content_role"] == "PUBLIC_STATEMENT"][:16]
-    for threat in result["threats"]:
-        threat["epistemic_state"] = "UNVERIFIED"
-        threat["confidence_is_heuristic"] = True
-        threat["technical_forensics_run"] = False
+    observed_attributions = {"OBSERVED_FEED_AUTHOR", "OBSERVED_SPEAKER_SECTION", "OBSERVED_SPEAKER_LABEL",
+                             "REPORTED_QUOTATION", "REPORTED_QUOTATION_SURNAME_IN_CAPTURE"}
+    result["public_statements"] = [copy.deepcopy(p) for record in records for p in record["passages"]
+                                   if p["content_role"] == "PUBLIC_STATEMENT"
+                                   and p["attribution"] in observed_attributions
+                                   and p["relevance"] not in {"BACKGROUND", "DISCOVERY_ONLY"}
+                                   and p["passage_id"] not in disputed_ids][:16]
+    for statement in result["public_statements"]:
+        statement.update(speaker=subject_name, identity_authenticated=False,
+                         interpretation="Publisher-attributed public statement; attribution is not independently verified.")
+    result["disputed_claims"] = disputed
+    result["identity_authenticated"] = False
+    result["identity_risk"] = "UNVERIFIED_ALLEGATIONS" if threat_records else "UNASSESSED"
+    result["impersonation_status"] = "UNVERIFIED_ALLEGATION" if result["suspected_impersonations"] else "UNASSESSED"
     result["status_note"] = "Captured public observations and unverified allegations; identity, intent and media authenticity are not established."
     return result
 
@@ -267,7 +398,7 @@ def verify_identity_match(
 
     if score >= 0.75:
         status = "CONTEXTUAL_MATCH_UNVERIFIED"
-        rationale = f"Candidate confirmed as subject '{canonical_name}' with matching affiliation ({', '.join(org_matches) or 'title/handle'})."
+        rationale = f"Candidate text contextually matches '{canonical_name}' and affiliation ({', '.join(org_matches) or 'title/handle'}); identity is not authenticated."
     elif score >= 0.50 and (known_orgs or known_titles):
         status = "AMBIGUOUS_NAMESAKE"
         rationale = f"Candidate mentions '{canonical_name}' but lacks confirming corporate affiliation or title context."
@@ -468,9 +599,9 @@ def verify_quote_attribution(
         conf = 0.35
         summary = "Primary-labeled text overlaps the quote; word overlap does not verify speaker attribution, context or an original recording."
     elif social_only_matches and not primary_matches:
-        verdict = "UNVERIFIED_VIRAL_ATTRIBUTION"
+        verdict = "UNVERIFIED_SECONDARY_TEXT_MATCH"
         conf = 0.35
-        summary = f"Quote circulates exclusively on secondary social platforms without primary transcript corroboration."
+        summary = "Secondary source text overlaps the quote; original speaker attribution, context and circulation or virality are not established."
     else:
         verdict = "INSUFFICIENT_EVIDENCE"
         conf = 0.0

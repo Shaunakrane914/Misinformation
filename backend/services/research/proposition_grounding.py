@@ -628,15 +628,15 @@ def evaluate_grounded_claim(claim: Any, items: List[Any]) -> Any:
     support_origins, opposing_origins, outdated_origins = set(), set(), set()
     primary_support, primary_opposition = False, False
     has_authoritative_primary_support = False
+    from backend.services.research.source_independence import reporting_origin_groups
     
-    for item in items:
+    for item, origin in zip(items, reporting_origin_groups(items)):
         alignment, passage = relation(claim.claim_text, claim.entity, item)
         url = item.canonical_url.split("#", 1)[0]
         if alignment == "NONE" or url in seen:
             continue
         seen.add(url)
         
-        origin = item.independence_group if item.independence_group not in {"", "independent"} else publisher_key(url)
         claim.evidence_citations.append({
             "evidence_id": item.id,
             "canonical_url": url,
@@ -653,17 +653,20 @@ def evaluate_grounded_claim(claim: Any, items: List[Any]) -> Any:
         
         if alignment == "SUPPORT":
             claim.supporting_evidence_ids.append(item.id)
-            support_origins.add(origin)
-            primary_support |= bool(item.primary_source)
-            if is_authoritative_registry_or_filing(item):
-                has_authoritative_primary_support = True
+            if origin:
+                support_origins.add(origin)
+                primary_support |= bool(item.primary_source)
+                if is_authoritative_registry_or_filing(item):
+                    has_authoritative_primary_support = True
         elif alignment == "OUTDATED":
             claim.contradicting_evidence_ids.append(item.id)
-            outdated_origins.add(origin)
+            if origin:
+                outdated_origins.add(origin)
         else:  # CONTRADICT
             claim.contradicting_evidence_ids.append(item.id)
-            opposing_origins.add(origin)
-            primary_opposition |= bool(item.primary_source)
+            if origin:
+                opposing_origins.add(origin)
+                primary_opposition |= bool(item.primary_source)
             
     # Epistemic Decision Tree
     if support_origins and opposing_origins:
@@ -674,13 +677,13 @@ def evaluate_grounded_claim(claim: Any, items: List[Any]) -> Any:
         claim.rationale = "An inspectable official primary record explicitly contradicts or refutes the asserted proposition."
     elif opposing_origins:
         claim.verdict, claim.confidence = "REFUTED", 0.75
-        claim.rationale = "Independent credible reporting contradicts the asserted claim or metrics."
+        claim.rationale = "An aligned captured reporting passage contradicts the asserted claim or metrics; this is a heuristic assessment."
     elif outdated_origins and not support_origins:
         claim.verdict, claim.confidence = "OUTDATED", 0.80
         claim.rationale = "Evidence confirms the asserted state or event occurred historically but has been superseded by subsequent developments."
     elif len(support_origins) >= 2 and primary_support:
         claim.verdict, claim.confidence = "SUPPORTED", 0.85
-        claim.rationale = "Matching passages from multiple distinct origins include an authenticated primary record."
+        claim.rationale = "Matching passages from distinct observed reporting-origin groups include a source classified as primary; authentication is not established by grouping."
     elif has_authoritative_primary_support and len(support_origins) >= 1:
         claim.verdict, claim.confidence = "SUPPORTED", 0.85
         claim.rationale = "An inspectable official regulatory filing or verified public research registry directly establishes the proposition."
@@ -692,7 +695,7 @@ def evaluate_grounded_claim(claim: Any, items: List[Any]) -> Any:
         claim.rationale = "Grounded wire reporting from an established financial news service corroborates the asserted report."
     elif len(support_origins) >= 2:
         claim.verdict, claim.confidence = "SUPPORTED", 0.70
-        claim.rationale = "Multiple independent corroborating sources support the asserted proposition."
+        claim.rationale = "Matching passages from distinct observed reporting-origin groups support the proposition heuristically; independent reporting is not authenticated."
     elif claim.evidence_citations:
         claim.verdict, claim.confidence = "UNVERIFIED", 0.35
         claim.rationale = "Aligned sampled passages are available, but independent authoritative confirmation is insufficient."

@@ -21,3 +21,11 @@ all_routers = [
     replay_router,
     replay_alias_router,
 ]
+
+# Optional monitoring is not part of the normal acquisition runtime. Importing
+# its module creates persistent storage, so do not even initialize it without
+# explicit operator configuration. No Huginn access is needed for the agents.
+import os
+if os.environ.get("HUGINN_ENABLED", "").lower() == "true" and os.environ.get("HUGINN_WEBHOOK_SECRET", "").strip():
+    from backend.api.events import router as events_router
+    all_routers.append(events_router)

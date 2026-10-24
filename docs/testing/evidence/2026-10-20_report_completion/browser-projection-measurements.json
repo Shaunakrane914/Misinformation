@@ -1,0 +1,361 @@
+{
+  "scope": "Exact saved SSE replay through all agent page buttons; readiness is a harness stub, all other API calls are blocked. No provider, health or fresh research claims.",
+  "configured_gemini_credentials": 0,
+  "mock_llm": false,
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Adobe",
+      "elapsed_seconds": 0.31,
+      "http_status": 200,
+      "retained_native_records": 5,
+      "retained_text_words": 3893,
+      "retained_text_kb": 26.53,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 0,
+      "heartbeat_events": 0,
+      "progress_phases": [],
+      "findings": 1,
+      "acquired_records": 5,
+      "discovery_records": 20,
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-320-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 5,
+          "rendered_discovery_cards": 20,
+          "missing_finding_texts": [],
+          "document_width": 320,
+          "screenshots": [
+            "01-scout-320-full.png",
+            "01-scout-320-report.png"
+          ]
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-390-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 5,
+          "rendered_discovery_cards": 20,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "01-scout-390-full.png",
+            "01-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-1440-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 5,
+          "rendered_discovery_cards": 20,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "01-scout-1440-full.png",
+            "01-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/scout/analyze/stream",
+          "body": {
+            "ticker": "Adobe"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "02-brandshield",
+      "agent": "brandshield",
+      "input": "Dyson",
+      "elapsed_seconds": 0.26,
+      "http_status": 200,
+      "retained_native_records": 2,
+      "retained_text_words": 2307,
+      "retained_text_kb": 14.586,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 0,
+      "heartbeat_events": 0,
+      "progress_phases": [],
+      "findings": 0,
+      "acquired_records": 2,
+      "discovery_records": 14,
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "02-brandshield-320-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 14,
+          "missing_finding_texts": [],
+          "document_width": 320,
+          "screenshots": [
+            "02-brandshield-320-full.png",
+            "02-brandshield-320-report.png"
+          ]
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "02-brandshield-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 14,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "02-brandshield-390-full.png",
+            "02-brandshield-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "02-brandshield-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 2,
+          "rendered_discovery_cards": 14,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "02-brandshield-1440-full.png",
+            "02-brandshield-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/brandshield/scan/stream",
+          "body": {
+            "brand_name": "Dyson",
+            "query": "Dyson"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "03-trending",
+      "agent": "trending",
+      "input": "battery recycling",
+      "elapsed_seconds": 0.17,
+      "http_status": 200,
+      "retained_native_records": 0,
+      "retained_text_words": 0,
+      "retained_text_kb": 0.0,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 0,
+      "heartbeat_events": 0,
+      "progress_phases": [],
+      "findings": 0,
+      "acquired_records": 0,
+      "discovery_records": 0,
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": null,
+          "inspection_screenshot": null,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 320,
+          "screenshots": [
+            "03-trending-320-full.png",
+            "03-trending-320-report.png"
+          ]
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": null,
+          "inspection_screenshot": null,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "03-trending-390-full.png",
+            "03-trending-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": null,
+          "inspection_screenshot": null,
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 0,
+          "rendered_discovery_cards": 0,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "03-trending-1440-full.png",
+            "03-trending-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/trending/scan/stream",
+          "body": {
+            "asset_name": "battery recycling",
+            "query": "battery recycling",
+            "category": "technology",
+            "mode": "entity"
+          }
+        }
+      ]
+    },
+    {
+      "case_id": "04-personal_watch",
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "elapsed_seconds": 0.23,
+      "http_status": 200,
+      "retained_native_records": 1,
+      "retained_text_words": 638,
+      "retained_text_kb": 4.019,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 0,
+      "heartbeat_events": 0,
+      "progress_phases": [],
+      "findings": 0,
+      "acquired_records": 1,
+      "discovery_records": 9,
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "04-personal_watch-320-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 9,
+          "missing_finding_texts": [],
+          "document_width": 320,
+          "screenshots": [
+            "04-personal_watch-320-full.png",
+            "04-personal_watch-320-report.png"
+          ]
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "04-personal_watch-390-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 9,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "04-personal_watch-390-full.png",
+            "04-personal_watch-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "04-personal_watch-1440-inspection.png",
+          "rendered_findings": 0,
+          "rendered_acquired_cards": 1,
+          "rendered_discovery_cards": 9,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "04-personal_watch-1440-full.png",
+            "04-personal_watch-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/personal/scan/stream",
+          "body": {
+            "name": "Mary Barra",
+            "category": "public_figure",
+            "official_handles": {},
+            "aliases": []
+          }
+        }
+      ]
+    }
+  ],
+  "head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "dirty_source": true,
+  "application_sha256": "fcce2eb9e8174b73f78ba553aff3f697389d6aa42e751a19a45c34f79f28e271",
+  "llm_timeout_seconds": 5.0,
+  "llm_max_retries": 1,
+  "chart_sha256": "d2af8974e95271638772e9e9524db5b9a6f58d6ec2d5d781400447b4a31c681e",
+  "independent_entailment_accuracy": null,
+  "retrieval_recall": null,
+  "mode": "EXACT_SAVED_SSE_REPLAY",
+  "application_unchanged_during_run": true
+}

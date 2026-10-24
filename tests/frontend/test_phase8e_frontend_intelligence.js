@@ -102,10 +102,10 @@ console.log('--- TEST 3: Multi-Dimensional 5D Contradiction Cards ---');
     ]
   });
   assert(mount.innerHTML.includes('WHAT DISAGREES?'));
-  assert(mount.innerHTML.includes('NUMERICAL DISCREPANCY'));
-  assert(mount.innerHTML.includes('TEMPORAL DIVERGENCE'));
-  assert(mount.innerHTML.includes('CRITICAL'));
-  assert(mount.innerHTML.includes('MODERATE'));
+  // Type/severity strings without paired captured passages are review leads.
+  assert(mount.innerHTML.includes('POSSIBLE DISAGREEMENT'));
+  assert(mount.innerHTML.includes('UNASSESSED'));
+  assert(!mount.innerHTML.includes('ur-contra-sev ur-sev--critical'));
   assert(mount.innerHTML.includes('Proposition A [Viral X Cashtag Analysis]:'));
   assert(mount.innerHTML.includes('Proposition B [SEC EDGAR 10-Q Item 2]:'));
   assert(mount.innerHTML.includes('Factual discrepancy of $140M'));
@@ -159,18 +159,25 @@ console.log('--- TEST 5: Agent Specialized Intelligence Modules ---');
   const mount = createTestMount();
   renderUnifiedReport(mount, {
     summary: 'Agent intelligence report',
+    // Synthetic render contract, not observed research or a source-authenticity test.
+    evidence: { primary: [{ title: 'Synthetic captured report', extraction: {
+      evidentiary_use: 'REQUIRES_PASSAGE_REVIEW', content_depth: 'PARTIAL_CONTENT'
+    } }] },
     agent_intelligence: {
       filing_comparison: {
+        status: 'ANOMALIES_DETECTED', comparisons: [{ metric: 'Revenue' }],
         discrepancy_detected: true,
         discrepancies: [
           { metric: 'Revenue', filing_value: '$100M', reported_value: '$500M', variance: '+400%' }
         ]
       },
       bot_amplification: {
+        measurement_basis: 'OBSERVED_POST_SAMPLE', observed_post_count: 3,
         bot_risk_score: 0.87,
         coordination_patterns: ['Synchronized burst posting', 'Near-identical semantic embeddings']
       },
       narrative_velocity: {
+        measurement_basis: 'OBSERVED_TIME_SERIES', observation_count: 3,
         velocity_score: 0.78,
         doubling_time_hours: 3.5
       },
@@ -192,7 +199,7 @@ console.log('--- TEST 5: Agent Specialized Intelligence Modules ---');
     }
   });
   assert(mount.innerHTML.includes('SPECIALIZED AGENT INTELLIGENCE'));
-  assert(mount.innerHTML.includes('NUMERICAL DISCREPANCY DETECTED'));
+  assert(mount.innerHTML.includes('Reported numerical discrepancy'));
   assert(mount.innerHTML.includes('Variance: +400%'));
   assert(mount.innerHTML.includes('Bot Risk Score'));
   assert(mount.innerHTML.includes('87%'));
@@ -201,7 +208,7 @@ console.log('--- TEST 5: Agent Specialized Intelligence Modules ---');
   assert(mount.innerHTML.includes('Impersonation Risk'));
   assert(mount.innerHTML.includes('SMEAR_CAMPAIGN'));
   assert(mount.innerHTML.includes('Catalog Identity Match'));
-  assert(mount.innerHTML.includes('VERIFIED MATCH'));
+  assert(mount.innerHTML.includes('CATALOG MATCH — NOT IDENTITY VERIFICATION'));
   assert(mount.innerHTML.includes('FABRICATED'));
 }
 console.log('✓ Agent specialized intelligence modules verified');

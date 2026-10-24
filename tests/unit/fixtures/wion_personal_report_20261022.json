@@ -1,0 +1,21 @@
+{
+  "fixture_kind": "GENUINE_CAPTURED_EXCERPT_OFFLINE_REPLAY_NOT_LIVE",
+  "capture_context": "Excerpt from the AI-disabled Tim Cook investigation captured on 2026-10-22; source date is a declared 2024 feed value, not an authenticated event date.",
+  "record": {
+    "evidence_id": "ev_hv_497e1eb6cf9bb0d6230f",
+    "title": "'Tim Cooked Us': Netizens react to fake AI-generated live stream of Apple CEO",
+    "url": "https://www.wionews.com/trending/tim-cooked-us-netizens-react-to-fake-ai-generated-live-stream-of-apple-ceo-757339",
+    "platform": "Web",
+    "source": "WION",
+    "author": "",
+    "published_at": "Mon, 09 Sep 2024 07:33:00 GMT",
+    "content_depth": "PARTIAL_CONTENT",
+    "content": "An AI-generated video of Apple CEO Tim Cook fraudulently streamed on the company's official YouTube channel on Monday, August 9. The video impersonated Cook and falsely promoted a cryptocurrency giveaway which gained millions of views ahead of the launch of iPhone 16.\n\nThe fake livestream promised the viewers to send them double the amount they would send to a \"contribution address\" by Dogecoin (DOGE), a popular cryptocurrency, luring many to the scam.",
+    "metadata": {
+      "read_success": true,
+      "layer2_eligible": true,
+      "page_metadata": {"body_kind": "ARTICLE_BODY"},
+      "acquisition_objective": "IDENTITY_THREAT"
+    }
+  }
+}

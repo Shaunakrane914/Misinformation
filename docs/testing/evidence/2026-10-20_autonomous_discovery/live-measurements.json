@@ -1,0 +1,193 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "56306a43f9cdb5ecea4a66fac3bfcfe5ea49aff944c7f1e8e7ac80425f8607a8",
+  "stable_application": true,
+  "live_ai_authorized": false,
+  "bounds": {
+    "research_timeout_seconds": 120.0,
+    "max_deep_reads": 6
+  },
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Adobe",
+      "seconds": 51.94,
+      "native_sha256": "c455fa551d7109bea17fbdb67acb0ece8d61b043d3080c21a0ac93fa5a0762a0",
+      "investigation_status": "COMPLETED",
+      "initial_generated_queries": 13,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 17,
+        "provider_attempts_observed": 48,
+        "query_records_without_provider_observations": 5,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 42,
+        "candidate_urls_observed_in_search_sample": 325,
+        "candidate_search_discards": {
+          "LOW_QUERY_COVERAGE": 27,
+          "SUBJECT_MISMATCH": 243,
+          "INVALID_URL": 5
+        },
+        "normalized_candidates": 25,
+        "accepted_candidates": 23,
+        "selected_acquisition_attempts": 5,
+        "read_failure_reasons": {
+          "HTTP_FAILURE": 1
+        },
+        "successful_body_captures": 4,
+        "extracted_article_bodies": 2,
+        "qualified_evidence": 1,
+        "qualified_evidence_ids": [
+          "ev_5a2a3469bbc9"
+        ],
+        "agent_research_findings": 1,
+        "unverified_or_uninvestigated_findings": 1,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "bing:CANDIDATES": 5,
+        "google-news-rss:CANDIDATES": 5,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1,
+        "yahoo:TRANSPORT_FAILURE": 8,
+        "bing:IRRELEVANT_RESULTS": 24,
+        "bing:TIMEOUT": 2,
+        "yahoo:TIMEOUT": 2
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_e3b1893843fc",
+          "url": "https://www.reuters.com/company/adobe-inc/",
+          "failure_kind": "HTTP_FAILURE",
+          "http_status": 401,
+          "resolver_query_statuses": []
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_19ff20637cb5",
+          "url": "https://www.adobe.com/",
+          "title": "Adobe : Creative , marketing and document management solutions",
+          "words": 920,
+          "kb": 6.841,
+          "text_sha256": "5b22197b11dc200a027b960643d6c2ef0a5ebe390d78487e17b91c482b8d118e",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_f4b9204e3102",
+          "url": "https://news.adobe.com/",
+          "title": "Adobe Newsroom",
+          "words": 199,
+          "kb": 1.694,
+          "text_sha256": "17b67d84488369ac4603cb09c3842cdd7c81008ace56d734eb6086a2f5667a21",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_5a2a3469bbc9",
+          "url": "https://www.marketbeat.com/stocks/NASDAQ/ADBE/news/",
+          "title": "ADBE News Today | Why did Adobe stock go up today? - MarketBeat",
+          "words": 1885,
+          "kb": 11.731,
+          "text_sha256": "604cd312aa91fa3722c5aceee739df0f8602d0fbf93120e9165c7397cb573598",
+          "extraction_status": "SUCCESS"
+        },
+        {
+          "id": "ev_page_35edfd7306d5",
+          "url": "https://news.adobe.com/assets/svgs/investorrelations-icon.svg",
+          "title": "https://main--news--adobecom.aem.live/assets/svgs/investorrelations-icon.svg | Investor Relations icon",
+          "words": 8,
+          "kb": 0.045,
+          "text_sha256": "d1ffea7bf500adbee29b37fd97a89e7daa21af73d51073fd59f3cd6d548cd8e0",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        }
+      ],
+      "displayed_findings": 1,
+      "remaining_research_seconds": 68.42909090000103
+    },
+    {
+      "case_id": "02-brandshield",
+      "agent": "brandshield",
+      "input": "Dyson",
+      "seconds": 41.12,
+      "native_sha256": "a281e2e1c5ede9509ed6e96ff73d5c1a9790c0eef669a6b497d3d2673ced3b3a",
+      "investigation_status": "ACQUISITION_FAILED",
+      "initial_generated_queries": 9,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 12,
+        "provider_attempts_observed": 41,
+        "query_records_without_provider_observations": 3,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 35,
+        "candidate_urls_observed_in_search_sample": 257,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 169,
+          "LOW_QUERY_COVERAGE": 22,
+          "HEADLINE_MISMATCH": 20
+        },
+        "normalized_candidates": 14,
+        "accepted_candidates": 13,
+        "selected_acquisition_attempts": 3,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "successful_body_captures": 0,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "READING",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 3,
+        "bing:CANDIDATES": 5,
+        "yahoo:TRANSPORT_FAILURE": 8,
+        "bing:IRRELEVANT_RESULTS": 19,
+        "yahoo:TIMEOUT": 2,
+        "bing:TIMEOUT": 1,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 3
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_b7ebd1814209",
+          "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFB3RnVxZVQ4T3JOTmhsTVE3Z0hOWjE5WDZxcktPZHYzZFpiMTUtdUY3Tnp6MDUyUFVWXzhuTVFYUERpN2lGY2xvMmV1UlRPYnpuZUI5dUNkWkRXU2hYTmpVVERFREVkWFhHNjQwZU1IaFNmV2RPeDdmcjB2ckpWZFk",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "QUEUE_TIMEOUT"
+          ]
+        },
+        {
+          "candidate_id": "ev_0a18f6e455d1",
+          "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOQjdsUm54Z2V5QTc4b213WTBoSTFYQ0FnSmp0d2RfNnB2TllqdG1Ec3BkM053eTZYbFhzdE02M3ZESEVuSGlLbFJ0N1Z1dFUyZDRiNFpvUGpIeDRpQkNhM1U5YnQzSXpwUEZpV2I3X0ZILU9LX0d2bHgxa3Q1ZEhoWWh1ek1Tdw",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "TIMEOUT"
+          ]
+        },
+        {
+          "candidate_id": "ev_c9af8d4b8e8a",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOOE1ZN2hyLU1RNzFheHNYSmhvZjQyTlBsdnIyQ3lMdmx0QmtyWkNsTEV0OVkxX3BSVmZWalpIVnBYN0V4LXEzUXVkbmhZZjkzWnlvSzhhSC11VUVFSDg0eG92TDlmaGdVUXlfR09vcl9qWmpZVDlmSEhLT3F6bUpMbVNjc1c2MW9DdDk0VDNkNFMwRDR6TmVaRnkyeGRLd9IBngFBVV95cUxOOE1ZN2hyLU1RNzFheHNYSmhvZjQyTlBsdnIyQ3lMdmx0QmtyWkNsTEV0OVkxX3BSVmZWalpIVnBYN0V4LXEzUXVkbmhZZjkzWnlvSzhhSC11VUVFSDg0eG92TDlmaGdVUXlfR09vcl9qWmpZVDlmSEhLT3F6bUpMbVNjc1c2MW9DdDk0VDNkNFMwRDR6TmVaRnkyeGRLdw",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "TIMEOUT"
+          ]
+        }
+      ],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 79.51725579999948
+    }
+  ],
+  "limitations": "Observed samples, not unique URL totals, complete HTTP accounting, calibrated entailment or independent accuracy; saved-mode attempts are historical observations."
+}

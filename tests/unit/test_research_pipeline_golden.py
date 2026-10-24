@@ -112,8 +112,8 @@ def _hash(value):
                 key: sorted(canonical(entry) for entry in val) if key in {"independence_groups", "entities"} and isinstance(val, list)
                 else canonical(val)
                 for key, val in node.items()
-                if key not in {"stage_timings_ms", "passages", "financial_observations", "acquisition",
-                               "acquisition_timing", "budget_observations", "pre_research_timings_ms",
+                if key not in {"stage_timings_ms", "passages", "financial_observations", "financial_context", "acquisition",
+                               "acquisition_timing", "discovery_funnel", "budget_observations", "pre_research_timings_ms", "ai_advisory_observations", "ai_search_advice",
                                "submitted_at", "provider_started", "queue_wait_ms", "provider_duration_ms", "provider_duration_censored", "submission_delay_ms"}
             }
         if isinstance(node, list):
@@ -125,6 +125,11 @@ def _hash(value):
     # excluded, not evidence/lineage: they have an independent contract test.
     # New exact-span inspection projections have separate integrity tests in
     # test_intelligence_completion; preserve this historical core projection.
+    # Additive discovery diagnostics are covered by test_autonomous_discovery_funnel;
+    # do not regenerate historical evidence/lineage golden manifests for them.
+    # Additive financial context annotations have exact period/date/currency and
+    # historical exclusion controls in test_scout_financial_context. Core finding
+    # text, epistemic state, citations, source bytes and all old fields stay here.
     encoded = json.dumps(canonical(value), sort_keys=True, ensure_ascii=False, separators=(",", ":"), default=str)
     return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
 
@@ -265,6 +270,12 @@ def test_research_result_and_replay_match_reviewed_policy(name):
     expected = {**expected, **corrections.get(name, {})}
     p0 = json.loads((PHASE9_MANIFEST.parent / "research_p0_acquisition_reviewed_changes.json").read_text(encoding="utf-8"))
     expected = {**expected, **p0["scenarios"].get(name, {})}
+    # Explicit correctness deltas, not a rewritten historical manifest. These
+    # hashes retain the full old projection except the corrected origin fields;
+    # candidate identities/bytes remain asserted below. Generic controls in
+    # test_reporting_origin_integrity independently assert the new semantics.
+    origin_deltas = json.loads((PHASE9_MANIFEST.parent / "research_origin_integrity_deltas.json").read_text(encoding="utf-8"))
+    expected = {**expected, **origin_deltas["scenarios"].get(name, {})}
     if name == "discovery_timeout":
         # Explicit correctness exception: the historical implementation read
         # documents AFTER its deadline. Keep that baseline, but require no reads.
@@ -279,6 +290,19 @@ def test_research_result_and_replay_match_reviewed_policy(name):
     # source-plan disclosure and serialized hashes, never acquired bytes/IDs.
     for invariant in ("candidate_hashes", "candidate_ids", "rejected_ids"):
         assert actual[invariant] == historical[invariant]
+    if name == "primary_escalation":
+        # Correctness exception: the secondary fixture is a keyword-only label,
+        # not an asserted proposition. Keep every historical manifest intact;
+        # enforce unchanged acquisition/lineage and explicit semantic correction.
+        for invariant in ("candidate_hashes", "candidate_ids", "ranked_ids", "rejected_ids", "query_statuses", "lineage_metrics"):
+            assert actual[invariant] == expected[invariant]
+        payload = capture_scenario(name, include_payload=True)
+        secondary = next(item for item in payload["corpus"]["ranked_candidates"] if item["id"] == "ev_secondary")
+        assert secondary["extraction_status"] == "NO_RELEVANT_PASSAGE"
+        assert secondary["relevant_excerpt"] == ""
+        assert len(payload["result"]["findings"]) == 1
+        assert all("ev_secondary" not in finding["supporting_evidence_ids"] for finding in payload["result"]["findings"])
+        return
     assert actual == expected
 
 

@@ -50,12 +50,12 @@ def evaluate_misinformation_risk(
     hoax_flag = any(w in all_text for w in ["death hoax", "fake news", "fabricated statement", "forged"])
 
     if deepfake_flag or hoax_flag or len(contradicted_claims) > 0:
-        return "HIGH", "Circulating claims involve confirmed falsehoods, hoaxes, or synthetic media allegations."
+        return "UNASSESSED", "Source records mention disputed claims or synthetic-media concerns; keyword mentions do not establish a confirmed falsehood or measured misinformation risk."
 
     if len(unverified_claims) >= 2 and all(it.source_role == "COMMUNITY" for it in items):
-        return "MEDIUM", "Viral claims circulating solely across community social nodes without credible primary corroboration."
+        return "UNASSESSED", "The sampled community claims are unverified; source counts do not establish virality or calibrated misinformation risk."
 
-    return "LOW", "Circulating discourse is supported by credible reporting or constitutes standard critical discussion."
+    return "UNASSESSED", "Attributed reporting or standard critical discussion does not establish absence of misinformation; no proposition-level risk assessment was completed."
 
 
 def detect_bot_amplification(posts: List[Dict[str, Any]]) -> Dict[str, Any]:

@@ -514,6 +514,7 @@ class ResearchRequest:
     # no acquisition time; do not silently override deployment configuration.
     timeout_seconds: Optional[float] = None
     extra_params: Dict[str, Any] = field(default_factory=dict)
+    research_profile: Optional[str] = None
 
 
 @dataclass
@@ -537,6 +538,7 @@ class ResearchCorpus:
     evidence_graph: Dict[str, Any] = field(default_factory=dict)
     source_lineage_graph: Dict[str, Any] = field(default_factory=dict)
     channel_telemetry: Dict[str, Any] = field(default_factory=dict)
+    raw_acquisition_pool: Optional[Dict[str, Any]] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -556,6 +558,7 @@ class ResearchCorpus:
             "evidence_graph": self.evidence_graph,
             "source_lineage_graph": self.source_lineage_graph,
             "channel_telemetry": self.channel_telemetry,
+            **({"raw_acquisition_pool": self.raw_acquisition_pool} if self.raw_acquisition_pool is not None else {}),
         }
 
 

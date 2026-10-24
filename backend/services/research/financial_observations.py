@@ -16,7 +16,7 @@ def financial_observations(text, evidence_id):
             periods.add(datetime.strptime(match.group(1).replace(",", ""), "%B %d %Y").date().isoformat())
         except ValueError:
             pass
-    amount = r"(?P<currency>\$|USD|INR|₹)?\s*(?P<value>\d[\d,]*(?:\.\d+)?)\s*(?P<unit>million|billion|crore|%)?"
+    amount = r"(?P<currency>US\$|USD|INR|EUR|GBP|\$|₹|€|£)?\s*(?P<value>\d[\d,]*(?:\.\d+)?)\s*(?P<unit>million|billion|crore|%)?"
     patterns = [
         ("REVENUE", r"revenues?\s+(?:at|of|was|were|totalled|totaled)\s*" + amount),
         ("REVENUE", r"(?:delivered|reported)\s+" + amount + r"\s+in\s+Q[1-4]\s+revenues?"),
@@ -31,7 +31,12 @@ def financial_observations(text, evidence_id):
             if key in seen:
                 continue
             seen.add(key)
-            currency = {"$": "USD", "₹": "INR"}.get(match.group("currency"), match.group("currency"))
+            observed_currency = (match.group("currency") or "").upper()
+            # A dollar glyph is shared by multiple national currencies. Do not
+            # silently turn it into USD, including when another amount in the
+            # document is explicitly denominated in USD.
+            currency = {"$": "DOLLAR_SYMBOL_UNSPECIFIED", "US$": "USD", "₹": "INR",
+                        "€": "EUR", "£": "GBP"}.get(observed_currency, observed_currency) or None
             unit = (match.group("unit") or "").lower()
             # Revenue share/growth percentages are not monetary revenue amounts.
             if metric == "REVENUE" and unit == "%":
@@ -63,10 +68,12 @@ def compare_financial_observations(claim_text, observations):
     claims = financial_observations(claim_text, "claim")
     result = []
     for claim in claims:
+        currencies = {"USD", "INR", "EUR", "GBP"}
         compatible = [o for o in observations if o.get("metric") == claim["metric"] and o.get("scope") != "GUIDANCE"
                       and claim["period_end"] and o.get("period_end") == claim["period_end"]
                       and o.get("currency") == claim["currency"]
-                      and ((o.get("currency") and claim["currency"]) or o.get("unit") == claim["unit"])
+                      and ((o.get("currency") in currencies and claim["currency"] in currencies)
+                           or (o.get("unit") == claim["unit"] == "percent"))
                       and not o.get("range_upper")]
         # Compare monetary magnitude, not spelling/scale (5.082 billion and
         # 5,082 million). Never perform an exchange-rate conversion.

@@ -249,9 +249,12 @@ class AgentEvaluationRunner:
             {
                 "evidence_id": "ev_ph_01",
                 "title": "Apple ID Phishing Scam - Fake Login Verification Portal",
-                "content": "Credential harvesting phishing scam targeting Apple ID accounts at http://appleid-verify-account.com to steal logins.",
-                "snippet": "Credential harvesting phishing scam targeting Apple ID accounts at http://appleid-verify-account.com.",
-                "url": "http://appleid-verify-account.com/login",
+                # Synthetic acquired-behavior control, not a real-site claim:
+                # a hostname or third-person accusation alone is insufficient.
+                "content": "Apple ID verification required. Enter your password and credentials to verify your account and retain access.",
+                "snippet": "Apple ID verification required. Enter your password and credentials to verify your account.",
+                "url": "https://apple-verification.example/verification",
+                "content_depth": "PARTIAL_CONTENT",
                 "platform": "Web",
                 "source": "Suspicious Host",
                 "source_role": "COMMUNITY",
@@ -573,7 +576,8 @@ class AgentEvaluationRunner:
         synd_ok = False
         if len(clusters) > 0:
             c = clusters[0]
-            synd_ok = (c.source_count == 6 and c.independent_source_count < 6 and c.independent_source_count <= 4)
+            synd_ok = (c.source_count == 6 and c.source_group_count <= 4
+                       and c.independent_source_count is None and c.independence_status == "NOT_ESTABLISHED")
         suite_results.append({
             "agent": "trending",
             "scenario": "wire_syndication_clustering",

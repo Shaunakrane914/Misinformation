@@ -9,6 +9,7 @@ from typing import Any, Dict, List, Optional, TYPE_CHECKING
 
 from backend.services.agent_reach.channels import EvidenceFragment, RetrievalMode
 from backend.services.agent_reach.native.errors import AuthRequiredError, NativeReachError
+from backend.infrastructure.acquisition.network.http import transport_failure_kind
 from backend.services.agent_reach.native.operation_capabilities import (
     required_auth_environment,
 )
@@ -457,14 +458,97 @@ class StandardChannelHandlers:
         return self._execute_feed("news", query, limit, query_id, query_class, query_text, telemetry)
 
     def _execute_feed(self, channel, query, limit, query_id, query_class, query_text, telemetry):
+        from backend.infrastructure.acquisition.adapters.web.search_observations import begin_search, public_locator, result_fit
+        from backend.infrastructure.acquisition.network.budget import has_public_request_budget
+        # A successful transport with only known-old results is not a useful
+        # recent-news response. Keep these observed leads for inspection while
+        # allowing the existing provider fallback an opportunity. Undated leads
+        # remain provisional read candidates, never fabricated fresh evidence.
+        temporal_query = str(query_class).startswith("harvest_") and bool(re.search(r"\bwhen:2d\b", query, re.I))
+        stale_leads = []
+
+        def temporal_partition(fragments):
+            if not temporal_query:
+                return fragments, []
+            from backend.services.research.temporal_guard import temporal_guard
+            viable, old = [], []
+            for fragment in fragments:
+                assessed = temporal_guard.evaluate(fragment)
+                fragment.raw_metadata["discovery_temporal_status"] = assessed.status
+                if assessed.is_eligible or assessed.status == "MISSING_TIMESTAMP":
+                    viable.append(fragment)
+                else:
+                    old.append(fragment)
+            return viable, old
+
+        def combine(fragments):
+            viable, old = temporal_partition(fragments)
+            seen, combined = set(), []
+            for fragment in viable + old + stale_leads:
+                if fragment.url not in seen:
+                    seen.add(fragment.url)
+                    combined.append(fragment)
+            return combined[:limit]
+
+        if has_public_request_budget():
+            # Same existing public search provider, a structured news surface
+            # with observed publisher links. No guessed article addresses or
+            # credentials, and the shared HTTP/deadline cap includes this call.
+            observed = begin_search("bing-news-rss")
+            try:
+                endpoint = "https://www.bing.com/news/search?q=" + urllib.parse.quote_plus(query.strip()) + "&format=rss"
+                result = self.router.executor.execute_rss_read(endpoint, limit=limit)
+                observed.update(response_received=True, status="NO_RESULTS",
+                    http_status=(result.get("transport") or {}).get("http_status"), candidate_count=len(result.get("items", [])))
+                proposed = self.router.normalizer.normalize_rss_entries(result.get("items", []),
+                    channel_name=channel, query_id=query_id, query_class=query_class, query_text=query_text)
+                retained = []
+                for fragment in proposed[:40]:
+                    score, reason = result_fit(query, fragment.title, fragment.snippet, fragment.url, query_class)
+                    observed["decisions"].append({"url": public_locator(fragment.url), "title": fragment.title[:200],
+                                                  "score": round(score, 3), "discard_reason": reason})
+                    if reason is None:
+                        fragment.content_depth = "FEED_ENTRY_SUMMARY"
+                        retained.append(fragment)
+                observed.update(status="CANDIDATES" if retained else "IRRELEVANT_RESULTS" if proposed else "NO_RESULTS",
+                                qualified_candidates=len(retained))
+                if retained:
+                    self._record_transport(telemetry, result)
+                    self._attach_transport(retained, result.get("transport"))
+                    self.router._tag_fragments(retained, channel, channel, RetrievalMode.RSS_FEED.value,
+                                              "feedparser-bing-news", None, False)
+                    viable, old = temporal_partition(retained)
+                    if viable:
+                        telemetry["status"] = "SUCCESS"
+                        return (viable + old)[:limit]
+                    stale_leads.extend(old)
+                    observed.update(status="STALE_RESULTS", recent_or_undated_candidates=0,
+                                    preserved_stale_candidates=len(old))
+                    telemetry["freshness_fallback_used"] = True
+            except Exception as error:
+                observed.update(status="TIMEOUT" if isinstance(error, TimeoutError) else "TRANSPORT_FAILURE",
+                    error_type=type(error).__name__, http_status=getattr(error, "status_code", None),
+                    failure_kind=transport_failure_kind(error))
+        observation = begin_search("google-news-rss")
         try:
             encoded = urllib.parse.quote_plus(query.strip())
             url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
             result = self.router.executor.execute_rss_read(url, limit=limit)
+            observation.update(response_received=True, status="NO_RESULTS", candidate_count=len(result.get("items", [])),
+                http_status=(result.get("transport") or {}).get("http_status"))
             self._record_transport(telemetry, result)
             fragments = self.router.normalizer.normalize_rss_entries(
                 result.get("items", []), channel_name=channel, query_id=query_id, query_class=query_class, query_text=query_text
             )
+            qualified = []
+            for fragment in fragments[:40]:
+                score, reason = result_fit(query, fragment.title, fragment.snippet, fragment.url, query_class)
+                observation["decisions"].append({"url": public_locator(fragment.url), "title": fragment.title[:200],
+                    "score": round(score, 3), "discard_reason": reason})
+                if reason is None:
+                    qualified.append(fragment)
+            observation["status"] = "IRRELEVANT_RESULTS" if fragments and not qualified else "NO_RESULTS"
+            fragments = qualified[:limit]
             if not fragments:
                 raise NativeReachError(f"{channel} returned no entries")
             self._attach_transport(fragments, result.get("transport"))
@@ -472,14 +556,21 @@ class StandardChannelHandlers:
             self.router._tag_fragments(fragments, channel, channel, RetrievalMode.RSS_FEED.value, backend, None, False)
             for fragment in fragments:
                 fragment.content_depth = "FEED_ENTRY_SUMMARY"
+            observation.update(status="CANDIDATES", qualified_candidates=len(fragments))
             telemetry["status"] = "SUCCESS"
-            return fragments
-        except Exception:
+            return combine(fragments)
+        except Exception as error:
+            if observation["status"] not in {"NO_RESULTS", "IRRELEVANT_RESULTS"}:
+                observation.update(status="TIMEOUT" if isinstance(error, TimeoutError) else "TRANSPORT_FAILURE",
+                    response_received=bool(getattr(error, "status_code", None)),
+                    http_status=getattr(error, "status_code", None), error_type=type(error).__name__,
+                    failure_kind=transport_failure_kind(error))
             reason = "RSS_UNAVAILABLE" if channel == "rss" else "NEWS_FEED_UNAVAILABLE"
             fragments = self.router._fallback_news_scraper(query, limit, channel, query_id, query_class, query_text)
+            fragments = self._qualify_legacy_search(fragments, query, limit, query_class, "legacy-news-fallback")
             self.router._tag_fragments(fragments, channel, channel, RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, "Legacy News Scraper", reason, False)
             self._fallback(telemetry, "Legacy News Scraper", reason, RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, fragments)
-            return fragments
+            return combine(fragments)
 
     def _execute_web(self, query, limit, query_id, query_class, query_text, telemetry, **_):
         if str(_.get("operation", "search")).lower() == "read":
@@ -499,8 +590,26 @@ class StandardChannelHandlers:
         except Exception:
             pass
         fragments = self.router._fallback_web_scraper(query, limit, query_id, query_class, query_text)
+        fragments = self._qualify_legacy_search(fragments, query, limit, query_class, "legacy-web-fallback")
         self.router._tag_fragments(fragments, "web", "web", RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, "Legacy Web Scraper", "BING_SEARCH_UNAVAILABLE", False)
         self._fallback(telemetry, "Legacy Web Scraper", "BING_SEARCH_UNAVAILABLE", RetrievalMode.LEGACY_SCRAPER_FALLBACK.value, fragments)
+        return fragments
+
+    @staticmethod
+    def _qualify_legacy_search(fragments, query, limit, query_class, provider):
+        from backend.infrastructure.acquisition.adapters.web.search_observations import begin_search, public_locator, result_fit
+        observation = begin_search(provider)
+        observation.update(response_received=None, candidate_count=len(fragments), status="UNINSTRUMENTED_TRANSPORT")
+        qualified = []
+        for fragment in fragments[:40]:
+            score, reason = result_fit(query, fragment.title, fragment.snippet, fragment.url, query_class)
+            observation["decisions"].append({"url": public_locator(fragment.url), "title": fragment.title[:200],
+                                               "score": round(score, 3), "discard_reason": reason})
+            if reason is None:
+                qualified.append(fragment)
+        # Compatibility fallback must not undo the canonical search gate.
+        fragments = qualified[:limit]
+        observation["qualified_candidates"] = len(fragments)
         return fragments
 
     def _execute_jina_reader(self, query, limit, query_id, query_class, query_text, telemetry, **kwargs):
@@ -511,7 +620,8 @@ class StandardChannelHandlers:
         result = self.router.execute_channel_read(target_url, max_chars=max_chars)
         self._record_transport(telemetry, result)
         if result.get("status") != "success":
-            telemetry.update(status="FAILED", error=result.get("error", "Failed to read content"))
+            telemetry.update(status="FAILED", error=result.get("error", "Failed to read content"),
+                             failure_kind=result.get("failure_kind"), failure_scope="DESTINATION")
             return []
         content = result.get("markdown", "") or result.get("content", "")
         backend_id = result.get("backend") or "jina-reader"

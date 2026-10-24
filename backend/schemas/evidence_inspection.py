@@ -33,6 +33,8 @@ SOURCE_FIELDS = (
     "content_depth_detail", "cve_id", "cvss_score", "filing_type", "form", "accession_number",
     "referenced_url_acquired", "has_more", "page",
     "observed_body_marker", "content_status", "content_role", "passage_selection_method", "content_completeness",
+    "body_author", "discovery_author_or_source", "attribution_conflict",
+    "discovery_title", "discovery_published_at", "publication_time_basis",
 )
 
 
@@ -104,6 +106,20 @@ def inspect_evidence(item: Any) -> dict:
         "quality_assessment": "NOT_ASSESSED",
     }
     observations = {}
+    for key in ("text_blocks", "date_observations"):
+        values = page.get(key)
+        if isinstance(values, list):
+            observations[key] = []
+            for value in values[:100 if key == "text_blocks" else 4]:
+                if (not isinstance(value, dict) or type(value.get("start")) is not int or type(value.get("end")) is not int
+                        or not 0 <= value["start"] < value["end"] <= len(captured)):
+                    continue
+                if key == "text_blocks" and value.get("role") == "HEADING":
+                    observations[key].append({"start": value["start"], "end": value["end"], "role": "HEADING"})
+                elif key == "date_observations" and captured[value["start"]:value["end"]] == value.get("text"):
+                    observations[key].append({"start": value["start"], "end": value["end"], "text": value["text"][:200],
+                        "meaning": value.get("meaning") if value.get("meaning") in {"UNSPECIFIED_DATE_LABEL", "DECLARED_PUBLICATION_LABEL", "DECLARED_UPDATE_LABEL"} else "UNSPECIFIED_DATE_LABEL",
+                        "independently_verified": False})
     for key in ("quotations", "potential_corrections", "media_captions"):
         values = page.get(key)
         if isinstance(values, list):
@@ -141,7 +157,7 @@ def inspect_evidence(item: Any) -> dict:
         "schema_version": SCHEMA, "document_id": document_id,
         "captured_text_sha256": fingerprint, "content_depth": depth,
         "evidentiary_use": "DISCOVERY_ONLY" if depth in METADATA_DEPTHS or meta.get("content_role") in {
-            "DOCUMENT_INDEX", "LANDING_PAGE", "PROFILE", "AUTHOR_BIO", "NAVIGATION"} else "REQUIRES_PASSAGE_REVIEW",
+            "DOCUMENT_INDEX", "NEWS_INDEX", "LANDING_PAGE", "PROFILE", "AUTHOR_BIO", "NAVIGATION", "CMS_METADATA", "ASSET_METADATA"} else "REQUIRES_PASSAGE_REVIEW",
         "captured_chars": len(content), "inspected_chars": len(captured),
         "inspection_truncated": len(content) > MAX_CAPTURE_CHARS,
         "provider_truncated": provider_truncated,
@@ -207,6 +223,51 @@ def public_capture_metadata(item, max_chars=20_000):
         for key in ("pdf_page_count", "pdf_truncated", "table_structure_verified"):
             if type(page.get(key)) in (int, bool):
                 public_page[key] = page[key]
+        if "article_body_recovery" in page:
+            # Scope restrictions must survive native agent serialization. A
+            # dropped invalid boundary would silently restore the whole page.
+            # Retain only bounded observations tied to these exact bytes;
+            # neither source credibility nor arbitrary provider metadata.
+            recovery = page["article_body_recovery"]
+            digest = hashlib.sha256(body.encode("utf-8")).hexdigest()
+            spans = recovery.get("spans") if isinstance(recovery, dict) else None
+            valid = (isinstance(recovery, dict)
+                and recovery.get("basis") == "OBSERVED_CAPTURED_TITLE_BYLINE_PROSE_SPANS"
+                and recovery.get("source_text_sha256") == digest
+                and isinstance(spans, list) and 3 <= len(spans) <= 50
+                and all(isinstance(row, dict) and type(row.get("start")) is int
+                    and type(row.get("end")) is int and 0 <= row["start"] < row["end"] <= len(body)
+                    for row in spans))
+            public_recovery = {"basis": "INVALID_CAPTURED_ARTICLE_RECOVERY", "evidence_qualified": False}
+            if valid:
+                public_recovery = {"basis": recovery["basis"], "scope": "PARTIAL_ARTICLE_SPANS",
+                    "source_text_sha256": digest,
+                    "spans": [{"start": row["start"], "end": row["end"]} for row in spans],
+                    "publication_timestamp_inferred": False, "evidence_qualified": False}
+                for boundary in ("byline_start", "byline_end", "selection_end"):
+                    value = recovery.get(boundary)
+                    if type(value) is int and 0 <= value <= len(body):
+                        public_recovery[boundary] = value
+                heading = recovery.get("title_heading")
+                if (isinstance(heading, dict) and type(heading.get("start")) is int
+                        and type(heading.get("end")) is int
+                        and 0 <= heading["start"] < heading["end"] <= len(body)):
+                    public_recovery["title_heading"] = {"start": heading["start"], "end": heading["end"], "role": "HEADING"}
+            public_page["article_body_recovery"] = public_recovery
+            for quality_key in ("body_quality", "original_body_quality"):
+                quality = page.get(quality_key)
+                if not isinstance(quality, dict):
+                    continue
+                safe_quality = {"evidence_qualified": False}
+                for field in ("body_kind", "basis", "scope"):
+                    if isinstance(quality.get(field), str):
+                        safe_quality[field] = quality[field][:100]
+                count, ratio = quality.get("paragraph_count"), quality.get("link_text_ratio")
+                if type(count) is int and 0 <= count <= 100_000:
+                    safe_quality["paragraph_count"] = count
+                if type(ratio) in (int, float) and 0 <= ratio <= 1:
+                    safe_quality["link_text_ratio"] = ratio
+                public_page[quality_key] = safe_quality
         result["page_metadata"] = public_page
     return result
 

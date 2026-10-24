@@ -148,7 +148,9 @@ def test_report_builder_from_scout_result():
     assert len(d["findings"]) == 2
     assert len(d["evidence"]["primary"]) == 1
     assert len(d["evidence"]["independent"]) == 1
-    assert d["trust"]["independent_source_count"] == 6
+    assert d["trust"]["independent_source_count"] is None
+    assert d["trust"]["observed_publisher_count"] == 2
+    assert d["trust"]["quality_tensor"]["independence"] is None
     assert d["trust"]["quality_tensor"]["primary_weight"] == 1.0
 
 

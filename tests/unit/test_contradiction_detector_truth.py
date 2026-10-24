@@ -72,7 +72,9 @@ def test_repeated_invocation_clears_stale_candidate_flags():
     detector = ContradictionDetector()
 
     assert len(detector.detect_contradictions([affirmative, denial], "Tata Motors")) == 1
-    assert affirmative.contradiction_flag is True
-    assert denial.contradiction_flag is True
+    # Lexical overlap is only a review lead, never an established conflict.
+    assert affirmative.contradiction_flag is False
+    assert denial.contradiction_flag is False
+    denial.contradiction_flag = True  # Explicit stale state must also clear.
     assert detector.detect_contradictions([denial], "Tata Motors") == []
     assert denial.contradiction_flag is False

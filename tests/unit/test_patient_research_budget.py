@@ -17,10 +17,11 @@ def test_patient_defaults_apply_on_desktop_and_server(monkeypatch, server):
     if server:
         monkeypatch.setenv("SERVER_MODE", "1")
     budget = ResearchBudget.from_env()
-    assert budget.timeout_seconds == 120
+    assert budget.research_profile == "STANDARD"
+    assert budget.timeout_seconds == 150
     assert budget.channel_timeout_seconds == 15
-    assert budget.discovery_timeout_seconds == 54
-    assert budget.deep_read_timeout_seconds == 48
+    assert budget.discovery_timeout_seconds == 67.5
+    assert budget.deep_read_timeout_seconds == 60
 
 
 def test_explicit_short_budget_is_still_respected(monkeypatch):

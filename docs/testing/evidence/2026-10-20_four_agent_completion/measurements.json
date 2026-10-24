@@ -1,0 +1,968 @@
+{
+  "date": "2026-10-20",
+  "scope": "Selected public metadata only; source-backed replay is not new live acquisition or independent truth",
+  "branch": "fix/p0-lenovo-acquisition-20261018",
+  "base_commit": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "live": [
+    {
+      "batch": "live",
+      "agent": "brandshield",
+      "subject": "Adidas",
+      "seconds": 38.85,
+      "http_status": 200,
+      "result_event": true,
+      "application_sha256": "c9cf4758356a4f2aeceeb04fa24b653fa538febc9ef84a40c73c7794ff20a1cf",
+      "stable_application": true,
+      "ai_calls": 0,
+      "metrics": {
+        "source_count": 9,
+        "candidate_urls": 9,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 4,
+          "ARTICLE_BODY": 1,
+          "DISCOVERY_LEAD": 1,
+          "FEED_ENTRY": 3
+        },
+        "reads_attempted": 6,
+        "successful_captures": 2,
+        "article_bodies": 1,
+        "raw_article_words": 1092,
+        "raw_source_words": 1802,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 56022,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "EMPTY_EXTRACTION": 1,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {},
+        "findings": 0,
+        "publisher_independence_verified": false
+      },
+      "harvesting": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 9,
+        "candidates_accepted_for_read": 9,
+        "discarded_by_reason": {},
+        "reads_attempted": 6,
+        "read_service_starts": 3,
+        "captures": 2,
+        "article_bodies": 1,
+        "raw_article_words": 1092,
+        "raw_capture_chars": 11649,
+        "observed_publisher_hosts": 1,
+        "independence_verified": false,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "EMPTY_EXTRACTION": 1
+        },
+        "service_operations_reserved": 24,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "wwd.com": 1,
+          "www.msn.com": 1,
+          "nypost.com": 1
+        },
+        "host_queue_wait_ms": 0.07,
+        "duration_seconds": 38.257,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 1,
+        "native_http_admissions": 70,
+        "native_http_by_host": {
+          "www.bing.com": 21,
+          "search.yahoo.com": 19,
+          "news.google.com": 24,
+          "wwd.com": 1,
+          "www.msn.com": 1,
+          "nypost.com": 1,
+          "r.jina.ai": 3
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 4,
+        "complete_network_accounting": false
+      },
+      "articles": [
+        {
+          "source_id": "ev_hv_08410d06ea528dbd486e",
+          "source_url": "https://wwd.com/sourcing-journal/industry-news/los-angeles-california-counterfeit-bust-nike-adidas-streetwear-1239180559/",
+          "title": "LA Counterfeit Bust Leads to Recovery of $1M In Nike, Adidas Streetwear",
+          "publisher": "Kate Nishimura",
+          "published_at": "2026-09-02T12:51:10+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "word_count": 1092,
+          "raw_content_hash": "bc6e43b8731ba31812d1b8ecf460ebbf348559773d12dd1589322a48ae46db42",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ],
+          "useful_words": 0
+        }
+      ]
+    },
+    {
+      "batch": "live",
+      "agent": "trending",
+      "subject": "grid-scale energy storage",
+      "seconds": 22.17,
+      "http_status": 200,
+      "result_event": true,
+      "application_sha256": "c9cf4758356a4f2aeceeb04fa24b653fa538febc9ef84a40c73c7794ff20a1cf",
+      "stable_application": true,
+      "ai_calls": 0,
+      "metrics": {
+        "source_count": 3,
+        "candidate_urls": 3,
+        "by_type": {
+          "ARTICLE_BODY": 1,
+          "DISCOVERY_LEAD": 2
+        },
+        "reads_attempted": 3,
+        "successful_captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 1472,
+        "raw_source_words": 4410,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 88160,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {},
+        "dropped_by_limit": {},
+        "findings": 0,
+        "publisher_independence_verified": false
+      },
+      "harvesting": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 3,
+        "candidates_accepted_for_read": 3,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 2
+        },
+        "reads_attempted": 3,
+        "read_service_starts": 3,
+        "captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 1472,
+        "raw_capture_chars": 29514,
+        "observed_publisher_hosts": 1,
+        "independence_verified": false,
+        "failure_categories": {},
+        "service_operations_reserved": 21,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "finance.yahoo.com": 1,
+          "www.moneycontrol.com": 1,
+          "www.livemint.com": 1
+        },
+        "host_queue_wait_ms": 0.06,
+        "duration_seconds": 21.663,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 1,
+        "native_http_admissions": 57,
+        "native_http_by_host": {
+          "www.bing.com": 18,
+          "search.yahoo.com": 12,
+          "news.google.com": 24,
+          "finance.yahoo.com": 1,
+          "www.moneycontrol.com": 1,
+          "www.livemint.com": 1
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 6,
+        "complete_network_accounting": false
+      },
+      "articles": [
+        {
+          "source_id": "ev_hv_1b174235a577ca5db0a9",
+          "source_url": "https://finance.yahoo.com/energy/articles/grid-scale-stationary-battery-storage-083900047.html",
+          "title": "Grid Scale Stationary Battery Storage Market Outlook 2026-2035 - Featuring Profiles of Tesla, Fluence, and LG Energy Solution",
+          "publisher": "PR Wire / RSS",
+          "published_at": "2026-09-25T08:39:00Z",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "word_count": 1472,
+          "raw_content_hash": "783250cff4cbb439aba1a3cccaaf30cfb723ad9db6183baa6f00f1b178d9821c",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "TEMPORAL_STALE: Published 599.3h ago exceeds Trending freshness window (48.0h)"
+          ],
+          "useful_words": 0
+        }
+      ]
+    },
+    {
+      "batch": "trending-postfix",
+      "agent": "trending",
+      "subject": "grid-scale energy storage",
+      "seconds": 29.43,
+      "http_status": 200,
+      "result_event": true,
+      "application_sha256": "569e77439c648eb2afc953c4b67d6964707faa745a483a6a329faf2da6e507ef",
+      "stable_application": true,
+      "ai_calls": 0,
+      "metrics": {
+        "source_count": 18,
+        "candidate_urls": 18,
+        "by_type": {
+          "FEED_ENTRY": 9,
+          "ARTICLE_BODY": 1,
+          "BLOCKED_OR_FAILED": 6,
+          "DISCOVERY_LEAD": 2
+        },
+        "reads_attempted": 9,
+        "successful_captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 1469,
+        "raw_source_words": 4402,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 115521,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 3
+        },
+        "dropped_by_limit": {},
+        "findings": 0,
+        "publisher_independence_verified": false
+      },
+      "harvesting": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 18,
+        "candidates_accepted_for_read": 18,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 7
+        },
+        "reads_attempted": 9,
+        "read_service_starts": 6,
+        "captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 1469,
+        "raw_capture_chars": 29493,
+        "observed_publisher_hosts": 1,
+        "independence_verified": false,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 3
+        },
+        "service_operations_reserved": 27,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "finance.yahoo.com": 1,
+          "www.moneycontrol.com": 1,
+          "www.livemint.com": 1,
+          "www.energy-storage.news": 1,
+          "www.streetinsider.com": 1,
+          "streamlinefeed.co.ke": 1
+        },
+        "host_queue_wait_ms": 0.04,
+        "duration_seconds": 29.035,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 1,
+        "native_http_admissions": 75,
+        "native_http_by_host": {
+          "www.bing.com": 21,
+          "search.yahoo.com": 24,
+          "news.google.com": 24,
+          "www.livemint.com": 1,
+          "finance.yahoo.com": 1,
+          "www.moneycontrol.com": 1,
+          "www.energy-storage.news": 1,
+          "www.streetinsider.com": 1,
+          "streamlinefeed.co.ke": 1
+        },
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 2,
+        "complete_network_accounting": false
+      },
+      "articles": [
+        {
+          "source_id": "ev_hv_1b174235a577ca5db0a9",
+          "source_url": "https://finance.yahoo.com/energy/articles/grid-scale-stationary-battery-storage-083900047.html",
+          "title": "Grid Scale Stationary Battery Storage Market Outlook 2026-2035 - Featuring Profiles of Tesla, Fluence, and LG Energy Solution",
+          "publisher": "PR Wire / RSS",
+          "published_at": "2026-09-25T08:39:00Z",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "word_count": 1469,
+          "raw_content_hash": "c7f64873626ab897f07536e1b2dcd79da6f0762d1c13b26acb4dc8b442d839ca",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "TEMPORAL_STALE: Published 603.9h ago exceeds Trending freshness window (48.0h)"
+          ],
+          "useful_words": 0
+        }
+      ]
+    }
+  ],
+  "current_offline_replays": [
+    {
+      "agent": "scout",
+      "subject": "Samsung",
+      "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+      "input_sha256": "827fb8e7a04136ee0eb8e6b22c302897b54178dd0d5a98e756bdc8e4993f5833",
+      "source_identity_and_body_preserved": true,
+      "publication_changes": [],
+      "temporal_reference": "2026-10-20T06:10:02.215367+00:00",
+      "network_calls": 0,
+      "model_calls": 0,
+      "progress_events": 20,
+      "metrics": {
+        "source_count": 29,
+        "candidate_urls": 29,
+        "by_type": {
+          "DISCOVERY_LEAD": 13,
+          "ARTICLE_BODY": 7,
+          "BLOCKED_OR_FAILED": 5,
+          "PUBLISHER_HOMEPAGE": 4
+        },
+        "reads_attempted": 16,
+        "successful_captures": 11,
+        "article_bodies": 7,
+        "raw_article_words": 6544,
+        "raw_source_words": 11368,
+        "duplicate_captures": 0,
+        "qualified_source_count": 7,
+        "relevant_words": 805,
+        "unique_publishers": 6,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 274117,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "HTTP_FAILURE": 2,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {},
+        "findings": 6,
+        "publisher_independence_verified": false
+      },
+      "qualified_sources": [
+        {
+          "source_id": "ev_hv_ca6b0101742f464ff381",
+          "source_url": "https://www.cnbctv18.com/market/samsung-projects-80-billion-profit-on-ai-boom-highest-quarterly-for-any-tech-company-20007147.htm",
+          "raw_content_hash": "b5b35669263ac9a75c70545ef28d76ab9212e62af93328a0b390e2201877c400",
+          "retained_words": 941,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 16
+        },
+        {
+          "source_id": "ev_hv_97f337007ae9a2876395",
+          "source_url": "https://en.sedaily.com/finance/2026/10/10/samsung-shares-fall-despite-record-quarterly-profit",
+          "raw_content_hash": "1c4d207cb8367f1dc8b54680502af5336fbebc751679b3f51a34b1db75b6a2eb",
+          "retained_words": 639,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 61
+        },
+        {
+          "source_id": "ev_hv_72cafc3b1389bdef59c2",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/samsung-electro-mechanics-stock-faces-chip-selloff-before-earnings/70359108",
+          "raw_content_hash": "3b5da9fe7c202377b1613c67bb1c1be3389d40a71376deaddb20e16d918cf271",
+          "retained_words": 563,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 71
+        },
+        {
+          "source_id": "ev_hv_12a498b25b6dd6cf37ac",
+          "source_url": "https://www.koreatimes.co.kr/business/companies/20261008/samsung-electronics-1st-korean-firm-to-top-80-bil-in-quarterly-operating-profit",
+          "raw_content_hash": "b5b9b90843ffe78856c5ca8890dc57e88bc1b0e611174d72bfdb218cc732dc78",
+          "retained_words": 765,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 62
+        },
+        {
+          "source_id": "ev_hv_19c9ac852dee66806d5a",
+          "source_url": "https://www.business-standard.com/companies/news/samsung-sees-record-80-bn-quarterly-profit-as-ai-chip-demand-surges-126100801254_1.html",
+          "raw_content_hash": "5556c39b404b6b97cb2ccfb3532ef356f8668434ecc8f685ea4aa37f6916c060",
+          "retained_words": 856,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 399
+        },
+        {
+          "source_id": "ev_hv_ce01d1146acdacbb1a83",
+          "source_url": "https://lapaasvoice.com/samsung-profit-8x-to-record-80-billion-in-q3/",
+          "raw_content_hash": "5fb86504a804fa8fe9495194a8c557adb45b528cce7aa5d89ff7f9c0d3e56897",
+          "retained_words": 1722,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 66
+        },
+        {
+          "source_id": "ev_hv_7a76ef92fb7f99ff469a",
+          "source_url": "https://en.sedaily.com/finance/2026/10/15/analysts-targets-for-samsung-sk-hynix-double-current-prices",
+          "raw_content_hash": "b1205278fd06388d58baf0d617a52c38d5eb36ead89f808fcf2dd75930ab0bc2",
+          "retained_words": 1058,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 130
+        }
+      ],
+      "source_assessments": null,
+      "native_threat_classifications": [],
+      "quote_spans": [],
+      "filing_comparison": {
+        "status": "NOT_PERFORMED",
+        "comparisons": [],
+        "reason": "No comparable acquired filing/claim assessment was performed; article counts are not filing reconciliation."
+      }
+    },
+    {
+      "agent": "trending",
+      "subject": "grid-scale energy storage",
+      "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+      "input_sha256": "03b946427615aacf2a821ae292e99e81c543910c6e2e38d0c3db754045f128bf",
+      "source_identity_and_body_preserved": true,
+      "publication_changes": [],
+      "temporal_reference": "2026-10-20T12:30:50.282134+00:00",
+      "network_calls": 0,
+      "model_calls": 0,
+      "progress_events": 20,
+      "metrics": {
+        "source_count": 18,
+        "candidate_urls": 18,
+        "by_type": {
+          "DISCOVERY_LEAD": 11,
+          "ARTICLE_BODY": 1,
+          "BLOCKED_OR_FAILED": 6
+        },
+        "reads_attempted": 9,
+        "successful_captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 1469,
+        "raw_source_words": 4402,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 115545,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 3
+        },
+        "dropped_by_limit": {},
+        "findings": 0,
+        "publisher_independence_verified": false
+      },
+      "qualified_sources": [],
+      "source_assessments": null,
+      "native_threat_classifications": [],
+      "quote_spans": [],
+      "filing_comparison": null
+    },
+    {
+      "agent": "brandshield",
+      "subject": "Adidas",
+      "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+      "input_sha256": "9b020e23faf7f545c12d528edea3db123cd1d5c1aafe628575f3fc30314c8ca2",
+      "source_identity_and_body_preserved": true,
+      "publication_changes": [],
+      "temporal_reference": "2026-10-20T07:54:46.367082+00:00",
+      "network_calls": 0,
+      "model_calls": 0,
+      "progress_events": 20,
+      "metrics": {
+        "source_count": 9,
+        "candidate_urls": 9,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 4,
+          "ARTICLE_BODY": 1,
+          "DISCOVERY_LEAD": 4
+        },
+        "reads_attempted": 6,
+        "successful_captures": 2,
+        "article_bodies": 1,
+        "raw_article_words": 1092,
+        "raw_source_words": 1802,
+        "duplicate_captures": 0,
+        "qualified_source_count": 1,
+        "relevant_words": 79,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 56007,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "EMPTY_EXTRACTION": 1,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {},
+        "findings": 1,
+        "publisher_independence_verified": false
+      },
+      "qualified_sources": [
+        {
+          "source_id": "ev_hv_08410d06ea528dbd486e",
+          "source_url": "https://wwd.com/sourcing-journal/industry-news/los-angeles-california-counterfeit-bust-nike-adidas-streetwear-1239180559/",
+          "raw_content_hash": "bc6e43b8731ba31812d1b8ecf460ebbf348559773d12dd1589322a48ae46db42",
+          "retained_words": 1092,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 79
+        }
+      ],
+      "source_assessments": [
+        {
+          "evidence_id": "ev_hv_08410d06ea528dbd486e",
+          "source_url": "https://wwd.com/sourcing-journal/industry-news/los-angeles-california-counterfeit-bust-nike-adidas-streetwear-1239180559/",
+          "classification": "HISTORICAL_ENFORCEMENT",
+          "actor_url": null,
+          "epistemic_state": "UNVERIFIED",
+          "ownership_verified": false,
+          "reason": "REPORTED_ENFORCEMENT_NOT_CURRENT_ACTOR",
+          "temporal_state": "HISTORICAL_OR_TIME_UNVERIFIED"
+        }
+      ],
+      "native_threat_classifications": [
+        {
+          "type": "ENFORCEMENT_REPORT",
+          "classification": "HISTORICAL_ENFORCEMENT",
+          "is_threat": false,
+          "actor_url": null,
+          "source_relation": "REPORTS_ENFORCEMENT"
+        }
+      ],
+      "quote_spans": [],
+      "filing_comparison": null
+    },
+    {
+      "agent": "personal_watch",
+      "subject": "Sundar Pichai",
+      "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+      "input_sha256": "453d690b85559c6f830f8c14abc26609f2fd67a66e0f264a56a5a00615828f75",
+      "source_identity_and_body_preserved": true,
+      "publication_changes": [],
+      "temporal_reference": "2026-10-20T06:10:48.483041+00:00",
+      "network_calls": 0,
+      "model_calls": 0,
+      "progress_events": 20,
+      "metrics": {
+        "source_count": 39,
+        "candidate_urls": 39,
+        "by_type": {
+          "DISCOVERY_LEAD": 28,
+          "BLOCKED_OR_FAILED": 4,
+          "ARTICLE_BODY": 5,
+          "PUBLISHER_HOMEPAGE": 2
+        },
+        "reads_attempted": 16,
+        "successful_captures": 12,
+        "article_bodies": 5,
+        "raw_article_words": 4161,
+        "raw_source_words": 12841,
+        "duplicate_captures": 0,
+        "qualified_source_count": 1,
+        "relevant_words": 53,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 358412,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {},
+        "findings": 1,
+        "publisher_independence_verified": false
+      },
+      "qualified_sources": [
+        {
+          "source_id": "ev_hv_840b35593560935f15ca",
+          "source_url": "https://www.hindustantimes.com/lifestyle/art-culture/quote-of-the-day-by-sundar-pichai-i-am-optimistic-not-because-i-believe-in-technology-but-because-i-believe-in-people-101781005535173.html",
+          "raw_content_hash": "936e93bca1bb4627a6b2a38cc00f1e5521a53ed546d6cbdc5be9107835a5ec0d",
+          "retained_words": 783,
+          "qualification_status": "QUALIFIED",
+          "useful_words": 53
+        }
+      ],
+      "source_assessments": null,
+      "native_threat_classifications": [],
+      "quote_spans": [
+        {
+          "evidence_id": "ev_hv_840b35593560935f15ca",
+          "speaker": "Sundar Pichai",
+          "start": 926,
+          "end": 1258,
+          "attribution": "REPORTED_QUOTATION",
+          "quote_start": 991,
+          "quote_end": 1076
+        }
+      ],
+      "filing_comparison": null
+    }
+  ],
+  "browser": {
+    "mode": "EXACT_SAVED_SSE_REPLAY",
+    "scope": "Exact saved SSE replay through all agent page buttons; readiness is a harness stub, all other API calls are blocked. No provider, health or fresh research claims.",
+    "application_sha256": "6bd060bc37e71a5eb82d6c89be95fff262c459841254a83c98ea6b0ad136e17f",
+    "stable_application": true,
+    "cases": [
+      {
+        "agent": "scout",
+        "input": "Samsung",
+        "progress_events": 20,
+        "ui_progress_updates": 25,
+        "ui_step_mismatches": [],
+        "loading_button_observed_disabled": true,
+        "findings": 6,
+        "acquired_records": 7,
+        "discovery_records": 22,
+        "native_ids_missing_from_report": [],
+        "report_ids_missing_from_native": [],
+        "unresolved_finding_citations": [],
+        "page_errors": [],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ],
+        "console_error_count": 2,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "01-scout-320-inspection.png",
+            "intelligence_screenshot": "01-scout-320-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 6,
+            "rendered_acquired_cards": 7,
+            "rendered_discovery_cards": 22,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "01-scout-320-full.png",
+              "01-scout-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "01-scout-390-inspection.png",
+            "intelligence_screenshot": "01-scout-390-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 6,
+            "rendered_acquired_cards": 7,
+            "rendered_discovery_cards": 22,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "01-scout-390-full.png",
+              "01-scout-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "01-scout-1440-inspection.png",
+            "intelligence_screenshot": "01-scout-1440-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 6,
+            "rendered_acquired_cards": 7,
+            "rendered_discovery_cards": 22,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "01-scout-1440-full.png",
+              "01-scout-1440-report.png"
+            ]
+          }
+        ]
+      },
+      {
+        "agent": "trending",
+        "input": "grid-scale energy storage",
+        "progress_events": 20,
+        "ui_progress_updates": 25,
+        "ui_step_mismatches": [],
+        "loading_button_observed_disabled": true,
+        "findings": 0,
+        "acquired_records": 0,
+        "discovery_records": 18,
+        "native_ids_missing_from_report": [],
+        "report_ids_missing_from_native": [],
+        "unresolved_finding_citations": [],
+        "page_errors": [],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ],
+        "console_error_count": 3,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": null,
+            "inspection_screenshot": null,
+            "intelligence_screenshot": "02-trending-320-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 0,
+            "rendered_acquired_cards": 0,
+            "rendered_discovery_cards": 18,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "02-trending-320-full.png",
+              "02-trending-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": null,
+            "inspection_screenshot": null,
+            "intelligence_screenshot": "02-trending-390-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 0,
+            "rendered_acquired_cards": 0,
+            "rendered_discovery_cards": 18,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "02-trending-390-full.png",
+              "02-trending-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": null,
+            "inspection_screenshot": null,
+            "intelligence_screenshot": "02-trending-1440-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 0,
+            "rendered_acquired_cards": 0,
+            "rendered_discovery_cards": 18,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "02-trending-1440-full.png",
+              "02-trending-1440-report.png"
+            ]
+          }
+        ]
+      },
+      {
+        "agent": "brandshield",
+        "input": "Adidas",
+        "progress_events": 20,
+        "ui_progress_updates": 25,
+        "ui_step_mismatches": [],
+        "loading_button_observed_disabled": true,
+        "findings": 2,
+        "acquired_records": 1,
+        "discovery_records": 8,
+        "native_ids_missing_from_report": [],
+        "report_ids_missing_from_native": [],
+        "unresolved_finding_citations": [],
+        "page_errors": [],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ],
+        "console_error_count": 2,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "03-brandshield-320-inspection.png",
+            "intelligence_screenshot": "03-brandshield-320-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 2,
+            "rendered_acquired_cards": 1,
+            "rendered_discovery_cards": 8,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "03-brandshield-320-full.png",
+              "03-brandshield-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "03-brandshield-390-inspection.png",
+            "intelligence_screenshot": "03-brandshield-390-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 2,
+            "rendered_acquired_cards": 1,
+            "rendered_discovery_cards": 8,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "03-brandshield-390-full.png",
+              "03-brandshield-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "03-brandshield-1440-inspection.png",
+            "intelligence_screenshot": "03-brandshield-1440-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 2,
+            "rendered_acquired_cards": 1,
+            "rendered_discovery_cards": 8,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "03-brandshield-1440-full.png",
+              "03-brandshield-1440-report.png"
+            ]
+          }
+        ]
+      },
+      {
+        "agent": "personal_watch",
+        "input": "Sundar Pichai",
+        "progress_events": 20,
+        "ui_progress_updates": 25,
+        "ui_step_mismatches": [],
+        "loading_button_observed_disabled": true,
+        "findings": 1,
+        "acquired_records": 1,
+        "discovery_records": 38,
+        "native_ids_missing_from_report": [],
+        "report_ids_missing_from_native": [],
+        "unresolved_finding_citations": [],
+        "page_errors": [],
+        "failed_resources": [
+          {
+            "url": "https://fonts.googleapis.com/css2",
+            "failure": "net::ERR_FAILED"
+          }
+        ],
+        "console_error_count": 2,
+        "views": [
+          {
+            "width": 320,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "04-personal_watch-320-inspection.png",
+            "intelligence_screenshot": "04-personal_watch-320-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 1,
+            "rendered_acquired_cards": 1,
+            "rendered_discovery_cards": 38,
+            "missing_finding_texts": [],
+            "document_width": 320,
+            "screenshots": [
+              "04-personal_watch-320-full.png",
+              "04-personal_watch-320-report.png"
+            ]
+          },
+          {
+            "width": 390,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "04-personal_watch-390-inspection.png",
+            "intelligence_screenshot": "04-personal_watch-390-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 1,
+            "rendered_acquired_cards": 1,
+            "rendered_discovery_cards": 38,
+            "missing_finding_texts": [],
+            "document_width": 390,
+            "screenshots": [
+              "04-personal_watch-390-full.png",
+              "04-personal_watch-390-report.png"
+            ]
+          },
+          {
+            "width": 1440,
+            "unified_report_visible": true,
+            "inspection_keyboard_open": true,
+            "inspection_screenshot": "04-personal_watch-1440-inspection.png",
+            "intelligence_screenshot": "04-personal_watch-1440-intelligence.png",
+            "source_identity_mismatches": [],
+            "rendered_findings": 1,
+            "rendered_acquired_cards": 1,
+            "rendered_discovery_cards": 38,
+            "missing_finding_texts": [],
+            "document_width": 1440,
+            "screenshots": [
+              "04-personal_watch-1440-full.png",
+              "04-personal_watch-1440-report.png"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "validation": {
+    "full_passed": 1742,
+    "full_seconds": 56.23,
+    "fast_passed": 1534,
+    "fast_seconds": 45.2,
+    "frontend_scripts": 9,
+    "fatal_lint": 0,
+    "smoke": "OFFLINE_SMOKE_PASS",
+    "persistence": "OFFLINE_PERSISTENCE_PASS",
+    "historical_archive": "NOT_VERIFIED",
+    "deployed_rollback": "NOT_VERIFIED",
+    "hosted_ci": "NOT_RUN"
+  },
+  "release_ready": false,
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "ai_generation_calls_this_cycle": 0,
+  "conditional_microsoft_case": "NOT_RUN_CONDITION_NOT_MET"
+}
+

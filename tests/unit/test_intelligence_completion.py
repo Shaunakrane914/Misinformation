@@ -58,7 +58,7 @@ def test_financial_measurements_have_period_currency_page_and_exact_span():
     revenue = next(f for f in facts if f["metric"] == "REVENUE")
     assert revenue["normalized_value"] == "5082000000"
     assert revenue["period_end"] == "2026-06-30"
-    assert revenue["currency"] == "USD" and revenue["source_page"] == 1
+    assert revenue["currency"] == "DOLLAR_SYMBOL_UNSPECIFIED" and revenue["source_page"] == 1
     assert text[revenue["start"]:revenue["end"]] == revenue["text"]
     item = EvidenceItem(id="pdf-original", content=text, canonical_url="https://issuer.example/result.pdf", content_depth="PARTIAL_CONTENT",
         metadata={"financial_observations": facts})
@@ -109,14 +109,15 @@ def test_personal_unlinked_deepfake_is_not_a_subject_incident():
 
 
 @pytest.mark.parametrize("amount,currency,period,status", [
-    ("5,082", "$", "June 30, 2026", "MATCHES_SOURCE_ASSERTION"),
-    ("6,000", "$", "June 30, 2026", "DISAGREES_WITH_SOURCE_ASSERTION"),
+    ("5,082", "USD", "June 30, 2026", "MATCHES_SOURCE_ASSERTION"),
+    ("6,000", "USD", "June 30, 2026", "DISAGREES_WITH_SOURCE_ASSERTION"),
     ("5,082", "INR", "June 30, 2026", "INSUFFICIENT_COMPARABLE_CONTEXT"),
-    ("5,082", "$", "June 30, 2025", "INSUFFICIENT_COMPARABLE_CONTEXT"),
+    ("5,082", "USD", "June 30, 2025", "INSUFFICIENT_COMPARABLE_CONTEXT"),
+    ("5,082", "$", "June 30, 2026", "INSUFFICIENT_COMPARABLE_CONTEXT"),
 ])
 def test_financial_comparisons_never_cross_currency_or_period(amount, currency, period, status):
     from backend.services.research.financial_observations import compare_financial_observations
-    facts = financial_observations("For the quarter ended June 30, 2026. Infosys revenues at $5,082 million.", "issuer")
+    facts = financial_observations("For the quarter ended June 30, 2026. Infosys revenues at USD5,082 million.", "issuer")
     claim = f"For the quarter ended {period}. Infosys revenue was {currency}{amount} million."
     comparison = compare_financial_observations(claim, facts)
     assert comparison[0]["status"] == status

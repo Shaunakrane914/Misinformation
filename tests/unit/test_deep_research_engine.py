@@ -203,10 +203,11 @@ class TestDeepResearchEngine:
     def test_corroboration_engine_group_accounting(self):
         engine = CorroborationEngine()
 
-        it1 = EvidenceItem(id="1", source_name="Reuters", independence_group="wire_reuters_01")
-        it2 = EvidenceItem(id="2", source_name="Yahoo", independence_group="wire_reuters_01")  # Syndicated copy of it1
-        it3 = EvidenceItem(id="3", source_name="Bloomberg", independence_group="wire_bloomberg_01")
-        it4 = EvidenceItem(id="4", source_name="Tesla IR", independence_group="domain_tesla.com", primary_source=True)
+        it1 = EvidenceItem(id="1", source_name="Reuters", canonical_url="https://reuters.com/a")
+        it2 = EvidenceItem(id="2", source_name="Yahoo", content="Reuters reported this story.",
+                           canonical_url="https://yahoo.com/a")
+        it3 = EvidenceItem(id="3", source_name="Bloomberg", canonical_url="https://bloomberg.com/a")
+        it4 = EvidenceItem(id="4", source_name="Tesla IR", canonical_url="https://tesla.com/a", primary_source=True)
 
         res = engine.evaluate_corroboration([it1, it2, it3, it4])
         # 4 items, but only 3 independent source groups (it1 & it2 are in same wire group)
@@ -234,10 +235,11 @@ class TestDeepResearchEngine:
         contradictions = detector.detect_contradictions([it_affirmative, it_denial], target_name="Tata Motors")
         assert len(contradictions) >= 1
         c = contradictions[0]
-        assert c["type"] == ContradictionType.FACTUAL_CONTRADICTION.value
-        assert it_affirmative.contradiction_flag is True
-        assert it_denial.contradiction_flag is True
-        assert c["severity"] == "HIGH"
+        assert c["type"] == "POSSIBLE_DISAGREEMENT"
+        assert c["established"] is False
+        assert it_affirmative.contradiction_flag is False
+        assert it_denial.contradiction_flag is False
+        assert c["severity"] == "REVIEW_REQUIRED"
 
     def test_evidence_graph_builder(self):
         builder = EvidenceGraphBuilder()

@@ -1,0 +1,269 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "2ea7b182bf1f6b6f57e6c5052fdf9ae51b4d2cd5b87626cc13e0dc066a565058",
+  "stable_application": true,
+  "live_ai_authorized": false,
+  "bounds": {
+    "research_timeout_seconds": 180.0,
+    "max_deep_reads": 16,
+    "research_profile": "DEEP"
+  },
+  "cases": [
+    {
+      "case_id": "01-brandshield",
+      "agent": "brandshield",
+      "input": "Apple",
+      "seconds": 66.42,
+      "native_sha256": "9b0602aa83880225e99ab19bb188891d93341ef623d575081c22bd0f3c65d8d9",
+      "investigation_status": "COMPLETED",
+      "initial_generated_queries": 18,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 18,
+        "provider_attempts_observed": 32,
+        "query_records_without_provider_observations": 0,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 25,
+        "candidate_urls_observed_in_search_sample": 202,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 27,
+          "LOW_QUERY_COVERAGE": 98
+        },
+        "normalized_candidates": 62,
+        "accepted_candidates": 62,
+        "selected_acquisition_attempts": 16,
+        "read_failure_reasons": {
+          "ACCESS_DENIED": 1,
+          "PROVIDER_FAILURE": 2,
+          "BUDGET_EXHAUSTED": 1,
+          "CONNECTION_FAILURE": 1
+        },
+        "successful_body_captures": 7,
+        "extracted_article_bodies": 7,
+        "qualified_evidence": 4,
+        "qualified_evidence_ids": [
+          "ev_hv_6e806704335e19a66774",
+          "ev_hv_7bb4855d80991eb50b9b",
+          "ev_hv_be9cb5f5cdc4c3986e82",
+          "ev_hv_bf8f5945fe9ff28266c1"
+        ],
+        "agent_research_findings": 4,
+        "unverified_or_uninvestigated_findings": 4,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "duplicate_captures": [],
+        "post_read_qualification": [
+          {
+            "id": "ev_hv_6e806704335e19a66774",
+            "status": "SUCCESS",
+            "reason": null
+          },
+          {
+            "id": "ev_hv_7bb4855d80991eb50b9b",
+            "status": "SUCCESS",
+            "reason": null
+          },
+          {
+            "id": "ev_hv_be9cb5f5cdc4c3986e82",
+            "status": "SUCCESS",
+            "reason": null
+          },
+          {
+            "id": "ev_hv_bf8f5945fe9ff28266c1",
+            "status": "SUCCESS",
+            "reason": null
+          }
+        ],
+        "raw_capture_count": 11
+      },
+      "provider_outcomes": {
+        "bing-news-rss:CANDIDATES": 10,
+        "bing-news-rss:NO_RESULTS": 2,
+        "google-news-rss:CANDIDATES": 2,
+        "bing:IRRELEVANT_RESULTS": 6,
+        "yahoo:TRANSPORT_FAILURE": 6,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 6
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_hv_1c07118018660ac2877a",
+          "url": "https://www.forbes.com/sites/daveywinder/2026/09/11/apple-iphone-18-pro-scam-warning-as-pre-orders-go-live-september-12/",
+          "failure_kind": "ACCESS_DENIED",
+          "http_status": 403,
+          "resolver_query_statuses": []
+        },
+        {
+          "candidate_id": "ev_hv_07ad64c8c9cc5e773ea7",
+          "url": "https://www.msn.com/en-us/news/technology/apple-pay-phishing-campaign-targets-users-with-fake-fraud-alerts/ar-AA1VBlCP",
+          "failure_kind": "PROVIDER_FAILURE",
+          "http_status": null,
+          "resolver_query_statuses": []
+        },
+        {
+          "candidate_id": "ev_hv_a5ec2d52da60996c1a74",
+          "url": "https://lawenforcementtoday.com/chinese-nationals-apple-counterfeit-iphone-fraud",
+          "failure_kind": "BUDGET_EXHAUSTED",
+          "http_status": null,
+          "resolver_query_statuses": []
+        },
+        {
+          "candidate_id": "ev_hv_b4136876ff9ffae02d2c",
+          "url": "https://www.china.org.cn/business/2011-08/09/content_23169281.htm",
+          "failure_kind": "CONNECTION_FAILURE",
+          "http_status": null,
+          "resolver_query_statuses": []
+        },
+        {
+          "candidate_id": "ev_hv_d5fda3a0ed8d36c05927",
+          "url": "https://www.dailymail.com/sciencetech/article-15974769/apple-iphone-facetime-bank-scam.html",
+          "failure_kind": "PROVIDER_FAILURE",
+          "http_status": null,
+          "resolver_query_statuses": []
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_hv_6e806704335e19a66774",
+          "url": "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/",
+          "title": "Apple sued over $1.8 mn crypto scam, accused of ignoring fraud warnings - Technology News | The Financial Express",
+          "words": 635,
+          "kb": 4.186,
+          "text_sha256": "9d3a00e4dee95df840c06e66da89c2508497f68a67df9ed884c5fb82a8f1832a",
+          "extraction_status": "SUCCESS"
+        },
+        {
+          "id": "ev_hv_7bb4855d80991eb50b9b",
+          "url": "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million",
+          "title": "Apple iMessage courier phishing scams: Losses up by $1m to $2.2m in 2 weeks",
+          "words": 470,
+          "kb": 3.034,
+          "text_sha256": "2e9fabc0c4d42b08e7421b6f9888345cd7c0863a5d33aec690efdda92568df23",
+          "extraction_status": "SUCCESS"
+        },
+        {
+          "id": "ev_hv_be9cb5f5cdc4c3986e82",
+          "url": "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece",
+          "title": "Chennai: Fake ‘Apple’ mobile accessories seized at Ritchie Street; four arrested",
+          "words": 165,
+          "kb": 1.069,
+          "text_sha256": "b9673efb5923adf66c4fc6c3e657a905bdc8f87fe0c436f5a4e28a605f5e9a66",
+          "extraction_status": "SUCCESS"
+        },
+        {
+          "id": "ev_hv_bf8f5945fe9ff28266c1",
+          "url": "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/",
+          "title": "Apple’s App Store promoted fake Bitcoin wallet that stole $1.8M after developer spent a year warning them",
+          "words": 1774,
+          "kb": 12.044,
+          "text_sha256": "8fe7734e758539e34915b68297c373fcc4cb09bd937e4a88102edb97e11dd85a",
+          "extraction_status": "SUCCESS"
+        }
+      ],
+      "displayed_findings": 7,
+      "remaining_research_seconds": null
+    },
+    {
+      "case_id": "02-personal_watch",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "seconds": 31.13,
+      "native_sha256": "60ef275e11dd9af4ef8e44f3ac265a3a56bbf34b466f7261b83d775085132c0c",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "initial_generated_queries": 18,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 18,
+        "provider_attempts_observed": 49,
+        "query_records_without_provider_observations": 0,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 33,
+        "candidate_urls_observed_in_search_sample": 191,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 92,
+          "HEADLINE_MISMATCH": 35
+        },
+        "normalized_candidates": 42,
+        "accepted_candidates": 42,
+        "selected_acquisition_attempts": 8,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 2
+        },
+        "successful_body_captures": 1,
+        "extracted_article_bodies": 1,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "BODY_OR_PASSAGE_QUALIFICATION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "duplicate_captures": [],
+        "post_read_qualification": [],
+        "raw_capture_count": 3
+      },
+      "provider_outcomes": {
+        "bing-news-rss:CANDIDATES": 4,
+        "bing-news-rss:NO_RESULTS": 8,
+        "google-news-rss:CANDIDATES": 6,
+        "bing:IRRELEVANT_RESULTS": 9,
+        "yahoo:TRANSPORT_FAILURE": 5,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 9,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 2,
+        "google-news-rss:NO_RESULTS": 1,
+        "yahoo:TIMEOUT": 4
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_hv_1f372e3b55e4a1ba1cb0",
+          "url": "https://news.google.com/rss/articles/CBMiyAFBVV95cUxOcmo4Q3lwTllwOFd2Tmo1ZnFMRGFOemNGc192OEhmS1lGdlRiMTZMb2FJRDZ5RDV5OW1XN1ViYU51RVJkb0JybTJhZXJtRUtsN1BaeG1vTUotY3YyM012S1lrclhFYU9pNHk4T05wbFdVN1ZLeHJVaS1ya3d5R1Z0alJaVFJWRVNiRTgzOXVwZHoxUmYwZnU1NGF3aGNYWENqdVBtQzFqRXNocTdhdXBUMVdXU1hwQzdDZHhpc2YwcVFUYkF3b0FrcQ",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_hv_60107553d56e8b839867",
+          "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPM2htY0RldVBtV0doMHlSa3QxMjY4MnExa2Nadzg2RWxfNWI5elV2Rk9hY3BCeTJpcTdBUUFkXy1lSXhaR3JMT01iUWZPalZvMVl4TGhqdzRZVlFkRndySjl5d1FYMFg0elRNMGVPSXBPekNidFp0R3RKSzdrTTNabFpva0k1LWt6ZnZYQnowdFFTR1JVSDhUbVRfNE5SUXc1WnRTbTYyLVlzYS1EeWJDLWhNV2xXNVM4",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_hv_8a0739c970af34779f5b",
+          "url": "https://www.latimes.com",
+          "failure_kind": "HTTP_FAILURE",
+          "http_status": 200,
+          "resolver_query_statuses": []
+        },
+        {
+          "candidate_id": "ev_hv_64fb3186b0c91331ebf2",
+          "url": "https://news.google.com/rss/articles/CBMiWEFVX3lxTE9sUFpON2E1Zm9Wb2NRejczTW9hVjdkWlhLbTQtS2lhUFVIRC1RR215S1Y4aEVOdHNuN1YtWm9KLVVSRmhpVjdtektLQUFVaEJ6a0t4cjJJRko",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_hv_abf1949433a3110eef1f",
+          "url": "https://time.com",
+          "failure_kind": "HTTP_FAILURE",
+          "http_status": 200,
+          "resolver_query_statuses": []
+        }
+      ],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": null
+    }
+  ],
+  "limitations": "Observed samples, not unique URL totals, complete HTTP accounting, calibrated entailment or independent accuracy; saved-mode attempts are historical observations."
+}

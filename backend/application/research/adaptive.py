@@ -187,6 +187,22 @@ class AdaptiveExpansionStage:
                         query_classes=plan.query_classes,
                     )
 
+        from backend.services.research.search_advice import expand_with_advice
+        advice_result, advice_trace = expand_with_advice(request, ranked.ranked, agent_reach_service,
+            max(0.0, discovery_ceiling - (time.monotonic() - start_ts)))
+        follow_up_telemetry["ai_search_advice"] = advice_trace
+        if advice_result is not None:
+            new = [EvidenceItem.from_evidence_fragment(f, getattr(f, "evidence_id", None) or f"ev_ai_{i}", request.target)
+                   for i, f in enumerate(advice_result.fragments)]
+            for item in new:
+                source_quality_engine.classify_and_score(item, target_name=request.target)
+            accepted, rejected = relevance_gate.filter_candidates(new, request.target, domain=request.domain,
+                intent=request.intent, provisional_read=request.domain == "trending")
+            discovery.raw_candidates.extend(new)
+            ranked.accepted.extend(accepted)
+            ranked.rejected.extend(rejected)
+            adaptive_query_records.extend(advice_result.query_records)
+            ranked.ranked = candidate_ranker.rank_candidates(ranked.accepted, request.target, request.intent, plan.query_classes)
         if budget.follow_up_budget > 0:
             for round_idx in range(1, max_adaptive_rounds + 1):
                 elapsed = time.monotonic() - start_ts
@@ -212,7 +228,7 @@ class AdaptiveExpansionStage:
                     initial_plan=None,
                     evidence_items=ranked.ranked[:12],
                     contradictions=current_contradictions,
-                    max_follow_ups=2
+                    max_follow_ups=2, domain=request.domain, intent=request.intent
                 )
 
                 new_queries = [

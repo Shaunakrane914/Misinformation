@@ -85,6 +85,15 @@ class QueryPlanningStage:
                     break
             if combined:
                 multi_queries[channel] = combined[:source_plan.budget.max_queries_per_channel]
+        if request.domain == "trending":
+            # Match discovery to the unchanged 48h eligibility gate. 'Latest'
+            # alone lets feeds rank months-old background above fresh articles.
+            # This is a provider hint, never proof of publication/freshness.
+            for channel in ("news", "rss"):
+                for query in multi_queries.get(channel, []):
+                    text = query.get("query_text", "")
+                    if text and not text.startswith(("http://", "https://")) and not re.search(r"\b(?:when|after|before):", text):
+                        query["query_text"] = text + " when:2d"
         # The legacy planner also combined request.query_classes into a local
         # value, but never consumed it; retaining that no-op is unnecessary.
         return QueryPlan(planner, multi_queries, query_classes, source_plan)
@@ -165,6 +174,7 @@ class CandidateQualificationStage:
             target_entity=request.target,
             domain=request.domain,
             intent=request.intent,
+            provisional_read=request.domain == "trending",
         )
         return Discovery(retrieval, raw_candidates, accepted, list(rejected))
 

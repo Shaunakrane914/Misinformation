@@ -480,8 +480,10 @@ def test_web_reader_does_not_invent_title_or_declared_canonical(monkeypatch, exe
     assert view["title"] == ""
 
 
-def test_web_reader_discards_challenge_page_metadata_on_reader_fallback(monkeypatch, executor, public_dns):
+def test_web_reader_does_not_bypass_challenge_via_reader_fallback(monkeypatch, executor, public_dns):
+    calls = []
     def fake_fetch(url, **_kwargs):
+        calls.append(url)
         if url.startswith("https://r.jina.ai/"):
             return _response("# Actual page\n" + ("Evidence text " * 20), url, "text/plain")
         return _response(
@@ -492,9 +494,9 @@ def test_web_reader_discards_challenge_page_metadata_on_reader_fallback(monkeypa
     monkeypatch.setattr(
         "backend.services.agent_reach.native.executor.fetch_public_http", fake_fetch,
     )
-    result = executor.execute_web_read("https://example.com/article")
-    assert result["backend"] == "jina_reader_fallback"
-    assert result["page_metadata"] == {}
+    with pytest.raises(ProviderHTTPError):
+        executor.execute_web_read("https://example.com/article")
+    assert calls == ["https://example.com/article"]
 
 
 def test_web_reader_does_not_bypass_provider_rate_limit(monkeypatch, executor, public_dns):

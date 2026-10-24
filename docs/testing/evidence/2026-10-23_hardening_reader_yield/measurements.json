@@ -1,0 +1,1117 @@
+{
+  "schema": "security-reader-yield-closeout-v1",
+  "mode": "SELECTED_READ_ONLY_LIVE_CAPTURE_MEASUREMENTS",
+  "batches": [
+    {
+      "source_run_mode": "REAL_LOCAL_ASGI_SSE",
+      "application_sha256": "0430b4b49f0aff586a12e2f5fbbbe4a402b98e276645e1b937fe4a58a3c9eb3f",
+      "final_application_sha256": "0430b4b49f0aff586a12e2f5fbbbe4a402b98e276645e1b937fe4a58a3c9eb3f",
+      "stable_application": true,
+      "requested_audit_bounds": {
+        "research_timeout_seconds": 240,
+        "max_deep_reads": 24,
+        "research_profile": "DEEP"
+      },
+      "ai_calls_reserved": 0,
+      "ai_observations": [],
+      "temporary_evidence_basename": "aegis-hardening-yield-a5abf902b68549aabd022efa70ddaba1",
+      "cases": [
+        {
+          "case_id": "01-scout",
+          "agent": "scout",
+          "input": "Adobe",
+          "returned_result_event": true,
+          "http_status": 200,
+          "seconds": 52.92,
+          "error_events": [],
+          "investigation_status": "COMPLETED",
+          "native_sha256": "541b914edb2b3a39a2c3bea49bc21dac564684648a95e7dd847171187e25ccbc",
+          "pipeline_sha256": "c864eeebc36a36a1debf7ea44ad4bd258370edf7c0f290f75fd961d707fa8608",
+          "generated_queries": 18,
+          "query_record_count": 18,
+          "query_status_counts": {
+            "SUCCESS": 17,
+            "AUTH_REQUIRED": 1
+          },
+          "providers_contacted": {
+            "bing-news-rss": 11,
+            "bing": 6,
+            "yahoo": 5,
+            "google-news-rss": 3,
+            "legacy-news-fallback": 1
+          },
+          "raw_pool_stats": {
+            "source_count": 35,
+            "candidate_urls": 35,
+            "by_type": {
+              "ARTICLE_BODY": 14,
+              "BLOCKED_OR_FAILED": 9,
+              "FEED_ENTRY": 5,
+              "DISCOVERY_LEAD": 1,
+              "PUBLISHER_HOMEPAGE": 5,
+              "BACKGROUND_REFERENCE": 1
+            },
+            "reads_attempted": 24,
+            "successful_captures": 15,
+            "article_bodies": 14,
+            "raw_article_words": 16908,
+            "raw_source_words": 17749,
+            "duplicate_captures": 0,
+            "qualified_source_count": 13,
+            "relevant_words": 650,
+            "unique_publishers": 10,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 421866,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PROVIDER_FAILURE": 3,
+              "ACCESS_DENIED": 6
+            },
+            "dropped_by_limit": {}
+          },
+          "captured_source_types": {
+            "ARTICLE_BODY": 14,
+            "DISCOVERY_LEAD": 1
+          },
+          "qualified_sources": 13,
+          "qualified_useful_words": 650,
+          "read_attempt_count": 24,
+          "read_status_counts": {
+            "FAILED": 9,
+            "SUCCESS": 15
+          },
+          "read_failure_categories": {
+            "ACCESS_DENIED": 6,
+            "PROVIDER_FAILURE": 3
+          },
+          "legacy_projection": {
+            "records": 13,
+            "words": 16509,
+            "kb": 115.15,
+            "displayed_finding_strings": 6,
+            "structured_findings": 6
+          },
+          "citation_reference_count": 6,
+          "ambiguous_native_source_ids": {},
+          "harvesting_observations": {
+            "profile": "DEEP",
+            "queries_generated": 18,
+            "candidate_urls_discovered": 35,
+            "candidates_accepted_for_read": 34,
+            "discarded_by_reason": {
+              "BACKGROUND_REFERENCE_NOT_CURRENT_ACQUISITION": 1,
+              "DUPLICATE_URL": 5
+            },
+            "reads_attempted": 24,
+            "read_service_starts": 24,
+            "captures": 15,
+            "article_bodies": 14,
+            "raw_article_words": 16908,
+            "eligible_candidates_unread": 10,
+            "unread_by_reason": {
+              "READ_ATTEMPT_BUDGET_EXHAUSTED": 10
+            },
+            "deadline_exhausted": false,
+            "user_supplied_source_count": 0,
+            "autonomously_discovered_article_bodies": 14,
+            "native_http_admissions": 68,
+            "native_http_cap": 120,
+            "native_http_per_host_cap": 24,
+            "native_http_by_phase": {
+              "discovery": 38,
+              "reading": 30
+            },
+            "discovery_http_cap": 60,
+            "discovery_http_per_host_cap": 20,
+            "discovery_http_reserve_rejections": 0,
+            "native_http_budget_rejections": 0,
+            "complete_network_accounting": false
+          },
+          "sampled_source_metadata": [
+            {
+              "source_id": "ev_hv_45028b06cae88e4f9316",
+              "source_url": "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "Publicnow",
+              "saved_publisher_host": "www.marketscreener.com",
+              "title": "Adobe : Earnings press release (au56y4ter)",
+              "published_at": "2026-09-10T22:12:18+02:00",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "QUALIFIED",
+              "qualification_reasons": [],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 1962,
+              "useful_words": 39,
+              "readable_text_sha256": "039c4073af5c39b328b5f5fd3c2016a6c05223a2adb2a1e99028b2e22e601340",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+                "observed_endpoint": "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520",
+                "observed_endpoint_host": "www.marketscreener.com",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "redirect_chain": [
+                  "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520"
+                ],
+                "source_body_hash": "4d87d3b99c9f94b9b5be0fa497c5d21d96acf31dd6a90a2685730e63a5eeedcf",
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "4d87d3b99c9f94b9b5be0fa497c5d21d96acf31dd6a90a2685730e63a5eeedcf",
+                "raw_capture_sha256": "270d728041872917d9c294c874172f508db9814ca349c0ebabeb957993300004",
+                "acquired_at": "2026-10-23T15:50:32.950011+00:00",
+                "retained_utf8_bytes": 20005
+              }
+            },
+            {
+              "source_id": "ev_hv_ae899503f1833bc1138d",
+              "source_url": "https://cryptobriefing.com/adobe-q3-earnings-revenue-eps-beat/",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "Editorial Team",
+              "saved_publisher_host": "cryptobriefing.com",
+              "title": "Adobe reports Q3 earnings with revenue hitting $6.76B and EPS of $6.13, beating estimates",
+              "published_at": "2026-09-10T20:13:09+00:00",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "QUALIFIED",
+              "qualification_reasons": [],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 381,
+              "useful_words": 53,
+              "readable_text_sha256": "87f131d120df090a70fa92fb353ea797f301e1b9a62d21c5817874252dca5b6b",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+                "observed_endpoint": "https://cryptobriefing.com/adobe-q3-earnings-revenue-eps-beat/",
+                "observed_endpoint_host": "cryptobriefing.com",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "redirect_chain": [
+                  "https://cryptobriefing.com/adobe-q3-earnings-revenue-eps-beat/"
+                ],
+                "source_body_hash": "9c4be2d533fccc9617f297848530c72227668ae87de6532cdac13a9f2fd6f960",
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://cryptobriefing.com/adobe-q3-earnings-revenue-eps-beat/",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "9c4be2d533fccc9617f297848530c72227668ae87de6532cdac13a9f2fd6f960",
+                "raw_capture_sha256": "a8cc45825d615071ac68772a09c98767711c8c1b340fb0f6158db1d7f15a3ff3",
+                "acquired_at": "2026-10-23T15:50:32.971201+00:00",
+                "retained_utf8_bytes": 2468
+              }
+            }
+          ],
+          "raw_article_utf8_bytes": 118115,
+          "raw_capture_utf8_bytes": 123578
+        },
+        {
+          "case_id": "02-brandshield",
+          "agent": "brandshield",
+          "input": "Dyson",
+          "returned_result_event": true,
+          "http_status": 200,
+          "seconds": 23.58,
+          "error_events": [],
+          "investigation_status": "COMPLETED",
+          "native_sha256": "40cd7f37bc2b04cba4e98de8db7795db6009fb20056653867203bcab09f96fe2",
+          "pipeline_sha256": "1fee9125cb3c92523d30543eaf6bef71d14155b8ac642850e217dc6743d29f08",
+          "generated_queries": 18,
+          "query_record_count": 18,
+          "query_status_counts": {
+            "SUCCESS": 18
+          },
+          "providers_contacted": {
+            "bing-news-rss": 12,
+            "google-news-rss": 11,
+            "legacy-news-fallback": 7,
+            "bing": 6,
+            "yahoo": 6,
+            "legacy-web-fallback": 6
+          },
+          "raw_pool_stats": {
+            "source_count": 11,
+            "candidate_urls": 11,
+            "by_type": {
+              "BLOCKED_OR_FAILED": 3,
+              "FEED_ENTRY": 2,
+              "ARTICLE_BODY": 1,
+              "PUBLISHER_HOMEPAGE": 3,
+              "DISCOVERY_LEAD": 1,
+              "SOURCE_INDEX": 1
+            },
+            "reads_attempted": 9,
+            "successful_captures": 6,
+            "article_bodies": 1,
+            "raw_article_words": 781,
+            "raw_source_words": 6486,
+            "duplicate_captures": 0,
+            "qualified_source_count": 1,
+            "relevant_words": 48,
+            "unique_publishers": 1,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 185563,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3
+            },
+            "dropped_by_limit": {}
+          },
+          "captured_source_types": {
+            "ARTICLE_BODY": 1,
+            "PUBLISHER_HOMEPAGE": 3,
+            "DISCOVERY_LEAD": 1,
+            "SOURCE_INDEX": 1
+          },
+          "qualified_sources": 1,
+          "qualified_useful_words": 48,
+          "read_attempt_count": 9,
+          "read_status_counts": {
+            "SUCCESS": 6,
+            "FAILED": 3
+          },
+          "read_failure_categories": {
+            "PUBLISHER_UNRESOLVED": 3
+          },
+          "legacy_projection": {
+            "records": 1,
+            "words": 781,
+            "kb": 4.936,
+            "displayed_finding_strings": 2,
+            "structured_findings": 1
+          },
+          "citation_reference_count": 1,
+          "ambiguous_native_source_ids": {},
+          "harvesting_observations": {
+            "profile": "DEEP",
+            "queries_generated": 18,
+            "candidate_urls_discovered": 11,
+            "candidates_accepted_for_read": 11,
+            "discarded_by_reason": {},
+            "reads_attempted": 9,
+            "read_service_starts": 6,
+            "captures": 6,
+            "article_bodies": 1,
+            "raw_article_words": 781,
+            "eligible_candidates_unread": 2,
+            "unread_by_reason": {
+              "WRAPPER_READ_BUDGET_EXHAUSTED": 2
+            },
+            "deadline_exhausted": false,
+            "user_supplied_source_count": 0,
+            "autonomously_discovered_article_bodies": 1,
+            "native_http_admissions": 77,
+            "native_http_cap": 120,
+            "native_http_per_host_cap": 24,
+            "native_http_by_phase": {
+              "discovery": 58,
+              "reading": 19
+            },
+            "discovery_http_cap": 60,
+            "discovery_http_per_host_cap": 20,
+            "discovery_http_reserve_rejections": 7,
+            "native_http_budget_rejections": 10,
+            "complete_network_accounting": false
+          },
+          "sampled_source_metadata": [
+            {
+              "source_id": "ev_hv_6365e5f7eeccd30f09ae",
+              "source_url": "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "PR Wire / RSS",
+              "saved_publisher_host": "cybernews.com",
+              "title": "Dyson CameraJet toothbrush users report significant issues",
+              "published_at": "2026-09-11T13:41:00+00:00",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "QUALIFIED",
+              "qualification_reasons": [],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 781,
+              "useful_words": 48,
+              "readable_text_sha256": "01d788889618f483ad3057426adba8c12bbad01d9a21f62dc9685ee012092ccd",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+                "observed_endpoint": "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/",
+                "observed_endpoint_host": "cybernews.com",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "redirect_chain": [
+                  "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/"
+                ],
+                "source_body_hash": "6ff4727cf8c849baa62f8b03fce79e2201e8755a2fbf0e1514b55f6b015b6033",
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "6ff4727cf8c849baa62f8b03fce79e2201e8755a2fbf0e1514b55f6b015b6033",
+                "raw_capture_sha256": "b6fcd6c324701660cb450b3576ab807cfbb5547a0fb0b8289618e1c396501c29",
+                "acquired_at": "2026-10-23T15:50:57.151171+00:00",
+                "retained_utf8_bytes": 4936
+              }
+            }
+          ],
+          "raw_article_utf8_bytes": 4936,
+          "raw_capture_utf8_bytes": 54078
+        },
+        {
+          "case_id": "03-trending",
+          "agent": "trending",
+          "input": "battery recycling",
+          "returned_result_event": true,
+          "http_status": 200,
+          "seconds": 43.89,
+          "error_events": [],
+          "investigation_status": "COMPLETED",
+          "native_sha256": "8a0e6ffb48cc0d8c828abe558aecc73e744d6902c5521bb87bd22dac482c195b",
+          "pipeline_sha256": "f3e480ce10595209d043e21a1957034f7b4d9320109136de4e75948af9faf324",
+          "generated_queries": 18,
+          "query_record_count": 18,
+          "query_status_counts": {
+            "SUCCESS": 18
+          },
+          "providers_contacted": {
+            "bing-news-rss": 12,
+            "google-news-rss": 12,
+            "legacy-news-fallback": 5,
+            "bing": 6,
+            "yahoo": 6,
+            "legacy-web-fallback": 6
+          },
+          "raw_pool_stats": {
+            "source_count": 59,
+            "candidate_urls": 59,
+            "by_type": {
+              "FEED_ENTRY": 8,
+              "BLOCKED_OR_FAILED": 6,
+              "PUBLISHER_HOMEPAGE": 2,
+              "SOURCE_INDEX": 3,
+              "DISCOVERY_LEAD": 33,
+              "ARTICLE_BODY": 7
+            },
+            "reads_attempted": 22,
+            "successful_captures": 16,
+            "article_bodies": 7,
+            "raw_article_words": 10916,
+            "raw_source_words": 27998,
+            "duplicate_captures": 0,
+            "qualified_source_count": 1,
+            "relevant_words": 28,
+            "unique_publishers": 1,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 797900,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3,
+              "ACCESS_DENIED": 2,
+              "PROVIDER_FAILURE": 1
+            },
+            "dropped_by_limit": {}
+          },
+          "captured_source_types": {
+            "PUBLISHER_HOMEPAGE": 2,
+            "SOURCE_INDEX": 3,
+            "DISCOVERY_LEAD": 4,
+            "ARTICLE_BODY": 7
+          },
+          "qualified_sources": 1,
+          "qualified_useful_words": 28,
+          "read_attempt_count": 22,
+          "read_status_counts": {
+            "FAILED": 6,
+            "SUCCESS": 16
+          },
+          "read_failure_categories": {
+            "PUBLISHER_UNRESOLVED": 3,
+            "ACCESS_DENIED": 2,
+            "PROVIDER_FAILURE": 1
+          },
+          "legacy_projection": {
+            "records": 1,
+            "words": 587,
+            "kb": 3.612,
+            "displayed_finding_strings": 1,
+            "structured_findings": 1
+          },
+          "citation_reference_count": 1,
+          "ambiguous_native_source_ids": {},
+          "harvesting_observations": {
+            "profile": "DEEP",
+            "queries_generated": 18,
+            "candidate_urls_discovered": 59,
+            "candidates_accepted_for_read": 59,
+            "discarded_by_reason": {
+              "DUPLICATE_URL": 3
+            },
+            "reads_attempted": 22,
+            "read_service_starts": 19,
+            "captures": 16,
+            "article_bodies": 7,
+            "raw_article_words": 10916,
+            "eligible_candidates_unread": 37,
+            "unread_by_reason": {
+              "WRAPPER_READ_BUDGET_EXHAUSTED": 8,
+              "HOST_READ_BUDGET_EXHAUSTED": 29
+            },
+            "deadline_exhausted": false,
+            "user_supplied_source_count": 0,
+            "autonomously_discovered_article_bodies": 7,
+            "native_http_admissions": 89,
+            "native_http_cap": 120,
+            "native_http_per_host_cap": 24,
+            "native_http_by_phase": {
+              "discovery": 58,
+              "reading": 31
+            },
+            "discovery_http_cap": 60,
+            "discovery_http_per_host_cap": 20,
+            "discovery_http_reserve_rejections": 5,
+            "native_http_budget_rejections": 7,
+            "complete_network_accounting": false
+          },
+          "sampled_source_metadata": [
+            {
+              "source_id": "ev_hv_b3e04e4a11c1ea1e6093",
+              "source_url": "https://electrek.co/2026/10/22/redwood-and-rivian-set-to-expand-their-ev-battery-recycling-partnership/",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "",
+              "saved_publisher_host": "electrek.co",
+              "title": "Redwood and Rivian set to expand their EV battery recycling partnership",
+              "published_at": "2026-10-22T11:00:00+00:00",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "QUALIFIED",
+              "qualification_reasons": [],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 587,
+              "useful_words": 28,
+              "readable_text_sha256": "e33e2111af10ac86c1f52a96b3d9a112eabb9d03775ba69c85d05cc9bb80fabe",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+                "observed_endpoint": "https://electrek.co/2026/10/22/redwood-and-rivian-set-to-expand-their-ev-battery-recycling-partnership/",
+                "observed_endpoint_host": "electrek.co",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "redirect_chain": [
+                  "https://electrek.co/2026/10/22/redwood-and-rivian-set-to-expand-their-ev-battery-recycling-partnership/"
+                ],
+                "source_body_hash": "510a0b40a3b26242f319c200ea5ea3dbc28f269f2996e99540061a5b6fe68a58",
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://electrek.co/2026/10/22/redwood-and-rivian-set-to-expand-their-ev-battery-recycling-partnership/",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "510a0b40a3b26242f319c200ea5ea3dbc28f269f2996e99540061a5b6fe68a58",
+                "raw_capture_sha256": "65177a00d88b630b7a7a5acaa7bfb42b5178599c37a8727a671a8f6da861afc6",
+                "acquired_at": "2026-10-23T15:51:40.494512+00:00",
+                "retained_utf8_bytes": 3612
+              }
+            },
+            {
+              "source_id": "ev_hv_66032e80b6f2e58c0232",
+              "source_url": "https://www.indexbox.io/blog/lithium-ion-battery-recycling-market-to-accelerate-on-regulatory-mandates-forecast-points-higher-toward-2035/",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "",
+              "saved_publisher_host": "www.indexbox.io",
+              "title": "Lithium Ion Battery Recycling Market To Accelerate on Regulatory Mandates, Forecast Points Higher Toward 2035 - News and Statistics - IndexBox",
+              "published_at": "2026-09-24T12:46:04+02:00",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "REJECTED",
+              "qualification_reasons": [
+                "TEMPORAL_STALE: Published 701.1h ago exceeds Trending freshness window (48.0h)"
+              ],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 2627,
+              "useful_words": 0,
+              "readable_text_sha256": "e108dd257ada7ac5a2926960cb8cff22f088a0db63c310f27783b25d8317f0f4",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+                "observed_endpoint": null,
+                "observed_endpoint_host": null,
+                "http_status": null,
+                "network_observed_this_attempt": null,
+                "redirect_chain": [],
+                "source_body_hash": null,
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://www.indexbox.io/blog/lithium-ion-battery-recycling-market-to-accelerate-on-regulatory-mandates-forecast-points-higher-toward-2035/",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "f4e05b9dfdf27aa7e7f3af90dbe8099a3bd88fcabfe10af0bde03cfd08e27cb6",
+                "raw_capture_sha256": "03bc33d9f9cb408ad54ea4a1bbad987cc9c25a59aa958a4efa527b0f63d3c1c9",
+                "acquired_at": "2026-10-23T15:51:40.460687+00:00",
+                "retained_utf8_bytes": 20007
+              }
+            },
+            {
+              "source_id": "ev_hv_2fd2ec8cc45aeaa02d29",
+              "source_url": "https://www.indexbox.io/blog/nimh-battery-recycling-market-forecast-points-higher-toward-2035-driven-by-hybrid-vehicle-battery-retirements-and-rare-earth-recovery-mandates/",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "",
+              "saved_publisher_host": "www.indexbox.io",
+              "title": "Nimh Battery Recycling Market To Reach New Heights by 2035 Amid Growing End-of-Life Battery Volumes and Circular Economy Policies - News and Statistics - IndexBox",
+              "published_at": "2026-07-09T23:06:10+02:00",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "REJECTED",
+              "qualification_reasons": [
+                "TEMPORAL_STALE: Published 2538.8h ago exceeds Trending freshness window (48.0h)"
+              ],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 2692,
+              "useful_words": 0,
+              "readable_text_sha256": "66c19d0451b68524091b0c21e0476e05c1f973a91f495435c01cb30677a25397",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+                "observed_endpoint": null,
+                "observed_endpoint_host": null,
+                "http_status": null,
+                "network_observed_this_attempt": null,
+                "redirect_chain": [],
+                "source_body_hash": null,
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://www.indexbox.io/blog/nimh-battery-recycling-market-forecast-points-higher-toward-2035-driven-by-hybrid-vehicle-battery-retirements-and-rare-earth-recovery-mandates/",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "b6493d84eed2ee4be8a1b9f8d0dfd0e5165d88b36d16d6dccd967968ab17b846",
+                "raw_capture_sha256": "0f09cdd04ab52c3fbe122775eaf48bec04d77b2491e3f3844561a0a36d26ec14",
+                "acquired_at": "2026-10-23T15:51:40.444916+00:00",
+                "retained_utf8_bytes": 20041
+              }
+            }
+          ],
+          "raw_article_utf8_bytes": 77904,
+          "raw_capture_utf8_bytes": 222669
+        },
+        {
+          "case_id": "04-personal_watch",
+          "agent": "personal_watch",
+          "input": "Mary Barra",
+          "returned_result_event": true,
+          "http_status": 200,
+          "seconds": 35.6,
+          "error_events": [],
+          "investigation_status": "INSUFFICIENT_EVIDENCE",
+          "native_sha256": "d79e3e6fd66c2c3ac7ed58f1682c1804fc1cf61c710a9da6e2def314f706e558",
+          "pipeline_sha256": "03151e02404ba5085220f091dfaaffdafe91ee41a4b5d068a7221fa8881ccd0d",
+          "generated_queries": 18,
+          "query_record_count": 18,
+          "query_status_counts": {
+            "SUCCESS": 18
+          },
+          "providers_contacted": {
+            "bing-news-rss": 12,
+            "google-news-rss": 10,
+            "legacy-news-fallback": 6,
+            "bing": 6,
+            "yahoo": 6,
+            "legacy-web-fallback": 6
+          },
+          "raw_pool_stats": {
+            "source_count": 22,
+            "candidate_urls": 22,
+            "by_type": {
+              "ARTICLE_BODY": 1,
+              "DISCOVERY_LEAD": 3,
+              "BLOCKED_OR_FAILED": 5,
+              "FEED_ENTRY": 7,
+              "PUBLISHER_HOMEPAGE": 3,
+              "SOURCE_INDEX": 3
+            },
+            "reads_attempted": 12,
+            "successful_captures": 7,
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "raw_source_words": 6744,
+            "duplicate_captures": 0,
+            "qualified_source_count": 0,
+            "relevant_words": 0,
+            "unique_publishers": 0,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 164132,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3,
+              "PROVIDER_FAILURE": 1,
+              "ACCESS_DENIED": 1
+            },
+            "dropped_by_limit": {}
+          },
+          "captured_source_types": {
+            "ARTICLE_BODY": 1,
+            "PUBLISHER_HOMEPAGE": 3,
+            "SOURCE_INDEX": 3
+          },
+          "qualified_sources": 0,
+          "qualified_useful_words": 0,
+          "read_attempt_count": 12,
+          "read_status_counts": {
+            "SUCCESS": 7,
+            "FAILED": 5
+          },
+          "read_failure_categories": {
+            "PUBLISHER_UNRESOLVED": 3,
+            "PROVIDER_FAILURE": 1,
+            "ACCESS_DENIED": 1
+          },
+          "legacy_projection": {
+            "records": 0,
+            "words": 0,
+            "kb": 0,
+            "displayed_finding_strings": 0,
+            "structured_findings": 0
+          },
+          "citation_reference_count": 0,
+          "ambiguous_native_source_ids": {},
+          "harvesting_observations": {
+            "profile": "DEEP",
+            "queries_generated": 18,
+            "candidate_urls_discovered": 22,
+            "candidates_accepted_for_read": 22,
+            "discarded_by_reason": {
+              "DUPLICATE_URL": 1
+            },
+            "reads_attempted": 12,
+            "read_service_starts": 9,
+            "captures": 7,
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "eligible_candidates_unread": 10,
+            "unread_by_reason": {
+              "WRAPPER_READ_BUDGET_EXHAUSTED": 10
+            },
+            "deadline_exhausted": false,
+            "user_supplied_source_count": 0,
+            "autonomously_discovered_article_bodies": 1,
+            "native_http_admissions": 80,
+            "native_http_cap": 120,
+            "native_http_per_host_cap": 24,
+            "native_http_by_phase": {
+              "discovery": 57,
+              "reading": 23
+            },
+            "discovery_http_cap": 60,
+            "discovery_http_per_host_cap": 20,
+            "discovery_http_reserve_rejections": 2,
+            "native_http_budget_rejections": 5,
+            "complete_network_accounting": false
+          },
+          "sampled_source_metadata": [
+            {
+              "source_id": "ev_hv_c1a3a9753d15fbef87d8",
+              "source_url": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "www.ETAuto.com",
+              "saved_publisher_host": "auto.economictimes.indiatimes.com",
+              "title": "GM CEO Barra first woman to chair Business Roundtable",
+              "published_at": "2021-09-29T21:08:46+05:30",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "REJECTED",
+              "qualification_reasons": [
+                "NO_RELEVANT_PASSAGE"
+              ],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 484,
+              "useful_words": 0,
+              "readable_text_sha256": "530fa5799c4afcf87949e388547c29cbd4d5b50f4baa333c9181247a08555f2a",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+                "observed_endpoint": null,
+                "observed_endpoint_host": null,
+                "http_status": null,
+                "network_observed_this_attempt": null,
+                "redirect_chain": [],
+                "source_body_hash": null,
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "8e229432d57a3dac0bc43d69f0cd346f809bc57168b91378102232fd222aef42",
+                "raw_capture_sha256": "686eda1d9ac5042b937d718d9c64f574b6e5bcb5d326cb89fc02f1a70c15a588",
+                "acquired_at": "2026-10-23T15:52:16.633370+00:00",
+                "retained_utf8_bytes": 3009
+              }
+            }
+          ],
+          "raw_article_utf8_bytes": 3009,
+          "raw_capture_utf8_bytes": 51315
+        }
+      ]
+    },
+    {
+      "source_run_mode": "REAL_LOCAL_ASGI_SSE",
+      "application_sha256": "7ac1b23a84c9798074933f93f99c253d428bf3cd1f2b32dc80446e50f5256bcd",
+      "final_application_sha256": "7ac1b23a84c9798074933f93f99c253d428bf3cd1f2b32dc80446e50f5256bcd",
+      "stable_application": true,
+      "requested_audit_bounds": {
+        "research_timeout_seconds": 240,
+        "max_deep_reads": 24,
+        "research_profile": "DEEP"
+      },
+      "ai_calls_reserved": 0,
+      "ai_observations": [],
+      "temporary_evidence_basename": "aegis-hardening-postfix-af88fe398f344302818c9a57bcabe474",
+      "cases": [
+        {
+          "case_id": "01-personal_watch",
+          "agent": "personal_watch",
+          "input": "Mary Barra",
+          "returned_result_event": true,
+          "http_status": 200,
+          "seconds": 29.74,
+          "error_events": [],
+          "investigation_status": "INSUFFICIENT_EVIDENCE",
+          "native_sha256": "29997122f05ed309f2aa03634469b8a54b45d2398bd59688a3a6ee2d74484e36",
+          "pipeline_sha256": "e20c26596e4e17ddd9d02651e84e119ddbc8bf3eeedbd11c10b15bd9f25de7a9",
+          "generated_queries": 18,
+          "query_record_count": 18,
+          "query_status_counts": {
+            "SUCCESS": 18
+          },
+          "providers_contacted": {
+            "bing-news-rss": 12,
+            "google-news-rss": 10,
+            "legacy-news-fallback": 6,
+            "bing": 6,
+            "yahoo": 6,
+            "legacy-web-fallback": 6
+          },
+          "raw_pool_stats": {
+            "source_count": 20,
+            "candidate_urls": 20,
+            "by_type": {
+              "ARTICLE_BODY": 1,
+              "DISCOVERY_LEAD": 3,
+              "BLOCKED_OR_FAILED": 3,
+              "FEED_ENTRY": 5,
+              "PUBLISHER_HOMEPAGE": 5,
+              "SOURCE_INDEX": 3
+            },
+            "reads_attempted": 12,
+            "successful_captures": 9,
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "raw_source_words": 11754,
+            "duplicate_captures": 0,
+            "qualified_source_count": 0,
+            "relevant_words": 0,
+            "unique_publishers": 0,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 263809,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3
+            },
+            "dropped_by_limit": {}
+          },
+          "captured_source_types": {
+            "ARTICLE_BODY": 1,
+            "PUBLISHER_HOMEPAGE": 5,
+            "SOURCE_INDEX": 3
+          },
+          "qualified_sources": 0,
+          "qualified_useful_words": 0,
+          "read_attempt_count": 12,
+          "read_status_counts": {
+            "SUCCESS": 9,
+            "FAILED": 3
+          },
+          "read_failure_categories": {
+            "PUBLISHER_UNRESOLVED": 3
+          },
+          "legacy_projection": {
+            "records": 0,
+            "words": 0,
+            "kb": 0,
+            "displayed_finding_strings": 0,
+            "structured_findings": 0
+          },
+          "citation_reference_count": 0,
+          "ambiguous_native_source_ids": {},
+          "harvesting_observations": {
+            "profile": "DEEP",
+            "queries_generated": 18,
+            "candidate_urls_discovered": 20,
+            "candidates_accepted_for_read": 20,
+            "discarded_by_reason": {
+              "DUPLICATE_URL": 1
+            },
+            "reads_attempted": 12,
+            "read_service_starts": 9,
+            "captures": 9,
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "eligible_candidates_unread": 8,
+            "unread_by_reason": {
+              "WRAPPER_READ_BUDGET_EXHAUSTED": 8
+            },
+            "deadline_exhausted": false,
+            "user_supplied_source_count": 0,
+            "autonomously_discovered_article_bodies": 1,
+            "native_http_admissions": 79,
+            "native_http_cap": 120,
+            "native_http_per_host_cap": 24,
+            "native_http_by_phase": {
+              "discovery": 58,
+              "reading": 21
+            },
+            "discovery_http_cap": 60,
+            "discovery_http_per_host_cap": 20,
+            "discovery_http_reserve_rejections": 4,
+            "native_http_budget_rejections": 6,
+            "complete_network_accounting": false
+          },
+          "sampled_source_metadata": [
+            {
+              "source_id": "ev_hv_c1a3a9753d15fbef87d8",
+              "source_url": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "www.ETAuto.com",
+              "saved_publisher_host": "auto.economictimes.indiatimes.com",
+              "title": "GM CEO Barra first woman to chair Business Roundtable",
+              "published_at": "2021-09-29T21:08:46+05:30",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "REJECTED",
+              "qualification_reasons": [
+                "NO_RELEVANT_PASSAGE"
+              ],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 484,
+              "useful_words": 0,
+              "readable_text_sha256": "530fa5799c4afcf87949e388547c29cbd4d5b50f4baa333c9181247a08555f2a",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+                "observed_endpoint": null,
+                "observed_endpoint_host": null,
+                "http_status": null,
+                "network_observed_this_attempt": null,
+                "redirect_chain": [],
+                "source_body_hash": null,
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://auto.economictimes.indiatimes.com/news/gm-ceo-barra-first-woman-to-chair-business-roundtable/86618005",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "8e229432d57a3dac0bc43d69f0cd346f809bc57168b91378102232fd222aef42",
+                "raw_capture_sha256": "686eda1d9ac5042b937d718d9c64f574b6e5bcb5d326cb89fc02f1a70c15a588",
+                "acquired_at": "2026-10-23T15:57:30.210303+00:00",
+                "retained_utf8_bytes": 3009
+              }
+            }
+          ],
+          "raw_article_utf8_bytes": 3009,
+          "raw_capture_utf8_bytes": 90420
+        },
+        {
+          "case_id": "02-brandshield",
+          "agent": "brandshield",
+          "input": "Dyson",
+          "returned_result_event": true,
+          "http_status": 200,
+          "seconds": 25.77,
+          "error_events": [],
+          "investigation_status": "COMPLETED",
+          "native_sha256": "ec2622bbb30e740b91bfed2eac896d4a1524d0689165431d3a85a92d85037048",
+          "pipeline_sha256": "da2462810551945c177a598027431a82061ac4704368e30673511c09bd937cd0",
+          "generated_queries": 18,
+          "query_record_count": 18,
+          "query_status_counts": {
+            "SUCCESS": 18
+          },
+          "providers_contacted": {
+            "bing-news-rss": 12,
+            "google-news-rss": 11,
+            "legacy-news-fallback": 6,
+            "bing": 6,
+            "yahoo": 6,
+            "legacy-web-fallback": 6
+          },
+          "raw_pool_stats": {
+            "source_count": 13,
+            "candidate_urls": 13,
+            "by_type": {
+              "BLOCKED_OR_FAILED": 3,
+              "FEED_ENTRY": 2,
+              "ARTICLE_BODY": 1,
+              "PUBLISHER_HOMEPAGE": 4,
+              "SOURCE_INDEX": 2,
+              "DISCOVERY_LEAD": 1
+            },
+            "reads_attempted": 11,
+            "successful_captures": 8,
+            "article_bodies": 1,
+            "raw_article_words": 781,
+            "raw_source_words": 8303,
+            "duplicate_captures": 0,
+            "qualified_source_count": 1,
+            "relevant_words": 48,
+            "unique_publishers": 1,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 219015,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3
+            },
+            "dropped_by_limit": {}
+          },
+          "captured_source_types": {
+            "ARTICLE_BODY": 1,
+            "PUBLISHER_HOMEPAGE": 4,
+            "SOURCE_INDEX": 2,
+            "DISCOVERY_LEAD": 1
+          },
+          "qualified_sources": 1,
+          "qualified_useful_words": 48,
+          "read_attempt_count": 11,
+          "read_status_counts": {
+            "SUCCESS": 8,
+            "FAILED": 3
+          },
+          "read_failure_categories": {
+            "PUBLISHER_UNRESOLVED": 3
+          },
+          "legacy_projection": {
+            "records": 1,
+            "words": 781,
+            "kb": 4.936,
+            "displayed_finding_strings": 2,
+            "structured_findings": 1
+          },
+          "citation_reference_count": 1,
+          "ambiguous_native_source_ids": {},
+          "harvesting_observations": {
+            "profile": "DEEP",
+            "queries_generated": 18,
+            "candidate_urls_discovered": 13,
+            "candidates_accepted_for_read": 13,
+            "discarded_by_reason": {},
+            "reads_attempted": 11,
+            "read_service_starts": 8,
+            "captures": 8,
+            "article_bodies": 1,
+            "raw_article_words": 781,
+            "eligible_candidates_unread": 2,
+            "unread_by_reason": {
+              "WRAPPER_READ_BUDGET_EXHAUSTED": 2
+            },
+            "deadline_exhausted": false,
+            "user_supplied_source_count": 0,
+            "autonomously_discovered_article_bodies": 1,
+            "native_http_admissions": 80,
+            "native_http_cap": 120,
+            "native_http_per_host_cap": 24,
+            "native_http_by_phase": {
+              "discovery": 55,
+              "reading": 25
+            },
+            "discovery_http_cap": 60,
+            "discovery_http_per_host_cap": 20,
+            "discovery_http_reserve_rejections": 3,
+            "native_http_budget_rejections": 5,
+            "complete_network_accounting": false
+          },
+          "sampled_source_metadata": [
+            {
+              "source_id": "ev_hv_6365e5f7eeccd30f09ae",
+              "source_url": "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/",
+              "original_url_is_search_wrapper": false,
+              "saved_source_label": "PR Wire / RSS",
+              "saved_publisher_host": "cybernews.com",
+              "title": "Dyson CameraJet toothbrush users report significant issues",
+              "published_at": "2026-09-11T13:41:00+00:00",
+              "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+              "source_type": "ARTICLE_BODY",
+              "qualification_status": "QUALIFIED",
+              "qualification_reasons": [],
+              "acquisition_method": "DOM_SEMANTIC_TEXT",
+              "content_depth": "PARTIAL_CONTENT",
+              "retained_word_count": 781,
+              "useful_words": 48,
+              "readable_text_sha256": "01d788889618f483ad3057426adba8c12bbad01d9a21f62dc9685ee012092ccd",
+              "duplicate_of": null,
+              "provider_truncated": false,
+              "transport": {
+                "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+                "observed_endpoint": "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/",
+                "observed_endpoint_host": "cybernews.com",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "redirect_chain": [
+                  "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/"
+                ],
+                "source_body_hash": "6ff4727cf8c849baa62f8b03fce79e2201e8755a2fbf0e1514b55f6b015b6033",
+                "endpoint_is_search_wrapper": false
+              },
+              "raw_pool_transport_observation": {
+                "observed_endpoint": "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/",
+                "http_status": 200,
+                "network_observed_this_attempt": true,
+                "source_body_hash": "6ff4727cf8c849baa62f8b03fce79e2201e8755a2fbf0e1514b55f6b015b6033",
+                "raw_capture_sha256": "b6fcd6c324701660cb450b3576ab807cfbb5547a0fb0b8289618e1c396501c29",
+                "acquired_at": "2026-10-23T15:57:56.011964+00:00",
+                "retained_utf8_bytes": 4936
+              }
+            }
+          ],
+          "raw_article_utf8_bytes": 4936,
+          "raw_capture_utf8_bytes": 65616
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "Code-classified article/qualification counts are not independent accuracy, completeness or source-independence acceptance.",
+    "Raw article word counts include irrelevant or weak content; useful words mean selected exact excerpts, not entire bodies or verified claims.",
+    "Native HTTP admissions bound the shared acquisition helper, not complete third-party/internal network accounting; saved complete_network_accounting=false.",
+    "Source transport metadata can be unavailable for rejected captures; null does not prove a fresh network transaction.",
+    "Six approved local investigations; no supplied article URLs, model calls, paid Firecrawl, production writes or audit-level retries.",
+    "Bodies, response headers, credentials and full investigation dossiers intentionally excluded. Temporary original captures may expire.",
+    "The final two cases use later application bytes. No causal before/after conclusion from changed source responses or different prior-turn limits.",
+    "Sample transport field from the generic audit joins only returned deep-read records; raw_pool_transport_observation separately preserves available rejected-source transactions."
+  ]
+}

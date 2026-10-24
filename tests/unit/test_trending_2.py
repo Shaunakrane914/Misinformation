@@ -248,7 +248,7 @@ def test_sentiment_vs_misinformation_separation(agent: TrendingAgent):
 
     # Negative sentiment should NOT lead to HIGH misinformation risk!
     assert sent_label == "NEGATIVE"
-    assert misinfo_risk == "LOW"
+    assert misinfo_risk == "UNASSESSED"
     assert "critical discussion" in rationale.lower() or "credible reporting" in rationale.lower()
 
 

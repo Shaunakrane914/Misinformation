@@ -253,9 +253,12 @@ class TestSentinelIntegrationWithRetrievalTrace:
             evidence, health, plan, syndicated = brandshield_agent.search_brand_evidence(
                 {"brand": "Nike", "resolved_entity": "Nike"}
             )
-            assert len(evidence) >= 1
+            # Downloaded product/navigation text remains in the raw pool, not
+            # specialist evidence merely because the transport returned 200.
+            assert evidence == []
             assert "trace" in plan
-            assert plan["trace"]["scan_id"] == "test_trace_bs"
+            assert any(wave.get("scan_id") == "test_trace_bs" for wave in plan["trace"]["discovery_waves"])
+            assert plan["trace"]["raw_acquisition_pool"]["stats"]["successful_captures"] >= 1
 
     def test_scout_stock_analysis_populates_trace(self):
         from backend.agents.scout_agent import scout_agent
@@ -283,4 +286,4 @@ class TestSentinelIntegrationWithRetrievalTrace:
 
             result = scout_agent.analyze_stock("TATAMOTORS.NS")
             assert "retrieval_trace" in result
-            assert result["retrieval_trace"]["scan_id"] == "test_trace_scout"
+            assert any(wave.get("scan_id") == "test_trace_scout" for wave in result["retrieval_trace"]["discovery_waves"])

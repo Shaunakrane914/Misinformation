@@ -1,0 +1,34 @@
+{
+  "origin": "GENUINE_SAVED_API_EXCERPTS_NOT_FRESH_ACQUISITION_OR_COMPLETE_ARTICLES",
+  "captured_response_sha256": "747c44ef7ede8763c9cddd57938cd511b2a3ad2262c548ad5de20ffa107e51db",
+  "captured_response_basename": "02-scout.json",
+  "records": [
+    {
+      "evidence_id": "ev_hv_21ce99c140aa1a649354",
+      "title": "Infosys Q4FY26 Result Highlights: FY27 growth seen at 1.5%-3.55%; to hire 20,000 freshers - ADR slides 4% - Industry News | The Financial Express",
+      "url": "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/",
+      "published_at": "2026-04-23T09:14:47+05:30",
+      "retrieved_at": "2026-10-21T04:49:34.506884",
+      "content": "On a sequential basis, Infosys posted 27.76% QoQ increase in its consolidated net profit from Rs 6,654 crore reported in Q3FY26 to Rs 8,501 crore this quarter.",
+      "content_depth": "PARTIAL_CONTENT"
+    },
+    {
+      "evidence_id": "ev_hv_687178f2b42ab46619c9",
+      "title": "Infy shares hit record high ahead of earnings",
+      "url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+      "published_at": "Wed, 07 Jul 2010 17:00:00 GMT",
+      "retrieved_at": "2026-10-21T04:49:28.264950",
+      "content": "Most analysts expect Infosys, which reports June quarter results on Tuesday, to raise its revenue growth guidance in dollar terms for 2010/11 to 17-19 percent from 16-18 percent given in April.",
+      "content_depth": "PARTIAL_CONTENT"
+    },
+    {
+      "evidence_id": "ev_hv_86a2a468764f5354194d",
+      "title": "INFY Share Price: IT stock gains 4% as board to consider share buyback proposal on this date - Check details - India TV News",
+      "url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+      "published_at": "2025-09-09T09:41:17+05:30",
+      "retrieved_at": "2026-10-21T04:49:28.264971",
+      "content": "\"...the Board of Directors of Infosys Limited will consider a proposal for buyback of fully paid-up equity shares of the company at its meeting to be held on September 11, 2025, in accordance with the Securities and Exchange Board of India (Buy-Back of Securities) Regulations, 2018, as amended,\" the company said in a regulatory filing.",
+      "content_depth": "PARTIAL_CONTENT"
+    }
+  ]
+}

@@ -98,10 +98,11 @@ class ScoutAgent:
         company_name: str,
         ticker: str,
         stock_data: Dict[str, Any],
-        sources: List[Dict[str, Any]]
+        sources: List[Dict[str, Any]],
+        intent: str = "",
     ) -> Dict[str, Any]:
         """Synthesize financial intelligence over retrieved evidence fragments."""
-        return synthesize_financial_intelligence(company_name, ticker, stock_data, sources)
+        return synthesize_financial_intelligence(company_name, ticker, stock_data, sources, intent=intent)
 
     def process_task(self, task: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -305,7 +306,7 @@ class ScoutAgent:
                 source_name = item.source_name or item.channel
                 channel = item.channel
                 published = item.published_at or ""
-                discovered = item.discovered_at
+                discovered = item.metadata.get("acquired_at") or item.metadata.get("retrieved_at") or item.discovered_at
                 snippet = item.snippet or item.relevant_excerpt[:240]
                 relevant_excerpt = item.relevant_excerpt
                 role = item.source_role
@@ -324,7 +325,8 @@ class ScoutAgent:
                 source_name = item.get("source", item.get("platform", "Channel"))
                 channel = item.get("channel", item.get("platform", "news"))
                 published = item.get("published_at", item.get("published", ""))
-                discovered = item.get("retrieved_at", "")
+                metadata = item.get("metadata") or {}
+                discovered = item.get("acquired_at") or metadata.get("acquired_at") or item.get("retrieved_at") or metadata.get("retrieved_at") or item.get("discovered_at", "")
                 snippet = item.get("snippet", "")
                 relevant_excerpt = item.get("relevant_excerpt", "")
                 role = item.get("source_role", "DISCOVERY")
@@ -410,7 +412,7 @@ class ScoutAgent:
                 })
 
         # 5. Extract Grounded Catalysts, Narratives, Contradictions, & Misinformation Risk
-        reasoning = self._synthesize_financial_intelligence(company_name, sym, stock_data, all_sources)
+        reasoning = self._synthesize_financial_intelligence(company_name, sym, stock_data, all_sources, intent=query or "")
         acquisition_failed = research_telemetry.get("acquisition", {}).get("status") == "ACQUISITION_FAILED"
         if acquisition_failed:
             reasoning = {"catalysts": {"positive": [], "negative": [], "unresolved": []},
@@ -554,15 +556,19 @@ class ScoutAgent:
             },
             "primary_sources": primary_sources,
             "catalysts": reasoning.get("catalysts", {"positive": [], "negative": [], "unresolved": []}),
+            "financial_observations": reasoning.get("financial_observations", []),
+            "financial_context_summary": reasoning.get("financial_context_summary", {}),
+            "filing_comparison": reasoning.get("filing_comparison", {"status": "NOT_PERFORMED", "comparisons": [],
+                "reason": "No comparable filing assessment was completed."}),
             "risks": reasoning.get("risks", []),
             "narratives": reasoning.get("narratives", []),
             "contradictions": reasoning.get("contradictions", {"for": [], "against": [], "unresolved": []}),
             "timeline": timeline,
             "misinformation": reasoning.get("misinformation", {
-                "status": "NOMINAL",
+                "status": "INSUFFICIENT_EVIDENCE",
                 "rumors_detected": [],
-                "manipulation_risk": "LOW",
-                "evidence_quality_score": 0.85
+                "manipulation_risk": "UNASSESSED",
+                "evidence_quality_score": None
             }),
             "limitations": [
                 "Market telemetry reflects delayed daily closing series from Yahoo Finance (free tier), not high-frequency tick streams.",

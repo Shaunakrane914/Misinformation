@@ -1,0 +1,95 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "40604e4533b9d2aee4d286774637c7ca664f99c610cd2a7cb62c9462ccf51b09",
+  "stable_application": true,
+  "live_ai_authorized": false,
+  "bounds": {
+    "research_timeout_seconds": 120.0,
+    "max_deep_reads": 6
+  },
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Samsung",
+      "seconds": 32.35,
+      "native_sha256": "3f46b807237ccde6f097f7b62eac42f095fc79508cbfaf729557ae165032e597",
+      "investigation_status": "ACQUISITION_FAILED",
+      "initial_generated_queries": 13,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 16,
+        "provider_attempts_observed": 44,
+        "query_records_without_provider_observations": 4,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 41,
+        "candidate_urls_observed_in_search_sample": 301,
+        "candidate_search_discards": {
+          "LOW_QUERY_COVERAGE": 39,
+          "SUBJECT_MISMATCH": 163,
+          "INVALID_URL": 5,
+          "HEADLINE_MISMATCH": 25
+        },
+        "normalized_candidates": 19,
+        "accepted_candidates": 22,
+        "selected_acquisition_attempts": 3,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 2,
+          "HTTP_FAILURE": 1
+        },
+        "successful_body_captures": 0,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "PUBLISHER_RESOLUTION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "duplicate_captures": [],
+        "post_read_qualification": []
+      },
+      "provider_outcomes": {
+        "bing:CANDIDATES": 8,
+        "google-news-rss:CANDIDATES": 5,
+        "yahoo:TRANSPORT_FAILURE": 9,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1,
+        "bing:IRRELEVANT_RESULTS": 18,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 2
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_48a5596554e8",
+          "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPYm5zLXZOdnRBZlF6eTBrdEozZVJjZUdWVlhjNlBqVHdxNWhoWWowT2MzeU54anJpVTk2YXBOMWZ2eUFwRG9STkJzdkw2c0d0UmZRaHZSb25qNUg5WGN6Y2FIbHlGaGpzZW5nbmpGYUtpb3M3dUIyNUVTNVNEak1kUjljanFsZWVaQ0N5cGF5N2VsWEk",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_0c7927047dbb",
+          "url": "https://news.google.com/rss/articles/CBMiuwFBVV95cUxQZmF5U2Y1S3JnUHlQX1oxT25iYlNyaW5RTFRwRnhZWUlmQUhwems3bnlZZWhqdGFiMFdWa3lHY1M5X3hZdk1uaG9zcjRlMEtDVnhlaFFPZVFZMUNoYmpQdV9jMXgyLTkzLTQ3MW44amV6elhHZVpJVk1xeWhKMjlyYURVTURMdjNiSG53Rm9uaVNwQlhGa1dvbjJyYm85NnpOTzBCWnZNT2VzWjQ5ODhvT3V0UWFJR3hHZU9Z",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_hub_afb3885cd559",
+          "url": "https://news.samsung.com",
+          "failure_kind": "HTTP_FAILURE",
+          "http_status": 403,
+          "resolver_query_statuses": []
+        }
+      ],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 88.01024629999665
+    }
+  ],
+  "limitations": "Observed samples, not unique URL totals, complete HTTP accounting, calibrated entailment or independent accuracy; saved-mode attempts are historical observations."
+}

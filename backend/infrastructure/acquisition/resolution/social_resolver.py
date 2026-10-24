@@ -499,17 +499,17 @@ class EntitySubredditResolver:
 
         # 1. Exact Brand Mapping
         for brand, (sector, candidates) in self.BRAND_SPECIFIC_MAP.items():
-            if clean_q == brand or clean_q in brand or brand in clean_q:
+            if self._word_boundary_match(brand, clean_q):
                 return sector, list(candidates)
 
         # 2. Sector Keyword Heuristics
-        if any(w in clean_q for w in ("nifty", "sensex", "india", "inr", "crore", "lakh", "sebi")):
+        if any(self._word_boundary_match(w, clean_q) for w in ("nifty", "sensex", "india", "inr", "crore", "lakh", "sebi")):
             return "indian_markets", list(self.SECTOR_SUBREDDIT_MAP["indian_markets"])
-        if any(w in clean_q for w in ("gpu", "chip", "semiconductor", "tsmc", "foundry", "blackwell")):
+        if any(self._word_boundary_match(w, clean_q) for w in ("gpu", "chip", "semiconductor", "tsmc", "foundry", "blackwell")):
             return "semiconductor_hardware", list(self.SECTOR_SUBREDDIT_MAP["semiconductor_hardware"])
-        if any(w in clean_q for w in ("ai", "llm", "gpt", "model", "neural", "deepseek", "anthropic")):
+        if any(self._word_boundary_match(w, clean_q) for w in ("ai", "llm", "gpt", "model", "neural", "deepseek", "anthropic")):
             return "ai_tech", list(self.SECTOR_SUBREDDIT_MAP["ai_tech"])
-        if any(w in clean_q for w in ("ev", "battery", "car", "vehicle", "fsd", "autopilot")):
+        if any(self._word_boundary_match(w, clean_q) for w in ("ev", "battery", "car", "vehicle", "fsd", "autopilot")):
             return "automotive_ev", list(self.SECTOR_SUBREDDIT_MAP["automotive_ev"])
 
         # 3. Default to broad market communities

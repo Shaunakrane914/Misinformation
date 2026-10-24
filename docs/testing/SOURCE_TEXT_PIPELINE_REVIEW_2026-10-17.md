@@ -1,5 +1,26 @@
 # Source capture, readable text and frontend review — 2026-10-17
 
+Latest [source-to-report repair and six bounded live observations](REPORT_COMPLETION_AND_FOUR_AGENT_CHECK_2026-10-20.md)
+correct Adobe's heading/title loss and preserve the substantive captured paragraph.
+1,555 full / 1,347 fast tests and 12 offline browser states pass. **Not fully
+fixed:** Dyson/Mary Barra only reach background publisher hubs, not article
+evidence; Trending freshness-query effect remains unverified live. Zero AI,
+no commit/push/merge/deployment. Earlier statements below remain dated history.
+
+Latest [Adobe post-fix live verification](ADOBE_POSTFIX_LIVE_CHECK_2026-10-20.md):
+query-driven acquisition now demonstrated in one case (842-word article), but
+heading-only synthesis keeps research acceptance open. No AI, push or deployment.
+
+## Continuation checkpoint — 2026-10-20
+
+See [autonomous-discovery repair](AUTONOMOUS_DISCOVERY_REPAIR_2026-10-20.md)
+and [handoff](../handoffs/2026-10-20_AUTONOMOUS_DISCOVERY_REPAIR.md) for the latest
+implementation and actual 1,532 full / 1,324 fast tests. Two authorized fresh
+Adobe/Dyson cases still did not establish useful autonomous article acquisition.
+Current saved-byte processing removes an index false finding; resolver scheduling
+and asset rejection are offline verified, not freshly live proven. Zero AI calls;
+uncommitted/unpushed, no merge/deployment. The original report below is dated history.
+
 ## Decision
 
 **Extraction improvements verified in bounded samples; overall research acceptance remains FAIL / PARTIAL.**
@@ -252,3 +273,13 @@ and deployment acceptance are not established by these checks. The implementatio
 checkpoint's five hosted jobs subsequently passed; see the
 [exact publication/CI closeout](../handoffs/2026-10-17_SOURCE_TEXT_PIPELINE_CLOSEOUT.md).
 CI does not remove the live research-quality failures.
+
+## Later continuation — 2026-10-19
+
+The [production-failure repair report](PRODUCTION_RESEARCH_FAILURE_REPAIR_2026-10-19.md)
+and [handoff](../handoffs/2026-10-19_PRODUCTION_RESEARCH_FAILURE_REPAIR.md) supersede
+implementation status for the focused acquisition/contradiction/risk projection
+defects, not this historical source-quality evidence. Local 1,498 full / 1,290
+fast tests and 12 saved-SSE frontend states pass. No new provider/AI requests,
+commit, push or deployment; upstream specialist retrieval and independent
+research-quality acceptance remain unverified.

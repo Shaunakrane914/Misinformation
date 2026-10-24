@@ -417,8 +417,9 @@ def test_trending_source_independence_clustering():
     # Grouped under primary narrative without inflating independence
     t = trends[0]
     assert t.source_count == 3
-    # Independent source groups are strictly bounded, not 3 separate independent publishers
-    assert t.independent_source_count <= 2
+    # Copy/source grouping is observable; independent reporting is not proven.
+    assert t.independent_source_count is None
+    assert t.independence_status == "NOT_ESTABLISHED"
 
 
 # =============================================================================

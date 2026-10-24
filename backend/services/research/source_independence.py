@@ -6,8 +6,8 @@ AP, Bloomberg, PTI, PR Newswire) to prevent false independent corroboration.
 """
 
 import re
-import hashlib
-from typing import Dict, List, Optional, Set, Tuple
+from typing import Dict, List, Optional, Tuple
+from urllib.parse import urlsplit
 
 from backend.services.research.research_models import EvidenceItem
 from backend.services.research.proposition_grounding import publisher_key
@@ -24,16 +24,22 @@ WIRE_SERVICE_MARKERS: Dict[str, List[str]] = {
     "Asian News International": ["ani news", "asian news international", "(ani) -"],
     "Indo-Asian News Service": ["ians news", "indo-asian news service"],
 }
+WIRE_PUBLISHERS = {"reuters.com": "Reuters", "apnews.com": "Associated Press",
+                   "bloomberg.com": "Bloomberg", "prnewswire.com": "PR Newswire",
+                   "businesswire.com": "Business Wire", "globenewswire.com": "GlobeNewswire"}
 
 
 class SourceIndependenceEngine:
-    """Clusters syndicated stories and calculates true independence scores."""
+    """Conservative reporting-origin heuristics, not authenticated independence."""
 
     def __init__(self):
         pass
 
     def _detect_wire_source(self, item: EvidenceItem) -> Optional[str]:
         """Detect if an article originates from a wire service or press distributor."""
+        direct = WIRE_PUBLISHERS.get(publisher_key(item.canonical_url))
+        if direct:
+            return direct
         text = f"{item.title} {item.snippet} {item.content[:500]} {item.source_name}".lower()
         for wire_name, markers in WIRE_SERVICE_MARKERS.items():
             for m in markers:
@@ -105,7 +111,66 @@ class SourceIndependenceEngine:
                 it.independence_score = 1.0 if it.primary_source else 0.85
                 clusters_map.setdefault(it.independence_group, []).append(it.id)
 
+        # A story family is not a reporting origin. Two differently titled wire
+        # stories cannot corroborate each other as two independent sources.
+        # Recompute from observed URLs/attribution, never caller-assigned groups.
+        clusters_map = {}
+        for item, origin in zip(items, reporting_origin_groups(items)):
+            item.independence_group = origin
+            if origin:
+                clusters_map.setdefault(origin, []).append(item.id)
+            else:
+                item.independence_score = 0.0
         return items, clusters_map
 
 
 source_independence_engine = SourceIndependenceEngine()
+
+
+def reporting_origin_groups(items: List[EvidenceItem]) -> List[str]:
+    """Group shared publishers, observed wires and duplicate titles transitively.
+
+    Ignore preassigned group IDs. Missing/invalid HTTP source URLs have no known
+    origin. Components are conservative dependence signals, not proof that the
+    remaining components reported independently. This does not mutate evidence.
+    """
+    parents = list(range(len(items)))
+    signals = []
+    owners = {}
+
+    def root(index):
+        while parents[index] != index:
+            parents[index] = parents[parents[index]]
+            index = parents[index]
+        return index
+
+    for index, item in enumerate(items):
+        try:
+            parsed = urlsplit(item.canonical_url or "")
+            publisher = publisher_key(item.canonical_url) if parsed.scheme in {"http", "https"} and parsed.hostname else ""
+        except (TypeError, ValueError):
+            publisher = ""
+        keys = []
+        if publisher:
+            keys.append(f"publisher_{publisher}")
+            wire = source_independence_engine._detect_wire_source(item)
+            if wire:
+                keys.append(f"wire_{wire.lower().replace(' ', '_')}")
+            slug = source_independence_engine._normalize_title_slug(item.title)
+            if len(slug) >= 15:
+                keys.append(f"synd_title_{slug}")
+        signals.append(keys)
+        for key in keys:
+            if key in owners:
+                parents[root(index)] = root(owners[key])
+            else:
+                owners[key] = index
+
+    components = {}
+    for index, keys in enumerate(signals):
+        components.setdefault(root(index), set()).update(keys)
+    # Stable descriptive keys; prefer wire attribution when present. A shared
+    # publisher joins different wires too, preventing a wire-first overcount.
+    labels = {index: min(keys, key=lambda key: (not key.startswith("wire_"), key))
+              for index, keys in components.items() if keys}
+    return [labels.get(root(index), "") for index in range(len(items))]

@@ -207,8 +207,19 @@ class CorpusAssemblyStage:
             telemetry["ai_passage_advice"] = read_telemetry["ai_passage_advice"]
         from backend.services.research.acquisition_status import acquisition_outcome
         telemetry["acquisition"] = acquisition_outcome(all_executed_queries, len(investigated_items),
-                                                       read_telemetry.get("attempted", 0))
+                                                       read_telemetry.get("attempted", 0), read_telemetry.get("read_failure_reason"))
         telemetry["acquisition_timing"] = trace_dict.get("timing", {})
+        from backend.services.research.discovery_funnel import build_discovery_funnel
+        telemetry["discovery_funnel"] = build_discovery_funnel(plan, all_query_records, raw_candidates,
+            accepted_candidates, all_rejected_audit, read, findings)
+        telemetry["ai_search_advice"] = follow_up_telemetry.get("ai_search_advice", {"status": "DISABLED"})
+        observed = [row for row in telemetry["discovery_funnel"]["provider_observations"]
+                    if row.get("status") != "UNINSTRUMENTED_TRANSPORT"]
+        if not investigated_items and not raw_candidates and observed and all(row.get("status") in {
+                "TRANSPORT_FAILURE", "HTTP_ERROR", "TIMEOUT"} for row in observed):
+            telemetry["acquisition"].update(status="ACQUISITION_FAILED", message=
+                "Unable to retrieve evidence: all instrumented discovery providers failed. "
+                "Legacy fallback transport, if invoked, is unverified. This is not proof that no relevant information exists.")
 
         summary = (
             f"Forensic investigation for '{request.target}' across {len(multi_queries)} channels yielded "

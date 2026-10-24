@@ -22,6 +22,29 @@ from backend.schemas.evidence_inspection import public_capture_metadata
 logger = logging.getLogger(__name__)
 
 
+def attribution_metadata(item):
+    """Preserve only observed fields needed for the article-to-speaker join.
+
+    The public inspection projection intentionally omits internal read markers.
+    Losing them inside this adapter used to turn an acquired reported quotation
+    back into unattributable text. These markers establish capture structure, not
+    speaker authentication; arbitrary provider metadata/headers are not copied.
+    """
+    meta = item.get("metadata", {}) if isinstance(item, dict) else getattr(item, "metadata", {})
+    meta = meta if isinstance(meta, dict) else {}
+    result = public_capture_metadata(item)
+    for key in ("read_success", "layer2_eligible"):
+        if type(meta.get(key)) is bool:
+            result[key] = meta[key]
+    if meta.get("acquisition_objective") in {"PUBLIC_STATEMENT", "IDENTITY_THREAT"}:
+        result["acquisition_objective"] = meta["acquisition_objective"]
+    page = meta.get("page_metadata") or {}
+    kind = page.get("body_kind") or (page.get("body_quality") or {}).get("body_kind")
+    if kind in {"ARTICLE_BODY", "SOURCE_INDEX", "PUBLISHER_HOMEPAGE", "BACKGROUND_REFERENCE"}:
+        result.setdefault("page_metadata", {})["body_kind"] = kind
+    return result
+
+
 def utcnow_iso() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
 
@@ -103,7 +126,7 @@ def normalize_item(
         "retrieval_method": "Agent Reach Omni-Retrieval",
         "content_depth": item.get("content_depth") or observed_metadata.get("content_depth") or "UNKNOWN",
         "metadata": {
-            **public_capture_metadata(item),
+            **attribution_metadata(item),
             "likes": item.get("likes"),
             "retweets": item.get("retweets"),
             "score": item.get("score"),
@@ -286,7 +309,7 @@ def search_personal_evidence(
                 "selection_decision": sel_dec,
                 "selection_reason": sel_rea,
                 "metadata": {
-                    **public_capture_metadata(f),
+                    **attribution_metadata(f),
                     "content_depth": depth,
                     "query_id": q_id,
                     "query_class": q_class,

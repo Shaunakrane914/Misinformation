@@ -5,6 +5,7 @@ historical snapshot tracking, /api/trending-news, and backward compatibility.
 """
 
 from datetime import datetime, timezone, timedelta
+from types import SimpleNamespace
 import pytest
 from starlette.testclient import TestClient
 from backend.main import app
@@ -13,6 +14,29 @@ from backend.main import app
 @pytest.fixture
 def client():
     return TestClient(app)
+
+
+def mock_acquired_research(monkeypatch, fetcher):
+    """Mock the qualified research boundary, not an unbudgeted snippet fallback.
+
+    This is an API/renderer contract fixture, not real acquisition evidence.
+    Completed empty research must not silently launch another source sweep.
+    """
+    from backend.services.research.research_models import EvidenceItem
+
+    def investigate(request):
+        rows = fetcher(None, request.target)
+        evidence = [EvidenceItem(id=f"contract-{idx}", canonical_url=row["link"], channel="news",
+            title=request.target + ": " + row["title"], content=row.get("summary", ""),
+            snippet=row.get("summary", ""), relevant_excerpt=row.get("summary", ""),
+            source_name=row["source"], published_at=row["published"],
+            source_role="SECONDARY", content_depth="PARTIAL_CONTENT", extraction_status="SUBSTANTIVE_CANDIDATE",
+            metadata={"read_success": True, "layer2_eligible": True,
+                      "page_metadata": {"published": row["published"], "body_kind": "ARTICLE_BODY"}})
+            for idx, row in enumerate(rows)]
+        return SimpleNamespace(evidence=evidence, telemetry={}, findings=[], contradictions=[], research_corpus={})
+
+    monkeypatch.setattr("backend.agents.trending.agent.research_engine.investigate", investigate)
 
 
 def test_trending_scan_entity_mode_api(client: TestClient, monkeypatch):
@@ -40,6 +64,7 @@ def test_trending_scan_entity_mode_api(client: TestClient, monkeypatch):
         ]
 
     monkeypatch.setattr(TrendingAgent, "fetch_news", mock_fetch_news)
+    mock_acquired_research(monkeypatch, mock_fetch_news)
 
     resp = client.post("/api/trending/scan", json={
         "asset_name": "Deepika Padukone",
@@ -93,6 +118,7 @@ def test_trending_scan_discovery_mode_api(client: TestClient, monkeypatch):
         ]
 
     monkeypatch.setattr(TrendingAgent, "fetch_news", mock_fetch_news)
+    mock_acquired_research(monkeypatch, mock_fetch_news)
 
     resp = client.post("/api/trending/scan", json={
         "query": "What's trending in India?",
@@ -123,6 +149,7 @@ def test_trending_repeat_scan_velocity_snapshot(client: TestClient, monkeypatch)
         ]
 
     monkeypatch.setattr(TrendingAgent, "fetch_news", mock_fetch_news)
+    mock_acquired_research(monkeypatch, mock_fetch_news)
 
     # Scan 1
     resp1 = client.post("/api/trending/scan", json={"asset_name": "OpenAI"})

@@ -30,14 +30,16 @@ class CorroborationEngine:
         independent_groups: Set[str] = set()
         primary_sources: List[str] = []
         wire_repetitions: int = 0
+        from backend.services.research.source_independence import reporting_origin_groups
 
-        for item in supporting_items:
+        for item, group in zip(supporting_items, reporting_origin_groups(supporting_items)):
+            if not group:
+                continue  # Unknown origin cannot add corroboration by ID alone.
             # Check if primary
             if item.primary_source or item.source_role == SourceRole.PRIMARY.value:
                 primary_sources.append(item.source_name or item.canonical_url)
 
             # Determine group
-            group = item.independence_group or f"indep_{item.id}"
             if group in independent_groups:
                 wire_repetitions += 1
             else:

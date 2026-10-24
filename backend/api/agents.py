@@ -29,6 +29,14 @@ from backend.api.research_stream import EventStreamResponse
 
 logger = logging.getLogger(__name__)
 
+
+def _sync_investigation_status(payload, report):
+    """Publish transport failure explicitly without mutating builder inputs."""
+    if isinstance(payload, dict) and report.investigation_status:
+        payload["investigation_status"] = report.investigation_status
+        if report.investigation_status == "ACQUISITION_FAILED":
+            payload["status"] = "ACQUISITION_FAILED"
+
 router = APIRouter()
 
 # Lazy-loaded agent getters
@@ -39,7 +47,7 @@ _personal_agent = None
 _scan_locks = {name: threading.Lock() for name in ("scout", "trending", "brandshield", "personal")}
 
 
-def _run_bounded_scan(name, callback):
+def _run_bounded_scan(name, callback, research_profile=None):
     """Protect mutable agent session state without blocking the event loop.
 
     Busy scans are rejected, not queued without limit. The lock is acquired in
@@ -49,8 +57,17 @@ def _run_bounded_scan(name, callback):
     if not lock.acquire(blocking=False):
         raise HTTPException(status_code=429, detail="Agent is handling another scan; retry shortly", headers={"Retry-After": "3"})
     try:
+        from backend.application.research.progress import requested_research_profile
+        profile_token = requested_research_profile.set(research_profile)
         report_progress(phase="analysis", completed=1, total=3)
-        result = callback()
+        try:
+            from backend.infrastructure.llm.advisory_policy import investigation_scope
+            # Several research passes inside one API scan share ONE advisory
+            # allowance; nested pipeline scopes must not reopen the budget.
+            with investigation_scope():
+                result = callback()
+        finally:
+            requested_research_profile.reset(profile_token)
         report_progress(phase="report", completed=2, total=3)
         return result
     finally:
@@ -91,16 +108,19 @@ def get_personal_agent():
 # ── Request Models ───────────────────────────────────────────────────────────
 
 class ScoutAnalyzeRequest(BaseModel):
+    research_profile: Optional[Literal["QUICK", "STANDARD", "DEEP"]] = None
     ticker: str = Field(..., min_length=1, max_length=80, description="Stock ticker symbol (e.g. 'NVDA', 'TATAMOTORS.NS')", json_schema_extra={"example": "NVDA"})
     query: Optional[str] = Field(None, max_length=2000, description="Optional search query override.", json_schema_extra={"example": "Nvidia Blackwell AI chip delay packaging defect"})
 
 
 class BrandShieldScanRequest(BaseModel):
+    research_profile: Optional[Literal["QUICK", "STANDARD", "DEEP"]] = None
     brand_name: str = Field(..., min_length=1, max_length=200, description="Brand, company, or trademark name.", json_schema_extra={"example": "Sony Electronics"})
     query: Optional[str] = Field(None, max_length=2000, description="Optional search query override or specific product line.", json_schema_extra={"example": "Nike Air Max counterfeit fake store"})
 
 
 class PersonalScanRequest(BaseModel):
+    research_profile: Optional[Literal["QUICK", "STANDARD", "DEEP"]] = None
     name: str = Field(..., min_length=1, max_length=200, description="Full name of VIP, executive, creator, or public figure.", json_schema_extra={"example": "Sam Altman"})
     official_handles: Optional[Dict[str, str]] = Field(None, description="Legacy field name: user-supplied candidate handles, not authenticated official identities.", json_schema_extra={"example": {"twitter": "@sama"}})
     phone_number: Optional[str] = Field(None, description="Optional phone number for Twilio security alerts.")
@@ -113,6 +133,7 @@ class PersonalScanRequest(BaseModel):
 
 
 class TrendingScanRequest(BaseModel):
+    research_profile: Optional[Literal["QUICK", "STANDARD", "DEEP"]] = None
     asset_name: Optional[str] = Field(None, description="Company, asset, or entity name.", json_schema_extra={"example": "Deepika Padukone"})
     query: Optional[str] = Field(None, description="Search query or discovery question.", json_schema_extra={"example": "What's trending in India?"})
     identifiers: Optional[Any] = Field(None, description="Keywords, cashtags, or dict of URLs/hashtags.")
@@ -209,7 +230,7 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
     try:
         def analyze():
             return get_scout_agent().analyze_stock(ticker=request.ticker, query=request.query)
-        result = await asyncio.to_thread(_run_bounded_scan, "scout", analyze)
+        result = await asyncio.to_thread(_run_bounded_scan, "scout", analyze, request.research_profile)
 
         # If stock price is 0, attempt live quote fallback
         if not result.get("stock", {}).get("current_price") and "entity_resolution" not in result:
@@ -224,6 +245,7 @@ async def analyze_stock_live(request: ScoutAnalyzeRequest):
                 scout_data=result,
             )
             result["unified_report"] = _unified.to_dict()
+            _sync_investigation_status(result, _unified)
         except Exception as _ur_err:
             logger.warning(f"[Scout] unified_report assembly note: {_ur_err}")
             result["unified_report"] = None
@@ -251,7 +273,7 @@ async def trending_scan(request: TrendingScanRequest):
             return get_trending_agent().scan(
                 target_name, identifiers=ident_dict, category=request.category, mode=request.mode
             )
-        result = await asyncio.to_thread(_run_bounded_scan, "trending", scan)
+        result = await asyncio.to_thread(_run_bounded_scan, "trending", scan, request.research_profile)
         try:
             from backend.services.alerts import check_critical_threats
             result["alerts"] = await asyncio.to_thread(check_critical_threats, result)
@@ -266,6 +288,7 @@ async def trending_scan(request: TrendingScanRequest):
                 trend_data=result,
             )
             result["unified_report"] = _unified.to_dict()
+            _sync_investigation_status(result, _unified)
         except Exception as _ur_err:
             logger.warning(f"[Trending] unified_report assembly note: {_ur_err}")
             result["unified_report"] = None
@@ -347,7 +370,7 @@ async def personal_watch_scan(request: PersonalScanRequest):
             "query": request.query
         }
         results = await asyncio.to_thread(
-            _run_bounded_scan, "personal", lambda: process_personal_watch(vip_profile)
+            _run_bounded_scan, "personal", lambda: process_personal_watch(vip_profile), request.research_profile
         )
 
         # ── Unified Report (schema v3.8.0) ────────────────────────────────────
@@ -358,6 +381,7 @@ async def personal_watch_scan(request: PersonalScanRequest):
             )
             if isinstance(results, dict):
                 results["unified_report"] = _unified.to_dict()
+                _sync_investigation_status(results, _unified)
         except Exception as _ur_err:
             logger.warning(f"[PersonalWatch] unified_report assembly note: {_ur_err}")
 
@@ -383,7 +407,7 @@ async def brandshield_scan(request: BrandShieldScanRequest):
     try:
         def scan():
             return get_brandshield_agent().scan(brand_name=request.brand_name, query=request.query)
-        results = await asyncio.to_thread(_run_bounded_scan, "brandshield", scan)
+        results = await asyncio.to_thread(_run_bounded_scan, "brandshield", scan, request.research_profile)
 
         # ── Unified Report (schema v3.8.0) ────────────────────────────────────
         try:
@@ -393,6 +417,7 @@ async def brandshield_scan(request: BrandShieldScanRequest):
             )
             if isinstance(results, dict):
                 results["unified_report"] = _unified.to_dict()
+                _sync_investigation_status(results, _unified)
         except Exception as _ur_err:
             logger.warning(f"[BrandShield] unified_report assembly note: {_ur_err}")
 

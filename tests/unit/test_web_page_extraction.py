@@ -36,18 +36,20 @@ def test_article_observations_are_bounded_and_explicitly_unverified():
     assert details["declared_structured_data"] == [{
         "@type": "NewsArticle", "headline": "Publisher says it happened",
         "datePublished": "2026-10-10", "author_name": "Editorial",
+        "declaration_basis": "PUBLISHER_JSONLD_UNVERIFIED",
     }]
 
 
 def test_page_observation_limits_and_malformed_json_ld():
     html = "<html><head><script type='application/ld+json'>{invalid}</script></head><body><main>"
-    html += "".join(f"<a href='https://example.org/{i}'>{i}</a>" for i in range(30))
+    html += "".join(f"<a href='https://example.org/{i}'>{i}</a>" for i in range(160))
     html += "<table>" + "".join("<tr><td>Cell</td></tr>" for _ in range(15)) + "</table>"
-    html += "</main></body></html>"
+    html += "</main><nav>" + "".join(f"<a href='/archive/{i}'>News archive {i}</a>" for i in range(24)) + "</nav></body></html>"
     details = extract_observed_page_details(
         BeautifulSoup(html, "html.parser"), "https://example.com/page"
     )
     assert details["content_scope"] == "main"
-    assert len(details["observed_links"]) == 20
+    assert len(details["observed_links"]) == 120
+    assert len(details["discovery_links"]) == 16
     assert len(details["tables"][0]) == 10
     assert details["declared_structured_data"] == []

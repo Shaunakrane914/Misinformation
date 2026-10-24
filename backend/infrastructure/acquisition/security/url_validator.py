@@ -8,6 +8,7 @@ or evidence retrieval agents.
 
 import ipaddress
 import logging
+import math
 import queue
 import socket
 import threading
@@ -95,6 +96,56 @@ def is_ip_blocked(ip_str: str) -> bool:
 _DNS_CACHE: dict = {}
 _DNS_CACHE_TTL = 300.0  # 5 minutes
 _DNS_SLOTS = threading.BoundedSemaphore(8)
+_DNS_CACHE_LOCK = threading.Lock()
+_DNS_FAILURE_TTL = 1.0  # Resolver errors are not durable security decisions.
+
+
+class DNSResolutionError(OSError):
+    """A failed bounded lookup, not evidence that a destination is private."""
+
+    def __init__(self, kind: str, message: str, *, attempts: int = 1):
+        super().__init__(message)
+        self.failure_kind = kind
+        self.resolver_attempts = attempts
+
+
+def validation_failure_kind(reason: str) -> str:
+    """Classify the legacy (bool, reason) API without weakening its deny result."""
+    reason = str(reason or "").lower()
+    if "deadline exhausted" in reason:
+        return "BUDGET_EXHAUSTED"
+    if "dns validation capacity exhausted" in reason:
+        return "DNS_CAPACITY"
+    if "dns validation timed out" in reason:
+        return "DNS_TIMEOUT"
+    if "dns resolution failed" in reason:
+        return "DNS_ERROR"
+    return "SSRF_BLOCKED"
+
+
+def _resolve_once(host: str, port: int, timeout: float) -> list:
+    if timeout <= 0:
+        raise DNSResolutionError("DNS_TIMEOUT", "DNS validation timed out", attempts=0)
+    if not _DNS_SLOTS.acquire(blocking=False):
+        raise DNSResolutionError("DNS_CAPACITY", "DNS validation capacity exhausted")
+    results = queue.Queue(maxsize=1)
+
+    def resolve():
+        try:
+            results.put((socket.getaddrinfo(host, port, type=socket.SOCK_STREAM), None))
+        except Exception as error:
+            results.put((None, error))
+        finally:
+            _DNS_SLOTS.release()
+
+    threading.Thread(target=resolve, name="public-dns-validation", daemon=True).start()
+    try:
+        addresses, error = results.get(timeout=max(0.001, timeout))
+    except queue.Empty as error:
+        raise DNSResolutionError("DNS_TIMEOUT", "DNS validation timed out") from error
+    if error is not None:
+        raise error
+    return addresses
 
 
 def resolve_public_addresses(host: str, port: int, timeout: float = 2.5,
@@ -107,26 +158,27 @@ def resolve_public_addresses(host: str, port: int, timeout: float = 2.5,
     """
     if not host or not (0 < port < 65536) or (port not in ALLOWED_PORTS and not allow_custom_ports):
         raise ValueError("Invalid public HTTP destination")
-    if not _DNS_SLOTS.acquire(blocking=False):
-        raise TimeoutError("DNS validation capacity exhausted")
-    results = queue.Queue(maxsize=1)
-
-    def resolve():
+    if not math.isfinite(timeout) or timeout <= 0:
+        raise DNSResolutionError("DNS_TIMEOUT", "DNS validation timed out", attempts=0)
+    from backend.infrastructure.acquisition.network.budget import remaining_timeout
+    deadline = time.monotonic() + remaining_timeout(timeout)
+    # Retry only an OS-declared transient lookup failure. NXDOMAIN/11001,
+    # unsafe answers, timeout/capacity and HTTP failures are not retry signals.
+    transient_codes = {socket.EAI_AGAIN, 11002}  # EAI_AGAIN / Windows WSATRY_AGAIN
+    for attempt in (1, 2):
         try:
-            results.put((socket.getaddrinfo(host, port, type=socket.SOCK_STREAM), None))
-        except Exception as error:
-            results.put((None, error))
-        finally:
-            _DNS_SLOTS.release()
-
-    # A stalled OS resolver must neither block the caller nor prevent shutdown.
-    threading.Thread(target=resolve, name="public-dns-validation", daemon=True).start()
-    try:
-        addresses, error = results.get(timeout=max(0.001, timeout))
-    except queue.Empty as error:
-        raise TimeoutError("DNS validation timed out") from error
-    if error is not None:
-        raise error
+            addresses = _resolve_once(host, port, deadline - time.monotonic())
+            break
+        except socket.gaierror as error:
+            if error.errno in transient_codes and attempt == 1 and time.monotonic() < deadline:
+                continue
+            raise DNSResolutionError("DNS_ERROR", f"DNS lookup failed ({error.errno})", attempts=attempt) from error
+        except DNSResolutionError:
+            raise
+        except OSError as error:
+            # OS resource/socket failures during getaddrinfo are still failed
+            # DNS observations, not evidence that an IP violated SSRF policy.
+            raise DNSResolutionError("DNS_ERROR", f"DNS lookup failed ({error.errno})", attempts=attempt) from error
     if not addresses or any(not item[4] or is_ip_blocked(item[4][0]) for item in addresses):
         raise ValueError("DNS resolved to a private, reserved, or empty address set")
     return addresses
@@ -134,7 +186,8 @@ def resolve_public_addresses(host: str, port: int, timeout: float = 2.5,
 
 def clear_dns_cache() -> None:
     """Clear internal DNS cache."""
-    _DNS_CACHE.clear()
+    with _DNS_CACHE_LOCK:
+        _DNS_CACHE.clear()
 
 
 def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool, str]:
@@ -189,11 +242,11 @@ def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool,
             return False, f"Port {port} is not permitted. Only standard web ports (80, 443) are allowed."
 
     # 6. Check DNS cache
-    now = time.time()
-    if host_lower in _DNS_CACHE:
-        cached_valid, cached_err, expiry = _DNS_CACHE[host_lower]
-        if now < expiry:
-            return cached_valid, cached_err
+    now = time.monotonic()
+    with _DNS_CACHE_LOCK:
+        cached = _DNS_CACHE.get(host_lower)
+    if cached and now < cached[2]:
+        return cached[0], cached[1]
 
     # 7. Check if hostname is directly an IP literal
     try:
@@ -215,9 +268,15 @@ def validate_url_safe(url: str, allow_custom_ports: bool = False) -> Tuple[bool,
                     _DNS_CACHE[host_lower] = (False, err, now + _DNS_CACHE_TTL)
                     return False, err
             _DNS_CACHE[host_lower] = (True, "", now + _DNS_CACHE_TTL)
-        except socket.gaierror as e:
+        except (DNSResolutionError, socket.gaierror) as e:
             err = f"DNS resolution failed for hostname '{host}': {e}"
-            _DNS_CACHE[host_lower] = (False, err, now + 60.0)
+            # Keep brief negative caching for bursts, but do not turn an OS
+            # resolver outage into a 60s unsafe-host decision across requests.
+            _DNS_CACHE[host_lower] = (False, err, time.monotonic() + _DNS_FAILURE_TTL)
+            return False, err
+        except TimeoutError as e:
+            err = f"DNS resolution failed for hostname '{host}': {e}"
+            _DNS_CACHE[host_lower] = (False, err, time.monotonic() + _DNS_FAILURE_TTL)
             return False, err
         except Exception as e:
             err = f"Error validating host '{host}': {e}"

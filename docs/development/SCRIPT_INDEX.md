@@ -1,5 +1,102 @@
 # Aegis Protocol — Authoritative Development Script Index
 
+## Saved-body selection and bounded transport diagnosis — 2026-10-23
+
+[`compare_saved_passage_selection.py`](../../scripts/audits/compare_saved_passage_selection.py)
+accepts repeated `--case "label=before.json=after.json" --output <new-json>`.
+It verifies raw article ID/URL/body-hash inventories and exact excerpt offsets;
+it never performs acquisition or treats replay as live recall.
+
+[`probe_public_transport.py`](../../scripts/audits/probe_public_transport.py)
+requires separate live authorization and explicit `--allow-live --url <https-url>
+--output <new-json>`. It permits only one or two credential-free GETs, each
+bounded to five seconds / 64 KiB / one attempt / zero redirects. Robots responses
+are not article or agent acceptance. The October 22 two-case live authorization
+and probes are consumed, not standing permission. See the
+[repair report](../testing/ACQUISITION_RELIABILITY_AND_EVIDENCE_SELECTION_2026-10-22.md).
+
+## Bound human-review collection — 2026-10-21
+
+[`reviewer_acceptance.py`](../../scripts/evaluation/reviewer_acceptance.py) reuses
+the existing research-quality scorer and adds hash-bound human acquisition,
+entailment and usefulness judgments plus per-agent summaries. No AI/network calls,
+invented labels or automatic research/release PASS. See
+[instructions and blank sheet](../testing/RESEARCH_QUALITY_HUMAN_REVIEW_2026-10-21.md).
+
+## Four-agent completion replay — 2026-10-20
+
+[`replay_specialist_completion.py`](../../scripts/audits/replay_specialist_completion.py)
+reprocesses hash-validated genuine saved pools through all four current API/SSE
+routes with networking/generation blocked. Saved query/read failures remain
+historical observations, and Trending uses the original temporal reference.
+Use fresh temporary outputs. This is output regression, not fresh discovery;
+see the [handoff](../handoffs/2026-10-20_FOUR_AGENT_COMPLETION.md).
+
+## Expanded harvesting and raw-pool replay — 2026-10-20
+
+[`run_terminal_agent_quality.py`](../../scripts/audits/run_terminal_agent_quality.py)
+supports QUICK/STANDARD/DEEP profiles, mode-bounded `--timeout-seconds` and
+`--max-deep-reads`, plus lower `--max-http-admissions`. DEEP ceilings are
+240s / 24 reads / 120 native HTTP admissions, not the earlier six-read audit cap.
+No live authorization is implied; all seven recent cases are consumed.
+
+[`requalify_raw_pool.py`](../../scripts/audits/requalify_raw_pool.py) accepts
+`--input <full-pool-or-native-json> --output <new-json> --target <subject> --domain <domain>`.
+Network-blocked, AI-disabled exact-source requalification; optional explicit
+`--disambiguate-aliases` excludes ambiguous aliases, never repairs prior verdicts.
+
+[`summarize_raw_harvest.py`](../../scripts/audits/summarize_raw_harvest.py) accepts
+`--run-dir <saved-run> --output <new-json>` for body-free measured proof. No app
+imports/network/model calls. [Runbook](../operations/EXPANDED_HARVESTING_RUNBOOK.md)
+and [actual results](../testing/EXPANDED_HARVESTING_TWO_LAYER_REPORT_2026-10-20.md).
+
+## Strict advisory live-run opt-in — 2026-10-20
+
+[`run_terminal_agent_quality.py`](../../scripts/audits/run_terminal_agent_quality.py)
+keeps ordinary acquisition/replay AI-disabled. Separately authorized
+`--allow-live-ai` batches allow at most five inputs and use one non-generation
+model capability GET before opening the existing shared reservation scope.
+Only the configured supported strict Flash-Lite model, max three calls per batch,
+one per investigation, max 160 output tokens, no fallback/retries. Summary records
+model check, reserved calls, statuses/latencies and supplied usage. Existing policy
+ledger/cooldown is retained; failed checks continue deterministically. Not a
+standing authorization or a production enablement switch. See
+[observed outcomes](../testing/P0_AUTONOMOUS_RESEARCH_OVERHAUL_2026-10-20.md).
+
+## Added offline report projection — 2026-10-20
+
+[`rebuild_saved_agent_reports.py`](../../scripts/audits/rebuild_saved_agent_reports.py)
+uses `--capture-dir <saved-native-directory> --output-dir <new-directory>`.
+Network blocked before report imports; no AI/acquisition. Retains native data,
+updates only shared report/status in new copies, and records original hashes.
+Emits explicitly synthetic **result-only SSE**, not live progress. Use with the
+browser runner's `--replay-dir` to inspect final report presentation without new
+provider calls. Missing original `_meta.query` fails closed. See
+[scope/results](../testing/REPORT_COMPLETION_AND_FOUR_AGENT_CHECK_2026-10-20.md).
+
+## Added saved-funnel summary — 2026-10-20
+
+[`summarize_discovery_funnel.py`](../../scripts/audits/summarize_discovery_funnel.py)
+uses `--capture-dir <saved-directory> --output <new-file.json>`; no app imports,
+network or AI, and refuses an existing output. Records capture/source hashes and
+the saved code version's funnel counters, not independent accuracy. In saved
+reprocessing, historical provider observations and blocked invocations must not
+be interpreted as fresh traffic. The terminal runner now accepts explicit
+`--timeout-seconds` and `--max-deep-reads` audit bounds. The earlier 120s/six-read
+limit is superseded by the explicit profile-specific caps above.
+See [discovery repair](../testing/AUTONOMOUS_DISCOVERY_REPAIR_2026-10-20.md);
+its two-case live authorization is consumed, not a standing sweep permission.
+
+## Added diagnostic — 2026-10-19
+
+[`scripts/audits/probe_public_search.py`](../../scripts/audits/probe_public_search.py):
+explicit `--allow-live`, public `--query`, and new `--output-dir`. Default three
+top-level plain/quoted Bing + Yahoo fetches; optional single probe using
+`--news-only`, `--observed-url`, or `--html-alternative`. One attempt each with
+normal bounded/SSRF-safe HTTP. No app/AI credentials; no challenge bypass.
+Captured HTML is untrusted data; exit 0 records observations, not source health.
+See [trial-loop report](../testing/SEARCH_RESOLUTION_TRIAL_LOOP_2026-10-19.md).
+
 **Phase:** 7.2 (Workspace Organization, Repository Hygiene & Safe Structural Consolidation)  
 **Status:** Authoritative Script Catalog & Usage Guide  
 **Historical Phase 7.2 Tracked Scripts:** 40

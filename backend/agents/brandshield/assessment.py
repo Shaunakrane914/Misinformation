@@ -167,6 +167,9 @@ def heuristic_threat_synthesis(
     """
     brand_name = brand_info.get("brand", "Unknown")
     target_name = brand_info.get("resolved_entity", brand_name)
+    from backend.agents.brandshield.intelligence import classify_brand_source, contextualize_brand_threat
+    original_evidence = evidence_list
+    source_assessments = [classify_brand_source(record, target_name) for record in original_evidence]
 
     # Real execution stage: invoke BrandShieldExtractionEngine
     # Generic company/about text must not create complaint/attacker signals.
@@ -177,7 +180,43 @@ def heuristic_threat_synthesis(
     for record in evidence_list:
         from backend.services.research.passage_records import captured_passages, classify_passage
         from backend.services.research.source_quality import canonical_hostname, hostname_matches, ENCYCLOPEDIA_DOMAINS
+        promotion_context = " ".join(str(record.get(key) or "") for key in ("title", "content", "snippet"))
+        promotion = re.search(r"\b(?:giveaways?|sweepstakes|free gifts?)\b", promotion_context, re.I)
+        abuse = re.search(r"\b(?:scams?|phishing|fraud\w*|counterfeit\w*|impersonat\w*|fake|unauthori[sz]ed|complaints?|stolen|credential\w*|password\w*|decept\w*|victims?)\b", promotion_context, re.I)
+        financial_solicitation = re.search(
+            r"\b(?:crypto(?:currency)?|bitcoin|ethereum|btc|eth|usdt|wallets?)\b"
+            r"|\b(?:send|deposit|transfer|pay)\b.{0,55}\b(?:receive|double|return|back|prize)\b",
+            promotion_context, re.I)
+        adversarial_source = str(record.get("source_role") or "").upper() == "ADVERSARIAL"
+        publisher_reporting = str(record.get("platform") or "").lower() in {"web", "news", "rss"}
+        if promotion and publisher_reporting and not abuse and not financial_solicitation and not adversarial_source:
+            # A publisher reporting a promotional offer is not observing a
+            # fraudulent actor. This does not authenticate the offer either.
+            record["intelligence_class"] = "PROMOTIONAL_REFERENCE"
+            continue
         passages = captured_passages(record, "brand", target_name)
+        # Preserve a strict shared-research excerpt even when its incident
+        # context spans adjacent paragraphs. Revalidate the exact native span;
+        # a title/snippet or stale offsets cannot become supporting evidence.
+        selected_span = record.get("selected_research_excerpt") or {}
+        body = record.get("content") or ""
+        start, end = selected_span.get("start"), selected_span.get("end")
+        from backend.infrastructure.acquisition.adapters.web.page_extraction import recovered_span_allowed
+        capture_meta = record.get("metadata") or record.get("raw_metadata") or {}
+        capture_page = capture_meta.get("page_metadata") or {}
+        if (selected_span.get("qualified") is True and type(start) is int and type(end) is int
+                and 0 <= start < end <= len(body) and 40 <= end - start <= 2000
+                and body[start:end] == selected_span.get("text")
+                and recovered_span_allowed(body, capture_page, start, end)
+                and not any(p["start"] == start and p["end"] == end for p in passages)):
+            import hashlib
+            text = body[start:end]
+            digest = hashlib.sha256((str(record.get("evidence_id")) + ":" + str(start) + ":" + text).encode()).hexdigest()[:16]
+            passages.append({"passage_id": "ps_" + digest, "evidence_id": record.get("evidence_id"),
+                "start": start, "end": end, "text": text, "content_role": classify_passage(text, domain="brand"),
+                "relevance": "DIRECTLY_RELEVANT", "attribution": "SOURCE_ASSERTION", "claim_status": "UNVERIFIED",
+                "source_url": record.get("url"), "published_at": record.get("published_at"),
+                "selection_method": "VALIDATED_SHARED_RESEARCH_SPAN"})
         record["passages"] = passages
         record["intelligence_class"] = classify_passage(record.get("content") or record.get("snippet") or "", domain="brand")
         if any(hostname_matches(canonical_hostname(record.get("url", "")), host) for host in ENCYCLOPEDIA_DOMAINS):
@@ -417,22 +456,67 @@ def heuristic_threat_synthesis(
             threat["title"] = "Source-reported enforcement involving " + target_name
             threat["summary"] = "The source reports enforcement or legal action. Its citation URL identifies the reporting source, not an observed seller, impersonator or phishing endpoint."
             threat["actionable_recommendation"] = "Review the source date, alleged conduct and recorded disposition. Do not treat a reporting publisher as an attacker or issue a takedown based on this record."
+        elif threat.get("type") != "CUSTOMER_COMPLAINT" and any(re.search(
+                r"\b(?:spot|avoid|prevent|protect|beware|tips|guide)\b.{0,80}\b(?:scams?|fraud|phishing|counterfeit)\b"
+                r"|\bhow\b.{0,60}\b(?:scams?|fraud|phishing)\b.{0,40}\b(?:work|target|trick|happen)\w*\b",
+                str(ev.get("title", "")), re.I) for ev in matched):
+            # An educational article discusses attack patterns; its publisher
+            # is not the seller/attacker described by those examples. Retain
+            # attributed guidance, not a high-severity listing or takedown.
+            threat.update(source_relation="REPORTS_SAFETY_ADVICE", actor_url=None,
+                type="SAFETY_ADVISORY", threat_type="SAFETY_ADVISORY", severity="info",
+                is_threat=False, confidence=None, evidence_class="SOURCE_PUBLISHED_ADVICE",
+                title="Source-published scam awareness involving " + target_name,
+                summary="The source describes scam patterns and protective guidance. This capture does not establish a specific active counterfeit listing or identify the reporting publisher as an attacker.",
+                actionable_recommendation="Inspect the cited examples and their dates. Do not issue a takedown or treat awareness guidance as an observed attacker listing.")
+            # Legacy report adapters prefer description over summary.
+            threat["description"] = threat["summary"]
     # Multiple legacy keyword engines can classify the same enforcement article
     # as counterfeit, safety and phishing. Retain one attributed report instead
     # of inflating current incident counts or inventing three observed actors.
+    # The two keyword engines above identify candidate categories, not actors or
+    # adjudicated incidents. Apply one source-relative boundary to both outputs.
+    # Selected spans identify support, but source context must still include
+    # captured enforcement/disposition elsewhere in that same acquired body.
+    # Reclassifying only a shortened excerpt could turn a historical seizure
+    # report back into an apparent current counterfeit listing.
+    ev_map = {ev.get("evidence_id"): ev for ev in original_evidence}
+    contextual = []
+    for threat in threats:
+        sources = [ev_map[eid] for eid in threat.get("evidence_ids", []) if eid in ev_map]
+        normalized = contextualize_brand_threat(threat, sources, target_name)
+        if normalized is not None:
+            contextual.append(normalized)
+    # Guidance is deliberately excluded from attack screening, but remains a
+    # useful attributed non-threat observation, including on official domains.
+    advisories = []
+    for record, assessment in zip(original_evidence, source_assessments):
+        if assessment["classification"] not in {"OFFICIAL_WARNING", "WARNING_ADVISORY"}:
+            continue
+        warning = contextualize_brand_threat({"threat_id": "warning_" + str(record.get("evidence_id")),
+            "evidence_ids": [record.get("evidence_id")], "origin_evidence_id": record.get("evidence_id"),
+            "supporting_passages": [p for p in record.get("passages", []) if p.get("content_role") == "SAFETY_WARNING"][:4]}, [record], target_name)
+        if warning:
+            advisories.append(warning)
+    threats = contextual
     reports, deduplicated = set(), []
     for threat in threats:
-        if threat.get("source_relation") == "REPORTS_ENFORCEMENT":
-            key = tuple(sorted(threat.get("evidence_ids", [])))
+        if threat.get("is_threat") is not True:
+            key = (threat.get("classification"), tuple(sorted(threat.get("evidence_ids", []))))
             if key in reports:
                 continue
             reports.add(key)
         deduplicated.append(threat)
     threats = deduplicated
-    report_ids = {identity for key in reports for identity in key}
+    report_ids = {identity for _, identities in reports for identity in identities}
     counterfeits = [c for c in counterfeits if not set(c.get("evidence_ids", [])) & report_ids]
     impersonations = [i for i in impersonations if not set(i.get("evidence_ids", [])) & report_ids]
-    dossiers = build_investigation_dossiers(brand_info, threats, claims, evidence_list)
+    dossiers = build_investigation_dossiers(brand_info, threats, claims, original_evidence)
+    observed = any(t.get("is_threat") for t in threats)
+    recommendations = (["Preserve the exact captured suspicious behavior and verify ownership and affiliation before escalation."] if observed
+        else ["Review the source-reported allegations, dates and named parties; obtain direct actor evidence before escalation."] if threats
+        else ["Review the captured preventive guidance. A warning alone is not evidence of an active attacker."] if advisories
+        else ["No qualified brand incident was established in this sample. Inspect acquisition failures and relevance decisions; this does not establish absence of threats."])
 
     return {
         "threats": threats[:6],
@@ -442,10 +526,11 @@ def heuristic_threat_synthesis(
         "counterfeits": counterfeits[:4],
         "impersonations": impersonations[:4],
         "review_intel": review_intel,
-        "recommendations": [
-            f"Verify seller credentials on reported {target_name} listings.",
-            "Review primary corporate communication channels for official statements."
-        ],
+        "source_assessments": source_assessments,
+        "advisories": advisories,
+        "assessment_status": "OBSERVED_SUSPICIOUS_ACTIVITY" if observed
+            else "SOURCE_REPORTS_ONLY" if threats or advisories else "INSUFFICIENT_EVIDENCE",
+        "recommendations": recommendations,
         "ai_enrichment": "OFFLINE_HEURISTIC"
     }
 

@@ -73,6 +73,7 @@ class ChannelQueryDispatcher:
                 retry_after_seconds=error.retry_after_seconds,
                 rate_limit_remaining=error.rate_limit_remaining,
                 rate_limit_reset_at=error.rate_limit_reset_at,
+                failure_kind=error.failure_kind,
             )
         except Exception as error:
             telemetry.update(status="FAILED", error=str(error))

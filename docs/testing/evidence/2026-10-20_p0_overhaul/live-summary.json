@@ -1,0 +1,149 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "f71cff883b42a9668872d148a624e37e267708f858b8eed6c46027228373317d",
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Samsung",
+      "http_status": 200,
+      "seconds": 41.59,
+      "result_event": true,
+      "error_events": [],
+      "records": 1,
+      "words": 455,
+      "kb": 12.0,
+      "findings": [],
+      "summary": "Report retains 0 finding(s), 1 source record(s) and 17 discovery-only candidate(s). Claim support requires review of captured passages and acquisition limits.",
+      "source_titles": [
+        "Yahoo Finance - Stock Market Live, Quotes, Business & Finance News"
+      ],
+      "background_evidence_ids": []
+    },
+    {
+      "case_id": "02-scout",
+      "agent": "scout",
+      "input": "Unilever",
+      "http_status": 200,
+      "seconds": 14747.9,
+      "result_event": false,
+      "error_events": [
+        {
+          "analysis_id": "381aba10-9d87-4979-a9e9-387f10783a25",
+          "status": 504,
+          "message": "Observation deadline reached. Server work may still continue; do not repeatedly retry."
+        }
+      ],
+      "records": 0,
+      "words": 0,
+      "kb": 0.0,
+      "findings": [],
+      "summary": null,
+      "source_titles": [],
+      "background_evidence_ids": []
+    },
+    {
+      "case_id": "03-brandshield",
+      "agent": "brandshield",
+      "input": "Adidas",
+      "http_status": 200,
+      "seconds": 23.25,
+      "result_event": true,
+      "error_events": [],
+      "records": 0,
+      "words": 0,
+      "kb": 0.0,
+      "findings": [],
+      "summary": "Adidas: 0 retained source record(s), including 0 profile(s); 0 capture(s) contain task-related text and 0 lead(s) are discovery-only. This sample cannot determine counterfeit/impersonation exposure; background text is not a finding or proof of safety. No media forensics or exhaustive platform coverage is established.",
+      "source_titles": [],
+      "background_evidence_ids": []
+    },
+    {
+      "case_id": "04-trending",
+      "agent": "trending",
+      "input": "grid-scale energy storage",
+      "http_status": 200,
+      "seconds": 35.14,
+      "result_event": true,
+      "error_events": [],
+      "records": 0,
+      "words": 0,
+      "kb": 0.0,
+      "findings": [],
+      "summary": "Unable to retrieve evidence: 4 success, 8 failed; selected source reads did not acquire a body. This does not mean no information exists about the subject.",
+      "source_titles": [],
+      "background_evidence_ids": []
+    },
+    {
+      "case_id": "05-personal_watch",
+      "agent": "personal_watch",
+      "input": "Sundar Pichai",
+      "http_status": 200,
+      "seconds": 45.17,
+      "result_event": true,
+      "error_events": [],
+      "records": 1,
+      "words": 9,
+      "kb": 0.068,
+      "findings": [],
+      "summary": "Sundar Pichai: 1 retained source record(s), including 1 profile(s); 0 capture(s) contain task-related text and 8 lead(s) are discovery-only. This sample cannot determine identity-abuse or synthetic-media exposure; background text is not a finding or proof of safety. 5 selected read(s) failed or timed out. No media forensics or exhaustive platform coverage is established.",
+      "source_titles": [
+        "Profile: Sundar Pichai (@sundarpichai)"
+      ],
+      "background_evidence_ids": []
+    }
+  ],
+  "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
+  "mock_llm": false,
+  "live_ai_authorized": true,
+  "requested_audit_bounds": {
+    "research_timeout_seconds": 120.0,
+    "max_deep_reads": 6
+  },
+  "advisory_model_check": {
+    "status": "PROVIDER_DECLARED_SUPPORTED",
+    "model": "gemini-3.5-flash-lite",
+    "http_status": 200
+  },
+  "final_application_sha256": "f71cff883b42a9668872d148a624e37e267708f858b8eed6c46027228373317d",
+  "stable_application": true,
+  "live_ai_calls_reserved": 3,
+  "live_ai_observations": [
+    {
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "search_suggestion",
+      "http_status": 200,
+      "status": "GENERATED",
+      "latency_ms": 1172.69,
+      "provider_model": "gemini-3.5-flash-lite",
+      "usage_source": "provider",
+      "prompt_tokens": 391,
+      "completion_tokens": 90,
+      "total_tokens": 481
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "search_suggestion",
+      "http_status": 200,
+      "status": "GENERATED",
+      "latency_ms": 1438.33,
+      "provider_model": "gemini-3.5-flash-lite",
+      "usage_source": "provider",
+      "prompt_tokens": 389,
+      "completion_tokens": 51,
+      "total_tokens": 440
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "search_suggestion",
+      "http_status": 200,
+      "status": "GENERATED",
+      "latency_ms": 1317.48,
+      "provider_model": "gemini-3.5-flash-lite",
+      "usage_source": "provider",
+      "prompt_tokens": 396,
+      "completion_tokens": 48,
+      "total_tokens": 444
+    }
+  ]
+}

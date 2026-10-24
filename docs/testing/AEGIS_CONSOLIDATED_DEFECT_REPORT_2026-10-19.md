@@ -4,6 +4,12 @@ Date: 2026-10-19 (Asia/Calcutta). Status: **OPEN — research-quality acceptance
 
 ## 1. Executive assessment
 
+Subsequent implementation: [focused offline repair report](PRODUCTION_RESEARCH_FAILURE_REPAIR_2026-10-19.md)
+and [handoff](../handoffs/2026-10-19_PRODUCTION_RESEARCH_FAILURE_REPAIR.md).
+This original register is preserved as the pre-repair observation. Selected
+entries now have code/regression fixes; upstream retrieval and the entire
+17-entry register are **not** declared accepted or closed.
+
 The latest local runs prove that acquisition can retrieve financial PDFs and a
 publisher article, and that the frontend can render their returned records.
 They do **not** prove that all four agents reliably produce useful intelligence.

@@ -655,6 +655,8 @@ class RetrievalPlanner:
         evidence_items: Optional[List[Any]] = None,
         contradictions: Optional[List[Dict[str, Any]]] = None,
         max_follow_ups: int = 5,
+        domain: str = "",
+        intent: str = "",
     ) -> List[Dict[str, Any]]:
         """
         Generate adaptive follow-up queries based on discovered evidence (Requirement 11).
@@ -694,6 +696,17 @@ class RetrievalPlanner:
                 "reason": reason,
                 "suggested_channels": channels,
             })
+
+        if domain in {"brand", "personal"}:
+            # Capitalized headline fragments are not named entities. Preserve
+            # the specialist objective even when discovery returns only a
+            # profile/storefront. Advice is optional, never required here.
+            topics = (("counterfeit enforcement report", "phishing impersonation warning") if domain == "brand"
+                      else ("deepfake impersonation scam report", "false quote original statement"))
+            for topic in topics:
+                _add_follow_up(f'"{clean_target}" {topic}', "task_evidence_gap",
+                               "Seek task-related source passages, not generic entity relationships", "q_001", ["web", "news"])
+            return follow_ups
 
         # 1. Contradictions resolution trigger
         if contradictions:

@@ -1,0 +1,963 @@
+{
+  "mode": "GENUINE_SAVED_RESPONSE_COMPARISON_NOT_LIVE",
+  "network_calls": 0,
+  "model_calls": 0,
+  "cases": [
+    {
+      "label": "Tata Motors",
+      "before_response_sha256": "123e901820f039eeec748ec57c294ff6139a60c2910a157a721b157e2ded98f4",
+      "after_response_sha256": "47f6cd501c54b3b5aa122bccee14e0b44e6f69eeee59ed656903e233e46f9b68",
+      "raw_article_identity_body_preserved": true,
+      "articles": [
+        {
+          "before": {
+            "source_id": "ev_hv_0ae539934fa897babde0",
+            "url": "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html",
+            "published_at": "2026-08-27T20:50:44+05:30",
+            "body_sha256": "2d9cc5693611a78037129891e289ec64f051a3e5ae86e011c819537857cbed9e",
+            "body_words": 1186,
+            "selected_words": 689,
+            "selected_passage": "“The Tata name carries forward our heritage, our values and the trust earned over generations, while the ‘.cars’ following it gives our passenger vehicle business a distinct, modern and future-facing expression,” Chandra said while unveiling the identity. “It is a brand system designed to grow across products, technologies, experiences and models,” he added. The introduction of Tata.cars does not mean the disappearance of Tata.ev, the separate identity Tata has built for its electric passenger vehicles. Tata.ev will continue to be used for the company’s electric cars and its dedicated EV dealerships, while Tata.cars becomes the broader customer-facing identity of the passenger vehicle business. The change, therefore, creates a clearer brand architecture for Tata’s automotive businesses at a time when the group has structurally separated passenger and commercial vehicles. Chandra positioned the new identity as more than a change in nomenclature, arguing that the company needed to evolve the way it presented itself to a new generation of Indian car buyers. “As India enters a new chapter and we aspire higher, we must reflect on how we will connect with a fundamentally different generation of Indians,” he said, describing the emerging consumer as expressive and ambitious and “ready to go further, expect more and define its own path”. “Brands are not simply defined by what they offer. They are defined by what they stand for, how they make people feel and whether they reflect who they are,” he said. The identity change comes as Tata Motors’ passenger vehicle business crosses 7 million customers, a milestone that Chandra described as a springboard for the company’s next phase. “Seven million is not just another milestone. It is a starting point that launches us into our next chapter,” he said. The company intends to use the next phase to reach more customers, strengthen its position in electric vehicles and improve the experience around buying, servicing and owning its vehicles. “Growth for us has never been defined by numbers alone. It is about creating products that anticipate evolving aspirations. It is about advancing design, technology and software in ways that make mobility more meaningful,” Chandra said. “It is about reimagining retail, service and ownership experiences so that every interaction reflects the same care and thoughtfulness as the vehicle itself,” he added. The brand shift also follows a larger corporate restructuring at Tata Motors. The group had announced the demerger to give its passenger vehicle and commercial vehicle businesses greater strategic focus and agility. Following completion of the restructuring, the passenger vehicle company includes the Indian PV operations and its interests in Jaguar Land Rover, while the CV business operates separately. In his FY26 shareholder address, Tata Sons Chairman N Chandrasekaran had described the year as the company’s first as an “exclusive, personal mobility company” following the demerger and said Tata Motors Passenger Vehicles would focus on building “distinctive, trusted and aspirational brands” that connect more meaningfully with customers. He also referred to the introduction of a “more purposeful brand proposition” at the passenger vehicle business. The Tata.cars identity builds on that strategy while retaining the Tata name at its core. Chandra said the company had evolved alongside India’s changing automobile market over more than three decades — from the Indica, Safari and Sierra to the Nexon and Punch and, more recently, its electric vehicle portfolio. “Our products have evolved. Our design has evolved. Our technology, retail environments, digital platforms and ownership experiences continue to evolve. And today, our customer-facing identity evolves as well to reflect this transformation,” he said. “What does not change is who we are — the heritage and the values we stand for.” The new brand proposition attempts to connect mobility with the aspirations of Indian consumers rather than positioning the company merely as a manufacturer of cars. “For them, a car is more than transportation. It is an enabler. It closes the distance between aspiration and opportunity, between where people are and where they want to be,” Chandra said. “That is the promise at the heart of Tata.cars,” he added. The company sums up that proposition in its new line: “When India sits in a Tata car, nothing’s too far.”",
+            "start": 2480,
+            "end": 6918,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_0ae539934fa897babde0",
+            "url": "https://www.business-standard.com/companies/news/tata-motors-pv-unveils-tata-cars-as-new-customer-facing-brand-identity-126082701429_1.html",
+            "published_at": "2026-08-27T20:50:44+05:30",
+            "body_sha256": "2d9cc5693611a78037129891e289ec64f051a3e5ae86e011c819537857cbed9e",
+            "body_words": 1186,
+            "selected_words": 209,
+            "selected_passage": "Tata Motors Passenger Vehicles (TMPV) on Thursday unveiled Tata.cars as its new customer-facing identity, giving its passenger vehicle business a distinct brand expression as the company enters what Managing Director and Chief Executive Officer Shailesh Chandra described as its “next chapter”. The new identity will progressively be visible across dealerships and showrooms, digital touchpoints, after-sales and service, and marketing communications. The company’s legal and registered name will, however, continue to be Tata Motors Passenger Vehicles Limited, and will be used for statutory filings, manufacturing plants and official contracts. The move comes after the demerger of the erstwhile Tata Motors into independently run passenger vehicle and commercial vehicle businesses, and gives the passenger vehicle company a sharper consumer-facing identity of its own. The demerger became effective on October 1, 2025. The commercial vehicle undertaking was transferred to the erstwhile TML Commercial Vehicles Ltd, which subsequently became Tata Motors Ltd, while the passenger vehicle business remained with the company now named Tata Motors Passenger Vehicles Ltd. The commercial vehicle business already operates with a distinct identity and the brand promise “Better Always”, which Tata Motors describes as guiding its standalone CV business following the demerger. For the passenger vehicle business, “Nothing’s too far” will form the central brand promise underpinning Tata.cars.",
+            "start": 605,
+            "end": 2095,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        }
+      ],
+      "primary_topic_coverage": null,
+      "financial_context_summary": {
+        "current_reporting_context_count": 1,
+        "historical_background_count": 0,
+        "unknown_or_future_date_count": 0,
+        "corporate_strategy_context_count": 1,
+        "incomplete_financial_context_count": 0,
+        "historical_background_evidence_ids": [],
+        "period_alignment": "NOT_RECONCILED",
+        "filing_comparison_status": "NOT_PERFORMED",
+        "interpretation": "Publication recency is a display heuristic, not fiscal-period alignment or proof of current company performance."
+      },
+      "financial_observations": [
+        {
+          "evidence_id": "ev_hv_0ae539934fa897babde0",
+          "published_at": "2026-08-27T20:50:44+05:30",
+          "publication_scope": "RECENT_REPORTING_CONTEXT",
+          "observed_at": "2026-10-21T04:49:24.691587+00:00",
+          "content_kind": "CORPORATE_STRATEGY_CONTEXT",
+          "financial_assessment_eligible": false,
+          "observed_period_labels": [],
+          "title_period_labels": [],
+          "observed_currencies": [],
+          "result_scope": "FORECAST_OR_MIXED_REPORTED_CONTEXT",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        }
+      ],
+      "filing_comparison_status": "NOT_PERFORMED",
+      "investigation_status": "COMPLETED"
+    },
+    {
+      "label": "Infosys",
+      "before_response_sha256": "747c44ef7ede8763c9cddd57938cd511b2a3ad2262c548ad5de20ffa107e51db",
+      "after_response_sha256": "f135e61eafad2cacdfb90a9466431d7de98e86639b3eb3ddf3ad739ac3f7cc76",
+      "raw_article_identity_body_preserved": true,
+      "articles": [
+        {
+          "before": {
+            "source_id": "ev_hv_687178f2b42ab46619c9",
+            "url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+            "published_at": "Wed, 07 Jul 2010 17:00:00 GMT",
+            "body_sha256": "1c80c3cb8eba6e0f66589d361ca04f42710570f60b20e4690fa3074e0d585869",
+            "body_words": 295,
+            "selected_words": 31,
+            "selected_passage": "Most analysts expect Infosys, which reports June quarter results on Tuesday, to raise its revenue growth guidance in dollar terms for 2010/11 to 17-19 percent from 16-18 percent given in April.",
+            "start": 760,
+            "end": 953,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_687178f2b42ab46619c9",
+            "url": "https://www.ciol.com/infy-shares-hit-record-ahead-earnings/",
+            "published_at": "Wed, 07 Jul 2010 17:00:00 GMT",
+            "body_sha256": "1c80c3cb8eba6e0f66589d361ca04f42710570f60b20e4690fa3074e0d585869",
+            "body_words": 295,
+            "selected_words": 31,
+            "selected_passage": "Most analysts expect Infosys, which reports June quarter results on Tuesday, to raise its revenue growth guidance in dollar terms for 2010/11 to 17-19 percent from 16-18 percent given in April.",
+            "start": 760,
+            "end": 953,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_86a2a468764f5354194d",
+            "url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+            "published_at": "2025-09-09T09:41:17+05:30",
+            "body_sha256": "afdfe0fdb113bd7dc4da76e27f665971d0954dfa065e2351809f1865c88da015",
+            "body_words": 609,
+            "selected_words": 55,
+            "selected_passage": "\"...the Board of Directors of Infosys Limited will consider a proposal for buyback of fully paid-up equity shares of the company at its meeting to be held on September 11, 2025, in accordance with the Securities and Exchange Board of India (Buy-Back of Securities) Regulations, 2018, as amended,\" the company said in a regulatory filing.",
+            "start": 1692,
+            "end": 2029,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_86a2a468764f5354194d",
+            "url": "https://www.indiatvnews.com/business/markets/infy-share-price-infosys-buyback-stock-surges-4-per-cent-it-stocks-rally-too-2025-09-09-1007338",
+            "published_at": "2025-09-09T09:41:17+05:30",
+            "body_sha256": "afdfe0fdb113bd7dc4da76e27f665971d0954dfa065e2351809f1865c88da015",
+            "body_words": 609,
+            "selected_words": 55,
+            "selected_passage": "\"...the Board of Directors of Infosys Limited will consider a proposal for buyback of fully paid-up equity shares of the company at its meeting to be held on September 11, 2025, in accordance with the Securities and Exchange Board of India (Buy-Back of Securities) Regulations, 2018, as amended,\" the company said in a regulatory filing.",
+            "start": 1692,
+            "end": 2029,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_21ce99c140aa1a649354",
+            "url": "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/",
+            "published_at": "2026-04-23T09:14:47+05:30",
+            "body_sha256": "0509cb43930aadef0c0fe4a3ab6e0a8fc5840c5689977217d93e55b34c184569",
+            "body_words": 1941,
+            "selected_words": 27,
+            "selected_passage": "On a sequential basis, Infosys posted 27.76% QoQ increase in its consolidated net profit from Rs 6,654 crore reported in Q3FY26 to Rs 8,501 crore this quarter.",
+            "start": 4390,
+            "end": 4549,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_21ce99c140aa1a649354",
+            "url": "https://www.financialexpress.com/business/industry/infosys-q4-results-live-updates-2026-infy-share-price-company-profit-earnings-dividend-report-updates/4215721/",
+            "published_at": "2026-04-23T09:14:47+05:30",
+            "body_sha256": "0509cb43930aadef0c0fe4a3ab6e0a8fc5840c5689977217d93e55b34c184569",
+            "body_words": 1941,
+            "selected_words": 27,
+            "selected_passage": "On a sequential basis, Infosys posted 27.76% QoQ increase in its consolidated net profit from Rs 6,654 crore reported in Q3FY26 to Rs 8,501 crore this quarter.",
+            "start": 4390,
+            "end": 4549,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        }
+      ],
+      "primary_topic_coverage": null,
+      "financial_context_summary": {
+        "current_reporting_context_count": 1,
+        "historical_background_count": 2,
+        "unknown_or_future_date_count": 0,
+        "corporate_strategy_context_count": 0,
+        "incomplete_financial_context_count": 0,
+        "historical_background_evidence_ids": [
+          "ev_hv_687178f2b42ab46619c9",
+          "ev_hv_86a2a468764f5354194d"
+        ],
+        "period_alignment": "NOT_RECONCILED",
+        "filing_comparison_status": "NOT_PERFORMED",
+        "interpretation": "Publication recency is a display heuristic, not fiscal-period alignment or proof of current company performance."
+      },
+      "financial_observations": [
+        {
+          "evidence_id": "ev_hv_687178f2b42ab46619c9",
+          "published_at": "Wed, 07 Jul 2010 17:00:00 GMT",
+          "publication_scope": "HISTORICAL_BACKGROUND",
+          "observed_at": "2026-10-21T04:50:30.201752+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": false,
+          "observed_period_labels": [
+            "2010/11"
+          ],
+          "title_period_labels": [],
+          "observed_currencies": [
+            "DOLLAR_SYMBOL_UNSPECIFIED"
+          ],
+          "result_scope": "FORECAST_OR_MIXED_REPORTED_CONTEXT",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        },
+        {
+          "evidence_id": "ev_hv_86a2a468764f5354194d",
+          "published_at": "2025-09-09T09:41:17+05:30",
+          "publication_scope": "HISTORICAL_BACKGROUND",
+          "observed_at": "2026-10-21T04:50:30.208912+00:00",
+          "content_kind": "CORPORATE_EVENT_ASSERTION",
+          "financial_assessment_eligible": false,
+          "observed_period_labels": [],
+          "title_period_labels": [],
+          "observed_currencies": [],
+          "result_scope": "FORECAST_OR_MIXED_REPORTED_CONTEXT",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        },
+        {
+          "evidence_id": "ev_hv_21ce99c140aa1a649354",
+          "published_at": "2026-04-23T09:14:47+05:30",
+          "publication_scope": "RECENT_REPORTING_CONTEXT",
+          "observed_at": "2026-10-21T04:50:30.195938+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": true,
+          "observed_period_labels": [
+            "Q3FY26"
+          ],
+          "title_period_labels": [
+            "Q4FY26",
+            "FY27"
+          ],
+          "observed_currencies": [
+            "RUPEE_LABEL_UNSPECIFIED"
+          ],
+          "result_scope": "REPORTED_SOURCE_ASSERTION",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        }
+      ],
+      "filing_comparison_status": "NOT_PERFORMED",
+      "investigation_status": "COMPLETED"
+    },
+    {
+      "label": "Apple",
+      "before_response_sha256": "5d5c03b596a0e88ef8a8d5d3d1176f51b9c8aa557bee151be994ed0307ebdc9f",
+      "after_response_sha256": "afa1521a9038aac0c39c7572f916d3cb50c5465a1e044b681d70eb6821057a92",
+      "raw_article_identity_body_preserved": true,
+      "articles": [
+        {
+          "before": {
+            "source_id": "ev_hv_0b51d15b94025beab21a",
+            "url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+            "published_at": "2026-10-07T20:37:01Z",
+            "body_sha256": "cdf29c2f7f71eb7d59fd6ce9b5cab9433a34f417faa3c0ef9933236869451494",
+            "body_words": 931,
+            "selected_words": 42,
+            "selected_passage": "Nvidia's market value, in other words, is only about 20% bigger than Apple's, even though its latest quarterly profit was about 100% bigger. I think this gap says less about Apple than about how much the market trusts Nvidia's earnings to last.",
+            "start": 556,
+            "end": 800,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_0b51d15b94025beab21a",
+            "url": "https://www.fool.com/investing/2026/10/07/nvidia-earned-about-twice-as-much-as-apple-last-quarter-its-stock-is-worth-only-about-20-more/",
+            "published_at": "2026-10-07T20:37:01Z",
+            "body_sha256": "cdf29c2f7f71eb7d59fd6ce9b5cab9433a34f417faa3c0ef9933236869451494",
+            "body_words": 931,
+            "selected_words": 42,
+            "selected_passage": "Nvidia's market value, in other words, is only about 20% bigger than Apple's, even though its latest quarterly profit was about 100% bigger. I think this gap says less about Apple than about how much the market trusts Nvidia's earnings to last.",
+            "start": 556,
+            "end": 800,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_739973eb0516a3691e32",
+            "url": "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/",
+            "published_at": "2026-10-06T12:35:42+00:00",
+            "body_sha256": "cd96dc7f16a3b12ff8404f14686b15feb80e465f2e8d8a1e35b916969ff86544",
+            "body_words": 1131,
+            "selected_words": 51,
+            "selected_passage": "The Duo launch and the earnings report scheduled for Oct. 29, which Apple has not confirmed, could change my view. Apple would need strong early Duo demand. It would also need gross margin at or above its 47% to 48% guidance and a December-quarter outlook that shows memory costs under control.",
+            "start": 4820,
+            "end": 5114,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_739973eb0516a3691e32",
+            "url": "https://247wallst.com/investing/2026/10/06/apple-aapl-trading-above-analyst-targets-as-memory-costs-crimp-margin-outlook/",
+            "published_at": "2026-10-06T12:35:42+00:00",
+            "body_sha256": "cd96dc7f16a3b12ff8404f14686b15feb80e465f2e8d8a1e35b916969ff86544",
+            "body_words": 1131,
+            "selected_words": 51,
+            "selected_passage": "The Duo launch and the earnings report scheduled for Oct. 29, which Apple has not confirmed, could change my view. Apple would need strong early Duo demand. It would also need gross margin at or above its 47% to 48% guidance and a December-quarter outlook that shows memory costs under control.",
+            "start": 4820,
+            "end": 5114,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_1447d3906f82cc04f9ae",
+            "url": "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/",
+            "published_at": "2026-05-01T18:17:46+00:00",
+            "body_sha256": "3d83464400f18fe5a5ba348ca85805466c16739d0e62674bc6e8c7fe5784d490",
+            "body_words": 1043,
+            "selected_words": 86,
+            "selected_passage": "Apple Inc. (AAPL) reported Q2 FY2026 revenue of $111.2 billion (January–March 2026 quarter), up 17% year-over-year from approximately $94.8 billion in Q2 FY2025, the strongest March-quarter revenue in the company’s history. GAAP diluted earnings per share reached $2.01, a 22% increase from $1.65 in Q2 FY2025, while net income rose to $29.58 billion. As of May 1, 2026, Apple had a market capitalization of approximately $4.17 trillion at a share price of $285.26 (Yahoo Finance, May 1, 2026) (Apple Q2 FY2026 Earnings Press Release, April 2026).",
+            "start": 168,
+            "end": 715,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_1447d3906f82cc04f9ae",
+            "url": "https://news.alphastreet.com/apple-aapl-posts-111-2b-quarter-as-services-hit-a-record-and-a-100b-buyback-resets-capital-return-expectations/",
+            "published_at": "2026-05-01T18:17:46+00:00",
+            "body_sha256": "3d83464400f18fe5a5ba348ca85805466c16739d0e62674bc6e8c7fe5784d490",
+            "body_words": 1043,
+            "selected_words": 86,
+            "selected_passage": "Apple Inc. (AAPL) reported Q2 FY2026 revenue of $111.2 billion (January–March 2026 quarter), up 17% year-over-year from approximately $94.8 billion in Q2 FY2025, the strongest March-quarter revenue in the company’s history. GAAP diluted earnings per share reached $2.01, a 22% increase from $1.65 in Q2 FY2025, while net income rose to $29.58 billion. As of May 1, 2026, Apple had a market capitalization of approximately $4.17 trillion at a share price of $285.26 (Yahoo Finance, May 1, 2026) (Apple Q2 FY2026 Earnings Press Release, April 2026).",
+            "start": 168,
+            "end": 715,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_c275109fca0e4f6518ee",
+            "url": "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/",
+            "published_at": "2026-07-31T17:30:36+00:00",
+            "body_sha256": "b0883d110ca7cd140a2e5183aac41c55483bb8d72929d8b1c0f239591b131620",
+            "body_words": 417,
+            "selected_words": 49,
+            "selected_passage": "JP Morgan’s revision came after Apple reported its quarterly results yesterday and warned that the memory shortage will significantly worsen supply constraints during the September quarter, particularly for the iPhone, iPad, and Mac. Typically, these three segments account for roughly 64% of Apple’s revenue during its fourth fiscal quarter.",
+            "start": 622,
+            "end": 964,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_c275109fca0e4f6518ee",
+            "url": "https://9to5mac.com/2026/07/31/following-apples-q4-2026-guidance-jp-morgan-cuts-its-target-for-the-companys-stock/",
+            "published_at": "2026-07-31T17:30:36+00:00",
+            "body_sha256": "b0883d110ca7cd140a2e5183aac41c55483bb8d72929d8b1c0f239591b131620",
+            "body_words": 417,
+            "selected_words": 49,
+            "selected_passage": "JP Morgan’s revision came after Apple reported its quarterly results yesterday and warned that the memory shortage will significantly worsen supply constraints during the September quarter, particularly for the iPhone, iPad, and Mac. Typically, these three segments account for roughly 64% of Apple’s revenue during its fourth fiscal quarter.",
+            "start": 622,
+            "end": 964,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_7496b708c2d11de1a488",
+            "url": "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29",
+            "published_at": null,
+            "body_sha256": "0ad07d82ce0e50056813faa73d54b3e6325e78f51fefd46396fab7d3536e7844",
+            "body_words": 1687,
+            "selected_words": 52,
+            "selected_passage": "Whatever the chart says today, the underlying business Apple is running is objectively elite. Apple reported stronger-than-expected earnings and revenue for the fiscal third quarter, driven by a 22% increase in iPhone sales, with adjusted EPS of $1.91 against an estimate of $1.89 and revenue of $109.42 billion versus $108.65 billion estimated.",
+            "start": 4883,
+            "end": 5228,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_7496b708c2d11de1a488",
+            "url": "https://blockchain.news/news/20261005-price-prediction-aapl-coiling-below-334-with-october-29",
+            "published_at": null,
+            "body_sha256": "0ad07d82ce0e50056813faa73d54b3e6325e78f51fefd46396fab7d3536e7844",
+            "body_words": 1687,
+            "selected_words": 52,
+            "selected_passage": "Whatever the chart says today, the underlying business Apple is running is objectively elite. Apple reported stronger-than-expected earnings and revenue for the fiscal third quarter, driven by a 22% increase in iPhone sales, with adjusted EPS of $1.91 against an estimate of $1.89 and revenue of $109.42 billion versus $108.65 billion estimated.",
+            "start": 4883,
+            "end": 5228,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_81ed3d17a5c626330926",
+            "url": "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/",
+            "published_at": "2026-04-30Z",
+            "body_sha256": "63accb2e53f72f5522c915dc04953ba47f4a7d71b13ae396aba8955166f2d341",
+            "body_words": 792,
+            "selected_words": 43,
+            "selected_passage": "CUPERTINO, CALIFORNIA Apple today announced financial results for its fiscal 2026 second quarter ended March 28, 2026. The Company posted quarterly revenue of $111.2 billion, up 17 percent year over year. Diluted earnings per share was $2.01, up 22 percent year over year.",
+            "start": 185,
+            "end": 457,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_81ed3d17a5c626330926",
+            "url": "https://www.apple.com/newsroom/2026/04/apple-reports-second-quarter-results/",
+            "published_at": "2026-04-30Z",
+            "body_sha256": "63accb2e53f72f5522c915dc04953ba47f4a7d71b13ae396aba8955166f2d341",
+            "body_words": 792,
+            "selected_words": 43,
+            "selected_passage": "CUPERTINO, CALIFORNIA Apple today announced financial results for its fiscal 2026 second quarter ended March 28, 2026. The Company posted quarterly revenue of $111.2 billion, up 17 percent year over year. Diluted earnings per share was $2.01, up 22 percent year over year.",
+            "start": 185,
+            "end": 457,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          }
+        }
+      ],
+      "primary_topic_coverage": null,
+      "financial_context_summary": {
+        "current_reporting_context_count": 5,
+        "historical_background_count": 0,
+        "unknown_or_future_date_count": 1,
+        "corporate_strategy_context_count": 0,
+        "incomplete_financial_context_count": 0,
+        "historical_background_evidence_ids": [],
+        "period_alignment": "NOT_RECONCILED",
+        "filing_comparison_status": "NOT_PERFORMED",
+        "interpretation": "Publication recency is a display heuristic, not fiscal-period alignment or proof of current company performance."
+      },
+      "financial_observations": [
+        {
+          "evidence_id": "ev_hv_0b51d15b94025beab21a",
+          "published_at": "2026-10-07T20:37:01Z",
+          "publication_scope": "RECENT_REPORTING_CONTEXT",
+          "observed_at": "2026-10-21T04:52:05.895117+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": true,
+          "observed_period_labels": [],
+          "title_period_labels": [],
+          "observed_currencies": [],
+          "result_scope": "REPORTED_SOURCE_ASSERTION",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        },
+        {
+          "evidence_id": "ev_hv_739973eb0516a3691e32",
+          "published_at": "2026-10-06T12:35:42+00:00",
+          "publication_scope": "RECENT_REPORTING_CONTEXT",
+          "observed_at": "2026-10-21T04:52:05.898064+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": true,
+          "observed_period_labels": [],
+          "title_period_labels": [],
+          "observed_currencies": [],
+          "result_scope": "FORECAST_OR_MIXED_REPORTED_CONTEXT",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        },
+        {
+          "evidence_id": "ev_hv_1447d3906f82cc04f9ae",
+          "published_at": "2026-05-01T18:17:46+00:00",
+          "publication_scope": "RECENT_REPORTING_CONTEXT",
+          "observed_at": "2026-10-21T04:52:05.896558+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": true,
+          "observed_period_labels": [
+            "Q2 FY2026",
+            "Q2 FY2025"
+          ],
+          "title_period_labels": [],
+          "observed_currencies": [
+            "DOLLAR_SYMBOL_UNSPECIFIED"
+          ],
+          "result_scope": "FORECAST_OR_MIXED_REPORTED_CONTEXT",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        },
+        {
+          "evidence_id": "ev_hv_c275109fca0e4f6518ee",
+          "published_at": "2026-07-31T17:30:36+00:00",
+          "publication_scope": "RECENT_REPORTING_CONTEXT",
+          "observed_at": "2026-10-21T04:52:05.905620+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": true,
+          "observed_period_labels": [],
+          "title_period_labels": [
+            "Q4 2026"
+          ],
+          "observed_currencies": [],
+          "result_scope": "FORECAST_OR_MIXED_REPORTED_CONTEXT",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        },
+        {
+          "evidence_id": "ev_hv_7496b708c2d11de1a488",
+          "published_at": null,
+          "publication_scope": "UNKNOWN_PUBLICATION_OR_CAPTURE_TIME",
+          "observed_at": "2026-10-21T04:52:05.899693+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": false,
+          "observed_period_labels": [
+            "third quarter"
+          ],
+          "title_period_labels": [],
+          "observed_currencies": [
+            "DOLLAR_SYMBOL_UNSPECIFIED"
+          ],
+          "result_scope": "FORECAST_OR_MIXED_REPORTED_CONTEXT",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        },
+        {
+          "evidence_id": "ev_hv_81ed3d17a5c626330926",
+          "published_at": "2026-04-30Z",
+          "publication_scope": "RECENT_REPORTING_CONTEXT",
+          "observed_at": "2026-10-21T04:52:05.901298+00:00",
+          "content_kind": "FINANCIAL_PERFORMANCE_ASSERTION",
+          "financial_assessment_eligible": true,
+          "observed_period_labels": [
+            "fiscal 2026",
+            "second quarter"
+          ],
+          "title_period_labels": [
+            "second quarter"
+          ],
+          "observed_currencies": [
+            "DOLLAR_SYMBOL_UNSPECIFIED"
+          ],
+          "result_scope": "REPORTED_SOURCE_ASSERTION",
+          "issuer_alignment": "MENTION_ONLY_NOT_AUTHENTICATED",
+          "filing_comparison_status": "NOT_PERFORMED"
+        }
+      ],
+      "filing_comparison_status": "NOT_PERFORMED",
+      "investigation_status": "COMPLETED"
+    },
+    {
+      "label": "NVIDIA",
+      "before_response_sha256": "46114476c1bc833ffaf39d3d01979ad66c02c5283bb66a19cd389d1bc859dbcf",
+      "after_response_sha256": "3271af176c19e402ae8d1f9b2db8279c208d8a6f66d26c182dee2c5fb85aa31e",
+      "raw_article_identity_body_preserved": true,
+      "articles": [
+        {
+          "before": {
+            "source_id": "ev_hv_02f4604b81f7be4c4f01",
+            "url": "https://www.nvidia.com/en-us/software/nvidia-app/",
+            "published_at": null,
+            "body_sha256": "6043eddb7e4e2e9d1ef8557b88d88abcff1d33fe54cc0296c4730fab053082ba",
+            "body_words": 1050,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+            ],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_02f4604b81f7be4c4f01",
+            "url": "https://www.nvidia.com/en-us/software/nvidia-app/",
+            "published_at": null,
+            "body_sha256": "6043eddb7e4e2e9d1ef8557b88d88abcff1d33fe54cc0296c4730fab053082ba",
+            "body_words": 1050,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+            ],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_752b58d4a7ff06bbb1bd",
+            "url": "https://www.nvidia.com/en-us/geforce/",
+            "published_at": null,
+            "body_sha256": "4b8b6dab31b715d3ea6330d448bd85da1daaac3b7d6972e9347b8a2769bad9b4",
+            "body_words": 908,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+            ],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_752b58d4a7ff06bbb1bd",
+            "url": "https://www.nvidia.com/en-us/geforce/",
+            "published_at": null,
+            "body_sha256": "4b8b6dab31b715d3ea6330d448bd85da1daaac3b7d6972e9347b8a2769bad9b4",
+            "body_words": 908,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_MISSING_TIMESTAMP: Candidate lacks a verifiable publication timestamp"
+            ],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_61ce75599c83f81b177f",
+            "url": "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/",
+            "published_at": "2026-10-20T18:38:24+00:00",
+            "body_sha256": "4772ae150d03ae06a2463e0080d20bc33d14fd642d33e68b8c20361ffcd41b3f",
+            "body_words": 415,
+            "selected_words": 100,
+            "selected_passage": "PyTorch is the popular open source toolkit that AI app developers and startups use to build, train, and run AI models. It is, by some accounts, used by 85% of the AI apps. PyTorch was originally developed by Meta (then Facebook) in 2016, long before the world had an inkling that LLMs would change the world. At the time, Nvidia’s GPUs were already the standard hardware for AI research, so many of PyTorch’s features were built to work specifically with them. In 2022, Meta turned PyTorch over to the Linux Foundation, a nonprofit that manages many important open source projects.",
+            "start": 295,
+            "end": 876,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_61ce75599c83f81b177f",
+            "url": "https://techcrunch.com/2026/10/20/google-has-joined-amazon-in-attacking-nvidias-stronghold-with-ai-app-developers/",
+            "published_at": "2026-10-20T18:38:24+00:00",
+            "body_sha256": "4772ae150d03ae06a2463e0080d20bc33d14fd642d33e68b8c20361ffcd41b3f",
+            "body_words": 415,
+            "selected_words": 49,
+            "selected_passage": "On Tuesday, Google announced that TorchTPU, its long-awaited version of PyTorch, is now available as an open source project. With this, Google joins Amazon in trying to break Nvidia’s stranglehold on the AI industry, where most AI apps are written by default to run on Nvidia’s chips, or GPUs.",
+            "start": 0,
+            "end": 293,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": {
+              "classification": "COMPETITIVE_CONTEXT",
+              "reason": "SOURCE_REPORTS_COMPETITIVE_IMPACT_NOT_TARGET_ANNOUNCEMENT",
+              "is_heuristic": true
+            }
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_c1dfee28d50b17ef202b",
+            "url": "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/",
+            "published_at": "2026-10-19T20:09:24+00:00",
+            "body_sha256": "952d15610075c34257c1f8e3aace90f3e1f4315e6028f141576df7f8e074717c",
+            "body_words": 688,
+            "selected_words": 78,
+            "selected_passage": "Amazon says about 85% of AI apps are written with PyTorch. Facebook originally developed it, but since 2022, it has been part of the Linux Foundation, which maintains open source projects. Nvidia has spent years ensuring its CUDA software — the software infrastructure that allows apps to run on Nvidia GPUs and its other hardware — seamlessly supports AI apps written with PyTorch. As a result, Nvidia’s hardware is now deeply embedded in the toolkit, essentially by default.",
+            "start": 611,
+            "end": 1087,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_c1dfee28d50b17ef202b",
+            "url": "https://techcrunch.com/2026/10/19/amazon-is-taking-its-biggest-shot-at-nvidia-yet-with-new-torchneuron-dev-tool/",
+            "published_at": "2026-10-19T20:09:24+00:00",
+            "body_sha256": "952d15610075c34257c1f8e3aace90f3e1f4315e6028f141576df7f8e074717c",
+            "body_words": 688,
+            "selected_words": 60,
+            "selected_passage": "On Monday, Amazon Web Services released a tool called TorchNeuron that lets AI startups easily move their AI apps onto Amazon’s AI chip, Trainium. In doing so, Amazon is also taking a direct stab at the software advantage that has helped Nvidia become the default hardware choice for AI apps and spurred its rise as AI hardware provider of choice.",
+            "start": 0,
+            "end": 347,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": {
+              "classification": "COMPETITIVE_CONTEXT",
+              "reason": "SOURCE_REPORTS_COMPETITIVE_IMPACT_NOT_TARGET_ANNOUNCEMENT",
+              "is_heuristic": true
+            }
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_68b9f741f3df646ee4cf",
+            "url": "https://techcrunch.com/video/a-nvidia-insider-turned-vc-on-why-robotics-hasnt-hit-its-chatgpt-moment-yet/",
+            "published_at": "2026-10-16T16:30:00+00:00",
+            "body_sha256": "d44b6e2809653163acadbb486ad7503f42551e455c4ed0c41da166a62c18487e",
+            "body_words": 200,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_STALE: Published 108.4h ago exceeds Trending freshness window (48.0h)"
+            ],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_68b9f741f3df646ee4cf",
+            "url": "https://techcrunch.com/video/a-nvidia-insider-turned-vc-on-why-robotics-hasnt-hit-its-chatgpt-moment-yet/",
+            "published_at": "2026-10-16T16:30:00+00:00",
+            "body_sha256": "d44b6e2809653163acadbb486ad7503f42551e455c4ed0c41da166a62c18487e",
+            "body_words": 200,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_STALE: Published 108.4h ago exceeds Trending freshness window (48.0h)"
+            ],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_2c0c78d6dd60d8434364",
+            "url": "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/",
+            "published_at": "2026-10-20T16:20:06+00:00",
+            "body_sha256": "f7328193bd0182c8b7a50213e4722ddc296e5039e3a98eb09bfef3bf4cba93ec",
+            "body_words": 367,
+            "selected_words": 84,
+            "selected_passage": "“Talent is also going to be very critical,” she continued, adding elsewhere in the convo that talent is still a key definer of the U.S. market. This is one of the “moats” of her firm, she said, helping connect founders to top talent so they can stay competitive right now, as so much talent is going to big companies like Anthropic and Nvidia. She pointed out that she’s built up a strong network to help founders from her years of working in this space.",
+            "start": 1569,
+            "end": 2023,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_2c0c78d6dd60d8434364",
+            "url": "https://techcrunch.com/2026/10/20/ex-nvidia-turned-vc-amulya-vishwanath-physical-ai-is-in-its-lego-era/",
+            "published_at": "2026-10-20T16:20:06+00:00",
+            "body_sha256": "f7328193bd0182c8b7a50213e4722ddc296e5039e3a98eb09bfef3bf4cba93ec",
+            "body_words": 367,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "FORMER_AFFILIATION_NOT_TARGET_EVENT"
+            ],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_046432880ec75ff50cbb",
+            "url": "https://blogs.nvidia.com/blog/vera-rubin-nvl72-mlperf-inference/",
+            "published_at": "2026-09-16T15:00:48+00:00",
+            "body_sha256": "2153b1591cc8bd104b30bd61a9feb1c635ef6cdd697a50761de917808705a151",
+            "body_words": 1023,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_STALE: Published 829.9h ago exceeds Trending freshness window (48.0h)"
+            ],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_046432880ec75ff50cbb",
+            "url": "https://blogs.nvidia.com/blog/vera-rubin-nvl72-mlperf-inference/",
+            "published_at": "2026-09-16T15:00:48+00:00",
+            "body_sha256": "2153b1591cc8bd104b30bd61a9feb1c635ef6cdd697a50761de917808705a151",
+            "body_words": 1023,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_STALE: Published 829.9h ago exceeds Trending freshness window (48.0h)"
+            ],
+            "source_context": null
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_1ef3c04752a8642d9af5",
+            "url": "https://blogs.nvidia.com/blog/alpamayo-2-super-open-model-now-available/",
+            "published_at": "2026-08-04T15:00:49+00:00",
+            "body_sha256": "a03760be4649923d595019cae795291f5fcb0bab55c595915694c39d30a63a61",
+            "body_words": 987,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_STALE: Published 1861.9h ago exceeds Trending freshness window (48.0h)"
+            ],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_1ef3c04752a8642d9af5",
+            "url": "https://blogs.nvidia.com/blog/alpamayo-2-super-open-model-now-available/",
+            "published_at": "2026-08-04T15:00:49+00:00",
+            "body_sha256": "a03760be4649923d595019cae795291f5fcb0bab55c595915694c39d30a63a61",
+            "body_words": 987,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "TEMPORAL_STALE: Published 1861.9h ago exceeds Trending freshness window (48.0h)"
+            ],
+            "source_context": null
+          }
+        }
+      ],
+      "primary_topic_coverage": {
+        "status": "COMPETITIVE_CONTEXT_ONLY",
+        "primary_topic_source_count": 0,
+        "competitive_context_source_count": 2
+      },
+      "financial_context_summary": null,
+      "financial_observations": [],
+      "filing_comparison_status": null,
+      "investigation_status": "COMPLETED"
+    },
+    {
+      "label": "OpenAI",
+      "before_response_sha256": "3aac5c1a05689316d626d9c4077dc499ee2c6074d67f4c086a2c0395abd10ad3",
+      "after_response_sha256": "b8cf48783dae40a528f7d34d40282b4bc0cdca6be6363ac181ca6359d8072155",
+      "raw_article_identity_body_preserved": true,
+      "articles": [
+        {
+          "before": {
+            "source_id": "ev_hv_e3e88cce9d16be0ac834",
+            "url": "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/",
+            "published_at": "2026-10-21T00:23:16+00:00",
+            "body_sha256": "ad15eef5a6e580bdb3b8d7f8d24b5f7cbd98cb5b5484cd1f96062c77ef68feb6",
+            "body_words": 1765,
+            "selected_words": 89,
+            "selected_passage": "DeepSeek has pulled back the curtain on the software that runs its own AI servers. On October 20, 2026, the Chinese AI company released DeepInfer , described as its in-house inference framework, as free and open-source code under the Apache 2.0 license. The move, first flagged widely after Gizmodo reported it as DeepSeek “dialing up the pressure” on OpenAI and Anthropic , hands outside developers a working copy of the engine DeepSeek uses to serve its own models at scale, rather than just another research paper or weights dump.",
+            "start": 108,
+            "end": 641,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_e3e88cce9d16be0ac834",
+            "url": "https://shattered.io/deepseek-deepinfer-open-source-inference-pressure-2026/",
+            "published_at": "2026-10-21T00:23:16+00:00",
+            "body_sha256": "ad15eef5a6e580bdb3b8d7f8d24b5f7cbd98cb5b5484cd1f96062c77ef68feb6",
+            "body_words": 1765,
+            "selected_words": 89,
+            "selected_passage": "DeepSeek has pulled back the curtain on the software that runs its own AI servers. On October 20, 2026, the Chinese AI company released DeepInfer , described as its in-house inference framework, as free and open-source code under the Apache 2.0 license. The move, first flagged widely after Gizmodo reported it as DeepSeek “dialing up the pressure” on OpenAI and Anthropic , hands outside developers a working copy of the engine DeepSeek uses to serve its own models at scale, rather than just another research paper or weights dump.",
+            "start": 108,
+            "end": 641,
+            "exact_capture_span": true,
+            "qualification": "QUALIFIED",
+            "reasons": [],
+            "source_context": {
+              "classification": "COMPETITIVE_CONTEXT",
+              "reason": "SOURCE_REPORTS_COMPETITIVE_IMPACT_NOT_TARGET_ANNOUNCEMENT",
+              "is_heuristic": true
+            }
+          }
+        },
+        {
+          "before": {
+            "source_id": "ev_hv_4a80747fc08d24557df1",
+            "url": "https://www.pymnts.com/news/artificial-intelligence/2026/metas-muse-reaches-10-million-downloads-faster-than-chatgpt/",
+            "published_at": "2026-10-20T21:53:30+00:00",
+            "body_sha256": "072903eccd322a77e7ab2458c9e445a7493204e3e50894b5e0841c77b5ac535e",
+            "body_words": 495,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "NO_RELEVANT_PASSAGE"
+            ],
+            "source_context": null
+          },
+          "after": {
+            "source_id": "ev_hv_4a80747fc08d24557df1",
+            "url": "https://www.pymnts.com/news/artificial-intelligence/2026/metas-muse-reaches-10-million-downloads-faster-than-chatgpt/",
+            "published_at": "2026-10-20T21:53:30+00:00",
+            "body_sha256": "072903eccd322a77e7ab2458c9e445a7493204e3e50894b5e0841c77b5ac535e",
+            "body_words": 495,
+            "selected_words": 0,
+            "selected_passage": "",
+            "start": null,
+            "end": null,
+            "exact_capture_span": false,
+            "qualification": "REJECTED",
+            "reasons": [
+              "NO_RELEVANT_PASSAGE"
+            ],
+            "source_context": null
+          }
+        }
+      ],
+      "primary_topic_coverage": {
+        "status": "COMPETITIVE_CONTEXT_ONLY",
+        "primary_topic_source_count": 0,
+        "competitive_context_source_count": 1
+      },
+      "financial_context_summary": null,
+      "financial_observations": [],
+      "filing_comparison_status": null,
+      "investigation_status": "COMPLETED"
+    }
+  ]
+}

@@ -104,6 +104,9 @@ class UnifiedEvidenceSource:
     is_primary: bool = False
     authority: Optional[str] = None
     reliability: Optional[float] = None
+    captured_author: Optional[str] = None
+    discovery_attribution: Optional[str] = None
+    attribution_conflict: bool = False
 
     def to_dict(self) -> Dict[str, Any]:
         d = {
@@ -116,6 +119,10 @@ class UnifiedEvidenceSource:
             d["authority"] = self.authority
         if self.reliability is not None:
             d["reliability"] = self.reliability
+        if self.captured_author:
+            d.update(captured_author=self.captured_author,
+                     discovery_attribution=self.discovery_attribution,
+                     attribution_conflict=self.attribution_conflict)
         return d
 
 
@@ -202,6 +209,12 @@ class UnifiedEvidenceItem:
             authority=_safe_str(auth),
             reliability=rel,
         )
+        observed = getattr(item, "metadata", None) or raw_meta
+        if isinstance(observed, dict) and observed.get("body_author"):
+            source.captured_author = _safe_str(observed["body_author"])
+            source.discovery_attribution = _safe_str(observed.get("discovery_author_or_source"))
+            source.attribution_conflict = bool(observed.get("attribution_conflict"))
+            source.name = source.captured_author
 
         # Quality tensor
         qt_raw = getattr(item, "quality_tensor", None)
@@ -368,12 +381,14 @@ class TrustMetadata:
     quality_tensor: Optional[UnifiedQualityTensor] = None
     independent_source_count: Optional[int] = None
     query_telemetry: QueryTelemetry = field(default_factory=QueryTelemetry)
+    observed_publisher_count: Optional[int] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "quality_tensor": self.quality_tensor.to_dict() if self.quality_tensor else None,
             "independent_source_count": self.independent_source_count,
             "query_telemetry": self.query_telemetry.to_dict(),
+            "observed_publisher_count": self.observed_publisher_count,
         }
 
 
@@ -532,16 +547,14 @@ def build_trust_metadata(
     ``quality_tensor`` and ``independent_source_count`` are left as ``None``.
     """
     qt: Optional[UnifiedQualityTensor] = None
-    ind_count: Optional[int] = None
 
     if corpus is not None:
         raw_qt = getattr(corpus, "quality_tensor", None)
         if raw_qt is not None:
             qt = UnifiedQualityTensor.from_research_model(raw_qt)
 
-        ind_groups = getattr(corpus, "independent_source_groups", None)
-        if ind_groups is not None:
-            ind_count = len(ind_groups) if hasattr(ind_groups, "__len__") else None
+        # Acquisition clusters are heuristics over an upstream pool, not verified
+        # independent sources in the final report. Do not promote their count.
 
     telemetry = QueryTelemetry.from_execution_log(
         log=execution_log or [],
@@ -550,6 +563,5 @@ def build_trust_metadata(
 
     return TrustMetadata(
         quality_tensor=qt,
-        independent_source_count=ind_count,
         query_telemetry=telemetry,
     )

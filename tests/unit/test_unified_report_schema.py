@@ -483,12 +483,12 @@ class TestBuildTrustMetadata:
         trust = build_trust_metadata(corpus=corpus)
         assert trust.quality_tensor is None
 
-    def test_corpus_with_ind_groups_counted(self):
+    def test_corpus_groups_do_not_establish_verified_independence(self):
         corpus = MagicMock()
         corpus.quality_tensor = None
         corpus.independent_source_groups = ["GroupA", "GroupB", "GroupC"]
         trust = build_trust_metadata(corpus=corpus)
-        assert trust.independent_source_count == 3
+        assert trust.independent_source_count is None
 
     def test_telemetry_aggregated_from_log(self, mixed_execution_log):
         trust = build_trust_metadata(

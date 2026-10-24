@@ -7,6 +7,7 @@ import hashlib
 import re
 from backend.services.research.content_roles import paragraph_role, matches_objective, document_role, NON_EVENT_ROLES
 from backend.schemas.evidence_inspection import METADATA_DEPTHS
+from backend.infrastructure.acquisition.adapters.web.page_extraction import recovered_span_allowed
 
 
 def public_statement_attribution(record, paragraph, target):
@@ -16,9 +17,43 @@ def public_statement_attribution(record, paragraph, target):
     prevents attributing Ryan Roslansky's message to Satya on a joint statement.
     """
     get = record.get if isinstance(record, dict) else lambda key, default=None: getattr(record, key, default)
-    meta = get("metadata", {}) or {}
-    if (get("query_class") or meta.get("query_class")) not in {"public_statement_discovery", "explicit_url"} or not target:
+    meta = get("metadata", {}) or get("raw_metadata", {}) or {}
+    if not target:
         return None
+    page = meta.get("page_metadata") or {}
+    if isinstance(page, dict) and "article_body_recovery" in page:
+        # Recovered article scope is narrower than the retained capture. A
+        # sidebar quotation cannot regain speaker attribution downstream.
+        body = get("content", "") or ""
+        offset = body.find(paragraph)
+        if not recovered_span_allowed(body, page, offset, offset + len(paragraph)):
+            return None
+    # A denial or a report about a fabricated quotation remains inspectable as
+    # disputed-claim context, never direct attribution to the named speaker.
+    denial = re.search(r"\b(?:fabricated|misattributed|debunked|falsely attributed|false quote|fake quote|false claim)\b|\b(?:did not say|never said|never endorsed)\b", paragraph, re.I)
+    if denial:
+        return None
+    statement_scope = ((get("query_class") or meta.get("query_class")) in {"public_statement_discovery", "explicit_url"}
+                       or meta.get("acquisition_objective") == "PUBLIC_STATEMENT")
+    if not statement_scope:
+        # A real reported quotation can be discovered incidentally by a threat
+        # query. Planner class is not evidence about what the captured article
+        # actually says. This exception requires native article acquisition and
+        # explicit full-name speaker linkage; metadata/snippets/profile bios,
+        # surname guesses and author shortcuts do not qualify here.
+        page = meta.get("page_metadata") or {}
+        quality = page.get("body_quality") or {}
+        kind = page.get("body_kind") or (quality.get("body_kind") if isinstance(quality, dict) else None)
+        captured = meta.get("read_success") is True or bool(get("acquired_id"))
+        if not captured or kind != "ARTICLE_BODY" or get("content_depth") in METADATA_DEPTHS:
+            return None
+        body = get("content", "") or ""
+        if paragraph not in body:
+            return None
+        quoted = re.search(r'"[^"\n]{8,}"|\u201c[^\u201d\n]{8,}\u201d', paragraph)
+        escaped = re.escape(target)
+        speaker = re.search(r"\b" + escaped + r"(?:\s*,[^,.!?]{0,45},)?\s+(?:said|says|wrote|writes|told)\b|\b(?:said|says|wrote|writes)\s+" + escaped + r"\b", paragraph, re.I)
+        return "REPORTED_QUOTATION" if quoted and speaker else None
     if (get("source_name") or get("author") or "").casefold().strip() == target.casefold().strip():
         return "OBSERVED_FEED_AUTHOR"
     body = get("content", "") or ""
@@ -32,7 +67,7 @@ def public_statement_attribution(record, paragraph, target):
     escaped = re.escape(target)
     if re.search(r"\b" + escaped + r"\s*:", paragraph, re.I):
         return "OBSERVED_SPEAKER_LABEL"
-    if re.search(r"(?:said|says|wrote|writes)\s+" + escaped + r"\b|\b" + escaped + r".{0,80}\b(?:said|says|wrote|writes)\b", paragraph, re.I) and re.search(r'["“”]', paragraph):
+    if re.search(r"\b(?:said|says|wrote|writes)\s+" + escaped + r"\b|\b" + escaped + r"(?:\s*,[^,.!?]{0,45},)?\s+(?:said|says|wrote|writes|told)\b", paragraph, re.I) and re.search(r'["“”]', paragraph):
         return "REPORTED_QUOTATION"
     # Releases often introduce a full name and then use a surname. Only use
     # that observed alias when this capture contains the full target and no
@@ -71,19 +106,57 @@ def classify_passage(text, *, domain=""):
     return "ARTICLE_CONTENT"
 
 
+def quotation_span(paragraph, target, paragraph_offset):
+    """An exact explicit-speaker quote span, not the whole surrounding paragraph.
+
+    Related-story links can contain another person's quotation in the same
+    paragraph. Preserve that original context, but never label all of it as the
+    monitored subject's own words.
+    """
+    name = re.escape(target)
+    patterns = [r"\b" + name + r"(?:\s*,[^,.!?]{0,45},)?\s+(?:said|says|wrote|writes|told)\b\s*[:,-]?\s*[\"“](?P<quote>[^\"”\n]{8,})[\"”]",
+                r"[\"“](?P<quote>[^\"”\n]{8,})[\"”][,\s]*(?:said|says|wrote|writes)\s+" + name + r"\b"]
+    for pattern in patterns:
+        match = re.search(pattern, paragraph, re.I)
+        if match:
+            return {"text": match.group("quote"), "start": paragraph_offset + match.start("quote"),
+                    "end": paragraph_offset + match.end("quote"), "speaker": target,
+                    "attribution_status": "REPORTED_QUOTATION_UNVERIFIED", "identity_authenticated": False}
+    return None
+
+
+def without_related_link_tail(text):
+    """Drop an explicitly labeled terminal related-story promo, not context.
+
+    The returned prefix still maps exactly to the original retained body. Raw
+    article bytes/hash remain unchanged; arbitrary parenthetical qualifications,
+    negations, citations or commentary are never removed by this narrow rule.
+    """
+    match = re.search(r"\s+\((?:also read|read also):[^)]{1,1500}\)\s*$", text, re.I)
+    return text[:match.start()].rstrip() if match else text
+
+
 def captured_passages(record, domain="", target=""):
     get = record.get if isinstance(record, dict) else lambda key, default=None: getattr(record, key, default)
     body = get("content", "") or ""
     identity = get("id") or get("evidence_id")
-    meta = get("metadata", {}) or {}
+    meta = get("metadata", {}) or get("raw_metadata", {}) or {}
     depth = get("content_depth", "") or meta.get("content_depth", "")
     if not isinstance(body, str) or not identity:
         return []
     metadata_only = depth in METADATA_DEPTHS or document_role(record) in NON_EVENT_ROLES
+    page = meta.get("page_metadata") or {}
     result = []
     # Paragraph boundaries only: a following negation/qualification is not lost.
     for match in re.finditer(r"\S[^\n]*(?:\n(?!\s*\n)[^\n]+)*", body):
         text = match.group().rstrip()
+        # The source buffer retains every byte, but only structurally observed
+        # article spans may become specialist passages. Validate the original
+        # complete paragraph before any display-only related-link trimming.
+        if not recovered_span_allowed(body, page, match.start(), match.start() + len(text)):
+            continue
+        if domain == "personal":
+            text = without_related_link_tail(text)
         if len(text) < 25:
             continue
         role = classify_passage(text, domain=domain)
@@ -106,6 +179,10 @@ def captured_passages(record, domain="", target=""):
             "dates": re.findall(r"\b20\d\d-\d{2}-\d{2}\b|\b(?:January|February|March|April|May|June|July|August|September|October|November|December) \d{1,2},? 20\d\d", text),
             "negation_present": bool(re.search(r"\b(?:not|never|no|denied|denies|without)\b", text, re.I)),
             "source_url": get("canonical_url") or get("url"), "published_at": get("published_at") or None})
+        if attributed:
+            quote = quotation_span(text, target, start)
+            if quote:
+                result[-1]["quotation"] = quote
     # A navigation-heavy capture can put the actual incident after the first
     # sixteen paragraphs. Bound the display projection by relevance, not by
     # position; preserve original offsets and reading order of selected spans.

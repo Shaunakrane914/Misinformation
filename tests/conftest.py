@@ -46,13 +46,15 @@ os.environ["RSS_INGESTION_ENABLED"] = "false"
 os.environ["SQLITE_DB_PATH"] = str(_test_root / "aegis.db")
 os.environ["AEGIS_SQLITE_PATH"] = os.environ["SQLITE_DB_PATH"]
 os.environ["AEGIS_DOSSIER_DIR"] = str(_test_root / "dossiers")
+os.environ["HUGINN_ENABLED"] = "false"
+os.environ["HUGINN_DB_PATH"] = str(_test_root / "huginn.db")
 _credential_prefixes = (
     "GEMINI_API_KEY", "GEMINI_KEY_", "SUPABASE_", "APIFY_", "TWILIO_",
     "GITHUB_TOKEN", "GH_TOKEN", "REDDIT_", "TWITTER_", "X_AUTH_",
     "YOUTUBE_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY", "YF_API_KEY",
     "ADMIN_API_TOKEN", "BRAVE_API_KEY", "EXA_API_KEY", "JINA_API_KEY",
     "GROQ_API_KEY", "LINKEDIN_COOKIE", "XUEQIU_COOKIE", "INSTAGRAM_COOKIE",
-    "FACEBOOK_COOKIE", "XIAOHONGSHU_COOKIE",
+    "FACEBOOK_COOKIE", "XIAOHONGSHU_COOKIE", "FIRECRAWL_API_KEY", "HUGINN_WEBHOOK_SECRET",
 )
 # python-dotenv's load_dotenv() searches parent directories. A nested Git
 # worktree can therefore inherit the outer checkout's .env unless the same

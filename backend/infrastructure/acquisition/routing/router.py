@@ -31,6 +31,8 @@ from backend.infrastructure.acquisition.adapters.social.twitter import (
     fetch_fxtwitter_status,
 )
 from backend.infrastructure.acquisition.adapters.web.jina import execute_web_read
+from backend.infrastructure.acquisition.adapters.web.search_matching import headline_overlap
+from backend.infrastructure.acquisition.adapters.web.search_observations import begin_search, public_locator, result_fit
 from backend.infrastructure.acquisition.routing.channel_dispatcher import ChannelQueryDispatcher
 from backend.services.agent_reach.channels import (
     CandidateSource,
@@ -67,6 +69,8 @@ from backend.services.agent_reach.native.telemetry import (
 from backend.services.agent_reach.native.operation_capabilities import runtime_operation_capabilities
 from backend.infrastructure.acquisition.network.http import decode_bounded_http_body, fetch_public_http
 from backend.services.url_validator import is_safe_url
+from backend.infrastructure.acquisition.security.url_validator import validation_failure_kind
+from backend.infrastructure.acquisition.network.http import transport_failure_kind
 
 logger = logging.getLogger(__name__)
 
@@ -295,11 +299,14 @@ class NativeRouter:
 
         safe, reason = is_safe_url(url)
         if not safe:
-            logger.warning(f"[NativeRouter] SSRF defense blocked URL: {url} ({reason})")
+            kind = validation_failure_kind(reason)
+            logger.warning("[NativeRouter] URL validation failed (%s): %s", kind, reason)
             return {
-                "status": "blocked_ssrf",
-                "error": f"URL blocked by SSRF defense: {reason}",
+                "status": "blocked_ssrf" if kind == "SSRF_BLOCKED" else "failed",
+                "error": reason, "failure_kind": kind,
+                "rejection_layer": "SSRF" if kind == "SSRF_BLOCKED" else "DNS" if kind.startswith("DNS_") else "BUDGET",
                 "url": url,
+                "transport": {"network_observed_this_attempt": False, "http_status": None},
             }
 
         parsed = urllib.parse.urlparse(url)
@@ -510,10 +517,13 @@ class NativeRouter:
         for page in range(max_pages):
             if len(fragments) >= limit:
                 break
+            observation = begin_search("bing")
             try:
                 url = f"https://www.bing.com/search?q={urllib.parse.quote_plus(clean_q)}&first={page_first}"
                 request_started = time.perf_counter()
                 resp = fetch_public_http(url, headers=headers, timeout=timeout, max_bytes=1_000_000)
+                observation.update(response_received=True, http_status=resp.status_code,
+                                   status="HTTP_RESPONSE" if resp.status_code == 200 else "HTTP_ERROR")
                 transport = {
                     "endpoint": resp.endpoint,
                     "network_observed_this_attempt": True,
@@ -527,15 +537,21 @@ class NativeRouter:
                     soup = BeautifulSoup(decode_bounded_http_body(resp), "html.parser")
                     results = soup.select("li.b_algo")
                     if not results:
+                        observation.update(status="NO_RESULTS", qualified_candidates=0)
                         break
-                    for r in results:
+                    observation["candidate_count"] = len(results)
+                    for r in results[:40]:
                         title_elem = r.select_one("h2 a")
                         snippet_elem = r.select_one(".b_caption p, .b_snippet")
                         if title_elem:
                             raw_href = title_elem.get("href", "")
                             resolved_url = resolve_bing_redirect(raw_href)
-                            title = title_elem.get_text(strip=True)
-                            snippet = snippet_elem.get_text(strip=True) if snippet_elem else ""
+                            title = title_elem.get_text(" ", strip=True)
+                            snippet = snippet_elem.get_text(" ", strip=True) if snippet_elem else ""
+                            score, reason = result_fit(clean_q, title, snippet, resolved_url, query_class)
+                            observation["decisions"].append({"url": public_locator(resolved_url), "title": title[:200], "score": round(score, 3), "discard_reason": reason})
+                            if reason:
+                                continue
                             if resolved_url and "bing.com" not in urllib.parse.urlparse(resolved_url).netloc:
                                 if not any(f.url == resolved_url for f in fragments):
                                     fragments.append(EvidenceFragment(
@@ -550,12 +566,16 @@ class NativeRouter:
                                         query_id=query_id,
                                         query_class=query_class,
                                         query_text=query_text or clean_q,
-                                        raw_metadata={"transport": dict(transport)},
+                                        raw_metadata={"transport": dict(transport), "search_fit_score": score},
                                     ))
-                                    if len(fragments) >= limit:
-                                        break
+                    observation["qualified_candidates"] = len(fragments)
+                    observation["status"] = "CANDIDATES" if fragments else "IRRELEVANT_RESULTS" if results else "NO_RESULTS"
                 page_first += 10
             except Exception as e:
+                observation.update(status="TIMEOUT" if isinstance(e, TimeoutError) else "TRANSPORT_FAILURE",
+                                   response_received=bool(getattr(e, "status_code", None)),
+                                   error_type=type(e).__name__, http_status=getattr(e, "status_code", None),
+                                   failure_kind=transport_failure_kind(e))
                 logger.debug(f"[NativeRouter] Bing search attempt notice (page {page+1}): {e}")
                 break
 
@@ -567,8 +587,16 @@ class NativeRouter:
             anchor = " ".join(quoted.group(1).casefold().split())
             fragments = [f for f in fragments if anchor in " ".join(
                 f"{f.title} {f.snippet}".casefold().split())]
-        if not fragments:
-            fragments = self._execute_yahoo_search(clean_q, limit=limit, query_id=query_id, query_class=query_class, query_text=query_text)
+        resolution_miss = query_class == "publisher_url_resolution" and not any(
+            headline_overlap(clean_q, fragment.title) >= 0.75 for fragment in fragments)
+        weak_primary = bool(fragments) and not any(fragment.raw_metadata.get("search_fit_score", 0.0) >= 0.35 for fragment in fragments)
+        if not fragments or resolution_miss or weak_primary:
+            secondary = self._execute_yahoo_search(clean_q, limit=limit, query_id=query_id, query_class=query_class, query_text=query_text)
+            fragments = secondary + [fragment for fragment in fragments if fragment.url not in {other.url for other in secondary}]
+            if query_class == "publisher_url_resolution":
+                # Nonempty unrelated results must not mask an observed article
+                # on the existing secondary provider. No new retry/provider.
+                fragments.sort(key=lambda fragment: headline_overlap(clean_q, fragment.title), reverse=True)
         elif re.search(r"counterfeit|impersonat|phishing|deepfake", clean_q, re.I):
             objectives = re.findall(r"counterfeit|impersonat\w*|phishing|deepfake", clean_q, re.I)
             if not any(any(term.casefold() in f"{fragment.title} {fragment.snippet}".casefold()
@@ -581,6 +609,7 @@ class NativeRouter:
             fragments = [f for f in fragments if anchor in " ".join(
                 f"{f.title} {f.snippet}".casefold().split())]
 
+        fragments.sort(key=lambda fragment: fragment.raw_metadata.get("search_fit_score", 0.0), reverse=True)
         return fragments[:limit]
 
     def _execute_yahoo_search(self, query: str, limit: int = 6, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
@@ -593,10 +622,13 @@ class NativeRouter:
             "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
         }
+        observation = begin_search("yahoo")
         try:
             url = f"https://search.yahoo.com/search?p={urllib.parse.quote_plus(clean_q)}"
             request_started = time.perf_counter()
             resp = fetch_public_http(url, headers=headers, timeout=5.0, max_bytes=1_000_000)
+            observation.update(response_received=True, http_status=resp.status_code,
+                               status="HTTP_RESPONSE" if resp.status_code == 200 else "HTTP_ERROR")
             transport = {
                 "endpoint": resp.endpoint,
                 "network_observed_this_attempt": True,
@@ -609,7 +641,8 @@ class NativeRouter:
             if resp.status_code == 200:
                 soup = BeautifulSoup(decode_bounded_http_body(resp), "html.parser")
                 results = soup.select("div.algo")
-                for r in results:
+                observation["candidate_count"] = len(results)
+                for r in results[:40]:
                     title_elem = r.select_one("h3 a")
                     snippet_elem = r.select_one(".compText p, .compText")
                     if title_elem:
@@ -622,8 +655,12 @@ class NativeRouter:
                                     actual_url = urllib.parse.unquote(m.group(1))
                             except Exception:
                                 pass
-                        title = title_elem.get_text(strip=True)
-                        snippet = snippet_elem.get_text(strip=True) if snippet_elem else ""
+                        title = title_elem.get_text(" ", strip=True)
+                        snippet = snippet_elem.get_text(" ", strip=True) if snippet_elem else ""
+                        score, reason = result_fit(clean_q, title, snippet, actual_url, query_class)
+                        observation["decisions"].append({"url": public_locator(actual_url), "title": title[:200], "score": round(score, 3), "discard_reason": reason})
+                        if reason:
+                            continue
                         if actual_url and "search.yahoo.com" not in actual_url:
                             fragments.append(EvidenceFragment(
                                 platform="Web",
@@ -637,14 +674,18 @@ class NativeRouter:
                                 query_id=query_id,
                                 query_class=query_class,
                                 query_text=query_text or clean_q,
-                                raw_metadata={"transport": dict(transport)},
+                                raw_metadata={"transport": dict(transport), "search_fit_score": score},
                             ))
-                            if len(fragments) >= limit:
-                                break
+                observation["qualified_candidates"] = len(fragments)
+                observation["status"] = "CANDIDATES" if fragments else "IRRELEVANT_RESULTS" if results else "NO_RESULTS"
         except Exception as e_y:
+            observation.update(status="TIMEOUT" if isinstance(e_y, TimeoutError) else "TRANSPORT_FAILURE",
+                               response_received=bool(getattr(e_y, "status_code", None)),
+                               error_type=type(e_y).__name__, http_status=getattr(e_y, "status_code", None),
+                               failure_kind=transport_failure_kind(e_y))
             logger.debug(f"[NativeRouter] Yahoo fallback search error: {e_y}")
 
-        return fragments
+        return sorted(fragments, key=lambda fragment: fragment.raw_metadata.get("search_fit_score", 0.0), reverse=True)[:limit]
 
     def _fallback_github_rest(self, query: str, limit: int = 5, query_id: str = "", query_class: str = "", query_text: str = "") -> List[EvidenceFragment]:
         """Zero-auth GitHub public search API fallback."""
@@ -803,6 +844,9 @@ class NativeRouter:
                     platform=ch,
                     entity=request.entity,
                     limit=max(request.candidate_budget * 2, 10),
+                    query_id=request.request_id,
+                    query_class=request.task_type,
+                    query_text=query_text,
                 )
                 all_candidates.extend(cands)
             except Exception as e_disc:

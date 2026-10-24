@@ -155,9 +155,12 @@ class SourcePlan:
         return list(dict.fromkeys(action.channel for action in self.actions))
 
     def to_channel_queries(self) -> Dict[str, List[Dict[str, str]]]:
+        from backend.services.research.specialist_planning import specialist_action_priority
         result: Dict[str, List[Dict[str, str]]] = {}
         per_channel: Dict[str, int] = {}
-        for action in sorted(self.actions, key=lambda item: (item.stage, item.priority)):
+        for action in sorted(self.actions, key=lambda item: (
+                specialist_action_priority(item, agent=self.agent, entity=self.entity, claim=self.claim),
+                item.stage, item.priority)):
             count = per_channel.get(action.channel, 0)
             if count >= self.budget.max_queries_per_channel:
                 continue
@@ -227,7 +230,7 @@ class SourcePlanningEngine:
         plan_id = "sp_" + hashlib.sha256(
             f"{agent}|{domain}|{clean_entity}|{clean_claim}".encode("utf-8")
         ).hexdigest()[:12]
-        intent_class = self._classify_intent(clean_claim, domain)
+        intent_class = self._classify_intent(clean_claim, domain, clean_entity)
         allowed = set(allowed_channels or EXECUTABLE_CAPABILITIES)
         allowed &= set(EXECUTABLE_CAPABILITIES)
         explicitly_allowed = allowed_channels is not None
@@ -273,7 +276,7 @@ class SourcePlanningEngine:
 
         actions, runtime_decisions, runtime_excluded = self._apply_runtime_capabilities(actions)
         excluded.extend(runtime_excluded)
-        actions = self._deduplicate_and_bound(actions)
+        actions = self._deduplicate_and_bound(actions, agent=agent, entity=clean_entity, claim=clean_claim)
         if not actions:
             warnings.append("No executable source action passed capability validation")
 
@@ -330,7 +333,7 @@ class SourcePlanningEngine:
             if key not in existing and self._is_executable(candidate.channel, candidate.operation):
                 plan.actions.append(candidate)
                 existing.add(key)
-        plan.actions = self._deduplicate_and_bound(plan.actions)
+        plan.actions = self._deduplicate_and_bound(plan.actions, agent=plan.agent, entity=plan.entity, claim=plan.claim)
         plan.replan_count += 1
         return plan
 
@@ -611,10 +614,14 @@ class SourcePlanningEngine:
             source_hint=url,
         )
 
-    def _deduplicate_and_bound(self, actions: Iterable[SourceAction]) -> List[SourceAction]:
+    def _deduplicate_and_bound(
+        self, actions: Iterable[SourceAction], *, agent: str = "", entity: str = "", claim: str = "",
+    ) -> List[SourceAction]:
+        from backend.services.research.specialist_planning import specialist_action_priority
         seen: Set[tuple[str, str, str]] = set()
         result: List[SourceAction] = []
-        for action in sorted(actions, key=lambda item: (item.stage, item.priority)):
+        for action in sorted(actions, key=lambda item: (
+                specialist_action_priority(item, agent=agent, entity=entity, claim=claim), item.stage, item.priority)):
             key = (action.channel, action.operation, action.query.strip().lower())
             if key in seen or not self._is_executable(action.channel, action.operation):
                 continue
@@ -643,7 +650,11 @@ class SourcePlanningEngine:
         )
 
     @classmethod
-    def _classify_intent(cls, claim: str, domain: str) -> str:
+    def _classify_intent(cls, claim: str, domain: str, entity: str = "") -> str:
+        from backend.services.research.specialist_planning import specialist_claim_intent
+        specialist_intent = specialist_claim_intent(claim, domain, entity)
+        if specialist_intent:
+            return specialist_intent
         lower = claim.lower()
         if any(term in lower for term in cls.IDENTITY_TERMS) or lower.startswith("@"):
             return "identity_attribution"

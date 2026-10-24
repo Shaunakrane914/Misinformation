@@ -1,0 +1,39 @@
+{
+  "mode": "BOUNDED_LIVE_TRANSPORT_ONLY",
+  "model_calls": 0,
+  "full_investigations": 0,
+  "observations": [
+    {
+      "url": "https://www.bing.com/robots.txt",
+      "method": "GET",
+      "timeout_seconds": 5,
+      "max_wire_bytes": 65536,
+      "max_attempts": 1,
+      "max_redirects": 0,
+      "status": "RESPONSE_RECEIVED",
+      "http_status": 200,
+      "wire_bytes": 2676,
+      "wire_sha256": "40d2da70c3b443225d5b01cc7b05117944980347637cc95ab285c6e4f5548235",
+      "attempts": 1,
+      "elapsed_seconds": 0.771
+    },
+    {
+      "url": "https://www.helpnetsecurity.com/robots.txt",
+      "method": "GET",
+      "timeout_seconds": 5,
+      "max_wire_bytes": 65536,
+      "max_attempts": 1,
+      "max_redirects": 0,
+      "status": "FAILED",
+      "failure_kind": "BUDGET_EXHAUSTED",
+      "http_status": null,
+      "network_observed": false,
+      "attempts": 1,
+      "elapsed_seconds": 5.009
+    }
+  ],
+  "limitations": [
+    "A robots GET is not search health, article access or multi-agent research acceptance.",
+    "Successful observations do not establish the cause of an earlier host outage."
+  ]
+}

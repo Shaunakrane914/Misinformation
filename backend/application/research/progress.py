@@ -4,6 +4,7 @@ from contextvars import ContextVar
 
 
 progress_observer = ContextVar("research_progress_observer", default=None)
+requested_research_profile = ContextVar("requested_research_profile", default=None)
 
 
 def report_progress(**observation):

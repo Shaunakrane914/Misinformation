@@ -1,0 +1,64 @@
+{
+  "mode": "OFFLINE_GENUINE_SOURCE_TO_API_SSE_REPLAY",
+  "agent": "personal_watch",
+  "subject": "Tim Cook",
+  "input_sha256": "60ef275e11dd9af4ef8e44f3ac265a3a56bbf34b466f7261b83d775085132c0c",
+  "new_network_calls": 0,
+  "model_calls": 0,
+  "acquisition_boundary": "HASH_VALIDATED_SAVED_SOURCES; LIVE_DISCOVERY_NOT_RERUN",
+  "api_transport": "CURRENT_AGENT_ROUTER_IN_ISOLATED_ASGI_APP; NO_BACKGROUND_LIFESPAN",
+  "unchanged_source_id_url_title_body_hash": true,
+  "unchanged_source_id_url_title_date_body_hash": true,
+  "publication_changes": [],
+  "temporal_reference": "2026-10-22T06:18:31.737064+00:00",
+  "original_raw_sources": 42,
+  "processing_progress_events": 20,
+  "acquisition_metrics": {
+    "source_count": 42,
+    "candidate_urls": 42,
+    "by_type": {
+      "ARTICLE_BODY": 2,
+      "BLOCKED_OR_FAILED": 5,
+      "DISCOVERY_LEAD": 34,
+      "PUBLISHER_HOMEPAGE": 1
+    },
+    "reads_attempted": 8,
+    "successful_captures": 3,
+    "article_bodies": 2,
+    "raw_article_words": 1873,
+    "raw_source_words": 2535,
+    "duplicate_captures": 0,
+    "qualified_source_count": 1,
+    "relevant_words": 42,
+    "unique_publishers": 1,
+    "publisher_independence": "NOT_ESTABLISHED",
+    "storage_bytes": 141892,
+    "acquisition_mode": "OBSERVED_ACQUISITION",
+    "ambiguous_alias_count": 0,
+    "failed_reads_by_cause": {
+      "PUBLISHER_UNRESOLVED": 3,
+      "HTTP_FAILURE": 2
+    },
+    "dropped_by_limit": {},
+    "findings": 1,
+    "publisher_independence_verified": false
+  },
+  "public_statements": [],
+  "identity_risk": "UNVERIFIED_ALLEGATIONS",
+  "filing_comparison": null,
+  "generation_policy": "LIVE_AND_SYNTHETIC_GATEWAY_GENERATION_BLOCKED; ZERO_ATTEMPTS_REQUIRED",
+  "qualified_sources": [
+    {
+      "source_id": "ev_hv_497e1eb6cf9bb0d6230f",
+      "source_url": "https://www.wionews.com/trending/tim-cooked-us-netizens-react-to-fake-ai-generated-live-stream-of-apple-ceo-757339",
+      "raw_content_hash": "b17158d72d4e9fae59bb7b8d33de14fcfebcf0619ff705aedf88fe11264c535f",
+      "retained_words": 1040,
+      "qualification_status": "QUALIFIED",
+      "useful_words": 42
+    }
+  ],
+  "limitations": [
+    "Source replay proves current interpretation/projection, not new live provider health or recall.",
+    "Fresh processing SSE events are not original network progress or latency measurements."
+  ]
+}

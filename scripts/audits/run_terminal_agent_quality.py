@@ -66,7 +66,19 @@ def main():
     parser.add_argument("--case", action="append", default=[], help="agent:input; otherwise fixed twelve")
     parser.add_argument("--query", action="append", default=[], help="Optional per-case query override; supply one per case, in case order")
     parser.add_argument("--capture-from", type=Path, help="Offline reprocessing of saved native responses; no provider acquisition")
+    parser.add_argument("--timeout-seconds", type=float, help="Explicit research deadline for a bounded authorized audit")
+    parser.add_argument("--max-deep-reads", type=int, help="Total deep-reader attempt allowance per case")
+    parser.add_argument("--research-profile", choices=("QUICK", "STANDARD", "DEEP"), default="STANDARD")
+    parser.add_argument("--max-http-admissions", type=int, help="Optional lower native HTTP cap; includes retries and redirects")
     args = parser.parse_args()
+    profile_limits = {"QUICK": (60, 6), "STANDARD": (150, 14), "DEEP": (240, 24)}
+    timeout_cap, read_cap = profile_limits[args.research_profile]
+    if args.max_http_admissions is not None and not 1 <= args.max_http_admissions <= 120:
+        parser.error("Native HTTP cap must be within 1..120")
+    if args.timeout_seconds is not None and not 0 < args.timeout_seconds <= timeout_cap:
+        parser.error("Audit timeout exceeds selected research profile")
+    if args.max_deep_reads is not None and not 0 <= args.max_deep_reads <= read_cap:
+        parser.error("Audit reads exceed selected research profile")
     if args.capture_from and args.allow_live_ai:
         parser.error("Saved-capture processing never permits live AI")
     cases = []
@@ -76,6 +88,8 @@ def main():
             parser.error("Invalid agent:input")
         cases.append((agent, query.strip()))
     cases = cases or CASES
+    if args.allow_live_ai and len(cases) > 5:
+        parser.error("AI-authorized batches are limited to five investigations")
     if args.query and len(args.query) != len(cases):
         parser.error("--query must be supplied once for every selected case")
     out = args.output_dir.resolve()
@@ -84,7 +98,7 @@ def main():
     values = dotenv_values(args.env_file)
     allowed = ("GEMINI_API_KEY", "GEMINI_KEY_", "GROQ_API_KEY", "YF_API_KEY", "AGENT_REACH_", "REDDIT_",
                "AEGIS_REDDIT_", "EXA_API_KEY", "TAVILY_API_KEY", "BRAVE_API_KEY", "FACTCHECK_API_KEY",
-               "SEC_USER_AGENT", "YOUTUBE_API_KEY", "GITHUB_TOKEN", "JINA_API_KEY")
+               "SEC_USER_AGENT", "YOUTUBE_API_KEY", "GITHUB_TOKEN", "JINA_API_KEY", "AEGIS_AI_POLICY_DB")
     ai_prefixes = ("GEMINI_", "GROQ_", "OPENAI_", "ANTHROPIC_")
     if not args.allow_live_ai:
         for key in list(os.environ):
@@ -99,6 +113,19 @@ def main():
                       AEGIS_DOSSIER_DIR=str(out / "dossiers"), AEGIS_MOCK_LLM="false",
                       ENVIRONMENT="development", AEGIS_ENV="development", RSS_INGESTION_ENABLED="false",
                       LLM_REQUEST_TIMEOUT="5", LLM_MAX_RETRIES="1")
+    # Native-yield checks never consume an inherited paid-reader credential or
+    # initialize unused optional monitoring, even if present in the parent shell.
+    os.environ.update(FIRECRAWL_API_KEY="", FIRECRAWL_API_BASE_URL="https://api.firecrawl.dev",
+                      FIRECRAWL_BASE_URL="", HUGINN_ENABLED="false", HUGINN_WEBHOOK_SECRET="",
+                      HUGINN_DB_PATH=str(out / "huginn.db"))
+    os.environ["AEGIS_RESEARCH_PROFILE"] = args.research_profile
+    os.environ["AEGIS_RAW_POOL_PERSIST"] = "true"
+    if args.max_http_admissions is not None:
+        os.environ["AEGIS_HARVEST_HTTP_CAP"] = str(args.max_http_admissions)
+    for prefix in ("SERVER_RESEARCH_", "LOCAL_RESEARCH_"):
+        os.environ[prefix + "TIMEOUT"] = str(args.timeout_seconds if args.timeout_seconds is not None else timeout_cap)
+        os.environ[prefix + "MAX_DEEP_READS"] = str(args.max_deep_reads if args.max_deep_reads is not None else read_cap)
+        os.environ[prefix + "MAX_QUERIES"] = str({"QUICK": 24, "STANDARD": 60, "DEEP": 100}[args.research_profile])
     secrets = [str(v) for k, v in values.items() if v and len(str(v)) > 8 and
                any(s in k.upper() for s in ("KEY", "TOKEN", "SECRET", "PASSWORD", "COOKIE"))]
 
@@ -126,6 +153,34 @@ def main():
     assert not settings.is_mock_llm and not settings.supabase_write_key and not settings.supabase_url
     if not args.allow_live_ai:
         assert not settings.gemini_api_keys
+    from backend.infrastructure.llm.advisory_policy import MODEL, advisory_run, call_count, observations
+    run_stack = ExitStack()
+    if os.name == "nt":
+        # Keep this audit thread awake without changing the machine's power
+        # plan. Release the execution-state request on normal/error closeout.
+        import ctypes
+        ctypes.windll.kernel32.SetThreadExecutionState(0x80000001)
+        run_stack.callback(ctypes.windll.kernel32.SetThreadExecutionState, 0x80000000)
+    model_check = {"status": "DISABLED", "model": settings.llm_advisory_model}
+    if args.allow_live_ai:
+        # One non-generation capability lookup, first credential, no rotation.
+        # Never declare a model verified from its configured name alone.
+        model_check["status"] = "UNAVAILABLE"
+        if settings.llm_advisory_model == MODEL and settings.gemini_api_keys:
+            try:
+                import requests
+                response = requests.get("https://generativelanguage.googleapis.com/v1beta/models/" + MODEL,
+                    headers={"x-goog-api-key": settings.gemini_api_keys[0]}, timeout=5.0)
+                model_check["http_status"] = response.status_code
+                metadata = response.json() if response.status_code == 200 and len(response.content) < 100_000 else {}
+                if metadata.get("name") == "models/" + MODEL and "generateContent" in metadata.get("supportedGenerationMethods", []):
+                    run_stack.enter_context(advisory_run(verified_models=(MODEL,)))
+                    os.environ["AEGIS_SEARCH_ADVISOR_ENABLED"] = "true"
+                    os.environ["AEGIS_EVIDENCE_ADVISOR_ENABLED"] = "false"
+                    model_check["status"] = "PROVIDER_DECLARED_SUPPORTED"
+            except Exception as error:
+                model_check["error_type"] = type(error).__name__
+        print(json.dumps({"advisory_model_check": model_check}), flush=True)
     # Deliberately no context manager: do not run app lifespan ingestion jobs.
     client = TestClient(app)
     routes = {"scout": ("scout/analyze", "ticker"), "trending": ("trending/scan", "query"),
@@ -134,6 +189,8 @@ def main():
     summary = {"mode": "REAL_LOCAL_ASGI_SSE", "application_sha256": initial, "cases": [],
                "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
                "mock_llm": False, "live_ai_authorized": args.allow_live_ai}
+    summary["requested_audit_bounds"] = {"research_timeout_seconds": args.timeout_seconds, "max_deep_reads": args.max_deep_reads, "research_profile": args.research_profile}
+    summary["advisory_model_check"] = model_check
     if args.capture_from:
         summary.update(mode="OFFLINE_SAVED_CAPTURE_REPROCESS", scope="Current agent/API processing of saved source bytes; no fresh acquisition or quota claim")
     try:
@@ -141,6 +198,13 @@ def main():
             case_id = f"{number:02d}-{agent}"
             route, field = routes[agent]
             payload = {field: query}
+            payload["research_profile"] = args.research_profile
+            if args.capture_from:
+                # Historical replay replaces the old discovery/reader boundaries,
+                # not the new raw-harvest engine. Keep this mode network-blocked.
+                payload.pop("research_profile")
+                from backend.services.research.research_engine import research_engine
+                research_engine.budget.research_profile = None
             if agent == "trending":
                 payload["category"] = "business" if query == "electric vehicles" else "technology"
             if args.query and args.query[number - 1]:
@@ -153,7 +217,9 @@ def main():
                     from backend.services.agent_reach.channels import EvidenceFragment, RetrievalResult, QueryExecutionRecord
                     corpus = saved.get("research_corpus") or {}
                     candidates = {}
-                    for record in corpus.get("raw_candidates", []) + corpus.get("deep_read_sources", []) + native_source_records(saved):
+                    # Native display records redact page links. Rich captured
+                    # corpus metadata must win, not disappear during replay.
+                    for record in native_source_records(saved) + corpus.get("raw_candidates", []) + corpus.get("deep_read_sources", []):
                         identity = record.get("id") or record.get("evidence_id")
                         if identity:
                             prior = candidates.get(identity) or {}
@@ -177,7 +243,10 @@ def main():
                                for row in corpus.get("queries", [])]
                     retrieval = RetrievalResult(query=query, domain={"scout": "financial", "brandshield": "brand", "personal_watch": "personal", "trending": "trending"}[agent], fragments=fragments, query_records=records)
                     stack.enter_context(patch("backend.application.research.acquisition.BroadDiscoveryStage.run", return_value=retrieval))
+                    prior_attempts = list((saved.get("retrieval_trace") or {}).get("acquisition_attempts", []))
+                    prior_attempts_exported = False
                     def saved_reads(ranked, max_reads, timeout_per_read):
+                        nonlocal prior_attempts_exported
                         # Restore only previously acquired bytes, never search
                         # snippets. Preserve the recorded depth and capture IDs.
                         restored = []
@@ -195,7 +264,14 @@ def main():
                             restored.append(item)
                             if len(restored) >= max_reads:
                                 break
-                        return restored, {"attempted": 0, "successful": len(restored), "failed": 0, "cached": len(restored),
+                        # Preserve prior failures as saved observations exactly
+                        # once. These counters are NOT fresh network attempts.
+                        observed = [] if prior_attempts_exported else [
+                            {**row, "observation_origin": "SAVED_CAPTURE"} for row in prior_attempts]
+                        prior_attempts_exported = True
+                        return restored, {"attempted": len(observed), "successful": sum(row.get("status") == "SUCCESS" for row in observed),
+                                          "failed": sum(row.get("status") != "SUCCESS" for row in observed), "cached": len(restored),
+                                          "acquisition_attempts": observed,
                                           "total_chars_read": 0, "read_urls": [], "mode": "SAVED_ACQUISITION_RESTORED_NO_HTTP"}
                     stack.enter_context(patch("backend.services.research.deep_reader.deep_reader.deep_read", side_effect=saved_reads))
                     stack.enter_context(patch("backend.services.agent_reach.agent_reach_service.search_channel", return_value=[]))
@@ -228,7 +304,10 @@ def main():
         client.close()
         summary["final_application_sha256"] = fingerprint()
         summary["stable_application"] = initial == summary["final_application_sha256"]
+        summary["live_ai_calls_reserved"] = call_count()
+        summary["live_ai_observations"] = observations()
         save("summary.json", summary)
+        run_stack.close()
     return int(not summary["stable_application"] or any(not r["result_event"] or r["error_events"] for r in summary["cases"]))
 
 

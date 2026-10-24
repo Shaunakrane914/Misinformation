@@ -35,6 +35,11 @@ class ResearchPipeline:
             return self._run(request)
 
     def _run(self, request: ResearchRequest) -> ResearchResult:
+        from backend.application.research.progress import requested_research_profile
+        profile = request.research_profile or requested_research_profile.get() or self.budget.research_profile
+        if profile:
+            from backend.application.research.harvest_pipeline import run_harvest_pipeline
+            return run_harvest_pipeline(request, self.budget, profile)
         start_ts = time.monotonic()
         effective_timeout = (
             request.timeout_seconds if getattr(request, "timeout_seconds", None) is not None
@@ -103,6 +108,8 @@ class ResearchPipeline:
         # Store the completed acquisition/processing measurements before dossier
         # registration, so diagnostic evidence is preserved as well as exported.
         assembled.telemetry["stage_timings_ms"] = dict(stage_timings_ms)
+        from backend.infrastructure.llm.advisory_policy import observations
+        assembled.telemetry["ai_advisory_observations"] = observations(current_only=True)
         assembled.telemetry["pre_research_timings_ms"] = request.extra_params.get("pre_research_timings_ms", {})
         assembled.telemetry["budget_observations"] = {
             "clock": "monotonic", "discovery_remaining_at_submission_seconds": discovery_remaining,

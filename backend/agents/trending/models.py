@@ -82,7 +82,7 @@ class Trend:
     signal_count: int
     source_count: int
     unique_source_count: int
-    independent_source_count: int
+    independent_source_count: Optional[int]
     platform_count: int
     velocity: Dict[str, Any]
     origin: Dict[str, Any]
@@ -100,6 +100,9 @@ class Trend:
     underlying_event: str = ""
     debunk_status: str = "NO_CONTRADICTION"
     contradictions: List[str] = field(default_factory=list)
+    source_group_count: int = 0
+    independence_status: str = "NOT_ESTABLISHED"
+    analysis_scope: str = "RECENT_DEVELOPMENTS_NOT_MEASURED_VIRALITY"
 
     def to_dict(self) -> Dict[str, Any]:
         return asdict(self)

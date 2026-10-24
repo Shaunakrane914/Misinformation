@@ -1,0 +1,32 @@
+{
+  "date": "2026-10-19",
+  "head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "branch": "fix/p0-lenovo-acquisition-20261018",
+  "dirty_source": true,
+  "final_application_sha256": "364663787ce194cc6c804fdc6980023216aa6f91158f348e485b30384e491073",
+  "backend_live_ai_calls": 0,
+  "live_investigations": 4,
+  "standalone_top_level_http_probes": 6,
+  "external_web_research_lookups": 2,
+  "all_underlying_http_request_count": null,
+  "cases": [
+    {"mode":"NORMAL_LIVE","agent":"brandshield","input":"LEGO","seconds":43.8,"records":0,"words":0,"findings":0},
+    {"mode":"NORMAL_LIVE","agent":"trending","input":"quantum computing","seconds":36.78,"records":0,"words":0,"findings":0,"rejected_raw":{"STATIC_REFERENCE":3,"INSUFFICIENT_MULTI_TOKEN_TOPIC":7,"TEMPORAL_STALE":10}},
+    {"mode":"NORMAL_LIVE","agent":"personal_watch","input":"Lisa Su","seconds":30.76,"records":1,"words":10,"decimal_kb":0.053,"findings":0,"limitation":"PROFILE_METADATA only"},
+    {"mode":"EXPLICIT_EXTERNALLY_LOCATED_URL_LIVE_CONTROL","agent":"brandshield","input":"LEGO","seconds":16.54,"records":1,"words":666,"decimal_kb":4.062,"automatic_discovery_success":false}
+  ],
+  "direct_probes": [
+    {"provider":"bing","status":200,"full_query_echoed":true,"result":"FIRST_WORD_RESULTS"},
+    {"provider":"bing_quoted","status":200,"full_query_echoed":true,"result":"FIRST_WORD_RESULTS"},
+    {"provider":"yahoo","status":500,"result":"HTTP_FAILURE"},
+    {"provider":"bing_news","status":200,"result":"NO_ENTRIES"},
+    {"provider":"observed_google_wrapper","status":200,"result":"NO_DIRECT_PUBLISHER_LINK"},
+    {"provider":"duckduckgo_html","status":202,"result":"NO_PARSED_RESULTS","runtime_integration":false}
+  ],
+  "saved_byte_correction":{"records":1,"words":666,"active_threats":0,"informational_advisories":1,"actor_url":null,"counterfeits":0,"impersonations":0,"source_bytes_retained":true,"shared_display_strings":2},
+  "validation":{"full":{"exit":0,"passed":1505,"seconds":44.71},"fast":{"exit":0,"passed":1297,"seconds":27.29},"focused":{"exit":0,"passed":28,"seconds":0.36},"fatal_lint_exit":0,"node_scripts_passed":9,"offline_smoke_exit":0,"offline_persistence_exit":0,"frozen_hash_exit":0},
+  "browser":{"mode":"EXACT_SAVED_SSE_REPLAY","states":3,"widths":[320,390,1440],"overflow":0,"uncaught_page_exceptions":0,"keyboard_inspection_states":3,"readiness":"HARNESS_STUB","other_apis_fonts":"BLOCKED","application_stable":true},
+  "screenshot":{"file":"01-brandshield-390-report.png","sha256":"a5b0ad1f9032cabd117bfca477cce5ce1d30119d4fc4d11051d504b8dce0391c"},
+  "research_acceptance":"NOT_COMPLETE",
+  "commit_push_merge_deployment":false
+}

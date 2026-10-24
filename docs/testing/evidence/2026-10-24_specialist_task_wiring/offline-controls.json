@@ -1,0 +1,1397 @@
+{
+  "schema": "specialist-task-wiring-offline-v1",
+  "date": "2026-10-24",
+  "source_provider_requests": 0,
+  "model_calls": 0,
+  "network_blocked": true,
+  "code_sha256": {
+    "backend/services/agent_reach/source_planner.py": "80c4747fb3e7397fb9ed35602cc958e9f80fcdcc270d916131a5c296327ff0c2",
+    "backend/services/research/specialist_planning.py": "80a517a3e320f3fc6559899349806be7e6867166353e59a488117c984ad7cd5c",
+    "backend/services/research/harvesting.py": "5d9c88589dd290f767444a1676c752ed2b3f274405d199747bcb66c3870df6a1",
+    "backend/application/research/harvest_pipeline.py": "ece8a682be77628ffb748f40a342ca71e25d05ecd40b1eeafb2af25d1edb0474",
+    "backend/services/research/raw_pool.py": "4ef67e9f22e3d3211322f9da24bb542f78180cbe9c27fb7ffa5d4b07f3c48337",
+    "backend/agents/personal_watch/assessment.py": "9de050e9edbdd5959e6bb5064d03f27777fb7c846c91c947cb43fa48ec9a33f4",
+    "backend/agents/personal_watch/agent.py": "ede9748b25cc14f2f9eb388f7b31da2162b7974693f00f854150f065bad2a8a7",
+    "backend/services/report_builder.py": "00749d16e88f2a578e05674d7b5d67d921a13abf0332e62d12ac932a0522319c",
+    "frontend/unified-report-renderer.js": "c8887974f4345530ac709cd246bab05297f3f86c80d9d7437477e33f36d12387"
+  },
+  "planning_controls": [
+    {
+      "domain": "brand",
+      "fictional_target": "Quartz Tools",
+      "claim": "Quartz Tools phishing incident",
+      "mode": "OFFLINE_PLANNING_NO_PROVIDER_CALL",
+      "capabilities": "SYNTHETIC_ELIGIBLE_NOT_LIVE_HEALTH",
+      "intent_class": "general_verification",
+      "source_action_count": 5,
+      "channel_query_counts": {
+        "web": 3,
+        "news": 1,
+        "reddit": 1
+      },
+      "diagnostics": {
+        "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+        "requested_tasks": [
+          "PHISHING"
+        ],
+        "selected": [
+          {
+            "source_plan_action_id": "spa_e750ff5e2f",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "primary_discovery",
+            "specialist_task": "PHISHING",
+            "acquisition_objective": "PHISHING"
+          },
+          {
+            "source_plan_action_id": "spa_07243018be",
+            "channel": "news",
+            "operation": "search",
+            "source_category": "independent_reporting",
+            "specialist_task": "PHISHING",
+            "acquisition_objective": "PHISHING"
+          },
+          {
+            "source_plan_action_id": "spa_a5dbe562c5",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "contradiction_probe",
+            "specialist_task": "PHISHING",
+            "acquisition_objective": "PHISHING"
+          },
+          {
+            "source_plan_action_id": "spa_cc86c96e92",
+            "channel": "reddit",
+            "operation": "search",
+            "source_category": "community_discussion",
+            "specialist_task": "PHISHING",
+            "acquisition_objective": "PHISHING"
+          }
+        ],
+        "skipped": [
+          {
+            "source_plan_action_id": "spa_5d02a187bc",
+            "reason": "UNRELATED_TO_EXPLICIT_SPECIALIST_TASK",
+            "source_category": "brand_risk"
+          }
+        ],
+        "core_limit": 6,
+        "optional_limit": 2,
+        "selected_core_count": 3,
+        "selected_optional_count": 1,
+        "network_calls": 0,
+        "explicit_task": true,
+        "status": "SELECTED"
+      },
+      "selected_queries": [
+        {
+          "query_id": "spa_e750ff5e2f",
+          "query_class": "primary_discovery",
+          "query_text": "Quartz Tools phishing incident official source",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_e750ff5e2f",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PHISHING"
+        },
+        {
+          "query_id": "spa_07243018be",
+          "query_class": "independent_reporting",
+          "query_text": "Quartz Tools phishing incident latest independent reporting",
+          "operation": "search",
+          "channel": "news",
+          "source_plan_action_id": "spa_07243018be",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PHISHING"
+        },
+        {
+          "query_id": "spa_a5dbe562c5",
+          "query_class": "contradiction_probe",
+          "query_text": "Quartz Tools debunked false rumor Quartz Tools phishing incident",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_a5dbe562c5",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PHISHING"
+        },
+        {
+          "query_id": "spa_cc86c96e92",
+          "query_class": "community_discussion",
+          "query_text": "Quartz Tools phishing incident",
+          "operation": "search",
+          "channel": "reddit",
+          "source_plan_action_id": "spa_cc86c96e92",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PHISHING"
+        }
+      ],
+      "fallback_queries": [
+        {
+          "channel": "news",
+          "query_id": "harvest_001",
+          "query_class": "harvest_phishing",
+          "query_text": "Quartz Tools phishing incident report",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_002",
+          "query_class": "harvest_phishing",
+          "query_text": "Quartz Tools phishing incident report",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_003",
+          "query_class": "harvest_phishing",
+          "query_text": "Quartz Tools phishing incident report",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_004",
+          "query_class": "harvest_credential",
+          "query_text": "Quartz Tools credential theft warning",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_005",
+          "query_class": "harvest_credential",
+          "query_text": "Quartz Tools credential theft warning",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_006",
+          "query_class": "harvest_credential",
+          "query_text": "Quartz Tools credential theft warning",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_007",
+          "query_class": "harvest_phishing",
+          "query_text": "Quartz Tools phishing allegation response",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_008",
+          "query_class": "harvest_phishing",
+          "query_text": "Quartz Tools phishing allegation response",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_009",
+          "query_class": "harvest_phishing",
+          "query_text": "Quartz Tools phishing allegation response",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PHISHING",
+          "specialist_task": "PHISHING",
+          "requested_specialist_tasks": [
+            "PHISHING"
+          ]
+        }
+      ],
+      "input_plan_unchanged": true
+    },
+    {
+      "domain": "brand",
+      "fictional_target": "Quartz Tools",
+      "claim": "Quartz Tools product recall",
+      "mode": "OFFLINE_PLANNING_NO_PROVIDER_CALL",
+      "capabilities": "SYNTHETIC_ELIGIBLE_NOT_LIVE_HEALTH",
+      "intent_class": "general_verification",
+      "source_action_count": 5,
+      "channel_query_counts": {
+        "web": 3,
+        "news": 1,
+        "reddit": 1
+      },
+      "diagnostics": {
+        "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+        "requested_tasks": [
+          "PRODUCT_SAFETY"
+        ],
+        "selected": [
+          {
+            "source_plan_action_id": "spa_c288af4575",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "primary_discovery",
+            "specialist_task": "PRODUCT_SAFETY",
+            "acquisition_objective": "PRODUCT_SAFETY"
+          },
+          {
+            "source_plan_action_id": "spa_0c64f676c7",
+            "channel": "news",
+            "operation": "search",
+            "source_category": "independent_reporting",
+            "specialist_task": "PRODUCT_SAFETY",
+            "acquisition_objective": "PRODUCT_SAFETY"
+          },
+          {
+            "source_plan_action_id": "spa_fc8489b81d",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "contradiction_probe",
+            "specialist_task": "PRODUCT_SAFETY",
+            "acquisition_objective": "PRODUCT_SAFETY"
+          },
+          {
+            "source_plan_action_id": "spa_7e77aebc74",
+            "channel": "reddit",
+            "operation": "search",
+            "source_category": "community_discussion",
+            "specialist_task": "PRODUCT_SAFETY",
+            "acquisition_objective": "PRODUCT_SAFETY"
+          }
+        ],
+        "skipped": [
+          {
+            "source_plan_action_id": "spa_5d02a187bc",
+            "reason": "UNRELATED_TO_EXPLICIT_SPECIALIST_TASK",
+            "source_category": "brand_risk"
+          }
+        ],
+        "core_limit": 6,
+        "optional_limit": 2,
+        "selected_core_count": 3,
+        "selected_optional_count": 1,
+        "network_calls": 0,
+        "explicit_task": true,
+        "status": "SELECTED"
+      },
+      "selected_queries": [
+        {
+          "query_id": "spa_c288af4575",
+          "query_class": "primary_discovery",
+          "query_text": "Quartz Tools product recall official source",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_c288af4575",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PRODUCT_SAFETY"
+        },
+        {
+          "query_id": "spa_0c64f676c7",
+          "query_class": "independent_reporting",
+          "query_text": "Quartz Tools product recall latest independent reporting",
+          "operation": "search",
+          "channel": "news",
+          "source_plan_action_id": "spa_0c64f676c7",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PRODUCT_SAFETY"
+        },
+        {
+          "query_id": "spa_fc8489b81d",
+          "query_class": "contradiction_probe",
+          "query_text": "Quartz Tools debunked false rumor Quartz Tools product recall",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_fc8489b81d",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PRODUCT_SAFETY"
+        },
+        {
+          "query_id": "spa_7e77aebc74",
+          "query_class": "community_discussion",
+          "query_text": "Quartz Tools product recall",
+          "operation": "search",
+          "channel": "reddit",
+          "source_plan_action_id": "spa_7e77aebc74",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PRODUCT_SAFETY"
+        }
+      ],
+      "fallback_queries": [
+        {
+          "channel": "news",
+          "query_id": "harvest_001",
+          "query_class": "harvest_product",
+          "query_text": "Quartz Tools product safety recall notice",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_002",
+          "query_class": "harvest_product",
+          "query_text": "Quartz Tools product safety recall notice",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_003",
+          "query_class": "harvest_product",
+          "query_text": "Quartz Tools product safety recall notice",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_004",
+          "query_class": "harvest_recall",
+          "query_text": "Quartz Tools recall company response",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_005",
+          "query_class": "harvest_recall",
+          "query_text": "Quartz Tools recall company response",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_006",
+          "query_class": "harvest_recall",
+          "query_text": "Quartz Tools recall company response",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_007",
+          "query_class": "harvest_product",
+          "query_text": "Quartz Tools product safety investigation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_008",
+          "query_class": "harvest_product",
+          "query_text": "Quartz Tools product safety investigation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_009",
+          "query_class": "harvest_product",
+          "query_text": "Quartz Tools product safety investigation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PRODUCT_SAFETY",
+          "specialist_task": "PRODUCT_SAFETY",
+          "requested_specialist_tasks": [
+            "PRODUCT_SAFETY"
+          ]
+        }
+      ],
+      "input_plan_unchanged": true
+    },
+    {
+      "domain": "personal",
+      "fictional_target": "Elena Rivera",
+      "claim": "Elena Rivera said \"Quarterly revenue will be disclosed after the audit\"",
+      "mode": "OFFLINE_PLANNING_NO_PROVIDER_CALL",
+      "capabilities": "SYNTHETIC_ELIGIBLE_NOT_LIVE_HEALTH",
+      "intent_class": "identity_attribution",
+      "source_action_count": 8,
+      "channel_query_counts": {
+        "web": 3,
+        "news": 1,
+        "twitter": 1
+      },
+      "diagnostics": {
+        "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+        "requested_tasks": [
+          "PUBLIC_STATEMENT"
+        ],
+        "selected": [
+          {
+            "source_plan_action_id": "spa_139f952dc4",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "quotation_verification",
+            "specialist_task": "PUBLIC_STATEMENT",
+            "acquisition_objective": "PUBLIC_STATEMENT"
+          },
+          {
+            "source_plan_action_id": "spa_c215bff7a0",
+            "channel": "news",
+            "operation": "search",
+            "source_category": "identity_corroboration",
+            "specialist_task": "PUBLIC_STATEMENT",
+            "acquisition_objective": "PUBLIC_STATEMENT"
+          },
+          {
+            "source_plan_action_id": "spa_da16c04c5a",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "public_statement_discovery",
+            "specialist_task": "PUBLIC_STATEMENT",
+            "acquisition_objective": "PUBLIC_STATEMENT"
+          }
+        ],
+        "skipped": [
+          {
+            "source_plan_action_id": "spa_1417842a8e",
+            "reason": "UNRELATED_TO_EXPLICIT_SPECIALIST_TASK",
+            "source_category": "synthetic_media_reporting"
+          },
+          {
+            "source_plan_action_id": "spa_9a9d394fa7",
+            "reason": "UNRELATED_TO_EXPLICIT_SPECIALIST_TASK",
+            "source_category": "verified_profile"
+          },
+          {
+            "source_plan_action_id": "spa_32929beadb",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "personal_watch"
+          },
+          {
+            "source_plan_action_id": "spa_042b0403a0",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "identity_primary"
+          },
+          {
+            "source_plan_action_id": "spa_8bd9b2da6d",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "contradiction_probe"
+          }
+        ],
+        "core_limit": 6,
+        "optional_limit": 2,
+        "selected_core_count": 3,
+        "selected_optional_count": 0,
+        "network_calls": 0,
+        "explicit_task": true,
+        "status": "SELECTED"
+      },
+      "selected_queries": [
+        {
+          "query_id": "spa_139f952dc4",
+          "query_class": "quotation_verification",
+          "query_text": "\"Quarterly revenue will be disclosed after the audit\" Elena Rivera",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_139f952dc4",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "query_id": "spa_c215bff7a0",
+          "query_class": "identity_corroboration",
+          "query_text": "Elena Rivera said \"Quarterly revenue will be disclosed after the audit\"",
+          "operation": "search",
+          "channel": "news",
+          "source_plan_action_id": "spa_c215bff7a0",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "query_id": "spa_da16c04c5a",
+          "query_class": "public_statement_discovery",
+          "query_text": "\"Elena Rivera\" statement interview",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_da16c04c5a",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        }
+      ],
+      "fallback_queries": [
+        {
+          "channel": "news",
+          "query_id": "harvest_001",
+          "query_class": "harvest_original",
+          "query_text": "Elena Rivera original statement transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_002",
+          "query_class": "harvest_original",
+          "query_text": "Elena Rivera original statement transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_003",
+          "query_class": "harvest_original",
+          "query_text": "Elena Rivera original statement transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_004",
+          "query_class": "harvest_interview",
+          "query_text": "Elena Rivera interview quotation source",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_005",
+          "query_class": "harvest_interview",
+          "query_text": "Elena Rivera interview quotation source",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_006",
+          "query_class": "harvest_interview",
+          "query_text": "Elena Rivera interview quotation source",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_007",
+          "query_class": "harvest_public",
+          "query_text": "Elena Rivera public speech transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_008",
+          "query_class": "harvest_public",
+          "query_text": "Elena Rivera public speech transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_009",
+          "query_class": "harvest_public",
+          "query_text": "Elena Rivera public speech transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT"
+          ]
+        }
+      ],
+      "input_plan_unchanged": true
+    },
+    {
+      "domain": "personal",
+      "fictional_target": "Elena Rivera",
+      "claim": "Elena Rivera false quote \"Quarterly revenue doubled\"",
+      "mode": "OFFLINE_PLANNING_NO_PROVIDER_CALL",
+      "capabilities": "SYNTHETIC_ELIGIBLE_NOT_LIVE_HEALTH",
+      "intent_class": "identity_attribution",
+      "source_action_count": 8,
+      "channel_query_counts": {
+        "web": 3,
+        "news": 1,
+        "twitter": 1
+      },
+      "diagnostics": {
+        "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+        "requested_tasks": [
+          "FALSE_QUOTE"
+        ],
+        "selected": [
+          {
+            "source_plan_action_id": "spa_5fc43bc2be",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "quotation_verification",
+            "specialist_task": "FALSE_QUOTE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "source_plan_action_id": "spa_beedbf9bdc",
+            "channel": "news",
+            "operation": "search",
+            "source_category": "identity_corroboration",
+            "specialist_task": "FALSE_QUOTE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "source_plan_action_id": "spa_8bd9b2da6d",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "contradiction_probe",
+            "specialist_task": "FALSE_QUOTE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          }
+        ],
+        "skipped": [
+          {
+            "source_plan_action_id": "spa_da16c04c5a",
+            "reason": "UNRELATED_TO_EXPLICIT_SPECIALIST_TASK",
+            "source_category": "public_statement_discovery"
+          },
+          {
+            "source_plan_action_id": "spa_9a9d394fa7",
+            "reason": "UNRELATED_TO_EXPLICIT_SPECIALIST_TASK",
+            "source_category": "verified_profile"
+          },
+          {
+            "source_plan_action_id": "spa_1417842a8e",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "synthetic_media_reporting"
+          },
+          {
+            "source_plan_action_id": "spa_32929beadb",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "personal_watch"
+          },
+          {
+            "source_plan_action_id": "spa_042b0403a0",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "identity_primary"
+          }
+        ],
+        "core_limit": 6,
+        "optional_limit": 2,
+        "selected_core_count": 3,
+        "selected_optional_count": 0,
+        "network_calls": 0,
+        "explicit_task": true,
+        "status": "SELECTED"
+      },
+      "selected_queries": [
+        {
+          "query_id": "spa_5fc43bc2be",
+          "query_class": "quotation_verification",
+          "query_text": "\"Quarterly revenue doubled\" Elena Rivera",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_5fc43bc2be",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "query_id": "spa_beedbf9bdc",
+          "query_class": "identity_corroboration",
+          "query_text": "Elena Rivera false quote \"Quarterly revenue doubled\"",
+          "operation": "search",
+          "channel": "news",
+          "source_plan_action_id": "spa_beedbf9bdc",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "query_id": "spa_8bd9b2da6d",
+          "query_class": "contradiction_probe",
+          "query_text": "Elena Rivera denies false quote fabricated statement",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_8bd9b2da6d",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        }
+      ],
+      "fallback_queries": [
+        {
+          "channel": "news",
+          "query_id": "harvest_001",
+          "query_class": "harvest_quotation",
+          "query_text": "Elena Rivera quotation original transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_002",
+          "query_class": "harvest_quotation",
+          "query_text": "Elena Rivera quotation original transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_003",
+          "query_class": "harvest_quotation",
+          "query_text": "Elena Rivera quotation original transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_004",
+          "query_class": "harvest_misattributed",
+          "query_text": "Elena Rivera misattributed quote fact check",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_005",
+          "query_class": "harvest_misattributed",
+          "query_text": "Elena Rivera misattributed quote fact check",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_006",
+          "query_class": "harvest_misattributed",
+          "query_text": "Elena Rivera misattributed quote fact check",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_007",
+          "query_class": "harvest_quotation",
+          "query_text": "Elena Rivera quotation denial correction",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_008",
+          "query_class": "harvest_quotation",
+          "query_text": "Elena Rivera quotation denial correction",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_009",
+          "query_class": "harvest_quotation",
+          "query_text": "Elena Rivera quotation denial correction",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT",
+          "specialist_task": "FALSE_QUOTE",
+          "requested_specialist_tasks": [
+            "FALSE_QUOTE"
+          ]
+        }
+      ],
+      "input_plan_unchanged": true
+    },
+    {
+      "domain": "personal",
+      "fictional_target": "Elena Rivera",
+      "claim": "Elena Rivera",
+      "mode": "OFFLINE_PLANNING_NO_PROVIDER_CALL",
+      "capabilities": "SYNTHETIC_ELIGIBLE_NOT_LIVE_HEALTH",
+      "intent_class": "identity_attribution",
+      "source_action_count": 9,
+      "channel_query_counts": {
+        "news": 3,
+        "web": 3,
+        "twitter": 1
+      },
+      "diagnostics": {
+        "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+        "requested_tasks": [
+          "PUBLIC_STATEMENT",
+          "IDENTITY_THREAT"
+        ],
+        "selected": [
+          {
+            "source_plan_action_id": "spa_00fcab2252",
+            "channel": "news",
+            "operation": "search",
+            "source_category": "identity_abuse_reporting",
+            "specialist_task": "DEEPFAKE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "source_plan_action_id": "spa_da16c04c5a",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "public_statement_discovery",
+            "specialist_task": "PUBLIC_STATEMENT",
+            "acquisition_objective": "PUBLIC_STATEMENT"
+          },
+          {
+            "source_plan_action_id": "spa_ba8bba52d8",
+            "channel": "news",
+            "operation": "search",
+            "source_category": "identity_abuse_reporting",
+            "specialist_task": "IMPERSONATION",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "source_plan_action_id": "spa_1417842a8e",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "synthetic_media_reporting",
+            "specialist_task": "DEEPFAKE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "source_plan_action_id": "spa_956a54f15b",
+            "channel": "news",
+            "operation": "search",
+            "source_category": "identity_corroboration",
+            "specialist_task": "IMPERSONATION",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "source_plan_action_id": "spa_32929beadb",
+            "channel": "web",
+            "operation": "search",
+            "source_category": "personal_watch",
+            "specialist_task": "IMPERSONATION",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "source_plan_action_id": "spa_9a9d394fa7",
+            "channel": "twitter",
+            "operation": "profile",
+            "source_category": "verified_profile",
+            "specialist_task": "IDENTITY_THREAT",
+            "acquisition_objective": "IDENTITY_THREAT"
+          }
+        ],
+        "skipped": [
+          {
+            "source_plan_action_id": "spa_042b0403a0",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "identity_primary"
+          },
+          {
+            "source_plan_action_id": "spa_1bc1520428",
+            "reason": "OUTSIDE_SOURCE_PLAN_CHANNEL_BUDGET",
+            "source_category": "quotation_verification"
+          }
+        ],
+        "core_limit": 6,
+        "optional_limit": 2,
+        "selected_core_count": 6,
+        "selected_optional_count": 1,
+        "network_calls": 0,
+        "explicit_task": false,
+        "status": "SELECTED"
+      },
+      "selected_queries": [
+        {
+          "query_id": "spa_00fcab2252",
+          "query_class": "identity_abuse_reporting",
+          "query_text": "\"Elena Rivera\" deepfake",
+          "operation": "search",
+          "channel": "news",
+          "source_plan_action_id": "spa_00fcab2252",
+          "specialist_task": "DEEPFAKE",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT",
+            "IDENTITY_THREAT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "query_id": "spa_da16c04c5a",
+          "query_class": "public_statement_discovery",
+          "query_text": "\"Elena Rivera\" statement interview",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_da16c04c5a",
+          "specialist_task": "PUBLIC_STATEMENT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT",
+            "IDENTITY_THREAT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "query_id": "spa_ba8bba52d8",
+          "query_class": "identity_abuse_reporting",
+          "query_text": "\"Elena Rivera\" impersonation",
+          "operation": "search",
+          "channel": "news",
+          "source_plan_action_id": "spa_ba8bba52d8",
+          "specialist_task": "IMPERSONATION",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT",
+            "IDENTITY_THREAT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "query_id": "spa_1417842a8e",
+          "query_class": "synthetic_media_reporting",
+          "query_text": "\"Elena Rivera\" deepfake",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_1417842a8e",
+          "specialist_task": "DEEPFAKE",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT",
+            "IDENTITY_THREAT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "query_id": "spa_956a54f15b",
+          "query_class": "identity_corroboration",
+          "query_text": "\"Elena Rivera\" (impersonation OR deepfake OR scam)",
+          "operation": "search",
+          "channel": "news",
+          "source_plan_action_id": "spa_956a54f15b",
+          "specialist_task": "IMPERSONATION",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT",
+            "IDENTITY_THREAT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "query_id": "spa_32929beadb",
+          "query_class": "personal_watch",
+          "query_text": "\"Elena Rivera\" impersonation scam",
+          "operation": "search",
+          "channel": "web",
+          "source_plan_action_id": "spa_32929beadb",
+          "specialist_task": "IMPERSONATION",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT",
+            "IDENTITY_THREAT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "query_id": "spa_9a9d394fa7",
+          "query_class": "verified_profile",
+          "query_text": "Elena Rivera",
+          "operation": "profile",
+          "channel": "twitter",
+          "source_plan_action_id": "spa_9a9d394fa7",
+          "specialist_task": "IDENTITY_THREAT",
+          "requested_specialist_tasks": [
+            "PUBLIC_STATEMENT",
+            "IDENTITY_THREAT"
+          ],
+          "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+          "acquisition_objective": "IDENTITY_THREAT"
+        }
+      ],
+      "fallback_queries": [
+        {
+          "channel": "news",
+          "query_id": "harvest_001",
+          "query_class": "harvest_public",
+          "query_text": "Elena Rivera public statement",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_002",
+          "query_class": "harvest_public",
+          "query_text": "Elena Rivera public statement",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_003",
+          "query_class": "harvest_public",
+          "query_text": "Elena Rivera public statement",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_004",
+          "query_class": "harvest_impersonation",
+          "query_text": "Elena Rivera impersonation allegation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_005",
+          "query_class": "harvest_impersonation",
+          "query_text": "Elena Rivera impersonation allegation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_006",
+          "query_class": "harvest_impersonation",
+          "query_text": "Elena Rivera impersonation allegation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_007",
+          "query_class": "harvest_identity",
+          "query_text": "Elena Rivera identity deepfake",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_008",
+          "query_class": "harvest_identity",
+          "query_text": "Elena Rivera identity deepfake",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_009",
+          "query_class": "harvest_identity",
+          "query_text": "Elena Rivera identity deepfake",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_010",
+          "query_class": "harvest_interview",
+          "query_text": "Elena Rivera interview transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_011",
+          "query_class": "harvest_interview",
+          "query_text": "Elena Rivera interview transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_012",
+          "query_class": "harvest_interview",
+          "query_text": "Elena Rivera interview transcript",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_013",
+          "query_class": "harvest_official",
+          "query_text": "Elena Rivera official statement",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_014",
+          "query_class": "harvest_official",
+          "query_text": "Elena Rivera official statement",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_015",
+          "query_class": "harvest_official",
+          "query_text": "Elena Rivera official statement",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "PUBLIC_STATEMENT"
+        },
+        {
+          "channel": "news",
+          "query_id": "harvest_016",
+          "query_class": "harvest_false",
+          "query_text": "Elena Rivera false quotation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "web",
+          "query_id": "harvest_017",
+          "query_class": "harvest_false",
+          "query_text": "Elena Rivera false quotation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        },
+        {
+          "channel": "rss",
+          "query_id": "harvest_018",
+          "query_class": "harvest_false",
+          "query_text": "Elena Rivera false quotation",
+          "operation": "search",
+          "basis": "DETERMINISTIC_OBJECTIVE",
+          "acquisition_objective": "IDENTITY_THREAT"
+        }
+      ],
+      "input_plan_unchanged": true
+    }
+  ],
+  "saved_response_checks": [
+    {
+      "case": "01-personal_watch.json",
+      "mode": "READ_ONLY_SAVED_RESPONSE",
+      "native_sha256": "29997122f05ed309f2aa03634469b8a54b45d2398bd59688a3a6ee2d74484e36",
+      "native_source_count": 0,
+      "public_statements": 0,
+      "disputed_claims": 0,
+      "suspected_impersonations": 0,
+      "source_input_unchanged": true
+    },
+    {
+      "case": "02-brandshield.json",
+      "mode": "READ_ONLY_SAVED_RESPONSE",
+      "native_sha256": "ec2622bbb30e740b91bfed2eac896d4a1524d0689165431d3a85a92d85037048",
+      "native_source_count": 1,
+      "source_classifications": [
+        "REPORTED_ALLEGATION"
+      ],
+      "source_input_unchanged": true
+    }
+  ],
+  "limitations": [
+    "Synthetic capability admission and planning are not live provider access or source recall.",
+    "Saved interpretation cannot prove improved autonomous acquisition.",
+    "No new live word-yield, browser visual, CI or production acceptance."
+  ]
+}

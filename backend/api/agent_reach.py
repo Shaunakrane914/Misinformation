@@ -201,7 +201,7 @@ def agent_reach_read(request: AgentReachReadRequest):
     try:
         res = agent_reach_service.read(request.url, max_chars=request.max_chars)
         if res.get("status") == "blocked_ssrf":
-            raise HTTPException(status_code=400, detail=res.get("error", "URL blocked by SSRF defense"))
+            raise HTTPException(status_code=400, detail="URL blocked by SSRF defense: " + res.get("error", "Unsafe destination"))
         return res
     except HTTPException:
         raise

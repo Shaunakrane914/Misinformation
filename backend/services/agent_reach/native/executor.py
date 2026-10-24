@@ -37,6 +37,7 @@ from backend.services.agent_reach.native.errors import (
 )
 from backend.services.agent_reach.native.runtime import RuntimeProfile, get_runtime_profile
 from backend.services.url_validator import is_safe_url
+from backend.infrastructure.acquisition.security.url_validator import validation_failure_kind
 
 logger = logging.getLogger(__name__)
 
@@ -99,6 +100,10 @@ class NativeExecutor:
         clean_url = url.strip()
         safe, reason = is_safe_url(clean_url)
         if not safe:
+            kind = validation_failure_kind(reason)
+            if kind != "SSRF_BLOCKED":
+                raise ProviderHTTPError("URL validation failed: " + reason, endpoint=clean_url,
+                                        failure_kind=kind, attempts=0)
             raise SecurityPolicyViolation(f"URL failed SSRF validation: {clean_url} ({reason})")
 
         t0 = time.perf_counter()
@@ -152,7 +157,7 @@ class NativeExecutor:
             media_type = (content_type or "").split(";", 1)[0].strip().lower()
             if media_type and not (
                 media_type.startswith("text/")
-                or media_type in ("application/xhtml+xml", "application/xml", "application/json", "application/ld+json")
+                or media_type in ("application/xhtml+xml", "application/xml", "application/json", "application/ld+json", "application/rss+xml", "application/atom+xml")
             ):
                 raise ValueError("HTTP response is not a text document")
             observed_endpoint = response.endpoint
@@ -200,6 +205,11 @@ class NativeExecutor:
                 extracted = extract_readable_page(soup)
                 markdown_text = extracted["text"]
                 page_metadata["content_scope"] = extracted["content_scope"]
+                page_metadata["text_blocks"] = extracted["text_blocks"]
+                page_metadata["date_observations"] = extracted["date_observations"]
+                for key in ("body_quality", "extraction_method", "readable_word_count", "readable_character_count", "readable_sha256"):
+                    if key in extracted:
+                        page_metadata[key] = extracted[key]
                 raw_text = extracted["raw_text"]
                 raw_capture = {
                     "text": raw_text[:100_000], "truncated": len(raw_text) > 100_000,
@@ -209,6 +219,10 @@ class NativeExecutor:
                 }
             else:
                 markdown_text = raw_text.strip()
+                from backend.infrastructure.acquisition.adapters.web.discovery_document import discovery_document
+                index = discovery_document(raw_text, response.endpoint)
+                if index is not None:
+                    page_metadata = index
             selected_response = response
 
         except ProviderHTTPError as error:
@@ -218,18 +232,19 @@ class NativeExecutor:
         except Exception as error:
             logger.debug("[NativeExecutor] HTTP parsing failed for %s: %s", clean_url, error)
 
-        CHALLENGE_INDICATORS = (
-            "cloudflare", "turnstile", "human security", "just a moment",
-            "verify you are human", "attention required", "security check",
-            "access denied", "403 forbidden"
-        )
-        is_challenge = any(ind in markdown_text.lower() for ind in CHALLENGE_INDICATORS)
+        # News about a CDN/security challenge is not itself a challenge page.
+        # Require a challenge-shaped page opening, not an incidental body word.
+        opening = re.sub(r"\s+", " ", markdown_text[:250]).strip().lower()
+        is_challenge = bool(re.match(r"^(?:#{1,3}\s*)?(?:just a moment|verify (?:that )?you are human|attention required|access denied|403 forbidden|checking your browser)", opening))
         if is_challenge:
-            markdown_text = ""
+            raise ProviderHTTPError("Publisher challenge page; alternate-route retrieval is not allowed",
+                                    endpoint=observed_endpoint or clean_url, status_code=status_code,
+                                    network_observed=True)
 
         # Browser rescue is intentionally disabled: hostname interception alone
         # cannot pin Chromium's destination DNS or bound all subresource I/O.
-        # For empty/challenge responses, only the bounded Jina transport remains.
+        # A genuinely empty non-challenge response may use the existing bounded
+        # reader. Access denials/challenges above never trigger another route.
         if len(markdown_text) < 100:
             try:
                 jina_url = f"https://r.jina.ai/{clean_url}"
@@ -1009,6 +1024,10 @@ class NativeExecutor:
         clean_url = url.strip()
         safe, reason = is_safe_url(clean_url)
         if not safe:
+            kind = validation_failure_kind(reason)
+            if kind != "SSRF_BLOCKED":
+                raise ProviderHTTPError("RSS URL validation failed: " + reason, endpoint=clean_url,
+                                        failure_kind=kind, attempts=0)
             raise SecurityPolicyViolation(f"RSS feed URL failed SSRF check: {clean_url} ({reason})")
 
         t0 = time.perf_counter()
@@ -1045,6 +1064,8 @@ class NativeExecutor:
                     "feed_content_truncated": len(feed_content) > 8000,
                     "feed_title": feed.feed.get("title", ""),
                     "feed_publisher": feed.feed.get("publisher", "") or feed.feed.get("author", ""),
+                    "publisher_source_url": (e.get("source") or {}).get("href", ""),
+                    "publisher_name": (e.get("source") or {}).get("title", ""),
                 })
             return {
                 "platform": "rss",

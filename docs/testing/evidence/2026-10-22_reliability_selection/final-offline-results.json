@@ -1,0 +1,137 @@
+{
+  "model_calls": 0,
+  "cases": [
+    {
+      "useful_excerpt_words": 97,
+      "recovered_body_records": [],
+      "qualified_sources": 4,
+      "final_offline_native_sha256": "b140cb7147188fbd059f90d705136156dc4d33a3539233c03513409cf46cd243",
+      "agent": "brandshield",
+      "subject": "Apple",
+      "source_assessments": [
+        {
+          "evidence_id": "ev_hv_7bb4855d80991eb50b9b",
+          "classification": "HISTORICAL_ENFORCEMENT",
+          "epistemic_state": "UNVERIFIED",
+          "actor_url": null
+        },
+        {
+          "evidence_id": "ev_hv_be9cb5f5cdc4c3986e82",
+          "classification": "HISTORICAL_ENFORCEMENT",
+          "epistemic_state": "UNVERIFIED",
+          "actor_url": null
+        },
+        {
+          "evidence_id": "ev_hv_6e806704335e19a66774",
+          "classification": "REPORTED_ALLEGATION",
+          "epistemic_state": "UNVERIFIED",
+          "actor_url": null
+        },
+        {
+          "evidence_id": "ev_hv_bf8f5945fe9ff28266c1",
+          "classification": "REPORTED_ALLEGATION",
+          "epistemic_state": "UNVERIFIED",
+          "actor_url": null
+        }
+      ],
+      "shared_findings": 6,
+      "shared_summary": "Captured passage from www.asiaone.com (source assertion; not independently verified): Phishing scams involving the impersonation of courier companies via Apple iMessage have surged over the past two weeks, with losses now estimated to be around $2.2 million, up from the $1.2 million reported on Aug 5 . Apple: 4 retained source record(s), including 0 profile(s); 4 capture(s) contain task-related text and 58 lead(s) are discovery-only. Captured text needs passage/context review; it does not confirm a threat. 5 selected read(s) failed or timed out. No media forensics or exhaustive platform coverage is established.",
+      "raw_records": 62,
+      "raw_id_url_title_readable_hash_acquired_publication_preserved": true,
+      "threat_observations": [
+        {
+          "threat_type": "ENFORCEMENT_REPORT",
+          "risk_level": null,
+          "confidence": null,
+          "assessment_status": null,
+          "source_relation": "REPORTS_ENFORCEMENT",
+          "direct_actor_capture": null,
+          "observed_actor_url": null,
+          "source_published_at": null,
+          "temporal_state": null
+        },
+        {
+          "threat_type": "ENFORCEMENT_REPORT",
+          "risk_level": null,
+          "confidence": null,
+          "assessment_status": null,
+          "source_relation": "REPORTS_ENFORCEMENT",
+          "direct_actor_capture": null,
+          "observed_actor_url": null,
+          "source_published_at": null,
+          "temporal_state": null
+        },
+        {
+          "threat_type": "COUNTERFEIT",
+          "risk_level": null,
+          "confidence": null,
+          "assessment_status": null,
+          "source_relation": "REPORTS_ALLEGATION",
+          "direct_actor_capture": null,
+          "observed_actor_url": null,
+          "source_published_at": null,
+          "temporal_state": null
+        },
+        {
+          "threat_type": "COUNTERFEIT",
+          "risk_level": null,
+          "confidence": null,
+          "assessment_status": null,
+          "source_relation": "REPORTS_ALLEGATION",
+          "direct_actor_capture": null,
+          "observed_actor_url": null,
+          "source_published_at": null,
+          "temporal_state": null
+        }
+      ],
+      "original_live_native_sha256": "9b0602aa83880225e99ab19bb188891d93341ef623d575081c22bd0f3c65d8d9"
+    },
+    {
+      "useful_excerpt_words": 42,
+      "recovered_body_records": [
+        {
+          "source_id": "ev_hv_497e1eb6cf9bb0d6230f",
+          "source_url": "https://www.wionews.com/trending/tim-cooked-us-netizens-react-to-fake-ai-generated-live-stream-of-apple-ceo-757339",
+          "raw_content_hash": "b17158d72d4e9fae59bb7b8d33de14fcfebcf0619ff705aedf88fe11264c535f",
+          "word_count": 1040,
+          "useful_words": 42,
+          "published_at": "Mon, 09 Sep 2024 07:33:00 GMT",
+          "qualification_status": "QUALIFIED",
+          "scope": "PARTIAL_ARTICLE_SPANS",
+          "original_link_ratio": 0.6114
+        }
+      ],
+      "qualified_sources": 1,
+      "final_offline_native_sha256": "4f936db62c57889dfaa3916747a34523eb53a1789e15e10a8cc72731c9073166",
+      "agent": "personal_watch",
+      "subject": "Tim Cook",
+      "source_assessments": [],
+      "shared_findings": 1,
+      "shared_summary": "Tim Cook: 1 retained source record(s), including 0 profile(s); 1 capture(s) contain task-related text and 41 lead(s) are discovery-only. Captured text needs passage/context review; it does not confirm a threat. 5 selected read(s) failed or timed out. No media forensics or exhaustive platform coverage is established.",
+      "raw_records": 42,
+      "raw_id_url_title_readable_hash_acquired_publication_preserved": true,
+      "threat_observations": [
+        {
+          "threat_type": "IMPERSONATION",
+          "risk_level": "UNASSESSED",
+          "confidence": null,
+          "assessment_status": "SOURCE_REPORT_ONLY",
+          "source_relation": null,
+          "direct_actor_capture": false,
+          "observed_actor_url": null,
+          "source_published_at": "Mon, 09 Sep 2024 07:33:00 GMT",
+          "temporal_state": "CURRENT_ACTIVITY_NOT_ESTABLISHED"
+        }
+      ],
+      "original_live_native_sha256": "60ef275e11dd9af4ef8e44f3ac265a3a56bbf34b466f7261b83d775085132c0c"
+    }
+  ],
+  "new_source_requests": 0,
+  "closeout_date": "2026-10-23",
+  "mode": "FINAL_OFFLINE_PROCESSING_OF_TWO_APPROVED_LIVE_CAPTURES",
+  "limitations": [
+    "Not fresh final-code autonomous discovery or independent accuracy.",
+    "Retained full-capture words include noise; useful words are exact selected excerpts.",
+    "Original HTML is unavailable for the recovered WION capture."
+  ]
+}

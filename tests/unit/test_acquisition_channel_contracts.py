@@ -228,7 +228,8 @@ def test_router_forwards_context_and_read_options_to_dispatcher(monkeypatch):
 
 def test_web_search_exception_uses_deterministic_legacy_fallback(monkeypatch):
     router = NativeRouter()
-    fallback = EvidenceFragment(platform="Web", title="fallback", channel_name="web")
+    fallback = EvidenceFragment(platform="Web", title="controlled fixture fallback",
+        url="https://publisher.example/controlled-fixture", channel_name="web")
     monkeypatch.setattr(
         router,
         "_execute_web_search",

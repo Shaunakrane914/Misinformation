@@ -37,6 +37,14 @@ def _subject_terms(text: str, target_name: str) -> set[str]:
     }
 
 
+def _captured_reference(item, target_name):
+    """Return an exact captured paragraph, never a discovery headline as proof."""
+    from backend.services.research.passage_records import captured_passages
+    rows = captured_passages(item, target=target_name) if item.content else []
+    return next((row for row in rows if row["relevance"] != "DISCOVERY_ONLY"
+                 and row["content_role"] not in {"NAVIGATION", "SOURCE_METADATA", "AUTHOR_BIO"}), None)
+
+
 class ContradictionDetector:
     """Identifies and classifies evidentiary conflicts across candidates."""
 
@@ -62,7 +70,7 @@ class ContradictionDetector:
         affirmative_items = []
 
         for item in items:
-            text = f"{item.title} {item.snippet} {item.relevant_excerpt}".lower()
+            text = f"{item.title} {item.snippet} {item.relevant_excerpt} {item.content}".lower()
             is_denial = any(p.search(text) for p in DENIAL_PATTERNS)
             if is_denial:
                 denial_items.append(item)
@@ -81,16 +89,21 @@ class ContradictionDetector:
                 # The named target and boilerplate alone cannot establish that
                 # both sources are discussing the same proposition.
                 if len(shared_subject) >= 2:
-                    a_item.contradiction_flag = True
-                    d_item.contradiction_flag = True
+                    a_ref = _captured_reference(a_item, target_name)
+                    d_ref = _captured_reference(d_item, target_name)
                     c_id = f"cont_{len(contradictions) + 1:03d}"
                     contradictions.append({
                         "contradiction_id": c_id,
-                        "type": ContradictionType.FACTUAL_CONTRADICTION.value,
-                        "statement_a": a_item.title,
+                        # Shared terms + denial language are a review lead,
+                        # even with captured paragraphs, not semantic entailment.
+                        "type": "POSSIBLE_DISAGREEMENT",
+                        "established": False,
+                        "claim_support_verified": False,
+                        "passage_references": [ref for ref in (a_ref, d_ref) if ref],
+                        "statement_a": a_ref["text"] if a_ref else a_item.title,
                         "source_a": a_item.source_name,
                         "source_a_id": a_item.id,
-                        "statement_b": d_item.title,
+                        "statement_b": d_ref["text"] if d_ref else d_item.title,
                         "source_b": d_item.source_name,
                         "source_b_id": d_item.id,
                         "explanation": (
@@ -98,7 +111,7 @@ class ContradictionDetector:
                             f"on the same sampled subject as '{a_item.source_name}'. "
                             "Verify claim wording and context before treating this as a resolved contradiction."
                         ),
-                        "severity": "HIGH" if d_item.primary_source else "MEDIUM"
+                        "severity": "REVIEW_REQUIRED"
                     })
                     break
         # Two articles saying "due to" or "driven by" do not imply exclusive

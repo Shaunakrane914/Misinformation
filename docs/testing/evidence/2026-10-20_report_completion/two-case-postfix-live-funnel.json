@@ -1,0 +1,179 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "4274a714944b555fbad0a7054d76cf3267e83b68be210a2cb04196b83ed0bddf",
+  "stable_application": true,
+  "live_ai_authorized": false,
+  "bounds": {
+    "research_timeout_seconds": 120.0,
+    "max_deep_reads": 6
+  },
+  "cases": [
+    {
+      "case_id": "01-brandshield",
+      "agent": "brandshield",
+      "input": "Dyson",
+      "seconds": 33.22,
+      "native_sha256": "9d5145c3c2568abb252ea7accef346b6b1309770862846b7b4d10f9ed8339735",
+      "investigation_status": "COMPLETED",
+      "initial_generated_queries": 9,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 12,
+        "provider_attempts_observed": 48,
+        "query_records_without_provider_observations": 3,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 41,
+        "candidate_urls_observed_in_search_sample": 302,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 255,
+          "HEADLINE_MISMATCH": 28
+        },
+        "normalized_candidates": 24,
+        "accepted_candidates": 14,
+        "selected_acquisition_attempts": 5,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "successful_body_captures": 2,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "BODY_OR_PASSAGE_QUALIFICATION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 3,
+        "bing:IRRELEVANT_RESULTS": 27,
+        "yahoo:TRANSPORT_FAILURE": 11,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 7
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_0a18f6e455d1",
+          "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOQjdsUm54Z2V5QTc4b213WTBoSTFYQ0FnSmp0d2RfNnB2TllqdG1Ec3BkM053eTZYbFhzdE02M3ZESEVuSGlLbFJ0N1Z1dFUyZDRiNFpvUGpIeDRpQkNhM1U5YnQzSXpwUEZpV2I3X0ZILU9LX0d2bHgxa3Q1ZEhoWWh1ek1Tdw",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_6a2963819adf",
+          "url": "https://news.google.com/rss/articles/CBMiswFBVV95cUxOaV9uY0lMUjdHQ0RWc0VjSFBCM2w3azJCVkE3ZTQ2ZWU4eGdMZ1RRSjEzN05mdUM2OVBwQ25KbUNtX0tDWTVxMFFTX251LUgxSEgwZkIxMnhHc2lHY3B6bks5WENHQ0tPUHhYSU1JWFlkR3VGZWhyeFc1cmtjYUkzbUJYNjhuRmpTZExFVDRMQmo0eFlUQktudWFqLXNhanYtaUp6dnNuMDVOX1A2LVpQZG5sSdIBuAFBVV95cUxQYUtFbVBrdl8zUU43dFhFdlprVm5SbGctQlhOc19OOFBZejA3cHpmdU1tY1VObnhreXppX2pqa0h2LUNiYkU1c1BXb2QwTm9pT1Q1eG90MWI4NmZkT1pKUHdXTE9ZSk9TRUpONlBaNUpGOGo1TTloUjJabnBRaG9FcDRydzgzQTBjR2k5RmY4UDJfTFFIUmtaR3R2dU1JSkJ",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_b7ebd1814209",
+          "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFB3RnVxZVQ4T3JOTmhsTVE3Z0hOWjE5WDZxcktPZHYzZFpiMTUtdUY3Tnp6MDUyUFVWXzhuTVFYUERpN2lGY2xvMmV1UlRPYnpuZUI5dUNkWkRXU2hYTmpVVERFREVkWFhHNjQwZU1IaFNmV2RPeDdmcjB2ckpWZFk",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_hub_d107b69982ab",
+          "url": "https://natlawreview.com",
+          "title": "Legal News & Business Law News",
+          "words": 1918,
+          "kb": 12.054,
+          "text_sha256": "cf9959ea70845f299833defbc7eac6f2ce851ec4601311a084d11925da44924c",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_hub_78f088514aa4",
+          "url": "https://trendlife.com",
+          "title": "TrendLife | An AI-powered life companion for families",
+          "words": 389,
+          "kb": 2.532,
+          "text_sha256": "ee1f981e2781bfbe5399237d66471321ba7bc6a3702718e9a7841ba9c74c8f1f",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        }
+      ],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 86.966385300002
+    },
+    {
+      "case_id": "02-personal_watch",
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "seconds": 32.68,
+      "native_sha256": "bda37ab3a028465e2eee2b7215326014ede639e57f3035060d0b712afd095560",
+      "investigation_status": "COMPLETED",
+      "initial_generated_queries": 9,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 12,
+        "provider_attempts_observed": 45,
+        "query_records_without_provider_observations": 2,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 39,
+        "candidate_urls_observed_in_search_sample": 292,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 266,
+          "INVALID_URL": 5,
+          "HEADLINE_MISMATCH": 13
+        },
+        "normalized_candidates": 10,
+        "accepted_candidates": 9,
+        "selected_acquisition_attempts": 2,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 1
+        },
+        "successful_body_captures": 1,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "BODY_OR_PASSAGE_QUALIFICATION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 2,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1,
+        "bing:IRRELEVANT_RESULTS": 26,
+        "yahoo:TRANSPORT_FAILURE": 10,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 5
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_f0b455f0827e",
+          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQeWgyX20zQTRzV1o3YVhoWnJZQXV5OHhUbU5kWEFUQUhtQWhMREsyVl90dnJ0OHhQS2lHSFpZRGVaUXBmR1ZEdVEyd21UV2xrY2xxajVUSWlFYWRpN0xYZkp6cU8zcjYyRjh4dW43NjlOM3NBRVhNQ0JfRjN0MmxKbTRYMFNMd1NRa2p2emoydE9ON1ZUQkVj",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_hub_13be8b461160",
+          "url": "https://www.deadlinedetroit.com",
+          "title": "Deadline Detroit - Your Source for Detroit Local News",
+          "words": 638,
+          "kb": 4.019,
+          "text_sha256": "a0495e4d73a127f4204f6d0e0feaf878490748020069620cfff8605dba6ddc25",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        }
+      ],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 87.44712489999802
+    }
+  ],
+  "limitations": "Observed samples, not unique URL totals, complete HTTP accounting, calibrated entailment or independent accuracy; saved-mode attempts are historical observations."
+}

@@ -385,8 +385,12 @@ class AgentReachService:
         lifecycle = {}
         lifecycle_lock = threading.Lock()
         closed = False
+        read_deadline_exhausted = False
 
         def _read_with_deadline(url: str, max_chars: int = 4000) -> Dict[str, Any]:
+            nonlocal read_deadline_exhausted
+            if read_deadline_exhausted:
+                return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
@@ -395,9 +399,14 @@ class AgentReachService:
                 def bounded_read():
                     with acquisition_deadline(deadline):
                         return self.read(url, max_chars=max_chars)
-                future = read_executor.submit(bounded_read)
+                from contextvars import copy_context
+                future = read_executor.submit(copy_context().run, bounded_read)
                 return future.result(timeout=remaining)
             except concurrent.futures.TimeoutError:
+                # A timed wait can return a fraction before the next monotonic
+                # check on some platforms. Once the shared wait expires, do
+                # not spend that rounding sliver launching downstream work.
+                read_deadline_exhausted = True
                 return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
             finally:
                 read_executor.shutdown(wait=False, cancel_futures=True)
@@ -504,19 +513,21 @@ class AgentReachService:
         health_snapshot_ms = round((time.monotonic() - health_started) * 1000, 3)
 
         def _run_single_query(task_tuple) -> Tuple[str, List[EvidenceFragment], int, Optional[str], QueryExecutionRecord]:
+            from backend.infrastructure.acquisition.adapters.web.search_observations import capture_search, empty_search_failure
+            search_attempts = []
             ch_n, ch_obj, q_sp = task_tuple
             started_at = datetime.utcnow().isoformat()
             t0 = time.monotonic()
             st_info = native_doctor.peek_channel_status(ch_n)
             backend_id = st_info.get("active_backend") or ch_n
             try:
-                if time.monotonic() >= deadline or max_res_per_q <= 0:
+                if read_deadline_exhausted or time.monotonic() >= deadline or max_res_per_q <= 0:
                     raise TimeoutError("Retrieval deadline or result budget exhausted")
                 with lifecycle_lock:
                     if closed:
                         raise TimeoutError("Investigation already closed")
                     lifecycle[q_sp["query_id"]].update(started=t0, started_at=started_at)
-                with acquisition_deadline(min(deadline, t0 + task_timeout)):
+                with acquisition_deadline(min(deadline, t0 + task_timeout)), capture_search(target_name, domain) as search_attempts:
                     frags = ch_obj.search(
                         q_sp["query_text"],
                         limit=max_res_per_q,
@@ -556,23 +567,25 @@ class AgentReachService:
                         if not lin.get("channel"):
                             lin["channel"] = f.actual_retrieval_channel
 
+                search_failure = empty_search_failure(search_attempts) if not frags else None
                 q_rec = QueryExecutionRecord(
                     query_id=q_sp["query_id"],
                     channel=ch_n,
                     query_text=q_sp["query_text"],
                     query_class=q_sp["query_class"],
                     phase="initial",
-                    status="SUCCESS",
+                    status=search_failure[0] if search_failure else "SUCCESS",
                     started_at=started_at,
                     completed_at=completed_at,
                     latency_ms=lat,
                     result_count_raw=len(frags or []),
                     result_count_normalized=0,
-                    error=None,
+                    error=search_failure[1] if search_failure else None,
                     retrieval_mode="direct",
                     backend_id=backend_id,
+                    search_attempts=copy.deepcopy(search_attempts),
                 )
-                return ch_n, frags or [], lat, None, q_rec
+                return ch_n, frags or [], lat, search_failure[1] if search_failure else None, q_rec
             except Exception as e:
                 completed_at = datetime.utcnow().isoformat()
                 lat = int((time.monotonic() - t0) * 1000)
@@ -601,6 +614,7 @@ class AgentReachService:
                     result_count_raw=0,
                     result_count_normalized=0,
                     error=err_str,
+                    search_attempts=copy.deepcopy(search_attempts),
                     retrieval_mode="direct",
                     backend_id=backend_id,
                 )
@@ -617,7 +631,7 @@ class AgentReachService:
             for task in tasks:
                 ch_n, _, q_sp = task
                 now = time.monotonic()
-                rejection = ("Discovery deadline exhausted before submission" if now >= deadline else
+                rejection = ("Discovery deadline exhausted before submission" if read_deadline_exhausted or now >= deadline else
                              "Configured result budget is zero" if max_res_per_q <= 0 else None)
                 if rejection is None and not _SEARCH_CAPACITY.acquire(blocking=False):
                     rejection = "Bounded worker capacity unavailable"
@@ -629,7 +643,8 @@ class AgentReachService:
                     continue
                 lifecycle[q_sp["query_id"]] = {"submitted": now, "submitted_at": datetime.utcnow().isoformat()}
                 try:
-                    fut = _CHANNEL_SEARCH_POOLS.get(ch_n, executor).submit(_run_single_query, task)
+                    from contextvars import copy_context
+                    fut = _CHANNEL_SEARCH_POOLS.get(ch_n, executor).submit(copy_context().run, _run_single_query, task)
                 except Exception:
                     _SEARCH_CAPACITY.release()
                     raise

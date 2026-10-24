@@ -54,6 +54,9 @@ class SearchDiscoveryAdapter(PlatformAdapter):
         platform: str = "web",
         entity: str = "",
         limit: int = 10,
+        query_id: str = "",
+        query_class: str = "",
+        query_text: str = "",
     ) -> List[CandidateSource]:
         """
         Execute multi-query search discovery and return ranked candidate sources.
@@ -65,7 +68,8 @@ class SearchDiscoveryAdapter(PlatformAdapter):
         queries = generate_discovery_queries(platform=platform, query=query, entity=entity) if platform in {"reddit", "twitter", "x"} else [query]
         fragments = []
         for discovery_query in queries:
-            fragments.extend(native_router._execute_web_search(discovery_query, limit=limit))
+            fragments.extend(native_router._execute_web_search(discovery_query, limit=limit,
+                query_id=query_id, query_class=query_class, query_text=query_text or query))
         disc_results = discover_sources_from_search(
             fragments, platform, query=query, target_entity=entity, max_candidates=limit
         ) if platform in {"reddit", "twitter", "x"} else []
@@ -88,7 +92,7 @@ class SearchDiscoveryAdapter(PlatformAdapter):
                     url=url, platform=actual_platform, title=fragment.title,
                     snippet=fragment.snippet, discovery_query=query,
                     search_rank=len(candidates) + 1,
-                    metadata={"published_at": fragment.published},
+                    metadata={**fragment.raw_metadata, "published_at": fragment.published},
                 ))
             return candidates[:limit]
 

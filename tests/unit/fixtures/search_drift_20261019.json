@@ -1,0 +1,15 @@
+{
+  "kind": "NORMALIZED_GENUINE_CAPTURE_REPLAY",
+  "captured_date": "2026-10-19",
+  "provider": "bing",
+  "query": "International LEGO Day: How LEGO Scams Target Families Online",
+  "capture_sha256": "d26ac5e8f922938adb11d32fe0007403b04ff6e78ee416bc1cc149c386f3c898",
+  "scope": "First five observed title/decoded URL pairs from saved probe/bing.html.txt; snippets omitted. Not a raw HTTP fixture, independent label set or fresh discovery.",
+  "records": [
+    {"title": "World News : Latest International News & Updates - The Hindu", "url": "https://www.thehindu.com/news/international/"},
+    {"title": "INTERNATIONAL | English meaning - Cambridge Dictionary", "url": "https://dictionary.cambridge.org/dictionary/english/international"},
+    {"title": "International - Wikipedia", "url": "https://en.wikipedia.org/wiki/International"},
+    {"title": "Trucks | International ®", "url": "https://www.international.com/products/trucks"},
+    {"title": "INTERNATIONAL Definition & Meaning - Merriam-Webster", "url": "https://www.merriam-webster.com/dictionary/international"}
+  ]
+}

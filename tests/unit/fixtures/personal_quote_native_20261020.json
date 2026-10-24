@@ -1,0 +1,22 @@
+{
+  "mode": "GENUINE_SAVED_NATIVE_PARTIAL_EXCERPT",
+  "source_run_sha256": "119c21ba2f809adedc24847e004136c9077aa15b4e534487fe01d75e4b60496e",
+  "source_id": "ev_hv_840b35593560935f15ca",
+  "source_url": "https://www.hindustantimes.com/lifestyle/art-culture/quote-of-the-day-by-sundar-pichai-i-am-optimistic-not-because-i-believe-in-technology-but-because-i-believe-in-people-101781005535173.html",
+  "published_at": "2026-06-10T07:05:34+05:30",
+  "original_body_sha256": "936e93bca1bb4627a6b2a38cc00f1e5521a53ed546d6cbdc5be9107835a5ec0d",
+  "original_word_count": 783,
+  "excerpt_sha256": "4ac665b61a4fb59be4616bdaa64604d90df2e648b62621ce70715f8d79077ac1",
+  "excerpt": "Sundar Pichai said: “I’m optimistic, not because I believe in technology, but because I believe in people.”",
+  "page_metadata": {
+    "content_scope": "main",
+    "body_quality": {
+      "body_kind": "ARTICLE_BODY",
+      "paragraph_count": 11,
+      "link_text_ratio": 0.0594,
+      "basis": "OBSERVED_DOCUMENT_STRUCTURE",
+      "evidence_qualified": false
+    }
+  },
+  "limitations": "Short verbatim excerpt for offline attribution regression; not the full article, a new live capture, or identity authentication."
+}

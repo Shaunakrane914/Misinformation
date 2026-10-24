@@ -138,8 +138,8 @@ def test_finding_cannot_use_missing_evidence():
 def test_atomic_and_overall_verdict_consistency():
     """Validates that atomic claim veracity aligns with overall verdict."""
     items = [
-        EvidenceItem(id="ev_01", title="Debunk 1", relevance_score=0.9, independence_group="grp_1"),
-        EvidenceItem(id="ev_02", title="Debunk 2", relevance_score=0.85, independence_group="grp_2"),
+        EvidenceItem(id="ev_01", title="Debunk 1", canonical_url="https://report-one.org/story", relevance_score=0.9),
+        EvidenceItem(id="ev_02", title="Debunk 2", canonical_url="https://report-two.org/story", relevance_score=0.85),
     ]
     res = corroboration_engine.evaluate_corroboration(items)
     assert res["independent_group_count"] == 2

@@ -111,6 +111,21 @@ def test_validation_environment_is_isolated_and_blanks_credentials(monkeypatch, 
     assert environment["SQLITE_DB_PATH"] == str(tmp_path / "aegis.db")
     assert environment["AEGIS_DOSSIER_DIR"] == str(tmp_path / "dossiers")
     assert environment["AGENT_REACH_ENABLED"] == environment["RSS_INGESTION_ENABLED"] == "false"
+    assert environment["PYTHON_DOTENV_DISABLED"] == "1"
+
+
+def test_validation_child_does_not_load_parent_dotenv(monkeypatch, tmp_path):
+    from dotenv import load_dotenv
+    # This synthetic marker is not a credential or real server configuration.
+    parent = tmp_path / "parent.env"
+    parent.write_text("GEMINI_KEY_PARENT_TEST=synthetic-must-not-load\n", encoding="utf-8")
+    monkeypatch.delenv("GEMINI_KEY_PARENT_TEST", raising=False)
+    monkeypatch.setattr(isolated_runtime, "find_dotenv", lambda: str(parent))
+    environment = isolated_runtime.isolated_environment(tmp_path)
+    assert environment["GEMINI_KEY_PARENT_TEST"] == ""
+    monkeypatch.setenv("GEMINI_KEY_PARENT_TEST", environment["GEMINI_KEY_PARENT_TEST"])
+    load_dotenv(parent)
+    assert os.environ["GEMINI_KEY_PARENT_TEST"] == ""
 
 
 def test_validation_output_never_overwrites_existing_report(tmp_path):

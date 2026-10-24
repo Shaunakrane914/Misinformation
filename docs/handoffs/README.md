@@ -1,5 +1,240 @@
 # Coding-agent handoffs
 
+## Authorized deployment tracking — 2026-10-24
+
+- [Deployment record](2026-10-24_DEPLOYMENT.md): explicit user deployment request;
+  candidate publication, exact-commit hosted CI and Cloudflare/Render verification
+  are tracked there. Initial state is pending; do not infer completion from this
+  index or from offline tests. Research-quality limitations remain separate.
+
+## BrandShield / Personal Watch specialist task layers — 2026-10-24
+
+- [Current handoff](2026-10-24_SPECIALIST_TASK_DISCOVERY_AND_SEGREGATION.md),
+  [report](../testing/SPECIALIST_TASK_DISCOVERY_AND_SEGREGATION_2026-10-24.md),
+  [offline selected controls](../testing/evidence/2026-10-24_specialist_task_wiring/offline-controls.json).
+  Repairs dropped core task plans, exact-quote priority before planner caps,
+  incidental-topic misrouting, task lineage and task-shaped read/fallback order.
+  Personal statements require observed attribution; disputes remain separately
+  unverified through API/shared rendering. Full/fast 2,184/1,976 pass; nine Node
+  scripts pass. No new provider/model calls, push or deployment; improved live
+  recall remains UNVERIFIED. Prior six live permissions remain consumed.
+  [Personal segregation decisions](2026-10-24_PERSONAL_TASK_SEGREGATION.md).
+
+## Security, reader opportunity and source yield — 2026-10-23
+
+- [Current handoff](2026-10-23_SECURITY_READER_OPPORTUNITY_AND_YIELD.md),
+  [full report](../testing/SECURITY_READER_OPPORTUNITY_AND_YIELD_2026-10-23.md),
+  [selected measurements](../testing/evidence/2026-10-23_hardening_reader_yield/measurements.json).
+  Repairs known optional-integration security defects, reserves bounded direct-read
+  opportunity, improves exact passage selection and truthful funnel reporting.
+  Six approved AI-disabled native investigations consumed; first four acquired
+  23 article bodies /29,089 raw words, but Mary Barra remains zero qualified.
+  Full/fast 2,124/1,916 passing; nine Node scripts pass. Research PARTIAL, no
+  whole-project security certification, no commit/push/merge/deployment. Older
+  Huginn HMAC/independence and disabled-test acceptance claims are corrected here.
+  [Passage controls](2026-10-23_PASSAGE_SIGNAL_CONTROLS.md) and
+  [diagnostic/wording decisions](2026-10-23_ACQUISITION_DIAGNOSTICS_REPAIR.md)
+  provide focused code/test maps. All six live permissions are consumed.
+
+## Firecrawl repair and measured native scraper strength — 2026-10-23
+
+- [Latest repair handoff](2026-10-23_SCRAPER_REPAIR_AND_STRENGTH.md),
+  [full report](../testing/SCRAPER_REPAIR_AND_STRENGTH_2026-10-23.md),
+  [measurements](../testing/evidence/2026-10-23_scraper_strength/measurements.json).
+  Firecrawl transport/extraction, conservative financial context and unsafe
+  lead-based discovery stopping repaired. Huginn stays disabled/unaccepted.
+  Four AI-disabled native cases: 12 article bodies / 11,952 words, but only
+  Adobe returns code-qualified evidence and passage quality remains imperfect.
+  Full/fast: 2,018/1,810 pass, one known disabled-Huginn failure in each. No
+  entirely-green-suite, live Firecrawl, broad research or release PASS claimed.
+  No commit, push, merge or deployment. Older implementation claims below are
+  historical and corrected by this handoff.
+
+## Firecrawl Web Acquisition & Huginn Continuous Source Monitoring — 2026-10-23
+
+- [Latest implementation handoff](2026-10-23_FIRECRAWL_AND_HUGINN_INTEGRATION.md).
+  Integrates Firecrawl v1 extraction adapter with SSRF protection and deep-reader fallback
+  for complex, dynamic, or anti-bot guarded article targets. Implements secure Huginn continuous
+  source monitoring webhook (`POST /api/events/huginn`) with HMAC secret authentication,
+  tamper-evident SHA-256 hashing, anti-amplification deduplication, bounded circular storage,
+  and PlatformAdapter normalization into `EvidenceFragment`. 14 new tests added; 1,782 full fast
+  regression tests passing with zero failures.
+
+## Staged query planning and Scout primary-source reconciliation — 2026-10-23
+
+- [Latest implementation handoff](2026-10-23_STAGED_PLANNING_AND_SCOUT_PRIMARY_RECONCILIATION.md).
+  Implements task-relevant coverage gates in the discovery loop to exit early once >= 2 distinct publishers
+  are identified matching the entity and domain objective (demonstrated -45.2% latency reduction on Apple).
+  Deepens Scout primary integration with expanded SEC EDGAR CIK resolution, metric magnitude scale extraction,
+  and fiscal period/date reconciliation against 10-Q/10-K filings. 36/36 unit/regression tests passing.
+
+## Acquisition reliability and exact evidence selection — 2026-10-23
+
+- [Implementation handoff](2026-10-23_ACQUISITION_RELIABILITY_AND_EVIDENCE_SELECTION.md),
+  [report and validation](../testing/ACQUISITION_RELIABILITY_AND_EVIDENCE_SELECTION_2026-10-22.md),
+  [evidence index](../testing/evidence/2026-10-22_reliability_selection/README.md).
+  Repairs shared DNS/transport failure amplification and exact source selection;
+  preserves expanded harvesting, raw captures, security and citation identities.
+  Two approved AI-disabled live checks are consumed. Apple recovered four retained
+  article sources; Tim Cook's acquired incident text required subsequent offline
+  structural/interpretation repair. **Broader research/release acceptance PARTIAL;
+  no commit, push, merge or deployment.** See report for final actual checks.
+
+## Twelve live prompts: word yield and relevance — 2026-10-21
+
+- [Latest audit handoff](2026-10-21_TWELVE_PROMPT_WORD_YIELD.md),
+  [complete report](../testing/TWELVE_PROMPT_WORD_YIELD_AND_RELEVANCE_2026-10-21.md).
+  Three prompts per agent, real local DEEP acquisition, zero AI calls/retries.
+  Retained text 1,948 → 15,461 words versus the historical identical-input matrix,
+  but six cases still have no evidence. Captured NVIDIA event bodies are poorly
+  projected; BrandShield/Personal Watch encounter reading/DNS/discovery failures.
+  No application repair, push or deployment; research acceptance remains unmet.
+
+## Reporting-origin integrity and reviewer readiness — 2026-10-21
+
+- [Latest handoff](2026-10-21_REPORTING_ORIGIN_AND_REVIEW_READINESS.md),
+  [report](../testing/REPORTING_ORIGIN_AND_REVIEW_READINESS_2026-10-21.md),
+  [human review](../testing/RESEARCH_QUALITY_HUMAN_REVIEW_2026-10-21.md).
+  Repaired same-wire false corroboration and final-report publisher counts;
+  prepared hash-bound human review collection without inventing labels. Final
+  full/fast 1,826/1,618 pass; six Chromium saved-SSE states pass. Zero new source
+  or AI calls; no commit/push/merge/deploy. Independent accuracy remains unverified.
+
+## Trending fresh-source completion — 2026-10-20
+
+- [Latest handoff](2026-10-20_TRENDING_FRESH_ACQUISITION_COMPLETION.md),
+  [report](../testing/TRENDING_FRESH_ACQUISITION_COMPLETION_2026-10-20.md),
+  [selected proof](../testing/evidence/2026-10-20_trending_completion/README.md).
+  Two autonomous AI-disabled topic queries acquired fresh articles; corrected
+  body handoff/passage selection retains one source-backed development each.
+  Six Chromium saved-SSE states pass. **Sampled Trending blocker repaired;
+  broad accuracy/virality/release acceptance remains separate.** Final full/fast
+  1,767/1,559 pass; zero AI calls, no commit/push/merge/deployment. Both live
+  permissions consumed; final downstream corrections have offline source proof.
+
+## Four-agent intelligence and browser continuation — 2026-10-20
+
+- [Latest handoff](2026-10-20_FOUR_AGENT_COMPLETION.md),
+  [complete report](../testing/FOUR_AGENT_COMPLETION_2026-10-20.md).
+  Adidas autonomously acquired a substantive enforcement article; corrected
+  attribution reaches the current API/browser offline. Scout's seven articles and
+  Personal Watch's exact source-attributed quotation are preserved. Four-page
+  Chromium saved-SSE acceptance checked at three widths. **Trending still has zero
+  qualified current articles; overall research PARTIAL, release blocked.**
+  Three AI-disabled live checks, no model calls or deployment. Do not reuse spent
+  permissions or mistake replay for fresh acquisition. See evidence for final tests.
+
+## Expanded acquisition-first pipeline — 2026-10-20
+
+- [Latest handoff](2026-10-20_EXPANDED_HARVESTING.md),
+  [engineering/live report](../testing/EXPANDED_HARVESTING_TWO_LAYER_REPORT_2026-10-20.md),
+  [runbook](../operations/EXPANDED_HARVESTING_RUNBOOK.md).
+  QUICK/STANDARD/DEEP harvesting, raw pool and strict qualification implemented.
+  Normal post-fix Samsung/Pichai queries acquired seven/five article bodies without
+  supplied URLs or AI. Citation collisions and raw-to-agent leakage fixed; final
+  attribution/status changes have offline proof only. **All-agent research
+  acceptance PARTIAL; no deployment.** 1,695 full / 1,487 fast tests pass.
+  Seven authorized cases consumed; two Gemini calls / 952 provider tokens in the
+  original batch. No push/merge/deploy or protected-data changes.
+
+## P0 autonomous overhaul — 2026-10-20
+
+- [Latest implementation handoff](2026-10-20_P0_AUTONOMOUS_OVERHAUL.md),
+  [full report](../testing/P0_AUTONOMOUS_RESEARCH_OVERHAUL_2026-10-20.md).
+  Token routing, deduplication, provisional dates/strict post-read gates,
+  observed feed/search discovery and bounded publisher fallback implemented.
+  Three real strict Flash-Lite suggestions succeeded within 160 output tokens
+  each. **Research acceptance NOT MET:** no newly qualified article, one
+  interrupted observation, publisher resolution/access failures. Additional
+  Samsung selection check reached the intended publisher but got HTTP 403.
+  No push/merge/deploy. Final fallback change has offline proof only; all live
+  and AI permissions consumed. See report for actual regression counts.
+
+## Five new live prompts — 2026-10-20
+
+- [Verification handoff](2026-10-20_FIVE_PROMPT_CHECK.md) and
+  [report](../testing/FIVE_PROMPT_LIVE_CHECK_2026-10-20.md).
+  Samsung/Unilever/Adidas/grid-scale energy storage/Sundar Pichai, one each,
+  AI disabled. No useful current specialist output: unresolved publisher URLs,
+  undated leads rejected before reading, historical Wikipedia as financial
+  finding, background hubs. Confirmed Unilever → EV subreddit substring bug
+  and duplicate root capture. No app changes; 1,555 full / 1,347 fast tests pass.
+  No push/merge/deployment; all five bounded permissions consumed.
+
+## Source-to-report completion and four-agent check — 2026-10-20
+
+- [Latest continuation handoff](2026-10-20_REPORT_COMPLETION.md),
+  [detailed repair/live report](../testing/REPORT_COMPLETION_AND_FOUR_AGENT_CHECK_2026-10-20.md),
+  [selected proof](../testing/evidence/2026-10-20_report_completion/README.md).
+  Adobe's real article now yields a substantive attributed paragraph, not the
+  heading. Generic passage/title/date, deferred-read, publisher-hub, freshness
+  and report-status repairs; 1,555 full / 1,347 fast tests and 12 offline-rendered
+  viewport states pass. Six approved live cases consumed; zero AI calls.
+  **Overall acceptance remains open:** Dyson/Mary Barra reach background hubs,
+  not qualified articles; Trending's freshness hint lacks a fresh live check.
+  Uncommitted/unpushed, no merge/deployment; prior sections are dated history.
+
+## Adobe post-fix live check — 2026-10-20
+
+- [Verification handoff](2026-10-20_ADOBE_POSTFIX_CHECK.md),
+  [report](../testing/ADOBE_POSTFIX_LIVE_CHECK_2026-10-20.md),
+  [proof](../testing/evidence/2026-10-20_adobe_postfix/README.md).
+  One separately authorized live query automatically acquired an 842-word article
+  in 44.39s, five reads, zero AI calls. **Acquisition demonstrated for Adobe;
+  research quality not accepted:** financial passage selection promotes an
+  earnings heading, title stays `Read more`. Three exact-SSE browser states and
+  1,532 full / 1,324 fast tests pass. Verification/docs only; no code fix, push or
+  deployment. This supersedes only the earlier absence of live acquisition proof.
+
+## Autonomous discovery repair — 2026-10-20
+
+- [Continuation handoff](2026-10-20_AUTONOMOUS_DISCOVERY_REPAIR.md),
+  [funnel/root-cause report](../testing/AUTONOMOUS_DISCOVERY_REPAIR_2026-10-20.md),
+  [selected proof](../testing/evidence/2026-10-20_autonomous_discovery/README.md).
+  Provider/candidate observations, gated legacy/feed fallback, observed-link
+  continuation, index/asset qualification and bounded resolver scheduling.
+  **Live discovery remains unaccepted:** Adobe captured hubs/index text; Dyson's
+  publisher resolution failed. Saved processing removes Adobe's false finding.
+  1,532 full / 1,324 fast tests, nine Node scripts, six saved-SSE browser states
+  pass. Two approved live cases consumed; zero AI calls; uncommitted/unpushed,
+  no merge/deployment. Further live validation needs new bounded authorization.
+
+## Search / interpretation trial loop — 2026-10-19
+
+- [Implementation handoff](2026-10-19_SEARCH_RESOLUTION_TRIAL_LOOP.md),
+  [measured iterations](../testing/SEARCH_RESOLUTION_TRIAL_LOOP_2026-10-19.md),
+  [selected proof](../testing/evidence/2026-10-19_search_resolution_trial/README.md).
+  Search fallback qualification, title spacing, topic/person separation and
+  advice-as-counterfeit classification corrected. An explicit real-source control
+  acquired 666 words; saved-byte correction removes the false listing/takedown.
+  Automatic discovery still fails sampled cases. 1,505 full / 1,297 fast tests and
+  three saved-SSE replay states pass. Zero backend AI calls; uncommitted/unpushed,
+  no deployment. Explicit-source success is not automatic discovery acceptance.
+
+## Four fresh random-pool prompts — 2026-10-19
+
+- [Results and continuation guide](2026-10-19_FOUR_RANDOM_PROMPT_RECHECK.md),
+  [full report](../testing/FOUR_RANDOM_PROMPT_RECHECK_2026-10-19.md) and
+  [selected proof](../testing/evidence/2026-10-19_four_random_prompt_recheck/README.md).
+  Sony retained four shallow pages; quantum computing/LEGO no bodies; Lisa Su
+  only a ten-word profile. Zero qualified findings. Forty-eight main query starts
+  are measured; six adaptive lifecycle records remain incomplete. There was
+  no total deadline starvation; publisher resolution/topic quality remain blockers.
+  Twelve exact-SSE frontend states pass. Zero AI calls; no application changes,
+  commit, push or deployment. Extra interrupted harness launch disclosed.
+
+## October production-failure repairs — 2026-10-19
+
+- [Implementation and continuation guide](2026-10-19_PRODUCTION_RESEARCH_FAILURE_REPAIR.md),
+  [root causes / before-after / validation](../testing/PRODUCTION_RESEARCH_FAILURE_REPAIR_2026-10-19.md)
+  and [selected proof](../testing/evidence/2026-10-19_production_research_repairs/README.md).
+  Wrapper selection, finite replacement reads, safe failure categories, deadline
+  latching, attribution and conservative contradiction/risk rendering repaired.
+  Local 1,498 full / 1,290 fast tests, nine Node scripts and 12 saved-SSE browser
+  states pass. Zero new provider/AI calls. **Uncommitted; no push/merge/deployment.**
+  Fresh acquisition, independent research accuracy, historical archive recovery
+  and production parity remain unverified; not all 17 register entries are closed.
+
 ## Consolidated defect register — 2026-10-19
 
 - [Detailed report](../testing/AEGIS_CONSOLIDATED_DEFECT_REPORT_2026-10-19.md) and

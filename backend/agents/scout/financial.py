@@ -61,10 +61,15 @@ def resolve_company_identity(value: str) -> Dict[str, Any]:
                 "exchange": explicit["exchange"] if explicit else None,
                 "listing_reference": "https://investor.lenovo.com/en/ir/stockinfo.php",
                 "listing_reference_checked": "2026-10-18", "quote_validated": False}
+    from backend.infrastructure.acquisition.adapters.authoritative.sec_edgar import resolve_cik
+    cik = resolve_cik(symbol or value)
     return {"company_name": company, "proposed_symbol": symbol or None,
             "status": "CATALOG_CANDIDATE" if symbol else "UNRESOLVED_LISTING",
             "currency": "INR" if symbol.endswith((".NS", ".BO")) else None,
-            "listing_candidates": [], "quote_validated": False}
+            "listing_candidates": [], "quote_validated": False,
+            "cik": cik,
+            "regulatory_filing_source": "SEC EDGAR" if cik else None,
+            "filing_url": f"https://www.sec.gov/edgar/browse/?CIK={cik}" if cik else None}
 
 
 def validated_quote_metadata(chart_data, symbol):

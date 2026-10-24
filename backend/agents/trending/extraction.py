@@ -133,9 +133,10 @@ class TrendingExtractionEngine:
                     topic=f"{target_entity} Emerging Narrative",
                     category="general",
                     sentiment=sent_dir.upper(),
-                    misinformation_risk="LOW" if neg_count < 3 else "MEDIUM",
-                    misinformation_rationale="Multi-source verified coverage with public attribution",
-                    velocity={"label": "HIGH_MOMENTUM" if len(fragments) >= 4 else "STEADY", "score": len(fragments) * 1.5},
+                    misinformation_risk="UNASSESSED",
+                    misinformation_rationale="Attributed source observations are not adjudicated truth or a misinformation-risk assessment.",
+                    velocity={"label": "UNASSESSED", "score": None, "measurement_basis": "SINGLE_ACQUISITION_SAMPLE",
+                              "popularity_growth_measured": False},
                     platform_count=len(platforms_present),
                     narratives=narratives,
                     evidence_ids=evidence_ids_all,
@@ -144,7 +145,7 @@ class TrendingExtractionEngine:
 
         # 6. Inferred & Uncertain Insights
         if len(platforms_present) > 1:
-            inferred.append(f"Narrative exhibits cross-platform diffusion across {', '.join(platforms_present)}.")
+            inferred.append(f"Records observed in acquisition channels {', '.join(platforms_present)}; this does not establish diffusion or audience reach.")
         if len(fragments) < 3:
             uncertain.append("Limited sample size across public mirrors may underrepresent offline coverage.")
 

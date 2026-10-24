@@ -1,0 +1,800 @@
+{
+  "schema": "raw-harvest-audit-summary-v1",
+  "mode": "READ_ONLY_SAVED_OBSERVATIONS",
+  "source_run_mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "2ea7b182bf1f6b6f57e6c5052fdf9ae51b4d2cd5b87626cc13e0dc066a565058",
+  "final_application_sha256": "2ea7b182bf1f6b6f57e6c5052fdf9ae51b4d2cd5b87626cc13e0dc066a565058",
+  "stable_application": true,
+  "requested_audit_bounds": {
+    "research_timeout_seconds": 180.0,
+    "max_deep_reads": 16,
+    "research_profile": "DEEP"
+  },
+  "model_check": {
+    "status": "DISABLED",
+    "model": "gemini-3.5-flash-lite"
+  },
+  "ai_calls_reserved": 0,
+  "ai_observations": [],
+  "cases": [
+    {
+      "case_id": "01-brandshield",
+      "agent": "brandshield",
+      "input": "Apple",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 66.42,
+      "error_events": [],
+      "investigation_status": "COMPLETED",
+      "native_sha256": "9b0602aa83880225e99ab19bb188891d93341ef623d575081c22bd0f3c65d8d9",
+      "pipeline_sha256": "6e80792ba7e02bd73f5cb2cb9cd02321394859db517f66be8b41fb4059d0662b",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 18
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "google-news-rss": 2,
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 18,
+        "candidate_urls_discovered": 62,
+        "candidates_accepted_for_read": 62,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 4
+        },
+        "reads_attempted": 16,
+        "read_service_starts": 16,
+        "captures": 11,
+        "article_bodies": 7,
+        "raw_article_words": 5197,
+        "raw_capture_chars": 68019,
+        "observed_publisher_hosts": 7,
+        "independence_verified": false,
+        "failure_categories": {
+          "ACCESS_DENIED": 1,
+          "PROVIDER_FAILURE": 2,
+          "BUDGET_EXHAUSTED": 1,
+          "CONNECTION_FAILURE": 1
+        },
+        "eligible_candidates_unread": 46,
+        "unread_by_reason": {
+          "READ_ATTEMPT_BUDGET_EXHAUSTED": 46
+        },
+        "service_operations_reserved": 34,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.msn.com": 1,
+          "cxotoday.com": 1,
+          "www.forbes.com": 1,
+          "www.businessworld.in": 1,
+          "www.moneycontrol.com": 1,
+          "telecom.economictimes.indiatimes.com": 1,
+          "www.thehansindia.com": 1,
+          "www.analyticsinsight.net": 1,
+          "www.financialexpress.com": 1,
+          "www.asiaone.com": 1,
+          "www.helpnetsecurity.com": 1,
+          "lawenforcementtoday.com": 1,
+          "www.china.org.cn": 1,
+          "www.thehindu.com": 1,
+          "cryptoslate.com": 1,
+          "www.dailymail.com": 1
+        },
+        "host_queue_wait_ms": 0.2,
+        "duration_seconds": 64.762,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 7,
+        "native_http_admissions": 72,
+        "native_http_by_host": {
+          "www.bing.com": 18,
+          "news.google.com": 8,
+          "search.yahoo.com": 24,
+          "cxotoday.com": 1,
+          "www.businessworld.in": 1,
+          "www.msn.com": 1,
+          "www.forbes.com": 1,
+          "r.jina.ai": 5,
+          "www.moneycontrol.com": 1,
+          "telecom.economictimes.indiatimes.com": 1,
+          "www.analyticsinsight.net": 1,
+          "www.thehansindia.com": 1,
+          "www.helpnetsecurity.com": 1,
+          "www.financialexpress.com": 1,
+          "lawenforcementtoday.com": 1,
+          "www.asiaone.com": 1,
+          "www.thehindu.com": 1,
+          "www.dailymail.com": 1,
+          "cryptoslate.com": 1,
+          "www.china.org.cn": 2
+        },
+        "native_http_cap": 80,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 1,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 62,
+        "candidate_urls": 62,
+        "by_type": {
+          "FEED_ENTRY": 25,
+          "ARTICLE_BODY": 7,
+          "BLOCKED_OR_FAILED": 5,
+          "DISCOVERY_LEAD": 25
+        },
+        "reads_attempted": 16,
+        "successful_captures": 11,
+        "article_bodies": 7,
+        "raw_article_words": 5197,
+        "raw_source_words": 9118,
+        "duplicate_captures": 0,
+        "qualified_source_count": 4,
+        "relevant_words": 97,
+        "unique_publishers": 4,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 344011,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PROVIDER_FAILURE": 2,
+          "BUDGET_EXHAUSTED": 1,
+          "ACCESS_DENIED": 1,
+          "CONNECTION_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "ARTICLE_BODY": 7,
+        "DISCOVERY_LEAD": 4
+      },
+      "recomputed_raw_article_bodies": 7,
+      "recomputed_raw_article_words": 5197,
+      "qualified_sources": 4,
+      "qualified_useful_words": 97,
+      "observed_article_endpoint_hosts": [
+        "cryptoslate.com",
+        "www.asiaone.com",
+        "www.financialexpress.com",
+        "www.thehindu.com"
+      ],
+      "observed_qualified_endpoint_hosts": [
+        "cryptoslate.com",
+        "www.asiaone.com",
+        "www.financialexpress.com",
+        "www.thehindu.com"
+      ],
+      "observed_unique_article_endpoints": 4,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_844bc3ced1351da2a6bc",
+          "source_url": "https://www.helpnetsecurity.com/2026/10/19/check-point-brand-impersonation-scams-q3-2026-report/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Anamarija Pogorelec",
+          "saved_publisher_host": "www.helpnetsecurity.com",
+          "title": "Cybercriminals favor Microsoft over Apple and Google in brand phishing attacks - Help Net Security",
+          "published_at": "2026-10-19T09:38:17+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 409,
+          "useful_words": 0,
+          "readable_text_sha256": "dd142ae6b5cca4df122fbdc977664f204e429b1b1ce0db2b1bc33170b4f83c7c",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_6680672e40e400c7283d",
+          "source_url": "https://www.thehansindia.com/business/market-compass/microsoft-becomes-phishers-favourite-target-1134011",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "The Hans India",
+          "saved_publisher_host": "www.thehansindia.com",
+          "title": "Microsoft becomes phishers’ favourite target",
+          "published_at": "2026-10-20T00:33:26+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 634,
+          "useful_words": 0,
+          "readable_text_sha256": "31db31085bacb766fe1681c8678e0b217d57b671b020f8c918ec29f1b26acf6d",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_1281641cbefb3dbbf95b",
+          "source_url": "https://cxotoday.com/cybersecurity/brand-impersonation-why-cybercriminals-target-the-worlds-most-trusted-companies/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "CXOtoday News Desk",
+          "saved_publisher_host": "cxotoday.com",
+          "title": "Brand Impersonation: Microsoft Retains Top Spot, Apple Climbs to No.2 in Q1 2026",
+          "published_at": null,
+          "publication_time_basis": "CONFLICTING_CAPTURED_DECLARATIONS",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1110,
+          "useful_words": 0,
+          "readable_text_sha256": "930e1a521a0a60c2ddb38baacd2ee0761b8f952093728a02b6a2a7bfe6e87df5",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_7bb4855d80991eb50b9b",
+          "source_url": "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.asiaone.com",
+          "title": "Apple iMessage courier phishing scams: Losses up by $1m to $2.2m in 2 weeks",
+          "published_at": "2026-08-20T13:58:55+08:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 470,
+          "useful_words": 37,
+          "readable_text_sha256": "2e9fabc0c4d42b08e7421b6f9888345cd7c0863a5d33aec690efdda92568df23",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million",
+            "observed_endpoint_host": "www.asiaone.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million"
+            ],
+            "source_body_hash": "0c9ef79e62f5f91d4cc2fc4aaa781659c5a9ce59e7b8b3221c367a302bf4a655",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_be9cb5f5cdc4c3986e82",
+          "source_url": "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.thehindu.com",
+          "title": "Chennai: Fake ‘Apple’ mobile accessories seized at Ritchie Street; four arrested",
+          "published_at": "2025-07-29T00:01:24+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 165,
+          "useful_words": 24,
+          "readable_text_sha256": "b9673efb5923adf66c4fc6c3e657a905bdc8f87fe0c436f5a4e28a605f5e9a66",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece",
+            "observed_endpoint_host": "www.thehindu.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece"
+            ],
+            "source_body_hash": "ee8235f6037383196f97ce5739bba11805d314d5c3e3e697852d7ff873492319",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_6e806704335e19a66774",
+          "source_url": "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.financialexpress.com",
+          "title": "Apple sued over $1.8 mn crypto scam, accused of ignoring fraud warnings - Technology News | The Financial Express",
+          "published_at": "2026-07-28T12:23:04+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 635,
+          "useful_words": 17,
+          "readable_text_sha256": "9d3a00e4dee95df840c06e66da89c2508497f68a67df9ed884c5fb82a8f1832a",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/",
+            "observed_endpoint_host": "www.financialexpress.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/"
+            ],
+            "source_body_hash": "4c975978c9660de4bd5a35b023241b7a595bf2dedb29a22a7c127b44607cb28f",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_bf8f5945fe9ff28266c1",
+          "source_url": "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Oluwapelumi Adejumo",
+          "saved_publisher_host": "cryptoslate.com",
+          "title": "Apple’s App Store promoted fake Bitcoin wallet that stole $1.8M after developer spent a year warning them",
+          "published_at": "2026-07-28T18:10:55+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1774,
+          "useful_words": 19,
+          "readable_text_sha256": "8fe7734e758539e34915b68297c373fcc4cb09bd937e4a88102edb97e11dd85a",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/",
+            "observed_endpoint_host": "cryptoslate.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/"
+            ],
+            "source_body_hash": "d761f9823c37d402e0c2e9edf46b766ce5c6212688a54dff81903cf55c5274dc",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [
+        {
+          "source_id": "ev_hv_7bb4855d80991eb50b9b",
+          "source_url": "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.asiaone.com",
+          "title": "Apple iMessage courier phishing scams: Losses up by $1m to $2.2m in 2 weeks",
+          "published_at": "2026-08-20T13:58:55+08:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 470,
+          "useful_words": 37,
+          "readable_text_sha256": "2e9fabc0c4d42b08e7421b6f9888345cd7c0863a5d33aec690efdda92568df23",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million",
+            "observed_endpoint_host": "www.asiaone.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.asiaone.com/singapore/apple-imessage-courier-phishing-scams-losses-hit-22-million"
+            ],
+            "source_body_hash": "0c9ef79e62f5f91d4cc2fc4aaa781659c5a9ce59e7b8b3221c367a302bf4a655",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_be9cb5f5cdc4c3986e82",
+          "source_url": "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.thehindu.com",
+          "title": "Chennai: Fake ‘Apple’ mobile accessories seized at Ritchie Street; four arrested",
+          "published_at": "2025-07-29T00:01:24+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 165,
+          "useful_words": 24,
+          "readable_text_sha256": "b9673efb5923adf66c4fc6c3e657a905bdc8f87fe0c436f5a4e28a605f5e9a66",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece",
+            "observed_endpoint_host": "www.thehindu.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.thehindu.com/news/cities/chennai/fake-apple-mobile-accessories-seized-at-ritchie-street-four-held/article69865218.ece"
+            ],
+            "source_body_hash": "ee8235f6037383196f97ce5739bba11805d314d5c3e3e697852d7ff873492319",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_6e806704335e19a66774",
+          "source_url": "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.financialexpress.com",
+          "title": "Apple sued over $1.8 mn crypto scam, accused of ignoring fraud warnings - Technology News | The Financial Express",
+          "published_at": "2026-07-28T12:23:04+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 635,
+          "useful_words": 17,
+          "readable_text_sha256": "9d3a00e4dee95df840c06e66da89c2508497f68a67df9ed884c5fb82a8f1832a",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/",
+            "observed_endpoint_host": "www.financialexpress.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://www.financialexpress.com/life/technology-apple-sued-over-1-8-mn-crypto-scam-accused-of-ignoring-fraud-warnings-4304340/"
+            ],
+            "source_body_hash": "4c975978c9660de4bd5a35b023241b7a595bf2dedb29a22a7c127b44607cb28f",
+            "endpoint_is_search_wrapper": false
+          }
+        },
+        {
+          "source_id": "ev_hv_bf8f5945fe9ff28266c1",
+          "source_url": "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "Oluwapelumi Adejumo",
+          "saved_publisher_host": "cryptoslate.com",
+          "title": "Apple’s App Store promoted fake Bitcoin wallet that stole $1.8M after developer spent a year warning them",
+          "published_at": "2026-07-28T18:10:55+00:00",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED",
+          "qualification_reasons": [],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 1774,
+          "useful_words": 19,
+          "readable_text_sha256": "8fe7734e758539e34915b68297c373fcc4cb09bd937e4a88102edb97e11dd85a",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "EXACT_SAVED_SOURCE_URL",
+            "observed_endpoint": "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/",
+            "observed_endpoint_host": "cryptoslate.com",
+            "http_status": 200,
+            "network_observed_this_attempt": true,
+            "redirect_chain": [
+              "https://cryptoslate.com/apples-app-store-security-promise-faces-test-as-fake-crypto-wallets-keep-getting-through/"
+            ],
+            "source_body_hash": "d761f9823c37d402e0c2e9edf46b766ce5c6212688a54dff81903cf55c5274dc",
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "read_attempt_count": 16,
+      "read_status_counts": {
+        "FAILED": 5,
+        "SUCCESS": 11
+      },
+      "read_failure_categories": {
+        "ACCESS_DENIED": 1,
+        "PROVIDER_FAILURE": 2,
+        "BUDGET_EXHAUSTED": 1,
+        "CONNECTION_FAILURE": 1
+      },
+      "legacy_projection": {
+        "records": 4,
+        "words": 3044,
+        "kb": 20.333,
+        "displayed_finding_strings": 7,
+        "structured_findings": 4
+      },
+      "projection_limitations": [
+        "Legacy source-record count is not the raw-pool article-body count.",
+        "Legacy retained words include nonarticle/homepage/index or metadata content."
+      ],
+      "citation_reference_count": 4,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [
+        {
+          "finding_id": "fnd_br_001",
+          "evidence_id": "ev_hv_6e806704335e19a66774",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_br_002",
+          "evidence_id": "ev_hv_7bb4855d80991eb50b9b",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_br_003",
+          "evidence_id": "ev_hv_be9cb5f5cdc4c3986e82",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        },
+        {
+          "finding_id": "fnd_br_004",
+          "evidence_id": "ev_hv_bf8f5945fe9ff28266c1",
+          "join_status": "RAW_POOL_RECORD",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "QUALIFIED"
+        }
+      ],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "case_id": "02-personal_watch",
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "returned_result_event": true,
+      "http_status": 200,
+      "seconds": 31.13,
+      "error_events": [],
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "native_sha256": "60ef275e11dd9af4ef8e44f3ac265a3a56bbf34b466f7261b83d775085132c0c",
+      "pipeline_sha256": "9ca086470c0e7ec57a52919f7c2fa31da455b76ae17b12735f6c60449cd71269",
+      "research_profile": "DEEP",
+      "generated_queries": 18,
+      "query_record_count": 18,
+      "query_status_counts": {
+        "SUCCESS": 18
+      },
+      "providers_contacted": {
+        "bing-news-rss": 12,
+        "google-news-rss": 8,
+        "bing": 6,
+        "yahoo": 6,
+        "legacy-web-fallback": 6,
+        "legacy-news-fallback": 2
+      },
+      "harvesting_observations": {
+        "profile": "DEEP",
+        "queries_generated": 18,
+        "query_records": 18,
+        "search_query_reservations": 21,
+        "candidate_urls_discovered": 42,
+        "candidates_accepted_for_read": 42,
+        "discarded_by_reason": {
+          "DUPLICATE_URL": 1
+        },
+        "reads_attempted": 8,
+        "read_service_starts": 5,
+        "captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 833,
+        "raw_capture_chars": 15576,
+        "observed_publisher_hosts": 1,
+        "independence_verified": false,
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 2
+        },
+        "eligible_candidates_unread": 34,
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 34
+        },
+        "service_operations_reserved": 26,
+        "service_operation_cap": 80,
+        "host_read_reservations": {
+          "www.wionews.com": 1,
+          "www.financialexpress.com": 1,
+          "www.latimes.com": 1,
+          "www.businessinsider.com": 1,
+          "time.com": 1
+        },
+        "host_queue_wait_ms": 0.04,
+        "duration_seconds": 30.205,
+        "deadline_exhausted": false,
+        "qualification_status": "PENDING_SECOND_LAYER",
+        "provider_http_request_count": null,
+        "ai_search_advice": {
+          "status": "DISABLED",
+          "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES",
+          "advisory_only": true
+        },
+        "user_supplied_source_count": 0,
+        "autonomously_discovered_article_bodies": 1,
+        "native_http_admissions": 69,
+        "native_http_by_host": {
+          "www.bing.com": 21,
+          "search.yahoo.com": 24,
+          "news.google.com": 19,
+          "www.financialexpress.com": 1,
+          "www.wionews.com": 1,
+          "www.latimes.com": 1,
+          "www.businessinsider.com": 1,
+          "time.com": 1
+        },
+        "native_http_cap": 80,
+        "native_http_per_host_cap": 24,
+        "native_http_budget_rejections": 5,
+        "complete_network_accounting": false
+      },
+      "raw_pool_stats": {
+        "source_count": 42,
+        "candidate_urls": 42,
+        "by_type": {
+          "ARTICLE_BODY": 1,
+          "BLOCKED_OR_FAILED": 5,
+          "DISCOVERY_LEAD": 17,
+          "FEED_ENTRY": 18,
+          "PUBLISHER_HOMEPAGE": 1
+        },
+        "reads_attempted": 8,
+        "successful_captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 833,
+        "raw_source_words": 2535,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 141068,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 2
+        },
+        "dropped_by_limit": {}
+      },
+      "captured_source_types": {
+        "ARTICLE_BODY": 1,
+        "DISCOVERY_LEAD": 1,
+        "PUBLISHER_HOMEPAGE": 1
+      },
+      "recomputed_raw_article_bodies": 1,
+      "recomputed_raw_article_words": 833,
+      "qualified_sources": 0,
+      "qualified_useful_words": 0,
+      "observed_article_endpoint_hosts": [],
+      "observed_qualified_endpoint_hosts": [],
+      "observed_unique_article_endpoints": 0,
+      "publisher_independence": "NOT_VERIFIED",
+      "article_metadata": [
+        {
+          "source_id": "ev_hv_2604fc45578f3e4f8f6a",
+          "source_url": "https://www.financialexpress.com/life/technology-trump-calls-tim-cook-an-amazing-manager-who-asked-for-3-or-4-big-helps-4214186/",
+          "original_url_is_search_wrapper": false,
+          "saved_source_label": "PR Wire / RSS",
+          "saved_publisher_host": "www.financialexpress.com",
+          "title": "Trump calls Tim Cook an ‘amazing manager' who asked for '3 or 4 BIG HELPS’ - Technology News | The Financial Express",
+          "published_at": "2026-04-21T18:58:59+05:30",
+          "publication_time_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "source_type": "ARTICLE_BODY",
+          "qualification_status": "REJECTED",
+          "qualification_reasons": [
+            "NO_RELEVANT_PASSAGE"
+          ],
+          "acquisition_method": "DOM_SEMANTIC_TEXT",
+          "content_depth": "PARTIAL_CONTENT",
+          "retained_word_count": 833,
+          "useful_words": 0,
+          "readable_text_sha256": "5e84aac18119f6f6e06e5cac216907d30e1eaec1f2994764209828c2130ac98f",
+          "duplicate_of": null,
+          "provider_truncated": false,
+          "transport": {
+            "transport_join_basis": "UNAVAILABLE_OR_AMBIGUOUS_ID",
+            "observed_endpoint": null,
+            "observed_endpoint_host": null,
+            "http_status": null,
+            "network_observed_this_attempt": null,
+            "redirect_chain": [],
+            "source_body_hash": null,
+            "endpoint_is_search_wrapper": false
+          }
+        }
+      ],
+      "qualified_source_metadata": [],
+      "read_attempt_count": 8,
+      "read_status_counts": {
+        "SUCCESS": 3,
+        "FAILED": 5
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "HTTP_FAILURE": 2
+      },
+      "legacy_projection": {
+        "records": 0,
+        "words": 0,
+        "kb": 0.0,
+        "displayed_finding_strings": 0,
+        "structured_findings": 0
+      },
+      "projection_limitations": [
+        "Legacy source-record count is not the raw-pool article-body count.",
+        "Legacy retained words include nonarticle/homepage/index or metadata content."
+      ],
+      "citation_reference_count": 0,
+      "duplicate_citations_within_findings": 0,
+      "ambiguous_native_source_ids": {},
+      "citation_joins": [],
+      "citation_entailment": "NOT_VERIFIED",
+      "ai_observations": [],
+      "isolated_not_returned_dossiers": []
+    }
+  ],
+  "limitations": [
+    "No network or AI call; no source requalification or original capture edits.",
+    "Raw-pool article and qualification decisions are the saved code's classifications, not independent accuracy acceptance.",
+    "Different endpoint hosts do not establish independent reporting; publication declarations are not independently verified dates.",
+    "No-result cases retain unknown article/qualification counts; internal dossiers are disclosed separately, not promoted to returned results.",
+    "Body text, headers and credentials are excluded. Exact public source/transport URLs are retained unless credential-shaped."
+  ]
+}

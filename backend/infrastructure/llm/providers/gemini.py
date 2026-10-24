@@ -56,7 +56,14 @@ class GeminiProvider(LLMProvider):
                     headers={"Content-Type": "application/json", "x-goog-api-key": self.api_keys[0]},
                     json=payload, timeout=timeout)
             except Exception as error:
+                from backend.infrastructure.llm.advisory_policy import record_observation
+                record_observation({"model": MODEL, "purpose": kwargs.get("purpose"), "status": type(error).__name__,
+                                    "latency_ms": round((time.perf_counter()-started)*1000, 2)})
                 raise RuntimeError("Advisory transport failed: " + type(error).__name__) from None
+            from backend.infrastructure.llm.advisory_policy import record_observation
+            observation = {"model": MODEL, "purpose": kwargs.get("purpose"), "http_status": response.status_code,
+                           "status": "RESPONSE_RECEIVED", "latency_ms": round((time.perf_counter()-started)*1000, 2)}
+            record_observation(observation)
             if response.status_code == 429:
                 diagnostics = quota_diagnostics(response)
                 set_cooldown(diagnostics["retry_after_seconds"] or 60)
@@ -66,6 +73,9 @@ class GeminiProvider(LLMProvider):
             data = response.json()
             content = self._extract_content(data)
             usage = self._usage_from_response(data, prompt, content)
+            observation.update(status="GENERATED", provider_model=data.get("modelVersion"),
+                usage_source="estimated" if usage.is_estimated else "provider",
+                prompt_tokens=usage.prompt_tokens, completion_tokens=usage.completion_tokens, total_tokens=usage.total_tokens)
             logger.info("Advisory completed; usage_source=%s total_tokens=%s",
                         "estimated" if usage.is_estimated else "provider", usage.total_tokens)
             return LLMResponse(content=content, model=MODEL, provider="gemini",

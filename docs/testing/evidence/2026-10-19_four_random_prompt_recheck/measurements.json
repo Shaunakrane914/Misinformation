@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-19",
+  "mode": "FOUR_FRESH_LOCAL_INVESTIGATIONS_THEN_EXACT_SSE_BROWSER_REPLAY",
+  "branch": "fix/p0-lenovo-acquisition-20261018",
+  "head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "dirty_source": true,
+  "application_sha256": "df0dcf9bd27b5c7290fece6ffe9a505fa1ff36b4a24e6c9759d98e5f8052f442",
+  "stable_application_terminal_and_browser": true,
+  "selection": "Get-Random once per agent from documented small pools; not an independent accuracy evaluation",
+  "valid_completed_investigations": 4,
+  "additional_interrupted_malformed_harness_launches": 1,
+  "live_ai_calls": 0,
+  "additional_browser_provider_investigations": 0,
+  "underlying_provider_http_request_count": null,
+  "terminal_exit": 0,
+  "browser_exit": 0,
+  "research_acceptance": "FAIL_FOR_THIS_SAMPLE",
+  "cases": [
+    {"agent":"scout","input":"SONY","seconds":36.95,"records":4,"words":3892,"decimal_kb":34.011,"findings":0,"discovery_cards":26,"queries":16,"queries_started":16,"queries_success":14,"queries_timeout":1,"queries_auth_required":1,"queries_failed":0,"acquisition_attempts":6,"successful_acquisitions":4,"failure_kinds":{"PROVIDER_FAILURE":1,"PUBLISHER_UNRESOLVED":1},"status":"COMPLETED","usefulness":"Partial indexes/storefront; no financial adjudication"},
+    {"agent":"trending","input":"quantum computing","seconds":32.52,"records":0,"words":0,"decimal_kb":0,"findings":0,"discovery_cards":0,"queries":14,"queries_started":14,"queries_success":9,"queries_timeout":5,"queries_auth_required":0,"queries_failed":0,"acquisition_attempts":0,"successful_acquisitions":0,"status":"INSUFFICIENT_EVIDENCE","raw_rejection_counts":{"TEMPORAL_STALE":9,"STATIC_REFERENCE":3,"AMBIGUOUS_ENTITY":8},"usefulness":"No candidates qualified; no trend assessment"},
+    {"agent":"brandshield","input":"LEGO","seconds":37.11,"records":0,"words":0,"decimal_kb":0,"findings":0,"discovery_cards":18,"queries":12,"queries_started":12,"queries_success":10,"queries_timeout":2,"queries_auth_required":0,"queries_failed":0,"acquisition_attempts":6,"successful_acquisitions":0,"failure_kinds":{"PUBLISHER_UNRESOLVED":6},"status":"ACQUISITION_FAILED","usefulness":"Incident leads unresolved; not an absence-of-threat result"},
+    {"agent":"personal_watch","input":"Lisa Su","seconds":44.71,"records":1,"words":10,"decimal_kb":0.053,"findings":0,"discovery_cards":6,"queries":12,"queries_started":12,"queries_success":8,"queries_timeout":2,"queries_auth_required":0,"queries_failed":2,"acquisition_attempts":6,"successful_acquisitions":1,"failure_kinds":{"PUBLISHER_UNRESOLVED":5},"status":"COMPLETED","usefulness":"PROFILE_METADATA only; no identity-abuse assessment"}
+  ],
+  "timing": {"all_main_query_records":54,"aggregate_reported_started":54,"explicit_measured_provider_starts":48,"adaptive_records_without_measured_start":6,"synchronous_doctor_calls":0,"capability_snapshots_under_ms":0.2,"overall_120s_deadline_exhausted":false},
+  "browser": {"widths":[320,390,1440],"states":12,"visible_reports":12,"matching_card_count_states":12,"horizontal_overflow_states":0,"missing_finding_texts":0,"uncaught_page_exceptions":0,"keyboard_inspection_states":6,"console_resource_error_entries":9,"readiness":"HARNESS_STUB","other_backend_apis_and_fonts":"BLOCKED"},
+  "screenshots": [
+    {"file":"01-scout-390-report.png","sha256":"cb1a7c1cd2e889a402e8f57455401534c146b48eabd14c4eef6cd2cbbe471a4a"},
+    {"file":"02-trending-390-report.png","sha256":"4ba5a4dda2ec4348582d350adf60c0800c13c74325b9ee54fb832087ee0a064e"},
+    {"file":"03-brandshield-390-report.png","sha256":"b48565c99e5ddc879e8bceaffff2cfa2ba4b863339e09119ac4aa99690121daa"},
+    {"file":"04-personal_watch-390-report.png","sha256":"86bd88f97ecdf3e356053c5dc964a8a1bb21988c7577ccfcc3bc17963a7d1fd4"}
+  ],
+  "commit_push_merge_deployment": false,
+  "full_regression_rerun_this_audit": false,
+  "limitations": ["Local not deployed", "Replay browser not fresh acquisition", "No independent entailment review", "No complete accessibility or cross-browser acceptance", "Malformed interrupted launch excluded from valid matrix but disclosed"]
+}

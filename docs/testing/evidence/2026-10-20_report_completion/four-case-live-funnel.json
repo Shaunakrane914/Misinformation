@@ -1,0 +1,304 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "6689ab5ca4511eac0e3ed1c1d41a5b308dff187ee4de5ee2cf176e495b2a22e3",
+  "stable_application": true,
+  "live_ai_authorized": false,
+  "bounds": {
+    "research_timeout_seconds": 120.0,
+    "max_deep_reads": 6
+  },
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Adobe",
+      "seconds": 44.99,
+      "native_sha256": "9e4fcf7fbca288344a2a373f57250f917e0fdc7701fd32180dde298e08609ad0",
+      "investigation_status": "COMPLETED",
+      "initial_generated_queries": 13,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 17,
+        "provider_attempts_observed": 50,
+        "query_records_without_provider_observations": 4,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 49,
+        "candidate_urls_observed_in_search_sample": 375,
+        "candidate_search_discards": {
+          "LOW_QUERY_COVERAGE": 37,
+          "SUBJECT_MISMATCH": 243,
+          "INVALID_URL": 5
+        },
+        "normalized_candidates": 27,
+        "accepted_candidates": 26,
+        "selected_acquisition_attempts": 6,
+        "read_failure_reasons": {
+          "HTTP_FAILURE": 1
+        },
+        "successful_body_captures": 5,
+        "extracted_article_bodies": 2,
+        "qualified_evidence": 1,
+        "qualified_evidence_ids": [
+          "ev_page_cc47517fb870"
+        ],
+        "agent_research_findings": 1,
+        "unverified_or_uninvestigated_findings": 1,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "bing:CANDIDATES": 10,
+        "google-news-rss:CANDIDATES": 5,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1,
+        "yahoo:TRANSPORT_FAILURE": 9,
+        "bing:IRRELEVANT_RESULTS": 24
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_e3b1893843fc",
+          "url": "https://www.reuters.com/company/adobe-inc/",
+          "failure_kind": "HTTP_FAILURE",
+          "http_status": 401,
+          "resolver_query_statuses": []
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_19ff20637cb5",
+          "url": "https://www.adobe.com/",
+          "title": "Adobe: Creative, marketing and document management solutions",
+          "words": 920,
+          "kb": 6.841,
+          "text_sha256": "5b22197b11dc200a027b960643d6c2ef0a5ebe390d78487e17b91c482b8d118e",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_f4b9204e3102",
+          "url": "https://news.adobe.com/",
+          "title": "Adobe Newsroom",
+          "words": 199,
+          "kb": 1.694,
+          "text_sha256": "17b67d84488369ac4603cb09c3842cdd7c81008ace56d734eb6086a2f5667a21",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_5a2a3469bbc9",
+          "url": "https://www.marketbeat.com/stocks/NASDAQ/ADBE/news/",
+          "title": "ADBE News Today | Why did Adobe stock go up today? $ADBE",
+          "words": 1911,
+          "kb": 11.914,
+          "text_sha256": "a978acadc3138688277877b324f5c8ef0c2e7b199268a1b29d58ac1b06cb5d24",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_page_cc47517fb870",
+          "url": "https://news.adobe.com/news/2026/09/adobe-announces-anil-chakravarthy-to-become-president-and-ceo",
+          "title": "Adobe Announces Anil Chakravarthy to Become President and CEO and Shantanu Narayen to Become Executive Chair on December 1, 2026",
+          "words": 842,
+          "kb": 5.957,
+          "text_sha256": "10416725f0a90cdea2e3e022522beb37e2b09a1bfc64c186d8f00d0f67b2a83e",
+          "extraction_status": "SUCCESS"
+        },
+        {
+          "id": "ev_page_d39e38a3cbdf",
+          "url": "https://www.marketbeat.com/instant-alerts/filing-burns-matteson-capital-management-llc-sells-5905-shares-of-adobe-inc-adbe-2026-10-18/",
+          "title": "Burns Matteson Capital Management LLC Sells 5,905 Shares of Adobe Inc. $ADBE",
+          "words": 21,
+          "kb": 0.124,
+          "text_sha256": "9774c2ff2c052880512f03846d4a43ca84b4e63447818e013340dc6634b89f08",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        }
+      ],
+      "displayed_findings": 1,
+      "remaining_research_seconds": 75.22376219999933
+    },
+    {
+      "case_id": "02-brandshield",
+      "agent": "brandshield",
+      "input": "Dyson",
+      "seconds": 36.44,
+      "native_sha256": "7f83ee3614a962b3bf74f65e79bdf90cafa8e26b77b1316021a27ff4d456fe63",
+      "investigation_status": "ACQUISITION_FAILED",
+      "initial_generated_queries": 9,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 12,
+        "provider_attempts_observed": 48,
+        "query_records_without_provider_observations": 3,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 41,
+        "candidate_urls_observed_in_search_sample": 307,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 256,
+          "HEADLINE_MISMATCH": 31
+        },
+        "normalized_candidates": 15,
+        "accepted_candidates": 14,
+        "selected_acquisition_attempts": 3,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "successful_body_captures": 0,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "READING",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 3,
+        "bing:IRRELEVANT_RESULTS": 27,
+        "yahoo:TRANSPORT_FAILURE": 11,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 7
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_0a18f6e455d1",
+          "url": "https://news.google.com/rss/articles/CBMihgFBVV95cUxOQjdsUm54Z2V5QTc4b213WTBoSTFYQ0FnSmp0d2RfNnB2TllqdG1Ec3BkM053eTZYbFhzdE02M3ZESEVuSGlLbFJ0N1Z1dFUyZDRiNFpvUGpIeDRpQkNhM1U5YnQzSXpwUEZpV2I3X0ZILU9LX0d2bHgxa3Q1ZEhoWWh1ek1Tdw",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_b7ebd1814209",
+          "url": "https://news.google.com/rss/articles/CBMif0FVX3lxTFB3RnVxZVQ4T3JOTmhsTVE3Z0hOWjE5WDZxcktPZHYzZFpiMTUtdUY3Tnp6MDUyUFVWXzhuTVFYUERpN2lGY2xvMmV1UlRPYnpuZUI5dUNkWkRXU2hYTmpVVERFREVkWFhHNjQwZU1IaFNmV2RPeDdmcjB2ckpWZFk",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_c9af8d4b8e8a",
+          "url": "https://news.google.com/rss/articles/CBMingFBVV95cUxOOE1ZN2hyLU1RNzFheHNYSmhvZjQyTlBsdnIyQ3lMdmx0QmtyWkNsTEV0OVkxX3BSVmZWalpIVnBYN0V4LXEzUXVkbmhZZjkzWnlvSzhhSC11VUVFSDg0eG92TDlmaGdVUXlfR09vcl9qWmpZVDlmSEhLT3F6bUpMbVNjc1c2MW9DdDk0VDNkNFMwRDR6TmVaRnkyeGRLd9IBngFBVV95cUxOOE1ZN2hyLU1RNzFheHNYSmhvZjQyTlBsdnIyQ3lMdmx0QmtyWkNsTEV0OVkxX3BSVmZWalpIVnBYN0V4LXEzUXVkbmhZZjkzWnlvSzhhSC11VUVFSDg0eG92TDlmaGdVUXlfR09vcl9qWmpZVDlmSEhLT3F6bUpMbVNjc1c2MW9DdDk0VDNkNFMwRDR6TmVaRnkyeGRLdw",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 83.68723849999878
+    },
+    {
+      "case_id": "03-trending",
+      "agent": "trending",
+      "input": "battery recycling",
+      "seconds": 37.79,
+      "native_sha256": "3c2068434b2174531b5c03bd9c07df415199fea6aa8c1c6561c46ac20d07d64d",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "initial_generated_queries": 12,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 14,
+        "provider_attempts_observed": 75,
+        "query_records_without_provider_observations": 2,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 71,
+        "candidate_urls_observed_in_search_sample": 603,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 386,
+          "LOW_QUERY_COVERAGE": 1
+        },
+        "normalized_candidates": 13,
+        "accepted_candidates": 0,
+        "selected_acquisition_attempts": 0,
+        "read_failure_reasons": {},
+        "successful_body_captures": 0,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "CANDIDATE_QUALIFICATION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 3,
+        "bing:IRRELEVANT_RESULTS": 32,
+        "yahoo:TRANSPORT_FAILURE": 11,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 4,
+        "bing:CANDIDATES": 25
+      },
+      "read_failures": [],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 88.32488500000181
+    },
+    {
+      "case_id": "04-personal_watch",
+      "agent": "personal_watch",
+      "input": "Mary Barra",
+      "seconds": 31.54,
+      "native_sha256": "c3f52c836f07b07ef3880ee9eb0d4d2ad83bc672a925b2e542f107e7682f1306",
+      "investigation_status": "ACQUISITION_FAILED",
+      "initial_generated_queries": 9,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 12,
+        "provider_attempts_observed": 45,
+        "query_records_without_provider_observations": 2,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 39,
+        "candidate_urls_observed_in_search_sample": 293,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 266,
+          "INVALID_URL": 5,
+          "HEADLINE_MISMATCH": 13
+        },
+        "normalized_candidates": 10,
+        "accepted_candidates": 10,
+        "selected_acquisition_attempts": 1,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 1
+        },
+        "successful_body_captures": 0,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "READING",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 2,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1,
+        "bing:IRRELEVANT_RESULTS": 26,
+        "yahoo:TRANSPORT_FAILURE": 10,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 5
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_f0b455f0827e",
+          "url": "https://news.google.com/rss/articles/CBMilwFBVV95cUxQeWgyX20zQTRzV1o3YVhoWnJZQXV5OHhUbU5kWEFUQUhtQWhMREsyVl90dnJ0OHhQS2lHSFpZRGVaUXBmR1ZEdVEyd21UV2xrY2xxajVUSWlFYWRpN0xYZkp6cU8zcjYyRjh4dW43NjlOM3NBRVhNQ0JfRjN0MmxKbTRYMFNMd1NRa2p2emoydE9ON1ZUQkVj",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 88.57885589999933
+    }
+  ],
+  "limitations": "Observed samples, not unique URL totals, complete HTTP accounting, calibrated entailment or independent accuracy; saved-mode attempts are historical observations."
+}

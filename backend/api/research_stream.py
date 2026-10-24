@@ -17,7 +17,7 @@ from starlette.responses import StreamingResponse
 from backend.application.research.progress import progress_observer
 
 logger = logging.getLogger(__name__)
-STREAM_TIMEOUT_SECONDS = 240
+STREAM_TIMEOUT_SECONDS = 300
 HEARTBEAT_SECONDS = 5
 _running = set()
 

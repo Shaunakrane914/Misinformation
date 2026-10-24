@@ -83,6 +83,8 @@ def calculate_velocity(
             "growth_rate_pct": 0.0,
             "status": "INSUFFICIENT_HISTORY",
             "velocity_status": "INSUFFICIENT_HISTORY",
+            "measurement_basis": "SAMPLED_ACQUISITION_COUNTS",
+            "popularity_growth_measured": False,
             "message": "First observation recorded. Minimum 2 scans required for velocity tracking; rate of change cannot be measured from a single scan.",
             "history": [current_snap]
         }
@@ -121,7 +123,9 @@ def calculate_velocity(
         "growth_rate_pct": growth_pct,
         "status": status,
         "velocity_status": status,
-        "message": f"Momentum measured across {len(history)} verified scan intervals.",
+        "message": f"Sampled acquisition counts compared across {len(history)} scan snapshots; not measured popularity, reach or amplification.",
+        "measurement_basis": "SAMPLED_ACQUISITION_COUNTS",
+        "popularity_growth_measured": False,
         "history": history
     }
 

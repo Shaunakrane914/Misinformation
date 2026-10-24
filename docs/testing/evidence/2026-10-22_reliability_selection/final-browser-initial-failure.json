@@ -1,0 +1,48 @@
+{
+  "date": "2026-10-23",
+  "mode": "EXACT_SAVED_SSE_REPLAY",
+  "exit_code": 1,
+  "application_sha256": "5cecf27e84ff4e1dfef14f70d5b2fc5731230abc17ba219dc08a20b92fdb3638",
+  "application_unchanged_during_run": true,
+  "new_provider_calls": 0,
+  "model_calls": 0,
+  "configured_gemini_credentials": 0,
+  "states": 6,
+  "cases": [
+    {
+      "agent": "brandshield",
+      "input": "Apple",
+      "retained_sources": 4,
+      "shared_finding_strings": 6,
+      "discovery_cards": 58,
+      "viewports": [320, 390, 1440],
+      "document_widths": [320, 390, 1440],
+      "source_identity_hash_passage_mismatches": [],
+      "unresolved_finding_citations": [],
+      "page_errors": [],
+      "console_resource_errors": 2,
+      "semantic_observation": "Lawsuit reports are REPORTED_ALLEGATION, not preventive warning-only; no reporting URL is identified as an attacker."
+    },
+    {
+      "agent": "personal_watch",
+      "input": "Tim Cook",
+      "retained_sources": 1,
+      "shared_finding_strings": 1,
+      "discovery_cards": 41,
+      "viewports": [320, 390, 1440],
+      "document_widths": [336, 390, 1440],
+      "source_identity_hash_passage_mismatches": [],
+      "unresolved_finding_citations": [],
+      "page_errors": [],
+      "console_resource_errors": 2,
+      "failure": "320px viewport has 16px horizontal document overflow from compact signal history's non-wrapping flex title and Open Dossier action.",
+      "semantic_observation": "One source-reported impersonation allegation is UNVERIFIED / UNASSESSED, not a confirmed HIGH-priority threat or legitimate public statement. Summary still incorrectly says zero task-related captures; retained as a known defect of this run."
+    }
+  ],
+  "resource_failure_scope": "External Google font request deliberately blocked; offline non-readiness API returned 503. Neither is an uncaught JavaScript exception.",
+  "limitations": [
+    "This failed run is preserved, not relabeled as a pass after later corrections.",
+    "Readiness is a harness stub; all provider/API requests other than exact saved SSE are blocked.",
+    "No live acquisition, entailment accuracy, manual screen reader, cross-browser or production acceptance is established."
+  ]
+}

@@ -1,0 +1,114 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "93fa5595adbebce17f21b3ecbce9797cc843f0361b748ae3d5402ea83dd26fc8",
+  "stable_application": true,
+  "live_ai_authorized": false,
+  "bounds": {
+    "research_timeout_seconds": 120.0,
+    "max_deep_reads": 6
+  },
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Adobe",
+      "seconds": 44.39,
+      "native_sha256": "11134b747419db66fa5a4d806cceef303d10a0584ba540cd42d796c30867e17e",
+      "investigation_status": "COMPLETED",
+      "initial_generated_queries": 13,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 17,
+        "provider_attempts_observed": 53,
+        "query_records_without_provider_observations": 4,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 51,
+        "candidate_urls_observed_in_search_sample": 387,
+        "candidate_search_discards": {
+          "LOW_QUERY_COVERAGE": 37,
+          "SUBJECT_MISMATCH": 243,
+          "INVALID_URL": 5,
+          "HEADLINE_MISMATCH": 11
+        },
+        "normalized_candidates": 23,
+        "accepted_candidates": 23,
+        "selected_acquisition_attempts": 5,
+        "read_failure_reasons": {
+          "HTTP_FAILURE": 1,
+          "PUBLISHER_UNRESOLVED": 1
+        },
+        "successful_body_captures": 3,
+        "extracted_article_bodies": 1,
+        "qualified_evidence": 1,
+        "qualified_evidence_ids": [
+          "ev_page_cc47517fb870"
+        ],
+        "agent_research_findings": 1,
+        "unverified_or_uninvestigated_findings": 1,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "bing:CANDIDATES": 10,
+        "google-news-rss:CANDIDATES": 5,
+        "yahoo:TRANSPORT_FAILURE": 10,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1,
+        "bing:IRRELEVANT_RESULTS": 25,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 1
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_e3b1893843fc",
+          "url": "https://www.reuters.com/company/adobe-inc/",
+          "failure_kind": "HTTP_FAILURE",
+          "http_status": 401,
+          "resolver_query_statuses": []
+        },
+        {
+          "candidate_id": "ev_fd7cc42299c5",
+          "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPVnhaVTR2TWZjcU85NTZwa3VfeVhoclgzMzVGRGdOcHM0U0lUN19PMndTVFNqNGEzYVlCc1dBUXQxU3FKSTZmTU5nR2FtSmJpMGJicGxRSTNZaVNiMDVNczd0ajRweVdvU0hUc1RVZkM4bFZDMFdsNnhLZjl6MU8wTVpNSFZKdnJERlJDR0Z1R0Rpa2M0cjdrVzlraFIyaWtNeFNvXzVvclZhWFE",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_19ff20637cb5",
+          "url": "https://www.adobe.com/",
+          "title": "Adobe : Creative , marketing and document management solutions",
+          "words": 920,
+          "kb": 6.841,
+          "text_sha256": "5b22197b11dc200a027b960643d6c2ef0a5ebe390d78487e17b91c482b8d118e",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_f4b9204e3102",
+          "url": "https://news.adobe.com/",
+          "title": "Adobe Newsroom",
+          "words": 199,
+          "kb": 1.694,
+          "text_sha256": "17b67d84488369ac4603cb09c3842cdd7c81008ace56d734eb6086a2f5667a21",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_page_cc47517fb870",
+          "url": "https://news.adobe.com/news/2026/09/adobe-announces-anil-chakravarthy-to-become-president-and-ceo",
+          "title": "Read more",
+          "words": 842,
+          "kb": 5.957,
+          "text_sha256": "10416725f0a90cdea2e3e022522beb37e2b09a1bfc64c186d8f00d0f67b2a83e",
+          "extraction_status": "SUCCESS"
+        }
+      ],
+      "displayed_findings": 1,
+      "remaining_research_seconds": 75.8065351999976
+    }
+  ],
+  "limitations": "Observed samples, not unique URL totals, complete HTTP accounting, calibrated entailment or independent accuracy; saved-mode attempts are historical observations."
+}

@@ -266,7 +266,9 @@ function renderFindings(report) {
       c && typeof c === 'object' ? `${c.evidence_id}: ${c.availability || 'UNAVAILABLE'}` : '')).filter(Boolean))];
     const body = text.length > 700 ? `<details class="ur-full-finding"><summary>Context preview — expand before interpreting: ${esc(text.slice(0, 180))}…</summary><p>${esc(text)}</p></details>` : esc(text);
     const community = matches.some(item => item.metadata && item.metadata.community_sample_only) ? '<p class="ur-ev-note">Sampled community observation only. Virality and independent corroboration are not measured.</p>' : '';
-    return `<li>${community}${body}${matches.length ? `<p class="ur-ev-note">Reported state: ${states.map(esc).join(', ')}. Source support requires passage review.${citations.length ? ` Citation observations: ${citations.map(esc).join(', ')}.` : ''}</p>` : ''}</li>`;
+    const competitive = matches.some(item => item.metadata && item.metadata.source_context && item.metadata.source_context.classification === 'COMPETITIVE_CONTEXT')
+      ? '<p class="ur-ev-note">COMPETITIVE CONTEXT — another actor’s development, not an announcement by the target.</p>' : '';
+    return `<li>${community}${competitive}${body}${matches.length ? `<p class="ur-ev-note">Reported state: ${states.map(esc).join(', ')}. Source support requires passage review.${citations.length ? ` Citation observations: ${citations.map(esc).join(', ')}.` : ''}</p>` : ''}</li>`;
   }).join('')}</ul>` : '<p class="ur-empty">No findings returned. This does not establish an absence of risk.</p>';
   const leads = array(report.processing_notes && report.processing_notes.unresolved_leads);
   const unresolved = leads.length ? `<details><summary>Unresolved leads — not findings</summary><ul class="ur-list">${leads.map(lead => `<li>${esc(lead.factor || lead.catalyst || '')}</li>`).join('')}</ul></details>` : '';
@@ -277,9 +279,9 @@ function renderFindings(report) {
 function renderDiscovery(report) {
   const candidates = array(report.discovery).filter(item => item && typeof item === 'object');
   if (!candidates.length) return '';
-  return section('ur-discovery', 'DISCOVERY ONLY — NOT ACQUIRED BODIES',
-    `<p class="ur-ev-note">${candidates.length} candidate(s) retained. Snippets and URLs are leads, not verified claim support or successful deep reads.</p>
-     <details><summary>Inspect discovery-only candidates</summary>${candidates.map(item => renderEvidenceCard(item)).join('')}</details>`);
+  return section('ur-discovery', 'DISCOVERY LEADS AND UNQUALIFIED CAPTURES',
+    `<p class="ur-ev-note">${candidates.length} non-evidence record(s) retained. Some are unread leads; others were captured but rejected for the research objective. Inspect the read and qualification status. Neither counts as verified claim support.</p>
+     <details><summary>Inspect leads and rejected captures</summary>${candidates.map(item => renderEvidenceCard(item)).join('')}</details>`);
 }
 
 /** SECTION 3 — EVIDENCE (Primary / Independent / Community) */
@@ -374,6 +376,7 @@ function renderEvidenceCard(item, allowRead = true) {
   const inspection = extraction ? `<details class="ur-ev-trace ur-ev-inspection">
     <summary>Inspect captured passages and extraction limits</summary>
     <p>Depth: ${esc(extraction.content_depth || 'UNKNOWN')} · ${esc(extraction.evidentiary_use || 'NOT_ASSESSED')}</p>
+    ${extraction.raw_source_type ? `<p>Raw type: ${esc(extraction.raw_source_type)} · Read: ${esc(extraction.read_status || 'NOT_ACQUIRED')} · Qualification: ${esc(extraction.qualification_status || 'UNASSESSED')}. ${esc(array(extraction.qualification_reasons).join(', '))}</p>` : ''}
     <p>Captured characters: ${esc(extraction.captured_chars ?? 'Unknown')}. Remote source completeness: unknown. Passage support requires review.</p>
     ${extraction.text_metrics && typeof extraction.text_metrics === 'object' ? `<p>Retained raw text: ${esc(extraction.text_metrics.raw_words ?? 'Unknown')} words / ${esc(Number.isFinite(extraction.text_metrics.raw_utf8_bytes) ? (extraction.text_metrics.raw_utf8_bytes / 1000).toFixed(3) : 'Unknown')} KB. Readable capture: ${esc(extraction.text_metrics.readable_words ?? 'Unknown')} words / ${esc(Number.isFinite(extraction.text_metrics.readable_utf8_bytes) ? (extraction.text_metrics.readable_utf8_bytes / 1000).toFixed(3) : 'Unknown')} KB.</p>
       <p>Selection: ${esc(extraction.text_metrics.selection_method || 'Unknown')} · ${esc(extraction.text_metrics.content_scope || 'Unknown')}. Text volume does not establish usefulness or claim support.</p>
@@ -386,6 +389,7 @@ function renderEvidenceCard(item, allowRead = true) {
     ${array(extraction.financial_observations).length ? `<details><summary>Financial observations — period and units require review</summary>${array(extraction.financial_observations).map(f => `<p>${esc(f.metric)}: ${esc(f.value)} ${esc(f.unit)} ${esc(f.currency || '')}${f.range_upper ? `–${esc(f.range_upper)}` : ''} · ${esc(f.scope || 'SCOPE_UNKNOWN')} · period ${esc(f.period_end || 'unknown/ambiguous')} · page ${esc(f.source_page ?? 'unavailable')} · ${esc(f.period_alignment)}</p><blockquote>${esc(f.text)}</blockquote>`).join('')}</details>` : ''}
     ${array(extraction.observed_numeric_mentions).slice(0, 12).length ? `<details><summary>Observed numeric mentions — not aligned financial facts</summary><ul>${array(extraction.observed_numeric_mentions).slice(0, 12).map(m => `<li>${esc(m && m.text || '')}: ${esc(m && m.context || '')}</li>`).join('')}</ul></details>` : ''}
     ${extraction.page_observations && typeof extraction.page_observations === 'object' ? `<details><summary>Extracted page observations — unverified</summary>
+      ${array(extraction.page_observations.date_observations).slice(0, 4).map(value => `<p>Observed date label: ${esc(value.text)} · ${esc(value.meaning)}. Not independently verified; an unlabeled date is not assumed to be publication time.</p>`).join('')}
       ${array(extraction.page_observations.pdf_pages).slice(0, 8).map(page => `<p>PDF page ${esc(page.page)} · captured offsets ${esc(page.start)}–${esc(page.end)}${page.text_truncated ? ' · text truncated' : ''}. Text-layer extraction only; table alignment requires review.</p>`).join('')}
       ${array(extraction.page_observations.tables).slice(0, 3).map((table, index) => `<div class="ur-observed-table"><table><caption>Observed table ${index + 1}; bounded cells, source context requires review</caption><tbody>${array(table).slice(0, 10).map(row => `<tr>${array(row).slice(0, 6).map(cell => `<td>${esc(cell)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`).join('')}
       ${['quotations', 'potential_corrections', 'media_captions'].map(key => array(extraction.page_observations[key]).slice(0, 5).map(value => `<p>${esc(key)}: ${esc(value)}</p>`).join('')).join('')}
@@ -395,7 +399,7 @@ function renderEvidenceCard(item, allowRead = true) {
   </details>` : '';
 
   return `
-    <article class="ur-ev-card">
+    <article class="ur-ev-card" data-ur-evidence-id="${esc(item.evidence_id || '')}" data-ur-source-url="${esc(url || '')}">
       <div class="ur-ev-card-head">
         ${titleEl}${badge}${authBadge}${relBadge}${noUrl}
       </div>
@@ -407,6 +411,7 @@ function renderEvidenceCard(item, allowRead = true) {
         <span class="ur-ev-ts">${ts}</span>
         ${srcType}${srcDomain}
       </footer>
+      ${source.attribution_conflict === true ? `<p class="ur-ev-note">Attribution conflict — captured byline: ${esc(source.captured_author || 'Unavailable')}; discovery/feed attribution: ${esc(source.discovery_attribution || 'Unavailable')}. Neither is independently authenticated.</p>` : ''}
       ${trace}
       ${inspection}
       ${url && allowRead ? `<div class="ur-source-read"><button type="button" class="ur-export-btn" data-ur-read-page="${esc(url)}">Request bounded source read</button><p>May contact this source. Optional follow-ups remain bounded; this does not revise the verdict.</p><div data-ur-read-result role="status" aria-live="polite"></div></div>` : ''}
@@ -445,15 +450,16 @@ function renderDisagreements(report) {
 
   if (structured.length > 0) {
     const cards = structured.map(c => {
-      const typeRaw = c.type || 'CONTRADICTION';
+      const established = c.established === true && array(c.passage_references).length >= 2;
+      const typeRaw = established ? (c.type || 'REVIEWED_DISAGREEMENT') : 'POSSIBLE_DISAGREEMENT';
       const type = esc(String(typeRaw).replace(/_/g, ' '));
-      const sev = esc(String(c.severity || 'MODERATE').toUpperCase());
+      const sev = established ? esc(String(c.severity || 'REVIEWED').toUpperCase()) : 'UNASSESSED';
       const sevClass = sev === 'CRITICAL' ? 'ur-sev--critical' : (sev === 'MINOR' ? 'ur-sev--minor' : 'ur-sev--moderate');
       const stmtA = esc(c.statement_a || c.statement || PH_STR);
       const srcA = esc(c.source_a || c.source || PH_STR);
       const stmtB = esc(c.statement_b || c.counter_statement || PH_STR);
       const srcB = esc(c.source_b || c.counter_source || PH_STR);
-      const expl = c.explanation ? `<p class="ur-contra-expl">${esc(c.explanation)}</p>` : '';
+      const expl = c.explanation ? `<p class="ur-contra-expl">Reported rationale — requires passage review: ${esc(c.explanation)}</p>` : '';
 
       return `
         <div class="ur-contra-card">
@@ -472,6 +478,8 @@ function renderDisagreements(report) {
             </div>
           </div>
           ${expl}
+          <p class="ur-ev-note">${established ? 'Reported reviewed assessment; inspect supporting passages.' : 'Unassessed review lead, not an established factual contradiction.'} Sources: ${esc(c.source_a_id || 'Unavailable')} / ${esc(c.source_b_id || 'Unavailable')}.</p>
+          ${array(c.passage_references).slice(0, 2).map(ref => `<details><summary>Captured passage ${esc(ref.passage_id || '')} — ${esc(ref.evidence_id || '')} [${esc(ref.start ?? '—')}:${esc(ref.end ?? '—')}]</summary><blockquote>${esc(ref.text || '')}</blockquote></details>`).join('')}
         </div>`;
     }).join('');
 
@@ -500,16 +508,33 @@ function renderAgentIntelligence(report) {
   if (!intel || typeof intel !== 'object' || Object.keys(intel).length === 0) return '';
 
   const modules = [];
+  const captured = Object.values(report.evidence || {}).flatMap(value => array(value));
+  const hasBodies = captured.some(item => item && item.extraction && item.extraction.evidentiary_use === 'REQUIRES_PASSAGE_REVIEW'
+    && !['PROFILE_METADATA', 'VIDEO_METADATA', 'METADATA', 'DIRECT_METADATA'].includes(item.extraction.content_depth));
+
+  if (Array.isArray(intel.financial_observations) && intel.financial_observations.length) {
+    modules.push(`<div class="ur-intel-card"><h3 class="ur-intel-head">Scout // Captured financial context</h3>
+      <p class="ur-ev-note">Corporate-news assertions, not verified financial claims. Affiliates, currencies, periods and forecasts must remain separate; no filing reconciliation is implied.</p>
+      <ul class="ur-list">${intel.financial_observations.filter(row => row && typeof row === 'object').map((row, index) => `<li><details>
+        <summary>Financial context ${index + 1} · ${esc(array(row.observed_currencies).join(', ').replace(/_/g, ' ') || 'Currency not established')}</summary>
+        <p>Evidence ID: ${esc(row.evidence_id || 'Citation unavailable')}</p>
+        <p>Entity: ${esc(String(row.entity_alignment || 'Entity unassessed').replace(/_/g, ' ').toLowerCase())}</p>
+        <p>Currencies: ${esc(array(row.observed_currencies).join(', ').replace(/_/g, ' ') || 'Not observed')} · Periods: ${esc(array(row.observed_period_labels).join(', ') || 'Not established')}</p>
+        <p>Result scope: ${esc(String(row.result_scope || 'Result scope unassessed').replace(/_/g, ' ').toLowerCase())}. ${esc(String(row.period_alignment || 'Period alignment not established').replace(/_/g, ' ').toLowerCase())}.</p>
+        ${row.passage && row.passage.text ? `<details><summary>Exact captured financial passage [${esc(row.passage.start)}:${esc(row.passage.end)}]</summary><blockquote>${esc(row.passage.text)}</blockquote></details>` : ''}
+      </details></li>`).join('')}</ul></div>`);
+  }
 
   // Scout: Official Filing Comparison & Rumors
   if (intel.filing_comparison && typeof intel.filing_comparison === 'object') {
     const fc = intel.filing_comparison;
-    const hasDisc = fc.discrepancy_detected === true;
+    const assessed = hasBodies && array(fc.comparisons).length > 0 && ['CONSISTENT', 'ANOMALIES_DETECTED'].includes(fc.status);
+    const hasDisc = assessed && (fc.discrepancy_detected === true || fc.status === 'ANOMALIES_DETECTED');
     modules.push(`
       <div class="ur-intel-card">
         <h3 class="ur-intel-head">Scout // SEC Statutory Filing Reconciliation</h3>
         <p class="ur-intel-status ${hasDisc ? 'ur-intel-status--alert' : 'ur-intel-status--ok'}">
-          ${hasDisc ? '⚠ NUMERICAL DISCREPANCY DETECTED BETWEEN FILING AND REPORTED CLAIMS' : '✓ Official filing metrics reconcile with reported disclosure'}
+          ${!assessed ? 'UNASSESSED — insufficient comparable filing evidence' : hasDisc ? 'Reported numerical discrepancy — inspect periods, units and citations' : 'Reported comparison: CONSISTENT — passage and context review required'}
         </p>
         ${array(fc.discrepancies).length ? `
           <ul class="ur-intel-list">
@@ -518,26 +543,59 @@ function renderAgentIntelligence(report) {
       </div>`);
   }
 
+  // A current article set is a development briefing, not measured popularity.
+  for (const [key, heading, description] of [
+    ['recent_developments', 'Trending // Recent source-reported developments', 'Observed article publication timing; not measured audience growth, reach or independent corroboration.'],
+    ['competitive_context', 'Trending // Competitive context — not primary-topic announcements', 'Other actors’ developments and reported competitive impact. This does not establish a new action by the target or measured virality.'],
+  ]) {
+    if (!Array.isArray(intel[key])) continue;
+    const developments = intel[key].filter(row => row && typeof row === 'object');
+    modules.push(`<div class="ur-intel-card"><h3 class="ur-intel-head">${heading}</h3>
+      <p class="ur-ev-note">${description}</p>
+      ${developments.length ? `<ul class="ur-list">${developments.map(row => {
+        const href = safeEvidenceUrl(row.url);
+        return `<li>${href ? `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">${esc(row.title || 'Source report')}</a>` : esc(row.title || 'Source report')}
+          <p>${esc(row.publisher || 'Publisher unavailable')} · published ${esc(row.published_at || 'Date unknown')} · ${esc(row.evidence_id || 'Citation unavailable')}</p>
+          ${row.passage ? `<blockquote>${esc(row.passage)}</blockquote>` : ''}</li>`;
+      }).join('')}</ul>` : '<p class="ur-empty">No qualified developments in this category were retained. Competitive context, unknown dates or stale reports do not establish direct current activity.</p>'}
+    </div>`);
+  }
+
   // Trending: Bot Amplification & Velocity
   if (intel.bot_amplification || intel.narrative_velocity) {
     const bot = intel.bot_amplification || {};
     const vel = intel.narrative_velocity || {};
-    const botScore = typeof bot.bot_risk_score === 'number' ? pct(bot.bot_risk_score) : PH_NUM;
-    const velScore = typeof vel.velocity_score === 'number' ? pct(vel.velocity_score) : PH_NUM;
+    const botMeasured = hasBodies && bot.measurement_basis === 'OBSERVED_POST_SAMPLE' && bot.observed_post_count >= 2;
+    const velMeasured = hasBodies && vel.measurement_basis === 'OBSERVED_TIME_SERIES' && vel.observation_count >= 2;
+    const botScore = botMeasured && typeof bot.bot_risk_score === 'number' ? pct(bot.bot_risk_score) : 'UNASSESSED';
+    const velScore = velMeasured && typeof vel.velocity_score === 'number' ? pct(vel.velocity_score) : 'UNASSESSED';
     modules.push(`
       <div class="ur-intel-card">
         <h3 class="ur-intel-head">Trending // Amplification &amp; Spread Velocity</h3>
         <div class="ur-intel-metrics">
           <div class="ur-intel-metric"><span>Bot Risk Score</span><strong>${botScore}</strong></div>
           <div class="ur-intel-metric"><span>Spread Velocity</span><strong>${velScore}</strong></div>
-          ${vel.doubling_time_hours != null ? `<div class="ur-intel-metric"><span>Doubling Time</span><strong>${esc(vel.doubling_time_hours)}h</strong></div>` : ''}
+          ${velMeasured && vel.doubling_time_hours != null ? `<div class="ur-intel-metric"><span>Doubling Time</span><strong>${esc(vel.doubling_time_hours)}h</strong></div>` : ''}
         </div>
-        ${array(bot.coordination_patterns).length ? `
+        <p class="ur-ev-note">A discovery count or one snapshot does not measure reach, narrative truth, bot activity or virality.</p>
+        ${botMeasured && array(bot.coordination_patterns).length ? `
           <p class="ur-intel-note">Coordination indicators: ${esc(bot.coordination_patterns.join(', '))}</p>` : ''}
       </div>`);
   }
 
   // BrandShield: Threat Vectors & Impersonation
+  if (Array.isArray(intel.source_assessments)) {
+    const assessments = intel.source_assessments.filter(row => row && typeof row === 'object');
+    modules.push(`<div class="ur-intel-card"><h3 class="ur-intel-head">BrandShield // Source context and attribution</h3>
+      <p>${esc(String(intel.assessment_status || 'UNASSESSED').replace(/_/g, ' '))}</p>
+      <p class="ur-ev-note">Warnings, allegations, complaints and enforcement reports remain distinct from an observed attacker. No ownership authentication or active-threat confirmation is implied.</p>
+      ${assessments.length ? `<ul class="ur-list">${assessments.map(row => `<li>
+        ${esc(String(row.classification || 'INSUFFICIENT_EVIDENCE').replace(/_/g, ' '))} · ${esc(row.evidence_id || 'Citation unavailable')}
+        <p>${esc(String(row.reason || 'Context requires review.').replace(/_/g, ' ').toLowerCase())}</p>
+        <p>Actor URL: ${esc(row.actor_url || 'Not established; reporting-source URL is not an attacker')} · ${esc(row.epistemic_state || 'UNVERIFIED')}</p>
+      </li>`).join('')}</ul>` : '<p class="ur-empty">No qualified source-context assessment; absence of a finding is not proof of safety.</p>'}
+    </div>`);
+  }
   if (intel.executive_impersonation || intel.smear_analysis || intel.counterfeit_domains) {
     const imp = intel.executive_impersonation || {};
     const smear = intel.smear_analysis || {};
@@ -546,12 +604,37 @@ function renderAgentIntelligence(report) {
       <div class="ur-intel-card">
         <h3 class="ur-intel-head">BrandShield // Threat Vectors &amp; Impersonation Defense</h3>
         <div class="ur-intel-metrics">
-          <div class="ur-intel-metric"><span>Impersonation Risk</span><strong>${imp.is_impersonation_suspected ? 'ELEVATED' : 'LOW'}</strong></div>
-          <div class="ur-intel-metric"><span>Campaign Classification</span><strong>${esc(smear.classification || 'ORGANIC_CRITICISM')}</strong></div>
+          <div class="ur-intel-metric"><span>Impersonation Risk</span><strong>${hasBodies && imp.is_impersonation_suspected === true ? 'REPORTED SUSPICION — UNVERIFIED' : 'UNASSESSED'}</strong></div>
+          <div class="ur-intel-metric"><span>Campaign Classification</span><strong>${hasBodies ? esc(smear.classification || 'UNASSESSED') : 'UNASSESSED'}</strong></div>
         </div>
         ${array(count.counterfeit_domains).length ? `
           <p class="ur-intel-note">Suspicious typosquat domains: ${esc(count.counterfeit_domains.join(', '))}</p>` : ''}
       </div>`);
+  }
+
+  if (Array.isArray(intel.public_statements) && intel.public_statements.length) {
+    modules.push(`<div class="ur-intel-card"><h3 class="ur-intel-head">Personal Watch // Reported quotations</h3>
+      <p class="ur-ev-note">Publisher-attributed text, not authenticated speech or identity verification. No impersonation conclusion follows from an attributed quote.</p>
+      ${intel.public_statements.filter(row => row && typeof row === 'object').map(row => {
+        const quotation = row.quotation && typeof row.quotation === 'object' ? row.quotation : {};
+        return `<figure><figcaption>${esc(row.speaker || 'Speaker unknown')} · REPORTED QUOTATION — UNVERIFIED · ${esc(row.evidence_id || 'Citation unavailable')}</figcaption>
+          <blockquote>${esc(quotation.text || row.text || '')}</blockquote>
+          <p>Captured offsets ${esc(quotation.start ?? row.start ?? '?')}–${esc(quotation.end ?? row.end ?? '?')}. Identity: UNASSESSED.</p></figure>`;
+      }).join('')}</div>`);
+  }
+
+  if (Array.isArray(intel.disputed_claims) && intel.disputed_claims.length) {
+    const disputes = intel.disputed_claims.filter(row => row && typeof row === 'object').slice(0, 16);
+    modules.push(`<div class="ur-intel-card"><h3 class="ur-intel-head">Personal Watch // Disputed attribution</h3>
+      <p class="ur-ev-note">These are publisher-reported disputes, not authenticated speech, proven falsehoods or confirmed impersonation.</p>
+      ${disputes.map(row => {
+        const passage = array(row.source_passages).find(value => value && typeof value === 'object') || {};
+        const href = safeEvidenceUrl(row.source_report_url);
+        return `<figure><figcaption>DISPUTED ATTRIBUTION — UNVERIFIED · ${esc(array(row.evidence_ids).join(', ') || 'Citation unavailable')}</figcaption>
+          <blockquote>${esc(row.text || '')}</blockquote>
+          <p>Captured offsets ${esc(passage.start ?? '?')}–${esc(passage.end ?? '?')}.
+          ${href ? `<a href="${esc(href)}" target="_blank" rel="noopener noreferrer">Inspect reporting source</a>` : 'Reporting source unavailable.'}</p></figure>`;
+      }).join('')}</div>`);
   }
 
   // Personal Watch: Identity & Doxxing Defense
@@ -563,10 +646,11 @@ function renderAgentIntelligence(report) {
       <div class="ur-intel-card">
         <h3 class="ur-intel-head">Personal Watch // Subject Identity &amp; Integrity Audit</h3>
         <div class="ur-intel-metrics">
-          <div class="ur-intel-metric"><span>Catalog Identity Match</span><strong>${idv.is_identity_matched === true ? 'VERIFIED MATCH' : 'UNCONFIRMED CANDIDATE'}</strong></div>
-          <div class="ur-intel-metric"><span>Doxxing Exposure Level</span><strong>${esc(dox.doxxing_risk_level || 'LOW')}</strong></div>
-          <div class="ur-intel-metric"><span>Quote Authenticity</span><strong>${esc(q.attribution_status || 'UNASSESSED')}</strong></div>
+          <div class="ur-intel-metric"><span>Catalog Identity Match</span><strong>${idv.is_identity_matched === true ? 'CATALOG MATCH — NOT IDENTITY VERIFICATION' : 'UNCONFIRMED CANDIDATE'}</strong></div>
+          <div class="ur-intel-metric"><span>Doxxing Exposure Level</span><strong>${hasBodies ? esc(dox.doxxing_risk_level || dox.exposure_severity || 'UNASSESSED') : 'UNASSESSED'}</strong></div>
+          <div class="ur-intel-metric"><span>Quote Authenticity</span><strong>${hasBodies ? esc(q.attribution_status || 'UNASSESSED') : 'UNASSESSED'}</strong></div>
         </div>
+        <p class="ur-ev-note">Missing assessment is not low risk or evidence of safety. Reported pattern assessments remain bounded and require source review.</p>
       </div>`);
   }
 
@@ -580,6 +664,9 @@ function renderAgentIntelligence(report) {
 /** SECTION 6 — TIMELINE */
 function renderTimeline(report) {
   const events = array(report.timeline).filter(ev => ev && typeof ev === 'object');
+  const observedTime = event => typeof event.timestamp === 'string' && /T.*(?:Z|[+-]\d{2}:\d{2})$/.test(event.timestamp)
+    && Number.isFinite(Date.parse(event.timestamp)) ? Date.parse(event.timestamp) : Infinity;
+  events.sort((left, right) => observedTime(left) - observedTime(right));
   if (events.length === 0) {
     return section('ur-timeline', 'TIMELINE', '<p class="ur-empty">Timeline unavailable.</p>');
   }
@@ -590,7 +677,7 @@ function renderTimeline(report) {
       return `<li class="ur-tl-item"><span class="ur-tl-ts">${ts}</span><span class="ur-tl-desc">${desc}</span></li>`;
     })
     .join('');
-  return section('ur-timeline', 'TIMELINE', `<ol class="ur-tl-list">${ols}</ol>`);
+  return section('ur-timeline', 'TIMELINE', `<p class="ur-ev-note">Observed source timestamps, not independently verified event times. Unknown timing remains unverified.</p><ol class="ur-tl-list">${ols}</ol>`);
 }
 
 /** SECTION 7 — WHY TRUST THIS? */
@@ -598,8 +685,17 @@ function renderTrust(report) {
   const trust = report.trust || {};
   const qt    = trust.quality_tensor || {};
   const indCount = trust.independent_source_count;
+  const publisherCount = trust.observed_publisher_count;
   const tel  = trust.query_telemetry || {};
   const advice = report.processing_notes && report.processing_notes.ai_passage_advice;
+  const metrics = report.processing_notes && report.processing_notes.acquisition_metrics;
+  const acquisitionNote = metrics && typeof metrics === 'object'
+    ? `<div class="ur-acquisition-metrics"><h3 class="ur-trust-sub">Acquisition and qualification</h3><p>${[
+        ['candidate_urls', 'candidate URLs'], ['reads_attempted', 'read attempts'],
+        ['article_bodies', 'article bodies'], ['qualified_source_count', 'qualified sources'],
+        ['raw_article_words', 'raw article words'], ['relevant_words', 'retained passage words'],
+        ['duplicate_captures', 'duplicates']
+      ].map(([key, label]) => `${Number.isSafeInteger(metrics[key]) && metrics[key] >= 0 ? esc(String(metrics[key])) : '—'} ${label}`).join(' · ')}</p><p class="ur-ev-note">Discovered URLs are not downloaded articles; article text is not a verified claim. Publisher counts do not prove independence.</p></div>` : '';
   const advisoryNote = advice && typeof advice === 'object'
     ? `<p class="ur-trust-note">AI passage assistance: ${esc(advice.status || 'UNKNOWN')}. ${Number.isSafeInteger(advice.accepted) ? esc(advice.accepted) : '—'} selection(s) passed deterministic checks. Advisory only; this does not verify claim support. Unavailable assistance leaves deterministic processing in place.</p>` : '';
 
@@ -621,7 +717,9 @@ function renderTrust(report) {
   }).join('');
 
   // Source count
-  const indText = Number.isSafeInteger(indCount) && indCount >= 0
+  const indText = Number.isSafeInteger(publisherCount) && publisherCount >= 0
+    ? `<strong>${publisherCount}</strong> observed publisher group${publisherCount !== 1 ? 's' : ''} in retained source records. Publisher grouping does not establish independent confirmation.`
+    : Number.isSafeInteger(indCount) && indCount >= 0
     ? `<strong>${indCount}</strong> source group${indCount !== 1 ? 's' : ''} reported. Grouping is heuristic; independence is not established by this count.`
     : `<span class="ur-trust-ph">${PH_IND}</span>`;
 
@@ -660,6 +758,7 @@ function renderTrust(report) {
         </p>
         ${telRow}${failRow}
         ${advisoryNote}
+        ${acquisitionNote}
       </div>
     </div>`;
 

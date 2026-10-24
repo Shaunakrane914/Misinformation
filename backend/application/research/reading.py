@@ -79,6 +79,9 @@ class DeepReadingStage:
                    and item.acquired_id and item.acquisition_attempt_id]
         pending = [item for item in ranked.ranked if item not in carried
                    and item.canonical_url not in {source.canonical_url for source in carried}]
+        if request.domain == "financial":
+            from backend.services.research.content_roles import matches_objective
+            pending.sort(key=lambda item: not matches_objective(item.title, "financial"))
         if request.domain in {"brand", "personal"}:
             from backend.services.research.content_roles import matches_objective, background_read_reason
             # Spend scarce reads on the agent's task, not just a famous name.
@@ -88,12 +91,25 @@ class DeepReadingStage:
             for item in pending:
                 item.metadata["objective_read_match"] = matches_objective(f"{item.title} {item.snippet}", request.domain)
                 item.metadata["read_exclusion_reason"] = background_read_reason(item, request.domain)
+            has_objective = any(item.metadata["objective_read_match"] for item in pending)
+            for item in pending:
+                item.metadata["defer_non_objective_read"] = has_objective and not item.metadata["objective_read_match"]
         # An issuer index -> quarterly index -> HTML statement is a bounded
         # at most three-hop document chain. Reserve existing read slots, not
         # extra fan-out or wall time. PDFs use the bounded text-layer parser.
         issuer_chain = request.domain == "financial" and any(
             item.query_class == "issuer_documents" for item in carried)
         first_limit = max(1, deep_read_budget - 2) if issuer_chain and deep_read_budget > 1 else deep_read_budget
+        if request.domain in {"brand", "personal"}:
+            # Leave an existing attempt allowance for alternatives; do not
+            # increase total fan-out when the first selected batch fails.
+            first_limit = min(first_limit, 3)
+        if deep_read_budget > 2 and any(item.metadata.get("publisher_source_url") for item in pending):
+            first_limit = min(first_limit, max(1, deep_read_budget - 4))
+        from backend.services.research.publisher_links import is_publisher_hub
+        if (request.domain == "financial" and not issuer_chain and deep_read_budget > 2
+                and any(is_publisher_hub(item.canonical_url) for item in pending)):
+            first_limit = min(first_limit, deep_read_budget - 2)
         time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
         first_timeout = max(0.0, time_left - 3.0) if issuer_chain and deep_read_budget > 1 else time_left
         if deep_read_budget > 0 and pending and time_left > 0:
@@ -112,6 +128,48 @@ class DeepReadingStage:
                 "read_urls": [],
                 "candidate_selection_audit": [],
             }
+
+        read_telemetry["replacement_read_rounds"] = 0
+        if pending and deep_read_budget > 0 and time_left <= 0:
+            read_telemetry["read_failure_reason"] = "READING_DEADLINE_EXHAUSTED"
+        # Only failed batches trigger replacement. Each new URL consumes the
+        # original total attempt limit and the actual remaining reading window.
+        attempted_ids = {row.get("candidate_id") for row in read_telemetry.get("acquisition_attempts", [])}
+        attempted_urls = {row.get("url") for row in read_telemetry.get("acquisition_attempts", [])}
+        while not issuer_chain and request.domain in {"brand", "personal"} and read_telemetry.get("failed", 0):
+            remaining = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
+            time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
+            from backend.services.research.publisher_links import failed_feed_publisher_hubs
+            if remaining >= 2 and failed_feed_publisher_hubs(pending,
+                    read_telemetry.get("acquisition_attempts", []), attempted_urls):
+                break  # Preserve two existing slots for an observed hub/article.
+            # Deferral is priority, not permanent ineligibility. Once the
+            # objective batch fails, let the reader reassess unattempted leads.
+            # Keep real background/auth/quality exclusions enforced there.
+            alternatives = [item for item in pending if item.id not in attempted_ids
+                            and item.canonical_url not in attempted_urls]
+            for item in alternatives:
+                item.metadata["defer_non_objective_read"] = False
+            if not remaining or not alternatives or time_left <= 0:
+                break
+            extra, observed = deep_reader.deep_read(alternatives, max_reads=remaining,
+                timeout_per_read=min(budget.channel_timeout_seconds, time_left))
+            if not observed.get("attempted"):
+                break
+            investigated_items.extend(extra)
+            for row in observed.get("acquisition_attempts", []):
+                attempted_ids.add(row.get("candidate_id"))
+                attempted_urls.add(row.get("url"))
+            for key in ("attempted", "successful", "failed", "cached", "total_chars_read"):
+                read_telemetry[key] = read_telemetry.get(key, 0) + observed.get(key, 0)
+            for key in ("read_urls", "acquisition_attempts"):
+                read_telemetry.setdefault(key, []).extend(observed.get(key, []))
+            audits = {row["candidate_id"]: row for row in read_telemetry.get("candidate_selection_audit", [])}
+            audits.update({row["candidate_id"]: row for row in observed.get("candidate_selection_audit", [])})
+            read_telemetry["candidate_selection_audit"] = list(audits.values())
+            read_telemetry["replacement_read_rounds"] += 1
+            if not observed.get("acquisition_attempts") or not observed.get("failed"):
+                break
 
         linked_candidates = []
         remaining_reads = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
@@ -163,5 +221,67 @@ class DeepReadingStage:
                 break
             remaining_reads = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
             time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
+        # Non-catalog publishers can expose useful articles through a captured
+        # hub. Use only observed links, the original attempt cap and remaining
+        # stage deadline. This is discovery, not a manufactured article body.
+        if not issuer_chain:
+            from backend.services.research.publisher_links import observed_publisher_articles, failed_feed_publisher_hubs
+            read_telemetry["publisher_link_audit"] = []
+            seen_urls = {item.canonical_url for item in ranked.ranked}
+            # Search can return only opaque wrappers. A feed's observed
+            # publisher hub offers a second discovery path without guessing a
+            # slug, adding providers, or increasing attempts. Leave a slot for
+            # an article; captured hubs remain background, not findings.
+            remaining_reads = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
+            time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
+            hubs = failed_feed_publisher_hubs(pending, read_telemetry.get("acquisition_attempts", []), seen_urls)
+            if hubs and remaining_reads >= 2 and time_left > 0:
+                hubs = hubs[:min(2, remaining_reads - 2)] if remaining_reads > 2 else hubs[:1]
+                linked_candidates.extend(hubs)
+                seen_urls.update(item.canonical_url for item in hubs)
+                extra, observed = deep_reader.deep_read(hubs, max_reads=len(hubs),
+                    timeout_per_read=min(budget.channel_timeout_seconds, time_left))
+                investigated_items.extend(extra)
+                for key in ("attempted", "successful", "failed", "cached", "total_chars_read"):
+                    read_telemetry[key] = read_telemetry.get(key, 0) + observed.get(key, 0)
+                for key in ("read_urls", "candidate_selection_audit", "acquisition_attempts"):
+                    read_telemetry.setdefault(key, []).extend(observed.get(key, []))
+                read_telemetry["feed_publisher_hub_attempts"] = observed.get("attempted", 0)
+            for _ in range(2):
+                remaining_reads = max(0, deep_read_budget - read_telemetry.get("attempted", 0))
+                time_left = max(0.0, effective_timeout * 0.85 - (time.monotonic() - start_ts))
+                if not remaining_reads or time_left <= 0:
+                    break
+                observed = []
+                for parent in carried + investigated_items:
+                    for child in observed_publisher_articles(parent, request.domain, read_telemetry["publisher_link_audit"], request.target):
+                        if child.canonical_url not in seen_urls:
+                            seen_urls.add(child.canonical_url)
+                            source_quality_engine.classify_and_score(child, target_name=request.target)
+                            observed.append(child)
+                if not observed:
+                    break
+                accepted, rejected = relevance_gate.filter_candidates(observed, target_entity=request.target,
+                    domain=request.domain, intent=request.intent, provisional_read=request.domain == "trending")
+                # Feed URLs are an observed publisher discovery step, not
+                # subject evidence. Do not fake an entity match on the feed.
+                accepted += [item for item in observed if item.metadata.get("discovery_kind") == "FEED_INDEX"
+                             and item not in accepted]
+                linked_candidates.extend(observed)
+                ranked.rejected.extend(rejected)
+                ranked.accepted.extend(accepted)
+                ranked.ranked.extend(accepted)
+                if not accepted:
+                    break
+                round_limit = min(2, remaining_reads)
+                if accepted and accepted[0].metadata.get("discovery_kind") == "FEED_INDEX":
+                    round_limit = 1  # Reserve an existing slot for its article.
+                extra, extra_trace = deep_reader.deep_read(accepted, max_reads=round_limit,
+                    timeout_per_read=min(budget.channel_timeout_seconds, time_left))
+                investigated_items.extend(extra)
+                for key in ("attempted", "successful", "failed", "cached", "total_chars_read"):
+                    read_telemetry[key] = read_telemetry.get(key, 0) + extra_trace.get(key, 0)
+                for key in ("read_urls", "acquisition_attempts", "candidate_selection_audit"):
+                    read_telemetry.setdefault(key, []).extend(extra_trace.get(key, []))
         read_telemetry["reused_acquired_count"] = len(carried)
         return ReadEvidence(carried + investigated_items, read_telemetry, linked_candidates)

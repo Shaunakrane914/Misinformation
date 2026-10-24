@@ -51,18 +51,24 @@
         find('overall').removeAttribute('value');
         find('status').textContent = 'This backend has no live-progress support. Waiting for its report; progress is unknown.';
       }
-      if (typeof event.pipeline_pass === 'string' && Number.isInteger(event.pipeline_completed) && event.pipeline_total === 13 && event.pipeline_completed >= 0 && event.pipeline_completed <= 13) {
+      if (typeof event.pipeline_pass === 'string' && Number.isInteger(event.pipeline_completed) && Number.isInteger(event.pipeline_total) && event.pipeline_total > 0 && event.pipeline_total <= 30 && event.pipeline_completed >= 0 && event.pipeline_completed <= event.pipeline_total) {
         if (!passes.has(event.pipeline_pass)) passes.set(event.pipeline_pass, passes.size + 1);
         find('pass').hidden = false;
         find('work').value = event.pipeline_completed;
-        find('step').textContent = `Research pass ${passes.get(event.pipeline_pass)}: ${event.pipeline_completed} / 13 steps finished — ${event.pipeline_step}`;
+        find('work').max = event.pipeline_total;
+        find('step').textContent = `Research pass ${passes.get(event.pipeline_pass)}: ${event.pipeline_completed} / ${event.pipeline_total} steps finished — ${event.pipeline_step}`;
         diagnostic.research_step = event.pipeline_step;
-        find('status').textContent = event.pipeline_completed === 13 ? 'Research pass finished; agent analysis may still be running.' : `Research: ${event.pipeline_step}`;
+        find('status').textContent = event.pipeline_completed === event.pipeline_total ? 'Research pass finished; agent analysis may still be running.' : `Research: ${event.pipeline_step}`;
         if (event.pipeline_failed) {
           diagnostic.research_pass_incomplete = true;
           find('status').textContent = 'Research pass could not finish. A report, if returned, may have evidence limitations.';
         }
       }
+      if (event.phase === 'harvesting') {
+        diagnostic.harvesting = event;
+        find('status').textContent = `Acquiring public sources: ${Number(event.candidate_urls) || 0} URLs, ${Number(event.reads_attempted) || 0} reads, ${Number(event.article_bodies) || 0} article bodies. Not yet qualified evidence.`;
+      }
+      if (event.acquisition_metrics) diagnostic.acquisition_metrics = event.acquisition_metrics;
       refresh();
     }
     function stop() { clearInterval(timer); stopped = true; refresh(); }

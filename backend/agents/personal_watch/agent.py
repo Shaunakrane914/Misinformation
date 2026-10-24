@@ -307,6 +307,11 @@ class PersonalWatchAgent:
             "suspected_scams": scams,
             "deepfake_claims": deepfakes,
             "public_statements": synthesis.get("public_statements", []),
+            "disputed_claims": synthesis.get("disputed_claims", []),
+            "identity_authenticated": False,
+            "identity_risk": synthesis.get("identity_risk", "UNASSESSED"),
+            "impersonation_status": synthesis.get("impersonation_status", "UNASSESSED"),
+            "assessment_note": synthesis.get("status_note", "Identity threat risk was not assessed."),
             "evidence": evidence_list,
             "dossiers": dossiers,
             "findings": [f.to_dict() if hasattr(f, "to_dict") else f for f in self._last_research_res.findings] if getattr(self, "_last_research_res", None) else [],
@@ -356,8 +361,10 @@ class PersonalWatchAgent:
         inferred: List[str] = []
         if isinstance(changes, dict) and changes.get("has_changes"):
             inferred.append("Material change detected across monitored public profiles since previous interval.")
+        elif isinstance(changes, list) and any(change.get("change_type") == "BASELINE_INITIALIZED" for change in changes):
+            inferred.append("Initial sample recorded; no prior observation window is available for a change comparison.")
         else:
-            inferred.append("Public footprint remains consistent with baseline activity.")
+            inferred.append("The sampled observations do not establish a material change or a stable public footprint.")
         if scan_res.get("high_risk_count", 0) > 0:
             inferred.append(f"High-priority threat exposure detected: {scan_res.get('high_risk_count')} severe vectors flagged.")
 
@@ -365,13 +372,13 @@ class PersonalWatchAgent:
         uncertain: List[str] = []
         for c in claims:
             if c.get("status") in ("unverified", "unknown"):
-                uncertain.append(f"Unverified public claim: {c.get('claim_text')}")
+                uncertain.append(f"Unverified public claim: {c.get('claim_text') or c.get('text') or 'No claim wording supplied'}")
         for contra in scan_res.get("contradictions", []):
             uncertain.append(f"Contradictory statement noted: {contra}")
         if not evidence_items:
-            uncertain.append(f"No public signals found for {canonical_name} within requested monitoring scope.")
+            uncertain.append(f"No usable public evidence was acquired for {canonical_name}; this does not establish an absence of public information or identity abuse.")
 
-        status = "no_material_change"
+        status = "insufficient_evidence"
         if scan_res.get("contradictions"):
             status = "contradicted"
         elif isinstance(changes, dict) and changes.get("has_changes"):
@@ -401,6 +408,11 @@ class PersonalWatchAgent:
             "agent": "personal_watch",
             "person": canonical_name,
             "identity_confidence": round(confidence, 2),
+            "identity_authenticated": False,
+            "identity_risk": scan_res.get("identity_risk", "UNASSESSED"),
+            "impersonation_status": scan_res.get("impersonation_status", "UNASSESSED"),
+            "public_statements": scan_res.get("public_statements", []),
+            "disputed_claims": scan_res.get("disputed_claims", []),
             "monitoring_scope": monitoring_scope or ["public statements", "career moves", "publications"],
             "status": status,
             "updates": updates,

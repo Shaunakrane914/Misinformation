@@ -46,7 +46,7 @@ def advisory_run(*, verified_models=(), database=None):
         raise AdvisoryPolicyError("Advisory model support has not been verified")
     path = Path(database or os.getenv("AEGIS_AI_POLICY_DB", str(Path(tempfile.gettempdir()) / "aegis-advisory-policy.sqlite3")))
     path.parent.mkdir(parents=True, exist_ok=True)
-    state = {"id": uuid.uuid4().hex, "database": str(path), "closed": False}
+    state = {"id": uuid.uuid4().hex, "database": str(path), "closed": False, "observations": []}
     with closing(_connect(path)) as connection:
         connection.execute("INSERT INTO runs VALUES (?,0)", (state["id"],))
     token = _run.set(state)
@@ -113,3 +113,16 @@ def call_count():
         return 0
     with closing(_connect(state["database"])) as connection:
         return connection.execute("SELECT calls FROM runs WHERE id=?", (state["id"],)).fetchone()[0]
+
+
+def record_observation(row):
+    state = _run.get()
+    if state is not None:
+        row["investigation_id"] = _investigation.get()
+        state["observations"].append(row)
+
+
+def observations(current_only=False):
+    state = _run.get()
+    rows = list(state.get("observations", [])) if state else []
+    return [row for row in rows if row.get("investigation_id") == _investigation.get()] if current_only else rows

@@ -1,0 +1,105 @@
+{
+  "scope": "Exact saved SSE replay through all agent page buttons; readiness is a harness stub, all other API calls are blocked. No provider, health or fresh research claims.",
+  "configured_gemini_credentials": 0,
+  "mock_llm": false,
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Adobe",
+      "elapsed_seconds": 0.72,
+      "http_status": 200,
+      "retained_native_records": 3,
+      "retained_text_words": 1961,
+      "retained_text_kb": 14.492,
+      "result_event": true,
+      "error_events": [],
+      "progress_events": 29,
+      "heartbeat_events": 7,
+      "progress_phases": [
+        "accepted",
+        "analysis",
+        "report"
+      ],
+      "findings": 1,
+      "acquired_records": 3,
+      "discovery_records": 19,
+      "views": [
+        {
+          "width": 320,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-320-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 3,
+          "rendered_discovery_cards": 19,
+          "missing_finding_texts": [],
+          "document_width": 320,
+          "screenshots": [
+            "01-scout-320-full.png",
+            "01-scout-320-report.png"
+          ]
+        },
+        {
+          "width": 390,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-390-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 3,
+          "rendered_discovery_cards": 19,
+          "missing_finding_texts": [],
+          "document_width": 390,
+          "screenshots": [
+            "01-scout-390-full.png",
+            "01-scout-390-report.png"
+          ]
+        },
+        {
+          "width": 1440,
+          "unified_report_visible": true,
+          "inspection_keyboard_open": true,
+          "inspection_screenshot": "01-scout-1440-inspection.png",
+          "rendered_findings": 1,
+          "rendered_acquired_cards": 3,
+          "rendered_discovery_cards": 19,
+          "missing_finding_texts": [],
+          "document_width": 1440,
+          "screenshots": [
+            "01-scout-1440-full.png",
+            "01-scout-1440-report.png"
+          ]
+        }
+      ],
+      "page_errors": [],
+      "console_errors": [
+        "Failed to load resource: net::ERR_FAILED",
+        "Failed to load resource: the server responded with a status of 404 (File not found)"
+      ],
+      "failed_resources": [
+        {
+          "url": "https://fonts.googleapis.com/css2",
+          "failure": "net::ERR_FAILED"
+        }
+      ],
+      "posts": [
+        {
+          "url": "/api/scout/analyze/stream",
+          "body": {
+            "ticker": "Adobe"
+          }
+        }
+      ]
+    }
+  ],
+  "head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "dirty_source": true,
+  "application_sha256": "93fa5595adbebce17f21b3ecbce9797cc843f0361b748ae3d5402ea83dd26fc8",
+  "llm_timeout_seconds": 5.0,
+  "llm_max_retries": 1,
+  "chart_sha256": "d2af8974e95271638772e9e9524db5b9a6f58d6ec2d5d781400447b4a31c681e",
+  "independent_entailment_accuracy": null,
+  "retrieval_recall": null,
+  "mode": "EXACT_SAVED_SSE_REPLAY",
+  "application_unchanged_during_run": true
+}

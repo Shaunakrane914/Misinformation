@@ -92,8 +92,8 @@ def test_relevant_passage_after_navigation_is_not_lost_to_display_cap():
 
 def test_financial_scale_conversion_is_not_currency_conversion():
     from backend.services.research.financial_observations import financial_observations, compare_financial_observations
-    source = financial_observations("For the quarter ended June 30, 2026. Revenue was $5,082 million.", "issuer")
-    same = compare_financial_observations("For the quarter ended June 30, 2026. Revenue was $5.082 billion.", source)
+    source = financial_observations("For the quarter ended June 30, 2026. Revenue was USD5,082 million.", "issuer")
+    same = compare_financial_observations("For the quarter ended June 30, 2026. Revenue was USD5.082 billion.", source)
     assert same[0]["status"] == "MATCHES_SOURCE_ASSERTION"
     different = compare_financial_observations("For the quarter ended June 30, 2026. Revenue was INR5.082 billion.", source)
     assert different[0]["status"] == "INSUFFICIENT_COMPARABLE_CONTEXT"

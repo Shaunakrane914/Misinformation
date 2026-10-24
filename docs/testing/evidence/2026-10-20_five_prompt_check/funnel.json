@@ -1,0 +1,465 @@
+{
+  "mode": "REAL_LOCAL_ASGI_SSE",
+  "application_sha256": "fcce2eb9e8174b73f78ba553aff3f697389d6aa42e751a19a45c34f79f28e271",
+  "stable_application": true,
+  "live_ai_authorized": false,
+  "bounds": {
+    "research_timeout_seconds": 120.0,
+    "max_deep_reads": 6
+  },
+  "cases": [
+    {
+      "case_id": "01-scout",
+      "agent": "scout",
+      "input": "Samsung",
+      "seconds": 38.19,
+      "native_sha256": "5333d6cedeff3fac8aca2f2ec59d5292d24bc78bc57ff87497f243c3a7a44466",
+      "investigation_status": "ACQUISITION_FAILED",
+      "initial_generated_queries": 13,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 16,
+        "provider_attempts_observed": 61,
+        "query_records_without_provider_observations": 4,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 50,
+        "candidate_urls_observed_in_search_sample": 371,
+        "candidate_search_discards": {
+          "LOW_QUERY_COVERAGE": 19,
+          "SUBJECT_MISMATCH": 249,
+          "INVALID_URL": 5,
+          "HEADLINE_MISMATCH": 72
+        },
+        "normalized_candidates": 13,
+        "accepted_candidates": 16,
+        "selected_acquisition_attempts": 6,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 6
+        },
+        "successful_body_captures": 0,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "PUBLISHER_RESOLUTION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 5,
+        "bing:IRRELEVANT_RESULTS": 30,
+        "yahoo:TRANSPORT_FAILURE": 14,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 10,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_48a5596554e8",
+          "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxPYm5zLXZOdnRBZlF6eTBrdEozZVJjZUdWVlhjNlBqVHdxNWhoWWowT2MzeU54anJpVTk2YXBOMWZ2eUFwRG9STkJzdkw2c0d0UmZRaHZSb25qNUg5WGN6Y2FIbHlGaGpzZW5nbmpGYUtpb3M3dUIyNUVTNVNEak1kUjljanFsZWVaQ0N5cGF5N2VsWEk",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_6a0781169aeb",
+          "url": "https://news.google.com/rss/articles/CBMipgFBVV95cUxQY21MZll6Uk1xYmdPZF8tRnMteFhHWFd1N2k4TUdSenppY2hzeUswQV9wX2dEbnBJSmRiUzB2OUlwNmFWTjZiaW1DVGJrRTFBaENlRng2T01pQ1doN3J3M2xkTTRFNXlXX3o0VjV3aUNWNjN5aWFNNXJGbF9lS2FRN2t5cWRxYTdtd3pybVp6UG04QlVDYTB5THRGYlpPaHNFazV2VTh3",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_23a5e3fefccf",
+          "url": "https://news.google.com/rss/articles/CBMiqgFBVV95cUxPOWlqTmxtdXBrVVNGREExcnRXNHJwejVqaUVwSDkxWHhYTU9iRnVHaWxVTTRxTHYweTBSSjBleHF2Y3Jac3NVX3ZOYkE1NW4zd1lyZElWaUFIWW9FcHh5ZENJc0lvVHBRRFRaeDRxakhUS1VzbG00NmNwbk5mUU9ab0pTLXpNYjMtbEVmSm8xcjVYUDBkNTE0V3p6QW1nSHBMelNoWDNiY3pYZw",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_d3ffdfae1d7f",
+          "url": "https://news.google.com/rss/articles/CBMiqwFBVV95cUxPX0tKOEswc2Jpa0RtR25qWFRlcFgzUVBfdE96b3hvQ0lBXzBIeXM4UDY5YUg2N3FrNEJEODU2TkRmSWlOSlRXZ3JFSG1mQW5GVUVxQ0p1dHA0M2VhSENUd29neDNuMFVnTFAzV2RyUG5ULTQ2VTlub1ZCNDNGRko5b1BIbDRDb2tvb2Y0V1ZEal9Oa0wtR0FxYTBwNGtuUllOMV9sWkQtTGVlVXM",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_c7328acbedf0",
+          "url": "https://news.google.com/rss/articles/CBMi1AFBVV95cUxOdU5pSkxpWGpvRUZQMGU2a0FYbmJrWnZmNWlCT2tQeWpEU3RTU0hMMHQ1SEx2SmV6THNUWjFIRmFJWmVPeXVlZDBxbGNCRjBlV05WZnBqVHM2Y2RlQzRhWkRxMi1sY3V5NFY5RktGcHJyZEk0MXhsQkw1WDBwcm93QWVIZzFDMVpsQ3FYT0hTU2tTb0tJSVBLbWVRUW1zTS1ORmduLVhLOEpENC1hdlg4MzVNc0VCVkx2UU52ODFZaXF2X0djWjdUV2YzdlNYQnRuQmQ1ZQ",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_92c64aae386e",
+          "url": "https://news.google.com/rss/articles/CBMirwFBVV95cUxNeEpSSU84RFJaNFlrb0dhR2VnbzQtTmgtMnIyeVpDaWtVUFBRd1lLNkp2LXJZREtXNmJ0LVRBNnVMTVdiOFVKVFpvalhNdXJRenFhNlJMVm1vbjRBTzFtajR1bFhrcG1jaDVsM0hSMHhubEZNYUVIYmgxdkRxQzg1WXBucjl0d1RUMmJrTTdYSkNMLWJPZXVteENkWDVjWmpkWkpPM1drc2o3QWlPaXRn",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 82.17993630000001
+    },
+    {
+      "case_id": "02-scout",
+      "agent": "scout",
+      "input": "Unilever",
+      "seconds": 29.14,
+      "native_sha256": "013597f8bc4fa612c2e9fc8ba9a697670389391ffe3fc9696a1cb0506ff58ff1",
+      "investigation_status": "COMPLETED",
+      "initial_generated_queries": 13,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 16,
+        "provider_attempts_observed": 38,
+        "query_records_without_provider_observations": 4,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 37,
+        "candidate_urls_observed_in_search_sample": 275,
+        "candidate_search_discards": {
+          "LOW_QUERY_COVERAGE": 37,
+          "SUBJECT_MISMATCH": 166,
+          "INVALID_URL": 5
+        },
+        "normalized_candidates": 25,
+        "accepted_candidates": 20,
+        "selected_acquisition_attempts": 6,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 1,
+          "PROVIDER_FAILURE": 1
+        },
+        "successful_body_captures": 4,
+        "extracted_article_bodies": 1,
+        "qualified_evidence": 1,
+        "qualified_evidence_ids": [
+          "ev_c6a3513c41f6"
+        ],
+        "agent_research_findings": 1,
+        "unverified_or_uninvestigated_findings": 1,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "bing:CANDIDATES": 8,
+        "google-news-rss:CANDIDATES": 5,
+        "yahoo:TRANSPORT_FAILURE": 7,
+        "google-news-rss:IRRELEVANT_RESULTS": 1,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 1,
+        "bing:IRRELEVANT_RESULTS": 16
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_efc1db9474fe",
+          "url": "https://news.google.com/rss/articles/CBMikwFBVV95cUxNbEdfNU9GYUh5S3BtYXZmRDY4c3dxNGJKZExoV2hTc1lYdEd1UFQxWWlZQWI3YzdCemFlMEl4ZnZxbUt6Z2Y2SG1uQlMxVjJrNHZYbDkxRzZYVDFVOTFvdmJudFR5cm0tZ3JhUExrQU1OcjhmanBQb3hGUUpSZTRGdlg3aHJpRWNnQV8yVDhHTjhRNDA",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": []
+        },
+        {
+          "candidate_id": "ev_page_708902010fc9",
+          "url": "https://www.unilever.com/files/unilever-annual-report-and-accounts-2024.pdf",
+          "failure_kind": "PROVIDER_FAILURE",
+          "http_status": 200,
+          "resolver_query_statuses": []
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_c6a3513c41f6",
+          "url": "https://en.wikipedia.org/wiki/Unilever",
+          "title": "Unilever - Wikipedia",
+          "words": 2016,
+          "kb": 12.252,
+          "text_sha256": "c5826542f80d701a4843334a6fc2534f8e36a3b0819abb722e96b99213dd7160",
+          "extraction_status": "SUCCESS"
+        },
+        {
+          "id": "ev_f3791d67e34d",
+          "url": "https://www.unilever.com/",
+          "title": "Unilever Global | Unilever",
+          "words": 475,
+          "kb": 2.969,
+          "text_sha256": "02bb5a955e3ff08585e2f8bb7cdb9c1d9ec4f09d7ab11c05dc43bf771bd6b3d4",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_6da8a622e767",
+          "url": "https://www.hul.co.in/",
+          "title": "Hindustan Unilever Limited | Unilever",
+          "words": 103,
+          "kb": 0.744,
+          "text_sha256": "fcfc16a4ca365c3af4720930d30ea5c4fdc28d35a09030100cfe29e422d513a5",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_hub_db993da86a67",
+          "url": "https://www.unilever.com",
+          "title": "Unilever Global | Unilever",
+          "words": 475,
+          "kb": 2.969,
+          "text_sha256": "02bb5a955e3ff08585e2f8bb7cdb9c1d9ec4f09d7ab11c05dc43bf771bd6b3d4",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        }
+      ],
+      "displayed_findings": 1,
+      "remaining_research_seconds": 91.29101560000004
+    },
+    {
+      "case_id": "03-brandshield",
+      "agent": "brandshield",
+      "input": "Adidas",
+      "seconds": 36.4,
+      "native_sha256": "952253b932a68150e2944fc44e84a738548afe35947f063f2ec91dbdffe00373",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "initial_generated_queries": 9,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 12,
+        "provider_attempts_observed": 44,
+        "query_records_without_provider_observations": 3,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 40,
+        "candidate_urls_observed_in_search_sample": 296,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 164,
+          "LOW_QUERY_COVERAGE": 13,
+          "HEADLINE_MISMATCH": 35
+        },
+        "normalized_candidates": 19,
+        "accepted_candidates": 17,
+        "selected_acquisition_attempts": 5,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "successful_body_captures": 2,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "PUBLISHER_RESOLUTION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 3,
+        "bing:CANDIDATES": 7,
+        "yahoo:TRANSPORT_FAILURE": 10,
+        "bing:IRRELEVANT_RESULTS": 20,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 4
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_e3487bc65bb0",
+          "url": "https://news.google.com/rss/articles/CBMiwgFBVV95cUxOTTJFMkhxQUlPYS0xbVhweEhFcGxBZmw5SGRBNEg3RlBTUFBmcFhWMW4yQVMxaVdIOTRiZGNzNHpFMWFxMjlPaC1mYUZDY2lzVDBPQU1QdF90aTZjNWN2MFhXME5iVHp6ZWMwSXdJajJFRVo2LUNCREI5T3ZGYklsb0hqWnFnSVN6V1pRNnphakpmcU5QLWNLTDlHejZ3WjlHZUFxLTdMeVJGcExCc2RvUjNrbkVNbTNVbHJnaTZvZ2dIQQ",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_8dfc99623bc4",
+          "url": "https://news.google.com/rss/articles/CBMiiAFBVV95cUxOWnhyYlFRUG9rSUx0SVZTalZnZ2lBRV80YTYyZG8zYk9ONVlRdmhQYWVQXzNwSGMzb0FNaGFPY1hla2JuZHZmQnR6ek55QWNVcFpNZDNDdHVOaURnMUNZMS1LNVRjWTdnNG1xemdJZzgtNE5NWmg2VWhlQ3QyQ1MxQzItQThwZzVG",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_1803f0d3496a",
+          "url": "https://news.google.com/rss/articles/CBMivgFBVV95cUxOZUd6bFh3ZE9DVldFeW14SElqU1RkQ25ZZEJpcEV0Q20wbzhvTU5sZHBmYnJrcnRUNUsxY01kUU9mVDd4YVhOb0IwNjBBcThPdXVTcUl3ZjNpNFZpVWIybW9oT0swVEVZLUVIc2c1UTJDUGRaVDBtcEpGUXhtcU9GVDRtbXg1SnM1RTkzbTNrWHdiVmlTUUJuRUJrcmp6N2FLdnY1S21rakJHUHhISGp3Zi1BUEFsbDk2ZVQxWXJn",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_hub_8c1f07181f7b",
+          "url": "https://www.techlicious.com",
+          "title": "Home - We Make Tech Simple",
+          "words": 1222,
+          "kb": 7.495,
+          "text_sha256": "7d8c61f5b7296515f8ba5710de72aa020530eb83aaf8e85a3fe2057e90b4eedc",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_hub_ff032d75340e",
+          "url": "https://news.tuoitre.vn",
+          "title": "Tuoi Tre News | The News Gateway to Vietnam",
+          "words": 1780,
+          "kb": 12.056,
+          "text_sha256": "4ff3f9011d4cb797d89a71891af0111adc1afa20e218d934b3eeee78973e4116",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        }
+      ],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 84.01627789999998
+    },
+    {
+      "case_id": "04-trending",
+      "agent": "trending",
+      "input": "grid-scale energy storage",
+      "seconds": 40.92,
+      "native_sha256": "fd259d49c8053faf30f805477229960ddb72dc02de43093b89b5ccf4c3de3419",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "initial_generated_queries": 12,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 14,
+        "provider_attempts_observed": 90,
+        "query_records_without_provider_observations": 1,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 83,
+        "candidate_urls_observed_in_search_sample": 677,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 657,
+          "INVALID_URL": 15
+        },
+        "normalized_candidates": 5,
+        "accepted_candidates": 0,
+        "selected_acquisition_attempts": 0,
+        "read_failure_reasons": {},
+        "successful_body_captures": 0,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "CANDIDATE_QUALIFICATION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:IRRELEVANT_RESULTS": 3,
+        "legacy-news-fallback:UNINSTRUMENTED_TRANSPORT": 3,
+        "bing:IRRELEVANT_RESULTS": 64,
+        "yahoo:TRANSPORT_FAILURE": 16,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 4
+      },
+      "read_failures": [],
+      "captures": [],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 83.73075449999999
+    },
+    {
+      "case_id": "05-personal_watch",
+      "agent": "personal_watch",
+      "input": "Sundar Pichai",
+      "seconds": 36.19,
+      "native_sha256": "fabe92038952961398e0784832eff4818e1a03377758e301a3fb00a52abcf465",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "initial_generated_queries": 9,
+      "funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 12,
+        "provider_attempts_observed": 50,
+        "query_records_without_provider_observations": 2,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 43,
+        "candidate_urls_observed_in_search_sample": 317,
+        "candidate_search_discards": {
+          "SUBJECT_MISMATCH": 265,
+          "HEADLINE_MISMATCH": 33
+        },
+        "normalized_candidates": 11,
+        "accepted_candidates": 13,
+        "selected_acquisition_attempts": 5,
+        "read_failure_reasons": {
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "successful_body_captures": 2,
+        "extracted_article_bodies": 0,
+        "qualified_evidence": 0,
+        "qualified_evidence_ids": [],
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "PUBLISHER_RESOLUTION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null
+      },
+      "provider_outcomes": {
+        "google-news-rss:CANDIDATES": 3,
+        "bing:IRRELEVANT_RESULTS": 28,
+        "yahoo:TRANSPORT_FAILURE": 12,
+        "legacy-web-fallback:UNINSTRUMENTED_TRANSPORT": 7
+      },
+      "read_failures": [
+        {
+          "candidate_id": "ev_00d9977a2af5",
+          "url": "https://news.google.com/rss/articles/CBMiuAFBVV95cUxPM2htY0RldVBtV0doMHlSa3QxMjY4MnExa2Nadzg2RWxfNWI5elV2Rk9hY3BCeTJpcTdBUUFkXy1lSXhaR3JMT01iUWZPalZvMVl4TGhqdzRZVlFkRndySjl5d1FYMFg0elRNMGVPSXBPekNidFp0R3RKSzdrTTNabFpva0k1LWt6ZnZYQnowdFFTR1JVSDhUbVRfNE5SUXc1WnRTbTYyLVlzYS1EeWJDLWhNV2xXNVM4",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_0d27f30a6b13",
+          "url": "https://news.google.com/rss/articles/CBMi2wFBVV95cUxPel8zdDJOX2hyTEpsMU5jOGRfdzdodlJERWxXczlSaGVVSExlZ0oxMWFzUFlZMVB0a0RPNmZJYWp4VFh3TnBMY0lnWTVwaE5MNWlKV2k0cTlJV3h3OXdlYWZqejJ5UjNyVmxidE5LcHFuOXhDekNmUTdLTElOUkdCMTJ1ejB0bWkyaEc5RHVSTENtZnZjMW10Y0Jxd0MwaElyRmx4Uy1kMHhyenpNaVNFUXEzZ1VFRjhFTUtQTVFtajZBUEEzQ0h0aGEtRzdyLTNjd3Y1OU9OcnR4TTjSAeMBQVVfeXFMTXItNHVLWHZ0Q0IwMGFyRFJqWU5MdVZ5Qm9HbURKSEl6TXFrUHFUNi1lZy1VR1NTV2VpcDJWdlJqVkt6Qk9SR0pKbmNjN08yRWxvM3RYZjBzbkdJdTdOcF9nZEpFVkdadU9XQXI0RWQ4NUVHWDJGelR",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        },
+        {
+          "candidate_id": "ev_686b167bacec",
+          "url": "https://news.google.com/rss/articles/CBMiogFBVV95cUxOQmdJNnVnY1NWWWRxdnhIbmc5LWFJS2FWamZCMm9iMzFqYmg4TnFEd1F0cWwxSF83cXJOUlVLbW5JNzRST0Y1YnlYVkpWMUswRTA0UnBxMlg1bjcwLWpLX29kNkRtaGJTTnVpQTgzM3ptbDVWM3lkTzlxelVDamI2Y3djMEZmOHc3N3c2ZEpMNVprbGp4X1RZVTQycFBxc0JPcWc",
+          "failure_kind": "PUBLISHER_UNRESOLVED",
+          "http_status": null,
+          "resolver_query_statuses": [
+            "SUCCESS"
+          ]
+        }
+      ],
+      "captures": [
+        {
+          "id": "ev_hub_c323f0b22627",
+          "url": "https://www.ndtvprofit.com",
+          "title": "Business News | Share Market News | Finance News | Economy News - NDTV Profit",
+          "words": 1421,
+          "kb": 9.006,
+          "text_sha256": "48f5d9991c639594ff3c6086991ba3a9757616b69fe2ca25aee9d0f4fe2e7e66",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        },
+        {
+          "id": "ev_hub_6f09628fd603",
+          "url": "https://www.businessinsider.com",
+          "title": "Business Insider - Latest News in Tech, Markets, Economy & Innovation",
+          "words": 639,
+          "kb": 3.806,
+          "text_sha256": "4a0c1c6e1c83c224e9d6a9c9bf3b3ccdb384ff46572e5bea12516124dd7762a3",
+          "extraction_status": "NO_RELEVANT_PASSAGE"
+        }
+      ],
+      "displayed_findings": 0,
+      "remaining_research_seconds": 84.16203949999999
+    }
+  ],
+  "limitations": "Observed samples, not unique URL totals, complete HTTP accounting, calibrated entailment or independent accuracy; saved-mode attempts are historical observations."
+}

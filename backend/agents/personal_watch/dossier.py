@@ -52,7 +52,7 @@ def build_investigation_dossiers(
             "dossier_id": f"dos_{threat_id}",
             "threat_id": threat_id,
             "threat_type": threat_type,
-            "risk_level": threat.get("risk_level", "LOW"),
+            "risk_level": threat.get("risk_level", "UNASSESSED"),
             "title": threat.get("title", ""),
             "why_flagged": threat.get("reason", ""),
             "first_observed_source": earliest_item.get("source", origin_platform),
@@ -155,9 +155,9 @@ def compute_change_detection(
         for tk, pt in prev_threat_keys.items():
             if tk not in current_threat_keys:
                 changes.append({
-                    "change_type": "RESOLVED_THREAT",
+                    "change_type": "NOT_REOBSERVED",
                     "severity": "INFO",
-                    "description": f"Prior threat no longer detected in active scan: {pt.get('threat_type')} - {pt.get('title')}",
+                    "description": f"Prior allegation not re-observed in this sample (resolution unverified): {pt.get('threat_type')} - {pt.get('title')}",
                     "timestamp": now_iso
                 })
 
@@ -167,14 +167,14 @@ def compute_change_detection(
             changes.append({
                 "change_type": "NEW_PLATFORM",
                 "severity": "INFO",
-                "description": f"Narrative expanded to new platform: {np}",
+                "description": f"Additional platform present in this sample: {np}; propagation is not established.",
                 "timestamp": now_iso
             })
     else:
         changes.append({
             "change_type": "BASELINE_INITIALIZED",
             "severity": "INFO",
-            "description": f"Initial monitoring baseline established with {len(current_threats)} threats and {len(current_platforms)} platforms.",
+            "description": f"Initial sample recorded: {len(current_threats)} unverified threat allegation(s), {len(current_platforms)} platform(s). No prior window exists for change comparison.",
             "timestamp": now_iso
         })
 

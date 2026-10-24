@@ -22,8 +22,8 @@ from dataclasses import dataclass
 from datetime import datetime, timezone
 from typing import Callable, Mapping, Optional
 
-from backend.infrastructure.acquisition.security.url_validator import is_safe_url, resolve_public_addresses
-from backend.infrastructure.acquisition.network.budget import remaining_timeout
+from backend.infrastructure.acquisition.security.url_validator import is_safe_url, resolve_public_addresses, validation_failure_kind
+from backend.infrastructure.acquisition.network.budget import acquisition_deadline, remaining_timeout, reserve_public_request
 
 
 RETRYABLE_STATUS_CODES = frozenset({429, 500, 502, 503, 504})
@@ -45,6 +45,7 @@ class ProviderHTTPError(RuntimeError):
         attempts: int = 1,
         rate_limit_remaining: Optional[int] = None,
         rate_limit_reset_at: Optional[str] = None,
+        failure_kind: Optional[str] = None,
     ) -> None:
         super().__init__(message)
         self.endpoint = endpoint
@@ -54,6 +55,24 @@ class ProviderHTTPError(RuntimeError):
         self.attempts = attempts
         self.rate_limit_remaining = rate_limit_remaining
         self.rate_limit_reset_at = rate_limit_reset_at
+        self.failure_kind = failure_kind or (
+            "RATE_LIMITED" if status_code == 429 else "AUTH_REQUIRED" if status_code == 401
+            else "ACCESS_DENIED" if status_code == 403 else "HTTP_FAILURE" if status_code
+            else "PROVIDER_FAILURE")
+
+
+def transport_failure_kind(error: Exception) -> str:
+    """Retain typed causes, including DNS failures wrapped by urllib."""
+    kind = getattr(error, "failure_kind", None)
+    if kind:
+        return kind
+    if isinstance(error, socket.gaierror):
+        return "DNS_ERROR"
+    if isinstance(error, urllib.error.URLError) and isinstance(error.reason, Exception):
+        return transport_failure_kind(error.reason)
+    if isinstance(error, TimeoutError):
+        return "BUDGET_EXHAUSTED" if "budget" in str(error).lower() or "deadline" in str(error).lower() else "TIMEOUT"
+    return "CONNECTION_FAILURE" if isinstance(error, OSError) else "PROVIDER_FAILURE"
 
 
 class ResponseTooLargeError(ProviderHTTPError):
@@ -170,7 +189,8 @@ def _connect_public_socket(address, timeout=5.0, source_address=None):
     try:
         addresses = resolve_public_addresses(host, port, timeout=min(2.5, timeout))
     except ValueError as error:
-        raise ProviderHTTPError("Connection blocked by SSRF policy", endpoint=f"{host}:{port}") from error
+        raise ProviderHTTPError("Connection blocked by SSRF policy", endpoint=f"{host}:{port}",
+                                failure_kind="SSRF_BLOCKED") from error
     last_error = None
     for family, socktype, protocol, _, sockaddr in addresses:
         remaining = deadline - time.monotonic()
@@ -183,6 +203,9 @@ def _connect_public_socket(address, timeout=5.0, source_address=None):
                 connection.bind(source_address)
             # Numeric sockaddr came from the validated DNS answer. No re-lookup.
             connection.connect(sockaddr)
+            # TCP can consume most of the allowance. TLS must receive only its
+            # remainder, not the timeout originally applied before connect().
+            connection.settimeout(remaining_timeout(deadline - time.monotonic()))
             return connection
         except OSError as error:
             last_error = error
@@ -206,7 +229,7 @@ class _DeadlineStream(io.RawIOBase):
         remaining = self.deadline - time.monotonic()
         if remaining <= 0:
             raise TimeoutError("Public HTTP response deadline expired")
-        self.connection.settimeout(remaining)
+        self.connection.settimeout(remaining_timeout(remaining))
         return self.raw.readinto(buffer)
 
     def close(self):
@@ -231,6 +254,7 @@ def _install_response_deadline(connection):
     if timeout is None or timeout is socket._GLOBAL_DEFAULT_TIMEOUT:
         timeout = 5.0
     deadline = time.monotonic() + remaining_timeout(float(timeout))
+    connection._public_deadline = deadline
 
     def response(sock, *args, **kwargs):
         return http.client.HTTPResponse(_ResponseSocket(sock, deadline), *args, **kwargs)
@@ -250,6 +274,16 @@ class _PublicHTTPSConnection(http.client.HTTPSConnection):
         super().__init__(*args, **kwargs)
         self._create_connection = _connect_public_socket
         _install_response_deadline(self)
+
+    def connect(self):
+        super().connect()
+        try:
+            # The numeric TCP socket already bounds TLS by the remaining
+            # allowance. Refresh again after TLS before transmitting headers.
+            self.sock.settimeout(remaining_timeout(self._public_deadline - time.monotonic()))
+        except Exception:
+            self.close()
+            raise
 
 
 class _PublicHTTPHandler(urllib.request.HTTPHandler):
@@ -281,11 +315,14 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
         target = urllib.parse.urljoin(req.full_url, newurl)
         safe, reason = is_safe_url(target)
         if not safe:
+            kind = validation_failure_kind(reason)
+            label = "Redirect blocked by SSRF policy" if kind == "SSRF_BLOCKED" else "Redirect validation failed"
             raise ProviderHTTPError(
-                f"Redirect blocked by SSRF policy: {reason}",
+                f"{label}: {reason}",
                 endpoint=target,
                 status_code=code,
                 network_observed=True,
+                failure_kind=kind,
             )
         self.redirect_count += 1
         self.redirect_targets.append(target)
@@ -298,6 +335,7 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
             )
         redirected = super().redirect_request(req, fp, code, msg, headers, target)
         if redirected is not None:
+            reserve_public_request(target)
             if _origin(req.full_url) != _origin(target):
                 sensitive = {"authorization", "cookie", "proxy-authorization", "x-goog-api-key", "x-api-key", "apikey"}
                 for name, _value in list(redirected.header_items()):
@@ -306,7 +344,7 @@ class _ValidatingRedirectHandler(urllib.request.HTTPRedirectHandler):
         return redirected
 
 
-def fetch_public_http(
+def _fetch_public_http(
     url: str,
     *,
     headers: Optional[Mapping[str, str]] = None,
@@ -318,19 +356,26 @@ def fetch_public_http(
     max_retry_sleep_seconds: float = 2.0,
     sleep: Callable[[float], None] = time.sleep,
     jitter: Callable[[float, float], float] = random.uniform,
+    method: str = "GET",
+    data: Optional[bytes] = None,
 ) -> BoundedHTTPResponse:
     """Fetch a public HTTP(S) URL with bounded retries and response size.
 
-    Only idempotent GET requests are supported.  A provider-supplied
+    GET may retry; explicit POST callers must disable retries and redirects.
+    A provider-supplied
     ``Retry-After`` delay is respected when it fits the local retry budget; a
     longer delay is surfaced to runtime health without blocking the worker.
     """
     if max_bytes <= 0 or max_attempts <= 0 or max_redirects < 0 or not math.isfinite(timeout) or timeout <= 0:
         raise ValueError("HTTP bounds must be positive")
+    if method not in {"GET", "POST"} or (method == "POST" and (max_attempts != 1 or max_redirects != 0)):
+        raise ValueError("POST requires one attempt and no redirects")
     remaining_timeout(timeout)
     safe, reason = is_safe_url(url)
     if not safe:
-        raise ProviderHTTPError(f"URL blocked by SSRF policy: {reason}", endpoint=url)
+        kind = validation_failure_kind(reason)
+        label = "URL validation failed" if kind != "SSRF_BLOCKED" else "URL blocked by SSRF policy"
+        raise ProviderHTTPError(f"{label}: {reason}", endpoint=url, failure_kind=kind, attempts=0)
 
     request_headers = dict(headers or {})
     request_headers.setdefault("Accept-Encoding", "identity")
@@ -339,24 +384,28 @@ def fetch_public_http(
 
     for attempt in range(1, max_attempts + 1):
         attempt_timeout = remaining_timeout(timeout)
+        reserve_public_request(url)
         redirect_handler = _ValidatingRedirectHandler(max_redirects=max_redirects)
         # Environment proxies must not bypass the destination-address boundary.
         opener = urllib.request.build_opener(
             urllib.request.ProxyHandler({}), redirect_handler,
             _PublicHTTPHandler(), _PublicHTTPSHandler(),
         )
-        request = urllib.request.Request(url, headers=request_headers, method="GET")
+        request = urllib.request.Request(url, headers=request_headers, method=method, data=data)
         try:
             with opener.open(request, timeout=attempt_timeout) as response:
                 endpoint = str(getattr(response, "url", url) or url)
                 final_safe, final_reason = is_safe_url(endpoint)
                 if not final_safe:
+                    kind = validation_failure_kind(final_reason)
+                    label = "Final endpoint blocked by SSRF policy" if kind == "SSRF_BLOCKED" else "Final endpoint validation failed"
                     raise ProviderHTTPError(
-                        f"Final endpoint blocked by SSRF policy: {final_reason}",
+                        f"{label}: {final_reason}",
                         endpoint=endpoint,
                         status_code=getattr(response, "status", None),
                         network_observed=True,
                         attempts=attempt,
+                        failure_kind=kind,
                     )
                 content_length = response.headers.get("Content-Length")
                 if content_length:
@@ -427,17 +476,28 @@ def fetch_public_http(
             if delay > max_retry_sleep_seconds:
                 raise last_error from error
             delay = max(0.0, delay + jitter(0.0, min(0.1, delay * 0.1)))
-            if delay >= remaining_timeout(timeout):
+            try:
+                remaining = remaining_timeout(timeout)
+            except TimeoutError:
+                # A received 429 remains a rate-limit observation even if it
+                # used up the request deadline; do not relabel it as no HTTP.
+                raise last_error from error
+            if delay >= remaining:
                 raise last_error from error
             sleep(delay)
         except (urllib.error.URLError, TimeoutError, OSError) as error:
+            kind = transport_failure_kind(error)
             last_error = ProviderHTTPError(
-                f"Provider network failure: {type(error).__name__}",
+                f"Provider network failure: {kind}",
                 endpoint=url,
                 network_observed=False,
                 attempts=attempt,
+                failure_kind=kind,
             )
-            if attempt >= max_attempts:
+            # NXDOMAIN, security and budget failures are not HTTP retry signals.
+            # DNS retries (only OS-declared transient errors) belong to the
+            # bounded resolver; do not multiply them again at this layer.
+            if kind in {"DNS_ERROR", "DNS_TIMEOUT", "DNS_CAPACITY", "SSRF_BLOCKED", "BUDGET_EXHAUSTED"} or attempt >= max_attempts:
                 raise last_error from error
             delay = retry_base_seconds * (2 ** (attempt - 1))
             delay += jitter(0.0, min(0.1, delay * 0.1))
@@ -446,3 +506,38 @@ def fetch_public_http(
             sleep(delay)
 
     raise last_error or ProviderHTTPError("Provider request failed", endpoint=url)
+
+
+def post_public_http(url: str, *, body: bytes, headers: Optional[Mapping[str, str]] = None,
+                     timeout: float = 5.0, max_bytes: int = DEFAULT_MAX_RESPONSE_BYTES) -> BoundedHTTPResponse:
+    """One paid/control-plane admission using the same pinned, bounded transport.
+
+    Never replay a POST or follow its redirects (including credential-bearing
+    redirects). The caller's original acquisition deadline still applies.
+    Private/self-hosted destinations are not an exception to public URL policy.
+    """
+    if not isinstance(body, bytes) or len(body) > DEFAULT_MAX_RESPONSE_BYTES:
+        raise ValueError("POST body must be bounded bytes")
+    with acquisition_deadline(time.monotonic() + remaining_timeout(timeout)):
+        return _fetch_public_http(url, headers=headers, timeout=timeout, max_bytes=max_bytes,
+                                  max_attempts=1, max_redirects=0, method="POST", data=body)
+
+
+def fetch_public_http(
+    url: str, *, headers: Optional[Mapping[str, str]] = None, timeout: float = 5.0,
+    max_bytes: int = DEFAULT_MAX_RESPONSE_BYTES, max_redirects: int = 4,
+    max_attempts: int = 2, retry_base_seconds: float = 0.2,
+    max_retry_sleep_seconds: float = 2.0,
+    sleep: Callable[[float], None] = time.sleep,
+    jitter: Callable[[float, float], float] = random.uniform,
+) -> BoundedHTTPResponse:
+    """Share one original wall-clock allowance across DNS, retries and redirects."""
+    if not math.isfinite(timeout) or timeout <= 0:
+        raise ValueError("HTTP bounds must be positive")
+    with acquisition_deadline(time.monotonic() + remaining_timeout(timeout)):
+        return _fetch_public_http(
+            url, headers=headers, timeout=timeout, max_bytes=max_bytes,
+            max_redirects=max_redirects, max_attempts=max_attempts,
+            retry_base_seconds=retry_base_seconds,
+            max_retry_sleep_seconds=max_retry_sleep_seconds, sleep=sleep, jitter=jitter,
+        )

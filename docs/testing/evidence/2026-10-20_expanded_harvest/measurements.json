@@ -1,0 +1,741 @@
+{
+  "schema": "expanded-harvest-selected-measurements-v1",
+  "mode": "LIVE_LOCAL_OBSERVATIONS_NOT_REPLAY",
+  "limitations": [
+    "First batch contains ID collisions and an Adidas API error; its citations are not accepted.",
+    "Postfix Pichai status and attribution were corrected offline afterward.",
+    "Publisher hosts do not establish independence or claim accuracy.",
+    "Bodies and credentials excluded; whole captures stay in new temp storage."
+  ],
+  "first_fingerprint": "ed235992c367a44e34a9a49f0795a65fabb99efee8e7dc774f665f96073b8399",
+  "first_stable": true,
+  "postfix_fingerprint": "119c21ba2f809adedc24847e004136c9077aa15b4e534487fe01d75e4b60496e",
+  "postfix_stable": true,
+  "first_batch": [
+    {
+      "agent": "scout",
+      "input": "Samsung",
+      "seconds": 56.69,
+      "returned": true,
+      "errors": [],
+      "queries": 18,
+      "candidates": 40,
+      "read_attempts": 24,
+      "native_http_admissions": 83,
+      "native_http_cap": 120,
+      "stats": {
+        "source_count": 40,
+        "candidate_urls": 40,
+        "by_type": {
+          "FEED_ENTRY": 14,
+          "PUBLISHER_HOMEPAGE": 5,
+          "ARTICLE_BODY": 2,
+          "DISCOVERY_LEAD": 13,
+          "BLOCKED_OR_FAILED": 6
+        },
+        "reads_attempted": 24,
+        "successful_captures": 16,
+        "article_bodies": 2,
+        "raw_article_words": 1274,
+        "raw_source_words": 15439,
+        "duplicate_captures": 0,
+        "qualified_source_count": 1,
+        "relevant_words": 60,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 351697,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 4,
+          "TIMEOUT": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "read_failure_categories": {
+        "HTTP_FAILURE": 4,
+        "PUBLISHER_UNRESOLVED": 3,
+        "TIMEOUT": 1
+      },
+      "ambiguous_ids": {
+        "ev_75708b0724aa": [
+          "ev_75708b0724aa",
+          "raw_fe15220dc5025527bbeb585c",
+          "raw_90a8c2b7f4d6f9f3d2a73ee8",
+          "raw_a6b484005d0bdc62fe6b3e28",
+          "raw_e781f5cf7bb8b34815a43b85",
+          "raw_d83ac1cec71b0efffb19cd76",
+          "raw_c51c037afc9e43cab9446867",
+          "raw_e0fafbd18c2b3ab7fa84fd22",
+          "raw_f3324c1d7485b8ffcff597d1",
+          "raw_4d27aa684ad78ce8b97a1b69",
+          "raw_76f95102c431de5d76b072d3",
+          "raw_5021bd1dcbe39a4f9a8db8cc"
+        ],
+        "ev_ee121f662c9a": [
+          "ev_ee121f662c9a",
+          "raw_85f647ede1b230ab3a630cb3",
+          "raw_4e85b4d3ccdcbaef4bf22e15"
+        ]
+      },
+      "articles": [
+        {
+          "id": "raw_fe15220dc5025527bbeb585c",
+          "source_url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad702a7d4924adeb85e34bbc9e6b223&url=https%3a%2f%2fwww.rediff.com%2fbusiness%2freport%2fsamsung-india-fy26-financials-profit-down-36-revenue-up-12-to-rs-112-lakh-crore%2f20260922.htm&c=13386502648756293821&mkt=en-in",
+          "observed_endpoint": "https://www.rediff.com/business/report/samsung-india-fy26-financials-profit-down-36-revenue-up-12-to-rs-112-lakh-crore/20260922.htm",
+          "http_status": 200,
+          "title": "Samsung India sees 36% profit decline in FY26 despite marginal revenue increase",
+          "published_at": "2026-09-22T15:42:26+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 333,
+          "sha256": "c2839c31f75892b7874878a7e9d87c8cee50eeba114df91c8f7e723232b34420",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "raw_90a8c2b7f4d6f9f3d2a73ee8",
+          "source_url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad702a7963544d180d216781c2b1cdf&url=https%3a%2f%2fwww.cnbctv18.com%2fmarket%2fsamsung-projects-80-billion-profit-on-ai-boom-highest-quarterly-for-any-tech-company-20007147.htm&c=7440122226354783163&mkt=en-in",
+          "observed_endpoint": "https://www.cnbctv18.com/market/samsung-projects-80-billion-profit-on-ai-boom-highest-quarterly-for-any-tech-company-20007147.htm",
+          "http_status": 200,
+          "title": "Samsung projects $80 billion profit on AI boom, highest quarterly for any tech company - CNBC TV18",
+          "published_at": "2026-10-08T06:28:44+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 941,
+          "sha256": "b5b35669263ac9a75c70545ef28d76ab9212e62af93328a0b390e2201877c400",
+          "qualification": "PENDING"
+        }
+      ],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "agent": "scout",
+      "input": "Unilever",
+      "seconds": 61.62,
+      "returned": true,
+      "errors": [],
+      "queries": 18,
+      "candidates": 34,
+      "read_attempts": 21,
+      "native_http_admissions": 81,
+      "native_http_cap": 120,
+      "stats": {
+        "source_count": 34,
+        "candidate_urls": 34,
+        "by_type": {
+          "DISCOVERY_LEAD": 9,
+          "PUBLISHER_HOMEPAGE": 5,
+          "FEED_ENTRY": 10,
+          "BLOCKED_OR_FAILED": 5,
+          "BACKGROUND_REFERENCE": 2,
+          "ARTICLE_BODY": 3
+        },
+        "reads_attempted": 21,
+        "successful_captures": 15,
+        "article_bodies": 3,
+        "raw_article_words": 4121,
+        "raw_source_words": 14752,
+        "duplicate_captures": 1,
+        "qualified_source_count": 2,
+        "relevant_words": 92,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 447243,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "HTTP_FAILURE": 2,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "HTTP_FAILURE": 2,
+        "PROVIDER_FAILURE": 1
+      },
+      "ambiguous_ids": {
+        "ev_75708b0724aa": [
+          "ev_75708b0724aa",
+          "raw_3f259e74dcaa68f773c7f6ae",
+          "raw_7474b3335c55740104bfc309",
+          "raw_9784cdfafd1cc2e85cd0e0d1",
+          "raw_5749dc26e9e34ce736c329a9",
+          "raw_da704fdfaa4277dfde4a9b51"
+        ]
+      },
+      "articles": [
+        {
+          "id": "ev_page_ddf0e13f4d16",
+          "source_url": "https://www.unilever.com/news/news-search/2026/superior-science-stronger-growth-the-rd-shaping-unilevers-haircare-brands/",
+          "observed_endpoint": "https://www.unilever.com/news/news-search/2026/superior-science-stronger-growth-the-rd-shaping-unilevers-haircare-brands/",
+          "http_status": 200,
+          "title": "How is superior science growing Unilever’s haircare brands? | Unilever",
+          "published_at": "2026-10-02T07:06:12Z",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 1636,
+          "sha256": "d1465da1ca63cb3f235f499c02c88ab0510d22a655fa2082c1b2735ab46fd838",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_page_5c130d0c07dd",
+          "source_url": "https://www.unilever.com/news/news-search/2026/how-climate-action-is-shaping-unilevers-growth-products-and-production/",
+          "observed_endpoint": "https://www.unilever.com/news/news-search/2026/how-climate-action-is-shaping-unilevers-growth-products-and-production/",
+          "http_status": 200,
+          "title": "How does climate action shape Unilever’s business growth? | Unilever",
+          "published_at": "2026-09-18T10:08:35Z",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 1342,
+          "sha256": "952e3fa939779c29724a074534ac42ef9f1eae7a99a1061d40a0b62a6da7d159",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_page_333386ce0af3",
+          "source_url": "https://www.unilever.com/news/news-search/2026/unilever-joins-consortium-to-accelerate-innovation-of-paper-based-flexible-packaging/",
+          "observed_endpoint": "https://www.unilever.com/news/news-search/2026/unilever-joins-consortium-to-accelerate-innovation-of-paper-based-flexible-packaging/",
+          "http_status": 200,
+          "title": "Unilever joins consortium on paper-based flexible packaging | Unilever",
+          "published_at": "2026-09-15T10:43:30Z",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 1143,
+          "sha256": "71e363b4a4f6bac8b38d9408543fe32a37bad63a48ae4246d7edc85cb71e5a0c",
+          "qualification": "REJECTED"
+        }
+      ],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "agent": "brandshield",
+      "input": "Adidas",
+      "seconds": 39.3,
+      "returned": false,
+      "errors": [
+        {
+          "analysis_id": "23feea1a-9281-465b-85cb-91aafa3aba00",
+          "status": 500,
+          "message": "Research failed; no completed result is claimed."
+        }
+      ],
+      "queries": null,
+      "candidates": null,
+      "read_attempts": null,
+      "native_http_admissions": null,
+      "native_http_cap": null,
+      "stats": null,
+      "read_failure_categories": {},
+      "ambiguous_ids": {},
+      "articles": [],
+      "isolated_not_returned_dossiers": [
+        {
+          "file": "R-2026-5DFC544FF48B4EEF90AFF5B371A1C33A.json",
+          "sha256": "f1d7f64ef45cc73c229e61edbe717886142ee053136df873e7b0c3593707459e",
+          "session_id": "R-2026-5DFC544FF48B4EEF90AFF5B371A1C33A",
+          "target": "Adidas",
+          "domain": "brand",
+          "internal_status": "COMPLETED",
+          "latency_ms": 39114,
+          "acquisition": {
+            "status": "COMPLETED",
+            "message": "",
+            "query_counts": {
+              "SUCCESS": 19,
+              "TIMEOUT": 0,
+              "QUEUE_TIMEOUT": 0,
+              "NOT_SUBMITTED": 0,
+              "SKIPPED": 0,
+              "FAILED": 0,
+              "AUTH_REQUIRED": 0,
+              "RATE_LIMITED": 0
+            },
+            "acquired_sources": 9,
+            "read_attempts": 12
+          },
+          "stage_timings_ms": {
+            "Query planning and raw harvesting": 38913.87,
+            "Strict body qualification": 23.52,
+            "Source independence ranking": 4.51,
+            "Passage analysis": 87.08,
+            "Grounded synthesis": 11.67,
+            "Evidence graph": 1.89,
+            "Corpus assembly": 7.71
+          },
+          "snapshot_count": 5,
+          "snapshot_text_words": 2950,
+          "finding_provenance_count": 1,
+          "returned_to_user": false,
+          "limitation": "Isolated internal dossier, not a completed returned API report. Snapshot text does not establish article type, qualification or accuracy."
+        }
+      ]
+    },
+    {
+      "agent": "trending",
+      "input": "grid-scale energy storage",
+      "seconds": 68.69,
+      "returned": true,
+      "errors": [],
+      "queries": 18,
+      "candidates": 20,
+      "read_attempts": 11,
+      "native_http_admissions": 80,
+      "native_http_cap": 120,
+      "stats": {
+        "source_count": 20,
+        "candidate_urls": 20,
+        "by_type": {
+          "DISCOVERY_LEAD": 10,
+          "ARTICLE_BODY": 1,
+          "FEED_ENTRY": 5,
+          "BLOCKED_OR_FAILED": 4
+        },
+        "reads_attempted": 11,
+        "successful_captures": 7,
+        "article_bodies": 1,
+        "raw_article_words": 843,
+        "raw_source_words": 7276,
+        "duplicate_captures": 1,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 197576,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "PROVIDER_FAILURE": 1
+      },
+      "ambiguous_ids": {
+        "ev_75708b0724aa": [
+          "ev_75708b0724aa",
+          "raw_efb650f19706a4d2531d809d",
+          "raw_0967f0931133e51469090332",
+          "raw_b5e3824babe8d8d5246f511d",
+          "raw_d8b31f2cef767d25f6fff356",
+          "raw_775bb8f2400696ba89c2b51c",
+          "raw_2ac4b80431f2f1d7219214cd",
+          "raw_475987836114297e72d64003",
+          "raw_8f71062cae3f325cd47d29ad",
+          "raw_fdb9732055424c57f63b5aaf",
+          "raw_6ea9042d942686d54d0d233e",
+          "raw_ac43e43e1c4825c4b9350afc",
+          "raw_325ca2967eea02d1b9763f7a"
+        ]
+      },
+      "articles": [
+        {
+          "id": "raw_0967f0931133e51469090332",
+          "source_url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad70344493249948a8465896ed4d408&url=https%3a%2f%2fwww.hindustantimes.com%2feducation%2fnews%2fiit-roorkee-ministry-of-new-and-renewable-energy-join-forces-to-transform-india-s-renewable-energy-landscape-101701331379201.html&c=1191311594247087142&mkt=en-in",
+          "observed_endpoint": "https://www.hindustantimes.com/education/news/iit-roorkee-ministry-of-new-and-renewable-energy-join-forces-to-transform-india-s-renewable-energy-landscape-101701331379201.html",
+          "http_status": 200,
+          "title": "IIT Roorkee releases comprehensive study on ‘Advanced Grid-Scale Energy Storage’ solutions",
+          "published_at": "2023-11-30T15:20:10+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 843,
+          "sha256": "5f63a30e5b65ab9db560721584500f5d033e048ca5f111f92a55eae31477e7d9",
+          "qualification": "PENDING"
+        }
+      ],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "agent": "personal_watch",
+      "input": "Sundar Pichai",
+      "seconds": 110.63,
+      "returned": true,
+      "errors": [],
+      "queries": 18,
+      "candidates": 44,
+      "read_attempts": 13,
+      "native_http_admissions": 87,
+      "native_http_cap": 120,
+      "stats": {
+        "source_count": 44,
+        "candidate_urls": 44,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 4,
+          "DISCOVERY_LEAD": 17,
+          "ARTICLE_BODY": 1,
+          "FEED_ENTRY": 20,
+          "PUBLISHER_HOMEPAGE": 2
+        },
+        "reads_attempted": 13,
+        "successful_captures": 8,
+        "article_bodies": 1,
+        "raw_article_words": 783,
+        "raw_source_words": 8982,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 313698,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 2
+        },
+        "dropped_by_limit": {}
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "PROVIDER_FAILURE": 2
+      },
+      "ambiguous_ids": {
+        "ev_75708b0724aa": [
+          "ev_75708b0724aa",
+          "raw_fd3569d0942960e381b6bcf0",
+          "raw_ae1876b26c2b8b868c6626c4",
+          "raw_5cf9d66813f9fb8743d8de1a",
+          "raw_e31aa20450508b84418f28d5",
+          "raw_3213efabf385488cb7a80330",
+          "raw_66c161a17ae616b883f3459e",
+          "raw_ad8778262a212859c78d54c8",
+          "raw_4dfd3d67ad73cbc611b51a3e",
+          "raw_5cd35f08721e2accca1dfffe",
+          "raw_927f570216536187342bc524",
+          "raw_7a5f062e714fad68326839bd",
+          "raw_3d32e9ef2450c42391fb0eb2",
+          "raw_fa378cd2988d574bb84e0eeb",
+          "raw_f53a45cbb8e5a1a6512a8f52",
+          "raw_1cc1bfd53eaf38b5fa4325d9",
+          "raw_4ff09f30bc6b7659008b16e9",
+          "raw_8099f9c55dfe0b2cf6ff0867",
+          "raw_79d711062eea49a390f67ba2",
+          "raw_3ef42d0d1ab8fc58c86a0488",
+          "raw_5f43e0dfac4b37eedf20be0a",
+          "raw_214b8c2810e706a117cb5bec"
+        ]
+      },
+      "articles": [
+        {
+          "id": "raw_fd3569d0942960e381b6bcf0",
+          "source_url": "http://www.bing.com/news/apiclick.aspx?ref=FexRss&aid=&tid=6ad70389ba1b40b3966573561e4f90b6&url=https%3a%2f%2fwww.hindustantimes.com%2flifestyle%2fart-culture%2fquote-of-the-day-by-sundar-pichai-i-am-optimistic-not-because-i-believe-in-technology-but-because-i-believe-in-people-101781005535173.html&c=16500173809170963624&mkt=en-in",
+          "observed_endpoint": "https://www.hindustantimes.com/lifestyle/art-culture/quote-of-the-day-by-sundar-pichai-i-am-optimistic-not-because-i-believe-in-technology-but-because-i-believe-in-people-101781005535173.html",
+          "http_status": 200,
+          "title": "Quote of the day by Sundar Pichai: ‘I’m optimistic, not because I believe in technology but because I believe in people'",
+          "published_at": "2026-06-10T07:05:34+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 783,
+          "sha256": "936e93bca1bb4627a6b2a38cc00f1e5521a53ed546d6cbdc5be9107835a5ec0d",
+          "qualification": "REJECTED"
+        }
+      ],
+      "isolated_not_returned_dossiers": []
+    }
+  ],
+  "postfix": [
+    {
+      "agent": "scout",
+      "input": "Samsung",
+      "seconds": 26.85,
+      "returned": true,
+      "errors": [],
+      "queries": 18,
+      "candidates": 29,
+      "read_attempts": 16,
+      "native_http_admissions": 68,
+      "native_http_cap": 80,
+      "stats": {
+        "source_count": 29,
+        "candidate_urls": 29,
+        "by_type": {
+          "DISCOVERY_LEAD": 4,
+          "ARTICLE_BODY": 7,
+          "BLOCKED_OR_FAILED": 5,
+          "FEED_ENTRY": 9,
+          "PUBLISHER_HOMEPAGE": 4
+        },
+        "reads_attempted": 16,
+        "successful_captures": 11,
+        "article_bodies": 7,
+        "raw_article_words": 6544,
+        "raw_source_words": 11368,
+        "duplicate_captures": 0,
+        "qualified_source_count": 7,
+        "relevant_words": 787,
+        "unique_publishers": 6,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 273784,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "HTTP_FAILURE": 2,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {}
+      },
+      "read_failure_categories": {
+        "HTTP_FAILURE": 2,
+        "PUBLISHER_UNRESOLVED": 3
+      },
+      "ambiguous_ids": {},
+      "articles": [
+        {
+          "id": "ev_hv_ca6b0101742f464ff381",
+          "source_url": "https://www.cnbctv18.com/market/samsung-projects-80-billion-profit-on-ai-boom-highest-quarterly-for-any-tech-company-20007147.htm",
+          "observed_endpoint": "https://www.cnbctv18.com/market/samsung-projects-80-billion-profit-on-ai-boom-highest-quarterly-for-any-tech-company-20007147.htm",
+          "http_status": 200,
+          "title": "Samsung projects $80 billion profit on AI boom, highest quarterly for any tech company - CNBC TV18",
+          "published_at": "2026-10-08T06:28:44+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 941,
+          "sha256": "b5b35669263ac9a75c70545ef28d76ab9212e62af93328a0b390e2201877c400",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_hv_97f337007ae9a2876395",
+          "source_url": "https://en.sedaily.com/finance/2026/10/10/samsung-shares-fall-despite-record-quarterly-profit",
+          "observed_endpoint": "https://en.sedaily.com/finance/2026/10/10/samsung-shares-fall-despite-record-quarterly-profit",
+          "http_status": 200,
+          "title": "Samsung Shares Fall Despite Record Quarterly Profit",
+          "published_at": "2026-10-10T16:00:05+09:00",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 639,
+          "sha256": "1c4d207cb8367f1dc8b54680502af5336fbebc751679b3f51a34b1db75b6a2eb",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_hv_72cafc3b1389bdef59c2",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/samsung-electro-mechanics-stock-faces-chip-selloff-before-earnings/70359108",
+          "observed_endpoint": "https://www.ad-hoc-news.de/boerse/news/corporate-news/samsung-electro-mechanics-stock-faces-chip-selloff-before-earnings/70359108",
+          "http_status": 200,
+          "title": "Samsung Electro-Mechanics stock faces chip selloff before earnings",
+          "published_at": "2026-10-19T09:11:41+02:00",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 563,
+          "sha256": "3b5da9fe7c202377b1613c67bb1c1be3389d40a71376deaddb20e16d918cf271",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_hv_12a498b25b6dd6cf37ac",
+          "source_url": "https://www.koreatimes.co.kr/business/companies/20261008/samsung-electronics-1st-korean-firm-to-top-80-bil-in-quarterly-operating-profit",
+          "observed_endpoint": "https://www.koreatimes.co.kr/business/companies/20261008/samsung-electronics-1st-korean-firm-to-top-80-bil-in-quarterly-operating-profit",
+          "http_status": 200,
+          "title": "Samsung Electronics 1st Korean firm to top $80 bil. in quarterly operating profit - The Korea Times",
+          "published_at": "2026-10-07T22:55:03.000Z",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 765,
+          "sha256": "b5b9b90843ffe78856c5ca8890dc57e88bc1b0e611174d72bfdb218cc732dc78",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_hv_19c9ac852dee66806d5a",
+          "source_url": "https://www.business-standard.com/companies/news/samsung-sees-record-80-bn-quarterly-profit-as-ai-chip-demand-surges-126100801254_1.html",
+          "observed_endpoint": "https://www.business-standard.com/companies/news/samsung-sees-record-80-bn-quarterly-profit-as-ai-chip-demand-surges-126100801254_1.html",
+          "http_status": 200,
+          "title": "Samsung sees record $80 bn quarterly profit as AI chip demand surges",
+          "published_at": "2026-10-08T19:13:07+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 856,
+          "sha256": "5556c39b404b6b97cb2ccfb3532ef356f8668434ecc8f685ea4aa37f6916c060",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_hv_ce01d1146acdacbb1a83",
+          "source_url": "https://lapaasvoice.com/samsung-profit-8x-to-record-80-billion-in-q3/",
+          "observed_endpoint": "https://lapaasvoice.com/samsung-profit-8x-to-record-80-billion-in-q3/",
+          "http_status": 200,
+          "title": "Samsung Earnings Guidance: Q3 Profit Seen at ₩107.4T",
+          "published_at": "2026-10-08T11:55:03+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 1722,
+          "sha256": "5fb86504a804fa8fe9495194a8c557adb45b528cce7aa5d89ff7f9c0d3e56897",
+          "qualification": "QUALIFIED"
+        },
+        {
+          "id": "ev_hv_7a76ef92fb7f99ff469a",
+          "source_url": "https://en.sedaily.com/finance/2026/10/15/analysts-targets-for-samsung-sk-hynix-double-current-prices",
+          "observed_endpoint": "https://en.sedaily.com/finance/2026/10/15/analysts-targets-for-samsung-sk-hynix-double-current-prices",
+          "http_status": 200,
+          "title": "Analysts' Targets for Samsung, SK hynix Double Current Prices",
+          "published_at": "2026-10-15T15:35:56+09:00",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 1058,
+          "sha256": "b1205278fd06388d58baf0d617a52c38d5eb36ead89f808fcf2dd75930ab0bc2",
+          "qualification": "QUALIFIED"
+        }
+      ],
+      "isolated_not_returned_dossiers": []
+    },
+    {
+      "agent": "personal_watch",
+      "input": "Sundar Pichai",
+      "seconds": 46.83,
+      "returned": true,
+      "errors": [],
+      "queries": 18,
+      "candidates": 39,
+      "read_attempts": 16,
+      "native_http_admissions": 79,
+      "native_http_cap": 80,
+      "stats": {
+        "source_count": 39,
+        "candidate_urls": 39,
+        "by_type": {
+          "FEED_ENTRY": 9,
+          "BLOCKED_OR_FAILED": 4,
+          "DISCOVERY_LEAD": 19,
+          "ARTICLE_BODY": 5,
+          "PUBLISHER_HOMEPAGE": 2
+        },
+        "reads_attempted": 16,
+        "successful_captures": 12,
+        "article_bodies": 5,
+        "raw_article_words": 4161,
+        "raw_source_words": 12841,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 358071,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "read_failure_categories": {
+        "PUBLISHER_UNRESOLVED": 3,
+        "PROVIDER_FAILURE": 1
+      },
+      "ambiguous_ids": {},
+      "articles": [
+        {
+          "id": "ev_hv_840b35593560935f15ca",
+          "source_url": "https://www.hindustantimes.com/lifestyle/art-culture/quote-of-the-day-by-sundar-pichai-i-am-optimistic-not-because-i-believe-in-technology-but-because-i-believe-in-people-101781005535173.html",
+          "observed_endpoint": null,
+          "http_status": null,
+          "title": "Quote of the day by Sundar Pichai: ‘I’m optimistic, not because I believe in technology but because I believe in people'",
+          "published_at": "2026-06-10T07:05:34+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 783,
+          "sha256": "936e93bca1bb4627a6b2a38cc00f1e5521a53ed546d6cbdc5be9107835a5ec0d",
+          "qualification": "REJECTED"
+        },
+        {
+          "id": "ev_hv_1c3e171763d715a0afdd",
+          "source_url": "https://www.telegraphindia.com/world/stanford-students-walk-out-during-sundar-pichais-commencement-speech-over-palestine-support/cid/2165572",
+          "observed_endpoint": null,
+          "http_status": null,
+          "title": "‘Free Palestine’ chants interrupt Sundar Pichai’s Stanford speech; hundreds walk out",
+          "published_at": "2026-06-15T09:55:20+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 900,
+          "sha256": "5102c108cf6b7ccf095e38e769e740809498317fc8d91284b790e750b55cadc1",
+          "qualification": "REJECTED"
+        },
+        {
+          "id": "ev_hv_3d3870a13d055c69866d",
+          "source_url": "https://www.news18.com/world/free-palestine-stanford-students-stage-walkout-as-google-ceo-sundar-pichai-begins-speech-video-ws-l-10150049.html",
+          "observed_endpoint": null,
+          "http_status": null,
+          "title": "'Free Palestine': Stanford Students Stage Walkout As Google CEO Sundar Pichai Begins Speech | Video",
+          "published_at": "2026-06-15T12:10:12+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 822,
+          "sha256": "fe96e3d593a18208bd4d01ff7ff3bb899e7097648d021d922348fcd91ef8ffee",
+          "qualification": "REJECTED"
+        },
+        {
+          "id": "ev_hv_90f2f3361c2bb5438f26",
+          "source_url": "https://www.financialexpress.com/world-news/us-news/why-are-stanford-graduates-walking-out-on-sundar-pichai-googles-project-nimbus-controversy-explained/4267427/",
+          "observed_endpoint": null,
+          "http_status": null,
+          "title": "Why did Stanford graduates walk out on Sundar Pichai? Google's Project Nimbus controversy explained - US News | The Financial Express",
+          "published_at": "2026-06-15T07:26:32+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 775,
+          "sha256": "c48d04e7e7888e39f81793442ab3f7478f486c0dfdfab10b80adb273665decf5",
+          "qualification": "REJECTED"
+        },
+        {
+          "id": "ev_hv_03829d56d56a91b4da6b",
+          "source_url": "https://www.indiatvnews.com/trending/offbeat/donald-trump-calls-sundar-pichai-a-monster-google-ceo-response-leaves-everyone-laughing-2026-09-30-1055722",
+          "observed_endpoint": null,
+          "http_status": null,
+          "title": "Trump calls Sundar Pichai a 'monster', Google CEO's response leaves everyone laughing - India TV News",
+          "published_at": "2026-09-30T15:23:40+05:30",
+          "date_basis": "CAPTURED_PUBLISHER_DECLARATION_UNVERIFIED",
+          "type": "ARTICLE_BODY",
+          "method": "DOM_SEMANTIC_TEXT",
+          "words": 881,
+          "sha256": "42b3a726649f3411eb72c158a3ee03f3a13e10825d6cdbe5bc8a697bd429aac8",
+          "qualification": "REJECTED"
+        }
+      ],
+      "isolated_not_returned_dossiers": []
+    }
+  ],
+  "ai_calls": 2,
+  "ai_observations": [
+    {
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "search_suggestion",
+      "http_status": 200,
+      "status": "GENERATED",
+      "latency_ms": 1797.33,
+      "investigation_id": "8ed32ed7308644618359399931c95e3a",
+      "provider_model": "gemini-3.5-flash-lite",
+      "usage_source": "provider",
+      "prompt_tokens": 389,
+      "completion_tokens": 84,
+      "total_tokens": 473
+    },
+    {
+      "model": "gemini-3.5-flash-lite",
+      "purpose": "search_suggestion",
+      "http_status": 200,
+      "status": "GENERATED",
+      "latency_ms": 1673.79,
+      "investigation_id": "c1e63522920d4100b797ac9808e84e6b",
+      "provider_model": "gemini-3.5-flash-lite",
+      "usage_source": "provider",
+      "prompt_tokens": 396,
+      "completion_tokens": 83,
+      "total_tokens": 479
+    }
+  ],
+  "postfix_ai_calls": 0
+}

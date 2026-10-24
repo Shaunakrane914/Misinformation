@@ -153,6 +153,13 @@ def search_brand_evidence(
             "content": content,
             "raw_metadata": public_capture_metadata(qualified),
             "snippet": snippet,
+            "selected_research_excerpt": {
+                "text": getattr(f, "relevant_excerpt", "") or "",
+                "start": getattr(f, "excerpt_start", -1),
+                "end": getattr(f, "excerpt_end", -1),
+                "qualified": getattr(f, "extraction_status", "") == "SUCCESS"
+                    and getattr(f, "metadata", {}).get("layer2_eligible") is True,
+            },
             "url": url,
             "has_url": bool(url and url.startswith("http")),
             "source": source,

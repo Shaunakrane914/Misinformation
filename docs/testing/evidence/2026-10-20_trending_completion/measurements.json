@@ -1,0 +1,95 @@
+{
+  "schema": "trending-completion-selected-v1",
+  "date": "2026-10-20",
+  "scope": "Two live local topic investigations; final interpretation/browser use unchanged genuine captures, not new acquisition",
+  "branch": "fix/p0-lenovo-acquisition-20261018",
+  "head": "39a514b68388450bbc5e6061aba97bda2077fc7f",
+  "live_application_sha256": "6a1a066fffe6925e4ca0a3f58d8901f30dcc6ff52758c6f27cca85adb0570e4f",
+  "live_application_stable": true,
+  "final_browser_application_sha256": "8bc97157ff15f4bdb4441f1ad1527ac264adf09caca8ded34858d866e4678d04",
+  "final_browser_application_stable": true,
+  "live_investigations": 2,
+  "ai_generation_calls": 0,
+  "model_capability_or_key_probes": 0,
+  "bounds_per_case": {"seconds": 240, "read_attempts": 24, "native_http_admissions": 120},
+  "cases": [
+    {
+      "subject": "grid-scale energy storage",
+      "earlier_checkpoint": {"candidates": 18, "reads": 9, "captures": 3, "article_bodies": 1, "raw_article_words": 1469, "qualified_current_sources": 0},
+      "live": {
+        "seconds": 27.32, "queries_generated": 18, "query_status_counts": {"SUCCESS": 18},
+        "candidates": 27, "reads": 18, "captures": 12, "article_bodies": 5, "raw_article_words": 4396,
+        "qualified_current_sources": 1, "native_source_records_before_handoff_fix": 0,
+        "native_http_admissions": 83, "deadline_exhausted": false,
+        "read_failures": {"PUBLISHER_UNRESOLVED": 3, "HTTP_FAILURE": 3},
+        "unread_by_reason": {"WRAPPER_READ_BUDGET_EXHAUSTED": 9},
+        "providers_invoked_observations": {"bing-news-rss": 12, "google-news-rss": 12, "bing": 6, "yahoo": 6, "legacy-web-fallback": 6, "legacy-news-fallback": 2},
+        "discovery_discard_counts": {"DUPLICATE_URL": 11}
+      },
+      "final_offline_processing": {
+        "source_records": 1, "findings": 1, "recent_developments": 1, "useful_passage_words": 66,
+        "citation_availability": "SOURCE_RECORD", "claim_state": "UNVERIFIED", "risk": "UNASSESSED",
+        "publication_changes": 0, "source_identity_and_body_hash_preserved": true,
+        "source_id": "ev_hv_747963b6262d85d2e9d1",
+        "source_url": "https://pv-magazine-usa.com/2026/10/20/qnetic-testing-flywheel-to-compete-with-lithium-ion-for-grid-connected-energy-storage/",
+        "publication_declaration": "2026-10-20T11:24:00+00:00",
+        "retained_body_words": 1177,
+        "retained_body_sha256": "4c45dd8c4c6a2755192bdb73286e9d208d799599b8aa8f18e654b44b6c3be4d9",
+        "http_status_at_original_acquisition": 200, "discovery_or_unqualified_cards": 26
+      }
+    },
+    {
+      "subject": "semiconductor manufacturing",
+      "earlier_checkpoint": null,
+      "live": {
+        "seconds": 24.95, "queries_generated": 18, "query_status_counts": {"SUCCESS": 18},
+        "candidates": 36, "reads": 16, "captures": 13, "article_bodies": 2, "raw_article_words": 1567,
+        "qualified_current_sources": 1, "native_source_records_before_handoff_fix": 1,
+        "native_http_admissions": 81, "deadline_exhausted": false,
+        "read_failures": {"PUBLISHER_UNRESOLVED": 3},
+        "unread_by_reason": {"WRAPPER_READ_BUDGET_EXHAUSTED": 5, "DISCOVERY_READ_BUDGET_EXHAUSTED": 5},
+        "providers_invoked_observations": {"bing-news-rss": 11, "google-news-rss": 11, "bing": 6, "yahoo": 6, "legacy-web-fallback": 6, "legacy-news-fallback": 6},
+        "discovery_discard_counts": {"DUPLICATE_URL": 1, "NON_ARTICLE_METADATA": 10}
+      },
+      "final_offline_processing": {
+        "source_records": 1, "findings": 1, "recent_developments": 1, "useful_passage_words": 44,
+        "citation_availability": "SOURCE_RECORD", "claim_state": "UNVERIFIED", "risk": "UNASSESSED",
+        "publication_changes": 0, "source_identity_and_body_hash_preserved": true,
+        "source_id": "ev_hv_1582e4008032fe32f2cd",
+        "source_url": "https://www.tweaktown.com/news/114160/intel-ceo-says-china-is-not-that-far-behind-in-semiconductor-manufacturing/index.html",
+        "publication_declaration": "2026-10-19T17:25:12-05:00",
+        "retained_body_words": 1024,
+        "retained_body_sha256": "e26cfe889250826c3b2158da845d156a65f1c9d0ff164bd7a9587c187f2b14ed",
+        "http_status_at_original_acquisition": 200, "discovery_or_unqualified_cards": 25
+      }
+    }
+  ],
+  "browser": {
+    "mode": "EXACT_SAVED_SSE_REPLAY", "states": 6, "widths": [320, 390, 1440],
+    "progress_events_per_case": 20, "real_progress_renderer_updates_per_case": 25,
+    "step_mismatches": 0, "source_identity_mismatches": 0, "unresolved_finding_citations": 0,
+    "uncaught_page_exceptions": 0, "horizontal_overflow_states": 0, "keyboard_inspection_checks": 6,
+    "resource_console_entries": {"deliberately_blocked_font": 2, "unmapped_404": 2, "unmapped_503": 2}
+  },
+  "final_tests": {
+    "full": {"passed": 1767, "seconds": 69.25, "exit_code": 0},
+    "fast": {"passed": 1559, "seconds": 51.15, "exit_code": 0},
+    "focused": {"passed": 38, "seconds": 0.57, "exit_code": 0},
+    "fatal_lint_exit": 0, "frontend_scripts_passed": 9, "frozen_hashes_verified": true,
+    "smoke": "OFFLINE_SMOKE_PASS", "persistence": "OFFLINE_PERSISTENCE_PASS"
+  },
+  "screenshots_sha256": {
+    "01-trending-390-intelligence.png": "7c08337ec9e3fd38cf33748efab872bcebb40ae6345cb323863323a742c6be73",
+    "01-trending-1440-report.png": "7dc7c8e894725b06e2e62392147c4a1db6235e3d4a9b13c5d4c508ac0fae54de",
+    "02-trending-390-intelligence.png": "0f36fb8a02a46cadaf99d0c8e06558eddbc5d96d3d384ec6216ef9b56cae56ae",
+    "02-trending-1440-inspection.png": "f379a3f087cce0f5bd8968a613d0c1c2daa7892f16ac493d551cd6587f4049fd"
+  },
+  "committed": false, "pushed": false, "merged": false, "deployed": false,
+  "limitations": [
+    "Final handoff/passage/attribution changes have genuine-source offline proof, not a third live investigation.",
+    "Source assertions and publication declarations are observed, not independently authenticated.",
+    "One publisher per topic does not establish independent corroboration or measured virality.",
+    "Native admissions are not complete hidden legacy-provider transport accounting.",
+    "Held-out accuracy, production parity, hosted CI, historical archive and deployed rollback remain unverified."
+  ]
+}

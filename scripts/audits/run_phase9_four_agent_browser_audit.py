@@ -1,7 +1,8 @@
-"""Twelve real Chromium button -> local backend SSE -> provider investigations.
+"""Chromium button -> SSE -> native/shared report acceptance.
 
 One fresh request per fixed input; both viewport captures use that same result.
-No transport replay, agent stubs, renderer replacements or notification targets.
+Explicit --replay-dir uses saved SSE and blocks additional provider calls.
+Replay validates presentation, not fresh acquisition, progress timing or accuracy.
 """
 import argparse
 import hashlib
@@ -148,7 +149,7 @@ summary.update(head=subprocess.check_output(['git','rev-parse','HEAD'],cwd=ROOT,
                independent_entailment_accuracy=None, retrieval_recall=None)
 summary['mode'] = 'EXACT_SAVED_SSE_REPLAY' if args.replay_dir else 'LIVE_BROWSER_BACKEND'
 if args.replay_dir:
-    summary['scope'] = 'Exact saved SSE replay through all agent page buttons; no fresh provider or research claims. Local health remains real.'
+    summary['scope'] = 'Exact saved SSE replay through all agent page buttons; readiness is a harness stub, all other API calls are blocked. No provider, health or fresh research claims.'
 print(json.dumps({'api_base':api_base, 'configured_gemini_credentials':summary['configured_gemini_credentials']}), flush=True)
 try:
     with sync_playwright() as p:
@@ -185,6 +186,13 @@ try:
                     saved = json.loads((args.replay_dir / (case_id + '-events.json')).read_text(encoding='utf-8'))
                     body = ''.join('event: ' + event['event'] + '\ndata: ' + json.dumps(event['data']) + '\n\n' for event in saved)
                     request.fulfill(status=200,content_type='text/event-stream',body=body)
+                elif args.replay_dir and urlsplit(url).netloc == urlsplit(api_base).netloc:
+                    # Exact-response UI replay must not invoke doctor/status
+                    # routes or source reads that could touch a provider.
+                    readiness = urlsplit(url).path in {'/api/healthz', '/healthz', '/readyz', '/api/readyz'}
+                    request.fulfill(status=200 if readiness else 503, content_type='application/json',
+                                    body=json.dumps({'status':'ok', 'mode':'REPLAY_READINESS_STUB'} if readiness
+                                                    else {'detail':'Unavailable in offline report replay'}))
                 elif urlsplit(url).netloc in origins:
                     request.continue_()
                 elif url == 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js':
@@ -195,6 +203,25 @@ try:
             page.route('**/*', route)
             page.goto(f'{base}/{filename}.html', wait_until='load')
             page.evaluate('(api) => { window.getAegisApiUrl = path => api + path; }', api_base)
+            # Observe the real progress renderer without replacing its updates,
+            # changing event payloads or inventing network timing during replay.
+            page.evaluate('''buttonId => {
+                window.auditProgress = [];
+                const realCreate = window.AegisResearch.createProgress;
+                window.AegisResearch.createProgress = (...args) => {
+                    const progress = realCreate(...args);
+                    if (!progress) return progress;
+                    const realUpdate = progress.update;
+                    progress.update = event => {
+                        realUpdate(event);
+                        const work = document.querySelector('[data-r-work]');
+                        window.auditProgress.push({completed: event?.pipeline_completed,
+                            total: event?.pipeline_total, rendered_value: work?.value,
+                            rendered_max: work?.max, button_disabled: document.getElementById(buttonId).disabled});
+                    };
+                    return progress;
+                };
+            }''', button)
             page.locator('#' + field).fill(item['input'])
             if item['agent'] == 'trending':
                 page.locator('#catSelect').select_option('business' if item['input'] == 'electric vehicles' else 'technology')
@@ -221,8 +248,8 @@ try:
                         events.append({'event':event,'data':json.loads(data)})
                 write_json(OUT / (case_id + '-events.json'), events)
                 native = next((e['data']['result'] for e in events if e['event']=='result'), {})
-                native_records = native.get('evidence') or native.get('sources') or []
-                native_records = native_records if isinstance(native_records,list) else []
+                native_records = next((native[key] for key in ('evidence', 'sources')
+                                       if isinstance(native.get(key), list)), [])
                 body = [str(record.get('content') or record.get('snippet') or '') for record in native_records if isinstance(record,dict)]
                 row['retained_native_records'] = len(native_records)
                 row['retained_text_words'] = sum(len(text.split()) for text in body)
@@ -233,10 +260,27 @@ try:
                 row['progress_events'] = sum(e['event']=='progress' for e in events)
                 row['heartbeat_events'] = sum(e['event']=='heartbeat' for e in events)
                 row['progress_phases'] = sorted({e['data'].get('phase') for e in events if e['event']=='progress' and e['data'].get('phase')})
+                progress_samples = page.evaluate('window.auditProgress')
+                row['ui_progress_updates'] = len(progress_samples)
+                row['ui_step_mismatches'] = [sample for sample in progress_samples if isinstance(sample.get('total'), int)
+                    and (sample.get('completed') != sample.get('rendered_value') or sample['total'] != sample.get('rendered_max'))]
+                row['loading_button_observed_disabled'] = any(sample.get('button_disabled') for sample in progress_samples)
                 report = native.get('unified_report') or {}
                 row['findings'] = len(report.get('findings',[]))
                 row['acquired_records'] = sum(len(v) for v in report.get('evidence',{}).values() if isinstance(v,list))
                 row['discovery_records'] = len(report.get('discovery',[]))
+                report_records = [record for bucket in report.get('evidence', {}).values()
+                                  if isinstance(bucket, list) for record in bucket if isinstance(record, dict)]
+                expected_sources = {record['evidence_id']: record for record in report_records if record.get('evidence_id')}
+                native_ids = {record.get('id') or record.get('evidence_id') for record in native_records}
+                native_ids.discard(None)
+                row['native_ids_missing_from_report'] = sorted(native_ids - set(expected_sources))
+                row['report_ids_missing_from_native'] = sorted(set(expected_sources) - native_ids)
+                row['citation_observations'] = [observation for finding in report.get('finding_details', [])
+                    if isinstance(finding, dict) for observation in finding.get('citation_observations', [])]
+                row['unresolved_finding_citations'] = [entry for entry in row['citation_observations']
+                    if entry.get('availability') != 'SOURCE_RECORD']
+                row['acquisition_metrics'] = (report.get('processing_notes') or {}).get('acquisition_metrics')
                 page.wait_for_function('(id) => !document.getElementById(id).disabled', arg=button,timeout=20000)
                 row['views'] = []
                 for width in (320,390,1440):
@@ -255,8 +299,21 @@ try:
                         page.locator('#' + button).scroll_into_view_if_needed()
                         page.evaluate('window.scrollBy(0,250)')
                     page.screenshot(path=str(OUT / shot))
+                    intel = page.locator('#ur-agent-intel')
+                    intel_shot = None
+                    if intel.count() and intel.is_visible():
+                        intel_shot = case_id + '-' + str(width) + '-intelligence.png'
+                        intel.evaluate("el=>el.scrollIntoView({block:'start'})")
+                        page.evaluate('window.scrollBy(0,-80)')
+                        page.screenshot(path=str(OUT / intel_shot))
                     text = page.locator('body').inner_text()
                     (OUT / (case_id + '-' + str(width) + '-text.txt')).write_text(text,encoding='utf-8')
+                    trust = page.locator('#ur-trust')
+                    trust_shot, trust_text = None, None
+                    if trust.count() and trust.is_visible():
+                        trust_shot = case_id + '-' + str(width) + '-trust.png'
+                        trust_text = trust.inner_text()
+                        trust.screenshot(path=str(OUT / trust_shot))
                     inspection = page.locator('#ur-evidence .ur-ev-inspection').first
                     inspection_keyboard = None
                     inspection_shot = None
@@ -268,12 +325,39 @@ try:
                         inspection_shot = case_id + '-' + str(width) + '-inspection.png'
                         page.screenshot(path=str(OUT / inspection_shot))
                         inspection.evaluate('el=>el.open=false')
+                    dom_sources = page.locator('#ur-evidence .ur-ev-card').evaluate_all('''cards => cards.map(card => ({
+                        id: card.dataset.urEvidenceId,
+                        url: card.querySelector('.ur-ev-title')?.getAttribute('href') || '',
+                        title: card.querySelector('.ur-ev-title')?.textContent || '',
+                        inspection: card.querySelector('.ur-ev-inspection')?.textContent || ''
+                    }))''')
+                    source_mismatches = []
+                    for observed in dom_sources:
+                        expected = expected_sources.get(observed['id'])
+                        if not expected:
+                            source_mismatches.append({'id': observed['id'], 'reason': 'UNKNOWN_SOURCE_ID'})
+                            continue
+                        if (observed['url'] != (expected.get('url') or '')
+                                or expected.get('title') and observed['title'] != expected['title']):
+                            source_mismatches.append({'id': observed['id'], 'reason': 'URL_OR_TITLE_MISMATCH'})
+                        extraction = expected.get('extraction') or {}
+                        digest = extraction.get('captured_text_sha256')
+                        if digest and digest not in observed['inspection']:
+                            source_mismatches.append({'id': observed['id'], 'reason': 'INSPECTION_HASH_MISMATCH'})
+                        for passage in extraction.get('passages', [])[:8]:
+                            expected_text = re.sub(r'\s+', ' ', str(passage.get('text') or '')[:600])
+                            if expected_text not in re.sub(r'\s+', ' ', observed['inspection']):
+                                source_mismatches.append({'id': observed['id'], 'reason': 'INSPECTION_PASSAGE_MISMATCH'})
                     # Full context can be intentionally collapsed; verify it is
                     # retained in DOM separately from actual screenshot paint.
                     normalized = re.sub(r'\s+',' ', report_node.text_content() if visible else '')
                     row['views'].append({'width':width, 'unified_report_visible':visible,
                                          'inspection_keyboard_open':inspection_keyboard,
                                          'inspection_screenshot':inspection_shot,
+                                         'intelligence_screenshot':intel_shot,
+                                         'trust_screenshot':trust_shot,
+                                         'trust_text':trust_text,
+                                         'source_identity_mismatches':source_mismatches,
                                          'rendered_findings':page.locator('#ur-findings-body > ul > li').count(),
                                          'rendered_acquired_cards':page.locator('#ur-evidence .ur-ev-card').count(),
                                          'rendered_discovery_cards':page.locator('#ur-discovery .ur-ev-card').count(),
@@ -302,7 +386,10 @@ summary['application_unchanged_during_run'] = application_fingerprint() == initi
 write_json(OUT / 'summary.json', summary)
 failed = not summary['cases'] or any(
     row.get('error_type') or not row.get('result_event') or row.get('error_events') or row.get('page_errors')
+    or row.get('ui_step_mismatches') or not row.get('loading_button_observed_disabled')
+    or row.get('native_ids_missing_from_report') or row.get('report_ids_missing_from_native')
     or any(not view['unified_report_visible'] or view['missing_finding_texts'] or view.get('inspection_keyboard_open') is False
+           or view.get('source_identity_mismatches')
            or view['document_width'] > view['width'] + 1
            or view['rendered_findings'] != row['findings']
            or view['rendered_acquired_cards'] != row['acquired_records']

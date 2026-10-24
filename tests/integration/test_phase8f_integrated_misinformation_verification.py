@@ -198,7 +198,10 @@ class TestPhase8FIntegratedVerification:
         assert dump["_meta"]["agent"] == "trending"
         assert dump["agent_intelligence"]["bot_amplification"]["coordination_score"] > 0
         assert len(dump["contradictions"]) == 1
-        assert dump["contradictions"][0]["type"] == "SCOPE_CONTEXT_MISMATCH"
+        # A supplied type and two strings are not inspectable opposing passages.
+        assert dump["contradictions"][0]["type"] == "POSSIBLE_DISAGREEMENT"
+        assert dump["contradictions"][0]["reported_type"] == "SCOPE_CONTEXT_MISMATCH"
+        assert dump["contradictions"][0]["established"] is False
 
     # ── Scenario 4: Brand Impersonation ──────────────────────────────────────
     def test_scenario_4_brand_impersonation(self):
@@ -339,18 +342,21 @@ class TestPhase8FIntegratedVerification:
                 title="Beta company reports merger talks underway",
                 snippet="Beta company reports merger talks underway in syndicated release.",
                 source_domain="wire-reprint-1.com",
+                canonical_url="https://wire-reprint-1.com/story",
             ),
             EvidenceItem(
                 id="ev_2",
                 title="Beta company reports merger talks underway",
                 snippet="Beta company reports merger talks underway in syndicated release.",
                 source_domain="wire-reprint-2.com",
+                canonical_url="https://wire-reprint-2.com/story",
             ),
             EvidenceItem(
                 id="ev_3",
                 title="Beta company reports merger talks underway",
                 snippet="Beta company reports merger talks underway in syndicated release.",
                 source_domain="wire-reprint-3.com",
+                canonical_url="https://wire-reprint-3.com/story",
             ),
         ]
         updated_items, clusters_map = engine.cluster_independence(items)

@@ -50,9 +50,10 @@ class QueryExecutionRecord:
     provider_duration_ms: Optional[float] = None
     provider_duration_censored: Optional[bool] = None
     submission_delay_ms: Optional[float] = None
+    search_attempts: List[Dict[str, Any]] = field(default_factory=list)
 
     def to_dict(self) -> Dict[str, Any]:
-        return {
+        result = {
             "query_id": self.query_id,
             "channel": self.channel,
             "query_text": self.query_text,
@@ -74,6 +75,10 @@ class QueryExecutionRecord:
             "provider_duration_censored": self.provider_duration_censored,
             "submission_delay_ms": self.submission_delay_ms,
         }
+        if self.search_attempts:
+            import copy
+            result["search_attempts"] = copy.deepcopy(self.search_attempts)
+        return result
 
 
 class RetrievalMode(str, Enum):

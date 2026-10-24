@@ -317,7 +317,10 @@ class NativeNormalizer:
         fragments: List[EvidenceFragment] = []
         for e in raw_items:
             title = e.get("title", "")
-            link = e.get("link", "")
+            # Native RSS entries use link; the retained compatibility scraper
+            # exposes the same observed locator as url. Neither shape permits
+            # inventing an article address from a headline.
+            link = e.get("link") or e.get("url") or ""
             published = e.get("published", "")
             summary = _clean_html_text(e.get("summary", ""))
             feed_content = _clean_feed_body(e.get("feed_content", ""))
@@ -345,6 +348,7 @@ class NativeNormalizer:
                     "backend": "feedparser",
                     "feed_title": e.get("feed_title"),
                     "feed_publisher": e.get("feed_publisher"),
+                    **{key: e[key] for key in ("publisher_source_url", "publisher_name") if e.get(key)},
                     "guid": e.get("guid"),
                     "updated": e.get("updated"),
                     "categories": e.get("categories", []),

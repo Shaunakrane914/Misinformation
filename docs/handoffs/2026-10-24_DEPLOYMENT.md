@@ -91,3 +91,58 @@ access restrictions and strict optional AI budget remain intact.
 ## Observed publication outcomes
 
 Pending at the initial candidate snapshot. No result is predeclared.
+
+### Actual closeout — application publication
+
+**Exact deployment / public release controls PASS; research acceptance remains
+PARTIAL.** [Selected machine-readable verification](../testing/evidence/2026-10-24_deployment/verification.json).
+
+- Complete application candidate `443652ec551caf44f2bf90e01f81bd317364a3b7`
+  committed on `release/specialist-task-20261024`: 315 files, 38,206 insertions,
+  504 deletions, including accumulated implementation and preserved test/docs
+  evidence. Worktree was clean after commit. A normal fast-forward advanced main
+  from `8471ee3`; no force push, squash or history rewrite.
+- [Release-branch CI](https://github.com/Shaunakrane914/Misinformation/actions/runs/40064958058):
+  all five jobs successful before main promotion.
+- [Main application CI](https://github.com/Shaunakrane914/Misinformation/actions/runs/40065150297):
+  all five jobs successful. Actual Linux logs: full Python3.12 **2,184 passed /
+  40.04s**; fast Python3.11 **1,976 /29.42s**, Python3.12 **1,976 /25.79s**,
+  Python3.13 **1,976 /24.73s**. Hosted lint/frontend/frozen/persistence/smoke
+  stages passed; these do not establish independent research accuracy.
+- Render `dep-dbe3r12jnfac73c1nc3g` reached **live** at that exact application
+  SHA, finished `2026-10-24T05:11:58.441716Z`. Prior deployment became
+  deactivated and remains the recorded recovery reference. No environment write
+  or manual duplicate deploy was needed; main auto-deployment handled it.
+- Cloudflare production deployment
+  `6a2923aa-9c4f-4fb6-b6bf-44e1e0cc486c`,
+  <https://6a2923aa.aegis-protocol-110.pages.dev>, source `443652e`.
+  Public site: <https://aegis-protocol-110.pages.dev>.
+- All **34** extracted frontend files matched their Git blobs before upload.
+  All **nine** public assets checked by the deployed attestation matched exact
+  application Git bytes after upload. Archive conversion was explicitly disabled.
+- Public Render health returned **200 /ok**. Production Cloudflare origin got
+  its exact allow-origin; an untrusted origin got no allow-origin. Actual POST
+  preflight for Scout returned200 with the expected origin. This exercised no
+  research query. An unauthenticated empty-body operator request returned503
+  `Operator authorization is not configured`, confirming fail-closed state
+  without a valid mutation payload. No admin token was created.
+
+The exact-code verifier exited0 with
+`EXACT_DEPLOYED_CODE_OBSERVED_NO_RESEARCH`; the bounded health/CORS/operator
+checks exited0 with `BOUNDED_PUBLIC_RELEASE_CONTROLS_PASS`. No
+`--allow-live-research` invocation, provider sweep or model/key probe occurred.
+No account-level AI usage audit was performed; provider usage is NOT_OBSERVED,
+not claimed as independently measured account-level zero.
+
+Fresh temp outputs/archive remain under basename
+`aegis-deploy-20261024-4yvgbo73`; they may expire. Durable verification excludes
+credentials, headers, raw dossiers and personal data. The limited staging
+whitespace observations above were preserved, not represented as a passing
+cached whitespace check. Hosted CI emitted non-blocking Node-action/Ubuntu
+runner deprecation notices; no workflow migration was introduced in this release.
+
+Documentation-only closeout is separate from the application commit and uses
+`[skip render]` to preserve the verified app deployment. Its Git/CI state is
+tracked independently; frontend/backend bytes do not require another upload for
+these documentation changes. Do not mistake a newer documentation SHA for
+unverified application code.

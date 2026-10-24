@@ -3,9 +3,11 @@
 ## Authorized deployment tracking — 2026-10-24
 
 - [Deployment record](2026-10-24_DEPLOYMENT.md): explicit user deployment request;
-  candidate publication, exact-commit hosted CI and Cloudflare/Render verification
-  are tracked there. Initial state is pending; do not infer completion from this
-  index or from offline tests. Research-quality limitations remain separate.
+  application `443652e` published to main, both five-job CI runs passed.
+  Render live at that SHA; Cloudflare deployment `6a2923aa` and all nine checked
+  assets match. Public health/CORS/fail-closed operator controls passed. No new
+  research/model calls, credential changes or paid-plan changes. Research-quality
+  limitations and historical archive/deployed rollback remain separate.
 
 ## BrandShield / Personal Watch specialist task layers — 2026-10-24
 

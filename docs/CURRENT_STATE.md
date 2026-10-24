@@ -1,5 +1,20 @@
 # Current project state — 2026-10-24
 
+## Latest production deployment: application 443652e
+
+[Deployment record](handoffs/2026-10-24_DEPLOYMENT.md),
+[verification](testing/evidence/2026-10-24_deployment/verification.json).
+User authorized deployment. Exact application commit
+`443652ec551caf44f2bf90e01f81bd317364a3b7` fast-forwarded to main after five
+release CI jobs passed; all five main jobs passed too. Render is live at that
+SHA; Cloudflare production `6a2923aa` serves matching frontend bytes. Public
+health, exact trusted CORS, untrusted-origin exclusion and fail-closed operator
+checks passed. No new research investigations, model probes, access changes or
+credential/paid-plan mutations. This is deployment integration PASS, not
+research-quality, historical recovery, durable storage or launch certification.
+Documentation-only closeout SHA may be newer; application attestation stays
+explicit in the deployment record.
+
 ## Latest continuation: specialist task discovery and segregation
 
 [Report](testing/SPECIALIST_TASK_DISCOVERY_AND_SEGREGATION_2026-10-24.md),

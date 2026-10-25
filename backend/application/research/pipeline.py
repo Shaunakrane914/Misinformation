@@ -31,7 +31,8 @@ class ResearchPipeline:
 
     def run(self, request: ResearchRequest) -> ResearchResult:
         from backend.infrastructure.llm.advisory_policy import investigation_scope
-        with investigation_scope():
+        from backend.infrastructure.llm.runtime_advisory import runtime_advisory_scope
+        with investigation_scope(), runtime_advisory_scope():
             return self._run(request)
 
     def _run(self, request: ResearchRequest) -> ResearchResult:

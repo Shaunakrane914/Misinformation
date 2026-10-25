@@ -9,6 +9,7 @@ loop. All mutable budget state belongs to one run and closes before returning.
 import copy
 import hashlib
 import math
+import os
 import re
 import threading
 import time
@@ -420,7 +421,9 @@ class HarvestingEngine:
 
     def run(self, target, domain="general", intent="", agent_name="research", profile="STANDARD",
             deadline=None, initial_candidates=(), query_plan=None, progress=None, aliases=(), request=None,
-            source_url=None, specialist_tasks=(), specialist_task_explicit=False):
+            source_url=None, specialist_tasks=(), specialist_task_explicit=False, controller="legacy"):
+        if controller not in {"legacy", "interleaved_v1"}:
+            raise ValueError("Unknown acquisition controller")
         profile = get_research_profile(profile)
         started = time.monotonic()
         deadline = min(float(deadline), started + profile.timeout_seconds) if deadline is not None else started + profile.timeout_seconds
@@ -472,6 +475,7 @@ class HarvestingEngine:
         for row in queries:
             output.channel_queries.setdefault(row["channel"], []).append({k: v for k, v in row.items() if k != "channel"})
         advice_trace = {"status": "DISABLED", "advisory_only": True}
+        advice_checked = False
 
         def emit(stage):
             if progress:
@@ -508,10 +512,26 @@ class HarvestingEngine:
                 item.metadata["discovery_url"] = original_url
                 item.metadata["publisher_url_basis"] = "DECODED_OBSERVED_BING_REDIRECT"
             key = source_url_key(item.canonical_url)
+            if domain == "trending":
+                from backend.services.research.temporal_guard import temporal_guard
+                temporal = temporal_guard.evaluate(item, reference_time=reference_time)
+                item.metadata["harvest_temporal_priority"] = (0 if temporal.is_eligible else
+                    1 if temporal.status == "MISSING_TIMESTAMP" else 3 if temporal.status == "FUTURE_DATED" else 2)
+                item.metadata["discovery_temporal_observation"] = temporal.status
             if key in known:
                 discarded["DUPLICATE_URL"] += 1
                 known[key].metadata.setdefault("discovery_query_aliases", []).append(item.query_id)
                 _merge_task_lineage(known[key].metadata, item.metadata)
+                if (controller == "interleaved_v1" and domain == "trending"
+                        and item.metadata.get("harvest_temporal_priority", 9) < known[key].metadata.get("harvest_temporal_priority", 9)):
+                    known[key].metadata.update(harvest_temporal_priority=item.metadata["harvest_temporal_priority"],
+                        discovery_temporal_observation=item.metadata["discovery_temporal_observation"],
+                        temporal_routing_basis="BEST_OBSERVED_DISCOVERY_ALIAS_NOT_BODY_VERIFICATION")
+                    known[key].metadata.pop("adaptive_read_deferral", None)
+                    known[key].metadata.setdefault("temporal_routing_aliases", []).append({
+                        "query_id": item.query_id, "published_at": item.published_at,
+                        "status": item.metadata["discovery_temporal_observation"]})
+                    known[key].metadata["temporal_routing_aliases"] = known[key].metadata["temporal_routing_aliases"][-8:]
                 return
             continuation = bool(item.metadata.get("observed_parent_id") or item.metadata.get("publisher_basis")
                                 or item.metadata.get("discovered_on_candidate_id"))
@@ -577,12 +597,105 @@ class HarvestingEngine:
                 item.relevant_excerpt = ""
                 for name in ("read_exclusion_reason", "defer_non_objective_read"):
                     item.metadata.pop(name, None)
-            if domain == "trending":
-                from backend.services.research.temporal_guard import temporal_guard
-                temporal = temporal_guard.evaluate(item, reference_time=reference_time)
-                item.metadata["harvest_temporal_priority"] = (0 if temporal.is_eligible else
-                    1 if temporal.status == "MISSING_TIMESTAMP" else 3 if temporal.status == "FUTURE_DATED" else 2)
-                item.metadata["discovery_temporal_observation"] = temporal.status
+
+
+        wrapper_count, discovery_count, raw_chars = 0, 0, 0
+        read_host_counts, read_publisher_counts = Counter(), Counter()
+        adaptive_controller = None
+        if controller == "interleaved_v1":
+            from backend.services.research.adaptive_acquisition import InterleavedController
+            from backend.infrastructure.acquisition.network.budget import configure_interleaved_discovery
+            adaptive_controller = InterleavedController(target, domain, intent, reference_time)
+            allocation = configure_interleaved_discovery()
+            adaptive_controller.record("CONFIGURED", allocation=allocation)
+
+        def read_available(max_additional_reads=None):
+            nonlocal wrapper_count, discovery_count, raw_chars
+            read_cutoff = (profile.max_reads if max_additional_reads is None else
+                           min(profile.max_reads, telemetry["attempted"] + max_additional_reads))
+            while time.monotonic() < reading_deadline and telemetry["attempted"] < read_cutoff:
+                pending = [item for key, item in known.items() if key not in attempted and item.metadata.get("harvest_acquisition_eligible")]
+                # Concrete task-appropriate titles, then article-shaped paths;
+                # hostname is never treated as entity/independence evidence.
+                pending.sort(key=lambda item: _read_priority(item, target, domain,
+                                                           read_host_counts, read_publisher_counts))
+                selected, round_hosts = [], Counter()
+                for item in pending:
+                    if adaptive_controller:
+                        deferred = adaptive_controller.defer_reason(item)
+                        if deferred and item.metadata.get("source_kind") != "USER_SUPPLIED_SOURCE":
+                            item.metadata["adaptive_read_deferral"] = deferred
+                            continue
+                        item.metadata.pop("adaptive_read_deferral", None)
+                    host = _host(item.canonical_url)
+                    if read_host_counts[host] >= profile.max_host_reads or round_hosts[host] >= profile.host_concurrency:
+                        continue
+                    if _is_wrapper(item) and wrapper_count >= profile.max_wrapper_reads:
+                        continue
+                    index = _is_index(item)
+                    if index and discovery_count >= profile.max_discovery_reads:
+                        continue
+                    if len(selected) >= min(profile.concurrency, read_cutoff - telemetry["attempted"]):
+                        break
+                    attempted.add(source_url_key(item.canonical_url))
+                    selected.append(item)
+                    round_hosts[host] += 1
+                    read_host_counts[host] += 1
+                    read_publisher_counts[_observed_publisher(item)] += 1
+                    wrapper_count += int(_is_wrapper(item))
+                    discovery_count += int(index)
+                if not selected:
+                    # Three opaque redirect attempts must not prevent an
+                    # already observed alternate publisher from receiving a
+                    # bounded hub/feed opportunity. Reserve one remaining slot
+                    # for an article found there; never guess an article URL.
+                    remaining_reads = profile.max_reads - telemetry["attempted"]
+                    remaining_indexes = profile.max_discovery_reads - discovery_count
+                    if (wrapper_count >= profile.max_wrapper_reads
+                            and remaining_reads > 1 and remaining_indexes > 0):
+                        hubs = _unread_wrapper_hubs(pending, [i.canonical_url for i in known.values()],
+                                                   min(2, remaining_indexes, remaining_reads - 1))
+                        previous_count = len(known)
+                        for hub in hubs:
+                            add(hub)
+                        if len(known) > previous_count:
+                            continue
+                    break
+                window = min(profile.read_window_seconds, max(0.0, reading_deadline - time.monotonic()))
+                if adaptive_controller:
+                    adaptive_controller.record("READ_BATCH", candidate_ids=[item.id for item in selected],
+                        attempt_count_before=telemetry["attempted"], attempt_cap=profile.max_reads)
+                captures, observed = self.reader.deep_read(selected, max_reads=len(selected), timeout_per_read=window,
+                                                         service=service, max_concurrency=profile.concurrency)
+                for name in ("attempted", "successful", "failed", "cached", "total_chars_read"):
+                    telemetry[name] += observed.get(name, 0)
+                for name in ("read_urls", "acquisition_attempts", "candidate_selection_audit"):
+                    telemetry[name].extend(observed.get(name, []))
+                for item in captures:
+                    key = source_url_key(item.canonical_url)
+                    if key in captured:
+                        continue
+                    if raw_chars + len(item.content) > profile.max_capture_chars:
+                        discarded["RAW_CAPTURE_STORAGE_CAP"] += 1
+                        continue
+                    captured.add(key)
+                    raw_chars += len(item.content)
+                    item.metadata["raw_source_type"] = raw_source_type(item)
+                    item.metadata["qualification_status"] = "PENDING"
+                    output.captures.append(item)
+                    if adaptive_controller:
+                        adaptive_controller.observe(item)
+                    for child in self._observed_children(item, target, domain, output.rejected):
+                        add(child)
+                # Feed-declared hubs are observed fallbacks after failed opaque
+                # wrapper resolution, never guessed /news or article slugs.
+                from backend.services.research.publisher_links import failed_feed_publisher_hubs
+                for hub in failed_feed_publisher_hubs(selected, observed.get("acquisition_attempts", []),
+                                                       {i.canonical_url for i in known.values()}):
+                    add(hub)
+                emit("HARVEST_READING")
+                if raw_chars >= profile.max_capture_chars or not observed.get("attempted"):
+                    break
 
         if source_url:
             add(EvidenceItem(id="explicit_source", canonical_url=str(source_url), title="User-supplied source",
@@ -594,13 +707,33 @@ class HarvestingEngine:
         emit("HARVEST_DISCOVERY")
         try:
             # Small provider-bulkheaded waves rather than one giant worker queue.
-            wave_size = min(6, max(3, profile.max_queries // 2))
+            wave_size = 3 if adaptive_controller else min(6, max(3, profile.max_queries // 2))
             for offset in range(0, len(queries), wave_size):
                 if time.monotonic() >= discovery_deadline or len(known) >= discovery_capacity:
+                    if adaptive_controller:
+                        output.retrieval_trace["discovery_stop_reason"] = ("DISCOVERY_DEADLINE_EXHAUSTED"
+                            if time.monotonic() >= discovery_deadline else "DISCOVERY_CANDIDATE_CAP_REACHED")
+                    break
+                pending_opportunities = ([item for key, item in known.items() if key not in attempted
+                    and item.metadata.get("harvest_acquisition_eligible") and not adaptive_controller.defer_reason(item)]
+                    if adaptive_controller else [])
+                remaining_planned_actions = any(row.get("source_plan_action_id") for row in queries[offset:])
+                if (adaptive_controller and offset > 0 and adaptive_controller.enough_for_discovery_pause()
+                        and not remaining_planned_actions
+                        and len(pending_opportunities) >= profile.max_reads - telemetry["attempted"]):
+                    output.retrieval_trace["discovery_stop_reason"] = "USABLE_CAPTURED_PASSAGES_PAUSE_DISCOVERY"
+                    adaptive_controller.record("PAUSE_DISCOVERY_FOR_CAPTURED_COVERAGE")
                     break
                 if discovery_http_remaining() == 0:
-                    output.retrieval_trace["discovery_stop_reason"] = "DISCOVERY_HTTP_RESERVE_FOR_READING"
-                    break
+                    if adaptive_controller and offset > 0:
+                        from backend.infrastructure.acquisition.network.budget import release_adaptive_discovery
+                        granted = release_adaptive_discovery()
+                        adaptive_controller.record("RELEASE_ADAPTIVE_DISCOVERY", admissions_granted=granted,
+                            after_read_attempts=telemetry["attempted"],
+                            scope="Released cumulative credit after bounded read selection; not provider success")
+                    if discovery_http_remaining() == 0:
+                        output.retrieval_trace["discovery_stop_reason"] = "DISCOVERY_HTTP_RESERVE_FOR_READING"
+                        break
                 if offset > 0:
                     task_covered_publishers = {
                         _host(item.canonical_url) for item in known.values()
@@ -625,6 +758,9 @@ class HarvestingEngine:
                 plan = {}
                 for row in queries[offset:offset + wave_size]:
                     plan.setdefault(row["channel"], []).append({k: v for k, v in row.items() if k != "channel"})
+                if adaptive_controller:
+                    adaptive_controller.record("DISCOVERY_WAVE", query_ids=[row["query_id"] for row in queries[offset:offset + wave_size]],
+                        read_attempts_before=telemetry["attempted"], remaining_http_discovery=discovery_http_remaining())
                 remaining = discovery_deadline - time.monotonic()
                 wave_timeout = min(20.0, remaining)
                 try:
@@ -655,8 +791,49 @@ class HarvestingEngine:
                                 error="Harvester transport exception: " + type(exc).__name__,
                                 result_count_raw=0, result_count_normalized=0))
                 emit("HARVEST_DISCOVERY")
+                if adaptive_controller:
+                    before_reads = telemetry["attempted"]
+                    reading_started = time.monotonic()
+                    read_available(min(4, profile.max_reads - telemetry["attempted"]))
+                    # Time spent reading must not silently consume the active
+                    # discovery allowance. The original overall/read deadline
+                    # remains fixed and a final read slice stays reserved.
+                    discovery_deadline = min(reading_deadline - min(10.0, max(0.0, reading_deadline - started) * .1),
+                        discovery_deadline + max(0.0, time.monotonic() - reading_started))
+                    adaptive_controller.record("READ_OPPORTUNITY_COMPLETE",
+                        attempted=telemetry["attempted"] - before_reads,
+                        deferrals=dict(Counter(item.metadata["adaptive_read_deferral"] for item in known.values()
+                            if item.metadata.get("adaptive_read_deferral"))))
+                    if (request is not None and not advice_checked
+                            and os.getenv("AEGIS_SEARCH_ADVISOR_ENABLED", "false").lower() in {"1", "true"}
+                            and reading_deadline - time.monotonic() >= 3):
+                        advice_checked = True
+                        from backend.services.research.search_advice import expand_with_advice
+                        if discovery_http_remaining() == 0:
+                            from backend.infrastructure.acquisition.network.budget import release_adaptive_discovery
+                            granted = release_adaptive_discovery()
+                            adaptive_controller.record("RELEASE_ADAPTIVE_DISCOVERY", admissions_granted=granted,
+                                after_read_attempts=telemetry["attempted"], purpose="BOUNDED_SEARCH_ADVICE")
+                        if discovery_http_remaining() != 0:
+                            with public_request_phase("discovery"):
+                                advice_result, advice_trace = expand_with_advice(request,
+                                    [item for item in known.values() if item.metadata.get("harvest_acquisition_eligible")],
+                                    service, min(6.0, reading_deadline - time.monotonic()),
+                                    capture_feedback=adaptive_controller.feedback)
+                            adaptive_controller.record("SEARCH_ADVICE", status=advice_trace.get("status"),
+                                query_count=advice_trace.get("query_count", 0))
+                            if advice_result is not None:
+                                output.query_records.extend(advice_result.query_records)
+                                output.channel_health.update(advice_result.channel_health)
+                                for fragment in advice_result.fragments:
+                                    url = getattr(fragment, "url", "") or ""
+                                    item_id = getattr(fragment, "evidence_id", "") or "ev_" + hashlib.sha256(source_url_key(url).encode()).hexdigest()[:16]
+                                    add(EvidenceItem.from_evidence_fragment(fragment, item_id=item_id, target_name=target))
+                    if telemetry["attempted"] >= profile.max_reads:
+                        output.retrieval_trace["discovery_stop_reason"] = "SHARED_READ_ATTEMPT_CAP"
+                        break
 
-            if request is not None and discovery_deadline - time.monotonic() >= 2 and discovery_http_remaining() != 0:
+            if adaptive_controller is None and request is not None and discovery_deadline - time.monotonic() >= 2 and discovery_http_remaining() != 0:
                 from backend.services.research.search_advice import expand_with_advice
                 with public_request_phase("discovery"):
                     advice_result, advice_trace = expand_with_advice(request,
@@ -670,80 +847,8 @@ class HarvestingEngine:
                         item_id = getattr(fragment, "evidence_id", "") or "ev_" + hashlib.sha256(source_url_key(url).encode()).hexdigest()[:16]
                         add(EvidenceItem.from_evidence_fragment(fragment, item_id=item_id, target_name=target))
 
-            wrapper_count, discovery_count, raw_chars = 0, 0, 0
-            read_host_counts, read_publisher_counts = Counter(), Counter()
-            while time.monotonic() < reading_deadline and telemetry["attempted"] < profile.max_reads:
-                pending = [item for key, item in known.items() if key not in attempted and item.metadata.get("harvest_acquisition_eligible")]
-                # Concrete task-appropriate titles, then article-shaped paths;
-                # hostname is never treated as entity/independence evidence.
-                pending.sort(key=lambda item: _read_priority(item, target, domain,
-                                                           read_host_counts, read_publisher_counts))
-                selected, round_hosts = [], Counter()
-                for item in pending:
-                    host = _host(item.canonical_url)
-                    if read_host_counts[host] >= profile.max_host_reads or round_hosts[host] >= profile.host_concurrency:
-                        continue
-                    if _is_wrapper(item) and wrapper_count >= profile.max_wrapper_reads:
-                        continue
-                    index = _is_index(item)
-                    if index and discovery_count >= profile.max_discovery_reads:
-                        continue
-                    if len(selected) >= min(profile.concurrency, profile.max_reads - telemetry["attempted"]):
-                        break
-                    attempted.add(source_url_key(item.canonical_url))
-                    selected.append(item)
-                    round_hosts[host] += 1
-                    read_host_counts[host] += 1
-                    read_publisher_counts[_observed_publisher(item)] += 1
-                    wrapper_count += int(_is_wrapper(item))
-                    discovery_count += int(index)
-                if not selected:
-                    # Three opaque redirect attempts must not prevent an
-                    # already observed alternate publisher from receiving a
-                    # bounded hub/feed opportunity. Reserve one remaining slot
-                    # for an article found there; never guess an article URL.
-                    remaining_reads = profile.max_reads - telemetry["attempted"]
-                    remaining_indexes = profile.max_discovery_reads - discovery_count
-                    if (wrapper_count >= profile.max_wrapper_reads
-                            and remaining_reads > 1 and remaining_indexes > 0):
-                        hubs = _unread_wrapper_hubs(pending, [i.canonical_url for i in known.values()],
-                                                   min(2, remaining_indexes, remaining_reads - 1))
-                        previous_count = len(known)
-                        for hub in hubs:
-                            add(hub)
-                        if len(known) > previous_count:
-                            continue
-                    break
-                window = min(profile.read_window_seconds, max(0.0, reading_deadline - time.monotonic()))
-                captures, observed = self.reader.deep_read(selected, max_reads=len(selected), timeout_per_read=window,
-                                                         service=service, max_concurrency=profile.concurrency)
-                for name in ("attempted", "successful", "failed", "cached", "total_chars_read"):
-                    telemetry[name] += observed.get(name, 0)
-                for name in ("read_urls", "acquisition_attempts", "candidate_selection_audit"):
-                    telemetry[name].extend(observed.get(name, []))
-                for item in captures:
-                    key = source_url_key(item.canonical_url)
-                    if key in captured:
-                        continue
-                    if raw_chars + len(item.content) > profile.max_capture_chars:
-                        discarded["RAW_CAPTURE_STORAGE_CAP"] += 1
-                        continue
-                    captured.add(key)
-                    raw_chars += len(item.content)
-                    item.metadata["raw_source_type"] = raw_source_type(item)
-                    item.metadata["qualification_status"] = "PENDING"
-                    output.captures.append(item)
-                    for child in self._observed_children(item, target, domain, output.rejected):
-                        add(child)
-                # Feed-declared hubs are observed fallbacks after failed opaque
-                # wrapper resolution, never guessed /news or article slugs.
-                from backend.services.research.publisher_links import failed_feed_publisher_hubs
-                for hub in failed_feed_publisher_hubs(selected, observed.get("acquisition_attempts", []),
-                                                       {i.canonical_url for i in known.values()}):
-                    add(hub)
-                emit("HARVEST_READING")
-                if raw_chars >= profile.max_capture_chars or not observed.get("attempted"):
-                    break
+            read_available()
+
         finally:
             service.close()
 
@@ -759,7 +864,7 @@ class HarvestingEngine:
                       "HOST_READ_BUDGET_EXHAUSTED" if read_host_counts[_host(item.canonical_url)] >= profile.max_host_reads else
                       "WRAPPER_READ_BUDGET_EXHAUSTED" if _is_wrapper(item) and wrapper_count >= profile.max_wrapper_reads else
                       "DISCOVERY_READ_BUDGET_EXHAUSTED" if _is_index(item) and discovery_count >= profile.max_discovery_reads else
-                      "NO_READER_PROGRESS")
+                      item.metadata.get("adaptive_read_deferral") or "NO_READER_PROGRESS")
             unread_reasons[reason] += 1
             item.metadata["harvest_unread_reason"] = reason
             telemetry["candidate_selection_audit"].append({"candidate_id": item.id,
@@ -775,10 +880,10 @@ class HarvestingEngine:
             if row["query_id"] in recorded_ids:
                 continue
             submitted = row["query_id"] in submitted_query_ids
-            reason = ("DISPATCHED_QUERY_RECORD_UNAVAILABLE" if submitted else
+            reason = ("DISPATCHED_QUERY_RECORD_UNAVAILABLE" if submitted else output.retrieval_trace.get("discovery_stop_reason") or (
                       "DISCOVERY_HTTP_RESERVE_FOR_READING" if discovery_http_remaining() == 0 else
                       "DISCOVERY_CANDIDATE_CAP_REACHED" if len(known) >= discovery_capacity else
-                      "DISCOVERY_DEADLINE_EXHAUSTED")
+                      "DISCOVERY_DEADLINE_EXHAUSTED"))
             output.query_records.append(QueryExecutionRecord(query_id=row["query_id"], channel=row["channel"],
                 query_text=row["query_text"], query_class=row.get("query_class", "general"), phase="harvesting",
                 status="UNRECORDED" if submitted else "NOT_SUBMITTED", provider_started=None if submitted else False,
@@ -823,6 +928,8 @@ class HarvestingEngine:
                                          if row["query_id"] in submitted_query_ids],
                 "scope": "Submission is not provider start, acquisition success or evidence qualification",
             }
+        if adaptive_controller:
+            output.metrics["acquisition_controller"] = adaptive_controller.snapshot()
         emit("HARVEST_COMPLETE")
         return output
 

@@ -12,7 +12,7 @@ NON_EVENT_ROLES.update({"QUESTION_PROMPT", "INSTRUCTIONAL_PROMPT"})
 OBJECTIVE_TERMS = {
     "financial": r"revenue|earnings|profit|loss|financial|filing|quarter|guidance|dividend|stock|shares|accounting|debt|lawsuit|investigat|resign|acquisition|merger|regulator|appoint|chief.executive|\bCEO\b|executive.chair|leadership.transition|board.of.directors",
     "brand": r"counterfeit|impersonat|\bfake\b|replica|knockoff|\bclone\b|phishing|scam|fraud|complaint|recall|safety hazard|defective|trademark|lawsuit|unauthori[sz]ed|refund|delivery delayed|never received|poor service|giveaway|free gift",
-    "personal": r"impersonat|deepfake|fabricat|fake (?:account|video|profile|quote)|false (?:claim|quote)|identity (?:abuse|theft)|scam|denied|denies|authentic|transcript",
+    "personal": r"impersonat|deepfake|fabricat|fake (?:account|video|profile|quote)|false (?:claim|quote)|identity (?:abuse|theft)|scam|denied|denies|authentic|transcript|(?<!financial\s)(?<!earnings\s)(?<!quarterly\s)\b(?:public statements?|official statements?|press statements?|statements?|speeches?|speech|interviews?|announced?|announcements?|remarks?|testimony|briefings?|address(?:ed)?|rebuttal|fact[- ]check)\b",
 }
 
 # Small observed FR/ES vocabulary for native-text inspection, not translation

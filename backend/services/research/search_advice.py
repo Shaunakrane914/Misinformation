@@ -4,7 +4,7 @@ import time
 from urllib.parse import urlsplit
 
 
-def expand_with_advice(request, candidates, service, timeout):
+def expand_with_advice(request, candidates, service, timeout, *, capture_feedback=None):
     trace = {"status": "DISABLED", "reason": "INSUFFICIENT_DIRECT_ARTICLE_CANDIDATES", "advisory_only": True}
     if os.getenv("AEGIS_SEARCH_ADVISOR_ENABLED", "false").lower() not in {"1", "true"} or timeout < 2:
         return None, trace
@@ -13,7 +13,14 @@ def expand_with_advice(request, candidates, service, timeout):
     direct = [item for item in candidates if item.channel in {"web", "news", "rss"} and not is_publisher_hub(item.canonical_url)
               and document_role(item) not in NON_EVENT_ROLES and matches_objective(item.title, request.domain)
               and not (urlsplit(item.canonical_url).hostname or "").endswith(("google.com", "wikipedia.org", "x.com"))]
-    if len(direct) >= 2:
+    if capture_feedback is not None:
+        usable = [row for row in capture_feedback if row.get("usable_passage") and not row.get("duplicate_body_observation")]
+        trace["trigger"] = "CAPTURED_PASSAGE_FEEDBACK"
+        trace["usable_capture_observations"] = len(usable)
+        if len(usable) >= 2:
+            trace["status"] = "SKIPPED_ADEQUATE_CAPTURED_PASSAGES"
+            return None, trace
+    elif len(direct) >= 2:
         trace["status"] = "SKIPPED_ADEQUATE_DIRECT_LEADS"
         return None, trace
     from backend.services.research.evidence_advisor import private_or_secret_text
@@ -25,8 +32,15 @@ def expand_with_advice(request, candidates, service, timeout):
         from backend.infrastructure.llm.advisory_policy import require_advisory
         require_advisory("search_suggestion")
         from backend.services.agent_reach.source_planner import source_planning_engine
+        context = request.target[:200]
+        if capture_feedback is not None:
+            # Bounded reason categories only, never source bodies, credentials,
+            # allegations or a generated claim/verdict.
+            categories = sorted({str(row.get("reason") or "UNKNOWN").split(":", 1)[0].split("(", 1)[0][:60]
+                                 for row in capture_feedback if not row.get("usable_passage")})[:4]
+            context += "; acquired-source gaps: " + ", ".join(categories)
         advice = source_planning_engine._get_llm_suggestions(
-            request.target[:200], request.target[:200], request.domain, request.agent_name)
+            context, request.target[:200], request.domain, request.agent_name)
         actions, rejected = source_planning_engine._validate_llm_actions(advice.actions[:1], request.target, {"news", "web"})
         trace.update(status="SUGGESTED", rejected=rejected, query_count=len(actions))
         if not actions or timeout - (time.monotonic() - started) <= 0:

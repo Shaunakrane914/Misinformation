@@ -89,6 +89,7 @@ def run_harvest_pipeline(request, budget, profile_name):
                 target=request.target, domain=request.domain, intent=request.intent, agent_name=request.agent_name,
                 profile=profile, deadline=started + timeout * .90, request=request,
                 source_url=request.source_url, query_plan=extra_queries,
+                controller=os.getenv("AEGIS_ACQUISITION_CONTROLLER", "legacy"),
                 specialist_tasks=(specialist_plan or {}).get("requested_tasks", []),
                 specialist_task_explicit=bool((specialist_plan or {}).get("explicit_task")),
                 progress=lambda counts: report_progress(phase="harvesting", **counts)))

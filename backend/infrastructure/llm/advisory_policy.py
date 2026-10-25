@@ -9,6 +9,7 @@ from contextlib import closing
 from contextvars import ContextVar
 import os
 from pathlib import Path
+import re
 import sqlite3
 import tempfile
 import time
@@ -33,8 +34,31 @@ def _connect(path):
     return connection
 
 
+def _database_path(database=None):
+    return Path(database or os.getenv("AEGIS_AI_POLICY_DB", str(Path(tempfile.gettempdir()) / "aegis-advisory-policy.sqlite3")))
+
+
+def advisory_budget_status(*, identity, database=None):
+    """Read persisted admission state before a runtime capability lookup.
+
+    This is a preflight observation, never a reservation. The provider still
+    performs the existing atomic check immediately before generation.
+    """
+    path = _database_path(database)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with closing(_connect(path)) as connection:
+        calls_row = connection.execute("SELECT calls FROM runs WHERE id=?", (identity,)).fetchone()
+        calls = calls_row[0] if calls_row else 0
+        cooldown, busy = connection.execute("SELECT cooldown,busy FROM provider WHERE id=1").fetchone()
+        used = (_investigation.get() is not None and connection.execute(
+            "SELECT 1 FROM investigations WHERE run=? AND id=?", (identity, _investigation.get())).fetchone())
+    reason = ("DAILY_REQUEST_BUDGET" if calls >= 3 else "PROVIDER_COOLDOWN" if cooldown > time.time()
+              else "PROVIDER_BUSY" if busy else "INVESTIGATION_REQUEST_BUDGET" if used else None)
+    return {"allowed": reason is None, "calls": calls, "reason": reason}
+
+
 @contextmanager
-def advisory_run(*, verified_models=(), database=None):
+def advisory_run(*, verified_models=(), database=None, identity=None):
     """Explicitly authorized development run. Model support must be established
     separately without generation; tests supply offline account observations.
     Nesting cannot reset an existing run's hard three-request budget.
@@ -44,11 +68,13 @@ def advisory_run(*, verified_models=(), database=None):
         return
     if MODEL not in verified_models:
         raise AdvisoryPolicyError("Advisory model support has not been verified")
-    path = Path(database or os.getenv("AEGIS_AI_POLICY_DB", str(Path(tempfile.gettempdir()) / "aegis-advisory-policy.sqlite3")))
+    if identity is not None and (not isinstance(identity, str) or not re.fullmatch(r"[A-Za-z0-9_.:-]{1,100}", identity)):
+        raise AdvisoryPolicyError("Invalid advisory run identity")
+    path = _database_path(database)
     path.parent.mkdir(parents=True, exist_ok=True)
-    state = {"id": uuid.uuid4().hex, "database": str(path), "closed": False, "observations": []}
+    state = {"id": identity or uuid.uuid4().hex, "database": str(path), "closed": False, "observations": []}
     with closing(_connect(path)) as connection:
-        connection.execute("INSERT INTO runs VALUES (?,0)", (state["id"],))
+        connection.execute("INSERT OR IGNORE INTO runs VALUES (?,0)", (state["id"],))
     token = _run.set(state)
     try:
         yield state
@@ -76,6 +102,8 @@ def require_advisory(purpose):
 @contextmanager
 def reserve_request(purpose):
     state = require_advisory(purpose)
+    if state.get("expires_at") is not None and time.time() >= state["expires_at"]:
+        raise AdvisoryPolicyError("Runtime advisory day has expired")
     reservation = uuid.uuid4().hex
     connection = _connect(state["database"])
     try:

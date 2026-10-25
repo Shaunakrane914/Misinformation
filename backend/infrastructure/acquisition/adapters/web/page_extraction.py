@@ -91,7 +91,7 @@ def _semantic_root(soup):
         return articles[0], "article"
     # Common static publishing containers are structural observations. Require
     # a unique container with paragraphs so a list of story cards cannot win.
-    containers = (main or soup).select('.article-body, .article-content, .story-body, .story-content, .entry-content, .post-content')
+    containers = (main or soup).select('.article-body, .article-content, .story-body, .story-content, .entry-content, .post-content, .artText, .article_body, .storyContent, .articleWrap')
     containers = [node for node in containers if len(node.find_all("p")) >= 2]
     containers = [node for node in containers if not any(parent in containers for parent in node.parents)]
     if len(containers) == 1:
@@ -162,7 +162,7 @@ def _body_quality(root, text, scope, *, declared_article=False):
     total = max(1, len(root.get_text(" ", strip=True)))
     density = min(1.0, link_chars / total)
     article_scope = (scope in {"article", "article_body", "publisher_article_container", "declared_article_body"}
-                     or scope == "main" and declared_article)
+                     or (scope in {"main", "body_fallback"} and declared_article))
     # JSON-LD scope supplies an explicit body, not DOM paragraphs. The label
     # still describes an extraction observation, not acquired evidence quality.
     substantive = ((len(prose) >= 2 and sum(len(p.split()) >= 12 for p in prose) >= 2 and density < 0.35)
@@ -382,13 +382,24 @@ def _publication_observations(soup, declarations):
 
 def _publication_identity(value):
     """Normalize equivalent ISO timezone spellings, without inventing a zone."""
+    val = value.strip()
     try:
-        parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+        parsed = datetime.fromisoformat(val.replace("Z", "+00:00"))
         if parsed.tzinfo:
             parsed = parsed.astimezone(timezone.utc)
         return parsed.isoformat()
     except (ValueError, TypeError):
-        return value.strip()
+        pass
+    m = re.match(r"^(\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}:\d{2})\s*([A-Za-z_]+/[A-Za-z_]+)$", val)
+    if m:
+        dt_str, tz_name = m.groups()
+        try:
+            from zoneinfo import ZoneInfo
+            parsed = datetime.fromisoformat(dt_str).replace(tzinfo=ZoneInfo(tz_name)).astimezone(timezone.utc)
+            return parsed.isoformat()
+        except Exception:
+            pass
+    return val
 
 
 def extract_observed_page_details(soup, endpoint: str) -> dict:
@@ -484,11 +495,28 @@ def extract_observed_page_details(soup, endpoint: str) -> dict:
         "parsed_html_sha256": hashlib.sha256(str(soup).encode("utf-8")).hexdigest(),
     }
     unique_dates = list(dict.fromkeys(row["value"] for row in dates))
-    if unique_dates and len({_publication_identity(value) for value in unique_dates}) == 1:
+    identities = {_publication_identity(value) for value in unique_dates}
+    if unique_dates and len(identities) == 1:
         result["published"] = unique_dates[0]
         result["publication_time_source"] = ";".join(dict.fromkeys(row["source"] for row in dates))
     elif len(unique_dates) > 1:
-        result["publication_metadata_conflict"] = True
+        parsed_dts = []
+        for v in identities:
+            try:
+                p = datetime.fromisoformat(v.replace("Z", "+00:00"))
+                if p.tzinfo:
+                    p = p.astimezone(timezone.utc)
+                parsed_dts.append(p)
+            except Exception:
+                pass
+        if len(parsed_dts) == len(identities) and len(parsed_dts) >= 2:
+            if (max(parsed_dts) - min(parsed_dts)).total_seconds() <= 3 * 3600:
+                result["published"] = unique_dates[0]
+                result["publication_time_source"] = ";".join(dict.fromkeys(row["source"] for row in dates))
+            else:
+                result["publication_metadata_conflict"] = True
+        else:
+            result["publication_metadata_conflict"] = True
     headlines = list(dict.fromkeys(row["headline"] for row in declarations if row.get("@type") in _ARTICLE_TYPES and row.get("headline")))
     if len(headlines) == 1 and not soup.find("title"):
         result["title"] = headlines[0]

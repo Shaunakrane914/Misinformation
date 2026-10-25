@@ -70,6 +70,8 @@ def main():
     parser.add_argument("--max-deep-reads", type=int, help="Total deep-reader attempt allowance per case")
     parser.add_argument("--research-profile", choices=("QUICK", "STANDARD", "DEEP"), default="STANDARD")
     parser.add_argument("--max-http-admissions", type=int, help="Optional lower native HTTP cap; includes retries and redirects")
+    parser.add_argument("--acquisition-controller", choices=("legacy", "interleaved_v1"), default="legacy",
+                        help="Explicit local experiment; preserves existing read/HTTP caps")
     args = parser.parse_args()
     profile_limits = {"QUICK": (60, 6), "STANDARD": (150, 14), "DEEP": (240, 24)}
     timeout_cap, read_cap = profile_limits[args.research_profile]
@@ -81,6 +83,8 @@ def main():
         parser.error("Audit reads exceed selected research profile")
     if args.capture_from and args.allow_live_ai:
         parser.error("Saved-capture processing never permits live AI")
+    if args.acquisition_controller == "interleaved_v1" and args.capture_from:
+        parser.error("Historical capture mode does not exercise the interleaved controller")
     cases = []
     for value in args.case:
         agent, _, query = value.partition(":")
@@ -119,6 +123,7 @@ def main():
                       FIRECRAWL_BASE_URL="", HUGINN_ENABLED="false", HUGINN_WEBHOOK_SECRET="",
                       HUGINN_DB_PATH=str(out / "huginn.db"))
     os.environ["AEGIS_RESEARCH_PROFILE"] = args.research_profile
+    os.environ["AEGIS_ACQUISITION_CONTROLLER"] = args.acquisition_controller
     os.environ["AEGIS_RAW_POOL_PERSIST"] = "true"
     if args.max_http_admissions is not None:
         os.environ["AEGIS_HARVEST_HTTP_CAP"] = str(args.max_http_admissions)
@@ -189,6 +194,7 @@ def main():
     summary = {"mode": "REAL_LOCAL_ASGI_SSE", "application_sha256": initial, "cases": [],
                "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
                "mock_llm": False, "live_ai_authorized": args.allow_live_ai}
+    summary["acquisition_controller"] = args.acquisition_controller
     summary["requested_audit_bounds"] = {"research_timeout_seconds": args.timeout_seconds, "max_deep_reads": args.max_deep_reads, "research_profile": args.research_profile}
     summary["advisory_model_check"] = model_check
     if args.capture_from:

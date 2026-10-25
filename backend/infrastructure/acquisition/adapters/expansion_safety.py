@@ -25,8 +25,9 @@ HOSTS = {
     "trustpilot": ("trustpilot.com", "sitejabber.com", "complaintsboard.com", "bbb.org"),
     "reddit_deep": ("reddit.com",), "bluesky": ("bsky.app",),
     "hackernews": ("news.ycombinator.com",), "telegram": ("t.me",),
-    "factcheck": ("snopes.com", "politifact.com", "factcheck.org", "altnews.in", "boomlive.in", "fullfact.org"),
+    "factcheck": ("snopes.com", "politifact.com", "factcheck.org", "altnews.in", "boomlive.in", "fullfact.org", "googleapis.com"),
     "news": ("reuters.com", "reutersagency.com", "apnews.com", "bbc.com", "bbc.co.uk", "pib.gov.in", "aninews.in", "thehindu.com"),
+    "gdelt": ("gdeltproject.org",),
 }
 
 _FETCH_OBSERVATIONS = contextvars.ContextVar("expanded_fetch_observations", default=None)
@@ -149,7 +150,7 @@ class GuardedExpansionAdapter(PlatformAdapter):
                     # API/feed-observed publisher links may leave the discovery
                     # host. They remain leads for the ordinary SSRF-safe reader;
                     # this does not authorize this adapter to acquire that host.
-                    external_lead = self.platform in {"substack", "yahoo_finance", "news"} and validate_url_safe(url)[0]
+                    external_lead = self.platform in {"substack", "yahoo_finance", "news", "gdelt", "factcheck"} and validate_url_safe(url)[0]
                     if owned or external_lead:
                         candidate.metadata["discovery_only"] = True
                         selected.append(candidate)

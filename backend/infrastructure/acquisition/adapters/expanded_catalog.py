@@ -20,8 +20,9 @@ ADAPTERS = {
     "bluesky": ("social.bluesky", "BlueskyAdapter"),
     "telegram": ("social.telegram", "TelegramPublicAdapter"),
     "news_wires": ("news.wires_adapter", "NewswireAdapter"),
+    "gdelt": ("news.gdelt", "GdeltDocAdapter"),
 }
-DOMAIN_DISCOVERY = {"financial": "yahoo_finance", "trending": "bluesky", "brand": "news_wires", "personal": "substack"}
+DOMAIN_DISCOVERY = {"financial": "yahoo_finance", "trending": "gdelt", "brand": "news_wires", "personal": "substack"}
 
 
 @lru_cache(maxsize=1)

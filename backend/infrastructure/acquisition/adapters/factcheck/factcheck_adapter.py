@@ -63,7 +63,10 @@ class FactCheckAdapter(PlatformAdapter):
             return candidates
 
         encoded_q = urllib.parse.quote_plus(clean_q)
-        api_url = f"https://factchecktools.googleapis.com/v1alpha1/claims:search?query={encoded_q}&pageSize={limit}"
+        import os
+        api_key = os.getenv("GOOGLE_FACTCHECK_API_KEY", "").strip()
+        key_param = f"&key={api_key}" if api_key else ""
+        api_url = f"https://factchecktools.googleapis.com/v1alpha1/claims:search?query={encoded_q}&pageSize={limit}{key_param}"
 
         try:
             resp = fetch_public_http(api_url, timeout=4.0)
@@ -93,6 +96,10 @@ class FactCheckAdapter(PlatformAdapter):
                                     "textual_rating": rating,
                                     "publisher": pub,
                                     "raw_claim": item,
+                                    "attributed_assessment": True,
+                                    "claim_review": True,
+                                    "independent_proof": False,
+                                    "discovery_only": True,
                                 },
                             )
                         )

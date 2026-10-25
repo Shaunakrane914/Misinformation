@@ -28,6 +28,7 @@ class PublicRequestBudget:
         self.discovery_limit = total
         self.discovery_per_host = per_host
         self.discovery_rejected = 0
+        self._interleaved_discovery = None
 
     def reserve_reading_capacity(self, minimum):
         """Fence discovery, never extend total/host allowances or grant access.
@@ -36,8 +37,65 @@ class PublicRequestBudget:
         publisher lookups. It is an opportunity, not promised article yield.
         """
         with self.lock:
-            self.discovery_limit = min(self.discovery_limit, max(0, self.total - minimum))
+            limit = max(0, self.total - minimum)
+            self.discovery_limit = min(self.discovery_limit, limit)
+            if self._interleaved_discovery is not None:
+                self._interleaved_discovery["legacy_discovery_cap"] = min(
+                    self._interleaved_discovery["legacy_discovery_cap"], limit)
             self.discovery_per_host = min(self.discovery_per_host, max(1, self.per_host - 4))
+
+    def configure_interleaved_discovery(self, initial=35, adaptive=25):
+        """Opt in to a cumulative discovery allowance released after reads.
+
+        Values are portions of a 120-admission budget, scaled down for smaller
+        budgets. The pre-existing discovery fence remains authoritative. This
+        is not an immutable per-worker phase quota: workers keep their copied
+        ``discovery`` phase and share the currently released cumulative cap.
+        Repeated configuration never resets spent admissions or released credit.
+        """
+        if (type(initial) is not int or type(adaptive) is not int
+                or initial < 0 or adaptive < 0 or initial + adaptive > 60):
+            raise ValueError("Discovery portions must be non-negative integers totaling at most 60")
+        remaining_timeout()
+        with self.lock:
+            if self.closed:
+                raise TimeoutError("Native HTTP request budget closed")
+            if self._interleaved_discovery is not None:
+                prior = self._interleaved_discovery
+                if (initial, adaptive) != (prior["initial_portion"], prior["adaptive_portion"]):
+                    raise ValueError("Interleaved discovery budget is already configured")
+                return dict(prior)
+            legacy_limit = self.discovery_limit
+            scale = min(self.total, 120) / 120
+            initial_limit = min(legacy_limit, max(self.phases["discovery"], round(initial * scale)))
+            adaptive_reserve = min(max(0, legacy_limit - initial_limit), round(adaptive * scale))
+            self.discovery_limit = initial_limit
+            self._interleaved_discovery = {
+                "initial_portion": initial, "adaptive_portion": adaptive,
+                "initial_discovery_cap": initial_limit,
+                "adaptive_reserved": adaptive_reserve, "adaptive_released": 0,
+                "legacy_discovery_cap": legacy_limit,
+                "scope": "CUMULATIVE_DISCOVERY_ALLOWANCE_NOT_PER_WORKER_PHASE_QUOTA",
+            }
+            return dict(self._interleaved_discovery)
+
+    def release_adaptive_discovery(self, amount=None):
+        """Release bounded reserved credit without changing total or host caps."""
+        if amount is not None and (type(amount) is not int or amount < 0):
+            raise ValueError("Adaptive release must be a non-negative integer")
+        remaining_timeout()
+        with self.lock:
+            if self.closed:
+                raise TimeoutError("Native HTTP request budget closed")
+            state = self._interleaved_discovery
+            if state is None:
+                return 0
+            available = max(0, state["adaptive_reserved"] - state["adaptive_released"])
+            room = max(0, state["legacy_discovery_cap"] - self.discovery_limit)
+            granted = min(available, room, available if amount is None else amount)
+            self.discovery_limit += granted
+            state["adaptive_released"] += granted
+            return granted
 
     def discovery_remaining(self):
         with self.lock:
@@ -62,12 +120,15 @@ class PublicRequestBudget:
 
     def snapshot(self):
         with self.lock:
-            return {"native_http_admissions": sum(self.hosts.values()), "native_http_by_host": dict(self.hosts),
+            result = {"native_http_admissions": sum(self.hosts.values()), "native_http_by_host": dict(self.hosts),
                     "native_http_cap": self.total, "native_http_per_host_cap": self.per_host,
                     "native_http_budget_rejections": self.rejected, "complete_network_accounting": False,
                     "native_http_by_phase": dict(self.phases), "discovery_http_cap": self.discovery_limit,
                     "discovery_http_per_host_cap": self.discovery_per_host,
                     "discovery_http_reserve_rejections": self.discovery_rejected}
+            if self._interleaved_discovery is not None:
+                result["interleaved_discovery_budget"] = dict(self._interleaved_discovery)
+            return result
 
     def close(self):
         with self.lock:
@@ -88,6 +149,16 @@ def reserve_reading_capacity(minimum):
     budget = _request_budget.get()
     if budget is not None:
         budget.reserve_reading_capacity(min(max(0, minimum), budget.total // 2))
+
+
+def configure_interleaved_discovery(initial=35, adaptive=25):
+    budget = _request_budget.get()
+    return budget.configure_interleaved_discovery(initial, adaptive) if budget is not None else None
+
+
+def release_adaptive_discovery(amount=None):
+    budget = _request_budget.get()
+    return budget.release_adaptive_discovery(amount) if budget is not None else 0
 
 
 def discovery_http_remaining():

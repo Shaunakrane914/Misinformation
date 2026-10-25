@@ -119,7 +119,7 @@ def test_feed_rejects_declarations_and_labels_summaries():
 
 @pytest.mark.parametrize("domain,key", [
     ("financial", "yahoo_finance"), ("brand", "news_wires"),
-    ("trending", "bluesky"), ("personal", "substack"),
+    ("trending", "gdelt"), ("personal", "substack"),
 ])
 def test_domain_discovery_leads_require_separate_native_body_read(domain, key, monkeypatch):
     from types import SimpleNamespace
@@ -127,6 +127,7 @@ def test_domain_discovery_leads_require_separate_native_body_read(domain, key, m
     assert row["query_text"] == key + "|Orion Research"
     url = {"yahoo_finance": "https://finance.yahoo.com/news/orion-research.html",
            "news_wires": "https://www.bbc.com/news/orion-research",
+           "gdelt": "https://api.gdeltproject.org/article/orion-research",
            "bluesky": "https://bsky.app/profile/orion.test/post/abc",
            "substack": "https://orion.substack.com/p/research"}[key]
     adapter = get_expanded_adapters()[key]

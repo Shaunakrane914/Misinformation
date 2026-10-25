@@ -465,14 +465,23 @@ class SourcePlanningEngine:
                 for feed_url in public_feeds[:1]:
                     actions.insert(0, self._action(1, "rss", "read", feed_url, "public_statement_discovery",
                         "DIRECT_CONTENT_OR_METADATA", 0, "Inspect attributed public publisher statements; catalog association is not identity authentication."))
-            # Separate alternatives: requiring impersonation AND deepfake in
-            # one query starved both objectives. Spend the same bounded slots
-            # on abuse reporting, not three generic identity/profile searches.
-            actions.insert(0, self._action(1, "web", "search", f'"{target}" impersonation scam', "personal_watch", "SEARCH_INDEX_DISCOVERY", 0, "Locate public identity-abuse reporting; exclude private data."))
-            actions.insert(0, self._action(1, "web", "search", f'"{target}" deepfake', "synthetic_media_reporting", "SEARCH_INDEX_DISCOVERY", 0, "Locate attributed synthetic-media reports, not proof of manipulation."))
-            actions.insert(0, self._action(1, "web", "search", f'"{target}" statement interview',
-                "public_statement_discovery", "SEARCH_INDEX_DISCOVERY", 0,
-                "Locate attributable public statements for any subject, not just catalog-listed feed authors."))
+            is_statement_research = bool(re.search(
+                r"\b(?:statements?|speeches?|speech|interviews?|announcements?|remarks|testimony|address)\b",
+                claim, re.I)) and not bool(re.search(r"\b(?:impersonat|deepfake|scams?|fake|fraud)\b", claim, re.I))
+            if is_statement_research:
+                actions.insert(0, self._action(1, "web", "search", f'"{target}" speech remarks announcement',
+                    "public_statement_discovery", "SEARCH_INDEX_DISCOVERY", 0, "Locate official speeches and announcements."))
+                actions.insert(0, self._action(1, "web", "search", f'"{target}" statement interview',
+                    "public_statement_discovery", "SEARCH_INDEX_DISCOVERY", 0,
+                    "Locate attributable public statements for any subject, not just catalog-listed feed authors."))
+                actions.insert(0, self._action(1, "news", "search", f'"{target}" statement',
+                    "public_statement_discovery", "SYNDICATED_SUMMARY", 0, "Locate recent news reporting on public statements."))
+            else:
+                actions.insert(0, self._action(1, "web", "search", f'"{target}" impersonation scam', "personal_watch", "SEARCH_INDEX_DISCOVERY", 0, "Locate public identity-abuse reporting; exclude private data."))
+                actions.insert(0, self._action(1, "web", "search", f'"{target}" deepfake', "synthetic_media_reporting", "SEARCH_INDEX_DISCOVERY", 0, "Locate attributed synthetic-media reports, not proof of manipulation."))
+                actions.insert(0, self._action(1, "web", "search", f'"{target}" statement interview',
+                    "public_statement_discovery", "SEARCH_INDEX_DISCOVERY", 0,
+                    "Locate attributable public statements for any subject, not just catalog-listed feed authors."))
             if entity_only:
                 for term in ("impersonation", "deepfake"):
                     actions.insert(0, self._action(1, "news", "search", f'"{target}" {term}',

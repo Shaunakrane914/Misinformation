@@ -143,7 +143,11 @@ def classify_passage(text, *, domain=""):
     if domain == "brand" and re.search(r"counterfeit|phishing|impersonat|scam|fraud", text, re.I) and re.search(r"\b(?:seized|arrested|charged|convicted|court|police|customs|CBP)\b", text, re.I):
         return "REPORTED_ENFORCEMENT"
     if domain in {"brand", "personal"} and matches_objective(text, domain):
-        return "UNVERIFIED_ALLEGATION" if re.search(r"scam|counterfeit|impersonat|deepfake|fake |phishing|fraud|" + LOCAL_BRAND_ABUSE, text, re.I) else "PUBLIC_STATEMENT"
+        if re.search(r"scam|counterfeit|impersonat|deepfake|fake |phishing|fraud|" + LOCAL_BRAND_ABUSE, text, re.I):
+            return "UNVERIFIED_ALLEGATION"
+        if re.search(r"\b(?:denied|denies|authentic|transcript)\b", text, re.I):
+            return "PUBLIC_STATEMENT"
+        return "ARTICLE_CONTENT"
     if domain == "financial" and re.search(r"revenue|profit|earnings|cash flow", text, re.I):
         return "FINANCIAL_STATEMENT"
     return "ARTICLE_CONTENT"

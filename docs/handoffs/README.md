@@ -1,6 +1,14 @@
 # Coding-agent handoffs
 
-## Expansion Git checkpoint ? 2026-10-25
+## Adaptive Acquisition & Four-Agent Evaluation — 2026-10-25
+
+- [Adaptive Acquisition & Four-Agent Evaluation](2026-10-25_ADAPTIVE_ACQUISITION_AND_FOUR_AGENT_EVALUATION.md):
+  InterleavedController verified with 35/60/25 adaptive budget, GDELT DOC API v2 adapter,
+  Google Fact Check Tools `claims.search` integration, Personal Watch statement planning and
+  regional container extraction, Scout SEC EDGAR transcript priority, BrandShield legal/counterfeit
+  recall focus, and 4-agent live pilot evaluation. Fast suite 2,212 passed / 63s.
+
+## Expansion Git checkpoint — 2026-10-25
 
 - [Push and pre-push security closeout](2026-10-25_EXPANSION_PUSH.md):
   code checkpoint9a437bb committed/pushed to the existing development branch;

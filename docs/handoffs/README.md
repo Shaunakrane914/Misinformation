@@ -1,5 +1,39 @@
 # Coding-agent handoffs
 
+## Useful evidence expansion ? 2026-10-25
+
+- [Implementation and measured continuation](2026-10-25_USEFUL_EVIDENCE_EXPANSION.md):
+  bounded article-citation crawling, native-language passage retention, safer
+  attribution/context and duplicate accounting. Final selected words7,111/1,080/322;
+  Personal's routing regression repaired and separately verified114 historical
+  statement words. Full/fast2,348/2,140 and15 saved-report browser states pass.
+  **20? NOT demonstrated; no push or deployment.**
+
+## Four-case expansion live retest — 2026-10-24
+
+- [Live retest and offline follow-up](2026-10-24_EXPANSION_LIVE_RETEST.md):
+  exactly four approved cases, zero AI reservations; published words
+  6,484/774/0/0. Trending plural-selection defect repaired from saved bytes,
+  one source qualifies offline; no extra live request. Full/fast2,300/2,092,
+  ten Node suites and12 browser replay states passed. **20× not demonstrated.**
+
+## Expansion safety and release integration repair — 2026-10-24
+
+- [Repair handoff](2026-10-24_EXPANSION_SAFETY_AND_RELEASE_INTEGRATION.md):
+  bounded transport, adapter access/depth controls, actual release integration
+  and honest output measurement. Offline validation and saved-report browser
+  replay are separated from fresh live proof. **20× remains unverified; no deploy.**
+
+## Evidence depth and separate expansion review — 2026-10-24
+
+- [Local implementation/review handoff](2026-10-24_EVIDENCE_DEPTH_AND_EXPANSION_REVIEW.md):
+  publisher diversity and bounded multi-passage API/frontend workbench; full/fast
+  2,219/2,011, ten Node scripts,12 Chromium replay states. Four approved live
+  checks consumed, zero AI reservations. Adobe/Dyson published6,948/792 selected
+  words; Trending/Mary zero. **20x NOT demonstrated; uncommitted/not deployed.**
+  Original-checkout expansion remains separate and needs routing, transport,
+  access-policy and benchmark corrections. Both worktrees preserved.
+
 ## Authorized deployment tracking — 2026-10-24
 
 - [Deployment record](2026-10-24_DEPLOYMENT.md): explicit user deployment request;

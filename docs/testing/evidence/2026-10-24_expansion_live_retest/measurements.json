@@ -1,0 +1,1597 @@
+{
+  "date": "2026-10-24",
+  "mode": "AUTHORIZED_FOUR_CASE_LIVE_RETEST",
+  "live_runner_exit_code": 0,
+  "application_sha256": "d6916d41e5716e178d56a31cb5c642bf4f66f152452c3d376e665b3bd74a449e",
+  "final_application_sha256": "d6916d41e5716e178d56a31cb5c642bf4f66f152452c3d376e665b3bd74a449e",
+  "stable_application": true,
+  "live_ai_calls_reserved": 0,
+  "advisory_model_check": {
+    "status": "DISABLED",
+    "model": "gemini-3.5-flash-lite"
+  },
+  "research_profile": "DEEP",
+  "limits_per_case": {
+    "seconds": 240,
+    "deep_reader_attempts": 24,
+    "native_http_admissions": 120
+  },
+  "permissions_consumed": 4,
+  "audit_retries": 0,
+  "paid_readers": false,
+  "deployment": false,
+  "cases": [
+    {
+      "agent": "scout",
+      "input_sha256": "13ace590ebd8d22cf5bedf444c5d19d68cd61ae31362e79ccaec6efa1065f111",
+      "investigation_status": "COMPLETED",
+      "article_bodies": 14,
+      "raw_article_words": 16254,
+      "raw_article_utf8_kb": 113.013,
+      "qualified_sources": 13,
+      "selected_excerpt_words": 705,
+      "workbench": {
+        "source_records_with_passages": 13,
+        "observed_publisher_hosts": 7,
+        "available_unique_passages": 117,
+        "published_passages": 117,
+        "published_unique_words": 6484,
+        "published_text_utf8_bytes": 41800,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "FINANCIAL_STATEMENT": 29,
+          "HISTORICAL_FINANCIAL_CONTEXT": 23,
+          "ARTICLE_CONTENT": 17,
+          "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 48
+        },
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [
+        {
+          "source_id": "ev_hv_45028b06cae88e4f9316",
+          "source_url": "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520",
+          "body_sha256": "b352d684124ff8fad6c5e46716e68ba0c1ede16c843d51adb77d88cae2761fac"
+        },
+        {
+          "source_id": "ev_hv_5c9c7e62a9faf6ac6d84",
+          "source_url": "https://www.techtimes.com/articles/318264/20260612/adobe-q2-2026-earnings-record-662b-revenue-ai-arr-triples-cfo-exits-days.htm",
+          "body_sha256": "2c97dc09e30d829917e82fac0b3e145392371a862cf910fe64726482b3563c06"
+        },
+        {
+          "source_id": "ev_hv_013c69034da97ecfeeaa",
+          "source_url": "https://www.theglobeandmail.com/investing/markets/stocks/GOOGL/pressreleases/4492304/oracle-adobe-micron-alphabet-and-nvidia-are-part-of-zacks-earnings-preview/",
+          "body_sha256": "0bb8aac263554e1beb3351a05781e0e022cc2c5268c0f920dcc5bd8a28c022b3"
+        },
+        {
+          "source_id": "ev_hv_c05553d456937606e9e6",
+          "source_url": "https://www.theglobeandmail.com/investing/markets/stocks/ADBE/pressreleases/4826612/nvidia-micron-alphabet-oracle-and-adobe-are-part-of-zacks-earnings-preview/",
+          "body_sha256": "0bc9eeb3f6b54e997e14baa1a4425835324cfa9324382975c7b9cab1ada9929e"
+        },
+        {
+          "source_id": "ev_hv_ae899503f1833bc1138d",
+          "source_url": "https://cryptobriefing.com/adobe-q3-earnings-revenue-eps-beat/",
+          "body_sha256": "87f131d120df090a70fa92fb353ea797f301e1b9a62d21c5817874252dca5b6b"
+        },
+        {
+          "source_id": "ev_hv_b607a44c2f38ade0e00d",
+          "source_url": "https://finance.yahoo.com/markets/stocks/articles/adobe-systems-adbe-q3-earnings-212501160.html",
+          "body_sha256": "be25641d3dc79d7ce7106c9519fab77f4d33de3f14ce02361bbf89a92a304eea"
+        },
+        {
+          "source_id": "ev_hv_b5fd5bcdca903759567d",
+          "source_url": "https://www.ad-hoc-news.de/boerse/news/corporate-news/adobe-inc-stock-dips-after-record-q3-fy2026-results-and-raised-guidance/70084138",
+          "body_sha256": "a1b0b31e4fcfa18e55bc32eb60afb106a4ff727085280c6f0243ffa2d6613637"
+        },
+        {
+          "source_id": "ev_hv_970f4ec391a975493741",
+          "source_url": "https://www.techtimes.com/articles/327366/20260911/adobe-hits-1b-users-record-revenue-stock-still-falls-freemium-bet.htm",
+          "body_sha256": "2911ec8e612332197ea4a3a5385bc59a6114fea199ba0efb11f35d6f4130007b"
+        },
+        {
+          "source_id": "ev_hv_0a77f6c2b56725d20dae",
+          "source_url": "https://finance.yahoo.com/news/adobe-boosting-guidance-beaten-down-110000306.html",
+          "body_sha256": "cc2e1faed96e0d02da8d8ed46b32641aec4ec3185499134f46316a787e05e891"
+        },
+        {
+          "source_id": "ev_hv_5fd73423784ddcfcba10",
+          "source_url": "https://247wallst.com/investing/2026/06/11/live-will-adobe-smash-q2-earnings-after-the-bell-tonight/liveupdates/3/",
+          "body_sha256": "a7d40dd1d67df306ce19e65a9fd42dcc487e7b882b3eb60fd6d605f0dfd6c79a"
+        },
+        {
+          "source_id": "ev_hv_849a423825cb2e27d123",
+          "source_url": "https://finance.yahoo.com/news/adobe-adbe-hidden-gem-overpriced-163253212.html",
+          "body_sha256": "c5fdac650a0cecd6611f2183bf283db7a8b877ab1ff0089cc40bba19c91ccc36"
+        },
+        {
+          "source_id": "ev_hv_675a3c83c783070fe8b7",
+          "source_url": "https://finance.yahoo.com/news/unveiling-adobe-inc-adbe-market-160448421.html",
+          "body_sha256": "84c52ee6c150cc52f1610317e48877ee546895222f5b65d96cf1f7c792365472"
+        },
+        {
+          "source_id": "ev_hv_046482bd51ae2588b5fc",
+          "source_url": "https://finance.yahoo.com/markets/stocks/articles/adobe-systems-adbe-dips-more-204501496.html",
+          "body_sha256": "328c018452f82da8247a90113b1d442ba6606b0b789e63281df2dd3943283f65"
+        }
+      ],
+      "workbench_role_words": {
+        "ARTICLE_CONTENT": 926,
+        "FINANCIAL_STATEMENT": 1547,
+        "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 2771,
+        "HISTORICAL_FINANCIAL_CONTEXT": 1240
+      },
+      "discovery": {
+        "queries_generated": 18,
+        "reads_attempted": 24,
+        "captures": 16,
+        "source_diversity": {
+          "planned_families": [
+            "financial_reporting",
+            "general_reporting",
+            "regional_reporting"
+          ],
+          "submitted_families": [
+            "financial_reporting",
+            "general_reporting",
+            "regional_reporting"
+          ],
+          "observed_candidate_hosts": [
+            "247wallst.com",
+            "businesswire.com",
+            "cryptobriefing.com",
+            "finance.yahoo.com",
+            "moomoo.com",
+            "news.google.com",
+            "note.com",
+            "stocktwits.com",
+            "tradersunion.com",
+            "www.ad-hoc-news.de",
+            "www.benzinga.com",
+            "www.investing.com",
+            "www.marketscreener.com",
+            "www.moomoo.com",
+            "www.msn.com",
+            "www.stocktitan.net",
+            "www.techtimes.com",
+            "www.theglobeandmail.com",
+            "www.thestreet.com"
+          ],
+          "read_publisher_reservations": {
+            "www.theglobeandmail.com": 2,
+            "finance.yahoo.com": 5,
+            "www.investing.com": 1,
+            "www.marketscreener.com": 1,
+            "www.techtimes.com": 2,
+            "247wallst.com": 1,
+            "note.com": 1,
+            "stocktwits.com": 1,
+            "www.msn.com": 1,
+            "www.thestreet.com": 1,
+            "cryptobriefing.com": 1,
+            "www.stocktitan.net": 1,
+            "www.ad-hoc-news.de": 1,
+            "www.benzinga.com": 1,
+            "tradersunion.com": 1,
+            "news.google.com": 2,
+            "moomoo.com": 1
+          },
+          "scope": "Discovery hints and host groups, not authenticated publishers or independent confirmation",
+          "catalog_live_health": "UNVERIFIED",
+          "discovery_publisher_share_limit": 25,
+          "eligible_discovery_by_observed_publisher": {
+            "www.thestreet.com": 1,
+            "www.marketscreener.com": 1,
+            "www.investing.com": 1,
+            "www.techtimes.com": 2,
+            "www.theglobeandmail.com": 2,
+            "www.stocktitan.net": 1,
+            "www.msn.com": 1,
+            "tradersunion.com": 1,
+            "cryptobriefing.com": 1,
+            "finance.yahoo.com": 6,
+            "news.google.com": 19,
+            "note.com": 1,
+            "moomoo.com": 1,
+            "businesswire.com": 1,
+            "stocktwits.com": 1,
+            "www.ad-hoc-news.de": 1,
+            "247wallst.com": 1,
+            "www.benzinga.com": 1
+          }
+        },
+        "failure_categories": {
+          "ACCESS_DENIED": 4,
+          "PROVIDER_FAILURE": 1,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "unread_by_reason": {
+          "READ_ATTEMPT_BUDGET_EXHAUSTED": 20
+        },
+        "native_http_admissions": 80,
+        "complete_network_accounting": false,
+        "candidate_urls_discovered": 45,
+        "candidates_accepted_for_read": 44
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_class": "harvest_quarterly",
+            "query_text": "Adobe quarterly earnings",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_class": "harvest_investor",
+            "query_text": "Adobe investor disclosure",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_010",
+            "query_class": "harvest_financial",
+            "query_text": "Adobe financial statements",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_class": "harvest_company",
+            "query_text": "Adobe company guidance",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_class": "harvest_financial",
+            "query_text": "Adobe financial analysis",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_class": "harvest_quarterly",
+            "query_text": "Adobe quarterly earnings",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_003",
+            "query_class": "harvest_quarterly",
+            "query_text": "Adobe quarterly earnings (site:cnbc.com OR site:marketwatch.com OR site:business-standard.com)",
+            "operation": "search",
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "FINANCIAL",
+            "source_family": "financial_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_004",
+            "query_class": "harvest_investor",
+            "query_text": "Adobe investor disclosure (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+            "operation": "search",
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "FINANCIAL",
+            "source_family": "general_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_005",
+            "query_class": "harvest_financial",
+            "query_text": "Adobe financial statements (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+            "operation": "search",
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "FINANCIAL",
+            "source_family": "regional_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_class": "harvest_investor",
+            "query_text": "Adobe investor disclosure",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_class": "harvest_financial",
+            "query_text": "Adobe financial statements",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_class": "harvest_company",
+            "query_text": "Adobe company guidance",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_006",
+            "query_class": "harvest_quarterly",
+            "query_text": "Adobe quarterly earnings",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_009",
+            "query_class": "harvest_investor",
+            "query_text": "Adobe investor disclosure",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_class": "harvest_financial",
+            "query_text": "Adobe financial statements",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_class": "harvest_company",
+            "query_text": "Adobe company guidance",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "FINANCIAL"
+          },
+          {
+            "channel": "expanded_sources",
+            "operation": "search",
+            "query_id": "hv_q_017",
+            "query_class": "expanded_discovery",
+            "query_text": "yahoo_finance|Adobe",
+            "basis": "BOUNDED_ADAPTER_DISCOVERY_NOT_EVIDENCE"
+          },
+          {
+            "channel": "sec_edgar",
+            "query_id": "hv_q_018",
+            "query_class": "regulatory_filing",
+            "query_text": "Adobe",
+            "operation": "search"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 44,
+        "reads_attempted": null,
+        "successful_body_captures": 14,
+        "qualified_evidence": 13,
+        "first_observed_empty_boundary": null
+      },
+      "acquisition_metrics": {
+        "article_bodies": 14,
+        "qualified_source_count": 13,
+        "relevant_words": 705
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted",
+      "seconds": 40.24,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": []
+    },
+    {
+      "agent": "brandshield",
+      "input_sha256": "91c8e5187b6258346a8104c5015fd346f89033552c359cb6201e7bda6e962345",
+      "investigation_status": "COMPLETED",
+      "article_bodies": 8,
+      "raw_article_words": 7656,
+      "raw_article_utf8_kb": 46.262,
+      "qualified_sources": 4,
+      "selected_excerpt_words": 114,
+      "workbench": {
+        "source_records_with_passages": 4,
+        "observed_publisher_hosts": 4,
+        "available_unique_passages": 15,
+        "published_passages": 15,
+        "published_unique_words": 774,
+        "published_text_utf8_bytes": 5272,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "UNVERIFIED_ALLEGATION": 11,
+          "PRODUCT_SAFETY_REPORT": 1,
+          "REPORTED_ENFORCEMENT": 1,
+          "SOURCE_REPORTED_CONTEXT": 2
+        },
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [
+        {
+          "source_id": "ev_hv_232905d9e657f33e94fe",
+          "source_url": "https://www.which.co.uk/news/article/dyson-warns-of-fake-products-on-online-marketplaces-averd8q7dY3K",
+          "body_sha256": "f5be4da0ba9779626cfad8db5b7b015adfd48733a6bdcfef2a97210bac2a0b9e"
+        },
+        {
+          "source_id": "ev_hv_364f666311e08f3a3c79",
+          "source_url": "https://lawstreetmedia.com/news/tech/dyson-sues-for-trademark-infringement-for-counterfeit-goods/",
+          "body_sha256": "c1c71f146ccd6b763cbcfd83e116b3c0e1ddea0ad3109401eedbc605b7e39108"
+        },
+        {
+          "source_id": "ev_hv_51534fdd78378e3baed5",
+          "source_url": "https://www.dorsetecho.co.uk/news/19868831.recall-issued-counterfeit-dyson-airwrap-sold-ebay/",
+          "body_sha256": "af5f364dc131270c30d8c9bab83708a0279b9e90f28695bd6d2b31e1262f10e6"
+        },
+        {
+          "source_id": "ev_hv_017c3660a70fe428f55c",
+          "source_url": "https://www.mirror.co.uk/money/shoppers-warned-fake-299-dyson-26277200.amp",
+          "body_sha256": "66c5cda138631a51bec92e3789f56b8ba573881466ab8389b1bb5f0b67250e41"
+        }
+      ],
+      "workbench_role_words": {
+        "PRODUCT_SAFETY_REPORT": 37,
+        "REPORTED_ENFORCEMENT": 19,
+        "SOURCE_REPORTED_CONTEXT": 201,
+        "UNVERIFIED_ALLEGATION": 517
+      },
+      "discovery": {
+        "queries_generated": 18,
+        "reads_attempted": 15,
+        "captures": 11,
+        "source_diversity": {
+          "planned_families": [
+            "enforcement_reports",
+            "consumer_safety",
+            "consumer_protection"
+          ],
+          "submitted_families": [
+            "enforcement_reports",
+            "consumer_safety",
+            "consumer_protection"
+          ],
+          "observed_candidate_hosts": [
+            "github.com",
+            "lawstreetmedia.com",
+            "maldita.es",
+            "news.google.com",
+            "tech.hindustantimes.com",
+            "www.dorsetecho.co.uk",
+            "www.independent.co.uk",
+            "www.indiatvnews.com",
+            "www.mirror.co.uk",
+            "www.numerama.com",
+            "www.thisismoney.co.uk",
+            "www.which.co.uk"
+          ],
+          "read_publisher_reservations": {
+            "www.mirror.co.uk": 1,
+            "github.com": 1,
+            "lawstreetmedia.com": 1,
+            "www.dorsetecho.co.uk": 1,
+            "maldita.es": 2,
+            "www.thisismoney.co.uk": 1,
+            "www.numerama.com": 1,
+            "www.indiatvnews.com": 1,
+            "news.google.com": 3,
+            "www.which.co.uk": 1,
+            "tech.hindustantimes.com": 1,
+            "www.independent.co.uk": 1
+          },
+          "scope": "Discovery hints and host groups, not authenticated publishers or independent confirmation",
+          "catalog_live_health": "UNVERIFIED",
+          "discovery_publisher_share_limit": 25,
+          "eligible_discovery_by_observed_publisher": {
+            "maldita.es": 2,
+            "www.numerama.com": 1,
+            "www.which.co.uk": 1,
+            "lawstreetmedia.com": 1,
+            "www.thisismoney.co.uk": 1,
+            "github.com": 1,
+            "www.dorsetecho.co.uk": 1,
+            "www.mirror.co.uk": 1,
+            "tech.hindustantimes.com": 1,
+            "www.independent.co.uk": 1,
+            "news.google.com": 18,
+            "www.indiatvnews.com": 1
+          }
+        },
+        "failure_categories": {
+          "ACCESS_DENIED": 1,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 15
+        },
+        "native_http_admissions": 82,
+        "complete_network_accounting": false,
+        "candidate_urls_discovered": 30,
+        "candidates_accepted_for_read": 30
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Dyson\" counterfeit",
+            "operation": "search",
+            "source_plan_action_id": "spa_3bce547c7f",
+            "specialist_task": "COUNTERFEIT",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "COUNTERFEIT"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_003",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Dyson\" phishing",
+            "operation": "search",
+            "source_plan_action_id": "spa_6a7ae36e6c",
+            "specialist_task": "PHISHING",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "PHISHING"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_005",
+            "query_class": "independent_reporting",
+            "query_text": "Dyson latest independent reporting",
+            "operation": "search",
+            "source_plan_action_id": "spa_07788514ba",
+            "specialist_task": "BRAND_ABUSE",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "BRAND_ABUSE"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_class": "harvest_counterfeit",
+            "query_text": "Dyson counterfeit enforcement",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "BRAND"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_class": "harvest_impersonation",
+            "query_text": "Dyson impersonation phishing",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "BRAND"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_class": "harvest_consumer",
+            "query_text": "Dyson consumer complaints",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "BRAND"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Dyson\" impersonation",
+            "operation": "search",
+            "source_plan_action_id": "spa_374714ae37",
+            "specialist_task": "IMPERSONATION",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "IMPERSONATION"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_004",
+            "query_class": "primary_discovery",
+            "query_text": "Dyson official source",
+            "operation": "search",
+            "source_plan_action_id": "spa_8bcb285343",
+            "specialist_task": "BRAND_ABUSE",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "BRAND_ABUSE"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_006",
+            "query_class": "brand_risk",
+            "query_text": "\"Dyson\" counterfeit",
+            "operation": "search",
+            "source_plan_action_id": "spa_f92a21f458",
+            "specialist_task": "COUNTERFEIT",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "COUNTERFEIT"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_class": "harvest_counterfeit",
+            "query_text": "Dyson counterfeit enforcement",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "BRAND"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_009",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Dyson\" counterfeit (site:justice.gov OR site:cbp.gov OR site:europol.europa.eu)",
+            "operation": "search",
+            "specialist_task": "COUNTERFEIT",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "COUNTERFEIT",
+            "source_family": "enforcement_reports"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_010",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Dyson\" impersonation (site:cpsc.gov OR site:recalls.gov OR site:gov.uk)",
+            "operation": "search",
+            "specialist_task": "IMPERSONATION",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "IMPERSONATION",
+            "source_family": "consumer_safety"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_class": "brand_abuse_reporting",
+            "query_text": "\"Dyson\" phishing (site:ftc.gov OR site:europa.eu OR site:accc.gov.au)",
+            "operation": "search",
+            "specialist_task": "PHISHING",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "PHISHING",
+            "source_family": "consumer_protection"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_class": "harvest_impersonation",
+            "query_text": "Dyson impersonation phishing",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "BRAND"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_class": "harvest_counterfeit",
+            "query_text": "Dyson counterfeit enforcement",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "BRAND"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_class": "harvest_impersonation",
+            "query_text": "Dyson impersonation phishing",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "BRAND"
+          },
+          {
+            "channel": "expanded_sources",
+            "operation": "search",
+            "query_id": "hv_q_017",
+            "query_class": "expanded_discovery",
+            "query_text": "news_wires|Dyson",
+            "basis": "BOUNDED_ADAPTER_DISCOVERY_NOT_EVIDENCE"
+          },
+          {
+            "channel": "reddit",
+            "query_id": "hv_q_018",
+            "query_class": "community_discussion",
+            "query_text": "Dyson",
+            "operation": "search",
+            "source_plan_action_id": "spa_0ab89ad4ed",
+            "specialist_task": "BRAND_ABUSE",
+            "requested_specialist_tasks": [
+              "COUNTERFEIT",
+              "PHISHING",
+              "COMPLAINT",
+              "BRAND_ABUSE",
+              "PRODUCT_SAFETY"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "BRAND_ABUSE"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 30,
+        "reads_attempted": null,
+        "successful_body_captures": 8,
+        "qualified_evidence": 4,
+        "first_observed_empty_boundary": null
+      },
+      "acquisition_metrics": {
+        "article_bodies": 8,
+        "qualified_source_count": 4,
+        "relevant_words": 114
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted",
+      "seconds": 25.97,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": []
+    },
+    {
+      "agent": "trending",
+      "input_sha256": "444149795b1a49dacf06241751df050f64212d14f379e681d13686e65e27dedb",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "article_bodies": 8,
+      "raw_article_words": 9596,
+      "raw_article_utf8_kb": 68.421,
+      "qualified_sources": 0,
+      "selected_excerpt_words": 0,
+      "workbench": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [],
+      "workbench_role_words": {},
+      "discovery": {
+        "queries_generated": 18,
+        "reads_attempted": 21,
+        "captures": 16,
+        "source_diversity": {
+          "planned_families": [
+            "technology_reporting",
+            "science_reporting",
+            "general_reporting"
+          ],
+          "submitted_families": [
+            "technology_reporting",
+            "science_reporting",
+            "general_reporting"
+          ],
+          "observed_candidate_hosts": [
+            "ess-news.com",
+            "indexbox.io",
+            "news.google.com",
+            "openpr.com",
+            "recyclingtoday.com",
+            "www.ess-news.com",
+            "www.indexbox.io",
+            "www.openpr.com",
+            "www.recyclingtoday.com"
+          ],
+          "read_publisher_reservations": {
+            "recyclingtoday.com": 1,
+            "indexbox.io": 1,
+            "www.recyclingtoday.com": 1,
+            "openpr.com": 1,
+            "www.indexbox.io": 8,
+            "www.openpr.com": 1,
+            "www.ess-news.com": 8
+          },
+          "scope": "Discovery hints and host groups, not authenticated publishers or independent confirmation",
+          "catalog_live_health": "UNVERIFIED",
+          "discovery_publisher_share_limit": 25,
+          "eligible_discovery_by_observed_publisher": {
+            "indexbox.io": 1,
+            "recyclingtoday.com": 1,
+            "ess-news.com": 1,
+            "openpr.com": 1,
+            "news.google.com": 2
+          }
+        },
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1,
+          "ACCESS_DENIED": 1
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 3,
+          "HOST_READ_BUDGET_EXHAUSTED": 27
+        },
+        "native_http_admissions": 88,
+        "complete_network_accounting": false,
+        "candidate_urls_discovered": 51,
+        "candidates_accepted_for_read": 51
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_class": "harvest_recent",
+            "query_text": "Battery Recycling recent developments when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_class": "harvest_research",
+            "query_text": "Battery Recycling research update when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_010",
+            "query_class": "harvest_industry",
+            "query_text": "Battery Recycling industry announcement when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_class": "harvest_institution",
+            "query_text": "Battery Recycling institution announcement when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_class": "harvest_latest",
+            "query_text": "Battery Recycling latest news when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_class": "harvest_recent",
+            "query_text": "Battery Recycling recent developments when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_003",
+            "query_class": "harvest_recent",
+            "query_text": "Battery Recycling recent developments when:2d after:2026-10-22 before:2026-10-25 (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)",
+            "operation": "search",
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "TRENDING",
+            "source_family": "technology_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_004",
+            "query_class": "harvest_research",
+            "query_text": "Battery Recycling research update when:2d after:2026-10-22 before:2026-10-25 (site:nature.com OR site:sciencedaily.com OR site:phys.org)",
+            "operation": "search",
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "TRENDING",
+            "source_family": "science_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_005",
+            "query_class": "harvest_industry",
+            "query_text": "Battery Recycling industry announcement when:2d after:2026-10-22 before:2026-10-25 (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+            "operation": "search",
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "TRENDING",
+            "source_family": "general_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_class": "harvest_research",
+            "query_text": "Battery Recycling research update when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_class": "harvest_industry",
+            "query_text": "Battery Recycling industry announcement when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_class": "harvest_institution",
+            "query_text": "Battery Recycling institution announcement when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_017",
+            "query_class": "harvest_latest",
+            "query_text": "Battery Recycling latest news when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_006",
+            "query_class": "harvest_recent",
+            "query_text": "Battery Recycling recent developments when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_009",
+            "query_class": "harvest_research",
+            "query_text": "Battery Recycling research update when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_class": "harvest_industry",
+            "query_text": "Battery Recycling industry announcement when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_class": "harvest_institution",
+            "query_text": "Battery Recycling institution announcement when:2d after:2026-10-22 before:2026-10-25",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "TRENDING"
+          },
+          {
+            "channel": "expanded_sources",
+            "operation": "search",
+            "query_id": "hv_q_018",
+            "query_class": "expanded_discovery",
+            "query_text": "bluesky|Battery Recycling",
+            "basis": "BOUNDED_ADAPTER_DISCOVERY_NOT_EVIDENCE"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 51,
+        "reads_attempted": null,
+        "successful_body_captures": 8,
+        "qualified_evidence": 0,
+        "first_observed_empty_boundary": "BODY_OR_PASSAGE_QUALIFICATION"
+      },
+      "acquisition_metrics": {
+        "article_bodies": 8,
+        "qualified_source_count": 0,
+        "relevant_words": 0
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted",
+      "seconds": 52.19,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": []
+    },
+    {
+      "agent": "personal_watch",
+      "input_sha256": "ca4b39712a9e5bb7b4beecfa86b630cfacb453370d3f06981e855c101a5149fe",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "article_bodies": 1,
+      "raw_article_words": 484,
+      "raw_article_utf8_kb": 3.009,
+      "qualified_sources": 0,
+      "selected_excerpt_words": 0,
+      "workbench": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [],
+      "workbench_role_words": {},
+      "discovery": {
+        "queries_generated": 18,
+        "reads_attempted": 7,
+        "captures": 3,
+        "source_diversity": {
+          "planned_families": [
+            "general_reporting",
+            "technology_reporting",
+            "regional_reporting"
+          ],
+          "submitted_families": [
+            "general_reporting",
+            "technology_reporting",
+            "regional_reporting"
+          ],
+          "observed_candidate_hosts": [
+            "auto.economictimes.indiatimes.com",
+            "bloomberg.com",
+            "ceoinsightsasia.com",
+            "economictimes.indiatimes.com",
+            "news.google.com",
+            "www.bloomberg.com",
+            "www.ceoinsightsasia.com",
+            "x.com"
+          ],
+          "read_publisher_reservations": {
+            "news.google.com": 2,
+            "economictimes.indiatimes.com": 1,
+            "auto.economictimes.indiatimes.com": 1,
+            "ceoinsightsasia.com": 1,
+            "www.ceoinsightsasia.com": 1,
+            "www.bloomberg.com": 1
+          },
+          "scope": "Discovery hints and host groups, not authenticated publishers or independent confirmation",
+          "catalog_live_health": "UNVERIFIED",
+          "discovery_publisher_share_limit": 25,
+          "eligible_discovery_by_observed_publisher": {
+            "bloomberg.com": 1,
+            "ceoinsightsasia.com": 1,
+            "news.google.com": 11,
+            "economictimes.indiatimes.com": 1,
+            "auto.economictimes.indiatimes.com": 1
+          }
+        },
+        "failure_categories": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "ACCESS_DENIED": 1
+        },
+        "unread_by_reason": {
+          "WRAPPER_READ_BUDGET_EXHAUSTED": 10
+        },
+        "native_http_admissions": 74,
+        "complete_network_accounting": false,
+        "candidate_urls_discovered": 18,
+        "candidates_accepted_for_read": 17
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Mary Barra\" deepfake",
+            "operation": "search",
+            "source_plan_action_id": "spa_e68a820ff3",
+            "specialist_task": "DEEPFAKE",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_003",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Mary Barra\" impersonation",
+            "operation": "search",
+            "source_plan_action_id": "spa_4bf28f1750",
+            "specialist_task": "IMPERSONATION",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_005",
+            "query_class": "identity_corroboration",
+            "query_text": "\"Mary Barra\" (impersonation OR deepfake OR scam)",
+            "operation": "search",
+            "source_plan_action_id": "spa_c9190be0f0",
+            "specialist_task": "IMPERSONATION",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_class": "harvest_public",
+            "query_text": "Mary Barra public statement",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_class": "harvest_impersonation",
+            "query_text": "Mary Barra impersonation allegation",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_class": "harvest_identity",
+            "query_text": "Mary Barra identity deepfake",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Mary Barra\" statement interview",
+            "operation": "search",
+            "source_plan_action_id": "spa_f446db37fc",
+            "specialist_task": "PUBLIC_STATEMENT",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "PUBLIC_STATEMENT"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_004",
+            "query_class": "synthetic_media_reporting",
+            "query_text": "\"Mary Barra\" deepfake",
+            "operation": "search",
+            "source_plan_action_id": "spa_e7b9c101cb",
+            "specialist_task": "DEEPFAKE",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_006",
+            "query_class": "personal_watch",
+            "query_text": "\"Mary Barra\" impersonation scam",
+            "operation": "search",
+            "source_plan_action_id": "spa_03552fbfad",
+            "specialist_task": "IMPERSONATION",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_class": "harvest_public",
+            "query_text": "Mary Barra public statement",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "PUBLIC_STATEMENT"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_009",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Mary Barra\" deepfake (site:reuters.com OR site:apnews.com OR site:bbc.com)",
+            "operation": "search",
+            "specialist_task": "DEEPFAKE",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "IDENTITY_THREAT",
+            "source_family": "general_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_010",
+            "query_class": "public_statement_discovery",
+            "query_text": "\"Mary Barra\" statement interview (site:arstechnica.com OR site:techcrunch.com OR site:theverge.com)",
+            "operation": "search",
+            "specialist_task": "PUBLIC_STATEMENT",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "PUBLIC_STATEMENT",
+            "source_family": "technology_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_class": "identity_abuse_reporting",
+            "query_text": "\"Mary Barra\" impersonation (site:theguardian.com OR site:dw.com OR site:aljazeera.com)",
+            "operation": "search",
+            "specialist_task": "IMPERSONATION",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "PUBLISHER_FAMILY_DISCOVERY_HINT",
+            "acquisition_objective": "IDENTITY_THREAT",
+            "source_family": "regional_reporting"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_class": "harvest_impersonation",
+            "query_text": "Mary Barra impersonation allegation",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_class": "harvest_public",
+            "query_text": "Mary Barra public statement",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "PUBLIC_STATEMENT"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_class": "harvest_impersonation",
+            "query_text": "Mary Barra impersonation allegation",
+            "operation": "search",
+            "basis": "DETERMINISTIC_OBJECTIVE",
+            "acquisition_objective": "IDENTITY_THREAT"
+          },
+          {
+            "channel": "expanded_sources",
+            "operation": "search",
+            "query_id": "hv_q_017",
+            "query_class": "expanded_discovery",
+            "query_text": "substack|Mary Barra",
+            "basis": "BOUNDED_ADAPTER_DISCOVERY_NOT_EVIDENCE"
+          },
+          {
+            "channel": "twitter",
+            "query_id": "hv_q_018",
+            "query_class": "verified_profile",
+            "query_text": "Mary Barra",
+            "operation": "profile",
+            "source_plan_action_id": "spa_0b1a75a1a9",
+            "specialist_task": "IDENTITY_THREAT",
+            "requested_specialist_tasks": [
+              "PUBLIC_STATEMENT",
+              "IDENTITY_THREAT"
+            ],
+            "basis": "VALIDATED_SPECIALIST_SOURCE_PLAN",
+            "acquisition_objective": "IDENTITY_THREAT"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 17,
+        "reads_attempted": null,
+        "successful_body_captures": 1,
+        "qualified_evidence": 0,
+        "first_observed_empty_boundary": "BODY_OR_PASSAGE_QUALIFICATION"
+      },
+      "acquisition_metrics": {
+        "article_bodies": 1,
+        "qualified_source_count": 0,
+        "relevant_words": 0
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted",
+      "seconds": 24.38,
+      "http_status": 200,
+      "result_event": true,
+      "error_events": []
+    }
+  ],
+  "browser": {
+    "mode": "OFFLINE_SAVED_API_REPORT_RENDERING",
+    "new_provider_calls": 0,
+    "model_calls": 0,
+    "external_browser_traffic": "BLOCKED",
+    "states": [
+      {
+        "agent": "scout",
+        "width": 320,
+        "expected_passages": 117,
+        "visited_passages": 117,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "scout",
+        "width": 390,
+        "expected_passages": 117,
+        "visited_passages": 117,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "scout",
+        "width": 1440,
+        "expected_passages": 117,
+        "visited_passages": 117,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "brandshield",
+        "width": 320,
+        "expected_passages": 15,
+        "visited_passages": 15,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "brandshield",
+        "width": 390,
+        "expected_passages": 15,
+        "visited_passages": 15,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "brandshield",
+        "width": 1440,
+        "expected_passages": 15,
+        "visited_passages": 15,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "trending",
+        "width": 320,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "trending",
+        "width": 390,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "trending",
+        "width": 1440,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 320,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 390,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 1440,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      }
+    ],
+    "limitations": [
+      "Shared report rendering, not native form submission or fresh acquisition.",
+      "External fonts/resources blocked; no screen-reader or contrast certification."
+    ],
+    "screenshot_inspection": "Scout and Trending mobile workbench captures viewed; remaining states checked by automation"
+  },
+  "offline_post_live_fix": {
+    "scope": "Topic regular -ies plural handling for topic/general/concept/product Trending inputs; named identity matching unchanged",
+    "new_provider_calls": 0,
+    "model_calls": 0,
+    "input_sha256": "444149795b1a49dacf06241751df050f64212d14f379e681d13686e65e27dedb",
+    "before_original_pool_sha256": "69b77d7124ddfe65f341ef0908d42784e845567ae190b0dd3013ba685d43bde1",
+    "after_original_pool_sha256": "69b77d7124ddfe65f341ef0908d42784e845567ae190b0dd3013ba685d43bde1",
+    "before_qualified": 0,
+    "after_qualified": 1,
+    "qualified_passages": [
+      {
+        "source_url": "https://www.ess-news.com/2026/10/23/swedish-industry-seeks-battery-recycling-checks-for-grid-service-access/",
+        "text": "Producer responsibility is intended to secure financing for the future collection and recycling of batteries and should be shared fairly among all companies that place products on the market, said Svensk Solenergi. It added that compliance is difficult to supervise in a fast-growing industry with many new players, complex supply chains and numerous, widely dispersed installations.",
+        "start": 428,
+        "end": 811,
+        "word_count": 56,
+        "source_id": "ev_hv_2511bf0299e340b8f47a",
+        "claim_support": "NOT_ADJUDICATED"
+      }
+    ],
+    "live_postfix_check": "NOT_RUN_PERMISSION_CONSUMED",
+    "full_tests": {
+      "passed": 2300,
+      "seconds": 51.62,
+      "exit_code": 0
+    },
+    "fast_tests": {
+      "passed": 2092,
+      "seconds": 38.29,
+      "exit_code": 0
+    },
+    "frontend_node_scripts_passed": 10,
+    "fatal_lint_exit_code": 0
+  },
+  "twentyfold_useful_evidence": "NOT_DEMONSTRATED",
+  "limitations": [
+    "Raw text is not useful evidence; selected words are not independently verified.",
+    "A selected-excerpt to workbench ratio is not growth over all previously inspectable frontend text.",
+    "Fresh live batches are not controlled before/after comparisons; source availability and dates may change."
+  ],
+  "post_live_application_sha256": "6d40a218574cdc66bdaa112a0f311d9d5ea6836d79869d3f20fa68b6f79226d8"
+}

@@ -53,6 +53,19 @@
   --ease-spring:      cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Evidence depth is paginated independently of the executive brief. */
+[data-ur-workbench] { padding: 1rem; min-width: 0; overflow-wrap: anywhere; }
+.ur-workbench-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 1rem; margin: 1rem 0; }
+.ur-workbench-filters label { display: grid; gap: .4rem; min-width: 0; }
+.ur-workbench-filters input, .ur-workbench-filters select { width: 100%; min-width: 0; padding: .65rem; color: inherit; background: var(--bg-card, #11151f); border: 1px solid var(--border-color, #64748b); border-radius: .4rem; }
+.ur-workbench-passage { padding: 1rem; margin-block: .8rem; border: 1px solid var(--border-color, #64748b); border-radius: .5rem; overflow-wrap: anywhere; }
+.ur-workbench-passage blockquote { margin: .8rem 0; padding-inline-start: 1rem; border-inline-start: 2px solid var(--accent-cyan, #06b6d4); white-space: pre-wrap; }
+.ur-workbench-passage h4 { margin: 0; }
+.ur-workbench-pagination { display: flex; flex-wrap: wrap; gap: .75rem; }
+.ur-workbench-pagination button { min-height: 44px; padding: .6rem 1rem; color: inherit; background: var(--bg-card, #11151f); border: 1px solid var(--border-color, #64748b); border-radius: .4rem; cursor: pointer; }
+.ur-workbench-pagination button:disabled { opacity: .5; cursor: default; }
+.ur-workbench-filters :focus-visible, .ur-workbench-pagination :focus-visible { outline: 2px solid var(--accent-cyan, #06b6d4); outline-offset: 3px; }
+
 html {
   scroll-behavior: smooth;
   color-scheme: dark;

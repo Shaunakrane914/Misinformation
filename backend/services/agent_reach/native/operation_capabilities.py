@@ -25,6 +25,7 @@ from backend.services.agent_reach.native.channel_capabilities import (
 # The canonical production dispatch contract.  Keep this narrower than the
 # upstream declaration catalogue and protect it with dispatcher contract tests.
 EXECUTABLE_CAPABILITIES: Dict[str, Set[str]] = {
+    "expanded_sources": {"search"},
     "news": {"search"},
     "web": {"search", "read"},
     "web_search": {"search"},
@@ -53,6 +54,7 @@ EXECUTABLE_CAPABILITIES: Dict[str, Set[str]] = {
 
 
 OPERATION_DEPTHS: Dict[Tuple[str, str], Set[str]] = {
+    ("expanded_sources", "search"): {"SEARCH_INDEX_DISCOVERY"},
     ("news", "search"): {"SYNDICATED_SUMMARY"},
     ("rss", "search"): {"SYNDICATED_SUMMARY"},
     ("rss", "read"): {"SYNDICATED_SUMMARY"},

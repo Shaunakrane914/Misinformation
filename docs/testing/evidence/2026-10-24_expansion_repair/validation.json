@@ -1,0 +1,142 @@
+{
+  "date": "2026-10-24",
+  "scope": "OFFLINE_EXPANSION_REPAIR",
+  "new_provider_calls": 0,
+  "model_calls": 0,
+  "fresh_live_acceptance": "NOT_VERIFIED",
+  "twentyfold_useful_evidence": "NOT_DEMONSTRATED",
+  "committed": false,
+  "pushed": false,
+  "deployed": false,
+  "checkouts": [
+    {
+      "name": "original",
+      "branch": "feat/phase8-real-acquisition-proof",
+      "head": "1e1c44e89ff635974150770d5d4cea1e9c9fb19e",
+      "full": {
+        "exit_code": 0,
+        "passed": 1063,
+        "seconds": 30.05
+      },
+      "fast": {
+        "exit_code": 0,
+        "passed": 867,
+        "seconds": 14.01
+      },
+      "fatal_lint_exit_code": 0,
+      "node_scripts_passed": 2,
+      "smoke": "OFFLINE_SMOKE_PASS",
+      "rollback": {
+        "exit_code": 1,
+        "verdict": "HISTORICAL_ARCHIVE_FAIL",
+        "archive": {
+          "status": "FAIL",
+          "counts": {
+            "VERIFIED": 11,
+            "LEGACY_UNSEALED": 2445,
+            "FAILED": 55
+          }
+        },
+        "deployed_rollback": "NOT_VERIFIED"
+      }
+    },
+    {
+      "name": "release",
+      "branch": "release/specialist-task-20261024",
+      "head": "1a90d681361b8e027a12feb88266932a5cb5d1d1",
+      "full": {
+        "exit_code": 0,
+        "passed": 2292,
+        "seconds": 39.75
+      },
+      "fast": {
+        "exit_code": 0,
+        "passed": 2084,
+        "seconds": 32.88
+      },
+      "fatal_lint_exit_code": 0,
+      "node_scripts_passed": 10,
+      "smoke": "OFFLINE_SMOKE_PASS",
+      "rollback": {
+        "exit_code": 0,
+        "verdict": "OFFLINE_PERSISTENCE_PASS",
+        "archive": {
+          "status": "NOT_VERIFIED",
+          "counts": {
+            "VERIFIED": 0,
+            "LEGACY_UNSEALED": 0,
+            "FAILED": 0
+          }
+        },
+        "deployed_rollback": "NOT_VERIFIED"
+      }
+    }
+  ],
+  "browser_replay": {
+    "mode": "OFFLINE_SAVED_API_REPORT_RENDERING",
+    "states": 12,
+    "passed": true,
+    "external_browser_traffic": "BLOCKED",
+    "new_provider_calls": 0,
+    "model_calls": 0
+  },
+  "saved_response_measurements": {
+    "mode": "OFFLINE_SAVED_AGENT_MEASUREMENT",
+    "new_network_calls": 0,
+    "model_calls": 0,
+    "cases": [
+      {
+        "agent": "scout",
+        "retained_unique_body_words": 16705,
+        "retained_body_records": 13,
+        "published_selected_passages": 127,
+        "published_selected_words": 6948,
+        "usefulness_independently_reviewed": false,
+        "twentyfold_acceptance": "NOT_EVALUATED",
+        "scope": "Saved normal agent output; no separately fetched adapter text added"
+      },
+      {
+        "agent": "brandshield",
+        "retained_unique_body_words": 3070,
+        "retained_body_records": 5,
+        "published_selected_passages": 16,
+        "published_selected_words": 792,
+        "usefulness_independently_reviewed": false,
+        "twentyfold_acceptance": "NOT_EVALUATED",
+        "scope": "Saved normal agent output; no separately fetched adapter text added"
+      },
+      {
+        "agent": "trending",
+        "retained_unique_body_words": 0,
+        "retained_body_records": 0,
+        "published_selected_passages": 0,
+        "published_selected_words": 0,
+        "usefulness_independently_reviewed": false,
+        "twentyfold_acceptance": "NOT_EVALUATED",
+        "scope": "Saved normal agent output; no separately fetched adapter text added"
+      },
+      {
+        "agent": "personal_watch",
+        "retained_unique_body_words": 0,
+        "retained_body_records": 0,
+        "published_selected_passages": 0,
+        "published_selected_words": 0,
+        "usefulness_independently_reviewed": false,
+        "twentyfold_acceptance": "NOT_EVALUATED",
+        "scope": "Saved normal agent output; no separately fetched adapter text added"
+      }
+    ],
+    "multiplier_claim": "NOT_DEMONSTRATED"
+  },
+  "synthetic_scheduler": {
+    "mode": "SYNTHETIC_SLEEP_SCHEDULER_ONLY",
+    "real_http_requests": 0,
+    "same_concurrency": 4,
+    "tasks": 16,
+    "thread_seconds": 0.2049222000023292,
+    "async_seconds": 0.2540907000002335,
+    "observed_scheduler_ratio": 0.8064923273545269,
+    "acquisition_throughput": "NOT_MEASURED",
+    "twentyfold_acceptance": "NOT_DEMONSTRATED"
+  }
+}

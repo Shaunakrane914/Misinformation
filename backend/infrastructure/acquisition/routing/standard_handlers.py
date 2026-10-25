@@ -55,6 +55,13 @@ class StandardChannelHandlers:
             return handler(query, limit, query_id, query_class, query_text, telemetry, **kwargs)
         return self._execute_generic(platform, query, limit, query_id, query_class, query_text, telemetry)
 
+    def _execute_expanded_sources(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        from backend.infrastructure.acquisition.adapters.expanded_catalog import ExpandedSourceChannel
+        fragments = ExpandedSourceChannel().search(query, limit=limit, query_id=query_id,
+                                                    query_class=query_class)
+        telemetry.update(status="SUCCESS", backend="bounded-expanded-adapters")
+        return fragments
+
     def _execute_github(self, query, limit, query_id, query_class, query_text, telemetry, **_):
         operation = str(_.get("operation", "search")).lower()
         if operation != "search":

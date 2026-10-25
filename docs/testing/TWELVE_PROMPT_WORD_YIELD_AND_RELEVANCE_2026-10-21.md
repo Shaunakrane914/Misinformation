@@ -1,5 +1,9 @@
 # Twelve-prompt live word-yield and relevance check — 2026-10-21
 
+Latest continuation: [useful evidence expansion ? October25](USEFUL_EVIDENCE_EXPANSION_2026-10-25.md).
+It preserves new live acquisition, the Personal routing failure/fix and separate
+post-fix proof. The twelve-case historical observations below remain unchanged.
+
 Latest specialist-layer repair: [task discovery and segregation](SPECIALIST_TASK_DISCOVERY_AND_SEGREGATION_2026-10-24.md).
 BrandShield/Personal planning and interpretation are corrected offline; no new
 live word-yield measurement is claimed. The original twelve-case results remain

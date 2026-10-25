@@ -10,6 +10,44 @@ from backend.schemas.evidence_inspection import METADATA_DEPTHS
 from backend.infrastructure.acquisition.adapters.web.page_extraction import recovered_span_allowed
 
 
+def _reported_quote_has_speaker(paragraph, speaker):
+    quote = r'["“][^"”\n]{8,}["”]'
+    relative = r"(?:\s*,\s*(?:who|the|a|an)\s+[^,.!?\n]{1,100},)?"
+    verb = r"(?:said|says|wrote|writes|told)"
+    name = r"\b(?:" + speaker + r")\b"
+    after_quote = quote + r"[,\s]*(?:" + name + relative + r"\s+" + verb + r"|" + verb + r"\s+" + name + r")"
+    before_quote = name + relative + r"\s+" + verb + r"(?:\s+(?:in a (?:statement|release|post)|that)){0,2}\s*[:,\-]?\s*" + quote
+    return bool(re.search(after_quote + "|" + before_quote, paragraph, re.I))
+
+
+def _captured_surname_unambiguous(body, target):
+    names = target.split()
+    if len(names) < 2 or len(names[-1]) < 3 or not re.search(r"\b" + re.escape(target) + r"\b", body, re.I):
+        return False
+    roles = {"chief", "executive", "officer", "president", "chair", "chairman", "chairwoman", "ceo", "cfo", "cto", "coo",
+             "director", "minister", "founder", "professor", "dr", "mr", "ms", "mrs"}
+    prefixes = re.findall(r"\b((?:[^\W\d_]+\.?[ \t]+){1,5})(?i:" + re.escape(names[-1]) + r")\b", body)
+    if not prefixes:
+        return False
+    expected = [part.casefold() for part in names[:-1]]
+    named = 0
+    for prefix in prefixes:
+        given = prefix.split()
+        last_lower = max((i for i, part in enumerate(given) if not part[0].isupper()), default=-1)
+        given = given[last_lower + 1:]
+        last_role = max((i for i, part in enumerate(given) if part.casefold() in roles), default=-1)
+        given = given[last_role + 1:]
+        if not given:
+            continue
+        named += 1
+        exact = [part.casefold() for part in given] == expected
+        middle_initial = (len(expected) == 1 and len(given) == 2 and given[0].casefold() == expected[0]
+                          and re.fullmatch(r"[A-Z]\.", given[1]))
+        if not exact and not middle_initial:
+            return False
+    return named > 0
+
+
 def public_statement_attribution(record, paragraph, target):
     """Observed speaker/author linkage only, never identity authentication.
 
@@ -50,10 +88,8 @@ def public_statement_attribution(record, paragraph, target):
         body = get("content", "") or ""
         if paragraph not in body:
             return None
-        quoted = re.search(r'"[^"\n]{8,}"|\u201c[^\u201d\n]{8,}\u201d', paragraph)
-        escaped = re.escape(target)
-        speaker = re.search(r"\b" + escaped + r"(?:\s*,[^,.!?]{0,45},)?\s+(?:said|says|wrote|writes|told)\b|\b(?:said|says|wrote|writes)\s+" + escaped + r"\b", paragraph, re.I)
-        return "REPORTED_QUOTATION" if quoted and speaker else None
+        return "REPORTED_QUOTATION" if (_reported_quote_has_speaker(paragraph, re.escape(target))
+            and (len(target.split()) < 2 or _captured_surname_unambiguous(body, target))) else None
     if (get("source_name") or get("author") or "").casefold().strip() == target.casefold().strip():
         return "OBSERVED_FEED_AUTHOR"
     body = get("content", "") or ""
@@ -67,7 +103,8 @@ def public_statement_attribution(record, paragraph, target):
     escaped = re.escape(target)
     if re.search(r"\b" + escaped + r"\s*:", paragraph, re.I):
         return "OBSERVED_SPEAKER_LABEL"
-    if re.search(r"\b(?:said|says|wrote|writes)\s+" + escaped + r"\b|\b" + escaped + r"(?:\s*,[^,.!?]{0,45},)?\s+(?:said|says|wrote|writes|told)\b", paragraph, re.I) and re.search(r'["“”]', paragraph):
+    if (_reported_quote_has_speaker(paragraph, escaped)
+            and (len(target.split()) < 2 or _captured_surname_unambiguous(body, target))):
         return "REPORTED_QUOTATION"
     # Releases often introduce a full name and then use a surname. Only use
     # that observed alias when this capture contains the full target and no
@@ -76,20 +113,26 @@ def public_statement_attribution(record, paragraph, target):
     names = target.split()
     if len(names) >= 2 and len(names[-1]) >= 3 and re.search(r"\b" + escaped + r"\b", body, re.I):
         surname = re.escape(names[-1])
-        observed_names = re.findall(r"\b([A-Z][a-z]+(?:[- ][A-Z][a-z]+){0,2})\s+(?i:" + surname + r")\b", body)
-        unambiguous = observed_names and all(name.casefold() == " ".join(names[:-1]).casefold() for name in observed_names)
-        if unambiguous and re.search(r"\b(?:said|says|wrote|writes)\s+" + surname + r"\b", paragraph, re.I) and re.search(r'["“”]', paragraph):
+        # Require the introduced full given name, excluding job-title prefixes.
+        # Matching just the final given name would conflate two people sharing
+        # a middle name. Quote and reporting verb must belong to this speaker.
+        if _captured_surname_unambiguous(body, target) and _reported_quote_has_speaker(paragraph, surname):
             return "REPORTED_QUOTATION_SURNAME_IN_CAPTURE"
     return None
 
 
 def classify_passage(text, *, domain=""):
+    from backend.services.research.content_roles import LOCAL_BRAND_ABUSE, LOCAL_BRAND_WARNING, LOCAL_BRAND_NEGATION
     role = paragraph_role(text)
     if role != "SUBSTANTIVE_CANDIDATE":
         return role
+    if domain == "brand" and re.search(LOCAL_BRAND_NEGATION, text, re.I):
+        return "DISPUTED_CLAIM"
     if re.search(r"\b(?:false|fabricated|misattributed|debunked) (?:claim|quote|allegation)|\b(?:did not|never) (?:say|endorse)", text, re.I):
         return "DISPUTED_CLAIM"
-    if re.search(r"\b(?:beware|warns|warning|we never|we do not|protect yourself|avoid scams)\b", text, re.I) and re.search(r"scam|fraud|phishing|fake", text, re.I):
+    if ((re.search(r"\b(?:beware|warns|warning|we never|we do not|protect yourself|avoid scams)\b", text, re.I)
+            or re.search(LOCAL_BRAND_WARNING, text, re.I))
+            and re.search(r"scam|fraud|phishing|fake|" + LOCAL_BRAND_ABUSE, text, re.I)):
         return "SAFETY_WARNING"
     if re.search(r"\b(?:add to cart|shop now|shop all|free shipping|size guide)\b", text, re.I) and not re.search(r"\b(?:counterfeit|replica|knockoff|unauthorized seller)\b", text, re.I):
         return "PRODUCT_CATALOG"
@@ -100,7 +143,7 @@ def classify_passage(text, *, domain=""):
     if domain == "brand" and re.search(r"counterfeit|phishing|impersonat|scam|fraud", text, re.I) and re.search(r"\b(?:seized|arrested|charged|convicted|court|police|customs|CBP)\b", text, re.I):
         return "REPORTED_ENFORCEMENT"
     if domain in {"brand", "personal"} and matches_objective(text, domain):
-        return "UNVERIFIED_ALLEGATION" if re.search(r"scam|counterfeit|impersonat|deepfake|fake |phishing|fraud", text, re.I) else "PUBLIC_STATEMENT"
+        return "UNVERIFIED_ALLEGATION" if re.search(r"scam|counterfeit|impersonat|deepfake|fake |phishing|fraud|" + LOCAL_BRAND_ABUSE, text, re.I) else "PUBLIC_STATEMENT"
     if domain == "financial" and re.search(r"revenue|profit|earnings|cash flow", text, re.I):
         return "FINANCIAL_STATEMENT"
     return "ARTICLE_CONTENT"

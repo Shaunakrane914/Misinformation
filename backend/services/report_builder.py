@@ -905,6 +905,9 @@ def _complete_agent_report(report, data, execution_log, queries_planned):
             if item.url:
                 seen_urls.add(item.url)
     report.evidence = canonical
+    from backend.services.research.evidence_workbench import build_evidence_workbench
+    report.evidence_workbench = build_evidence_workbench([
+        item.to_dict() for bucket in (canonical.primary, canonical.independent, canonical.community) for item in bucket])
 
     # Legacy structured conflict types are not established merely because an
     # adapter named them FACTUAL_CONTRADICTION. Require explicit review and

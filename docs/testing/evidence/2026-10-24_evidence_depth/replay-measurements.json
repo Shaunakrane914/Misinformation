@@ -1,0 +1,758 @@
+{
+  "mode": "SAVED_SOURCE_REPLAY",
+  "target_multiplier": 20,
+  "target_status": "NOT_DEMONSTRATED",
+  "cases": [
+    {
+      "agent": "scout",
+      "input_sha256": "1ed9602a6541c6310ba3400bf3c6782d9cb7e228902cb06f8810b5ebe0d37fe8",
+      "investigation_status": "COMPLETED",
+      "article_bodies": 14,
+      "raw_article_words": 16908,
+      "raw_article_utf8_kb": 118.115,
+      "qualified_sources": 13,
+      "selected_excerpt_words": 650,
+      "workbench": {
+        "source_records_with_passages": 13,
+        "observed_publisher_hosts": 10,
+        "available_unique_passages": 124,
+        "published_passages": 124,
+        "published_unique_words": 6618,
+        "published_text_utf8_bytes": 42886,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 20,
+          "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 43,
+          "FINANCIAL_STATEMENT": 30,
+          "HISTORICAL_FINANCIAL_CONTEXT": 30,
+          "CORRECTION_OR_RESPONSE": 1
+        },
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [
+        {
+          "source_id": "ev_hv_45028b06cae88e4f9316",
+          "source_url": "https://www.marketscreener.com/news/adobe-earnings-press-release-au56y4ter-ce785bded08df520",
+          "body_sha256": "039c4073af5c39b328b5f5fd3c2016a6c05223a2adb2a1e99028b2e22e601340"
+        },
+        {
+          "source_id": "ev_hv_ae899503f1833bc1138d",
+          "source_url": "https://cryptobriefing.com/adobe-q3-earnings-revenue-eps-beat/",
+          "body_sha256": "87f131d120df090a70fa92fb353ea797f301e1b9a62d21c5817874252dca5b6b"
+        },
+        {
+          "source_id": "ev_hv_b607a44c2f38ade0e00d",
+          "source_url": "https://finance.yahoo.com/markets/stocks/articles/adobe-systems-adbe-q3-earnings-212501160.html",
+          "body_sha256": "8ed2d7f425edd23b59c0408db40aeefdfb34ca0ec10c662012ef62c2c5510a60"
+        },
+        {
+          "source_id": "ev_hv_013c69034da97ecfeeaa",
+          "source_url": "https://www.theglobeandmail.com/investing/markets/stocks/GOOGL/pressreleases/4492304/oracle-adobe-micron-alphabet-and-nvidia-are-part-of-zacks-earnings-preview/",
+          "body_sha256": "83e29d97e91c06c192ee4c233bb7a8b6ba5e77a42bb8d6b810b8b76bf0dee1a2"
+        },
+        {
+          "source_id": "ev_hv_5c9c7e62a9faf6ac6d84",
+          "source_url": "https://www.techtimes.com/articles/318264/20260612/adobe-q2-2026-earnings-record-662b-revenue-ai-arr-triples-cfo-exits-days.htm",
+          "body_sha256": "2c97dc09e30d829917e82fac0b3e145392371a862cf910fe64726482b3563c06"
+        },
+        {
+          "source_id": "ev_hv_c05553d456937606e9e6",
+          "source_url": "https://www.theglobeandmail.com/investing/markets/stocks/ADBE/pressreleases/4826612/nvidia-micron-alphabet-oracle-and-adobe-are-part-of-zacks-earnings-preview/",
+          "body_sha256": "e3a856ac970e7ccea9156b9d8f7b0765213a352cb850279aed2e679fa32b8851"
+        },
+        {
+          "source_id": "ev_hv_57a0247d49e9c8e6575c",
+          "source_url": "https://www.fool.com/investing/2025/09/15/adobe-after-boosting-guidance-is-its-beaten-down-s/",
+          "body_sha256": "baf7dbf15956da6b64e96c938187d9442c7591ead7f3dce918698ab2e6a6c801"
+        },
+        {
+          "source_id": "ev_hv_5fd73423784ddcfcba10",
+          "source_url": "https://247wallst.com/investing/2026/06/11/live-will-adobe-smash-q2-earnings-after-the-bell-tonight/liveupdates/3/",
+          "body_sha256": "211c860129ffb4886a096e5699ba53a005901203052bb95cf4315b8407d1d1d4"
+        },
+        {
+          "source_id": "ev_hv_970f4ec391a975493741",
+          "source_url": "https://www.techtimes.com/articles/327366/20260911/adobe-hits-1b-users-record-revenue-stock-still-falls-freemium-bet.htm",
+          "body_sha256": "2911ec8e612332197ea4a3a5385bc59a6114fea199ba0efb11f35d6f4130007b"
+        },
+        {
+          "source_id": "ev_hv_849a423825cb2e27d123",
+          "source_url": "https://finance.yahoo.com/news/adobe-adbe-hidden-gem-overpriced-163253212.html",
+          "body_sha256": "ff85e522191adc49b0e1b03ecc4673471bbe9efa156497b481926aa20ffbef8b"
+        },
+        {
+          "source_id": "ev_hv_0e726979771aba2c6f68",
+          "source_url": "https://markets.financialcontent.com/prnews/article/finterra-2026-3-9-adobe-inc-adbe-navigating-the-generative-ai-frontier-a-2026-stock-analysis",
+          "body_sha256": "7e5841c05aa27ae8cbb7dac4ed589a41579c63388ce160438f4ddbb9222da673"
+        },
+        {
+          "source_id": "ev_hv_2645d2c1e5636216b3c7",
+          "source_url": "https://www.nbcmiami.com/news/business/money-report/adobe-and-figma-call-off-20-billion-merger/3186446/",
+          "body_sha256": "135d0f77b89c5861b5792c2ff28052d135e972327e2a85c71562ff5f4e084ecc"
+        },
+        {
+          "source_id": "ev_hv_54fe35fbf3c47f1e4ebd",
+          "source_url": "https://siliconangle.com/2023/12/18/adobe-figma-end-proposed-20b-proposed-merger-amid-regulatory-issues/",
+          "body_sha256": "0b399f256651fe22a45b485b56da00e5a336e06193080927a31b9bcc8efe56e8"
+        }
+      ],
+      "workbench_role_words": {
+        "ARTICLE_CONTENT": 1053,
+        "CORRECTION_OR_RESPONSE": 34,
+        "FINANCIAL_STATEMENT": 1610,
+        "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 2455,
+        "HISTORICAL_FINANCIAL_CONTEXT": 1466
+      },
+      "discovery": {
+        "queries_generated": null,
+        "reads_attempted": null,
+        "captures": null,
+        "source_diversity": null,
+        "failure_categories": null,
+        "unread_by_reason": null,
+        "native_http_admissions": 0,
+        "complete_network_accounting": false
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_text": "Adobe quarterly earnings",
+            "query_class": "harvest_quarterly"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_004",
+            "query_text": "Adobe investor disclosure",
+            "query_class": "harvest_investor"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_text": "Adobe financial statements",
+            "query_class": "harvest_financial"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_010",
+            "query_text": "Adobe company guidance",
+            "query_class": "harvest_company"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_text": "Adobe financial analysis",
+            "query_class": "harvest_financial"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_text": "Adobe regulatory filing",
+            "query_class": "harvest_regulatory"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_003",
+            "query_text": "Adobe quarterly earnings",
+            "query_class": "harvest_quarterly"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_006",
+            "query_text": "Adobe investor disclosure",
+            "query_class": "harvest_investor"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_009",
+            "query_text": "Adobe financial statements",
+            "query_class": "harvest_financial"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_text": "Adobe company guidance",
+            "query_class": "harvest_company"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_text": "Adobe financial analysis",
+            "query_class": "harvest_financial"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_005",
+            "query_text": "Adobe investor disclosure",
+            "query_class": "harvest_investor"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_text": "Adobe quarterly earnings",
+            "query_class": "harvest_quarterly"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_text": "Adobe company guidance",
+            "query_class": "harvest_company"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_text": "Adobe financial statements",
+            "query_class": "harvest_financial"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_text": "Adobe financial analysis",
+            "query_class": "harvest_financial"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_017",
+            "query_text": "Adobe regulatory filing",
+            "query_class": "harvest_regulatory"
+          },
+          {
+            "channel": "sec_edgar",
+            "query_id": "hv_q_018",
+            "query_text": "Adobe",
+            "query_class": "regulatory_filing"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 0,
+        "reads_attempted": null,
+        "successful_body_captures": 14,
+        "qualified_evidence": 13,
+        "first_observed_empty_boundary": null
+      },
+      "acquisition_metrics": {
+        "article_bodies": 14,
+        "qualified_source_count": 13,
+        "relevant_words": 650
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted"
+    },
+    {
+      "agent": "brandshield",
+      "input_sha256": "a1fcc14f62d176a46a170f600351541c41cf684545698c3817fe6446bf8d2254",
+      "investigation_status": "COMPLETED",
+      "article_bodies": 1,
+      "raw_article_words": 781,
+      "raw_article_utf8_kb": 4.936,
+      "qualified_sources": 1,
+      "selected_excerpt_words": 48,
+      "workbench": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 3,
+        "published_passages": 3,
+        "published_unique_words": 101,
+        "published_text_utf8_bytes": 616,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "CORRECTION_OR_RESPONSE": 1,
+          "SOURCE_REPORTED_CONTEXT": 1,
+          "PRODUCT_SAFETY_REPORT": 1
+        },
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [
+        {
+          "source_id": "ev_hv_6365e5f7eeccd30f09ae",
+          "source_url": "https://cybernews.com/tech/dyson-ai-camerajet-toothbrush-suspended-sales/",
+          "body_sha256": "01d788889618f483ad3057426adba8c12bbad01d9a21f62dc9685ee012092ccd"
+        }
+      ],
+      "workbench_role_words": {
+        "CORRECTION_OR_RESPONSE": 48,
+        "PRODUCT_SAFETY_REPORT": 38,
+        "SOURCE_REPORTED_CONTEXT": 15
+      },
+      "discovery": {
+        "queries_generated": null,
+        "reads_attempted": null,
+        "captures": null,
+        "source_diversity": null,
+        "failure_categories": null,
+        "unread_by_reason": null,
+        "native_http_admissions": 0,
+        "complete_network_accounting": false
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_text": "Dyson counterfeit enforcement",
+            "query_class": "harvest_counterfeit"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_004",
+            "query_text": "Dyson impersonation phishing",
+            "query_class": "harvest_impersonation"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_010",
+            "query_text": "Dyson fraud warning",
+            "query_class": "harvest_fraud"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_text": "Dyson consumer complaints",
+            "query_class": "harvest_consumer"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_text": "Dyson complaints response",
+            "query_class": "harvest_complaints"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_text": "Dyson unauthorized sellers",
+            "query_class": "harvest_unauthorized"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_003",
+            "query_text": "Dyson counterfeit enforcement",
+            "query_class": "harvest_counterfeit"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_006",
+            "query_text": "Dyson impersonation phishing",
+            "query_class": "harvest_impersonation"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_009",
+            "query_text": "Dyson consumer complaints",
+            "query_class": "harvest_consumer"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_text": "Dyson fraud warning",
+            "query_class": "harvest_fraud"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_018",
+            "query_text": "Dyson complaints response",
+            "query_class": "harvest_complaints"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_text": "Dyson unauthorized sellers",
+            "query_class": "harvest_unauthorized"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_005",
+            "query_text": "Dyson impersonation phishing",
+            "query_class": "harvest_impersonation"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_text": "Dyson counterfeit enforcement",
+            "query_class": "harvest_counterfeit"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_text": "Dyson fraud warning",
+            "query_class": "harvest_fraud"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_text": "Dyson consumer complaints",
+            "query_class": "harvest_consumer"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_text": "Dyson unauthorized sellers",
+            "query_class": "harvest_unauthorized"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_017",
+            "query_text": "Dyson complaints response",
+            "query_class": "harvest_complaints"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 0,
+        "reads_attempted": null,
+        "successful_body_captures": 1,
+        "qualified_evidence": 1,
+        "first_observed_empty_boundary": null
+      },
+      "acquisition_metrics": {
+        "article_bodies": 1,
+        "qualified_source_count": 1,
+        "relevant_words": 48
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted"
+    },
+    {
+      "agent": "trending",
+      "input_sha256": "fe3e985dbf10bb5c3d2bd208187d466a334c82f868f73b6d92d844d17be39326",
+      "investigation_status": "COMPLETED",
+      "article_bodies": 7,
+      "raw_article_words": 10916,
+      "raw_article_utf8_kb": 77.904,
+      "qualified_sources": 1,
+      "selected_excerpt_words": 28,
+      "workbench": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 2,
+        "published_passages": 2,
+        "published_unique_words": 59,
+        "published_text_utf8_bytes": 396,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 2
+        },
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [
+        {
+          "source_id": "ev_hv_b3e04e4a11c1ea1e6093",
+          "source_url": "https://electrek.co/2026/10/22/redwood-and-rivian-set-to-expand-their-ev-battery-recycling-partnership/",
+          "body_sha256": "e33e2111af10ac86c1f52a96b3d9a112eabb9d03775ba69c85d05cc9bb80fabe"
+        }
+      ],
+      "workbench_role_words": {
+        "ARTICLE_CONTENT": 59
+      },
+      "discovery": {
+        "queries_generated": null,
+        "reads_attempted": null,
+        "captures": null,
+        "source_diversity": null,
+        "failure_categories": null,
+        "unread_by_reason": null,
+        "native_http_admissions": 0,
+        "complete_network_accounting": false
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "news",
+            "query_id": "hv_q_004",
+            "query_text": "Battery Recycling research update when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_research"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_text": "Battery Recycling recent developments when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_recent"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_text": "Battery Recycling industry announcement when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_industry"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_010",
+            "query_text": "Battery Recycling institution announcement when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_institution"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_text": "Battery Recycling latest news when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_latest"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_text": "Battery Recycling project deployment when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_project"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_003",
+            "query_text": "Battery Recycling recent developments when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_recent"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_006",
+            "query_text": "Battery Recycling research update when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_research"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_009",
+            "query_text": "Battery Recycling industry announcement when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_industry"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_text": "Battery Recycling institution announcement when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_institution"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_text": "Battery Recycling latest news when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_latest"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_018",
+            "query_text": "Battery Recycling project deployment when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_project"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_text": "Battery Recycling recent developments when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_recent"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_005",
+            "query_text": "Battery Recycling research update when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_research"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_text": "Battery Recycling industry announcement when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_industry"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_text": "Battery Recycling institution announcement when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_institution"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_text": "Battery Recycling latest news when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_latest"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_017",
+            "query_text": "Battery Recycling project deployment when:2d after:2026-10-21 before:2026-10-24",
+            "query_class": "harvest_project"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 0,
+        "reads_attempted": null,
+        "successful_body_captures": 7,
+        "qualified_evidence": 1,
+        "first_observed_empty_boundary": null
+      },
+      "acquisition_metrics": {
+        "article_bodies": 7,
+        "qualified_source_count": 1,
+        "relevant_words": 28
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted"
+    },
+    {
+      "agent": "personal_watch",
+      "input_sha256": "b702f6002cd75d57ca376950e68bb8f7e02acff93c18c5a16bc3e9060381c00d",
+      "investigation_status": "INSUFFICIENT_EVIDENCE",
+      "article_bodies": 1,
+      "raw_article_words": 484,
+      "raw_article_utf8_kb": 3.009,
+      "qualified_sources": 0,
+      "selected_excerpt_words": 0,
+      "workbench": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "all_published_spans_match_retained_bodies": true,
+      "published_sources": [],
+      "workbench_role_words": {},
+      "discovery": {
+        "queries_generated": null,
+        "reads_attempted": null,
+        "captures": null,
+        "source_diversity": null,
+        "failure_categories": null,
+        "unread_by_reason": null,
+        "native_http_admissions": 0,
+        "complete_network_accounting": false
+      },
+      "funnel": {
+        "generated_queries": [
+          {
+            "channel": "rss",
+            "query_id": "hv_q_003",
+            "query_text": "Mary Barra public statement",
+            "query_class": "harvest_public"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_006",
+            "query_text": "Mary Barra impersonation allegation",
+            "query_class": "harvest_impersonation"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_012",
+            "query_text": "Mary Barra interview transcript",
+            "query_class": "harvest_interview"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_009",
+            "query_text": "Mary Barra identity deepfake",
+            "query_class": "harvest_identity"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_015",
+            "query_text": "Mary Barra official statement",
+            "query_class": "harvest_official"
+          },
+          {
+            "channel": "rss",
+            "query_id": "hv_q_018",
+            "query_text": "Mary Barra false quotation",
+            "query_class": "harvest_false"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_001",
+            "query_text": "Mary Barra public statement",
+            "query_class": "harvest_public"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_004",
+            "query_text": "Mary Barra impersonation allegation",
+            "query_class": "harvest_impersonation"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_010",
+            "query_text": "Mary Barra interview transcript",
+            "query_class": "harvest_interview"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_007",
+            "query_text": "Mary Barra identity deepfake",
+            "query_class": "harvest_identity"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_013",
+            "query_text": "Mary Barra official statement",
+            "query_class": "harvest_official"
+          },
+          {
+            "channel": "news",
+            "query_id": "hv_q_016",
+            "query_text": "Mary Barra false quotation",
+            "query_class": "harvest_false"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_005",
+            "query_text": "Mary Barra impersonation allegation",
+            "query_class": "harvest_impersonation"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_002",
+            "query_text": "Mary Barra public statement",
+            "query_class": "harvest_public"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_011",
+            "query_text": "Mary Barra interview transcript",
+            "query_class": "harvest_interview"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_008",
+            "query_text": "Mary Barra identity deepfake",
+            "query_class": "harvest_identity"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_017",
+            "query_text": "Mary Barra false quotation",
+            "query_class": "harvest_false"
+          },
+          {
+            "channel": "web",
+            "query_id": "hv_q_014",
+            "query_text": "Mary Barra official statement",
+            "query_class": "harvest_official"
+          }
+        ],
+        "candidate_urls_discovered": null,
+        "accepted_candidates": 0,
+        "reads_attempted": null,
+        "successful_body_captures": 1,
+        "qualified_evidence": 0,
+        "first_observed_empty_boundary": "BODY_OR_PASSAGE_QUALIFICATION"
+      },
+      "acquisition_metrics": {
+        "article_bodies": 1,
+        "qualified_source_count": 0,
+        "relevant_words": 0
+      },
+      "scope": "Code-selected source assertions; no independent accuracy, completeness or 20x acceptance asserted"
+    }
+  ],
+  "limitations": [
+    "Raw text is not useful evidence; selected words are not independently verified.",
+    "A selected-excerpt to workbench ratio is not growth over all previously inspectable frontend text.",
+    "Fresh live batches are not controlled before/after comparisons; source availability and dates may change."
+  ]
+}

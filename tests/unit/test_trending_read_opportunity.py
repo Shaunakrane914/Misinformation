@@ -44,10 +44,13 @@ def test_declared_publisher_hint_diversifies_wrapper_slots_not_independence():
     assert "source_independence_group" not in unseen.metadata
 
 
-def test_non_trending_priority_does_not_change_from_publisher_or_title_fit():
+def test_non_trending_priority_preserves_target_independence_but_diversifies_publishers():
     item = lead("a", "Acme quarterly results")
     before = _read_priority(item, "Acme", "financial", Counter(), Counter())
-    assert before == _read_priority(item, "unrelated", "financial", Counter(), Counter({"publisher.test": 9}))
+    assert before == _read_priority(item, "unrelated", "financial", Counter(), Counter())
+    # All four domains now share publisher diversity as a tie-breaker, not as
+    # relevance evidence. Original fresh/task/article priorities remain first.
+    assert before < _read_priority(item, "Acme", "financial", Counter(), Counter({"publisher.test": 9}))
 
 
 @pytest.mark.parametrize("url", ["https://user:secret@publisher.test", "javascript:bad", "//publisher.test"])

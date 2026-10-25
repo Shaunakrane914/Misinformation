@@ -96,6 +96,9 @@ class AgentReachService:
         self.planner = RetrievalPlanner()
         self.source_planner = SourcePlanningEngine()
         self._register_default_channels()
+        from backend.infrastructure.acquisition.adapters.expanded_catalog import get_expanded_adapters, ExpandedSourceChannel
+        self.adapters = get_expanded_adapters()
+        self.registry.register(ExpandedSourceChannel())
         logger.info("[AgentReachService] Initialized with Native Agent Reach 3.0 capability backbone")
 
     def _register_default_channels(self) -> None:

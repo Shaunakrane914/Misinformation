@@ -441,6 +441,7 @@ class UnifiedReport:
     finding_details: List[Dict[str, Any]] = field(default_factory=list)
     processing_notes: Dict[str, Any] = field(default_factory=dict)
     investigation_status: Optional[str] = None
+    evidence_workbench: Dict[str, Any] = field(default_factory=dict)
 
     # Internal metadata (not rendered in report sections)
     agent: Optional[str] = None          # e.g. "claim_verifier"
@@ -481,6 +482,8 @@ class UnifiedReport:
             d["finding_details"] = self.finding_details
         if self.processing_notes:
             d["processing_notes"] = self.processing_notes
+        if self.evidence_workbench:
+            d["evidence_workbench"] = self.evidence_workbench
         return d
 
 

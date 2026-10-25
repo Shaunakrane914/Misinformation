@@ -324,6 +324,15 @@ class NativeRouter:
             return {"status": "failed", "error": assessment["reason"] if max_chars > 0 else "Read budget is zero",
                     "url": url, "runtime_decision": assessment, "network_observed": False}
 
+        from backend.infrastructure.acquisition.adapters.expanded_catalog import read_expanded_url
+        try:
+            expanded = read_expanded_url(url, max_chars=max_chars)
+        except Exception as error:
+            return {"status": "failed", "url": url, "error": "Expanded read failed: " + type(error).__name__,
+                    "failure_kind": getattr(error, "failure_kind", "PROVIDER_FAILURE")}
+        if expanded is not None:
+            return expanded
+
         # 1. Specialized Zero-Auth Social: Twitter / X
         if channel == "twitter":
             x_src = extract_x_source(url)

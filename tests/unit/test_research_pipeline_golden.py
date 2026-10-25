@@ -112,7 +112,7 @@ def _hash(value):
                 key: sorted(canonical(entry) for entry in val) if key in {"independence_groups", "entities"} and isinstance(val, list)
                 else canonical(val)
                 for key, val in node.items()
-                if key not in {"stage_timings_ms", "passages", "financial_observations", "financial_context", "acquisition",
+                if key not in {"stage_timings_ms", "passages", "evidence_passages", "evidence_passage_accounting", "financial_observations", "financial_context", "acquisition",
                                "acquisition_timing", "discovery_funnel", "budget_observations", "pre_research_timings_ms", "ai_advisory_observations", "ai_search_advice",
                                "submitted_at", "provider_started", "queue_wait_ms", "provider_duration_ms", "provider_duration_censored", "submission_delay_ms"}
             }
@@ -126,6 +126,8 @@ def _hash(value):
     # New exact-span inspection projections have separate integrity tests in
     # test_intelligence_completion; preserve this historical core projection.
     # Additive discovery diagnostics are covered by test_autonomous_discovery_funnel;
+    # Additive multi-passage publication has exact-span/budget/rejection controls
+    # in test_evidence_depth_workbench; no historical source/verdict is replaced.
     # do not regenerate historical evidence/lineage golden manifests for them.
     # Additive financial context annotations have exact period/date/currency and
     # historical exclusion controls in test_scout_financial_context. Core finding

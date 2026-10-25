@@ -284,6 +284,84 @@ function renderDiscovery(report) {
      <details><summary>Inspect leads and rejected captures</summary>${candidates.map(item => renderEvidenceCard(item)).join('')}</details>`);
 }
 
+/** A bounded collection of exact passages, distinct from the short brief. */
+function workbenchPage(workbench, filters = {}, pageSize = 8) {
+  const query = String(filters.search || '').trim().toLocaleLowerCase().slice(0, 200);
+  const rows = array(workbench && workbench.passages).slice(0, 512).filter(row => row && typeof row.text === 'string');
+  const matches = rows.filter(row => (!filters.publisher || row.publisher_host === filters.publisher)
+    && (!filters.role || row.content_role === filters.role)
+    && (!query || [row.text, row.source_title, row.publisher_host, row.content_role].join(' ').toLocaleLowerCase().includes(query)));
+  const size = Math.max(1, Math.min(20, Number(pageSize) || 8));
+  const pages = Math.max(1, Math.ceil(matches.length / size));
+  const page = Math.max(0, Math.min(pages - 1, Math.floor(Number(filters.page) || 0)));
+  return { rows: matches.slice(page * size, (page + 1) * size), total: matches.length, page, pages,
+    start: matches.length ? page * size + 1 : 0, end: Math.min((page + 1) * size, matches.length) };
+}
+
+function renderWorkbenchPage(workbench, filters = {}) {
+  const selected = workbenchPage(workbench, filters);
+  const cards = selected.rows.map(row => {
+    const url = safeEvidenceUrl(row.source_url);
+    return `<article class="ur-workbench-passage"><h4>${esc(row.source_title || 'Captured source')}</h4>
+      <p class="ur-ev-note">${esc(row.publisher_host || 'Unknown publisher')} · ${esc(row.content_role || 'SOURCE ASSERTION')} · UNVERIFIED</p>
+      ${row.context_labels && typeof row.context_labels === 'object' ? `<p class="ur-ev-note">${Object.values(row.context_labels).filter(value => typeof value === 'string').map(esc).join(' · ')}</p>` : ''}
+      <blockquote>${esc(row.text)}</blockquote>
+      <p class="ur-ev-note">${esc(row.evidence_id)} / ${esc(row.passage_id)} · offsets ${esc(row.start)}–${esc(row.end)} · ${esc(row.published_at || 'Publication date unknown')}</p>
+      ${url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">Open reporting source</a>` : '<p>Source URL unavailable</p>'}
+      ${array(row.also_reported_by).length ? `<p class="ur-ev-note">Identical passage also observed in ${array(row.also_reported_by).length} source record(s); not additional independent confirmation.</p>` : ''}
+      </article>`;
+  }).join('');
+  return `<p role="status" aria-live="polite">Showing ${selected.start}–${selected.end} of ${selected.total} matching passages · page ${selected.page + 1} of ${selected.pages}</p>
+    ${cards || '<p>No published passages match these filters. This does not establish absence of evidence.</p>'}
+    <div class="ur-workbench-pagination"><button type="button" data-ur-wb-prev ${selected.page === 0 ? 'disabled' : ''}>Previous passages</button>
+    <button type="button" data-ur-wb-next ${selected.page + 1 >= selected.pages ? 'disabled' : ''}>Next passages</button></div>`;
+}
+
+function renderEvidenceWorkbench(report) {
+  const workbench = report.evidence_workbench;
+  if (!workbench || workbench.schema !== 'evidence-workbench-v1') return '';
+  const accounting = workbench.accounting || {};
+  const rows = array(workbench.passages).filter(row => row && typeof row === 'object');
+  const publishers = [...new Set(rows.map(row => row.publisher_host).filter(Boolean))].sort();
+  const roles = [...new Set(rows.map(row => row.content_role).filter(Boolean))].sort();
+  const omitted = (Number(accounting.omitted_by_source_budget) || 0) + (Number(accounting.omitted_by_workbench_budget) || 0);
+  return section('ur-evidence-workbench', 'EVIDENCE WORKBENCH', `<div data-ur-workbench>
+    <p>${esc(accounting.published_passages ?? rows.length)} unique passages · ${esc(accounting.published_unique_words ?? 'Unknown')} selected words · ${esc(accounting.observed_publisher_hosts ?? publishers.length)} observed publisher hosts.</p>
+    <p class="ur-ev-note">Exact captured text selected by relevance heuristics. Source assertions are not verified facts. Publisher hosts are not proof of independence. The 20× depth target has not been evaluated.</p>
+    ${omitted ? `<p class="ur-ev-note">${esc(omitted)} passage observations omitted by publication budgets. Source inspection and the dossier retain their separately bounded context.</p>` : ''}
+    <div class="ur-workbench-filters">
+      <label>Search captured passages<input type="search" maxlength="200" data-ur-wb-search placeholder="Topic, quotation or source"></label>
+      <label>Publisher<select data-ur-wb-publisher><option value="">All observed publishers</option>${publishers.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select></label>
+      <label>Content role<select data-ur-wb-role><option value="">All source assertions</option>${roles.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join('')}</select></label>
+    </div><div data-ur-wb-results>${renderWorkbenchPage(workbench)}</div></div>`);
+}
+
+function bindEvidenceWorkbench(container, report) {
+  container.querySelectorAll('[data-ur-workbench]').forEach(root => {
+    // Lightweight Node test mounts need not implement the browser DOM.
+    if (typeof root.querySelector !== 'function' || !report.evidence_workbench) return;
+    const search = root.querySelector('[data-ur-wb-search]');
+    const publisher = root.querySelector('[data-ur-wb-publisher]');
+    const role = root.querySelector('[data-ur-wb-role]');
+    const results = root.querySelector('[data-ur-wb-results]');
+    if (!search || !publisher || !role || !results) return;
+    let page = 0;
+    const filters = () => ({ search: search.value, publisher: publisher.value, role: role.value, page });
+    const update = () => {
+      const selected = workbenchPage(report.evidence_workbench, filters());
+      page = selected.page;
+      results.innerHTML = renderWorkbenchPage(report.evidence_workbench, filters());
+      results.querySelector('[data-ur-wb-prev]').addEventListener('click', () => { page--; update(); results.querySelector('[role="status"]').focus(); });
+      results.querySelector('[data-ur-wb-next]').addEventListener('click', () => { page++; update(); results.querySelector('[role="status"]').focus(); });
+      results.querySelector('[role="status"]').setAttribute('tabindex', '-1');
+    };
+    search.addEventListener('input', () => { page = 0; update(); });
+    publisher.addEventListener('change', () => { page = 0; update(); });
+    role.addEventListener('change', () => { page = 0; update(); });
+    update();
+  });
+}
+
 /** SECTION 3 — EVIDENCE (Primary / Independent / Community) */
 function renderEvidence(report) {
   const ev = report.evidence || {};
@@ -860,6 +938,7 @@ function renderUnifiedReport(container, report) {
     renderSummary(report),
     renderClaimDecomposition(report),
     renderFindings(report),
+    renderEvidenceWorkbench(report),
     renderEvidence(report),
     renderDiscovery(report),
     renderDisagreements(report),
@@ -873,6 +952,7 @@ function renderUnifiedReport(container, report) {
   ].filter(Boolean).join('\n');
 
   container.innerHTML = `<div class="unified-report">${html}</div>`;
+  bindEvidenceWorkbench(container, report);
 
   // Expand/collapse on mobile — toggle .ur-section.collapsed on heading click
   container.querySelectorAll('.ur-heading-button').forEach(button => {
@@ -974,6 +1054,6 @@ if (typeof window !== 'undefined') {
   window.fetchAndRenderReport = fetchAndRenderReport;
 }
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest };
+  module.exports = { renderUnifiedReport, fetchAndRenderReport, sourceReadRequest, workbenchPage };
 }
 })();

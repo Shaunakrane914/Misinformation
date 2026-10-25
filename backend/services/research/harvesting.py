@@ -145,10 +145,14 @@ def diversified_queries(target, domain="general", intent="", aliases=(), referen
         # useful angle with a long sentence about the pipeline's own job.
         if len(objective.split()) <= 8 and target.casefold() not in objective.casefold():
             specs[0]["query_text"] = f"{target} {objective}" + (recent_hint if domain == "trending" else "")
-        if domain == "personal":
-            statement = bool(re.search(r"\b(?:statement|interview|speech|transcript)\b", objective, re.I))
-            threat = bool(re.search(r"impersonat|deepfake|scam|false.quote|identity.threat|identity.misuse", objective, re.I))
-            specs[0]["acquisition_objective"] = "PUBLIC_STATEMENT" if statement and not threat else "IDENTITY_THREAT"
+            if domain == "personal":
+                # Change the task only when that intent actually replaces the
+                # query. Internal agent prose must not relabel an unchanged
+                # public-statement query as identity-threat discovery. Otherwise
+                # duplicate news/RSS completion order changes qualification.
+                statement = bool(re.search(r"\b(?:statement|interview|speech|transcript)\b", objective, re.I))
+                threat = bool(re.search(r"impersonat|deepfake|scam|false.quote|identity.threat|identity.misuse", objective, re.I))
+                specs[0]["acquisition_objective"] = "PUBLIC_STATEMENT" if statement and not threat else "IDENTITY_THREAT"
     return specs
 
 
@@ -194,8 +198,10 @@ def _observed_publisher(item):
 def _read_priority(item, target, domain, host_counts, publisher_counts):
     """Order observed leads; final body, subject and publication gates are later."""
     ordinary = (item.metadata.get("harvest_temporal_priority", 0),
+                not bool(item.metadata.get("source_citation")),
                 not matches_objective(item.title + " " + item.snippet, domain),
-                _is_index(item), _is_wrapper(item), host_counts[_host(item.canonical_url)], item.id)
+                _is_index(item), _is_wrapper(item), publisher_counts[_observed_publisher(item)],
+                host_counts[_host(item.canonical_url)], item.id)
     if domain in {"brand", "personal"}:
         tasks = item.metadata.get("requested_specialist_tasks") or item.metadata.get("specialist_tasks") or []
         context = " ".join((item.title or "", item.snippet or "", urlsplit(item.canonical_url).path))
@@ -433,6 +439,7 @@ class HarvestingEngine:
         upstream_ids, submitted_query_ids = {}, set()
         reference_time = datetime.now(timezone.utc)
         discarded = Counter()
+        discovery_publishers = Counter()
         discovery_capacity = max(1, profile.max_candidates - profile.max_reads)
         generated = diversified_queries(target, domain, intent, aliases,
             specialist_tasks=specialist_tasks if specialist_task_explicit else ())
@@ -448,6 +455,11 @@ class HarvestingEngine:
                              and row.get("channel") not in core_channels][:2]
         if extra_queries:
             generated = generated[:max(0, profile.max_queries - len(extra_queries))] + extra_queries
+        from backend.services.research.source_diversity import diversify_search_plan
+        # Registered optional actions remain in their original reserved slots.
+        core_limit = max(0, profile.max_queries - len(extra_queries))
+        generated = diversify_search_plan([row for row in generated if row not in extra_queries],
+                                         target, domain, core_limit) + extra_queries
         queries, seen_queries = [], set()
         for row in generated:
             channel, text = row.get("channel", "web"), str(row.get("query_text", "")).strip()
@@ -503,6 +515,13 @@ class HarvestingEngine:
                 return
             continuation = bool(item.metadata.get("observed_parent_id") or item.metadata.get("publisher_basis")
                                 or item.metadata.get("discovered_on_candidate_id"))
+            publisher = _observed_publisher(item)
+            share_limit = max(4, discovery_capacity // 3)
+            if not continuation and discovery_publishers[publisher] >= share_limit:
+                discarded["PUBLISHER_DISCOVERY_SHARE_LIMIT"] += 1
+                output.rejected.append({"candidate_id": item.id, "url": _locator(item.canonical_url),
+                    "reason": "PUBLISHER_DISCOVERY_SHARE_LIMIT", "stage": "CANDIDATE_ADMISSION"})
+                return
             limit = profile.max_candidates if continuation else discovery_capacity
             if len(known) >= limit:
                 discarded["CANDIDATE_CAP" if continuation else "DISCOVERY_RESERVED_CONTINUATION_CAP"] += 1
@@ -551,6 +570,8 @@ class HarvestingEngine:
                 output.rejected.append({"candidate_id": item.id, "url": _locator(item.canonical_url), "reason": reason})
             else:
                 # No pre-read date/claim/primary/quality proof is required.
+                if not continuation:
+                    discovery_publishers[publisher] += 1
                 item.relevance_score = max(0.25, item.relevance_score)
                 item.source_quality_score = max(0.25, item.source_quality_score)
                 item.relevant_excerpt = ""
@@ -782,6 +803,17 @@ class HarvestingEngine:
             "qualification_status": "PENDING_SECOND_LAYER", "provider_http_request_count": None,
             "ai_search_advice": advice_trace}
         output.metrics["user_supplied_source_count"] = sum(item.metadata.get("source_kind") == "USER_SUPPLIED_SOURCE" for item in known.values())
+        output.metrics["source_diversity"] = {
+            "planned_families": list(dict.fromkeys(row["source_family"] for row in queries if row.get("source_family"))),
+            "submitted_families": list(dict.fromkeys(row["source_family"] for row in queries
+                if row.get("source_family") and row["query_id"] in submitted_query_ids)),
+            "observed_candidate_hosts": sorted({_observed_publisher(item) for item in known.values()} - {""})[:120],
+            "read_publisher_reservations": dict(read_publisher_counts),
+            "scope": "Discovery hints and host groups, not authenticated publishers or independent confirmation",
+            "catalog_live_health": "UNVERIFIED",
+            "discovery_publisher_share_limit": max(4, discovery_capacity // 3),
+            "eligible_discovery_by_observed_publisher": dict(discovery_publishers),
+        }
         output.metrics["autonomously_discovered_article_bodies"] = sum(item.metadata.get("acquisition_scope") != "EXTERNALLY_SUPPLIED_SOURCE" for item in bodies)
         specialist_rows = [row for row in queries if row.get("source_plan_action_id")]
         if specialist_rows:
@@ -796,57 +828,20 @@ class HarvestingEngine:
 
     @staticmethod
     def _observed_children(parent, target, domain, audit):
-        """Read observed indexes permissively; final evidence gates stay strict."""
-        if not parent.metadata.get("read_success") or parent.metadata.get("publisher_hop", 0) >= 3:
-            return []
-        if not _is_index(parent):
-            return []
+        """Use one admission path for observed index links and source citations."""
         page = parent.metadata.get("page_metadata") or {}
-        origin = _host(parent.canonical_url)
-        links = list(page.get("discovery_links", [])) + list(page.get("observed_links", []))
-        # Reuse the existing validated observed GET search-form implementation.
+        kind = page.get("body_kind") or (page.get("body_quality") or {}).get("body_kind")
+        if (not parent.metadata.get("read_success") or parent.metadata.get("publisher_hop", 0) >= 3
+                or not (_is_index(parent) or kind == "ARTICLE_BODY")):
+            return []
         from backend.services.research.publisher_links import observed_publisher_articles
-        children = []
-        for child in observed_publisher_articles(parent, domain, [], target=target, max_children=24, max_hops=3):
-            if (child.metadata.get("discovery_kind") == "FEED_INDEX"
-                    or acquisition_reason(child, target, domain) is None):
-                children.append(child)
-            else:
-                audit.append({"parent_id": parent.id, "url": _locator(child.canonical_url),
-                              "reason": "SUBJECT_NOT_OBSERVED_IN_LEAD"})
-        seen = {source_url_key(item.canonical_url) for item in children}
-        for row in links[:120]:
-            url, title = str(row.get("url") or ""), str(row.get("text") or "")
-            try:
-                p = urlsplit(url)
-                same_host = _host(url) == origin
-                valid = p.scheme in {"http", "https"} and same_host and not p.username and not p.password
-            except ValueError:
-                valid = False
-            key = source_url_key(url)
-            if not valid or key in seen:
-                continue
-            index = row.get("kind") == "FEED_INDEX"
-            candidate = EvidenceItem(id="ev_hv_" + hashlib.sha256(key.encode()).hexdigest()[:16],
-                canonical_url=url, title=title, snippet=title, channel="web", published_at=row.get("published") or "",
-                query_id=parent.query_id, query_class="observed_harvest_link", query_text=parent.query_text,
-                metadata={"publisher_hop": parent.metadata.get("publisher_hop", 0) + 1,
-                          "discovered_on_url": parent.canonical_url, "observed_parent_id": parent.id,
-                          "discovery_kind": "FEED_INDEX" if index else "ARTICLE_LEAD"})
-            # Bypass only proof/date gating: a clearly irrelevant story does not
-            # deserve a download merely because it is on a good publisher host.
-            candidate.metadata.pop("observed_parent_id")
-            subject_reason = acquisition_reason(candidate, target, domain)
-            candidate.metadata["observed_parent_id"] = parent.id
-            if not index and subject_reason:
-                audit.append({"parent_id": parent.id, "url": _locator(url), "reason": subject_reason})
-                continue
-            seen.add(key)
-            children.append(candidate)
-            if len(children) >= 24:
-                break
+        observations = []
+        children = observed_publisher_articles(parent, domain, observations, target=target,
+                                                max_children=24, max_hops=3)
+        audit.extend(row for row in observations if row.get("discard_reason"))
         for child in children:
             child.metadata["observed_parent_id"] = parent.id
+            _merge_task_lineage(child.metadata, parent.metadata)
             if parent.metadata.get("acquisition_objective") == "PUBLIC_STATEMENT":
                 child.metadata["acquisition_objective"] = "PUBLIC_STATEMENT"
             if parent.metadata.get("acquisition_scope") == "EXTERNALLY_SUPPLIED_SOURCE":

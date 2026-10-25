@@ -9,7 +9,7 @@ import re
 from typing import Dict, List, Optional, Set, Tuple
 
 from backend.services.research.research_models import EvidenceItem
-from backend.services.research.content_roles import NON_EVENT_ROLES, document_role, matches_objective, paragraph_role
+from backend.services.research.content_roles import NON_EVENT_ROLES, document_role, matches_objective, paragraph_role, local_prose_predicate
 from backend.infrastructure.acquisition.adapters.web.page_extraction import recovered_span_allowed
 
 # High-signal action verbs and investigative indicators
@@ -30,6 +30,16 @@ NAVIGATION_MARKERS = ("toggle navigation", "switch to dark", "switch to light", 
                       "privacy policy", "contact us", "men women", "add to cart", "browse select")
 
 
+def _topic_token_keys(text):
+    """Conservative regular -ies plurals for topic matching, not identity joins.
+
+    Preserve source bytes and the existing token-overlap threshold. This is not
+    synonym expansion, arbitrary stemming or support for a source's assertion.
+    """
+    return {token[:-3] + "y" if re.search(r"[^aeiou]ies$", token) and len(token) > 4 else token
+            for token in re.findall(r"[a-z0-9]{3,}", text.casefold())}
+
+
 def _bare_label(text):
     """A short keyword/date label is not a proposition. Numeric rows survive.
 
@@ -40,7 +50,7 @@ def _bare_label(text):
         return False
     predicate = re.search(r"\b(?:is|are|was|were|has|have|had|will|can|could|may|must|did|does|do|said|says|wrote|writes|reported|reports|announced|announces|confirmed|confirms|denied|denies|warned|warns|seized|charged|arrested|filed|rose|fell|grew|increased|decreased|appointed|joined|tested|found|shows|offers|offered|sold|allows|contains|includes|limits|rated|received|ordered|launched|released|endorsed|claimed|claims)\b", text, re.I)
     measurement = re.search(r"(?:[$€£₹]|\b(?:USD|INR|EUR|GBP)\b)\s*\d|\d+(?:\.\d+)?\s*(?:%|(?:percent|million|billion|crore)\b)", text, re.I)
-    return not predicate and not measurement
+    return not predicate and not measurement and not local_prose_predicate(text)
 
 
 def has_usable_passage(item) -> bool:
@@ -60,7 +70,8 @@ def has_usable_passage(item) -> bool:
     return (paragraph_role(text) not in NON_EVENT_ROLES and len(text.strip()) >= 40 and not _bare_label(text)
             and sum(marker in lower for marker in NAVIGATION_MARKERS) < 2
             and bool(re.search(r"\b(?:is|are|was|were|has|have|allows|contains|includes|limits|rated)\b", lower)
-                     or any(re.search(r"\b" + marker + r"\b", lower) for marker in SIGNAL_MARKERS)))
+                     or any(re.search(r"\b" + marker + r"\b", lower) for marker in SIGNAL_MARKERS)
+                     or local_prose_predicate(text)))
 
 
 def _brand_context_window(item, raw_text, target_tokens, clean_target):
@@ -133,6 +144,9 @@ class PassageExtractor:
 
         for item in items:
             item.relevant_excerpt = ""
+            # Recompute from current bytes; never trust a stale stored projection.
+            item.metadata.pop("evidence_passages", None)
+            item.metadata.pop("evidence_passage_accounting", None)
             item.excerpt_start = item.excerpt_end = -1
             if item.metadata.get("temporal_required") and not item.metadata.get("temporal_eligible"):
                 item.extraction_status = "TEMPORAL_INELIGIBLE"
@@ -185,6 +199,7 @@ class PassageExtractor:
             best_p = paragraphs[0]
             best_score = -1.0
             best_idx = 0
+            eligible_paragraphs = []
 
             for idx, p in enumerate(paragraphs):
                 page = item.metadata.get("page_metadata") or {}
@@ -206,6 +221,8 @@ class PassageExtractor:
                     continue
                 p_lower = p.lower()
                 present = target_tokens & set(re.findall(r"[a-z0-9]{3,}", p_lower))
+                if domain == "trending" and profile.entity_type in {"topic", "concept", "product", "general"}:
+                    present = _topic_token_keys(" ".join(target_tokens)) & _topic_token_keys(p_lower)
                 topic_match = any(re.search(r"\b" + re.escape(alias.casefold()) + r"\b", p_lower) for alias in topic_aliases)
                 if target_tokens and len(present) < min(2, len(target_tokens)) and clean_target not in p_lower and not topic_match and not attributed_statement:
                     continue
@@ -294,6 +311,8 @@ class PassageExtractor:
                     # clipped sentence window that could lose a qualification.
                     score -= min(4.0, max(0.0, (len(p.split()) - 180) / 100))
 
+                if score >= 1.5 and len(p) <= 6000:
+                    eligible_paragraphs.append((score, p))
                 if score > best_score:
                     best_score = score
                     best_p = p
@@ -328,6 +347,13 @@ class PassageExtractor:
             item.excerpt_start = raw_text.find(best_p)
             item.excerpt_end = item.excerpt_start + len(clean_excerpt)
             item.extraction_status = "SUCCESS"
+            # Keep the compatibility winner for verdict engines, while exposing
+            # all bounded paragraphs that passed these same subject/objective/
+            # structural gates. These are source assertions, never extra verdicts.
+            if has_usable_passage(item):
+                from backend.services.research.evidence_workbench import select_source_passages
+                item.metadata["evidence_passages"], item.metadata["evidence_passage_accounting"] = select_source_passages(
+                    item, eligible_paragraphs, clean_excerpt, domain, clean_target, intent)
 
             # Extract named entities & factual numbers
             entities = set()

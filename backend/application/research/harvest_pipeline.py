@@ -71,6 +71,18 @@ def run_harvest_pipeline(request, budget, profile_name):
     if request.domain in {"brand", "personal"}:
         from backend.services.research.specialist_planning import build_specialist_harvest_plan
         extra_queries, specialist_plan = build_specialist_harvest_plan(request, source_plan)
+    # One explicit adapter discovery action competes inside the original two
+    # optional slots; its returned leads still require normal budgeted reads.
+    from backend.infrastructure.acquisition.adapters.expanded_catalog import expanded_query
+    from backend.services.agent_reach.native.operation_capabilities import runtime_operation_capabilities
+    expanded = expanded_query(request)
+    allowed = request.extra_params.get("allowed_channels")
+    expanded_allowed = not allowed or "expanded_sources" in allowed
+    if (expanded and expanded_allowed and not request.source_url
+            and runtime_operation_capabilities.assess("expanded_sources", "search")["decision"] not in {"EXCLUDE", "DEFER_TEMPORARY"}):
+        core = [row for row in extra_queries if row.get("channel") in {"web", "news", "rss"}]
+        optional = [row for row in extra_queries if row.get("channel") not in {"web", "news", "rss"}]
+        extra_queries = core + [expanded] + optional[:1]
     try:
         with public_request_budget(http_budget):
             harvest = stage(labels[0], lambda: HarvestingEngine(agent_reach_service).run(

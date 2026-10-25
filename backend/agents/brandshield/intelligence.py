@@ -47,7 +47,7 @@ def classify_brand_source(record, target=""):
         body = "\n\n".join(scoped)
         if not body:
             return {**outcome, "classification": "INSUFFICIENT_EVIDENCE", "reason": "NO_VALID_RECOVERED_ARTICLE_SPANS"}
-    from backend.services.research.content_roles import document_role, paragraph_role, NON_EVENT_ROLES
+    from backend.services.research.content_roles import document_role, paragraph_role, NON_EVENT_ROLES, LOCAL_BRAND_ABUSE, LOCAL_BRAND_WARNING, LOCAL_BRAND_NEGATION
     role = document_role(record)
     if role in NON_EVENT_ROLES - {"LANDING_PAGE"}:
         return {**outcome, "reason": "NON_INCIDENT_DOCUMENT_ROLE_" + role}
@@ -75,7 +75,9 @@ def classify_brand_source(record, target=""):
     # caller's selected captured passages remain the source of supporting spans.
     if re.search(r"\b(?:I ordered|my order|my refund|never received|customer complaint|delivery delayed)\b", body, re.I):
         return {**outcome, "classification": "CUSTOMER_COMPLAINT", "reason": "COMPLAINT_NOT_ADJUDICATED_FRAUD"}
-    abuse = re.search(r"\b(?:counterfeit\w*|replica\w*|knockoffs?|phishing|scams?|fraud\w*|impersonat\w*|credential\w*|fake)\b", body, re.I)
+    abuse = re.search(r"\b(?:counterfeit\w*|replica\w*|knockoffs?|phishing|scams?|fraud\w*|impersonat\w*|credential\w*|fake)\b|" + LOCAL_BRAND_ABUSE, body, re.I)
+    if abuse and re.search(LOCAL_BRAND_NEGATION, body, re.I):
+        return {**outcome, "classification": "INSUFFICIENT_EVIDENCE", "reason": "NEGATED_OR_UNESTABLISHED_ALLEGATION"}
     attributed_disruption = re.search(
         r"\b(?:police|authorities|law enforcement|cyber command)\b[^.!?\n]{0,160}"
         r"\b(?:disrupted|dismantled|took down|shut down)\b[^.!?\n]{0,100}"
@@ -96,6 +98,7 @@ def classify_brand_source(record, target=""):
         # Concrete filed allegations above still take precedence over advice.
         warning = re.search(r"\b(?:should|must)\s+(?:inspect|check|verify|review)\b[^.!?\n]{0,90}"
                             r"\b(?:seller|identity|details|link|account|before)\b", body, re.I)
+    warning = warning or re.search(LOCAL_BRAND_WARNING, body + " " + title, re.I)
     if abuse and warning:
         official = str(record.get("source_role") or "").upper() in {"PRIMARY", "PRIMARY_OFFICIAL", "PRIMARY_REGULATORY"}
         return {**outcome, "classification": "OFFICIAL_WARNING" if official else "WARNING_ADVISORY",

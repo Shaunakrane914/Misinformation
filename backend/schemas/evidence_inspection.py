@@ -174,7 +174,33 @@ def inspect_evidence(item: Any) -> dict:
         "support_assessment": "NOT_ASSESSED",
         "structured_passages": _validated_observations(meta, captured).get("passages", []),
         "financial_observations": _validated_observations(meta, captured).get("financial_observations", []),
+        "evidence_passages": _validated_evidence_passages(meta, captured, fingerprint),
+        "evidence_passage_accounting": _passage_accounting(meta),
     }
+
+
+def _passage_accounting(meta):
+    value = meta.get("evidence_passage_accounting")
+    return {key: number for key, number in value.items()
+            if key in {"eligible_unique_paragraphs", "published_paragraphs", "omitted_by_source_budget", "max_passages", "max_chars", "excluded_non_assertive_context", "overlapping_source_spans_omitted"}
+            and type(number) is int and 0 <= number <= 100_000} if isinstance(value, dict) else {}
+
+
+def _validated_evidence_passages(meta, body, fingerprint):
+    values = meta.get("evidence_passages")
+    if not isinstance(values, list) or meta.get("layer2_eligible") is False:
+        return []
+    fields = {"passage_id", "evidence_id", "start", "end", "text", "content_role", "relevance",
+              "claim_status", "attribution", "source_url", "published_at", "scope", "captured_text_sha256"}
+    return [{**{key: row[key] for key in fields if key in row},
+             "context_labels": {key: str(value)[:100] for key, value in (row.get("context_labels") or {}).items()
+                 if key in {"publication_scope", "result_scope", "content_kind", "period_alignment", "subject_context"} and isinstance(value, str)}
+                 if isinstance(row.get("context_labels"), dict) else {}}
+            for row in values[:80]
+            if isinstance(row, dict) and type(row.get("start")) is int and type(row.get("end")) is int
+            and 0 <= row["start"] < row["end"] <= len(body)
+            and body[row["start"]:row["end"]] == row.get("text")
+            and row.get("captured_text_sha256") == fingerprint]
 
 
 def _validated_observations(meta, body):
@@ -204,6 +230,10 @@ def public_capture_metadata(item, max_chars=20_000):
     body = body if isinstance(body, str) else ""
     result = {"truncated": bool(meta.get("truncated")) or len(body) > max_chars}
     result.update(_validated_observations(meta, body[:max_chars]))
+    if "evidence_passages" in meta:
+        result["evidence_passages"] = _validated_evidence_passages(meta, body[:max_chars],
+            hashlib.sha256(body.encode("utf-8")).hexdigest()) if len(body) <= max_chars else []
+        result["evidence_passage_accounting"] = _passage_accounting(meta)
     for key in SOURCE_FIELDS:
         value = meta.get(key)
         if type(value) in (str, bool, int, float):

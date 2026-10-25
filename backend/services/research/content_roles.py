@@ -15,6 +15,29 @@ OBJECTIVE_TERMS = {
     "personal": r"impersonat|deepfake|fabricat|fake (?:account|video|profile|quote)|false (?:claim|quote)|identity (?:abuse|theft)|scam|denied|denies|authentic|transcript",
 }
 
+# Small observed FR/ES vocabulary for native-text inspection, not translation
+# or a general multilingual entailment claim. Whole words avoid name fragments.
+LOCAL_BRAND_ABUSE = r"\b(?:arnaques?|fraudes?|contrefaçons?|estafas?|suplantación|falsificaciones?)\b"
+LOCAL_BRAND_WARNING = r"\b(?:cuidado|méfiez|ne cliquez pas|no hagas clic|no pinches|protégez)\b"
+LOCAL_BRAND_NEGATION = (r"\bno (?:es|son|se trata de) (?:(?:una?|unas?|unos?) )?(?:estafas?|fraudes?|falsificaciones?|falsificación)\b"
+                       r"|\b(?:n['’]est|ne sont|ne constitue(?:nt)?) pas (?:(?:une?|des?|du) )?(?:arnaques?|fraudes?|contrefaçons?)\b")
+
+
+def local_prose_predicate(text):
+    """Require several language cues plus a standalone predicate, never a URL.
+
+    Used only by deterministic prose selection; source assertions remain
+    unverified and original source text is retained unchanged.
+    """
+    words = set(re.findall(r"[^\W\d_]+", text.casefold(), re.UNICODE))
+    rules = [({"le", "la", "les", "des", "une", "avec", "pour", "dans", "vous", "votre", "cette"},
+              r"est|sont|ont|affirme|offre|propose|annonce|signale|demande"),
+             ({"el", "la", "los", "las", "una", "por", "para", "que", "con", "este", "esta", "del"},
+              r"es|son|ha|han|dijo|ofrece|advierte|afirma|solicita|pide")]
+    return any(len(words & cues) >= 3 and re.search(
+        r'(?:^|[\s"(])(?:' + verbs + r")(?=$|[\s,.;:!?])", text, re.I)
+        for cues, verbs in rules)
+
 
 def paragraph_role(text):
     lower = text.casefold().strip()
@@ -50,6 +73,8 @@ def paragraph_role(text):
 
 
 def matches_objective(text, domain=""):
+    if domain == "brand" and re.search(LOCAL_BRAND_ABUSE, text, re.I):
+        return True
     if domain == "brand" and re.search(r"\b(?:giveaways?|sweepstakes|free gifts?)\b", text, re.I):
         # A promotional contest is not brand-abuse evidence merely because
         # scams can also use giveaways. Keep reported abuse, recalls, complaints

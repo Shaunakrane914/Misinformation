@@ -1,0 +1,209 @@
+{
+  "mode": "OFFLINE_SAVED_API_REPORT_RENDERING",
+  "new_provider_calls": 0,
+  "model_calls": 0,
+  "final_four_case_batch": {
+    "mode": "OFFLINE_SAVED_API_REPORT_RENDERING",
+    "new_provider_calls": 0,
+    "model_calls": 0,
+    "external_browser_traffic": "BLOCKED",
+    "states": [
+      {
+        "agent": "scout",
+        "width": 320,
+        "expected_passages": 111,
+        "visited_passages": 111,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "scout",
+        "width": 390,
+        "expected_passages": 111,
+        "visited_passages": 111,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "scout",
+        "width": 1440,
+        "expected_passages": 111,
+        "visited_passages": 111,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "brandshield",
+        "width": 320,
+        "expected_passages": 19,
+        "visited_passages": 19,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "brandshield",
+        "width": 390,
+        "expected_passages": 19,
+        "visited_passages": 19,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "brandshield",
+        "width": 1440,
+        "expected_passages": 19,
+        "visited_passages": 19,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "trending",
+        "width": 320,
+        "expected_passages": 6,
+        "visited_passages": 6,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "trending",
+        "width": 390,
+        "expected_passages": 6,
+        "visited_passages": 6,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "trending",
+        "width": 1440,
+        "expected_passages": 6,
+        "visited_passages": 6,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 320,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 390,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 1440,
+        "expected_passages": 0,
+        "visited_passages": 0,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      }
+    ],
+    "limitations": [
+      "Shared report rendering, not native form submission or fresh acquisition.",
+      "External fonts/resources blocked; no screen-reader or contrast certification."
+    ]
+  },
+  "separate_personal_routing_postfix": {
+    "mode": "OFFLINE_SAVED_API_REPORT_RENDERING",
+    "new_provider_calls": 0,
+    "model_calls": 0,
+    "external_browser_traffic": "BLOCKED",
+    "states": [
+      {
+        "agent": "personal_watch",
+        "width": 320,
+        "expected_passages": 1,
+        "visited_passages": 1,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 390,
+        "expected_passages": 1,
+        "visited_passages": 1,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      },
+      {
+        "agent": "personal_watch",
+        "width": 1440,
+        "expected_passages": 1,
+        "visited_passages": 1,
+        "all_passages_accessible_by_keyboard_pagination": true,
+        "search_filter": true,
+        "role_filter": true,
+        "publisher_filter": true,
+        "horizontal_overflow": false,
+        "page_errors": []
+      }
+    ],
+    "limitations": [
+      "Shared report rendering, not native form submission or fresh acquisition.",
+      "External fonts/resources blocked; no screen-reader or contrast certification."
+    ]
+  }
+}

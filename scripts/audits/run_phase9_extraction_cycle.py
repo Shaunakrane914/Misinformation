@@ -64,6 +64,7 @@ def probe_specs(all_operations=False):
             "nist_cve": "Log4j", "arxiv": "attention transformer",
             "fact_check": "climate change", "hackernews": "Python",
             "stackexchange": "python generator",
+            "expanded_sources": "yahoo_finance|Microsoft",
         }
         overrides = {
             "github.search": "misinformation verification", "v2ex.hot": "",

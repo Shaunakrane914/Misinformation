@@ -1,5 +1,17 @@
 # Acquisition channel coverage matrix
 
+Current expansion status: [2026-10-24 repair record](../testing/EXPANSION_SAFETY_AND_RELEASE_INTEGRATION_2026-10-24.md).
+The new bounded `expanded_sources.search` route produces discovery leads, followed
+by separate native reads. Wikipedia/Wikidata are background/profile content,
+arXiv is abstract-only, feeds are syndicated observations and community posts
+do not establish measured virality. SEC requires declared contact configuration;
+Reddit requires approved access. Adapter registration is not live acceptance.
+The historical expansion word/throughput claims below do not prove20× useful
+frontend evidence. Later [October 25 live samples](../testing/USEFUL_EVIDENCE_EXPANSION_2026-10-25.md)
+demonstrate bounded acquisition, with20× and broader research acceptance still
+unmet. Expanded adapter redirects are disabled pending per-hop platform access
+authorization; ordinary native web reads retain their separate safe transport.
+
 This file describes the upstream declaration catalogue. It is not an executable
 support claim. The authoritative current audit is
 `docs/architecture/PRE_PHASE7_READINESS_REPORT.md`, and the machine-readable

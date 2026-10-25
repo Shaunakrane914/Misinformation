@@ -3,8 +3,28 @@ Shared pytest fixtures for the Aegis Protocol unit test suite.
 """
 
 import hashlib
+import socket
 import pytest
 from unittest.mock import MagicMock
+
+@pytest.fixture(autouse=True)
+def expanded_adapter_fixture_environment(request, monkeypatch):
+    """Positive adapter fixtures have explicit synthetic DNS/config, not live access.
+
+    Scope is limited to the original positive fixture modules. Security tests
+    outside this list retain missing-config/blocked defaults.
+    """
+    if request.path.name not in {
+        "test_wikipedia_adapter.py", "test_sec_filings_full_adapter.py", "test_sec_edgar_adapter.py",
+        "test_arxiv_adapter.py", "test_substack_adapter.py", "test_yahoo_finance_adapter.py",
+        "test_consumer_review_adapter.py", "test_reddit_deep_adapter.py", "test_wikidata_exec_adapter.py",
+        "test_factcheck_adapter.py", "test_expanded_social_adapters.py", "test_news_wires_adapter.py",
+    }:
+        return
+    monkeypatch.setattr(socket, "getaddrinfo", lambda *args, **kwargs: [(socket.AF_INET, socket.SOCK_STREAM, 6, "", ("93.184.216.34", 443))])
+    monkeypatch.setenv("REDDIT_APPROVED_ACCESS", "true")
+    monkeypatch.setenv("SEC_USER_AGENT", "OfflineFixture test@example.invalid")
+    monkeypatch.setenv("GOOGLE_FACTCHECK_API_KEY", "offline-fixture-not-a-key")
 from fastapi.testclient import TestClient
 
 from backend.main import app

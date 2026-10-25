@@ -1,5 +1,12 @@
 # Coding-agent handoffs
 
+## Expansion Git checkpoint ? 2026-10-25
+
+- [Push and pre-push security closeout](2026-10-25_EXPANSION_PUSH.md):
+  code checkpoint9a437bb committed/pushed to the existing development branch;
+  expanded adapter redirect-policy gap closed. Full/fast2,356/2,148 passing.
+  Hosted CI was queued at handoff preparation; no main merge or deployment.
+
 ## Useful evidence expansion ? 2026-10-25
 
 - [Implementation and measured continuation](2026-10-25_USEFUL_EVIDENCE_EXPANSION.md):

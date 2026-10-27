@@ -83,7 +83,7 @@ def read_article_via_jina(url: str, timeout: float = 5.0) -> Optional[Dict[str, 
 
 def execute_web_read(
     url: str,
-    max_chars: int = 4000,
+    max_chars: int = 25000,
     executor: Any = None,
     legacy_scraper: Any = None,
 ) -> Dict[str, Any]:
@@ -169,5 +169,5 @@ class JinaWebReaderAdapter:
     def backend_id(self) -> str:
         return "jina-reader"
 
-    def read(self, url: str, max_chars: int = 4000) -> Dict[str, Any]:
+    def read(self, url: str, max_chars: int = 25000) -> Dict[str, Any]:
         return execute_web_read(url, max_chars=max_chars)

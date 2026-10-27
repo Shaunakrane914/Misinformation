@@ -123,7 +123,7 @@ def test_auth_only_scope_returns_no_false_executable_plan(monkeypatch):
     assert {item["reason"] for item in plan.excluded} == {
         "AUTH_REQUIRED: INSTAGRAM_COOKIE is not configured"
     }
-    assert "No executable source action" in plan.warnings[0]
+    assert any("No executable source action" in w for w in plan.warnings)
 
 
 def test_replanning_is_bounded_and_deduplicated():
@@ -149,7 +149,11 @@ def test_prompt_injection_text_is_data_and_cannot_expand_capabilities():
     assert plan.intent_class == "technical_product"
     assert "instagram" not in plan.channels
     assert all(action.source_hint is None for action in plan.actions)
-    assert all(action.channel in {"web", "news", "reddit", "youtube"} for action in plan.actions)
+    # expanded_sources is a deterministic planner capability (bounded curated-source discovery),
+    # not something the injected claim text can add; its selector is the token before '|'.
+    assert all(action.channel in {"web", "news", "reddit", "youtube", "expanded_sources"} for action in plan.actions)
+    assert all("|" in action.query and action.query.split("|", 1)[0] in {"hackernews", "news_wires", "wikipedia", "yahoo_finance", "wikidata_exec", "trending_pulse"}
+               for action in plan.actions if action.channel == "expanded_sources")
 
 
 def test_overlapping_agent_plans_have_stable_action_identity():

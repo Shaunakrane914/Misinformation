@@ -54,6 +54,13 @@ class StandardChannelHandlers:
             return handler(query, limit, query_id, query_class, query_text, telemetry, **kwargs)
         return self._execute_generic(platform, query, limit, query_id, query_class, query_text, telemetry)
 
+    def _execute_expanded_sources(self, query, limit, query_id, query_class, query_text, telemetry, **_):
+        from backend.infrastructure.acquisition.adapters.expanded_catalog import ExpandedSourceChannel
+        fragments = ExpandedSourceChannel().search(query, limit=limit, query_id=query_id,
+                                                    query_class=query_class)
+        telemetry.update(status="SUCCESS", backend="bounded-expanded-adapters")
+        return fragments
+
     def _execute_github(self, query, limit, query_id, query_class, query_text, telemetry, **_):
         operation = str(_.get("operation", "search")).lower()
         if operation != "search":
@@ -279,8 +286,17 @@ class StandardChannelHandlers:
     def _execute_feed(self, channel, query, limit, query_id, query_class, query_text, telemetry):
         try:
             encoded = urllib.parse.quote_plus(query.strip())
-            url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
-            result = self.router.executor.execute_rss_read(url, limit=limit)
+            # For news channel, prioritize Bing News RSS to obtain direct publisher URLs rather than
+            # opaque Google News wrapper redirect tokens (/rss/articles/CBMi...).
+            if channel == "news":
+                url = f"https://www.bing.com/news/search?q={encoded}&format=rss"
+                result = self.router.executor.execute_rss_read(url, limit=limit)
+                if not result.get("items"):
+                    url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
+                    result = self.router.executor.execute_rss_read(url, limit=limit)
+            else:
+                url = f"https://news.google.com/rss/search?q={encoded}&hl=en-US&gl=US&ceid=US:en"
+                result = self.router.executor.execute_rss_read(url, limit=limit)
             self._record_transport(telemetry, result)
             fragments = self.router.normalizer.normalize_rss_entries(
                 result.get("items", []), channel_name=channel, query_id=query_id, query_class=query_class, query_text=query_text
@@ -288,7 +304,7 @@ class StandardChannelHandlers:
             if not fragments:
                 raise NativeReachError(f"{channel} returned no entries")
             self._attach_transport(fragments, result.get("transport"))
-            backend = "feedparser-google-rss" if channel == "rss" else "feedparser-google-news"
+            backend = "feedparser-bing-news" if "bing.com" in url else ("feedparser-google-rss" if channel == "rss" else "feedparser-google-news")
             self.router._tag_fragments(fragments, channel, channel, RetrievalMode.RSS_FEED.value, backend, None, False)
             for fragment in fragments:
                 fragment.content_depth = "FEED_ENTRY_SUMMARY"

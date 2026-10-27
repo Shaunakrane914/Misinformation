@@ -80,7 +80,12 @@ class AgentReachService:
         self.registry = CapabilityRegistry()
         self.planner = RetrievalPlanner()
         self.source_planner = SourcePlanningEngine()
+        self.adapters: Dict[str, Any] = {}
         self._register_default_channels()
+        self._register_default_adapters()
+        from backend.infrastructure.acquisition.adapters.expanded_catalog import get_expanded_adapters, ExpandedSourceChannel
+        self.adapters.update(get_expanded_adapters())
+        self.registry.register(ExpandedSourceChannel())
         logger.info("[AgentReachService] Initialized with Native Agent Reach 3.0 capability backbone")
 
     def _register_default_channels(self) -> None:
@@ -106,6 +111,92 @@ class AgentReachService:
         self.registry.register(AuthenticatedOptionalChannel("facebook", "Facebook", "FACEBOOK_COOKIE"))
         self.registry.register(AuthenticatedOptionalChannel("boss", "Boss直聘", "BOSS_CDP_PORT"))
         self.registry.register(AuthenticatedOptionalChannel("xiaoyuzhou", "Xiaoyuzhou", "GROQ_API_KEY"))
+
+    def _register_default_adapters(self) -> None:
+        """Register extended platform adapters for deep multi-website scraping."""
+        try:
+            from backend.infrastructure.acquisition.adapters.encyclopedia.wikipedia import WikipediaAdapter
+            self.adapters["wikipedia"] = WikipediaAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] WikipediaAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.regulatory.sec_filings_full import SecFilingsFullAdapter
+            self.adapters["sec_filings_full"] = SecFilingsFullAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] SecFilingsFullAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.academic.arxiv import ArxivAdapter
+            self.adapters["arxiv"] = ArxivAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] ArxivAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.news.substack import SubstackAdapter
+            self.adapters["substack"] = SubstackAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] SubstackAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.financial.yahoo_finance import YahooFinanceAdapter
+            self.adapters["yahoo_finance"] = YahooFinanceAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] YahooFinanceAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.consumer.trustpilot import ConsumerReviewAdapter
+            self.adapters["trustpilot"] = ConsumerReviewAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] ConsumerReviewAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.social.reddit_deep import RedditDeepAdapter
+            self.adapters["reddit_deep"] = RedditDeepAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] RedditDeepAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.governance.wikidata_exec import WikidataExecutiveAdapter
+            self.adapters["wikidata_exec"] = WikidataExecutiveAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] WikidataExecutiveAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.regulatory.sec_edgar import SecEdgarAdapter
+            self.adapters["sec_edgar"] = SecEdgarAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] SecEdgarAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.social.bluesky import BlueskyAdapter
+            self.adapters["bluesky"] = BlueskyAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] BlueskyAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.social.hackernews import HackerNewsAdapter
+            self.adapters["hackernews"] = HackerNewsAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] HackerNewsAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.social.telegram import TelegramPublicAdapter
+            self.adapters["telegram"] = TelegramPublicAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] TelegramPublicAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.factcheck.factcheck_adapter import FactCheckAdapter
+            self.adapters["factcheck"] = FactCheckAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] FactCheckAdapter notice: {e}")
+
+        try:
+            from backend.infrastructure.acquisition.adapters.news.wires_adapter import NewswireAdapter
+            self.adapters["news_wires"] = NewswireAdapter()
+        except Exception as e:
+            logger.debug(f"[AgentReachService] NewswireAdapter notice: {e}")
 
     # ── Diagnostics & Capabilities ──────────────────────────────────────────
 
@@ -203,7 +294,7 @@ class AgentReachService:
 
     # ── Safe Content Reading ────────────────────────────────────────────────
 
-    def read(self, url: str, max_chars: int = 4000) -> Dict[str, Any]:
+    def read(self, url: str, max_chars: int = 25000) -> Dict[str, Any]:
         """
         Safely fetch and parse a web document into clean markdown.
         Routes through native_router with SSRF validation and structured fallback.
@@ -360,7 +451,7 @@ class AgentReachService:
         max_deep_reads = max(0, int(budget.get("max_deep_reads", 4)))
         task_timeout = max(0.0, budget.get("channel_timeout", min(timeout, 8.0)))
 
-        def _read_with_deadline(url: str, max_chars: int = 4000) -> Dict[str, Any]:
+        def _read_with_deadline(url: str, max_chars: int = 25000) -> Dict[str, Any]:
             remaining = deadline - time.monotonic()
             if remaining <= 0:
                 return {"status": "failed", "error": "Retrieval deadline expired", "url": url}
@@ -562,7 +653,10 @@ class AgentReachService:
 
         channel_raw_fragments: Dict[str, List[EvidenceFragment]] = {ch: [] for ch in normalized_channel_queries}
 
-        executor = concurrent.futures.ThreadPoolExecutor(max_workers=8)
+        # Bounded synchronous compatibility path; async offloading is not a
+        # license to create 120 threads per request or bypass provider caps.
+        worker_count = max(1, min(8, int(budget.get("max_workers", 8))))
+        executor = concurrent.futures.ThreadPoolExecutor(max_workers=worker_count)
         try:
             future_to_task = {executor.submit(_run_single_query, t): t for t in tasks}
             try:
@@ -694,7 +788,7 @@ class AgentReachService:
                 if time.monotonic() >= deadline:
                     break
                 try:
-                    read_res = _read_with_deadline(cand.url, max_chars=2500)
+                    read_res = _read_with_deadline(cand.url, max_chars=25000)
                     if read_res.get("status") in ("success", "fallback_soup") and read_res.get("markdown"):
                         md = read_res["markdown"].strip()
                         if len(md) > 200:
@@ -799,6 +893,31 @@ class AgentReachService:
             retrieval_trace=trace.to_dict(),
             trace_obj=trace,
             query_records=list(query_records_map.values()),
+        )
+
+    async def async_retrieve_many(
+        self,
+        channel_queries: Dict[str, List[Any]],
+        domain: str = "general",
+        agent_name: str = "agent",
+        target_name: str = "",
+        source_url: Optional[str] = None,
+        budget: Optional[Dict[str, Any]] = None,
+        perform_reads: bool = True,
+        timeout: float = 12.0,
+    ) -> RetrievalResult:
+        """Offload the bounded synchronous pipeline; not a native-async rewrite."""
+        import asyncio
+        return await asyncio.to_thread(
+            self.retrieve_many,
+            channel_queries=channel_queries,
+            domain=domain,
+            agent_name=agent_name,
+            target_name=target_name,
+            source_url=source_url,
+            budget=budget,
+            perform_reads=perform_reads,
+            timeout=timeout,
         )
 
     # ── Deduplication & Independence Logic ──────────────────────────────────
@@ -1017,7 +1136,7 @@ class AgentReachService:
         """Legacy doctor compatibility method."""
         return self.health()
 
-    def read_article_markdown(self, url: str, max_chars: int = 4000) -> Dict[str, Any]:
+    def read_article_markdown(self, url: str, max_chars: int = 25000) -> Dict[str, Any]:
         """Legacy read_article_markdown compatibility method."""
         return self.read(url, max_chars=max_chars)
 

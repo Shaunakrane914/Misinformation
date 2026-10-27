@@ -6,6 +6,7 @@ into strongly typed Aegis EvidenceFragment and EvidenceItem objects with full pr
 """
 
 import re
+import urllib.parse
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 
@@ -227,6 +228,28 @@ class NativeNormalizer:
         for e in raw_items:
             title = e.get("title", "")
             link = e.get("link", "")
+            # Unwrap redirect wrappers (e.g. Bing News apiclick, Yahoo RU=) to surface direct publisher URLs
+            if link:
+                if "bing.com/news/apiclick" in link:
+                    m = re.search(r"[?&]url=([^&]+)", link)
+                    if m:
+                        try:
+                            link = urllib.parse.unquote(m.group(1))
+                        except Exception:
+                            pass
+                elif "/RU=" in link:
+                    m = re.search(r"/RU=([^/]+)/", link)
+                    if m:
+                        try:
+                            link = urllib.parse.unquote(m.group(1))
+                        except Exception:
+                            pass
+
+            source_data = e.get("source")
+            source_url = ""
+            if isinstance(source_data, dict):
+                source_url = source_data.get("href") or source_data.get("url") or ""
+
             published = e.get("published", "")
             summary = _clean_html_text(e.get("summary", ""))
             feed_content = _clean_html_text(e.get("feed_content", ""))
@@ -253,6 +276,7 @@ class NativeNormalizer:
                     "backend": "feedparser",
                     "feed_title": e.get("feed_title"),
                     "feed_publisher": e.get("feed_publisher"),
+                    "source_url": source_url,
                     "guid": e.get("guid"),
                     "updated": e.get("updated"),
                     "categories": e.get("categories", []),

@@ -1,0 +1,199 @@
+{
+  "full": {
+    "exit_code": 0,
+    "passed": 2348,
+    "seconds": 41.71
+  },
+  "fast": {
+    "exit_code": 0,
+    "passed": 2140,
+    "seconds": 34.14
+  },
+  "focused": {
+    "exit_code": 0,
+    "passed": 48,
+    "seconds": 0.52
+  },
+  "fatal_lint": {
+    "exit_code": 0
+  },
+  "node": [
+    {
+      "suite": "test_agent_research_client.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_agent_ui_truth.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_claim_ui_truth.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_cloudflare_api_routing.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_evidence_workbench.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_forensic_explorer_truth.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_operation_health.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_phase8e_frontend_intelligence.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_security_and_health_regressions.js",
+      "exit_code": 0
+    },
+    {
+      "suite": "test_unified_report_renderer.js",
+      "exit_code": 0
+    }
+  ],
+  "smoke": {
+    "suite": "Phase 7.1 Isolated Release-Candidate Smoke Validation",
+    "timestamp": "2026-10-24T22:37:33.335984+00:00",
+    "execution_mode": "OFFLINE_REGRESSION",
+    "gates": {
+      "healthz": {
+        "status": "PASS",
+        "data": {
+          "status": "ok",
+          "system": "Aegis Protocol",
+          "version": "4.1.0",
+          "response_generated_at": "2026-10-24T22:37:33.336686Z",
+          "registered_modules": 7,
+          "active_agents": null,
+          "active_agent_count_status": "NOT_APPLICABLE_ON_DEMAND_EXECUTION"
+        }
+      },
+      "readyz": {
+        "status": "PASS",
+        "data": {
+          "status": "ready",
+          "mode": "READY_UNVERIFIED",
+          "version": "4.1.0",
+          "operation_summary": {
+            "total": 74,
+            "eligible": 44,
+            "verified": 0,
+            "auth_required": 6,
+            "policy_blocked": 3,
+            "not_implemented": 21
+          },
+          "note": "Readiness does not imply that unprobed third-party providers are healthy.",
+          "response_generated_at": "2026-10-24T22:37:33.338108Z"
+        }
+      },
+      "capabilities": {
+        "status": "PASS",
+        "channels_count": 24
+      },
+      "doctor": {
+        "status": "PASS",
+        "summary": {
+          "healthy": 0,
+          "degraded": 7,
+          "auth_required": 9,
+          "unavailable": 2
+        }
+      },
+      "secret_redaction": {
+        "status": "PASS"
+      },
+      "frontend_pages": {
+        "status": "PASS",
+        "pages_verified": 5
+      }
+    },
+    "scenarios": {
+      "nvidia_revenue_scout": {
+        "status": "PASS",
+        "report_id": null,
+        "evidence_count": 0
+      },
+      "nvidia_rtx5090_trending": {
+        "status": "PASS",
+        "trend_count": 0
+      },
+      "tata_sons_brandshield": {
+        "status": "PASS",
+        "threats_count": 0
+      },
+      "anthropic_personal_watch": {
+        "status": "PASS",
+        "alerts_count": 0
+      },
+      "zero_evidence_guard": {
+        "status": "PASS",
+        "verdict": "INSUFFICIENT_EVIDENCE"
+      }
+    },
+    "errors": [],
+    "verdict": "OFFLINE_SMOKE_PASS",
+    "limitations": [
+      "Uses temporary storage, disabled acquisition and explicit test LLM mocks.",
+      "Does not verify live scraping, deployed credentials, or production readiness."
+    ]
+  },
+  "rollback": {
+    "suite": "Offline persistence and rollback reader validation",
+    "execution_mode": "OFFLINE_REGRESSION",
+    "checks": {
+      "fresh_process_reload": {
+        "status": "PASS",
+        "producer_pid": 16928,
+        "consumer_pid": 10504
+      },
+      "persistent_state": {
+        "pid": 10504,
+        "claim_id": "572a67bc-f2c7-4898-9489-c784ba62e593",
+        "archive": {
+          "status": "PASS",
+          "counts": {
+            "VERIFIED": 1,
+            "LEGACY_UNSEALED": 0,
+            "FAILED": 0
+          },
+          "invalid_files": [],
+          "disclosure": "Legacy JSON readability is not cryptographic integrity verification."
+        },
+        "tamper_detection": "PASS",
+        "legacy_unsealed_disclosure": "PASS",
+        "healthz": "ok",
+        "readyz": "ready"
+      },
+      "historical_readers": {
+        "status": "PASS",
+        "baseline_commit": "258cb4f1fc71c379d0e882d8804c2a9770fc7f60",
+        "pid": 9408,
+        "scope": "Actual historical SQLite and JSON readers, not a full old-version deployment"
+      },
+      "historical_archive_read_only": {
+        "status": "NOT_VERIFIED",
+        "counts": {
+          "VERIFIED": 0,
+          "LEGACY_UNSEALED": 0,
+          "FAILED": 0
+        },
+        "invalid_files": [],
+        "disclosure": "Legacy JSON readability is not cryptographic integrity verification."
+      },
+      "preserved_dossier_bytes": "PASS",
+      "deployed_previous_version": {
+        "status": "NOT_VERIFIED",
+        "reason": "Requires an owner-controlled staging rollback"
+      }
+    },
+    "verdict": "OFFLINE_PERSISTENCE_PASS"
+  }
+}

@@ -46,9 +46,13 @@ class RelevanceAssessment:
     url: str = ""
     temporal_status: Optional[str] = None
     recency_score: float = 0.50
+    temporal_fresh: Optional[bool] = None   # True=within freshness window, False=older (kept + labeled), None=n/a
 
     def to_dict(self) -> Dict[str, Any]:
-        return asdict(self)
+        d = asdict(self)
+        if d.get("temporal_fresh") is None:
+            d.pop("temporal_fresh", None)
+        return d
 
 
 class RelevanceGate:
@@ -166,6 +170,7 @@ class RelevanceGate:
 
         # ── Stage 3b: Trending Temporal Freshness & Eligibility Gate ──
         temporal_assessment = None
+        temporal_fresh = None
         if domain == "trending":
             ref_t = reference_time if reference_time is not None else self.reference_time
             win_h = window_hours if window_hours is not None else self.trending_window_hours
@@ -189,23 +194,16 @@ class RelevanceGate:
                 item["temporal_status"] = temporal_assessment.status
                 item["recency_score"] = temporal_assessment.recency_score
 
-            if not temporal_assessment.is_eligible:
-                return RelevanceAssessment(
-                    evidence_id=e_id,
-                    relevance_score=0.0,
-                    relevance_class="REJECTED",
-                    is_accepted=False,
-                    entity_score=entity_score,
-                    intent_score=0.0,
-                    source_quality_score=0.50,
-                    matched_entities=matched_signals,
-                    rejection_reason=temporal_assessment.rejection_reason,
-                    rejection_stage="TEMPORAL_GATE_ERROR",
-                    title=title,
-                    url=url,
-                    temporal_status=temporal_assessment.status,
-                    recency_score=temporal_assessment.recency_score,
-                )
+            # Freshness is now a LABEL, not a hard reject: older-but-relevant items are kept so the
+            # page is never empty, and the two-layer threshold in filter_candidates uses them only to
+            # top up to a minimum when fresh results are scarce. Relevance (below) still applies.
+            temporal_fresh = bool(temporal_assessment.is_eligible)
+            if hasattr(item, "metadata") and isinstance(item.metadata, dict):
+                item.metadata["temporal_fresh"] = temporal_fresh
+                item.metadata["freshness"] = "NEW" if temporal_fresh else "OLD"
+            elif isinstance(item, dict):
+                item["temporal_fresh"] = temporal_fresh
+                item["freshness"] = "NEW" if temporal_fresh else "OLD"
 
         # ── Stage 4: Orthogonal Intent Scoring ──
         intent_score = 0.50  # Neutral base
@@ -279,6 +277,7 @@ class RelevanceGate:
             url=url,
             temporal_status=temporal_assessment.status if temporal_assessment else None,
             recency_score=temporal_assessment.recency_score if temporal_assessment else 0.50,
+            temporal_fresh=temporal_fresh,
         )
 
     def filter_candidates(
@@ -341,7 +340,47 @@ class RelevanceGate:
             else:
                 rejected_audit.append(assessment.to_dict())
 
+        if domain == "trending":
+            accepted, trimmed = self._apply_trending_freshness_threshold(accepted)
+            rejected_audit.extend(trimmed)
+
         return accepted, rejected_audit
+
+    #: Minimum relevant items to surface for a Trending page before older items are used as fallback.
+    TRENDING_MIN_RESULTS = 6
+
+    @staticmethod
+    def _meta(item):
+        if hasattr(item, "metadata") and isinstance(item.metadata, dict):
+            return item.metadata
+        return item if isinstance(item, dict) else {}
+
+    def _apply_trending_freshness_threshold(self, accepted: List[Any]) -> Tuple[List[Any], List[Dict[str, Any]]]:
+        """Fresh-first, never-empty. Keep every within-window ("NEW") relevant item; if that is below
+        the per-page minimum, top up with the most-recent OLDER relevant items (kept + labelled "OLD").
+        Only the surplus beyond the minimum is shed, so a niche/non-trending query still returns
+        content instead of nothing, and nothing recent is ever discarded for age.
+        """
+        fresh = [it for it in accepted if self._meta(it).get("temporal_fresh", True)]
+        older = [it for it in accepted if not self._meta(it).get("temporal_fresh", True)]
+        older.sort(key=lambda it: self._meta(it).get("recency_score", 0.0) or 0.0, reverse=True)
+        need = max(0, self.TRENDING_MIN_RESULTS - len(fresh))
+        kept_older, surplus = older[:need], older[need:]
+        for it in fresh:
+            self._meta(it).update(freshness="NEW", is_fresh=True)
+        for it in kept_older:
+            self._meta(it).update(freshness="OLD", is_fresh=False,
+                                   freshness_note="Older than the freshness window; shown to meet the page minimum.")
+        trimmed = []
+        for it in surplus:
+            m = self._meta(it)
+            trimmed.append({"evidence_id": m.get("evidence_id") or getattr(it, "id", ""),
+                            "url": getattr(it, "canonical_url", "") or m.get("canonical_url", ""),
+                            "relevance_class": "STALE_SURPLUS", "is_accepted": False,
+                            "temporal_status": m.get("temporal_status"),
+                            "rejection_reason": "Older than the freshness window and the fresh-result minimum is already met",
+                            "rejection_stage": "TRENDING_FRESHNESS_THRESHOLD"})
+        return fresh + kept_older, trimmed
 
 
 # Global singleton

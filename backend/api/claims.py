@@ -492,7 +492,7 @@ async def verify_claim_sync(request: ClaimVerifyRequest):
             "debunk_statement": debunk_stmt,
             "action_package": {
                 "copy_debunk": debunk_stmt,
-                "tweet_rebuttal": f"Empirical fact-check for '{norm_text[:50]}...': {clean_verdict}. Details: https://agenticai914.netlify.app/submit.html?claim={urllib.parse.quote_plus(norm_text[:40])}",
+                "tweet_rebuttal": f"Empirical fact-check for '{norm_text[:50]}...': {clean_verdict}. Details: https://aegis-protocol-110.pages.dev/submit.html?claim={urllib.parse.quote_plus(norm_text[:40])}",
                 "press_notice": f"Correction Notice: Research regarding '{norm_text}' concluded {clean_verdict}."
             },
             "execution_time_seconds": duration,

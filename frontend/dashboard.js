@@ -1,6 +1,6 @@
 // ─────────────────────────────────────────────
 // STATIC FALLBACK CLAIMS (shown instantly)
-// These live in the frontend (Netlify) and are
+// These live in the frontend (Cloudflare Pages) and are
 // replaced once the Render backend wakes up.
 // ─────────────────────────────────────────────
 const STATIC_CLAIMS = [

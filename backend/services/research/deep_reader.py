@@ -196,7 +196,8 @@ class DeepReader:
         self,
         ranked_candidates: List[EvidenceItem],
         max_reads: int = 15,
-        timeout_per_read: float = 6.0
+        timeout_per_read: float = 6.0,
+        max_chars_per_read: int = 25000,
     ) -> Tuple[List[EvidenceItem], Dict[str, Any]]:
         """
         Deep-reads top diverse candidates using bounded concurrency and caching.
@@ -224,6 +225,22 @@ class DeepReader:
         def _fetch_url(item: EvidenceItem, attempt_id: str) -> Tuple[EvidenceItem, Dict[str, Any], str, float]:
             url = item.canonical_url
             t0 = time.perf_counter()
+            # Fast-fail Google News wrapper URLs: their /rss/articles/ tokens are opaque and cannot be
+            # resolved to a real article here, yet fetching the wrapper returns a heavy JS shell that
+            # burns the shared read-batch deadline and starves readable sources (Yahoo, BBC, Guardian…).
+            from urllib.parse import urlsplit as _urlsplit
+            _host = (_urlsplit(url or "").hostname or "").lower()
+            if _host == "news.google.com" or _host.endswith(".news.google.com"):
+                meta = getattr(item, "metadata", {}) if hasattr(item, "metadata") else {}
+                meta = meta if isinstance(meta, dict) else (item if isinstance(item, dict) else {})
+                source_url = meta.get("source_url") or meta.get("publisher_url")
+                if source_url and "news.google.com" not in str(source_url):
+                    url = source_url
+                    _host = (_urlsplit(url or "").hostname or "").lower()
+                else:
+                    return item, {"status": "failed", "url": url, "failure_kind": "PUBLISHER_UNRESOLVED",
+                                  "error": "Google News wrapper URL is not a readable article"}, attempt_id, \
+                        round((time.perf_counter() - t0) * 1000, 2)
             # Check cache
             if url in self._cache:
                 cached_res, ts = self._cache[url]
@@ -232,7 +249,7 @@ class DeepReader:
                     return item, cached_res, attempt_id, dur_ms
 
             try:
-                res = agent_reach_service.read(url, max_chars=4000)
+                res = agent_reach_service.read(url, max_chars=max_chars_per_read)
                 dur_ms = round((time.perf_counter() - t0) * 1000, 2)
                 if res.get("status") in ("success", "fallback_soup") and res.get("markdown"):
                     self._cache[url] = (res, now)
@@ -249,7 +266,7 @@ class DeepReader:
             candidate_attempts.append((item, att_id))
 
         # Execute bounded concurrent reading
-        max_workers = min(len(candidate_attempts) or 1, 6)
+        max_workers = min(len(candidate_attempts) or 1, 12)
         completed_futures = set()
         executor = concurrent.futures.ThreadPoolExecutor(max_workers=max_workers)
         try:

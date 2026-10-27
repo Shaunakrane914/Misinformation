@@ -1,0 +1,1323 @@
+{
+  "schema": "aegis-prior-cycle-useful-yield-summary-v1",
+  "client_task_date": "2026-10-25",
+  "compiled_at_host": "2026-10-25T03:50:48.033833+05:30",
+  "mode": "READ_ONLY_RECOMPUTATION_FROM_EXISTING_SAVED_RESPONSES",
+  "new_network_calls": 0,
+  "new_model_calls": 0,
+  "raw_source_bodies_included": false,
+  "source_temp_basename": "aegis-useful-yield-648b5eb59537470ea08558920b838c3a",
+  "source_branch_observed": "release/specialist-task-20261024",
+  "source_head_observed": "1a90d681361b8e027a12feb88266932a5cb5d1d1",
+  "target_multiplier": 20,
+  "target_status": "NOT_DEMONSTRATED",
+  "later_citation_crawling_included": false,
+  "batches": [
+    {
+      "mode": "REAL_LOCAL_ASGI_SSE",
+      "application_sha256": "52c410f225a62616afff13e4902bfb3b0c92cb21a68bce06a5f9877d247a2670",
+      "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
+      "mock_llm": false,
+      "live_ai_authorized": false,
+      "requested_audit_bounds": {
+        "research_timeout_seconds": 240.0,
+        "max_deep_reads": 24,
+        "research_profile": "DEEP"
+      },
+      "advisory_model_check": {
+        "status": "DISABLED",
+        "model": "gemini-3.5-flash-lite"
+      },
+      "final_application_sha256": "52c410f225a62616afff13e4902bfb3b0c92cb21a68bce06a5f9877d247a2670",
+      "stable_application": true,
+      "live_ai_calls_reserved": 0,
+      "live_ai_observations": [],
+      "batch_id": "live",
+      "source_summary_file": "live/summary.json",
+      "cases": [
+        {
+          "agent": "scout",
+          "sample_input": "Adobe",
+          "source_native_file": "live/01-scout.json",
+          "source_native_sha256": "dc4bb843e0e65dbe2ad661114839cba561eb11eff5247200e428a7a0ec252665",
+          "observed_report_generated_at": "2026-10-24T13:06:41.235614+00:00",
+          "observed_root_times": {
+            "analyzed_at": "2026-10-24T13:06:41.233352"
+          },
+          "http_status": 200,
+          "seconds": 49.0,
+          "result_event": true,
+          "error_events": [],
+          "metrics": {
+            "article_bodies": 13,
+            "raw_article_words": 14019,
+            "qualified_sources": 12,
+            "selected_excerpt_words": 640,
+            "published_workbench_words": 6248,
+            "published_passages": 114
+          },
+          "runner_summary_retained_records": 12,
+          "runner_summary_record_words": 13620,
+          "pool_stats": {
+            "source_count": 46,
+            "candidate_urls": 46,
+            "by_type": {
+              "DISCOVERY_LEAD": 23,
+              "BLOCKED_OR_FAILED": 8,
+              "ARTICLE_BODY": 13,
+              "FEED_ENTRY": 1,
+              "PUBLISHER_HOMEPAGE": 1
+            },
+            "reads_attempted": 24,
+            "successful_captures": 16,
+            "article_bodies": 13,
+            "raw_article_words": 14019,
+            "raw_source_words": 15719,
+            "duplicate_captures": 0,
+            "qualified_source_count": 12,
+            "relevant_words": 640,
+            "unique_publishers": 6,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 348152,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "ACCESS_DENIED": 4,
+              "PROVIDER_FAILURE": 1,
+              "PUBLISHER_UNRESOLVED": 3
+            },
+            "dropped_by_limit": {}
+          },
+          "source_funnel": {
+            "queries_planned": 18,
+            "queries_submitted": 18,
+            "queries_started": 18,
+            "queries_succeeded": 17,
+            "queries_failed": 0,
+            "queries_timed_out": 0,
+            "queries_auth_required": 1,
+            "queries_skipped": 0,
+            "queries_executed": 18,
+            "candidates_found": 46,
+            "candidates_accepted": 45,
+            "candidates_rejected": 4,
+            "unique_candidates": 13,
+            "deep_reads_count": 16,
+            "acquired_record_count": 12,
+            "reused_acquired_count": 0,
+            "primary_sources_count": 0,
+            "independent_groups_count": 7,
+            "contradictions_count": 0,
+            "findings_count": 6,
+            "saturation_score": 0.0,
+            "halt_reason": "HARVEST_COMPLETE",
+            "adaptive_rounds": 0,
+            "raw_capture_count": 16,
+            "article_body_count": 13,
+            "qualified_source_count": 12,
+            "publisher_link_decision_count": 0,
+            "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+          },
+          "workbench_accounting": {
+            "source_records_with_passages": 12,
+            "observed_publisher_hosts": 6,
+            "available_unique_passages": 114,
+            "published_passages": 114,
+            "published_unique_words": 6248,
+            "published_text_utf8_bytes": 40211,
+            "identical_text_observations": 0,
+            "omitted_by_workbench_budget": 0,
+            "omitted_by_source_budget": 0,
+            "invalid_passage_records": 0,
+            "roles": {
+              "FINANCIAL_STATEMENT": 27,
+              "HISTORICAL_FINANCIAL_CONTEXT": 23,
+              "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 48,
+              "ARTICLE_CONTENT": 16
+            },
+            "independence_verified": false
+          },
+          "workbench_role_words": {
+            "FINANCIAL_STATEMENT": 1468,
+            "HISTORICAL_FINANCIAL_CONTEXT": 1240,
+            "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 2651,
+            "ARTICLE_CONTENT": 889
+          },
+          "workbench_relevance_labels": {
+            "DIRECTLY_RELEVANT": 114
+          },
+          "safety_and_epistemic_states": {
+            "investigation_status": "COMPLETED",
+            "epistemic_status": "REPORTED",
+            "published_claim_status_counts": {
+              "UNVERIFIED": 114
+            }
+          },
+          "saved_body_verification": {
+            "passages_checked": 114,
+            "exact_offset_mismatches": 0,
+            "distinct_published_texts": 114
+          }
+        },
+        {
+          "agent": "brandshield",
+          "sample_input": "Dyson",
+          "source_native_file": "live/02-brandshield.json",
+          "source_native_sha256": "ec365c5fb1e4a1b09738109bca32087e9295edccaa6a889fc4274b802a2c2272",
+          "observed_report_generated_at": "2026-10-24T13:07:11.174118+00:00",
+          "observed_root_times": {
+            "scanned_at": "2026-10-24T13:07:11.172547Z"
+          },
+          "http_status": 200,
+          "seconds": 29.22,
+          "result_event": true,
+          "error_events": [],
+          "metrics": {
+            "article_bodies": 8,
+            "raw_article_words": 7656,
+            "qualified_sources": 4,
+            "selected_excerpt_words": 114,
+            "published_workbench_words": 774,
+            "published_passages": 15
+          },
+          "runner_summary_retained_records": 4,
+          "runner_summary_record_words": 1653,
+          "pool_stats": {
+            "source_count": 28,
+            "candidate_urls": 28,
+            "by_type": {
+              "ARTICLE_BODY": 8,
+              "DISCOVERY_LEAD": 16,
+              "BLOCKED_OR_FAILED": 4
+            },
+            "reads_attempted": 15,
+            "successful_captures": 11,
+            "article_bodies": 8,
+            "raw_article_words": 7656,
+            "raw_source_words": 9363,
+            "duplicate_captures": 0,
+            "qualified_source_count": 4,
+            "relevant_words": 114,
+            "unique_publishers": 4,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 250783,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3,
+              "ACCESS_DENIED": 1
+            },
+            "dropped_by_limit": {}
+          },
+          "source_funnel": {
+            "queries_planned": 18,
+            "queries_submitted": 18,
+            "queries_started": 18,
+            "queries_succeeded": 18,
+            "queries_failed": 0,
+            "queries_timed_out": 0,
+            "queries_auth_required": 0,
+            "queries_skipped": 0,
+            "queries_executed": 18,
+            "candidates_found": 28,
+            "candidates_accepted": 28,
+            "candidates_rejected": 3,
+            "unique_candidates": 8,
+            "deep_reads_count": 11,
+            "acquired_record_count": 4,
+            "reused_acquired_count": 0,
+            "primary_sources_count": 0,
+            "independent_groups_count": 7,
+            "contradictions_count": 1,
+            "findings_count": 4,
+            "saturation_score": 0.0,
+            "halt_reason": "HARVEST_COMPLETE",
+            "adaptive_rounds": 0,
+            "raw_capture_count": 11,
+            "article_body_count": 8,
+            "qualified_source_count": 4,
+            "publisher_link_decision_count": 0,
+            "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+          },
+          "workbench_accounting": {
+            "source_records_with_passages": 4,
+            "observed_publisher_hosts": 4,
+            "available_unique_passages": 15,
+            "published_passages": 15,
+            "published_unique_words": 774,
+            "published_text_utf8_bytes": 5272,
+            "identical_text_observations": 0,
+            "omitted_by_workbench_budget": 0,
+            "omitted_by_source_budget": 0,
+            "invalid_passage_records": 0,
+            "roles": {
+              "UNVERIFIED_ALLEGATION": 11,
+              "PRODUCT_SAFETY_REPORT": 1,
+              "REPORTED_ENFORCEMENT": 1,
+              "SOURCE_REPORTED_CONTEXT": 2
+            },
+            "independence_verified": false
+          },
+          "workbench_role_words": {
+            "UNVERIFIED_ALLEGATION": 517,
+            "PRODUCT_SAFETY_REPORT": 37,
+            "REPORTED_ENFORCEMENT": 19,
+            "SOURCE_REPORTED_CONTEXT": 201
+          },
+          "workbench_relevance_labels": {
+            "DIRECTLY_RELEVANT": 15
+          },
+          "safety_and_epistemic_states": {
+            "investigation_status": "COMPLETED",
+            "assessment_status": "SOURCE_REPORTS_ONLY",
+            "safety_assessment": "NOT_ESTABLISHED",
+            "threat_count": 0,
+            "safe_count": 0,
+            "non_threat_finding_count": 4,
+            "published_claim_status_counts": {
+              "UNVERIFIED": 15
+            }
+          },
+          "saved_body_verification": {
+            "passages_checked": 15,
+            "exact_offset_mismatches": 0,
+            "distinct_published_texts": 15
+          }
+        },
+        {
+          "agent": "trending",
+          "sample_input": "battery recycling",
+          "source_native_file": "live/03-trending.json",
+          "source_native_sha256": "c41ea0f14276492875c32d6c03a99f0d34f50aecd6e4c53afa12481f96d35053",
+          "observed_report_generated_at": "2026-10-24T13:09:02.641886+00:00",
+          "observed_root_times": {},
+          "http_status": 200,
+          "seconds": 111.32,
+          "result_event": true,
+          "error_events": [],
+          "metrics": {
+            "article_bodies": 7,
+            "raw_article_words": 9859,
+            "qualified_sources": 1,
+            "selected_excerpt_words": 51,
+            "published_workbench_words": 322,
+            "published_passages": 6
+          },
+          "runner_summary_retained_records": 1,
+          "runner_summary_record_words": 1250,
+          "pool_stats": {
+            "source_count": 60,
+            "candidate_urls": 60,
+            "by_type": {
+              "BLOCKED_OR_FAILED": 7,
+              "FEED_ENTRY": 3,
+              "PUBLISHER_HOMEPAGE": 5,
+              "ARTICLE_BODY": 7,
+              "SOURCE_INDEX": 2,
+              "DISCOVERY_LEAD": 36
+            },
+            "reads_attempted": 24,
+            "successful_captures": 17,
+            "article_bodies": 7,
+            "raw_article_words": 9859,
+            "raw_source_words": 26380,
+            "duplicate_captures": 0,
+            "qualified_source_count": 1,
+            "relevant_words": 51,
+            "unique_publishers": 1,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 760874,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3,
+              "PROVIDER_FAILURE": 3,
+              "BUDGET_EXHAUSTED": 1
+            },
+            "dropped_by_limit": {}
+          },
+          "source_funnel": {
+            "queries_planned": 18,
+            "queries_submitted": 18,
+            "queries_started": 18,
+            "queries_succeeded": 17,
+            "queries_failed": 1,
+            "queries_timed_out": 0,
+            "queries_auth_required": 0,
+            "queries_skipped": 0,
+            "queries_executed": 18,
+            "candidates_found": 60,
+            "candidates_accepted": 60,
+            "candidates_rejected": 16,
+            "unique_candidates": 1,
+            "deep_reads_count": 17,
+            "acquired_record_count": 1,
+            "reused_acquired_count": 0,
+            "primary_sources_count": 0,
+            "independent_groups_count": 1,
+            "contradictions_count": 0,
+            "findings_count": 1,
+            "saturation_score": 0.0,
+            "halt_reason": "HARVEST_COMPLETE",
+            "adaptive_rounds": 0,
+            "raw_capture_count": 17,
+            "article_body_count": 7,
+            "qualified_source_count": 1,
+            "publisher_link_decision_count": 89,
+            "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+          },
+          "workbench_accounting": {
+            "source_records_with_passages": 1,
+            "observed_publisher_hosts": 1,
+            "available_unique_passages": 6,
+            "published_passages": 6,
+            "published_unique_words": 322,
+            "published_text_utf8_bytes": 2208,
+            "identical_text_observations": 0,
+            "omitted_by_workbench_budget": 0,
+            "omitted_by_source_budget": 0,
+            "invalid_passage_records": 0,
+            "roles": {
+              "ARTICLE_CONTENT": 6
+            },
+            "independence_verified": false
+          },
+          "workbench_role_words": {
+            "ARTICLE_CONTENT": 322
+          },
+          "workbench_relevance_labels": {
+            "DIRECTLY_RELEVANT": 6
+          },
+          "safety_and_epistemic_states": {
+            "investigation_status": "COMPLETED",
+            "threat_count": 0,
+            "safe_count": 1,
+            "published_claim_status_counts": {
+              "UNVERIFIED": 6
+            }
+          },
+          "saved_body_verification": {
+            "passages_checked": 6,
+            "exact_offset_mismatches": 0,
+            "distinct_published_texts": 6
+          }
+        },
+        {
+          "agent": "personal_watch",
+          "sample_input": "Mary Barra",
+          "source_native_file": "live/04-personal_watch.json",
+          "source_native_sha256": "6a41f98df8fc0b63ca0e1f71d0eaa0581ddecfc825f8605e52a96717b5f82aa9",
+          "observed_report_generated_at": "2026-10-24T13:09:23.558623+00:00",
+          "observed_root_times": {},
+          "http_status": 200,
+          "seconds": 20.65,
+          "result_event": true,
+          "error_events": [],
+          "metrics": {
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "qualified_sources": 1,
+            "selected_excerpt_words": 114,
+            "published_workbench_words": 114,
+            "published_passages": 1
+          },
+          "runner_summary_retained_records": 1,
+          "runner_summary_record_words": 484,
+          "pool_stats": {
+            "source_count": 15,
+            "candidate_urls": 15,
+            "by_type": {
+              "BLOCKED_OR_FAILED": 4,
+              "DISCOVERY_LEAD": 10,
+              "ARTICLE_BODY": 1
+            },
+            "reads_attempted": 6,
+            "successful_captures": 2,
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "raw_source_words": 1627,
+            "duplicate_captures": 0,
+            "qualified_source_count": 1,
+            "relevant_words": 114,
+            "unique_publishers": 1,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 63402,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "PUBLISHER_UNRESOLVED": 3,
+              "ACCESS_DENIED": 1
+            },
+            "dropped_by_limit": {}
+          },
+          "source_funnel": {
+            "queries_planned": 18,
+            "queries_submitted": 18,
+            "queries_started": 18,
+            "queries_succeeded": 18,
+            "queries_failed": 0,
+            "queries_timed_out": 0,
+            "queries_auth_required": 0,
+            "queries_skipped": 0,
+            "queries_executed": 18,
+            "candidates_found": 15,
+            "candidates_accepted": 14,
+            "candidates_rejected": 2,
+            "unique_candidates": 1,
+            "deep_reads_count": 2,
+            "acquired_record_count": 1,
+            "reused_acquired_count": 0,
+            "primary_sources_count": 0,
+            "independent_groups_count": 1,
+            "contradictions_count": 0,
+            "findings_count": 1,
+            "saturation_score": 0.0,
+            "halt_reason": "HARVEST_COMPLETE",
+            "adaptive_rounds": 0,
+            "raw_capture_count": 2,
+            "article_body_count": 1,
+            "qualified_source_count": 1,
+            "publisher_link_decision_count": 0,
+            "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+          },
+          "workbench_accounting": {
+            "source_records_with_passages": 1,
+            "observed_publisher_hosts": 1,
+            "available_unique_passages": 1,
+            "published_passages": 1,
+            "published_unique_words": 114,
+            "published_text_utf8_bytes": 704,
+            "identical_text_observations": 0,
+            "omitted_by_workbench_budget": 0,
+            "omitted_by_source_budget": 0,
+            "invalid_passage_records": 0,
+            "roles": {
+              "ARTICLE_CONTENT": 1
+            },
+            "independence_verified": false
+          },
+          "workbench_role_words": {
+            "ARTICLE_CONTENT": 114
+          },
+          "workbench_relevance_labels": {
+            "DIRECTLY_RELEVANT": 1
+          },
+          "safety_and_epistemic_states": {
+            "investigation_status": "COMPLETED",
+            "identity_authenticated": false,
+            "identity_risk": "UNASSESSED",
+            "published_claim_status_counts": {
+              "UNVERIFIED": 1
+            },
+            "publisher_attributed_public_statement_count": 1,
+            "public_statement_content_roles": {
+              "PUBLIC_STATEMENT": 1
+            },
+            "public_statement_publisher_dates": [
+              "2021-09-29T21:08:46+05:30"
+            ]
+          },
+          "saved_body_verification": {
+            "passages_checked": 1,
+            "exact_offset_mismatches": 0,
+            "distinct_published_texts": 1
+          }
+        }
+      ]
+    },
+    {
+      "mode": "REAL_LOCAL_ASGI_SSE",
+      "application_sha256": "8dbffbc6020babdf090b5e7f9cd367026dcf037d098a1261962ccdfef687c89c",
+      "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
+      "mock_llm": false,
+      "live_ai_authorized": false,
+      "requested_audit_bounds": {
+        "research_timeout_seconds": 240.0,
+        "max_deep_reads": 24,
+        "research_profile": "DEEP"
+      },
+      "advisory_model_check": {
+        "status": "DISABLED",
+        "model": "gemini-3.5-flash-lite"
+      },
+      "final_application_sha256": "8dbffbc6020babdf090b5e7f9cd367026dcf037d098a1261962ccdfef687c89c",
+      "stable_application": true,
+      "live_ai_calls_reserved": 0,
+      "live_ai_observations": [],
+      "batch_id": "brand-postfix",
+      "source_summary_file": "brand-postfix/summary.json",
+      "cases": [
+        {
+          "agent": "brandshield",
+          "sample_input": "Dyson",
+          "source_native_file": "brand-postfix/01-brandshield.json",
+          "source_native_sha256": "bd933f59c520c3c0e816d533a55095d249f5966ab140193c5bdf165aa90803ac",
+          "observed_report_generated_at": "2026-10-24T13:19:14.176247+00:00",
+          "observed_root_times": {
+            "scanned_at": "2026-10-24T13:19:14.169810Z"
+          },
+          "http_status": 200,
+          "seconds": 38.88,
+          "result_event": true,
+          "error_events": [],
+          "metrics": {
+            "article_bodies": 8,
+            "raw_article_words": 7656,
+            "qualified_sources": 7,
+            "selected_excerpt_words": 395,
+            "published_workbench_words": 1055,
+            "published_passages": 18
+          },
+          "runner_summary_retained_records": 7,
+          "runner_summary_record_words": 6100,
+          "pool_stats": {
+            "source_count": 28,
+            "candidate_urls": 28,
+            "by_type": {
+              "ARTICLE_BODY": 8,
+              "BLOCKED_OR_FAILED": 4,
+              "DISCOVERY_LEAD": 16
+            },
+            "reads_attempted": 15,
+            "successful_captures": 11,
+            "article_bodies": 8,
+            "raw_article_words": 7656,
+            "raw_source_words": 9363,
+            "duplicate_captures": 0,
+            "qualified_source_count": 7,
+            "relevant_words": 395,
+            "unique_publishers": 6,
+            "publisher_independence": "NOT_ESTABLISHED",
+            "storage_bytes": 250729,
+            "acquisition_mode": "OBSERVED_ACQUISITION",
+            "ambiguous_alias_count": 0,
+            "failed_reads_by_cause": {
+              "ACCESS_DENIED": 1,
+              "PUBLISHER_UNRESOLVED": 3
+            },
+            "dropped_by_limit": {}
+          },
+          "source_funnel": {
+            "queries_planned": 18,
+            "queries_submitted": 18,
+            "queries_started": 18,
+            "queries_succeeded": 18,
+            "queries_failed": 0,
+            "queries_timed_out": 0,
+            "queries_auth_required": 0,
+            "queries_skipped": 0,
+            "queries_executed": 18,
+            "candidates_found": 28,
+            "candidates_accepted": 28,
+            "candidates_rejected": 3,
+            "unique_candidates": 8,
+            "deep_reads_count": 11,
+            "acquired_record_count": 7,
+            "reused_acquired_count": 0,
+            "primary_sources_count": 0,
+            "independent_groups_count": 7,
+            "contradictions_count": 1,
+            "findings_count": 6,
+            "saturation_score": 0.0,
+            "halt_reason": "HARVEST_COMPLETE",
+            "adaptive_rounds": 0,
+            "raw_capture_count": 11,
+            "article_body_count": 8,
+            "qualified_source_count": 7,
+            "publisher_link_decision_count": 0,
+            "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+          },
+          "workbench_accounting": {
+            "source_records_with_passages": 7,
+            "observed_publisher_hosts": 6,
+            "available_unique_passages": 18,
+            "published_passages": 18,
+            "published_unique_words": 1055,
+            "published_text_utf8_bytes": 6840,
+            "identical_text_observations": 0,
+            "omitted_by_workbench_budget": 0,
+            "omitted_by_source_budget": 0,
+            "invalid_passage_records": 0,
+            "roles": {
+              "UNVERIFIED_ALLEGATION": 13,
+              "SAFETY_WARNING": 1,
+              "PRODUCT_SAFETY_REPORT": 1,
+              "REPORTED_ENFORCEMENT": 1,
+              "SOURCE_REPORTED_CONTEXT": 2
+            },
+            "independence_verified": false
+          },
+          "workbench_role_words": {
+            "UNVERIFIED_ALLEGATION": 720,
+            "SAFETY_WARNING": 78,
+            "PRODUCT_SAFETY_REPORT": 37,
+            "REPORTED_ENFORCEMENT": 19,
+            "SOURCE_REPORTED_CONTEXT": 201
+          },
+          "workbench_relevance_labels": {
+            "DIRECTLY_RELEVANT": 18
+          },
+          "safety_and_epistemic_states": {
+            "investigation_status": "COMPLETED",
+            "assessment_status": "SOURCE_REPORTS_ONLY",
+            "safety_assessment": "NOT_ESTABLISHED",
+            "threat_count": 0,
+            "safe_count": 0,
+            "non_threat_finding_count": 6,
+            "published_claim_status_counts": {
+              "UNVERIFIED": 18
+            }
+          },
+          "saved_body_verification": {
+            "passages_checked": 18,
+            "exact_offset_mismatches": 0,
+            "distinct_published_texts": 18
+          }
+        }
+      ]
+    }
+  ],
+  "baselines": [
+    {
+      "baseline_id": "evidence_depth",
+      "source_measurements": "docs/testing/evidence/2026-10-24_evidence_depth/live-measurements.json",
+      "application_sha256": "4c6aee7bcd14eb1faa25df504e0eba98e9b0009a9cebaa0e8f751c2c73c2ba4f",
+      "fingerprint_source": "docs/handoffs/2026-10-24_EVIDENCE_DEPTH_AND_EXPANSION_REVIEW.md",
+      "later_offline_application_sha256_excluded": null,
+      "cases": [
+        {
+          "agent": "scout",
+          "investigation_status": "COMPLETED",
+          "metrics": {
+            "article_bodies": 14,
+            "raw_article_words": 17104,
+            "qualified_sources": 13,
+            "selected_excerpt_words": 679,
+            "published_workbench_words": 6948,
+            "published_passages": 127
+          }
+        },
+        {
+          "agent": "brandshield",
+          "investigation_status": "COMPLETED",
+          "metrics": {
+            "article_bodies": 9,
+            "raw_article_words": 9089,
+            "qualified_sources": 5,
+            "selected_excerpt_words": 132,
+            "published_workbench_words": 792,
+            "published_passages": 16
+          }
+        },
+        {
+          "agent": "trending",
+          "investigation_status": "INSUFFICIENT_EVIDENCE",
+          "metrics": {
+            "article_bodies": 9,
+            "raw_article_words": 12280,
+            "qualified_sources": 0,
+            "selected_excerpt_words": 0,
+            "published_workbench_words": 0,
+            "published_passages": 0
+          }
+        },
+        {
+          "agent": "personal_watch",
+          "investigation_status": "INSUFFICIENT_EVIDENCE",
+          "metrics": {
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "qualified_sources": 0,
+            "selected_excerpt_words": 0,
+            "published_workbench_words": 0,
+            "published_passages": 0
+          }
+        }
+      ]
+    },
+    {
+      "baseline_id": "expansion_live_retest",
+      "source_measurements": "docs/testing/evidence/2026-10-24_expansion_live_retest/measurements.json",
+      "application_sha256": "d6916d41e5716e178d56a31cb5c642bf4f66f152452c3d376e665b3bd74a449e",
+      "fingerprint_source": "docs/testing/evidence/2026-10-24_expansion_live_retest/measurements.json",
+      "later_offline_application_sha256_excluded": "6d40a218574cdc66bdaa112a0f311d9d5ea6836d79869d3f20fa68b6f79226d8",
+      "cases": [
+        {
+          "agent": "scout",
+          "investigation_status": "COMPLETED",
+          "metrics": {
+            "article_bodies": 14,
+            "raw_article_words": 16254,
+            "qualified_sources": 13,
+            "selected_excerpt_words": 705,
+            "published_workbench_words": 6484,
+            "published_passages": 117
+          }
+        },
+        {
+          "agent": "brandshield",
+          "investigation_status": "COMPLETED",
+          "metrics": {
+            "article_bodies": 8,
+            "raw_article_words": 7656,
+            "qualified_sources": 4,
+            "selected_excerpt_words": 114,
+            "published_workbench_words": 774,
+            "published_passages": 15
+          }
+        },
+        {
+          "agent": "trending",
+          "investigation_status": "INSUFFICIENT_EVIDENCE",
+          "metrics": {
+            "article_bodies": 8,
+            "raw_article_words": 9596,
+            "qualified_sources": 0,
+            "selected_excerpt_words": 0,
+            "published_workbench_words": 0,
+            "published_passages": 0
+          }
+        },
+        {
+          "agent": "personal_watch",
+          "investigation_status": "INSUFFICIENT_EVIDENCE",
+          "metrics": {
+            "article_bodies": 1,
+            "raw_article_words": 484,
+            "qualified_sources": 0,
+            "selected_excerpt_words": 0,
+            "published_workbench_words": 0,
+            "published_passages": 0
+          }
+        }
+      ]
+    }
+  ],
+  "descriptive_baseline_comparisons": [
+    {
+      "baseline_id": "evidence_depth",
+      "current_batch_id": "live",
+      "agent": "scout",
+      "metrics": {
+        "article_bodies": {
+          "before": 14,
+          "after": 13,
+          "difference": -1,
+          "ratio": 0.928571
+        },
+        "raw_article_words": {
+          "before": 17104,
+          "after": 14019,
+          "difference": -3085,
+          "ratio": 0.819633
+        },
+        "qualified_sources": {
+          "before": 13,
+          "after": 12,
+          "difference": -1,
+          "ratio": 0.923077
+        },
+        "selected_excerpt_words": {
+          "before": 679,
+          "after": 640,
+          "difference": -39,
+          "ratio": 0.942563
+        },
+        "published_workbench_words": {
+          "before": 6948,
+          "after": 6248,
+          "difference": -700,
+          "ratio": 0.899252
+        },
+        "published_passages": {
+          "before": 127,
+          "after": 114,
+          "difference": -13,
+          "ratio": 0.897638
+        }
+      }
+    },
+    {
+      "baseline_id": "evidence_depth",
+      "current_batch_id": "live",
+      "agent": "brandshield",
+      "metrics": {
+        "article_bodies": {
+          "before": 9,
+          "after": 8,
+          "difference": -1,
+          "ratio": 0.888889
+        },
+        "raw_article_words": {
+          "before": 9089,
+          "after": 7656,
+          "difference": -1433,
+          "ratio": 0.842337
+        },
+        "qualified_sources": {
+          "before": 5,
+          "after": 4,
+          "difference": -1,
+          "ratio": 0.8
+        },
+        "selected_excerpt_words": {
+          "before": 132,
+          "after": 114,
+          "difference": -18,
+          "ratio": 0.863636
+        },
+        "published_workbench_words": {
+          "before": 792,
+          "after": 774,
+          "difference": -18,
+          "ratio": 0.977273
+        },
+        "published_passages": {
+          "before": 16,
+          "after": 15,
+          "difference": -1,
+          "ratio": 0.9375
+        }
+      }
+    },
+    {
+      "baseline_id": "evidence_depth",
+      "current_batch_id": "live",
+      "agent": "trending",
+      "metrics": {
+        "article_bodies": {
+          "before": 9,
+          "after": 7,
+          "difference": -2,
+          "ratio": 0.777778
+        },
+        "raw_article_words": {
+          "before": 12280,
+          "after": 9859,
+          "difference": -2421,
+          "ratio": 0.80285
+        },
+        "qualified_sources": {
+          "before": 0,
+          "after": 1,
+          "difference": 1,
+          "ratio": null
+        },
+        "selected_excerpt_words": {
+          "before": 0,
+          "after": 51,
+          "difference": 51,
+          "ratio": null
+        },
+        "published_workbench_words": {
+          "before": 0,
+          "after": 322,
+          "difference": 322,
+          "ratio": null
+        },
+        "published_passages": {
+          "before": 0,
+          "after": 6,
+          "difference": 6,
+          "ratio": null
+        }
+      }
+    },
+    {
+      "baseline_id": "evidence_depth",
+      "current_batch_id": "live",
+      "agent": "personal_watch",
+      "metrics": {
+        "article_bodies": {
+          "before": 1,
+          "after": 1,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "raw_article_words": {
+          "before": 484,
+          "after": 484,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "qualified_sources": {
+          "before": 0,
+          "after": 1,
+          "difference": 1,
+          "ratio": null
+        },
+        "selected_excerpt_words": {
+          "before": 0,
+          "after": 114,
+          "difference": 114,
+          "ratio": null
+        },
+        "published_workbench_words": {
+          "before": 0,
+          "after": 114,
+          "difference": 114,
+          "ratio": null
+        },
+        "published_passages": {
+          "before": 0,
+          "after": 1,
+          "difference": 1,
+          "ratio": null
+        }
+      }
+    },
+    {
+      "baseline_id": "evidence_depth",
+      "current_batch_id": "brand-postfix",
+      "agent": "brandshield",
+      "metrics": {
+        "article_bodies": {
+          "before": 9,
+          "after": 8,
+          "difference": -1,
+          "ratio": 0.888889
+        },
+        "raw_article_words": {
+          "before": 9089,
+          "after": 7656,
+          "difference": -1433,
+          "ratio": 0.842337
+        },
+        "qualified_sources": {
+          "before": 5,
+          "after": 7,
+          "difference": 2,
+          "ratio": 1.4
+        },
+        "selected_excerpt_words": {
+          "before": 132,
+          "after": 395,
+          "difference": 263,
+          "ratio": 2.992424
+        },
+        "published_workbench_words": {
+          "before": 792,
+          "after": 1055,
+          "difference": 263,
+          "ratio": 1.332071
+        },
+        "published_passages": {
+          "before": 16,
+          "after": 18,
+          "difference": 2,
+          "ratio": 1.125
+        }
+      }
+    },
+    {
+      "baseline_id": "expansion_live_retest",
+      "current_batch_id": "live",
+      "agent": "scout",
+      "metrics": {
+        "article_bodies": {
+          "before": 14,
+          "after": 13,
+          "difference": -1,
+          "ratio": 0.928571
+        },
+        "raw_article_words": {
+          "before": 16254,
+          "after": 14019,
+          "difference": -2235,
+          "ratio": 0.862495
+        },
+        "qualified_sources": {
+          "before": 13,
+          "after": 12,
+          "difference": -1,
+          "ratio": 0.923077
+        },
+        "selected_excerpt_words": {
+          "before": 705,
+          "after": 640,
+          "difference": -65,
+          "ratio": 0.907801
+        },
+        "published_workbench_words": {
+          "before": 6484,
+          "after": 6248,
+          "difference": -236,
+          "ratio": 0.963603
+        },
+        "published_passages": {
+          "before": 117,
+          "after": 114,
+          "difference": -3,
+          "ratio": 0.974359
+        }
+      }
+    },
+    {
+      "baseline_id": "expansion_live_retest",
+      "current_batch_id": "live",
+      "agent": "brandshield",
+      "metrics": {
+        "article_bodies": {
+          "before": 8,
+          "after": 8,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "raw_article_words": {
+          "before": 7656,
+          "after": 7656,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "qualified_sources": {
+          "before": 4,
+          "after": 4,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "selected_excerpt_words": {
+          "before": 114,
+          "after": 114,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "published_workbench_words": {
+          "before": 774,
+          "after": 774,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "published_passages": {
+          "before": 15,
+          "after": 15,
+          "difference": 0,
+          "ratio": 1.0
+        }
+      }
+    },
+    {
+      "baseline_id": "expansion_live_retest",
+      "current_batch_id": "live",
+      "agent": "trending",
+      "metrics": {
+        "article_bodies": {
+          "before": 8,
+          "after": 7,
+          "difference": -1,
+          "ratio": 0.875
+        },
+        "raw_article_words": {
+          "before": 9596,
+          "after": 9859,
+          "difference": 263,
+          "ratio": 1.027407
+        },
+        "qualified_sources": {
+          "before": 0,
+          "after": 1,
+          "difference": 1,
+          "ratio": null
+        },
+        "selected_excerpt_words": {
+          "before": 0,
+          "after": 51,
+          "difference": 51,
+          "ratio": null
+        },
+        "published_workbench_words": {
+          "before": 0,
+          "after": 322,
+          "difference": 322,
+          "ratio": null
+        },
+        "published_passages": {
+          "before": 0,
+          "after": 6,
+          "difference": 6,
+          "ratio": null
+        }
+      }
+    },
+    {
+      "baseline_id": "expansion_live_retest",
+      "current_batch_id": "live",
+      "agent": "personal_watch",
+      "metrics": {
+        "article_bodies": {
+          "before": 1,
+          "after": 1,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "raw_article_words": {
+          "before": 484,
+          "after": 484,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "qualified_sources": {
+          "before": 0,
+          "after": 1,
+          "difference": 1,
+          "ratio": null
+        },
+        "selected_excerpt_words": {
+          "before": 0,
+          "after": 114,
+          "difference": 114,
+          "ratio": null
+        },
+        "published_workbench_words": {
+          "before": 0,
+          "after": 114,
+          "difference": 114,
+          "ratio": null
+        },
+        "published_passages": {
+          "before": 0,
+          "after": 1,
+          "difference": 1,
+          "ratio": null
+        }
+      }
+    },
+    {
+      "baseline_id": "expansion_live_retest",
+      "current_batch_id": "brand-postfix",
+      "agent": "brandshield",
+      "metrics": {
+        "article_bodies": {
+          "before": 8,
+          "after": 8,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "raw_article_words": {
+          "before": 7656,
+          "after": 7656,
+          "difference": 0,
+          "ratio": 1.0
+        },
+        "qualified_sources": {
+          "before": 4,
+          "after": 7,
+          "difference": 3,
+          "ratio": 1.75
+        },
+        "selected_excerpt_words": {
+          "before": 114,
+          "after": 395,
+          "difference": 281,
+          "ratio": 3.464912
+        },
+        "published_workbench_words": {
+          "before": 774,
+          "after": 1055,
+          "difference": 281,
+          "ratio": 1.363049
+        },
+        "published_passages": {
+          "before": 15,
+          "after": 18,
+          "difference": 3,
+          "ratio": 1.2
+        }
+      }
+    }
+  ],
+  "brand_same_body_retest_comparison": {
+    "before_batch_id": "live",
+    "after_batch_id": "brand-postfix",
+    "agent": "brandshield",
+    "metrics": {
+      "article_bodies": {
+        "before": 8,
+        "after": 8,
+        "difference": 0,
+        "ratio": 1.0
+      },
+      "raw_article_words": {
+        "before": 7656,
+        "after": 7656,
+        "difference": 0,
+        "ratio": 1.0
+      },
+      "qualified_sources": {
+        "before": 4,
+        "after": 7,
+        "difference": 3,
+        "ratio": 1.75
+      },
+      "selected_excerpt_words": {
+        "before": 114,
+        "after": 395,
+        "difference": 281,
+        "ratio": 3.464912
+      },
+      "published_workbench_words": {
+        "before": 774,
+        "after": 1055,
+        "difference": 281,
+        "ratio": 1.363049
+      },
+      "published_passages": {
+        "before": 15,
+        "after": 18,
+        "difference": 3,
+        "ratio": 1.2
+      }
+    },
+    "same_article_source_ids_and_raw_content_hashes": true,
+    "interpretation": "Fresh separate retest with unchanged eight saved article identities/body hashes; qualification/publication increased. Not additional raw article acquisition."
+  },
+  "totals": {
+    "current_four_case_batch": {
+      "article_bodies": 29,
+      "raw_article_words": 32018,
+      "qualified_sources": 18,
+      "published_workbench_words": 7458,
+      "published_passages": 136
+    },
+    "latest_observation_per_agent_mixed_batches": {
+      "article_bodies": 29,
+      "raw_article_words": 32018,
+      "qualified_sources": 21,
+      "published_workbench_words": 7739,
+      "published_passages": 139
+    },
+    "mixed_batch_warning": "BrandShield uses the later single-case retest. This is a descriptive composite, not one four-case batch or one application fingerprint.",
+    "baselines": {
+      "evidence_depth": {
+        "article_bodies": 33,
+        "raw_article_words": 38957,
+        "qualified_sources": 18,
+        "published_workbench_words": 7740,
+        "published_passages": 143
+      },
+      "expansion_live_retest": {
+        "article_bodies": 31,
+        "raw_article_words": 33990,
+        "qualified_sources": 17,
+        "published_workbench_words": 7258,
+        "published_passages": 132
+      }
+    }
+  },
+  "definition_cautions": [
+    "Observed report timestamps are preserved as recorded (2026-10-24); the directory/task date is the client date 2026-10-25. No timestamp was shifted to match it.",
+    "Batch application fingerprints describe only their completed live runs. Subsequent content-role edits, citation crawling, offline replay and future acquisition are excluded.",
+    "raw_article_words counts whitespace-separated readable_text words for every ARTICLE_BODY in the retained acquisition pool, including rejected articles; it does not count every page/snippet or prove useful evidence.",
+    "runner_summary_record_words describes retained report records and differs from all-acquired raw_article_words. Do not substitute it in baseline comparisons.",
+    "qualified_sources and selected_excerpt_words are heuristic source-selection metrics; they are not independently verified facts, independent publishers or confirmed threats.",
+    "published_workbench_words is the sum of words across deduplicated published passage texts, not a count of distinct vocabulary words or all previously inspectable frontend content.",
+    "All five saved reports have exact matching source spans, UNVERIFIED passage claims and independence_verified=false. This validates capture fidelity, not assertion truth.",
+    "DIRECTLY_RELEVANT labels concern selection for the objective. Historical/forecast financial context, unverified allegations and source-reported context remain distinct from claim confirmation.",
+    "Scout includes 1240 historical and 2651 forecast-or-mixed-context published words in its 6248-word total.",
+    "BrandShield stays SOURCE_REPORTS_ONLY, safety NOT_ESTABLISHED, threat_count=0 and safe_count=0 after the retest; warnings/allegations are not verified threats.",
+    "Personal Watch retains one publisher-attributed 2021 public statement; identity_authenticated=false and identity_risk=UNASSESSED. Its saved workbench role is ARTICLE_CONTENT while the native public_statements projection uses PUBLIC_STATEMENT.",
+    "Trending has one selected source and 322 published article words. A completed request and legacy safe_count=1 do not establish platform completeness, safety or a verified trend.",
+    "Zero baseline denominators yield null ratios. Improvement from zero is newly observed yield, not a finite 20x gain.",
+    "Fresh batches are descriptive observations with changing source availability and capture timing, not controlled causal before/after proof.",
+    "Selected-excerpt to workbench ratios are not growth over all previously inspectable frontend text. Twentyfold useful-evidence acceptance remains NOT_DEMONSTRATED."
+  ]
+}

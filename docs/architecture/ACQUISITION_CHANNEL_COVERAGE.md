@@ -1,5 +1,14 @@
 # Acquisition channel coverage matrix
 
+Current expansion status: [2026-10-24 repair record](../testing/EXPANSION_SAFETY_AND_RELEASE_INTEGRATION_2026-10-24.md).
+The new bounded `expanded_sources.search` route produces discovery leads, followed
+by separate native reads. Wikipedia/Wikidata are background/profile content,
+arXiv is abstract-only, feeds are syndicated observations and community posts
+do not establish measured virality. SEC requires declared contact configuration;
+Reddit requires approved access. Adapter registration is not live acceptance.
+The historical expansion word/throughput claims below do not prove20× useful
+frontend evidence. No fresh live validation of this repaired expansion was run.
+
 This file describes the upstream declaration catalogue. It is not an executable
 support claim. The authoritative current audit is
 `docs/architecture/PRE_PHASE7_READINESS_REPORT.md`, and the machine-readable
@@ -26,6 +35,19 @@ credentials, and a provider declaration do not prove meaningful acquisition.
 | instagram | search, profile, posts, explore | session_required | OpenCLI | AUTH_REQUIRED without session | credential-gated |
 | boss | search jobs, read JD | browser_cdp | boss CLI | AUTH_REQUIRED without CDP | credential-gated |
 | xiaoyuzhou | transcribe | api_key | Groq Whisper / ffmpeg | explicit unavailable state without key | credential-gated |
+| wikipedia | search, read, summary | none | Wikimedia / Wikipedia REST API | safe public encyclopedia read | implemented |
+| sec_filings_full | search, read, filings | none | SEC EDGAR API / Form 10-K, 10-Q, 8-K | full statutory disclosure text | implemented |
+| arxiv | search, read, preprints | none | arXiv API / export | academic research & claims | implemented |
+| substack | search, read, newsletter | none | Substack publication reader | long-form analysis & newsletters | implemented |
+| yahoo_finance | search, quote, profile | none | Yahoo Finance API / metrics | balance sheet & valuation metrics | implemented |
+| trustpilot | search, read, reviews | none | Trustpilot / ComplaintsBoard | consumer reviews & scam reports | implemented |
+| reddit_deep | search, read, comment_tree | none | Arctic Shift / Reddit JSON | multi-tiered comment trees | implemented |
+| wikidata_exec | search, read, governance | none | Wikidata SPARQL / Entity API | executive entity graph & board | implemented |
+| telegram | search, read, channel | none | Public web preview | public broadcast channel posts | implemented |
+| hackernews | search, read, comments | none | Firebase / Algolia HN API | tech discussions & commentary | implemented |
+| bluesky | search, read, posts | none | AT Protocol public API | public decentralized feed posts | implemented |
+| factcheck | search, claims | none | Google Fact Check / ClaimReview | verified claim verdicts | implemented |
+| newswire | search, read, wires | none | PR Newswire / BusinessWire RSS | press releases & corporate news | implemented |
 
 Phase 6.9.1 adds an operation-level runtime view in
 `backend/services/agent_reach/native/operation_capabilities.py`. Current recovered

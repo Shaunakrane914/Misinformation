@@ -489,7 +489,11 @@ class ResearchRequest:
     time_scope: str = "recent"
     source_url: Optional[str] = None
     agent_name: str = "research_engine"
-    timeout_seconds: float = 15.0
+    # None inherits the configured ResearchBudget timeout (LOCAL/SERVER_RESEARCH_TIMEOUT). The old
+    # hardcoded 15.0 capped every agent investigation at 15s regardless of the budget, which left the
+    # deep-read phase ~5s after discovery and starved real article reads. Callers may still pass an
+    # explicit bound to lower it.
+    timeout_seconds: Optional[float] = None
     extra_params: Dict[str, Any] = field(default_factory=dict)
 
 

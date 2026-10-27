@@ -24,6 +24,8 @@ This guide provides immediate file and directory locations for common developer 
 | **API Routers & Endpoints** | [`backend/api/`](../../backend/api/) | `claims.py`, `agents.py`, `system.py`, `agent_reach.py`, `replay.py`, `threat_lab.py`; `security.py` owns operator authorization |
 | **Main Application Entrypoint** | [`backend/main.py`](../../backend/main.py) | FastAPI app instance, CORS middleware, static asset mounting |
 | **Native Acquisition Router** | [`backend/infrastructure/acquisition/routing/router.py`](../../backend/infrastructure/acquisition/routing/router.py) | `NativeRouter` — routes 16 recovered operations + Reddit/X |
+| **High-Volume Acquisition Adapters** | [`backend/infrastructure/acquisition/adapters/`](../../backend/infrastructure/acquisition/adapters/) | `wikipedia`, `sec_filings_full`, `arxiv`, `substack`, `yahoo_finance`, `trustpilot`, `reddit_deep`, `wikidata_exec` |
+| **High-Concurrency Transport** | [`backend/infrastructure/acquisition/network/`](../../backend/infrastructure/acquisition/network/) | `PinnedAsyncHTTPTransport` (DNS pinning, connection pooling), `DomainRateLimiter` |
 | **Centralized LLM Gateway** | [`backend/infrastructure/llm/gateway.py`](../../backend/infrastructure/llm/gateway.py) | `CentralizedLLMGateway` — multi-model failover, mock guard |
 | **Claim-Aware Source Planner** | [`backend/services/agent_reach/source_planner.py`](../../backend/services/agent_reach/source_planner.py) | `SourcePlanningEngine` — bounded source planning |
 | **Runtime Capability Health** | [`backend/services/agent_reach/native/operation_capabilities.py`](../../backend/services/agent_reach/native/operation_capabilities.py) | `RuntimeOperationCapabilities` — health, cooldown, auth |
@@ -105,6 +107,9 @@ python scripts/evaluate_dataset.py --mode all_offline --seed 42
 
 # Run Cranfield retrieval quality benchmark on frozen fixtures:
 python scripts/benchmarks/run_retrieval_benchmark.py
+
+# Run 4-agent 10x content word extraction benchmark:
+python scripts/evaluation/test_4_agents_word_extraction.py
 
 # Run 4-agent quality evaluation harness:
 python scripts/evaluation/evaluate_all_agents.py

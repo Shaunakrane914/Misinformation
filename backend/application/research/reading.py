@@ -71,10 +71,15 @@ class DeepReadingStage:
         deep_read_budget = max(0, min(request.deep_read_budget, budget.max_deep_reads))
         time_left = max(0.0, effective_timeout - (time.time() - start_ts))
         if deep_read_budget > 0 and ranked.ranked and time_left > 0:
+            # deep_reader uses this as the as_completed() deadline for the WHOLE concurrent read
+            # batch, not a per-read cap (each HTTP read keeps its own ~5s transport bound). Budgeting
+            # it at the per-channel 5s starved the batch: real article reads (2-5s each, run in waves)
+            # could not finish, so every read timed out. Give the batch the reading-phase budget.
+            batch_deadline = min(time_left, max(budget.channel_timeout_seconds, budget.deep_read_timeout_seconds))
             investigated_items, read_telemetry = deep_reader.deep_read(
                 ranked.ranked,
                 max_reads=deep_read_budget,
-                timeout_per_read=min(budget.channel_timeout_seconds, time_left)
+                timeout_per_read=batch_deadline
             )
         else:
             investigated_items, read_telemetry = [], {

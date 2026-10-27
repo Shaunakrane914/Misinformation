@@ -51,8 +51,8 @@ class Settings(BaseSettings):
     gemini_models: List[str] = Field(default_factory=lambda: [
         "gemini-3.8-flash",
         "gemini-3.7-flash",
-        "gemini-2.5-flash",
-        "gemini-2.5-flash-lite",
+        "gemini-3.5-flash",
+        "gemini-3.5-flash-lite",
     ])
     default_model: str = Field(default="gemini-3.8-flash")
     aegis_mock_llm: bool = Field(

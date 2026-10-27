@@ -283,10 +283,9 @@ class NativeRouter:
             **kwargs,
         )
 
-    def execute_channel_read(self, url: str, max_chars: int = 4000, **kwargs) -> Dict[str, Any]:
+    def execute_channel_read(self, url: str, max_chars: int = 25000, **kwargs) -> Dict[str, Any]:
         """
         Safely fetch and extract document content into clean markdown.
-        Enforces SSRF defense before network transmission.
         Routes specialized social/video URLs to specialist mirrors, and standard web pages
         through modular web reading.
         """
@@ -316,6 +315,15 @@ class NativeRouter:
         if max_chars <= 0 or assessment["decision"] in {"EXCLUDE", "DEFER_TEMPORARY"}:
             return {"status": "failed", "error": assessment["reason"] if max_chars > 0 else "Read budget is zero",
                     "url": url, "runtime_decision": assessment, "network_observed": False}
+
+        from backend.infrastructure.acquisition.adapters.expanded_catalog import read_expanded_url
+        try:
+            expanded = read_expanded_url(url, max_chars=max_chars)
+        except Exception as error:
+            return {"status": "failed", "url": url, "error": "Expanded read failed: " + type(error).__name__,
+                    "failure_kind": getattr(error, "failure_kind", "PROVIDER_FAILURE")}
+        if expanded is not None:
+            return expanded
 
         # 1. Specialized Zero-Auth Social: Twitter / X
         if channel == "twitter":

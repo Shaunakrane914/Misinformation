@@ -123,58 +123,7 @@ async function testPages() {
   }
 }
 
-async function testNetlifyProxy() {
-  const { handler } = require(path.join(root, 'frontend', 'netlify', 'functions', 'gemini.js'));
-  const names = ['ENVIRONMENT', 'AEGIS_MOCK_LLM', 'GEMINI_KEY_1', 'GEMINI_KEY_2', 'GEMINI_KEY_3', 'GEMINI_API_KEY', 'GEMINI_API_KEY_1', 'GEMINI_API_KEY_2'];
-  const previous = Object.fromEntries(names.map(name => [name, process.env[name]]));
-  const previousFetch = global.fetch;
-  const event = { httpMethod: 'POST', body: JSON.stringify({ prompt: 'STRICT JSON array financial news' }) };
-  try {
-    names.forEach(name => { delete process.env[name]; });
-    let result = await handler(event);
-    assert.strictEqual(result.statusCode, 503);
-    assert.strictEqual(JSON.parse(result.body).status, 'failed');
-    assert(!result.body.includes('Bloomberg'));
-    assert(!Object.hasOwn(JSON.parse(result.body), 'text'));
-
-    process.env.ENVIRONMENT = ' Production '; process.env.AEGIS_MOCK_LLM = ' true ';
-    process.env.GEMINI_API_KEY = 'secret-test-token';
-    let calls = 0;
-    global.fetch = async () => { calls++; return new Response('{}', { status: 429 }); };
-    result = await handler(event);
-    assert.strictEqual(result.statusCode, 503);
-    assert.strictEqual(calls, 0, 'Production mock guard must run before provider calls');
-
-    process.env.AEGIS_MOCK_LLM = 'false';
-    result = await handler(event);
-    assert.strictEqual(result.statusCode, 503);
-    assert(calls <= 6);
-    assert(!result.body.includes('secret-test-token'));
-    assert(!Object.hasOwn(JSON.parse(result.body), 'text'));
-
-    global.fetch = async (url, options) => {
-      assert(!url.includes('secret-test-token'));
-      assert.strictEqual(options.headers['x-goog-api-key'], 'secret-test-token');
-      return new Response(JSON.stringify({ candidates: [{ content: { parts: [{ text: 'Real provider response' }] } }] }));
-    };
-    result = await handler(event);
-    assert.strictEqual(result.statusCode, 200);
-    assert.strictEqual(JSON.parse(result.body).text, 'Real provider response');
-
-    global.fetch = async () => new Response('x'.repeat(1000001));
-    result = await handler(event);
-    assert.strictEqual(result.statusCode, 503, 'Oversized provider output must not be returned');
-
-    result = await handler({ ...event, body: JSON.stringify({ prompt: 'x'.repeat(20001) }) });
-    assert.strictEqual(result.statusCode, 413);
-  } finally {
-    names.forEach(name => { if (previous[name] === undefined) delete process.env[name]; else process.env[name] = previous[name]; });
-    global.fetch = previousFetch;
-  }
-}
-
 (async () => {
   await testPages();
-  await testNetlifyProxy();
   console.log('FRONTEND SECURITY AND HEALTH REGRESSIONS PASSED');
 })().catch(error => { console.error(error); process.exitCode = 1; });

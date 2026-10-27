@@ -14,4 +14,4 @@ Static HTML/JS/CSS dashboard served directly from the `frontend/` directory.
 and honest stale-observation badges. Documented in `tests/frontend/test_operation_health.js`.
 
 ## Deployment
-Deployed via Netlify. See `netlify.toml` and `frontend/netlify.toml`.
+The static frontend is served by Cloudflare Pages (`https://aegis-protocol-110.pages.dev/`), configured via `_headers` and `_redirects`. API requests proxy to the active Render backend.

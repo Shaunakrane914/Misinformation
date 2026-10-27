@@ -121,35 +121,46 @@ def fetch_news(keyword: str, limit: int = 8) -> List[Dict[str, Any]]:
         logger.debug(f"[TrendingAgent] Shared fabric fetch_news notice: {reach_err}")
 
     # Emergency fallback to RSS if shared fabric yielded no items
-    feed_url = (
-        "https://news.google.com/rss/search?"
-        f"q={urllib.parse.quote_plus(keyword)}&hl=en-IN&gl=IN&ceid=IN:en"
-    )
-    try:
-        from backend.services.url_validator import validate_url_safe
-        is_safe, reason = validate_url_safe(feed_url)
-        if not is_safe:
-            logger.warning(f"[TrendingAgent] Blocked unsafe feed URL: {reason}")
-            return []
-        parsed = feedparser.parse(feed_url)
-        entries = parsed.get("entries", [])[:limit]
-        headlines = []
-        for entry in entries:
-            src_info = entry.get("source")
-            source_title = src_info.get("title") if isinstance(src_info, dict) else "Google News"
-            link = entry.get("link") or "Source URL unavailable"
-            pub = entry.get("published") or datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
-            headlines.append({
-                "title": entry.get("title", "News Headline"),
-                "link": link,
-                "published": pub,
-                "source": source_title,
-                "summary": entry.get("summary", "")
-            })
-        return headlines
-    except Exception as exc:
-        logger.warning(f"Google News fetch error for {keyword}: {exc}")
-        return []
+    from backend.services.url_validator import validate_url_safe
+    feed_candidates = [
+        f"https://www.bing.com/news/search?q={urllib.parse.quote_plus(keyword)}&format=rss",
+        f"https://news.google.com/rss/search?q={urllib.parse.quote_plus(keyword)}&hl=en-IN&gl=IN&ceid=IN:en",
+    ]
+    for feed_url in feed_candidates:
+        try:
+            is_safe, reason = validate_url_safe(feed_url)
+            if not is_safe:
+                logger.warning(f"[TrendingAgent] Blocked unsafe feed URL: {reason}")
+                continue
+            parsed = feedparser.parse(feed_url)
+            entries = parsed.get("entries", [])[:limit]
+            if not entries:
+                continue
+            headlines = []
+            for entry in entries:
+                src_info = entry.get("source")
+                source_title = src_info.get("title") if isinstance(src_info, dict) else ("Bing News" if "bing.com" in feed_url else "News")
+                link = entry.get("link") or "Source URL unavailable"
+                if "bing.com/news/apiclick" in link:
+                    m = re.search(r"[?&]url=([^&]+)", link)
+                    if m:
+                        try:
+                            link = urllib.parse.unquote(m.group(1))
+                        except Exception:
+                            pass
+                pub = entry.get("published") or datetime.now(timezone.utc).strftime("%a, %d %b %Y %H:%M:%S GMT")
+                headlines.append({
+                    "title": entry.get("title", "News Headline"),
+                    "link": link,
+                    "published": pub,
+                    "source": source_title,
+                    "summary": entry.get("summary", ""),
+                })
+            if headlines:
+                return headlines
+        except Exception as exc:
+            logger.warning(f"News feed fallback error for {keyword} ({feed_url}): {exc}")
+    return []
 
 
 def fetch_targeted_news(query: str, window_mins: int = 1440, fetch_news_fn=None) -> List[Dict[str, Any]]:

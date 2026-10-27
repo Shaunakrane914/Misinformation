@@ -761,3 +761,22 @@ def test_evidence_sufficiency_top_5_to_10_escalation():
     strong_eval = evidence_sufficiency_evaluator.evaluate(strong_frags, req, remaining_candidates_count=5)
     assert strong_eval.is_sufficient is True
     assert strong_eval.should_escalate is False
+
+
+def test_async_retrieve_many_execution():
+    """Verify async_retrieve_many executes non-blocking retrieval with high concurrency."""
+    import asyncio
+    from backend.infrastructure.acquisition.service import AgentReachService
+    service = AgentReachService()
+
+    async def _run():
+        res = await service.async_retrieve_many(
+            channel_queries={"web": [{"query_id": "w1", "query_text": "test query"}]},
+            domain="general",
+            budget={"max_workers": 64},
+            timeout=2.0,
+        )
+        assert res is not None
+        assert res.retrieval_plan is not None
+
+    asyncio.run(_run())

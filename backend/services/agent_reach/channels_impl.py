@@ -216,7 +216,7 @@ class JinaReaderChannel(Channel):
     def search(self, query: str, limit: int = 1, **kwargs) -> List[EvidenceFragment]:
         return _dispatch_channel_query(self.name, query, limit=limit, default_domain="general", url=query, **kwargs)
 
-    def read(self, url: str, max_chars: int = 4000, **kwargs) -> Dict[str, Any]:
+    def read(self, url: str, max_chars: int = 25000, **kwargs) -> Dict[str, Any]:
         return native_router.execute_channel_read(url, max_chars=max_chars, **kwargs)
 
     def health_check(self) -> ChannelStatus:

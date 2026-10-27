@@ -1,0 +1,1753 @@
+{
+  "schema": "aegis-final-useful-yield-live-summary-v1",
+  "client_task_date": "2026-10-25",
+  "compiled_at_host": "2026-10-25T04:07:44.560813+05:30",
+  "mode": "SANITIZED_RECOMPUTATION_FROM_COMPLETED_SAVED_REAL_LOCAL_ASGI_SSE_BATCH",
+  "new_network_calls_during_summary": 0,
+  "new_model_calls_during_summary": 0,
+  "raw_source_bodies_included": false,
+  "source_temp_basename": "aegis-useful-yield-648b5eb59537470ea08558920b838c3a",
+  "source_subdirectory": "citation-live",
+  "prior_cycle_summary": "prior_cycle_measurements.json",
+  "target_multiplier": 20,
+  "target_status": "NOT_DEMONSTRATED",
+  "batch": {
+    "mode": "REAL_LOCAL_ASGI_SSE",
+    "application_sha256": "3df7720e94d4506da05832d03a9619cc2a2ca656eef12ea2b84cf830a78d6c92",
+    "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
+    "mock_llm": false,
+    "live_ai_authorized": false,
+    "requested_audit_bounds": {
+      "research_timeout_seconds": 240.0,
+      "max_deep_reads": 24,
+      "research_profile": "DEEP"
+    },
+    "advisory_model_check": {
+      "status": "DISABLED",
+      "model": "gemini-3.5-flash-lite"
+    },
+    "final_application_sha256": "3df7720e94d4506da05832d03a9619cc2a2ca656eef12ea2b84cf830a78d6c92",
+    "stable_application": true,
+    "live_ai_calls_reserved": 0,
+    "live_ai_observations": []
+  },
+  "cases": [
+    {
+      "agent": "scout",
+      "sample_input": "Adobe",
+      "native_file": "citation-live/01-scout.json",
+      "native_sha256": "59dbfafe1e04f9cb2c4df6f6bd0caa64cf69d9b0e1e56bd5554fe1fc5fce989b",
+      "observed_report_generated_at": "2026-10-24T22:30:25.777991+00:00",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "seconds": 49.79,
+      "metrics": {
+        "article_bodies": 15,
+        "raw_article_words": 17910,
+        "qualified_sources": 14,
+        "selected_excerpt_words": 841,
+        "published_workbench_words": 7111,
+        "published_passages": 111
+      },
+      "runner_summary_record_words": 17511,
+      "pool_stats": {
+        "source_count": 60,
+        "candidate_urls": 60,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 6,
+          "ARTICLE_BODY": 15,
+          "DISCOVERY_LEAD": 34,
+          "FEED_ENTRY": 4,
+          "PUBLISHER_HOMEPAGE": 1
+        },
+        "reads_attempted": 24,
+        "successful_captures": 18,
+        "article_bodies": 15,
+        "raw_article_words": 17910,
+        "raw_source_words": 21648,
+        "duplicate_captures": 0,
+        "qualified_source_count": 14,
+        "relevant_words": 841,
+        "unique_publishers": 7,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 521945,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "ACCESS_DENIED": 3,
+          "PROVIDER_FAILURE": 3
+        },
+        "dropped_by_limit": {}
+      },
+      "source_funnel": {
+        "queries_planned": 18,
+        "queries_submitted": 18,
+        "queries_started": 18,
+        "queries_succeeded": 17,
+        "queries_failed": 0,
+        "queries_timed_out": 0,
+        "queries_auth_required": 1,
+        "queries_skipped": 0,
+        "queries_executed": 18,
+        "candidates_found": 60,
+        "candidates_accepted": 59,
+        "candidates_rejected": 4,
+        "unique_candidates": 15,
+        "deep_reads_count": 18,
+        "acquired_record_count": 14,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 7,
+        "contradictions_count": 0,
+        "findings_count": 6,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 18,
+        "article_body_count": 15,
+        "qualified_source_count": 14,
+        "publisher_link_decision_count": 108,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "discovery_funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 18,
+        "provider_attempts_observed": 33,
+        "query_records_without_provider_observations": 2,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 22,
+        "candidate_urls_observed_in_search_sample": 146,
+        "candidate_url_decision_events_observed_in_search_sample": 202,
+        "normalized_candidates": 60,
+        "accepted_candidates": 59,
+        "qualification_decision_count": 4,
+        "rejected_candidate_count": 4,
+        "qualification_decisions_without_identity": 0,
+        "publisher_link_decision_count": 108,
+        "qualification_count_scope": "Distinct observed source identities, not link-audit events; one source can have multiple reasons",
+        "selected_acquisition_attempts": 24,
+        "successful_body_captures": 15,
+        "extracted_article_bodies": 15,
+        "qualified_evidence": 14,
+        "agent_research_findings": 6,
+        "unverified_or_uninvestigated_findings": 6,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "raw_capture_count": 18
+      },
+      "native_http_accounting": {
+        "native_http_admissions": 77,
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_by_phase": {
+          "discovery": 47,
+          "reading": 30
+        },
+        "native_http_budget_rejections": 4,
+        "complete_network_accounting": false,
+        "provider_http_request_count": null,
+        "discovery_http_cap": 60,
+        "discovery_http_per_host_cap": 20,
+        "discovery_http_reserve_rejections": 4
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 14,
+        "observed_publisher_hosts": 7,
+        "available_unique_passages": 111,
+        "published_passages": 111,
+        "published_unique_words": 7111,
+        "published_text_utf8_bytes": 45654,
+        "identical_text_observations": 16,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 52,
+          "HISTORICAL_FINANCIAL_CONTEXT": 21,
+          "FINANCIAL_STATEMENT": 20,
+          "ARTICLE_CONTENT": 18
+        },
+        "independence_verified": false
+      },
+      "workbench_role_words": {
+        "FORECAST_OR_MIXED_FINANCIAL_CONTEXT": 4014,
+        "HISTORICAL_FINANCIAL_CONTEXT": 1180,
+        "FINANCIAL_STATEMENT": 1063,
+        "ARTICLE_CONTENT": 854
+      },
+      "workbench_relevance_labels": {
+        "DIRECTLY_RELEVANT": 111
+      },
+      "safety_and_epistemic_states": {
+        "investigation_status": "COMPLETED",
+        "epistemic_status": "REPORTED",
+        "claim_status_counts": {
+          "UNVERIFIED": 111
+        },
+        "publisher_attributed_public_statements": 0
+      },
+      "integrity": {
+        "published_passages_checked": 111,
+        "exact_offset_mismatches": 0,
+        "retained_body_sha256_mismatches": 0,
+        "distinct_published_texts": 111,
+        "overlapping_primary_source_span_pairs": 0,
+        "also_reported_observations_checked": 16,
+        "also_reported_exact_span_mismatches": 0,
+        "joins": {
+          "unified_evidence_records": 14,
+          "workbench_source_records": 14,
+          "distinct_primary_passage_source_ids": 14,
+          "finding_support_source_ids": 6,
+          "evidence_ids_missing_from_pool": [],
+          "workbench_ids_missing_from_pool": [],
+          "primary_passage_ids_missing_from_unified_evidence": [],
+          "finding_support_ids_missing_from_pool": []
+        }
+      },
+      "article_link_lineage_counts": {
+        "publisher_continuation": {
+          "candidates": 14,
+          "deduplicated_article_bodies": 3,
+          "qualified_sources": 3,
+          "workbench_source_records": 3
+        },
+        "source_citation": {
+          "candidates": 2,
+          "deduplicated_article_bodies": 1,
+          "qualified_sources": 1,
+          "workbench_source_records": 1
+        }
+      },
+      "source_citation_provenance": [
+        {
+          "candidate_id": "ev_hv_cc50f383461d48cb6c23",
+          "candidate_url": "https://www.fool.com/earnings/call-transcripts/2026/06/11/adobe-adbe-q2-2026-earnings-transcript/",
+          "parent_candidate_id": "ev_hv_5c9c7e62a9faf6ac6d84",
+          "parent_url": "https://www.techtimes.com/articles/318264/20260612/adobe-q2-2026-earnings-record-662b-revenue-ai-arr-triples-cfo-exits-days.htm",
+          "parent_candidate_found": true,
+          "parent_pool_source_found": true,
+          "parent_body_sha256": "2c97dc09e30d829917e82fac0b3e145392371a862cf910fe64726482b3563c06",
+          "child_url_found_in_parent_observed_links": true,
+          "citation_basis": "OBSERVED_ARTICLE_LINK_UNVERIFIED",
+          "publisher_hop": 1,
+          "query_id": "hv_q_006",
+          "child_pool_source_found": true,
+          "child_source_type": "ARTICLE_BODY",
+          "child_qualification_status": "QUALIFIED",
+          "child_retained_words": 2935,
+          "child_body_sha256": "0e9f4541691d20fc35d85926128ef1c720651c45a7f2f13633d9ac4900436322",
+          "primary_published_passages": 9,
+          "primary_published_words": 958,
+          "unread_reason": null,
+          "interpretation": "Observed link and acquired source assertion; not independent verification of the article claim or source authority."
+        },
+        {
+          "candidate_id": "ev_hv_30fa967eea63c2d2df95",
+          "candidate_url": "https://247wallst.com/investing/2026/06/11/live-will-adobe-smash-q2-earnings-after-the-bell-tonight/liveupdates/7/",
+          "parent_candidate_id": "ev_hv_e531604bf5068188d99d",
+          "parent_url": "https://247wallst.com/investing/2026/06/11/live-will-adobe-smash-q2-earnings-after-the-bell-tonight/liveupdates/10/",
+          "parent_candidate_found": true,
+          "parent_pool_source_found": true,
+          "parent_body_sha256": "5bf66e55e09f51fbf2191fb4fe5b8a5d0bb039391b05014ee55e610fdd4b9383",
+          "child_url_found_in_parent_observed_links": true,
+          "citation_basis": "OBSERVED_ARTICLE_LINK_UNVERIFIED",
+          "publisher_hop": 2,
+          "query_id": "hv_q_013",
+          "child_pool_source_found": true,
+          "child_source_type": "DISCOVERY_LEAD",
+          "child_qualification_status": "REJECTED",
+          "child_retained_words": 0,
+          "child_body_sha256": null,
+          "primary_published_passages": 0,
+          "primary_published_words": 0,
+          "unread_reason": "READ_ATTEMPT_BUDGET_EXHAUSTED",
+          "interpretation": "Observed link and acquired source assertion; not independent verification of the article claim or source authority."
+        }
+      ],
+      "publisher_link_decisions": {
+        "observed_count": 108,
+        "discard_reasons": {
+          "DIFFERENT_PUBLISHER": 59,
+          "ARTICLE_LINK_NOT_SUBJECT_SPECIFIC": 35,
+          "NON_DOCUMENT_ASSET": 13,
+          "DUPLICATE": 1
+        },
+        "saved_rejection_event_records": 108,
+        "saved_accepted_audit_records": 0,
+        "scope": "Decision-event counts are not distinct acquired citations; the rejection event list may be capped."
+      },
+      "published_source_manifest": [
+        {
+          "evidence_id": "ev_hv_13fce5165f6b01e79a8f",
+          "source_url_without_query_or_fragment": "https://www.theglobeandmail.com/investing/markets/stocks/GOOGL/pressreleases/4826612/nvidia-micron-alphabet-oracle-and-adobe-are-part-of-zacks-earnings-preview/",
+          "publisher_host": "www.theglobeandmail.com",
+          "readable_body_sha256": "0bc9eeb3f6b54e997e14baa1a4425835324cfa9324382975c7b9cab1ada9929e",
+          "captured_words": 1235,
+          "primary_published_passages": 2,
+          "primary_published_words": 95
+        },
+        {
+          "evidence_id": "ev_hv_1932d932f6c46da374e7",
+          "source_url_without_query_or_fragment": "https://www.techtimes.com/articles/315183/20260315/adobe-settles-us-lawsuit-offers-75-million-free-services-users.htm",
+          "publisher_host": "www.techtimes.com",
+          "readable_body_sha256": "73ea76d918a309eb3ec7e1da0a47a50f52c15f979f0da1331f340daa09b4f744",
+          "captured_words": 331,
+          "primary_published_passages": 4,
+          "primary_published_words": 97
+        },
+        {
+          "evidence_id": "ev_hv_3f2d887c0742d98ebeee",
+          "source_url_without_query_or_fragment": "https://www.theglobeandmail.com/investing/markets/stocks/ORCL/pressreleases/4492304/oracle-adobe-micron-alphabet-and-nvidia-are-part-of-zacks-earnings-preview/",
+          "publisher_host": "www.theglobeandmail.com",
+          "readable_body_sha256": "0bb8aac263554e1beb3351a05781e0e022cc2c5268c0f920dcc5bd8a28c022b3",
+          "captured_words": 1161,
+          "primary_published_passages": 4,
+          "primary_published_words": 206
+        },
+        {
+          "evidence_id": "ev_hv_57a0247d49e9c8e6575c",
+          "source_url_without_query_or_fragment": "https://www.fool.com/investing/2025/09/15/adobe-after-boosting-guidance-is-its-beaten-down-s/",
+          "publisher_host": "www.fool.com",
+          "readable_body_sha256": "385655d78c583c48be708c3d8446ae63bf569cf4e30b13954d86651adaf5bcd6",
+          "captured_words": 775,
+          "primary_published_passages": 6,
+          "primary_published_words": 325
+        },
+        {
+          "evidence_id": "ev_hv_5c9c7e62a9faf6ac6d84",
+          "source_url_without_query_or_fragment": "https://www.techtimes.com/articles/318264/20260612/adobe-q2-2026-earnings-record-662b-revenue-ai-arr-triples-cfo-exits-days.htm",
+          "publisher_host": "www.techtimes.com",
+          "readable_body_sha256": "2c97dc09e30d829917e82fac0b3e145392371a862cf910fe64726482b3563c06",
+          "captured_words": 1818,
+          "primary_published_passages": 20,
+          "primary_published_words": 1344
+        },
+        {
+          "evidence_id": "ev_hv_5fd73423784ddcfcba10",
+          "source_url_without_query_or_fragment": "https://247wallst.com/investing/2026/06/11/live-will-adobe-smash-q2-earnings-after-the-bell-tonight/liveupdates/3/",
+          "publisher_host": "247wallst.com",
+          "readable_body_sha256": "b1c1542fc95f93e3f6e5657662651e5d0fcf603676d7e84e20def89c63dad211",
+          "captured_words": 1613,
+          "primary_published_passages": 6,
+          "primary_published_words": 234
+        },
+        {
+          "evidence_id": "ev_hv_675a3c83c783070fe8b7",
+          "source_url_without_query_or_fragment": "https://finance.yahoo.com/news/unveiling-adobe-inc-adbe-market-160448421.html",
+          "publisher_host": "finance.yahoo.com",
+          "readable_body_sha256": "84c52ee6c150cc52f1610317e48877ee546895222f5b65d96cf1f7c792365472",
+          "captured_words": 985,
+          "primary_published_passages": 7,
+          "primary_published_words": 418
+        },
+        {
+          "evidence_id": "ev_hv_730679c02a0634390bc4",
+          "source_url_without_query_or_fragment": "https://www.theglobeandmail.com/investing/markets/stocks/MSFT/pressreleases/4497362/adobe-before-q3-earnings-should-you-hold-or-fold-the-adbe-stock/",
+          "publisher_host": "www.theglobeandmail.com",
+          "readable_body_sha256": "4805fafdb67b8bf56cf6b81c7300d47bc978f539c5baa6983f7378ef46a62137",
+          "captured_words": 1271,
+          "primary_published_passages": 5,
+          "primary_published_words": 914
+        },
+        {
+          "evidence_id": "ev_hv_849a423825cb2e27d123",
+          "source_url_without_query_or_fragment": "https://finance.yahoo.com/news/adobe-adbe-hidden-gem-overpriced-163253212.html",
+          "publisher_host": "finance.yahoo.com",
+          "readable_body_sha256": "c5fdac650a0cecd6611f2183bf283db7a8b877ab1ff0089cc40bba19c91ccc36",
+          "captured_words": 748,
+          "primary_published_passages": 8,
+          "primary_published_words": 437
+        },
+        {
+          "evidence_id": "ev_hv_a12d6d86e939ea7f4405",
+          "source_url_without_query_or_fragment": "https://www.techtimes.com/articles/318155/20260610/adobe-q2-earnings-june-11-stock-down-30market-test-whether-ai-eats-feeds-creative-software.htm",
+          "publisher_host": "www.techtimes.com",
+          "readable_body_sha256": "af83cba48358c002ef10418f6e54f310adf83065fac0c3a1ffddebf3947715d0",
+          "captured_words": 1461,
+          "primary_published_passages": 14,
+          "primary_published_words": 1085
+        },
+        {
+          "evidence_id": "ev_hv_b5fd5bcdca903759567d",
+          "source_url_without_query_or_fragment": "https://www.ad-hoc-news.de/boerse/news/corporate-news/adobe-inc-stock-dips-after-record-q3-fy2026-results-and-raised-guidance/70084138",
+          "publisher_host": "www.ad-hoc-news.de",
+          "readable_body_sha256": "a1b0b31e4fcfa18e55bc32eb60afb106a4ff727085280c6f0243ffa2d6613637",
+          "captured_words": 913,
+          "primary_published_passages": 9,
+          "primary_published_words": 420
+        },
+        {
+          "evidence_id": "ev_hv_cc50f383461d48cb6c23",
+          "source_url_without_query_or_fragment": "https://www.fool.com/earnings/call-transcripts/2026/06/11/adobe-adbe-q2-2026-earnings-transcript/",
+          "publisher_host": "www.fool.com",
+          "readable_body_sha256": "0e9f4541691d20fc35d85926128ef1c720651c45a7f2f13633d9ac4900436322",
+          "captured_words": 2935,
+          "primary_published_passages": 9,
+          "primary_published_words": 958
+        },
+        {
+          "evidence_id": "ev_hv_e0b849ae1b7de2fbbdc9",
+          "source_url_without_query_or_fragment": "https://uk.finance.yahoo.com/news/adobe-systems-adbe-q3-earnings-212501160.html",
+          "publisher_host": "uk.finance.yahoo.com",
+          "readable_body_sha256": "23e65b416b2ba27704818c5291e2c0739310d20368310b04db98539b14ef266e",
+          "captured_words": 656,
+          "primary_published_passages": 5,
+          "primary_published_words": 201
+        },
+        {
+          "evidence_id": "ev_hv_e531604bf5068188d99d",
+          "source_url_without_query_or_fragment": "https://247wallst.com/investing/2026/06/11/live-will-adobe-smash-q2-earnings-after-the-bell-tonight/liveupdates/10/",
+          "publisher_host": "247wallst.com",
+          "readable_body_sha256": "5bf66e55e09f51fbf2191fb4fe5b8a5d0bb039391b05014ee55e610fdd4b9383",
+          "captured_words": 1609,
+          "primary_published_passages": 12,
+          "primary_published_words": 377
+        }
+      ],
+      "comparison_to_initial_live": {
+        "metrics": {
+          "article_bodies": {
+            "before": 13,
+            "after": 15,
+            "delta": 2,
+            "ratio": 1.153846
+          },
+          "raw_article_words": {
+            "before": 14019,
+            "after": 17910,
+            "delta": 3891,
+            "ratio": 1.277552
+          },
+          "qualified_sources": {
+            "before": 12,
+            "after": 14,
+            "delta": 2,
+            "ratio": 1.166667
+          },
+          "selected_excerpt_words": {
+            "before": 640,
+            "after": 841,
+            "delta": 201,
+            "ratio": 1.314062
+          },
+          "published_workbench_words": {
+            "before": 6248,
+            "after": 7111,
+            "delta": 863,
+            "ratio": 1.138124
+          },
+          "published_passages": {
+            "before": 114,
+            "after": 111,
+            "delta": -3,
+            "ratio": 0.973684
+          }
+        },
+        "source_and_passage_overlap": {
+          "common_article_source_ids": 6,
+          "common_ids_same_readable_body_hash": 5,
+          "article_source_ids_new_to_comparator": 9,
+          "prior_article_source_ids_absent": 7,
+          "new_ids_article_words": 11434,
+          "new_ids_qualified_sources": 9,
+          "new_ids_primary_published_passages": 61,
+          "new_ids_primary_published_words": 4258,
+          "new_distinct_readable_body_hashes": 8,
+          "exact_published_passage_texts_shared": 77,
+          "final_passage_texts_absent_from_comparator": 34,
+          "scope": "URL/source-ID and exact-byte comparisons; new IDs or different text do not establish independent sources, new facts or causal effect."
+        }
+      },
+      "internal_excerpt_comparison": {
+        "selected_excerpt_words": 841,
+        "published_workbench_words": 7111,
+        "ratio": 8.45541,
+        "scope": "Current report multi-passage output divided by its compatibility selected excerpt; not growth over all prior frontend text or 20x overall useful evidence."
+      }
+    },
+    {
+      "agent": "brandshield",
+      "sample_input": "Dyson",
+      "native_file": "citation-live/02-brandshield.json",
+      "native_sha256": "5e678cef394082f4b47855e6278e7fade71ed9178953004727d48db6c0c02944",
+      "observed_report_generated_at": "2026-10-24T22:30:55.506962+00:00",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "seconds": 29.64,
+      "metrics": {
+        "article_bodies": 9,
+        "raw_article_words": 8302,
+        "qualified_sources": 8,
+        "selected_excerpt_words": 420,
+        "published_workbench_words": 1080,
+        "published_passages": 19
+      },
+      "runner_summary_record_words": 6541,
+      "pool_stats": {
+        "source_count": 46,
+        "candidate_urls": 46,
+        "by_type": {
+          "ARTICLE_BODY": 10,
+          "BLOCKED_OR_FAILED": 4,
+          "DISCOVERY_LEAD": 25,
+          "FEED_ENTRY": 5,
+          "SOURCE_INDEX": 2
+        },
+        "reads_attempted": 24,
+        "successful_captures": 20,
+        "article_bodies": 9,
+        "raw_article_words": 8302,
+        "raw_source_words": 13843,
+        "duplicate_captures": 1,
+        "qualified_source_count": 8,
+        "relevant_words": 420,
+        "unique_publishers": 6,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 394440,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "ACCESS_DENIED": 1,
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {}
+      },
+      "source_funnel": {
+        "queries_planned": 18,
+        "queries_submitted": 18,
+        "queries_started": 18,
+        "queries_succeeded": 18,
+        "queries_failed": 0,
+        "queries_timed_out": 0,
+        "queries_auth_required": 0,
+        "queries_skipped": 0,
+        "queries_executed": 18,
+        "candidates_found": 46,
+        "candidates_accepted": 46,
+        "candidates_rejected": 10,
+        "unique_candidates": 10,
+        "deep_reads_count": 20,
+        "acquired_record_count": 8,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 6,
+        "contradictions_count": 1,
+        "findings_count": 6,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 20,
+        "article_body_count": 9,
+        "qualified_source_count": 8,
+        "publisher_link_decision_count": 146,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "discovery_funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 18,
+        "provider_attempts_observed": 62,
+        "query_records_without_provider_observations": 1,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 31,
+        "candidate_urls_observed_in_search_sample": 191,
+        "candidate_url_decision_events_observed_in_search_sample": 256,
+        "normalized_candidates": 46,
+        "accepted_candidates": 46,
+        "qualification_decision_count": 10,
+        "rejected_candidate_count": 10,
+        "qualification_decisions_without_identity": 0,
+        "publisher_link_decision_count": 146,
+        "qualification_count_scope": "Distinct observed source identities, not link-audit events; one source can have multiple reasons",
+        "selected_acquisition_attempts": 24,
+        "successful_body_captures": 9,
+        "extracted_article_bodies": 9,
+        "qualified_evidence": 8,
+        "agent_research_findings": 6,
+        "unverified_or_uninvestigated_findings": 6,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "raw_capture_count": 20
+      },
+      "native_http_accounting": {
+        "native_http_admissions": 93,
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_by_phase": {
+          "discovery": 60,
+          "reading": 33
+        },
+        "native_http_budget_rejections": 21,
+        "complete_network_accounting": false,
+        "provider_http_request_count": null,
+        "discovery_http_cap": 60,
+        "discovery_http_per_host_cap": 20,
+        "discovery_http_reserve_rejections": 19
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 8,
+        "observed_publisher_hosts": 6,
+        "available_unique_passages": 19,
+        "published_passages": 19,
+        "published_unique_words": 1080,
+        "published_text_utf8_bytes": 6993,
+        "identical_text_observations": 1,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "UNVERIFIED_ALLEGATION": 14,
+          "SAFETY_WARNING": 1,
+          "PRODUCT_SAFETY_REPORT": 1,
+          "REPORTED_ENFORCEMENT": 1,
+          "SOURCE_REPORTED_CONTEXT": 2
+        },
+        "independence_verified": false
+      },
+      "workbench_role_words": {
+        "UNVERIFIED_ALLEGATION": 745,
+        "SAFETY_WARNING": 78,
+        "PRODUCT_SAFETY_REPORT": 37,
+        "REPORTED_ENFORCEMENT": 19,
+        "SOURCE_REPORTED_CONTEXT": 201
+      },
+      "workbench_relevance_labels": {
+        "DIRECTLY_RELEVANT": 19
+      },
+      "safety_and_epistemic_states": {
+        "investigation_status": "COMPLETED",
+        "assessment_status": "SOURCE_REPORTS_ONLY",
+        "safety_assessment": "NOT_ESTABLISHED",
+        "threat_count": 0,
+        "safe_count": 0,
+        "non_threat_finding_count": 6,
+        "claim_status_counts": {
+          "UNVERIFIED": 19
+        },
+        "publisher_attributed_public_statements": 0
+      },
+      "integrity": {
+        "published_passages_checked": 19,
+        "exact_offset_mismatches": 0,
+        "retained_body_sha256_mismatches": 0,
+        "distinct_published_texts": 19,
+        "overlapping_primary_source_span_pairs": 0,
+        "also_reported_observations_checked": 1,
+        "also_reported_exact_span_mismatches": 0,
+        "joins": {
+          "unified_evidence_records": 8,
+          "workbench_source_records": 8,
+          "distinct_primary_passage_source_ids": 8,
+          "finding_support_source_ids": 6,
+          "evidence_ids_missing_from_pool": [],
+          "workbench_ids_missing_from_pool": [],
+          "primary_passage_ids_missing_from_unified_evidence": [],
+          "finding_support_ids_missing_from_pool": []
+        }
+      },
+      "article_link_lineage_counts": {
+        "publisher_continuation": {
+          "candidates": 14,
+          "deduplicated_article_bodies": 2,
+          "qualified_sources": 1,
+          "workbench_source_records": 1
+        }
+      },
+      "source_citation_provenance": [],
+      "publisher_link_decisions": {
+        "observed_count": 146,
+        "discard_reasons": {
+          "ARTICLE_LINK_NOT_SUBJECT_SPECIFIC": 77,
+          "DUPLICATE": 5,
+          "DIFFERENT_PUBLISHER": 44,
+          "NON_DOCUMENT_ASSET": 6,
+          "OFF_SUBJECT_CONTINUATION": 12,
+          "NON_DOCUMENT": 2
+        },
+        "saved_rejection_event_records": 146,
+        "saved_accepted_audit_records": 0,
+        "scope": "Decision-event counts are not distinct acquired citations; the rejection event list may be capped."
+      },
+      "published_source_manifest": [
+        {
+          "evidence_id": "ev_hv_017c3660a70fe428f55c",
+          "source_url_without_query_or_fragment": "https://www.mirror.co.uk/money/shoppers-warned-fake-299-dyson-26277200.amp",
+          "publisher_host": "www.mirror.co.uk",
+          "readable_body_sha256": "66c5cda138631a51bec92e3789f56b8ba573881466ab8389b1bb5f0b67250e41",
+          "captured_words": 184,
+          "primary_published_passages": 1,
+          "primary_published_words": 16
+        },
+        {
+          "evidence_id": "ev_hv_232905d9e657f33e94fe",
+          "source_url_without_query_or_fragment": "https://www.which.co.uk/news/article/dyson-warns-of-fake-products-on-online-marketplaces-averd8q7dY3K",
+          "publisher_host": "www.which.co.uk",
+          "readable_body_sha256": "f5be4da0ba9779626cfad8db5b7b015adfd48733a6bdcfef2a97210bac2a0b9e",
+          "captured_words": 640,
+          "primary_published_passages": 7,
+          "primary_published_words": 196
+        },
+        {
+          "evidence_id": "ev_hv_364f666311e08f3a3c79",
+          "source_url_without_query_or_fragment": "https://lawstreetmedia.com/news/tech/dyson-sues-for-trademark-infringement-for-counterfeit-goods/",
+          "publisher_host": "lawstreetmedia.com",
+          "readable_body_sha256": "c1c71f146ccd6b763cbcfd83e116b3c0e1ddea0ad3109401eedbc605b7e39108",
+          "captured_words": 605,
+          "primary_published_passages": 5,
+          "primary_published_words": 505
+        },
+        {
+          "evidence_id": "ev_hv_4684ce29aaa2347a1dcc",
+          "source_url_without_query_or_fragment": "https://www.mirror.co.uk/money/shoppers-warned-fake-299-dyson-26277200",
+          "publisher_host": "www.mirror.co.uk",
+          "readable_body_sha256": "8ce2cde77a8b1404d2d6eac8f0a29cbaf60916c8b360d426a51f19ec0c2e452a",
+          "captured_words": 434,
+          "primary_published_passages": 1,
+          "primary_published_words": 25
+        },
+        {
+          "evidence_id": "ev_hv_51534fdd78378e3baed5",
+          "source_url_without_query_or_fragment": "https://www.dorsetecho.co.uk/news/19868831.recall-issued-counterfeit-dyson-airwrap-sold-ebay/",
+          "publisher_host": "www.dorsetecho.co.uk",
+          "readable_body_sha256": "af5f364dc131270c30d8c9bab83708a0279b9e90f28695bd6d2b31e1262f10e6",
+          "captured_words": 224,
+          "primary_published_passages": 2,
+          "primary_published_words": 57
+        },
+        {
+          "evidence_id": "ev_hv_872cf52d3c3a034190f3",
+          "source_url_without_query_or_fragment": "https://maldita.es/timo/20240104/anuncio-lidl-aspiradora-dyson/",
+          "publisher_host": "maldita.es",
+          "readable_body_sha256": "ec2b357413818ec76407e66734c60ab80c4f00c472758a3bbcf74fc8fd89cee4",
+          "captured_words": 977,
+          "primary_published_passages": 1,
+          "primary_published_words": 87
+        },
+        {
+          "evidence_id": "ev_hv_ac4e185f8b228189773a",
+          "source_url_without_query_or_fragment": "https://maldita.es/index.php/malditobulo/20230820/sorteo-aspiradora-dyson-phishing-suscripcion/",
+          "publisher_host": "maldita.es",
+          "readable_body_sha256": "c38857da0366fc525d12d5547c342c216beffb935dbf39ad96c097798e3fb540",
+          "captured_words": 1477,
+          "primary_published_passages": 1,
+          "primary_published_words": 78
+        },
+        {
+          "evidence_id": "ev_hv_ce2c2b3bb29c51b395c3",
+          "source_url_without_query_or_fragment": "https://www.numerama.com/cyberguerre/743537-darty-vous-offre-un-aspirateur-dyson-dernier-cri-ne-cliquez-pas-il-sagit-dun-phishing.html",
+          "publisher_host": "www.numerama.com",
+          "readable_body_sha256": "6686d8657223b152cc09cda72387ad50421235eeceab11b6c3cb8da3e3916d40",
+          "captured_words": 2000,
+          "primary_published_passages": 1,
+          "primary_published_words": 116
+        }
+      ],
+      "comparison_to_initial_live": {
+        "metrics": {
+          "article_bodies": {
+            "before": 8,
+            "after": 9,
+            "delta": 1,
+            "ratio": 1.125
+          },
+          "raw_article_words": {
+            "before": 7656,
+            "after": 8302,
+            "delta": 646,
+            "ratio": 1.084378
+          },
+          "qualified_sources": {
+            "before": 4,
+            "after": 8,
+            "delta": 4,
+            "ratio": 2.0
+          },
+          "selected_excerpt_words": {
+            "before": 114,
+            "after": 420,
+            "delta": 306,
+            "ratio": 3.684211
+          },
+          "published_workbench_words": {
+            "before": 774,
+            "after": 1080,
+            "delta": 306,
+            "ratio": 1.395349
+          },
+          "published_passages": {
+            "before": 15,
+            "after": 19,
+            "delta": 4,
+            "ratio": 1.266667
+          }
+        },
+        "source_and_passage_overlap": {
+          "common_article_source_ids": 7,
+          "common_ids_same_readable_body_hash": 6,
+          "article_source_ids_new_to_comparator": 2,
+          "prior_article_source_ids_absent": 1,
+          "new_ids_article_words": 2195,
+          "new_ids_qualified_sources": 1,
+          "new_ids_primary_published_passages": 1,
+          "new_ids_primary_published_words": 25,
+          "new_distinct_readable_body_hashes": 3,
+          "exact_published_passage_texts_shared": 15,
+          "final_passage_texts_absent_from_comparator": 4,
+          "scope": "URL/source-ID and exact-byte comparisons; new IDs or different text do not establish independent sources, new facts or causal effect."
+        }
+      },
+      "internal_excerpt_comparison": {
+        "selected_excerpt_words": 420,
+        "published_workbench_words": 1080,
+        "ratio": 2.571429,
+        "scope": "Current report multi-passage output divided by its compatibility selected excerpt; not growth over all prior frontend text or 20x overall useful evidence."
+      },
+      "comparison_to_brand_postfix": {
+        "metrics": {
+          "article_bodies": {
+            "before": 8,
+            "after": 9,
+            "delta": 1,
+            "ratio": 1.125
+          },
+          "raw_article_words": {
+            "before": 7656,
+            "after": 8302,
+            "delta": 646,
+            "ratio": 1.084378
+          },
+          "qualified_sources": {
+            "before": 7,
+            "after": 8,
+            "delta": 1,
+            "ratio": 1.142857
+          },
+          "selected_excerpt_words": {
+            "before": 395,
+            "after": 420,
+            "delta": 25,
+            "ratio": 1.063291
+          },
+          "published_workbench_words": {
+            "before": 1055,
+            "after": 1080,
+            "delta": 25,
+            "ratio": 1.023697
+          },
+          "published_passages": {
+            "before": 18,
+            "after": 19,
+            "delta": 1,
+            "ratio": 1.055556
+          }
+        },
+        "source_and_passage_overlap": {
+          "common_article_source_ids": 7,
+          "common_ids_same_readable_body_hash": 6,
+          "article_source_ids_new_to_comparator": 2,
+          "prior_article_source_ids_absent": 1,
+          "new_ids_article_words": 2195,
+          "new_ids_qualified_sources": 1,
+          "new_ids_primary_published_passages": 1,
+          "new_ids_primary_published_words": 25,
+          "new_distinct_readable_body_hashes": 3,
+          "exact_published_passage_texts_shared": 18,
+          "final_passage_texts_absent_from_comparator": 1,
+          "scope": "URL/source-ID and exact-byte comparisons; new IDs or different text do not establish independent sources, new facts or causal effect."
+        }
+      }
+    },
+    {
+      "agent": "trending",
+      "sample_input": "battery recycling",
+      "native_file": "citation-live/03-trending.json",
+      "native_sha256": "94a0dffd551ec2d9fc64771e63bd6e2d1da3c86e4bff27f5fe82984569684cab",
+      "observed_report_generated_at": "2026-10-24T22:31:30.209897+00:00",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "seconds": 34.53,
+      "metrics": {
+        "article_bodies": 10,
+        "raw_article_words": 11978,
+        "qualified_sources": 1,
+        "selected_excerpt_words": 51,
+        "published_workbench_words": 322,
+        "published_passages": 6
+      },
+      "runner_summary_record_words": 1250,
+      "pool_stats": {
+        "source_count": 63,
+        "candidate_urls": 63,
+        "by_type": {
+          "FEED_ENTRY": 2,
+          "BLOCKED_OR_FAILED": 3,
+          "PUBLISHER_HOMEPAGE": 4,
+          "ARTICLE_BODY": 10,
+          "DISCOVERY_LEAD": 39,
+          "SOURCE_INDEX": 5
+        },
+        "reads_attempted": 24,
+        "successful_captures": 21,
+        "article_bodies": 10,
+        "raw_article_words": 11978,
+        "raw_source_words": 27057,
+        "duplicate_captures": 0,
+        "qualified_source_count": 1,
+        "relevant_words": 51,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 735131,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3
+        },
+        "dropped_by_limit": {}
+      },
+      "source_funnel": {
+        "queries_planned": 18,
+        "queries_submitted": 18,
+        "queries_started": 18,
+        "queries_succeeded": 17,
+        "queries_failed": 1,
+        "queries_timed_out": 0,
+        "queries_auth_required": 0,
+        "queries_skipped": 0,
+        "queries_executed": 18,
+        "candidates_found": 63,
+        "candidates_accepted": 63,
+        "candidates_rejected": 20,
+        "unique_candidates": 1,
+        "deep_reads_count": 21,
+        "acquired_record_count": 1,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 1,
+        "contradictions_count": 0,
+        "findings_count": 1,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 21,
+        "article_body_count": 10,
+        "qualified_source_count": 1,
+        "publisher_link_decision_count": 291,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "discovery_funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 18,
+        "provider_attempts_observed": 53,
+        "query_records_without_provider_observations": 1,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 39,
+        "candidate_urls_observed_in_search_sample": 81,
+        "candidate_url_decision_events_observed_in_search_sample": 220,
+        "normalized_candidates": 63,
+        "accepted_candidates": 63,
+        "qualification_decision_count": 20,
+        "rejected_candidate_count": 20,
+        "qualification_decisions_without_identity": 0,
+        "publisher_link_decision_count": 291,
+        "qualification_count_scope": "Distinct observed source identities, not link-audit events; one source can have multiple reasons",
+        "selected_acquisition_attempts": 24,
+        "successful_body_captures": 10,
+        "extracted_article_bodies": 10,
+        "qualified_evidence": 1,
+        "agent_research_findings": 1,
+        "unverified_or_uninvestigated_findings": 1,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "raw_capture_count": 21
+      },
+      "native_http_accounting": {
+        "native_http_admissions": 88,
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_by_phase": {
+          "discovery": 56,
+          "reading": 32
+        },
+        "native_http_budget_rejections": 1,
+        "complete_network_accounting": false,
+        "provider_http_request_count": null,
+        "discovery_http_cap": 60,
+        "discovery_http_per_host_cap": 20,
+        "discovery_http_reserve_rejections": 0
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 6,
+        "published_passages": 6,
+        "published_unique_words": 322,
+        "published_text_utf8_bytes": 2208,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 6
+        },
+        "independence_verified": false
+      },
+      "workbench_role_words": {
+        "ARTICLE_CONTENT": 322
+      },
+      "workbench_relevance_labels": {
+        "DIRECTLY_RELEVANT": 6
+      },
+      "safety_and_epistemic_states": {
+        "investigation_status": "COMPLETED",
+        "threat_count": 0,
+        "safe_count": 1,
+        "claim_status_counts": {
+          "UNVERIFIED": 6
+        },
+        "publisher_attributed_public_statements": 0
+      },
+      "integrity": {
+        "published_passages_checked": 6,
+        "exact_offset_mismatches": 0,
+        "retained_body_sha256_mismatches": 0,
+        "distinct_published_texts": 6,
+        "overlapping_primary_source_span_pairs": 0,
+        "also_reported_observations_checked": 0,
+        "also_reported_exact_span_mismatches": 0,
+        "joins": {
+          "unified_evidence_records": 1,
+          "workbench_source_records": 1,
+          "distinct_primary_passage_source_ids": 1,
+          "finding_support_source_ids": 1,
+          "evidence_ids_missing_from_pool": [],
+          "workbench_ids_missing_from_pool": [],
+          "primary_passage_ids_missing_from_unified_evidence": [],
+          "finding_support_ids_missing_from_pool": []
+        }
+      },
+      "article_link_lineage_counts": {
+        "publisher_continuation": {
+          "candidates": 58,
+          "deduplicated_article_bodies": 10,
+          "qualified_sources": 1,
+          "workbench_source_records": 1
+        }
+      },
+      "source_citation_provenance": [],
+      "publisher_link_decisions": {
+        "observed_count": 291,
+        "discard_reasons": {
+          "OFF_SUBJECT_CONTINUATION": 138,
+          "DUPLICATE": 7,
+          "DIFFERENT_PUBLISHER": 77,
+          "NON_DOCUMENT": 14,
+          "NON_DOCUMENT_ASSET": 6,
+          "ARTICLE_LINK_NOT_SUBJECT_SPECIFIC": 49
+        },
+        "saved_rejection_event_records": 200,
+        "saved_accepted_audit_records": 0,
+        "scope": "Decision-event counts are not distinct acquired citations; the rejection event list may be capped."
+      },
+      "published_source_manifest": [
+        {
+          "evidence_id": "ev_hv_cb54c6d95c329d994994",
+          "source_url_without_query_or_fragment": "https://autorecyclingworld.com/mobile-battery-processing-takes-recycling-onsite-for-uk-recyclers/",
+          "publisher_host": "autorecyclingworld.com",
+          "readable_body_sha256": "022ca564ab7e4a962f3b7684fbd57f75884b2a1064acf6e945c8846e53216016",
+          "captured_words": 1250,
+          "primary_published_passages": 6,
+          "primary_published_words": 322
+        }
+      ],
+      "comparison_to_initial_live": {
+        "metrics": {
+          "article_bodies": {
+            "before": 7,
+            "after": 10,
+            "delta": 3,
+            "ratio": 1.428571
+          },
+          "raw_article_words": {
+            "before": 9859,
+            "after": 11978,
+            "delta": 2119,
+            "ratio": 1.214931
+          },
+          "qualified_sources": {
+            "before": 1,
+            "after": 1,
+            "delta": 0,
+            "ratio": 1.0
+          },
+          "selected_excerpt_words": {
+            "before": 51,
+            "after": 51,
+            "delta": 0,
+            "ratio": 1.0
+          },
+          "published_workbench_words": {
+            "before": 322,
+            "after": 322,
+            "delta": 0,
+            "ratio": 1.0
+          },
+          "published_passages": {
+            "before": 6,
+            "after": 6,
+            "delta": 0,
+            "ratio": 1.0
+          }
+        },
+        "source_and_passage_overlap": {
+          "common_article_source_ids": 3,
+          "common_ids_same_readable_body_hash": 3,
+          "article_source_ids_new_to_comparator": 7,
+          "prior_article_source_ids_absent": 4,
+          "new_ids_article_words": 6868,
+          "new_ids_qualified_sources": 0,
+          "new_ids_primary_published_passages": 0,
+          "new_ids_primary_published_words": 0,
+          "new_distinct_readable_body_hashes": 7,
+          "exact_published_passage_texts_shared": 6,
+          "final_passage_texts_absent_from_comparator": 0,
+          "scope": "URL/source-ID and exact-byte comparisons; new IDs or different text do not establish independent sources, new facts or causal effect."
+        }
+      },
+      "internal_excerpt_comparison": {
+        "selected_excerpt_words": 51,
+        "published_workbench_words": 322,
+        "ratio": 6.313725,
+        "scope": "Current report multi-passage output divided by its compatibility selected excerpt; not growth over all prior frontend text or 20x overall useful evidence."
+      }
+    },
+    {
+      "agent": "personal_watch",
+      "sample_input": "Mary Barra",
+      "native_file": "citation-live/04-personal_watch.json",
+      "native_sha256": "1f9c288b393fd5475db4fc182ed0f09bb88ba9d9f6d63676c65c28f5d5cfb5aa",
+      "observed_report_generated_at": "2026-10-24T22:32:04.005392+00:00",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "seconds": 33.61,
+      "metrics": {
+        "article_bodies": 1,
+        "raw_article_words": 484,
+        "qualified_sources": 0,
+        "selected_excerpt_words": 0,
+        "published_workbench_words": 0,
+        "published_passages": 0
+      },
+      "runner_summary_record_words": 0,
+      "pool_stats": {
+        "source_count": 18,
+        "candidate_urls": 18,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 5,
+          "DISCOVERY_LEAD": 11,
+          "ARTICLE_BODY": 1,
+          "PUBLISHER_HOMEPAGE": 1
+        },
+        "reads_attempted": 8,
+        "successful_captures": 3,
+        "article_bodies": 1,
+        "raw_article_words": 484,
+        "raw_source_words": 4140,
+        "duplicate_captures": 0,
+        "qualified_source_count": 0,
+        "relevant_words": 0,
+        "unique_publishers": 0,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 110648,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "PROVIDER_FAILURE": 1,
+          "ACCESS_DENIED": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "source_funnel": {
+        "queries_planned": 18,
+        "queries_submitted": 18,
+        "queries_started": 18,
+        "queries_succeeded": 18,
+        "queries_failed": 0,
+        "queries_timed_out": 0,
+        "queries_auth_required": 0,
+        "queries_skipped": 0,
+        "queries_executed": 18,
+        "candidates_found": 18,
+        "candidates_accepted": 17,
+        "candidates_rejected": 3,
+        "unique_candidates": 1,
+        "deep_reads_count": 3,
+        "acquired_record_count": 0,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 1,
+        "contradictions_count": 0,
+        "findings_count": 0,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 3,
+        "article_body_count": 1,
+        "qualified_source_count": 0,
+        "publisher_link_decision_count": 98,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "discovery_funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 18,
+        "provider_attempts_observed": 52,
+        "query_records_without_provider_observations": 1,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 31,
+        "candidate_urls_observed_in_search_sample": 72,
+        "candidate_url_decision_events_observed_in_search_sample": 170,
+        "normalized_candidates": 18,
+        "accepted_candidates": 17,
+        "qualification_decision_count": 3,
+        "rejected_candidate_count": 3,
+        "qualification_decisions_without_identity": 0,
+        "publisher_link_decision_count": 98,
+        "qualification_count_scope": "Distinct observed source identities, not link-audit events; one source can have multiple reasons",
+        "selected_acquisition_attempts": 8,
+        "successful_body_captures": 1,
+        "extracted_article_bodies": 1,
+        "qualified_evidence": 0,
+        "agent_research_findings": 0,
+        "unverified_or_uninvestigated_findings": 0,
+        "empty_findings_abstention": true,
+        "first_observed_empty_boundary": "BODY_OR_PASSAGE_QUALIFICATION",
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "raw_capture_count": 3
+      },
+      "native_http_accounting": {
+        "native_http_admissions": 77,
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_by_phase": {
+          "discovery": 60,
+          "reading": 17
+        },
+        "native_http_budget_rejections": 10,
+        "complete_network_accounting": false,
+        "provider_http_request_count": null,
+        "discovery_http_cap": 60,
+        "discovery_http_per_host_cap": 20,
+        "discovery_http_reserve_rejections": 9
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 0,
+        "observed_publisher_hosts": 0,
+        "available_unique_passages": 0,
+        "published_passages": 0,
+        "published_unique_words": 0,
+        "published_text_utf8_bytes": 0,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {},
+        "independence_verified": false
+      },
+      "workbench_role_words": {},
+      "workbench_relevance_labels": {},
+      "safety_and_epistemic_states": {
+        "investigation_status": "INSUFFICIENT_EVIDENCE",
+        "identity_authenticated": false,
+        "identity_risk": "UNASSESSED",
+        "claim_status_counts": {},
+        "publisher_attributed_public_statements": 0
+      },
+      "integrity": {
+        "published_passages_checked": 0,
+        "exact_offset_mismatches": 0,
+        "retained_body_sha256_mismatches": 0,
+        "distinct_published_texts": 0,
+        "overlapping_primary_source_span_pairs": 0,
+        "also_reported_observations_checked": 0,
+        "also_reported_exact_span_mismatches": 0,
+        "joins": {
+          "unified_evidence_records": 0,
+          "workbench_source_records": 0,
+          "distinct_primary_passage_source_ids": 0,
+          "finding_support_source_ids": 0,
+          "evidence_ids_missing_from_pool": [],
+          "workbench_ids_missing_from_pool": [],
+          "primary_passage_ids_missing_from_unified_evidence": [],
+          "finding_support_ids_missing_from_pool": []
+        }
+      },
+      "article_link_lineage_counts": {
+        "publisher_continuation": {
+          "candidates": 3,
+          "deduplicated_article_bodies": 0,
+          "qualified_sources": 0,
+          "workbench_source_records": 0
+        }
+      },
+      "source_citation_provenance": [],
+      "publisher_link_decisions": {
+        "observed_count": 98,
+        "discard_reasons": {
+          "ARTICLE_LINK_NOT_SUBJECT_SPECIFIC": 10,
+          "DIFFERENT_PUBLISHER": 2,
+          "OFF_SUBJECT_CONTINUATION": 85,
+          "DUPLICATE": 1
+        },
+        "saved_rejection_event_records": 98,
+        "saved_accepted_audit_records": 0,
+        "scope": "Decision-event counts are not distinct acquired citations; the rejection event list may be capped."
+      },
+      "published_source_manifest": [],
+      "comparison_to_initial_live": {
+        "metrics": {
+          "article_bodies": {
+            "before": 1,
+            "after": 1,
+            "delta": 0,
+            "ratio": 1.0
+          },
+          "raw_article_words": {
+            "before": 484,
+            "after": 484,
+            "delta": 0,
+            "ratio": 1.0
+          },
+          "qualified_sources": {
+            "before": 1,
+            "after": 0,
+            "delta": -1,
+            "ratio": 0.0
+          },
+          "selected_excerpt_words": {
+            "before": 114,
+            "after": 0,
+            "delta": -114,
+            "ratio": 0.0
+          },
+          "published_workbench_words": {
+            "before": 114,
+            "after": 0,
+            "delta": -114,
+            "ratio": 0.0
+          },
+          "published_passages": {
+            "before": 1,
+            "after": 0,
+            "delta": -1,
+            "ratio": 0.0
+          }
+        },
+        "source_and_passage_overlap": {
+          "common_article_source_ids": 1,
+          "common_ids_same_readable_body_hash": 1,
+          "article_source_ids_new_to_comparator": 0,
+          "prior_article_source_ids_absent": 0,
+          "new_ids_article_words": 0,
+          "new_ids_qualified_sources": 0,
+          "new_ids_primary_published_passages": 0,
+          "new_ids_primary_published_words": 0,
+          "new_distinct_readable_body_hashes": 0,
+          "exact_published_passage_texts_shared": 0,
+          "final_passage_texts_absent_from_comparator": 0,
+          "scope": "URL/source-ID and exact-byte comparisons; new IDs or different text do not establish independent sources, new facts or causal effect."
+        }
+      },
+      "internal_excerpt_comparison": {
+        "selected_excerpt_words": 0,
+        "published_workbench_words": 0,
+        "ratio": null,
+        "scope": "Current report multi-passage output divided by its compatibility selected excerpt; not growth over all prior frontend text or 20x overall useful evidence."
+      }
+    }
+  ],
+  "aggregate": {
+    "metrics": {
+      "article_bodies": 35,
+      "raw_article_words": 38674,
+      "qualified_sources": 23,
+      "selected_excerpt_words": 1312,
+      "published_workbench_words": 8513,
+      "published_passages": 136
+    },
+    "native_http_admissions": 335,
+    "complete_network_accounting": false,
+    "source_citation_candidates": 2,
+    "source_citation_deduplicated_article_bodies": 1,
+    "source_citation_qualified_sources": 1,
+    "source_citation_published_words": 958,
+    "published_passages_exact_span_checked": 136,
+    "exact_span_or_body_hash_mismatches": 0,
+    "overlapping_primary_source_span_pairs": 0,
+    "comparison_to_initial_four_case_batch": {
+      "article_bodies": {
+        "before": 29,
+        "after": 35,
+        "delta": 6,
+        "ratio": 1.206897
+      },
+      "raw_article_words": {
+        "before": 32018,
+        "after": 38674,
+        "delta": 6656,
+        "ratio": 1.207883
+      },
+      "qualified_sources": {
+        "before": 18,
+        "after": 23,
+        "delta": 5,
+        "ratio": 1.277778
+      },
+      "selected_excerpt_words": {
+        "before": 919,
+        "after": 1312,
+        "delta": 393,
+        "ratio": 1.427639
+      },
+      "published_workbench_words": {
+        "before": 7458,
+        "after": 8513,
+        "delta": 1055,
+        "ratio": 1.141459
+      },
+      "published_passages": {
+        "before": 136,
+        "after": 136,
+        "delta": 0,
+        "ratio": 1.0
+      }
+    },
+    "comparison_to_mixed_latest_prior_observations": {
+      "article_bodies": {
+        "before": 29,
+        "after": 35,
+        "delta": 6,
+        "ratio": 1.206897
+      },
+      "raw_article_words": {
+        "before": 32018,
+        "after": 38674,
+        "delta": 6656,
+        "ratio": 1.207883
+      },
+      "qualified_sources": {
+        "before": 21,
+        "after": 23,
+        "delta": 2,
+        "ratio": 1.095238
+      },
+      "selected_excerpt_words": {
+        "before": 1200,
+        "after": 1312,
+        "delta": 112,
+        "ratio": 1.093333
+      },
+      "published_workbench_words": {
+        "before": 7739,
+        "after": 8513,
+        "delta": 774,
+        "ratio": 1.100013
+      },
+      "published_passages": {
+        "before": 139,
+        "after": 136,
+        "delta": -3,
+        "ratio": 0.978417
+      }
+    },
+    "internal_selected_excerpt_to_workbench_ratio": 6.488567
+  },
+  "definition_cautions": [
+    "The stable batch fingerprint applies only to this completed citation-live run. It does not retroactively apply to initial live or brand-postfix batches.",
+    "Client task date2026-10-25 and actual report timestamps are recorded separately without changing the observed clock.",
+    "Raw article counts/words exclude duplicate_of captures. BrandShield has10 ARTICLE_BODY records but9 deduplicated bodies, removing one605-word exact duplicate; the resulting article-word total is8302.",
+    "Runner summary record words are report-retained text, not all acquired article words. Raw bodies include rejected sources and are not useful-evidence counts.",
+    "All published passages remain UNVERIFIED and independence_verified=false. Source span/hash fidelity does not verify source assertions.",
+    "Native HTTP admissions omit non-instrumented provider traffic; complete_network_accounting=false in every case. Counts77/93/88/77 are not total network requests.",
+    "Publisher link rejection events and accepted citation metadata describe different stages. Empty publisher_link_audit lists do not imply no article-citation candidates; the two Scout candidates have source_citation metadata and exact observed parent links.",
+    "Only one newly followed source-citation candidate became an acquired/qualified/published article: a Motley Fool transcript linked from a captured TechTimes article. It contributes2935 retained words and958 published words in9 passages. A second cited continuation remained unread at the read-attempt limit.",
+    "Publisher-continuation lineage includes same-publisher/resolver links and may be attached to previously known candidates. Its counts are not automatically additional sources attributable to the new crawler.",
+    "Source-ID/hash and passage-text overlaps are descriptive. URL variants, syndicated content, changing source availability, paragraph joining and duplicate suppression prevent causal or independent-source interpretations.",
+    "Scout includes4014 forecast-or-mixed financial-context words and1180 historical-context words in its7111-word workbench. They are labeled context, not current statement confirmation.",
+    "BrandShield remains SOURCE_REPORTS_ONLY; safety NOT_ESTABLISHED, threat_count=0 and safe_count=0. Source reports and preventive warnings are not confirmed threats.",
+    "Trending retains one source and322 published words; legacy safe_count=1 does not establish safety, exhaustiveness or independently verified trend coverage.",
+    "Personal Watch is INSUFFICIENT_EVIDENCE with zero qualified/published sources, identity_authenticated=false and identity_risk=UNASSESSED. The same484-word old article body is acquired but does not pass final qualification.",
+    "Published source grouping under the legacy independent evidence section is not verified publisher independence. Workbench accounting explicitly records independence_verified=false.",
+    "Null ratios have zero denominators. Internal excerpt-to-workbench ratios measure an additive projection, not all previously inspectable frontend text. No20x overall useful-evidence gain is established."
+  ],
+  "separate_personal_routing_postfix": {
+    "scope": "Separate fresh one-case routing-postfix observation; does not replace the four-case citation-live Personal Watch zero or change its aggregate.",
+    "appended_at_host": "2026-10-25T04:08:48.038142+05:30",
+    "batch": {
+      "mode": "REAL_LOCAL_ASGI_SSE",
+      "application_sha256": "ff015131a463520c0d0f0250c10295e063b72848cf15e100e2a42c835f955532",
+      "scope": "Normal local routes/provider acquisition, no browser; word counts are not evidence quality",
+      "mock_llm": false,
+      "live_ai_authorized": false,
+      "requested_audit_bounds": {
+        "research_timeout_seconds": 240.0,
+        "max_deep_reads": 24,
+        "research_profile": "DEEP"
+      },
+      "advisory_model_check": {
+        "status": "DISABLED",
+        "model": "gemini-3.5-flash-lite"
+      },
+      "final_application_sha256": "ff015131a463520c0d0f0250c10295e063b72848cf15e100e2a42c835f955532",
+      "stable_application": true,
+      "live_ai_calls_reserved": 0,
+      "live_ai_observations": []
+    },
+    "case": {
+      "agent": "personal_watch",
+      "sample_input": "Mary Barra",
+      "native_file": "personal-routing-postfix/01-personal_watch.json",
+      "native_sha256": "d83cf9c2e293d1ced41e6ad241f1ab9ce71aa43351a8c4e33911a109475f37bd",
+      "observed_report_generated_at": "2026-10-24T22:37:17.190500+00:00",
+      "http_status": 200,
+      "result_event": true,
+      "error_events": [],
+      "seconds": 18.49,
+      "metrics": {
+        "article_bodies": 1,
+        "raw_article_words": 484,
+        "qualified_sources": 1,
+        "selected_excerpt_words": 114,
+        "published_workbench_words": 114,
+        "published_passages": 1
+      },
+      "runner_summary_record_words": 484,
+      "pool_stats": {
+        "source_count": 19,
+        "candidate_urls": 19,
+        "by_type": {
+          "BLOCKED_OR_FAILED": 4,
+          "DISCOVERY_LEAD": 12,
+          "ARTICLE_BODY": 1,
+          "SOURCE_INDEX": 1,
+          "PUBLISHER_HOMEPAGE": 1
+        },
+        "reads_attempted": 9,
+        "successful_captures": 5,
+        "article_bodies": 1,
+        "raw_article_words": 484,
+        "raw_source_words": 5270,
+        "duplicate_captures": 0,
+        "qualified_source_count": 1,
+        "relevant_words": 114,
+        "unique_publishers": 1,
+        "publisher_independence": "NOT_ESTABLISHED",
+        "storage_bytes": 136661,
+        "acquisition_mode": "OBSERVED_ACQUISITION",
+        "ambiguous_alias_count": 0,
+        "failed_reads_by_cause": {
+          "PUBLISHER_UNRESOLVED": 3,
+          "ACCESS_DENIED": 1
+        },
+        "dropped_by_limit": {}
+      },
+      "source_funnel": {
+        "queries_planned": 18,
+        "queries_submitted": 18,
+        "queries_started": 18,
+        "queries_succeeded": 18,
+        "queries_failed": 0,
+        "queries_timed_out": 0,
+        "queries_auth_required": 0,
+        "queries_skipped": 0,
+        "queries_executed": 18,
+        "candidates_found": 19,
+        "candidates_accepted": 18,
+        "candidates_rejected": 5,
+        "unique_candidates": 1,
+        "deep_reads_count": 5,
+        "acquired_record_count": 1,
+        "reused_acquired_count": 0,
+        "primary_sources_count": 0,
+        "independent_groups_count": 1,
+        "contradictions_count": 0,
+        "findings_count": 1,
+        "saturation_score": 0.0,
+        "halt_reason": "HARVEST_COMPLETE",
+        "adaptive_rounds": 0,
+        "raw_capture_count": 5,
+        "article_body_count": 1,
+        "qualified_source_count": 1,
+        "publisher_link_decision_count": 136,
+        "candidate_count_scope": "Read-eligible leads and post-read rejected source identities are different stages and may overlap"
+      },
+      "discovery_funnel": {
+        "scope": "Main queries plus separately labeled nested resolver attempts; not complete HTTP accounting or independent accuracy",
+        "query_records": 18,
+        "provider_attempts_observed": 52,
+        "query_records_without_provider_observations": 1,
+        "provider_coverage_limit": "Instrumented web and news/RSS search calls; other absent observations are unknown, not zero requests; legacy fallback transport unverified",
+        "search_responses_observed": 32,
+        "candidate_urls_observed_in_search_sample": 81,
+        "candidate_url_decision_events_observed_in_search_sample": 177,
+        "normalized_candidates": 19,
+        "accepted_candidates": 18,
+        "qualification_decision_count": 5,
+        "rejected_candidate_count": 5,
+        "qualification_decisions_without_identity": 0,
+        "publisher_link_decision_count": 136,
+        "qualification_count_scope": "Distinct observed source identities, not link-audit events; one source can have multiple reasons",
+        "selected_acquisition_attempts": 9,
+        "successful_body_captures": 1,
+        "extracted_article_bodies": 1,
+        "qualified_evidence": 1,
+        "agent_research_findings": 1,
+        "unverified_or_uninvestigated_findings": 1,
+        "empty_findings_abstention": false,
+        "first_observed_empty_boundary": null,
+        "causal_limit": "An empty boundary is not proof that rejected or inaccessible sources were relevant; inspect candidate decisions",
+        "reading_failure_reason": null,
+        "raw_capture_count": 5
+      },
+      "native_http_accounting": {
+        "native_http_admissions": 76,
+        "native_http_cap": 120,
+        "native_http_per_host_cap": 24,
+        "native_http_by_phase": {
+          "discovery": 60,
+          "reading": 16
+        },
+        "native_http_budget_rejections": 10,
+        "complete_network_accounting": false,
+        "provider_http_request_count": null,
+        "discovery_http_cap": 60,
+        "discovery_http_per_host_cap": 20,
+        "discovery_http_reserve_rejections": 7
+      },
+      "workbench_accounting": {
+        "source_records_with_passages": 1,
+        "observed_publisher_hosts": 1,
+        "available_unique_passages": 1,
+        "published_passages": 1,
+        "published_unique_words": 114,
+        "published_text_utf8_bytes": 704,
+        "identical_text_observations": 0,
+        "contained_text_observations": 0,
+        "overlapping_source_spans_omitted": 0,
+        "omitted_by_workbench_budget": 0,
+        "omitted_by_source_budget": 0,
+        "invalid_passage_records": 0,
+        "roles": {
+          "ARTICLE_CONTENT": 1
+        },
+        "independence_verified": false
+      },
+      "workbench_role_words": {
+        "ARTICLE_CONTENT": 114
+      },
+      "safety_and_epistemic_states": {
+        "investigation_status": "COMPLETED",
+        "identity_authenticated": false,
+        "identity_risk": "UNASSESSED",
+        "claim_status_counts": {
+          "UNVERIFIED": 1
+        },
+        "publisher_attributed_public_statements": 1,
+        "native_public_statement_roles": {
+          "PUBLIC_STATEMENT": 1
+        },
+        "public_statement_publisher_dates": [
+          "2021-09-29T21:08:46+05:30"
+        ]
+      },
+      "integrity": {
+        "published_passages_checked": 1,
+        "exact_offset_mismatches": 0,
+        "retained_body_sha256_mismatches": 0,
+        "distinct_published_texts": 1,
+        "unified_evidence_ids_missing_from_pool": [],
+        "published_ids_missing_from_unified_evidence": [],
+        "finding_support_ids_missing_from_pool": []
+      },
+      "source_citation_candidates": 0,
+      "published_source_manifest": [
+        {
+          "evidence_id": "ev_hv_c1a3a9753d15fbef87d8",
+          "readable_body_sha256": "530fa5799c4afcf87949e388547c29cbd4d5b50f4baa333c9181247a08555f2a",
+          "captured_words": 484,
+          "primary_published_passages": 1,
+          "primary_published_words": 114
+        }
+      ]
+    },
+    "comparison_to_final_four_case_personal_observation": {
+      "metrics": {
+        "article_bodies": {
+          "before": 1,
+          "after": 1,
+          "delta": 0,
+          "ratio": 1.0
+        },
+        "raw_article_words": {
+          "before": 484,
+          "after": 484,
+          "delta": 0,
+          "ratio": 1.0
+        },
+        "qualified_sources": {
+          "before": 0,
+          "after": 1,
+          "delta": 1,
+          "ratio": null
+        },
+        "selected_excerpt_words": {
+          "before": 0,
+          "after": 114,
+          "delta": 114,
+          "ratio": null
+        },
+        "published_workbench_words": {
+          "before": 0,
+          "after": 114,
+          "delta": 114,
+          "ratio": null
+        },
+        "published_passages": {
+          "before": 0,
+          "after": 1,
+          "delta": 1,
+          "ratio": null
+        }
+      },
+      "same_article_source_ids_and_readable_body_hashes": true,
+      "new_article_source_ids": 0
+    },
+    "preserved_four_case_sections_sha256": "81788a7f22f0f7d3e61630ff66b98e317d568ecd5c17f7400a8bd98e09466bd2",
+    "definition_cautions": [
+      "The separate stable application fingerprint is ff015131a463520c0d0f0250c10295e063b72848cf15e100e2a42c835f955532; it does not apply to the earlier four-case batch.",
+      "The same484-word acquired article body now yields one114-word selected/published passage. This is newly qualified use of an already observed body, not an additional article acquisition.",
+      "Public statement attribution is publisher-reported and dated2021. Identity remains unauthenticated, risk UNASSESSED, and the passage UNVERIFIED. No threat or current-risk finding is established.",
+      "The saved workbench projects ARTICLE_CONTENT while the native public_statements projection uses PUBLIC_STATEMENT. Preserve both observed roles.",
+      "Native admissions76 split60 discovery/16 reading; accounting remains incomplete.",
+      "Zero baseline qualification/publication makes ratios null; this is not finite20x growth. The original four-case aggregate remains unchanged."
+    ]
+  }
+}

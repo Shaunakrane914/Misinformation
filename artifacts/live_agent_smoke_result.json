@@ -1,71 +1,45 @@
 {
-  "timestamp": "2026-10-08T02:24:59.281041+00:00",
-  "commit": "fd4f8c315233",
-  "overall_status": "PASS",
-  "passed_count": 4,
+  "timestamp": "2026-10-27T17:03:52.085792+00:00",
+  "commit": "1e1c44e89ff6",
+  "overall_status": "FAIL",
+  "passed_count": 1,
   "total_count": 4,
-  "total_duration_sec": 103.29,
+  "total_duration_sec": 31.0,
   "agents": {
     "brandshield": {
-      "status": "PASS",
-      "duration_sec": 42.69,
+      "status": "SKIP",
+      "duration_sec": 0.0,
       "error": null,
       "details": {
-        "entity": "Nike",
-        "sources_count": 19,
-        "threat_count": 6,
-        "risk_level": "low",
-        "platforms": [
-          "rss",
-          "web",
-          "news",
-          "youtube"
-        ],
-        "observed_count": 6,
-        "inferred_count": 1,
-        "uncertain_count": 0,
-        "fallback_used": false
+        "reason": "Filtered out by --agent"
       }
     },
     "trending": {
-      "status": "PASS",
-      "duration_sec": 21.44,
+      "status": "SKIP",
+      "duration_sec": 0.0,
       "error": null,
       "details": {
-        "discovery_mode": "discovery",
-        "discovery_scope": "ai",
-        "discovery_trends_count": 2,
-        "entity_mode": "entity",
-        "entity_resolved": "OpenAI",
-        "entity_trends_count": 1,
-        "total_evidence_collected": 12
+        "reason": "Filtered out by --agent"
       }
     },
     "scout": {
-      "status": "PASS",
-      "duration_sec": 25.83,
+      "status": "SKIP",
+      "duration_sec": 0.0,
       "error": null,
       "details": {
-        "ticker": "NVDA",
-        "price": 237.47,
-        "z_score": 0.43,
-        "volatility_status": "STABLE",
-        "observed_count": 1,
-        "inferred_count": 1,
-        "uncertain_count": 1,
-        "sources_count": 0
+        "reason": "Filtered out by --agent"
       }
     },
     "personal_watch": {
       "status": "PASS",
-      "duration_sec": 13.3,
+      "duration_sec": 30.97,
       "error": null,
       "details": {
         "canonical_name": "Satya Nadella",
         "category": "executive",
-        "evidence_count": 17,
+        "evidence_count": 0,
         "threat_count": 0,
-        "timeline_count": 12,
+        "timeline_count": 0,
         "changes_count": 1,
         "pii_detected": false
       }

@@ -4,6 +4,8 @@ Aegis Protocol — Social Platform Acquisition Adapters
 Zero-auth public mirror adapters for Reddit (Arctic Shift) and Twitter/X (FxTwitter).
 """
 
+from backend.infrastructure.acquisition.adapters.social.bluesky import BlueskyAdapter
+from backend.infrastructure.acquisition.adapters.social.hackernews import HackerNewsAdapter
 from backend.infrastructure.acquisition.adapters.social.reddit import (
     ARCTIC_SHIFT_BASE,
     RedditAdapter,
@@ -12,6 +14,7 @@ from backend.infrastructure.acquisition.adapters.social.reddit import (
     fetch_arctic_shift_posts_batch,
     fetch_arctic_shift_search,
 )
+from backend.infrastructure.acquisition.adapters.social.telegram import TelegramPublicAdapter
 from backend.infrastructure.acquisition.adapters.social.twitter import (
     FXTWITTER_BASE,
     TwitterAdapter,
@@ -21,7 +24,10 @@ from backend.infrastructure.acquisition.adapters.social.twitter import (
 
 __all__ = [
     "ARCTIC_SHIFT_BASE",
+    "BlueskyAdapter",
+    "HackerNewsAdapter",
     "RedditAdapter",
+    "TelegramPublicAdapter",
     "fetch_arctic_shift_comments",
     "fetch_arctic_shift_post",
     "fetch_arctic_shift_posts_batch",

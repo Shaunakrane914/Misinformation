@@ -96,7 +96,7 @@ class ResearchBudget:
         disc_b = int(os.getenv(f"{prefix}MAX_QUERIES", os.getenv("RESEARCH_MAX_CANDIDATES", "40")))
         fu_b = int(os.getenv(f"{prefix}MAX_FOLLOW_UPS", os.getenv("RESEARCH_MAX_FOLLOW_UPS", "3")))
         prim_b = int(os.getenv(f"{prefix}MAX_PRIMARY_ESCALATIONS", os.getenv("RESEARCH_MAX_PRIMARY_ESCALATIONS", "2")))
-        dr_b = int(os.getenv(f"{prefix}MAX_DEEP_READS", os.getenv("RESEARCH_MAX_DEEP_READS", "6")))
+        dr_b = int(os.getenv(f"{prefix}MAX_DEEP_READS", os.getenv("RESEARCH_MAX_DEEP_READS", "15")))
         tout = float(os.getenv(f"{prefix}TIMEOUT", os.getenv("RESEARCH_MAX_TOTAL_LATENCY_SECONDS", "25.0" if not is_server else "20.0")))
         ch_tout = float(os.getenv(f"{prefix}CHANNEL_TIMEOUT", os.getenv("RESEARCH_CHANNEL_TIMEOUT_SECONDS", "5.0")))
 
@@ -109,7 +109,7 @@ class ResearchBudget:
             contradiction_resolution_budget=int(os.getenv("RESEARCH_MAX_CORROBORATION_QUERIES", "2")),
             timeout_seconds=tout,
             channel_timeout_seconds=ch_tout,
-            deep_read_concurrency=int(os.getenv("RESEARCH_DEEP_READ_CONCURRENCY", "4")),
+            deep_read_concurrency=int(os.getenv("RESEARCH_DEEP_READ_CONCURRENCY", "12")),
         )
 
 

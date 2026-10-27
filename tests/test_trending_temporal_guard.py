@@ -80,7 +80,8 @@ def test_2_historical_2021_story_fetched_today_remains_stale():
     assert "TEMPORAL_STALE" in assessment.rejection_reason
     assert assessment.context_only is True
 
-    # Gate verification
+    # Gate verification: under the 2-layer design, freshness is a label (temporal_fresh=False)
+    # rather than a hard drop, so niche topics are never empty and older items serve as fallback.
     rel_assess = relevance_gate.evaluate_item(
         cand,
         target_entity="Microsoft",
@@ -89,9 +90,8 @@ def test_2_historical_2021_story_fetched_today_remains_stale():
         reference_time=REF_TIME,
         window_hours=48.0,
     )
-    assert rel_assess.is_accepted is False
-    assert rel_assess.rejection_stage == "TEMPORAL_GATE_ERROR"
-    assert "TEMPORAL_STALE" in rel_assess.rejection_reason
+    assert rel_assess.temporal_fresh is False
+    assert rel_assess.temporal_status == "STALE"
 
 
 def test_3_syndicated_old_story_with_fresh_mirror_timestamp():
@@ -118,8 +118,8 @@ def test_3_syndicated_old_story_with_fresh_mirror_timestamp():
         reference_time=REF_TIME,
         window_hours=48.0,
     )
-    assert rel_assess.is_accepted is False
-    assert rel_assess.rejection_stage == "TEMPORAL_GATE_ERROR"
+    assert rel_assess.temporal_fresh is False
+    assert rel_assess.temporal_status == "SYNDICATED_STALE"
 
 
 def test_4_recent_update_to_old_article_follows_update_policy():
@@ -190,8 +190,8 @@ def test_5_missing_publication_timestamp_handled_conservatively():
         rel = relevance_gate.evaluate_item(
             c, target_entity="Microsoft", domain="trending", reference_time=REF_TIME
         )
-        assert rel.is_accepted is False
-        assert rel.rejection_stage == "TEMPORAL_GATE_ERROR"
+        assert rel.temporal_fresh is False
+        assert rel.temporal_status == "MISSING_TIMESTAMP"
 
 
 def test_6_future_dated_timestamp_cannot_gain_recency_advantage():
@@ -214,8 +214,8 @@ def test_6_future_dated_timestamp_cannot_gain_recency_advantage():
     rel = relevance_gate.evaluate_item(
         cand_future, target_entity="Microsoft", domain="trending", reference_time=REF_TIME
     )
-    assert rel.is_accepted is False
-    assert rel.rejection_stage == "TEMPORAL_GATE_ERROR"
+    assert rel.temporal_fresh is False
+    assert rel.temporal_status == "FUTURE_DATED"
 
 
 def test_7_timezone_invariance():

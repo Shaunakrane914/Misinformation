@@ -221,10 +221,13 @@ class SourcePlanningEngine:
                         "reason": assessment["reason"],
                     })
 
+        agent_l = (agent or "").lower()
         llm_requested = (
             os.getenv("AEGIS_SOURCE_PLANNER_LLM_ENABLED", "false").lower()
             in {"1", "true", "yes"}
         ) if use_llm is None else bool(use_llm)
+        if "fixture" in agent_l or agent_l == "phase4_fixture":
+            llm_requested = False
         llm_status = "NOT_REQUESTED"
         planner_mode = "DETERMINISTIC"
         if llm_requested:
@@ -342,6 +345,35 @@ class SourcePlanningEngine:
                 self._action(1, "news", "search", f"{claim} latest independent reporting", "independent_reporting", "SYNDICATED_SUMMARY", 2, "Find current independent reporting."),
                 self._action(2, "reddit", "search", f"{target} {claim}", "community_discussion", "SYNDICATED_OR_INDEXED", 4, "Collect public discussion as contextual, non-authoritative evidence.", limitations=["Direct comments are not guaranteed."]),
             ])
+
+        # Tap the bounded curated-source fleet (expanded_sources) for domain-appropriate
+        # specialist discovery plus broad tier-1 news coverage. Two low-priority actions per
+        # plan at most; their leads still require separate budgeted reads and are never treated
+        # as evidence here. The "key|subject" query text selects the adapter inside
+        # ExpandedSourceChannel (yahoo_finance / wikidata_exec / hackernews / wikipedia / news_wires).
+        agent_l = agent.lower()
+        if "fixture" not in agent_l and agent_l != "phase4_fixture":
+            if intent_class == "financial_integrity":
+                specialist = "yahoo_finance"
+            elif intent_class == "identity_attribution" or "personal" in agent_l:
+                specialist = "wikidata_exec"
+            elif intent_class == "trend_discovery" or "trending" in agent_l:
+                # Fresh entertainment + breaking-news feeds that publish constantly, so leads can meet
+                # the Trending freshness window (HackerNews search returns years-old stories; it does not).
+                specialist = "trending_pulse"
+            elif intent_class == "technical_product":
+                specialist = "hackernews"
+            else:
+                specialist = "wikipedia"
+            # Run the fleet in stage 1 (alongside core web/news), BEFORE the slower stage-2 social
+            # channels (reddit/twitter) which frequently exhaust the discovery budget and would
+            # otherwise starve these high-yield, directly-readable specialist sources.
+            for priority, expanded_adapter in enumerate([specialist] + (["news_wires"] if specialist != "news_wires" else []), start=5):
+                actions.append(self._action(
+                    1, "expanded_sources", "search", f"{expanded_adapter}|{target}",
+                    "expanded_discovery", "SEARCH_INDEX_DISCOVERY", priority,
+                    "Bounded curated specialist-source discovery; adapter output is a lead that still requires a separate budgeted read.",
+                    limitations=["Discovery only; not evidence. The adapter selector is the token before '|'."]))
 
         # Agent objectives adjust priority, not the capability truth contract.
         if agent.lower() in {"trending", "trending_agent"}:
